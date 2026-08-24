@@ -89,6 +89,17 @@ export const COHERENT_LEDGER_ENTRIES: {
     direction: "DEBIT",
     source: "8-K Item 1.01",
   },
+  {
+    // Illustrative, not sourced from an actual filing - exists so the RP
+    // basket waterfall and its golden tests exercise a genuine nonzero
+    // historical-usage case rather than only ever starting from zero.
+    date: "2026-04-15",
+    description: "Illustrative test fixture — prior-quarter dividend (not an actual filing)",
+    basket: "DIVIDEND",
+    amount: 150,
+    direction: "DEBIT",
+    source: "illustrative test fixture",
+  },
 ];
 
 export const LEDGER_BASKET_LABELS: Record<LedgerBasket, string> = {
@@ -160,7 +171,11 @@ export const COHERENT_DATA: CompanyCovenantData = {
                 { op: "REF", code: "general_debt" },
               ],
             },
-            { op: "SUM", items: [{ op: "REF", code: "lien_ratio" }, { op: "REF", code: "lien_general" }] },
+            {
+              op: "SUM",
+              items: [{ op: "REF", code: "lien_ratio" }, { op: "REF", code: "lien_general" }],
+              label: "Lien capacity",
+            },
             { op: "REF", code: "mila_secured" },
           ],
         },
@@ -606,6 +621,7 @@ export type GoldenQueryType =
 export interface GoldenTestSeed {
   question: string;
   queryType: GoldenQueryType;
+  /** May include `expectedStatus` (an EvaluationStatus/TransactionStatus) to assert the fail-closed status alone, independent of (or instead of) a numeric expectedAnswer. */
   queryParams?: Record<string, unknown>;
   expectedAnswer?: number;
   tolerance?: number;
@@ -675,5 +691,62 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     queryType: "OUT_OF_SCOPE",
     reviewerNotes:
       "Restricted/Unrestricted Subsidiary redesignation mechanics are explicitly out of scope for this phase - flagged rather than attempted, per instructions. Revisit once redesignation is in scope.",
+  },
+  {
+    question: "What is the Credit Agreement's own secured debt capacity, considered on its own?",
+    queryType: "DOCUMENT_CAPACITY",
+    queryParams: { documentId: CREDIT_AGREEMENT_ID, secured: true },
+    expectedAnswer: 5129,
+    tolerance: 1,
+    bindingProvision: "ca_leverage_cap",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
+    reviewerNotes: "Document-level (not cross-document) capacity - the §6.11(a) TNL maintenance covenant binds at $5,129M, tighter than the interest-coverage covenant's $7,538M.",
+  },
+  {
+    question: "Can Coherent pay a $200M dividend under the indenture, given the $150M already committed against the RP pool this quarter?",
+    queryType: "RP_SIMULATION",
+    queryParams: { documentId: INDENTURE_ID, amount: 200, kind: "dividend", metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "rp_builder",
+    bindingDefinedTerms: ["Consolidated Net Income", "Available Amount", "Restricted Payments", "Consolidated EBITDA"],
+    reviewerNotes: "Tests nonzero historical ledger usage: the builder basket already has $150M drawn (see the illustrative ledger fixture), leaving $2,685M - still enough to cover $200M on its own.",
+  },
+  {
+    question: "Can Coherent pay a $3,000M dividend under the indenture without tripping the ratio prong?",
+    queryType: "RP_SIMULATION",
+    queryParams: { documentId: INDENTURE_ID, amount: 3000, kind: "dividend", metric: "remaining" },
+    expectedAnswer: 0,
+    tolerance: 0.01,
+    bindingProvision: "rp_general",
+    bindingDefinedTerms: ["Restricted Payments", "Consolidated EBITDA"],
+    reviewerNotes: "$3,000M spills past the (already $150M-drawn) builder basket into the general RP basket, which covers the rest - $0 unallocated, general basket is the binding constraint.",
+  },
+  {
+    question: "Can Coherent make a $6,000M Investment under the indenture's unlimited ratio prong?",
+    queryType: "RP_SIMULATION",
+    queryParams: { documentId: INDENTURE_ID, amount: 6000, kind: "investment", metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "inv_ratio_gate",
+    bindingDefinedTerms: ["Consolidated Total Net Leverage Ratio", "Investments"],
+    reviewerNotes: "$6,000M exceeds both fixed baskets combined, so the unlimited ratio-gated basket (TNL <= 3.50x for Investments) has to open to cover the rest - it does, since TNL is currently 1.23x.",
+  },
+  {
+    question: "If Coherent sells $300M of assets and does not reinvest the proceeds, is a mandatory Asset Sale Offer triggered?",
+    queryType: "ASSET_SALE_SIMULATION",
+    queryParams: { documentId: INDENTURE_ID, amount: 300, reinvest: false, metric: "offerTriggered" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "asset_sale_threshold",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Asset Sale", "Excess Proceeds"],
+    reviewerNotes: "$300M net proceeds, not reinvested, exceeds the $42.5M Excess Proceeds threshold (greater of $35M / 2.5% EBITDA) - offer is required.",
+  },
+  {
+    question: "Is a dividend from Coherent tested against the Credit Agreement's own Restricted Payments covenant here?",
+    queryType: "RP_SIMULATION",
+    queryParams: { documentId: CREDIT_AGREEMENT_ID, amount: 100, kind: "dividend", metric: "cleared", expectedStatus: "not_tested" },
+    reviewerNotes:
+      "Fail-closed check: the Credit Agreement has its own separate Restricted Payments covenant (§6.06) per its caveat, but no basket configuration for it has been entered - the engine must report not_tested here, never silently fall back to the indenture's numbers or to \"unlimited.\"",
   },
 ];

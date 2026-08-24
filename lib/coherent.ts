@@ -1,45 +1,36 @@
 /**
- * Single-tenant data access for the app. Coherent Corp. is the only company
- * seeded in the database right now, so every page just reads its data - no
- * multi-tenant routing/session logic yet, per the current scope.
+ * Data access for the app. Every loader below takes `companyId` explicitly
+ * (defaulting to Coherent, the only company currently seeded) rather than
+ * baking a company id into the function bodies - there's still no
+ * multi-tenant account-selection UI, but the data-access layer itself no
+ * longer assumes a single tenant, so a page (or a future account switcher)
+ * can pass a different id without touching this file.
  */
 import { cache } from "react";
 import { prisma } from "./prisma";
 import { computeCovenantPosition, loadCompanyCovenantData } from "./covenant-engine";
-import {
-  COHERENT_COMPANY,
-  COHERENT_CREDIT_AGREEMENT_ID,
-  COHERENT_DOCUMENT_CAVEATS,
-  COHERENT_INDENTURE_ID,
-  LEDGER_BASKET_LABELS,
-  NOT_TESTED_CAVEATS,
-} from "@/prisma/seed-data";
+import { COHERENT_COMPANY, LEDGER_BASKET_LABELS } from "@/prisma/seed-data";
 
-export const COMPANY_ID = COHERENT_COMPANY.id;
-export {
-  COHERENT_COMPANY,
-  COHERENT_CREDIT_AGREEMENT_ID,
-  COHERENT_DOCUMENT_CAVEATS,
-  COHERENT_INDENTURE_ID,
-  LEDGER_BASKET_LABELS,
-  NOT_TESTED_CAVEATS,
-};
+/** The tenant every page falls back to until account selection exists. Not consumed by lib/covenant-engine.ts or any calculation logic - only by page-level call sites below. */
+export const DEFAULT_COMPANY_ID = COHERENT_COMPANY.id;
+/** A fixed label per LedgerBasket enum value - generic across any company using that enum, not Coherent-specific. */
+export { LEDGER_BASKET_LABELS };
 
-/** Loads Coherent's documents/provisions/latest snapshot/ledger, deduped per request. */
-export const getCovenantData = cache(async () => {
-  return loadCompanyCovenantData(prisma, COMPANY_ID);
+/** Loads a company's documents/provisions/latest snapshot/ledger, deduped per request, date-scoped for amendment precedence. */
+export const getCovenantData = cache(async (companyId: string = DEFAULT_COMPANY_ID, asOfDate: Date = new Date()) => {
+  return loadCompanyCovenantData(prisma, companyId, asOfDate);
 });
 
 /** getCovenantData() plus the computed position (leverage metrics + per-document capacity). */
-export const getPosition = cache(async () => {
-  const data = await getCovenantData();
+export const getPosition = cache(async (companyId: string = DEFAULT_COMPANY_ID, asOfDate: Date = new Date()) => {
+  const data = await getCovenantData(companyId, asOfDate);
   const position = computeCovenantPosition(data);
   return { data, position };
 });
 
-export const getDebtTranches = cache(async () => {
+export const getDebtTranches = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
   const snapshot = await prisma.financialSnapshot.findFirst({
-    where: { companyId: COMPANY_ID },
+    where: { companyId },
     orderBy: { asOfDate: "desc" },
   });
   if (!snapshot) return [];
@@ -49,24 +40,32 @@ export const getDebtTranches = cache(async () => {
   });
 });
 
-export const getLedgerEntries = cache(async () => {
+export const getLedgerEntries = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
   return prisma.ledgerEntry.findMany({
-    where: { companyId: COMPANY_ID },
+    where: { companyId },
     orderBy: { createdAt: "asc" },
   });
 });
 
-export const getCompany = cache(async () => {
-  return prisma.company.findUniqueOrThrow({ where: { id: COMPANY_ID } });
+export const getCompany = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
+  return prisma.company.findUniqueOrThrow({ where: { id: companyId } });
 });
 
 /** Raw Document rows (name/governs/notes) for display - the engine's DocumentInput deliberately omits non-computational fields like `notes`. */
-export const getDocuments = cache(async () => {
-  return prisma.document.findMany({ where: { companyId: COMPANY_ID }, orderBy: { createdAt: "asc" } });
+export const getDocuments = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
+  return prisma.document.findMany({ where: { companyId }, orderBy: { createdAt: "asc" } });
 });
 
-export const getFeedQueueItems = cache(async () => {
-  return prisma.feedQueueItem.findMany({ where: { companyId: COMPANY_ID }, orderBy: { createdAt: "asc" } });
+/** Raw FinancialSnapshot row (asOfDate/notes) for display - the engine's FinancialSnapshotInput deliberately omits non-computational fields. */
+export const getFinancialSnapshot = cache(async (companyId: string = DEFAULT_COMPANY_ID, asOfDate: Date = new Date()) => {
+  return prisma.financialSnapshot.findFirst({
+    where: { companyId, asOfDate: { lte: asOfDate } },
+    orderBy: { asOfDate: "desc" },
+  });
+});
+
+export const getFeedQueueItems = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
+  return prisma.feedQueueItem.findMany({ where: { companyId }, orderBy: { createdAt: "asc" } });
 });
 
 export interface DefinedTermLite {
@@ -82,19 +81,21 @@ export interface DefinedTermLite {
  * components like SimulateClient. This is the data behind ProvisionTrace's
  * "defined terms it depends on" expansion.
  */
-export const getDefinedTermsByProvision = cache(async (): Promise<Record<string, DefinedTermLite[]>> => {
-  const provisions = await prisma.covenantProvision.findMany({
-    where: { companyId: COMPANY_ID },
-    include: { definedTerms: { orderBy: { termName: "asc" } } },
-  });
-  const map: Record<string, DefinedTermLite[]> = {};
-  for (const p of provisions) {
-    map[`${p.documentId}:${p.code}`] = p.definedTerms.map((t) => ({
-      termName: t.termName,
-      sectionRef: t.sectionRef,
-      fullText: t.fullText,
-      status: t.status,
-    }));
+export const getDefinedTermsByProvision = cache(
+  async (companyId: string = DEFAULT_COMPANY_ID): Promise<Record<string, DefinedTermLite[]>> => {
+    const provisions = await prisma.covenantProvision.findMany({
+      where: { companyId },
+      include: { definedTerms: { orderBy: { termName: "asc" } } },
+    });
+    const map: Record<string, DefinedTermLite[]> = {};
+    for (const p of provisions) {
+      map[`${p.documentId}:${p.code}`] = p.definedTerms.map((t) => ({
+        termName: t.termName,
+        sectionRef: t.sectionRef,
+        fullText: t.fullText,
+        status: t.status,
+      }));
+    }
+    return map;
   }
-  return map;
-});
+);

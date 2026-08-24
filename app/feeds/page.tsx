@@ -6,7 +6,7 @@ import { approveFeedItem, dismissFeedItem } from "./actions";
 
 export const metadata = { title: "Headroom — Feeds" };
 
-const IGNORED_SOURCES = new Set(["manual", "Simulate tab"]);
+const IGNORED_SOURCES = new Set(["manual", "Simulate tab", "illustrative test fixture"]);
 
 const SNAPSHOT_FIELD_LABELS: Record<keyof Omit<FeedQueueSnapshotPayload, "asOfDate" | "notes">, string> = {
   ebitda: "EBITDA",

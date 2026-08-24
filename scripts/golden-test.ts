@@ -2,13 +2,18 @@
  * The permanent regression suite. Every row in golden_tests is a lawyer-
  * reviewable question with a mechanically-executable form (queryType +
  * queryParams); this script runs each one against the LIVE database and the
- * SAME engine functions the app uses, and reports pass/fail against three
- * independent things:
- *   1. expectedAnswer, within tolerance - the number.
- *   2. bindingProvision - which basket/test the engine says is actually
+ * SAME engine functions the app uses, and reports pass/fail against up to
+ * four independent things:
+ *   1. expectedAnswer, within tolerance - the number (only checked when the
+ *      engine actually reached a "modeled" / "clear" / "blocked" result).
+ *   2. expectedStatus (optional, in queryParams) - the fail-closed status
+ *      (EvaluationStatus/TransactionStatus) the engine returned, so a golden
+ *      row can assert "this should come back not_tested" or "review_required"
+ *      without needing a number at all.
+ *   3. bindingProvision - which basket/test the engine says is actually
  *      binding, so a change that gets the number right for the wrong reason
  *      still fails.
- *   3. bindingDefinedTerms - the defined terms that binding provision is
+ *   4. bindingDefinedTerms - the defined terms that binding provision is
  *      wired to, so a change that silently drops a term dependency fails too.
  *
  * Run: npm run golden-test
@@ -19,6 +24,10 @@
  * Restricted/Unrestricted Subsidiary redesignation, etc.) are never computed
  * - they're reported FLAGGED and do not affect the exit code, per the
  * explicit instruction to flag rather than attempt those.
+ *
+ * This script defaults to Coherent (the only seeded company) purely because
+ * there's no multi-tenant account selection yet - `npm run golden-test -- <companyId>`
+ * runs it against any other company's golden_tests rows instead.
  */
 import { PrismaClient, type GoldenTest } from "@prisma/client";
 import {
@@ -32,19 +41,25 @@ import {
   type CovenantPosition,
   type CovenantProvisionInput,
   type DebtIncurrenceSimulation,
+  type EvaluationStatus,
   type RestrictedPaymentKind,
   type RestrictedPaymentSimulation,
+  type TransactionStatus,
 } from "../lib/covenant-engine";
 import { COHERENT_COMPANY } from "../prisma/seed-data";
 
 const prisma = new PrismaClient();
 
 type Outcome = "PASS" | "FAIL" | "FLAGGED" | "ERROR";
+type AnyStatus = EvaluationStatus | TransactionStatus;
 
 interface EvalResult {
   outcome: Outcome;
   computed: number | null;
   numericOk: boolean | null;
+  status: AnyStatus | null;
+  expectedStatus: string | null;
+  statusOk: boolean | null;
   bindingLabel: string | null;
   bindingSectionRef: string | null;
   bindingOk: boolean | null;
@@ -91,7 +106,7 @@ function readNumericMetric(source: Record<string, unknown>, metric: string): num
 
 /** Which provision a Debt/RP/Asset Sale simulation should cite as "binding," for the traceability check. */
 function debtBindingProvision(sim: DebtIncurrenceSimulation): CovenantProvisionInput | null {
-  return sim.binding.bindingProvision ?? null;
+  return sim.binding?.bindingProvision ?? null;
 }
 
 function rpBindingProvision(
@@ -101,7 +116,7 @@ function rpBindingProvision(
   documentId: string,
   kind: RestrictedPaymentKind
 ): CovenantProvisionInput | null {
-  if (sim.cleared && sim.steps.length > 0) {
+  if (sim.status === "clear" && sim.steps.length > 0) {
     const lastCode = sim.steps[sim.steps.length - 1]!.code;
     return position.provisionCapacities.get(`${documentId}:${lastCode}`)?.provision ?? null;
   }
@@ -131,6 +146,9 @@ function evaluateGoldenTest(
       outcome: "FLAGGED",
       computed: null,
       numericOk: null,
+      status: null,
+      expectedStatus: null,
+      statusOk: null,
       bindingLabel: null,
       bindingSectionRef: null,
       bindingOk: null,
@@ -142,7 +160,9 @@ function evaluateGoldenTest(
   }
 
   const params = (test.queryParams ?? {}) as Record<string, unknown>;
-  let computed: number;
+  const expectedStatus = (params.expectedStatus as string | undefined) ?? null;
+  let computed: number | null = null;
+  let status: AnyStatus | null = null;
   let bindingProvision: CovenantProvisionInput | null = null;
 
   switch (test.queryType) {
@@ -156,7 +176,8 @@ function evaluateGoldenTest(
       const provisionCode = params.provisionCode as string;
       const evaluated = position.provisionCapacities.get(`${documentId}:${provisionCode}`);
       if (!evaluated) throw new Error(`Unknown provision ${documentId}:${provisionCode}`);
-      computed = evaluated.capacity;
+      status = evaluated.status;
+      computed = evaluated.status === "modeled" ? evaluated.capacity ?? null : null;
       bindingProvision = evaluated.provision;
       break;
     }
@@ -165,30 +186,33 @@ function evaluateGoldenTest(
       const secured = Boolean(params.secured);
       const doc = position.documents.find((d) => d.documentId === documentId);
       if (!doc) throw new Error(`Unknown document ${documentId}`);
-      computed = secured ? doc.securedCapacity : doc.unsecuredCapacity;
+      status = secured ? doc.securedStatus : doc.unsecuredStatus;
+      computed = status === "modeled" ? (secured ? doc.securedCapacity : doc.unsecuredCapacity) ?? null : null;
       bindingProvision = (secured ? doc.securedBindingProvision : doc.unsecuredBindingProvision) ?? null;
       break;
     }
     case "CROSS_DOCUMENT_CAPACITY": {
       const secured = Boolean(params.secured);
-      computed = secured ? position.crossDocumentSecuredCapacity : position.crossDocumentUnsecuredCapacity;
-      const bindingDoc = position.documents.reduce((min, d) => {
-        const v = secured ? d.securedCapacity : d.unsecuredCapacity;
-        const minV = secured ? min.securedCapacity : min.unsecuredCapacity;
-        return v < minV ? d : min;
-      });
-      bindingProvision = (secured ? bindingDoc.securedBindingProvision : bindingDoc.unsecuredBindingProvision) ?? null;
+      const cross = secured ? position.crossDocumentSecured : position.crossDocumentUnsecured;
+      status = cross.status;
+      computed = cross.status === "modeled" ? cross.capacity ?? null : null;
+      bindingProvision = cross.bindingProvision ?? null;
       break;
     }
     case "DEBT_SIMULATION": {
       const amount = Number(params.amount);
       const secured = Boolean(params.secured);
       const metric = params.metric as string;
-      const sim = simulateDebtIncurrence(position, data.financials, amount, secured);
-      computed = readNumericMetric(
-        { overallCapacity: sim.overallCapacity, cleared: sim.cleared, ...sim.proForma } as unknown as Record<string, unknown>,
-        metric
-      );
+      const sim = simulateDebtIncurrence(data, position, amount, secured);
+      status = sim.status;
+      if (metric === "cleared") {
+        computed = sim.status === "clear" ? 1 : 0;
+      } else {
+        computed = readNumericMetric(
+          { overallCapacity: sim.overallCapacity, ...sim.proForma } as unknown as Record<string, unknown>,
+          metric
+        );
+      }
       bindingProvision = debtBindingProvision(sim);
       break;
     }
@@ -198,13 +222,18 @@ function evaluateGoldenTest(
       const kind = params.kind as RestrictedPaymentKind;
       const metric = params.metric as string;
       const sim = simulateRestrictedPayment(data, position, documentId, amount, kind);
-      computed = readNumericMetric(
-        { remaining: sim.remaining, cleared: sim.cleared, poolUsed: sim.poolUsed, proFormaTotalNetLeverage: sim.proFormaTotalNetLeverage } as unknown as Record<
-          string,
-          unknown
-        >,
-        metric
-      );
+      status = sim.status;
+      if (metric === "cleared") {
+        computed = sim.status === "clear" ? 1 : 0;
+      } else {
+        computed = readNumericMetric(
+          { remaining: sim.remaining, poolUsed: sim.poolUsed, proFormaTotalNetLeverage: sim.proFormaTotalNetLeverage } as unknown as Record<
+            string,
+            unknown
+          >,
+          metric
+        );
+      }
       bindingProvision = rpBindingProvision(sim, data, position, documentId, kind);
       break;
     }
@@ -214,7 +243,8 @@ function evaluateGoldenTest(
       const reinvest = Boolean(params.reinvest);
       const metric = params.metric as string;
       const sim: AssetSaleSimulation = simulateAssetSale(data, position, documentId, amount, reinvest);
-      computed = readNumericMetric(sim as unknown as Record<string, unknown>, metric);
+      status = sim.status;
+      computed = sim.status === "clear" ? readNumericMetric(sim as unknown as Record<string, unknown>, metric) : null;
       bindingProvision = assetSaleBindingProvision(data, position, documentId);
       break;
     }
@@ -224,7 +254,9 @@ function evaluateGoldenTest(
 
   const expected = test.expectedAnswer !== null ? Number(test.expectedAnswer) : null;
   const tolerance = test.tolerance !== null ? Number(test.tolerance) : 0;
-  const numericOk = expected === null ? null : Math.abs(computed - expected) <= tolerance;
+  const numericOk = expected === null ? null : computed === null ? false : Math.abs(computed - expected) <= tolerance;
+
+  const statusOk = expectedStatus ? status === expectedStatus : null;
 
   const bindingOk = test.bindingProvision ? (bindingProvision ? matchesBindingLabel(test.bindingProvision, bindingProvision) : false) : null;
 
@@ -234,9 +266,10 @@ function evaluateGoldenTest(
   const expectedDefinedTerms = test.bindingDefinedTerms;
   const definedTermsOk = expectedDefinedTerms.length > 0 ? setEqualsCaseInsensitive(expectedDefinedTerms, actualDefinedTerms) : null;
 
-  const failed = numericOk === false || bindingOk === false || definedTermsOk === false;
+  const failed = numericOk === false || statusOk === false || bindingOk === false || definedTermsOk === false;
   const detailParts: string[] = [];
   if (numericOk === false) detailParts.push(`expected ${money(expected)} (±${money(tolerance)}), got ${money(computed)}`);
+  if (statusOk === false) detailParts.push(`expected status "${expectedStatus}", got "${status ?? "none"}"`);
   if (bindingOk === false) detailParts.push(`expected binding provision "${test.bindingProvision}", got "${bindingProvision?.code ?? "none"}"`);
   if (definedTermsOk === false) {
     detailParts.push(`expected defined terms [${expectedDefinedTerms.join(", ")}], got [${actualDefinedTerms.join(", ")}]`);
@@ -246,32 +279,37 @@ function evaluateGoldenTest(
     outcome: failed ? "FAIL" : "PASS",
     computed,
     numericOk,
+    status,
+    expectedStatus,
+    statusOk,
     bindingLabel: bindingProvision?.code ?? null,
     bindingSectionRef: bindingProvision?.sectionRef ?? null,
     bindingOk,
     actualDefinedTerms,
     expectedDefinedTerms,
     definedTermsOk,
-    detail: detailParts.join("; ") || "matches expected answer, binding provision, and defined terms",
+    detail: detailParts.join("; ") || "matches expected answer, status, binding provision, and defined terms",
   };
 }
 
 async function main() {
+  const companyId = process.argv[2] ?? COHERENT_COMPANY.id;
+
   const tests = await prisma.goldenTest.findMany({
-    where: { companyId: COHERENT_COMPANY.id },
+    where: { companyId },
     orderBy: { createdAt: "asc" },
   });
 
   if (tests.length === 0) {
-    console.log("No golden tests found for", COHERENT_COMPANY.name, "- populate the golden_tests table to run the regression suite.");
+    console.log("No golden tests found for", companyId, "- populate the golden_tests table to run the regression suite.");
     return;
   }
 
-  const data = await loadCompanyCovenantData(prisma, COHERENT_COMPANY.id);
+  const data = await loadCompanyCovenantData(prisma, companyId);
   const position = computeCovenantPosition(data);
 
   const provisionRows = await prisma.covenantProvision.findMany({
-    where: { companyId: COHERENT_COMPANY.id },
+    where: { companyId },
     include: { definedTerms: true },
   });
   const definedTermsByKey = new Map<string, string[]>();
@@ -284,7 +322,7 @@ async function main() {
   let flagged = 0;
   let errored = 0;
 
-  console.log(`\nGolden test run — ${COHERENT_COMPANY.name} — ${tests.length} question(s)\n${"=".repeat(72)}`);
+  console.log(`\nGolden test run — ${companyId} — ${tests.length} question(s)\n${"=".repeat(72)}`);
 
   for (const [i, test] of tests.entries()) {
     let result: EvalResult;
@@ -295,6 +333,9 @@ async function main() {
         outcome: "ERROR",
         computed: null,
         numericOk: null,
+        status: null,
+        expectedStatus: null,
+        statusOk: null,
         bindingLabel: null,
         bindingSectionRef: null,
         bindingOk: null,
@@ -316,7 +357,11 @@ async function main() {
     if (result.outcome === "FLAGGED") {
       console.log(`  ${result.detail}`);
     } else {
-      console.log(`  computed: ${money(result.computed)}${test.expectedAnswer !== null ? ` (expected ${money(Number(test.expectedAnswer))})` : ""}`);
+      console.log(
+        `  computed: ${money(result.computed)}${test.expectedAnswer !== null ? ` (expected ${money(Number(test.expectedAnswer))})` : ""}${
+          result.status ? ` [status: ${result.status}]` : ""
+        }`
+      );
       if (result.bindingLabel) {
         console.log(`  binding: ${result.bindingLabel} (${result.bindingSectionRef})`);
         console.log(`  defined terms: ${result.actualDefinedTerms.join(", ") || "(none linked)"}`);

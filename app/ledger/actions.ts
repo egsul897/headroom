@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { COMPANY_ID } from "@/lib/coherent";
+import { DEFAULT_COMPANY_ID } from "@/lib/coherent";
 import type { LedgerBasket, LedgerDirection } from "@prisma/client";
 
 const VALID_BASKETS: LedgerBasket[] = ["EQUITY", "DEBT_INCUR", "DEBT_REPAY", "ASSET_SALE", "DIVIDEND", "INVESTMENT"];
@@ -20,7 +20,7 @@ export async function addLedgerEntry(formData: FormData) {
 
   await prisma.ledgerEntry.create({
     data: {
-      companyId: COMPANY_ID,
+      companyId: DEFAULT_COMPANY_ID,
       date: new Date(),
       description,
       basket: basket as LedgerBasket,
@@ -38,12 +38,12 @@ export async function deleteLedgerEntry(id: string) {
   revalidatePath("/", "layout");
 }
 
-/** Mirrors the prototype's "commit to ledger" buttons on the Simulate tab - a cleared dividend/Investment becomes a real DEBIT entry against the shared §3.4 pool. */
+/** Mirrors the "commit to ledger" buttons on the Simulate tab - a cleared dividend/Investment becomes a real DEBIT entry against the shared restricted-payment pool. */
 export async function commitRestrictedPayment(kind: "DIVIDEND" | "INVESTMENT", amount: number) {
   if (!Number.isFinite(amount) || amount <= 0) throw new Error("Amount must be a positive number");
   await prisma.ledgerEntry.create({
     data: {
-      companyId: COMPANY_ID,
+      companyId: DEFAULT_COMPANY_ID,
       date: new Date(),
       description: `Simulated ${kind === "DIVIDEND" ? "dividend/buyback" : "Investment"} — $${Math.round(amount)}M`,
       basket: kind,

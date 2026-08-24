@@ -13,6 +13,15 @@ import { COHERENT_CREDIT_AGREEMENT_ID, COHERENT_DATA, COHERENT_INDENTURE_ID } fr
  * independent ground truth to check the DB-driven engine against. If the
  * engine's generalized formula evaluation ever drifts from what the
  * prototype actually computed for Coherent, these numbers will diverge.
+ *
+ * Known limitation: this oracle and COHERENT_DATA both trace back to the
+ * same source (the headroom-coherent.jsx prototype's default state), so a
+ * formula error that was already present in the prototype - and then
+ * transcribed identically into both the oracle and the seed data - would NOT
+ * be caught here; this test only proves the engine reproduces the prototype,
+ * not that the prototype's math (or Coherent's actual covenant terms) is
+ * correct. The synthetic-company and versioning tests elsewhere in this
+ * suite are independent of this fixture and don't share that risk.
  */
 function oracleM(fin: {
   ebitda: number;
@@ -253,26 +262,26 @@ describe("covenant-engine reproduces the Coherent prototype's numbers", () => {
   });
 
   it("matches cross-document (binding) capacity", () => {
-    expect(position.crossDocumentSecuredCapacity).toBeCloseTo(m.crossSec, 6);
-    expect(position.crossDocumentUnsecuredCapacity).toBeCloseTo(m.crossUnsec, 6);
+    expect(position.crossDocumentSecured.capacity).toBeCloseTo(m.crossSec, 6);
+    expect(position.crossDocumentUnsecured.capacity).toBeCloseTo(m.crossUnsec, 6);
   });
 
   it("matches a simulated secured debt incurrence", () => {
     const result = simulateDebtIncurrence(
+      COHERENT_DATA,
       position,
-      COHERENT_DATA.financials,
       PROTOTYPE_DEFAULTS.simAmt,
       PROTOTYPE_DEFAULTS.simSecured
     );
 
     expect(result.overallCapacity).toBeCloseTo(sim.overall, 6);
-    expect(result.cleared).toBe(sim.cleared);
+    expect(result.status === "clear").toBe(sim.cleared);
     expect(result.proForma.totalNetLeverage).toBeCloseTo(sim.pf.tnl, 9);
     expect(result.proForma.seniorSecuredNetLeverage).toBeCloseTo(sim.pf.ssnl, 9);
     expect(result.proForma.fixedChargeCoverage).toBeCloseTo(sim.pf.fccr, 9);
 
     // Indenture is the binding constraint (4041 < 5129) in the default scenario.
-    expect(result.binding.documentId).toBe(COHERENT_INDENTURE_ID);
+    expect(result.binding?.documentId).toBe(COHERENT_INDENTURE_ID);
   });
 
   it("matches a simulated dividend/buyback against the RP waterfall", () => {
@@ -284,7 +293,7 @@ describe("covenant-engine reproduces the Coherent prototype's numbers", () => {
       "dividend"
     );
 
-    expect(result.cleared).toBe(sim.rpResult.cleared);
+    expect(result.status === "clear").toBe(sim.rpResult.cleared);
     expect(result.remaining).toBeCloseTo(sim.rpResult.remaining, 6);
     expect(result.poolUsed).toBeCloseTo(sim.rpPoolUsed, 6);
     expect(result.proFormaTotalNetLeverage).toBeCloseTo(sim.rpPfTnl, 9);
@@ -300,7 +309,7 @@ describe("covenant-engine reproduces the Coherent prototype's numbers", () => {
       "investment"
     );
 
-    expect(result.cleared).toBe(sim.invResult.cleared);
+    expect(result.status === "clear").toBe(sim.invResult.cleared);
     expect(result.remaining).toBeCloseTo(sim.invResult.remaining, 6);
     expect(result.proFormaTotalNetLeverage).toBeCloseTo(sim.invPfTnl, 9);
     expect(result.steps.map((s) => s.allocated)).toEqual(sim.invResult.steps);

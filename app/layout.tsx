@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import "./globals.css";
 import { Nav } from "@/components/Nav";
-import { getCompany, getPosition } from "@/lib/coherent";
+import { getCompany, getDocuments, getPosition } from "@/lib/coherent";
 import { fmtX } from "@/lib/format";
 
 export const metadata = {
@@ -15,7 +15,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
-  const [company, { position }] = await Promise.all([getCompany(), getPosition()]);
+  const [company, { position }, documents] = await Promise.all([getCompany(), getPosition(), getDocuments()]);
 
   return (
     <html lang="en">
@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
               <div>
                 <div className="site-title">Headroom</div>
                 <div className="site-subtitle">
-                  {company.name} ({company.ticker}) · FY2026 10-K + 2029 Notes Indenture
+                  {company.name} ({company.ticker}) · {documents.map((d) => d.name).join(" + ")}
                 </div>
               </div>
               <div className="site-metric">

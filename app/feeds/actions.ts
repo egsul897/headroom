@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { COMPANY_ID } from "@/lib/coherent";
+import { DEFAULT_COMPANY_ID } from "@/lib/coherent";
 import type { FeedQueueLedgerPayload, FeedQueueSnapshotPayload } from "@/prisma/seed-data";
 
 /**
@@ -13,18 +13,18 @@ import type { FeedQueueLedgerPayload, FeedQueueSnapshotPayload } from "@/prisma/
 export async function approveFeedItem(id: string) {
   const item = await prisma.feedQueueItem.findUniqueOrThrow({ where: { id } });
   if (item.status !== "PENDING") throw new Error(`Feed item ${id} is already ${item.status.toLowerCase()}`);
-  if (item.companyId !== COMPANY_ID) throw new Error(`Feed item ${id} does not belong to this company`);
+  if (item.companyId !== DEFAULT_COMPANY_ID) throw new Error(`Feed item ${id} does not belong to this company`);
 
   if (item.kind === "SNAPSHOT_UPDATE") {
     const payload = item.payload as unknown as FeedQueueSnapshotPayload;
     const latest = await prisma.financialSnapshot.findFirstOrThrow({
-      where: { companyId: COMPANY_ID },
+      where: { companyId: DEFAULT_COMPANY_ID },
       orderBy: { asOfDate: "desc" },
     });
 
     const snapshot = await prisma.financialSnapshot.create({
       data: {
-        companyId: COMPANY_ID,
+        companyId: DEFAULT_COMPANY_ID,
         asOfDate: new Date(payload.asOfDate),
         ebitda: payload.ebitda ?? latest.ebitda,
         cash: payload.cash ?? latest.cash,
@@ -47,7 +47,7 @@ export async function approveFeedItem(id: string) {
     if (priorTranches.length > 0) {
       await prisma.debtTranche.createMany({
         data: priorTranches.map((t) => ({
-          companyId: COMPANY_ID,
+          companyId: DEFAULT_COMPANY_ID,
           financialSnapshotId: snapshot.id,
           name: t.name,
           amount: t.amount,
@@ -60,7 +60,7 @@ export async function approveFeedItem(id: string) {
     const payload = item.payload as unknown as FeedQueueLedgerPayload;
     await prisma.ledgerEntry.create({
       data: {
-        companyId: COMPANY_ID,
+        companyId: DEFAULT_COMPANY_ID,
         date: new Date(payload.date),
         description: payload.description,
         basket: payload.basket,
