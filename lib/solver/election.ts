@@ -244,15 +244,6 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   const fixed = members.filter((m) => m.amountKind === "FIXED");
   const incurrenceBased = members.filter((m) => m.amountKind === "INCURRENCE_BASED");
 
-  if (incurrenceBased.length > 1) {
-    // Two-or-more concurrently-drawn INCURRENCE_BASED members require the
-    // bisection layer (§E.4 step 4) - not handled by this simple waterfall.
-    // See computeElectionMaxCapacityBisected below, used by the caller when
-    // this condition holds; evaluateElection itself reports NOT_EVALUABLE
-    // for the single-amount-feasibility case as a conservative (never
-    // silently wrong) simplification documented in the Phase 6 report.
-  }
-
   const requirements: RequirementResult[] = [];
   for (const m of members) requirements.push(...evaluatePermissionEligibility(m, eligibilityContext));
 
@@ -273,6 +264,12 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   const legs: PermissionPathLeg[] = [];
   let remaining = requestedAmount;
   let totalAllocated = 0;
+  // Populated only by the incurrenceBased.length > 1 branch below: the
+  // election's own request-amount-independent ceiling is the MIN across
+  // every concurrently-drawn member's own standalone capacity (never a sum -
+  // see that branch's comment for why summing double-counts shared
+  // leverage headroom).
+  let multiRatioMaxCapacity: number | undefined;
 
   // Stateful shared-constraint headroom tracker: two members of the SAME
   // election drawing on the SAME SharedCapacityConstraint must jointly
@@ -405,6 +402,113 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
         detail: `${ratioPermission.id} ratio room ${standalone}.`,
       });
     }
+  } else if (incurrenceBased.length > 1) {
+    // Joint feasibility of concurrent ratio permissions (task-required fix
+    // for the gap documented in docs/solver-implementation-phases-0-7-report.md
+    // §O item 1). Every member here shares the SAME election, and by
+    // construction of enumerateElections's clique pruning, every pair is
+    // CONCURRENT_DISREGARDED/CONCURRENT_COUNTED - meaning the transaction
+    // relies on ALL of them concurrently, not on a fictional per-member
+    // split of the requested amount. Because each of these leaf formulas
+    // (LEVERAGE_RATIO_ROOM/COVERAGE_RATIO_ROOM) is linear/non-increasing in
+    // total pro forma debt, and the FULL `remaining` amount (not some
+    // smaller allocated share) counts toward whichever shared metric each
+    // member's own threshold measures, the exact joint-feasibility test is:
+    // does `remaining` exceed ANY individual member's OWN standalone
+    // capacity (each evaluated from the pre-transaction state, adjusted
+    // only for its own CONCURRENT_COUNTED fixed contributions)? This is the
+    // "resulting joint pro forma state" test the design doc requires -
+    // independently evaluating each member against a SMALLER, already-
+    // reduced-by-the-others amount would silently overstate what the
+    // transaction can rely on (the exact $300M+$300M=>$600M failure mode
+    // named in the task), because it ignores that every member measures the
+    // SAME aggregate leverage the full transaction produces.
+    //
+    // The dollar amount itself is attributed to exactly ONE leg (the
+    // lexicographically-first member, for determinism) so StateDelta/
+    // debtOutstandingDelta never double-counts the same real dollars across
+    // multiple legs; every other concurrently-relied-upon member still gets
+    // its own RATIO_CONDITION RequirementResult, so the trace shows every
+    // permission actually relied upon (design doc §D), not just the one
+    // carrying the leg.
+    const sortedRatio = [...incurrenceBased].sort((a, b) => (a.id < b.id ? -1 : 1));
+    const perMemberCapacity = new Map<string, number>();
+    let anyUnresolved = false;
+    let anyBelowRequested = false;
+
+    for (const rm of sortedRatio) {
+      let rmCountedFixedTotal = 0;
+      let rmCountedFixedSecured = 0;
+      for (const f of fixed) {
+        if (relationshipTypeBetween(graph, f.id, rm.id) === "CONCURRENT_COUNTED") {
+          rmCountedFixedTotal += legs.find((l) => l.permissionId === f.id)?.amountAllocated ?? 0;
+          // Secured-ness of a FIXED basket's counted contribution is not
+          // modeled separately here - same documented simplification as the
+          // single-incurrence-based-member branch above (report §O item 3).
+        }
+      }
+      const rmFin = withProFormaDebt(financials, rmCountedFixedTotal, rmCountedFixedSecured);
+      const evaluated = evaluateProvision(permissionAsProvision(rm), rmFin, computeLeverageMetrics(rmFin));
+      if (evaluated.status !== "modeled") {
+        anyUnresolved = true;
+        requirements.push({
+          class: "RATIO_CONDITION",
+          scope: { permissionId: rm.id },
+          status: "UNKNOWN",
+          detail: evaluated.reason ?? `Permission ${rm.id}'s ratio calculation did not resolve.`,
+          reasonCategory: "MISSING_ASSUMPTION",
+        });
+        continue;
+      }
+      const capacity = evaluated.capacity!;
+      perMemberCapacity.set(rm.id, capacity);
+      const satisfied = remaining <= capacity + 1e-6;
+      if (!satisfied) anyBelowRequested = true;
+      requirements.push({
+        class: "RATIO_CONDITION",
+        scope: { permissionId: rm.id },
+        status: satisfied ? "SATISFIED" : "FAILED",
+        detail:
+          `${rm.id} standalone ratio room ${capacity}, tested against the FULL jointly-relied-upon amount ${remaining} ` +
+          `(joint pro forma state across all ${sortedRatio.length} concurrently-drawn ratio permissions in this election) - ` +
+          `not independently against a smaller allocated share.`,
+      });
+    }
+
+    if (!anyUnresolved) {
+      multiRatioMaxCapacity = Math.min(...Array.from(perMemberCapacity.values()));
+    }
+
+    if (!anyUnresolved && !anyBelowRequested && sortedRatio.length > 0) {
+      const primary = sortedRatio[0]!;
+      const primaryCapacity = perMemberCapacity.get(primary.id)!;
+      const desiredForSharedCheck = Math.min(remaining, primaryCapacity);
+      const { cappedAlloc, constraintId } = headroomAndConsume(primary.id, desiredForSharedCheck);
+      let effectiveCapacity = primaryCapacity;
+      if (constraintId !== undefined) {
+        effectiveCapacity = Math.min(primaryCapacity, cappedAlloc);
+        requirements.push({
+          class: "SHARED_CAP",
+          scope: { permissionId: primary.id, constraintId },
+          status: cappedAlloc > 0 || desiredForSharedCheck === 0 ? "SATISFIED" : "FAILED",
+          detail: `Shared constraint ${constraintId} headroom consumed by ${primary.id}: ${cappedAlloc}.`,
+        });
+      }
+      const alloc = Math.max(0, Math.min(remaining, effectiveCapacity));
+      remaining -= alloc;
+      totalAllocated += alloc;
+      legs.push({
+        permissionId: primary.id,
+        grantType: primary.grantType,
+        amountAllocated: alloc,
+        standaloneCapacity: effectiveCapacity,
+        measurementBasis: primary.measurementBasis,
+        historicalUsage: {},
+        ratioCalculation: { measure: primary.formulaType, threshold: primary.thresholdValue, proFormaDebtUsed: financials.totalDebt + alloc },
+        sourceProvision: primary.sourceProvision,
+        concurrentTreatment: { withPermissionId: sortedRatio[1]!.id, relationship: "CONCURRENT_COUNTED", disregardedFromRatioDenominator: false },
+      });
+    }
   }
 
   // Automatic lien linkage (design doc §E.3/§E.5): once a debt leg is
@@ -471,6 +575,33 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     }
   }
 
+  // Fail-closed shortfall check: the transaction is being tested for the
+  // FULL `requestedAmount`, not merely "does some subset of it fit
+  // somewhere." If every requirement pushed above resolved (no UNKNOWN left
+  // to explain the gap - an unresolved leaf calculation already produces its
+  // own UNKNOWN/ASSUMPTION_REQUIRED status and must not be silently upgraded
+  // to a hard FAILED here) but this election's members still could not
+  // jointly absorb the whole amount, that is a confirmed, not merely
+  // unresolved, insufficiency - the election must not be reported CLEAR for
+  // an amount it only partially covers. Without this check, an election
+  // whose modeled capacity is smaller than the requested amount would still
+  // produce only SATISFIED requirements (each covering the portion it could
+  // absorb) and pathStatus would incorrectly resolve to CLEAR - the same
+  // class of false-affirmative bug the joint-feasibility fix above targets,
+  // generalized to any election (not only the 2+-concurrent-ratio case).
+  const EPS = 1e-6;
+  if (remaining > EPS && !requirements.some((r) => r.status === "UNKNOWN")) {
+    requirements.push({
+      class: "DEBT_PERMISSION",
+      scope: {},
+      status: "FAILED",
+      detail:
+        `This election's modeled capacity (${totalAllocated}) covers only part of the requested amount ` +
+        `(${requestedAmount}); ${remaining} would remain with no permitting basket in this election. An election is never ` +
+        `reported CLEAR for a partial amount.`,
+    });
+  }
+
   return {
     election,
     legs,
@@ -479,8 +610,8 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     parameterAdjustmentsTriggered,
     sharedConstraintsConsumed: sharedConsumption,
     totalAllocated,
-    maxCapacity: incurrenceBased.length <= 1 ? totalAllocated + remaining : undefined,
-    status: incurrenceBased.length > 1 ? "NOT_EVALUABLE" : "EVALUATED",
+    maxCapacity: incurrenceBased.length > 1 ? multiRatioMaxCapacity : totalAllocated + remaining,
+    status: "EVALUATED",
   };
 }
 

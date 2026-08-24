@@ -288,7 +288,8 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
   });
 
   describe("buildPermissionPaths - status derivation", () => {
-    it("skips NOT_EVALUABLE elections (2+ concurrent incurrence-based members) rather than reporting a false result", () => {
+    it("evaluates 2+ concurrent incurrence-based members for a specific amount (joint feasibility fix) rather than reporting NOT_EVALUABLE", () => {
+      // capacity(r1) = 5*500 - 750 = 1750; capacity(r2) = 4*500 - 750 = 1250.
       const r1 = permission("r1", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 5, params: {} });
       const r2 = permission("r2", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 4, params: {} });
       const graph = buildPermissionGraph([r1, r2], [rel({ fromPermissionId: "r1", toPermissionId: "r2", relationshipType: "CONCURRENT_COUNTED" })]);
@@ -302,8 +303,104 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
         sharedConstraints: [],
         collateralScopes: [],
       });
-      expect(evalResult.status).toBe("NOT_EVALUABLE");
-      expect(buildPermissionPaths([evalResult])).toHaveLength(0);
+      expect(evalResult.status).toBe("EVALUATED");
+      expect(evalResult.maxCapacity).toBeCloseTo(1250, 6); // min across members, never the sum
+      expect(buildPermissionPaths([evalResult])).toHaveLength(1);
+      expect(buildPermissionPaths([evalResult])[0]!.status).toBe("CLEAR");
+    });
+
+    it("joint feasibility: two permissions each independently 'appear' to permit $300M, but the shared pro forma state only supports $300M jointly, not $600M", () => {
+      // Both reference total net leverage off the SAME pre-transaction state:
+      // capacity(a) = capacity(b) = threshold*ebitda - (totalDebt - cash).
+      // threshold*500 - 750 = 300  =>  threshold = 2.1
+      const a = permission("a", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.1, params: {} });
+      const b = permission("b", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.1, params: {} });
+      const graph = buildPermissionGraph([a, b], [rel({ fromPermissionId: "a", toPermissionId: "b", relationshipType: "CONCURRENT_COUNTED" })]);
+      const permissionsById = new Map([["a", a], ["b", b]]);
+
+      const at300 = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["a", "b"], rationale: "" },
+        permissionsById,
+        graph,
+        financials: FIN,
+        requestedAmount: 300,
+        eligibilityContext: { transaction: baseTransaction, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      expect(buildPermissionPaths([at300])[0]!.status).toBe("CLEAR");
+      expect(at300.totalAllocated).toBeCloseTo(300, 6);
+
+      // The buggy independent-evaluation approach would wrongly sum 300+300=600 and clear it.
+      const at600 = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["a", "b"], rationale: "" },
+        permissionsById,
+        graph,
+        financials: FIN,
+        requestedAmount: 600,
+        eligibilityContext: { transaction: baseTransaction, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      expect(buildPermissionPaths([at600])[0]!.status).toBe("BLOCKED"); // never CLEAR
+      expect(at600.requirements.some((r) => r.status === "FAILED")).toBe(true);
+    });
+
+    it("boundary: exactly at the joint ceiling clears; $1 above it blocks", () => {
+      const a = permission("a", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.1, params: {} });
+      const b = permission("b", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.1, params: {} });
+      const graph = buildPermissionGraph([a, b], [rel({ fromPermissionId: "a", toPermissionId: "b", relationshipType: "CONCURRENT_COUNTED" })]);
+      const permissionsById = new Map([["a", a], ["b", b]]);
+      const run = (amount: number) =>
+        evaluateElection({
+          election: { id: "e", memberPermissionIds: ["a", "b"], rationale: "" },
+          permissionsById,
+          graph,
+          financials: FIN,
+          requestedAmount: amount,
+          eligibilityContext: { transaction: baseTransaction, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+          sharedConstraints: [],
+          collateralScopes: [],
+        });
+      expect(buildPermissionPaths([run(300)])[0]!.status).toBe("CLEAR");
+      expect(buildPermissionPaths([run(301)])[0]!.status).toBe("BLOCKED");
+    });
+
+    it("two ratio permissions with different applicable metrics (total vs. secured net leverage) - both must hold for a secured incurrence", () => {
+      // TNL basis: threshold*500 - 750 = 300 => threshold 2.1
+      const tnl = permission("tnl", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 2.1, params: { debtBasis: "total" } });
+      // SSNL basis: threshold*500 - (400-50) = 150 => threshold*500 = 500 => threshold = 1.0
+      const ssnl = permission("ssnl", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 1.0, params: { debtBasis: "secured" } });
+      const graph = buildPermissionGraph([tnl, ssnl], [rel({ fromPermissionId: "tnl", toPermissionId: "ssnl", relationshipType: "CONCURRENT_COUNTED" })]);
+      const permissionsById = new Map([["tnl", tnl], ["ssnl", ssnl]]);
+      const secured = { ...baseTransaction, secured: true };
+
+      // SSNL room (150) is the tighter of the two - joint ceiling is min(300, 150) = 150.
+      const at150 = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["tnl", "ssnl"], rationale: "" },
+        permissionsById,
+        graph,
+        financials: FIN,
+        requestedAmount: 150,
+        eligibilityContext: { transaction: secured, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      expect(buildPermissionPaths([at150])[0]!.status).toBe("CLEAR");
+
+      const at250 = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["tnl", "ssnl"], rationale: "" },
+        permissionsById,
+        graph,
+        financials: FIN,
+        requestedAmount: 250,
+        eligibilityContext: { transaction: secured, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      expect(buildPermissionPaths([at250])[0]!.status).toBe("BLOCKED"); // TNL alone would allow 250, but SSNL blocks it
+      expect(at250.requirements.find((r) => r.scope.permissionId === "ssnl")?.status).toBe("FAILED");
+      expect(at250.requirements.find((r) => r.scope.permissionId === "tnl")?.status).toBe("SATISFIED");
     });
   });
 

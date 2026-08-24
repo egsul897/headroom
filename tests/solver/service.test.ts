@@ -154,9 +154,45 @@ describe("Phase 7 - service layer (lib/solver/service.ts)", () => {
       activationState,
       asOfDate: new Date("2026-06-30"),
     });
-    const combinedElection = result.permissionPathUsed?.legs.reduce((sum, l) => sum + l.amountAllocated, 0);
+    // $300 was requested but the shared cap only has $150 of headroom -
+    // never a silent partial CLEAR; the transaction as a whole BLOCKS.
+    expect(result.overall.status).toBe("BLOCKED");
+    const jointPath = result.alternatives.find((a) => a.path.legs.length === 2)!.path;
+    const combinedElection = jointPath.legs.reduce((sum, l) => sum + l.amountAllocated, 0);
     // Even though each permission alone could supply 200, the SHARED cap of
     // 150 must bound their combined allocation to at most 150 - never 300+.
     expect(combinedElection).toBeLessThanOrEqual(150);
+  });
+
+  it("clears when the requested amount fits within the shared cap across two members", () => {
+    const p1 = permission("a", { thresholdValue: 200 });
+    const p2 = permission("b", { thresholdValue: 200 });
+    const rel: PermissionRelationship = { id: "r", companyId: "co-1", fromPermissionId: "a", toPermissionId: "b", relationshipType: "CONCURRENT_COUNTED", sourceProvision: { documentId: "doc-1", sectionRef: "§r" } };
+    const constraint: SharedConstraint = {
+      id: "sc-1",
+      companyId: "co-1",
+      name: "Shared cap",
+      cap: { amount: 150 },
+      aggregationRule: "NAMED_MEMBER_CLAUSES",
+      members: [{ permissionId: "a" }, { permissionId: "b" }],
+      measurementBasis: "CURRENTLY_OUTSTANDING",
+      followsRefinancing: false,
+      currentUsage: 0,
+      sourceProvision: { documentId: "doc-1", sectionRef: "§sc" },
+    };
+    const result = runSolver({
+      eligiblePermissions: [p1, p2],
+      relationships: [rel],
+      sharedConstraints: [constraint],
+      collateralScopes: [],
+      ruleActivationConditions: [],
+      financials: FIN,
+      transaction: { ...transaction, amount: 150 },
+      entityClasses: [],
+      activationState,
+      asOfDate: new Date("2026-06-30"),
+    });
+    expect(result.overall.status).toBe("CLEAR");
+    expect(result.permissionPathUsed?.legs.reduce((sum, l) => sum + l.amountAllocated, 0)).toBeCloseTo(150, 6);
   });
 });

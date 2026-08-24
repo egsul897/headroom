@@ -234,10 +234,49 @@ describe("Synthetic solver-native fixtures (Cases A-J)", () => {
         asOfDate: new Date("2026-06-30"),
       });
 
-      const totalAllocated = result.permissionPathUsed!.legs.reduce((sum, l) => sum + l.amountAllocated, 0);
+      // $400 was requested but the shared cap only has $250 of headroom - no
+      // election (p1 alone, p2 alone, or the two jointly) can cover the full
+      // $400, so this must BLOCK rather than silently clear a partial amount
+      // (the same fail-closed shortfall rule the joint-feasibility fix
+      // applies generally, not only to concurrently-drawn ratio permissions).
+      expect(result.overall.status).toBe("BLOCKED");
+      const jointPath = result.alternatives.find((a) => a.path.legs.length === 2)!.path;
+      const totalAllocated = jointPath.legs.reduce((sum, l) => sum + l.amountAllocated, 0);
       expect(totalAllocated).toBeLessThanOrEqual(250);
-      expect(result.permissionPathUsed!.sharedConstraintsConsumed.reduce((s, c) => s + c.amountConsumed, 0)).toBeLessThanOrEqual(250);
+      expect(jointPath.sharedConstraintsConsumed.reduce((s, c) => s + c.amountConsumed, 0)).toBeLessThanOrEqual(250);
       expect(result.constraintsEvaluated.sharedConstraints).toContainEqual(sharedCap);
+    });
+
+    it("clears when the requested amount fits within the shared cap", () => {
+      const p1 = permission("series-2031", { formulaType: "FLAT_AMOUNT", thresholdValue: 200, action: "2031 Notes debt basket" });
+      const p2 = permission("series-2032", { formulaType: "FLAT_AMOUNT", thresholdValue: 200, action: "2032 Notes debt basket" });
+      const combine = rel({ fromPermissionId: "series-2031", toPermissionId: "series-2032", relationshipType: "CONCURRENT_COUNTED", sourceProvision: { documentId: "synth-doc-1", sectionRef: "§E.1" } });
+      const sharedCap: SharedConstraint = {
+        id: "shared-notes-cap",
+        companyId: "synth-co",
+        name: "Combined notes cap",
+        cap: { amount: 250 },
+        aggregationRule: "NAMED_MEMBER_CLAUSES",
+        members: [{ permissionId: "series-2031" }, { permissionId: "series-2032" }],
+        measurementBasis: "CUMULATIVE_INCURRED",
+        followsRefinancing: true,
+        currentUsage: 0,
+        sourceProvision: { documentId: "synth-doc-1", sectionRef: "§E.1" },
+      };
+      const result = runSolver({
+        eligiblePermissions: [p1, p2],
+        relationships: [combine],
+        sharedConstraints: [sharedCap],
+        collateralScopes: [],
+        ruleActivationConditions: [],
+        financials: FIN,
+        transaction: baseTransaction({ amount: 250 }),
+        entityClasses: [],
+        activationState: emptyActivationState(),
+        asOfDate: new Date("2026-06-30"),
+      });
+      expect(result.overall.status).toBe("CLEAR");
+      expect(result.permissionPathUsed!.legs.reduce((s, l) => s + l.amountAllocated, 0)).toBeCloseTo(250, 6);
     });
   });
 
@@ -269,7 +308,26 @@ describe("Synthetic solver-native fixtures (Cases A-J)", () => {
         activationState: emptyActivationState(),
         asOfDate: new Date("2026-06-30"),
       });
-      expect(nonGuarantorResult.permissionPathUsed!.legs[0]!.amountAllocated).toBe(100); // capped by the sub-cap, not the $500 global basket
+      // Capped by the $100 sub-cap, not the $500 global basket - and since
+      // $500 was requested, the shortfall correctly BLOCKS overall (never a
+      // silent partial CLEAR for $100 of a $500 ask).
+      expect(nonGuarantorResult.overall.status).toBe("BLOCKED");
+      expect(nonGuarantorResult.alternatives[0]!.path.legs[0]!.amountAllocated).toBe(100);
+
+      const nonGuarantorWithinCap = runSolver({
+        eligiblePermissions: [globalP],
+        relationships: [],
+        sharedConstraints: [nonGuarantorSubCap],
+        collateralScopes: [],
+        ruleActivationConditions: [],
+        financials: FIN,
+        transaction: baseTransaction({ amount: 100, incurringEntity: { id: "non-guarantor-sub", name: "Non-Guarantor Sub LLC" } }),
+        entityClasses: ["NON_GUARANTOR_RS"],
+        activationState: emptyActivationState(),
+        asOfDate: new Date("2026-06-30"),
+      });
+      expect(nonGuarantorWithinCap.overall.status).toBe("CLEAR");
+      expect(nonGuarantorWithinCap.permissionPathUsed!.legs[0]!.amountAllocated).toBe(100);
 
       const guarantorResult = runSolver({
         eligiblePermissions: [globalP],
