@@ -23,6 +23,22 @@ model Company {
   feedQueueItems     FeedQueueItem[]
   goldenTests        GoldenTest[]
 
+  // --- Solver-native contract model (docs/solver-architecture-design.md §R) ---
+  // Additive only. Zero rows for Coherent/any existing company as of this
+  // migration - see docs/solver-implementation-phases-0-7-report.md. These
+  // relations exist purely so the new tables have real referential integrity
+  // to Company; nothing in the legacy engine (lib/covenant-engine.ts) reads
+  // them.
+  permissions                Permission[]
+  permissionRelationships    PermissionRelationship[]
+  sharedCapacityConstraints  SharedCapacityConstraint[]
+  collateralPools            CollateralPool[]
+  intercreditorAgreements    IntercreditorAgreement[]
+  ruleActivationConditions   RuleActivationCondition[]
+  entityClassMembers         EntityClassMember[]
+  externalInputRecords       ExternalInputRecord[]
+  solverCoverageDeclarations SolverCoverageDeclaration[]
+
   @@map("companies")
 }
 
@@ -79,6 +95,11 @@ model Document {
   covenantProvisions CovenantProvision[]
   ledgerEntries      LedgerEntry[]
   definedTerms       DefinedTerm[]
+
+  // Solver-native permissions sourced from this document (additive; see
+  // Permission below). A document may have zero of these (legacy-only) or a
+  // full complement (solver-native for the sides/grant types covered).
+  permissions Permission[]
 
   @@map("documents")
 }
@@ -376,4 +397,439 @@ model GoldenTest {
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("golden_tests")
+}
+
+// =============================================================================
+// Solver-native contract model
+// docs/solver-architecture-design.md §R ("Proposed schema"), implemented here
+// per Phase 1 of docs/solver-implementation-phases-0-7-report.md.
+//
+// Everything below is strictly additive: no existing model, column, or enum
+// above this line is modified. Zero rows exist for Coherent or any other
+// pre-existing company as a result of this migration - see the "Legacy
+// compatibility requirement" in the implementation task and
+// docs/solver-implementation-phases-0-7-report.md §M. `lib/covenant-engine.ts`
+// does not read any table below; only the new `lib/solver/*` modules do.
+//
+// The strict migration boundary (a document/side is fully solver-native XOR
+// fully legacy CapacityExpr, never mixed - design doc §Q.2/§Q.3) is enforced
+// by SolverCoverageDeclaration + Permission.modelingStatus, evaluated by
+// lib/solver/coverage.ts, not by anything in this schema file alone.
+// =============================================================================
+
+enum GrantType {
+  DEBT_INCURRENCE
+  LIEN
+
+  @@map("grant_type")
+}
+
+enum AmountKind {
+  FIXED
+  INCURRENCE_BASED
+
+  @@map("amount_kind")
+}
+
+// Whether a Permission slot required by a document/side's declared coverage
+// model has actually been authored (MODELED) or is a deliberate placeholder
+// acknowledging a real, applicable provision that has not been modeled yet
+// (KNOWN_NOT_MODELED). The coverage gate (lib/solver/coverage.ts) treats any
+// KNOWN_NOT_MODELED row within a declared-complete scope as disqualifying
+// that scope from solver-native evaluation - see design doc §Q.2.
+enum ModelingStatus {
+  MODELED
+  KNOWN_NOT_MODELED
+
+  @@map("modeling_status")
+}
+
+// Mirrors CovenantProvision/Permission's existing MeasurementBasis concept
+// (legal-model-remediation-design.md §3, carried through unchanged by both
+// ontology rounds - design doc §J).
+enum MeasurementBasis {
+  CUMULATIVE_INCURRED
+  CURRENTLY_OUTSTANDING
+  NET_OF_REPAYMENT
+  PREPAYMENT_CREDIT
+
+  @@map("measurement_basis")
+}
+
+// design doc §C.3. UNKNOWN is the fail-closed default for an unestablished
+// pairwise relationship - never inferred (lib/solver/graph.ts never treats a
+// missing relationship as any of the other eight kinds).
+enum StackingRelationshipType {
+  CONCURRENT_DISREGARDED
+  CONCURRENT_COUNTED
+  ALTERNATIVE
+  MUTUALLY_EXCLUSIVE
+  AUTOMATIC_LINKED_PERMISSION
+  EQUAL_AND_RATABLE_PULLUP
+  PARAMETER_ADJUSTMENT_TRIGGER
+  SHARED_CONSTRAINT_PARTICIPATION
+  UNKNOWN
+
+  @@map("stacking_relationship_type")
+}
+
+// design doc §G.
+enum AggregationRule {
+  NAMED_MEMBER_CLAUSES
+  EXTERNAL_INSTRUMENT_BALANCE
+  ENTITY_CLASS_FILTER
+
+  @@map("aggregation_rule")
+}
+
+// design doc §H. PARI_PASSU's "with which group" is carried on
+// PermissionCollateralScope.pariPassuWithGroupId, not as a parameterized enum
+// value, so the enum itself stays a small closed set.
+enum PriorityTier {
+  FIRST
+  SECOND
+  PARI_PASSU
+  UNSECURED
+
+  @@map("priority_tier")
+}
+
+// design doc §C.1 / Round 2 §I. A small, company-scoped fact table (see
+// EntityClassMember below) rather than a hardcoded list of real entity names.
+enum EntityClassTag {
+  BORROWER
+  GUARANTOR_RS
+  NON_GUARANTOR_RS
+  FOREIGN_RS
+  UNRESTRICTED_SUB
+  SECURITIZATION_SUB
+  IMMATERIAL_SUB
+
+  @@map("entity_class_tag")
+}
+
+// design doc §I.
+enum RuleActivationEffect {
+  APPLICABILITY
+  PARAMETER_VALUE
+  RETROACTIVE_REEXAMINATION
+
+  @@map("rule_activation_effect")
+}
+
+// design doc §I `StatePredicate` kinds.
+enum StatePredicateKind {
+  POINT_IN_TIME
+  CONTINUITY_WINDOW
+  EVENT_TRIGGERED
+  USAGE_LIMITED
+
+  @@map("state_predicate_kind")
+}
+
+// design doc §K.
+enum ExternalInputKind {
+  COMPUTABLE_FORMULA
+  CERTIFIED_EXTERNAL_INPUT
+  DISCRETIONARY_CATCH_ALL
+  HUMAN_CLASSIFICATION
+
+  @@map("external_input_kind")
+}
+
+// The generalized replacement for the debt/lien-relevant subset of
+// CovenantProvision (design doc §C.1) - NOT a mutation of CovenantProvision
+// itself; a parallel, independently-populated table. `formulaType`/
+// `thresholdValue`/`params` deliberately mirror CovenantProvision's own
+// fields so the leaf calculation core (`evaluateProvision` in
+// lib/covenant-engine.ts) can be reused verbatim (design doc §Q.1 - "Phase
+// (1) - leaf calculation - is kept as-is and reused, not replaced").
+model Permission {
+  id         String     @id @default(cuid())
+  companyId  String
+  documentId String
+  // Optional stable machine key for citation/joins in tests and fixtures -
+  // NOT required to be unique across companies, mirroring CovenantProvision.code.
+  code       String?
+  grantType  GrantType
+  amountKind AmountKind
+  // What this permission permits, in plain terms - "incur debt", "secure debt on Pool A at first priority".
+  action     String
+
+  // EntityClassFilter (design doc §C.1): which entity classes this permission
+  // admits. An empty array means "no entity-class restriction" (available to
+  // any incurring entity) - lib/solver/graph.ts treats empty distinctly from
+  // "unknown", which is why this is a required array column, not nullable.
+  entityScope EntityClassTag[]
+
+  // Leaf calculation (FormulaRef, design doc §C.1) - reuses the existing
+  // FormulaType/params/thresholdValue shape verbatim.
+  formulaType    FormulaType
+  thresholdValue Decimal     @db.Decimal(18, 6)
+  params         Json?
+
+  // Heterogeneous, permission-specific predicate lists - deliberately JSON,
+  // not tables, per design doc §R ("Deliberately not over-normalized").
+  eligibilityConditions Json?
+  termConditions        Json?
+
+  measurementBasis MeasurementBasis
+
+  // Provenance (task Phase 1: "every solver-native record must preserve...
+  // source section; review/modeling status").
+  sectionRef      String
+  definedTermRefs String[]
+
+  // Effective dating - same semantics as Document/CovenantProvision.
+  effectiveFrom DateTime?
+  effectiveTo   DateTime?
+
+  modelingStatus ModelingStatus    @default(KNOWN_NOT_MODELED)
+  reviewStatus   DefinedTermStatus @default(UNVERIFIED)
+  notes          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company  Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  relationshipsFrom           PermissionRelationship[]         @relation("PermissionRelationshipFrom")
+  relationshipsTo             PermissionRelationship[]         @relation("PermissionRelationshipTo")
+  sharedConstraintMemberships SharedCapacityConstraintMember[]
+  collateralScopes            PermissionCollateralScope[]
+  ruleActivationConditions    RuleActivationCondition[]
+
+  @@index([documentId, grantType])
+  @@index([companyId])
+  @@map("permissions")
+}
+
+// design doc §C.3 - a row connecting two Permission ids with its own
+// citation. `groupKey` clusters >2-way ALTERNATIVE/MUTUALLY_EXCLUSIVE groups
+// (every member relationship row in the same group shares the same key).
+// `parameter` carries PARAMETER_ADJUSTMENT_TRIGGER's payload (e.g.
+// { parameter: "couponPct", adjustmentBps: 50 }).
+model PermissionRelationship {
+  id               String                   @id @default(cuid())
+  companyId        String
+  fromPermissionId String
+  toPermissionId   String
+  relationshipType StackingRelationshipType
+  groupKey         String?
+  parameter        Json?
+  sourceSectionRef String
+  notes            String?
+
+  createdAt DateTime @default(now())
+
+  company        Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  fromPermission Permission @relation("PermissionRelationshipFrom", fields: [fromPermissionId], references: [id], onDelete: Cascade)
+  toPermission   Permission @relation("PermissionRelationshipTo", fields: [toPermissionId], references: [id], onDelete: Cascade)
+
+  @@index([fromPermissionId])
+  @@index([toPermissionId])
+  @@index([groupKey])
+  @@map("permission_relationships")
+}
+
+// design doc §G - adopted verbatim from the Round 2 §F/§L item 1 merge of
+// "cross-document capacity reference" and "nested guarantor sub-cap" into one
+// shape. Company-scoped, not document-scoped, by design.
+model SharedCapacityConstraint {
+  id                 String           @id @default(cuid())
+  companyId          String
+  name               String
+  // Usually FIXED; capFormulaType/capParams allow a formula-derived cap
+  // (design doc §G: "usually FIXED, occasionally itself formula-derived").
+  capAmount          Decimal?         @db.Decimal(18, 6)
+  capFormulaType     FormulaType?
+  capParams          Json?
+  aggregationRule    AggregationRule
+  measurementBasis   MeasurementBasis
+  followsRefinancing Boolean          @default(false)
+  sourceSectionRef   String
+  effectiveFrom      DateTime?
+  effectiveTo        DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company                          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  members SharedCapacityConstraintMember[]
+
+  @@index([companyId])
+  @@map("shared_capacity_constraints")
+}
+
+// Join table (design doc §R: "the standard, correctly-normalized shape").
+// Exactly one of permissionId / namedInstrument / entityClass is populated,
+// matching whichever aggregationRule the parent constraint uses.
+model SharedCapacityConstraintMember {
+  id                    String          @id @default(cuid())
+  constraintId          String
+  permissionId          String?
+  namedInstrument       String?
+  entityClass           EntityClassTag?
+  externalInstrumentRef String?
+
+  constraint SharedCapacityConstraint @relation(fields: [constraintId], references: [id], onDelete: Cascade)
+  permission Permission?              @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@index([constraintId])
+  @@index([permissionId])
+  @@map("shared_capacity_constraint_members")
+}
+
+// design doc §H.
+model CollateralPool {
+  id             String  @id @default(cuid())
+  companyId      String
+  name           String
+  definedTermRef String?
+
+  createdAt DateTime @default(now())
+
+  company Company                     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  scopes  PermissionCollateralScope[]
+
+  @@index([companyId])
+  @@map("collateral_pools")
+}
+
+// The load-bearing normalization that makes "first-priority on Pool A,
+// second-priority on Pool B, same permission" representable (design doc §H).
+model PermissionCollateralScope {
+  id                       String       @id @default(cuid())
+  permissionId             String
+  collateralPoolId         String
+  priorityTier             PriorityTier
+  pariPassuWithGroupId     String?
+  intercreditorAgreementId String?
+
+  permission             Permission              @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  collateralPool         CollateralPool          @relation(fields: [collateralPoolId], references: [id], onDelete: Cascade)
+  intercreditorAgreement IntercreditorAgreement? @relation(fields: [intercreditorAgreementId], references: [id], onDelete: SetNull)
+
+  @@index([permissionId])
+  @@index([collateralPoolId])
+  @@map("permission_collateral_scopes")
+}
+
+// design doc §H - stops deliberately at "does joinder exist as a
+// precondition"; enforcement-regime fields (standstill, turnover, DIP
+// subordination, etc.) are intentionally NOT modeled, matching the explicit
+// Phase 1 scope boundary.
+model IntercreditorAgreement {
+  id        String @id @default(cuid())
+  companyId String
+  name      String
+  // { poolId, counterpartyClass }[] - which pool(s)/creditor classes this
+  // specific agreement governs.
+  governs   Json
+
+  createdAt DateTime @default(now())
+
+  company          Company                     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  collateralScopes PermissionCollateralScope[]
+
+  @@index([companyId])
+  @@map("intercreditor_agreements")
+}
+
+// design doc §I - one generalized shape for every dynamic-activation
+// mechanic (step-up/cooldown, springing covenants, discharge/reinstatement,
+// equity-cure usage limits). `predicateConfig` carries the kind-specific
+// parameters (minConsecutivePeriods/periodUnit for CONTINUITY_WINDOW,
+// sinceEvent/until for EVENT_TRIGGERED, maxUses/minSpacingPeriods for
+// USAGE_LIMITED, a description for POINT_IN_TIME) rather than a table per
+// kind, since these are heterogeneous and permission/section-specific.
+model RuleActivationCondition {
+  id                       String               @id @default(cuid())
+  companyId                String
+  permissionId             String?
+  covenantSectionIds       String[]
+  companyWide              Boolean              @default(false)
+  predicateKind            StatePredicateKind
+  predicateConfig          Json
+  effect                   RuleActivationEffect
+  parameterName            String?
+  reversionPredicateConfig Json?
+  sourceSectionRef         String
+
+  createdAt DateTime @default(now())
+
+  company    Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  permission Permission? @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([permissionId])
+  @@map("rule_activation_conditions")
+}
+
+// design doc §R - "a small fact table of Restricted Subsidiaries +
+// EntityClass tag", shared by both Permission.entityScope matching and
+// SharedCapacityConstraintMember's ENTITY_CLASS_FILTER aggregation.
+model EntityClassMember {
+  id          String         @id @default(cuid())
+  companyId   String
+  entityName  String
+  entityClass EntityClassTag
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, entityName])
+  @@map("entity_class_members")
+}
+
+// design doc §K - generalizes FinancialFieldProvenance to certified/
+// discretionary external inputs (borrowing-base certificate line items,
+// named reserves, the discretionary catch-all reserve).
+model ExternalInputRecord {
+  id           String            @id @default(cuid())
+  companyId    String
+  kind         ExternalInputKind
+  name         String
+  value        Decimal?          @db.Decimal(18, 6)
+  asOfDate     DateTime?
+  sourceRef    String?
+  reviewStatus DefinedTermStatus @default(UNVERIFIED)
+  // Periodic certificates are stale, not silently reused, past this window
+  // (design doc §K).
+  maxAgeDays   Int?
+
+  createdAt DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@map("external_input_records")
+}
+
+// The explicit, human-attested "coverage model" the strict coverage gate
+// (design doc §Q.2, lib/solver/coverage.ts) consults: a document/side is
+// eligible to be considered solver-native ONLY when a declaration exists AND
+// is marked complete AND every Permission row in its scope is MODELED (not
+// KNOWN_NOT_MODELED). Absence of a declaration (the case for every existing
+// document today, including all of Coherent's) always resolves to the legacy
+// path - see lib/solver/coverage.ts for the exact predicate. `side` is a free
+// string (not an enum) so it can mirror CapacityExpr's existing
+// "secured"/"unsecured" vocabulary without a schema change if a future side
+// value is needed.
+model SolverCoverageDeclaration {
+  id         String    @id @default(cuid())
+  companyId  String
+  documentId String
+  side       String
+  grantType  GrantType
+  isComplete Boolean   @default(false)
+  notes      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, side, grantType])
+  @@map("solver_coverage_declarations")
 }
