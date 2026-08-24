@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  ticker    String?
+  cik       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  documents          Document[]
+  covenantProvisions CovenantProvision[]
+  financialSnapshots FinancialSnapshot[]
+  ledgerEntries      LedgerEntry[]
+
+  @@map("companies")
+}
+
+enum DocumentType {
+  CREDIT_AGREEMENT
+  INDENTURE
+  OTHER
+
+  @@map("document_type")
+}
+
+// A credit document's structural capacity formulas, expressed as expression
+// trees over its own CovenantProvision rows (see CapacityExpr / RpWaterfallConfig
+// / AssetSaleConfig in lib/covenant-engine.ts). This is *composition* wiring
+// ("secured capacity = min(these baskets stacked, this ceiling)") which is
+// specific to how a given document's covenant package fits together - the
+// individual basket sizes/ratios/percentages referenced by these formulas
+// live in CovenantProvision rows below and are what actually varies per deal.
+model Document {
+  id         String       @id @default(cuid())
+  companyId  String
+  name       String
+  type       DocumentType
+  governs    String?
+  executedOn DateTime?
+  notes      String?
+
+  // JSON-encoded CapacityExpr trees: { secured?: CapacityExpr, unsecured?: CapacityExpr }
+  capacityFormulas Json?
+  // JSON-encoded RpWaterfallConfig: { steps: {code}[], ratioGateCodeByKind: {dividend, investment} }
+  rpWaterfall Json?
+  // JSON-encoded AssetSaleConfig: { thresholdCode: string, reinvestmentWindowDays: number }
+  assetSale Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company            Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  covenantProvisions CovenantProvision[]
+  ledgerEntries      LedgerEntry[]
+
+  @@map("documents")
+}
+
+// The generalized formula archetypes the engine knows how to evaluate.
+// See lib/covenant-engine.ts for the per-type calculation and the FormulaParams
+// each type reads out of CovenantProvision.params.
+enum FormulaType {
+  FLAT_AMOUNT
+  FLAT_NET_OF_DEBT
+  GREATER_OF_FLAT_OR_PCT_EBITDA
+  LEVERAGE_RATIO_ROOM
+  COVERAGE_RATIO_ROOM
+  BUILDER_BASKET
+  RATIO_GATE
+
+  @@map("formula_type")
+}
+
+// One basket / covenant test, defined by data instead of hardcoded arithmetic.
+// `code` is a stable machine key a document's capacityFormulas/rpWaterfall/
+// assetSale JSON refers to; `thresholdValue` is the formula's primary numeric
+// input (a ratio, a flat dollar amount, a required coverage multiple); `params`
+// carries formula-specific secondary inputs (percentages, which leverage
+// measure to use, etc).
+model CovenantProvision {
+  id             String      @id @default(cuid())
+  companyId      String
+  documentId     String
+  code           String
+  basketName     String
+  sectionRef     String
+  formulaType    FormulaType
+  thresholdValue Decimal     @db.Decimal(18, 6)
+  params         Json?
+  notes          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company  Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId, code])
+  @@map("covenant_provisions")
+}
+
+// Periodic financial inputs the engine's formulas run against.
+model FinancialSnapshot {
+  id                       String   @id @default(cuid())
+  companyId                String
+  asOfDate                 DateTime
+  ebitda                   Decimal  @db.Decimal(18, 6)
+  cash                     Decimal  @db.Decimal(18, 6)
+  interestExpense          Decimal  @db.Decimal(18, 6)
+  cumulativeNetIncome      Decimal  @db.Decimal(18, 6)
+  equityProceedsSinceIssue Decimal  @db.Decimal(18, 6)
+  assumedNewDebtRatePct    Decimal  @db.Decimal(9, 6)
+  totalDebt                Decimal  @db.Decimal(18, 6)
+  securedDebt              Decimal  @db.Decimal(18, 6)
+  notes                    String?
+
+  createdAt DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("financial_snapshots")
+}
+
+enum LedgerBasket {
+  EQUITY
+  DEBT_INCUR
+  DEBT_REPAY
+  ASSET_SALE
+  DIVIDEND
+  INVESTMENT
+
+  @@map("ledger_basket")
+}
+
+enum LedgerDirection {
+  CREDIT
+  DEBIT
+
+  @@map("ledger_direction")
+}
+
+// Public-record / compliance-certificate events that draw on or add to basket
+// capacity (equity raises, debt incurrence/repayment, asset-sale proceeds,
+// dividends, investments).
+model LedgerEntry {
+  id          String          @id @default(cuid())
+  companyId   String
+  documentId  String?
+  date        DateTime
+  description String
+  basket      LedgerBasket
+  amount      Decimal         @db.Decimal(18, 6)
+  direction   LedgerDirection
+  source      String?
+
+  createdAt DateTime @default(now())
+
+  company  Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  @@map("ledger_entries")
+}
