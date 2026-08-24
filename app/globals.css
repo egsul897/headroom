@@ -214,6 +214,108 @@ main {
   white-space: nowrap;
 }
 
+/* ProvisionTrace: the citation -> defined terms -> formula -> number chain.
+   Built on native <details>/<summary>, so this is all it needs - no JS. */
+.trace {
+  border-bottom: 1px solid var(--line);
+}
+.trace:last-child {
+  border-bottom: none;
+}
+
+.trace-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 0;
+  cursor: pointer;
+  list-style: none;
+}
+.trace-summary::-webkit-details-marker {
+  display: none;
+}
+.trace-summary::before {
+  content: "▸";
+  display: inline-block;
+  width: 0.9em;
+  margin-right: 4px;
+  color: var(--muted);
+  transition: transform 120ms ease;
+}
+.trace[open] > .trace-summary::before {
+  transform: rotate(90deg);
+}
+
+.trace-summary-main {
+  min-width: 0;
+}
+
+.trace-body {
+  padding: 0 0 14px 1.3em;
+  display: grid;
+  gap: 10px;
+}
+
+.trace-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.trace-formula {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.trace-formula .trace-label {
+  display: inline;
+  margin-right: 4px;
+}
+
+.trace-terms {
+  display: grid;
+  gap: 4px;
+}
+
+.trace-term {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 6px 10px;
+  background: #fcfbf8;
+}
+
+.trace-term summary {
+  cursor: pointer;
+  font-size: 13px;
+  list-style: none;
+}
+.trace-term summary::-webkit-details-marker {
+  display: none;
+}
+.trace-term summary::before {
+  content: "▸";
+  display: inline-block;
+  width: 0.9em;
+  color: var(--muted);
+}
+.trace-term[open] summary::before {
+  content: "▾";
+}
+
+.trace-term-name {
+  font-weight: 600;
+}
+
+.trace-term-text {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin: 8px 0 2px;
+  padding-top: 8px;
+  border-top: 1px dotted var(--line);
+}
+
 .mono {
   font-family: var(--font-mono);
 }

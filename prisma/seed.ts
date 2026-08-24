@@ -2,7 +2,10 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import {
   COHERENT_COMPANY,
   COHERENT_DATA,
+  COHERENT_DEFINED_TERMS,
   COHERENT_DOCUMENT_CAVEATS,
+  COHERENT_FEED_QUEUE_ITEMS,
+  COHERENT_GOLDEN_TESTS,
   COHERENT_LEDGER_ENTRIES,
   COHERENT_TRANCHES,
 } from "./seed-data";
@@ -48,8 +51,9 @@ async function main() {
     });
   }
 
+  const provisionIdByKey = new Map<string, string>();
   for (const p of COHERENT_DATA.provisions) {
-    await prisma.covenantProvision.upsert({
+    const row = await prisma.covenantProvision.upsert({
       where: { documentId_code: { documentId: p.documentId, code: p.code } },
       update: {
         basketName: p.basketName,
@@ -72,12 +76,39 @@ async function main() {
         notes: p.notes,
       },
     });
+    provisionIdByKey.set(`${p.documentId}:${p.code}`, row.id);
   }
 
-  // FinancialSnapshot/DebtTranche/LedgerEntry are append-only event data with
-  // no natural unique key to upsert on - clear this company's rows before
-  // reinserting so the seed script stays idempotent across re-runs.
+  for (const term of COHERENT_DEFINED_TERMS) {
+    const connectProvisions = term.usedByProvisionCodes.map((code) => {
+      const id = provisionIdByKey.get(`${term.documentId}:${code}`);
+      if (!id) throw new Error(`Defined term "${term.termName}" references unknown provision ${term.documentId}:${code}`);
+      return { id };
+    });
+    await prisma.definedTerm.upsert({
+      where: { documentId_termName: { documentId: term.documentId, termName: term.termName } },
+      update: {
+        sectionRef: term.sectionRef,
+        fullText: term.fullText,
+        provisions: { set: connectProvisions },
+      },
+      create: {
+        documentId: term.documentId,
+        termName: term.termName,
+        sectionRef: term.sectionRef,
+        fullText: term.fullText,
+        provisions: { connect: connectProvisions },
+      },
+    });
+  }
+
+  // FinancialSnapshot/DebtTranche/LedgerEntry/FeedQueueItem/GoldenTest are
+  // append-only event data with no natural unique key to upsert on - clear
+  // this company's rows before reinserting so the seed script stays
+  // idempotent across re-runs.
   await prisma.ledgerEntry.deleteMany({ where: { companyId: company.id } });
+  await prisma.feedQueueItem.deleteMany({ where: { companyId: company.id } });
+  await prisma.goldenTest.deleteMany({ where: { companyId: company.id } });
   await prisma.debtTranche.deleteMany({ where: { companyId: company.id } });
   await prisma.financialSnapshot.deleteMany({ where: { companyId: company.id } });
 
@@ -124,6 +155,37 @@ async function main() {
         amount: entry.amount,
         direction: entry.direction,
         source: entry.source,
+      },
+    });
+  }
+
+  for (const item of COHERENT_FEED_QUEUE_ITEMS) {
+    await prisma.feedQueueItem.create({
+      data: {
+        companyId: company.id,
+        title: item.title,
+        description: item.description,
+        source: item.source,
+        filedDate: new Date(item.filedDate),
+        kind: item.kind,
+        payload: asJson(item.payload),
+      },
+    });
+  }
+
+  for (const test of COHERENT_GOLDEN_TESTS) {
+    await prisma.goldenTest.create({
+      data: {
+        companyId: company.id,
+        question: test.question,
+        queryType: test.queryType,
+        queryParams: test.queryParams ? asJson(test.queryParams) : Prisma.DbNull,
+        expectedAnswer: test.expectedAnswer ?? null,
+        tolerance: test.tolerance ?? null,
+        bindingProvision: test.bindingProvision ?? null,
+        bindingDefinedTerms: test.bindingDefinedTerms ?? [],
+        reviewerNotes: test.reviewerNotes,
+        status: "UNVERIFIED",
       },
     });
   }
