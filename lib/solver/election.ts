@@ -366,7 +366,19 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     totalAllocated += alloc;
     if (incurrenceBased.length === 1 && concurrentTreatmentByFixedId.get(f.id) === "COUNTED") {
       countedFixedTotalDebt += alloc;
-      if (f.grantType === "DEBT_INCURRENCE") countedFixedSecuredDebt += 0; // secured-ness of a FIXED basket is not modeled separately here; see report §O
+      // A FIXED permission has no distinct "is this secured debt" flag of
+      // its own separate from the transaction's own `secured` flag (report
+      // §O item 3). Rather than assume 0 (which would understate pro forma
+      // secured debt and could overstate room under an SSNL-basis ratio
+      // permission counted concurrently with it - a false-CLEAR risk for a
+      // real secured Phase 1 transaction), this conservatively assumes the
+      // counted FIXED contribution IS secured whenever the transaction
+      // itself is secured - the safe direction (never understates secured
+      // leverage), at the cost of occasionally being pessimistic for a
+      // FIXED basket that happens to authorize only unsecured debt even
+      // within a secured transaction. A distinct per-grant secured flag
+      // would resolve this exactly; that is the scoped follow-up.
+      if (f.grantType === "DEBT_INCURRENCE" && eligibilityContext.transaction.secured) countedFixedSecuredDebt += alloc;
     }
     legs.push({
       permissionId: f.id,
@@ -469,10 +481,12 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
       let rmCountedFixedSecured = 0;
       for (const f of fixed) {
         if (relationshipTypeBetween(graph, f.id, rm.id) === "CONCURRENT_COUNTED") {
-          rmCountedFixedTotal += legs.find((l) => l.permissionId === f.id)?.amountAllocated ?? 0;
-          // Secured-ness of a FIXED basket's counted contribution is not
-          // modeled separately here - same documented simplification as the
-          // single-incurrence-based-member branch above (report §O item 3).
+          const fAlloc = legs.find((l) => l.permissionId === f.id)?.amountAllocated ?? 0;
+          rmCountedFixedTotal += fAlloc;
+          // Same conservative "assume secured whenever the transaction is
+          // secured" rule as the single-incurrence-based-member branch above
+          // (report §O item 3) - never understates secured pro forma debt.
+          if (f.grantType === "DEBT_INCURRENCE" && eligibilityContext.transaction.secured) rmCountedFixedSecured += fAlloc;
         }
       }
       const rmFin = withProFormaDebt(financials, rmCountedFixedTotal, rmCountedFixedSecured);

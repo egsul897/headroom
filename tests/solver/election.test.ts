@@ -172,6 +172,33 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       expect(ratioLeg.standaloneCapacity).toBeCloseTo(expectedRatioRoom, 6);
     });
 
+    it("Case: fixed + SSNL-basis ratio concurrent COUNTED, secured transaction - the fixed basket's contribution counts toward secured debt too (report §O item 3 fix)", () => {
+      const fixedP = permission("fixed", { formulaType: "FLAT_AMOUNT", thresholdValue: 50 });
+      const ratioP = permission("ratio", { amountKind: "INCURRENCE_BASED", formulaType: "LEVERAGE_RATIO_ROOM", thresholdValue: 5, params: { debtBasis: "secured" } });
+      const graph = buildPermissionGraph([fixedP, ratioP], [rel({ fromPermissionId: "fixed", toPermissionId: "ratio", relationshipType: "CONCURRENT_COUNTED" })]);
+      const permissionsById = new Map([["fixed", fixedP], ["ratio", ratioP]]);
+      const withoutFixedRoom = 5 * FIN.ebitda - (FIN.securedDebt - FIN.cash); // SSNL basis: 2500 - (400-50) = 2150
+      const expectedRatioRoom = withoutFixedRoom - 50; // fixed's $50 counted as secured too, since the transaction is secured
+
+      const securedTransaction = { ...baseTransaction, secured: true };
+      const evalResult = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["fixed", "ratio"], rationale: "" },
+        permissionsById,
+        graph,
+        financials: FIN,
+        requestedAmount: 10000,
+        eligibilityContext: { transaction: securedTransaction, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      const ratioLeg = evalResult.legs.find((l) => l.permissionId === "ratio")!;
+      // Before the fix this would have been `withoutFixedRoom` (understating
+      // secured pro forma debt by ignoring the concurrently-counted fixed
+      // basket's own $50) - a false-affirmative risk for a real secured
+      // Phase 1 transaction.
+      expect(ratioLeg.standaloneCapacity).toBeCloseTo(expectedRatioRoom, 6);
+    });
+
     it("Case: automatic lien linkage - a lien leg is included automatically once its linked debt leg is included, allocated to match", () => {
       const debtP = permission("debt", { formulaType: "FLAT_AMOUNT", thresholdValue: 300 });
       const lienP = permission("lien", { grantType: "LIEN", formulaType: "FLAT_AMOUNT", thresholdValue: 0 });
