@@ -169,6 +169,14 @@ function evaluateGoldenTest(
     case "LEVERAGE_METRIC": {
       const metric = params.metric as string;
       computed = readNumericMetric(position.metrics as unknown as Record<string, unknown>, metric);
+      // A raw leverage ratio isn't itself computed from one provision, but a
+      // golden row MAY optionally name the provision that states the threshold
+      // this ratio is tested against, for citation-traceability checking.
+      const bindingDocumentId = params.bindingProvisionDocumentId as string | undefined;
+      const bindingCode = params.bindingProvisionCode as string | undefined;
+      if (bindingDocumentId && bindingCode) {
+        bindingProvision = position.provisionCapacities.get(`${bindingDocumentId}:${bindingCode}`)?.provision ?? null;
+      }
       break;
     }
     case "PROVISION_CAPACITY": {
@@ -208,8 +216,12 @@ function evaluateGoldenTest(
       if (metric === "cleared") {
         computed = sim.status === "clear" ? 1 : 0;
       } else {
+        // remainingAfterAmount is a derived figure computed only here (not on the
+        // engine's own DebtIncurrenceSimulation type): the pre-transaction binding
+        // capacity net of the amount being tested. Generic over any company/amount.
+        const remainingAfterAmount = sim.overallCapacity !== undefined ? sim.overallCapacity - amount : undefined;
         computed = readNumericMetric(
-          { overallCapacity: sim.overallCapacity, ...sim.proForma } as unknown as Record<string, unknown>,
+          { overallCapacity: sim.overallCapacity, remainingAfterAmount, ...sim.proForma } as unknown as Record<string, unknown>,
           metric
         );
       }

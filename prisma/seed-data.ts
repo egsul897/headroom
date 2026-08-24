@@ -637,43 +637,262 @@ export interface GoldenTestSeed {
  * this once a lawyer reviews the debt-and-liens question set.
  */
 export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
+  // ---- Golden Test Set v1 (Debt & Liens Capacity) - see docs/golden-questions-v1.md.
+  // Claude-derived first pass, not yet lawyer-verified (status stays UNVERIFIED).
+  // Q1-Q4: maximum capacity today / which document+provision binds it.
   {
-    question: "What is Coherent's total net leverage ratio as of the latest financial snapshot?",
-    queryType: "LEVERAGE_METRIC",
-    queryParams: { metric: "totalNetLeverage" },
-    expectedAnswer: 1.232941,
-    tolerance: 0.001,
-    reviewerNotes: "(Net debt $2,096M) / (EBITDA $1,700M). No single basket governs a raw leverage ratio, so no binding provision.",
-  },
-  {
-    question: "What is the maximum amount of additional secured debt Coherent can incur without breaching either document?",
+    question: "What is the maximum additional secured debt Coherent could incur today?",
     queryType: "CROSS_DOCUMENT_CAPACITY",
     queryParams: { secured: true },
     expectedAnswer: 4041,
     tolerance: 1,
     bindingProvision: "mila_secured",
     bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
-    reviewerNotes: "Indenture's MILA secured prong (§3.3(b)(i)(C), SSNL ≤ 3.00x) binds at $4,041M, tighter than the Credit Agreement's $5,129M.",
+    reviewerNotes: "v1 Q1. Indenture's MILA secured prong (§3.3(b)(i)(C), SSNL ≤ 3.00x) binds at $4,041M; Credit Agreement's own ceiling here is $5,129M, looser and not binding.",
   },
   {
-    question: "What is the maximum amount of additional unsecured debt Coherent can incur without breaching either document?",
+    question: "What is the maximum additional unsecured debt Coherent could incur today?",
     queryType: "CROSS_DOCUMENT_CAPACITY",
     queryParams: { secured: false },
     expectedAnswer: 5129,
     tolerance: 1,
     bindingProvision: "ca_leverage_cap",
     bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
-    reviewerNotes: "Credit Agreement's §6.11(a) maintenance leverage covenant (TNL ≤ 4.25x) binds at $5,129M, tighter than the indenture's $10,154M.",
+    reviewerNotes: "v1 Q2. Credit Agreement's §6.11(a) maintenance leverage covenant (TNL ≤ 4.25x) binds at $5,129M; indenture's own ceiling is ~$10,154M, looser.",
   },
   {
-    question: "Under the indenture, what is the size of the general liens basket (Permitted Liens cl. (25))?",
+    question: "Which document and provision binds the secured-capacity answer (Q1)?",
+    queryType: "CROSS_DOCUMENT_CAPACITY",
+    queryParams: { secured: true },
+    expectedAnswer: 4041,
+    tolerance: 1,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "v1 Q3. The Indenture's Permitted Liens cl. (24) / MILA secured prong (SSNL ≤ 3.00x) - tighter than the Credit Agreement because the 3.00x secured test bites before the 4.25x total-leverage test does, at Coherent's current secured/unsecured mix.",
+  },
+  {
+    question: "Which document and provision binds the unsecured-capacity answer (Q2)?",
+    queryType: "CROSS_DOCUMENT_CAPACITY",
+    queryParams: { secured: false },
+    expectedAnswer: 5129,
+    tolerance: 1,
+    bindingProvision: "ca_leverage_cap",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
+    reviewerNotes: "v1 Q4. The Credit Agreement's §6.11 Financial Covenants (TNL ≤ 4.25x) - tighter than the indenture's own unsecured ceiling (FCCR ≥ 2.00x / TNL ≤ 5.00x under MILA).",
+  },
+  // Q5 (debt-basket-permitted-but-lien-blocked capacity) is NOT represented as an
+  // executable row here: it asks whether the indenture's debt-basket nominal
+  // subtotal (facility_flat + facility_grower + mila_secured + general_debt,
+  // currently an UNLABELED SUM node inside capacityFormulas.secured) exceeds the
+  // labeled "Lien capacity" subtotal - and golden-test.ts has no query type that
+  // reads a labeled subtotal at all (GoldenQueryType is a Prisma enum; adding one
+  // is a schema migration, not attempted without confirming first). Manually
+  // verified against the live engine instead: nominal ≈ $8,200M vs. lien capacity
+  // $4,721M vs. binding $4,041M - the qualitative claim holds, but it is NOT
+  // covered by `npm run golden-test` yet.
+
+  // Q6-Q13: fixed-amount checkpoints, secured and unsecured. None of these bind
+  // at Coherent's current leverage - that's the actual assertion being tested.
+  {
+    question: "Is $100M of new secured debt permitted? Under which test?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 100, secured: true, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "v1 Q6. FCCR-based Ratio Debt (§3.3(a)) would cover it many times over; at this size every prong clears trivially.",
+  },
+  {
+    question: "Is $250M of new secured debt permitted?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 250, secured: true, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "v1 Q7.",
+  },
+  {
+    question: "Is $500M of new secured debt permitted?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 500, secured: true, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "v1 Q8. Still well inside the $4,041M ceiling from Q1.",
+  },
+  {
+    question: "Is $1,000M ($1B) of new secured debt permitted?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 1000, secured: true, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "v1 Q9. Still under the $4,041M ceiling - leaves $3,041M of secured headroom remaining afterward.",
+  },
+  {
+    question: "Is $100M of new unsecured debt permitted?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 100, secured: false, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "ca_leverage_cap",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
+    reviewerNotes: "v1 Q10.",
+  },
+  {
+    question: "Is $250M of new unsecured debt permitted?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 250, secured: false, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "ca_leverage_cap",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
+    reviewerNotes: "v1 Q11.",
+  },
+  {
+    question: "Is $500M of new unsecured debt permitted?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 500, secured: false, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "ca_leverage_cap",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
+    reviewerNotes: "v1 Q12.",
+  },
+  {
+    question: "Is $1,000M ($1B) of new unsecured debt permitted?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 1000, secured: false, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "ca_leverage_cap",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
+    reviewerNotes: "v1 Q13. Still under the $5,129M ceiling from Q2 - leaves $4,129M remaining. None of the Section B checkpoints bind at Coherent's current leverage, which is itself the assertion under test; they don't exercise the blocked path (see v1 Q17/Q23-25 notes).",
+  },
+
+  // Q14-Q17: ratio mechanics.
+  {
+    question: "What is the FCCR threshold for Ratio Debt under the indenture, and is it currently satisfied?",
+    queryType: "LEVERAGE_METRIC",
+    queryParams: { metric: "fixedChargeCoverage", bindingProvisionDocumentId: INDENTURE_ID, bindingProvisionCode: "ratio_debt_fccr" },
+    expectedAnswer: 8.947368,
+    tolerance: 0.001,
+    bindingProvision: "ratio_debt_fccr",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Fixed Charge Coverage Ratio"],
+    reviewerNotes: "v1 Q14. Threshold is FCCR ≥ 2.00x (§3.3(a)); currently satisfied at 8.95x.",
+  },
+  {
+    question: "What is the TNL threshold under the Credit Agreement's financial covenant, and what is the current TNL?",
+    queryType: "LEVERAGE_METRIC",
+    queryParams: { metric: "totalNetLeverage", bindingProvisionDocumentId: CREDIT_AGREEMENT_ID, bindingProvisionCode: "ca_leverage_cap" },
+    expectedAnswer: 1.232941,
+    tolerance: 0.001,
+    bindingProvision: "ca_leverage_cap",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
+    reviewerNotes: "v1 Q15. Threshold is ≤ 4.25x (§6.11); current TNL is 1.23x - substantial headroom. (Net debt $2,096M / EBITDA $1,700M.)",
+  },
+  {
+    question: "What is the SSNL threshold applicable to secured incurrence under the indenture, and what is the current SSNL?",
+    queryType: "LEVERAGE_METRIC",
+    queryParams: { metric: "seniorSecuredNetLeverage", bindingProvisionDocumentId: INDENTURE_ID, bindingProvisionCode: "mila_secured" },
+    expectedAnswer: 0.622941,
+    tolerance: 0.001,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "v1 Q16. Threshold is ≤ 3.00x (MILA secured prong / Permitted Liens cl. (24)); current SSNL is 0.62x.",
+  },
+  {
+    question: "At what level of incremental secured debt would the indenture's SSNL test first become the binding constraint - spot check at $2,000M",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 2000, secured: true, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes:
+      "v1 Q17, partial coverage. The full question asks whether the indenture is binding across the ENTIRE $0-$4,041M range - that's a continuous claim this harness cannot prove with point checks. This row and the next one are spot checks (at $2,000M and at the $4,041M ceiling itself) confirming the indenture stays binding at those two points; manually confirmed via a one-off script that it also holds at $0/$1,000/$3,000/$4,000M. Not a substitute for a real proof across the range - flagged per the source doc's own note that this question is a priority for lawyer review.",
+  },
+  {
+    question: "At what level of incremental secured debt would the indenture's SSNL test first become the binding constraint - spot check at the $4,041M ceiling",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 4041, secured: true, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "v1 Q17, partial coverage (see previous row). At exactly the stated ceiling, still clear and still bound by mila_secured.",
+  },
+
+  // Q18-Q21: basket-specific.
+  {
+    question: "What is the size of the indenture's Credit Facilities basket (flat component), and how much is currently used?",
+    queryType: "PROVISION_CAPACITY",
+    queryParams: { documentId: INDENTURE_ID, provisionCode: "facility_flat" },
+    expectedAnswer: 1779,
+    tolerance: 0.5,
+    bindingProvision: "facility_flat",
+    bindingDefinedTerms: ["Indebtedness", "Permitted Liens"],
+    reviewerNotes: "v1 Q18. $4,000M flat (§3.3(b)(i)(A)), net of the $2,221M TLA+TLB currently outstanding, leaves $1,779M unused - before the $1,700M grower component (§3.3(b)(i)(B), not netted) is even counted.",
+  },
+  {
+    question: "What is the size of the general debt basket under §3.3(b)(xii), and is any of it currently used?",
+    queryType: "PROVISION_CAPACITY",
+    queryParams: { documentId: INDENTURE_ID, provisionCode: "general_debt" },
+    expectedAnswer: 680,
+    tolerance: 0.5,
+    bindingProvision: "general_debt",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Indebtedness"],
+    reviewerNotes: "v1 Q19. Greater of $530M and 40% of EBITDA ($1,700M x 40% = $680M). No usage currently modeled/observed in public filings.",
+  },
+  {
+    question: "What is the size of the general liens basket, separate from the ratio-based lien capacity?",
     queryType: "PROVISION_CAPACITY",
     queryParams: { documentId: INDENTURE_ID, provisionCode: "lien_general" },
     expectedAnswer: 680,
     tolerance: 0.5,
     bindingProvision: "lien_general",
     bindingDefinedTerms: ["Consolidated EBITDA", "Permitted Liens"],
-    reviewerNotes: "Greater of $530M or 40% of Consolidated EBITDA ($1,700M × 40% = $680M).",
+    reviewerNotes: "v1 Q20. Same formula as Q19 (greater of $530M / 40% EBITDA) but a distinct basket under Permitted Liens cl. (25).",
+  },
+  {
+    question: "What is the MILA formula for unsecured debt, and what is the current dollar figure (the looser, controlling prong)?",
+    queryType: "DOCUMENT_CAPACITY",
+    queryParams: { documentId: INDENTURE_ID, secured: false },
+    expectedAnswer: 10153.846,
+    tolerance: 1,
+    bindingProvision: "ratio_debt_fccr",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Fixed Charge Coverage Ratio"],
+    reviewerNotes: "v1 Q21. Unsecured prong is TNL ≤ 5.00x OR FCCR ≥ 2.00x (either sufficient) - TNL-based gives $6,404M, FCCR-based gives ~$10,154M; the FCCR prong is looser and controls the indenture's own (document-level, not cross-document) unsecured ceiling.",
+  },
+
+  // Q22: sequential/ledger behavior, single-step (supported). Q23-Q25 are NOT
+  // represented as executable rows: simulateDebtIncurrence always measures from
+  // the CURRENT financial snapshot, with no way to chain "amount already added
+  // from a prior hypothetical step" into the next call - there is no pro-forma
+  // composition API. Manually verified against the live engine instead (see
+  // chat transcript): Q23's $2,000M unsecured incurrence (after the $500M
+  // secured from Q22) is confirmed clear, bound by ca_leverage_cap, pro forma
+  // TNL 2.70x. Q24's $300M TLB repayment is confirmed to move BOTH the ratio
+  // tests AND facility_flat (a FLAT_NET_OF_DEBT basket) by the full $300M,
+  // which refines v1's own framing - facility_flat is not a static "fixed-
+  // dollar" ceiling, it nets against outstanding secured debt exactly like a
+  // ratio test scales, just linearly rather than via a leverage multiple. Q25
+  // (solve for the EBITDA growth needed to unlock +$500M) needs a genuine
+  // "solve for X" capability the engine doesn't have; not attempted.
+  {
+    question: "If Coherent incurs $500M of new secured debt today, what secured capacity remains immediately afterward, and under which provision?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 500, secured: true, metric: "remainingAfterAmount" },
+    expectedAnswer: 3541,
+    tolerance: 1,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes:
+      "v1 Q22. $4,041M - $500M = $3,541M remaining, still bound by the same indenture SSNL/liens test (pro forma SSNL rises to roughly 1.00x, still well under the 3.00x ceiling). `remainingAfterAmount` is a metric computed only inside golden-test.ts (overallCapacity - amount), not a field on the engine's own simulation result - reflects the PRE-transaction binding document/capacity, not a re-run against pro forma financials.",
   },
   {
     question: "Can Coherent incur $1,000M of secured debt without breaching either document, and if so what does pro forma total net leverage become?",
