@@ -3,6 +3,7 @@ import {
   COHERENT_COMPANY,
   COHERENT_DATA,
   COHERENT_DOCUMENT_CAVEATS,
+  COHERENT_FEED_QUEUE_ITEMS,
   COHERENT_LEDGER_ENTRIES,
   COHERENT_TRANCHES,
 } from "./seed-data";
@@ -74,10 +75,12 @@ async function main() {
     });
   }
 
-  // FinancialSnapshot/DebtTranche/LedgerEntry are append-only event data with
-  // no natural unique key to upsert on - clear this company's rows before
-  // reinserting so the seed script stays idempotent across re-runs.
+  // FinancialSnapshot/DebtTranche/LedgerEntry/FeedQueueItem are append-only
+  // event data with no natural unique key to upsert on - clear this
+  // company's rows before reinserting so the seed script stays idempotent
+  // across re-runs.
   await prisma.ledgerEntry.deleteMany({ where: { companyId: company.id } });
+  await prisma.feedQueueItem.deleteMany({ where: { companyId: company.id } });
   await prisma.debtTranche.deleteMany({ where: { companyId: company.id } });
   await prisma.financialSnapshot.deleteMany({ where: { companyId: company.id } });
 
@@ -124,6 +127,20 @@ async function main() {
         amount: entry.amount,
         direction: entry.direction,
         source: entry.source,
+      },
+    });
+  }
+
+  for (const item of COHERENT_FEED_QUEUE_ITEMS) {
+    await prisma.feedQueueItem.create({
+      data: {
+        companyId: company.id,
+        title: item.title,
+        description: item.description,
+        source: item.source,
+        filedDate: new Date(item.filedDate),
+        kind: item.kind,
+        payload: asJson(item.payload),
       },
     });
   }

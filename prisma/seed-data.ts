@@ -356,3 +356,57 @@ export const COHERENT_DOCUMENT_CAVEATS: Record<string, string> = {
 
 export const COHERENT_CREDIT_AGREEMENT_ID = CREDIT_AGREEMENT_ID;
 export const COHERENT_INDENTURE_ID = INDENTURE_ID;
+
+// ---------------------------------------------------------------------------
+// Feeds review queue
+// ---------------------------------------------------------------------------
+
+/** SNAPSHOT_UPDATE payload: fields present override the latest FinancialSnapshot; fields omitted carry forward unchanged. */
+export interface FeedQueueSnapshotPayload {
+  asOfDate: string;
+  ebitda?: number;
+  cash?: number;
+  interestExpense?: number;
+  cumulativeNetIncome?: number;
+  equityProceedsSinceIssue?: number;
+  assumedNewDebtRatePct?: number;
+  totalDebt?: number;
+  securedDebt?: number;
+  notes?: string;
+}
+
+/** LEDGER_ENTRY payload: creates one new LedgerEntry verbatim. */
+export interface FeedQueueLedgerPayload {
+  date: string;
+  description: string;
+  basket: LedgerBasket;
+  amount: number;
+  direction: LedgerDirection;
+  source: string;
+}
+
+export const COHERENT_FEED_QUEUE_ITEMS: {
+  title: string;
+  description: string;
+  source: string;
+  filedDate: string;
+  kind: "SNAPSHOT_UPDATE" | "LEDGER_ENTRY";
+  payload: FeedQueueSnapshotPayload | FeedQueueLedgerPayload;
+}[] = [
+  {
+    title: "10-Q filed — quarter ended 9/30/26",
+    description:
+      "First fiscal quarter of FY27. EBITDA and cash both grew sequentially and interest expense ticked down on continued Term Loan B-3 amortization. No new debt issuance, repurchases, or asset sales disclosed this quarter, so total/secured debt and the capital structure are carried forward unchanged.",
+    source: "10-Q filed 11/10/2026",
+    filedDate: "2026-11-10",
+    kind: "SNAPSHOT_UPDATE",
+    payload: {
+      asOfDate: "2026-09-30",
+      ebitda: 1740,
+      cash: 1240,
+      interestExpense: 186,
+      cumulativeNetIncome: 560,
+      notes: "FY2027 Q1 10-Q (filed 11/10/2026), fiscal quarter ended 9/30/2026.",
+    },
+  },
+];

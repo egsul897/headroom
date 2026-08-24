@@ -20,6 +20,7 @@ model Company {
   financialSnapshots FinancialSnapshot[]
   debtTranches       DebtTranche[]
   ledgerEntries      LedgerEntry[]
+  feedQueueItems     FeedQueueItem[]
 
   @@map("companies")
 }
@@ -189,4 +190,45 @@ model LedgerEntry {
   document Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
 
   @@map("ledger_entries")
+}
+
+enum FeedQueueKind {
+  // Approving creates a new FinancialSnapshot, merging payload fields onto the current latest one.
+  SNAPSHOT_UPDATE
+  // Approving creates a new LedgerEntry from the payload.
+  LEDGER_ENTRY
+
+  @@map("feed_queue_kind")
+}
+
+enum FeedQueueStatus {
+  PENDING
+  APPLIED
+  DISMISSED
+
+  @@map("feed_queue_status")
+}
+
+// A filing/feed event awaiting sign-off before it touches the model - the
+// Feeds tab's review queue. `payload` is a FeedQueueSnapshotPayload or
+// FeedQueueLedgerPayload (lib/coherent.ts) depending on `kind`; approving
+// writes real FinancialSnapshot/LedgerEntry rows, which is why approving a
+// queue item changes what Position/Simulate show.
+model FeedQueueItem {
+  id          String          @id @default(cuid())
+  companyId   String
+  title       String
+  description String
+  source      String
+  filedDate   DateTime
+  kind        FeedQueueKind
+  payload     Json
+  status      FeedQueueStatus @default(PENDING)
+  resolvedAt  DateTime?
+
+  createdAt DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("feed_queue_items")
 }

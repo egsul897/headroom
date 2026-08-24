@@ -64,3 +64,7 @@ export const getCompany = cache(async () => {
 export const getDocuments = cache(async () => {
   return prisma.document.findMany({ where: { companyId: COMPANY_ID }, orderBy: { createdAt: "asc" } });
 });
+
+export const getFeedQueueItems = cache(async () => {
+  return prisma.feedQueueItem.findMany({ where: { companyId: COMPANY_ID }, orderBy: { createdAt: "asc" } });
+});
