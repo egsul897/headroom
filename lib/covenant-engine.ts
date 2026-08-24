@@ -21,7 +21,41 @@
  *  - A thin Prisma adapter (`loadCompanyCovenantData`) that fetches rows
  *    (date-scoped by `asOfDate` for amendment precedence) and maps them
  *    (Decimal -> number, etc) into the pure core's input types.
+ *
+ * Solver-native live routing (docs/solver-architecture-design.md §Q):
+ * `simulateDebtIncurrence` accepts an OPTIONAL `solverContext` parameter. When
+ * omitted (the case for every existing caller and, always, for Coherent -
+ * which has zero Permission rows), the function's behavior and output are
+ * byte-identical to before this parameter existed: every document/side falls
+ * back to LEGACY inside `resolveDocumentSideCoverage` exactly as
+ * `lib/solver/coverage.ts`'s own fail-closed default does, and the original,
+ * unmodified per-document mapping runs. When `solverContext` IS supplied, the
+ * per-document loop below calls the strict coverage gate
+ * (`lib/solver/coverage.ts`) for every document/side and routes to
+ * `lib/solver/service.ts`'s `runSolver` only for scopes it classifies
+ * SOLVER_NATIVE - a document/side is never evaluated by both paths, and an
+ * incomplete solver-native scope always falls back to LEGACY/NOT_TESTED in
+ * full, never a partial solver-native result (design doc §Q.2/§Q.3).
  */
+
+import { isEffective, determineCoverage, assertNoDoubleCounting } from "./solver/coverage";
+import { runSolver } from "./solver/service";
+import type {
+  ActivationState,
+  CollateralPoolRef,
+  CoverageDeclaration,
+  CoverageResult,
+  EntityClass,
+  GrantType,
+  GuarantorStatus,
+  Permission,
+  PermissionCollateralScope,
+  PermissionRelationship,
+  RuleActivationCondition,
+  SharedConstraint,
+  SolverResult,
+  Transaction,
+} from "./solver/types";
 
 // ---------------------------------------------------------------------------
 // Types mirroring the Prisma schema (decimal fields as `number`)
@@ -698,6 +732,16 @@ export interface PerDocumentDebtResult {
   capacity?: number;
   bindingProvision?: CovenantProvisionInput;
   reason?: string;
+  /**
+   * Present only when this document/side was classified SOLVER_NATIVE for
+   * this transaction (see `simulateDebtIncurrence`'s `solverContext`
+   * parameter) - the full solver-native result, preserved unmodified so a
+   * caller never has to reconstruct contractual logic from a bare status
+   * (design doc §N, task's live-integration §9 explainability requirement).
+   */
+  solverResult?: SolverResult;
+  /** The coverage-gate determination that routed this document/side here - present whenever `solverContext` was supplied, regardless of which path was chosen, for audit. */
+  solverCoverage?: CoverageResult;
 }
 
 export interface DebtIncurrenceSimulation {
@@ -720,15 +764,208 @@ export interface DebtIncurrenceSimulation {
   reason?: string;
 }
 
+// ---------------------------------------------------------------------------
+// Solver-native live routing (design doc §Q.1-§Q.3)
+// ---------------------------------------------------------------------------
+
+/**
+ * Everything `simulateDebtIncurrence` needs, beyond `amount`/`secured`, to
+ * route a document/side to the solver-native path: the company's solver-native
+ * graph rows (mirrors `CompanyCovenantData`'s own "plain data, DB-shaped"
+ * posture - loaded by a caller-supplied adapter, never fetched by this pure
+ * function) plus the specific transaction's own entity/collateral context.
+ * Optional and additive: every existing call site that omits this continues
+ * to get exactly today's legacy-only behavior (see file header).
+ */
+export interface SolverNativeCompanyContext {
+  permissions: Permission[];
+  relationships: PermissionRelationship[];
+  sharedConstraints: SharedConstraint[];
+  collateralScopes: PermissionCollateralScope[];
+  ruleActivationConditions: RuleActivationCondition[];
+  coverageDeclarations: CoverageDeclaration[];
+  activationState: ActivationState;
+  asOfDate: Date;
+  /** The incurring entity's own EntityClass memberships, for §C.1 entityScope/§G ENTITY_CLASS_FILTER checks. */
+  entityClasses: EntityClass[];
+  incurringEntity: { id: string; name: string };
+  guarantorStatus: GuarantorStatus;
+  collateralPools: CollateralPoolRef[];
+  requestedLienPriority: { poolId: string; priorityTier: "FIRST" | "SECOND" | "PARI_PASSU" | "UNSECURED"; pariPassuWithGroupId?: string }[];
+}
+
+/**
+ * design doc §Q.2, applied to one document/side: a SECURED side needs BOTH
+ * DEBT_INCURRENCE and (if this document declares any LIEN-grantType
+ * permissions at all) LIEN coverage to be complete before the side is
+ * solver-native - a document/side is never partially solver-native. An
+ * UNSECURED side needs only DEBT_INCURRENCE coverage (no lien question
+ * applies to an unsecured incurrence).
+ */
+export function resolveDocumentSideCoverage(
+  documentId: string,
+  side: "secured" | "unsecured",
+  legacyFormulaPresent: boolean,
+  ctx: SolverNativeCompanyContext
+): CoverageResult {
+  const findDeclaration = (grantType: GrantType) => ctx.coverageDeclarations.find((d) => d.documentId === documentId && d.side === side && d.grantType === grantType);
+
+  const debtCoverage = determineCoverage({
+    declaration: findDeclaration("DEBT_INCURRENCE"),
+    permissions: ctx.permissions,
+    documentId,
+    side,
+    grantType: "DEBT_INCURRENCE",
+    asOfDate: ctx.asOfDate,
+    legacyFormulaPresent,
+  });
+  if (debtCoverage.status !== "SOLVER_NATIVE") return debtCoverage;
+  if (side !== "secured") return debtCoverage;
+
+  const hasLienPermissions = ctx.permissions.some((p) => p.documentId === documentId && p.grantType === "LIEN");
+  if (!hasLienPermissions) return debtCoverage;
+
+  const lienCoverage = determineCoverage({
+    declaration: findDeclaration("LIEN"),
+    permissions: ctx.permissions,
+    documentId,
+    side,
+    grantType: "LIEN",
+    asOfDate: ctx.asOfDate,
+    legacyFormulaPresent,
+  });
+  if (lienCoverage.status === "SOLVER_NATIVE") return debtCoverage;
+
+  // Debt coverage alone is complete, but this document also has lien
+  // permissions whose OWN coverage isn't - the secured side is never
+  // reported partially solver-native (Q.2/Q.3): fall back to LEGACY (if a
+  // legacy formula exists for this side) or NOT_TESTED, in full.
+  return {
+    status: legacyFormulaPresent ? "LEGACY" : "NOT_TESTED",
+    documentId,
+    side,
+    grantType: "DEBT_INCURRENCE",
+    reason:
+      `Debt-incurrence coverage for ${documentId}/${side} is complete, but this document also has LIEN-grantType ` +
+      `permissions whose coverage is ${lienCoverage.status} (${lienCoverage.reason}). A secured side is never solver-native ` +
+      `unless BOTH debt and lien coverage are complete - falling back in full.`,
+    scopedPermissionIds: [...debtCoverage.scopedPermissionIds, ...lienCoverage.scopedPermissionIds],
+  };
+}
+
+/** Builds the `Transaction` object `runSolver` needs from the caller's context and this specific amount/secured flag. */
+function buildLiveTransaction(amount: number, secured: boolean, ctx: SolverNativeCompanyContext): Transaction {
+  return {
+    transactionType: "DEBT_INCURRENCE",
+    amount,
+    currency: { code: "USD" },
+    incurringEntity: ctx.incurringEntity,
+    guarantorStatus: ctx.guarantorStatus,
+    secured,
+    collateralPools: ctx.collateralPools,
+    requestedLienPriority: ctx.requestedLienPriority,
+    useOfProceeds: "GENERAL_CORPORATE",
+    acquisitionRelated: false,
+    transactionDate: ctx.asOfDate,
+  };
+}
+
+/**
+ * Runs the real solver-native `runSolver` service for one document/side
+ * already classified SOLVER_NATIVE, and translates its `SolverResult` into
+ * the same `PerDocumentDebtResult` shape a legacy document produces -
+ * `simulateDebtIncurrence`'s downstream combination logic (binding/next,
+ * overall status, reason text) is then completely agnostic to which path
+ * produced each entry.
+ */
+export function runSolverForDocument(
+  documentId: string,
+  documentName: string,
+  fin: FinancialSnapshotInput,
+  amount: number,
+  secured: boolean,
+  ctx: SolverNativeCompanyContext,
+  coverage: CoverageResult
+): PerDocumentDebtResult {
+  const relevantGrantTypes: GrantType[] = secured ? ["DEBT_INCURRENCE", "LIEN"] : ["DEBT_INCURRENCE"];
+  const eligiblePermissions = ctx.permissions.filter(
+    (p) => p.documentId === documentId && relevantGrantTypes.includes(p.grantType) && p.modelingStatus === "MODELED" && isEffective(p, ctx.asOfDate)
+  );
+  const eligibleIds = new Set(eligiblePermissions.map((p) => p.id));
+
+  const result = runSolver({
+    eligiblePermissions,
+    relationships: ctx.relationships.filter((r) => eligibleIds.has(r.fromPermissionId) || eligibleIds.has(r.toPermissionId)),
+    sharedConstraints: ctx.sharedConstraints,
+    collateralScopes: ctx.collateralScopes.filter((s) => eligibleIds.has(s.permissionId)),
+    ruleActivationConditions: ctx.ruleActivationConditions,
+    financials: fin,
+    transaction: buildLiveTransaction(amount, secured, ctx),
+    entityClasses: ctx.entityClasses,
+    activationState: ctx.activationState,
+    asOfDate: ctx.asOfDate,
+  });
+
+  const status: TransactionStatus =
+    result.overall.status === "CLEAR"
+      ? "clear"
+      : result.overall.status === "BLOCKED"
+        ? "blocked"
+        : result.overall.status === "NOT_TESTED"
+          ? "not_tested"
+          : "review_required"; // ASSUMPTION_REQUIRED / REVIEW_REQUIRED
+
+  // A CLEAR path, by construction (lib/solver/election.ts's fail-closed
+  // shortfall check), always allocates the FULL requested amount - so
+  // reporting `amount` here is exact, not an approximation.
+  const capacity = status === "clear" ? amount : undefined;
+
+  const reason =
+    status === "clear" || status === "blocked"
+      ? undefined
+      : (result.uncertainty.reviewItems[0]?.description ??
+          result.alternatives[0]?.rejectionReason ??
+          `Solver-native evaluation of ${documentName} did not resolve to a definite answer for this transaction.`);
+
+  return {
+    documentId,
+    documentName,
+    status,
+    capacity,
+    reason,
+    solverResult: result,
+    solverCoverage: coverage,
+  };
+}
+
 export function simulateDebtIncurrence(
   data: CompanyCovenantData,
   position: CovenantPosition,
   amount: number,
-  secured: boolean
+  secured: boolean,
+  solverContext?: SolverNativeCompanyContext
 ): DebtIncurrenceSimulation {
   const fin = data.financials;
+  const side: "secured" | "unsecured" = secured ? "secured" : "unsecured";
+  const coverageResults: CoverageResult[] = [];
 
   const perDocument: PerDocumentDebtResult[] = position.documents.map((d) => {
+    if (solverContext) {
+      const doc = data.documents.find((doc) => doc.id === d.documentId);
+      const legacyFormulaPresent = Boolean(side === "secured" ? doc?.capacityFormulas?.secured : doc?.capacityFormulas?.unsecured);
+      const coverage = resolveDocumentSideCoverage(d.documentId, side, legacyFormulaPresent, solverContext);
+      coverageResults.push(coverage);
+      if (coverage.status === "SOLVER_NATIVE") {
+        return runSolverForDocument(d.documentId, d.documentName, fin, amount, secured, solverContext, coverage);
+      }
+    }
+
+    // LEGACY / NOT_TESTED: exactly today's behavior, byte-for-byte
+    // unchanged - this branch is untouched by the solverContext parameter's
+    // existence, which is what keeps Coherent's own output identical to the
+    // Phase-0 baseline (Coherent has zero Permission rows, so every document/
+    // side it has always resolves LEGACY/NOT_TESTED here regardless of
+    // whether a solverContext is ever supplied for it).
     const status = secured ? d.securedStatus : d.unsecuredStatus;
     const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
     const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
@@ -744,6 +981,9 @@ export function simulateDebtIncurrence(
       bindingProvision,
     };
   });
+  // Mechanical no-double-counting guard (design doc §Q.3): every
+  // (documentId, side) pair classified above must appear exactly once.
+  assertNoDoubleCounting(coverageResults);
 
   const modeled = perDocument.filter((d) => d.status === "clear" || d.status === "blocked");
   const sorted = [...modeled].sort((a, b) => (a.capacity ?? Infinity) - (b.capacity ?? Infinity));
