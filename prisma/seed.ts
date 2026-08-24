@@ -1,5 +1,11 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import { COHERENT_COMPANY, COHERENT_DATA } from "./seed-data";
+import {
+  COHERENT_COMPANY,
+  COHERENT_DATA,
+  COHERENT_DOCUMENT_CAVEATS,
+  COHERENT_LEDGER_ENTRIES,
+  COHERENT_TRANCHES,
+} from "./seed-data";
 
 const prisma = new PrismaClient();
 
@@ -16,12 +22,14 @@ async function main() {
   });
 
   for (const doc of COHERENT_DATA.documents) {
+    const notes = COHERENT_DOCUMENT_CAVEATS[doc.id];
     await prisma.document.upsert({
       where: { id: doc.id },
       update: {
         name: doc.name,
         type: doc.type,
         governs: doc.governs,
+        notes,
         capacityFormulas: doc.capacityFormulas ? asJson(doc.capacityFormulas) : undefined,
         rpWaterfall: doc.rpWaterfall ? asJson(doc.rpWaterfall) : undefined,
         assetSale: doc.assetSale ? asJson(doc.assetSale) : undefined,
@@ -32,6 +40,7 @@ async function main() {
         name: doc.name,
         type: doc.type,
         governs: doc.governs,
+        notes,
         capacityFormulas: doc.capacityFormulas ? asJson(doc.capacityFormulas) : undefined,
         rpWaterfall: doc.rpWaterfall ? asJson(doc.rpWaterfall) : undefined,
         assetSale: doc.assetSale ? asJson(doc.assetSale) : undefined,
@@ -65,8 +74,15 @@ async function main() {
     });
   }
 
+  // FinancialSnapshot/DebtTranche/LedgerEntry are append-only event data with
+  // no natural unique key to upsert on - clear this company's rows before
+  // reinserting so the seed script stays idempotent across re-runs.
+  await prisma.ledgerEntry.deleteMany({ where: { companyId: company.id } });
+  await prisma.debtTranche.deleteMany({ where: { companyId: company.id } });
+  await prisma.financialSnapshot.deleteMany({ where: { companyId: company.id } });
+
   const fin = COHERENT_DATA.financials;
-  await prisma.financialSnapshot.create({
+  const snapshot = await prisma.financialSnapshot.create({
     data: {
       companyId: company.id,
       asOfDate: new Date("2026-06-30"),
@@ -78,20 +94,36 @@ async function main() {
       assumedNewDebtRatePct: fin.assumedNewDebtRatePct,
       totalDebt: fin.totalDebt,
       securedDebt: fin.securedDebt,
-      notes: "FY2026 10-K, as of 6/30/26.",
+      notes:
+        "FY2026 10-K (filed 8/14/2026), fiscal year ended 6/30/2026. Covenant EBITDA is an estimated build-up from the public reconciliation; CNI and basket usage not stated in filings are estimates.",
     },
   });
 
-  for (const entry of COHERENT_DATA.ledger) {
+  for (const t of COHERENT_TRANCHES) {
+    await prisma.debtTranche.create({
+      data: {
+        companyId: company.id,
+        financialSnapshotId: snapshot.id,
+        name: t.name,
+        amount: t.amt,
+        secured: t.secured,
+        documentName: t.documentName,
+      },
+    });
+  }
+
+  // Inserted in the prototype's original array order so display order
+  // (createdAt ascending) matches the reference exactly.
+  for (const entry of COHERENT_LEDGER_ENTRIES) {
     await prisma.ledgerEntry.create({
       data: {
         companyId: company.id,
-        date: new Date("2026-06-30"),
-        description: `${entry.basket} ${entry.direction}`,
+        date: new Date(entry.date),
+        description: entry.description,
         basket: entry.basket,
         amount: entry.amount,
         direction: entry.direction,
-        source: "seed",
+        source: entry.source,
       },
     });
   }

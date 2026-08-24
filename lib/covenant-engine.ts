@@ -45,6 +45,19 @@ export interface FormulaParams {
   cniSharePct?: number;
   /** BUILDER_BASKET: whether equity proceeds since issuance are added to the basket. */
   includeEquityProceeds?: boolean;
+  /** BUILDER_BASKET: section ref for the starter component, if distinct from the provision's own sectionRef. */
+  starterSectionRef?: string;
+  /** BUILDER_BASKET: section ref for the CNI contribution, if distinct from the provision's own sectionRef. */
+  cniSectionRef?: string;
+  /** BUILDER_BASKET: section ref for the equity proceeds contribution, if distinct from the provision's own sectionRef. */
+  equitySectionRef?: string;
+}
+
+/** One line item inside a composite basket's total (currently: BUILDER_BASKET). */
+export interface EvaluatedProvisionComponent {
+  label: string;
+  sectionRef: string;
+  value: number;
 }
 
 export interface CovenantProvisionInput {
@@ -164,6 +177,8 @@ export interface EvaluatedProvision {
   capacity: number;
   /** Present only for RATIO_GATE provisions. */
   gate?: { open: boolean; measure: number };
+  /** Present only for composite formulas (currently BUILDER_BASKET): the line items summing to `capacity`. */
+  components?: EvaluatedProvisionComponent[];
 }
 
 function leverageBasisValue(basis: DebtBasis | undefined, metrics: LeverageMetrics): number {
@@ -219,7 +234,24 @@ export function evaluateProvision(
       const base = Math.max(p.thresholdValue, pct * fin.ebitda);
       const cniContribution = (params.cniSharePct ?? 0) * Math.max(0, fin.cumulativeNetIncome);
       const equityContribution = params.includeEquityProceeds ? fin.equityProceedsSinceIssue : 0;
-      return { provision: p, capacity: base + cniContribution + equityContribution };
+      const components: EvaluatedProvisionComponent[] = [
+        { label: "Builder basket starter", sectionRef: params.starterSectionRef ?? p.sectionRef, value: base },
+      ];
+      if (params.cniSharePct) {
+        components.push({
+          label: `+ ${(params.cniSharePct * 100).toFixed(0)}% CNI since issue`,
+          sectionRef: params.cniSectionRef ?? p.sectionRef,
+          value: cniContribution,
+        });
+      }
+      if (params.includeEquityProceeds) {
+        components.push({
+          label: "+ equity proceeds since issue",
+          sectionRef: params.equitySectionRef ?? p.sectionRef,
+          value: equityContribution,
+        });
+      }
+      return { provision: p, capacity: base + cniContribution + equityContribution, components };
     }
     case "RATIO_GATE": {
       const measure = leverageMeasure(params.debtBasis, metrics);
@@ -564,11 +596,13 @@ export function simulateAssetSale(
  * don't exist until `prisma generate` has run against a real database).
  */
 export interface CovenantEnginePrismaClient {
-  company: { findUniqueOrThrow: (args: unknown) => Promise<{ id: string }> };
-  document: { findMany: (args: unknown) => Promise<DbDocumentRow[]> };
-  covenantProvision: { findMany: (args: unknown) => Promise<DbProvisionRow[]> };
-  financialSnapshot: { findFirst: (args: unknown) => Promise<DbSnapshotRow | null> };
-  ledgerEntry: { findMany: (args: unknown) => Promise<DbLedgerRow[]> };
+  // Method-shorthand signatures (not arrow-typed properties) so TS's bivariant
+  // parameter checking lets a real PrismaClient's more specific `*FindManyArgs`
+  // types satisfy this adapter's looser `any`.
+  document: { findMany(args: any): Promise<DbDocumentRow[]> };
+  covenantProvision: { findMany(args: any): Promise<DbProvisionRow[]> };
+  financialSnapshot: { findFirst(args: any): Promise<DbSnapshotRow | null> };
+  ledgerEntry: { findMany(args: any): Promise<DbLedgerRow[]> };
 }
 
 interface DecimalLike {
@@ -580,14 +614,18 @@ function toNumber(value: DecimalField): number {
   return typeof value === "number" ? value : value.toNumber();
 }
 
+// Prisma's generated JSON field type (Prisma.JsonValue) is a broad
+// string|number|boolean|object|array union - narrower than what these
+// columns actually hold, so the adapter casts through `unknown` at the
+// mapping boundary below rather than fighting that union here.
 interface DbDocumentRow {
   id: string;
   name: string;
   type: DocumentType;
   governs: string | null;
-  capacityFormulas: CapacityFormulas | null;
-  rpWaterfall: RpWaterfallConfig | null;
-  assetSale: AssetSaleConfig | null;
+  capacityFormulas: unknown;
+  rpWaterfall: unknown;
+  assetSale: unknown;
 }
 
 interface DbProvisionRow {
@@ -598,7 +636,7 @@ interface DbProvisionRow {
   sectionRef: string;
   formulaType: FormulaType;
   thresholdValue: DecimalField;
-  params: FormulaParams | null;
+  params: unknown;
   notes: string | null;
 }
 
@@ -642,9 +680,9 @@ export async function loadCompanyCovenantData(
       name: d.name,
       type: d.type,
       governs: d.governs,
-      capacityFormulas: d.capacityFormulas,
-      rpWaterfall: d.rpWaterfall,
-      assetSale: d.assetSale,
+      capacityFormulas: d.capacityFormulas as CapacityFormulas | null,
+      rpWaterfall: d.rpWaterfall as RpWaterfallConfig | null,
+      assetSale: d.assetSale as AssetSaleConfig | null,
     })),
     provisions: provisions.map((p) => ({
       id: p.id,
@@ -654,7 +692,7 @@ export async function loadCompanyCovenantData(
       sectionRef: p.sectionRef,
       formulaType: p.formulaType,
       thresholdValue: toNumber(p.thresholdValue),
-      params: p.params,
+      params: p.params as FormulaParams | null,
       notes: p.notes,
     })),
     financials: {
