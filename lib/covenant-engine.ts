@@ -950,10 +950,11 @@ export function simulateDebtIncurrence(
   const coverageResults: CoverageResult[] = [];
 
   const perDocument: PerDocumentDebtResult[] = position.documents.map((d) => {
+    let coverage: CoverageResult | undefined;
     if (solverContext) {
       const doc = data.documents.find((doc) => doc.id === d.documentId);
       const legacyFormulaPresent = Boolean(side === "secured" ? doc?.capacityFormulas?.secured : doc?.capacityFormulas?.unsecured);
-      const coverage = resolveDocumentSideCoverage(d.documentId, side, legacyFormulaPresent, solverContext);
+      coverage = resolveDocumentSideCoverage(d.documentId, side, legacyFormulaPresent, solverContext);
       coverageResults.push(coverage);
       if (coverage.status === "SOLVER_NATIVE") {
         return runSolverForDocument(d.documentId, d.documentName, fin, amount, secured, solverContext, coverage);
@@ -965,13 +966,15 @@ export function simulateDebtIncurrence(
     // existence, which is what keeps Coherent's own output identical to the
     // Phase-0 baseline (Coherent has zero Permission rows, so every document/
     // side it has always resolves LEGACY/NOT_TESTED here regardless of
-    // whether a solverContext is ever supplied for it).
+    // whether a solverContext is ever supplied for it). `coverage` (present
+    // only when solverContext was supplied) is attached purely for audit -
+    // it never changes which branch below runs or what it computes.
     const status = secured ? d.securedStatus : d.unsecuredStatus;
     const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
     const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
     const reason = secured ? d.securedReason : d.unsecuredReason;
     if (status !== "modeled") {
-      return { documentId: d.documentId, documentName: d.documentName, status, reason, bindingProvision };
+      return { documentId: d.documentId, documentName: d.documentName, status, reason, bindingProvision, solverCoverage: coverage };
     }
     return {
       documentId: d.documentId,
@@ -979,6 +982,7 @@ export function simulateDebtIncurrence(
       status: amount <= capacity! ? "clear" : "blocked",
       capacity,
       bindingProvision,
+      solverCoverage: coverage,
     };
   });
   // Mechanical no-double-counting guard (design doc §Q.3): every
