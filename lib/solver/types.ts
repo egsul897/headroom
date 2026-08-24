@@ -243,19 +243,44 @@ export interface IntercreditorAgreementRef {
 
 export type StatePredicateKind = "POINT_IN_TIME" | "CONTINUITY_WINDOW" | "EVENT_TRIGGERED" | "USAGE_LIMITED";
 export type RuleActivationEffect = "APPLICABILITY" | "PARAMETER_VALUE" | "RETROACTIVE_REEXAMINATION";
+export type SeriesComparator = "gte" | "lte" | "gt" | "lt" | "eq";
 
-/** design doc §I `StatePredicate` - config-shaped, evaluated by lib/solver/graph.ts's activation evaluator (never company-specific code). */
+/**
+ * design doc §I `StatePredicate` - deliberately **data-only** (no embedded
+ * functions), unlike the design doc's own illustrative pseudocode, so that:
+ *  (a) a RuleActivationCondition round-trips through Prisma's JSON
+ *      `predicateConfig` column without losing behavior, and
+ *  (b) evaluation logic lives once, generically, in
+ *      lib/solver/graph.ts's `evaluateStatePredicate` - never as a
+ *      per-permission or per-company closure, which is what "no
+ *      company-specific solver branches" (task §19) requires in practice
+ *      for this concept.
+ * Each variant reads a single named series/event/usage key out of
+ * `ActivationState` - the series' *meaning* (which rating agency, which
+ * liquidity measure) is a fact about the fixture/company's data, not about
+ * the predicate's shape.
+ */
 export type StatePredicate =
-  | { kind: "POINT_IN_TIME"; description: string; test: (state: ActivationState, asOf: Date) => boolean | "UNKNOWN" }
+  | { kind: "POINT_IN_TIME"; description: string; seriesKey: string; comparator: SeriesComparator; threshold: number | string | boolean }
   | {
       kind: "CONTINUITY_WINDOW";
       description: string;
-      test: (state: ActivationState, asOf: Date) => boolean | "UNKNOWN";
+      seriesKey: string;
+      comparator: SeriesComparator;
+      threshold: number;
       minConsecutivePeriods: number;
       periodUnit: "DAY" | "QUARTER";
     }
   | { kind: "EVENT_TRIGGERED"; description: string; sinceEvent: string; until?: string }
-  | { kind: "USAGE_LIMITED"; description: string; maxUses: number; minSpacingPeriods?: number };
+  | { kind: "USAGE_LIMITED"; description: string; usageKey: string; maxUses: number; minSpacingPeriods?: number; periodUnit?: "DAY" | "QUARTER" };
+
+/** Step-table parameter resolution for `effect === "PARAMETER_VALUE"` (e.g. a step-up'd threshold) - data-only for the same reason as StatePredicate above. */
+export interface ParameterResolution {
+  seriesKey: string;
+  /** Evaluated in descending `thresholdAtLeast` order; the first step whose threshold the series' current value meets or exceeds wins. */
+  steps: { thresholdAtLeast: number; value: number }[];
+  belowAllStepsValue: number;
+}
 
 export interface RuleActivationCondition {
   id: string;
@@ -264,6 +289,7 @@ export interface RuleActivationCondition {
   predicate: StatePredicate;
   effect: RuleActivationEffect;
   parameterName?: string;
+  parameterResolution?: ParameterResolution;
   reversionRule?: { predicate: StatePredicate; retroactiveReconciliation?: string };
   sourceProvision: SourceProvisionRef;
 }
