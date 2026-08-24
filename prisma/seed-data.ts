@@ -873,16 +873,12 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
   // represented as executable rows: simulateDebtIncurrence always measures from
   // the CURRENT financial snapshot, with no way to chain "amount already added
   // from a prior hypothetical step" into the next call - there is no pro-forma
-  // composition API. Manually verified against the live engine instead (see
-  // chat transcript): Q23's $2,000M unsecured incurrence (after the $500M
-  // secured from Q22) is confirmed clear, bound by ca_leverage_cap, pro forma
-  // TNL 2.70x. Q24's $300M TLB repayment is confirmed to move BOTH the ratio
-  // tests AND facility_flat (a FLAT_NET_OF_DEBT basket) by the full $300M,
-  // which refines v1's own framing - facility_flat is not a static "fixed-
-  // dollar" ceiling, it nets against outstanding secured debt exactly like a
-  // ratio test scales, just linearly rather than via a leverage multiple. Q25
-  // (solve for the EBITDA growth needed to unlock +$500M) needs a genuine
-  // "solve for X" capability the engine doesn't have; not attempted.
+  // composition API. Manually verified against the live engine instead by
+  // scripts/verify-sequential-transactions.ts (committed, not just a terminal
+  // transcript - run it with `npx tsx scripts/verify-sequential-transactions.ts`,
+  // its last output is reproduced verbatim in a comment at the bottom of that
+  // file). Full findings are also embedded in Q22's own reviewerNotes below so
+  // they're readable from the golden_tests row itself, not only from source.
   {
     question: "If Coherent incurs $500M of new secured debt today, what secured capacity remains immediately afterward, and under which provision?",
     queryType: "DEBT_SIMULATION",
@@ -892,7 +888,8 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     bindingProvision: "mila_secured",
     bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
     reviewerNotes:
-      "v1 Q22. $4,041M - $500M = $3,541M remaining, still bound by the same indenture SSNL/liens test (pro forma SSNL rises to roughly 1.00x, still well under the 3.00x ceiling). `remainingAfterAmount` is a metric computed only inside golden-test.ts (overallCapacity - amount), not a field on the engine's own simulation result - reflects the PRE-transaction binding document/capacity, not a re-run against pro forma financials.",
+      "v1 Q22. $4,041M - $500M = $3,541M remaining, still bound by the same indenture SSNL/liens test (pro forma SSNL rises to roughly 1.00x, still well under the 3.00x ceiling). `remainingAfterAmount` is a metric computed only inside golden-test.ts (overallCapacity - amount), not a field on the engine's own simulation result - reflects the PRE-transaction binding document/capacity, not a re-run against pro forma financials." +
+      " || v1 Q23-Q25 (chained scenarios) are NOT executable golden rows - simulateDebtIncurrence has no pro-forma-composition API. Manually verified via scripts/verify-sequential-transactions.ts (committed to the repo): Q23 - pro forma after the $500M secured incurrence above, a further $2,000M unsecured incurrence is CLEAR, bound by ca_leverage_cap, pro forma TNL 2.70x. Q24 - pro forma after both Q22 and Q23 (TNL 2.70x, SSNL 0.92x), a $300M TLB (secured) repayment moves TNL to 2.53x, SSNL to 0.74x, and increases indenture secured capacity by $300M (3,541 -> 3,841), CA secured capacity by $300M (2,629 -> 2,929), AND facility_flat (a FLAT_NET_OF_DEBT basket, not a ratio test) by the same $300M (1,279 -> 1,579). Finding: this refines v1's own Q24 framing - a FLAT_NET_OF_DEBT basket nets directly against outstanding secured debt and DOES move dollar-for-dollar with a repayment, same magnitude as the ratio tests; the doc's claim that a 'fixed-dollar basket' does not restore only holds for baskets with no debt-outstanding term in their formula (e.g. GREATER_OF_FLAT_OR_PCT_EBITDA). Q25 (solve for the EBITDA growth needed to unlock +$500M more) needs a genuine solve-for-X capability the engine does not have - not attempted.",
   },
   {
     question: "Can Coherent incur $1,000M of secured debt without breaching either document, and if so what does pro forma total net leverage become?",
