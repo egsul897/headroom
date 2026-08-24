@@ -44,7 +44,8 @@ export type ReviewReasonCategory =
   | "UNKNOWN_ENTITY_CLASS"
   | "INCOMPLETE_COVERAGE"
   | "UNRESOLVED_ACTIVATION_STATE"
-  | "SEARCH_LIMIT_EXCEEDED";
+  | "SEARCH_LIMIT_EXCEEDED"
+  | "MISSING_ASSUMPTION";
 
 // ---------------------------------------------------------------------------
 // §K - provenance / source citation, wrapper types
