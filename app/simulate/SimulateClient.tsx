@@ -4,37 +4,80 @@ import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Banner, Card, Chip, ProgressBar, SectionRef, type ChipTone } from "@/components/ui";
 import { ProvisionTrace } from "@/components/ProvisionTrace";
-import { fmtM, fmtX } from "@/lib/format";
+import { fmtCapacity, fmtM, fmtX } from "@/lib/format";
 import type { DefinedTermLite } from "@/lib/coherent";
 import {
   computeCovenantPosition,
+  documentsWithAssetSale,
+  documentsWithRpWaterfall,
   simulateAssetSale,
   simulateDebtIncurrence,
   simulateRestrictedPayment,
   type CompanyCovenantData,
-  type EvaluatedProvision,
+  type CovenantPosition,
+  type DebtIncurrenceSimulation,
+  type DocumentInput,
+  type RestrictedPaymentKind,
+  type TransactionStatus,
 } from "@/lib/covenant-engine";
-import { COHERENT_INDENTURE_ID, NOT_TESTED_CAVEATS } from "@/prisma/seed-data";
 import { commitRestrictedPayment } from "../ledger/actions";
 
 type ActionType = "debt" | "rp" | "investment" | "assetSale";
 type DefinedTermsMap = Record<string, DefinedTermLite[]>;
+/** Raw Document rows (with `notes`) - the engine's DocumentInput deliberately omits display-only fields. */
+type DocumentRow = { id: string; name: string; notes: string | null };
 
-function provisionFor(
-  position: ReturnType<typeof computeCovenantPosition>,
-  documentId: string,
-  code: string
-): EvaluatedProvision {
-  const evaluated = position.provisionCapacities.get(`${documentId}:${code}`);
-  if (!evaluated) throw new Error(`Missing provision ${documentId}:${code}`);
-  return evaluated;
+const RESULT_TONE: Record<TransactionStatus, "ok" | "blocked" | "review"> = {
+  clear: "ok",
+  blocked: "blocked",
+  review_required: "review",
+  not_tested: "review",
+};
+
+const STATUS_TITLE: Record<TransactionStatus, string> = {
+  clear: "Permitted",
+  blocked: "Blocked",
+  review_required: "Review required",
+  not_tested: "Not tested",
+};
+
+/**
+ * Every OTHER document governing this company that this simulation did NOT
+ * test - a company can have any number of documents, and a transaction type
+ * modeled in one may not be modeled (or may be separately restricted) in
+ * another. Uses each document's own `notes` (DB-sourced) rather than any
+ * hardcoded prose, so this generalizes to whatever documents/notes exist.
+ */
+function OtherDocumentsCaveat({
+  documents,
+  testedDocumentId,
+  transactionLabel,
+}: {
+  documents: DocumentRow[];
+  testedDocumentId: string | undefined;
+  transactionLabel: string;
+}) {
+  const others = documents.filter((d) => d.id !== testedDocumentId);
+  if (others.length === 0) return null;
+  return (
+    <>
+      {others.map((d) => (
+        <Banner key={d.id} tone="red">
+          Not tested here: this verdict only reflects the document tested above. {d.name} may separately restrict{" "}
+          {transactionLabel}.{d.notes ? ` ${d.notes}` : " Its basket configuration for this transaction type has not been entered."}
+        </Banner>
+      ))}
+    </>
+  );
 }
 
 export function SimulateClient({
   data,
+  documents,
   definedTermsByProvision,
 }: {
   data: CompanyCovenantData;
+  documents: DocumentRow[];
   definedTermsByProvision: DefinedTermsMap;
 }) {
   const router = useRouter();
@@ -51,9 +94,6 @@ export function SimulateClient({
   // Pure, deterministic - safe to recompute on every keystroke/drag with no server round trip.
   // `data` came from Postgres via the server component; this is the SAME engine module used there.
   const position = useMemo(() => computeCovenantPosition(data), [data]);
-  const caLeverageProvision = provisionFor(position, data.documents.find((d) => d.type === "CREDIT_AGREEMENT")!.id, "ca_leverage_cap");
-  const milaSecuredProvision = provisionFor(position, COHERENT_INDENTURE_ID, "mila_secured");
-  const ratioDebtProvision = provisionFor(position, COHERENT_INDENTURE_ID, "ratio_debt_fccr");
 
   function commit(kind: "DIVIDEND" | "INVESTMENT", amount: number) {
     startTransition(async () => {
@@ -67,8 +107,8 @@ export function SimulateClient({
       <Card>
         <div className="card-title">What are you testing?</div>
         <div className="card-subtitle">
-          Every action type below draws on the same covenant package — dividends, buybacks, and Investments
-          literally share one basket pool under §3.4.
+          Every action type below is tested against whatever documents and basket configuration exist for this
+          company in the database.
         </div>
         <div className="button-row">
           {(
@@ -93,15 +133,12 @@ export function SimulateClient({
 
       {actionType === "debt" && (
         <DebtPanel
+          data={data}
           position={position}
           simAmt={simAmt}
           setSimAmt={setSimAmt}
           simSecured={simSecured}
           setSimSecured={setSimSecured}
-          data={data}
-          caLeverageProvision={caLeverageProvision}
-          milaSecuredProvision={milaSecuredProvision}
-          ratioDebtProvision={ratioDebtProvision}
           definedTermsByProvision={definedTermsByProvision}
         />
       )}
@@ -109,11 +146,11 @@ export function SimulateClient({
       {actionType === "rp" && (
         <RpPanel
           data={data}
+          documents={documents}
           position={position}
           amount={rpAmt}
           setAmount={setRpAmt}
           kind="dividend"
-          caveat={NOT_TESTED_CAVEATS.restrictedPayments}
           onCommit={(amt) => commit("DIVIDEND", amt)}
           pending={isPending}
           definedTermsByProvision={definedTermsByProvision}
@@ -123,11 +160,11 @@ export function SimulateClient({
       {actionType === "investment" && (
         <RpPanel
           data={data}
+          documents={documents}
           position={position}
           amount={invAmt}
           setAmount={setInvAmt}
           kind="investment"
-          caveat={NOT_TESTED_CAVEATS.investments}
           onCommit={(amt) => commit("INVESTMENT", amt)}
           pending={isPending}
           definedTermsByProvision={definedTermsByProvision}
@@ -137,6 +174,7 @@ export function SimulateClient({
       {actionType === "assetSale" && (
         <AssetSalePanel
           data={data}
+          documents={documents}
           position={position}
           amount={saleAmt}
           setAmount={setSaleAmt}
@@ -150,72 +188,35 @@ export function SimulateClient({
 }
 
 function DebtPanel({
+  data,
   position,
   simAmt,
   setSimAmt,
   simSecured,
   setSimSecured,
-  data,
-  caLeverageProvision,
-  milaSecuredProvision,
-  ratioDebtProvision,
   definedTermsByProvision,
 }: {
-  position: ReturnType<typeof computeCovenantPosition>;
+  data: CompanyCovenantData;
+  position: CovenantPosition;
   simAmt: number;
   setSimAmt: (n: number) => void;
   simSecured: boolean;
   setSimSecured: (b: boolean) => void;
-  data: CompanyCovenantData;
-  caLeverageProvision: EvaluatedProvision;
-  milaSecuredProvision: EvaluatedProvision;
-  ratioDebtProvision: EvaluatedProvision;
   definedTermsByProvision: DefinedTermsMap;
 }) {
-  const sim = simulateDebtIncurrence(position, data.financials, simAmt, simSecured);
-  const caLeverageThreshold = caLeverageProvision.provision.thresholdValue;
-  const milaSecuredThreshold = milaSecuredProvision.provision.thresholdValue;
-  const ratioDebtThreshold = ratioDebtProvision.provision.thresholdValue;
-  const termsFor = (p: EvaluatedProvision) => definedTermsByProvision[`${p.provision.documentId}:${p.provision.code}`] ?? [];
-
-  // Ratio-consistency rule: capacity is constructed so a cleared amount can never trip a
-  // displayed ratio - but we check it explicitly here rather than trusting that invariant
-  // blindly, so the UI can never show "Clears" next to a ratio that reads "fails".
-  const ratioRows: { label: string; value: number; ok: boolean; applies: boolean; note: string; provision: EvaluatedProvision }[] = [
-    {
-      label: "Total net leverage",
-      value: sim.proForma.totalNetLeverage,
-      ok: sim.proForma.totalNetLeverage <= caLeverageThreshold,
-      applies: true,
-      note: `indenture MILA ≤ 5.00x · indenture ratio RP §3.4(b)(xvii) ≤ 3.25x also apply`,
-      provision: caLeverageProvision,
-    },
-    {
-      label: "Senior secured net leverage",
-      value: sim.proForma.seniorSecuredNetLeverage,
-      ok: sim.proForma.seniorSecuredNetLeverage <= milaSecuredThreshold,
-      applies: simSecured,
-      note: simSecured ? "" : "not tested for an unsecured incurrence — current level shown for reference",
-      provision: milaSecuredProvision,
-    },
-    {
-      label: "FCCR / interest coverage",
-      value: sim.proForma.fixedChargeCoverage,
-      ok: sim.proForma.fixedChargeCoverage >= ratioDebtThreshold,
-      applies: true,
-      note: "CA §6.11 ≥ 2.50x also applies",
-      provision: ratioDebtProvision,
-    },
-  ];
-  const anyApplicableRatioTripped = ratioRows.some((r) => r.applies && !r.ok);
-  const displayCleared = sim.cleared && !anyApplicableRatioTripped;
+  // Cross-document capacity AND every applicable ratio test - both computed
+  // generically inside the engine, not rechecked here. There is no separate
+  // client-side ratio-consistency recheck: `sim.status` is the sole verdict.
+  const sim: DebtIncurrenceSimulation = simulateDebtIncurrence(data, position, simAmt, simSecured);
+  const tone = RESULT_TONE[sim.status];
+  const blockedRatioTests = sim.ratioTests.filter((r) => r.applies && r.status === "blocked");
 
   return (
     <>
       <Card>
         <div className="card-title">Test an incurrence</div>
         <div className="card-subtitle" style={{ marginBottom: 0 }}>
-          Tested pro forma against the indenture and the credit agreement maintenance package.
+          Tested pro forma against every governing document and every applicable ratio test.
         </div>
         <div style={{ marginTop: 14 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
@@ -248,31 +249,48 @@ function DebtPanel({
         </div>
       </Card>
 
-      <div className={`result-panel ${displayCleared ? "ok" : "blocked"}`}>
+      <div className={`result-panel ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { background: "var(--amber-soft)", borderColor: "var(--amber)" } : undefined}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div className={`result-title ${displayCleared ? "ok" : "blocked"}`}>
-            {displayCleared ? "Clears both documents" : "Blocked"}
+          <div className={`result-title ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { color: "var(--amber)" } : undefined}>
+            {STATUS_TITLE[sim.status]}
           </div>
-          <Chip tone={displayCleared ? "pass" : "trip"}>max capacity {fmtM(sim.overallCapacity)}</Chip>
+          {sim.overallCapacity !== undefined && (
+            <Chip tone={tone === "ok" ? "pass" : "trip"}>max capacity {fmtM(sim.overallCapacity)}</Chip>
+          )}
         </div>
-        <div style={{ fontSize: 13.5, marginTop: 8, color: displayCleared ? "var(--ink)" : "var(--red)" }}>
-          {displayCleared ? (
+        <div style={{ fontSize: 13.5, marginTop: 8, color: tone === "blocked" ? "var(--red)" : "var(--ink)" }}>
+          {sim.status === "clear" && sim.binding && (
             <>
               Binding constraint: <b>{sim.binding.documentName}</b>
               {sim.binding.bindingProvision ? ` — ${sim.binding.bindingProvision.basketName} (${sim.binding.bindingProvision.sectionRef})` : ""}.
-              Headroom after this incurrence: {fmtM(sim.overallCapacity - simAmt)}.
+              Headroom after this incurrence: {fmtM((sim.overallCapacity ?? 0) - simAmt)}.
             </>
-          ) : (
+          )}
+          {sim.status === "clear" && !sim.binding && <>No document imposes a finite capacity limit on this incurrence.</>}
+          {sim.status === "blocked" && sim.binding?.status === "blocked" && (
             <>
-              <b>{sim.binding.documentName}</b> stops you at {fmtM(sim.binding.capacity)}
+              <b>{sim.binding.documentName}</b> stops you at {fmtM(sim.binding.capacity ?? 0)}
               {sim.binding.bindingProvision ? ` — ${sim.binding.bindingProvision.basketName} (${sim.binding.bindingProvision.sectionRef})` : ""}.
             </>
           )}
+          {sim.status === "blocked" && sim.binding?.status !== "blocked" && blockedRatioTests.length > 0 && (
+            <>
+              {blockedRatioTests.map((r) => (
+                <div key={r.provisionId}>
+                  <b>{r.documentName}</b> — {r.basketName} ({r.sectionRef}) fails: {fmtX(r.postTransactionRatio ?? r.preTransactionRatio)}{" "}
+                  {r.comparisonDirection === "at_or_below" ? "must be ≤" : "must be ≥"} {r.threshold.toFixed(2)}x.
+                </div>
+              ))}
+            </>
+          )}
+          {(sim.status === "review_required" || sim.status === "not_tested") && (
+            <>{sim.reason ?? "Not enough modeled configuration to evaluate this transaction."}</>
+          )}
         </div>
-        {!sim.cleared && sim.next && sim.next.capacity > sim.binding.capacity && (
+        {sim.status === "blocked" && sim.binding && sim.next && (sim.next.capacity ?? Infinity) > (sim.binding.capacity ?? 0) && (
           <div style={{ marginTop: 10, background: "#fff", border: "1px solid var(--line)", borderRadius: 6, padding: "10px 12px", fontSize: 13 }}>
             <b>Amendment unlock:</b> relaxing the binding covenant in {sim.binding.documentName} would raise
-            capacity to <span className="mono" style={{ fontWeight: 600 }}>{fmtM(sim.next.capacity)}</span>, where{" "}
+            capacity to <span className="mono" style={{ fontWeight: 600 }}>{fmtM(sim.next.capacity!)}</span>, where{" "}
             {sim.next.documentName} becomes the constraint.
           </div>
         )}
@@ -284,101 +302,127 @@ function DebtPanel({
           <div key={d.documentId} style={{ padding: "12px 0", borderBottom: "1px solid var(--line)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
               <div style={{ fontSize: 14, fontWeight: 600 }}>{d.documentName}</div>
-              <Chip tone={d.cleared ? "pass" : "trip"}>{d.cleared ? "clears" : "blocks"}</Chip>
+              <Chip tone={d.status === "clear" ? "pass" : d.status === "blocked" ? "trip" : "idle"}>
+                {d.status === "clear" ? "clears" : d.status === "blocked" ? "blocks" : STATUS_TITLE[d.status].toLowerCase()}
+              </Chip>
             </div>
-            <ProgressBar pct={(simAmt / Math.max(1, d.capacity)) * 100} ok={d.cleared} />
+            {d.capacity !== undefined && <ProgressBar pct={(simAmt / Math.max(1, d.capacity)) * 100} ok={d.status === "clear"} />}
             {d.bindingProvision ? (
               <ProvisionTrace
                 provision={d.bindingProvision}
                 definedTerms={definedTermsByProvision[`${d.bindingProvision.documentId}:${d.bindingProvision.code}`] ?? []}
-                value={fmtM(d.capacity)}
+                value={fmtCapacity(d.status === "clear" || d.status === "blocked" ? "modeled" : d.status, d.capacity)}
                 note="governing test"
               />
             ) : (
               <div className="row-note" style={{ marginTop: 6 }}>
-                capacity <span className="mono" style={{ fontWeight: 600, color: "var(--ink)" }}>{fmtM(d.capacity)}</span>
+                {d.capacity !== undefined ? (
+                  <>capacity <span className="mono" style={{ fontWeight: 600, color: "var(--ink)" }}>{fmtM(d.capacity)}</span></>
+                ) : (
+                  d.reason ?? "Not tested here."
+                )}
               </div>
             )}
           </div>
         ))}
       </Card>
 
-      <Card>
-        <div className="card-title">Pro forma</div>
-        <div className="card-subtitle">
-          Capacity above is capped so it can never clear an amount that breaches one of these ratios — a red row
-          here means the deal is genuinely blocked, not a soft warning.
-        </div>
-        {ratioRows.map((r) => {
-          const tone: ChipTone = !r.applies ? "idle" : r.ok ? "pass" : "trip";
-          const toneLabel = !r.applies ? "n/a" : r.ok ? "ok" : "fails";
-          return (
-            <ProvisionTrace
-              key={r.label}
-              provision={r.provision.provision}
-              definedTerms={termsFor(r.provision)}
-              note={`${r.label} pro forma${r.note ? ` — ${r.note}` : ""}`}
-              value={
-                <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                  <span className="mono" style={{ fontSize: 15, fontWeight: 600, opacity: r.applies ? 1 : 0.6 }}>
-                    {fmtX(r.value)}
+      {sim.ratioTests.length > 0 && (
+        <Card>
+          <div className="card-title">Pro forma ratio tests</div>
+          <div className="card-subtitle">
+            Every LEVERAGE_RATIO_ROOM / COVERAGE_RATIO_ROOM covenant modeled for this company, pro forma for this
+            incurrence - capacity above is capped so it can never clear an amount that breaches one of these.
+          </div>
+          {sim.ratioTests.map((r) => {
+            const tone: ChipTone = !r.applies ? "idle" : r.status === "clear" ? "pass" : r.status === "blocked" ? "trip" : "tight";
+            const toneLabel = !r.applies ? "n/a" : r.status === "clear" ? "ok" : r.status === "blocked" ? "fails" : "review";
+            return (
+              <ProvisionTrace
+                key={r.provisionId}
+                provision={r.provision}
+                definedTerms={definedTermsByProvision[`${r.documentId}:${r.provision.code}`] ?? []}
+                note={`${r.metricName} pro forma${!r.applies ? " — not applicable to this incurrence" : ""}${r.reason ? ` — ${r.reason}` : ""}`}
+                value={
+                  <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                    <span className="mono" style={{ fontSize: 15, fontWeight: 600, opacity: r.applies ? 1 : 0.6 }}>
+                      {fmtX(r.postTransactionRatio ?? r.preTransactionRatio)}
+                    </span>
+                    <Chip tone={tone}>{toneLabel}</Chip>
                   </span>
-                  <Chip tone={tone}>{toneLabel}</Chip>
-                </span>
-              }
-            />
-          );
-        })}
-        {sim.cleared !== displayCleared && (
-          <Banner tone="red">
-            The engine reported this as cleared, but a displayed ratio above is tripped — showing Blocked per the
-            ratio-consistency rule rather than a false &quot;Clears&quot;. This should not happen; treat it as a bug.
-          </Banner>
-        )}
-      </Card>
+                }
+              />
+            );
+          })}
+        </Card>
+      )}
     </>
   );
 }
 
 function RpPanel({
   data,
+  documents,
   position,
   amount,
   setAmount,
   kind,
-  caveat,
   onCommit,
   pending,
   definedTermsByProvision,
 }: {
   data: CompanyCovenantData;
-  position: ReturnType<typeof computeCovenantPosition>;
+  documents: DocumentRow[];
+  position: CovenantPosition;
   amount: number;
   setAmount: (n: number) => void;
-  kind: "dividend" | "investment";
-  caveat: string;
+  kind: RestrictedPaymentKind;
   onCommit: (amount: number) => void;
   pending: boolean;
   definedTermsByProvision: DefinedTermsMap;
 }) {
-  const sim = simulateRestrictedPayment(data, position, COHERENT_INDENTURE_ID, amount, kind);
-  const rpGate = position.provisionCapacities.get(`${COHERENT_INDENTURE_ID}:${kind === "dividend" ? "rp_ratio_gate" : "inv_ratio_gate"}`)!;
-  const termsFor = (documentId: string, code: string) => definedTermsByProvision[`${documentId}:${code}`] ?? [];
+  const candidates: DocumentInput[] = documentsWithRpWaterfall(data);
+  const [selectedId, setSelectedId] = useState<string | undefined>(candidates[0]?.id);
+  const doc = candidates.find((d) => d.id === selectedId) ?? candidates[0];
   const title = kind === "dividend" ? "Test a dividend or buyback" : "Test an Investment";
-  const description =
-    kind === "dividend"
-      ? "Tested against indenture §3.4(a) — the builder basket, then the general RP basket (§3.4(b)(x)), then unlimited capacity if net leverage is at or below 3.25x (§3.4(b)(xvii)(i))."
-      : "A JV contribution, minority stake, or loan to an unrestricted subsidiary — under indenture §3.4(a)(iv), Restricted Investments draw the same basket pool as dividends, but the unlimited ratio prong is looser: 3.50x (§3.4(b)(xvii)(ii)) instead of 3.25x.";
+
+  if (!doc) {
+    return (
+      <Card>
+        <div className="card-title">{title}</div>
+        <Banner tone="red">
+          Not tested here: no document for this company has a restricted-payment basket configuration entered.
+        </Banner>
+      </Card>
+    );
+  }
+
+  const sim = simulateRestrictedPayment(data, position, doc.id, amount, kind);
+  const gateCode = doc.rpWaterfall?.ratioGateCodeByKind[kind];
+  const rpGate = gateCode ? position.provisionCapacities.get(`${doc.id}:${gateCode}`) : undefined;
+  const tone = RESULT_TONE[sim.status];
 
   return (
     <>
       <Card>
-        <div className="card-title">{title}</div>
-        <div className="card-subtitle" style={{ marginBottom: 0 }}>{description}</div>
-        <Banner tone="red">{caveat}</Banner>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+          <div className="card-title" style={{ marginBottom: 0 }}>{title}</div>
+          {candidates.length > 1 && (
+            <select value={doc.id} onChange={(e) => setSelectedId(e.target.value)}>
+              {candidates.map((c) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          )}
+        </div>
+        <div className="card-subtitle" style={{ marginBottom: 0 }}>
+          Tested against {doc.name}&apos;s restricted-payment basket waterfall — each basket below cites its own
+          governing section.
+        </div>
+        <OtherDocumentsCaveat documents={documents} testedDocumentId={doc.id} transactionLabel={kind === "dividend" ? "dividends and buybacks" : "Investments"} />
         {sim.poolUsed > 0 && (
           <Banner tone="amber">
-            {fmtM(sim.poolUsed)} already committed against this pool (dividends + Investments) — see Ledger.
+            {fmtM(sim.poolUsed)} already committed against this pool — see Ledger.
           </Banner>
         )}
         <div style={{ marginTop: 14 }}>
@@ -390,21 +434,27 @@ function RpPanel({
         </div>
       </Card>
 
-      <div className={`result-panel ${sim.cleared ? "ok" : "blocked"}`}>
+      <div className={`result-panel ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { background: "var(--amber-soft)", borderColor: "var(--amber)" } : undefined}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div className={`result-title ${sim.cleared ? "ok" : "blocked"}`}>{sim.cleared ? "Permitted" : "Blocked"}</div>
-          <Chip tone={rpGate.gate?.open ? "pass" : "idle"}>
-            ratio prong {rpGate.gate?.open ? "open" : "closed"} · TNL {fmtX(position.metrics.totalNetLeverage)}
-          </Chip>
-        </div>
-        <div style={{ fontSize: 13.5, marginTop: 8 }}>
-          {sim.cleared ? (
-            <>Total net leverage after this payment: <b>{fmtX(sim.proFormaTotalNetLeverage)}</b>.</>
-          ) : (
-            <>{fmtM(sim.remaining)} of the proposed amount has no basket left to draw on.</>
+          <div className={`result-title ${tone === "ok" ? "ok" : tone === "blocked" ? "blocked" : ""}`} style={tone === "review" ? { color: "var(--amber)" } : undefined}>
+            {STATUS_TITLE[sim.status]}
+          </div>
+          {rpGate?.gate && (
+            <Chip tone={rpGate.gate.open ? "pass" : "idle"}>
+              ratio prong {rpGate.gate.open ? "open" : "closed"} · {fmtX(rpGate.gate.measure)}
+            </Chip>
           )}
         </div>
-        {sim.cleared && amount > 0 && (
+        <div style={{ fontSize: 13.5, marginTop: 8 }}>
+          {sim.status === "clear" && sim.proFormaTotalNetLeverage !== undefined && (
+            <>Total net leverage after this payment: <b>{fmtX(sim.proFormaTotalNetLeverage)}</b>.</>
+          )}
+          {sim.status === "blocked" && <>{fmtM(sim.remaining)} of the proposed amount has no basket left to draw on.</>}
+          {(sim.status === "review_required" || sim.status === "not_tested") && (
+            <>{sim.reason ?? "Not enough modeled configuration to evaluate this transaction."}</>
+          )}
+        </div>
+        {sim.status === "clear" && amount > 0 && (
           <button
             type="button"
             className="button-primary"
@@ -421,11 +471,15 @@ function RpPanel({
         <div className="card-title" style={{ marginBottom: 6 }}>Allocation waterfall</div>
         {sim.steps.length === 0 && <div className="muted" style={{ fontSize: 13 }}>Set an amount above.</div>}
         {sim.steps.map((s) => {
-          const stepProvision = position.provisionCapacities.get(`${COHERENT_INDENTURE_ID}:${s.code}`)?.provision;
+          const stepProvision = position.provisionCapacities.get(`${doc.id}:${s.code}`)?.provision;
           return (
             <div key={s.code}>
               {stepProvision ? (
-                <ProvisionTrace provision={stepProvision} definedTerms={termsFor(COHERENT_INDENTURE_ID, s.code)} value={fmtM(s.allocated)} />
+                <ProvisionTrace
+                  provision={stepProvision}
+                  definedTerms={definedTermsByProvision[`${doc.id}:${s.code}`] ?? []}
+                  value={fmtM(s.allocated)}
+                />
               ) : (
                 <div style={{ padding: "10px 0" }}>
                   {s.basketName} <SectionRef>{s.sectionRef}</SectionRef>
@@ -438,7 +492,7 @@ function RpPanel({
             </div>
           );
         })}
-        {!sim.cleared && (
+        {sim.status === "blocked" && (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ fontSize: 13, fontWeight: 500, color: "var(--red)" }}>Unallocated</div>
             <div className="mono" style={{ fontSize: 13, fontWeight: 600, color: "var(--red)" }}>{fmtM(sim.remaining)}</div>
@@ -451,6 +505,7 @@ function RpPanel({
 
 function AssetSalePanel({
   data,
+  documents,
   position,
   amount,
   setAmount,
@@ -459,26 +514,51 @@ function AssetSalePanel({
   definedTermsByProvision,
 }: {
   data: CompanyCovenantData;
-  position: ReturnType<typeof computeCovenantPosition>;
+  documents: DocumentRow[];
+  position: CovenantPosition;
   amount: number;
   setAmount: (n: number) => void;
   reinvest: boolean;
   setReinvest: (b: boolean) => void;
   definedTermsByProvision: DefinedTermsMap;
 }) {
-  const sim = simulateAssetSale(data, position, COHERENT_INDENTURE_ID, amount, reinvest);
-  const thresholdProvision = position.provisionCapacities.get(`${COHERENT_INDENTURE_ID}:asset_sale_threshold`)?.provision;
+  const candidates: DocumentInput[] = documentsWithAssetSale(data);
+  const [selectedId, setSelectedId] = useState<string | undefined>(candidates[0]?.id);
+  const doc = candidates.find((d) => d.id === selectedId) ?? candidates[0];
+
+  if (!doc) {
+    return (
+      <Card>
+        <div className="card-title">Test an asset sale</div>
+        <Banner tone="red">
+          Not tested here: no document for this company has an asset-sale threshold configuration entered.
+        </Banner>
+      </Card>
+    );
+  }
+
+  const sim = simulateAssetSale(data, position, doc.id, amount, reinvest);
+  const thresholdProvision = doc.assetSale ? position.provisionCapacities.get(`${doc.id}:${doc.assetSale.thresholdCode}`)?.provision : undefined;
 
   return (
     <>
       <Card>
-        <div className="card-title">Test an asset sale</div>
-        <div className="card-subtitle" style={{ marginBottom: 0 }}>
-          Under §3.7(b), net proceeds can be reinvested or applied to debt within{" "}
-          {data.documents.find((d) => d.id === COHERENT_INDENTURE_ID)?.assetSale?.reinvestmentWindowDays ?? 455} days.
-          Whatever&apos;s left over the §3.7(d) Excess Proceeds threshold triggers a mandatory offer to repurchase
-          Notes at 100% of principal.
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+          <div className="card-title" style={{ marginBottom: 0 }}>Test an asset sale</div>
+          {candidates.length > 1 && (
+            <select value={doc.id} onChange={(e) => setSelectedId(e.target.value)}>
+              {candidates.map((c) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
+          )}
         </div>
+        <div className="card-subtitle" style={{ marginBottom: 0 }}>
+          Under {doc.name}, net proceeds can be reinvested or applied to debt within{" "}
+          {doc.assetSale?.reinvestmentWindowDays} days. Whatever&apos;s left over the Excess Proceeds threshold
+          below triggers a mandatory offer to repurchase at 100% of principal.
+        </div>
+        <OtherDocumentsCaveat documents={documents} testedDocumentId={doc.id} transactionLabel="asset-sale proceeds" />
         <div style={{ marginTop: 14 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
             <span className="field-label">Net proceeds</span>
@@ -503,43 +583,34 @@ function AssetSalePanel({
         </div>
       </Card>
 
-      <div className={`result-panel ${sim.offerTriggered ? "" : "ok"}`} style={sim.offerTriggered ? { background: "var(--amber-soft)", borderColor: "var(--amber)" } : undefined}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div className="result-title" style={{ color: sim.offerTriggered ? "var(--amber)" : "var(--green)" }}>
-            {sim.offerTriggered ? "Asset Sale Offer required" : "No mandatory offer"}
+      {sim.status !== "clear" ? (
+        <Banner tone="red">{sim.reason ?? "Not enough modeled configuration to evaluate this asset sale."}</Banner>
+      ) : (
+        <div className={`result-panel ${sim.offerTriggered ? "" : "ok"}`} style={sim.offerTriggered ? { background: "var(--amber-soft)", borderColor: "var(--amber)" } : undefined}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="result-title" style={{ color: sim.offerTriggered ? "var(--amber)" : "var(--green)" }}>
+              {sim.offerTriggered ? "Asset Sale Offer required" : "No mandatory offer"}
+            </div>
+            <Chip tone={sim.offerTriggered ? "tight" : "pass"}>Excess Proceeds {fmtM(sim.excessProceeds ?? 0)}</Chip>
           </div>
-          <Chip tone={sim.offerTriggered ? "tight" : "pass"}>Excess Proceeds {fmtM(sim.excessProceeds)}</Chip>
-        </div>
-        <div style={{ fontSize: 13.5, marginTop: 8 }}>
-          {reinvest ? (
-            <>
-              Applied within the reinvestment window (<SectionRef>§3.7(b)</SectionRef>) — no offer triggered
-              regardless of amount, so long as it&apos;s genuinely reinvested or used to pay down Credit Agreement or
-              Pari Passu debt.
-            </>
-          ) : sim.offerTriggered ? (
-            <>
-              Excess Proceeds exceed the <span className="mono">{fmtM(sim.excessProceedsThreshold)}</span> threshold
-              under <SectionRef>§3.7(d)</SectionRef> — must offer to repurchase Notes and Pari Passu debt pro rata at
-              100% of principal plus accrued interest for the excess.
-            </>
-          ) : (
-            <>
-              Proceeds fall within the <span className="mono">{fmtM(sim.excessProceedsThreshold)}</span> threshold
-              under <SectionRef>§3.7(d)</SectionRef> — no offer required even though it isn&apos;t formally
-              reinvested.
-            </>
+          <div style={{ fontSize: 13.5, marginTop: 8 }}>
+            {reinvest ? (
+              <>Applied within the reinvestment window — no offer triggered regardless of amount, so long as it&apos;s genuinely reinvested or used to pay down permitted debt.</>
+            ) : sim.offerTriggered ? (
+              <>Excess Proceeds exceed the <span className="mono">{fmtM(sim.excessProceedsThreshold ?? 0)}</span> threshold — must offer to repurchase at 100% of principal plus accrued interest for the excess.</>
+            ) : (
+              <>Proceeds fall within the <span className="mono">{fmtM(sim.excessProceedsThreshold ?? 0)}</span> threshold — no offer required even though it isn&apos;t formally reinvested.</>
+            )}
+          </div>
+          {thresholdProvision && (
+            <ProvisionTrace
+              provision={thresholdProvision}
+              definedTerms={definedTermsByProvision[`${doc.id}:${doc.assetSale?.thresholdCode}`] ?? []}
+              value={fmtM(sim.excessProceedsThreshold ?? 0)}
+            />
           )}
         </div>
-        {thresholdProvision && (
-          <ProvisionTrace
-            provision={thresholdProvision}
-            definedTerms={definedTermsByProvision[`${COHERENT_INDENTURE_ID}:asset_sale_threshold`] ?? []}
-            value={fmtM(sim.excessProceedsThreshold)}
-          />
-        )}
-        <Banner tone="red">{NOT_TESTED_CAVEATS.assetSale}</Banner>
-      </div>
+      )}
     </>
   );
 }

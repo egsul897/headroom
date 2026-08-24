@@ -50,6 +50,19 @@ model Document {
   executedOn DateTime?
   notes      String?
 
+  // Effective-dating for amendment precedence. Both null = always effective
+  // (the common case for an original, never-amended document). When an
+  // amendment supersedes this document, set THIS document's effectiveTo to
+  // the amendment's effectiveFrom - the load layer (loadCompanyCovenantData)
+  // filters purely on these two columns; supersedesDocumentId below carries
+  // NO filtering logic of its own, so there is no document-name/type special
+  // case anywhere in the query path.
+  effectiveFrom        DateTime?
+  effectiveTo          DateTime?
+  // Informational provenance only ("this document is Amendment No. 1 to X") -
+  // not consulted by the load-time date filter.
+  supersedesDocumentId String?
+
   // JSON-encoded CapacityExpr trees: { secured?: CapacityExpr, unsecured?: CapacityExpr }
   capacityFormulas Json?
   // JSON-encoded RpWaterfallConfig: { steps: {code}[], ratioGateCodeByKind: {dividend, investment} }
@@ -61,6 +74,8 @@ model Document {
   updatedAt DateTime @updatedAt
 
   company            Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  supersedesDocument Document?           @relation("DocumentSupersedes", fields: [supersedesDocumentId], references: [id], onDelete: SetNull)
+  supersededBy       Document[]          @relation("DocumentSupersedes")
   covenantProvisions CovenantProvision[]
   ledgerEntries      LedgerEntry[]
   definedTerms       DefinedTerm[]
@@ -101,6 +116,20 @@ model CovenantProvision {
   params         Json?
   notes          String?
 
+  // Provision-level effective dating, for an amendment that changes only one
+  // basket without replacing the whole document. Both null = effective for
+  // the document's entire effective window. NOTE: (documentId, code) is
+  // intentionally NOT a unique constraint anymore - a code legitimately
+  // repeats across time-scoped versions (original + amended row). Postgres
+  // unique constraints treat NULL as distinct from itself, so a composite
+  // constraint including effectiveFrom could not actually prevent duplicate
+  // never-amended rows either; correctness here is enforced by the load-time
+  // date filter (at most one row per (documentId, code) can match a given
+  // asOfDate if the data was entered without overlapping ranges), not by the
+  // database. See loadCompanyCovenantData in lib/covenant-engine.ts.
+  effectiveFrom DateTime?
+  effectiveTo   DateTime?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -114,7 +143,7 @@ model CovenantProvision {
   // golden_tests.binding_defined_terms.
   definedTerms DefinedTerm[]
 
-  @@unique([documentId, code])
+  @@index([documentId, code])
   @@map("covenant_provisions")
 }
 

@@ -54,7 +54,7 @@ async function main() {
   const provisionIdByKey = new Map<string, string>();
   for (const p of COHERENT_DATA.provisions) {
     const row = await prisma.covenantProvision.upsert({
-      where: { documentId_code: { documentId: p.documentId, code: p.code } },
+      where: { id: p.id },
       update: {
         basketName: p.basketName,
         sectionRef: p.sectionRef,

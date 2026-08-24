@@ -1,8 +1,8 @@
-import { Card } from "@/components/ui";
+import { Banner, Card } from "@/components/ui";
 import { Disclosure } from "@/components/Disclosure";
-import { COHERENT_INDENTURE_ID, LEDGER_BASKET_LABELS, getLedgerEntries, getPosition } from "@/lib/coherent";
+import { LEDGER_BASKET_LABELS, getLedgerEntries, getPosition } from "@/lib/coherent";
 import { fmtM, fmtX, fmtDate } from "@/lib/format";
-import { simulateRestrictedPayment } from "@/lib/covenant-engine";
+import { documentsWithRpWaterfall, simulateRestrictedPayment } from "@/lib/covenant-engine";
 import { addLedgerEntry, deleteLedgerEntry } from "./actions";
 
 export const metadata = { title: "Headroom — Ledger" };
@@ -10,33 +10,53 @@ export const metadata = { title: "Headroom — Ledger" };
 export default async function LedgerPage() {
   const [{ data, position }, entries] = await Promise.all([getPosition(), getLedgerEntries()]);
 
-  // amount=0 just walks the waterfall to report pool usage / capacity left, without allocating anything.
-  const rpPool = simulateRestrictedPayment(data, position, COHERENT_INDENTURE_ID, 0, "dividend");
-  const builderLeft = rpPool.stepCapacitiesRemaining["rp_builder"] ?? 0;
-  const genRPLeft = rpPool.stepCapacitiesRemaining["rp_general"] ?? 0;
+  // amount=0 just walks each document's waterfall to report pool usage / capacity left, without allocating anything.
+  const rpDocs = documentsWithRpWaterfall(data);
+  const rpStats: { label: string; value: number }[] = [];
+  let poolUsed = 0;
+  let rpNotModeled = false;
+  for (const doc of rpDocs) {
+    const sim = simulateRestrictedPayment(data, position, doc.id, 0, "dividend");
+    if (sim.status !== "clear") {
+      rpNotModeled = true;
+      continue;
+    }
+    poolUsed = sim.poolUsed;
+    for (const step of doc.rpWaterfall!.steps) {
+      const provision = position.provisionCapacities.get(`${doc.id}:${step.code}`)?.provision;
+      rpStats.push({
+        label: `${provision?.basketName ?? step.code} left`,
+        value: sim.stepCapacitiesRemaining[step.code] ?? 0,
+      });
+    }
+  }
 
   const debtSchedule = entries.filter((e) => e.basket === "DEBT_INCUR" || e.basket === "DEBT_REPAY");
   const equitySchedule = entries.filter((e) => e.basket === "EQUITY" || e.basket === "ASSET_SALE");
 
   return (
     <div className="stack">
-      <div className="summary-band">
-        <div className="summary-band-title">§3.4 RP pool — shared by dividends, buybacks, and Investments</div>
-        <div className="summary-band-stats">
-          <div>
-            <div className="summary-stat-value">{fmtM(builderLeft)}</div>
-            <div className="summary-stat-label">builder basket left</div>
-          </div>
-          <div>
-            <div className="summary-stat-value">{fmtM(genRPLeft)}</div>
-            <div className="summary-stat-label">general RP basket left</div>
-          </div>
-          <div>
-            <div className="summary-stat-value">{fmtM(rpPool.poolUsed)}</div>
-            <div className="summary-stat-label">committed so far (dividends + Investments)</div>
+      {rpDocs.length === 0 ? (
+        <Banner tone="red">Not tested here: no document for this company has a restricted-payment basket configuration entered.</Banner>
+      ) : rpNotModeled ? (
+        <Banner tone="red">Restricted-payment pool usage could not be fully evaluated - see Simulate for details.</Banner>
+      ) : (
+        <div className="summary-band">
+          <div className="summary-band-title">Restricted payment pool — shared by dividends, buybacks, and Investments</div>
+          <div className="summary-band-stats">
+            {rpStats.map((s) => (
+              <div key={s.label}>
+                <div className="summary-stat-value">{fmtM(s.value)}</div>
+                <div className="summary-stat-label">{s.label}</div>
+              </div>
+            ))}
+            <div>
+              <div className="summary-stat-value">{fmtM(poolUsed)}</div>
+              <div className="summary-stat-label">committed so far (dividends + Investments)</div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <Card>
         <div className="card-title">Public-record ledger</div>
@@ -78,7 +98,8 @@ export default async function LedgerPage() {
               Sample officer&apos;s compliance certificate
             </div>
             <div className="card-subtitle">
-              Illustrative only — computed live from the same position data as the Position tab.
+              Illustrative only — computed live from the same position data as the Position tab, not tied to any
+              specific section numbers.
             </div>
           </div>
         </div>
@@ -88,13 +109,13 @@ export default async function LedgerPage() {
               OFFICER&apos;S COMPLIANCE CERTIFICATE (ILLUSTRATIVE)
             </div>
             <div className="serif muted" style={{ textAlign: "center", fontStyle: "italic", fontSize: 13, marginTop: 2 }}>
-              Modeled on Credit Agreement §5.04(c) and Indenture §3.4(a)(C) disclosure requirements
+              Modeled on typical compliance-certificate disclosure requirements
             </div>
             <div className="serif" style={{ fontSize: 14, lineHeight: 1.65, marginTop: 14 }}>
               The undersigned officer certifies, as of the latest financial snapshot: (i) the Total Net Leverage
               Ratio was <span className="mono">{fmtX(position.metrics.totalNetLeverage)}</span>; (ii) the Fixed
               Charge Coverage Ratio was <span className="mono">{fmtX(position.metrics.fixedChargeCoverage)}</span>;
-              (iii) the Consolidated Senior Secured Net Leverage Ratio was{" "}
+              (iii) the Senior Secured Net Leverage Ratio was{" "}
               <span className="mono">{fmtX(position.metrics.seniorSecuredNetLeverage)}</span>; (iv) no Default or
               Event of Default has occurred and is continuing under any Debt Document.
             </div>

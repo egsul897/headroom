@@ -26,7 +26,8 @@ export function Row({
   note,
 }: {
   label: string;
-  sref: string;
+  /** Omit for a value that isn't itself a cited clause (e.g. a derived subtotal of other cited rows). */
+  sref?: string;
   value: string;
   note?: string;
 }) {
@@ -35,7 +36,7 @@ export function Row({
       <div>
         <div className="row-label">{label}</div>
         <div>
-          <SectionRef>{sref}</SectionRef>
+          {sref && <SectionRef>{sref}</SectionRef>}
           {note && <span className="row-note"> · {note}</span>}
         </div>
       </div>

@@ -1,9 +1,13 @@
-import { getCovenantData, getDefinedTermsByProvision } from "@/lib/coherent";
+import { getCovenantData, getDefinedTermsByProvision, getDocuments } from "@/lib/coherent";
 import { SimulateClient } from "./SimulateClient";
 
 export const metadata = { title: "Headroom — Simulate" };
 
 export default async function SimulatePage() {
-  const [data, definedTermsByProvision] = await Promise.all([getCovenantData(), getDefinedTermsByProvision()]);
-  return <SimulateClient data={data} definedTermsByProvision={definedTermsByProvision} />;
+  const [data, documents, definedTermsByProvision] = await Promise.all([
+    getCovenantData(),
+    getDocuments(),
+    getDefinedTermsByProvision(),
+  ]);
+  return <SimulateClient data={data} documents={documents} definedTermsByProvision={definedTermsByProvision} />;
 }

@@ -1,85 +1,119 @@
-import { Card, Row } from "@/components/ui";
+import { Banner, Card, Row } from "@/components/ui";
 import { ProvisionTrace } from "@/components/ProvisionTrace";
-import { COHERENT_INDENTURE_ID, getCompany, getDebtTranches, getDefinedTermsByProvision, getPosition } from "@/lib/coherent";
-import { fmtM, fmtX } from "@/lib/format";
-import type { EvaluatedProvision } from "@/lib/covenant-engine";
+import {
+  getCompany,
+  getDebtTranches,
+  getDefinedTermsByProvision,
+  getFinancialSnapshot,
+  getPosition,
+} from "@/lib/coherent";
+import { fmtCapacity, fmtM, fmtX } from "@/lib/format";
+import {
+  documentsWithRpWaterfall,
+  simulateRestrictedPayment,
+  type CapacityExpr,
+  type CompanyCovenantData,
+  type CovenantPosition,
+  type LabeledSubtotal,
+} from "@/lib/covenant-engine";
 import type { DefinedTermLite } from "@/lib/coherent";
 
 export const metadata = { title: "Headroom — Position" };
 
-function cap(provisionCapacities: Map<string, EvaluatedProvision>, documentId: string, code: string): EvaluatedProvision {
-  const evaluated = provisionCapacities.get(`${documentId}:${code}`);
-  if (!evaluated) throw new Error(`Missing provision ${documentId}:${code}`);
-  return evaluated;
+/** Every provision code a capacity expression tree references, in first-appearance order - the generic replacement for hardcoding a document's basket codes into the page. */
+function collectRefCodes(expr: CapacityExpr | undefined, seen: Set<string>, order: string[]) {
+  if (!expr) return;
+  if (expr.op === "REF") {
+    if (!seen.has(expr.code)) {
+      seen.add(expr.code);
+      order.push(expr.code);
+    }
+    return;
+  }
+  for (const item of expr.items) collectRefCodes(item, seen, order);
+}
+
+function dedupeLabeled(subtotals: LabeledSubtotal[]): LabeledSubtotal[] {
+  const seen = new Set<string>();
+  const out: LabeledSubtotal[] = [];
+  for (const s of subtotals) {
+    if (seen.has(s.label)) continue;
+    seen.add(s.label);
+    out.push(s);
+  }
+  return out;
+}
+
+/** Restricted-payment headroom across every document with a modeled RP waterfall, net of ledger usage - generic over however many such documents exist (0, 1, or more), never assuming exactly one. */
+function summarizeRpHeadroom(data: CompanyCovenantData, position: CovenantPosition): { display: string; note?: string } {
+  const rpDocs = documentsWithRpWaterfall(data);
+  if (rpDocs.length === 0) return { display: "Not tested" };
+
+  // amount=0 just walks the waterfall to report basket capacity remaining / gate status, without allocating anything.
+  const results = rpDocs.map((doc) => simulateRestrictedPayment(data, position, doc.id, 0, "dividend"));
+  if (results.some((r) => r.status === "review_required")) return { display: "Review required" };
+  if (results.some((r) => r.status === "not_tested")) return { display: "Not tested" };
+
+  const gateOpen = rpDocs.some((doc) => {
+    const gateCode = doc.rpWaterfall?.ratioGateCodeByKind.dividend;
+    const evaluated = gateCode ? position.provisionCapacities.get(`${doc.id}:${gateCode}`) : undefined;
+    return evaluated?.gate?.open ?? false;
+  });
+  if (gateOpen) return { display: "Open", note: "ratio prong satisfied" };
+
+  const remaining = results.reduce(
+    (sum, r) => sum + Object.values(r.stepCapacitiesRemaining).reduce((s, v) => s + v, 0),
+    0
+  );
+  return { display: fmtM(remaining) };
 }
 
 export default async function PositionPage() {
-  const [{ data, position }, tranches, company, definedTermsByProvision] = await Promise.all([
+  const [{ data, position }, tranches, company, definedTermsByProvision, snapshot] = await Promise.all([
     getPosition(),
     getDebtTranches(),
     getCompany(),
     getDefinedTermsByProvision(),
+    getFinancialSnapshot(),
   ]);
   const fin = data.financials;
   const { metrics } = position;
   const termsFor = (documentId: string, code: string): DefinedTermLite[] => definedTermsByProvision[`${documentId}:${code}`] ?? [];
 
-  const ratioDebt = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "ratio_debt_fccr");
-  const facA = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "facility_flat");
-  const facB = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "facility_grower");
-  const milaSec = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "mila_secured");
-  const milaUnsec = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "mila_unsecured");
-  const genDebt = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "general_debt");
-  const lienRatio = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "lien_ratio");
-  const lienGeneral = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "lien_general");
-  const lienCap = lienRatio.capacity + lienGeneral.capacity;
-
-  const builder = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "rp_builder");
-  const genRP = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "rp_general");
-  const rpGate = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "rp_ratio_gate");
-  const rpCapacityUnconstrained = rpGate.gate?.open ?? false;
-
   const totalDebt = tranches.reduce((s, t) => s + Number(t.amount), 0);
   const securedDebt = tranches.filter((t) => t.secured).reduce((s, t) => s + Number(t.amount), 0);
+  const rpSummary = summarizeRpHeadroom(data, position);
 
   return (
     <div className="stack">
       <div className="summary-band">
         <div className="summary-band-title">
           Maximum incremental debt — the most {company.name.replace(/ Corp\.?$/, "")} can incur without tripping
-          either document
+          any governing document
         </div>
         <div className="summary-band-stats">
           <div>
-            <div className="summary-stat-value">{fmtM(position.crossDocumentSecuredCapacity)}</div>
+            <div className="summary-stat-value">{fmtCapacity(position.crossDocumentSecured.status, position.crossDocumentSecured.capacity)}</div>
             <div className="summary-stat-label">secured</div>
           </div>
           <div>
-            <div className="summary-stat-value">{fmtM(position.crossDocumentUnsecuredCapacity)}</div>
+            <div className="summary-stat-value">{fmtCapacity(position.crossDocumentUnsecured.status, position.crossDocumentUnsecured.capacity)}</div>
             <div className="summary-stat-label">unsecured</div>
           </div>
           <div>
-            <div className="summary-stat-value">
-              {rpCapacityUnconstrained ? "open" : fmtM(builder.capacity + genRP.capacity)}
-            </div>
-            <div className="summary-stat-label">
-              restricted payments{rpCapacityUnconstrained ? " — ratio prong satisfied" : ""}
-            </div>
+            <div className="summary-stat-value">{rpSummary.display}</div>
+            <div className="summary-stat-label">restricted payments{rpSummary.note ? ` — ${rpSummary.note}` : ""}</div>
           </div>
         </div>
       </div>
 
       <Card>
-        <div className="card-title">FY26 financials (10-K)</div>
-        <div className="card-subtitle">
-          Covenant EBITDA is an estimated build-up from the public reconciliation (net earnings + tax +
-          interest + D&amp;A + SBC, restructuring, impairments and integration costs, less gains on sales) —
-          the defined term is bespoke.
-        </div>
+        <div className="card-title">Latest financial snapshot</div>
+        {snapshot?.notes && <div className="card-subtitle">{snapshot.notes}</div>}
         <table className="plain">
           <tbody>
             <tr>
-              <td>4Q Consolidated EBITDA (est.)</td>
+              <td>Consolidated EBITDA</td>
               <td className="mono">{fmtM(fin.ebitda)}</td>
             </tr>
             <tr>
@@ -91,7 +125,7 @@ export default async function PositionPage() {
               <td className="mono">{fmtM(fin.interestExpense)}</td>
             </tr>
             <tr>
-              <td>CNI since 12/10/21 (est.)</td>
+              <td>Cumulative net income since issue</td>
               <td className="mono">{fmtM(fin.cumulativeNetIncome)}</td>
             </tr>
             <tr>
@@ -110,102 +144,102 @@ export default async function PositionPage() {
         </div>
       </Card>
 
-      <Card>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-          <div className="card-title" style={{ marginBottom: 0 }}>
-            Debt capacity — 2029 Notes Indenture
-          </div>
-          <span className="section-ref">§3.3</span>
-        </div>
-        <ProvisionTrace
-          provision={ratioDebt.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "ratio_debt_fccr")}
-          value={fmtM(ratioDebt.capacity)}
-          note={`at ${fin.assumedNewDebtRatePct}% assumed coupon; FCCR now ${fmtX(metrics.fixedChargeCoverage)}`}
-        />
-        <ProvisionTrace
-          provision={facA.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "facility_flat")}
-          value={fmtM(facA.capacity)}
-          note="net of TLA/TLB outstanding"
-        />
-        <ProvisionTrace
-          provision={facB.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "facility_grower")}
-          value={fmtM(facB.capacity)}
-        />
-        <ProvisionTrace
-          provision={milaSec.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "mila_secured")}
-          value={fmtM(milaSec.capacity)}
-          note={`SSNL now ${fmtX(metrics.seniorSecuredNetLeverage)}`}
-        />
-        <ProvisionTrace
-          provision={milaUnsec.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "mila_unsecured")}
-          value={fmtM(milaUnsec.capacity)}
-        />
-        <ProvisionTrace
-          provision={genDebt.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "general_debt")}
-          value={fmtM(genDebt.capacity)}
-        />
-        <ProvisionTrace
-          provision={lienRatio.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "lien_ratio")}
-          value={fmtM(lienRatio.capacity)}
-        />
-        <ProvisionTrace
-          provision={lienGeneral.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "lien_general")}
-          value={fmtM(lienGeneral.capacity)}
-        />
-        <Row
-          label="= Lien capacity for secured debt"
-          sref="Permitted Liens cl. (24) + cl. (25)"
-          value={fmtM(lienCap)}
-          note="sum of the two rows above; secured incurrences must also fit here"
-        />
-      </Card>
+      {data.documents.map((doc) => {
+        const capacityResult = position.documents.find((d) => d.documentId === doc.id);
+        if (!capacityResult) return null;
+
+        const securedSeen = new Set<string>();
+        const securedCodes: string[] = [];
+        collectRefCodes(doc.capacityFormulas?.secured, securedSeen, securedCodes);
+        const unsecuredSeen = new Set(securedSeen);
+        const unsecuredCodes: string[] = [];
+        collectRefCodes(doc.capacityFormulas?.unsecured, unsecuredSeen, unsecuredCodes);
+        const allCodes = [...securedCodes, ...unsecuredCodes];
+        const labeledSubtotals = dedupeLabeled([
+          ...capacityResult.securedLabeledSubtotals,
+          ...capacityResult.unsecuredLabeledSubtotals,
+        ]);
+
+        if (allCodes.length === 0 && capacityResult.securedStatus === "not_tested" && capacityResult.unsecuredStatus === "not_tested") {
+          return null;
+        }
+
+        return (
+          <Card key={doc.id}>
+            <div className="card-title">{doc.name} — debt capacity</div>
+            {capacityResult.securedStatus !== "modeled" && (
+              <Banner tone="red">Secured: {capacityResult.securedReason ?? "Not tested here."}</Banner>
+            )}
+            {capacityResult.unsecuredStatus !== "modeled" && (
+              <Banner tone="red">Unsecured: {capacityResult.unsecuredReason ?? "Not tested here."}</Banner>
+            )}
+            {allCodes.map((code) => {
+              const evaluated = position.provisionCapacities.get(`${doc.id}:${code}`);
+              if (!evaluated) return null;
+              return (
+                <ProvisionTrace
+                  key={code}
+                  provision={evaluated.provision}
+                  definedTerms={termsFor(doc.id, code)}
+                  value={fmtCapacity(evaluated.status, evaluated.capacity)}
+                />
+              );
+            })}
+            {labeledSubtotals.map((s) => (
+              <Row key={s.label} label={`= ${s.label}`} value={fmtCapacity(s.status, s.value)} note="derived subtotal" />
+            ))}
+          </Card>
+        );
+      })}
+
+      {documentsWithRpWaterfall(data).map((doc) => {
+        const steps = doc.rpWaterfall!.steps;
+        const gateCodes = Object.values(doc.rpWaterfall!.ratioGateCodeByKind);
+        return (
+          <Card key={`${doc.id}-rp`}>
+            <div className="card-title">{doc.name} — restricted payments</div>
+            {steps.map((s) => {
+              const evaluated = position.provisionCapacities.get(`${doc.id}:${s.code}`);
+              if (!evaluated) return null;
+              return (
+                <div key={s.code}>
+                  <ProvisionTrace
+                    provision={evaluated.provision}
+                    definedTerms={termsFor(doc.id, s.code)}
+                    value={fmtCapacity(evaluated.status, evaluated.capacity)}
+                  />
+                  {evaluated.components?.map((c) => (
+                    <Row key={c.label} label={c.label} sref={c.sectionRef} value={fmtM(c.value)} />
+                  ))}
+                </div>
+              );
+            })}
+            {gateCodes.map((code) => {
+              const evaluated = position.provisionCapacities.get(`${doc.id}:${code}`);
+              if (!evaluated) return null;
+              return (
+                <ProvisionTrace
+                  key={code}
+                  provision={evaluated.provision}
+                  definedTerms={termsFor(doc.id, code)}
+                  value={
+                    evaluated.status === "modeled" && evaluated.gate ? (
+                      <span className={`chip chip-${evaluated.gate.open ? "pass" : "trip"}`}>
+                        {evaluated.gate.open ? "open" : "locked"} · {fmtX(evaluated.gate.measure)}
+                      </span>
+                    ) : (
+                      fmtCapacity(evaluated.status, evaluated.capacity)
+                    )
+                  }
+                />
+              );
+            })}
+          </Card>
+        );
+      })}
 
       <Card>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-          <div className="card-title" style={{ marginBottom: 0 }}>
-            Restricted Payments — 2029 Notes Indenture
-          </div>
-          <span className="section-ref">§3.4</span>
-        </div>
-        <ProvisionTrace
-          provision={builder.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "rp_builder")}
-          value={fmtM(builder.capacity)}
-        />
-        {builder.components?.map((c) => (
-          <Row key={c.label} label={c.label} sref={c.sectionRef} value={fmtM(c.value)} />
-        ))}
-        <ProvisionTrace
-          provision={genRP.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "rp_general")}
-          value={fmtM(genRP.capacity)}
-        />
-        <ProvisionTrace
-          provision={rpGate.provision}
-          definedTerms={termsFor(COHERENT_INDENTURE_ID, "rp_ratio_gate")}
-          value={
-            <span className={`chip chip-${rpGate.gate?.open ? "pass" : "trip"}`}>
-              {rpGate.gate?.open ? "open" : "locked"} · {fmtX(metrics.totalNetLeverage)}
-            </span>
-          }
-        />
-        <div className="card-subtitle" style={{ marginTop: 4, marginBottom: 0 }}>
-          {rpCapacityUnconstrained
-            ? "The equity raise cut net leverage below the ratio prong and added to the builder basket — RP capacity is effectively unconstrained by the indenture today."
-            : "The ratio prong is currently closed; RP capacity is limited to the builder and general baskets above."}
-        </div>
-      </Card>
-
-      <Card>
-        <div className="card-title">Capital structure (6/30/26)</div>
+        <div className="card-title">Capital structure</div>
         {tranches.map((t) => (
           <div key={t.id} className="row">
             <div>
