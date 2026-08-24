@@ -35,6 +35,7 @@ import type {
   RequirementResult,
   RuleActivationCondition,
   SharedConstraint,
+  SharedConstraintConsumption,
   ActivationState,
   Transaction,
 } from "./types";
@@ -222,6 +223,7 @@ export interface ElectionEvaluation {
   linkedPermissions: LinkedPermissionPair[];
   requirements: RequirementResult[];
   parameterAdjustmentsTriggered: ParameterAdjustment[];
+  sharedConstraintsConsumed: SharedConstraintConsumption[];
   totalAllocated: number;
   /** The election's own maximum capacity, independent of the specific requested amount - undefined if not exactly determinable (see status). */
   maxCapacity?: number;
@@ -272,11 +274,29 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   let remaining = requestedAmount;
   let totalAllocated = 0;
 
-  const sharedHeadroom = (permissionId: string): number | undefined => {
-    const constraint = sharedConstraints.find((c) => c.members.some((mem) => mem.permissionId === permissionId));
-    if (!constraint) return undefined;
-    const cap = "amount" in constraint.cap ? constraint.cap.amount : evaluateProvision({ ...permissionAsProvision(permissionsById.get(permissionId)!), formulaType: constraint.cap.formulaType, thresholdValue: constraint.cap.thresholdValue, params: constraint.cap.params }, financials, computeLeverageMetrics(financials)).capacity;
-    return Math.max(0, (cap ?? 0) - constraint.currentUsage);
+  // Stateful shared-constraint headroom tracker: two members of the SAME
+  // election drawing on the SAME SharedCapacityConstraint must jointly
+  // exhaust its remaining headroom, not each be checked independently
+  // against the constraint's pre-transaction currentUsage (design doc §G:
+  // "currentUsage + proposedAllocationAcrossParticipatingLegs <= cap" - the
+  // gate is on the SUM across every participating leg in this election, not
+  // per-leg in isolation). Initialized lazily so a constraint never consulted
+  // by this election costs nothing.
+  const sharedRemaining = new Map<string, number>();
+  const sharedConsumption: SharedConstraintConsumption[] = [];
+  const constraintFor = (permissionId: string): SharedConstraint | undefined => sharedConstraints.find((c) => c.members.some((mem) => mem.permissionId === permissionId));
+  const headroomAndConsume = (permissionId: string, desiredAlloc: number): { cappedAlloc: number; constraintId?: string } => {
+    const constraint = constraintFor(permissionId);
+    if (!constraint) return { cappedAlloc: desiredAlloc };
+    if (!sharedRemaining.has(constraint.id)) {
+      const cap = "amount" in constraint.cap ? constraint.cap.amount : evaluateProvision({ ...permissionAsProvision(permissionsById.get(permissionId)!), formulaType: constraint.cap.formulaType, thresholdValue: constraint.cap.thresholdValue, params: constraint.cap.params }, financials, computeLeverageMetrics(financials)).capacity;
+      sharedRemaining.set(constraint.id, Math.max(0, (cap ?? 0) - constraint.currentUsage));
+    }
+    const before = sharedRemaining.get(constraint.id)!;
+    const consumed = Math.max(0, Math.min(desiredAlloc, before));
+    sharedRemaining.set(constraint.id, before - consumed);
+    sharedConsumption.push({ constraintId: constraint.id, amountConsumed: consumed, headroomBefore: before, headroomAfter: before - consumed });
+    return { cappedAlloc: consumed, constraintId: constraint.id };
   };
 
   for (const f of fixed) {
@@ -293,14 +313,15 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
       continue;
     }
     let standalone = evaluated.capacity!;
-    const headroom = sharedHeadroom(f.id);
-    if (headroom !== undefined) {
-      standalone = Math.min(standalone, headroom);
+    const desiredForSharedCheck = Math.min(remaining, standalone);
+    const { cappedAlloc, constraintId } = headroomAndConsume(f.id, desiredForSharedCheck);
+    if (constraintId !== undefined) {
+      standalone = Math.min(standalone, cappedAlloc);
       requirements.push({
         class: "SHARED_CAP",
-        scope: { permissionId: f.id },
-        status: standalone > 0 || headroom > 0 ? "SATISFIED" : "FAILED",
-        detail: `Shared constraint headroom for ${f.id}: ${headroom}.`,
+        scope: { permissionId: f.id, constraintId },
+        status: cappedAlloc > 0 || desiredForSharedCheck === 0 ? "SATISFIED" : "FAILED",
+        detail: `Shared constraint ${constraintId} headroom consumed by ${f.id}: ${cappedAlloc}.`,
       });
     }
     const alloc = Math.max(0, Math.min(remaining, standalone));
@@ -341,8 +362,17 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
       });
     } else {
       let standalone = evaluated.capacity!;
-      const headroom = sharedHeadroom(ratioPermission.id);
-      if (headroom !== undefined) standalone = Math.min(standalone, headroom);
+      const desiredForSharedCheck = Math.min(remaining, standalone);
+      const { cappedAlloc, constraintId } = headroomAndConsume(ratioPermission.id, desiredForSharedCheck);
+      if (constraintId !== undefined) {
+        standalone = Math.min(standalone, cappedAlloc);
+        requirements.push({
+          class: "SHARED_CAP",
+          scope: { permissionId: ratioPermission.id, constraintId },
+          status: cappedAlloc > 0 || desiredForSharedCheck === 0 ? "SATISFIED" : "FAILED",
+          detail: `Shared constraint ${constraintId} headroom consumed by ${ratioPermission.id}: ${cappedAlloc}.`,
+        });
+      }
       const alloc = Math.max(0, Math.min(remaining, standalone));
       remaining -= alloc;
       totalAllocated += alloc;
@@ -429,7 +459,17 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     }
   }
 
-  return { election, legs, linkedPermissions, requirements, parameterAdjustmentsTriggered, totalAllocated, maxCapacity: incurrenceBased.length <= 1 ? totalAllocated + remaining : undefined, status: incurrenceBased.length > 1 ? "NOT_EVALUABLE" : "EVALUATED" };
+  return {
+    election,
+    legs,
+    linkedPermissions,
+    requirements,
+    parameterAdjustmentsTriggered,
+    sharedConstraintsConsumed: sharedConsumption,
+    totalAllocated,
+    maxCapacity: incurrenceBased.length <= 1 ? totalAllocated + remaining : undefined,
+    status: incurrenceBased.length > 1 ? "NOT_EVALUABLE" : "EVALUATED",
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -493,14 +533,6 @@ export function computeElectionMaxCapacityBisected(members: Permission[], fixedT
 // Top-level: build PermissionPaths for a Requirement Group
 // ---------------------------------------------------------------------------
 
-export interface SearchStats {
-  candidateElections: number;
-  prunedElections: number;
-  evaluatedElections: number;
-  durationMs: number;
-  limitExceeded: boolean;
-}
-
 export function buildPermissionPaths(evaluations: ElectionEvaluation[]): PermissionPath[] {
   return evaluations
     .filter((e) => e.status === "EVALUATED")
@@ -512,7 +544,7 @@ export function buildPermissionPaths(evaluations: ElectionEvaluation[]): Permiss
         legs: e.legs,
         linkedPermissions: e.linkedPermissions,
         conditionsTested: e.requirements,
-        sharedConstraintsConsumed: [],
+        sharedConstraintsConsumed: e.sharedConstraintsConsumed,
         assumptionsUsed: [],
         parameterAdjustmentsTriggered: e.parameterAdjustmentsTriggered,
         sourceProvisions: e.legs.map((l) => ({ documentId: l.sourceProvision.documentId, sectionRef: l.sourceProvision.sectionRef, permissionId: l.permissionId })),

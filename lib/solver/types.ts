@@ -612,13 +612,16 @@ export interface SolverResult {
     legalJudgmentRequired: { description: string; sourceProvision?: SourceProvisionRef }[];
   };
   /** Performance guardrail instrumentation (task §14) - never affects the result's correctness, only its observability. */
-  searchStats: {
-    candidateElections: number;
-    prunedElections: number;
-    evaluatedElections: number;
-    durationMs: number;
-    limitExceeded: boolean;
-  };
+  searchStats: SearchStats;
+}
+
+/** Performance guardrail instrumentation (task §14), shared by lib/solver/election.ts's enumeration/evaluation loop and lib/solver/result.ts's SolverResult. */
+export interface SearchStats {
+  candidateElections: number;
+  prunedElections: number;
+  evaluatedElections: number;
+  durationMs: number;
+  limitExceeded: boolean;
 }
 
 // ---------------------------------------------------------------------------
