@@ -262,6 +262,27 @@ describe("Phase 6 - election enumeration + feasibility (lib/solver/election.ts)"
       });
       expect(evalResult.requirements.some((r) => r.class === "GUARANTOR_CONDITION" && r.status === "FAILED")).toBe(true);
     });
+
+    it("Case: an unsupported eligibility-condition kind fails closed (UNKNOWN), never silently SATISFIED", () => {
+      const p = permission("a", {
+        eligibilityConditions: [{ id: "ec-1", description: "Requires Ba3/BB- or better from either rating agency", kind: "RATINGS_THRESHOLD" }],
+      });
+      const graph = buildPermissionGraph([p], []);
+      const evalResult = evaluateElection({
+        election: { id: "e", memberPermissionIds: ["a"], rationale: "" },
+        permissionsById: new Map([["a", p]]),
+        graph,
+        financials: FIN,
+        requestedAmount: 10,
+        eligibilityContext: { transaction: baseTransaction, entityClasses: [], ruleActivationConditions: [], activationState: emptyActivationState, asOfDate: new Date() },
+        sharedConstraints: [],
+        collateralScopes: [],
+      });
+      const cond = evalResult.requirements.find((r) => r.class === "COVENANT_APPLICABILITY" && r.detail.includes("RATINGS_THRESHOLD"));
+      expect(cond?.status).toBe("UNKNOWN");
+      expect(cond?.reasonCategory).toBe("LEGAL_JUDGMENT");
+      expect(buildPermissionPaths([evalResult])[0]!.status).not.toBe("CLEAR");
+    });
   });
 
   describe("bisectMaxFeasibleAmount - monotone bisection", () => {

@@ -148,7 +148,23 @@ export interface EligibilityContext {
   asOfDate: Date;
 }
 
-/** design doc §C.2 GUARANTOR_CONDITION-adjacent entity-scope check + §I APPLICABILITY. Currently implements ENTITY_SCOPE and CUSTOM_STATE_PREDICATE eligibility-condition kinds mechanically; every other kind (RATINGS_THRESHOLD/INTERCREDITOR_JOINDER/MFN_EXCLUSION_TEST/LCA_TEST_DATE_FREEZE) not backed by an attached ruleActivationConditionId is treated as SATISFIED (a documented Phase 6 limitation - see docs/solver-implementation-phases-0-7-report.md §O). */
+/**
+ * design doc §C.2 GUARANTOR_CONDITION-adjacent entity-scope check + §I
+ * APPLICABILITY. ENTITY_SCOPE and CUSTOM_STATE_PREDICATE (backed by a
+ * resolvable RuleActivationCondition) are mechanically evaluated. Every
+ * other eligibility-condition kind - RATINGS_THRESHOLD/INTERCREDITOR_JOINDER/
+ * MFN_EXCLUSION_TEST/LCA_TEST_DATE_FREEZE, or a CUSTOM_STATE_PREDICATE
+ * missing its ruleActivationConditionId - has no mechanical evaluation in
+ * this phase (report §O item 2). This is fail-closed BY CONSTRUCTION: an
+ * unsupported kind produces its own UNKNOWN RequirementResult (reasonCategory
+ * "LEGAL_JUDGMENT") rather than being silently skipped, which would
+ * otherwise let a permission with e.g. an unverified RATINGS_THRESHOLD
+ * condition attached clear as if that condition had actually been checked -
+ * exactly the false-affirmative failure mode the live-integration hardening
+ * gate requires never happen. The remedy differs from a data gap (get a
+ * rating agency confirmation vs. get certified financial data), which is
+ * why it carries its own reason category rather than reusing EXTERNAL_INPUT.
+ */
 export function evaluatePermissionEligibility(permission: Permission, ctx: EligibilityContext): RequirementResult[] {
   const results: RequirementResult[] = [];
 
@@ -185,9 +201,21 @@ export function evaluatePermissionEligibility(permission: Permission, ctx: Eligi
         reasonCategory: active === "UNKNOWN" ? "UNRESOLVED_ACTIVATION_STATE" : undefined,
         sourceProvision: cond.sourceProvision ? { documentId: cond.sourceProvision.documentId, sectionRef: cond.sourceProvision.sectionRef } : undefined,
       });
+      continue;
     }
-    // RATINGS_THRESHOLD / INTERCREDITOR_JOINDER / MFN_EXCLUSION_TEST / LCA_TEST_DATE_FREEZE without
-    // an attached activation condition: no mechanical evaluation in this phase - see file header.
+    // Every other kind - RATINGS_THRESHOLD / INTERCREDITOR_JOINDER /
+    // MFN_EXCLUSION_TEST / LCA_TEST_DATE_FREEZE, or a CUSTOM_STATE_PREDICATE
+    // missing its ruleActivationConditionId - has no mechanical evaluation
+    // in this phase. Fails closed to UNKNOWN rather than being silently
+    // dropped (see this function's header comment).
+    results.push({
+      class: "COVENANT_APPLICABILITY",
+      scope: { permissionId: permission.id },
+      status: "UNKNOWN",
+      detail: `Eligibility condition "${cond.description}" (kind ${cond.kind}) on permission ${permission.id} has no mechanical evaluation in this phase and cannot be assumed satisfied.`,
+      reasonCategory: "LEGAL_JUDGMENT",
+      sourceProvision: cond.sourceProvision ? { documentId: cond.sourceProvision.documentId, sectionRef: cond.sourceProvision.sectionRef } : undefined,
+    });
   }
 
   // Company-wide / permission-targeted RuleActivationConditions with effect APPLICABILITY, beyond
