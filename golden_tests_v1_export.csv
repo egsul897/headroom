@@ -1,0 +1,31 @@
+n,question,expected_answer,binding_provision,status
+1,What is the maximum additional secured debt Coherent could incur today?,4041.000000,mila_secured,UNVERIFIED
+2,What is the maximum additional unsecured debt Coherent could incur today?,5129.000000,ca_leverage_cap,UNVERIFIED
+3,Which document and provision binds the secured-capacity answer (Q1)?,4041.000000,mila_secured,UNVERIFIED
+4,Which document and provision binds the unsecured-capacity answer (Q2)?,5129.000000,ca_leverage_cap,UNVERIFIED
+5,Is $100M of new secured debt permitted? Under which test?,1.000000,mila_secured,UNVERIFIED
+6,Is $250M of new secured debt permitted?,1.000000,mila_secured,UNVERIFIED
+7,Is $500M of new secured debt permitted?,1.000000,mila_secured,UNVERIFIED
+8,"Is $1,000M ($1B) of new secured debt permitted?",1.000000,mila_secured,UNVERIFIED
+9,Is $100M of new unsecured debt permitted?,1.000000,ca_leverage_cap,UNVERIFIED
+10,Is $250M of new unsecured debt permitted?,1.000000,ca_leverage_cap,UNVERIFIED
+11,Is $500M of new unsecured debt permitted?,1.000000,ca_leverage_cap,UNVERIFIED
+12,"Is $1,000M ($1B) of new unsecured debt permitted?",1.000000,ca_leverage_cap,UNVERIFIED
+13,"What is the FCCR threshold for Ratio Debt under the indenture, and is it currently satisfied?",8.947368,ratio_debt_fccr,UNVERIFIED
+14,"What is the TNL threshold under the Credit Agreement's financial covenant, and what is the current TNL?",1.232941,ca_leverage_cap,UNVERIFIED
+15,"What is the SSNL threshold applicable to secured incurrence under the indenture, and what is the current SSNL?",0.622941,mila_secured,UNVERIFIED
+16,"At what level of incremental secured debt would the indenture's SSNL test first become the binding constraint - spot check at $2,000M",1.000000,mila_secured,UNVERIFIED
+17,"At what level of incremental secured debt would the indenture's SSNL test first become the binding constraint - spot check at the $4,041M ceiling",1.000000,mila_secured,UNVERIFIED
+18,"What is the size of the indenture's Credit Facilities basket (flat component), and how much is currently used?",1779.000000,facility_flat,UNVERIFIED
+19,"What is the size of the general debt basket under §3.3(b)(xii), and is any of it currently used?",680.000000,general_debt,UNVERIFIED
+20,"What is the size of the general liens basket, separate from the ratio-based lien capacity?",680.000000,lien_general,UNVERIFIED
+21,"What is the MILA formula for unsecured debt, and what is the current dollar figure (the looser, controlling prong)?",10153.846000,ratio_debt_fccr,UNVERIFIED
+22,"If Coherent incurs $500M of new secured debt today, what secured capacity remains immediately afterward, and under which provision?",3541.000000,mila_secured,UNVERIFIED
+23,"Can Coherent incur $1,000M of secured debt without breaching either document, and if so what does pro forma total net leverage become?",1.000000,mila_secured,UNVERIFIED
+24,"If Coherent redesignates Silicon Carbide LLC from a Restricted Subsidiary to an Unrestricted Subsidiary, how does that change secured debt capacity?",,,UNVERIFIED
+25,"What is the Credit Agreement's own secured debt capacity, considered on its own?",5129.000000,ca_leverage_cap,UNVERIFIED
+26,"Can Coherent pay a $200M dividend under the indenture, given the $150M already committed against the RP pool this quarter?",1.000000,rp_builder,UNVERIFIED
+27,"Can Coherent pay a $3,000M dividend under the indenture without tripping the ratio prong?",0.000000,rp_general,UNVERIFIED
+28,"Can Coherent make a $6,000M Investment under the indenture's unlimited ratio prong?",1.000000,inv_ratio_gate,UNVERIFIED
+29,"If Coherent sells $300M of assets and does not reinvest the proceeds, is a mandatory Asset Sale Offer triggered?",1.000000,asset_sale_threshold,UNVERIFIED
+30,Is a dividend from Coherent tested against the Credit Agreement's own Restricted Payments covenant here?,,,UNVERIFIED
