@@ -1376,3 +1376,240 @@ export async function loadCompanyCovenantData(
     ledger: ledger.map((e) => ({ basket: e.basket, amount: toNumber(e.amount), direction: e.direction })),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Solver-native DB adapter (design doc §V Phase 6's DB-adapter half -
+// mirrors loadCompanyCovenantData's own pattern: date-scoped, Decimal ->
+// number, JSON -> typed shape). Loads only the STATIC, company-owned rows;
+// the transaction-specific fields SolverNativeCompanyContext also needs
+// (incurringEntity, collateralPools, requestedLienPriority, activationState)
+// are supplied by the caller per-request, exactly like `amount`/`secured`
+// already are for simulateDebtIncurrence.
+// ---------------------------------------------------------------------------
+
+export interface SolverNativeStaticData {
+  permissions: Permission[];
+  relationships: PermissionRelationship[];
+  sharedConstraints: SharedConstraint[];
+  collateralScopes: PermissionCollateralScope[];
+  ruleActivationConditions: RuleActivationCondition[];
+  coverageDeclarations: CoverageDeclaration[];
+}
+
+interface DbPermissionRow {
+  id: string;
+  companyId: string;
+  documentId: string;
+  code: string | null;
+  grantType: GrantType;
+  amountKind: "FIXED" | "INCURRENCE_BASED";
+  action: string;
+  entityScope: EntityClass[];
+  formulaType: FormulaType;
+  thresholdValue: DecimalField;
+  params: unknown;
+  eligibilityConditions: unknown;
+  termConditions: unknown;
+  measurementBasis: Permission["measurementBasis"];
+  sectionRef: string;
+  definedTermRefs: string[];
+  effectiveFrom: Date | null;
+  effectiveTo: Date | null;
+  modelingStatus: Permission["modelingStatus"];
+}
+
+interface DbPermissionRelationshipRow {
+  id: string;
+  companyId: string;
+  fromPermissionId: string;
+  toPermissionId: string;
+  relationshipType: PermissionRelationship["relationshipType"];
+  groupKey: string | null;
+  parameter: unknown;
+  sourceSectionRef: string;
+  notes: string | null;
+}
+
+interface DbSharedCapacityConstraintRow {
+  id: string;
+  companyId: string;
+  name: string;
+  capAmount: DecimalField | null;
+  capFormulaType: FormulaType | null;
+  capParams: unknown;
+  aggregationRule: SharedConstraint["aggregationRule"];
+  measurementBasis: SharedConstraint["measurementBasis"];
+  followsRefinancing: boolean;
+  sourceSectionRef: string;
+}
+
+interface DbSharedCapacityConstraintMemberRow {
+  constraintId: string;
+  permissionId: string | null;
+  namedInstrument: string | null;
+  entityClass: EntityClass | null;
+  externalInstrumentRef: string | null;
+}
+
+interface DbPermissionCollateralScopeRow {
+  permissionId: string;
+  collateralPoolId: string;
+  priorityTier: PermissionCollateralScope["priorityTier"];
+  pariPassuWithGroupId: string | null;
+  intercreditorAgreementId: string | null;
+}
+
+interface DbRuleActivationConditionRow {
+  id: string;
+  companyId: string;
+  permissionId: string | null;
+  covenantSectionIds: string[];
+  companyWide: boolean;
+  predicateConfig: unknown;
+  effect: RuleActivationCondition["effect"];
+  parameterName: string | null;
+  reversionPredicateConfig: unknown;
+  sourceSectionRef: string;
+}
+
+interface DbSolverCoverageDeclarationRow {
+  documentId: string;
+  side: string;
+  grantType: GrantType;
+  isComplete: boolean;
+}
+
+/**
+ * Minimal structural Prisma client shape this adapter needs - same pattern
+ * as `CovenantEnginePrismaClient` above.
+ */
+export interface SolverNativePrismaClient {
+  permission: { findMany(args: any): Promise<DbPermissionRow[]> };
+  permissionRelationship: { findMany(args: any): Promise<DbPermissionRelationshipRow[]> };
+  sharedCapacityConstraint: { findMany(args: any): Promise<DbSharedCapacityConstraintRow[]> };
+  sharedCapacityConstraintMember: { findMany(args: any): Promise<DbSharedCapacityConstraintMemberRow[]> };
+  permissionCollateralScope: { findMany(args: any): Promise<DbPermissionCollateralScopeRow[]> };
+  ruleActivationCondition: { findMany(args: any): Promise<DbRuleActivationConditionRow[]> };
+  solverCoverageDeclaration: { findMany(args: any): Promise<DbSolverCoverageDeclarationRow[]> };
+}
+
+/**
+ * Loads a company's solver-native graph rows (Permission/PermissionRelationship/
+ * SharedCapacityConstraint/PermissionCollateralScope/RuleActivationCondition/
+ * SolverCoverageDeclaration), date-scoped by `asOfDate` for the same
+ * amendment-precedence semantics `loadCompanyCovenantData` already applies
+ * to legacy rows. Zero rows for a company (true for Coherent today) yields
+ * empty arrays, which is exactly what makes every document/side for that
+ * company resolve LEGACY/NOT_TESTED in `resolveDocumentSideCoverage`.
+ */
+export async function loadCompanySolverStaticData(
+  prisma: SolverNativePrismaClient,
+  companyId: string,
+  asOfDate: Date = new Date()
+): Promise<SolverNativeStaticData> {
+  const dateFilter = effectiveDateFilter(asOfDate);
+  const [permissionRows, relationshipRows, constraintRows, constraintMemberRows, collateralScopeRows, activationRows, declarationRows] = await Promise.all([
+    prisma.permission.findMany({ where: { companyId, ...dateFilter } }),
+    prisma.permissionRelationship.findMany({ where: { companyId } }),
+    prisma.sharedCapacityConstraint.findMany({ where: { companyId } }),
+    prisma.sharedCapacityConstraintMember.findMany({ where: { constraint: { companyId } } }),
+    prisma.permissionCollateralScope.findMany({ where: { permission: { companyId } } }),
+    prisma.ruleActivationCondition.findMany({ where: { companyId } }),
+    prisma.solverCoverageDeclaration.findMany({ where: { companyId } }),
+  ]);
+  const membersByConstraintId = new Map<string, DbSharedCapacityConstraintMemberRow[]>();
+  for (const m of constraintMemberRows) {
+    const list = membersByConstraintId.get(m.constraintId) ?? [];
+    list.push(m);
+    membersByConstraintId.set(m.constraintId, list);
+  }
+
+  const permissions: Permission[] = permissionRows.map((p) => ({
+    id: p.id,
+    documentId: p.documentId,
+    companyId: p.companyId,
+    code: p.code ?? undefined,
+    grantType: p.grantType,
+    amountKind: p.amountKind,
+    action: p.action,
+    entityScope: p.entityScope,
+    formulaType: p.formulaType,
+    thresholdValue: toNumber(p.thresholdValue),
+    params: p.params as FormulaParams | null,
+    eligibilityConditions: (p.eligibilityConditions as Permission["eligibilityConditions"] | null) ?? [],
+    termConditions: (p.termConditions as Permission["termConditions"] | null) ?? [],
+    measurementBasis: p.measurementBasis,
+    sourceProvision: { documentId: p.documentId, sectionRef: p.sectionRef, definedTermIds: p.definedTermRefs },
+    effectiveFrom: p.effectiveFrom,
+    effectiveTo: p.effectiveTo,
+    modelingStatus: p.modelingStatus,
+  }));
+  const documentIdByPermissionId = new Map(permissions.map((p) => [p.id, p.documentId]));
+
+  const relationships: PermissionRelationship[] = relationshipRows.map((r) => ({
+    id: r.id,
+    companyId: r.companyId,
+    fromPermissionId: r.fromPermissionId,
+    toPermissionId: r.toPermissionId,
+    relationshipType: r.relationshipType,
+    groupKey: r.groupKey ?? undefined,
+    parameter: (r.parameter as Record<string, unknown> | null) ?? undefined,
+    sourceProvision: { documentId: documentIdByPermissionId.get(r.fromPermissionId) ?? "", sectionRef: r.sourceSectionRef },
+    notes: r.notes ?? undefined,
+  }));
+
+  const sharedConstraints: SharedConstraint[] = constraintRows.map((c) => ({
+    id: c.id,
+    companyId: c.companyId,
+    name: c.name,
+    // capAmount covers the common FIXED case exactly. A formula-derived cap
+    // (capFormulaType set) stores its own thresholdValue inside capParams
+    // under the key "thresholdValue" by convention, since the schema does
+    // not carry a separate column for it - no fixture in this repository
+    // uses a formula-derived shared cap yet, so this path is unexercised;
+    // flagged rather than silently guessed at zero.
+    cap:
+      c.capAmount !== null
+        ? { amount: toNumber(c.capAmount) }
+        : { formulaType: c.capFormulaType!, thresholdValue: Number((c.capParams as { thresholdValue?: number } | null)?.thresholdValue ?? 0), params: c.capParams as FormulaParams | null },
+    aggregationRule: c.aggregationRule,
+    members: (membersByConstraintId.get(c.id) ?? []).map((m) => ({
+      permissionId: m.permissionId ?? undefined,
+      namedInstrument: m.namedInstrument ?? undefined,
+      entityClass: m.entityClass ?? undefined,
+      externalInstrumentRef: m.externalInstrumentRef ?? undefined,
+    })),
+    measurementBasis: c.measurementBasis,
+    followsRefinancing: c.followsRefinancing,
+    currentUsage: 0, // computed from ledger/historicalState by the caller when that's wired up; see report §O/M for this scoped follow-up
+    sourceProvision: { documentId: companyId, sectionRef: c.sourceSectionRef },
+  }));
+
+  const collateralScopes: PermissionCollateralScope[] = collateralScopeRows.map((s) => ({
+    permissionId: s.permissionId,
+    collateralPoolId: s.collateralPoolId,
+    priorityTier: s.priorityTier,
+    pariPassuWithGroupId: s.pariPassuWithGroupId ?? undefined,
+    intercreditorAgreementId: s.intercreditorAgreementId ?? undefined,
+  }));
+
+  const ruleActivationConditions: RuleActivationCondition[] = activationRows.map((a) => ({
+    id: a.id,
+    companyId: a.companyId,
+    appliesTo: { permissionId: a.permissionId ?? undefined, covenantSectionIds: a.covenantSectionIds, companyWide: a.companyWide },
+    predicate: a.predicateConfig as RuleActivationCondition["predicate"],
+    effect: a.effect,
+    parameterName: a.parameterName ?? undefined,
+    reversionRule: a.reversionPredicateConfig as RuleActivationCondition["reversionRule"],
+    sourceProvision: { documentId: a.permissionId ? (documentIdByPermissionId.get(a.permissionId) ?? "") : companyId, sectionRef: a.sourceSectionRef },
+  }));
+
+  const coverageDeclarations: CoverageDeclaration[] = declarationRows.map((d) => ({
+    documentId: d.documentId,
+    side: d.side,
+    grantType: d.grantType,
+    isComplete: d.isComplete,
+  }));
+
+  return { permissions, relationships, sharedConstraints, collateralScopes, ruleActivationConditions, coverageDeclarations };
+}
