@@ -284,7 +284,19 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
   // by this election costs nothing.
   const sharedRemaining = new Map<string, number>();
   const sharedConsumption: SharedConstraintConsumption[] = [];
-  const constraintFor = (permissionId: string): SharedConstraint | undefined => sharedConstraints.find((c) => c.members.some((mem) => mem.permissionId === permissionId));
+  // A constraint participates for a given permission either by naming it
+  // directly (NAMED_MEMBER_CLAUSES) or, for ENTITY_CLASS_FILTER constraints,
+  // by the incurring entity's own class membership matching one of the
+  // constraint's entity-class members (design doc §G aggregationRule) -
+  // this is Case F's "entity-specific sub-cap" mechanism: a permission with
+  // NO per-permission member row can still be gated by a shared constraint
+  // purely because of which entity is incurring.
+  const constraintFor = (permissionId: string): SharedConstraint | undefined =>
+    sharedConstraints.find(
+      (c) =>
+        c.members.some((mem) => mem.permissionId === permissionId) ||
+        (c.aggregationRule === "ENTITY_CLASS_FILTER" && c.members.some((mem) => mem.entityClass && eligibilityContext.entityClasses.includes(mem.entityClass)))
+    );
   const headroomAndConsume = (permissionId: string, desiredAlloc: number): { cappedAlloc: number; constraintId?: string } => {
     const constraint = constraintFor(permissionId);
     if (!constraint) return { cappedAlloc: desiredAlloc };
