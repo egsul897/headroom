@@ -410,3 +410,270 @@ export const COHERENT_FEED_QUEUE_ITEMS: {
     },
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Defined terms
+// ---------------------------------------------------------------------------
+
+/**
+ * We don't have the executed indenture/credit agreement text to extract from
+ * (only the public-filing summaries the rest of this app is built on), so
+ * every entry below is a reconstruction in typical high-yield/leveraged-loan
+ * drafting style, NOT a verbatim quote of Coherent's actual documents. Every
+ * row seeds with status UNVERIFIED for exactly that reason, and the UI must
+ * keep showing that badge until a human checks the real text and flips it -
+ * silently presenting this as sourced would defeat the entire point of the
+ * traceability feature.
+ */
+const ILLUSTRATIVE_PREFIX =
+  "[Illustrative reconstruction — not yet checked against the executed document.] ";
+
+export interface DefinedTermSeed {
+  documentId: string;
+  termName: string;
+  sectionRef: string;
+  fullText: string;
+  /** Provision codes (within the same document) whose formula depends on this term. */
+  usedByProvisionCodes: string[];
+}
+
+export const COHERENT_DEFINED_TERMS: DefinedTermSeed[] = [
+  // ---- 2029 Notes Indenture ----
+  {
+    documentId: INDENTURE_ID,
+    termName: "Consolidated EBITDA",
+    sectionRef: "§1.1",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication and to the extent deducted in determining such Consolidated Net Income, (a) income tax expense, (b) Consolidated Interest Expense, (c) depreciation and amortization expense, (d) non-cash stock-based compensation expense, (e) restructuring, integration, and transaction costs, and (f) other non-recurring or non-cash charges reasonably identified by the Issuer, minus non-cash items increasing Consolidated Net Income for such period, in each case determined on a consolidated basis for the Issuer and its Restricted Subsidiaries in accordance with GAAP.`,
+    usedByProvisionCodes: [
+      "ratio_debt_fccr",
+      "mila_secured",
+      "mila_unsecured",
+      "facility_grower",
+      "general_debt",
+      "lien_ratio",
+      "lien_general",
+      "rp_builder",
+      "rp_general",
+      "asset_sale_threshold",
+    ],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Fixed Charge Coverage Ratio",
+    sectionRef: "§1.1",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Fixed Charge Coverage Ratio" means, as of any date of determination, the ratio of (a) Consolidated EBITDA for the most recently ended four fiscal quarters to (b) Consolidated Fixed Charges for such period, in each case calculated on a Pro Forma Basis for the Indebtedness giving rise to the need to calculate such ratio.`,
+    usedByProvisionCodes: ["ratio_debt_fccr"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Consolidated Senior Secured Net Leverage Ratio",
+    sectionRef: "§1.1",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Consolidated Senior Secured Net Leverage Ratio" means, as of any date of determination, the ratio of (a) Consolidated Total Indebtedness that is secured by a Lien as of such date, less unrestricted cash and Cash Equivalents of the Issuer and its Restricted Subsidiaries as of such date, to (b) Consolidated EBITDA for the most recently ended four fiscal quarters, calculated on a Pro Forma Basis.`,
+    usedByProvisionCodes: ["mila_secured", "lien_ratio"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Consolidated Total Net Leverage Ratio",
+    sectionRef: "§1.1",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Consolidated Total Net Leverage Ratio" means, as of any date of determination, the ratio of (a) Consolidated Total Indebtedness as of such date, less unrestricted cash and Cash Equivalents of the Issuer and its Restricted Subsidiaries as of such date, to (b) Consolidated EBITDA for the most recently ended four fiscal quarters, calculated on a Pro Forma Basis.`,
+    usedByProvisionCodes: ["mila_unsecured", "rp_ratio_gate", "inv_ratio_gate"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Indebtedness",
+    sectionRef: "§1.1",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Indebtedness" means, with respect to any Person, without duplication, (a) all obligations for borrowed money, (b) all obligations evidenced by bonds, debentures, notes, or similar instruments, (c) all Capitalized Lease Obligations, and (d) all Guarantees of Indebtedness of another Person, in each case determined in accordance with GAAP, but excluding trade payables and accrued liabilities arising in the ordinary course of business.`,
+    usedByProvisionCodes: ["mila_secured", "mila_unsecured", "facility_flat", "facility_grower", "general_debt"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Permitted Liens",
+    sectionRef: "§1.1, cls. (24)-(25)",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Permitted Liens" means, among the enumerated categories in this definition: ... (24) Liens securing Indebtedness in an aggregate principal amount not to exceed the amount permitted under the Consolidated Senior Secured Net Leverage Ratio test set forth in Section 3.3(b)(i)(C); and (25) Liens securing other Indebtedness in an aggregate principal amount not to exceed the greater of $530.0 million and 40% of Consolidated EBITDA, outstanding at any time.`,
+    usedByProvisionCodes: ["facility_flat", "lien_ratio", "lien_general"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Consolidated Net Income",
+    sectionRef: "§1.1",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Consolidated Net Income" means, for any period, the net income (loss) of the Issuer and its Restricted Subsidiaries for such period determined on a consolidated basis in accordance with GAAP, excluding the net income (loss) of any Unrestricted Subsidiary, and subject to customary adjustments excluding extraordinary, unusual, or non-recurring gains and losses.`,
+    usedByProvisionCodes: ["rp_builder"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Available Amount",
+    sectionRef: "§3.4(a)(C)",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Available Amount" means, as of any date of determination, the sum, without duplication, of (1) the greater of $330.0 million and 25% of Consolidated EBITDA, plus (2) 50% of cumulative Consolidated Net Income of the Issuer accrued during the period from the Issue Date to the end of the most recently ended fiscal quarter, plus (3) 100% of the net cash proceeds received by the Issuer from the issuance or sale of Capital Stock (other than Disqualified Stock) since the Issue Date, plus (4) 100% of the net cash proceeds of any equity contribution received by the Issuer since the Issue Date, in each case to the extent not otherwise applied.`,
+    usedByProvisionCodes: ["rp_builder"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Restricted Payments",
+    sectionRef: "§3.4",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Restricted Payments" means, collectively, (a) dividends or distributions on the Issuer's Capital Stock, (b) purchases, redemptions, or other acquisitions or retirements for value of the Issuer's Capital Stock, and (c) certain payments on Indebtedness subordinated to the Notes, in each case subject to the exceptions and baskets set forth in Section 3.4(b), including the Available Amount builder basket, the general Restricted Payments basket, and the unlimited ratio-based basket keyed to the Consolidated Total Net Leverage Ratio.`,
+    usedByProvisionCodes: ["rp_builder", "rp_general", "rp_ratio_gate"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Investments",
+    sectionRef: "§3.4(a)(iv)",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Investments" means, for purposes of Section 3.4, any direct or indirect advance, loan, or other extension of credit, or capital contribution, to any Person, including a contribution to a joint venture or an Unrestricted Subsidiary. Restricted Investments are tested under the same basket waterfall as Restricted Payments, except that the unlimited ratio-based basket under clause (xvii)(ii) applies at a Consolidated Total Net Leverage Ratio of 3.50x rather than the 3.25x applicable to dividends and buybacks under clause (xvii)(i).`,
+    usedByProvisionCodes: ["inv_ratio_gate"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Asset Sale",
+    sectionRef: "§3.7(a)",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Asset Sale" means any sale, transfer, or other disposition of property or assets of the Issuer or a Restricted Subsidiary outside the ordinary course of business, other than dispositions below a de minimis threshold and other customary exceptions. Net proceeds of an Asset Sale must be applied under Section 3.7(b) within the Proceeds Application Period (455 days) to reinvestment or debt repayment, failing which they become Excess Proceeds.`,
+    usedByProvisionCodes: ["asset_sale_threshold"],
+  },
+  {
+    documentId: INDENTURE_ID,
+    termName: "Excess Proceeds",
+    sectionRef: "§3.7(d)",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Excess Proceeds" means the net cash proceeds from one or more Asset Sales that remain unapplied under Section 3.7(b) after expiration of the Proceeds Application Period, once such unapplied amount exceeds the greater of $35.0 million and 2.5% of Consolidated EBITDA — at which point the Issuer must make an Asset Sale Offer to repurchase Notes and Pari Passu Indebtedness pro rata at 100% of principal plus accrued interest.`,
+    usedByProvisionCodes: ["asset_sale_threshold"],
+  },
+
+  // ---- Credit Agreement ----
+  {
+    documentId: CREDIT_AGREEMENT_ID,
+    termName: "Consolidated EBITDA",
+    sectionRef: "§1.01",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Consolidated EBITDA" means, for any period, Consolidated Net Income for such period plus, without duplication, (a) income tax expense, (b) Consolidated Interest Expense, (c) depreciation and amortization expense, (d) non-cash stock-based compensation expense, and (e) restructuring, integration, and transaction costs subject to a cap of 15% of Consolidated EBITDA (calculated before giving effect to such add-back) in any period, in each case determined on a consolidated basis for the Borrower and its Restricted Subsidiaries in accordance with GAAP. The Credit Agreement's definition is negotiated separately from the Indenture's and, notwithstanding substantial overlap, is not assumed identical to it.`,
+    usedByProvisionCodes: ["ca_leverage_cap", "ca_coverage_cap"],
+  },
+  {
+    documentId: CREDIT_AGREEMENT_ID,
+    termName: "Total Net Leverage Ratio",
+    sectionRef: "§6.11(a)",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Total Net Leverage Ratio" means, as of the last day of any fiscal quarter, the ratio of (a) Consolidated Total Debt as of such date, less unrestricted cash and Cash Equivalents of the Borrower and its Restricted Subsidiaries as of such date, to (b) Consolidated EBITDA for the four fiscal quarters then ended. Section 6.11(a) requires this ratio not to exceed 4.25:1.00, tested quarterly on a maintenance basis (not merely as a condition to incurrence).`,
+    usedByProvisionCodes: ["ca_leverage_cap"],
+  },
+  {
+    documentId: CREDIT_AGREEMENT_ID,
+    termName: "Consolidated Interest Coverage Ratio",
+    sectionRef: "§6.11(b)",
+    fullText:
+      ILLUSTRATIVE_PREFIX +
+      `"Consolidated Interest Coverage Ratio" means, as of the last day of any fiscal quarter, the ratio of (a) Consolidated EBITDA for the four fiscal quarters then ended to (b) Consolidated Interest Expense for such period. Section 6.11(b) requires this ratio to be not less than 2.50:1.00, tested quarterly on a maintenance basis.`,
+    usedByProvisionCodes: ["ca_coverage_cap"],
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Golden tests
+// ---------------------------------------------------------------------------
+
+export type GoldenQueryType =
+  | "LEVERAGE_METRIC"
+  | "PROVISION_CAPACITY"
+  | "DOCUMENT_CAPACITY"
+  | "CROSS_DOCUMENT_CAPACITY"
+  | "DEBT_SIMULATION"
+  | "RP_SIMULATION"
+  | "ASSET_SALE_SIMULATION"
+  | "OUT_OF_SCOPE";
+
+export interface GoldenTestSeed {
+  question: string;
+  queryType: GoldenQueryType;
+  queryParams?: Record<string, unknown>;
+  expectedAnswer?: number;
+  tolerance?: number;
+  bindingProvision?: string;
+  bindingDefinedTerms?: string[];
+  reviewerNotes?: string;
+}
+
+/**
+ * A handful of worked examples proving the harness runs end to end - hand-
+ * derived by us, NOT lawyer-reviewed, hence status defaults to UNVERIFIED in
+ * seed.ts. The real regression suite is whatever gets populated on top of
+ * this once a lawyer reviews the debt-and-liens question set.
+ */
+export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
+  {
+    question: "What is Coherent's total net leverage ratio as of the latest financial snapshot?",
+    queryType: "LEVERAGE_METRIC",
+    queryParams: { metric: "totalNetLeverage" },
+    expectedAnswer: 1.232941,
+    tolerance: 0.001,
+    reviewerNotes: "(Net debt $2,096M) / (EBITDA $1,700M). No single basket governs a raw leverage ratio, so no binding provision.",
+  },
+  {
+    question: "What is the maximum amount of additional secured debt Coherent can incur without breaching either document?",
+    queryType: "CROSS_DOCUMENT_CAPACITY",
+    queryParams: { secured: true },
+    expectedAnswer: 4041,
+    tolerance: 1,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "Indenture's MILA secured prong (§3.3(b)(i)(C), SSNL ≤ 3.00x) binds at $4,041M, tighter than the Credit Agreement's $5,129M.",
+  },
+  {
+    question: "What is the maximum amount of additional unsecured debt Coherent can incur without breaching either document?",
+    queryType: "CROSS_DOCUMENT_CAPACITY",
+    queryParams: { secured: false },
+    expectedAnswer: 5129,
+    tolerance: 1,
+    bindingProvision: "ca_leverage_cap",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Total Net Leverage Ratio"],
+    reviewerNotes: "Credit Agreement's §6.11(a) maintenance leverage covenant (TNL ≤ 4.25x) binds at $5,129M, tighter than the indenture's $10,154M.",
+  },
+  {
+    question: "Under the indenture, what is the size of the general liens basket (Permitted Liens cl. (25))?",
+    queryType: "PROVISION_CAPACITY",
+    queryParams: { documentId: INDENTURE_ID, provisionCode: "lien_general" },
+    expectedAnswer: 680,
+    tolerance: 0.5,
+    bindingProvision: "lien_general",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Permitted Liens"],
+    reviewerNotes: "Greater of $530M or 40% of Consolidated EBITDA ($1,700M × 40% = $680M).",
+  },
+  {
+    question: "Can Coherent incur $1,000M of secured debt without breaching either document, and if so what does pro forma total net leverage become?",
+    queryType: "DEBT_SIMULATION",
+    queryParams: { amount: 1000, secured: true, metric: "cleared" },
+    expectedAnswer: 1,
+    tolerance: 0,
+    bindingProvision: "mila_secured",
+    bindingDefinedTerms: ["Consolidated EBITDA", "Consolidated Senior Secured Net Leverage Ratio", "Indebtedness"],
+    reviewerNotes: "1 = cleared (true). $1,000M is well under the $4,041M binding MILA secured-prong capacity.",
+  },
+  {
+    question:
+      "If Coherent redesignates Silicon Carbide LLC from a Restricted Subsidiary to an Unrestricted Subsidiary, how does that change secured debt capacity?",
+    queryType: "OUT_OF_SCOPE",
+    reviewerNotes:
+      "Restricted/Unrestricted Subsidiary redesignation mechanics are explicitly out of scope for this phase - flagged rather than attempted, per instructions. Revisit once redesignation is in scope.",
+  },
+];

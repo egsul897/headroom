@@ -21,6 +21,7 @@ model Company {
   debtTranches       DebtTranche[]
   ledgerEntries      LedgerEntry[]
   feedQueueItems     FeedQueueItem[]
+  goldenTests        GoldenTest[]
 
   @@map("companies")
 }
@@ -52,9 +53,9 @@ model Document {
   // JSON-encoded CapacityExpr trees: { secured?: CapacityExpr, unsecured?: CapacityExpr }
   capacityFormulas Json?
   // JSON-encoded RpWaterfallConfig: { steps: {code}[], ratioGateCodeByKind: {dividend, investment} }
-  rpWaterfall Json?
+  rpWaterfall      Json?
   // JSON-encoded AssetSaleConfig: { thresholdCode: string, reinvestmentWindowDays: number }
-  assetSale Json?
+  assetSale        Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -62,6 +63,7 @@ model Document {
   company            Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
   covenantProvisions CovenantProvision[]
   ledgerEntries      LedgerEntry[]
+  definedTerms       DefinedTerm[]
 
   @@map("documents")
 }
@@ -104,6 +106,13 @@ model CovenantProvision {
 
   company  Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
   document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  // The defined terms this provision's formula actually depends on (e.g. MILA's
+  // secured prong depends on "Consolidated EBITDA" and "Consolidated Senior
+  // Secured Net Leverage Ratio") - the backbone of the citation-to-text chain
+  // the UI renders and the golden-test harness checks against
+  // golden_tests.binding_defined_terms.
+  definedTerms DefinedTerm[]
 
   @@unique([documentId, code])
   @@map("covenant_provisions")
@@ -231,4 +240,111 @@ model FeedQueueItem {
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("feed_queue_items")
+}
+
+enum DefinedTermStatus {
+  // Reconstructed/illustrative text, not yet checked against the executed document.
+  UNVERIFIED
+  // Checked against the executed document by a human reviewer.
+  VERIFIED
+  // A reviewer flagged the text as wrong or contested.
+  DISPUTED
+
+  @@map("defined_term_status")
+}
+
+// A defined term from a document's definitions section, with its actual text -
+// the other half of "cite the section" (SectionRef): a lawyer can expand a
+// provision's citation and read the definition itself, not just trust that a
+// section number was matched correctly. `status` defaults to UNVERIFIED
+// because this text is reconstructed from public summaries, not extracted
+// from the executed indenture/credit agreement - see the seed data and the
+// UI's "unverified" badge for how that's surfaced.
+model DefinedTerm {
+  id         String            @id @default(cuid())
+  documentId String
+  termName   String
+  sectionRef String
+  fullText   String
+  status     DefinedTermStatus @default(UNVERIFIED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  document   Document            @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  provisions CovenantProvision[]
+
+  @@unique([documentId, termName])
+  @@map("defined_terms")
+}
+
+// The read-only, mechanically-executable form of a golden question: which
+// existing engine capability to call, and with what arguments. `question` is
+// the human-readable prose a lawyer reviews; queryType/queryParams is what
+// `npm run golden-test` actually invokes. Never expands to a new engine
+// capability on its own - every queryType maps onto a function the engine
+// already has (see scripts/golden-test.ts).
+enum GoldenQueryType {
+  // queryParams: { metric: "totalNetLeverage" | "seniorSecuredNetLeverage" | "fixedChargeCoverage" }
+  LEVERAGE_METRIC
+  // queryParams: { documentId: string, provisionCode: string }
+  PROVISION_CAPACITY
+  // queryParams: { documentId: string, secured: boolean }
+  DOCUMENT_CAPACITY
+  // queryParams: { secured: boolean }
+  CROSS_DOCUMENT_CAPACITY
+  // queryParams: { amount: number, secured: boolean, metric: "overallCapacity" | "cleared" | "proFormaTotalNetLeverage" | "proFormaSeniorSecuredNetLeverage" | "proFormaFixedChargeCoverage" }
+  DEBT_SIMULATION
+  // queryParams: { documentId: string, amount: number, kind: "dividend" | "investment", metric: "remaining" | "cleared" | "poolUsed" | "proFormaTotalNetLeverage" }
+  RP_SIMULATION
+  // queryParams: { documentId: string, amount: number, reinvest: boolean, metric: "excessProceeds" | "offerTriggered" | "proFormaTotalNetLeverage" }
+  ASSET_SALE_SIMULATION
+  // Reclassification, LME/priority/intercreditor analysis, Restricted/Unrestricted
+  // Subsidiary redesignation, or anything else explicitly out of scope: the
+  // harness reports these as FLAGGED rather than attempting a calculation.
+  OUT_OF_SCOPE
+
+  @@map("golden_query_type")
+}
+
+enum GoldenTestStatus {
+  UNVERIFIED
+  LAWYER_VERIFIED
+  DISPUTED
+
+  @@map("golden_test_status")
+}
+
+// One row of the permanent regression suite. `npm run golden-test` runs every
+// row against the live engine + live database and reports PASS/FAIL against
+// expectedAnswer (within tolerance) AND against bindingProvision/
+// bindingDefinedTerms - so a change that gets the number right but cites the
+// wrong basket, or drops a defined-term dependency, still fails.
+model GoldenTest {
+  id        String @id @default(cuid())
+  companyId String
+
+  question String
+
+  queryType   GoldenQueryType
+  queryParams Json?
+
+  // Null for OUT_OF_SCOPE rows, which the harness always reports as FLAGGED.
+  expectedAnswer Decimal? @db.Decimal(18, 6)
+  tolerance      Decimal? @db.Decimal(18, 6)
+
+  // Expected to match the binding provision's `code`, `basketName`, or
+  // `sectionRef` (see matchesBindingLabel in scripts/golden-test.ts).
+  bindingProvision    String?
+  bindingDefinedTerms String[]
+
+  reviewerNotes String?
+  status        GoldenTestStatus @default(UNVERIFIED)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("golden_tests")
 }

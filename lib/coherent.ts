@@ -68,3 +68,33 @@ export const getDocuments = cache(async () => {
 export const getFeedQueueItems = cache(async () => {
   return prisma.feedQueueItem.findMany({ where: { companyId: COMPANY_ID }, orderBy: { createdAt: "asc" } });
 });
+
+export interface DefinedTermLite {
+  termName: string;
+  sectionRef: string;
+  fullText: string;
+  status: "UNVERIFIED" | "VERIFIED" | "DISPUTED";
+}
+
+/**
+ * Every provision's defined-term dependencies, keyed by `${documentId}:${code}`
+ * - a plain Record (not a Map) so it's safe to pass as a prop into client
+ * components like SimulateClient. This is the data behind ProvisionTrace's
+ * "defined terms it depends on" expansion.
+ */
+export const getDefinedTermsByProvision = cache(async (): Promise<Record<string, DefinedTermLite[]>> => {
+  const provisions = await prisma.covenantProvision.findMany({
+    where: { companyId: COMPANY_ID },
+    include: { definedTerms: { orderBy: { termName: "asc" } } },
+  });
+  const map: Record<string, DefinedTermLite[]> = {};
+  for (const p of provisions) {
+    map[`${p.documentId}:${p.code}`] = p.definedTerms.map((t) => ({
+      termName: t.termName,
+      sectionRef: t.sectionRef,
+      fullText: t.fullText,
+      status: t.status,
+    }));
+  }
+  return map;
+});

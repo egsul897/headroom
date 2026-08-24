@@ -1,7 +1,9 @@
 import { Card, Row } from "@/components/ui";
-import { COHERENT_INDENTURE_ID, getCompany, getDebtTranches, getPosition } from "@/lib/coherent";
+import { ProvisionTrace } from "@/components/ProvisionTrace";
+import { COHERENT_INDENTURE_ID, getCompany, getDebtTranches, getDefinedTermsByProvision, getPosition } from "@/lib/coherent";
 import { fmtM, fmtX } from "@/lib/format";
 import type { EvaluatedProvision } from "@/lib/covenant-engine";
+import type { DefinedTermLite } from "@/lib/coherent";
 
 export const metadata = { title: "Headroom — Position" };
 
@@ -12,9 +14,15 @@ function cap(provisionCapacities: Map<string, EvaluatedProvision>, documentId: s
 }
 
 export default async function PositionPage() {
-  const [{ data, position }, tranches, company] = await Promise.all([getPosition(), getDebtTranches(), getCompany()]);
+  const [{ data, position }, tranches, company, definedTermsByProvision] = await Promise.all([
+    getPosition(),
+    getDebtTranches(),
+    getCompany(),
+    getDefinedTermsByProvision(),
+  ]);
   const fin = data.financials;
   const { metrics } = position;
+  const termsFor = (documentId: string, code: string): DefinedTermLite[] => definedTermsByProvision[`${documentId}:${code}`] ?? [];
 
   const ratioDebt = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "ratio_debt_fccr");
   const facA = cap(position.provisionCapacities, COHERENT_INDENTURE_ID, "facility_flat");
@@ -109,32 +117,54 @@ export default async function PositionPage() {
           </div>
           <span className="section-ref">§3.3</span>
         </div>
-        <Row
-          label="Ratio Debt"
-          sref={ratioDebt.provision.sectionRef}
+        <ProvisionTrace
+          provision={ratioDebt.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "ratio_debt_fccr")}
           value={fmtM(ratioDebt.capacity)}
           note={`at ${fin.assumedNewDebtRatePct}% assumed coupon; FCCR now ${fmtX(metrics.fixedChargeCoverage)}`}
         />
-        <Row
-          label="Credit Facilities basket — flat"
-          sref={facA.provision.sectionRef}
+        <ProvisionTrace
+          provision={facA.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "facility_flat")}
           value={fmtM(facA.capacity)}
           note="net of TLA/TLB outstanding"
         />
-        <Row label="Credit Facilities basket — grower" sref={facB.provision.sectionRef} value={fmtM(facB.capacity)} />
-        <Row
-          label="MILA — secured prong"
-          sref={milaSec.provision.sectionRef}
+        <ProvisionTrace
+          provision={facB.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "facility_grower")}
+          value={fmtM(facB.capacity)}
+        />
+        <ProvisionTrace
+          provision={milaSec.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "mila_secured")}
           value={fmtM(milaSec.capacity)}
           note={`SSNL now ${fmtX(metrics.seniorSecuredNetLeverage)}`}
         />
-        <Row label="MILA — unsecured prong" sref={milaUnsec.provision.sectionRef} value={fmtM(milaUnsec.capacity)} />
-        <Row label="General debt basket" sref={genDebt.provision.sectionRef} value={fmtM(genDebt.capacity)} />
+        <ProvisionTrace
+          provision={milaUnsec.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "mila_unsecured")}
+          value={fmtM(milaUnsec.capacity)}
+        />
+        <ProvisionTrace
+          provision={genDebt.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "general_debt")}
+          value={fmtM(genDebt.capacity)}
+        />
+        <ProvisionTrace
+          provision={lienRatio.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "lien_ratio")}
+          value={fmtM(lienRatio.capacity)}
+        />
+        <ProvisionTrace
+          provision={lienGeneral.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "lien_general")}
+          value={fmtM(lienGeneral.capacity)}
+        />
         <Row
-          label="Lien capacity for secured debt"
-          sref="Permitted Liens cl. (24)+(25)"
+          label="= Lien capacity for secured debt"
+          sref="Permitted Liens cl. (24) + cl. (25)"
           value={fmtM(lienCap)}
-          note="secured incurrences must also fit here"
+          note="sum of the two rows above; secured incurrences must also fit here"
         />
       </Card>
 
@@ -145,19 +175,28 @@ export default async function PositionPage() {
           </div>
           <span className="section-ref">§3.4</span>
         </div>
+        <ProvisionTrace
+          provision={builder.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "rp_builder")}
+          value={fmtM(builder.capacity)}
+        />
         {builder.components?.map((c) => (
           <Row key={c.label} label={c.label} sref={c.sectionRef} value={fmtM(c.value)} />
         ))}
-        <Row label="General RP basket" sref={genRP.provision.sectionRef} value={fmtM(genRP.capacity)} />
-        <div className="row">
-          <div>
-            <div className="row-label">Ratio RP (unlimited)</div>
-            <span className="section-ref">{rpGate.provision.sectionRef}</span>
-          </div>
-          <span className={`chip chip-${rpGate.gate?.open ? "pass" : "trip"}`}>
-            {rpGate.gate?.open ? "open" : "locked"} · {fmtX(metrics.totalNetLeverage)}
-          </span>
-        </div>
+        <ProvisionTrace
+          provision={genRP.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "rp_general")}
+          value={fmtM(genRP.capacity)}
+        />
+        <ProvisionTrace
+          provision={rpGate.provision}
+          definedTerms={termsFor(COHERENT_INDENTURE_ID, "rp_ratio_gate")}
+          value={
+            <span className={`chip chip-${rpGate.gate?.open ? "pass" : "trip"}`}>
+              {rpGate.gate?.open ? "open" : "locked"} · {fmtX(metrics.totalNetLeverage)}
+            </span>
+          }
+        />
         <div className="card-subtitle" style={{ marginTop: 4, marginBottom: 0 }}>
           {rpCapacityUnconstrained
             ? "The equity raise cut net leverage below the ratio prong and added to the builder basket — RP capacity is effectively unconstrained by the indenture today."

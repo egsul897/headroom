@@ -3,30 +3,40 @@
 import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Banner, Card, Chip, ProgressBar, SectionRef, type ChipTone } from "@/components/ui";
+import { ProvisionTrace } from "@/components/ProvisionTrace";
 import { fmtM, fmtX } from "@/lib/format";
+import type { DefinedTermLite } from "@/lib/coherent";
 import {
   computeCovenantPosition,
   simulateAssetSale,
   simulateDebtIncurrence,
   simulateRestrictedPayment,
   type CompanyCovenantData,
+  type EvaluatedProvision,
 } from "@/lib/covenant-engine";
 import { COHERENT_INDENTURE_ID, NOT_TESTED_CAVEATS } from "@/prisma/seed-data";
 import { commitRestrictedPayment } from "../ledger/actions";
 
 type ActionType = "debt" | "rp" | "investment" | "assetSale";
+type DefinedTermsMap = Record<string, DefinedTermLite[]>;
 
-function provisionThreshold(
+function provisionFor(
   position: ReturnType<typeof computeCovenantPosition>,
   documentId: string,
   code: string
-): number {
+): EvaluatedProvision {
   const evaluated = position.provisionCapacities.get(`${documentId}:${code}`);
   if (!evaluated) throw new Error(`Missing provision ${documentId}:${code}`);
-  return evaluated.provision.thresholdValue;
+  return evaluated;
 }
 
-export function SimulateClient({ data }: { data: CompanyCovenantData }) {
+export function SimulateClient({
+  data,
+  definedTermsByProvision,
+}: {
+  data: CompanyCovenantData;
+  definedTermsByProvision: DefinedTermsMap;
+}) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -41,9 +51,9 @@ export function SimulateClient({ data }: { data: CompanyCovenantData }) {
   // Pure, deterministic - safe to recompute on every keystroke/drag with no server round trip.
   // `data` came from Postgres via the server component; this is the SAME engine module used there.
   const position = useMemo(() => computeCovenantPosition(data), [data]);
-  const caLeverageThreshold = provisionThreshold(position, data.documents.find((d) => d.type === "CREDIT_AGREEMENT")!.id, "ca_leverage_cap");
-  const milaSecuredThreshold = provisionThreshold(position, COHERENT_INDENTURE_ID, "mila_secured");
-  const ratioDebtThreshold = provisionThreshold(position, COHERENT_INDENTURE_ID, "ratio_debt_fccr");
+  const caLeverageProvision = provisionFor(position, data.documents.find((d) => d.type === "CREDIT_AGREEMENT")!.id, "ca_leverage_cap");
+  const milaSecuredProvision = provisionFor(position, COHERENT_INDENTURE_ID, "mila_secured");
+  const ratioDebtProvision = provisionFor(position, COHERENT_INDENTURE_ID, "ratio_debt_fccr");
 
   function commit(kind: "DIVIDEND" | "INVESTMENT", amount: number) {
     startTransition(async () => {
@@ -89,9 +99,10 @@ export function SimulateClient({ data }: { data: CompanyCovenantData }) {
           simSecured={simSecured}
           setSimSecured={setSimSecured}
           data={data}
-          caLeverageThreshold={caLeverageThreshold}
-          milaSecuredThreshold={milaSecuredThreshold}
-          ratioDebtThreshold={ratioDebtThreshold}
+          caLeverageProvision={caLeverageProvision}
+          milaSecuredProvision={milaSecuredProvision}
+          ratioDebtProvision={ratioDebtProvision}
+          definedTermsByProvision={definedTermsByProvision}
         />
       )}
 
@@ -105,6 +116,7 @@ export function SimulateClient({ data }: { data: CompanyCovenantData }) {
           caveat={NOT_TESTED_CAVEATS.restrictedPayments}
           onCommit={(amt) => commit("DIVIDEND", amt)}
           pending={isPending}
+          definedTermsByProvision={definedTermsByProvision}
         />
       )}
 
@@ -118,6 +130,7 @@ export function SimulateClient({ data }: { data: CompanyCovenantData }) {
           caveat={NOT_TESTED_CAVEATS.investments}
           onCommit={(amt) => commit("INVESTMENT", amt)}
           pending={isPending}
+          definedTermsByProvision={definedTermsByProvision}
         />
       )}
 
@@ -129,6 +142,7 @@ export function SimulateClient({ data }: { data: CompanyCovenantData }) {
           setAmount={setSaleAmt}
           reinvest={saleReinvest}
           setReinvest={setSaleReinvest}
+          definedTermsByProvision={definedTermsByProvision}
         />
       )}
     </div>
@@ -142,9 +156,10 @@ function DebtPanel({
   simSecured,
   setSimSecured,
   data,
-  caLeverageThreshold,
-  milaSecuredThreshold,
-  ratioDebtThreshold,
+  caLeverageProvision,
+  milaSecuredProvision,
+  ratioDebtProvision,
+  definedTermsByProvision,
 }: {
   position: ReturnType<typeof computeCovenantPosition>;
   simAmt: number;
@@ -152,38 +167,44 @@ function DebtPanel({
   simSecured: boolean;
   setSimSecured: (b: boolean) => void;
   data: CompanyCovenantData;
-  caLeverageThreshold: number;
-  milaSecuredThreshold: number;
-  ratioDebtThreshold: number;
+  caLeverageProvision: EvaluatedProvision;
+  milaSecuredProvision: EvaluatedProvision;
+  ratioDebtProvision: EvaluatedProvision;
+  definedTermsByProvision: DefinedTermsMap;
 }) {
   const sim = simulateDebtIncurrence(position, data.financials, simAmt, simSecured);
+  const caLeverageThreshold = caLeverageProvision.provision.thresholdValue;
+  const milaSecuredThreshold = milaSecuredProvision.provision.thresholdValue;
+  const ratioDebtThreshold = ratioDebtProvision.provision.thresholdValue;
+  const termsFor = (p: EvaluatedProvision) => definedTermsByProvision[`${p.provision.documentId}:${p.provision.code}`] ?? [];
 
   // Ratio-consistency rule: capacity is constructed so a cleared amount can never trip a
   // displayed ratio - but we check it explicitly here rather than trusting that invariant
   // blindly, so the UI can never show "Clears" next to a ratio that reads "fails".
-  const ratioRows: { label: string; value: number; ok: boolean; applies: boolean; note: string }[] = [
+  const ratioRows: { label: string; value: number; ok: boolean; applies: boolean; note: string; provision: EvaluatedProvision }[] = [
     {
       label: "Total net leverage",
       value: sim.proForma.totalNetLeverage,
       ok: sim.proForma.totalNetLeverage <= caLeverageThreshold,
       applies: true,
-      note: `CA §6.11 ≤ ${caLeverageThreshold.toFixed(2)}x · indenture MILA ≤ 5.00x · indenture ratio RP §3.4(b)(xvii) ≤ 3.25x`,
+      note: `indenture MILA ≤ 5.00x · indenture ratio RP §3.4(b)(xvii) ≤ 3.25x also apply`,
+      provision: caLeverageProvision,
     },
     {
       label: "Senior secured net leverage",
       value: sim.proForma.seniorSecuredNetLeverage,
       ok: sim.proForma.seniorSecuredNetLeverage <= milaSecuredThreshold,
       applies: simSecured,
-      note: simSecured
-        ? `indenture Permitted Liens cl. (24) ≤ ${milaSecuredThreshold.toFixed(2)}x`
-        : "not tested for an unsecured incurrence — current level shown for reference",
+      note: simSecured ? "" : "not tested for an unsecured incurrence — current level shown for reference",
+      provision: milaSecuredProvision,
     },
     {
       label: "FCCR / interest coverage",
       value: sim.proForma.fixedChargeCoverage,
       ok: sim.proForma.fixedChargeCoverage >= ratioDebtThreshold,
       applies: true,
-      note: `indenture §3.3(a) ≥ ${ratioDebtThreshold.toFixed(2)}x · CA §6.11 ≥ 2.50x`,
+      note: "CA §6.11 ≥ 2.50x also applies",
+      provision: ratioDebtProvision,
     },
   ];
   const anyApplicableRatioTripped = ratioRows.some((r) => r.applies && !r.ok);
@@ -265,16 +286,19 @@ function DebtPanel({
               <div style={{ fontSize: 14, fontWeight: 600 }}>{d.documentName}</div>
               <Chip tone={d.cleared ? "pass" : "trip"}>{d.cleared ? "clears" : "blocks"}</Chip>
             </div>
-            <div className="row-note" style={{ marginTop: 2 }}>
-              capacity <span className="mono" style={{ fontWeight: 600, color: "var(--ink)" }}>{fmtM(d.capacity)}</span>
-              {d.bindingProvision && (
-                <>
-                  {" · governing test: "}
-                  {d.bindingProvision.basketName} (<SectionRef>{d.bindingProvision.sectionRef}</SectionRef>)
-                </>
-              )}
-            </div>
             <ProgressBar pct={(simAmt / Math.max(1, d.capacity)) * 100} ok={d.cleared} />
+            {d.bindingProvision ? (
+              <ProvisionTrace
+                provision={d.bindingProvision}
+                definedTerms={definedTermsByProvision[`${d.bindingProvision.documentId}:${d.bindingProvision.code}`] ?? []}
+                value={fmtM(d.capacity)}
+                note="governing test"
+              />
+            ) : (
+              <div className="row-note" style={{ marginTop: 6 }}>
+                capacity <span className="mono" style={{ fontWeight: 600, color: "var(--ink)" }}>{fmtM(d.capacity)}</span>
+              </div>
+            )}
           </div>
         ))}
       </Card>
@@ -289,18 +313,20 @@ function DebtPanel({
           const tone: ChipTone = !r.applies ? "idle" : r.ok ? "pass" : "trip";
           const toneLabel = !r.applies ? "n/a" : r.ok ? "ok" : "fails";
           return (
-            <div key={r.label} className="row">
-              <div>
-                <div className="row-label">{r.label}</div>
-                <div className="row-note">{r.note}</div>
-              </div>
-              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <span className="mono" style={{ fontSize: 15, fontWeight: 600, opacity: r.applies ? 1 : 0.6 }}>
-                  {fmtX(r.value)}
+            <ProvisionTrace
+              key={r.label}
+              provision={r.provision.provision}
+              definedTerms={termsFor(r.provision)}
+              note={`${r.label} pro forma${r.note ? ` — ${r.note}` : ""}`}
+              value={
+                <span style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                  <span className="mono" style={{ fontSize: 15, fontWeight: 600, opacity: r.applies ? 1 : 0.6 }}>
+                    {fmtX(r.value)}
+                  </span>
+                  <Chip tone={tone}>{toneLabel}</Chip>
                 </span>
-                <Chip tone={tone}>{toneLabel}</Chip>
-              </div>
-            </div>
+              }
+            />
           );
         })}
         {sim.cleared !== displayCleared && (
@@ -323,6 +349,7 @@ function RpPanel({
   caveat,
   onCommit,
   pending,
+  definedTermsByProvision,
 }: {
   data: CompanyCovenantData;
   position: ReturnType<typeof computeCovenantPosition>;
@@ -332,9 +359,11 @@ function RpPanel({
   caveat: string;
   onCommit: (amount: number) => void;
   pending: boolean;
+  definedTermsByProvision: DefinedTermsMap;
 }) {
   const sim = simulateRestrictedPayment(data, position, COHERENT_INDENTURE_ID, amount, kind);
   const rpGate = position.provisionCapacities.get(`${COHERENT_INDENTURE_ID}:${kind === "dividend" ? "rp_ratio_gate" : "inv_ratio_gate"}`)!;
+  const termsFor = (documentId: string, code: string) => definedTermsByProvision[`${documentId}:${code}`] ?? [];
   const title = kind === "dividend" ? "Test a dividend or buyback" : "Test an Investment";
   const description =
     kind === "dividend"
@@ -391,19 +420,24 @@ function RpPanel({
       <Card>
         <div className="card-title" style={{ marginBottom: 6 }}>Allocation waterfall</div>
         {sim.steps.length === 0 && <div className="muted" style={{ fontSize: 13 }}>Set an amount above.</div>}
-        {sim.steps.map((s) => (
-          <div key={s.code} style={{ marginBottom: 10 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <div style={{ fontSize: 13, fontWeight: 500 }}>
-                {s.basketName} <SectionRef>{s.sectionRef}</SectionRef>
+        {sim.steps.map((s) => {
+          const stepProvision = position.provisionCapacities.get(`${COHERENT_INDENTURE_ID}:${s.code}`)?.provision;
+          return (
+            <div key={s.code}>
+              {stepProvision ? (
+                <ProvisionTrace provision={stepProvision} definedTerms={termsFor(COHERENT_INDENTURE_ID, s.code)} value={fmtM(s.allocated)} />
+              ) : (
+                <div style={{ padding: "10px 0" }}>
+                  {s.basketName} <SectionRef>{s.sectionRef}</SectionRef>
+                  <span className="mono" style={{ float: "right" }}>{fmtM(s.allocated)}</span>
+                </div>
+              )}
+              <div style={{ height: 6, background: "rgba(0,0,0,0.06)", borderRadius: 2, marginBottom: 10, overflow: "hidden" }}>
+                <div style={{ width: `${Math.min(100, (s.allocated / Math.max(1, amount)) * 100)}%`, height: "100%", background: "var(--green)" }} />
               </div>
-              <div className="mono" style={{ fontSize: 13, fontWeight: 600 }}>{fmtM(s.allocated)}</div>
             </div>
-            <div style={{ height: 6, background: "rgba(0,0,0,0.06)", borderRadius: 2, marginTop: 4, overflow: "hidden" }}>
-              <div style={{ width: `${Math.min(100, (s.allocated / Math.max(1, amount)) * 100)}%`, height: "100%", background: "var(--green)" }} />
-            </div>
-          </div>
-        ))}
+          );
+        })}
         {!sim.cleared && (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <div style={{ fontSize: 13, fontWeight: 500, color: "var(--red)" }}>Unallocated</div>
@@ -422,6 +456,7 @@ function AssetSalePanel({
   setAmount,
   reinvest,
   setReinvest,
+  definedTermsByProvision,
 }: {
   data: CompanyCovenantData;
   position: ReturnType<typeof computeCovenantPosition>;
@@ -429,8 +464,10 @@ function AssetSalePanel({
   setAmount: (n: number) => void;
   reinvest: boolean;
   setReinvest: (b: boolean) => void;
+  definedTermsByProvision: DefinedTermsMap;
 }) {
   const sim = simulateAssetSale(data, position, COHERENT_INDENTURE_ID, amount, reinvest);
+  const thresholdProvision = position.provisionCapacities.get(`${COHERENT_INDENTURE_ID}:asset_sale_threshold`)?.provision;
 
   return (
     <>
@@ -494,6 +531,13 @@ function AssetSalePanel({
             </>
           )}
         </div>
+        {thresholdProvision && (
+          <ProvisionTrace
+            provision={thresholdProvision}
+            definedTerms={definedTermsByProvision[`${COHERENT_INDENTURE_ID}:asset_sale_threshold`] ?? []}
+            value={fmtM(sim.excessProceedsThreshold)}
+          />
+        )}
         <Banner tone="red">{NOT_TESTED_CAVEATS.assetSale}</Banner>
       </div>
     </>
