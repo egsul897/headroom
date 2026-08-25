@@ -1487,10 +1487,11 @@ model ExtractionCandidate {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  extractionRun   ExtractionRun   @relation(fields: [extractionRunId], references: [id], onDelete: Cascade)
-  extractionStage ExtractionStage @relation(fields: [extractionStageId], references: [id], onDelete: Cascade)
-  company         Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  sourceDocument  Document        @relation(fields: [sourceDocumentId], references: [id], onDelete: Cascade)
+  extractionRun   ExtractionRun          @relation(fields: [extractionRunId], references: [id], onDelete: Cascade)
+  extractionStage ExtractionStage        @relation(fields: [extractionStageId], references: [id], onDelete: Cascade)
+  company         Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceDocument  Document               @relation(fields: [sourceDocumentId], references: [id], onDelete: Cascade)
+  reviewEvents    CandidateReviewEvent[]
 
   @@index([companyId])
   @@index([extractionRunId])
@@ -1530,4 +1531,59 @@ enum ExtractionCandidateReviewStatus {
   REVIEW_REQUIRED
 
   @@map("extraction_candidate_review_status")
+}
+
+// =============================================================================
+// Company onboarding - Phase 2 (docs/company-onboarding-v1-implementation.md)
+//
+// Builds everything from "candidates exist in the DB" through "the company is
+// live in the generalized product UI": review workspace, transactional
+// promotion, post-promotion coverage-gate evaluation, financial onboarding,
+// facility mapping, compliance-certificate proposal flow, golden-test
+// proposal generation, and the onboarding wizard UI. Additive only - zero new
+// columns on any table Phase 1 or earlier already shipped, except this one
+// new table below (an audit trail, per the task's own "legitimate reason to
+// add a small additive table" allowance).
+// =============================================================================
+
+// One row per review DECISION ever made on an ExtractionCandidate - the full
+// history the brief requires beyond what reviewedAt/reviewedBy alone give
+// (those two columns only ever hold the LATEST decision). Never mutated or
+// deleted once written; a later decision on the same candidate is always a
+// NEW row, so a reviewer's prior decision is never silently overwritten
+// without a trace. `previousStatus`/`newStatus` bracket exactly what changed;
+// `editedValue` is populated only for an EDIT action (a snapshot of what
+// reviewerEditedValue was set to at that moment - ExtractionCandidate's own
+// reviewerEditedValue column always reflects the LATEST edit, this table
+// preserves every one that came before it too).
+model CandidateReviewEvent {
+  id             String                          @id @default(cuid())
+  candidateId    String
+  action         CandidateReviewAction
+  previousStatus ExtractionCandidateReviewStatus
+  newStatus      ExtractionCandidateReviewStatus
+  editedValue    Json?
+  note           String?
+  // Never fabricated - see ExtractionCandidate.reviewedBy's own comment. In
+  // this app (no auth system - see lib/auth.ts's absence, confirmed before
+  // writing this table), populated from a plain text field the human
+  // reviewer using the review workspace types their own name/email into,
+  // never invented on their behalf.
+  reviewedBy     String?
+
+  createdAt DateTime @default(now())
+
+  candidate ExtractionCandidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([candidateId])
+  @@map("candidate_review_events")
+}
+
+enum CandidateReviewAction {
+  APPROVE
+  EDIT
+  REJECT
+  REVIEW_REQUIRED
+
+  @@map("candidate_review_action")
 }
