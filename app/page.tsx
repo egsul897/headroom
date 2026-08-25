@@ -28,12 +28,20 @@ export default async function Home() {
             <div>
               <div className="row-label">{c.name}</div>
               {c.ticker && <div className="row-note">{c.ticker}</div>}
+              {c.onboardingStatus !== "ACTIVE" && <div className="row-note">{c.onboardingStatus === "ONBOARDING" ? "Onboarding in progress" : "Active with limitations"}</div>}
             </div>
-            <Link className="button button-primary" href={`/${c.id}/overview`}>
-              Open
+            <Link className="button button-primary" href={c.onboardingStatus === "ONBOARDING" ? `/${c.id}/onboarding` : `/${c.id}/overview`}>
+              {c.onboardingStatus === "ONBOARDING" ? "Continue onboarding" : "Open"}
             </Link>
           </div>
         ))}
+      </Card>
+      <Card>
+        <div className="card-title">Onboard a new company</div>
+        <div className="card-subtitle">Upload a document, extract, review, and activate — no engineer-written population script required.</div>
+        <Link className="button button-primary" href="/companies/new">
+          + New company
+        </Link>
       </Card>
       <Card>
         <div className="card-title">Legacy views (Coherent only)</div>

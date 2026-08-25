@@ -396,6 +396,18 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
   return { companyId, promotedCount: result.promotedCount, skipped: result.skipped, coverageResults, onboardingStatus: result.onboardingStatus };
 }
 
+/** Read-only coverage-gate snapshot (no writes) - what the Activate page shows both before and after promotion, using the SAME lib/solver/coverage.ts predicate promotion itself uses. */
+export async function getCoverageSnapshot(companyId: string, asOfDate: Date = new Date()): Promise<CoverageResult[]> {
+  const staticData = await loadCompanySolverStaticData(prisma, companyId, asOfDate);
+  const documents = await prisma.document.findMany({ where: { companyId } });
+  const legacyFormulaPresence = new Map<string, boolean>();
+  for (const d of documents) {
+    legacyFormulaPresence.set(`${d.id}:secured`, !!(d.capacityFormulas as { secured?: unknown } | null)?.secured);
+    legacyFormulaPresence.set(`${d.id}:unsecured`, !!(d.capacityFormulas as { unsecured?: unknown } | null)?.unsecured);
+  }
+  return classifyCompanyCoverage({ declarations: staticData.coverageDeclarations, permissions: staticData.permissions, asOfDate, legacyFormulaPresence });
+}
+
 /**
  * Declares a SolverCoverageDeclaration for every (documentId, grantType) that
  * now has at least one promoted (MODELED) Permission, and sets

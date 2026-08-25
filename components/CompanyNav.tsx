@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { OnboardingStatus } from "@prisma/client";
 
-const TABS: { segment: string; label: string }[] = [
+const PRODUCT_TABS: { segment: string; label: string }[] = [
   { segment: "overview", label: "Overview" },
   { segment: "capital-structure", label: "Capital Structure" },
   { segment: "capacity", label: "Capacity" },
@@ -11,14 +12,25 @@ const TABS: { segment: string; label: string }[] = [
   { segment: "documents", label: "Documents" },
 ];
 
-export function CompanyNav({ companyId }: { companyId: string }) {
+const ONBOARDING_TAB = { segment: "onboarding", label: "Onboarding" };
+
+/**
+ * Product-page tabs work identically for any ACTIVE/ACTIVE_WITH_LIMITATIONS
+ * company (task hard requirement - no company-specific branching); a
+ * company still ONBOARDING has no financial/covenant data for those pages
+ * to render yet, so only the Onboarding tab is shown until it's live -
+ * this is a lifecycle gate on `onboardingStatus`, not a per-company special
+ * case.
+ */
+export function CompanyNav({ companyId, onboardingStatus }: { companyId: string; onboardingStatus: OnboardingStatus }) {
   const pathname = usePathname();
+  const tabs = onboardingStatus === "ONBOARDING" ? [ONBOARDING_TAB] : [...PRODUCT_TABS, ONBOARDING_TAB];
   return (
     <nav className="nav">
-      {TABS.map((tab) => {
+      {tabs.map((tab) => {
         const href = `/${companyId}/${tab.segment}`;
         return (
-          <Link key={tab.segment} href={href} className={`nav-link ${pathname === href ? "active" : ""}`}>
+          <Link key={tab.segment} href={href} className={`nav-link ${pathname === href || pathname?.startsWith(`${href}/`) ? "active" : ""}`}>
             {tab.label}
           </Link>
         );

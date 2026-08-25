@@ -218,3 +218,18 @@ export async function getReviewProgress(companyId: string): Promise<ReviewProgre
 export async function getChunkContext(chunkId: string) {
   return prisma.documentChunk.findUniqueOrThrow({ where: { id: chunkId } });
 }
+
+/** Every review-decision event for a company's candidates, grouped by candidateId - the review workspace's inline "full edit history" panel, one query instead of one-per-card. */
+export async function getReviewHistoryForCompany(companyId: string) {
+  const rows = await prisma.candidateReviewEvent.findMany({
+    where: { candidate: { companyId } },
+    orderBy: { createdAt: "asc" },
+  });
+  const byCandidateId = new Map<string, typeof rows>();
+  for (const r of rows) {
+    const list = byCandidateId.get(r.candidateId) ?? [];
+    list.push(r);
+    byCandidateId.set(r.candidateId, list);
+  }
+  return byCandidateId;
+}

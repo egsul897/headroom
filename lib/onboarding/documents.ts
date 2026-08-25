@@ -79,16 +79,60 @@ export async function uploadAndChunkDocument(params: UploadDocumentParams) {
   return { document, chunkCount: chunks.length };
 }
 
-/** Creates an ExtractionRun for a document and immediately drives every pending stage - the wizard's "Extraction" stage single action. */
+export interface DocumentWithExtractionStatus {
+  id: string;
+  name: string;
+  type: string;
+  originalFilename: string | null;
+  uploadedAt: Date | null;
+  typeConfirmedByUser: boolean;
+  chunkCount: number;
+  latestRun: { id: string; stages: { stage: string; status: string; error: string | null }[] } | null;
+}
+
+/** The onboarding wizard's Documents stage listing - one document row per upload, its chunk count, and its most recent extraction run's per-stage status. */
+export async function getDocumentsWithExtractionStatus(companyId: string): Promise<DocumentWithExtractionStatus[]> {
+  const documents = await prisma.document.findMany({ where: { companyId }, orderBy: { createdAt: "asc" } });
+  const results: DocumentWithExtractionStatus[] = [];
+  for (const d of documents) {
+    const [chunkCount, latestRun] = await Promise.all([
+      prisma.documentChunk.count({ where: { documentId: d.id } }),
+      prisma.extractionRun.findFirst({ where: { documentId: d.id }, orderBy: { startedAt: "desc" }, include: { stages: { select: { stage: true, status: true, error: true } } } }),
+    ]);
+    results.push({
+      id: d.id,
+      name: d.name,
+      type: d.type,
+      originalFilename: d.originalFilename,
+      uploadedAt: d.uploadedAt,
+      typeConfirmedByUser: d.typeConfirmedByUser,
+      chunkCount,
+      latestRun: latestRun ? { id: latestRun.id, stages: latestRun.stages } : null,
+    });
+  }
+  return results;
+}
+
+/**
+ * Drives every pending/failed stage for a document's extraction - the
+ * wizard's "Extraction" stage single action. Reuses the document's most
+ * recent ExtractionRun (retrying/resuming it from persisted state, per
+ * lib/extraction/run-stage.ts's own partial-failure contract) rather than
+ * creating a fresh run + six new PENDING stages every time this is called;
+ * a new run is only created the FIRST time a document is extracted.
+ */
 export async function runExtractionForDocument(params: { companyId: string; documentId: string; provider: ContractExtractionProvider; providerName: string; model: string; promptVersion?: string; schemaVersion?: string }) {
-  const run = await createExtractionRun({
-    companyId: params.companyId,
-    documentId: params.documentId,
-    provider: params.providerName,
-    model: params.model,
-    promptVersion: params.promptVersion ?? "v1",
-    schemaVersion: params.schemaVersion ?? "v1",
-  });
+  const existing = await prisma.extractionRun.findFirst({ where: { documentId: params.documentId }, orderBy: { startedAt: "desc" } });
+  const run =
+    existing ??
+    (await createExtractionRun({
+      companyId: params.companyId,
+      documentId: params.documentId,
+      provider: params.providerName,
+      model: params.model,
+      promptVersion: params.promptVersion ?? "v1",
+      schemaVersion: params.schemaVersion ?? "v1",
+    }));
   const results = await runAllPendingStages(run.id, params.provider);
   return { run, results };
 }
