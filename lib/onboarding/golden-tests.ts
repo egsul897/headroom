@@ -25,18 +25,27 @@ import { prisma } from "../prisma";
 import { computeCovenantPosition, computeRemainingCapacityAfterDebtIncurrence, loadCompanyCovenantData } from "../covenant-engine";
 import { buildSolverContext, getCompanySummary } from "../dashboard-service";
 
-async function nextStableKeySeq(companyId: string): Promise<number> {
-  const rows = await prisma.goldenTest.findMany({ where: { companyId, stableKey: { startsWith: `${companyId}:q` } }, select: { stableKey: true } });
-  let max = 0;
-  for (const r of rows) {
-    const m = /:q(\d+)/.exec(r.stableKey);
-    if (m) max = Math.max(max, parseInt(m[1]!, 10));
-  }
-  return max + 1;
-}
-
 function padKey(companyId: string, seq: number): string {
   return `${companyId}:q${String(seq).padStart(2, "0")}`;
+}
+
+/**
+ * A fixed, content-derived "slot" tag embedded in reviewerNotes - what makes
+ * re-running this generator idempotent (upsert onto the SAME stableKey each
+ * time) rather than minting a fresh q<NN> every call. stableKey itself stays
+ * the plain numeric-sequence format docs/database-replay-safety.md
+ * documents (never derived from mutable content); this tag is only how THIS
+ * generator re-finds which existing row, if any, already occupies a given
+ * logical slot for this company, so it can resolve that row's CURRENT
+ * stableKey instead of guessing the next sequence number.
+ */
+function slotTag(kind: "cross-document-secured-capacity" | "cross-document-unsecured-capacity"): string {
+  return `[onboarding-slot: ${kind}]`;
+}
+
+async function resolveSlotStableKey(companyId: string, tag: string, mintNextSeq: () => number): Promise<string> {
+  const existing = await prisma.goldenTest.findFirst({ where: { companyId, reviewerNotes: { contains: tag } }, select: { stableKey: true } });
+  return existing?.stableKey ?? padKey(companyId, mintNextSeq());
 }
 
 export interface GoldenTestProposalSummary {
@@ -59,13 +68,20 @@ export async function generateGoldenTestProposals(companyId: string, asOfDate: D
   const position = computeCovenantPosition(covenantData);
   const solverContext = await buildSolverContext(companyId, asOfDate);
 
-  let seq = await nextStableKeySeq(companyId);
+  const existingRows = await prisma.goldenTest.findMany({ where: { companyId, stableKey: { startsWith: `${companyId}:q` } }, select: { stableKey: true } });
+  let seq = existingRows.reduce((max, r) => {
+    const m = /:q(\d+)/.exec(r.stableKey);
+    return m ? Math.max(max, parseInt(m[1]!, 10)) : max;
+  }, 0);
+  const mintNextSeq = () => ++seq;
+
   const summaries: GoldenTestProposalSummary[] = [];
 
   for (const secured of [true, false]) {
     const sideLabel = secured ? "secured" : "unsecured";
+    const tag = slotTag(secured ? "cross-document-secured-capacity" : "cross-document-unsecured-capacity");
+    const stableKey = await resolveSlotStableKey(companyId, tag, mintNextSeq);
     const postTxn = computeRemainingCapacityAfterDebtIncurrence(covenantData, position, 0, secured, solverContext);
-    const stableKey = padKey(companyId, seq++);
 
     if (postTxn.remainingCapacity !== undefined) {
       const citation = postTxn.binding?.bindingConstraint?.[0];
@@ -82,21 +98,28 @@ export async function generateGoldenTestProposals(companyId: string, asOfDate: D
           expectedAnswer: postTxn.remainingCapacity,
           tolerance: 0.01,
           bindingProvision: bindingPermission?.code ?? undefined,
-          reviewerNotes: `Onboarding-proposed row - expectedAnswer computed by actually running computeRemainingCapacityAfterDebtIncurrence at proposal time (asOfDate ${asOfDate.toISOString()}), not guessed. Requires founder legal review before VERIFIED.`,
+          reviewerNotes: `${tag} Onboarding-proposed row - expectedAnswer computed by actually running computeRemainingCapacityAfterDebtIncurrence at proposal time (asOfDate ${asOfDate.toISOString()}), not guessed. Requires founder legal review before VERIFIED.`,
           status: "UNVERIFIED",
         },
         update: {
           question,
           queryParams: { amount: 0, secured, metric: "remainingAfterAmount" },
-          // expectedAnswer/status intentionally NOT re-synced on update - see
-          // prisma/seed.ts's own established "never reset a promoted row"
-          // discipline (docs/database-replay-safety.md §D). Re-running
-          // proposal generation refreshes the QUESTION shape only; a value a
-          // reviewer has already looked at (or disputed) is not silently
-          // clobbered by a later run.
+          // expectedAnswer/status/reviewerNotes intentionally NOT re-synced
+          // on update - see prisma/seed.ts's own established "never reset a
+          // promoted row" discipline (docs/database-replay-safety.md §D).
+          // Re-running proposal generation refreshes the QUESTION shape
+          // only; a value a reviewer has already looked at (or disputed) is
+          // not silently clobbered by a later run.
         },
       });
       summaries.push({ stableKey, question, outcome: "computed" });
+      // Known v1 limitation: if this slot's existing row was previously
+      // created as OUT_OF_SCOPE (the gap arm below) and the gap is later
+      // resolved, this upsert's `update` branch does not itself flip
+      // queryType/expectedAnswer onto that existing row - re-running after a
+      // gap resolves onto a PREVIOUSLY-flagged slot needs a human to also
+      // update that row's queryType, exactly like any other reviewed row
+      // this generator deliberately never silently overwrites.
     } else {
       const question = `Structural finding for legal review: ${company.name}'s cross-document maximum additional ${sideLabel} debt capacity is not yet determinable from the currently-modeled Permission graph (a real coverage gap, not a $0 answer) - see the company's onboarding coverage-gate results.`;
       await prisma.goldenTest.upsert({
@@ -106,7 +129,7 @@ export async function generateGoldenTestProposals(companyId: string, asOfDate: D
           stableKey,
           question,
           queryType: "OUT_OF_SCOPE",
-          reviewerNotes: "Onboarding-proposed row - flagged because the underlying Permission graph does not yet resolve to a single determinable cross-document capacity (an unpromoted/KNOWN_NOT_MODELED gap remains). Not a computational error - see Company.onboardingStatus.",
+          reviewerNotes: `${tag} Onboarding-proposed row - flagged because the underlying Permission graph does not yet resolve to a single determinable cross-document capacity (an unpromoted/KNOWN_NOT_MODELED gap remains). Not a computational error - see Company.onboardingStatus.`,
           status: "UNVERIFIED",
         },
         update: { question },

@@ -22,6 +22,22 @@ import { fact } from "../financial-core/types";
 export interface ManualFinancialStateInput {
   companyId: string;
   asOfDate: Date;
+  /**
+   * Required - this codebase currently has TWO parallel financial models that
+   * both remain live consumers for a solver-native company (confirmed by
+   * inspecting Coherent's own data: it carries one row in EACH table, not
+   * one-or-the-other): the legacy `FinancialSnapshot` table
+   * (lib/covenant-engine.ts's `loadCompanyCovenantData` - what
+   * `computeRemainingCapacityAfterDebtIncurrence` and therefore every
+   * Overview/Capacity/Simulate capacity figure ultimately reads, via
+   * lib/dashboard-service.ts) and the newer `FinancialState` table
+   * (lib/financial-core/** - what `getFinancialPosition` reads for the
+   * liquidity/maturity/leverage-metrics side of the same dashboard). Neither
+   * this task nor Phase 1 unifies them, so one manual-entry action writes
+   * BOTH rows from the same human input rather than leaving one of the two
+   * dashboard halves silently broken for an onboarded company.
+   */
+  ebitda: number;
   cash: number;
   totalDebtPrincipal: number;
   securedDebtPrincipal: number;
@@ -30,16 +46,35 @@ export interface ManualFinancialStateInput {
   interestExpense: number;
   assumedNewDebtRatePct: number;
   revenue?: number;
-  gaapEbitda?: number;
   gaapNetIncome?: number;
   capex?: number;
-  covenantEbitdaValue?: number;
   notes?: string;
 }
 
-/** Creates one manually-entered FinancialState row - the onboarding wizard's Financials stage. */
+/**
+ * Creates a manually-entered FinancialState row (lib/financial-core) AND a
+ * matching legacy FinancialSnapshot row (lib/covenant-engine) from the SAME
+ * human input - the onboarding wizard's Financials stage. See
+ * ManualFinancialStateInput's own comment for why both are written.
+ */
 export async function createManualFinancialState(input: ManualFinancialStateInput) {
   const { companyId, asOfDate } = input;
+
+  await prisma.financialSnapshot.create({
+    data: {
+      companyId,
+      asOfDate,
+      ebitda: input.ebitda,
+      cash: input.cash,
+      interestExpense: input.interestExpense,
+      cumulativeNetIncome: input.cumulativeNetIncomeSinceIssue,
+      equityProceedsSinceIssue: input.equityProceedsSinceIssue,
+      assumedNewDebtRatePct: input.assumedNewDebtRatePct,
+      totalDebt: input.totalDebtPrincipal,
+      securedDebt: input.securedDebtPrincipal,
+      notes: input.notes,
+    },
+  });
   const balanceSheetFacts = {
     cash: fact(input.cash, "REPORTED", asOfDate),
     totalDebtPrincipal: fact(input.totalDebtPrincipal, "REPORTED", asOfDate),
@@ -47,7 +82,7 @@ export async function createManualFinancialState(input: ManualFinancialStateInpu
   };
   const incomeStatementFacts = {
     ...(input.revenue !== undefined ? { revenue: fact(input.revenue, "REPORTED", asOfDate) } : {}),
-    ...(input.gaapEbitda !== undefined ? { gaapEbitda: fact(input.gaapEbitda, "REPORTED", asOfDate) } : {}),
+    gaapEbitda: fact(input.ebitda, "REPORTED", asOfDate),
     ...(input.gaapNetIncome !== undefined ? { gaapNetIncome: fact(input.gaapNetIncome, "REPORTED", asOfDate) } : {}),
     cumulativeNetIncomeSinceIssue: fact(input.cumulativeNetIncomeSinceIssue, "REPORTED", asOfDate),
     equityProceedsSinceIssue: fact(input.equityProceedsSinceIssue, "REPORTED", asOfDate),
@@ -56,9 +91,7 @@ export async function createManualFinancialState(input: ManualFinancialStateInpu
   };
   const covenantMetricFacts = {
     assumedNewDebtRatePct: fact(input.assumedNewDebtRatePct, "REPORTED", asOfDate),
-    ...(input.covenantEbitdaValue !== undefined
-      ? { covenantEbitda: { value: input.covenantEbitdaValue, addbacks: [], provenance: fact(input.covenantEbitdaValue, "REPORTED", asOfDate) } }
-      : {}),
+    covenantEbitda: { value: input.ebitda, addbacks: [], provenance: fact(input.ebitda, "REPORTED", asOfDate) },
   };
 
   return prisma.financialState.create({

@@ -54,9 +54,18 @@ export interface PromotionResult {
 
 type TxClient = Prisma.TransactionClient | PrismaClient;
 
-/** Resolves EDITED -> reviewerEditedValue, APPROVED -> proposedValue, re-validated against the kind's own schema (defense in depth, same discipline as lib/extraction/run-stage.ts's own read-time re-hydration). */
+/**
+ * Resolves the value promotion actually reads: `reviewerEditedValue` when
+ * present, `proposedValue` otherwise - independent of the candidate's
+ * CURRENT reviewStatus (not just when it happens to equal "EDITED"), since a
+ * candidate that was EDITED and later re-APPROVEd by a second reviewer must
+ * still promote the edited figure, never silently revert to the AI's
+ * original proposal. Re-validated against the kind's own schema (defense in
+ * depth, same discipline as lib/extraction/run-stage.ts's own read-time
+ * re-hydration).
+ */
 function resolveEffectiveValue(c: ExtractionCandidate): unknown | null {
-  const raw = c.reviewStatus === "EDITED" ? (c.reviewerEditedValue ?? c.proposedValue) : c.proposedValue;
+  const raw = c.reviewerEditedValue ?? c.proposedValue;
   const schema = VALUE_SCHEMA_BY_KIND[c.kind];
   const parsed = schema.safeParse(raw);
   return parsed.success ? parsed.data : null;
