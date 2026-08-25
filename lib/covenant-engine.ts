@@ -48,12 +48,15 @@ import type {
   EntityClass,
   GrantType,
   GuarantorStatus,
+  MaxCapacityResult,
   Permission,
   PermissionCollateralScope,
+  PermissionPath,
   PermissionRelationship,
   RuleActivationCondition,
   SharedConstraint,
   SolverResult,
+  SourceCitation,
   Transaction,
 } from "./solver/types";
 
@@ -729,7 +732,22 @@ export interface PerDocumentDebtResult {
   documentId: string;
   documentName: string;
   status: TransactionStatus;
+  /**
+   * SEMANTICS WARNING (docs/result-semantics-headroom-cleanup.md §C/§D):
+   * for a LEGACY document, this is the document's declared, amount-
+   * independent ceiling (a real maximum). For a SOLVER_NATIVE document, this
+   * is the amount that was CONFIRMED TO CLEAR at `testedAmount` - by
+   * construction always equal to `testedAmount` itself when `status ===
+   * "clear"` (a solver-native CLEAR path, per lib/solver/election.ts's
+   * fail-closed shortfall check, always allocates the FULL requested
+   * amount). It is NOT that document's maximum capacity. Kept unchanged,
+   * for backward compatibility with every existing caller (app/**, prior
+   * scripts) that already reads this field with that assumption baked in -
+   * use `maximumCapacity` for the real, testedAmount-independent ceiling.
+   */
   capacity?: number;
+  /** The amount actually tested for this document/side - always populated, distinct from `capacity` (see the warning above). Task §3/§9 "TESTED AMOUNT." */
+  testedAmount?: number;
   bindingProvision?: CovenantProvisionInput;
   reason?: string;
   /**
@@ -742,6 +760,40 @@ export interface PerDocumentDebtResult {
   solverResult?: SolverResult;
   /** The coverage-gate determination that routed this document/side here - present whenever `solverContext` was supplied, regardless of which path was chosen, for audit. */
   solverCoverage?: CoverageResult;
+  /**
+   * design doc §O's `MaxCapacityResult` for this document/side, PRE-
+   * transaction (i.e., not reflecting `testedAmount` having been incurred) -
+   * the real, testedAmount-independent ceiling `runSolver` already computes
+   * from each election's own `standaloneCapacity` (lib/solver/service.ts
+   * `computeMaximumCapacityFromEvaluations`). Present only for a
+   * SOLVER_NATIVE document/side; a LEGACY document's own `capacity` field
+   * already serves this role (task §3 "MAXIMUM CAPACITY" / §4 audit
+   * finding: `runSolverForDocument` previously computed this value inside
+   * `runSolver` and then discarded it, replacing it with `testedAmount` -
+   * see docs/result-semantics-headroom-cleanup.md §B).
+   */
+  maximumCapacity?: MaxCapacityResult;
+  /**
+   * The selected permission path the solver actually relied upon to clear
+   * `testedAmount` (task §3 "SELECTED PATH") - a convenience alias for
+   * `solverResult?.permissionPathUsed`, present only for SOLVER_NATIVE.
+   * NOT automatically the binding constraint (see `bindingConstraint`) -
+   * multiple equally-valid selected paths can exist for the same
+   * `testedAmount` (design doc §D/§N `alternatives`; task §8/§11).
+   */
+  selectedPath?: PermissionPath;
+  /**
+   * The limiting contractual provision(s) that determine `maximumCapacity`,
+   * when determinable (task §3 "BINDING CONSTRAINT") - derived from
+   * `maximumCapacity`'s own winning election (the DEBT_INCURRENCE leg(s)
+   * with the SMALLEST `standaloneCapacity`, i.e. the leg(s) that would run
+   * out first as the tested amount approaches the ceiling), NOT from
+   * `selectedPath` (task §8: "a selected clearing path and a binding
+   * constraint may differ"). More than one entry means multiple provisions
+   * are simultaneously (co-)binding (design doc §O.3 "no unique maximizer";
+   * task §11). Present only when `maximumCapacity` resolves to `EXACT`.
+   */
+  bindingConstraint?: SourceCitation[];
 }
 
 export interface DebtIncurrenceSimulation {
@@ -871,6 +923,34 @@ function buildLiveTransaction(amount: number, secured: boolean, ctx: SolverNativ
 }
 
 /**
+ * design doc §O's "BINDING CONSTRAINT" (task §3/§8), derived generically
+ * from a `MaxCapacityResult` - never from `selectedPath` (task §8 explicitly
+ * warns against using the selected path as a substitute). Only an `EXACT`
+ * result has a `path` to derive from; every other kind (`BOUNDED_RANGE`,
+ * `SCENARIO_DEPENDENT`, `ASSUMPTION_REQUIRED`, `REVIEW_REQUIRED`) has no
+ * single winning election to point at, so this returns `undefined` rather
+ * than fabricating a citation (design doc §O.4's governing rule, applied
+ * here to the binding-constraint question specifically).
+ *
+ * The binding provision(s) are the DEBT_INCURRENCE leg(s) with the SMALLEST
+ * `standaloneCapacity` among the winning election's own legs - the leg(s)
+ * that would exhaust first as the tested amount rises toward the ceiling.
+ * More than one leg tied at the minimum means the constraints are
+ * co-binding (design doc §O.3; task §11) - every tied leg's provision is
+ * returned, not an arbitrarily "first" one.
+ */
+export function deriveBindingConstraint(maximumCapacity: MaxCapacityResult | undefined): SourceCitation[] | undefined {
+  if (!maximumCapacity || maximumCapacity.kind !== "EXACT") return undefined;
+  const debtLegs = maximumCapacity.path.legs.filter((l) => l.grantType === "DEBT_INCURRENCE" && l.standaloneCapacity !== undefined);
+  if (debtLegs.length === 0) return undefined;
+  const minCapacity = Math.min(...debtLegs.map((l) => l.standaloneCapacity!));
+  const EPS = 1e-6;
+  return debtLegs
+    .filter((l) => Math.abs(l.standaloneCapacity! - minCapacity) < EPS)
+    .map((l) => ({ documentId: l.sourceProvision.documentId, sectionRef: l.sourceProvision.sectionRef, definedTermIds: l.sourceProvision.definedTermIds, permissionId: l.permissionId }));
+}
+
+/**
  * Runs the real solver-native `runSolver` service for one document/side
  * already classified SOLVER_NATIVE, and translates its `SolverResult` into
  * the same `PerDocumentDebtResult` shape a legacy document produces -
@@ -930,7 +1010,10 @@ export function runSolverForDocument(
 
   // A CLEAR path, by construction (lib/solver/election.ts's fail-closed
   // shortfall check), always allocates the FULL requested amount - so
-  // reporting `amount` here is exact, not an approximation.
+  // reporting `amount` here is exact, not an approximation. See
+  // PerDocumentDebtResult.capacity's own doc comment for the semantics
+  // warning this implies (it is "amount confirmed to clear," not "maximum
+  // capacity" - use `maximumCapacity` below for the real ceiling).
   const capacity = status === "clear" ? amount : undefined;
 
   const reason =
@@ -945,9 +1028,13 @@ export function runSolverForDocument(
     documentName,
     status,
     capacity,
+    testedAmount: amount,
     reason,
     solverResult: result,
     solverCoverage: coverage,
+    maximumCapacity: result.overall.maximumCapacity,
+    selectedPath: result.permissionPathUsed,
+    bindingConstraint: deriveBindingConstraint(result.overall.maximumCapacity),
   };
 }
 
@@ -987,13 +1074,14 @@ export function simulateDebtIncurrence(
     const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
     const reason = secured ? d.securedReason : d.unsecuredReason;
     if (status !== "modeled") {
-      return { documentId: d.documentId, documentName: d.documentName, status, reason, bindingProvision, solverCoverage: coverage };
+      return { documentId: d.documentId, documentName: d.documentName, status, testedAmount: amount, reason, bindingProvision, solverCoverage: coverage };
     }
     return {
       documentId: d.documentId,
       documentName: d.documentName,
       status: amount <= capacity! ? "clear" : "blocked",
       capacity,
+      testedAmount: amount,
       bindingProvision,
       solverCoverage: coverage,
     };
@@ -1040,6 +1128,134 @@ export function simulateDebtIncurrence(
         ].join(" ");
 
   return { amount, secured, perDocument, binding, next, status, overallCapacity: binding?.capacity, proForma, ratioTests, reason };
+}
+
+// ---------------------------------------------------------------------------
+// Post-transaction remaining capacity (task §6/§7's generalized headroom
+// query) - reuses runSolver's own maximum-capacity machinery against a
+// hypothetical POST-transaction financial state, rather than
+// `overallCapacity - amount` against the PRE-transaction state (the exact
+// tautology docs/result-semantics-headroom-cleanup.md §B diagnoses).
+// ---------------------------------------------------------------------------
+
+export interface PerDocumentRemainingCapacity {
+  documentId: string;
+  documentName: string;
+  method: "SOLVER_NATIVE_RECOMPUTED" | "LEGACY_DECLARED_MINUS_TESTED_AMOUNT" | "NOT_DETERMINABLE";
+  /** This document/side's remaining capacity AFTER giving effect to the tested transaction. Undefined - never fabricated as 0 - when not determinable. */
+  remainingCapacity?: number;
+  /** Present only for SOLVER_NATIVE_RECOMPUTED - the full post-transaction MaxCapacityResult `remainingCapacity` was read from (design doc §O). */
+  maximumCapacity?: MaxCapacityResult;
+  bindingConstraint?: SourceCitation[];
+  reason?: string;
+}
+
+export interface PostTransactionCapacitySimulation {
+  amount: number;
+  secured: boolean;
+  perDocument: PerDocumentRemainingCapacity[];
+  /** The document/side that is tightest AFTER the transaction - i.e. the NEW binding constraint. Not necessarily the same document that was binding BEFORE the transaction (a document can become newly binding, or stop binding, purely from the transaction's own effect on its pro forma ratios). Undefined - fail-closed - if ANY governing document/side's post-transaction capacity is not determinable, since an undetermined document could turn out to be the tighter one. */
+  binding?: PerDocumentRemainingCapacity;
+  /** = `binding?.remainingCapacity`, exposed at the top level for convenience. Undefined (never 0) when not determinable. */
+  remainingCapacity?: number;
+}
+
+/**
+ * Task §6/§7's generalized "given this transaction, what capacity remains
+ * afterward" query - a SEPARATE function from `simulateDebtIncurrence`, not
+ * folded into it, so a caller that only needs "does $X clear" never pays for
+ * a second solver evaluation per document (§7: "add the smallest
+ * generalized... capability necessary. Do not add it if an existing
+ * production function already provides it correctly" - none did; see
+ * docs/result-semantics-headroom-cleanup.md §B/§G for why).
+ *
+ * For each document/side:
+ *  - SOLVER_NATIVE: builds a hypothetical POST-transaction
+ *    `FinancialSnapshotInput` (debt outstanding increased by `amount`;
+ *    secured debt increased too when the tested transaction is secured;
+ *    cash unchanged - the SAME debt-funded convention `simulateDebtIncurrence`
+ *    already uses for `proForma.totalNetLeverage`/`seniorSecuredNetLeverage`
+ *    above, not a new assumption invented for this function) and RE-RUNS
+ *    `runSolverForDocument` (hence the real `runSolver` maximum-capacity
+ *    machinery, lib/solver/service.ts `computeMaximumCapacityFromEvaluations`)
+ *    against that hypothetical state - a full post-transaction
+ *    recomputation (task §6), never `preTransactionMaximum - amount`. The
+ *    amount passed to `runSolverForDocument` itself is 0 (nothing is being
+ *    "tested" here, only measured) - the maximum-capacity figure it returns
+ *    is independent of the amount tested (`computeMaximumCapacityFromEvaluations`
+ *    derives it from each election's own amount-independent
+ *    `standaloneCapacity`), so this is exact, not an approximation.
+ *  - LEGACY: this engine's existing (unmodified) legacy model treats a
+ *    document's declared capacity as a fixed ceiling independent of the pro
+ *    forma amount already incurred, so `capacity - amount` is exact for that
+ *    model, not an approximation - the SAME subtraction the legacy-only path
+ *    has always implied; not reopened or changed here (reopening legacy
+ *    modeling is explicitly out of this task's scope).
+ *  - NOT_TESTED/REVIEW_REQUIRED (either model): `NOT_DETERMINABLE` -
+ *    `remainingCapacity` stays undefined, never fabricated as 0 (task §5's
+ *    governing rule: "Never produce zero merely because testedAmount equals
+ *    the transaction result's capacity field").
+ */
+export function computeRemainingCapacityAfterDebtIncurrence(
+  data: CompanyCovenantData,
+  position: CovenantPosition,
+  amount: number,
+  secured: boolean,
+  solverContext?: SolverNativeCompanyContext
+): PostTransactionCapacitySimulation {
+  const fin = data.financials;
+  const side: "secured" | "unsecured" = secured ? "secured" : "unsecured";
+  const postFin: FinancialSnapshotInput = { ...fin, totalDebt: fin.totalDebt + amount, securedDebt: fin.securedDebt + (secured ? amount : 0) };
+
+  const perDocument: PerDocumentRemainingCapacity[] = position.documents.map((d) => {
+    if (solverContext) {
+      const doc = data.documents.find((doc) => doc.id === d.documentId);
+      const legacyFormulaPresent = Boolean(side === "secured" ? doc?.capacityFormulas?.secured : doc?.capacityFormulas?.unsecured);
+      const coverage = resolveDocumentSideCoverage(d.documentId, side, legacyFormulaPresent, solverContext);
+      if (coverage.status === "SOLVER_NATIVE") {
+        const postResult = runSolverForDocument(d.documentId, d.documentName, postFin, 0, secured, solverContext, coverage);
+        const mc = postResult.maximumCapacity;
+        const remainingCapacity = mc?.kind === "EXACT" ? mc.amount : undefined;
+        return {
+          documentId: d.documentId,
+          documentName: d.documentName,
+          method: "SOLVER_NATIVE_RECOMPUTED",
+          remainingCapacity,
+          maximumCapacity: mc,
+          bindingConstraint: postResult.bindingConstraint,
+          reason:
+            remainingCapacity === undefined
+              ? `Post-transaction maximum capacity for ${d.documentName} is ${mc?.kind ?? "not determinable"}, not a single EXACT figure.`
+              : undefined,
+        };
+      }
+    }
+
+    const status = secured ? d.securedStatus : d.unsecuredStatus;
+    const capacity = secured ? d.securedCapacity : d.unsecuredCapacity;
+    const bindingProvision = secured ? d.securedBindingProvision : d.unsecuredBindingProvision;
+    if (status !== "modeled" || capacity === undefined) {
+      return {
+        documentId: d.documentId,
+        documentName: d.documentName,
+        method: "NOT_DETERMINABLE",
+        reason: `${d.documentName} is "${status}" for this side - no declared legacy capacity to subtract from.`,
+      };
+    }
+    return {
+      documentId: d.documentId,
+      documentName: d.documentName,
+      method: "LEGACY_DECLARED_MINUS_TESTED_AMOUNT",
+      remainingCapacity: capacity - amount,
+      bindingConstraint: bindingProvision ? [{ documentId: bindingProvision.documentId, sectionRef: bindingProvision.sectionRef, permissionId: bindingProvision.id }] : undefined,
+    };
+  });
+
+  const anyNotDeterminable = perDocument.some((d) => d.method === "NOT_DETERMINABLE");
+  const sorted = [...perDocument].filter((d) => d.remainingCapacity !== undefined).sort((a, b) => a.remainingCapacity! - b.remainingCapacity!);
+  const binding = anyNotDeterminable ? undefined : sorted[0];
+
+  return { amount, secured, perDocument, binding, remainingCapacity: binding?.remainingCapacity };
 }
 
 // ---------------------------------------------------------------------------
