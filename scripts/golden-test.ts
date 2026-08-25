@@ -32,6 +32,7 @@
 import { PrismaClient, type GoldenTest } from "@prisma/client";
 import {
   computeCovenantPosition,
+  computeRemainingCapacityAfterDebtIncurrence,
   loadCompanyCovenantData,
   loadCompanySolverStaticData,
   simulateAssetSale,
@@ -43,12 +44,13 @@ import {
   type CovenantProvisionInput,
   type DebtIncurrenceSimulation,
   type EvaluationStatus,
+  type PostTransactionCapacitySimulation,
   type RestrictedPaymentKind,
   type RestrictedPaymentSimulation,
   type SolverNativeCompanyContext,
   type TransactionStatus,
 } from "../lib/covenant-engine";
-import type { EntityClass, GuarantorStatus, Permission } from "../lib/solver/types";
+import type { EntityClass, GuarantorStatus, Permission, SourceCitation } from "../lib/solver/types";
 import { COHERENT_COMPANY } from "../prisma/seed-data";
 
 const prisma = new PrismaClient();
@@ -108,6 +110,29 @@ interface EvalResult {
   solverNote: string | null;
   /** Present only when solver-native-aware grading produced a DIFFERENT actual (status or number) than legacy-only grading would have for this same row. */
   discrepancy: Discrepancy | null;
+  /**
+   * True only for a DEBT_SIMULATION "cleared" row where the solver itself
+   * reports multiple, equally-valid CLEAR paths for the tested amount
+   * (`SolverResult.alternatives` contains another CLEAR path — real
+   * evidence, not an assumption) AND the golden question does not itself
+   * ask which provision BINDS (task §11: "Where a golden question does NOT
+   * require one unique permission path, do not fail merely because the
+   * solver chose another equally valid path" / "Do not weaken golden
+   * verification into 'any answer is acceptable'" — this flag is set only
+   * from that positive evidence, never merely because a citation mismatched).
+   * When true, `bindingOk`/`definedTermsOk` are computed as `null`
+   * (informational, non-gating) rather than `false` for this row —
+   * `discrepancy` still records the mismatch for the report.
+   */
+  bindingCheckSuppressed: boolean;
+}
+
+/** Adapts a `SourceCitation` (design doc §K, e.g. from `PerDocumentDebtResult.bindingConstraint`) into the same `BindingLike` shape a legacy `CovenantProvisionInput` or solver-native `Permission` satisfies, resolving to the real `Permission` row (for its `code`/`action`) when `permissionId` is present. */
+function citationAsBindingLike(citation: SourceCitation | undefined, permissions: Permission[]): BindingLike | null {
+  if (!citation) return null;
+  const perm = citation.permissionId ? permissions.find((p) => p.id === citation.permissionId) : undefined;
+  if (perm) return permissionAsBindingLike(perm);
+  return { code: citation.sectionRef, basketName: citation.sectionRef, sectionRef: citation.sectionRef, documentId: citation.documentId };
 }
 
 function money(n: number | null): string {
@@ -324,6 +349,7 @@ function evaluateGoldenTest(
       detail: test.reviewerNotes ?? "Out of scope for this phase - not attempted.",
       solverNote: null,
       discrepancy: null,
+      bindingCheckSuppressed: false,
     };
   }
 
@@ -337,6 +363,8 @@ function evaluateGoldenTest(
   let discrepancy: Discrepancy | null = null;
   /** Set only for a solver-bound DEBT_SIMULATION row (Permission.definedTermRefs has no counterpart in definedTermsByKey, which only indexes legacy CovenantProvision rows). Null elsewhere, meaning "use definedTermsByKey as usual." */
   let solverBoundDefinedTerms: string[] | null = null;
+  /** See EvalResult.bindingCheckSuppressed's own doc comment - set true only inside DEBT_SIMULATION, only on positive evidence of multiple valid clearing paths, and only for a question that doesn't itself ask which provision binds. */
+  let bindingCheckSuppressed = false;
 
   // LEVERAGE_METRIC/PROVISION_CAPACITY/DOCUMENT_CAPACITY/CROSS_DOCUMENT_CAPACITY
   // all read `position` (computeCovenantPosition's output) directly, and
@@ -403,10 +431,23 @@ function evaluateGoldenTest(
       const amount = Number(params.amount);
       const secured = Boolean(params.secured);
       const metric = params.metric as string;
+      // Generalized (not Coherent-specific — this is a plain-English keyword
+      // check on the question's own text, applied identically to every
+      // company/row): does this golden question ask which provision BINDS,
+      // as opposed to which test/path a specific tested amount cleared
+      // through? Task §8/§10/§11 requires grading these differently —
+      // `selectedPath` is never a substitute for `bindingConstraint` when
+      // the question is actually asking for the latter.
+      const asksWhichProvisionBinds = /\bbind(s|ing)?\b/i.test(test.question);
 
       // Legacy-only (exactly today's pre-fix harness behavior - no
       // solverContext) computed purely for the discrepancy comparison below;
-      // never the source of the row's outcome any more.
+      // never the source of the row's outcome any more. Its
+      // "remainingAfterAmount" arm intentionally KEEPS the original
+      // `overallCapacity - amount` subtraction — that IS the legacy model's
+      // own (unmodified, and exact for a FIXED/state-independent basket)
+      // semantics; only the SOLVER-NATIVE arm's use of that same formula was
+      // ever wrong (docs/result-semantics-headroom-cleanup.md §B).
       const legacySim = simulateDebtIncurrence(data, position, amount, secured);
       // Solver-native-aware: the SAME call the live application makes when a
       // solverContext is supplied - resolveDocumentSideCoverage decides,
@@ -415,33 +456,99 @@ function evaluateGoldenTest(
       // new, authoritative "actual."
       const solverSim = simulateDebtIncurrence(data, position, amount, secured, solverContext);
 
-      const readDebtMetric = (sim: DebtIncurrenceSimulation): number => {
-        if (metric === "cleared") return sim.status === "clear" ? 1 : 0;
-        const remainingAfterAmount = sim.overallCapacity !== undefined ? sim.overallCapacity - amount : undefined;
-        return readNumericMetric(
-          { overallCapacity: sim.overallCapacity, remainingAfterAmount, ...sim.proForma } as unknown as Record<string, unknown>,
-          metric
-        );
-      };
+      let legacyComputed: number | null;
+      let solverComputed: number | null;
+      // Present only for metric === "remainingAfterAmount" - the real
+      // post-transaction recomputation (task §5/§6/§7), never
+      // `overallCapacity - amount` against the PRE-transaction figure.
+      let solverPostTxn: PostTransactionCapacitySimulation | null = null;
 
-      const legacyComputed = readDebtMetric(legacySim);
-      const solverComputed = readDebtMetric(solverSim);
+      if (metric === "cleared") {
+        legacyComputed = legacySim.status === "clear" ? 1 : 0;
+        solverComputed = solverSim.status === "clear" ? 1 : 0;
+      } else if (metric === "remainingAfterAmount") {
+        legacyComputed = legacySim.overallCapacity !== undefined ? legacySim.overallCapacity - amount : null;
+        solverPostTxn = computeRemainingCapacityAfterDebtIncurrence(data, position, amount, secured, solverContext);
+        // task §5's governing rule: never a fabricated zero merely because
+        // testedAmount equals a per-document `capacity` field - `undefined`
+        // (surfaced here as `null`, failing honestly against a numeric
+        // expectation) when the real post-transaction maximum isn't a
+        // single EXACT figure, not a silently-substituted 0.
+        solverComputed = solverPostTxn.remainingCapacity ?? null;
+      } else {
+        legacyComputed = readNumericMetric({ overallCapacity: legacySim.overallCapacity, ...legacySim.proForma } as unknown as Record<string, unknown>, metric);
+        solverComputed = readNumericMetric({ overallCapacity: solverSim.overallCapacity, ...solverSim.proForma } as unknown as Record<string, unknown>, metric);
+      }
 
       status = solverSim.status;
       computed = solverComputed;
 
-      const solverBindingPermission = solverSim.binding?.solverResult?.permissionPathUsed?.legs[0]?.permissionId;
-      if (solverBindingPermission) {
-        const perm = solverContext.permissions.find((p) => p.id === solverBindingPermission);
-        if (perm) {
-          bindingProvision = permissionAsBindingLike(perm);
-          // bindingDefinedTerms, for a solver-bound permission, comes from
-          // Permission.definedTermRefs (resolved via definedTermIdToName) -
-          // definedTermsByKey only indexes legacy CovenantProvision rows.
-          solverBoundDefinedTerms = permissionDefinedTermNames(perm, definedTermIdToName);
+      // BINDING PROVISION selection (task §8/§9/§10) - three distinct cases,
+      // never conflated:
+      if (metric === "remainingAfterAmount") {
+        // "What remains, and under which provision" is inherently a binding-
+        // constraint question about the POST-transaction state - graded
+        // against `computeRemainingCapacityAfterDebtIncurrence`'s own
+        // cross-document binding document, never against `selectedPath`.
+        const citation = solverPostTxn?.binding?.bindingConstraint?.[0];
+        bindingProvision = citationAsBindingLike(citation, solverContext.permissions);
+        if (citation?.permissionId) {
+          const perm = solverContext.permissions.find((p) => p.id === citation.permissionId);
+          if (perm) solverBoundDefinedTerms = permissionDefinedTermNames(perm, definedTermIdToName);
+        }
+      } else if (asksWhichProvisionBinds) {
+        // A binding-constraint question independent of the specific spot-
+        // check amount tested (e.g. "at what level would the SSNL test
+        // first become binding") - graded against the PRE-transaction
+        // cross-document binding constraint (the same real maximum-capacity
+        // machinery, evaluated with amount=0 so nothing is "tested," only
+        // measured - see computeRemainingCapacityAfterDebtIncurrence's own
+        // doc comment on why amount doesn't affect this figure), never
+        // against whichever path happened to clear the spot-check amount.
+        const preTxnBinding = computeRemainingCapacityAfterDebtIncurrence(data, position, 0, secured, solverContext);
+        // The cross-document computation above fails closed (undefined) when
+        // ANY governing document/side is not determinable (e.g. Matthews'
+        // Credit Agreement has no debt-incurrence covenant at all, ever -
+        // not a temporary gap). When that happens, fall back to whichever
+        // SINGLE document DID resolve solver-native's own pre-transaction
+        // bindingConstraint (`solverSim.binding` - the same per-document,
+        // not-cross-document-fail-closed value `simulateDebtIncurrence`
+        // already exposes) - a real, computed citation from a narrower
+        // (single-document) scope, never a fabricated one (task §9).
+        const citation = preTxnBinding.binding?.bindingConstraint?.[0] ?? solverSim.binding?.bindingConstraint?.[0];
+        bindingProvision = citationAsBindingLike(citation, solverContext.permissions);
+        if (citation?.permissionId) {
+          const perm = solverContext.permissions.find((p) => p.id === citation.permissionId);
+          if (perm) solverBoundDefinedTerms = permissionDefinedTermNames(perm, definedTermIdToName);
         }
       } else {
-        bindingProvision = debtBindingProvision(solverSim);
+        // Plain "does this specific amount clear" question - the question
+        // does not itself ask which provision binds the ceiling, so the
+        // SELECTED PATH the solver actually relied upon for this tested
+        // amount is the right citation (task §10: "which path was used for
+        // this particular transaction? -> grade selectedPath").
+        const solverBindingPermission = solverSim.binding?.solverResult?.permissionPathUsed?.legs[0]?.permissionId;
+        if (solverBindingPermission) {
+          const perm = solverContext.permissions.find((p) => p.id === solverBindingPermission);
+          if (perm) {
+            bindingProvision = permissionAsBindingLike(perm);
+            // bindingDefinedTerms, for a solver-bound permission, comes from
+            // Permission.definedTermRefs (resolved via definedTermIdToName) -
+            // definedTermsByKey only indexes legacy CovenantProvision rows.
+            solverBoundDefinedTerms = permissionDefinedTermNames(perm, definedTermIdToName);
+          }
+        } else {
+          bindingProvision = debtBindingProvision(solverSim);
+        }
+
+        // task §11: "Where a golden question does NOT require one unique
+        // permission path, do not fail merely because the solver chose
+        // another equally valid path." Suppressed ONLY on positive evidence
+        // that another CLEAR path exists for THIS tested amount
+        // (`SolverResult.alternatives` — a real, already-computed fact, not
+        // an assumption) - never merely because the citation mismatched.
+        const bindingSolverResult = solverSim.binding?.solverResult;
+        bindingCheckSuppressed = bindingSolverResult?.alternatives?.some((a) => a.path.status === "CLEAR") ?? false;
       }
 
       // "Differs" covers everything a golden row actually asserts against a
@@ -527,12 +634,26 @@ function evaluateGoldenTest(
 
   const statusOk = expectedStatus ? status === expectedStatus : null;
 
-  const bindingOk = test.bindingProvision ? (bindingProvision ? matchesBindingLabel(test.bindingProvision, bindingProvision) : false) : null;
+  // task §11: when `bindingCheckSuppressed` is set (positive evidence of
+  // multiple valid clearing paths, and the question doesn't itself ask which
+  // provision binds — see its own doc comment on EvalResult), the citation
+  // check is INFORMATIONAL only - `null`, not `false`, so it never gates
+  // `failed` below, while `bindingLabel`/`discrepancy` below still surface
+  // the actual citation for the report. This is never a blanket "any answer
+  // is acceptable": every other row (and every binding-constraint question)
+  // is graded exactly as strictly as before.
+  const bindingOk = test.bindingProvision
+    ? bindingCheckSuppressed
+      ? null
+      : bindingProvision
+        ? matchesBindingLabel(test.bindingProvision, bindingProvision)
+        : false
+    : null;
 
   const actualDefinedTerms =
     solverBoundDefinedTerms ?? (bindingProvision ? definedTermsByKey.get(`${bindingProvision.documentId}:${bindingProvision.code}`) ?? [] : []);
   const expectedDefinedTerms = test.bindingDefinedTerms;
-  const definedTermsOk = expectedDefinedTerms.length > 0 ? setEqualsCaseInsensitive(expectedDefinedTerms, actualDefinedTerms) : null;
+  const definedTermsOk = bindingCheckSuppressed ? null : expectedDefinedTerms.length > 0 ? setEqualsCaseInsensitive(expectedDefinedTerms, actualDefinedTerms) : null;
 
   const failed = numericOk === false || statusOk === false || bindingOk === false || definedTermsOk === false;
   const detailParts: string[] = [];
@@ -541,6 +662,11 @@ function evaluateGoldenTest(
   if (bindingOk === false) detailParts.push(`expected binding provision "${test.bindingProvision}", got "${bindingProvision?.code ?? "none"}"`);
   if (definedTermsOk === false) {
     detailParts.push(`expected defined terms [${expectedDefinedTerms.join(", ")}], got [${actualDefinedTerms.join(", ")}]`);
+  }
+  if (bindingCheckSuppressed && test.bindingProvision && bindingProvision && !matchesBindingLabel(test.bindingProvision, bindingProvision)) {
+    detailParts.push(
+      `(informational, non-gating per task §11: multiple valid clearing paths exist for this tested amount; golden row cites "${test.bindingProvision}", solver selected "${bindingProvision.code}" - both are valid, this question does not ask which provision binds)`
+    );
   }
 
   return {
@@ -559,6 +685,7 @@ function evaluateGoldenTest(
     detail: detailParts.join("; ") || "matches expected answer, status, binding provision, and defined terms",
     solverNote,
     discrepancy,
+    bindingCheckSuppressed,
   };
 }
 
@@ -659,6 +786,7 @@ async function main() {
         detail: err instanceof Error ? err.message : String(err),
         solverNote: null,
         discrepancy: null,
+        bindingCheckSuppressed: false,
       };
     }
 
