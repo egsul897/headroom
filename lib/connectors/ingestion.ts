@@ -42,12 +42,26 @@ import { FinancialFactValueSchema } from "../extraction/schemas";
 import { upsertArtifactWithDedup, findDuplicateArtifact } from "./dedup";
 import { CsvFinancialConnector } from "./csv-financial-connector";
 import { getConnectorForConnection } from "./registry";
+import { reconcileFinancialFacts, type FinancialFactCandidateWithSource } from "./reconciliation";
 import type { DiscoveredSourceItem, SourceConnector } from "./types";
 
-/** Which IngestionJobStage rows a job needs, by kind - documented per the task's own "minimal correct stage set per kind" instruction. INITIALIZE/AMENDMENT_PROCESS run the full pipeline (a first-time or amendment-triggered pull genuinely needs every stage, including the RECONCILE stub - see runReconcileStage below). SYNC (an incremental delta pull) skips RECONCILE, exactly as the task brief's own example names - Phase B has not wired real reconciliation logic yet for ANY job kind, so carrying a stub RECONCILE stage through every SYNC run would only be busywork with no real behavior behind it; INITIALIZE/AMENDMENT_PROCESS keep it so the full stage set exists once a company's very first pull completes (or an amendment triggers reprocessing), ready for Phase B to fill in. */
+/**
+ * Which IngestionJobStage rows a job needs, by kind - documented per the
+ * task's own "minimal correct stage set per kind" instruction.
+ *
+ * Phase B UPDATE: SYNC now ALSO runs RECONCILE. Phase A's own stub-era
+ * rationale for skipping it on SYNC ("carrying a stub through every
+ * incremental sync would be pure busywork") no longer applies now that
+ * RECONCILE does real work (see runReconcileStage below) - the task's own
+ * brief names the exact scenario this matters for: a SYNC pulling fresh CSV
+ * data SHOULD be reconciled against already-approved/pending EDGAR or
+ * upload-sourced facts for the same metric/period, not just silently land as
+ * more PENDING candidates. INITIALIZE/AMENDMENT_PROCESS already ran the full
+ * pipeline including RECONCILE.
+ */
 const STAGE_SET_BY_KIND: Record<IngestionJobKind, IngestionStageKind[]> = {
   INITIALIZE: ["DISCOVER", "FETCH", "CLASSIFY_DEDUPE", "EXTRACT", "RECONCILE", "COMPLETE"],
-  SYNC: ["DISCOVER", "FETCH", "CLASSIFY_DEDUPE", "EXTRACT", "COMPLETE"],
+  SYNC: ["DISCOVER", "FETCH", "CLASSIFY_DEDUPE", "EXTRACT", "RECONCILE", "COMPLETE"],
   AMENDMENT_PROCESS: ["DISCOVER", "FETCH", "CLASSIFY_DEDUPE", "EXTRACT", "RECONCILE", "COMPLETE"],
 };
 
@@ -231,7 +245,7 @@ async function runClassifyDedupeStage(job: IngestionJob, connection: CompanySour
 }
 
 /** Ensures a stable "container" Document/ExtractionRun/ExtractionStage chain exists for FINANCIAL_RECORD candidates to hang off of, satisfying ExtractionCandidate's own required (sourceDocumentId, extractionRunId, extractionStageId) foreign keys without a schema change - a CSV upload genuinely IS the "document" a financial fact was sourced from, so this is real provenance, not a workaround. Idempotent: reuses the same synthetic Document/ExtractionRun for a given connection across repeated EXTRACT stage runs. */
-async function ensureFinancialFactContainer(companyId: string, connection: CompanySourceConnection): Promise<{ documentId: string; extractionRunId: string; extractionStageId: string }> {
+export async function ensureFinancialFactContainer(companyId: string, connection: CompanySourceConnection): Promise<{ documentId: string; extractionRunId: string; extractionStageId: string }> {
   const marker = `connector-financial-records:${connection.id}`;
   let document = await prisma.document.findFirst({ where: { companyId, source: marker } });
   if (!document) {
@@ -328,19 +342,158 @@ async function runExtractStage(job: IngestionJob, connection: CompanySourceConne
 }
 
 /**
- * A LEGITIMATE SCOPED STUB, not a fake success: Phase A does not implement
- * reconciliation (MATCH/MATERIAL_DIFFERENCE/etc. classification across
- * sources) - that is explicitly Phase B's job per this phase's own brief.
- * This stage marks itself COMPLETE with a clearly-labeled note rather than
- * silently no-op'ing without a trace, so a reader of the stage row (or a
- * future Phase B implementation) can see exactly what did and did not run
- * here.
+ * Real reconciliation (Phase B). Loads every PENDING/REVIEW_REQUIRED
+ * FINANCIAL_FACT candidate for this company (promoted/rejected/approved
+ * candidates are settled - re-reconciling them would be pointless and could
+ * spuriously flip a human decision), joins each one back to its source
+ * connection (candidate.proposedValue.sourceRecordRef -> SourceArtifact ->
+ * CompanySourceConnection, exactly the join the brief describes - nothing
+ * new invented here), runs the PURE reconcileFinancialFacts function, and
+ * applies its verdict:
+ *
+ *  - MATCH: no writes. Every candidate's reviewStatus is left exactly as it
+ *    already was - the normal PENDING review flow proceeds untouched.
+ *  - MATERIAL_DIFFERENCE: every candidate EXCEPT the winner is flagged
+ *    REVIEW_REQUIRED with a rationale naming the higher-priority value that
+ *    conflicts with it.
+ *  - CONFLICTING_SOURCE: every candidate in the group is flagged
+ *    REVIEW_REQUIRED (no winner exists to leave untouched) - never silently
+ *    picked.
+ *  - STALE_SOURCE: every candidate in the group is flagged REVIEW_REQUIRED
+ *    with a staleness rationale.
+ *
+ * COMPARISON SCOPE vs. WRITE SCOPE (deliberately different - documented per
+ * the task's own "never silently overwrite the approved one" requirement):
+ * the candidates COMPARED against each other include every non-REJECTED
+ * FINANCIAL_FACT candidate for the company - APPROVED/EDITED/already-
+ * PROMOTED ones too, not just PENDING/REVIEW_REQUIRED - so a NEWLY-arrived
+ * fact that conflicts with an ALREADY-DECIDED (or already-promoted) one is
+ * still genuinely detected as a conflict, not silently missed just because
+ * the earlier fact left the "open" pool. The candidates this stage actually
+ * WRITES to are a strict subset: only ones still open (reviewStatus PENDING
+ * or REVIEW_REQUIRED AND promotedAt IS NULL). An already-approved, edited,
+ * or promoted candidate is NEVER flipped back to REVIEW_REQUIRED by this
+ * system process, no matter which side of a conflict it's on - only a human
+ * review decision (lib/onboarding/review.ts) or promotion can change its
+ * status once it has left the open pool. This is what makes "a
+ * deliberately-conflicting re-upload produces a REVIEW_REQUIRED candidate
+ * rather than silently overwriting the approved one" concretely true:
+ * tests/onboarding/*-acceptance*.test.ts exercises exactly this scenario.
+ *
+ * This is a SYSTEM-initiated status change, not a human review decision, so
+ * it deliberately does NOT go through reviewCandidate() (lib/onboarding/review.ts)
+ * - that function requires a real reviewedBy identity and is reserved for an
+ * actual human's decision (see its own MissingReviewerError). A direct
+ * `prisma.extractionCandidate.update` is the correct, narrower write here.
+ * Audit-trail decision (documented per the task's own "your call, document
+ * it" allowance): NO CandidateReviewEvent row is written for this system
+ * flag. CandidateReviewEvent's own schema comment frames it as "one row per
+ * review DECISION" bracketed by an action from CandidateReviewAction
+ * (APPROVE/EDIT/REJECT/REVIEW_REQUIRED) - genuinely human decisions, each
+ * with a `reviewedBy`. Overloading that table with a system-authored,
+ * reviewer-less row would blur "who decided this" for every real reviewer
+ * looking at a candidate's history. This stage's own persisted `output` JSON
+ * (below) is a complete, durable, re-inspectable audit trail already - every
+ * classification produced, every group's rationale and member candidateIds -
+ * and IngestionJobStage rows are never deleted, so nothing is lost by not
+ * duplicating it into CandidateReviewEvent. If a future phase wants a
+ * candidate-level "why is this REVIEW_REQUIRED" trail visible from the
+ * candidate's own history panel, the rationale field this stage writes onto
+ * each flagged candidate already carries that explanation inline.
  */
-async function runReconcileStage(): Promise<StageOutcome> {
+async function runReconcileStage(companyId: string): Promise<StageOutcome> {
+  const [pendingCandidates, priorityRules] = await Promise.all([
+    // Comparison scope: every non-REJECTED FINANCIAL_FACT candidate - see
+    // this function's own header comment for why this deliberately includes
+    // already-decided/promoted candidates (comparison scope) while the WRITE
+    // scope below stays much narrower (open candidates only).
+    prisma.extractionCandidate.findMany({
+      where: { companyId, kind: "FINANCIAL_FACT", reviewStatus: { not: "REJECTED" } },
+    }),
+    prisma.sourcePriorityRule.findMany({ where: { OR: [{ companyId }, { companyId: null }] } }),
+  ]);
+
+  if (pendingCandidates.length === 0) {
+    return { recordsDiscovered: 0, recordsChanged: 0, output: { note: "No FINANCIAL_FACT candidates to reconcile.", classificationCounts: {} } };
+  }
+
+  const sourceRecordRefs = pendingCandidates.map((c) => (c.proposedValue as { sourceRecordRef?: string }).sourceRecordRef).filter((v): v is string => Boolean(v));
+  const artifacts = await prisma.sourceArtifact.findMany({ where: { id: { in: sourceRecordRefs } }, include: { sourceConnection: true } });
+  const artifactById = new Map(artifacts.map((a) => [a.id, a]));
+
+  const candidateRowById = new Map(pendingCandidates.map((c) => [c.id, c]));
+  const withSource: FinancialFactCandidateWithSource[] = [];
+  for (const c of pendingCandidates) {
+    const value = c.proposedValue as { metricName: string; value: number; asOfDate: string; unit?: string; sourceRecordRef?: string };
+    const artifact = value.sourceRecordRef ? artifactById.get(value.sourceRecordRef) : undefined;
+    if (!artifact) continue; // no resolvable source connection - cannot reconcile this candidate; it stays PENDING, reviewed normally.
+    withSource.push({
+      candidateId: c.id,
+      metricName: value.metricName,
+      value: value.value,
+      asOfDate: value.asOfDate,
+      unit: value.unit,
+      sourceConnectionId: artifact.sourceConnectionId,
+      connectorType: artifact.sourceConnection.connectorType,
+      connectionSourcePriority: artifact.sourceConnection.sourcePriority,
+      reviewStatus: c.reviewStatus,
+    });
+  }
+
+  const groups = reconcileFinancialFacts(withSource, priorityRules, { companyId });
+
+  const classificationCounts: Record<string, number> = {};
+  let flaggedCount = 0;
+  const groupSummaries: Record<string, unknown>[] = [];
+
+  for (const group of groups) {
+    classificationCounts[group.classification] = (classificationCounts[group.classification] ?? 0) + 1;
+    groupSummaries.push({
+      metricName: group.metricName,
+      period: group.period,
+      classification: group.classification,
+      candidateIds: group.candidates.map((c) => c.candidateId),
+      winnerCandidateId: group.winnerCandidateId,
+      rationale: group.rationale,
+    });
+
+    if (group.classification === "MATCH" || group.classification === "MISSING_SOURCE") continue;
+
+    const toFlag = group.classification === "MATERIAL_DIFFERENCE" ? group.candidates.filter((c) => c.candidateId !== group.winnerCandidateId) : group.candidates;
+
+    for (const c of toFlag) {
+      const winner = group.classification === "MATERIAL_DIFFERENCE" ? group.candidates.find((w) => w.candidateId === group.winnerCandidateId) : undefined;
+      const rationale =
+        group.classification === "MATERIAL_DIFFERENCE" && winner
+          ? `Conflicts with a higher-priority ${winner.connectorType} value of ${winner.value}${winner.unit ? ` ${winner.unit}` : ""} as of ${winner.asOfDate} - see candidate ${winner.candidateId}. ${group.rationale}`
+          : group.rationale;
+      const current = candidateRowById.get(c.candidateId);
+      // WRITE SCOPE (see this function's own header comment): never touch a
+      // candidate that has left the open pool - already APPROVED/EDITED/
+      // PROMOTED (or REJECTED, though REJECTED is already excluded from the
+      // comparison scope above). It still fully participated in the
+      // classification/rationale above; it is simply never written to.
+      if (!current || current.promotedAt || (current.reviewStatus !== "PENDING" && current.reviewStatus !== "REVIEW_REQUIRED")) continue;
+      // Idempotent re-runs (this stage scans EVERY open FINANCIAL_FACT
+      // candidate company-wide, not just this job's own - see this stage's
+      // own header comment on why per-company scope is correct): skip the
+      // write entirely, and don't count it in recordsChanged, when the
+      // candidate is already exactly REVIEW_REQUIRED with this same
+      // rationale - re-running RECONCILE after nothing relevant has changed
+      // should be a true no-op, not a phantom "change."
+      if (current.reviewStatus === "REVIEW_REQUIRED" && current.rationale === rationale) continue;
+      await prisma.extractionCandidate.update({
+        where: { id: c.candidateId },
+        data: { reviewStatus: "REVIEW_REQUIRED", rationale },
+      });
+      flaggedCount++;
+    }
+  }
+
   return {
-    recordsDiscovered: 0,
-    recordsChanged: 0,
-    output: { note: "Phase A scoped stub - no reconciliation logic runs here. Phase B implements MATCH/MATERIAL_DIFFERENCE/etc. classification across sources per docs/autonomous-retrieval-phase-a-foundation.md." },
+    recordsDiscovered: withSource.length,
+    recordsChanged: flaggedCount,
+    output: { classificationCounts, groups: groupSummaries },
   };
 }
 
@@ -411,7 +564,7 @@ export async function runIngestionJobStage(ingestionJobId: string, stage: Ingest
         break;
       }
       case "RECONCILE":
-        outcome = await runReconcileStage();
+        outcome = await runReconcileStage(job.companyId);
         break;
       case "COMPLETE": {
         const discoverOutput = await loadStageOutput(ingestionJobId, "DISCOVER");

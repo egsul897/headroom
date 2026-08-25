@@ -121,9 +121,12 @@ describe("IngestionJobStage partial-failure/retry discipline (real database + re
       expect(value.sourceRecordRef).toBeTruthy();
     }
 
-    // SYNC jobs skip RECONCILE - COMPLETE is the very next (and last) stage.
+    // Phase B UPDATE (lib/connectors/ingestion.ts's STAGE_SET_BY_KIND - see
+    // its own header comment): SYNC jobs now include RECONCILE too, since
+    // reconciliation is real logic as of Phase B, not the Phase A stub this
+    // test's comment used to describe.
     const stages = await prisma.ingestionJobStage.findMany({ where: { ingestionJobId: job.id } });
-    expect(stages.map((s) => s.stage).sort()).toEqual(["CLASSIFY_DEDUPE", "COMPLETE", "DISCOVER", "EXTRACT", "FETCH"].sort());
+    expect(stages.map((s) => s.stage).sort()).toEqual(["CLASSIFY_DEDUPE", "COMPLETE", "DISCOVER", "EXTRACT", "FETCH", "RECONCILE"].sort());
 
     // Re-running EXTRACT a second time (after resetting it to PENDING would be needed to actually re-invoke it - here we just confirm idempotency logic directly) never double-creates candidates for the same artifacts.
     const artifactIds = (await prisma.sourceArtifact.findMany({ where: { companyId: COMPANY_ID }, select: { id: true } })).map((a) => a.id);

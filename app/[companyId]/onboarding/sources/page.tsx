@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Card, Chip, type ChipTone } from "@/components/ui";
 import { fmtDate } from "@/lib/format";
 import { listCompanySourceConnections } from "@/lib/connectors/registry";
+import { getCanonicalCompanyState } from "@/lib/company-state/canonical-state";
 import { prisma } from "@/lib/prisma";
 import { connectEdgarAction, connectAndSyncCsvAction, syncConnectionAction } from "./actions";
 
@@ -26,12 +27,55 @@ export default async function OnboardingSourcesPage({ params }: { params: Promis
     take: 10,
     include: { stages: { orderBy: { id: "asc" } }, sourceConnection: { select: { provider: true, connectorType: true } } },
   });
+  // Phase B: a minimal reconciliation/coverage summary, reusing
+  // getCanonicalCompanyState (lib/company-state/canonical-state.ts) - the
+  // one composed read this page and any future canonical-state UI would
+  // both draw from. Deliberately not a polished dashboard - see that
+  // module's own header comment on scope.
+  const canonicalState = await getCanonicalCompanyState(companyId);
 
   const connectEdgar = connectEdgarAction.bind(null, companyId);
   const connectAndSyncCsv = connectAndSyncCsvAction.bind(null, companyId);
 
   return (
     <div className="stack">
+      {(canonicalState.conflicts.length > 0 || canonicalState.reviewProgress.total > 0) && (
+        <Card>
+          <div className="card-title">Reconciliation &amp; review summary</div>
+          <div className="card-subtitle">Composed via getCanonicalCompanyState - the same function a future canonical-state view would use.</div>
+          <div className="stat-grid">
+            <div className="stat-tile">
+              <div className="stat-tile-value">{canonicalState.reviewProgress.total}</div>
+              <div className="stat-tile-label">candidates discovered</div>
+            </div>
+            <div className="stat-tile">
+              <div className="stat-tile-value">{canonicalState.reviewProgress.pending}</div>
+              <div className="stat-tile-label">pending review</div>
+            </div>
+            <div className="stat-tile">
+              <div className="stat-tile-value">{canonicalState.reviewProgress.reviewRequired}</div>
+              <div className="stat-tile-label">review required</div>
+            </div>
+            <div className="stat-tile">
+              <div className="stat-tile-value">{canonicalState.conflicts.length}</div>
+              <div className="stat-tile-label">reconciliation conflicts</div>
+            </div>
+          </div>
+          {canonicalState.conflicts.length > 0 && (
+            <div className="stack" style={{ gap: 6, marginTop: 10 }}>
+              {canonicalState.conflicts.map((g, i) => (
+                <div key={i} className="row-note">
+                  <Chip tone={g.classification === "STALE_SOURCE" ? "tight" : "trip"}>{g.classification}</Chip> {g.metricName} / {g.period} — {g.rationale}
+                </div>
+              ))}
+            </div>
+          )}
+          <div className="row-note" style={{ marginTop: 6 }}>
+            <Link href={`/${companyId}/onboarding/review`}>Go to review workspace</Link>
+          </div>
+        </Card>
+      )}
+
       <Card>
         <div className="card-title">Connected sources</div>
         <div className="card-subtitle">A company&rsquo;s document upload is already a first-class source connection here, alongside EDGAR/CSV - not a special case.</div>

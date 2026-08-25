@@ -35,6 +35,7 @@ import { VALUE_SCHEMA_BY_KIND } from "./review";
 import { classifyCompanyCoverage } from "../solver/coverage";
 import type { CoverageResult } from "../solver/types";
 import { loadCompanySolverStaticData } from "../covenant-engine";
+import { upsertFinancialFactsForDate } from "./financial";
 
 const VALID_ENTITY_CLASS_TAGS = new Set(["BORROWER", "GUARANTOR_RS", "NON_GUARANTOR_RS", "FOREIGN_RS", "UNRESTRICTED_SUB", "SECURITIZATION_SUB", "IMMATERIAL_SUB"]);
 
@@ -123,18 +124,45 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
         skipped.push({ candidateId: c.id, kind: c.kind, reason: "Effective value failed re-validation against its own schema - not promoted." });
         continue;
       }
-      const supersedesId = value.supersedesDocumentRef ? companyDocuments.find((d) => d.name === value.supersedesDocumentRef || d.id === value.supersedesDocumentRef)?.id : undefined;
+      // Case-insensitive match: real document titles and an extraction
+      // provider's own textual reference to them do not reliably share exact
+      // casing (e.g. a document row named "Credit Agreement" vs. body text
+      // reading "...amends the CREDIT AGREEMENT dated..."), and a supersession
+      // link should not silently fail to resolve over a casing difference
+      // alone. Still an exact (case-folded) name/id match, never a fuzzy one.
+      const supersedesId = value.supersedesDocumentRef
+        ? companyDocuments.find((d) => d.name.toLowerCase() === value.supersedesDocumentRef!.toLowerCase() || d.id === value.supersedesDocumentRef)?.id
+        : undefined;
+      const amendmentEffectiveFrom = parseDateOrNull(value.effectiveFrom);
       await tx.document.update({
         where: { id: c.sourceDocumentId },
         data: {
           type: value.documentType as never,
           supersedesDocumentId: supersedesId ?? null,
-          effectiveFrom: parseDateOrNull(value.effectiveFrom),
+          effectiveFrom: amendmentEffectiveFrom,
           effectiveTo: parseDateOrNull(value.effectiveTo),
           typeConfirmedByUser: true,
           amendmentRelationshipConfirmedByUser: true,
         },
       });
+      // Propagate the amendment's effectiveFrom onto the BASE (superseded)
+      // document's own effectiveTo - this is what actually makes
+      // loadCompanyCovenantData's date-range filter (lib/covenant-engine.ts)
+      // treat the base document's provisions as no longer effective from
+      // that date forward, per Document.effectiveTo's own schema comment
+      // ("When an amendment supersedes this document, set THIS document's
+      // effectiveTo to the amendment's effectiveFrom"). Without this, the
+      // base document would remain "always effective" forever even after a
+      // reviewer approves a clear supersession - a genuine gap this promotion
+      // code did not previously close (docs/autonomous-information-retrieval-v1.md
+      // "Amendment processing"). Only applied when the amendment candidate
+      // actually proposed an effectiveFrom date - an approved supersession
+      // link with no date is recorded (supersedesDocumentId) but does not
+      // retroactively cut off the base document's effectiveness, since "no
+      // date" is not the same as "effective immediately."
+      if (supersedesId && amendmentEffectiveFrom) {
+        await tx.document.update({ where: { id: supersedesId }, data: { effectiveTo: amendmentEffectiveFrom } });
+      }
       promotions.push({ candidateId: c.id, promotedToId: c.sourceDocumentId });
     }
 
@@ -361,14 +389,68 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     }
 
     // -----------------------------------------------------------------------
-    // 9. Mark every successfully-promoted candidate.
+    // 9. FINANCIAL_FACT -> FinancialSnapshot/FinancialState upsert (Phase B,
+    //    docs/autonomous-information-retrieval-v1.md "Source mapping").
+    //    Closes the gap Phase A deliberately left open: a connector-
+    //    discovered financial fact (EDGAR/CSV/upload), once a human approves
+    //    or edits it, flows into the EXACT SAME rows lib/dashboard-service.ts
+    //    already reads - no dashboard code changes, per the task's own
+    //    explicit instruction.
+    //
+    //    Batched BY asOfDate (lib/onboarding/financial.ts's
+    //    upsertFinancialFactsForDate): several sibling FINANCIAL_FACT
+    //    candidates dated the same day (e.g. a CSV upload reporting cash,
+    //    total_debt, covenant_ebitda, etc. all as of the same period-end) are
+    //    merged into ONE snapshot/state write, so a brand-new company with NO
+    //    prior FinancialSnapshot can still be fully promoted from its very
+    //    first batch of facts, provided that batch collectively covers all 8
+    //    required fields - not silently forced to fail closed one-fact-at-a-
+    //    time just because promotion happened to process them in isolation.
+    //    An unrecognized metricName, or a batch that still leaves some
+    //    required field uncovered by any base row or sibling fact, is a
+    //    documented per-fact skip (never an error that aborts the whole
+    //    promotion batch, never a fabricated value).
+    // -----------------------------------------------------------------------
+    const financialFactCandidates = candidates.filter((c) => c.kind === "FINANCIAL_FACT");
+    const byAsOfDate = new Map<string, { candidate: ExtractionCandidate; metricName: string; value: number }[]>();
+    for (const c of financialFactCandidates) {
+      const value = resolveEffectiveValue(c) as { metricName: string; value: number; asOfDate: string; unit?: string; sourceRecordRef?: string } | null;
+      if (!value) {
+        skipped.push({ candidateId: c.id, kind: c.kind, reason: "Effective value failed re-validation against its own schema - not promoted." });
+        continue;
+      }
+      const asOfDate = parseDateOrNull(value.asOfDate);
+      if (!asOfDate) {
+        skipped.push({ candidateId: c.id, kind: c.kind, reason: `asOfDate "${value.asOfDate}" did not parse to a valid date - not promoted.` });
+        continue;
+      }
+      const key = asOfDate.toISOString();
+      const list = byAsOfDate.get(key) ?? [];
+      list.push({ candidate: c, metricName: value.metricName, value: value.value });
+      byAsOfDate.set(key, list);
+    }
+    for (const [isoDate, group] of byAsOfDate) {
+      const asOfDate = new Date(isoDate);
+      const notes = `Promoted from FINANCIAL_FACT candidate(s): ${group.map((g) => g.candidate.id).join(", ")}.`;
+      const result = await upsertFinancialFactsForDate(companyId, asOfDate, group.map((g) => ({ key: g.candidate.id, metricName: g.metricName, value: g.value })), notes, tx);
+      for (const outcome of result.perFact) {
+        if (!outcome.applied) {
+          skipped.push({ candidateId: outcome.key, kind: "FINANCIAL_FACT", reason: outcome.skipReason ?? "upsertFinancialFactsForDate declined to apply this fact - not promoted." });
+          continue;
+        }
+        promotions.push({ candidateId: outcome.key, promotedToId: outcome.financialSnapshotId ?? outcome.financialStateId! });
+      }
+    }
+
+    // -----------------------------------------------------------------------
+    // 10. Mark every successfully-promoted candidate.
     // -----------------------------------------------------------------------
     for (const p of promotions) {
       await tx.extractionCandidate.update({ where: { id: p.candidateId }, data: { promotedAt: new Date(), promotedToId: p.promotedToId } });
     }
 
     // -----------------------------------------------------------------------
-    // 10. Post-promotion coverage-gate evaluation - SolverCoverageDeclarations
+    // 11. Post-promotion coverage-gate evaluation - SolverCoverageDeclarations
     //     + Company.onboardingStatus, using lib/solver/coverage.ts's EXISTING
     //     classifyCompanyCoverage predicate (no new gap logic). A scope's
     //     declaration is marked isComplete=true only when zero un-promoted,
