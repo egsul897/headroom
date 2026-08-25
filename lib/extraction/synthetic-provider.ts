@@ -12,15 +12,18 @@
  * easily extended later") means adding another regex/heuristic method here,
  * not a per-company special case.
  *
- * thresholdValue/confidence note: a KNOWN_NOT_MODELED or no-dollar-figure
- * PERMISSION proposal below still needs SOME number for the schema's
- * required `thresholdValue` field (it mirrors Permission.thresholdValue,
- * a non-nullable Decimal), so it uses 0 with reduced/absent `confidence`
- * and an explicit rationale - never treated as a real "$0 capacity" because
- * nothing in this pipeline promotes a candidate without human review, and
- * `modelingStatus: "KNOWN_NOT_MODELED"` / `reviewStatus: REVIEW_REQUIRED`
- * (set by lib/extraction/run-stage.ts for COVERAGE output) makes that
- * explicit for a reviewer.
+ * extractPermissions only proposes a MODELED candidate when a concrete
+ * dollar figure anchors thresholdValue - a Lien/Indebtedness keyword with no
+ * figure is left unmodeled on purpose (fail closed, never a fabricated $0/
+ * low-confidence "modeled" placeholder) and is exactly what extractCoverageGaps
+ * exists to flag instead, as a KNOWN_NOT_MODELED PERMISSION proposal.
+ * `thresholdValue: 0` there still needs SOME number for the schema's
+ * required, non-nullable field (it mirrors Permission.thresholdValue), but
+ * carries no `confidence` and an explicit rationale - never treated as a
+ * real "$0 capacity" because nothing in this pipeline promotes a candidate
+ * without human review, and `modelingStatus: "KNOWN_NOT_MODELED"` /
+ * `reviewStatus: REVIEW_REQUIRED` (derived by lib/extraction/run-stage.ts)
+ * makes that explicit for a reviewer.
  */
 
 import type {
@@ -107,15 +110,21 @@ export class SyntheticExtractionProvider implements ContractExtractionProvider {
       const isLien = /\blien\b/i.test(chunk.text);
       const isIndebtedness = /\bindebtedness\b/i.test(chunk.text);
       if (!isLien && !isIndebtedness) continue;
+      // Only propose a MODELED permission when there is a concrete
+      // dollar-denominated basket to anchor thresholdValue to - a
+      // keyword-only match with no figure is exactly what COVERAGE below
+      // exists to flag instead (fail closed: leave it genuinely unmodeled
+      // rather than fabricate a $0/low-confidence "modeled" placeholder).
       const amount = parseDollarAmount(chunk.text);
+      if (amount === null) continue;
       candidates.push({
         kind: "PERMISSION",
         sourceChunkIds: [chunk.id],
         sourcePage: chunk.page ?? undefined,
         sourceSectionRef: chunk.sectionRef,
         sourceExcerpt: chunk.text.slice(0, 300),
-        confidence: amount !== null ? 0.8 : 0.4,
-        rationale: amount !== null ? `Found a dollar-denominated basket in Section ${chunk.sectionRef}.` : `Section ${chunk.sectionRef} references ${isLien ? "Lien" : "Indebtedness"} but no dollar figure was found - flagged with reduced confidence.`,
+        confidence: 0.8,
+        rationale: `Found a dollar-denominated basket in Section ${chunk.sectionRef}.`,
         proposedValue: {
           permissionRef: chunk.sectionRef,
           action: isLien ? "secure Indebtedness with a Lien" : "incur Indebtedness",
@@ -123,7 +132,7 @@ export class SyntheticExtractionProvider implements ContractExtractionProvider {
           amountKind: "FIXED",
           entityScope: [],
           formulaType: "FLAT_AMOUNT",
-          thresholdValue: amount ?? 0,
+          thresholdValue: amount,
           measurementBasis: "CUMULATIVE_INCURRED",
           sectionRef: chunk.sectionRef,
           definedTermRefs: [],
