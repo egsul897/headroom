@@ -68,4 +68,14 @@ describe("LocalFilesystemStorageProvider", () => {
   it("rejects retrieval of a file that was never stored", async () => {
     await expect(provider.retrieve("co-1/does-not-exist.pdf")).rejects.toThrow();
   });
+
+  it("delete() removes a previously stored file - retrieve() then fails", async () => {
+    const { storageRef } = await provider.store({ companyId: "co-1", filename: "to-delete.pdf", contentType: "application/pdf", data: Buffer.from("bytes") });
+    await provider.delete(storageRef);
+    await expect(provider.retrieve(storageRef)).rejects.toThrow();
+  });
+
+  it("delete() of a file that was never stored does not throw (best-effort orphan cleanup)", async () => {
+    await expect(provider.delete("co-1/never-existed.pdf")).resolves.toBeUndefined();
+  });
 });
