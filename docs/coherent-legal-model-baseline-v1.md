@@ -51,8 +51,9 @@ All 6 declared (documentId, side, grantType) scopes route `SOLVER_NATIVE` live (
 |---|---|
 | `FOUNDER_AND_PEER_REVIEWED` | 8 |
 | `UNVERIFIED` | 22 |
-| `LAWYER_VERIFIED` | 0 |
 | `DISPUTED` | 0 |
+
+*(As originally written, this table also listed `LAWYER_VERIFIED | 0`. That value was subsequently removed from the `GoldenTestStatus` enum on 2026-08-25 — zero rows ever used it, confirmed before removal — see `docs/legal-review-status-model.md` §3. Left out of the table above rather than edited in place, since the count was accurate at authorship and the removal is a later, separate event.)*
 
 Executable harness result (`npx tsx scripts/golden-test.ts`): **29 passed, 0 failed, 1 flagged out-of-scope, 0 errored** — unchanged from the pre-closeout baseline.
 

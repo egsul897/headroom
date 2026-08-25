@@ -25,9 +25,6 @@ describe("hasCompletedQualifiedLegalReview (task §S.4)", () => {
   it("FOUNDER_AND_PEER_REVIEWED satisfies the gate", () => {
     expect(hasCompletedQualifiedLegalReview("FOUNDER_AND_PEER_REVIEWED")).toBe(true);
   });
-  it("LAWYER_VERIFIED (an existing, currently-unused status) also satisfies the gate - a different reviewer relationship, not a required higher tier", () => {
-    expect(hasCompletedQualifiedLegalReview("LAWYER_VERIFIED")).toBe(true);
-  });
   it("UNVERIFIED does not satisfy the gate (task §S.3 - UNVERIFIED remains distinct)", () => {
     expect(hasCompletedQualifiedLegalReview("UNVERIFIED")).toBe(false);
   });
@@ -60,7 +57,6 @@ describe("Coherent legal-review provenance (live DB) (task §S.1/§S.2)", () => 
     }, {});
     expect(byStatus["FOUNDER_AND_PEER_REVIEWED"]).toBe(8);
     expect(byStatus["UNVERIFIED"]).toBe(22);
-    expect(byStatus["LAWYER_VERIFIED"] ?? 0).toBe(0);
     expect(byStatus["DISPUTED"] ?? 0).toBe(0);
   });
 

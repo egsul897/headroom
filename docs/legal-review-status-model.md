@@ -17,16 +17,16 @@ Headroom's engine computes covenant capacity from contractual interpretations so
 
 **What it must never be characterized as.** A `FOUNDER_AND_PEER_REVIEWED` conclusion is not: pending outside counsel; awaiting independent legal verification; legally unreviewed; engineering-verified only; provisional solely because counsel review is missing; or blocked from product development for lack of additional counsel review.
 
-**Not a rung on a required ladder.** `FOUNDER_AND_PEER_REVIEWED` is not an intermediate step toward some other, mandatory "fully verified" status. Headroom's development model does not require a progression such as `FOUNDER_AND_PEER_REVIEWED → LAWYER_VERIFIED → usable`. If Headroom later receives review from outside or independent counsel, that fact is retained as **additional** reviewer provenance on the same artifact — never as a condition that was silently required all along.
+**Not a rung on a required ladder.** `FOUNDER_AND_PEER_REVIEWED` is not an intermediate step toward some other, mandatory "fully verified" status. Headroom's development model does not require a progression toward some other, higher-tier "fully verified" status. If Headroom later receives review from outside or independent counsel, that fact is retained as **additional** reviewer provenance on the same artifact (e.g. a second `LegalReviewRecord`) — never as a condition that was silently required all along.
 
 ## 3. Where it lives
 
 Two persisted layers, deliberately kept separate:
 
-- **`GoldenTest.status`** (`GoldenTestStatus` enum: `UNVERIFIED | LAWYER_VERIFIED | FOUNDER_AND_PEER_REVIEWED | DISPUTED`) — the review status of one specific golden question's legal conclusion. This is the field a reader sees directly on a golden-test row.
+- **`GoldenTest.status`** (`GoldenTestStatus` enum: `UNVERIFIED | FOUNDER_AND_PEER_REVIEWED | DISPUTED`) — the review status of one specific golden question's legal conclusion. This is the field a reader sees directly on a golden-test row.
 - **`LegalReviewRecord`** (new model, `prisma/schema.prisma`) — the generalized, reusable provenance record behind a promotion: who reviewed what, in what capacity, when, and why. A `LegalReviewRecord` can point at a `GOLDEN_TEST` row, a `PERMISSION` row, a `RULE_ACTIVATION_CONDITION` row, or a `LEGAL_CONCLUSION` that isn't any single row (e.g. a stacking/non-netting determination spanning several permissions — see §8 below). One `GoldenTest.status` promotion is always backed by at least one `LegalReviewRecord` row; the reverse is not required (a `LEGAL_CONCLUSION`-level record need not correspond to any single golden test).
 
-`LAWYER_VERIFIED` (an existing, older `GoldenTestStatus` value) is kept, unremoved — no historical data was deleted because terminology changed — but as of this document it has zero referencing application code and zero rows. It is reserved for a future row that legitimately records independent/outside-counsel provenance; it is not a required tier above `FOUNDER_AND_PEER_REVIEWED` (see §2).
+**2026-08-25 update**: `GoldenTestStatus` previously also carried a `LAWYER_VERIFIED` value. It was removed via a proper Prisma migration (`prisma/migrations/20260825031110_remove_unused_lawyer_verified_status`) after confirming zero `golden_tests` rows ever used it and zero application code referenced it. Independent/outside-counsel review, if it occurs, should be recorded as an **additional `LegalReviewRecord`** on the same artifact (e.g. `notes` identifying the reviewer as independent/outside counsel) rather than as a distinct enum tier — see §2's "not a rung on a required ladder" principle, which motivated removing the unused placeholder rather than reintroducing it as a formal status value.
 
 ## 4. Reviewer metadata
 
@@ -54,11 +54,11 @@ A completed `FOUNDER_AND_PEER_REVIEWED` legal review **never** marks a financial
 
 ```ts
 export function hasCompletedQualifiedLegalReview(status): boolean {
-  return status === "FOUNDER_AND_PEER_REVIEWED" || status === "LAWYER_VERIFIED";
+  return status === "FOUNDER_AND_PEER_REVIEWED";
 }
 ```
 
-As of this document, **no code path in the repository actually gates anything on legal-review status** — `grep -rn "LAWYER_VERIFIED"` across `lib/**`, `app/**`, `scripts/**`, `tests/**` returns nothing, and the engine's own status types (`EvaluationStatus`, `TransactionStatus`, `PathStatus`) gate on data/coverage completeness, never on review provenance. `hasCompletedQualifiedLegalReview` exists so that if such a gate is ever added, it is shaped correctly from the start: explicit set membership, not an ordinal comparison (`status >= X`) that would incorrectly imply one reviewer relationship is unconditionally "better" than another. `FOUNDER_AND_PEER_REVIEWED` alone satisfies it; no ownership-independent reviewer is required.
+As of this document, **no code path in the repository actually gates anything on legal-review status** — the engine's own status types (`EvaluationStatus`, `TransactionStatus`, `PathStatus`) gate on data/coverage completeness, never on review provenance. `hasCompletedQualifiedLegalReview` exists so that if such a gate is ever added, it is shaped correctly from the start: explicit set membership, not an ordinal comparison (`status >= X`) that would incorrectly imply one reviewer relationship is unconditionally "better" than another. `FOUNDER_AND_PEER_REVIEWED` alone satisfies it; no ownership-independent reviewer is required. If independent/outside-counsel provenance is added in the future (as an additional `LegalReviewRecord`, per §3), extend this function's accepted set at that time rather than modeling it as a required higher tier.
 
 ## 7. Relationship to `REVIEW_REQUIRED` / `ASSUMPTION_REQUIRED` / `NOT_TESTED` / `NOT_EVALUABLE`
 
@@ -77,4 +77,4 @@ These are **engineering/execution** states (`lib/solver/status.ts`, `lib/covenan
 1. When a legal conclusion (a stacking rule, a definition reading, a basket's availability) is substantively reviewed by the founder and a second qualifying attorney, create or update a `LegalReviewRecord` with `reviewStatus: FOUNDER_AND_PEER_REVIEWED`, the real reviewer metadata if available (never fabricated if not), and a `reviewedArtifactRef` precise enough that a later reader can tell exactly what was and wasn't covered.
 2. If the conclusion corresponds to specific `golden_tests` rows, update those rows' `status` to match **only** for rows whose answer actually depends on the reviewed conclusion and is not itself known-stale for an unrelated reason (§8's golden-question note). Never promote a row just because it cites the same document.
 3. Never let a `FOUNDER_AND_PEER_REVIEWED` promotion touch `expectedAnswer`, `bindingProvision`, or any solver-native configuration row — review status is provenance, not a correction mechanism (see the closeout task's own §C/§G/§L for the rule this restates).
-4. If outside/independent counsel later reviews the same conclusion, add that as a **second, additional** `LegalReviewRecord` (or a `LAWYER_VERIFIED` promotion alongside the existing `FOUNDER_AND_PEER_REVIEWED` one) — never delete or downgrade the founder-and-peer record, and never make the new review a precondition that was retroactively "always required."
+4. If outside/independent counsel later reviews the same conclusion, add that as a **second, additional** `LegalReviewRecord` alongside the existing `FOUNDER_AND_PEER_REVIEWED` one (e.g. `notes` identifying the reviewer as independent/outside counsel) — never delete or downgrade the founder-and-peer record, and never make the new review a precondition that was retroactively "always required."
