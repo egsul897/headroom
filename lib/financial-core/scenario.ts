@@ -219,7 +219,20 @@ function applyAction(ws: WorkingState, action: ScenarioAction, actionIndex: numb
         id: `${id}-issuance`,
         companyId: state.companyId,
         facilityId: id,
-        eventType: "REFINANCING",
+        // The NEW facility's funding event must be "ISSUANCE" (the same
+        // convention DEBT_ISSUANCE/DRAW_REVOLVER/ACQUISITION's newDebtFunding
+        // all use above) so computeOutstandingPrincipal
+        // (lib/financial-core/capital-structure.ts) counts it as a positive
+        // addition to the new facility's balance. Using the DebtEventType
+        // "REFINANCING" here was a bug: computeOutstandingPrincipal's own
+        // convention treats a "REFINANCING"-typed event as a RETIREMENT
+        // (a positive-magnitude reduction, the same bucket as REPAYMENT -
+        // see that function's own doc comment), which floored the brand-new
+        // facility's outstanding balance to zero and silently dropped the
+        // refinanced amount out of grossDebt entirely. `refinancesFacilityId`
+        // below still carries the "this event refinances facility X"
+        // provenance - only the DebtEventType itself changes.
+        eventType: "ISSUANCE",
         date: asOfDate,
         amount: action.newAmount,
         refinancesFacilityId: old.id,
