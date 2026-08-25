@@ -16,10 +16,15 @@
     "golden-test": "tsx scripts/golden-test.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.120.0",
     "@prisma/client": "^5.20.0",
+    "@vercel/blob": "^2.8.0",
+    "mammoth": "^1.12.1",
     "next": "^14.2.15",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "unpdf": "^1.8.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/node": "^20.14.9",
