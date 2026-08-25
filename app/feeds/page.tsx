@@ -5,6 +5,9 @@ import type { FeedQueueLedgerPayload, FeedQueueSnapshotPayload } from "@/prisma/
 import { approveFeedItem, dismissFeedItem } from "./actions";
 
 export const metadata = { title: "Headroom — Feeds" };
+// Vercel deployment fix: see app/page.tsx's identical comment - this page
+// queries Prisma directly with no dynamic route segment above it.
+export const dynamic = "force-dynamic";
 
 const IGNORED_SOURCES = new Set(["manual", "Simulate tab", "illustrative test fixture"]);
 

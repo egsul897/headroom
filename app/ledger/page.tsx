@@ -6,6 +6,9 @@ import { documentsWithRpWaterfall, simulateRestrictedPayment } from "@/lib/coven
 import { addLedgerEntry, deleteLedgerEntry } from "./actions";
 
 export const metadata = { title: "Headroom — Ledger" };
+// Vercel deployment fix: see app/page.tsx's identical comment - this page
+// queries Prisma directly with no dynamic route segment above it.
+export const dynamic = "force-dynamic";
 
 export default async function LedgerPage() {
   const [{ data, position }, entries] = await Promise.all([getPosition(), getLedgerEntries()]);

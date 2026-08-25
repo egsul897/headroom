@@ -3,6 +3,13 @@ import { Card } from "@/components/ui";
 import { listCompanies } from "@/lib/dashboard-service";
 
 export const metadata = { title: "Headroom — Companies" };
+// Vercel deployment fix: this page queries Prisma directly (listCompanies())
+// with no dynamic route segment above it, so without this Next.js attempts
+// to prerender it at build time - requiring a reachable database during
+// `next build`, which Vercel's build machine has no path to. Forces
+// per-request rendering instead (runtime still requires a real, reachable
+// DATABASE_URL - this does not substitute for database hosting).
+export const dynamic = "force-dynamic";
 
 /**
  * The company-selector landing page (task's "smallest generalized mechanism
