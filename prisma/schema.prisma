@@ -543,9 +543,33 @@ enum StatePredicateKind {
 }
 
 // design doc §K.
+//
+// PUBLIC_FILING_RECONSTRUCTION is DELIBERATELY NOT a stronger or weaker tier
+// of CERTIFIED_EXTERNAL_INPUT - it is a different kind of thing, the same way
+// FOUNDER_AND_PEER_REVIEWED is a different dimension from CERTIFIED_EXTERNAL_INPUT
+// (docs/legal-review-status-model.md §5). A value is CERTIFIED_EXTERNAL_INPUT
+// only when it is sourced from a real customer's own certified record - a
+// Compliance Certificate, an ERP-linked figure, a lender-delivered
+// certificate line item. A value is PUBLIC_FILING_RECONSTRUCTION when it is
+// a documented, source-cited reconstruction built from a company's public
+// SEC filings (e.g. GAAP net income + tax + interest + D&A, plus disclosed
+// non-cash/one-time addbacks, approximating a covenant-style Adjusted
+// EBITDA the filing itself never states as a single reconciled figure).
+//
+// HARD RULE: PUBLIC_FILING_RECONSTRUCTION is valid ONLY for test/regression
+// fixtures (Coherent's own seed data being the first and, as of this
+// migration, only example - see docs/coherent-phase8-population-reconciliation.md
+// §U). It must NEVER be used to represent a real customer's certified
+// figure, and it must never be silently upgraded to CERTIFIED_EXTERNAL_INPUT
+// - certification requires the customer's own certified source, which a
+// public-filing reconstruction categorically is not and cannot become by
+// being reviewed more carefully. Application code that treats
+// PUBLIC_FILING_RECONSTRUCTION as satisfying a real customer's
+// CERTIFIED_EXTERNAL_INPUT gate is a bug, not a judgment call.
 enum ExternalInputKind {
   COMPUTABLE_FORMULA
   CERTIFIED_EXTERNAL_INPUT
+  PUBLIC_FILING_RECONSTRUCTION
   DISCRETIONARY_CATCH_ALL
   HUMAN_CLASSIFICATION
 
