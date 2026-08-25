@@ -99,10 +99,37 @@ export type EntityClass =
 export interface EligibilityCondition {
   id: string;
   description: string;
-  /** How this condition is resolved against SolverRequest/state - purely declarative; lib/solver/graph.ts interprets `kind`. */
-  kind: "RATINGS_THRESHOLD" | "INTERCREDITOR_JOINDER" | "MFN_EXCLUSION_TEST" | "LCA_TEST_DATE_FREEZE" | "ENTITY_SCOPE" | "CUSTOM_STATE_PREDICATE";
+  /**
+   * How this condition is resolved against SolverRequest/state - purely
+   * declarative; lib/solver/election.ts's `evaluatePermissionEligibility`
+   * interprets `kind`.
+   *
+   * `TRANSACTION_SECURITY_SCOPE` is a GENERALIZED primitive - it restricts a
+   * permission to a declared subset of the requesting transaction's own
+   * secured/lien-priority character (`allowedSecurity` below), mechanically
+   * evaluated against `Transaction.secured`/`Transaction.requestedLienPriority`.
+   * It is not specific to any one permission or company: any Permission row
+   * on any document/company whose own action label restricts it to (e.g.)
+   * unsecured-or-junior debt can carry this condition to have that
+   * restriction mechanically enforced, rather than relying on the label text
+   * alone (see docs/founder-legal-review-2026-08-25.md §3 for the case that
+   * motivated adding it - a permission whose action label said "unsecured or
+   * junior-secured" but had no data enforcing it).
+   */
+  kind: "RATINGS_THRESHOLD" | "INTERCREDITOR_JOINDER" | "MFN_EXCLUSION_TEST" | "LCA_TEST_DATE_FREEZE" | "ENTITY_SCOPE" | "CUSTOM_STATE_PREDICATE" | "TRANSACTION_SECURITY_SCOPE";
   /** Only for CUSTOM_STATE_PREDICATE: the RuleActivationCondition id this defers to (§I). */
   ruleActivationConditionId?: string;
+  /**
+   * Only for TRANSACTION_SECURITY_SCOPE. `UNSECURED_ONLY` requires
+   * `Transaction.secured === false`. `UNSECURED_OR_JUNIOR` additionally
+   * permits a secured transaction, but only when every entry in
+   * `Transaction.requestedLienPriority` is confirmed junior (`"SECOND"`) -
+   * an uncharacterized/empty priority array, or any `"FIRST"`/`"PARI_PASSU"`
+   * entry, fails closed rather than being assumed eligible. Kept to exactly
+   * these two values deliberately - no `SECURED_ANY`/other variant exists
+   * because nothing in this codebase currently needs one.
+   */
+  allowedSecurity?: "UNSECURED_ONLY" | "UNSECURED_OR_JUNIOR";
   sourceProvision?: SourceProvisionRef;
 }
 

@@ -150,12 +150,13 @@ export interface EligibilityContext {
 
 /**
  * design doc §C.2 GUARANTOR_CONDITION-adjacent entity-scope check + §I
- * APPLICABILITY. ENTITY_SCOPE and CUSTOM_STATE_PREDICATE (backed by a
- * resolvable RuleActivationCondition) are mechanically evaluated. Every
- * other eligibility-condition kind - RATINGS_THRESHOLD/INTERCREDITOR_JOINDER/
- * MFN_EXCLUSION_TEST/LCA_TEST_DATE_FREEZE, or a CUSTOM_STATE_PREDICATE
- * missing its ruleActivationConditionId - has no mechanical evaluation in
- * this phase (report §O item 2). This is fail-closed BY CONSTRUCTION: an
+ * APPLICABILITY. ENTITY_SCOPE, TRANSACTION_SECURITY_SCOPE, and
+ * CUSTOM_STATE_PREDICATE (backed by a resolvable RuleActivationCondition) are
+ * mechanically evaluated. Every other eligibility-condition kind -
+ * RATINGS_THRESHOLD/INTERCREDITOR_JOINDER/MFN_EXCLUSION_TEST/
+ * LCA_TEST_DATE_FREEZE, or a CUSTOM_STATE_PREDICATE missing its
+ * ruleActivationConditionId - has no mechanical evaluation in this phase
+ * (report §O item 2). This is fail-closed BY CONSTRUCTION: an
  * unsupported kind produces its own UNKNOWN RequirementResult (reasonCategory
  * "LEGAL_JUDGMENT") rather than being silently skipped, which would
  * otherwise let a permission with e.g. an unverified RATINGS_THRESHOLD
@@ -180,6 +181,34 @@ export function evaluatePermissionEligibility(permission: Permission, ctx: Eligi
 
   for (const cond of permission.eligibilityConditions) {
     if (cond.kind === "ENTITY_SCOPE") continue; // covered structurally above
+    if (cond.kind === "TRANSACTION_SECURITY_SCOPE") {
+      // Generalized, mechanically-evaluated primitive (see the type's own
+      // doc comment in lib/solver/types.ts) - restricts a permission to a
+      // declared subset of the transaction's own secured/lien-priority
+      // character. Always resolves to SATISFIED/FAILED, never UNKNOWN: both
+      // `Transaction.secured` and `Transaction.requestedLienPriority` are
+      // always known at evaluation time (no external data dependency), and
+      // an uncharacterized/empty `requestedLienPriority` on a secured
+      // transaction fails closed under UNSECURED_OR_JUNIOR rather than being
+      // assumed eligible.
+      const txn = ctx.transaction;
+      let satisfied: boolean;
+      if (cond.allowedSecurity === "UNSECURED_ONLY") {
+        satisfied = !txn.secured;
+      } else {
+        // UNSECURED_OR_JUNIOR (the only other defined value).
+        satisfied = !txn.secured || txn.requestedLienPriority.every((p) => p.priorityTier === "SECOND");
+        if (txn.secured && txn.requestedLienPriority.length === 0) satisfied = false;
+      }
+      results.push({
+        class: "COVENANT_APPLICABILITY",
+        scope: { permissionId: permission.id },
+        status: satisfied ? "SATISFIED" : "FAILED",
+        detail: cond.description,
+        sourceProvision: cond.sourceProvision ? { documentId: cond.sourceProvision.documentId, sectionRef: cond.sourceProvision.sectionRef } : undefined,
+      });
+      continue;
+    }
     if (cond.kind === "CUSTOM_STATE_PREDICATE" && cond.ruleActivationConditionId) {
       const activation = ctx.ruleActivationConditions.find((c) => c.id === cond.ruleActivationConditionId);
       if (!activation) {
