@@ -40,6 +40,15 @@ model Company {
   solverCoverageDeclarations SolverCoverageDeclaration[]
   legalReviewRecords         LegalReviewRecord[]
 
+  // --- Financial core (docs/generalized-financial-analytics-architecture.md §T) ---
+  // Additive only, mirroring the solver-native model's own "zero rows for any
+  // existing company as of this migration" posture. Nothing in the legacy
+  // engine (lib/covenant-engine.ts) or the solver (lib/solver/**) reads these
+  // tables; only lib/financial-core/** and lib/financial-core-db/** do.
+  financialStates FinancialState[]
+  facilities      Facility[]
+  debtEvents      DebtEvent[]
+
   @@map("companies")
 }
 
@@ -804,11 +813,27 @@ model ExternalInputRecord {
   // (design doc §K).
   maxAgeDays   Int?
 
+  // --- Financial-core provenance extension (design doc §M.2/§T) ---
+  // §M.2/§T recommend extending this table over a parallel one, since the
+  // shape (kind/value/asOfDate/sourceRef/reviewStatus/maxAgeDays) is already
+  // identical to what a per-fact financial-core provenance row needs. Both
+  // columns are nullable and additive; a row backing a solver ExternalInputs
+  // certificate (the table's original use) leaves both null, exactly as
+  // today. `fieldKey` names which FinancialState/Facility field this record
+  // is the source for (e.g. "balanceSheetFacts.cash", "liquidityFacts.borrowingBaseValue").
+  financialStateId String?
+  facilityId       String?
+  fieldKey         String?
+
   createdAt DateTime @default(now())
 
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company        Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  financialState FinancialState? @relation(fields: [financialStateId], references: [id], onDelete: Cascade)
+  facility       Facility?       @relation(fields: [facilityId], references: [id], onDelete: Cascade)
 
   @@index([companyId])
+  @@index([financialStateId])
+  @@index([facilityId])
   @@map("external_input_records")
 }
 
@@ -933,4 +958,217 @@ model LegalReviewRecord {
   @@index([companyId])
   @@index([reviewedArtifactType, reviewedArtifactRef])
   @@map("legal_review_records")
+}
+
+// =============================================================================
+// Financial core (docs/generalized-financial-analytics-architecture.md §T,
+// Phase 1 of the vertical-slice implementation).
+//
+// Additive only. Zero rows for Coherent/any existing company as of this
+// migration. Only lib/financial-core/** and lib/financial-core-db/** read or
+// write these tables - lib/covenant-engine.ts and lib/solver/** are
+// untouched (design doc §S.1's one-directional dependency).
+//
+// Scope note (minimum slice, task §4): this migration implements exactly the
+// tables Phases 1-9 need (FinancialState, Facility, DebtEvent, plus the
+// additive ExternalInputRecord extension above). ForecastSet, a persisted
+// Scenario table, and FactConflict are named in the design doc's §T but
+// explicitly deferred past this MVP slice (design doc §W/§X) - not built
+// here. AmortizationSchedule is likewise not a separate table for this slice;
+// the interest/maturity engines operate on Facility's own coupon/maturity
+// fields directly (a pragmatic, bullet-maturity-first model - design doc §H's
+// "pragmatic interest model" instruction), which is sufficient for every
+// synthetic fixture and test case this task requires. See
+// docs/financial-core-vertical-slice-implementation.md §W for the full
+// deferred-capability list.
+// =============================================================================
+
+enum PeriodType {
+  ACTUAL
+  FORECAST
+  PRO_FORMA
+
+  @@map("period_type")
+}
+
+enum FacilityType {
+  TERM_LOAN
+  REVOLVER
+  NOTES
+  ABL
+  OTHER
+
+  @@map("facility_type")
+}
+
+enum CouponType {
+  FIXED
+  FLOATING
+
+  @@map("coupon_type")
+}
+
+// Design doc §E.1's own enum, plus two additive members (LC_ISSUANCE/
+// LC_EXPIRATION) needed by the ABL/LC synthetic fixture (task §20) to track
+// letter-of-credit usage as its own event stream, distinct from principal
+// draws/repayments - "amount" on an LC event is the signed LC-usage delta,
+// never conflated with the principal `amount` sign convention ISSUANCE/
+// REPAYMENT use (design doc §E.1: "sign convention by eventType, never
+// overloaded").
+enum DebtEventType {
+  ISSUANCE
+  REPAYMENT
+  REFINANCING
+  REDESIGNATION
+  RECLASSIFICATION
+  AMENDMENT
+  LC_ISSUANCE
+  LC_EXPIRATION
+
+  @@map("debt_event_type")
+}
+
+// design doc §C - the canonical, company-agnostic point-in-time (or period)
+// financial position. Fact groups are stored as JSON, each value shaped as a
+// ProvencancedFact<T> (lib/financial-core/types.ts) - i.e. { value,
+// sourceType, reviewStatus, asOfDate, staleness?, notes? } - never a bare
+// number. This keeps every material fact's own provenance travelling with
+// it, satisfying task §18's "every material derived output must be able to
+// identify its material dependencies" without a fourth join table for this
+// slice (see the ExternalInputRecord extension above for facts that also
+// need independent per-fact staleness/citation lifecycle beyond what the
+// embedded wrapper itself carries).
+model FinancialState {
+  id        String     @id @default(cuid())
+  companyId String
+  asOfDate  DateTime
+  periodType PeriodType @default(ACTUAL)
+  // design doc §C.1 EntityScopeRef - "CONSOLIDATED" (default) or a specific
+  // EntityClassTag subset, encoded as a free string so it never needs a
+  // schema change to add a new scope shape.
+  scope     String     @default("CONSOLIDATED")
+
+  effectiveFrom DateTime?
+  effectiveTo   DateTime?
+
+  // { cash, restrictedCash?, totalAssets?, totalDebtPrincipal, securedDebtPrincipal, totalEquity? }
+  balanceSheetFacts   Json
+  // { revenue?, gaapEbitda?, gaapNetIncome?, cumulativeNetIncomeSinceIssue, equityProceedsSinceIssue, interestExpense, capex? }
+  incomeStatementFacts Json
+  // { covenantEbitda?: { value, addbacks: [...], provenance }, assumedNewDebtRatePct }
+  covenantMetricFacts Json
+  // Additive extension beyond design doc §C.1's three fact groups, needed by
+  // the liquidity engine (§F) for revolver/ABL-specific facts the product
+  // acceptance target (task §2) requires that don't fit balance-sheet/
+  // income-statement/covenant-metric categories: { revolverFacilityId?,
+  // revolverCommitment?, revolverDrawn?, revolverLcUsage?, borrowingBaseValue? }.
+  // Optional and nullable - a FinancialState with no revolver/ABL simply
+  // omits it.
+  liquidityFacts Json?
+
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company              Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  externalInputRecords ExternalInputRecord[]
+
+  @@index([companyId, asOfDate])
+  @@index([companyId, periodType])
+  @@map("financial_states")
+}
+
+// design doc §D - a durable, company-scoped capital-structure instrument
+// with its own identity across time (replaces DebtTranche's *display* role
+// for financial-core consumers; DebtTranche itself is untouched - design doc
+// §D.1).
+model Facility {
+  id           String       @id @default(cuid())
+  companyId    String
+  name         String
+  facilityType FacilityType
+  currency     String       @default("USD")
+
+  // For TERM_LOAN/NOTES: the originally-issued principal. For REVOLVER/ABL:
+  // informational only (commitmentAmount is the operative ceiling) - kept
+  // non-null for schema simplicity, set equal to commitmentAmount for those
+  // facility types by convention.
+  originalPrincipal Decimal  @db.Decimal(18, 6)
+  // REVOLVER/ABL only: total commitment. Null for TERM_LOAN/NOTES.
+  commitmentAmount  Decimal? @db.Decimal(18, 6)
+  // ABL only: the most recently certified borrowing-base value, when known
+  // as a static fact on the facility itself (as opposed to a per-date
+  // ExternalInputRecord-backed FinancialState.liquidityFacts.borrowingBaseValue,
+  // which is the authoritative as-of-date figure the liquidity engine
+  // actually reads - design doc §F.1). Kept here only as an originationtime
+  // reference value; may be null.
+  borrowingBaseAtOrigination Decimal? @db.Decimal(18, 6)
+
+  secured    Boolean
+  couponType CouponType
+  couponPct  Decimal?    @db.Decimal(9, 6) // FIXED
+  marginBps  Int?                          // FLOATING, over referenceRate
+  referenceRate String?                    // e.g. "SOFR" - free text, never branched on
+  rateFloorPct  Decimal? @db.Decimal(9, 6) // FLOATING floor, where modeled
+
+  maturityDate DateTime?
+  issuedDate   DateTime?
+
+  governingDocumentId String?
+
+  obligorEntityClasses   EntityClassTag[]
+  guarantorEntityClasses EntityClassTag[]
+  collateralPoolIds      String[]
+  // design doc §D.2 - citation into the solver's own PermissionPath legs
+  // that authorized this facility's incurrence, never re-derived.
+  originatingPermissionIds String[]
+
+  effectiveFrom DateTime?
+  effectiveTo   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company              Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  debtEvents           DebtEvent[]
+  externalInputRecords ExternalInputRecord[]
+
+  @@index([companyId])
+  @@map("facilities")
+}
+
+// design doc §E - the financial core's own capital-structure event log,
+// facility-scoped and richer than LedgerEntry (which is untouched - design
+// doc §E.2).
+model DebtEvent {
+  id        String        @id @default(cuid())
+  companyId String
+  facilityId String
+  eventType DebtEventType
+  date      DateTime
+  // Principal (or, for LC_ISSUANCE/LC_EXPIRATION, LC-usage) effect. Sign
+  // convention by eventType, never overloaded (design doc §E.1): ISSUANCE/
+  // LC_ISSUANCE positive; REPAYMENT/LC_EXPIRATION positive-magnitude
+  // reductions (subtracted by the replay logic, never stored negative).
+  amount Decimal @db.Decimal(18, 6)
+
+  refinancesFacilityId String?
+  relatedPermissionIds String[]
+  sourceLedgerEntryId  String?
+
+  // The amount's own source/certification, ProvenanceWrapper-shaped (design
+  // doc §E.1's `provenance: ProvencancedFact<number>`), stored as JSON for
+  // the same reason FinancialState's fact groups are - a single wrapper
+  // shape reused everywhere (design doc §M.1).
+  provenance Json
+
+  createdAt DateTime @default(now())
+
+  company  Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  facility Facility @relation(fields: [facilityId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([facilityId, date])
+  @@map("debt_events")
 }
