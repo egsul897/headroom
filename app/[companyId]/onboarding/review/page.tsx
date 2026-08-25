@@ -17,9 +17,14 @@ const KIND_LABELS: Record<ExtractionCandidateKind, string> = {
   SHARED_CONSTRAINT: "Shared capacity constraints",
   ACTIVATION_CONDITION: "Activation conditions",
   EXTERNAL_INPUT_REQUIREMENT: "External input requirements",
+  // Autonomous information retrieval, Phase A
+  // (docs/autonomous-retrieval-phase-a-foundation.md) - a connector-discovered
+  // financial fact (EDGAR/CSV/upload) reviewed through this exact same
+  // generic workspace, no new UI code required beyond this label.
+  FINANCIAL_FACT: "Financial facts (connector-discovered)",
 };
 
-const KIND_ORDER: ExtractionCandidateKind[] = ["DOCUMENT_RELATIONSHIP", "DEFINED_TERM", "PERMISSION", "COLLATERAL_SCOPE", "RELATIONSHIP", "SHARED_CONSTRAINT", "ACTIVATION_CONDITION", "EXTERNAL_INPUT_REQUIREMENT"];
+const KIND_ORDER: ExtractionCandidateKind[] = ["DOCUMENT_RELATIONSHIP", "DEFINED_TERM", "PERMISSION", "COLLATERAL_SCOPE", "RELATIONSHIP", "SHARED_CONSTRAINT", "ACTIVATION_CONDITION", "EXTERNAL_INPUT_REQUIREMENT", "FINANCIAL_FACT"];
 
 const STATUS_TONE: Record<ExtractionCandidateReviewStatus, ChipTone> = {
   PENDING: "idle",

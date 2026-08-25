@@ -78,6 +78,19 @@ model Company {
   extractionRuns       ExtractionRun[]
   extractionCandidates ExtractionCandidate[]
 
+  // --- Autonomous information retrieval, Phase A (docs/autonomous-retrieval-phase-a-foundation.md) ---
+  // Additive only. Zero rows for Coherent/Matthews as of this migration -
+  // nothing here is retroactively backfilled for either company. Nothing in
+  // lib/covenant-engine.ts, lib/solver/**, or lib/onboarding/promotion.ts
+  // reads these tables; only lib/connectors/** does. See SourceArtifact's own
+  // comment for why FINANCIAL_FACT candidates still flow through the
+  // pre-existing ExtractionCandidate/CandidateReviewEvent machinery rather
+  // than a parallel one.
+  sourceConnections   CompanySourceConnection[]
+  sourceArtifacts     SourceArtifact[]
+  ingestionJobs       IngestionJob[]
+  sourcePriorityRules SourcePriorityRule[]
+
   @@map("companies")
 }
 
@@ -184,6 +197,11 @@ model Document {
   chunks               DocumentChunk[]
   extractionRuns       ExtractionRun[]
   extractionCandidates ExtractionCandidate[]
+
+  // Autonomous information retrieval, Phase A (docs/autonomous-retrieval-phase-a-foundation.md).
+  // A SourceArtifact.documentId is set once a DOCUMENT artifact has been
+  // materialized into this row - see SourceArtifact's own comment.
+  sourceArtifacts SourceArtifact[]
 
   @@map("documents")
 }
@@ -1510,6 +1528,15 @@ enum ExtractionCandidateKind {
   ACTIVATION_CONDITION
   DOCUMENT_RELATIONSHIP
   EXTERNAL_INPUT_REQUIREMENT
+  // Additive (docs/autonomous-retrieval-phase-a-foundation.md), same pattern
+  // as every prior enum extension in this codebase (ALTER TYPE ... ADD VALUE
+  // is additive only, no existing row affected). A financial fact discovered
+  // or uploaded through a source connector (lib/connectors/**) becomes an
+  // ExtractionCandidate row of this kind, going through the EXACT SAME
+  // reviewStatus lifecycle / CandidateReviewEvent audit trail / reviewCandidate()
+  // function every other candidate kind already uses - see FinancialFactValueSchema
+  // in lib/extraction/schemas.ts. No parallel review/audit system was built.
+  FINANCIAL_FACT
 
   @@map("extraction_candidate_kind")
 }
@@ -1586,4 +1613,267 @@ enum CandidateReviewAction {
   REVIEW_REQUIRED
 
   @@map("candidate_review_action")
+}
+
+// =============================================================================
+// Autonomous information retrieval - Phase A foundation
+// (docs/autonomous-retrieval-phase-a-foundation.md)
+//
+// Builds the connector/registry/ingestion foundation that lets a company
+// connect data sources (SEC EDGAR for documents, CSV/Excel upload for
+// financial figures) and have Headroom autonomously discover/fetch/classify/
+// dedupe/extract what it needs - converging with the EXISTING manual-upload
+// path (Phase 1/2 above) into one unified pipeline, rather than a parallel
+// architecture. Phase B (a later pass) builds reconciliation, the canonical
+// company-state aggregation service, and the review-queue UI on top of this.
+//
+// Additive only. Zero rows for Coherent/Matthews as of this migration - see
+// Company's own comment above. Nothing in lib/covenant-engine.ts,
+// lib/solver/**, or lib/onboarding/promotion.ts reads any table below; only
+// lib/connectors/** does. A connector NEVER writes directly to Permission/
+// PermissionRelationship/FinancialState/FinancialSnapshot/etc - every fact it
+// discovers lands as a reviewable ExtractionCandidate first, exactly like
+// Phase 1/2's own contractual-candidate flow (lib/onboarding/promotion.ts
+// remains the only writer of real rows from a candidate).
+// =============================================================================
+
+enum ConnectorType {
+  EDGAR
+  CSV_FINANCIAL
+  DOCUMENT_UPLOAD
+
+  @@map("connector_type")
+}
+
+enum ConnectionStatus {
+  CONNECTED
+  ERROR
+  DISCONNECTED
+
+  @@map("connection_status")
+}
+
+// One company's connection to one data source. `capabilities` deliberately
+// stores the ConnectorCapability conceptual enum (lib/connectors/types.ts) as
+// a plain String[], not a Prisma enum array - capability sets are per-
+// connector-INSTANCE (e.g. one CSV upload might carry only cash figures,
+// another might carry debt balances too), so a closed Postgres enum column
+// would force a schema change every time a new capability combination shows
+// up. `credentialRef` is an OPAQUE reference only (e.g. an env-var name) -
+// this column, like every column on this table, must NEVER hold a raw
+// credential value; EDGAR needs no credential at all (public API), so it is
+// null for every EDGAR connection created by this phase.
+//
+// Every company has exactly one DOCUMENT_UPLOAD-type row, auto-created (see
+// getOrCreateUploadConnection in lib/connectors/registry.ts) - this is how
+// manual upload "converges into the same ingestion system" per the brief: a
+// first-class source connection like any other, not a special case. The
+// @@unique([companyId, connectorType]) constraint below is what makes
+// "exactly one" a database-enforced guarantee, not just a convention - and
+// generalizes the same way to EDGAR/CSV_FINANCIAL (one connection per
+// connector type per company for this V1; a company that wants a second
+// EDGAR connection, e.g. for a second ticker, is out of scope here).
+model CompanySourceConnection {
+  id            String            @id @default(cuid())
+  companyId     String
+  connectorType ConnectorType
+  provider      String
+  status        ConnectionStatus  @default(CONNECTED)
+  capabilities  String[]
+  sourcePriority Int              @default(0)
+  lastSuccessfulSyncAt DateTime?
+  cursor        String?
+  errorState    String?
+  enabled       Boolean           @default(true)
+  // Opaque reference only (e.g. an env-var name) - NEVER a raw credential
+  // value. See this model's own header comment.
+  credentialRef String?
+  // Connector-specific NON-SECRET config, e.g. EDGAR's { ticker, cik }.
+  config        Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company        Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceArtifacts SourceArtifact[]
+  ingestionJobs   IngestionJob[]
+
+  @@unique([companyId, connectorType])
+  @@index([companyId])
+  @@map("company_source_connections")
+}
+
+enum SourceArtifactType {
+  DOCUMENT
+  FINANCIAL_RECORD
+
+  @@map("source_artifact_type")
+}
+
+// The dedup ledger: one row per genuinely-distinct piece of content this
+// company has ever ingested from ANY source connector, keyed by
+// (companyId, contentHash) - a sha256 of the raw bytes (DOCUMENT) or of a
+// canonicalized JSON encoding of the row (FINANCIAL_RECORD). This unique
+// constraint IS the dedup mechanism (lib/connectors/dedup.ts): a second
+// artifact with the same hash for the same company is never a new row - see
+// that file's own comment for the "arrived via 2 sources" provenance choice
+// (recorded in provenanceMetadata.duplicateSources, not a second row or a
+// separate join table - the smallest correct representation for this phase).
+//
+// `documentId` is set once a DOCUMENT artifact has been materialized into a
+// real Document row (the CLASSIFY_DEDUPE ingestion stage) - null until then,
+// and always null for a FINANCIAL_RECORD artifact (those become
+// ExtractionCandidate rows directly in the EXTRACT stage, never a Document).
+model SourceArtifact {
+  id                 String              @id @default(cuid())
+  companyId          String
+  sourceConnectionId String
+  artifactType       SourceArtifactType
+  sourceIdentifier   String?
+  sourceUri          String?
+  retrievedAt        DateTime
+  effectiveDate      DateTime?
+  contentHash        String
+  mimeType           String?
+  // DOCUMENT artifacts: an opaque DocumentStorageProvider ref, reusing
+  // lib/document-storage/** exactly like Phase 1's upload path - never a
+  // second storage mechanism.
+  storageRef         String?
+  // FINANCIAL_RECORD artifacts: the raw source row/object, JSON-safe.
+  rawPayload         Json?
+  provenanceMetadata Json?
+  documentId         String?
+
+  createdAt DateTime @default(now())
+
+  company          Company                 @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceConnection CompanySourceConnection @relation(fields: [sourceConnectionId], references: [id], onDelete: Cascade)
+  document         Document?               @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, contentHash])
+  @@index([companyId])
+  @@index([sourceConnectionId])
+  @@index([documentId])
+  @@map("source_artifacts")
+}
+
+enum IngestionJobKind {
+  INITIALIZE
+  SYNC
+  AMENDMENT_PROCESS
+
+  @@map("ingestion_job_kind")
+}
+
+// Mirrors ExtractionRun/ExtractionStage's exact proven discipline
+// (lib/extraction/run-stage.ts) - a durable, Postgres-persisted job/stage
+// pair rather than an in-memory queue, so this is Vercel-compatible by
+// construction (one HTTP request processes one stage, or drives every
+// pending stage in a loop like runAllPendingStages - see
+// lib/connectors/ingestion.ts's runAllPendingIngestionStages - stopping at
+// the first failure; never one giant synchronous "discover, fetch, extract
+// everything" request).
+//
+// `sourceConnectionId` is nullable because a job can span connectors (e.g. an
+// INITIALIZE job that discovers/fetches from every enabled connection a
+// company has, not just one).
+model IngestionJob {
+  id                 String           @id @default(cuid())
+  companyId          String
+  sourceConnectionId String?
+  kind               IngestionJobKind
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company          Company                  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceConnection CompanySourceConnection? @relation(fields: [sourceConnectionId], references: [id], onDelete: SetNull)
+  stages           IngestionJobStage[]
+
+  @@index([companyId])
+  @@index([sourceConnectionId])
+  @@map("ingestion_jobs")
+}
+
+enum IngestionStageKind {
+  DISCOVER
+  FETCH
+  CLASSIFY_DEDUPE
+  EXTRACT
+  RECONCILE
+  COMPLETE
+
+  @@map("ingestion_stage_kind")
+}
+
+// A dedicated enum, deliberately NOT a reuse of the literal
+// ExtractionStageStatus Postgres type (which lib/extraction/** already owns)
+// - same four-value SHAPE (task instruction: "reusing the pattern of
+// ExtractionStageStatus"), but a genuinely independent type, so an ingestion-
+// specific status value could be added later without touching the
+// extraction pipeline's own enum or any migration that references it.
+enum IngestionStageStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETE
+  FAILED
+
+  @@map("ingestion_stage_status")
+}
+
+// One (ingestionJobId, stage) row - the exact same retry/resume unit
+// ExtractionStage established: @@unique([ingestionJobId, stage]) below is
+// what makes a retry an UPDATE, never a duplicate INSERT, and what lets a
+// FAILED stage's retry leave every sibling stage's COMPLETE row untouched.
+// See lib/connectors/ingestion.ts's runIngestionJobStage for the full
+// contract (assembles each stage's input from PERSISTED prior-stage state
+// only - never in-memory - one prisma.$transaction per stage's writes).
+//
+// `output` is this stage's own durable, stage-scoped result payload (e.g.
+// DISCOVER's list of DiscoveredSourceItem, FETCH's list of created
+// SourceArtifact ids) - a deliberate "persist minimally and durably" choice
+// over a whole new join table per stage-output shape (documented in
+// lib/connectors/ingestion.ts), consistent with ExtractionCandidate's own
+// "JSON payload, not 8 separate tables" precedent in this codebase.
+model IngestionJobStage {
+  id                String                @id @default(cuid())
+  ingestionJobId    String
+  stage             IngestionStageKind
+  status            IngestionStageStatus  @default(PENDING)
+  error             String?
+  attemptCount      Int                   @default(0)
+  recordsDiscovered Int                   @default(0)
+  recordsChanged    Int                   @default(0)
+  output            Json?
+  startedAt         DateTime?
+  completedAt       DateTime?
+
+  ingestionJob IngestionJob @relation(fields: [ingestionJobId], references: [id], onDelete: Cascade)
+
+  @@unique([ingestionJobId, stage])
+  @@map("ingestion_job_stages")
+}
+
+// Phase B reads this to decide, per metric, which connector's figure wins
+// when sources disagree (e.g. a compliance-certificate-derived EBITDA
+// outranks a CSV-derived one) - reconciliation LOGIC itself is explicitly
+// Phase B's job (see this file's own header comment), this phase only builds
+// the table + a few sensible seeded defaults. `companyId: null` means a
+// global default rule; `priority`: LOWER NUMBER = HIGHER PRIORITY (a rule
+// with priority 0 wins over priority 10), the same convention
+// Company.onboardingStatus-adjacent SourcePriority-style fields in this
+// codebase already use for sourcePriority on CompanySourceConnection above.
+model SourcePriorityRule {
+  id            String         @id @default(cuid())
+  companyId     String?
+  metricName    String
+  connectorType ConnectorType
+  priority      Int
+
+  createdAt DateTime @default(now())
+
+  company Company? @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, metricName])
+  @@map("source_priority_rules")
 }

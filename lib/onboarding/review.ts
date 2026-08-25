@@ -26,12 +26,20 @@ import {
   DefinedTermValueSchema,
   DocumentRelationshipValueSchema,
   ExternalInputRequirementValueSchema,
+  FinancialFactValueSchema,
   PermissionValueSchema,
   RelationshipValueSchema,
   SharedConstraintValueSchema,
 } from "../extraction/schemas";
 
-/** Maps each candidate kind to the zod schema its `proposedValue`/`reviewerEditedValue` must validate against - reused verbatim from lib/extraction/schemas.ts, never redefined. */
+/**
+ * Maps each candidate kind to the zod schema its `proposedValue`/
+ * `reviewerEditedValue` must validate against - reused verbatim from
+ * lib/extraction/schemas.ts, never redefined. FINANCIAL_FACT
+ * (docs/autonomous-retrieval-phase-a-foundation.md) is just one more entry
+ * here - reviewCandidate() itself needed zero changes to support it, exactly
+ * as intended by the "reuse the ontology" decision.
+ */
 export const VALUE_SCHEMA_BY_KIND: Record<ExtractionCandidateKind, z.ZodTypeAny> = {
   DEFINED_TERM: DefinedTermValueSchema,
   PERMISSION: PermissionValueSchema,
@@ -41,6 +49,7 @@ export const VALUE_SCHEMA_BY_KIND: Record<ExtractionCandidateKind, z.ZodTypeAny>
   ACTIVATION_CONDITION: ActivationConditionValueSchema,
   DOCUMENT_RELATIONSHIP: DocumentRelationshipValueSchema,
   EXTERNAL_INPUT_REQUIREMENT: ExternalInputRequirementValueSchema,
+  FINANCIAL_FACT: FinancialFactValueSchema,
 };
 
 export type ReviewAction = "APPROVE" | "EDIT" | "REJECT" | "REVIEW_REQUIRED";
