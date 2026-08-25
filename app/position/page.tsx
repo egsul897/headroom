@@ -19,6 +19,9 @@ import {
 import type { DefinedTermLite } from "@/lib/coherent";
 
 export const metadata = { title: "Headroom — Position" };
+// Vercel deployment fix: see app/page.tsx's identical comment - this page
+// queries Prisma directly with no dynamic route segment above it.
+export const dynamic = "force-dynamic";
 
 /** Every provision code a capacity expression tree references, in first-appearance order - the generic replacement for hardcoding a document's basket codes into the page. */
 function collectRefCodes(expr: CapacityExpr | undefined, seen: Set<string>, order: string[]) {

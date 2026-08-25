@@ -4,6 +4,9 @@ import { getCompany, getDefinedTermsByProvision, getDocuments, getPosition } fro
 import { fmtCapacity } from "@/lib/format";
 
 export const metadata = { title: "Headroom — Docs" };
+// Vercel deployment fix: see app/page.tsx's identical comment - this page
+// queries Prisma directly with no dynamic route segment above it.
+export const dynamic = "force-dynamic";
 
 export default async function DocsPage() {
   const [{ position }, documents, definedTermsByProvision, company] = await Promise.all([

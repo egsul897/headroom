@@ -619,6 +619,8 @@ export type GoldenQueryType =
   | "OUT_OF_SCOPE";
 
 export interface GoldenTestSeed {
+  /** Stable, content-derived business key ("coherent:qNN") - see GoldenTest.stableKey in prisma/schema.prisma. Upsert key for prisma/seed.ts; never a hardcoded database id. */
+  stableKey: string;
   question: string;
   queryType: GoldenQueryType;
   /** May include `expectedStatus` (an EvaluationStatus/TransactionStatus) to assert the fail-closed status alone, independent of (or instead of) a numeric expectedAnswer. */
@@ -641,6 +643,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
   // Claude-derived first pass, not yet lawyer-verified (status stays UNVERIFIED).
   // Q1-Q4: maximum capacity today / which document+provision binds it.
   {
+    stableKey: "coherent:q01",
     question: "What is the maximum additional secured debt Coherent could incur today?",
     queryType: "CROSS_DOCUMENT_CAPACITY",
     queryParams: { secured: true },
@@ -651,6 +654,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q1. Indenture's MILA secured prong (§3.3(b)(i)(C), SSNL ≤ 3.00x) binds at $4,041M; Credit Agreement's own ceiling here is $5,129M, looser and not binding.",
   },
   {
+    stableKey: "coherent:q02",
     question: "What is the maximum additional unsecured debt Coherent could incur today?",
     queryType: "CROSS_DOCUMENT_CAPACITY",
     queryParams: { secured: false },
@@ -661,6 +665,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q2. Credit Agreement's §6.11(a) maintenance leverage covenant (TNL ≤ 4.25x) binds at $5,129M; indenture's own ceiling is ~$10,154M, looser.",
   },
   {
+    stableKey: "coherent:q03",
     question: "Which document and provision binds the secured-capacity answer (Q1)?",
     queryType: "CROSS_DOCUMENT_CAPACITY",
     queryParams: { secured: true },
@@ -671,6 +676,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q3. The Indenture's Permitted Liens cl. (24) / MILA secured prong (SSNL ≤ 3.00x) - tighter than the Credit Agreement because the 3.00x secured test bites before the 4.25x total-leverage test does, at Coherent's current secured/unsecured mix.",
   },
   {
+    stableKey: "coherent:q04",
     question: "Which document and provision binds the unsecured-capacity answer (Q2)?",
     queryType: "CROSS_DOCUMENT_CAPACITY",
     queryParams: { secured: false },
@@ -694,6 +700,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
   // Q6-Q13: fixed-amount checkpoints, secured and unsecured. None of these bind
   // at Coherent's current leverage - that's the actual assertion being tested.
   {
+    stableKey: "coherent:q06",
     question: "Is $100M of new secured debt permitted? Under which test?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 100, secured: true, metric: "cleared" },
@@ -704,6 +711,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q6. FCCR-based Ratio Debt (§3.3(a)) would cover it many times over; at this size every prong clears trivially.",
   },
   {
+    stableKey: "coherent:q07",
     question: "Is $250M of new secured debt permitted?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 250, secured: true, metric: "cleared" },
@@ -714,6 +722,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q7.",
   },
   {
+    stableKey: "coherent:q08",
     question: "Is $500M of new secured debt permitted?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 500, secured: true, metric: "cleared" },
@@ -724,6 +733,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q8. Still well inside the $4,041M ceiling from Q1.",
   },
   {
+    stableKey: "coherent:q09",
     question: "Is $1,000M ($1B) of new secured debt permitted?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 1000, secured: true, metric: "cleared" },
@@ -734,6 +744,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q9. Still under the $4,041M ceiling - leaves $3,041M of secured headroom remaining afterward.",
   },
   {
+    stableKey: "coherent:q10",
     question: "Is $100M of new unsecured debt permitted?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 100, secured: false, metric: "cleared" },
@@ -744,6 +755,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q10.",
   },
   {
+    stableKey: "coherent:q11",
     question: "Is $250M of new unsecured debt permitted?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 250, secured: false, metric: "cleared" },
@@ -754,6 +766,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q11.",
   },
   {
+    stableKey: "coherent:q12",
     question: "Is $500M of new unsecured debt permitted?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 500, secured: false, metric: "cleared" },
@@ -764,6 +777,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q12.",
   },
   {
+    stableKey: "coherent:q13",
     question: "Is $1,000M ($1B) of new unsecured debt permitted?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 1000, secured: false, metric: "cleared" },
@@ -776,6 +790,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
 
   // Q14-Q17: ratio mechanics.
   {
+    stableKey: "coherent:q14",
     question: "What is the FCCR threshold for Ratio Debt under the indenture, and is it currently satisfied?",
     queryType: "LEVERAGE_METRIC",
     queryParams: { metric: "fixedChargeCoverage", bindingProvisionDocumentId: INDENTURE_ID, bindingProvisionCode: "ratio_debt_fccr" },
@@ -786,6 +801,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q14. Threshold is FCCR ≥ 2.00x (§3.3(a)); currently satisfied at 8.95x.",
   },
   {
+    stableKey: "coherent:q15",
     question: "What is the TNL threshold under the Credit Agreement's financial covenant, and what is the current TNL?",
     queryType: "LEVERAGE_METRIC",
     queryParams: { metric: "totalNetLeverage", bindingProvisionDocumentId: CREDIT_AGREEMENT_ID, bindingProvisionCode: "ca_leverage_cap" },
@@ -796,6 +812,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q15. Threshold is ≤ 4.25x (§6.11); current TNL is 1.23x - substantial headroom. (Net debt $2,096M / EBITDA $1,700M.)",
   },
   {
+    stableKey: "coherent:q16",
     question: "What is the SSNL threshold applicable to secured incurrence under the indenture, and what is the current SSNL?",
     queryType: "LEVERAGE_METRIC",
     queryParams: { metric: "seniorSecuredNetLeverage", bindingProvisionDocumentId: INDENTURE_ID, bindingProvisionCode: "mila_secured" },
@@ -806,6 +823,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q16. Threshold is ≤ 3.00x (MILA secured prong / Permitted Liens cl. (24)); current SSNL is 0.62x.",
   },
   {
+    stableKey: "coherent:q17a",
     question: "At what level of incremental secured debt would the indenture's SSNL test first become the binding constraint - spot check at $2,000M",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 2000, secured: true, metric: "cleared" },
@@ -817,6 +835,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
       "v1 Q17, partial coverage. The full question asks whether the indenture is binding across the ENTIRE $0-$4,041M range - that's a continuous claim this harness cannot prove with point checks. This row and the next one are spot checks (at $2,000M and at the $4,041M ceiling itself) confirming the indenture stays binding at those two points; manually confirmed via a one-off script that it also holds at $0/$1,000/$3,000/$4,000M. Not a substitute for a real proof across the range - flagged per the source doc's own note that this question is a priority for lawyer review.",
   },
   {
+    stableKey: "coherent:q17b",
     question: "At what level of incremental secured debt would the indenture's SSNL test first become the binding constraint - spot check at the $4,041M ceiling",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 4041, secured: true, metric: "cleared" },
@@ -829,6 +848,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
 
   // Q18-Q21: basket-specific.
   {
+    stableKey: "coherent:q18",
     question: "What is the size of the indenture's Credit Facilities basket (flat component), and how much is currently used?",
     queryType: "PROVISION_CAPACITY",
     queryParams: { documentId: INDENTURE_ID, provisionCode: "facility_flat" },
@@ -839,6 +859,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q18. $4,000M flat (§3.3(b)(i)(A)), net of the $2,221M TLA+TLB currently outstanding, leaves $1,779M unused - before the $1,700M grower component (§3.3(b)(i)(B), not netted) is even counted.",
   },
   {
+    stableKey: "coherent:q19",
     question: "What is the size of the general debt basket under §3.3(b)(xii), and is any of it currently used?",
     queryType: "PROVISION_CAPACITY",
     queryParams: { documentId: INDENTURE_ID, provisionCode: "general_debt" },
@@ -849,6 +870,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q19. Greater of $530M and 40% of EBITDA ($1,700M x 40% = $680M). No usage currently modeled/observed in public filings.",
   },
   {
+    stableKey: "coherent:q20",
     question: "What is the size of the general liens basket, separate from the ratio-based lien capacity?",
     queryType: "PROVISION_CAPACITY",
     queryParams: { documentId: INDENTURE_ID, provisionCode: "lien_general" },
@@ -859,6 +881,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "v1 Q20. Same formula as Q19 (greater of $530M / 40% EBITDA) but a distinct basket under Permitted Liens cl. (25).",
   },
   {
+    stableKey: "coherent:q21",
     question: "What is the MILA formula for unsecured debt, and what is the current dollar figure (the looser, controlling prong)?",
     queryType: "DOCUMENT_CAPACITY",
     queryParams: { documentId: INDENTURE_ID, secured: false },
@@ -880,6 +903,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
   // file). Full findings are also embedded in Q22's own reviewerNotes below so
   // they're readable from the golden_tests row itself, not only from source.
   {
+    stableKey: "coherent:q22",
     question: "If Coherent incurs $500M of new secured debt today, what secured capacity remains immediately afterward, and under which provision?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 500, secured: true, metric: "remainingAfterAmount" },
@@ -892,6 +916,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
       " || v1 Q23-Q25 (chained scenarios) are NOT executable golden rows - simulateDebtIncurrence has no pro-forma-composition API. Manually verified via scripts/verify-sequential-transactions.ts (committed to the repo): Q23 - pro forma after the $500M secured incurrence above, a further $2,000M unsecured incurrence is CLEAR, bound by ca_leverage_cap, pro forma TNL 2.70x. Q24 - pro forma after both Q22 and Q23 (TNL 2.70x, SSNL 0.92x), a $300M TLB (secured) repayment moves TNL to 2.53x, SSNL to 0.74x, and increases indenture secured capacity by $300M (3,541 -> 3,841), CA secured capacity by $300M (2,629 -> 2,929), AND facility_flat (a FLAT_NET_OF_DEBT basket, not a ratio test) by the same $300M (1,279 -> 1,579). Finding: this refines v1's own Q24 framing - a FLAT_NET_OF_DEBT basket nets directly against outstanding secured debt and DOES move dollar-for-dollar with a repayment, same magnitude as the ratio tests; the doc's claim that a 'fixed-dollar basket' does not restore only holds for baskets with no debt-outstanding term in their formula (e.g. GREATER_OF_FLAT_OR_PCT_EBITDA). Q25 (solve for the EBITDA growth needed to unlock +$500M more) needs a genuine solve-for-X capability the engine does not have - not attempted.",
   },
   {
+    stableKey: "coherent:q26",
     question: "Can Coherent incur $1,000M of secured debt without breaching either document, and if so what does pro forma total net leverage become?",
     queryType: "DEBT_SIMULATION",
     queryParams: { amount: 1000, secured: true, metric: "cleared" },
@@ -902,6 +927,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "1 = cleared (true). $1,000M is well under the $4,041M binding MILA secured-prong capacity.",
   },
   {
+    stableKey: "coherent:q27",
     question:
       "If Coherent redesignates Silicon Carbide LLC from a Restricted Subsidiary to an Unrestricted Subsidiary, how does that change secured debt capacity?",
     queryType: "OUT_OF_SCOPE",
@@ -909,6 +935,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
       "Restricted/Unrestricted Subsidiary redesignation mechanics are explicitly out of scope for this phase - flagged rather than attempted, per instructions. Revisit once redesignation is in scope.",
   },
   {
+    stableKey: "coherent:q28",
     question: "What is the Credit Agreement's own secured debt capacity, considered on its own?",
     queryType: "DOCUMENT_CAPACITY",
     queryParams: { documentId: CREDIT_AGREEMENT_ID, secured: true },
@@ -919,6 +946,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "Document-level (not cross-document) capacity - the §6.11(a) TNL maintenance covenant binds at $5,129M, tighter than the interest-coverage covenant's $7,538M.",
   },
   {
+    stableKey: "coherent:q29",
     question: "Can Coherent pay a $200M dividend under the indenture, given the $150M already committed against the RP pool this quarter?",
     queryType: "RP_SIMULATION",
     queryParams: { documentId: INDENTURE_ID, amount: 200, kind: "dividend", metric: "cleared" },
@@ -929,6 +957,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "Tests nonzero historical ledger usage: the builder basket already has $150M drawn (see the illustrative ledger fixture), leaving $2,685M - still enough to cover $200M on its own.",
   },
   {
+    stableKey: "coherent:q30",
     question: "Can Coherent pay a $3,000M dividend under the indenture without tripping the ratio prong?",
     queryType: "RP_SIMULATION",
     queryParams: { documentId: INDENTURE_ID, amount: 3000, kind: "dividend", metric: "remaining" },
@@ -939,6 +968,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "$3,000M spills past the (already $150M-drawn) builder basket into the general RP basket, which covers the rest - $0 unallocated, general basket is the binding constraint.",
   },
   {
+    stableKey: "coherent:q31",
     question: "Can Coherent make a $6,000M Investment under the indenture's unlimited ratio prong?",
     queryType: "RP_SIMULATION",
     queryParams: { documentId: INDENTURE_ID, amount: 6000, kind: "investment", metric: "cleared" },
@@ -949,6 +979,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "$6,000M exceeds both fixed baskets combined, so the unlimited ratio-gated basket (TNL <= 3.50x for Investments) has to open to cover the rest - it does, since TNL is currently 1.23x.",
   },
   {
+    stableKey: "coherent:q32",
     question: "If Coherent sells $300M of assets and does not reinvest the proceeds, is a mandatory Asset Sale Offer triggered?",
     queryType: "ASSET_SALE_SIMULATION",
     queryParams: { documentId: INDENTURE_ID, amount: 300, reinvest: false, metric: "offerTriggered" },
@@ -959,6 +990,7 @@ export const COHERENT_GOLDEN_TESTS: GoldenTestSeed[] = [
     reviewerNotes: "$300M net proceeds, not reinvested, exceeds the $42.5M Excess Proceeds threshold (greater of $35M / 2.5% EBITDA) - offer is required.",
   },
   {
+    stableKey: "coherent:q33",
     question: "Is a dividend from Coherent tested against the Credit Agreement's own Restricted Payments covenant here?",
     queryType: "RP_SIMULATION",
     queryParams: { documentId: CREDIT_AGREEMENT_ID, amount: 100, kind: "dividend", metric: "cleared", expectedStatus: "not_tested" },

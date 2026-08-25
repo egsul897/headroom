@@ -8,7 +8,7 @@
  */
 import { cache } from "react";
 import { prisma } from "./prisma";
-import { computeCovenantPosition, loadCompanyCovenantData } from "./covenant-engine";
+import { computeCovenantPosition, loadCompanyCovenantData, loadCompanySolverStaticData } from "./covenant-engine";
 import { COHERENT_COMPANY, LEDGER_BASKET_LABELS } from "@/prisma/seed-data";
 
 /** The tenant every page falls back to until account selection exists. Not consumed by lib/covenant-engine.ts or any calculation logic - only by page-level call sites below. */
@@ -26,6 +26,18 @@ export const getPosition = cache(async (companyId: string = DEFAULT_COMPANY_ID, 
   const data = await getCovenantData(companyId, asOfDate);
   const position = computeCovenantPosition(data);
   return { data, position };
+});
+
+/**
+ * Loads a company's solver-native graph rows (Permission/relationship/shared-
+ * constraint/collateral-scope/rule-activation/coverage-declaration), date-
+ * scoped for amendment precedence - the data-access counterpart to
+ * getCovenantData() for the solver-native composition path (design doc §Q).
+ * For Coherent this always returns empty arrays for every field (zero
+ * Permission rows have ever been populated for Coherent - see report §N).
+ */
+export const getSolverStaticData = cache(async (companyId: string = DEFAULT_COMPANY_ID, asOfDate: Date = new Date()) => {
+  return loadCompanySolverStaticData(prisma, companyId, asOfDate);
 });
 
 export const getDebtTranches = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {

@@ -102,13 +102,25 @@ async function main() {
     });
   }
 
-  // FinancialSnapshot/DebtTranche/LedgerEntry/FeedQueueItem/GoldenTest are
-  // append-only event data with no natural unique key to upsert on - clear
-  // this company's rows before reinserting so the seed script stays
-  // idempotent across re-runs.
+  // FinancialSnapshot/DebtTranche/LedgerEntry/FeedQueueItem are append-only
+  // event data with no natural unique key to upsert on - clear this
+  // company's rows before reinserting so the seed script stays idempotent
+  // across re-runs.
+  //
+  // GoldenTest is DELIBERATELY NOT cleared/recreated here (see
+  // docs/database-replay-safety.md). It used to be: every re-seed reset
+  // every GoldenTest.status back to UNVERIFIED and assigned each row a fresh
+  // cuid, which both discarded review-script promotions on a local reseed
+  // AND (on a genuinely fresh database) silently broke every historical
+  // review/reconciliation script that hardcoded a specific golden_tests.id
+  // literal from a prior run. Golden tests are now upserted on `stableKey`
+  // (below) - a stable, content-derived, company-scoped key that survives
+  // both a local reseed and a full database rebuild - so `id` may still
+  // differ across environments/reseeds, but `status`/reviewerNotes set by a
+  // review script are preserved across a re-run of this seed script, and a
+  // fresh database always reconstructs the same set of stableKeys.
   await prisma.ledgerEntry.deleteMany({ where: { companyId: company.id } });
   await prisma.feedQueueItem.deleteMany({ where: { companyId: company.id } });
-  await prisma.goldenTest.deleteMany({ where: { companyId: company.id } });
   await prisma.debtTranche.deleteMany({ where: { companyId: company.id } });
   await prisma.financialSnapshot.deleteMany({ where: { companyId: company.id } });
 
@@ -173,10 +185,33 @@ async function main() {
     });
   }
 
+  // Upserted on `stableKey`, NOT created fresh each run (see the comment
+  // block above). `update` deliberately omits `status` and `reviewerNotes`:
+  // those are the two columns review/reconciliation scripts (e.g.
+  // scripts/populate-coherent-legal-review-provenance.ts,
+  // scripts/populate-gate0-golden-reconciliation.ts) write after seeding, and
+  // re-running this seed script must not clobber that provenance. Every
+  // other column (question/queryType/queryParams/expectedAnswer/tolerance/
+  // bindingProvision/bindingDefinedTerms) IS re-synced from seed-data.ts on
+  // every run, matching this script's existing behavior for every other
+  // upserted table above - seed-data.ts remains the source of truth for
+  // substantive content; only the review/reconciliation-owned fields are
+  // exempt.
   for (const test of COHERENT_GOLDEN_TESTS) {
-    await prisma.goldenTest.create({
-      data: {
+    await prisma.goldenTest.upsert({
+      where: { stableKey: test.stableKey },
+      update: {
+        question: test.question,
+        queryType: test.queryType,
+        queryParams: test.queryParams ? asJson(test.queryParams) : Prisma.DbNull,
+        expectedAnswer: test.expectedAnswer ?? null,
+        tolerance: test.tolerance ?? null,
+        bindingProvision: test.bindingProvision ?? null,
+        bindingDefinedTerms: test.bindingDefinedTerms ?? [],
+      },
+      create: {
         companyId: company.id,
+        stableKey: test.stableKey,
         question: test.question,
         queryType: test.queryType,
         queryParams: test.queryParams ? asJson(test.queryParams) : Prisma.DbNull,
