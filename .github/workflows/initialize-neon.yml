@@ -12,10 +12,14 @@
 # `migrate dev`, `db push`, or any reset/destructive reseed.
 #
 # Node version: the repository has no .nvmrc/.node-version and no
-# package.json "engines" field. package.json's devDependencies pin
-# @types/node to ^20.14.9, indicating Node 20 was the development target -
-# Node 20 (a current LTS as of this workflow's authoring) is used below on
-# that basis, not from an explicit repository declaration.
+# package.json "engines" field. Node 20 (this workflow's original choice,
+# inferred from package.json's @types/node ^20.14.9 pin) reached end-of-life
+# in April 2026 and is no longer supported by GitHub's setup-node action's
+# security/patch guarantees. Node 22 is used instead: it's the actual
+# runtime this whole project has been developed and tested against in its
+# sandbox environment (confirmed via `node -v`) and remains in maintenance
+# LTS through ~April 2027 - the closest match to "what this repo actually
+# runs on" without introducing an unvalidated newer major version.
 #
 # NOT EXECUTED as part of authoring this file - no GitHub Actions runner is
 # available in the environment that wrote it. Every command below was run,
@@ -42,7 +46,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
