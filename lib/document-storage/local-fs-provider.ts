@@ -15,7 +15,7 @@
  */
 
 import { randomUUID } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { DocumentStorageProvider } from "./types";
 
@@ -49,5 +49,15 @@ export class LocalFilesystemStorageProvider implements DocumentStorageProvider {
     const segments = storageRef.split("/").map(sanitizePathSegment);
     const absolutePath = path.join(this.baseDir, ...segments);
     return readFile(absolutePath);
+  }
+
+  async delete(storageRef: string): Promise<void> {
+    const segments = storageRef.split("/").map(sanitizePathSegment);
+    const absolutePath = path.join(this.baseDir, ...segments);
+    try {
+      await unlink(absolutePath);
+    } catch {
+      // best-effort - see the interface's own doc comment (types.ts).
+    }
   }
 }
