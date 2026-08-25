@@ -19,7 +19,7 @@ export default async function OnboardingWizardPage({ params }: { params: Promise
   const company = await prisma.company.findUnique({ where: { id: companyId } });
   if (!company) notFound();
 
-  const [documentCount, chunkCount, progress, permissionCount, financialStateCount, facilityCount, goldenTestCount] = await Promise.all([
+  const [documentCount, chunkCount, progress, permissionCount, financialStateCount, facilityCount, goldenTestCount, sourceConnectionCount] = await Promise.all([
     prisma.document.count({ where: { companyId } }),
     prisma.documentChunk.count({ where: { document: { companyId } } }),
     getReviewProgress(companyId),
@@ -27,9 +27,11 @@ export default async function OnboardingWizardPage({ params }: { params: Promise
     prisma.financialState.count({ where: { companyId } }),
     prisma.facility.count({ where: { companyId } }),
     prisma.goldenTest.count({ where: { companyId } }),
+    prisma.companySourceConnection.count({ where: { companyId } }),
   ]);
 
   const stages = [
+    { href: `/${companyId}/onboarding/sources`, label: "Connect sources", detail: `${sourceConnectionCount} source(s) connected (EDGAR, CSV, or manual upload)`, done: sourceConnectionCount > 0 },
     { href: `/${companyId}/onboarding/documents`, label: "Documents", detail: `${documentCount} document(s), ${chunkCount} chunk(s)`, done: documentCount > 0 },
     { href: `/${companyId}/onboarding/review`, label: "Review", detail: `${progress.total} candidate(s), ${progress.approved + progress.edited} ready to promote`, done: progress.total > 0 && progress.pending === 0 && progress.reviewRequired === 0 },
     { href: `/${companyId}/onboarding/financials`, label: "Financials", detail: `${financialStateCount} snapshot(s) recorded`, done: financialStateCount > 0 },

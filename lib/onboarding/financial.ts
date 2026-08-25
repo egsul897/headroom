@@ -11,9 +11,16 @@
  * shape, reused verbatim here, never reinvented).
  */
 
-import { Prisma, type Facility as PrismaFacility, type Permission as PrismaPermission } from "@prisma/client";
+import { Prisma, type Facility as PrismaFacility, type Permission as PrismaPermission, type PrismaClient } from "@prisma/client";
 import { prisma } from "../prisma";
 import { fact } from "../financial-core/types";
+
+/** Either the global client or a `prisma.$transaction` callback's `tx` - lets upsertFinancialFactForDate participate in lib/onboarding/promotion.ts's single all-or-nothing transaction instead of writing outside it. */
+type FinancialDbClient = Prisma.TransactionClient | PrismaClient;
+
+function toNumber(value: Prisma.Decimal | number): number {
+  return typeof value === "number" ? value : value.toNumber();
+}
 
 // ---------------------------------------------------------------------------
 // Manual FinancialState entry
@@ -52,29 +59,28 @@ export interface ManualFinancialStateInput {
 }
 
 /**
- * Creates a manually-entered FinancialState row (lib/financial-core) AND a
- * matching legacy FinancialSnapshot row (lib/covenant-engine) from the SAME
- * human input - the onboarding wizard's Financials stage. See
- * ManualFinancialStateInput's own comment for why both are written.
+ * Shapes the FinancialSnapshot row's plain-column data from a full
+ * ManualFinancialStateInput - factored out of createManualFinancialState so
+ * lib/onboarding/promotion.ts's FINANCIAL_FACT promotion path (Phase B) can
+ * write the SAME fields from a merged (existing-row + one-new-fact) input
+ * without duplicating this mapping.
  */
-export async function createManualFinancialState(input: ManualFinancialStateInput) {
-  const { companyId, asOfDate } = input;
+function snapshotFieldsFromInput(input: ManualFinancialStateInput) {
+  return {
+    ebitda: input.ebitda,
+    cash: input.cash,
+    interestExpense: input.interestExpense,
+    cumulativeNetIncome: input.cumulativeNetIncomeSinceIssue,
+    equityProceedsSinceIssue: input.equityProceedsSinceIssue,
+    assumedNewDebtRatePct: input.assumedNewDebtRatePct,
+    totalDebt: input.totalDebtPrincipal,
+    securedDebt: input.securedDebtPrincipal,
+  };
+}
 
-  await prisma.financialSnapshot.create({
-    data: {
-      companyId,
-      asOfDate,
-      ebitda: input.ebitda,
-      cash: input.cash,
-      interestExpense: input.interestExpense,
-      cumulativeNetIncome: input.cumulativeNetIncomeSinceIssue,
-      equityProceedsSinceIssue: input.equityProceedsSinceIssue,
-      assumedNewDebtRatePct: input.assumedNewDebtRatePct,
-      totalDebt: input.totalDebtPrincipal,
-      securedDebt: input.securedDebtPrincipal,
-      notes: input.notes,
-    },
-  });
+/** Same factoring as snapshotFieldsFromInput, for FinancialState's three JSON fact groups. */
+function financialStateFactsFromInput(input: ManualFinancialStateInput) {
+  const { asOfDate } = input;
   const balanceSheetFacts = {
     cash: fact(input.cash, "REPORTED", asOfDate),
     totalDebtPrincipal: fact(input.totalDebtPrincipal, "REPORTED", asOfDate),
@@ -93,6 +99,22 @@ export async function createManualFinancialState(input: ManualFinancialStateInpu
     assumedNewDebtRatePct: fact(input.assumedNewDebtRatePct, "REPORTED", asOfDate),
     covenantEbitda: { value: input.ebitda, addbacks: [], provenance: fact(input.ebitda, "REPORTED", asOfDate) },
   };
+  return { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts };
+}
+
+/**
+ * Creates a manually-entered FinancialState row (lib/financial-core) AND a
+ * matching legacy FinancialSnapshot row (lib/covenant-engine) from the SAME
+ * human input - the onboarding wizard's Financials stage. See
+ * ManualFinancialStateInput's own comment for why both are written.
+ */
+export async function createManualFinancialState(input: ManualFinancialStateInput) {
+  const { companyId, asOfDate } = input;
+
+  await prisma.financialSnapshot.create({
+    data: { companyId, asOfDate, ...snapshotFieldsFromInput(input), notes: input.notes },
+  });
+  const { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts } = financialStateFactsFromInput(input);
 
   return prisma.financialState.create({
     data: {
@@ -106,6 +128,206 @@ export async function createManualFinancialState(input: ManualFinancialStateInpu
       notes: input.notes,
     },
   });
+}
+
+// ---------------------------------------------------------------------------
+// FINANCIAL_FACT promotion (Phase B, lib/onboarding/promotion.ts) - a
+// connector-discovered, human-approved financial fact upserts into the SAME
+// FinancialSnapshot/FinancialState rows manual entry writes, so
+// lib/dashboard-service.ts needs zero changes to reflect it (docs/
+// autonomous-information-retrieval-v1.md "Source mapping" / "Canonical
+// company state").
+// ---------------------------------------------------------------------------
+
+/**
+ * The small, fixed, explicit mapping (task §17) from a FINANCIAL_FACT
+ * candidate's `metricName` to the one ManualFinancialStateInput field it
+ * updates - configuration/data, never company-specific code. An unrecognized
+ * metricName is NOT in this map on purpose; callers must check for its
+ * absence and skip with a clear reason (fail closed) rather than guess a
+ * mapping.
+ */
+export const FINANCIAL_METRIC_FIELD_MAP: Record<string, keyof ReturnType<typeof requiredFieldsFromSnapshot>> = {
+  cash: "cash",
+  total_debt: "totalDebtPrincipal",
+  secured_debt: "securedDebtPrincipal",
+  covenant_ebitda: "ebitda",
+  interest_expense: "interestExpense",
+  cumulative_net_income: "cumulativeNetIncomeSinceIssue",
+  equity_proceeds: "equityProceedsSinceIssue",
+  assumed_new_debt_rate_pct: "assumedNewDebtRatePct",
+};
+
+type RequiredFinancialFields = Pick<ManualFinancialStateInput, "ebitda" | "cash" | "totalDebtPrincipal" | "securedDebtPrincipal" | "cumulativeNetIncomeSinceIssue" | "equityProceedsSinceIssue" | "interestExpense" | "assumedNewDebtRatePct">;
+
+function requiredFieldsFromSnapshot(row: { ebitda: Prisma.Decimal | number; cash: Prisma.Decimal | number; totalDebt: Prisma.Decimal | number; securedDebt: Prisma.Decimal | number; cumulativeNetIncome: Prisma.Decimal | number; equityProceedsSinceIssue: Prisma.Decimal | number; interestExpense: Prisma.Decimal | number; assumedNewDebtRatePct: Prisma.Decimal | number }): RequiredFinancialFields {
+  return {
+    ebitda: toNumber(row.ebitda),
+    cash: toNumber(row.cash),
+    totalDebtPrincipal: toNumber(row.totalDebt),
+    securedDebtPrincipal: toNumber(row.securedDebt),
+    cumulativeNetIncomeSinceIssue: toNumber(row.cumulativeNetIncome),
+    equityProceedsSinceIssue: toNumber(row.equityProceedsSinceIssue),
+    interestExpense: toNumber(row.interestExpense),
+    assumedNewDebtRatePct: toNumber(row.assumedNewDebtRatePct),
+  };
+}
+
+export interface UpsertFinancialFactParams {
+  companyId: string;
+  asOfDate: Date;
+  metricName: string;
+  value: number;
+  notes?: string;
+}
+
+export interface UpsertFinancialFactResult {
+  applied: boolean;
+  /** Populated only when applied is false - a clear, human-readable reason, never a fabricated mapping or a fabricated value. */
+  skipReason?: string;
+  financialSnapshotId?: string;
+  financialStateId?: string;
+}
+
+/**
+ * Upserts ONE financial fact into the company's FinancialSnapshot/
+ * FinancialState row for `asOfDate` - reusing snapshotFieldsFromInput/
+ * financialStateFactsFromInput (the SAME field-writing logic
+ * createManualFinancialState uses) rather than a parallel writer.
+ *
+ * Both tables require a FULL set of 8 numeric fields per row (they were
+ * designed around one human typing in a complete snapshot at once) - a
+ * single connector-discovered fact only ever supplies ONE of those 8. This
+ * function resolves that tension by finding a BASE row to seed the other 7
+ * fields from:
+ *   1. An existing row for this EXACT asOfDate, if one exists (created by a
+ *      prior manual entry or a prior promoted fact for the same date) - the
+ *      new metric's field is merged on top of it and the row is UPDATED.
+ *   2. Otherwise, the company's most recent PRIOR row (asOfDate < this
+ *      fact's) - its 8 values seed a NEW row, again with only this metric's
+ *      field overridden.
+ *   3. If neither exists (this is the company's very first financial fact of
+ *      any kind), this function FAILS CLOSED: it does not fabricate the
+ *      other 7 required fields as 0 or any other guessed value. It returns
+ *      applied:false with a clear skipReason instead - the fact remains an
+ *      approved-but-not-yet-promotable candidate until either a full manual
+ *      snapshot or a second promotable fact for the same date exists to seed
+ *      the missing fields from.
+ */
+export interface BatchFinancialFact {
+  /** Caller-supplied identifier (lib/onboarding/promotion.ts passes the originating ExtractionCandidate's own id) echoed back on the matching perFact entry - avoids relying on array position or on metricName uniqueness (two facts in the same batch CAN legitimately share a metricName, e.g. two independently-approved candidates both proposing "cash" for the same date) to match a result back to its request. */
+  key: string;
+  metricName: string;
+  value: number;
+}
+
+export interface UpsertFinancialFactsResult {
+  /** One entry per input fact, keyed by `key` - applied:true/false + skipReason, mirroring UpsertFinancialFactResult per-fact. */
+  perFact: (UpsertFinancialFactResult & { key: string; metricName: string })[];
+  financialSnapshotId?: string;
+  financialStateId?: string;
+}
+
+/**
+ * The general form `upsertFinancialFactForDate` (below) delegates to for a
+ * single fact: merges a WHOLE BATCH of facts for the SAME (companyId,
+ * asOfDate) at once. This matters for the common real case a single-fact
+ * call cannot handle - a CSV/EDGAR/upload source that reports SEVERAL
+ * metrics for the same reporting date in one batch, for a company with NO
+ * prior FinancialSnapshot at all (e.g. a brand-new company's very first
+ * financial data). Resolving facts one at a time (each looking for a "base"
+ * row before the others in the same batch have been written) would make
+ * EVERY one of them fail closed, even though the batch as a whole may
+ * collectively supply all 8 required fields. Batching them together fixes
+ * that without weakening the fail-closed guarantee: if the batch (merged
+ * onto whatever base row exists) still leaves a required field with no
+ * source at all, this still creates nothing and reports every affected fact
+ * as skipped with a clear reason - never a fabricated 0.
+ */
+export async function upsertFinancialFactsForDate(companyId: string, asOfDate: Date, facts: BatchFinancialFact[], notes: string | undefined, client: FinancialDbClient = prisma): Promise<UpsertFinancialFactsResult> {
+  const perFact: (UpsertFinancialFactResult & { key: string; metricName: string })[] = [];
+  const resolvedFields = new Map<keyof RequiredFinancialFields, number>();
+  const applicableFacts: { key: string; metricName: string; field: keyof RequiredFinancialFields; value: number }[] = [];
+
+  for (const f of facts) {
+    const field = FINANCIAL_METRIC_FIELD_MAP[f.metricName];
+    if (!field) {
+      perFact.push({ key: f.key, metricName: f.metricName, applied: false, skipReason: `Unrecognized metricName "${f.metricName}" - no entry in FINANCIAL_METRIC_FIELD_MAP. Not promoted (fail closed): configuration/data gap, not an error, and never a fabricated mapping.` });
+      continue;
+    }
+    resolvedFields.set(field, f.value);
+    applicableFacts.push({ key: f.key, metricName: f.metricName, field, value: f.value });
+  }
+
+  if (applicableFacts.length === 0) return { perFact };
+
+  const existingSnapshot = await client.financialSnapshot.findFirst({ where: { companyId, asOfDate } });
+  const existingState = await client.financialState.findFirst({ where: { companyId, asOfDate } });
+
+  let base: RequiredFinancialFields | null = existingSnapshot ? requiredFieldsFromSnapshot(existingSnapshot) : null;
+  if (!base) {
+    const prior = await client.financialSnapshot.findFirst({ where: { companyId, asOfDate: { lt: asOfDate } }, orderBy: { asOfDate: "desc" } });
+    if (prior) base = requiredFieldsFromSnapshot(prior);
+  }
+
+  const ALL_FIELDS: (keyof RequiredFinancialFields)[] = ["ebitda", "cash", "totalDebtPrincipal", "securedDebtPrincipal", "cumulativeNetIncomeSinceIssue", "equityProceedsSinceIssue", "interestExpense", "assumedNewDebtRatePct"];
+
+  if (!base) {
+    // No base row anywhere - the batch itself must collectively cover all 8 required fields, or every applicable fact is skipped (never a fabricated 0 for whatever's missing).
+    const missing = ALL_FIELDS.filter((f) => !resolvedFields.has(f));
+    if (missing.length > 0) {
+      const reason = `No existing or prior FinancialSnapshot for ${asOfDate.toISOString().slice(0, 10)} to seed the missing required field(s) from, and this batch does not itself cover: ${missing.join(", ")}. Not promoted (fail closed: never fabricates a required field as 0). Promote a full manual financial snapshot first, or wait for facts covering the remaining metrics.`;
+      for (const f of applicableFacts) perFact.push({ key: f.key, metricName: f.metricName, applied: false, skipReason: reason });
+      return { perFact };
+    }
+    base = {
+      ebitda: resolvedFields.get("ebitda")!,
+      cash: resolvedFields.get("cash")!,
+      totalDebtPrincipal: resolvedFields.get("totalDebtPrincipal")!,
+      securedDebtPrincipal: resolvedFields.get("securedDebtPrincipal")!,
+      cumulativeNetIncomeSinceIssue: resolvedFields.get("cumulativeNetIncomeSinceIssue")!,
+      equityProceedsSinceIssue: resolvedFields.get("equityProceedsSinceIssue")!,
+      interestExpense: resolvedFields.get("interestExpense")!,
+      assumedNewDebtRatePct: resolvedFields.get("assumedNewDebtRatePct")!,
+    };
+  } else {
+    base = { ...base, ...Object.fromEntries(resolvedFields) };
+  }
+
+  const merged: ManualFinancialStateInput = { companyId, asOfDate, ...base, notes };
+
+  const snapshot = existingSnapshot
+    ? await client.financialSnapshot.update({ where: { id: existingSnapshot.id }, data: { ...snapshotFieldsFromInput(merged), notes: merged.notes ?? existingSnapshot.notes } })
+    : await client.financialSnapshot.create({ data: { companyId, asOfDate, ...snapshotFieldsFromInput(merged), notes: merged.notes } });
+
+  const { balanceSheetFacts, incomeStatementFacts, covenantMetricFacts } = financialStateFactsFromInput(merged);
+  const state = existingState
+    ? await client.financialState.update({
+        where: { id: existingState.id },
+        data: { balanceSheetFacts: balanceSheetFacts as unknown as Prisma.InputJsonValue, incomeStatementFacts: incomeStatementFacts as unknown as Prisma.InputJsonValue, covenantMetricFacts: covenantMetricFacts as unknown as Prisma.InputJsonValue, notes: merged.notes ?? existingState.notes },
+      })
+    : await client.financialState.create({
+        data: {
+          companyId,
+          asOfDate,
+          periodType: "ACTUAL",
+          scope: "CONSOLIDATED",
+          balanceSheetFacts: balanceSheetFacts as unknown as Prisma.InputJsonValue,
+          incomeStatementFacts: incomeStatementFacts as unknown as Prisma.InputJsonValue,
+          covenantMetricFacts: covenantMetricFacts as unknown as Prisma.InputJsonValue,
+          notes: merged.notes,
+        },
+      });
+
+  for (const f of applicableFacts) perFact.push({ key: f.key, metricName: f.metricName, applied: true, financialSnapshotId: snapshot.id, financialStateId: state.id });
+  return { perFact, financialSnapshotId: snapshot.id, financialStateId: state.id };
+}
+
+/** Single-fact convenience wrapper over upsertFinancialFactsForDate - see that function's own header comment for why a batch of sibling facts for the same date should generally be promoted together when a company has no prior snapshot to seed from. */
+export async function upsertFinancialFactForDate(params: UpsertFinancialFactParams, client: FinancialDbClient = prisma): Promise<UpsertFinancialFactResult> {
+  const result = await upsertFinancialFactsForDate(params.companyId, params.asOfDate, [{ key: "single", metricName: params.metricName, value: params.value }], params.notes, client);
+  const { key: _key, metricName: _metricName, ...rest } = result.perFact[0]!;
+  return rest;
 }
 
 // ---------------------------------------------------------------------------

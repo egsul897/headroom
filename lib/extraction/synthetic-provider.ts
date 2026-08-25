@@ -60,7 +60,32 @@ export class SyntheticExtractionProvider implements ContractExtractionProvider {
     if (input.chunks.length === 0) return { candidates: [] };
 
     const allText = input.chunks.map((c) => c.text).join("\n");
-    const documentType = /INDENTURE/i.test(allText) ? "INDENTURE" : /CREDIT AGREEMENT/i.test(allText) ? "CREDIT_AGREEMENT" : "OTHER";
+    let documentType: DocumentRelationshipProposal["proposedValue"]["documentType"] = /INDENTURE/i.test(allText) ? "INDENTURE" : /CREDIT AGREEMENT/i.test(allText) ? "CREDIT_AGREEMENT" : "OTHER";
+
+    // Amendment/supersession detection (Phase B, docs/autonomous-information-retrieval-v1.md
+    // "Amendment processing") - a genuine, honest textual pattern over the
+    // chunk text, matching this provider's own established "regex/heuristic
+    // over ChunkRefs, never a real NLP model" discipline (see this file's own
+    // header comment). Looks for the standard contract-amendment phrasing
+    // "Amendment No. N ... amends/to the "<Base Document Name>" ... dated
+    // <date>" and an explicit "Effective Date: <date>" marker - real amendment
+    // cover pages consistently carry both. supersedesDocumentRef is the
+    // quoted base-document name verbatim (resolved against real Document.name
+    // rows by lib/onboarding/promotion.ts, case-insensitively); never guessed
+    // when the pattern doesn't match (documentType simply stays whatever the
+    // credit-agreement/indenture/other heuristic above already determined).
+    let supersedesDocumentRef: string | undefined;
+    let effectiveFrom: string | undefined;
+    if (/\bAMENDMENT\b/i.test(allText)) {
+      documentType = "AMENDMENT";
+      const refMatch = /(?:to|amends?)\s+the\s+"([^"]{2,120})"/i.exec(allText);
+      if (refMatch?.[1]) supersedesDocumentRef = refMatch[1];
+      const dateMatch = /Effective\s+Date:?\s*([^\n]+)/i.exec(allText);
+      if (dateMatch?.[1]) {
+        const parsed = new Date(dateMatch[1].trim());
+        if (!Number.isNaN(parsed.getTime())) effectiveFrom = parsed.toISOString();
+      }
+    }
 
     const seen = new Set<string>();
     const articleOutline: DocumentRelationshipProposal["proposedValue"]["articleOutline"] = [];
@@ -75,9 +100,13 @@ export class SyntheticExtractionProvider implements ContractExtractionProvider {
     const candidate: DocumentRelationshipProposal = {
       kind: "DOCUMENT_RELATIONSHIP",
       sourceChunkIds: [input.chunks[0]!.id],
+      sourceExcerpt: supersedesDocumentRef ? allText.slice(0, 300) : undefined,
       confidence: documentType === "OTHER" ? 0.3 : 0.9,
-      rationale: `Document type inferred from the presence of "${documentType === "INDENTURE" ? "Indenture" : documentType === "CREDIT_AGREEMENT" ? "Credit Agreement" : "no recognized title"}" in the extracted text.`,
-      proposedValue: { documentType, articleOutline },
+      rationale:
+        documentType === "AMENDMENT"
+          ? `Identified as an amendment (matched "Amendment" in the extracted text)${supersedesDocumentRef ? `, proposing supersession of "${supersedesDocumentRef}"` : " - no base-document reference pattern matched, supersedesDocumentRef left unset (fail closed, never guessed)"}${effectiveFrom ? ` effective ${effectiveFrom.slice(0, 10)}` : ""}.`
+          : `Document type inferred from the presence of "${documentType === "INDENTURE" ? "Indenture" : documentType === "CREDIT_AGREEMENT" ? "Credit Agreement" : "no recognized title"}" in the extracted text.`,
+      proposedValue: { documentType, supersedesDocumentRef, effectiveFrom, articleOutline },
     };
     return { candidates: [candidate] };
   }
