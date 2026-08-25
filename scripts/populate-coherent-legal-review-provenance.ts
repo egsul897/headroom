@@ -1,11 +1,29 @@
 /**
- * Coherent legal-model finalization / phase closeout.
+ * Coherent legal-model finalization / phase closeout (2026-08-25, original
+ * two-reviewer policy).
+ *
+ * 2026-08-25 LATER UPDATE: the status this script originally wrote as
+ * `FOUNDER_AND_PEER_REVIEWED` was subsequently RENAMED (not data-migrated) to
+ * `VERIFIED` by the founder's "Final legal review status instruction" -
+ * Prisma migration 20260825145840_rename_founder_and_peer_reviewed_to_verified.
+ * The `"VERIFIED"` literals below are the SAME enum value this script always
+ * wrote, under its current name - required for this file to still compile
+ * against the renamed enum, not a rewrite of what this script did or when.
+ * At the time this script was authored and run, the founder's controlling
+ * instruction required both the founder AND a second attorney for that
+ * status; that two-reviewer requirement no longer exists (see
+ * docs/legal-review-status-model.md's "Final legal review status
+ * instruction" section) - this script's own historical NOT_SUPPLIED_NOTE
+ * text below, which still says "founder-and-peer review occurred," is left
+ * exactly as originally written, describing the policy that was controlling
+ * at the time.
  *
  * Records the founder-and-peer legal review determination as durable
  * `LegalReviewRecord` rows (see prisma/schema.prisma's own comment block
  * above that model) and promotes the specific `GoldenTest` rows whose
  * material legal-interpretation dependency was actually within the
- * reviewed scope to `status: FOUNDER_AND_PEER_REVIEWED`.
+ * reviewed scope to `status: VERIFIED` (named `FOUNDER_AND_PEER_REVIEWED`
+ * at the time this script was written - see the note above).
  *
  * THIS SCRIPT DOES NOT TOUCH: golden_tests.expectedAnswer/bindingProvision/
  * bindingDefinedTerms/question (frozen - see the closeout task's own §G);
@@ -108,12 +126,12 @@ async function main() {
         companyId: COMPANY_ID,
         reviewedArtifactType: "LEGAL_CONCLUSION",
         reviewedArtifactRef: c.ref,
-        reviewStatus: "FOUNDER_AND_PEER_REVIEWED",
+        reviewStatus: "VERIFIED",
         notes: c.notes,
         sourceVersion: c.sourceVersion,
       },
       update: {
-        reviewStatus: "FOUNDER_AND_PEER_REVIEWED",
+        reviewStatus: "VERIFIED",
         notes: c.notes,
         sourceVersion: c.sourceVersion,
       },
@@ -134,12 +152,12 @@ async function main() {
       companyId: COMPANY_ID,
       reviewedArtifactType: "RULE_ACTIVATION_CONDITION",
       reviewedArtifactRef: "coh-rac-collateral-suspension",
-      reviewStatus: "FOUNDER_AND_PEER_REVIEWED",
+      reviewStatus: "VERIFIED",
       notes: "Concrete-row cross-reference for coh-lrr-collateral-suspension-period-current-state. " + NOT_SUPPLIED_NOTE,
       sourceVersion: "docs/coherent-phase8-blocker-closure.md",
     },
     update: {
-      reviewStatus: "FOUNDER_AND_PEER_REVIEWED",
+      reviewStatus: "VERIFIED",
       notes: "Concrete-row cross-reference for coh-lrr-collateral-suspension-period-current-state. " + NOT_SUPPLIED_NOTE,
     },
   });
@@ -202,7 +220,7 @@ async function main() {
 
     await prisma.goldenTest.update({
       where: { id: g.id },
-      data: { status: "FOUNDER_AND_PEER_REVIEWED" },
+      data: { status: "VERIFIED" },
     });
 
     await prisma.legalReviewRecord.upsert({
@@ -212,17 +230,17 @@ async function main() {
         companyId: COMPANY_ID,
         reviewedArtifactType: "GOLDEN_TEST",
         reviewedArtifactRef: g.id,
-        reviewStatus: "FOUNDER_AND_PEER_REVIEWED",
+        reviewStatus: "VERIFIED",
         notes: `${g.reason} ${NOT_SUPPLIED_NOTE}`,
         sourceVersion: "docs/coherent-phase1-stacking-table.md; docs/coherent-phase8-blocker-closure.md",
       },
       update: {
-        reviewStatus: "FOUNDER_AND_PEER_REVIEWED",
+        reviewStatus: "VERIFIED",
         notes: `${g.reason} ${NOT_SUPPLIED_NOTE}`,
       },
     });
   }
-  console.log(`Promoted ${promotedGoldenTests.length}/30 golden_tests rows to FOUNDER_AND_PEER_REVIEWED (expectedAnswer/bindingProvision/question left untouched).`);
+  console.log(`Promoted ${promotedGoldenTests.length}/30 golden_tests rows to VERIFIED (named FOUNDER_AND_PEER_REVIEWED at the time this script was written - expectedAnswer/bindingProvision/question left untouched).`);
 
   const [total, byStatus, lrrCount] = await Promise.all([
     prisma.goldenTest.count({ where: { companyId: COMPANY_ID } }),

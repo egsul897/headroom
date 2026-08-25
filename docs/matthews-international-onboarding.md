@@ -1,6 +1,8 @@
 # Matthews International Corporation (NASDAQ: MATW) — Company B Onboarding
 
-Status: engineering-verified only, no outside-counsel confirmation. Every golden-question row created by this pass is `UNVERIFIED` — none has been self-promoted to `FOUNDER_AND_PEER_REVIEWED`. Legal review of Matthews' conclusions is a separate, later phase, not begun here (same discipline as Coherent's own review sequencing — see `docs/legal-review-status-model.md`).
+Status (as of original authorship): engineering-verified only, no outside-counsel confirmation. Every golden-question row created by this pass is `UNVERIFIED` — none has been self-promoted to `FOUNDER_AND_PEER_REVIEWED`. Legal review of Matthews' conclusions is a separate, later phase, not begun here (same discipline as Coherent's own review sequencing — see `docs/legal-review-status-model.md`).
+
+> **SUPERSEDING UPDATE (2026-08-25, later phase — founder legal review):** the founder has since personally reviewed all 18 Matthews golden rows and approved them; per the founder's "Final legal review status instruction" (`docs/legal-review-status-model.md` §0), all 18 are now `VERIFIED` — the founder's own review is Headroom's complete legal-verification standard, no outside-counsel confirmation required. This did not re-derive or change any of the underlying legal/engineering findings below, which remain exactly as originally authored.
 
 This document reports the first onboarding of a second real capital structure onto the generalized permission/solver engine and financial-core vertical slice, both built and verified against Coherent Corp. and synthetic fixtures only until now. Section lettering below is adapted from the Coherent phase docs (`docs/coherent-phase1-stacking-table.md`, `docs/coherent-phase8-population-reconciliation.md`) to fit this single combined deliverable.
 

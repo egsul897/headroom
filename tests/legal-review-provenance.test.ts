@@ -1,32 +1,37 @@
 /**
- * Coherent legal-model finalization / phase closeout — proves the
- * FOUNDER_AND_PEER_REVIEWED review-status model (task §S).
+ * Legal-review provenance and the VERIFIED status model.
  *
- * Covers, in order: (1) FOUNDER_AND_PEER_REVIEWED persists correctly: (2)
- * reviewer metadata persists correctly (and is honestly null, not
- * fabricated): (3) UNVERIFIED remains distinct: (4) FOUNDER_AND_PEER_REVIEWED
- * satisfies the generalized "completed qualified legal review" gate, and
- * DISPUTED/UNVERIFIED do not: (5) a missing/unsupported substantive rule can
- * still return REVIEW_REQUIRED despite legal review existing elsewhere -
- * i.e. legal-review provenance and solver PathStatus are structurally
- * unconnected: (6)/(7) legal review does not satisfy CERTIFIED_EXTERNAL_INPUT
- * and Covenant EBITDA certification remains open: plus frozen-expected-answer
- * and unchanged-solver-configuration spot checks.
+ * History: this status was originally FOUNDER_AND_PEER_REVIEWED (2026-08-25
+ * Coherent closeout), requiring both the founder and a second attorney. A
+ * later, narrower task (docs/founder-legal-review-2026-08-25.md) recorded a
+ * single-reviewer founder confirmation without promoting to that status
+ * (the two-reviewer bar wasn't met) and reverted 2 rows whose original
+ * promotion premise had been disproved by the golden-harness fix.
  *
- * 2026-08-25 UPDATE (docs/founder-legal-review-2026-08-25.md): the founder's
- * single-reviewer confirmation of all 48 golden_tests rows (both companies)
- * reverted 2 of the original 8 promoted Coherent rows ("SSNL test first
- * become the binding constraint" spot checks at $2,000M/$4,041M) from
- * FOUNDER_AND_PEER_REVIEWED back to UNVERIFIED — their original promotion
- * premise ("matches exactly between legacy and solver-native") was disproved
- * by the golden-harness solver-native-grading fix, and investigating the
- * proposed correction surfaced a further, unresolved Permission-eligibility
- * gap (see that doc §3). 6 of the original 8 remain validly promoted. The
- * same task added 48 new, single-reviewer (founder-solo) LegalReviewRecord
- * rows — unlike the original 2026-08-25 closeout records, these DO carry a
- * real (non-fabricated) reviewerRole/reviewDate, because that metadata was
- * actually supplied this time; reviewerName remains null throughout (no name
- * was ever supplied, by either task).
+ * FINAL POLICY (docs/legal-review-status-model.md, "Final legal review
+ * status instruction", 2026-08-25): the founder — Headroom's own controlling
+ * legal-review authority — superseded the two-reviewer requirement outright.
+ * For Headroom's internal product/development purposes, a conclusion the
+ * founder has personally reviewed and approved is VERIFIED, the complete
+ * legal-review state, with no additional peer/second-attorney/outside-
+ * counsel/independent-counsel requirement. The enum value itself was RENAMED
+ * FOUNDER_AND_PEER_REVIEWED -> VERIFIED (Prisma migration
+ * 20260825145840_rename_founder_and_peer_reviewed_to_verified — an enum
+ * rename, not a data migration: zero rows touched by hand, zero data loss),
+ * and all 48 current golden_tests rows (30 Coherent + 18 Matthews) were then
+ * promoted to VERIFIED (scripts/finalize-founder-sole-review-verified-2026-08-25.ts).
+ *
+ * Covers (per that instruction's own §10 test list):
+ *   A. founder legal review can produce VERIFIED.
+ *   B. VERIFIED does not require a second reviewer.
+ *   C. all 48 current golden rows are VERIFIED.
+ *   D. VERIFIED is orthogonal to engineering PASS/FAIL.
+ *   E. VERIFIED is orthogonal to financial-data provenance.
+ *   F. a verified legal rule may still expose a known configuration/engine
+ *      discrepancy.
+ *   G. historical LegalReviewRecords remain intact (nothing deleted across
+ *      any of the three review-policy tasks).
+ *   H. no code path gates Phase 10 on second-lawyer/outside-counsel review.
  */
 import { describe, expect, it } from "vitest";
 import { prisma } from "../lib/prisma";
@@ -36,11 +41,11 @@ import type { RequirementResult } from "../lib/solver/types";
 
 const COMPANY_ID = "coherent";
 
-describe("hasCompletedQualifiedLegalReview (task §S.4)", () => {
-  it("FOUNDER_AND_PEER_REVIEWED satisfies the gate", () => {
-    expect(hasCompletedQualifiedLegalReview("FOUNDER_AND_PEER_REVIEWED")).toBe(true);
+describe("hasCompletedQualifiedLegalReview (A/B/H)", () => {
+  it("VERIFIED (the founder's own review, single-reviewer) satisfies the gate on its own", () => {
+    expect(hasCompletedQualifiedLegalReview("VERIFIED")).toBe(true);
   });
-  it("UNVERIFIED does not satisfy the gate (task §S.3 - UNVERIFIED remains distinct)", () => {
+  it("UNVERIFIED does not satisfy the gate", () => {
     expect(hasCompletedQualifiedLegalReview("UNVERIFIED")).toBe(false);
   });
   it("DISPUTED does not satisfy the gate", () => {
@@ -48,7 +53,7 @@ describe("hasCompletedQualifiedLegalReview (task §S.4)", () => {
   });
 });
 
-describe("Solver PathStatus is structurally independent of legal-review provenance (task §S.5)", () => {
+describe("Solver PathStatus is structurally independent of legal-review provenance (D/F)", () => {
   it("an unresolved, non-assumption requirement still returns REVIEW_REQUIRED, regardless of legal-review status elsewhere - there is no wiring from GoldenTest.status/LegalReviewRecord into pathStatus at all", () => {
     const results: RequirementResult[] = [
       { requirement: "some-unsupported-primitive", status: "UNKNOWN", class: "ENGINE_CAPABILITY", reasonCategory: "NOT_MODELED" } as unknown as RequirementResult,
@@ -62,68 +67,64 @@ describe("Solver PathStatus is structurally independent of legal-review provenan
   });
 });
 
-describe("Coherent legal-review provenance (live DB) (task §S.1/§S.2)", () => {
-  it("exactly 6 of 30 golden_tests rows carry FOUNDER_AND_PEER_REVIEWED (2026-08-25: 2 of the original 8 reverted); the rest remain UNVERIFIED", async () => {
-    const rows = await prisma.goldenTest.findMany({ where: { companyId: COMPANY_ID }, select: { status: true } });
-    expect(rows.length).toBe(30);
+describe("All 48 current golden rows are VERIFIED (C)", () => {
+  it("30 Coherent + 18 Matthews rows are all VERIFIED; zero UNVERIFIED/DISPUTED remain", async () => {
+    const rows = await prisma.goldenTest.findMany({ where: { companyId: { in: ["coherent", "matthews"] } }, select: { companyId: true, status: true } });
+    expect(rows.length).toBe(48);
+    expect(rows.filter((r) => r.companyId === "coherent").length).toBe(30);
+    expect(rows.filter((r) => r.companyId === "matthews").length).toBe(18);
     const byStatus = rows.reduce<Record<string, number>>((acc, r) => {
       acc[r.status] = (acc[r.status] ?? 0) + 1;
       return acc;
     }, {});
-    expect(byStatus["FOUNDER_AND_PEER_REVIEWED"]).toBe(6);
-    expect(byStatus["UNVERIFIED"]).toBe(24);
+    expect(byStatus["VERIFIED"]).toBe(48);
+    expect(byStatus["UNVERIFIED"] ?? 0).toBe(0);
     expect(byStatus["DISPUTED"] ?? 0).toBe(0);
   });
 
-  it("every FOUNDER_AND_PEER_REVIEWED golden_tests row has a matching LegalReviewRecord with reviewStatus FOUNDER_AND_PEER_REVIEWED", async () => {
-    const promoted = await prisma.goldenTest.findMany({ where: { companyId: COMPANY_ID, status: "FOUNDER_AND_PEER_REVIEWED" }, select: { id: true } });
-    expect(promoted.length).toBe(6);
-    for (const g of promoted) {
-      const record = await prisma.legalReviewRecord.findFirst({
-        where: { companyId: COMPANY_ID, reviewedArtifactType: "GOLDEN_TEST", reviewedArtifactRef: g.id, reviewStatus: "FOUNDER_AND_PEER_REVIEWED" },
-      });
-      expect(record, `No FOUNDER_AND_PEER_REVIEWED LegalReviewRecord for promoted golden_tests row ${g.id}`).toBeTruthy();
+  it("every golden_tests row has a matching VERIFIED LegalReviewRecord recording the founder as sole reviewer, with no fabricated name", async () => {
+    const rows = await prisma.goldenTest.findMany({ where: { companyId: { in: ["coherent", "matthews"] } }, select: { id: true, companyId: true } });
+    for (const g of rows) {
+      const record = await prisma.legalReviewRecord.findUnique({ where: { id: `lrr-policy-verified-2026-08-25-${g.id}` } });
+      expect(record, `No lrr-policy-verified-2026-08-25 record for golden_tests row ${g.id}`).toBeTruthy();
+      expect(record!.reviewStatus).toBe("VERIFIED");
+      expect(record!.reviewerName, `${g.id}'s review record should not have a fabricated reviewerName`).toBeNull();
+      expect(record!.reviewerRole).toBe("Founder / Legal Reviewer");
+      expect(record!.reviewDate).toEqual(new Date("2026-08-25"));
     }
   });
+});
 
-  it("the 2 reverted rows (2026-08-25) keep their original closeout LegalReviewRecord untouched, plus a new superseding record explaining the revert - never silently overwritten", async () => {
-    const revertedIds = ["cmt7vicwj002dj1d3bv3zwd1w", "cmt7vicwk002fj1d3nnpsqqdp"];
-    for (const id of revertedIds) {
+describe("VERIFIED does not force a stale engineering answer (D/F)", () => {
+  const affected = ["cmt7vicwr002pj1d33vvdfvav", "cmt7vicwj002dj1d3bv3zwd1w", "cmt7vicwk002fj1d3nnpsqqdp"];
+
+  it("Q22 and rows 16/17 are VERIFIED even though their engineering discrepancy (the ca_incremental_ratio_based_unsecured_or_junior eligibility gap) is unresolved - legal review and engineering correctness are separate dimensions", async () => {
+    for (const id of affected) {
       const row = await prisma.goldenTest.findUnique({ where: { id } });
       expect(row, `golden_tests row ${id} not found`).toBeTruthy();
-      expect(row!.status).toBe("UNVERIFIED");
-
-      const original = await prisma.legalReviewRecord.findUnique({ where: { id: `coh-lrr-golden-${id}` } });
-      expect(original, `original 2026-08-25 closeout record for ${id} must be preserved, not deleted`).toBeTruthy();
-      expect(original!.reviewStatus).toBe("FOUNDER_AND_PEER_REVIEWED"); // historical record, left exactly as it was
-
-      const superseding = await prisma.legalReviewRecord.findUnique({ where: { id: `lrr-supersede-2026-08-25-${id}` } });
-      expect(superseding, `superseding record for ${id} must exist`).toBeTruthy();
-      expect(superseding!.notes).toMatch(/SUPERSEDES/);
+      expect(row!.status, `${id} should be VERIFIED despite the open engineering discrepancy`).toBe("VERIFIED");
+      // expectedAnswer/bindingProvision are NEITHER "corrected" to the new
+      // solver-native figure NOR silently changed for any other reason -
+      // legal VERIFIED status does not force or bless any particular number.
+      expect(row!.reviewerNotes, `${id} should document that VERIFIED does not resolve the engineering discrepancy`).toMatch(/does NOT resolve/);
     }
   });
 
-  it("reviewer name is never fabricated on any record; reviewerRole/reviewDate are honestly null on the 2026-08-25 closeout records (never supplied) and honestly populated on the 2026-08-25 founder-solo records (actually supplied that pass)", async () => {
-    const records = await prisma.legalReviewRecord.findMany({ where: { companyId: COMPANY_ID } });
-    expect(records.length).toBeGreaterThan(0);
-    for (const r of records) {
-      expect(r.reviewerName, `${r.id} should not have a fabricated reviewerName`).toBeNull();
-      if (r.id.startsWith("lrr-founder-solo-2026-08-25-") || r.id.startsWith("lrr-supersede-2026-08-25-")) {
-        // Metadata actually supplied by the founder's 2026-08-25 instruction -
-        // recording it is not fabrication, and leaving it null here would be
-        // dishonest in the other direction.
-        expect(r.reviewerRole, `${r.id} should record the real founder-solo review role`).toMatch(/^Founder \(Headroom\) - single reviewer/);
-        expect(r.reviewDate, `${r.id} should record the real 2026-08-25 review date`).toEqual(new Date("2026-08-25"));
-        expect(r.reviewStatus, `${r.id} must not claim the two-reviewer status from a single-reviewer confirmation`).toBe("UNVERIFIED");
-      } else {
-        expect(r.reviewerRole, `${r.id} should not have a fabricated reviewerRole`).toBeNull();
-        expect(r.reviewDate, `${r.id} should not have a fabricated reviewDate`).toBeNull();
-        expect(r.notes, `${r.id} should document that reviewer identity/date is not yet supplied`).toMatch(/were NOT supplied/);
-      }
-    }
+  it("the golden harness still FAILs these 3 rows on engineering grounds - VERIFIED legal status does not suppress or weaken the regression check", async () => {
+    // Structural assertion, not a re-run of the harness itself (that's
+    // scripts/golden-test.ts, exercised separately in CI/manual runs): the
+    // stored expectedAnswer for Q22 (3541) and the stored bindingProvision
+    // for all 3 (mila_secured) are unchanged from before this task, which is
+    // exactly what keeps the harness's existing FAIL/discrepancy
+    // classification (EXPECTED_ANSWER_STALE / stale-citation) accurate.
+    const q22 = await prisma.goldenTest.findUnique({ where: { id: "cmt7vicwr002pj1d33vvdfvav" } });
+    expect(Number(q22!.expectedAnswer)).toBe(3541);
+    expect(q22!.bindingProvision).toBe("mila_secured");
   });
+});
 
-  it("the four load-bearing legal conclusions (task §E) are each recorded as FOUNDER_AND_PEER_REVIEWED", async () => {
+describe("Historical LegalReviewRecord chronology remains fully intact (G)", () => {
+  it("the original 2026-08-25 closeout records (4 conclusions + 1 RAC cross-ref + 8 golden-test promotions) still exist, untouched", async () => {
     const refs = [
       "coherent-indenture-permitted-liens-clause-6-24-25-stacking-nonnetting",
       "coherent-adjusted-consolidated-ebitda-addback-cap-absence",
@@ -132,14 +133,38 @@ describe("Coherent legal-review provenance (live DB) (task §S.1/§S.2)", () => 
     ];
     for (const ref of refs) {
       const record = await prisma.legalReviewRecord.findFirst({ where: { companyId: COMPANY_ID, reviewedArtifactType: "LEGAL_CONCLUSION", reviewedArtifactRef: ref } });
-      expect(record, `Missing LegalReviewRecord for conclusion ${ref}`).toBeTruthy();
-      expect(record!.reviewStatus).toBe("FOUNDER_AND_PEER_REVIEWED");
+      expect(record, `Missing historical LegalReviewRecord for conclusion ${ref}`).toBeTruthy();
+      // Historical record's own reviewStatus column reads VERIFIED now too -
+      // that specific field was renamed in place by the enum-value rename
+      // migration (not a data migration; the row was never individually
+      // touched), so this is the same historical row, not a rewritten one.
+      expect(record!.reviewStatus).toBe("VERIFIED");
     }
+
+    const originalGoldenPromotion = await prisma.legalReviewRecord.findUnique({ where: { id: "coh-lrr-golden-cmt7vicw6001rj1d3qr02g8l6" } });
+    expect(originalGoldenPromotion, "original 2026-08-25 closeout golden-test promotion record must be preserved").toBeTruthy();
+  });
+
+  it("the reverted-row supersession records from docs/founder-legal-review-2026-08-25.md are preserved (nothing deleted when the status model was simplified again)", async () => {
+    for (const id of ["cmt7vicwj002dj1d3bv3zwd1w", "cmt7vicwk002fj1d3nnpsqqdp"]) {
+      const original = await prisma.legalReviewRecord.findUnique({ where: { id: `coh-lrr-golden-${id}` } });
+      expect(original, `original closeout record for ${id} must remain preserved`).toBeTruthy();
+      const supersede = await prisma.legalReviewRecord.findUnique({ where: { id: `lrr-supersede-2026-08-25-${id}` } });
+      expect(supersede, `2026-08-25 revert-supersession record for ${id} must remain preserved`).toBeTruthy();
+      const founderSolo = await prisma.legalReviewRecord.findUnique({ where: { id: `lrr-founder-solo-2026-08-25-${id}` } });
+      expect(founderSolo, `founder-solo record for ${id} must remain preserved`).toBeTruthy();
+    }
+  });
+
+  it("total legal_review_records count only grows across the three review-policy tasks - nothing was ever deleted", async () => {
+    const total = await prisma.legalReviewRecord.count({ where: { companyId: { in: ["coherent", "matthews"] } } });
+    // 13 (2026-08-25 closeout) + 50 (founder-solo task: 48 + 2 supersession) + 48 (this task) = 111.
+    expect(total).toBe(111);
   });
 });
 
-describe("Legal review does not satisfy financial-data certification (task §S.6/§S.7)", () => {
-  it("no ExternalInputRecord of kind CERTIFIED_EXTERNAL_INPUT exists for Coherent - Covenant EBITDA certification remains open despite completed legal review", async () => {
+describe("Legal review does not satisfy financial-data certification (E)", () => {
+  it("no ExternalInputRecord of kind CERTIFIED_EXTERNAL_INPUT exists for Coherent - Covenant EBITDA certification remains open despite completed (VERIFIED) legal review", async () => {
     const certified = await prisma.externalInputRecord.findMany({ where: { companyId: COMPANY_ID, kind: "CERTIFIED_EXTERNAL_INPUT" } });
     expect(certified, "A CERTIFIED_EXTERNAL_INPUT row exists for Coherent - if this is EBITDA, docs/coherent-legal-model-baseline-v1.md §6 needs updating; legal review alone must never create this row.").toEqual([]);
   });
@@ -155,7 +180,7 @@ describe("Legal review does not satisfy financial-data certification (task §S.6
   });
 });
 
-describe("Non-mutation: solver-native configuration and golden-test substance unchanged (task §S.9/§S.10)", () => {
+describe("Non-mutation: solver-native configuration and golden-test substance unchanged", () => {
   it("Permission/PermissionRelationship/SharedCapacityConstraint/SolverCoverageDeclaration counts match the Phase 8 population exactly", async () => {
     const [permCount, relCount, sccCount, declCount] = await Promise.all([
       prisma.permission.count({ where: { companyId: COMPANY_ID } }),
@@ -169,29 +194,29 @@ describe("Non-mutation: solver-native configuration and golden-test substance un
     expect(declCount).toBe(6);
   });
 
-  it("frozen expected answers on promoted golden_tests rows are unchanged (spot check)", async () => {
+  it("frozen expected answers on VERIFIED golden_tests rows are unchanged (spot check)", async () => {
     const ssnlThreshold = await prisma.goldenTest.findFirst({
       where: { companyId: COMPANY_ID, question: { contains: "SSNL threshold applicable to secured incurrence" } },
     });
     expect(ssnlThreshold).toBeTruthy();
     expect(Number(ssnlThreshold!.expectedAnswer)).toBeCloseTo(0.622941, 6);
     expect(ssnlThreshold!.bindingProvision).toBe("mila_secured");
-    expect(ssnlThreshold!.status).toBe("FOUNDER_AND_PEER_REVIEWED");
+    expect(ssnlThreshold!.status).toBe("VERIFIED");
 
     const q100msecured = await prisma.goldenTest.findFirst({
       where: { companyId: COMPANY_ID, question: "Is $100M of new secured debt permitted? Under which test?" },
     });
     expect(q100msecured).toBeTruthy();
     expect(Number(q100msecured!.expectedAnswer)).toBe(1);
-    expect(q100msecured!.status).toBe("FOUNDER_AND_PEER_REVIEWED");
+    expect(q100msecured!.status).toBe("VERIFIED");
   });
 
-  it("a non-promoted, capacity-ceiling golden row (Q1, max secured cross-doc) stays UNVERIFIED - its expected answer reflects the pre-correction legacy formula, not the reviewed non-netting conclusion", async () => {
+  it("Q1 (max secured cross-doc) is VERIFIED but its expected answer is unchanged - still the pre-correction legacy figure, not silently updated by the status-policy change", async () => {
     const q1 = await prisma.goldenTest.findFirst({
       where: { companyId: COMPANY_ID, question: "What is the maximum additional secured debt Coherent could incur today?" },
     });
     expect(q1).toBeTruthy();
-    expect(q1!.status).toBe("UNVERIFIED");
+    expect(q1!.status).toBe("VERIFIED");
     expect(Number(q1!.expectedAnswer)).toBe(4041);
   });
 });

@@ -370,11 +370,22 @@ enum GoldenQueryType {
 // LAWYER_VERIFIED previously existed here and was removed (zero rows ever
 // used it, confirmed before removal) - see docs/legal-review-status-model.md
 // for how independent/outside-counsel provenance should be recorded instead
-// (an additional LegalReviewRecord, not a required higher enum tier above
-// FOUNDER_AND_PEER_REVIEWED).
+// (an additional LegalReviewRecord, never a required tier).
+//
+// 2026-08-25 FINAL POLICY (docs/legal-review-status-model.md, "Final legal
+// review status instruction"): this value was FOUNDER_AND_PEER_REVIEWED
+// until this date, requiring both the founder and a second attorney. The
+// founder, Headroom's own controlling legal-review authority, superseded
+// that requirement: for Headroom's internal product/development purposes, a
+// legal conclusion the founder has personally reviewed and approved is
+// VERIFIED - complete, with no additional peer/second-attorney/outside-
+// counsel/independent-counsel requirement. Renamed via a proper Prisma
+// migration (prisma/migrations/<timestamp>_rename_founder_and_peer_reviewed_to_verified);
+// every row previously FOUNDER_AND_PEER_REVIEWED is now VERIFIED with no data
+// loss (an enum value rename, not a data migration).
 enum GoldenTestStatus {
   UNVERIFIED
-  FOUNDER_AND_PEER_REVIEWED
+  VERIFIED
   DISPUTED
 
   @@map("golden_test_status")
@@ -546,8 +557,9 @@ enum StatePredicateKind {
 //
 // PUBLIC_FILING_RECONSTRUCTION is DELIBERATELY NOT a stronger or weaker tier
 // of CERTIFIED_EXTERNAL_INPUT - it is a different kind of thing, the same way
-// FOUNDER_AND_PEER_REVIEWED is a different dimension from CERTIFIED_EXTERNAL_INPUT
-// (docs/legal-review-status-model.md §5). A value is CERTIFIED_EXTERNAL_INPUT
+// legal-review status (GoldenTestStatus/LegalReviewStatus VERIFIED) is a
+// different dimension from CERTIFIED_EXTERNAL_INPUT
+// (docs/legal-review-status-model.md §5/§7). A value is CERTIFIED_EXTERNAL_INPUT
 // only when it is sourced from a real customer's own certified record - a
 // Compliance Certificate, an ERP-linked figure, a lender-delivered
 // certificate line item. A value is PUBLIC_FILING_RECONSTRUCTION when it is
@@ -919,11 +931,19 @@ enum LegalReviewStatus {
   // No qualified legal review recorded for this artifact yet.
   UNVERIFIED
   // Substantively reviewed and approved by Headroom's founder (an
-  // experienced leveraged/debt-finance attorney) AND a second attorney with
-  // relevant debt-finance experience. Sufficient completed legal review for
-  // Headroom product-development purposes (docs/legal-review-status-model.md)
-  // - NOT a lower rung beneath some further-required tier.
-  FOUNDER_AND_PEER_REVIEWED
+  // experienced leveraged/debt-finance attorney), who is Headroom's own
+  // authorized legal-review standard for internal product/development
+  // purposes. Complete legal-review state on its own - no additional
+  // peer-attorney, outside-counsel, or independent-counsel requirement
+  // (docs/legal-review-status-model.md, "Final legal review status
+  // instruction", 2026-08-25, superseding the prior two-reviewer
+  // FOUNDER_AND_PEER_REVIEWED framework this value was renamed from - a
+  // rename, not a data migration; no row or record was lost).
+  // Orthogonal to financial-data provenance (ExternalInputRecord/
+  // CERTIFIED_EXTERNAL_INPUT) and to engineering/implementation correctness
+  // (a VERIFIED legal conclusion can still expose a CONFIGURATION_ERROR/
+  // ENGINE_BUG in how it's implemented - see docs/legal-review-status-model.md §7/§9).
+  VERIFIED
   // A reviewer flagged the reviewed conclusion as wrong or contested.
   DISPUTED
 

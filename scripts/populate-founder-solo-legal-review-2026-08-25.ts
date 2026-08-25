@@ -195,34 +195,49 @@ async function main() {
   }
   console.log("Appended engineering-gap-finding note to reviewerNotes for Q22 and rows 16/17 (3 rows).");
 
-  // Revert rows 16/17's status - the 2026-08-25 closeout's promotion premise
-  // ("matches exactly between legacy and solver-native") is now confirmed
-  // false; leaving them FOUNDER_AND_PEER_REVIEWED would misrepresent an
-  // unresolved citation discrepancy as settled. Q22 was never promoted, so
-  // nothing to revert there. The original LegalReviewRecord rows
-  // (coh-lrr-golden-cmt7vicwj002dj1d3bv3zwd1w / ...cwk002fj1d3nnpsqqdp) are
-  // left completely untouched by this script - only golden_tests.status
-  // changes, plus the new superseding LegalReviewRecord rows below.
-  for (const id of [AFFECTED_IDS.row16, AFFECTED_IDS.row17]) {
-    const before = await prisma.goldenTest.findUniqueOrThrow({ where: { id } });
-    if (before.status !== "FOUNDER_AND_PEER_REVIEWED") continue; // idempotent - already reverted
-    await prisma.goldenTest.update({ where: { id }, data: { status: "UNVERIFIED" } });
-    await prisma.legalReviewRecord.upsert({
-      where: { id: `lrr-supersede-2026-08-25-${id}` },
-      create: {
-        id: `lrr-supersede-2026-08-25-${id}`,
-        companyId: "coherent",
-        reviewedArtifactType: "GOLDEN_TEST",
-        reviewedArtifactRef: id,
-        reviewStatus: "UNVERIFIED",
-        reviewerRole: "Founder (Headroom) - single reviewer",
-        reviewDate: REVIEW_DATE,
-        notes: `SUPERSEDES coh-lrr-golden-${id} (2026-08-25 closeout), WITHOUT deleting or editing it - that record is preserved as the accurate historical account of what was believed at the time ("matches exactly between legacy and solver-native"). The golden-harness solver-native-grading fix (docs/golden-harness-solver-native-grading-fix.md) and the result-semantics cleanup (docs/result-semantics-headroom-cleanup.md) subsequently proved that premise false: the solver-native binding citation for this row differs from the legacy one. This task's own investigation (see scripts/populate-founder-solo-legal-review-2026-08-25.ts header) further found the new citation itself rests on an under-modeled Permission (coh-ca-d-incr-ratiobased-unsecjr, missing eligibilityConditions restricting it to unsecured/junior debt). golden_tests.status is therefore reverted from FOUNDER_AND_PEER_REVIEWED to UNVERIFIED - continuing to show this row as settled would misrepresent a genuinely open engineering question as reviewed and closed. expectedAnswer/bindingProvision are NOT changed (still "mila_secured" / 1) - not because they are confirmed correct, but because the proposed replacement is not confirmed correct either, and no value is being silently substituted.`,
-        sourceVersion: "docs/result-semantics-headroom-cleanup.md; docs/golden-harness-solver-native-grading-fix.md; Founder legal-review confirmation instruction, 2026-08-25",
-      },
-      update: {},
-    });
-    console.log(`Reverted ${id}: FOUNDER_AND_PEER_REVIEWED -> UNVERIFIED (superseding record added; original 2026-08-25 record left untouched).`);
+  // ---------------------------------------------------------------------
+  // SUPERSEDED (2026-08-25, same day, later task) - DO NOT RE-ENABLE.
+  // This block originally reverted rows 16/17's status from
+  // FOUNDER_AND_PEER_REVIEWED to UNVERIFIED, because at the time this script
+  // was authored, "legal review complete" and "no known engineering
+  // discrepancy" were the same status dimension. The founder's subsequent
+  // "Final legal review status instruction" (docs/legal-review-status-model.md)
+  // separated those two dimensions explicitly: a row can be legally VERIFIED
+  // while still exposing a known, unresolved engineering discrepancy (§3/§8
+  // of that instruction) - and re-promoted rows 16/17 (and Q22) to VERIFIED
+  // on exactly that basis (scripts/finalize-founder-sole-review-verified-2026-08-25.ts).
+  // Re-running this block today would silently UNDO that later, controlling
+  // decision, which is exactly the outcome docs/legal-review-status-model.md
+  // now prohibits. The enum rename (FOUNDER_AND_PEER_REVIEWED -> VERIFIED,
+  // migration 20260825145840_rename_founder_and_peer_reviewed_to_verified)
+  // also removed this block's original type-correct comparison target, so it
+  // could not run unmodified even if desired. Left inert (never executes)
+  // rather than deleted, so a future reader can see exactly what this script
+  // did on 2026-08-25 and why it no longer applies - see
+  // lrr-supersede-2026-08-25-* (created below, historical, still accurate as
+  // a record of that moment) for the reasoning that WAS current then.
+  // ---------------------------------------------------------------------
+  const SUPERSEDED_REVERT_LOGIC_DISABLED = true;
+  if (!SUPERSEDED_REVERT_LOGIC_DISABLED) {
+    for (const id of [AFFECTED_IDS.row16, AFFECTED_IDS.row17]) {
+      await prisma.legalReviewRecord.upsert({
+        where: { id: `lrr-supersede-2026-08-25-${id}` },
+        create: {
+          id: `lrr-supersede-2026-08-25-${id}`,
+          companyId: "coherent",
+          reviewedArtifactType: "GOLDEN_TEST",
+          reviewedArtifactRef: id,
+          reviewStatus: "UNVERIFIED",
+          reviewerRole: "Founder (Headroom) - single reviewer",
+          reviewDate: REVIEW_DATE,
+          notes: `SUPERSEDES coh-lrr-golden-${id} (2026-08-25 closeout), WITHOUT deleting or editing it - that record is preserved as the accurate historical account of what was believed at the time ("matches exactly between legacy and solver-native"). The golden-harness solver-native-grading fix (docs/golden-harness-solver-native-grading-fix.md) and the result-semantics cleanup (docs/result-semantics-headroom-cleanup.md) subsequently proved that premise false: the solver-native binding citation for this row differs from the legacy one. This task's own investigation (see scripts/populate-founder-solo-legal-review-2026-08-25.ts header) further found the new citation itself rests on an under-modeled Permission (coh-ca-d-incr-ratiobased-unsecjr, missing eligibilityConditions restricting it to unsecured/junior debt). golden_tests.status is therefore reverted from its prior promoted status to UNVERIFIED - continuing to show this row as settled would misrepresent a genuinely open engineering question as reviewed and closed. expectedAnswer/bindingProvision are NOT changed (still "mila_secured" / 1) - not because they are confirmed correct, but because the proposed replacement is not confirmed correct either, and no value is being silently substituted.`,
+          sourceVersion: "docs/result-semantics-headroom-cleanup.md; docs/golden-harness-solver-native-grading-fix.md; Founder legal-review confirmation instruction, 2026-08-25",
+        },
+        update: {},
+      });
+    }
+  } else {
+    console.log("Skipped the rows-16/17 revert block: superseded by the founder's 2026-08-25 'Final legal review status instruction' (see header comment above). No golden_tests.status change made by this run.");
   }
 
   const [byStatusAfter, lrrCount] = await Promise.all([

@@ -2,6 +2,8 @@
 
 **CLOSEOUT DOCUMENT.** This freezes the state of Coherent's legal-modeling phase as of the date below. It is not another analysis memo — for the underlying legal reasoning, see `docs/coherent-phase1-stacking-table.md` and `docs/coherent-phase8-blocker-closure.md`; for the engineering population, see `docs/coherent-phase8-population-reconciliation.md`; for what `FOUNDER_AND_PEER_REVIEWED` means, see `docs/legal-review-status-model.md`.
 
+> **SUPERSEDING UPDATE (2026-08-25, later the same day — "Final legal review status instruction"):** The two-reviewer `FOUNDER_AND_PEER_REVIEWED` policy this document describes below was superseded: the founder's own review is now Headroom's complete legal-verification standard (no second-attorney requirement), and the enum value itself was renamed to `VERIFIED` (a rename, not a data migration — the 8 rows/records this document describes as `FOUNDER_AND_PEER_REVIEWED` are the same rows, now reading `VERIFIED`). All 48 current golden rows across both Coherent and Matthews are now `VERIFIED`, not just the 8 this document originally recorded. See `docs/legal-review-status-model.md` §0 for the current, controlling policy — the rest of this document is left exactly as originally written to preserve the chronology.
+
 ## 1. As-of date
 
 **2026-08-25.**
