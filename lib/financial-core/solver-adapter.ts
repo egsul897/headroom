@@ -15,7 +15,8 @@
  * §L.1).
  */
 
-import type { FinancialSnapshotInput, SolverNativeCompanyContext, SolverNativeStaticData } from "../covenant-engine";
+import { simulateDebtIncurrence } from "../covenant-engine";
+import type { CompanyCovenantData, CovenantPosition, DebtIncurrenceSimulation, FinancialSnapshotInput, SolverNativeCompanyContext, SolverNativeStaticData } from "../covenant-engine";
 import type { ActivationState, BasketUsageRecord, CollateralPoolRef, EntityClass, GuarantorStatus, HistoricalState, LedgerEventRef, Permission, PriorityTier } from "../solver/types";
 import type { DebtEvent, FinancialState } from "./types";
 
@@ -132,4 +133,16 @@ export function toHistoricalState(events: DebtEvent[], permissions: Permission[]
     elections: [],
     stepUpCooldownHistory: [],
   };
+}
+
+/**
+ * architecture §L.4/§S.1 - the sole call into `simulateDebtIncurrence`
+ * (which itself routes to `runSolver` when `solverContext` is supplied and
+ * coverage is complete) permitted anywhere in lib/financial-core/**. The
+ * financial core never reconstructs contractual logic from this result - it
+ * wraps it unmodified (architecture §L.4's "the UI never reconstructs
+ * allocation logic" discipline, generalized).
+ */
+export function evaluateContractualCapacity(data: CompanyCovenantData, position: CovenantPosition, amount: number, secured: boolean, solverContext?: SolverNativeCompanyContext): DebtIncurrenceSimulation {
+  return simulateDebtIncurrence(data, position, amount, secured, solverContext);
 }

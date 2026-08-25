@@ -16,6 +16,7 @@
 import { computeOutstandingPrincipal } from "./capital-structure";
 import { computeInterestResult, type RateAssumption } from "./interest";
 import { computeLiquidityPosition } from "./liquidity";
+import { reviveProvencancedFact } from "./provenance";
 import { fact } from "./types";
 import type { DebtEvent, Facility, FinancialState, FinancialStateDelta, Scenario, ScenarioAction, ScenarioRunResult } from "./types";
 
@@ -34,17 +35,6 @@ function cloneState(s: FinancialState): FinancialState {
   }) as FinancialState;
 }
 
-function reviveFact<T>(f: {
-  value: T;
-  sourceType: "REPORTED" | "RECONSTRUCTED" | "ASSUMED" | "EXTERNAL_CERTIFICATE";
-  reviewStatus: "UNVERIFIED" | "VERIFIED" | "DISPUTED";
-  asOfDate: string | Date;
-  notes?: string;
-  staleness?: { maxAgeDays: number };
-}) {
-  return { ...f, asOfDate: new Date(f.asOfDate) };
-}
-
 /** Deep-clones a FinancialState, correctly reviving embedded Date fields inside every ProvencancedFact (JSON round-tripping turns Dates into strings). */
 function deepCloneState(s: FinancialState): FinancialState {
   const clone = cloneState(s);
@@ -52,14 +42,14 @@ function deepCloneState(s: FinancialState): FinancialState {
     if (!g) return g;
     for (const k of Object.keys(g)) {
       const v = g[k] as { asOfDate?: string } | undefined;
-      if (v && typeof v === "object" && "asOfDate" in v) g[k] = reviveFact(v as any);
+      if (v && typeof v === "object" && "asOfDate" in v) g[k] = reviveProvencancedFact(v as any);
     }
     return g;
   };
   reviveGroup(clone.balanceSheetFacts as unknown as Record<string, unknown>);
   reviveGroup(clone.incomeStatementFacts as unknown as Record<string, unknown>);
-  if (clone.covenantMetricFacts.assumedNewDebtRatePct) clone.covenantMetricFacts.assumedNewDebtRatePct = reviveFact(clone.covenantMetricFacts.assumedNewDebtRatePct as any);
-  if (clone.covenantMetricFacts.covenantEbitda) clone.covenantMetricFacts.covenantEbitda.provenance = reviveFact(clone.covenantMetricFacts.covenantEbitda.provenance as any);
+  if (clone.covenantMetricFacts.assumedNewDebtRatePct) clone.covenantMetricFacts.assumedNewDebtRatePct = reviveProvencancedFact(clone.covenantMetricFacts.assumedNewDebtRatePct as any);
+  if (clone.covenantMetricFacts.covenantEbitda) clone.covenantMetricFacts.covenantEbitda.provenance = reviveProvencancedFact(clone.covenantMetricFacts.covenantEbitda.provenance as any);
   if (clone.liquidityFacts) reviveGroup(clone.liquidityFacts as unknown as Record<string, unknown>);
   return clone;
 }
@@ -69,7 +59,7 @@ function cloneFacilities(facilities: Facility[]): Facility[] {
 }
 
 function cloneEvents(events: DebtEvent[]): DebtEvent[] {
-  return events.map((e) => ({ ...e, date: new Date(e.date), provenance: reviveFact(e.provenance as any) }));
+  return events.map((e) => ({ ...e, date: new Date(e.date), provenance: reviveProvencancedFact(e.provenance as any) }));
 }
 
 function requireFacility(facilities: Facility[], facilityId: string, actionKind: string): Facility {

@@ -9,6 +9,24 @@
 
 import type { ProvencancedFact } from "./types";
 
+/**
+ * Revives a ProvencancedFact whose `asOfDate` (and any nested staleness) has
+ * round-tripped through JSON (a Prisma JSONB column, or JSON.stringify for
+ * an in-memory deep-clone) as a plain string. Centralized here so
+ * lib/financial-core-db/adapter.ts and scenario.ts's deep-clone both use the
+ * same revival logic rather than two near-duplicate implementations.
+ */
+export function reviveProvencancedFact<T>(raw: {
+  value: T;
+  sourceType: "REPORTED" | "RECONSTRUCTED" | "ASSUMED" | "EXTERNAL_CERTIFICATE";
+  reviewStatus: "UNVERIFIED" | "VERIFIED" | "DISPUTED";
+  asOfDate: string | Date;
+  notes?: string;
+  staleness?: { maxAgeDays: number };
+}): ProvencancedFact<T> {
+  return { ...raw, asOfDate: raw.asOfDate instanceof Date ? raw.asOfDate : new Date(raw.asOfDate) };
+}
+
 /** architecture §O.1 - a fact is stale once its own natural refresh window has elapsed, evaluated as of a given date. Facts with no `staleness` window are never considered stale (their cadence is undefined, not infinite). */
 export function isStale(fact: ProvencancedFact<unknown>, evaluationDate: Date): boolean {
   if (!fact.staleness) return false;
