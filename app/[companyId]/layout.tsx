@@ -27,14 +27,16 @@ export default async function CompanyLayout({ children, params }: { children: Re
             </div>
             <div className="company-switcher">
               {allCompanies.map((c) => (
-                <Link key={c.id} href={`/${c.id}/overview`} className={c.id === companyId ? "active" : ""}>
+                <Link key={c.id} href={c.onboardingStatus === "ONBOARDING" ? `/${c.id}/onboarding` : `/${c.id}/overview`} className={c.id === companyId ? "active" : ""}>
                   {c.name}
+                  {c.onboardingStatus !== "ACTIVE" ? " *" : ""}
                 </Link>
               ))}
+              <Link href="/companies/new">+ New</Link>
             </div>
           </div>
         </div>
-        <CompanyNav companyId={companyId} />
+        <CompanyNav companyId={companyId} onboardingStatus={company.onboardingStatus} />
       </div>
       {children}
     </div>

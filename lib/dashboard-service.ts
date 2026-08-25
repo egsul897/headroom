@@ -22,6 +22,7 @@
  * company identity in the sense the task prohibits (no `if (companyId ===
  * "coherent")` anywhere in this file or any other lib/ or app/ file).
  */
+import type { OnboardingStatus } from "@prisma/client";
 import { prisma } from "./prisma";
 import {
   computeCovenantPosition,
@@ -44,6 +45,12 @@ export interface CompanySummary {
   id: string;
   name: string;
   ticker: string | null;
+  // Company onboarding (docs/company-onboarding-v1-implementation.md) -
+  // additive field, defaults to "ACTIVE" for every pre-existing row per
+  // Company.onboardingStatus's own schema default. Lets the landing page and
+  // company switcher route an ONBOARDING company to its wizard instead of a
+  // product page it has no data for yet, with zero company-specific branching.
+  onboardingStatus: OnboardingStatus;
 }
 
 /**
@@ -58,12 +65,12 @@ export interface CompanySummary {
  */
 export async function listCompanies(): Promise<CompanySummary[]> {
   const rows = await prisma.company.findMany({ orderBy: { name: "asc" } });
-  return rows.map((r) => ({ id: r.id, name: r.name, ticker: r.ticker }));
+  return rows.map((r) => ({ id: r.id, name: r.name, ticker: r.ticker, onboardingStatus: r.onboardingStatus }));
 }
 
 export async function getCompanySummary(companyId: string): Promise<CompanySummary> {
   const row = await prisma.company.findUniqueOrThrow({ where: { id: companyId } });
-  return { id: row.id, name: row.name, ticker: row.ticker };
+  return { id: row.id, name: row.name, ticker: row.ticker, onboardingStatus: row.onboardingStatus };
 }
 
 // ---------------------------------------------------------------------------
