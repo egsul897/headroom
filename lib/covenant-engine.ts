@@ -175,7 +175,14 @@ export interface AssetSaleConfig {
   reinvestmentWindowDays: number;
 }
 
-export type DocumentType = "CREDIT_AGREEMENT" | "INDENTURE" | "OTHER";
+// Mirrors prisma/schema.prisma's DocumentType enum for structural typing of
+// query results. AMENDMENT/INTERCREDITOR_AGREEMENT/COMPLIANCE_CERTIFICATE were
+// added additively for the document onboarding pipeline
+// (docs/document-onboarding-pipeline-foundation.md) - the legacy engine
+// itself has no branching on document type and does not need to change to
+// support them; this is a type-only widening so DbDocumentRow-shaped Prisma
+// results keep type-checking after that schema change.
+export type DocumentType = "CREDIT_AGREEMENT" | "INDENTURE" | "OTHER" | "AMENDMENT" | "INTERCREDITOR_AGREEMENT" | "COMPLIANCE_CERTIFICATE";
 
 export interface DocumentInput {
   id: string;
