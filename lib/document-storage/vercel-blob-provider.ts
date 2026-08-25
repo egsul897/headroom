@@ -26,7 +26,7 @@
  * as a hard rule independent of whatever ACL tier is configured.
  */
 
-import { get, put } from "@vercel/blob";
+import { del, get, put } from "@vercel/blob";
 import { Readable } from "node:stream";
 import type { ReadableStream as NodeWebReadableStream } from "node:stream/web";
 import type { DocumentStorageProvider } from "./types";
@@ -64,5 +64,13 @@ export class VercelBlobStorageProvider implements DocumentStorageProvider {
       throw new Error(`VercelBlobStorageProvider.retrieve: blob not found for storageRef ${storageRef}`);
     }
     return streamToBuffer(result.stream);
+  }
+
+  async delete(storageRef: string): Promise<void> {
+    try {
+      await del(storageRef);
+    } catch {
+      // best-effort - see the interface's own doc comment (types.ts).
+    }
   }
 }

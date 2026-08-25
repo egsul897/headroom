@@ -50,27 +50,40 @@ export interface UploadDocumentParams {
  * uploaded document's type/amendment relationship is NOT yet human-confirmed
  * until the STRUCTURE-stage candidate is reviewed, unlike an
  * engineer-authored row).
+ *
+ * Blob-then-DB write order: if the Document row fails to create after the
+ * blob was already stored, the orphaned blob is cleaned up (best-effort -
+ * DocumentStorageProvider.delete never throws) and the original DB error is
+ * rethrown unchanged. No Document row ever exists without a real, already-
+ * stored blob behind it - there is no state where a document is "marked as
+ * uploaded" without the bytes actually being retrievable.
  */
 export async function uploadAndChunkDocument(params: UploadDocumentParams) {
   const contentType = inferContentType(params.filename);
   const storage = getDocumentStorageProvider();
   const stored = await storage.store({ companyId: params.companyId, filename: params.filename, contentType, data: params.data });
 
-  const document = await prisma.document.create({
-    data: {
-      companyId: params.companyId,
-      name: params.filename,
-      type: params.declaredType,
-      governs: params.governs,
-      storageRef: stored.storageRef,
-      storageProvider: stored.provider,
-      originalFilename: params.filename,
-      uploadedAt: new Date(),
-      source: "user-upload",
-      typeConfirmedByUser: false,
-      amendmentRelationshipConfirmedByUser: false,
-    },
-  });
+  let document;
+  try {
+    document = await prisma.document.create({
+      data: {
+        companyId: params.companyId,
+        name: params.filename,
+        type: params.declaredType,
+        governs: params.governs,
+        storageRef: stored.storageRef,
+        storageProvider: stored.provider,
+        originalFilename: params.filename,
+        uploadedAt: new Date(),
+        source: "user-upload",
+        typeConfirmedByUser: false,
+        amendmentRelationshipConfirmedByUser: false,
+      },
+    });
+  } catch (err) {
+    await storage.delete(stored.storageRef);
+    throw err;
+  }
 
   const parsed = await parseDocument(params.data, contentType);
   const chunks = chunkDocument(parsed);

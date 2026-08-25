@@ -19,4 +19,12 @@
 export interface DocumentStorageProvider {
   store(params: { companyId: string; filename: string; contentType: string; data: Buffer }): Promise<{ storageRef: string; provider: string }>;
   retrieve(storageRef: string): Promise<Buffer>;
+  /**
+   * Best-effort orphan cleanup: called when a stored blob's matching
+   * Document DB row failed to create (lib/onboarding/documents.ts's
+   * uploadAndChunkDocument). Must never throw - a cleanup failure has
+   * nothing safe left to do about it and must never mask the original
+   * DB-write error that triggered the cleanup attempt.
+   */
+  delete(storageRef: string): Promise<void>;
 }

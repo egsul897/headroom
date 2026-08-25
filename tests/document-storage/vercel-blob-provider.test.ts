@@ -12,10 +12,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const putMock = vi.fn();
 const getMock = vi.fn();
+const delMock = vi.fn();
 
 vi.mock("@vercel/blob", () => ({
   put: (...args: unknown[]) => putMock(...args),
   get: (...args: unknown[]) => getMock(...args),
+  del: (...args: unknown[]) => delMock(...args),
 }));
 
 // Imported AFTER the mock so it picks up the mocked module.
@@ -24,6 +26,7 @@ const { VercelBlobStorageProvider } = await import("../../lib/document-storage/v
 beforeEach(() => {
   putMock.mockReset();
   getMock.mockReset();
+  delMock.mockReset();
 });
 
 function webStreamFrom(text: string): ReadableStream<Uint8Array> {
@@ -70,5 +73,20 @@ describe("VercelBlobStorageProvider.retrieve", () => {
     getMock.mockResolvedValue(null);
     const provider = new VercelBlobStorageProvider();
     await expect(provider.retrieve("https://example.com/missing")).rejects.toThrow(/not found/);
+  });
+});
+
+describe("VercelBlobStorageProvider.delete", () => {
+  it("calls del() with the given storageRef", async () => {
+    delMock.mockResolvedValue(undefined);
+    const provider = new VercelBlobStorageProvider();
+    await provider.delete("https://example.com/orphaned-blob.pdf");
+    expect(delMock).toHaveBeenCalledWith("https://example.com/orphaned-blob.pdf");
+  });
+
+  it("never throws, even when del() itself fails (best-effort orphan cleanup)", async () => {
+    delMock.mockRejectedValue(new Error("network error"));
+    const provider = new VercelBlobStorageProvider();
+    await expect(provider.delete("https://example.com/orphaned-blob.pdf")).resolves.toBeUndefined();
   });
 });
