@@ -644,6 +644,26 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     });
   }
 
+  // `maxCapacity` must be "the election's own maximum capacity, independent
+  // of the specific requested amount" (see the ElectionEvaluation type's own
+  // doc comment) - `totalAllocated + remaining` is NOT that: by construction
+  // of the allocation loop above (`remaining` starts at `requestedAmount` and
+  // is decremented by exactly what `totalAllocated` gains), that sum is an
+  // accounting identity that always equals `requestedAmount` itself,
+  // regardless of the election's actual capacity. That bug meant
+  // `computeMaximumCapacityFromEvaluations` (lib/solver/service.ts) silently
+  // echoed back whatever amount happened to be tested rather than computing
+  // a real maximum - caught by Phase 8's live Coherent shadow-run (every
+  // document/side's solver-native "maximum capacity" came back equal to the
+  // $1 probe amount; docs/coherent-phase8-population-reconciliation.md §J).
+  // The correct amount-independent figure is the sum of each DEBT_INCURRENCE
+  // leg's own `standaloneCapacity` (already computed above from each leg's
+  // own formula/ratio room, never from `remaining`/`requestedAmount`) - LIEN
+  // legs are excluded because an automatically-linked lien leg has no
+  // standalone capacity of its own; it is parasitic on its linked debt leg
+  // (task §6), so including it would double-count.
+  const standaloneMaxCapacity = legs.filter((l) => l.grantType === "DEBT_INCURRENCE").reduce((sum, l) => sum + (l.standaloneCapacity ?? 0), 0);
+
   return {
     election,
     legs,
@@ -652,7 +672,7 @@ export function evaluateElection(params: ElectionEvaluationParams): ElectionEval
     parameterAdjustmentsTriggered,
     sharedConstraintsConsumed: sharedConsumption,
     totalAllocated,
-    maxCapacity: incurrenceBased.length > 1 ? multiRatioMaxCapacity : totalAllocated + remaining,
+    maxCapacity: incurrenceBased.length > 1 ? multiRatioMaxCapacity : standaloneMaxCapacity,
     status: "EVALUATED",
   };
 }

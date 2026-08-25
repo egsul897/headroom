@@ -895,7 +895,20 @@ export function runSolverForDocument(
 
   const result = runSolver({
     eligiblePermissions,
-    relationships: ctx.relationships.filter((r) => eligibleIds.has(r.fromPermissionId) || eligibleIds.has(r.toPermissionId)),
+    // BOTH endpoints must be in scope, not just one (previously `||`): for an
+    // UNSECURED transaction, relevantGrantTypes excludes LIEN permissions
+    // entirely, so an AUTOMATIC_LINKED_PERMISSION relationship whose `to`
+    // endpoint is a LIEN permission would otherwise pass this filter with a
+    // dangling reference to a permission absent from `eligiblePermissions` -
+    // buildPermissionGraph (lib/solver/graph.ts) fails closed (throws) on
+    // exactly that dangling reference, which is correct defensive behavior
+    // there, but the bug was upstream: such a relationship is never actually
+    // relevant to an unsecured evaluation (no lien is being requested) and
+    // should simply be excluded, not passed in half-formed. Discovered by
+    // Phase 8's live Coherent shadow-run (docs/coherent-phase8-population-reconciliation.md
+    // §J) - a defect in this generalized function, not a Coherent-specific
+    // workaround; fixed here for every company/document this function serves.
+    relationships: ctx.relationships.filter((r) => eligibleIds.has(r.fromPermissionId) && eligibleIds.has(r.toPermissionId)),
     sharedConstraints: ctx.sharedConstraints,
     collateralScopes: ctx.collateralScopes.filter((s) => eligibleIds.has(s.permissionId)),
     ruleActivationConditions: ctx.ruleActivationConditions,
