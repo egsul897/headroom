@@ -1,0 +1,87 @@
+# Applies the two company-onboarding-v1 migrations
+# (20260825190617_add_document_onboarding_pipeline_foundation,
+# 20260825200000_add_candidate_review_events) to the hosted Neon database,
+# then verifies existing Coherent/Matthews data is intact.
+#
+# workflow_dispatch ONLY - a one-time (or deliberately-repeated, by hand)
+# migration action, not part of any CI/CD pipeline. Deliberately does NOT
+# reseed/repopulate anything - both migrations are additive (new tables /
+# new nullable-or-defaulted columns only), so there is nothing to
+# reconstruct; this workflow only runs `prisma migrate deploy` and read-only
+# verification, matching the task's "smallest manual workflow necessary"
+# instruction and its explicit prohibition on reseeding hosted data.
+#
+# Node 22 - see .github/workflows/initialize-neon.yml's own header comment
+# for why (Node 20 EOL, this is the sandbox's actual dev/test runtime).
+
+name: Migrate Neon database (company onboarding v1)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Guard - DATABASE_URL must be a real, non-local target
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::NEON_DATABASE_URL secret is not set. Refusing to proceed."
+            exit 1
+          fi
+          case "$DATABASE_URL" in
+            *localhost*)
+              echo "::error::DATABASE_URL contains 'localhost'. Refusing to run migrations against what looks like a local database."
+              exit 1
+              ;;
+            *127.0.0.1*)
+              echo "::error::DATABASE_URL contains '127.0.0.1'. Refusing to run migrations against what looks like a local database."
+              exit 1
+              ;;
+          esac
+          echo "DATABASE_URL guard passed (value not printed)."
+
+      - name: Apply migrations (prisma migrate deploy - never dev/push/reset)
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: npx prisma migrate deploy
+
+      - name: Confirm migrate status is current
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: npx prisma migrate status
+
+      - name: Verify existing Coherent/Matthews data is intact (read-only, no reseeding)
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: npx tsx scripts/verify-neon-initialization.ts
+
+      - name: Run Coherent golden-test harness (baseline-checked, read-only)
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: npx tsx scripts/verify-golden-baseline.ts coherent
+
+      - name: Run Matthews golden-test harness (baseline-checked, read-only)
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: npx tsx scripts/verify-golden-baseline.ts matthews
