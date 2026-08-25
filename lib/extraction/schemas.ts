@@ -163,6 +163,24 @@ export const ExternalInputRequirementValueSchema = z.object({
   maxAgeDays: z.number().int().positive().optional(),
 });
 
+// Autonomous information retrieval, Phase A
+// (docs/autonomous-retrieval-phase-a-foundation.md). A financial fact
+// discovered/uploaded through a source connector (lib/connectors/**) becomes
+// an ExtractionCandidate of kind FINANCIAL_FACT with a proposedValue matching
+// this shape - the same reuse-the-ontology decision every other candidate
+// kind above already follows: no parallel review/audit table, no bespoke
+// promotion path. `metricName` is a free string (not an enum) matching
+// SourcePriorityRule.metricName's own free-string convention - the set of
+// financial metrics this pipeline cares about is expected to grow without a
+// schema change.
+export const FinancialFactValueSchema = z.object({
+  metricName: z.string().min(1),
+  value: z.number(),
+  asOfDate: z.string().min(1),
+  unit: z.string().optional(),
+  sourceRecordRef: z.string().optional(),
+});
+
 // ---------------------------------------------------------------------------
 // Proposal = provenance + kind-tagged proposedValue. One per
 // ExtractionCandidateKind.
