@@ -127,11 +127,35 @@ const REVIEW_DATE = new Date("2026-08-25");
 const SOLO_REVIEWER_NOTE_TAIL =
   "This is a SINGLE-REVIEWER (founder-only) confirmation - the second qualified attorney required by docs/legal-review-status-model.md §2's FOUNDER_AND_PEER_REVIEWED definition has not been supplied. reviewStatus is left UNVERIFIED (the enum has no intermediate tier for 'one qualified reviewer, second pending') rather than promoted - see this script's own header comment and docs/legal-review-status-model.md §2/§3 ('not a rung on a required ladder'; independent/additional review is recorded as an additional LegalReviewRecord, never fabricated). No reviewer name was supplied and none is invented; reviewerRole records only that this is the founder himself.";
 
-const AFFECTED_IDS = {
-  q22: "cmt7vicwr002pj1d33vvdfvav",
-  row16: "cmt7vicwj002dj1d3bv3zwd1w",
-  row17: "cmt7vicwk002fj1d3nnpsqqdp",
+// Resolved by `stableKey` (docs/database-replay-safety.md), NOT a hardcoded
+// golden_tests.id cuid literal - a fresh database rebuild regenerates every
+// GoldenTest.id, so a hardcoded cuid here would silently stop matching any
+// row. See resolveAffectedIds() below for the runtime resolution.
+const AFFECTED_STABLE_KEYS = {
+  q22: "coherent:q22",
+  row16: "coherent:q17a",
+  row17: "coherent:q17b",
 } as const;
+
+async function resolveAffectedIds(): Promise<Record<keyof typeof AFFECTED_STABLE_KEYS, string>> {
+  const rows = await prisma.goldenTest.findMany({
+    where: { stableKey: { in: Object.values(AFFECTED_STABLE_KEYS) } },
+    select: { id: true, stableKey: true },
+  });
+  if (rows.length !== 3) {
+    throw new Error(
+      `Expected exactly 3 golden_tests rows for stableKeys ${Object.values(AFFECTED_STABLE_KEYS).join(", ")} - found ${rows.length}. Refusing to proceed.`
+    );
+  }
+  const byStableKey = new Map(rows.map((r) => [r.stableKey, r.id]));
+  const result = {} as Record<keyof typeof AFFECTED_STABLE_KEYS, string>;
+  for (const key of Object.keys(AFFECTED_STABLE_KEYS) as (keyof typeof AFFECTED_STABLE_KEYS)[]) {
+    const id = byStableKey.get(AFFECTED_STABLE_KEYS[key]);
+    if (!id) throw new Error(`No golden_tests row found for stableKey ${AFFECTED_STABLE_KEYS[key]}`);
+    result[key] = id;
+  }
+  return result;
+}
 
 const GAP_FINDING_NOTE =
   "[2026-08-25 founder-review reconciliation] Founder has reviewed this row and its underlying alternative permission paths. The solver-native-aware harness (post result-semantics fix) now computes a DIFFERENT figure/citation than this row's stored expectedAnswer/bindingProvision (see docs/result-semantics-headroom-cleanup.md and the 2026-08-25 founder-review task). Investigating that difference before writing it as a 'correction' surfaced a real, separate, NOT-YET-FIXED engineering gap: the new citation is permission coh-ca-d-incr-ratiobased-unsecjr (ca_incremental_ratio_based_unsecured_or_junior), whose own action label restricts it to unsecured/junior-secured debt but which carries NO structured eligibilityConditions enforcing that restriction - so the solver currently (and likely incorrectly) counts its ratio room toward SECURED debt capacity. Neither this row's existing expectedAnswer/bindingProvision NOR the new solver-native figure/citation is confirmed correct as a result. Per the founder's own instruction, NEITHER value is being silently changed here; expectedAnswer/bindingProvision are left at their pre-existing values pending a separate, explicitly-authorized fix to that Permission row's eligibility conditions. See scripts/populate-founder-solo-legal-review-2026-08-25.ts's header comment for the full analysis.";
@@ -173,6 +197,7 @@ async function appendReviewerNote(id: string) {
 }
 
 async function main() {
+  const AFFECTED_IDS = await resolveAffectedIds();
   const affectedIdSet = new Set<string>(Object.values(AFFECTED_IDS));
 
   const allRows = await prisma.goldenTest.findMany({

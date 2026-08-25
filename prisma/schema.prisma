@@ -400,6 +400,22 @@ model GoldenTest {
   id        String @id @default(cuid())
   companyId String
 
+  // Stable, content-derived, company-scoped business identity - independent
+  // of the database-generated `id` (cuid) and of anything mutable
+  // (expectedAnswer/status/question wording). Format: "<companyId>:q<NN>"
+  // (2-digit zero-padded), e.g. "coherent:q22", "matthews:q07" - see
+  // docs/database-replay-safety.md §B for the full 48-row assignment table
+  // and the rationale (a fresh `prisma migrate deploy` + reseed regenerates
+  // every GoldenTest.id, which previously broke every review/reconciliation
+  // script that hardcoded a specific cuid literal). Seed/population scripts
+  // upsert on this key (never on `id`); historical review/reconciliation
+  // scripts resolve the row's current `id` through this key instead of
+  // assuming a fixed cuid. `id` remains the database primary key and the
+  // relational identity every other table's foreign key/ref continues to
+  // point at (e.g. LegalReviewRecord.reviewedArtifactRef still stores an
+  // `id`) - this is a replayability fix, not a primary-key redesign.
+  stableKey String @unique
+
   question String
 
   queryType   GoldenQueryType

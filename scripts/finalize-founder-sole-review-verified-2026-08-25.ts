@@ -56,12 +56,12 @@ const prisma = new PrismaClient();
 const REVIEW_DATE = new Date("2026-08-25");
 const REVIEWER_ROLE = "Founder / Legal Reviewer";
 
-const AFFECTED_IDS = {
-  q22: "cmt7vicwr002pj1d33vvdfvav",
-  row16: "cmt7vicwj002dj1d3bv3zwd1w",
-  row17: "cmt7vicwk002fj1d3nnpsqqdp",
-} as const;
-const affectedIdSet = new Set<string>(Object.values(AFFECTED_IDS));
+// Resolved by `stableKey` (docs/database-replay-safety.md), NOT a hardcoded
+// golden_tests.id cuid literal - a fresh database rebuild regenerates every
+// GoldenTest.id, so a hardcoded cuid here would silently stop matching any
+// row (or, worse, match nothing and leave the Q22/rows-16-17 engineering-
+// discrepancy note un-attached with no error - the exact bug this fixes).
+const AFFECTED_STABLE_KEYS = ["coherent:q22", "coherent:q17a", "coherent:q17b"] as const;
 
 const POLICY_NOTE_HEAD =
   "[2026-08-25 Final legal review status instruction] Supersedes the prior two-reviewer FOUNDER_AND_PEER_REVIEWED framework: for Headroom's internal product/development purposes, the founder's own review is the complete legal-verification standard. No additional peer/second-attorney/outside-counsel/independent-counsel requirement exists. The founder has personally reviewed this row (question, expected answer, binding provision, assumptions, and its status/determination) and approves the represented legal conclusion. reviewStatus: VERIFIED.";
@@ -75,12 +75,20 @@ const ENGINEERING_DISCREPANCY_GOLDEN_NOTE =
 async function main() {
   const allRows = await prisma.goldenTest.findMany({
     where: { companyId: { in: ["coherent", "matthews"] } },
-    select: { id: true, companyId: true, status: true, reviewerNotes: true },
+    select: { id: true, companyId: true, status: true, reviewerNotes: true, stableKey: true },
     orderBy: [{ companyId: "asc" }, { id: "asc" }],
   });
   if (allRows.length !== 48) {
     throw new Error(`Expected exactly 48 golden_tests rows (30 coherent + 18 matthews) - found ${allRows.length}. Refusing to proceed without re-confirming the row set this instruction covers.`);
   }
+
+  const affectedRows = allRows.filter((r) => (AFFECTED_STABLE_KEYS as readonly string[]).includes(r.stableKey));
+  if (affectedRows.length !== AFFECTED_STABLE_KEYS.length) {
+    throw new Error(
+      `Expected exactly ${AFFECTED_STABLE_KEYS.length} golden_tests rows for stableKeys ${AFFECTED_STABLE_KEYS.join(", ")} - found ${affectedRows.length}. Refusing to proceed.`
+    );
+  }
+  const affectedIdSet = new Set<string>(affectedRows.map((r) => r.id));
 
   let promotedCount = 0;
   for (const row of allRows) {

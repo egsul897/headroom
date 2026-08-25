@@ -168,68 +168,75 @@ async function main() {
   //    row-by-row reasoning. expectedAnswer/bindingProvision/question are
   //    NEVER touched here - only `status`.
   // ---------------------------------------------------------------------
-  const promotedGoldenTests: { id: string; question: string; reason: string }[] = [
+  // GOLDEN-QUESTION SELECTION identifies rows by `stableKey` (docs/database-
+  // replay-safety.md), NOT by a hardcoded golden_tests.id cuid literal - a
+  // fresh database rebuild regenerates every GoldenTest.id, so a hardcoded
+  // cuid here would silently stop matching any row (see that doc's §A for
+  // the empirical repro). `id` is resolved from `stableKey` at run time,
+  // immediately below, and used only as a local variable from that point on
+  // - never assumed fixed across environments/reseeds.
+  const promotedGoldenTests: { stableKey: string; question: string; reason: string }[] = [
     {
-      id: "cmt7vicw6001rj1d3qr02g8l6",
+      stableKey: "coherent:q06",
       question: "Is $100M of new secured debt permitted? Under which test?",
       reason: "mila_secured/clause-24 SSNL<=3.00x test - within reviewed clause 6/24/25 scope; clears under both legacy and corrected capacity, so promotion does not endorse an unreviewed ceiling figure.",
     },
     {
-      id: "cmt7vicw7001tj1d3riwfeoy1",
+      stableKey: "coherent:q07",
       question: "Is $250M of new secured debt permitted?",
       reason: "Same basis as $100M row.",
     },
     {
-      id: "cmt7vicw9001vj1d3mxmcuusv",
+      stableKey: "coherent:q08",
       question: "Is $500M of new secured debt permitted?",
       reason: "Same basis as $100M row.",
     },
     {
-      id: "cmt7vicwa001xj1d3l5x0s6ah",
+      stableKey: "coherent:q09",
       question: "Is $1,000M ($1B) of new secured debt permitted?",
       reason: "Same basis as $100M row.",
     },
     {
-      id: "cmt7vicwi002bj1d39xfqtbe0",
+      stableKey: "coherent:q16",
       question: "What is the SSNL threshold applicable to secured incurrence under the indenture, and what is the current SSNL?",
       reason: "Directly the Permitted Liens clause (24) SSNL<=3.00x ratio test; the ratio/threshold computation itself (not an aggregate ceiling) is unaffected by the non-netting correction.",
     },
     {
-      id: "cmt7vicwj002dj1d3bv3zwd1w",
+      stableKey: "coherent:q17a",
       question: "At what level of incremental secured debt would the indenture's SSNL test first become the binding constraint - spot check at $2,000M",
       reason: "DEBT_SIMULATION clear/blocked spot check - matches exactly between legacy and solver-native per docs/coherent-phase8-population-reconciliation.md §O/§J.",
     },
     {
-      id: "cmt7vicwk002fj1d3nnpsqqdp",
+      stableKey: "coherent:q17b",
       question: "At what level of incremental secured debt would the indenture's SSNL test first become the binding constraint - spot check at the $4,041M ceiling",
       reason: "Same basis as the $2,000M spot check row - clear under both interpretations (the corrected model's true ceiling is materially higher).",
     },
     {
-      id: "cmt7vicwt002rj1d35pii22zu",
+      stableKey: "coherent:q26",
       question: "Can Coherent incur $1,000M of secured debt without breaching either document, and if so what does pro forma total net leverage become?",
       reason: "DEBT_SIMULATION clear check well within capacity under either interpretation - within reviewed clause 24 scope.",
     },
   ];
 
   for (const g of promotedGoldenTests) {
-    const row = await prisma.goldenTest.findUnique({ where: { id: g.id } });
-    if (!row) throw new Error(`Expected golden_tests row ${g.id} not found - refusing to proceed (question mismatch risk).`);
+    const row = await prisma.goldenTest.findUnique({ where: { stableKey: g.stableKey } });
+    if (!row) throw new Error(`Expected golden_tests row with stableKey ${g.stableKey} not found - refusing to proceed (question mismatch risk).`);
     if (row.question !== g.question) {
-      throw new Error(`golden_tests row ${g.id} question text changed since this script was written - refusing to promote. Expected: "${g.question}" Got: "${row.question}"`);
+      throw new Error(`golden_tests row ${g.stableKey} (id ${row.id}) question text changed since this script was written - refusing to promote. Expected: "${g.question}" Got: "${row.question}"`);
     }
 
     await prisma.goldenTest.update({
-      where: { id: g.id },
+      where: { stableKey: g.stableKey },
       data: { status: "VERIFIED" },
     });
 
     await prisma.legalReviewRecord.upsert({
-      where: { id: `coh-lrr-golden-${g.id}` },
+      where: { id: `coh-lrr-golden-${row.id}` },
       create: {
-        id: `coh-lrr-golden-${g.id}`,
+        id: `coh-lrr-golden-${row.id}`,
         companyId: COMPANY_ID,
         reviewedArtifactType: "GOLDEN_TEST",
-        reviewedArtifactRef: g.id,
+        reviewedArtifactRef: row.id,
         reviewStatus: "VERIFIED",
         notes: `${g.reason} ${NOT_SUPPLIED_NOTE}`,
         sourceVersion: "docs/coherent-phase1-stacking-table.md; docs/coherent-phase8-blocker-closure.md",

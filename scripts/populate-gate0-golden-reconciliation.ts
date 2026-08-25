@@ -90,16 +90,21 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const ROW_IDS = ["cmt7vicwr002pj1d33vvdfvav", "cmt7vicwj002dj1d3bv3zwd1w", "cmt7vicwk002fj1d3nnpsqqdp"];
+// Resolved by `stableKey` (docs/database-replay-safety.md), NOT a hardcoded
+// golden_tests.id cuid literal - a fresh database rebuild regenerates every
+// GoldenTest.id, so a hardcoded cuid here would silently stop matching any
+// row (see the `if (rows.length !== 3)` guard below, which is exactly what
+// caught this empirically against a from-scratch database before this fix).
+const ROW_STABLE_KEYS = ["coherent:q22", "coherent:q17a", "coherent:q17b"];
 
 const MARKER = "GATE-0 SECURITY-SCOPE FIX RECONCILIATION (2026-08-25)";
 
 const NOTE = `${MARKER}: The TRANSACTION_SECURITY_SCOPE eligibility-condition fix (lib/solver/types.ts, lib/solver/election.ts) was implemented and applied to coh-ca-d-incr-ratiobased-unsecjr (scripts/populate-coherent-security-scope-fix.ts). Re-running the golden harness confirms that permission is now correctly EXCLUDED from this row's winning election for a secured, uncharacterized-lien-priority transaction (its TRANSACTION_SECURITY_SCOPE/UNSECURED_OR_JUNIOR condition FAILS, per design). However, the solver-native citation this row now reports is a DIFFERENT permission, coh-ca-d-permitted-601p (ca_permitted_debt_601p, §6.01(p)) - which shares the identical LEVERAGE_RATIO_ROOM/TNL<=4.25x formula and threshold, so the computed dollar figure is unchanged (4629 for Q22). This permission's own notes and PermissionRelationship data confirm it has NO automatic lien linkage and is not independently lien-eligible without separate §6.02(kk) clearance - yet the solver reports it CLEAR for a secured transaction, because (as this task's own instructions already disclose) no live caller populates requestedLienPriority, so nothing mechanically verifies a winning election actually carries lien authority for a "secured" query. This is the SAME already-disclosed "no live lien-priority signal" limitation named in this task's own design, not a new defect of the kind this task's eligibility fix targets - it is intentionally NOT fixed here (would require a lib/solver/** feasibility-algorithm change beyond this task's authorized scope). Net effect: expectedAnswer (3541/mila_secured) is NOT confirmed correct (unchanged from the prior investigation), and neither is the new solver-native figure (4629/ca_permitted_debt_601p) - a different, still-open reason than before. expectedAnswer/bindingProvision are therefore left UNCHANGED, per this task's own instruction not to update when ambiguity remains. golden_tests.status is left VERIFIED (legal review and this engineering finding are separate dimensions - docs/legal-review-status-model.md §0/§10). Recommended future follow-up (not performed, separately authorizable): add a general "a secured transaction's winning election must include at least one LIEN leg or established collateral-pool scope" check to lib/solver/election.ts, and/or populate requestedLienPriority from a live caller so PRIORITY_CONDITION checks actually run.`;
 
 async function main() {
-  const rows = await prisma.goldenTest.findMany({ where: { id: { in: ROW_IDS } } });
+  const rows = await prisma.goldenTest.findMany({ where: { stableKey: { in: ROW_STABLE_KEYS } } });
   if (rows.length !== 3) {
-    throw new Error(`Expected exactly 3 golden_tests rows (Q22, 16, 17) - found ${rows.length}. Refusing to proceed.`);
+    throw new Error(`Expected exactly 3 golden_tests rows (Q22, 16, 17 - stableKeys ${ROW_STABLE_KEYS.join(", ")}) - found ${rows.length}. Refusing to proceed.`);
   }
 
   for (const row of rows) {
@@ -116,7 +121,7 @@ async function main() {
   }
 
   // Confirm expectedAnswer/bindingProvision/status are untouched.
-  const after = await prisma.goldenTest.findMany({ where: { id: { in: ROW_IDS } } });
+  const after = await prisma.goldenTest.findMany({ where: { stableKey: { in: ROW_STABLE_KEYS } } });
   for (const row of after) {
     console.log(`${row.id}: expectedAnswer=${row.expectedAnswer} bindingProvision=${row.bindingProvision} status=${row.status}`);
   }

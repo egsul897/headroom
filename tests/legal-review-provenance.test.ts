@@ -96,17 +96,20 @@ describe("All 48 current golden rows are VERIFIED (C)", () => {
 });
 
 describe("VERIFIED does not force a stale engineering answer (D/F)", () => {
-  const affected = ["cmt7vicwr002pj1d33vvdfvav", "cmt7vicwj002dj1d3bv3zwd1w", "cmt7vicwk002fj1d3nnpsqqdp"];
+  // Resolved by stableKey (docs/database-replay-safety.md), not a hardcoded
+  // golden_tests.id cuid literal - see the "no hardcoded golden-test cuid
+  // literals" adversarial test in tests/golden-test-stable-key.test.ts (§10.H).
+  const affectedStableKeys = ["coherent:q22", "coherent:q17a", "coherent:q17b"];
 
   it("Q22 and rows 16/17 are VERIFIED even though their engineering discrepancy (the ca_incremental_ratio_based_unsecured_or_junior eligibility gap) is unresolved - legal review and engineering correctness are separate dimensions", async () => {
-    for (const id of affected) {
-      const row = await prisma.goldenTest.findUnique({ where: { id } });
-      expect(row, `golden_tests row ${id} not found`).toBeTruthy();
-      expect(row!.status, `${id} should be VERIFIED despite the open engineering discrepancy`).toBe("VERIFIED");
+    for (const stableKey of affectedStableKeys) {
+      const row = await prisma.goldenTest.findUnique({ where: { stableKey } });
+      expect(row, `golden_tests row ${stableKey} not found`).toBeTruthy();
+      expect(row!.status, `${stableKey} should be VERIFIED despite the open engineering discrepancy`).toBe("VERIFIED");
       // expectedAnswer/bindingProvision are NEITHER "corrected" to the new
       // solver-native figure NOR silently changed for any other reason -
       // legal VERIFIED status does not force or bless any particular number.
-      expect(row!.reviewerNotes, `${id} should document that VERIFIED does not resolve the engineering discrepancy`).toMatch(/does NOT resolve/);
+      expect(row!.reviewerNotes, `${stableKey} should document that VERIFIED does not resolve the engineering discrepancy`).toMatch(/does NOT resolve/);
     }
   });
 
@@ -117,7 +120,7 @@ describe("VERIFIED does not force a stale engineering answer (D/F)", () => {
     // for all 3 (mila_secured) are unchanged from before this task, which is
     // exactly what keeps the harness's existing FAIL/discrepancy
     // classification (EXPECTED_ANSWER_STALE / stale-citation) accurate.
-    const q22 = await prisma.goldenTest.findUnique({ where: { id: "cmt7vicwr002pj1d33vvdfvav" } });
+    const q22 = await prisma.goldenTest.findUnique({ where: { stableKey: "coherent:q22" } });
     expect(Number(q22!.expectedAnswer)).toBe(3541);
     expect(q22!.bindingProvision).toBe("mila_secured");
   });
@@ -141,18 +144,27 @@ describe("Historical LegalReviewRecord chronology remains fully intact (G)", () 
       expect(record!.reviewStatus).toBe("VERIFIED");
     }
 
-    const originalGoldenPromotion = await prisma.legalReviewRecord.findUnique({ where: { id: "coh-lrr-golden-cmt7vicw6001rj1d3qr02g8l6" } });
+    // Resolved by stableKey (docs/database-replay-safety.md), not a
+    // hardcoded golden_tests.id cuid literal - "Is $100M of new secured debt
+    // permitted? Under which test?" is coherent:q06, the row this original
+    // 2026-08-25 closeout LegalReviewRecord's own id was built from
+    // (`coh-lrr-golden-${id}` - see scripts/populate-coherent-legal-review-provenance.ts).
+    const q06 = await prisma.goldenTest.findUniqueOrThrow({ where: { stableKey: "coherent:q06" } });
+    const originalGoldenPromotion = await prisma.legalReviewRecord.findUnique({ where: { id: `coh-lrr-golden-${q06.id}` } });
     expect(originalGoldenPromotion, "original 2026-08-25 closeout golden-test promotion record must be preserved").toBeTruthy();
   });
 
   it("the reverted-row supersession records from docs/founder-legal-review-2026-08-25.md are preserved (nothing deleted when the status model was simplified again)", async () => {
-    for (const id of ["cmt7vicwj002dj1d3bv3zwd1w", "cmt7vicwk002fj1d3nnpsqqdp"]) {
+    // Resolved by stableKey - rows 16/17 are coherent:q17a/coherent:q17b.
+    for (const stableKey of ["coherent:q17a", "coherent:q17b"]) {
+      const row = await prisma.goldenTest.findUniqueOrThrow({ where: { stableKey } });
+      const id = row.id;
       const original = await prisma.legalReviewRecord.findUnique({ where: { id: `coh-lrr-golden-${id}` } });
-      expect(original, `original closeout record for ${id} must remain preserved`).toBeTruthy();
+      expect(original, `original closeout record for ${stableKey} must remain preserved`).toBeTruthy();
       const supersede = await prisma.legalReviewRecord.findUnique({ where: { id: `lrr-supersede-2026-08-25-${id}` } });
-      expect(supersede, `2026-08-25 revert-supersession record for ${id} must remain preserved`).toBeTruthy();
+      expect(supersede, `2026-08-25 revert-supersession record for ${stableKey} must remain preserved`).toBeTruthy();
       const founderSolo = await prisma.legalReviewRecord.findUnique({ where: { id: `lrr-founder-solo-2026-08-25-${id}` } });
-      expect(founderSolo, `founder-solo record for ${id} must remain preserved`).toBeTruthy();
+      expect(founderSolo, `founder-solo record for ${stableKey} must remain preserved`).toBeTruthy();
     }
   });
 
