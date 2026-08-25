@@ -7,6 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Coarse, company-level onboarding lifecycle (docs/document-onboarding-pipeline-foundation.md).
+// Deliberately coarse - "is this company usable yet, and how much" - not a
+// substitute for the fine-grained per-document/per-stage state that already
+// lives on ExtractionRun/ExtractionStage below. ACTIVE is the default so this
+// migration leaves Coherent/Matthews' real state alone (both are already
+// fully active, engineer-populated companies as of this migration).
+enum OnboardingStatus {
+  ONBOARDING
+  ACTIVE_WITH_LIMITATIONS
+  ACTIVE
+
+  @@map("onboarding_status")
+}
+
 model Company {
   id        String   @id @default(cuid())
   name      String
@@ -14,6 +28,13 @@ model Company {
   cik       String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // Onboarding-pipeline additions (docs/document-onboarding-pipeline-foundation.md).
+  // `currency`/`asOfDate` are company-level defaults a later phase's financial
+  // onboarding can read without re-deriving them per FinancialState row.
+  onboardingStatus OnboardingStatus @default(ACTIVE)
+  currency         String?          @default("USD")
+  asOfDate         DateTime?
 
   documents          Document[]
   covenantProvisions CovenantProvision[]
@@ -49,6 +70,14 @@ model Company {
   facilities      Facility[]
   debtEvents      DebtEvent[]
 
+  // --- Document onboarding pipeline (docs/document-onboarding-pipeline-foundation.md) ---
+  // Additive only. Zero rows for Coherent/Matthews as of this migration - both
+  // were populated by engineer scripts, not this pipeline. Nothing in
+  // lib/covenant-engine.ts or lib/solver/** reads these tables; only
+  // lib/extraction/** and lib/document-storage/** do.
+  extractionRuns       ExtractionRun[]
+  extractionCandidates ExtractionCandidate[]
+
   @@map("companies")
 }
 
@@ -56,6 +85,13 @@ enum DocumentType {
   CREDIT_AGREEMENT
   INDENTURE
   OTHER
+  // Additive (docs/document-onboarding-pipeline-foundation.md), same pattern
+  // as the ExternalInputKind.PUBLIC_FILING_RECONSTRUCTION addition
+  // (prisma/migrations/20260825041936_add_public_filing_reconstruction_input_kind) -
+  // Postgres ALTER TYPE ADD VALUE is additive only, no existing row affected.
+  AMENDMENT
+  INTERCREDITOR_AGREEMENT
+  COMPLIANCE_CERTIFICATE
 
   @@map("document_type")
 }
@@ -96,6 +132,38 @@ model Document {
   // JSON-encoded AssetSaleConfig: { thresholdCode: string, reinvestmentWindowDays: number }
   assetSale        Json?
 
+  // --- Upload/storage/review-provenance (docs/document-onboarding-pipeline-foundation.md) ---
+  // Deliberately separate from supersedesDocumentId/effectiveFrom/effectiveTo
+  // above, which remain the ONLY amendment-precedence mechanism the engine's
+  // load layer consults - these fields never feed loadCompanyCovenantData.
+  //
+  // storageRef/storageProvider are opaque references into whichever
+  // DocumentStorageProvider (lib/document-storage/**) actually stored the
+  // uploaded file's bytes - null for a document that was never uploaded
+  // through the pipeline (every existing Coherent/Matthews row, as of this
+  // migration).
+  storageRef       String?
+  storageProvider  String?
+  originalFilename String?
+  uploadedAt       DateTime?
+  // Distinguishes how this row came to exist - "user-upload" for the new
+  // pipeline, defaulted to "engineer-authored" by this migration for every
+  // pre-existing row (Coherent/Matthews were populated by hand-written
+  // population scripts, not a document upload).
+  source String @default("engineer-authored")
+
+  // Whether a human has confirmed the AI-proposed `type` /
+  // `supersedesDocumentId` (STRUCTURE-stage ExtractionCandidate.kind =
+  // DOCUMENT_RELATIONSHIP proposals - lib/extraction/provider.ts) as correct,
+  // as opposed to those fields merely reflecting an unreviewed AI proposal -
+  // the review discipline the task's own onboarding-pipeline brief requires.
+  // Defaulted to true by this migration for every pre-existing row: Coherent/
+  // Matthews' `type`/`supersedesDocumentId` were set directly by an engineer
+  // reading the executed document, not proposed-then-reviewed, so they are
+  // already "confirmed" in the sense this flag records.
+  typeConfirmedByUser                Boolean @default(true)
+  amendmentRelationshipConfirmedByUser Boolean @default(true)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -110,6 +178,12 @@ model Document {
   // Permission below). A document may have zero of these (legacy-only) or a
   // full complement (solver-native for the sides/grant types covered).
   permissions Permission[]
+
+  // Document onboarding pipeline (see Company's own comment above for the
+  // additive/zero-rows-for-existing-companies posture).
+  chunks               DocumentChunk[]
+  extractionRuns       ExtractionRun[]
+  extractionCandidates ExtractionCandidate[]
 
   @@map("documents")
 }
@@ -1231,4 +1305,229 @@ model DebtEvent {
   @@index([companyId])
   @@index([facilityId, date])
   @@map("debt_events")
+}
+
+// =============================================================================
+// Document onboarding pipeline - Phase 1 (docs/document-onboarding-pipeline-foundation.md)
+//
+// UPLOAD -> PARSE -> EXTRACT -> REVIEW -> APPROVE -> PROMOTE -> ACTIVATE. This
+// migration builds the foundation only: storage, parsing/chunking, staged
+// LLM extraction, and candidate persistence (lib/document-storage/**,
+// lib/extraction/**). It deliberately stops at ExtractionCandidate -
+// reviewStatus PENDING - and never writes a real Permission/
+// PermissionRelationship/SharedCapacityConstraint/etc. row. Promotion (the
+// transaction that turns an APPROVED candidate into a real row) is Phase 2's
+// job, not this migration's or lib/extraction/**'s.
+//
+// Additive only. Zero rows for Coherent/Matthews as of this migration - see
+// Company's own "Document onboarding pipeline" comment above. Nothing in
+// lib/covenant-engine.ts or lib/solver/** reads any table below.
+// =============================================================================
+
+// One section/heading-scoped slice of a parsed document (lib/extraction/chunk.ts),
+// with enough locational provenance (page/article/section/heading/char
+// offsets) that a reviewer - or an ExtractionCandidate's sourceExcerpt - can
+// point back at exactly where a proposal came from without re-parsing the
+// source file. Deliberately NOT a vector-embeddings/retrieval-index table
+// (task: "not infrastructure for its own sake") - `chunkIndex` gives stable
+// ordering and that is the whole of this table's retrieval story.
+model DocumentChunk {
+  id         String  @id @default(cuid())
+  documentId String
+  chunkIndex Int
+  page       Int?
+  articleRef String?
+  sectionRef String?
+  heading    String?
+  text       String
+  charStart  Int?
+  charEnd    Int?
+
+  createdAt DateTime @default(now())
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+  @@map("document_chunks")
+}
+
+// The staged-extraction pipeline's own stage vocabulary (lib/extraction/provider.ts's
+// ContractExtractionProvider methods, one per value) and each stage's
+// candidate-kind mapping is documented on ExtractionCandidateKind below.
+enum ExtractionStageKind {
+  STRUCTURE
+  DEFINITIONS
+  PERMISSIONS
+  RELATIONSHIPS
+  COVERAGE
+  FINANCIAL_INPUTS
+
+  @@map("extraction_stage_kind")
+}
+
+enum ExtractionStageStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETE
+  FAILED
+
+  @@map("extraction_stage_status")
+}
+
+// One provider/model/prompt-version-pinned pass over a single document.
+// `documentId` is the one document this run's chunks are read from; the
+// RELATIONSHIPS/COVERAGE stages additionally read across every
+// ExtractionCandidate already persisted for the company (not just this run's)
+// when building their own stage input (lib/extraction/run-stage.ts) - a
+// company can have several runs (one per document) whose candidates all
+// participate in that company-wide cross-referencing.
+model ExtractionRun {
+  id            String   @id @default(cuid())
+  companyId     String
+  documentId    String
+  provider      String
+  model         String
+  promptVersion String
+  schemaVersion String
+
+  startedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company    Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document   Document               @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  stages     ExtractionStage[]
+  candidates ExtractionCandidate[]
+
+  @@index([companyId])
+  @@index([documentId])
+  @@map("extraction_runs")
+}
+
+// One (extractionRunId, stage) row - the unit of partial-failure/retry
+// (task §18: "a failure in one category should not destroy completed work").
+// `runExtractionStage`/retry (lib/extraction/run-stage.ts) update this row in
+// place; the unique constraint below is what makes a retry an UPDATE, never
+// a duplicate INSERT, and what lets a FAILED stage's own retry leave every
+// sibling stage's COMPLETE row (and its persisted candidates) untouched.
+model ExtractionStage {
+  id              String                 @id @default(cuid())
+  extractionRunId String
+  stage           ExtractionStageKind
+  status          ExtractionStageStatus  @default(PENDING)
+  error           String?
+  attemptCount    Int                    @default(0)
+  startedAt       DateTime?
+  completedAt     DateTime?
+
+  extractionRun ExtractionRun         @relation(fields: [extractionRunId], references: [id], onDelete: Cascade)
+  candidates    ExtractionCandidate[]
+
+  @@unique([extractionRunId, stage])
+  @@map("extraction_stages")
+}
+
+// The single generalized candidate table (task's own explicit permission for
+// "a simpler normalized equivalent" over 8 separate Candidate* tables),
+// `kind`-discriminated with a JSON payload - the same shape this codebase
+// already uses for EligibilityCondition.kind/RuleActivationCondition.predicateConfig.
+// Each stage's own candidate kind(s):
+//   STRUCTURE        -> DOCUMENT_RELATIONSHIP (proposed Document.type +
+//                        supersedesDocumentId + article/section outline -
+//                        exactly what Document.typeConfirmedByUser /
+//                        amendmentRelationshipConfirmedByUser above gate)
+//   DEFINITIONS      -> DEFINED_TERM
+//   PERMISSIONS      -> PERMISSION, COLLATERAL_SCOPE
+//   RELATIONSHIPS    -> RELATIONSHIP, SHARED_CONSTRAINT, ACTIVATION_CONDITION
+//   COVERAGE         -> PERMISSION (a KNOWN_NOT_MODELED-style placeholder for
+//                        a real provision this run found no other stage
+//                        modeled - reviewStatus REVIEW_REQUIRED, never
+//                        auto-approved)
+//   FINANCIAL_INPUTS -> EXTERNAL_INPUT_REQUIREMENT
+model ExtractionCandidate {
+  id                String @id @default(cuid())
+  extractionRunId   String
+  extractionStageId String
+  companyId         String
+  kind              ExtractionCandidateKind
+
+  sourceDocumentId String
+  sourceChunkIds   String[]
+  sourcePage       Int?
+  sourceSectionRef String?
+  // A short quoted snippet for display without re-fetching the chunk row.
+  sourceExcerpt    String?
+
+  // Kind-specific structured payload (lib/extraction/schemas.ts has the zod
+  // shape validated against before a row is ever written here).
+  proposedValue Json
+  confidence    Float?
+  // Short, structured justification ONLY - never a raw chain-of-thought
+  // trace (task's hard constraint; lib/extraction/provider.ts discards any
+  // extended-reasoning content before this field is populated).
+  rationale     String?
+
+  reviewStatus ExtractionCandidateReviewStatus @default(PENDING)
+  // The reviewer's corrected version. `proposedValue` above is NEVER
+  // overwritten - it stays the permanent record of what the AI originally
+  // proposed, independent of what a reviewer later changed it to.
+  reviewerEditedValue Json?
+  reviewedAt          DateTime?
+  // Never fabricated - left null unless a real identity is genuinely
+  // available (matches this project's established "never invent a reviewer
+  // name" discipline - see LegalReviewRecord.reviewerName above).
+  reviewedBy          String?
+
+  // Set once Phase 2's promotion step creates the real Permission/etc. row
+  // this candidate became. Both columns are unused by anything in this
+  // migration or in lib/extraction/** - they exist here only so Phase 2 has
+  // somewhere to write the outcome.
+  promotedAt   DateTime?
+  promotedToId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  extractionRun   ExtractionRun   @relation(fields: [extractionRunId], references: [id], onDelete: Cascade)
+  extractionStage ExtractionStage @relation(fields: [extractionStageId], references: [id], onDelete: Cascade)
+  company         Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceDocument  Document        @relation(fields: [sourceDocumentId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([extractionRunId])
+  @@index([extractionStageId])
+  @@index([sourceDocumentId])
+  @@index([kind, reviewStatus])
+  @@map("extraction_candidates")
+}
+
+enum ExtractionCandidateKind {
+  DEFINED_TERM
+  PERMISSION
+  RELATIONSHIP
+  SHARED_CONSTRAINT
+  COLLATERAL_SCOPE
+  ACTIVATION_CONDITION
+  DOCUMENT_RELATIONSHIP
+  EXTERNAL_INPUT_REQUIREMENT
+
+  @@map("extraction_candidate_kind")
+}
+
+// PENDING - not yet reviewed. APPROVED - reviewer accepted proposedValue
+// as-is. EDITED - reviewer accepted with changes (reviewerEditedValue set).
+// REJECTED - reviewer determined this proposal should not be promoted.
+// REVIEW_REQUIRED - the extraction pipeline itself flagged this as needing
+// human attention before it can even be considered for approval (e.g. a
+// COVERAGE-stage gap placeholder, or low-confidence output the provider
+// itself was unsure of) - distinct from PENDING in that PENDING is simply
+// "not yet looked at" while REVIEW_REQUIRED is "looked at by the pipeline
+// and flagged as uncertain."
+enum ExtractionCandidateReviewStatus {
+  PENDING
+  APPROVED
+  EDITED
+  REJECTED
+  REVIEW_REQUIRED
+
+  @@map("extraction_candidate_review_status")
 }
