@@ -915,8 +915,20 @@ async function main() {
         id: "coh-rac-collateral-suspension",
         companyId: COMPANY_ID,
         permissionId: null,
-        covenantSectionIds: [],
-        companyWide: true,
+        // Deliberately NOT companyWide and NOT matching any populated
+        // Permission's own sectionRef: this row exists purely for provenance
+        // (it documents the mechanic per this script's header item 6). A
+        // companyWide=true row would apply lib/solver/graph.ts's
+        // resolveApplicability to EVERY permission in the company (not just
+        // the dormant Priority Debt baskets it is actually about), and -
+        // since the mechanic correctly evaluates to `false` given zero
+        // "InvestmentGradeRatingTriggerDate" events in ActivationState - that
+        // would incorrectly BLOCK every Coherent permission, not just the
+        // two dormant §6.01(ee)/§6.02(pp) baskets this condition is actually
+        // scoped to (which are, correctly, not populated - see header item
+        // 6). Discovered by this population's own shadow-run smoke test.
+        covenantSectionIds: ["6.01(ee)", "6.02(pp)"],
+        companyWide: false,
         predicateKind: "EVENT_TRIGGERED",
         predicateConfig: {
           kind: "EVENT_TRIGGERED",
