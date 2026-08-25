@@ -106,6 +106,20 @@ async function main() {
   // append-only event data with no natural unique key to upsert on - clear
   // this company's rows before reinserting so the seed script stays
   // idempotent across re-runs.
+  //
+  // KNOWN LIMITATION (found during the Coherent legal-model closeout, docs/
+  // coherent-legal-model-baseline-v1.md): re-running this seed script resets
+  // every GoldenTest.status back to COHERENT_GOLDEN_TESTS's seed-data
+  // default (UNVERIFIED) - including rows promoted to FOUNDER_AND_PEER_REVIEWED
+  // by scripts/populate-coherent-legal-review-provenance.ts - AND orphans any
+  // LegalReviewRecord row whose reviewedArtifactRef pointed at one of the
+  // deleted GoldenTest ids (a fresh cuid is assigned on recreation, and
+  // LegalReviewRecord.reviewedArtifactRef is a plain string, not an FK, so
+  // deletion doesn't cascade to it - it silently becomes stale instead).
+  // This task does not fix that (a real fix needs a stable, content-derived
+  // golden-test key to upsert on, which is a seed-architecture change, not a
+  // provenance change) - re-run scripts/populate-coherent-legal-review-provenance.ts
+  // after any `npm run seed` against Coherent to restore review status.
   await prisma.ledgerEntry.deleteMany({ where: { companyId: company.id } });
   await prisma.feedQueueItem.deleteMany({ where: { companyId: company.id } });
   await prisma.goldenTest.deleteMany({ where: { companyId: company.id } });

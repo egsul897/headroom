@@ -38,6 +38,7 @@ model Company {
   entityClassMembers         EntityClassMember[]
   externalInputRecords       ExternalInputRecord[]
   solverCoverageDeclarations SolverCoverageDeclaration[]
+  legalReviewRecords         LegalReviewRecord[]
 
   @@map("companies")
 }
@@ -357,9 +358,24 @@ enum GoldenQueryType {
   @@map("golden_query_type")
 }
 
+// LAWYER_VERIFIED predates docs/legal-review-status-model.md and, as of
+// that document, is not part of Headroom's approved development-gating
+// model (an ownership-independent "lawyer" tier is deliberately NOT a
+// mandatory higher rung above founder-and-peer review - see that doc §7).
+// It is kept here, unremoved, purely so any future row that legitimately
+// records independent/outside-counsel provenance has somewhere to land
+// (task instruction: "do not delete historical data merely because
+// terminology changed"; "if Headroom later receives review from outside
+// or independent counsel, that fact may be retained as additional
+// reviewer provenance"). As of this migration it has zero referencing
+// code (`grep -rn "LAWYER_VERIFIED"` across lib/**, app/**, scripts/**,
+// tests/** returns nothing) and zero rows use it.
+// FOUNDER_AND_PEER_REVIEWED is the status this task's closeout actually
+// uses - see docs/legal-review-status-model.md for its full semantics.
 enum GoldenTestStatus {
   UNVERIFIED
   LAWYER_VERIFIED
+  FOUNDER_AND_PEER_REVIEWED
   DISPUTED
 
   @@map("golden_test_status")
@@ -832,4 +848,99 @@ model SolverCoverageDeclaration {
 
   @@unique([documentId, side, grantType])
   @@map("solver_coverage_declarations")
+}
+
+// =============================================================================
+// Legal-review provenance (docs/legal-review-status-model.md)
+//
+// This is a DIFFERENT dimension from DefinedTermStatus/GoldenTestStatus's
+// existing UNVERIFIED/VERIFIED/DISPUTED-style fields, deliberately not
+// collapsed into them (task instruction: "preserve distinctions... do not
+// collapse these dimensions"):
+//   - DefinedTerm.status / Permission.reviewStatus / ExternalInputRecord.reviewStatus
+//     (DefinedTermStatus) record DATA FIDELITY - "has this row's own text/
+//     value been checked against the executed document" - an engineering/
+//     transcription check, not a legal-interpretation judgment.
+//   - GoldenTest.status (GoldenTestStatus) records the legal-review state of
+//     one specific golden question's conclusion.
+//   - LegalReviewRecord (below) is the generalized, reusable provenance
+//     record behind a GoldenTestStatus/other legal-conclusion promotion: WHO
+//     reviewed WHAT, in what capacity, and when - independent of which
+//     specific status enum the reviewed artifact happens to carry. A
+//     GoldenTest or a load-bearing legal conclusion that isn't tied to any
+//     single row (e.g. "clause 6/24/25 non-netting", which spans several
+//     Permission rows and the fact of their NOT being connected by a
+//     stacking relationship) can both point here.
+// A LegalReviewRecord never substitutes for CERTIFIED_EXTERNAL_INPUT
+// financial-data provenance (ExternalInputRecord) - legal review status and
+// financial-data certification remain orthogonal (task §C/§H).
+// =============================================================================
+
+enum LegalReviewStatus {
+  // No qualified legal review recorded for this artifact yet.
+  UNVERIFIED
+  // Substantively reviewed and approved by Headroom's founder (an
+  // experienced leveraged/debt-finance attorney) AND a second attorney with
+  // relevant debt-finance experience. Sufficient completed legal review for
+  // Headroom product-development purposes (docs/legal-review-status-model.md)
+  // - NOT a lower rung beneath some further-required tier.
+  FOUNDER_AND_PEER_REVIEWED
+  // A reviewer flagged the reviewed conclusion as wrong or contested.
+  DISPUTED
+
+  @@map("legal_review_status")
+}
+
+// What kind of thing a LegalReviewRecord's reviewedArtifactRef points at.
+// Deliberately a free-form-paired enum + string (like RuleActivationCondition's
+// covenantSectionIds) rather than a set of nullable FK columns, because a
+// reviewed conclusion legitimately spans zero, one, or several rows across
+// different tables (e.g. the clause 6/24/25 non-netting conclusion is a
+// property of an ABSENCE of a PermissionRelationship row, not any one row).
+enum ReviewedArtifactType {
+  GOLDEN_TEST // reviewedArtifactRef = GoldenTest.id
+  PERMISSION // reviewedArtifactRef = Permission.id or .code
+  RULE_ACTIVATION_CONDITION // reviewedArtifactRef = RuleActivationCondition.id
+  // A conclusion that is not one single row - e.g. a stacking/non-netting
+  // determination spanning several Permission rows, or a legal-definition
+  // conclusion (EBITDA addback-cap absence) spanning a document's baskets.
+  // reviewedArtifactRef is then a stable, human-readable conclusion slug.
+  LEGAL_CONCLUSION
+
+  @@map("reviewed_artifact_type")
+}
+
+model LegalReviewRecord {
+  id                   String               @id @default(cuid())
+  companyId            String
+  reviewedArtifactType ReviewedArtifactType
+  reviewedArtifactRef  String
+  reviewStatus         LegalReviewStatus    @default(UNVERIFIED)
+
+  // Reviewer metadata (task: "use actual reviewer metadata supplied by the
+  // user/repository... DO NOT invent names, roles, or dates"). All three are
+  // nullable and, as of this migration, are left null for every row - see
+  // docs/legal-review-status-model.md and the population script's own
+  // header comment for why: this task was given a review DETERMINATION
+  // (founder-and-peer review occurred) but not the reviewers' names, their
+  // exact titles, or the review date, so those fields are left for a future
+  // update rather than fabricated.
+  reviewerName       String?
+  reviewerRole       String?
+  reviewerExperience String?
+  reviewDate         DateTime?
+
+  notes         String?
+  // Applicable source/version where relevant (e.g. a stacking-table or
+  // blocker-closure document filename, a document's effective version).
+  sourceVersion String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([reviewedArtifactType, reviewedArtifactRef])
+  @@map("legal_review_records")
 }
