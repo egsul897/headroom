@@ -60,13 +60,16 @@ describe("evaluateProvision hierarchy-children fallback (task's own §7 demonstr
     expect(result.outcome).toBe("MATCHED_INCORRECT_UNFLAGGED");
   });
 
-  it("classifies as FLAGGED (not unflagged) when the child that actually carries the real figure is itself self-flagged", () => {
-    const ground: GroundTruthProvisionLike = { id: "g4", sourceSectionRef: "9.05", realFigures: ["$500,000"], family: "RESTRICTED_PAYMENTS", conditionTypes: [] };
-    const rules = [rule({ sourceSectionRef: "9.05", covenantFamily: "INVESTMENTS" }), rule({ sourceSectionRef: "9.05(d)", thresholdValue: 500000, evaluationClass: "JUDGMENT_REQUIRED" })];
+  it("classifies as FLAGGED (not unflagged) when the child that resolves the real figure still has its own genuine formula mismatch and is itself self-flagged", () => {
+    const ground: GroundTruthProvisionLike = { id: "g4", sourceSectionRef: "9.05", realFigures: ["$500,000"], family: "RESTRICTED_PAYMENTS", formulaRef: "FIXED_AMOUNT", conditionTypes: [] };
+    // Once the child resolves the number, all remaining checks (including
+    // formula) run against the CHILD, not the parent - so the child's own
+    // formulaRef must genuinely mismatch for this to stay MATCHED_INCORRECT.
+    const rules = [rule({ sourceSectionRef: "9.05" }), rule({ sourceSectionRef: "9.05(d)", thresholdValue: 500000, formulaRef: "OTHER", evaluationClass: "JUDGMENT_REQUIRED" })];
     const result = evaluateProvision(ground, rules);
-    // family mismatch on the primary match keeps this MATCHED_INCORRECT, but
-    // the number now resolves via the self-flagged child, so it must be the
-    // FLAGGED bucket, never UNFLAGGED.
+    // the number resolves via the self-flagged child, and the child's own
+    // formula still genuinely mismatches, so this must be the FLAGGED
+    // bucket, never UNFLAGGED.
     expect(result.outcome).toBe("MATCHED_INCORRECT_FLAGGED");
   });
 });

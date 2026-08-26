@@ -167,10 +167,6 @@ export function evaluateProvision(ground: GroundTruthProvisionLike, extractedRul
     return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome: "MISSING", mismatchReasons: ["no extracted rule cites this section, and no matching defined term either"] };
   }
 
-  const reasons: string[] = [];
-  if (match.covenantFamily !== ground.family) reasons.push(`family mismatch: expected ${ground.family}, got ${match.covenantFamily}`);
-  if (ground.formulaRef && match.formulaRef !== ground.formulaRef) reasons.push(`formula mismatch: expected ${ground.formulaRef}, got ${match.formulaRef ?? "(none)"}`);
-
   // Phase C.1 fix (task's own §7 "demonstrable scoring bug" allowance) - a
   // real, demonstrated evaluator bug: a grouped ground-truth entry spanning
   // a real multi-clause section (e.g. "the Restricted Payments section") is
@@ -180,64 +176,78 @@ export function evaluateProvision(ground: GroundTruthProvisionLike, extractedRul
   // thresholded exception rules. Re-examining the raw persisted output for
   // every case this evaluator previously called MATCHED_INCORRECT_UNFLAGGED
   // (docs/phase-c-1-multi-basket-verification.md) showed the real dollar
-  // figures were NOT lost - they were sitting in a SIBLING rule (same
-  // section, different sub-clause) the single-match design never checked.
-  // This does not touch any ground-truth expected value and does not widen
-  // WHICH numbers count as correct - it only widens WHERE in the real,
-  // already-extracted output this evaluator looks for the ground truth's
-  // own already-expected number.
-  let effectiveRuleForFlagCheck = match;
+  // figures, formulas, AND families were NOT lost - they were sitting in a
+  // CHILD sub-clause rule (a real, generalized parent -> child decomposition,
+  // e.g. ground truth "6.11" -> exact match "Section 6.11" -> child
+  // "6.11(d)") the single-match design never checked. This does not touch
+  // any ground-truth expected value and does not widen WHICH values count
+  // as correct - it only widens WHERE in the real, already-extracted output
+  // this evaluator looks for the ground truth's own already-expected data.
+  //
+  // Only searched when `match` is an EXACT match to the ground truth's own
+  // full target reference (findMatch's own exactMatches bucket), never when
+  // match came from findMatch's looser "one ref is a prefix of the other"
+  // fallback. This distinction is load-bearing, proven by real evidence:
+  // without it, a ground-truth entry whose own target is already more
+  // specific than what the extractor found (match itself only a coarse
+  // prefix guess) could spuriously credit a totally unrelated sibling
+  // basket that merely shares the same coarse section number - exactly the
+  // false-positive this narrowing was added to close (two distinct specific
+  // sub-clauses are never a prefix of one another, so this can't recur).
+  //
+  // Once a genuine child is found (via a real-figure match), it becomes the
+  // comparison target for family/formula/conditions too, not just the
+  // number check - grading the parent's family/formula while crediting the
+  // child's number would otherwise leave a real, correct decomposition
+  // scored as "formula mismatch" merely because the general-prohibition
+  // rule itself (correctly) carries no formula of its own.
+  let comparisonRule = match;
   const groundNumbers = extractNumbers(ground.realFigures);
   if (groundNumbers.length > 0) {
     const matchNumbers = [match.thresholdValue, ...extractNumbers([match.notes ?? ""])].filter((n): n is number => typeof n === "number");
-    let anyNumberMatches = groundNumbers.some((gn) => matchNumbers.some((mn) => Math.abs(mn - gn) / Math.max(gn, 1) < 0.01));
-    // Only search for a hierarchy-child fallback when `match` is an EXACT
-    // match to the ground truth's own full target reference (findMatch's
-    // own exactMatches bucket), never when match came from findMatch's
-    // looser "one ref is a prefix of the other" fallback. This distinction
-    // is load-bearing, proven by real evidence: without it, a ground-truth
-    // entry whose own target is already more specific than what the
-    // extractor found (match itself only a coarse prefix guess) could
-    // spuriously credit a totally unrelated sibling basket that merely
-    // shares the same coarse section number - exactly the false-positive
-    // this narrowing was added to close (see this file's own git history/
-    // docs/phase-c-1-multi-basket-verification.md for the real regression
-    // this caught before it shipped).
+    const matchHasNumber = groundNumbers.some((gn) => matchNumbers.some((mn) => Math.abs(mn - gn) / Math.max(gn, 1) < 0.01));
     const { target, targetNorm } = groundTruthTargets(ground);
     const matchRef = normalizeRef(match.sourceSectionRef ?? "");
     const matchIsExact = matchRef === target || matchRef === targetNorm;
-    if (!anyNumberMatches && matchIsExact) {
+    if (!matchHasNumber && matchIsExact) {
       for (const child of findHierarchyChildren(matchRef, extractedRules)) {
         const childNumbers = [child.thresholdValue, ...extractNumbers([child.notes ?? ""])].filter((n): n is number => typeof n === "number");
         if (groundNumbers.some((gn) => childNumbers.some((mn) => Math.abs(mn - gn) / Math.max(gn, 1) < 0.01))) {
-          anyNumberMatches = true;
-          effectiveRuleForFlagCheck = child;
+          comparisonRule = child;
           break;
         }
       }
     }
-    if (!anyNumberMatches) reasons.push(`no real figure matched: expected one of [${groundNumbers.join(", ")}], extracted thresholdValue=${match.thresholdValue ?? "(none)"} (checked ${match.sourceSectionRef} and its own more-specific sub-clause rules, if any)`);
+  }
+
+  const reasons: string[] = [];
+  if (comparisonRule.covenantFamily !== ground.family) reasons.push(`family mismatch: expected ${ground.family}, got ${comparisonRule.covenantFamily}`);
+  if (ground.formulaRef && comparisonRule.formulaRef !== ground.formulaRef) reasons.push(`formula mismatch: expected ${ground.formulaRef}, got ${comparisonRule.formulaRef ?? "(none)"}`);
+  if (groundNumbers.length > 0) {
+    const comparisonNumbers = [comparisonRule.thresholdValue, ...extractNumbers([comparisonRule.notes ?? ""])].filter((n): n is number => typeof n === "number");
+    const anyNumberMatches = groundNumbers.some((gn) => comparisonNumbers.some((mn) => Math.abs(mn - gn) / Math.max(gn, 1) < 0.01));
+    if (!anyNumberMatches) reasons.push(`no real figure matched: expected one of [${groundNumbers.join(", ")}], extracted thresholdValue=${comparisonRule.thresholdValue ?? "(none)"} (checked ${match.sourceSectionRef} and its own more-specific sub-clause rules, if any)`);
   }
 
   if (ground.conditionTypes.includes("RATIO_SATISFIED")) {
-    const hasRatioCondition = match.conditions.some((c) => c.type === "RATIO_SATISFIED") || /ratio/i.test(match.notes ?? "");
+    const hasRatioCondition = comparisonRule.conditions.some((c) => c.type === "RATIO_SATISFIED") || /ratio/i.test(comparisonRule.notes ?? "");
     if (!hasRatioCondition) reasons.push("ground truth requires a ratio-gate condition that the extracted rule does not carry");
   }
   if (ground.conditionTypes.includes("NO_DEFAULT")) {
-    const hasNoDefault = match.conditions.some((c) => c.type === "NO_DEFAULT");
+    const hasNoDefault = comparisonRule.conditions.some((c) => c.type === "NO_DEFAULT");
     if (!hasNoDefault) reasons.push("ground truth requires a no-default condition that the extracted rule does not carry");
   }
 
   if (reasons.length === 0) {
-    return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome: "MATCHED_CORRECT", matchedRule: effectiveRuleForFlagCheck, matchedVia: "rule", mismatchReasons: [] };
+    return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome: "MATCHED_CORRECT", matchedRule: comparisonRule, matchedVia: "rule", mismatchReasons: [] };
   }
   // The flag/no-flag determination tracks whichever rule actually supplied
-  // the risk-relevant economic data (effectiveRuleForFlagCheck) - if that
-  // came from a sibling sub-clause rule rather than the primary match, its
-  // own evaluationClass/notes are the real signal a downstream consumer of
-  // the persisted output would actually see for this real dollar figure.
-  const outcome: ProvisionOutcome = ruleIsSelfFlagged(effectiveRuleForFlagCheck) ? "MATCHED_INCORRECT_FLAGGED" : "MATCHED_INCORRECT_UNFLAGGED";
-  return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome, matchedRule: match, matchedVia: "rule", mismatchReasons: reasons };
+  // the risk-relevant economic data (comparisonRule) - if that came from a
+  // child sub-clause rule rather than the primary match, its own
+  // evaluationClass/notes are the real signal a downstream consumer of the
+  // persisted output would actually see for this real economic entity.
+  const outcome: ProvisionOutcome = ruleIsSelfFlagged(comparisonRule) ? "MATCHED_INCORRECT_FLAGGED" : "MATCHED_INCORRECT_UNFLAGGED";
+  return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome, matchedRule: comparisonRule, matchedVia: "rule", mismatchReasons: reasons };
 }
 
 export interface EvaluationSummary {
