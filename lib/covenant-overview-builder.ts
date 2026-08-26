@@ -44,6 +44,16 @@ export type RowStatus = "MODELED" | "REVIEW_REQUIRED" | "NOT_TESTED" | "UNMODELE
 export type BindingState = "BINDING" | "AVAILABLE" | "REVIEW_REQUIRED" | "NOT_EVALUABLE" | "UNMODELED";
 export type ReviewStateLabel = "VERIFIED" | "UNVERIFIED" | "DISPUTED" | "NOT_TRACKED";
 
+/**
+ * Basket priority hierarchy (task "UNIVERSAL HEADROOM PRODUCT EXPERIENCE"
+ * §17-20 - "visually prioritize rows into generalized tiers... nothing
+ * disappears"). Derived purely from each row's own already-computed
+ * capacity/status - never from provision codes or basket-name pattern
+ * matching (§18 - "Do not hardcode by provision code"), so it generalizes
+ * to any company's data. See `assignTiers` below for the exact rule.
+ */
+export type RowTier = "PRIMARY" | "CONDITIONAL" | "EXCEPTION";
+
 export interface CapacityRow {
   kind: "CAPACITY";
   stableKey: string;
@@ -61,6 +71,7 @@ export interface CapacityRow {
   status: RowStatus;
   reviewState: ReviewStateLabel;
   entityScope: string[];
+  tier: RowTier;
   reason?: string;
 }
 
@@ -77,6 +88,7 @@ export interface RatioRow {
   bindingState: BindingState;
   status: RowStatus;
   reviewState: ReviewStateLabel;
+  tier: RowTier;
   reason?: string;
 }
 
@@ -113,12 +125,20 @@ export interface HeadlineCapacitySide {
   status: "MODELED" | "REVIEW_REQUIRED" | "NOT_MODELED";
 }
 
+/** A compact, real, non-fabricated "needs attention" item (task §13/§96). See `buildAttentionItems` for the exact, generalized derivation rules. */
+export interface AttentionItem {
+  severity: "HIGH" | "MEDIUM";
+  category: string;
+  description: string;
+}
+
 export interface CovenantOverviewCore {
   asOfDate: Date;
   headlineMetrics: HeadlineMetric[];
   securedCapacity: HeadlineCapacitySide;
   unsecuredCapacity: HeadlineCapacitySide;
   warnings: { category: string; description: string }[];
+  attentionItems: AttentionItem[];
   covenantFamilies: CovenantFamilySection[];
 }
 
@@ -252,6 +272,7 @@ function buildCapacityRowFromPermission(p: PermissionRowInput, documentName: str
       status: "UNMODELED",
       reviewState: p.reviewStatus,
       entityScope: p.entityScope,
+      tier: "EXCEPTION",
       reason: p.notes ?? "Acknowledged as a real, applicable provision that has not been modeled yet.",
     };
   }
@@ -279,6 +300,7 @@ function buildCapacityRowFromPermission(p: PermissionRowInput, documentName: str
     status,
     reviewState: p.reviewStatus,
     entityScope: p.entityScope,
+    tier: "CONDITIONAL",
     reason: evaluated.reason,
   };
 }
@@ -305,6 +327,7 @@ function buildCapacityRowFromProvision(provision: CovenantProvisionInput, docume
     status,
     reviewState: "NOT_TRACKED",
     entityScope: [],
+    tier: "CONDITIONAL",
     reason: evaluated.reason,
   };
 }
@@ -325,6 +348,7 @@ function buildRatioRowFromTest(test: RatioTestResult, documentName: string): Rat
     bindingState: status === "MODELED" ? "AVAILABLE" : status === "REVIEW_REQUIRED" ? "REVIEW_REQUIRED" : "NOT_EVALUABLE",
     status,
     reviewState: "NOT_TRACKED",
+    tier: "PRIMARY",
     reason: test.reason,
   };
 }
@@ -345,6 +369,7 @@ function buildRatioRowFromGate(provision: CovenantProvisionInput, documentName: 
     bindingState: status === "MODELED" ? (evaluated.gate?.open ? "AVAILABLE" : "REVIEW_REQUIRED") : status === "REVIEW_REQUIRED" ? "REVIEW_REQUIRED" : "NOT_EVALUABLE",
     status,
     reviewState: "NOT_TRACKED",
+    tier: "PRIMARY",
     reason: evaluated.reason,
   };
 }
@@ -469,9 +494,25 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
   pushFamily("ASSET_SALES", assetSaleRows);
   pushFamily("DEFINITIONS_CALCULATION_RULES", unclassified);
 
-  const priority: Record<string, number> = { BINDING: 0, REVIEW_REQUIRED: 1, AVAILABLE: 2, NOT_EVALUABLE: 3, UNMODELED: 4 };
+  for (const f of families) assignTiers(f.rows);
+
+  // Default row order (task §87): breach/locked, then binding/near-limit,
+  // then review-required, then the tiered available paths (primary before
+  // conditional before exceptions/other), then not-evaluable, then
+  // genuinely unmodeled/not-tested last. "Breach/locked" here means a real
+  // computed CAPACITY row already sitting at zero (never a fabricated
+  // percentage threshold) that ISN'T itself the current binding constraint.
+  const bindingUrgency = (r: OverviewRow): number => {
+    if (r.bindingState === "BINDING") return 0;
+    if (r.kind === "CAPACITY" && r.status === "MODELED" && !r.capacityUnlimited && r.currentCapacity !== null && r.currentCapacity <= 0) return 1;
+    if (r.bindingState === "REVIEW_REQUIRED") return 2;
+    if (r.bindingState === "AVAILABLE") return 3;
+    if (r.bindingState === "NOT_EVALUABLE") return 4;
+    return 5; // UNMODELED
+  };
+  const tierRank: Record<RowTier, number> = { PRIMARY: 0, CONDITIONAL: 1, EXCEPTION: 2 };
   for (const f of families) {
-    f.rows.sort((a, b) => (priority[a.bindingState] ?? 9) - (priority[b.bindingState] ?? 9));
+    f.rows.sort((a, b) => bindingUrgency(a) - bindingUrgency(b) || tierRank[a.tier] - tierRank[b.tier]);
   }
 
   return {
@@ -481,7 +522,105 @@ export function buildCovenantOverview(input: BuildCovenantOverviewInput): Covena
     unsecuredCapacity,
     warnings: financialPosition.warnings,
     covenantFamilies: families,
+    attentionItems: buildAttentionItems(families, financialPosition, securedCapacity, unsecuredCapacity),
   };
+}
+
+/**
+ * Basket priority tiers (task §17-20). Purely a materiality re-rank of
+ * already-evaluated CAPACITY rows within one family - never a new
+ * calculation, never keyed on provision code or basket name. RATIO rows are
+ * always PRIMARY (a financial-covenant test is inherently decision-relevant,
+ * and there are typically too few per family to usefully sub-rank).
+ * UNMODELED/NOT_TESTED rows are always EXCEPTION (§20 - "present in
+ * documents, not modeled" is the least decision-relevant state, though still
+ * fully visible, never hidden). Among the rest, the top 3 by real evaluated
+ * capacity (unlimited counts as top) are PRIMARY; everything else modeled or
+ * review-required is CONDITIONAL.
+ */
+function assignTiers(rows: OverviewRow[]): void {
+  const rankable = rows.filter((r): r is CapacityRow => r.kind === "CAPACITY" && (r.status === "MODELED" || r.status === "REVIEW_REQUIRED"));
+  const ranked = [...rankable].sort((a, b) => {
+    const av = a.capacityUnlimited ? Infinity : (a.currentCapacity ?? -1);
+    const bv = b.capacityUnlimited ? Infinity : (b.currentCapacity ?? -1);
+    return bv - av;
+  });
+  const primaryKeys = new Set(ranked.slice(0, 3).map((r) => r.stableKey));
+  for (const r of rows) {
+    if (r.kind === "RATIO") continue; // already PRIMARY at construction
+    if (r.status === "UNMODELED" || r.status === "NOT_TESTED") {
+      r.tier = "EXCEPTION";
+    } else if (primaryKeys.has(r.stableKey)) {
+      r.tier = "PRIMARY";
+    } else {
+      r.tier = "CONDITIONAL";
+    }
+  }
+}
+
+/**
+ * Needs Attention (task §13/§96 - "compact... only actual material
+ * issues... make the impact obvious"). Every item here is read directly off
+ * an already-computed, real signal - never a fabricated alert or an invented
+ * near-limit percentage:
+ *   - financialPosition.warnings (lib/financial-core/position-service.ts,
+ *     unmodified) - STALE_INPUT / DISPUTED_FACT / MISSING_ASSUMPTION,
+ *     already real and categorized.
+ *   - a family with REVIEW_REQUIRED rows - real coverage counts.
+ *   - a maturity due within 12 months - real financial-core analytics.
+ *   - a CAPACITY row genuinely at zero capacity of its own formula - a real
+ *     computed fact, not a % threshold.
+ * Capped and severity-sorted so it stays compact (§13 - "Keep it compact").
+ */
+function buildAttentionItems(
+  families: CovenantFamilySection[],
+  financialPosition: FinancialPosition,
+  securedCapacity: HeadlineCapacitySide,
+  unsecuredCapacity: HeadlineCapacitySide
+): AttentionItem[] {
+  const items: AttentionItem[] = [];
+
+  for (const w of financialPosition.warnings) {
+    items.push({ severity: w.category === "MISSING_ASSUMPTION" ? "MEDIUM" : "HIGH", category: w.category, description: w.description });
+  }
+
+  if (securedCapacity.status === "REVIEW_REQUIRED" || unsecuredCapacity.status === "REVIEW_REQUIRED") {
+    items.push({ severity: "HIGH", category: "REVIEW_REQUIRED", description: "Headline incremental debt capacity is review-required, not a clean modeled figure." });
+  }
+
+  for (const f of families) {
+    if (f.counts.reviewRequired > 0) {
+      items.push({ severity: "MEDIUM", category: "REVIEW_REQUIRED", description: `${familyDisplayName(f.family)}: ${f.counts.reviewRequired} rule(s) require review.` });
+    }
+  }
+
+  const nextMaturity = financialPosition.maturities.nextMaturity;
+  if (nextMaturity && financialPosition.maturities.dueWithin12Months > 0) {
+    items.push({
+      severity: "HIGH",
+      category: "UPCOMING_MATURITY",
+      description: `${nextMaturity.facilityName} matures ${nextMaturity.date.toISOString().slice(0, 10)} ($${Math.round(nextMaturity.principal).toLocaleString("en-US")}M).`,
+    });
+  }
+
+  for (const f of families) {
+    for (const r of f.rows) {
+      if (r.kind !== "CAPACITY" || r.status !== "MODELED" || r.capacityUnlimited || r.currentCapacity === null || r.currentCapacity > 0) continue;
+      if (r.bindingState === "BINDING") continue; // already the headline's own binding constraint - not a separate surprise
+      items.push({ severity: "MEDIUM", category: "LOCKED_CAPACITY", description: `${r.name} (${familyDisplayName(f.family)}) has no capacity currently available under its own formula.` });
+    }
+  }
+
+  const severityRank: Record<AttentionItem["severity"], number> = { HIGH: 0, MEDIUM: 1 };
+  items.sort((a, b) => severityRank[a.severity] - severityRank[b.severity]);
+  return items.slice(0, 8);
+}
+
+function familyDisplayName(family: string): string {
+  return family
+    .split("_")
+    .map((w) => w[0] + w.slice(1).toLowerCase())
+    .join(" ");
 }
 
 function metricRow(key: string, label: string, m: { status: string; value: number | null }): HeadlineMetric {

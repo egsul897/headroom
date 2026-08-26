@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Card, WarningList } from "@/components/ui";
-import { CovenantFamiliesView } from "@/components/CovenantOverview";
+import { AttentionList, CovenantFamiliesView } from "@/components/CovenantOverview";
 import { buildCovenantOverview, type CoverageDeclarationInput, type PermissionRowInput } from "@/lib/covenant-overview-builder";
 import type { CompanyCovenantData, FormulaParams, SolverNativeCompanyContext } from "@/lib/covenant-engine";
 import type { FinancialPosition } from "@/lib/financial-core/types";
@@ -105,6 +105,20 @@ export function DashboardClient(props: DashboardClientProps) {
     <div className="stack">
       <WarningList warnings={overview.warnings} />
 
+      {/* 1. Headline financial position (task "UNIVERSAL HEADROOM PRODUCT EXPERIENCE" §10 - business answer first). */}
+      <Card>
+        <div className="card-title">Position as of {fmtDate(new Date(props.asOfDate))}</div>
+        <div className="headline-metric-strip">
+          {overview.headlineMetrics.map((m) => (
+            <div className="headline-metric-tile" key={m.key}>
+              <div className={`headline-metric-value ${m.value === null ? "na" : ""}`}>{m.value ?? (m.state === "NOT_AVAILABLE" ? "Not available" : "Review required")}</div>
+              <div className="headline-metric-label">{m.label}</div>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {/* 2. Headline capacity (§12). */}
       <div className="summary-band">
         <div className="summary-band-title">Maximum incremental debt — the most {companyName.replace(/ Corp\.?$/, "")} can incur without tripping any governing document</div>
         <div className="summary-band-stats">
@@ -133,18 +147,10 @@ export function DashboardClient(props: DashboardClientProps) {
         </div>
       </Card>
 
-      <Card>
-        <div className="card-title">Position as of {fmtDate(new Date(props.asOfDate))}</div>
-        <div className="headline-metric-strip">
-          {overview.headlineMetrics.map((m) => (
-            <div className="headline-metric-tile" key={m.key}>
-              <div className={`headline-metric-value ${m.value === null ? "na" : ""}`}>{m.value ?? (m.state === "NOT_AVAILABLE" ? "Not available" : "Review required")}</div>
-              <div className="headline-metric-label">{m.label}</div>
-            </div>
-          ))}
-        </div>
-      </Card>
+      {/* 3. Needs attention (§13). */}
+      <AttentionList items={overview.attentionItems} />
 
+      {/* 4-5. Covenant family summaries + detailed rows (§14-21). */}
       <CovenantFamiliesView families={overview.covenantFamilies} />
 
       <Card>

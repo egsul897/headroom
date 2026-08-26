@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Card } from "@/components/ui";
+import { GlobalBrand } from "@/components/GlobalBrand";
 import { listCompanies } from "@/lib/dashboard-service";
 
 export const metadata = { title: "Headroom — Admin" };
@@ -12,9 +13,13 @@ export const dynamic = "force-dynamic";
  * Internal/admin/development mode (docs/headroom-master-product-architecture.md
  * §D - "preserve Coherent, Matthews and synthetic/evaluation companies... move
  * company switching to admin/internal/development mode"). This is the ONLY
- * place in the product that enumerates every tenant regardless of kind, links
- * to the legacy Coherent-only pages, and offers "+ New" company creation -
- * none of it belongs on the customer-facing root (app/page.tsx).
+ * place in the product that enumerates every tenant regardless of kind and
+ * offers "+ New" company creation - none of it belongs on the
+ * customer-facing root (app/page.tsx). The legacy Coherent-only pages this
+ * used to link to (app/position, app/simulate, app/docs, app/ledger,
+ * app/feeds) were removed (task "UNIVERSAL HEADROOM PRODUCT EXPERIENCE" §4
+ * generalization audit - PRODUCTION_RISK: hardcoded to Coherent via omitted
+ * companyId args, fully superseded by app/[companyId]/*).
  *
  * Admin safety mitigation (task §31, docs/contract-model-foundation-phase-b.md §31):
  * this route is unlinked from any customer-facing surface, but "unlinked" is
@@ -41,6 +46,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const evaluation = companies.filter((c) => c.tenantKind === "EVALUATION");
 
   return (
+    <>
+    <GlobalBrand />
     <div className="stack">
       <Card>
         <div className="card-title">Admin / internal mode</div>
@@ -90,28 +97,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
           </Link>
         </div>
       </Card>
-
-      <Card>
-        <div className="card-title">Legacy views (Coherent only)</div>
-        <div className="card-subtitle">Pre-existing pages, retained for reference.</div>
-        <div className="button-row">
-          <Link className="button" href="/position">
-            Position
-          </Link>
-          <Link className="button" href="/simulate">
-            Simulate
-          </Link>
-          <Link className="button" href="/docs">
-            Docs
-          </Link>
-          <Link className="button" href="/ledger">
-            Ledger
-          </Link>
-          <Link className="button" href="/feeds">
-            Feeds
-          </Link>
-        </div>
-      </Card>
     </div>
+    </>
   );
 }

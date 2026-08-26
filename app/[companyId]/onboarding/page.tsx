@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Card, Chip } from "@/components/ui";
 import { prisma } from "@/lib/prisma";
 import { getReviewProgress } from "@/lib/onboarding/review";
+import { onboardingStatusLabel } from "@/lib/status-labels";
 
 export const metadata = { title: "Headroom — Onboarding wizard" };
 export const dynamic = "force-dynamic";
@@ -36,7 +37,7 @@ export default async function OnboardingWizardPage({ params }: { params: Promise
     { href: `/${companyId}/onboarding/review`, label: "Review", detail: `${progress.total} candidate(s), ${progress.approved + progress.edited} ready to promote`, done: progress.total > 0 && progress.pending === 0 && progress.reviewRequired === 0 },
     { href: `/${companyId}/onboarding/financials`, label: "Financials", detail: `${financialStateCount} snapshot(s) recorded`, done: financialStateCount > 0 },
     { href: `/${companyId}/onboarding/facilities`, label: "Facility mapping", detail: `${facilityCount} facility(ies) mapped, ${permissionCount} permission(s) available`, done: facilityCount > 0 },
-    { href: `/${companyId}/onboarding/activate`, label: "Activate", detail: `status: ${company.onboardingStatus}, ${goldenTestCount} golden-test proposal(s)`, done: company.onboardingStatus !== "ONBOARDING" },
+    { href: `/${companyId}/onboarding/activate`, label: "Activate", detail: `status: ${onboardingStatusLabel(company.onboardingStatus)}, ${goldenTestCount} golden-test proposal(s)`, done: company.onboardingStatus !== "ONBOARDING" },
   ];
 
   return (
@@ -44,7 +45,7 @@ export default async function OnboardingWizardPage({ params }: { params: Promise
       <Card>
         <div className="card-title">{company.name} — onboarding</div>
         <div className="card-subtitle">
-          Status: <Chip tone={company.onboardingStatus === "ACTIVE" ? "pass" : company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS" ? "tight" : "idle"}>{company.onboardingStatus}</Chip>
+          Status: <Chip tone={company.onboardingStatus === "ACTIVE" ? "pass" : company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS" ? "tight" : "idle"}>{onboardingStatusLabel(company.onboardingStatus)}</Chip>
         </div>
         <div className="onboarding-stage-list">
           {stages.map((s) => (
