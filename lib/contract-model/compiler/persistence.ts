@@ -12,13 +12,36 @@ import { prisma } from "../../prisma";
 import { computeStableKey } from "../stable-keys";
 import type { CandidateContractRule, CandidateDefinedTerm, CandidateContractReference, CandidateRuleRelationship } from "../types";
 import type { StructuralNode } from "./types";
+import type { DetectedReference } from "./structural-references";
+import type { DetectedDefinition } from "./structural-definitions";
 import type { EntityClassTag } from "@prisma/client";
 
-/** Key used everywhere a rule/reference needs to look up "the node for this section, in this document" - documentId-scoped so two documents in the same package sharing a section number (e.g. both have a "6.01") never collide. */
+/**
+ * Key used everywhere a rule/reference needs to look up "the node for this
+ * section, in this document" - documentId-scoped so two documents in the
+ * same package sharing a section number (e.g. both have a "6.01") never
+ * collide. Identical in format to StructuralNode.nodeKey (both are
+ * `${documentId}::${sectionRef with whitespace stripped}`), so the map
+ * persistStructuralNodes returns doubles as the nodeKey->id map
+ * persistStructuralReferences/persistStructuralDefinitions need - one real
+ * identity scheme, not two.
+ */
 export function nodeLookupKey(documentId: string, sectionRef: string): string {
   return `${documentId}::${sectionRef.replace(/\s+/g, "")}`;
 }
 
+/**
+ * Phase 2A fix: the real Prisma schema has always had a genuine self-
+ * relation (DocumentNode.parentId) for parent/child edges, but this
+ * function never populated it - every persisted node's parentId was
+ * silently null, so no real tree ever existed in the database even though
+ * StructuralNode carried parentSectionRef in memory. Fixed generally with a
+ * two-pass upsert: nodes are created/updated first (parents always appear
+ * before their children in the sorted input, but this makes no assumption
+ * about that - it simply cannot set a child's parentId before the parent
+ * row exists), then every row's parentId is set once every node's real id
+ * is known, keyed by the same nodeKey-derived stableKey scheme.
+ */
 export async function persistStructuralNodes(companyId: string, nodes: StructuralNode[]): Promise<Map<string, string>> {
   const idByLookupKey = new Map<string, string>();
   for (const node of nodes) {
@@ -30,7 +53,69 @@ export async function persistStructuralNodes(companyId: string, nodes: Structura
     });
     idByLookupKey.set(nodeLookupKey(node.documentId, node.sectionRef), row.id);
   }
+  for (const node of nodes) {
+    if (!node.parentSectionRef) continue;
+    const parentId = idByLookupKey.get(nodeLookupKey(node.documentId, node.parentSectionRef));
+    if (!parentId) continue; // parent wasn't itself a recognized structural node (e.g. an ARTICLE-less top-level SECTION) - leave parentId null rather than guess.
+    const childId = idByLookupKey.get(node.nodeKey)!;
+    await prisma.documentNode.update({ where: { id: childId }, data: { parentId } });
+  }
   return idByLookupKey;
+}
+
+/**
+ * Phase 2A - persists deterministically-detected explicit references
+ * (structural-references.ts), fixing the same real gap the LLM-candidate
+ * path (persistReferences below) always had: sourceNodeId was never set,
+ * so "what references this node" (task §9) could never be answered from
+ * persisted data. idByNodeKey must come from persistStructuralNodes's own
+ * return value's underlying node-key map (exposed via the second return
+ * value here) so both sides agree on identity.
+ */
+export async function persistStructuralReferences(companyId: string, references: DetectedReference[], idByNodeKey: Map<string, string>): Promise<number> {
+  let persisted = 0;
+  for (const ref of references) {
+    const sourceNodeId = ref.sourceNodeKey ? idByNodeKey.get(ref.sourceNodeKey) : undefined;
+    const targetDocumentNodeId = ref.targetNodeKey ? idByNodeKey.get(ref.targetNodeKey) : undefined;
+    await prisma.contractReferenceEdge.create({
+      data: {
+        companyId,
+        sourceNodeId,
+        referenceType: "REQUIRES",
+        referenceText: ref.referenceText,
+        targetType: ref.resolved ? "SECTION" : "UNRESOLVED",
+        targetDocumentNodeId,
+        resolved: ref.resolved,
+        unresolvedReason: ref.unresolvedReason ?? undefined,
+      },
+    });
+    persisted++;
+  }
+  return persisted;
+}
+
+/**
+ * Phase 2A - persists deterministically-detected defined-term declarations
+ * (structural-definitions.ts). Uses the SAME stableKey scheme as
+ * persistDefinedTerms below (keyed only by companyId + lowercased term
+ * name) so a term found by both the deterministic detector and the LLM
+ * DEFINITIONS stage converges on one row rather than creating a duplicate -
+ * this call additionally fills in sourceNodeId/definitionTextRef, which the
+ * LLM path alone never populated with a real structural anchor.
+ */
+export async function persistStructuralDefinitions(companyId: string, definitions: DetectedDefinition[], idByNodeKey: Map<string, string>): Promise<Map<string, string>> {
+  const idByTermName = new Map<string, string>();
+  for (const def of definitions) {
+    const stableKey = computeStableKey("defined-term", companyId, def.normalizedTerm);
+    const sourceNodeId = def.sourceNodeKey ? idByNodeKey.get(def.sourceNodeKey) : undefined;
+    const row = await prisma.definedTermNode.upsert({
+      where: { companyId_stableKey: { companyId, stableKey } },
+      create: { companyId, documentId: def.documentId, stableKey, termName: def.exactTerm, normalizedName: def.normalizedTerm, sourceNodeId, definitionTextRef: def.definitionExcerpt },
+      update: { sourceNodeId, definitionTextRef: def.definitionExcerpt },
+    });
+    idByTermName.set(def.normalizedTerm, row.id);
+  }
+  return idByTermName;
 }
 
 export async function persistDefinedTerms(companyId: string, documentId: string, terms: CandidateDefinedTerm[]): Promise<Map<string, string>> {

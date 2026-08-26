@@ -33,15 +33,27 @@ export interface StageRunResult<TOutput> {
   notes?: string[];
 }
 
-/** Structural node the STRUCTURE stage produces (task §8/§9) - a coarser granularity than the full DocumentNodeType taxonomy (ARTICLE/SECTION only, not SUBSECTION/CLAUSE/PROVISO), a deliberate v1 scope bound, see docs/phase-c-contract-compiler-v1.md's own disclosed limitation. */
+/**
+ * Structural node the STRUCTURE stage produces (task §8/§9; widened in
+ * Phase 2A, docs/phase-2a-structural-index.md, to the full nested
+ * DocumentNodeType taxonomy - ARTICLE/SECTION/SUBSECTION/CLAUSE/SUBCLAUSE -
+ * previously a deliberate v1 scope bound covering only ARTICLE/SECTION).
+ */
 export interface StructuralNode {
   documentId: string;
-  nodeType: "ARTICLE" | "SECTION";
+  nodeType: "ARTICLE" | "SECTION" | "SUBSECTION" | "CLAUSE" | "SUBCLAUSE";
   heading: string;
+  /** Fully-qualified ref, e.g. "VI", "6.01", "6.01(a)", "6.01(a)(i)" - never a bare marker alone for nested levels, so it can be compared directly against a rule's own sourceSectionRef citation style. */
   sectionRef: string;
+  /** Document-scoped exact structural identity (`${documentId}::${normalized sectionRef}`) - the stable identity the task asks for, independent of DB persistence and never derived from fuzzy string matching. */
+  nodeKey: string;
+  /** Start of this node's own marker/heading. */
   charStart: number;
+  /** End of this node's FULL owned span - own text plus every nested descendant's text (a section's char range naturally contains its lettered subsections, since they are physically nested in the source prose). Use charStart..(firstChild.charStart) for "own text only". */
   charEnd: number;
+  /** Sibling order under the SAME parent (not a global index across the whole document). */
   ordinal: number;
+  /** The DIRECT parent's own sectionRef (any level - an ARTICLE for a top-level SECTION, a SECTION for a SUBSECTION, etc.), or null for a top-level node with no enclosing parent. */
   parentSectionRef: string | null;
 }
 
