@@ -34,6 +34,8 @@ const SCHEMA_VERSION = "phase-c.1";
 
 export interface CompilerRunOptions {
   force?: boolean;
+  /** Force only these specific stages to re-run (their downstream consumers still see the new output, since each stage reads the PRIOR stage's freshly-computed in-memory result, not just its own cache check) - lets a code fix scoped to one stage (e.g. a verification-logic bug) be re-verified without re-spending real money on unaffected upstream LLM stages. Ignored if `force` is also set (force wins, re-running everything). */
+  forceStages?: ContractCompilerStageKind[];
   /** Whether to run the bounded LLM adversarial-verification pass (real cost) or the deterministic-only layer alone (free). Defaults to true - verification is mandatory per task §30, but a caller validating orchestration wiring against the synthetic provider can still exercise it (the synthetic caller returns schema defaults at zero cost either way). */
   useLlmAdversarialPass?: boolean;
 }
@@ -91,6 +93,8 @@ async function getOrRunStage<TOutput>(runId: string, stage: ContractCompilerStag
 export async function runContractCompiler(input: CompilerPackageInput, options: CompilerRunOptions = {}): Promise<CompilerRunSummary> {
   const { companyId, packageKey, documents } = input;
   const force = options.force ?? false;
+  const forceStages = new Set(options.forceStages ?? []);
+  const shouldForce = (stage: ContractCompilerStageKind): boolean => force || forceStages.has(stage);
   const useLlmAdversarialPass = options.useLlmAdversarialPass ?? true;
   const runId = await upsertRun(companyId, packageKey, documents.map((d) => d.documentId));
   const stages: CompilerRunSummary["stages"] = [];
@@ -99,7 +103,7 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
 
   // Stage 1: STRUCTURE (deterministic).
   const structureInputHash = hashParts(documents.map((d) => `${d.documentId}:${d.text}`));
-  const structureRes = await getOrRunStage(runId, "STRUCTURE", structureInputHash, force, async () => {
+  const structureRes = await getOrRunStage(runId, "STRUCTURE", structureInputHash, shouldForce("STRUCTURE"), async () => {
     const r = runStructureStage(documents);
     return { ...r };
   });
@@ -118,7 +122,7 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
 
   // Stage 2: DEFINITIONS (real LLM call).
   const definitionsInputHash = hashParts([providerIdentity, structureOutputHash(structuralNodes), ...documents.map((d) => d.text)]);
-  const definitionsRes = await getOrRunStage(runId, "DEFINITIONS", definitionsInputHash, force, () => runDefinitionsStage(caller, documents));
+  const definitionsRes = await getOrRunStage(runId, "DEFINITIONS", definitionsInputHash, shouldForce("DEFINITIONS"), () => runDefinitionsStage(caller, documents));
   stages.push({ stage: "DEFINITIONS", status: definitionsRes.status });
   const definedTerms = definitionsRes.output.definedTerms;
   // A defined term is attributed to the document whose structural nodes
@@ -134,19 +138,19 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
 
   // Stage 3: INVENTORY (real LLM call, independent of rule extraction - task §13).
   const inventoryInputHash = hashParts([providerIdentity, structureOutputHash(structuralNodes)]);
-  const inventoryRes = await getOrRunStage(runId, "INVENTORY", inventoryInputHash, force, () => runInventoryStage(caller, documents, structuralNodes));
+  const inventoryRes = await getOrRunStage(runId, "INVENTORY", inventoryInputHash, shouldForce("INVENTORY"), () => runInventoryStage(caller, documents, structuralNodes));
   stages.push({ stage: "INVENTORY", status: inventoryRes.status });
 
   // Stage 4: RULE_EXTRACTION (real LLM call(s), bounded/batched by article - task §15).
   const batches = buildRuleExtractionBatches(documents, structuralNodes, definedTerms);
   const ruleExtractionInputHash = hashParts([providerIdentity, hashJson(definedTerms), ...batches.map((b) => b.text)]);
-  const ruleExtractionRes = await getOrRunStage(runId, "RULE_EXTRACTION", ruleExtractionInputHash, force, () => runRuleExtractionStage(caller, batches));
+  const ruleExtractionRes = await getOrRunStage(runId, "RULE_EXTRACTION", ruleExtractionInputHash, shouldForce("RULE_EXTRACTION"), () => runRuleExtractionStage(caller, batches));
   stages.push({ stage: "RULE_EXTRACTION", status: ruleExtractionRes.status });
   const extractedRules = ruleExtractionRes.output.rules;
 
   // Stage 5: DEPENDENCY_RESOLUTION (deterministic).
   const depResInputHash = hashParts([hashJson(extractedRules), hashJson(definedTerms)]);
-  const depResRes = await getOrRunStage(runId, "DEPENDENCY_RESOLUTION", depResInputHash, force, async () => {
+  const depResRes = await getOrRunStage(runId, "DEPENDENCY_RESOLUTION", depResInputHash, shouldForce("DEPENDENCY_RESOLUTION"), async () => {
     const termDeps = resolveDefinedTermDependencies(extractedRules, definedTerms);
     const refsByDocument: Record<string, ReturnType<typeof detectCrossReferences>> = {};
     for (const d of documents) refsByDocument[d.documentId] = detectCrossReferences(d.documentId, d.text, structuralNodes);
@@ -166,12 +170,12 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
 
   // Stage 6: RELATIONSHIPS (real LLM call, given already-extracted rules - task §24).
   const relationshipsInputHash = hashParts([providerIdentity, hashJson(extractedRules)]);
-  const relationshipsRes = await getOrRunStage(runId, "RELATIONSHIPS", relationshipsInputHash, force, () => runRelationshipsStage(caller, extractedRules));
+  const relationshipsRes = await getOrRunStage(runId, "RELATIONSHIPS", relationshipsInputHash, shouldForce("RELATIONSHIPS"), () => runRelationshipsStage(caller, extractedRules));
   stages.push({ stage: "RELATIONSHIPS", status: relationshipsRes.status });
 
   // Stage 7: AMENDMENTS (deterministic detection; representation-only, task §27 scope).
   const amendmentsInputHash = hashParts(documents.map((d) => d.label));
-  const amendmentsRes = await getOrRunStage(runId, "AMENDMENTS", amendmentsInputHash, force, async () => runAmendmentsStage(documents));
+  const amendmentsRes = await getOrRunStage(runId, "AMENDMENTS", amendmentsInputHash, shouldForce("AMENDMENTS"), async () => runAmendmentsStage(documents));
   stages.push({ stage: "AMENDMENTS", status: amendmentsRes.status });
 
   // Persist rules BEFORE verification/validation so those stages see real
@@ -192,7 +196,7 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
 
   // Stage 8: VERIFICATION (deterministic, mandatory + bounded real LLM adversarial pass - task §30).
   const verificationInputHash = hashParts([useLlmAdversarialPass ? providerIdentity : "deterministic-only", hashJson(extractedRules)]);
-  const verificationRes = await getOrRunStage(runId, "VERIFICATION", verificationInputHash, force, () => {
+  const verificationRes = await getOrRunStage(runId, "VERIFICATION", verificationInputHash, shouldForce("VERIFICATION"), () => {
     const verificationBatches = documents.map((d) => ({ documentId: d.documentId, sourceText: d.text, rules: rulesByDocument.get(d.documentId) ?? [] }));
     return runVerificationStage(caller, verificationBatches, useLlmAdversarialPass);
   });
@@ -200,17 +204,17 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
 
   // Stage 9: VALIDATION (reuse validators.ts, deterministic, runs against persisted rows).
   const validationInputHash = hashJson(verificationRes.output.finalRules.map((r) => r.sourceSectionRef));
-  const validationRes = await getOrRunStage(runId, "VALIDATION", validationInputHash, force, () => runValidationStage(companyId));
+  const validationRes = await getOrRunStage(runId, "VALIDATION", validationInputHash, shouldForce("VALIDATION"), () => runValidationStage(companyId));
   stages.push({ stage: "VALIDATION", status: validationRes.status });
 
   // Stage 10: COVERAGE (task §37 - independent inventory vs modeled output; fixes the C0 definedTerms[]-scope gap generally, task §38).
   const coverageInputHash = hashJson({ inventory: inventoryRes.output, rules: extractedRules, terms: definedTerms });
-  const coverageRes = await getOrRunStage(runId, "COVERAGE", coverageInputHash, force, async () => runCoverageStage(inventoryRes.output, extractedRules, definedTerms));
+  const coverageRes = await getOrRunStage(runId, "COVERAGE", coverageInputHash, shouldForce("COVERAGE"), async () => runCoverageStage(inventoryRes.output, extractedRules, definedTerms));
   stages.push({ stage: "COVERAGE", status: coverageRes.status });
 
   // Stage 11: PROMOTION (the hard execution invariant, task §4/§42-44).
   const promotionInputHash = hashJson({ rules: verificationRes.output.finalRules, validationOk: validationRes.output.ok });
-  const promotionRes = await getOrRunStage(runId, "PROMOTION", promotionInputHash, force, async () => {
+  const promotionRes = await getOrRunStage(runId, "PROMOTION", promotionInputHash, shouldForce("PROMOTION"), async () => {
     const decisions = runPromotionStage(verificationRes.output.finalRules, verificationRes.output, validationRes.output, unresolvedByRule);
     const blocked = decisions.filter((d) => d.executabilityState !== "EXECUTABLE" && d.executabilityState !== "NON_EXECUTABLE_QUALITATIVE");
     return { status: blocked.length > 0 ? ("REVIEW_REQUIRED" as const) : ("COMPLETED" as const), output: decisions };

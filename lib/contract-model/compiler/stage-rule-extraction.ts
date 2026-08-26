@@ -27,23 +27,50 @@ export interface RuleExtractionBatch {
   relevantDefinedTerms: CandidateDefinedTerm[];
 }
 
-/** Splits a document's text into per-ARTICLE batches using the STRUCTURE stage's own nodes; a document with no detected articles becomes one whole-document batch. */
+/**
+ * Above this size, a single-ARTICLE (or whole-document, when no article
+ * boundary exists) segment is further subdivided by its own SECTION nodes.
+ * Real evidence this threshold matters (docs/phase-c-contract-compiler-v1.md):
+ * the FWRG package has exactly one ARTICLE (its entire Negative Covenants
+ * article), so ARTICLE-only batching degenerated to a single ~104K-character
+ * call and failed a structured-output validation check partway through a
+ * very long rules[] array - reproducing C0's own "single call doesn't
+ * scale" finding one level down. LSB's own ARTICLE VI batch (~16.8K chars,
+ * under this threshold) succeeded whole. This is a real, measured data
+ * point informing the threshold, not an arbitrary guess.
+ */
+const SECTION_SPLIT_THRESHOLD_CHARS = 25_000;
+
+/** Splits a document's text into bounded batches using the STRUCTURE stage's own ARTICLE/SECTION nodes: ARTICLE-level first, then further split by SECTION when an article (or the whole document, if no article boundary exists) exceeds SECTION_SPLIT_THRESHOLD_CHARS. Any lead-in text before the first section (a chapeau like "The Loan Parties will not...") is prepended to that first section's own batch, never dropped. */
 export function buildRuleExtractionBatches(documents: CompilerDocumentInput[], structuralNodes: StructuralNode[], definedTerms: CandidateDefinedTerm[]): RuleExtractionBatch[] {
   const batches: RuleExtractionBatch[] = [];
   for (const doc of documents) {
     const articles = structuralNodes.filter((n) => n.documentId === doc.documentId && n.nodeType === "ARTICLE").sort((a, b) => a.charStart - b.charStart);
-    if (articles.length === 0) {
-      batches.push({ documentId: doc.documentId, label: doc.label, text: doc.text, relevantDefinedTerms: definedTerms });
-      continue;
-    }
-    for (let i = 0; i < articles.length; i++) {
-      const article = articles[i]!;
-      const next = articles[i + 1];
-      const start = article.charStart;
-      const end = next ? next.charStart : doc.text.length;
-      const text = doc.text.slice(start, end);
-      if (text.trim().length === 0) continue;
-      batches.push({ documentId: doc.documentId, label: `${doc.label} / ${article.heading || article.sectionRef}`, text, relevantDefinedTerms: definedTerms });
+    const sections = structuralNodes.filter((n) => n.documentId === doc.documentId && n.nodeType === "SECTION").sort((a, b) => a.charStart - b.charStart);
+
+    const segments: { start: number; end: number; label: string }[] =
+      articles.length === 0
+        ? [{ start: 0, end: doc.text.length, label: doc.label }]
+        : articles.map((article, i) => ({ start: article.charStart, end: articles[i + 1] ? articles[i + 1]!.charStart : doc.text.length, label: `${doc.label} / ${article.heading || article.sectionRef}` }));
+
+    for (const segment of segments) {
+      const segmentText = doc.text.slice(segment.start, segment.end);
+      if (segmentText.trim().length === 0) continue;
+
+      const innerSections = sections.filter((s) => s.charStart >= segment.start && s.charStart < segment.end);
+      if (segmentText.length <= SECTION_SPLIT_THRESHOLD_CHARS || innerSections.length < 2) {
+        batches.push({ documentId: doc.documentId, label: segment.label, text: segmentText, relevantDefinedTerms: definedTerms });
+        continue;
+      }
+
+      for (let i = 0; i < innerSections.length; i++) {
+        const section = innerSections[i]!;
+        const chunkStart = i === 0 ? segment.start : section.charStart; // first sub-batch also carries the segment's own lead-in/chapeau text.
+        const chunkEnd = innerSections[i + 1] ? innerSections[i + 1]!.charStart : segment.end;
+        const text = doc.text.slice(chunkStart, chunkEnd);
+        if (text.trim().length === 0) continue;
+        batches.push({ documentId: doc.documentId, label: `${segment.label} / ${section.heading || section.sectionRef}`, text, relevantDefinedTerms: definedTerms });
+      }
     }
   }
   return batches;

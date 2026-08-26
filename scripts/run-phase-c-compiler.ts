@@ -13,6 +13,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync } from "fs";
 import { join } from "path";
+import type { ContractCompilerStageKind } from "@prisma/client";
 import { prisma } from "../lib/prisma";
 import { runContractCompiler } from "../lib/contract-model/compiler/orchestrator";
 import { evaluateAll } from "../lib/contract-model/analyzer/evaluator";
@@ -58,7 +59,8 @@ async function loadPackage(name: string): Promise<PackageDef> {
 async function main() {
   const name = process.argv[2];
   const force = process.argv.includes("--force");
-  if (!name) throw new Error("Usage: npx tsx scripts/run-phase-c-compiler.ts <fwrg|lsb> [--force]");
+  const reverify = process.argv.includes("--reverify");
+  if (!name) throw new Error("Usage: npx tsx scripts/run-phase-c-compiler.ts <fwrg|lsb> [--force] [--reverify]");
 
   const pkg = await loadPackage(name);
   await prisma.company.upsert({ where: { id: pkg.companyId }, create: { id: pkg.companyId, name: `Fixture ${pkg.key} Co (real unseen package, test-only)`, tenantKind: "EVALUATION" }, update: {} });
@@ -73,7 +75,8 @@ async function main() {
   }));
 
   console.log(`[run] package=${pkg.key} companyId=${pkg.companyId} documents=${documents.length}`);
-  const summary = await runContractCompiler({ companyId: pkg.companyId, packageKey: pkg.key, documents }, { force });
+  const forceStages: ContractCompilerStageKind[] | undefined = reverify ? ["RELATIONSHIPS", "VERIFICATION", "VALIDATION", "COVERAGE", "PROMOTION"] : undefined;
+  const summary = await runContractCompiler({ companyId: pkg.companyId, packageKey: pkg.key, documents }, { force, forceStages });
 
   const evaluation = evaluateAll(pkg.groundTruth, summary.rules, summary.definedTerms);
 

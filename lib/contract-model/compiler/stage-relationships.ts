@@ -14,9 +14,23 @@ import type { StageRunResult } from "./types";
 
 const SYSTEM_PROMPT = [
   "You are identifying RELATIONSHIPS between already-extracted contract rules from the same financing package - you are given a list of rules (their source section, covenant family, and a short description), not the raw document text.",
-  "For each pair of rules that interact, extract a relationship: STACKS_WITH, SHARES_CAPACITY_WITH, REDUCES, INCREASES, RECLASSIFIABLE_TO, CONDITIONED_ON, EXCEPTION_TO, BLOCKED_BY, REQUIRES, ALTERNATIVE_TO, REFINANCES, or SUPERSEDES - whichever is the closest real fit.",
+  // Real, closed ContractRuleRelationshipType enum values ONLY
+  // (prisma/schema.prisma) - real evidence this list previously included
+  // several invalid values (STACKS_WITH, REDUCES, INCREASES, CONDITIONED_ON,
+  // EXCEPTION_TO, BLOCKED_BY, REFINANCES, SUPERSEDES caused a real Prisma
+  // write failure on the LSB run) motivated both this correction and the
+  // schema-level zodEnumFromPrismaEnum fix in lib/contract-model/types.ts.
+  "For each pair of rules that interact, extract a relationship of exactly one of these real types: ALTERNATIVE_TO, CONCURRENT_COUNTED, CONCURRENT_DISREGARDED, INDEPENDENT_REQUIREMENT, SHARES_CAPACITY_WITH, REQUIRES, LIMITED_BY, AUTOMATIC_LINKED_PERMISSION, BASKET_FEEDING, COMBINABLE, RECLASSIFIABLE_TO, REDESIGNATES_TO, EXCLUDED_FROM, OVERRIDES, ACTIVATES, DEACTIVATES, PARAMETER_ADJUSTMENT_TRIGGER, SOURCE_PRECEDENCE - whichever is the closest real fit. A general prohibition and one of its own enumerated exceptions is best represented as EXCLUDED_FROM (the exception is excluded from the prohibition's scope).",
   "Only extract a relationship you can point to real textual evidence for (one rule's exceptions/conditions referencing another, a shared defined-term capacity pool, an explicit cross-reference). Do not guess at relationships that are not evidenced.",
   "It is correct and expected to return zero relationships if the rules given do not actually interact.",
+  // Real evidence this exact instruction was missing and mattered (LSB run,
+  // docs/phase-c-contract-compiler-v1.md): without it, the model correctly
+  // found 66 real relationships but echoed back the full bracketed summary
+  // line (e.g. 'Section 6.01(a) [INDEBTEDNESS/EXCEPTION]') as fromRuleRef/
+  // toRuleRef instead of the bare citation, so 100% failed to resolve
+  // against the real persisted rule set - a parsing-contract bug, not a
+  // semantic one.
+  "CRITICAL: fromRuleRef and toRuleRef must be EXACTLY the bare source section citation as given below (e.g. '6.01(a)' or 'Section 6.01(a)', copied verbatim from the line's own leading citation) - never include the bracketed family/type annotation or any other text from that line in these two fields.",
 ].join(" ");
 
 function summarizeRule(rule: CandidateContractRule): string {

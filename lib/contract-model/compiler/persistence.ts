@@ -98,11 +98,31 @@ export async function persistContractRules(companyId: string, documentId: string
   return idBySectionRef;
 }
 
+function normalizeSectionRef(ref: string): string {
+  return ref
+    .replace(/^§/, "")
+    .replace(/^Section\s+/i, "")
+    .replace(/\s*\[[^\]]*\]\s*$/, "") // strips a stray bracketed annotation if a model echoes one back despite the prompt instruction not to (defense in depth, not a substitute for the prompt fix).
+    .replace(/\s+/g, "")
+    .trim();
+}
+
+/** Exact match first, then a normalized (Section-prefix/whitespace/bracket-tolerant) match - real evidence (LSB run) showed a naive exact-string lookup silently dropped 100% of otherwise-correct relationships over a formatting mismatch. */
+function resolveRuleRef(ref: string, ruleIdBySectionRef: Map<string, string>): string | undefined {
+  const exact = ruleIdBySectionRef.get(ref);
+  if (exact) return exact;
+  const normalizedTarget = normalizeSectionRef(ref);
+  for (const [key, id] of ruleIdBySectionRef) {
+    if (normalizeSectionRef(key) === normalizedTarget) return id;
+  }
+  return undefined;
+}
+
 export async function persistRuleRelationships(companyId: string, relationships: CandidateRuleRelationship[], ruleIdBySectionRef: Map<string, string>): Promise<number> {
   let persisted = 0;
   for (const rel of relationships) {
-    const fromId = ruleIdBySectionRef.get(rel.fromRuleRef);
-    const toId = ruleIdBySectionRef.get(rel.toRuleRef);
+    const fromId = resolveRuleRef(rel.fromRuleRef, ruleIdBySectionRef);
+    const toId = resolveRuleRef(rel.toRuleRef, ruleIdBySectionRef);
     if (!fromId || !toId) continue; // unresolved endpoint - not persisted as a relationship (would violate the FK); reported separately as an UnresolvedContractItem by the caller.
     // ContractRuleRelationship has no stableKey/unique constraint of its own
     // (task §M's design decision: it is a plain edge table) - idempotency

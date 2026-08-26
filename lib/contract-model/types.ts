@@ -11,7 +11,7 @@
  * payload in lib/extraction/schemas.ts.
  */
 import { z } from "zod";
-import { CovenantFamily, ContractRuleType, RuleEvaluationClass } from "@prisma/client";
+import { CovenantFamily, ContractRuleType, RuleEvaluationClass, ContractRuleRelationshipType } from "@prisma/client";
 
 /** Builds a Zod enum from a Prisma-generated enum object's own values - one source of truth, never a hand-duplicated list. */
 function zodEnumFromPrismaEnum<T extends Record<string, string>>(prismaEnum: T) {
@@ -232,8 +232,19 @@ export const CandidateContractReferenceSchema = z.object({
 });
 export type CandidateContractReference = z.infer<typeof CandidateContractReferenceSchema>;
 
+// Phase C fix (docs/phase-c-contract-compiler-v1.md) - the exact same class
+// of bug as the earlier Phase C0 fix above (a real, closed Postgres enum
+// left as an unconstrained z.string()): the real LSB Industries staged run
+// showed the model emitting plausible-but-invalid relationship type strings
+// ("EXCEPTION_TO", "STACKS_WITH", "REDUCES") that are not real
+// ContractRuleRelationshipType members - a Prisma write on
+// persistRuleRelationships failed outright rather than silently accepting
+// the invalid value, which is exactly why this was caught immediately
+// rather than corrupting data, but the correct fix is the same one used
+// above: constrain the schema itself so the model's own decoding respects
+// the real closed ontology.
 export const CandidateRuleRelationshipSchema = z.object({
-  relationshipType: z.string(),
+  relationshipType: zodEnumFromPrismaEnum(ContractRuleRelationshipType),
   fromRuleRef: z.string(),
   toRuleRef: z.string(),
   notes: z.string().optional(),

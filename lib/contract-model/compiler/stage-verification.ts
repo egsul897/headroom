@@ -105,9 +105,18 @@ export async function runVerificationStage(caller: StageCaller, batches: Verific
           } else {
             // Bounded: no further correction attempts (task §34) - a
             // correction that doesn't re-confirm becomes REVIEW_REQUIRED,
-            // never re-looped.
+            // never re-looped. Real evidence this matters (LSB run,
+            // docs/phase-c-contract-compiler-v1.md): a proposed correction
+            // can itself DROP real, correct fields the original extraction
+            // had (observed: a correction that "fixed" formulaRef also
+            // silently dropped a real, correct thresholdValue/thresholdUnit
+            // the pre-correction rule carried). Falling back to the
+            // ORIGINAL (pre-correction) rule here - not the unconfirmed
+            // corrected one - preserves whatever real information the first
+            // extraction pass had, rather than keeping a strictly worse,
+            // unconfirmed rewrite merely because it was the most recent one.
             dispositions.push({ sourceSectionRef: original.sourceSectionRef, deterministicFlag: false, llmVerdict: "REVIEW_REQUIRED", correctionApplied: false });
-            finalRules.push({ ...rule, evaluationClass: "JUDGMENT_REQUIRED", notes: `${rule.notes ?? ""} CORRECTION_NOT_RECONFIRMED: bounded verification (1 correction attempt) did not reach CONFIRMED.`.trim() });
+            finalRules.push({ ...original, evaluationClass: "JUDGMENT_REQUIRED", notes: `${original.notes ?? ""} CORRECTION_NOT_RECONFIRMED: bounded verification (1 correction attempt, proposed correction not reconfirmed) - falling back to original extraction, downgraded.`.trim() });
           }
         }
       }
