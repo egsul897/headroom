@@ -9,6 +9,7 @@ import { connectSource, getOrCreateUploadConnection } from "../../lib/connectors
 import { createIngestionJob, runAllPendingIngestionStages, ensureFinancialFactContainer } from "../../lib/connectors/ingestion";
 import { upsertArtifactWithDedup, canonicalizeFinancialRecord, computeContentHash } from "../../lib/connectors/dedup";
 import { getCanonicalCompanyState } from "../../lib/company-state/canonical-state";
+import { normalizeFinancialValue } from "../../lib/connectors/units";
 
 const COMPANY_ID = "fixture-canonical-state-co";
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -29,7 +30,8 @@ describe("getCanonicalCompanyState", () => {
 
     // A conflicting DOCUMENT_UPLOAD-sourced fact for the same metric/period.
     const uploadConnection = await getOrCreateUploadConnection(COMPANY_ID);
-    const rawPayload = { metricName: "cash", value: 1300000, asOfDate: TODAY, unit: "USD" };
+    const normalization = normalizeFinancialValue("cash", 1300000, "USD");
+    const rawPayload = { metricName: "cash", value: normalization.normalizedValue, asOfDate: TODAY, canonicalUnit: normalization.canonicalUnit, originalValue: normalization.originalValue, originalUnit: normalization.originalUnit };
     const data = canonicalizeFinancialRecord(rawPayload);
     const { artifact } = await upsertArtifactWithDedup({
       companyId: COMPANY_ID,

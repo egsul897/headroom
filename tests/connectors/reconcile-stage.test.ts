@@ -11,6 +11,7 @@ import { prisma } from "../../lib/prisma";
 import { connectSource, getOrCreateUploadConnection } from "../../lib/connectors/registry";
 import { createIngestionJob, runAllPendingIngestionStages, runIngestionJobStage, ensureFinancialFactContainer } from "../../lib/connectors/ingestion";
 import { upsertArtifactWithDedup, canonicalizeFinancialRecord, computeContentHash } from "../../lib/connectors/dedup";
+import { normalizeFinancialValue } from "../../lib/connectors/units";
 
 const COMPANY_ID = "fixture-reconcile-stage-co";
 
@@ -62,7 +63,8 @@ describe("RECONCILE stage - real reconciliation, not the Phase A stub", () => {
     //    DOCUMENT_UPLOAD outranks CSV_FINANCIAL per the seeded global
     //    SourcePriorityRule rows (prisma/migrations/20260825210000.../migration.sql).
     const uploadConnection = await getOrCreateUploadConnection(COMPANY_ID);
-    const rawPayload = { metricName: "cash", value: 5800000, asOfDate: TODAY, unit: "USD" };
+    const normalization = normalizeFinancialValue("cash", 5800000, "USD");
+    const rawPayload = { metricName: "cash", value: normalization.normalizedValue, asOfDate: TODAY, canonicalUnit: normalization.canonicalUnit, originalValue: normalization.originalValue, originalUnit: normalization.originalUnit };
     const data = canonicalizeFinancialRecord(rawPayload);
     const { artifact } = await upsertArtifactWithDedup({
       companyId: COMPANY_ID,
@@ -83,7 +85,7 @@ describe("RECONCILE stage - real reconciliation, not the Phase A stub", () => {
         kind: "FINANCIAL_FACT",
         sourceDocumentId: container.documentId,
         sourceChunkIds: [],
-        proposedValue: { metricName: "cash", value: 5800000, asOfDate: TODAY, unit: "USD", sourceRecordRef: artifact.id },
+        proposedValue: { ...rawPayload, sourceRecordRef: artifact.id },
         reviewStatus: "PENDING",
       },
     });
@@ -98,7 +100,7 @@ describe("RECONCILE stage - real reconciliation, not the Phase A stub", () => {
     expect(csvAfter.rationale).toMatch(/higher-priority/i);
     expect(csvAfter.rationale).toMatch(/DOCUMENT_UPLOAD/);
     expect(csvAfter.rationale).toContain(uploadCandidate.id);
-    expect(csvAfter.rationale).toMatch(/5800000/);
+    expect(csvAfter.rationale).toMatch(/5\.8/);
 
     const uploadAfter = await prisma.extractionCandidate.findUniqueOrThrow({ where: { id: uploadCandidate.id } });
     expect(uploadAfter.reviewStatus).toBe("PENDING"); // untouched - it is the WINNER
@@ -132,7 +134,8 @@ describe("RECONCILE stage - real reconciliation, not the Phase A stub", () => {
     }
     const csvCandidate = await prisma.extractionCandidate.findFirstOrThrow({ where: { companyId: COMPANY_ID, kind: "FINANCIAL_FACT", proposedValue: { path: ["metricName"], equals: "total_debt" } } });
 
-    const rawPayload = { metricName: "total_debt", value: 20050000, asOfDate: TODAY, unit: "USD" }; // within 1% tolerance
+    const totalDebtNormalization = normalizeFinancialValue("total_debt", 20050000, "USD"); // within 1% tolerance
+    const rawPayload = { metricName: "total_debt", value: totalDebtNormalization.normalizedValue, asOfDate: TODAY, canonicalUnit: totalDebtNormalization.canonicalUnit, originalValue: totalDebtNormalization.originalValue, originalUnit: totalDebtNormalization.originalUnit };
     const data = canonicalizeFinancialRecord(rawPayload);
     const { artifact } = await upsertArtifactWithDedup({
       companyId: COMPANY_ID,

@@ -149,14 +149,27 @@ interface StageOutcome {
   output: Record<string, unknown>;
 }
 
+/** Duck-typed: only CsvFinancialConnector currently implements this (its fail-closed per-row parse/unit errors - lib/connectors/csv-financial-connector.ts). Not part of the generic SourceConnector interface (a pull-based connector like EdgarConnector has no "row-level parse error" concept at all), so this is an optional capability check, not a required method every connector must implement. */
+interface HasLastParseErrors {
+  getLastParseErrors(): { rowIndex: number; error: string }[];
+}
+function hasLastParseErrors(connector: SourceConnector): connector is SourceConnector & HasLastParseErrors {
+  return typeof (connector as Partial<HasLastParseErrors>).getLastParseErrors === "function";
+}
+
 async function runDiscoverStage(job: IngestionJob, connection: CompanySourceConnection, ownStageOutput: Record<string, unknown> | null): Promise<StageOutcome> {
   const connector = await buildConnector(connection, ownStageOutput);
   const items = job.kind === "SYNC" ? (await connector.syncSince(connection.cursor)).map((d) => d.item) : await connector.discover({});
   const tagged: TaggedDiscoveredItem[] = items.map((item) => ({ ...item, sourceConnectionId: connection.id }));
+  // Surfaces every row this connector rejected (missing/invalid unit,
+  // unrecognized metric, malformed value, etc.) as a durable, inspectable
+  // INGESTION_ERROR on this stage's own persisted output - never silently
+  // dropped with no trace (docs/autonomous-ingestion-production-readiness.md).
+  const ingestionErrors = hasLastParseErrors(connector) ? connector.getLastParseErrors() : [];
   return {
     recordsDiscovered: tagged.length,
     recordsChanged: tagged.length,
-    output: { ...(ownStageOutput ?? {}), items: tagged },
+    output: { ...(ownStageOutput ?? {}), items: tagged, ingestionErrors },
   };
 }
 
@@ -306,13 +319,22 @@ async function runExtractStage(job: IngestionJob, connection: CompanySourceConne
     if (pending.length > 0) {
       const container = await ensureFinancialFactContainer(job.companyId, connection);
       for (const artifact of pending) {
-        const payload = artifact.rawPayload as { metricName?: string; value?: number; asOfDate?: string; unit?: string | null } | null;
+        // rawPayload already carries the unit-normalized shape
+        // lib/connectors/csv-financial-connector.ts's fetch() produces
+        // (canonicalUnit/originalValue/originalUnit/withinSanityBounds) -
+        // this stage never re-derives or re-guesses units itself, it only
+        // forwards what the connector already normalized and re-validates
+        // the result against the schema (defense in depth, same discipline
+        // as lib/extraction/run-stage.ts's own independent re-validation).
+        const payload = artifact.rawPayload as { metricName?: string; value?: number; asOfDate?: string; canonicalUnit?: string; originalValue?: number; originalUnit?: string; withinSanityBounds?: boolean; sanityNote?: string | null } | null;
         if (!payload) continue;
         const candidateValue = {
           metricName: payload.metricName,
           value: payload.value,
           asOfDate: payload.asOfDate,
-          unit: payload.unit ?? undefined,
+          canonicalUnit: payload.canonicalUnit,
+          originalValue: payload.originalValue,
+          originalUnit: payload.originalUnit,
           sourceRecordRef: artifact.id,
         };
         const validated = FinancialFactValueSchema.safeParse(candidateValue);
@@ -320,6 +342,7 @@ async function runExtractStage(job: IngestionJob, connection: CompanySourceConne
           // Fail closed for this one row - never a fabricated candidate - but never abort the whole batch either.
           continue;
         }
+        const withinSanityBounds = payload.withinSanityBounds !== false;
         await prisma.extractionCandidate.create({
           data: {
             extractionRunId: container.extractionRunId,
@@ -328,9 +351,15 @@ async function runExtractStage(job: IngestionJob, connection: CompanySourceConne
             kind: "FINANCIAL_FACT",
             sourceDocumentId: container.documentId,
             sourceChunkIds: [],
-            sourceExcerpt: `${payload.metricName} = ${payload.value}${payload.unit ? ` ${payload.unit}` : ""} as of ${payload.asOfDate}`,
+            sourceExcerpt: `${payload.metricName} = ${payload.originalValue} ${payload.originalUnit} (normalized: ${payload.value} ${payload.canonicalUnit}) as of ${payload.asOfDate}`,
             proposedValue: validated.data,
-            reviewStatus: "PENDING",
+            // A value that converted successfully but exceeds the
+            // extreme-magnitude sanity ceiling is never silently trusted as
+            // an ordinary PENDING fact - REVIEW_REQUIRED, with the reason in
+            // rationale, exactly like a KNOWN_NOT_MODELED contractual
+            // candidate is never silently promotable either.
+            reviewStatus: withinSanityBounds ? "PENDING" : "REVIEW_REQUIRED",
+            rationale: withinSanityBounds ? undefined : payload.sanityNote ?? undefined,
           },
         });
         createdFacts++;
@@ -424,7 +453,7 @@ async function runReconcileStage(companyId: string): Promise<StageOutcome> {
   const candidateRowById = new Map(pendingCandidates.map((c) => [c.id, c]));
   const withSource: FinancialFactCandidateWithSource[] = [];
   for (const c of pendingCandidates) {
-    const value = c.proposedValue as { metricName: string; value: number; asOfDate: string; unit?: string; sourceRecordRef?: string };
+    const value = c.proposedValue as { metricName: string; value: number; asOfDate: string; canonicalUnit?: string; sourceRecordRef?: string };
     const artifact = value.sourceRecordRef ? artifactById.get(value.sourceRecordRef) : undefined;
     if (!artifact) continue; // no resolvable source connection - cannot reconcile this candidate; it stays PENDING, reviewed normally.
     withSource.push({
@@ -432,7 +461,7 @@ async function runReconcileStage(companyId: string): Promise<StageOutcome> {
       metricName: value.metricName,
       value: value.value,
       asOfDate: value.asOfDate,
-      unit: value.unit,
+      unit: value.canonicalUnit,
       sourceConnectionId: artifact.sourceConnectionId,
       connectorType: artifact.sourceConnection.connectorType,
       connectionSourcePriority: artifact.sourceConnection.sourcePriority,

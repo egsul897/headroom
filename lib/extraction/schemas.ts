@@ -19,6 +19,7 @@
  */
 
 import { z } from "zod";
+import { FINANCIAL_UNITS } from "../connectors/units";
 
 // ---------------------------------------------------------------------------
 // Shared provenance - every proposal carries this, regardless of kind.
@@ -173,11 +174,23 @@ export const ExternalInputRequirementValueSchema = z.object({
 // SourcePriorityRule.metricName's own free-string convention - the set of
 // financial metrics this pipeline cares about is expected to grow without a
 // schema change.
+//
+// Production-readiness fix (docs/autonomous-ingestion-production-readiness.md):
+// `value` is now REQUIRED to already be normalized into this metric's
+// canonical unit (lib/connectors/units.ts) - the ONLY value this codebase's
+// existing FinancialSnapshot/FinancialState/dashboard code ever reads.
+// `originalValue`/`originalUnit`/`canonicalUnit` are preserved alongside it
+// so a reviewer can see exactly what was declared and how it was converted -
+// never silently discarded. A candidate can no longer exist with a bare
+// numeric `value` and no unit provenance at all (the exact gap that let a
+// raw dollar figure be silently misread as already being in millions).
 export const FinancialFactValueSchema = z.object({
   metricName: z.string().min(1),
   value: z.number(),
   asOfDate: z.string().min(1),
-  unit: z.string().optional(),
+  canonicalUnit: z.enum(FINANCIAL_UNITS),
+  originalValue: z.number(),
+  originalUnit: z.enum(FINANCIAL_UNITS),
   sourceRecordRef: z.string().optional(),
 });
 

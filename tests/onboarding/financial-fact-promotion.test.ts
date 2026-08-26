@@ -22,8 +22,16 @@ const COMPANY_ID = "fixture-financial-fact-promotion-co";
 const AS_OF = "2026-06-30";
 // All 8 FINANCIAL_METRIC_FIELD_MAP metrics for the same date, so this is
 // promotable from a company with ZERO prior FinancialSnapshot in one batch
-// (lib/onboarding/financial.ts's upsertFinancialFactsForDate) - plus one
-// UNRECOGNIZED metricName that must be skipped, not fabricated or errored.
+// (lib/onboarding/financial.ts's upsertFinancialFactsForDate). `unit` is
+// REQUIRED per metric (docs/autonomous-ingestion-production-readiness.md) -
+// USD for every dollar-denominated metric here, PERCENT for the rate.
+// `some_unrecognized_metric` is a SEPARATE, deliberately-unrecognized
+// metricName - this now fails CLOSED at ingestion/parse time
+// (normalizeFinancialValue's UnrecognizedMetricError, surfaced via the
+// DISCOVER stage's own ingestionErrors output), one step earlier than
+// before (previously it became a candidate that promotion itself skipped) -
+// never becomes a candidate at all, which is what "candidates" below
+// excludes it from.
 const CSV = [
   "metricName,value,asOfDate,unit",
   `cash,4200000,${AS_OF},USD`,
@@ -33,7 +41,7 @@ const CSV = [
   `interest_expense,2100000,${AS_OF},USD`,
   `cumulative_net_income,9000000,${AS_OF},USD`,
   `equity_proceeds,5000000,${AS_OF},USD`,
-  `assumed_new_debt_rate_pct,7.5,${AS_OF},pct`,
+  `assumed_new_debt_rate_pct,7.5,${AS_OF},PERCENT`,
   `some_unrecognized_metric,999,${AS_OF},USD`,
 ].join("\n");
 
@@ -53,8 +61,11 @@ describe("FINANCIAL_FACT promotion", () => {
     const results = await runAllPendingIngestionStages(job.id);
     expect(results.every((r) => r.status === "COMPLETE")).toBe(true);
 
+    // Only the 8 recognized, unit-valid metrics become candidates -
+    // some_unrecognized_metric fails closed at ingestion/parse time (see
+    // this file's own CSV comment), never reaching ExtractionCandidate.
     const candidates = await prisma.extractionCandidate.findMany({ where: { companyId: COMPANY_ID, kind: "FINANCIAL_FACT" } });
-    expect(candidates).toHaveLength(9);
+    expect(candidates).toHaveLength(8);
     candidateIds = candidates.map((c) => c.id);
 
     for (const id of candidateIds) {
@@ -66,30 +77,34 @@ describe("FINANCIAL_FACT promotion", () => {
     await teardown();
   });
 
-  it("promotes all 8 recognized metrics into ONE FinancialSnapshot/FinancialState row, and skips the unrecognized metric with a clear reason (not an error)", async () => {
+  it("the unrecognized metric was rejected at ingestion time (not promotion time), surfaced as an ingestion error, and never became a candidate", async () => {
+    const job = await prisma.ingestionJob.findFirstOrThrow({ where: { companyId: COMPANY_ID }, include: { stages: true } });
+    const discoverStage = job.stages.find((s) => s.stage === "DISCOVER")!;
+    const ingestionErrors = (discoverStage.output as { ingestionErrors?: { error: string }[] } | null)?.ingestionErrors ?? [];
+    expect(ingestionErrors.some((e) => e.error.includes("some_unrecognized_metric"))).toBe(true);
+  });
+
+  it("promotes all 8 recognized metrics into ONE FinancialSnapshot/FinancialState row (values normalized into their canonical unit - USD_MILLIONS for dollar figures)", async () => {
     const result = await promoteCompanyCandidates(COMPANY_ID, new Date(AS_OF));
     expect(result.promotedCount).toBe(8);
-    expect(result.skipped).toHaveLength(1);
-    expect(result.skipped[0]!.kind).toBe("FINANCIAL_FACT");
-    expect(result.skipped[0]!.reason).toMatch(/Unrecognized metricName/);
-    expect(result.skipped[0]!.reason).toMatch(/some_unrecognized_metric/);
+    expect(result.skipped).toHaveLength(0);
 
     const snapshots = await prisma.financialSnapshot.findMany({ where: { companyId: COMPANY_ID } });
     expect(snapshots).toHaveLength(1); // one row, not 8
     const snap = snapshots[0]!;
-    expect(snap.cash.toNumber()).toBe(4200000);
-    expect(snap.totalDebt.toNumber()).toBe(52000000);
-    expect(snap.securedDebt.toNumber()).toBe(30000000);
-    expect(snap.ebitda.toNumber()).toBe(18000000);
-    expect(snap.interestExpense.toNumber()).toBe(2100000);
-    expect(snap.cumulativeNetIncome.toNumber()).toBe(9000000);
-    expect(snap.equityProceedsSinceIssue.toNumber()).toBe(5000000);
+    expect(snap.cash.toNumber()).toBe(4.2);
+    expect(snap.totalDebt.toNumber()).toBe(52);
+    expect(snap.securedDebt.toNumber()).toBe(30);
+    expect(snap.ebitda.toNumber()).toBe(18);
+    expect(snap.interestExpense.toNumber()).toBe(2.1);
+    expect(snap.cumulativeNetIncome.toNumber()).toBe(9);
+    expect(snap.equityProceedsSinceIssue.toNumber()).toBe(5);
     expect(snap.assumedNewDebtRatePct.toNumber()).toBe(7.5);
 
     const states = await prisma.financialState.findMany({ where: { companyId: COMPANY_ID } });
     expect(states).toHaveLength(1);
     const balanceSheetFacts = states[0]!.balanceSheetFacts as { cash: { value: number } };
-    expect(balanceSheetFacts.cash.value).toBe(4200000);
+    expect(balanceSheetFacts.cash.value).toBe(4.2);
 
     // Every promoted candidate is marked promotedAt/promotedToId, pointing at the same snapshot row.
     const promoted = await prisma.extractionCandidate.findMany({ where: { companyId: COMPANY_ID, kind: "FINANCIAL_FACT", promotedAt: { not: null } } });

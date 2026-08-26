@@ -90,7 +90,7 @@ async function computeReconciliation(companyId: string): Promise<{ groups: Recon
 
   const withSource: FinancialFactCandidateWithSource[] = [];
   for (const c of pendingCandidates) {
-    const value = c.proposedValue as { metricName: string; value: number; asOfDate: string; unit?: string; sourceRecordRef?: string };
+    const value = c.proposedValue as { metricName: string; value: number; asOfDate: string; canonicalUnit?: string; sourceRecordRef?: string };
     const artifact = value.sourceRecordRef ? artifactById.get(value.sourceRecordRef) : undefined;
     if (!artifact) continue;
     withSource.push({
@@ -98,7 +98,7 @@ async function computeReconciliation(companyId: string): Promise<{ groups: Recon
       metricName: value.metricName,
       value: value.value,
       asOfDate: value.asOfDate,
-      unit: value.unit,
+      unit: value.canonicalUnit,
       sourceConnectionId: artifact.sourceConnectionId,
       connectorType: artifact.sourceConnection.connectorType,
       connectionSourcePriority: artifact.sourceConnection.sourcePriority,

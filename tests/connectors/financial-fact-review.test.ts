@@ -67,7 +67,7 @@ describe("FINANCIAL_FACT candidates through the existing review workspace (unmod
     const before = await prisma.extractionCandidate.findUniqueOrThrow({ where: { id } });
     const originalProposedValue = before.proposedValue;
 
-    const editedValue = { metricName: "covenant_ebitda", value: 21500000, asOfDate: "2026-06-30", unit: "USD" };
+    const editedValue = { metricName: "covenant_ebitda", value: 21.5, asOfDate: "2026-06-30", canonicalUnit: "USD_MILLIONS", originalValue: 21500000, originalUnit: "USD" };
     const updated = await reviewCandidate({ candidateId: id, action: "EDIT", editedValue, reviewedBy: "test-reviewer@headroom.app" });
     expect(updated.reviewStatus).toBe("EDITED");
     expect(updated.reviewerEditedValue).toMatchObject(editedValue);

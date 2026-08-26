@@ -18,9 +18,16 @@ import { runExtractionForDocument } from "../../lib/onboarding/documents";
 import { getCandidatesForReview, reviewCandidate } from "../../lib/onboarding/review";
 import { promoteCompanyCandidates } from "../../lib/onboarding/promotion";
 import { getCanonicalCompanyState } from "../../lib/company-state/canonical-state";
+import { normalizeFinancialValue } from "../../lib/connectors/units";
 
 const COMPANY_ID = "phaseb-synthetic-acceptance-co";
-const AS_OF = "2026-06-30";
+// Dynamic ("today"), not a fixed past date: cash's own 1-day staleness
+// threshold (lib/connectors/reconciliation.ts) means a fixed date eventually
+// makes test 5's cross-source CONFLICT scenario spuriously read as
+// STALE_SOURCE once enough real time passes since this file was written.
+// "Today" keeps this test's actual intent (a value disagreement between two
+// sources) correct regardless of when the suite runs.
+const AS_OF = new Date().toISOString().slice(0, 10);
 
 const CSV = [
   "metricName,value,asOfDate,unit",
@@ -31,7 +38,7 @@ const CSV = [
   `interest_expense,2100000,${AS_OF},USD`,
   `cumulative_net_income,9000000,${AS_OF},USD`,
   `equity_proceeds,5000000,${AS_OF},USD`,
-  `assumed_new_debt_rate_pct,7.5,${AS_OF},pct`,
+  `assumed_new_debt_rate_pct,7.5,${AS_OF},PERCENT`,
 ].join("\n");
 
 const BASE_CREDIT_AGREEMENT = `CREDIT AGREEMENT
@@ -115,7 +122,7 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
     expect(result.promotedCount).toBeGreaterThanOrEqual(8 + 2); // 8 financial facts + at least base/amendment DOCUMENT_RELATIONSHIP
 
     const snapshot = await prisma.financialSnapshot.findFirstOrThrow({ where: { companyId: COMPANY_ID } });
-    expect(snapshot.cash.toNumber()).toBe(4200000);
+    expect(snapshot.cash.toNumber()).toBe(4.2); // normalized: 4,200,000 USD -> 4.2 USD_MILLIONS
 
     const amendmentDoc = await prisma.document.findUniqueOrThrow({ where: { id: amendmentDocumentId } });
     expect(amendmentDoc.supersedesDocumentId).toBe(baseDocumentId);
@@ -168,7 +175,8 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
     });
 
     const uploadConnection = await getOrCreateUploadConnection(COMPANY_ID);
-    const rawPayload = { metricName: "cash", value: 5500000, asOfDate: AS_OF, unit: "USD" };
+    const normalization = normalizeFinancialValue("cash", 5500000, "USD");
+    const rawPayload = { metricName: "cash", value: normalization.normalizedValue, asOfDate: AS_OF, canonicalUnit: normalization.canonicalUnit, originalValue: normalization.originalValue, originalUnit: normalization.originalUnit };
     const data = canonicalizeFinancialRecord(rawPayload);
     const { artifact } = await upsertArtifactWithDedup({
       companyId: COMPANY_ID,
@@ -207,7 +215,7 @@ describe("Phase B synthetic-company acceptance (zero company-specific code)", ()
 
     // The ORIGINAL approved+promoted candidate is completely untouched - never silently overwritten.
     const originalCashSnapshot = await prisma.financialSnapshot.findFirstOrThrow({ where: { companyId: COMPANY_ID, asOfDate: new Date(AS_OF) } });
-    expect(originalCashSnapshot.cash.toNumber()).toBe(4200000);
+    expect(originalCashSnapshot.cash.toNumber()).toBe(4.2);
 
     // The canonical state surfaces this as a live conflict/review item.
     const state = await getCanonicalCompanyState(COMPANY_ID, new Date(AS_OF));
