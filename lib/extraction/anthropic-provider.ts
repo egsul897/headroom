@@ -1,21 +1,42 @@
 /**
- * Production ContractExtractionProvider, calling the real Claude API
- * (docs/document-onboarding-pipeline-foundation.md).
+ * Production ContractExtractionProvider(s), calling the real Claude API
+ * (docs/document-onboarding-pipeline-foundation.md) either directly or
+ * through Vercel AI Gateway (docs/vercel-ai-gateway-extraction.md).
  *
- * UNVERIFIED FROM THIS SANDBOX: no ANTHROPIC_API_KEY is available here, so
- * this file cannot be exercised against a live model from this environment.
- * It is written and type-checked against @anthropic-ai/sdk 0.120.0's own
- * actual published types (read directly from node_modules/@anthropic-ai/sdk,
- * never guessed) and compiles cleanly; its live behavior can only be
- * confirmed once deployed with real credentials. tests/extraction/**
- * exercise the pipeline end-to-end against SyntheticExtractionProvider
- * instead - see that file's own header comment.
+ * `AnthropicMessagesProvider` is the shared base: every stage-extraction
+ * prompt, schema, and parsing rule lives here ONCE. It is constructed with
+ * an already-configured `Anthropic` client and model id, and knows nothing
+ * about where that client points or how it authenticates - that is the
+ * ENTIRE surface a transport (direct API vs. Gateway) can vary. This is
+ * deliberate: the task that added Vercel AI Gateway support was explicit
+ * that "the Gateway changes TRANSPORT / PROVIDER ROUTING only" - it must
+ * never fork extraction logic, prompts, or schemas per transport.
+ *
+ * `AnthropicExtractionProvider` (below) is the direct-API subclass -
+ * `new Anthropic({apiKey})` against Anthropic's own default base URL.
+ * `VercelAIGatewayExtractionProvider` (./vercel-ai-gateway-provider.ts) is
+ * the Gateway subclass - same base class, a client pointed at
+ * `https://ai-gateway.vercel.sh` with `AI_GATEWAY_API_KEY` and a
+ * gateway-prefixed model id (e.g. `anthropic/claude-opus-5`) instead.
+ *
+ * UNVERIFIED FROM THIS SANDBOX: no ANTHROPIC_API_KEY/AI_GATEWAY_API_KEY is
+ * available here, so this file cannot be exercised against a live model
+ * from this environment. It is written and type-checked against
+ * @anthropic-ai/sdk 0.120.0's own actual published types (read directly from
+ * node_modules/@anthropic-ai/sdk, never guessed) and compiles cleanly; its
+ * live behavior can only be confirmed once deployed with real credentials.
+ * tests/extraction/** exercise the pipeline end-to-end against
+ * SyntheticExtractionProvider instead - see that file's own header comment.
  *
  * Structured output, not chat: every stage is one `client.messages.parse()`
  * call with `output_config.format: zodOutputFormat(<stage schema>)` (the
  * SDK's own recommended structured-outputs path - see
- * node_modules/@anthropic-ai/sdk/resources/messages/messages.d.ts). This
- * file deliberately never sets `thinking` - the response is exactly the
+ * node_modules/@anthropic-ai/sdk/resources/messages/messages.d.ts). Vercel's
+ * own AI Gateway documentation (docs/ai-gateway/sdks-and-apis/anthropic-messages-api)
+ * confirms the Gateway implements this exact same `output_config.format`
+ * request/response shape against `/v1/messages` - a base URL + auth change
+ * is the entire integration, never a different request shape per transport.
+ * This file deliberately never sets `thinking` - the response is exactly the
  * parsed JSON object the schema describes, so there is no extended-reasoning
  * content in the response to strip in the first place. The SDK validates
  * the model's JSON against the schema at the API layer (`parsed_output` is
@@ -24,13 +45,17 @@
  * provider returns before persisting anything, so this file's own
  * correctness is never the sole validation gate.
  *
- * Model: EXTRACTION_MODEL env var, default `claude-opus-5` - Anthropic's
- * current, most capable generally-available model (see the model table this
- * project's claude-api skill ships). Legal-document extraction feeds
- * downstream covenant-capacity review, so this pipeline defaults to the
- * strongest available model rather than a cheaper one; EXTRACTION_MODEL
- * lets a deployment trade accuracy for cost/latency deliberately, but the
- * pipeline itself never picks that tradeoff on its own.
+ * Model: EXTRACTION_MODEL env var, default `claude-opus-5` (direct) /
+ * `anthropic/claude-opus-5` (Gateway, provider-prefixed per Vercel's own
+ * model-id convention) - Anthropic's current, most capable
+ * generally-available model (see the model table this project's claude-api
+ * skill ships). Legal-document extraction feeds downstream covenant-capacity
+ * review, so this pipeline defaults to the strongest available model rather
+ * than a cheaper one; EXTRACTION_MODEL lets a deployment trade accuracy for
+ * cost/latency deliberately, but the pipeline itself never picks that
+ * tradeoff on its own, and never branches on a specific model id anywhere
+ * else in the application - lib/extraction/get-provider.ts is the ONE place
+ * that reads EXTRACTION_MODEL.
  *
  * Auth: ANTHROPIC_API_KEY, the SDK's own standard env var (confirmed against
  * its published README/client constructor - `new Anthropic()` reads it with
@@ -82,14 +107,18 @@ const BASE_SYSTEM_PROMPT = [
   "If a section is ambiguous, contested, or you are not confident, say so via a lower confidence value rather than omitting the proposal or inventing a resolution.",
 ].join(" ");
 
-export class AnthropicExtractionProvider implements ContractExtractionProvider {
-  private readonly client: Anthropic;
-  readonly model: string;
-
-  constructor(options?: { apiKey?: string; model?: string }) {
-    this.client = new Anthropic(options?.apiKey ? { apiKey: options.apiKey } : {});
-    this.model = options?.model ?? process.env.EXTRACTION_MODEL ?? DEFAULT_EXTRACTION_MODEL;
-  }
+/**
+ * Shared implementation of every extraction stage against the Anthropic
+ * Messages API (`client.messages.parse()` + structured outputs) - see this
+ * file's own header comment. Subclasses only decide how `client` is
+ * constructed (base URL, auth) and what `model` id to pass; every prompt,
+ * schema, and parsing rule lives here exactly once.
+ */
+export abstract class AnthropicMessagesProvider implements ContractExtractionProvider {
+  constructor(
+    protected readonly client: Anthropic,
+    readonly model: string
+  ) {}
 
   private async runStage<Schema extends z.ZodType>(schema: Schema, instruction: string, chunks: ChunkRef[], extraContext?: unknown): Promise<z.infer<Schema>> {
     const parts = [instruction];
@@ -105,7 +134,7 @@ export class AnthropicExtractionProvider implements ContractExtractionProvider {
     });
 
     if (!message.parsed_output) {
-      throw new Error(`AnthropicExtractionProvider: model response did not parse against the expected schema (stop_reason=${message.stop_reason})`);
+      throw new Error(`${this.constructor.name}: model response did not parse against the expected schema (stop_reason=${message.stop_reason})`);
     }
     return message.parsed_output;
   }
@@ -156,5 +185,14 @@ export class AnthropicExtractionProvider implements ContractExtractionProvider {
       input.chunks,
       input.definitions
     );
+  }
+}
+
+/** Direct-API subclass: `new Anthropic({apiKey})` against Anthropic's own default base URL. */
+export class AnthropicExtractionProvider extends AnthropicMessagesProvider {
+  constructor(options?: { apiKey?: string; model?: string }) {
+    const client = new Anthropic(options?.apiKey ? { apiKey: options.apiKey } : {});
+    const model = options?.model ?? process.env.EXTRACTION_MODEL ?? DEFAULT_EXTRACTION_MODEL;
+    super(client, model);
   }
 }

@@ -18,8 +18,8 @@ export async function uploadDocumentAction(companyId: string, formData: FormData
 }
 
 export async function runExtractionAction(companyId: string, documentId: string) {
-  const { provider, providerName, model } = getExtractionProvider();
-  await runExtractionForDocument({ companyId, documentId, provider, providerName, model });
+  const { provider, providerName, model, promptVersion, schemaVersion } = getExtractionProvider();
+  await runExtractionForDocument({ companyId, documentId, provider, providerName, model, promptVersion, schemaVersion });
   revalidatePath(`/${companyId}/onboarding/documents`);
   redirect(`/${companyId}/onboarding/review`);
 }
