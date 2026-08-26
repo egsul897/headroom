@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Card } from "@/components/ui";
 import { listCompanies } from "@/lib/dashboard-service";
 
@@ -13,12 +14,28 @@ export const dynamic = "force-dynamic";
  * company switching to admin/internal/development mode"). This is the ONLY
  * place in the product that enumerates every tenant regardless of kind, links
  * to the legacy Coherent-only pages, and offers "+ New" company creation -
- * none of it belongs on the customer-facing root (app/page.tsx). No auth
- * gate exists yet (see that file's own "known limitations" note); this route
- * is unlinked from any customer-facing surface, which is this phase's
- * honest interim posture.
+ * none of it belongs on the customer-facing root (app/page.tsx).
+ *
+ * Admin safety mitigation (task §31, docs/contract-model-foundation-phase-b.md §31):
+ * this route is unlinked from any customer-facing surface, but "unlinked" is
+ * not a real safeguard against a direct request in production - a small,
+ * safe, fail-closed gate that needs no new auth infrastructure. On Vercel
+ * (`process.env.VERCEL`), the page requires `?token=<ADMIN_ACCESS_TOKEN>` to
+ * match a real value configured in the Vercel dashboard; with no
+ * ADMIN_ACCESS_TOKEN configured at all (the default, until an operator sets
+ * one), production access is completely disabled (404, never a login
+ * prompt that would itself confirm the route exists) rather than left open.
+ * Local dev (VERCEL unset) is unaffected - this is not a login system, only
+ * a stopgap for "do not leave an openly reachable customer-list surface in
+ * production if a small safe mitigation exists" until real admin auth ships.
  */
-export default async function AdminPage() {
+export default async function AdminPage({ searchParams }: { searchParams: Promise<{ token?: string }> }) {
+  if (process.env.VERCEL) {
+    const { token } = await searchParams;
+    const required = process.env.ADMIN_ACCESS_TOKEN;
+    if (!required || token !== required) notFound();
+  }
+
   const companies = await listCompanies();
   const customer = companies.filter((c) => c.tenantKind === "CUSTOMER");
   const evaluation = companies.filter((c) => c.tenantKind === "EVALUATION");

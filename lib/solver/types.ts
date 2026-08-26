@@ -85,7 +85,17 @@ export type AmountKind = "FIXED" | "INCURRENCE_BASED";
 export type MeasurementBasis = "CUMULATIVE_INCURRED" | "CURRENTLY_OUTSTANDING" | "NET_OF_REPAYMENT" | "PREPAYMENT_CREDIT";
 export type ModelingStatus = "MODELED" | "KNOWN_NOT_MODELED";
 
-/** design doc §C.1 `EntityClassFilter` - the closed entity-class vocabulary Round 2 §L item 10 established. */
+/**
+ * design doc §C.1 `EntityClassFilter` - the closed entity-class vocabulary
+ * Round 2 §L item 10 established, mirroring the Prisma `EntityClassTag`
+ * enum. The last four values were added additively by
+ * docs/contract-model-foundation-phase-b.md (§E - entity/subject scope):
+ * Phase B's generalized ContractRule reuses this exact same vocabulary
+ * rather than a parallel one, but the debt/lien solver above never
+ * constructs or switches on them - no Permission row is ever written with
+ * one of these four, so this widening changes no solver behavior, only the
+ * type this union admits.
+ */
 export type EntityClass =
   | "BORROWER"
   | "GUARANTOR_RS"
@@ -93,7 +103,11 @@ export type EntityClass =
   | "FOREIGN_RS"
   | "UNRESTRICTED_SUB"
   | "SECURITIZATION_SUB"
-  | "IMMATERIAL_SUB";
+  | "IMMATERIAL_SUB"
+  | "PARENT"
+  | "LOAN_PARTY"
+  | "MATERIAL_SUBSIDIARY"
+  | "ANY_SUBSIDIARY";
 
 /** design doc §C.1 `eligibilityConditions`/`termConditions` - heterogeneous, AND-combined predicates. Kept as data (never inferred), never a table (design doc §R). */
 export interface EligibilityCondition {
