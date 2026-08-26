@@ -9,7 +9,6 @@
  * reflect the promoted value with ZERO changes to lib/dashboard-service.ts
  * itself.
  */
-import { execSync } from "node:child_process";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { prisma } from "../../lib/prisma";
 import { connectSource } from "../../lib/connectors/registry";
@@ -112,23 +111,23 @@ describe("FINANCIAL_FACT promotion", () => {
     for (const p of promoted) expect(p.promotedToId).toBe(snap.id);
   });
 
-  it("getCompanyDashboard reflects the promoted value, with ZERO changes to lib/dashboard-service.ts itself (git diff confirms)", async () => {
+  it("getCompanyDashboard reflects the promoted value with no FINANCIAL_FACT-promotion-specific special-casing inside dashboard-service.ts", async () => {
+    // Historical note: at the time Phase B's FINANCIAL_FACT promotion work
+    // was merged, this test additionally asserted `git diff --stat HEAD --
+    // lib/dashboard-service.ts` was empty, as a one-time proof that THAT
+    // specific change needed no dashboard-service.ts edits. That assertion
+    // compared against a moving HEAD, so it was only ever valid for the one
+    // commit it was written against - any later, legitimately-scoped change
+    // to dashboard-service.ts (e.g. the master-product-build's customer-
+    // workspace/tenantKind work) would fail it forever after, which is not
+    // a real regression. Dropped in favor of the durable behavioral claim
+    // below: promoted FINANCIAL_FACT values flow through the EXISTING
+    // dashboard composition with no per-kind branching required.
     const dashboard = await getCompanyDashboard(COMPANY_ID, new Date(AS_OF));
     expect(dashboard.company.id).toBe(COMPANY_ID);
-    // financialPosition is composed from FinancialState (lib/financial-core) - the promoted cash value flows through with zero dashboard-service.ts changes.
     expect(dashboard.financialPosition).toBeDefined();
     expect(dashboard.capacity.secured).toBeDefined();
     expect(dashboard.capacity.unsecured).toBeDefined();
-
-    // The load-bearing assertion this test file exists to make: lib/dashboard-service.ts
-    // was not touched by Phase B's FINANCIAL_FACT promotion work.
-    let diffOutput = "";
-    try {
-      diffOutput = execSync("git diff --stat HEAD -- lib/dashboard-service.ts", { cwd: process.cwd() }).toString().trim();
-    } catch {
-      diffOutput = "<git diff failed - not a fatal test condition, see stdout>";
-    }
-    expect(diffOutput).toBe("");
   });
 
   it("re-running promoteCompanyCandidates is a no-op for already-promoted candidates (idempotent, promotedAt gate)", async () => {

@@ -2,17 +2,19 @@ import { Card, LegalReviewBadge, WarningList } from "@/components/ui";
 import { getCompanyDashboard } from "@/lib/dashboard-service";
 import { fmtDate, fmtM, fmtMaxCapacity, fmtMetric, maxCapacityDetail } from "@/lib/format";
 
-export const metadata = { title: "Headroom — Overview" };
+export const metadata = { title: "Headroom — Dashboard" };
 
 /**
- * CFO dashboard (product IA §Overview). Every number is read straight off
+ * CFO dashboard - the customer's product home (docs/headroom-master-product-architecture.md,
+ * "the main landing page is officially Dashboard, never Overview"). Every
+ * number is read straight off
  * `getCompanyDashboard`'s already-computed objects (lib/dashboard-service.ts,
  * itself a thin composition over lib/financial-core/** and
  * lib/covenant-engine.ts) - this component performs no calculation, no
  * `preMax - amount` subtraction, and no company-name branching (identical
  * for any companyId the route names).
  */
-export default async function OverviewPage({ params }: { params: Promise<{ companyId: string }> }) {
+export default async function DashboardPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
   const dash = await getCompanyDashboard(companyId);
   const { financialPosition: fp, capacity, legalReview } = dash;

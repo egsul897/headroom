@@ -1,12 +1,41 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Banner, Card, Chip, LegalReviewBadge, WarningList, type ChipTone } from "@/components/ui";
 import { runScenarioWithInputs, type ScenarioInputs } from "@/lib/scenario-runner";
 import { fmtM, fmtX } from "@/lib/format";
 import type { FacilityDraft, ScenarioAction } from "@/lib/financial-core/types";
 import type { PerDocumentDebtResult } from "@/lib/covenant-engine";
 import type { ScenarioResult } from "@/lib/financial-core/types";
+
+/**
+ * Slider + direct numeric entry, wired to the SAME state value (task hard
+ * requirement, docs/headroom-master-product-architecture.md §26 - "Use BOTH
+ * slider + direct numeric entry... never fake client-side arithmetic merely
+ * to animate UI"). `max` is a generous fixed ceiling in the same style the
+ * original single-company prototype (app/simulate/SimulateClient.tsx) used,
+ * not derived from a specific facility's principal - this client component
+ * only ever receives facility identity fields (id/name/type) from the
+ * server, never their Decimal-typed amount fields (see this file's own
+ * ScenarioInputs import - lib/financial-core/types' Facility carries Prisma
+ * Decimal fields that do not survive the server->client boundary as usable
+ * numbers), so a fixed, honest range is the correct choice here, not a
+ * fragile derived one.
+ */
+function SliderField({ label, value, onChange, max, step = 5, suffix = "M" }: { label: string; value: number; onChange: (n: number) => void; max: number; step?: number; suffix?: string }) {
+  return (
+    <div className="field">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+        <span className="field-label">{label}</span>
+        <span className="mono" style={{ fontSize: 18, fontWeight: 600 }}>
+          {suffix === "%" ? `${value}%` : fmtM(value)}
+        </span>
+      </div>
+      <input type="range" min={0} max={max} step={step} value={Math.min(value, max)} onChange={(e) => onChange(Number(e.target.value))} />
+      <input className="field-control" style={{ marginTop: 6 }} type="number" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </div>
+  );
+}
 
 type ActionKind = "DEBT_ISSUANCE" | "DRAW_REVOLVER" | "DEBT_REPAYMENT" | "REFINANCING" | "ACQUISITION";
 
@@ -174,13 +203,20 @@ export function SimulateClient({ inputs }: { inputs: ScenarioInputs }) {
     }
   }, [kind, amount, secured, couponPct, facilityId, acquiredEbitda, synergyEbitda, cashConsideration]);
 
-  function run() {
-    if (!action) return;
-    setInfeasibleReason(undefined);
+  // Live recompute (docs/headroom-master-product-architecture.md §26 - "Slider
+  // movement modifies the real structured scenario" / §29 "ADJUST -> Headroom
+  // recomputes"): re-runs the SAME pure, client-side, non-mutating
+  // `runScenarioWithInputs` call every time `action` changes, with no
+  // fetch/server action/DB call of any kind - identical computation to the
+  // original explicit-button flow, just triggered automatically.
+  useEffect(() => {
+    if (!action) {
+      setResult(undefined);
+      setInfeasibleReason(undefined);
+      return;
+    }
     try {
-      // Pure, client-side, non-mutating: runs directly against the
-      // ScenarioInputs already loaded server-side - no fetch/server
-      // action/DB call of any kind.
+      setInfeasibleReason(undefined);
       setResult(runScenarioWithInputs(inputs, [action]));
     } catch (err) {
       // The financial-core scenario engine deliberately throws (fails
@@ -192,7 +228,7 @@ export function SimulateClient({ inputs }: { inputs: ScenarioInputs }) {
       setResult(undefined);
       setInfeasibleReason(err instanceof Error ? err.message : String(err));
     }
-  }
+  }, [action, inputs]);
 
   return (
     <div className="stack">
@@ -232,40 +268,19 @@ export function SimulateClient({ inputs }: { inputs: ScenarioInputs }) {
           </div>
         )}
 
-        <div className="field">
-          <div className="field-label">{kind === "ACQUISITION" ? "New debt funding ($M)" : "Amount ($M)"}</div>
-          <input className="field-control" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
-        </div>
+        <SliderField label={kind === "ACQUISITION" ? "New debt funding" : "Amount"} value={amount} onChange={setAmount} max={kind === "ACQUISITION" ? 2000 : 3000} step={25} />
 
         {kind === "ACQUISITION" && (
           <>
-            <div className="field">
-              <div className="field-label">Cash consideration ($M)</div>
-              <input className="field-control" type="number" value={cashConsideration} onChange={(e) => setCashConsideration(Number(e.target.value))} />
-            </div>
-            <div className="field">
-              <div className="field-label">Acquired EBITDA ($M)</div>
-              <input className="field-control" type="number" value={acquiredEbitda} onChange={(e) => setAcquiredEbitda(Number(e.target.value))} />
-            </div>
-            <div className="field">
-              <div className="field-label">Synergy EBITDA ($M)</div>
-              <input className="field-control" type="number" value={synergyEbitda} onChange={(e) => setSynergyEbitda(Number(e.target.value))} />
-            </div>
+            <SliderField label="Cash consideration" value={cashConsideration} onChange={setCashConsideration} max={2000} step={25} />
+            <SliderField label="Acquired EBITDA" value={acquiredEbitda} onChange={setAcquiredEbitda} max={500} step={5} />
+            <SliderField label="Synergy EBITDA" value={synergyEbitda} onChange={setSynergyEbitda} max={200} step={5} />
           </>
         )}
 
-        {(kind === "DEBT_ISSUANCE" || kind === "REFINANCING" || kind === "ACQUISITION") && (
-          <div className="field">
-            <div className="field-label">Coupon (%)</div>
-            <input className="field-control" type="number" value={couponPct} onChange={(e) => setCouponPct(Number(e.target.value))} />
-          </div>
-        )}
+        {(kind === "DEBT_ISSUANCE" || kind === "REFINANCING" || kind === "ACQUISITION") && <SliderField label="Coupon" value={couponPct} onChange={setCouponPct} max={20} step={0.25} suffix="%" />}
 
-        <div className="button-row">
-          <button type="button" className="button button-primary" onClick={run} disabled={!action}>
-            Run scenario
-          </button>
-        </div>
+        <div className="row-note" style={{ marginTop: 4 }}>{action ? "Recalculates automatically as you adjust the transaction." : "Choose a facility to model this scenario."}</div>
 
         {infeasibleReason && <Banner tone="red">This transaction is not feasible as composed: {infeasibleReason}</Banner>}
       </Card>
