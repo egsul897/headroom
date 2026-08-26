@@ -305,11 +305,48 @@ generated).
 
 ## U. Production deployment
 
-Zero schema changes were made in this task (`npx prisma migrate status`
-confirms no drift before or after) — no hosted-Neon migration was necessary.
-Committed and pushed to `claude/headroom-scaffold-covenant-engine-jrijk8`;
-Vercel's own GitHub integration deploys the pushed commit automatically. See
-the final report for the deployed SHA and live-verification results.
+Zero schema changes were made in this task (`git diff --stat` between main's
+prior tip and the merged commit shows no `prisma/` files touched;
+`npx prisma migrate status` confirms no drift before or after) — no
+hosted-Neon migration was necessary.
+
+This repo's Vercel project deploys Production from `main`, via merged PRs
+(confirmed from `main`'s own commit history — every prior task's work
+reached Production the same way). Committed and pushed to
+`claude/headroom-scaffold-covenant-engine-jrijk8`, then, with the user's
+explicit authorization for this specific step, PR #18 was opened and merged
+into `main` (merge commit `b94651b`) to actually trigger the Production
+deploy.
+
+**Live verification** (against `https://headroom-debt-compass.vercel.app`,
+using the Vercel Protection Bypass header, per the user's explicit
+authorization for this task):
+- `/coherent/dashboard`: HTTP 200. The new build went live ~30s after the
+  merge. Served markup contains all 6 real family sections (Indebtedness,
+  Liens, Financial Covenants, Restricted Payments, Investments, Asset
+  Sales), the real `$5,129M` headline capacity with its binding
+  document/section, 33 real section citations, exactly one `Binding` status
+  pill, and zero error markers (`Internal Server Error`/stack
+  traces/Prisma error text) — byte-for-byte structurally identical to the
+  locally-verified build.
+- `/matthews/dashboard`: HTTP 200. Correctly shows `Not modeled` headline
+  capacity (not a fabricated figure), only the Indebtedness/Liens families,
+  and the real advisory notes — confirming the fail-closed behavior holds in
+  production, not just locally.
+- `/admin` (no token): HTTP 404, as designed (fail-closed admin gate,
+  unrelated to this task, unmodified).
+- **Mobile**: a direct Playwright-to-production connection failed in this
+  sandbox (`net::ERR_CONNECTION_RESET` reaching the live host from
+  Chromium specifically — curl to the same host succeeds normally; a
+  sandbox network/proxy limitation on browser traffic, reported honestly
+  rather than routed around). Mobile rendering is instead evidenced by: (1)
+  a real Playwright screenshot of the identical code running locally (§Q/§R,
+  desktop + 390px mobile viewport, zero console errors besides an unrelated
+  pre-existing missing favicon), and (2) confirming the live production HTML
+  is structurally identical to that same local build (same CSS classes,
+  same markup shape) — the responsive behavior is pure CSS
+  (`@media (max-width: 860px)`), so an identical served markup+stylesheet
+  renders identically regardless of which host serves it.
 
 ## V. Known limitations
 
