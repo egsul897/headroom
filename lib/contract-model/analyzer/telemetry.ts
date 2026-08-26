@@ -43,12 +43,18 @@ export interface AnalyzerCallTelemetry {
   error?: string;
 }
 
-/** Anthropic's own published Claude Opus 5 rate card, cited in docs/phase-c0-validation-spike.md §O and reused here rather than re-deriving. USD per token. */
+/** Anthropic's own published rate cards (USD per token) - current as of this session, per Anthropic's own pricing reference. */
+export const SONNET_5_RATE_CARD = { inputPerToken: 2 / 1_000_000, outputPerToken: 10 / 1_000_000 };
 export const OPUS_5_RATE_CARD = { inputPerToken: 5 / 1_000_000, outputPerToken: 25 / 1_000_000 };
 
-export function calculateCostUsd(inputTokens: number | null, outputTokens: number | null): number | null {
+function rateCardForModel(model: string): { inputPerToken: number; outputPerToken: number } {
+  return model.includes("opus") ? OPUS_5_RATE_CARD : SONNET_5_RATE_CARD;
+}
+
+export function calculateCostUsd(inputTokens: number | null, outputTokens: number | null, model: string = "claude-sonnet-5"): number | null {
   if (inputTokens === null || outputTokens === null) return null;
-  return inputTokens * OPUS_5_RATE_CARD.inputPerToken + outputTokens * OPUS_5_RATE_CARD.outputPerToken;
+  const rateCard = rateCardForModel(model);
+  return inputTokens * rateCard.inputPerToken + outputTokens * rateCard.outputPerToken;
 }
 
 /** True for a real Anthropic SDK rate-limit error (HTTP 429) - narrow, not a catch-all for any failure. */

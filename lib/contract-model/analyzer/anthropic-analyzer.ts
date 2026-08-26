@@ -26,11 +26,14 @@ import { ContractAnalysisResultSchema, type ContractAnalysisResult, type Contrac
 import type { ContractAnalyzerProvider } from "./provider";
 import { calculateCostUsd, withRetry, type AnalyzerCallTelemetry } from "./telemetry";
 
-export const DEFAULT_ANALYZER_MODEL = "claude-opus-5";
-export const DEFAULT_GATEWAY_ANALYZER_MODEL = "anthropic/claude-opus-5";
+/** Claude Sonnet 5, per explicit user instruction to use the cheaper model for this spike ($2/$10 per M tokens vs. Opus 5's $5/$25). */
+export const DEFAULT_ANALYZER_MODEL = "claude-sonnet-5";
+export const DEFAULT_GATEWAY_ANALYZER_MODEL = "anthropic/claude-sonnet-5";
 export const AI_GATEWAY_BASE_URL = "https://ai-gateway.vercel.sh";
 export const ANALYZER_PROMPT_VERSION = "phase-c0.1";
 export const ANALYZER_SCHEMA_VERSION = "phase-c0.1";
+/** Streaming avoids the SDK's non-streaming long-request guard; 128K max_tokens is the real ceiling for these models, per "run the whole thing, no ceiling." */
+export const DEFAULT_MAX_TOKENS = 128000;
 
 const SYSTEM_PROMPT = [
   "You are a precise legal-document analyzer for a covenant-capacity analytics platform.",
@@ -50,17 +53,22 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
   constructor(
     protected readonly client: Anthropic,
     readonly model: string,
-    protected readonly providerName: string
+    protected readonly providerName: string,
+    protected readonly maxTokens: number = DEFAULT_MAX_TOKENS
   ) {}
 
   async analyze(input: ContractAnalyzerInput): Promise<ContractAnalysisResult> {
     const startedAt = Date.now();
     const timestamp = new Date().toISOString();
     try {
-      const { value: message, attemptCount, retryCount, rateLimitFailures } = await withRetry(() =>
-        this.client.messages.parse({
+      // Streaming (per the SDK's own guidance: non-streaming requests at a
+      // large max_tokens hit a client-side "would take >10 minutes" guard).
+      // Real evidence this spike hit that exact wall at max_tokens=32000
+      // non-streaming - see docs/phase-c0-analyzer-validation.md.
+      const { value: message, attemptCount, retryCount, rateLimitFailures } = await withRetry(async () => {
+        const stream = this.client.messages.stream({
           model: this.model,
-          max_tokens: 16000,
+          max_tokens: this.maxTokens,
           system: SYSTEM_PROMPT,
           messages: [
             {
@@ -69,8 +77,9 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
             },
           ],
           output_config: { format: zodOutputFormat(ContractAnalysisResultSchema) },
-        })
-      );
+        });
+        return stream.finalMessage();
+      });
 
       const usage = message.usage;
       const inputTokens = usage?.input_tokens ?? null;
@@ -91,7 +100,7 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
         rateLimitFailures,
         latencyMs: Date.now() - startedAt,
         providerCost: undefined,
-        calculatedCostUsd: calculateCostUsd(inputTokens, outputTokens),
+        calculatedCostUsd: calculateCostUsd(inputTokens, outputTokens, this.model),
       };
 
       if (!message.parsed_output) {
@@ -124,21 +133,21 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
 }
 
 export class AnthropicContractAnalyzer extends AnthropicMessagesAnalyzer {
-  constructor(options?: { apiKey?: string; model?: string }) {
+  constructor(options?: { apiKey?: string; model?: string; maxTokens?: number }) {
     const client = new Anthropic(options?.apiKey ? { apiKey: options.apiKey } : {});
     const model = options?.model ?? process.env.ANALYZER_MODEL ?? DEFAULT_ANALYZER_MODEL;
-    super(client, model, "anthropic-direct");
+    super(client, model, "anthropic-direct", options?.maxTokens ?? DEFAULT_MAX_TOKENS);
   }
 }
 
 export class VercelAIGatewayContractAnalyzer extends AnthropicMessagesAnalyzer {
-  constructor(options?: { apiKey?: string; model?: string; baseURL?: string }) {
+  constructor(options?: { apiKey?: string; model?: string; baseURL?: string; maxTokens?: number }) {
     const apiKey = options?.apiKey ?? process.env.AI_GATEWAY_API_KEY;
     if (!apiKey) {
       throw new Error("VercelAIGatewayContractAnalyzer requires AI_GATEWAY_API_KEY (or an explicit apiKey option) - none was provided.");
     }
     const client = new Anthropic({ apiKey, baseURL: options?.baseURL ?? AI_GATEWAY_BASE_URL });
     const model = options?.model ?? process.env.ANALYZER_MODEL ?? DEFAULT_GATEWAY_ANALYZER_MODEL;
-    super(client, model, "vercel-ai-gateway");
+    super(client, model, "vercel-ai-gateway", options?.maxTokens ?? DEFAULT_MAX_TOKENS);
   }
 }

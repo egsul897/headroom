@@ -29,13 +29,14 @@ export class MissingAnalyzerCredentialError extends Error {
 }
 
 export function getAnalyzerProvider(): AnalyzerProviderChoice {
+  const maxTokens = process.env.ANALYZER_MAX_TOKENS ? Number(process.env.ANALYZER_MAX_TOKENS) : undefined;
   if (process.env.AI_GATEWAY_API_KEY) {
     const model = process.env.ANALYZER_MODEL ?? DEFAULT_GATEWAY_ANALYZER_MODEL;
-    return { provider: new VercelAIGatewayContractAnalyzer({ model }), providerName: "VERCEL_AI_GATEWAY", model, promptVersion: ANALYZER_PROMPT_VERSION, schemaVersion: ANALYZER_SCHEMA_VERSION };
+    return { provider: new VercelAIGatewayContractAnalyzer({ model, maxTokens }), providerName: "VERCEL_AI_GATEWAY", model, promptVersion: ANALYZER_PROMPT_VERSION, schemaVersion: ANALYZER_SCHEMA_VERSION };
   }
   if (process.env.ANTHROPIC_API_KEY) {
     const model = process.env.ANALYZER_MODEL ?? DEFAULT_ANALYZER_MODEL;
-    return { provider: new AnthropicContractAnalyzer({ model }), providerName: "anthropic", model, promptVersion: ANALYZER_PROMPT_VERSION, schemaVersion: ANALYZER_SCHEMA_VERSION };
+    return { provider: new AnthropicContractAnalyzer({ model, maxTokens }), providerName: "anthropic", model, promptVersion: ANALYZER_PROMPT_VERSION, schemaVersion: ANALYZER_SCHEMA_VERSION };
   }
   if (process.env.VERCEL) {
     throw new MissingAnalyzerCredentialError();

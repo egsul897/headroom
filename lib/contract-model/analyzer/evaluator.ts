@@ -72,16 +72,45 @@ function ruleIsSelfFlagged(rule: CandidateContractRule): boolean {
   return false;
 }
 
-/** Finds the extracted rule whose sourceSectionRef best matches (exact, or one is a prefix of the other). */
+/** How many optional-but-substantive fields a candidate rule actually populated - used only to break ties between two candidates citing the SAME section (see findMatch's own comment for why this arises for real). */
+function completenessScore(rule: CandidateContractRule): number {
+  let score = 0;
+  if (rule.thresholdValue !== undefined) score++;
+  if (rule.formulaRef !== undefined) score++;
+  if (rule.conditions.length > 0) score++;
+  if (rule.notes && rule.notes.length > 10) score++;
+  return score;
+}
+
+/**
+ * Finds the extracted rule whose sourceSectionRef best matches (exact, or
+ * one is a prefix of the other). A real analyzer run against the unseen
+ * FWRG package showed the model sometimes emits TWO candidate rules citing
+ * the identical section - one a near-empty "placeholder" (no thresholdValue/
+ * formulaRef, notes: "placeholder") and one fully populated with the real
+ * figures - a real, generalizable analyzer-output-quality finding (see
+ * docs/phase-c0-analyzer-validation.md), not unique to this document. Among
+ * multiple EXACT ref matches, this prefers the more complete one rather than
+ * whichever happened to appear first in the array, so a genuinely correct
+ * extraction isn't graded wrong just because an emptier duplicate sorted
+ * earlier.
+ */
 function findMatch(ground: GroundTruthProvisionLike, rules: CandidateContractRule[]): CandidateContractRule | undefined {
   const target = normalizeRef(ground.sourceSectionRef.split(/[\s(]/)[0] + (ground.sourceSectionRef.match(/\([a-z]+\)/gi)?.join("") ?? ""));
   const targetNorm = normalizeRef(ground.sourceSectionRef);
+  const exactMatches: CandidateContractRule[] = [];
   let best: CandidateContractRule | undefined;
   for (const rule of rules) {
     const ruleRef = normalizeRef(rule.sourceSectionRef ?? "");
     if (!ruleRef) continue;
-    if (ruleRef === targetNorm || ruleRef === target) return rule;
+    if (ruleRef === targetNorm || ruleRef === target) {
+      exactMatches.push(rule);
+      continue;
+    }
     if (targetNorm.startsWith(ruleRef) || ruleRef.startsWith(targetNorm)) best = best ?? rule;
+  }
+  if (exactMatches.length > 0) {
+    return exactMatches.reduce((a, b) => (completenessScore(b) > completenessScore(a) ? b : a));
   }
   return best;
 }

@@ -52,11 +52,34 @@ async function main() {
   if (existsSync(logPath) && !force) {
     console.log(`[resume] Found existing run at ${logPath} - skipping the model call, re-running evaluation only. Pass --force to re-call the model.`);
     const prior = JSON.parse(readFileSync(logPath, "utf-8")) as RunLog;
+    const evaluationBefore = evaluateAll(HUMAN_PROVISIONS, prior.rawResult.rules);
     const verifiedRules = verifyAllRulesAgainstSource(prior.rawResult.rules, documentText);
-    log = { ...prior, evaluationAfter: evaluateAll(HUMAN_PROVISIONS, verifiedRules) };
+    log = { ...prior, evaluationBefore, evaluationAfter: evaluateAll(HUMAN_PROVISIONS, verifiedRules) };
+    // Persist back so the on-disk log always reflects the current evaluator/verify
+    // logic, not whatever version happened to be in place at the original paid call -
+    // a resumed run costs zero tokens, so there is no reason to let the saved
+    // evaluation go stale after a real evaluator bug fix (see evaluator.ts's
+    // findMatch/completenessScore comment for the bug this specifically corrects).
+    writeFileSync(logPath, JSON.stringify(log, null, 2));
+    console.log(`[re-saved with current evaluator] ${logPath}`);
   } else {
     console.log(`[run] provider=${providerName} model=${model} promptVersion=${promptVersion} schemaVersion=${schemaVersion}`);
-    const rawResult = await provider.analyze({ documentText, definitionsText });
+    const failurePath = join(RESULTS_DIR, `${providerName}__${model.replace(/\//g, "-")}__FAILED_${Date.now()}.json`);
+    let rawResult: ContractAnalysisResult;
+    try {
+      rawResult = await provider.analyze({ documentText, definitionsText });
+    } catch (err) {
+      // A real call that failed (parse error, transport error, etc.) still
+      // spends real tokens/money - persist whatever telemetry the provider
+      // captured plus the error itself (task §25 - never lose a real,
+      // already-paid-for attempt's evidence), rather than letting the
+      // process exit with nothing recorded.
+      const telemetry = "lastCallTelemetry" in provider ? ((provider as { lastCallTelemetry: AnalyzerCallTelemetry | null }).lastCallTelemetry) : null;
+      mkdirSync(RESULTS_DIR, { recursive: true });
+      writeFileSync(failurePath, JSON.stringify({ providerName, model, promptVersion, schemaVersion, ranAt: new Date().toISOString(), telemetry, error: err instanceof Error ? err.message : String(err) }, null, 2));
+      console.error(`[FAILED] real call errored - telemetry/error saved to ${failurePath}`);
+      throw err;
+    }
     const telemetry = "lastCallTelemetry" in provider ? ((provider as { lastCallTelemetry: AnalyzerCallTelemetry | null }).lastCallTelemetry) : null;
 
     const evaluationBefore = evaluateAll(HUMAN_PROVISIONS, rawResult.rules);

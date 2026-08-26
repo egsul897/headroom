@@ -11,6 +11,13 @@
  * payload in lib/extraction/schemas.ts.
  */
 import { z } from "zod";
+import { CovenantFamily, ContractRuleType, RuleEvaluationClass } from "@prisma/client";
+
+/** Builds a Zod enum from a Prisma-generated enum object's own values - one source of truth, never a hand-duplicated list. */
+function zodEnumFromPrismaEnum<T extends Record<string, string>>(prismaEnum: T) {
+  const values = Object.values(prismaEnum) as [string, ...string[]];
+  return z.enum(values);
+}
 
 // ---------------------------------------------------------------------------
 // Action ontology (task §7). Extensible: OTHER is always a safe fallback for
@@ -178,10 +185,21 @@ export type ExtractionOrigin = z.infer<typeof ExtractionOriginSchema>;
 // emit to be mapped into this phase's real Prisma models. Domain schemas
 // only; no LLM call, no compiler implementation, lives here.
 // ---------------------------------------------------------------------------
+// Real, closed Prisma enums (task "PROVE THE CONTRACT ANALYZER BEFORE PHASE
+// C" §6 - minimum ontology fix, additive/generalized, no migration). Real
+// evidence for this fix: the first live analyzer run against the unseen
+// FWRG package produced plausible-but-invalid category names ("GROWER_BASKET"
+// as an evaluationClass, "GENERAL_PROHIBITION"/"BASKET_EXCEPTION" as a
+// ruleType, "Indebtedness" instead of "INDEBTEDNESS" for covenantFamily) once
+// these fields were left as unconstrained z.string() - a real, generalized
+// risk for any document, not specific to this one. Constraining the
+// structured-output schema itself is a stronger fix than normalizing on the
+// read side, since it makes the model's own decoding respect the actual
+// closed ontology rather than merely grading it more leniently afterward.
 export const CandidateContractRuleSchema = z.object({
-  covenantFamily: z.string(),
-  ruleType: z.string(),
-  evaluationClass: z.string(),
+  covenantFamily: zodEnumFromPrismaEnum(CovenantFamily),
+  ruleType: zodEnumFromPrismaEnum(ContractRuleType),
+  evaluationClass: zodEnumFromPrismaEnum(RuleEvaluationClass),
   action: ContractActionSchema,
   entityScope: z.array(z.string()).default([]),
   entityScopeExcluded: z.array(z.string()).default([]),
