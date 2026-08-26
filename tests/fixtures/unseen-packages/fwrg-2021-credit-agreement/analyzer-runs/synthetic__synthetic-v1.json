@@ -1,0 +1,1379 @@
+{
+  "providerName": "synthetic",
+  "model": "synthetic-v1",
+  "promptVersion": "synthetic",
+  "schemaVersion": "phase-c0.1",
+  "ranAt": "2026-08-26T15:04:28.230Z",
+  "telemetry": null,
+  "rawResult": {
+    "definedTerms": [],
+    "rules": [
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 2500000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.06",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "synthetic pattern match: greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA"
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.06",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.06",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.04(b)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.01(w)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 6000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.01",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.01(w)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 12000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.06",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $12,000,000 and 20% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "FUNDAMENTAL_CHANGES",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.07(g)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.01",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 15000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.06(b)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $15,000,000 and 25% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.06(b)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period and"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period and"
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.06(b)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.06",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 2500000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.04(b)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "synthetic pattern match: greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA"
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.04(a)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 5000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.04(a)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $5,000,000 and 9% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "FUNDAMENTAL_CHANGES",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 6000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.07",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any single transaction or series of related transactions"
+        ],
+        "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any single transaction or series of related transactions"
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 6000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.04(a)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 12000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.04(a)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        ],
+        "notes": "synthetic pattern match: greater of $12,000,000 and 20% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+      },
+      {
+        "covenantFamily": "FUNDAMENTAL_CHANGES",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.07",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any Fiscal Year"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any Fiscal Year"
+      },
+      {
+        "covenantFamily": "FUNDAMENTAL_CHANGES",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.07",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any Fiscal Year"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any Fiscal Year"
+      },
+      {
+        "covenantFamily": "FUNDAMENTAL_CHANGES",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.07",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period and"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period and"
+      },
+      {
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "CALCULATION_RULE",
+        "evaluationClass": "EXECUTABLE",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.10(b)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA"
+      },
+      {
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SATISFY_RATIO",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 5.5,
+        "thresholdUnit": "RATIO",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.10",
+        "definedTermRefs": [],
+        "notes": "synthetic pattern match: bare ratio-test sentence"
+      },
+      {
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SATISFY_RATIO",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "thresholdValue": 1.25,
+        "thresholdUnit": "RATIO",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "6.10",
+        "definedTermRefs": [],
+        "notes": "synthetic pattern match: bare ratio-test sentence"
+      }
+    ],
+    "references": [],
+    "relationships": []
+  },
+  "evaluationBefore": {
+    "total": 18,
+    "matchedCorrect": 1,
+    "matchedIncorrectFlagged": 9,
+    "matchedIncorrectUnflagged": 2,
+    "missing": 6,
+    "dangerousUnflaggedErrorRate": 0.1111111111111111,
+    "dangerousFlaggedErrorRate": 0.5,
+    "missingRate": 0.3333333333333333,
+    "precisionRecallF1ByFamily": {
+      "INDEBTEDNESS": {
+        "truePositives": 0,
+        "total": 3,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "LIENS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "RESTRICTED_PAYMENTS": {
+        "truePositives": 0,
+        "total": 4,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "INVESTMENTS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "FUNDAMENTAL_CHANGES": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "FINANCIAL_COVENANTS": {
+        "truePositives": 0,
+        "total": 3,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "DEFINITIONS_CALCULATION_RULES": {
+        "truePositives": 0,
+        "total": 3,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "ENTITY_SCOPE_RESTRICTIONS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "AMENDMENT_WAIVER_CONSENT": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      }
+    },
+    "results": [
+      {
+        "provisionId": "fwrg-6.01-g-i",
+        "sourceSectionRef": "6.01(g)(i)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.01",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [2500000, 5], extracted thresholdValue=6000000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.01-j",
+        "sourceSectionRef": "6.01(j)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.01",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [30000000, 50], extracted thresholdValue=6000000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.01-m",
+        "sourceSectionRef": "6.01(m)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.01",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [30000000, 50], extracted thresholdValue=6000000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.02-a",
+        "sourceSectionRef": "6.02(a)",
+        "family": "LIENS",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-a-iii",
+        "sourceSectionRef": "6.04(a)(iii)(A)-(B)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.04(a)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        },
+        "mismatchReasons": [
+          "formula mismatch: expected BUILDER_BASKET, got GREATER_OF_FLAT_OR_PCT_EBITDA"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-a-x",
+        "sourceSectionRef": "6.04(a)(x)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.04(a)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        },
+        "mismatchReasons": [
+          "ground truth requires a no-default condition that the extracted rule does not carry"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-a-xi",
+        "sourceSectionRef": "6.04(a)(xi)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.04(a)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        },
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "no real figure matched: expected one of [3.5, 1], extracted thresholdValue=21000000",
+          "ground truth requires a ratio-gate condition that the extracted rule does not carry"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-b",
+        "sourceSectionRef": "6.04(b)(iv)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 30000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.04(b)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [21000000, 35], extracted thresholdValue=30000000",
+          "ground truth requires a no-default condition that the extracted rule does not carry"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.06-b-ii",
+        "sourceSectionRef": "6.06(b)(ii)",
+        "family": "INVESTMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 2500000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.06",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "synthetic pattern match: greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA"
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [15000000, 25], extracted thresholdValue=2500000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.07-threshold",
+        "sourceSectionRef": "6.07 (chapeau)",
+        "family": "FUNDAMENTAL_CHANGES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "FUNDAMENTAL_CHANGES",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.07",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any single transaction or series of related transactions"
+          ],
+          "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any single transaction or series of related transactions"
+        },
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.10-a",
+        "sourceSectionRef": "6.10(a)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "EXECUTABLE",
+          "action": "SATISFY_RATIO",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 5.5,
+          "thresholdUnit": "RATIO",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.10",
+          "definedTermRefs": [],
+          "notes": "synthetic pattern match: bare ratio-test sentence"
+        },
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-b",
+        "sourceSectionRef": "6.10(b)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.10(b)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA"
+        },
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "no real figure matched: expected one of [1.25, 1], extracted thresholdValue=21000000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-c",
+        "sourceSectionRef": "6.10(c)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "EXECUTABLE",
+          "action": "SATISFY_RATIO",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 5.5,
+          "thresholdUnit": "RATIO",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.10",
+          "definedTermRefs": [],
+          "notes": "synthetic pattern match: bare ratio-test sentence"
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [5, 2, 4], extracted thresholdValue=5.5"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-available-amount",
+        "sourceSectionRef": "Article 1 (Available Amount)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-cadj-ebitda",
+        "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDA)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-cadj-ebitdar",
+        "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDAR)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-restricted-subsidiary-loan-party",
+        "sourceSectionRef": "Article 1 (Restricted Subsidiary / Loan Party)",
+        "family": "ENTITY_SCOPE_RESTRICTIONS",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-restricted-debt",
+        "sourceSectionRef": "Article 1 (Restricted Debt) / 6.04(b)",
+        "family": "AMENDMENT_WAIVER_CONSENT",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      }
+    ]
+  },
+  "evaluationAfter": {
+    "total": 18,
+    "matchedCorrect": 1,
+    "matchedIncorrectFlagged": 11,
+    "matchedIncorrectUnflagged": 0,
+    "missing": 6,
+    "dangerousUnflaggedErrorRate": 0,
+    "dangerousFlaggedErrorRate": 0.6111111111111112,
+    "missingRate": 0.3333333333333333,
+    "precisionRecallF1ByFamily": {
+      "INDEBTEDNESS": {
+        "truePositives": 0,
+        "total": 3,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "LIENS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "RESTRICTED_PAYMENTS": {
+        "truePositives": 0,
+        "total": 4,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "INVESTMENTS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "FUNDAMENTAL_CHANGES": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "FINANCIAL_COVENANTS": {
+        "truePositives": 0,
+        "total": 3,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "DEFINITIONS_CALCULATION_RULES": {
+        "truePositives": 0,
+        "total": 3,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "ENTITY_SCOPE_RESTRICTIONS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "AMENDMENT_WAIVER_CONSENT": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      }
+    },
+    "results": [
+      {
+        "provisionId": "fwrg-6.01-g-i",
+        "sourceSectionRef": "6.01(g)(i)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.01",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period VERIFICATION_FAILED: thresholdValue 6000000 does not appear within 400 characters of cited section \"6.01\"."
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [2500000, 5], extracted thresholdValue=6000000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.01-j",
+        "sourceSectionRef": "6.01(j)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.01",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period VERIFICATION_FAILED: thresholdValue 6000000 does not appear within 400 characters of cited section \"6.01\"."
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [30000000, 50], extracted thresholdValue=6000000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.01-m",
+        "sourceSectionRef": "6.01(m)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.01",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period VERIFICATION_FAILED: thresholdValue 6000000 does not appear within 400 characters of cited section \"6.01\"."
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [30000000, 50], extracted thresholdValue=6000000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.02-a",
+        "sourceSectionRef": "6.02(a)",
+        "family": "LIENS",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-a-iii",
+        "sourceSectionRef": "6.04(a)(iii)(A)-(B)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.04(a)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period VERIFICATION_FAILED: thresholdValue 21000000 does not appear within 400 characters of cited section \"6.04(a)\"."
+        },
+        "mismatchReasons": [
+          "formula mismatch: expected BUILDER_BASKET, got GREATER_OF_FLAT_OR_PCT_EBITDA"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-a-x",
+        "sourceSectionRef": "6.04(a)(x)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.04(a)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period VERIFICATION_FAILED: thresholdValue 21000000 does not appear within 400 characters of cited section \"6.04(a)\"."
+        },
+        "mismatchReasons": [
+          "ground truth requires a no-default condition that the extracted rule does not carry"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-a-xi",
+        "sourceSectionRef": "6.04(a)(xi)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.04(a)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period VERIFICATION_FAILED: thresholdValue 21000000 does not appear within 400 characters of cited section \"6.04(a)\"."
+        },
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "no real figure matched: expected one of [3.5, 1], extracted thresholdValue=21000000",
+          "ground truth requires a ratio-gate condition that the extracted rule does not carry"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-b",
+        "sourceSectionRef": "6.04(b)(iv)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 30000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.04(b)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period"
+          ],
+          "notes": "synthetic pattern match: greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period VERIFICATION_FAILED: thresholdValue 30000000 does not appear within 400 characters of cited section \"6.04(b)\"."
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [21000000, 35], extracted thresholdValue=30000000",
+          "ground truth requires a no-default condition that the extracted rule does not carry"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.06-b-ii",
+        "sourceSectionRef": "6.06(b)(ii)",
+        "family": "INVESTMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 2500000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.06",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "synthetic pattern match: greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA VERIFICATION_FAILED: thresholdValue 2500000 does not appear within 400 characters of cited section \"6.06\"."
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [15000000, 25], extracted thresholdValue=2500000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.07-threshold",
+        "sourceSectionRef": "6.07 (chapeau)",
+        "family": "FUNDAMENTAL_CHANGES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "FUNDAMENTAL_CHANGES",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.07",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any single transaction or series of related transactions"
+          ],
+          "notes": "synthetic pattern match: greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period in any single transaction or series of related transactions VERIFICATION_FAILED: thresholdValue 6000000 does not appear within 400 characters of cited section \"6.07\"."
+        },
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.10-a",
+        "sourceSectionRef": "6.10(a)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "SATISFY_RATIO",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 5.5,
+          "thresholdUnit": "RATIO",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.10",
+          "definedTermRefs": [],
+          "notes": "synthetic pattern match: bare ratio-test sentence VERIFICATION_FAILED: thresholdValue 5.5 does not appear within 400 characters of cited section \"6.10\"."
+        },
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-b",
+        "sourceSectionRef": "6.10(b)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "CALCULATION_RULE",
+          "evaluationClass": "EXECUTABLE",
+          "action": "OTHER",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.10(b)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "synthetic pattern match: greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA"
+        },
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "no real figure matched: expected one of [1.25, 1], extracted thresholdValue=21000000"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-c",
+        "sourceSectionRef": "6.10(c)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "SATISFY_RATIO",
+          "entityScope": [],
+          "entityScopeExcluded": [],
+          "thresholdValue": 5.5,
+          "thresholdUnit": "RATIO",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "6.10",
+          "definedTermRefs": [],
+          "notes": "synthetic pattern match: bare ratio-test sentence VERIFICATION_FAILED: thresholdValue 5.5 does not appear within 400 characters of cited section \"6.10\"."
+        },
+        "mismatchReasons": [
+          "no real figure matched: expected one of [5, 2, 4], extracted thresholdValue=5.5"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-available-amount",
+        "sourceSectionRef": "Article 1 (Available Amount)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-cadj-ebitda",
+        "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDA)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-cadj-ebitdar",
+        "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDAR)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-restricted-subsidiary-loan-party",
+        "sourceSectionRef": "Article 1 (Restricted Subsidiary / Loan Party)",
+        "family": "ENTITY_SCOPE_RESTRICTIONS",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-restricted-debt",
+        "sourceSectionRef": "Article 1 (Restricted Debt) / 6.04(b)",
+        "family": "AMENDMENT_WAIVER_CONSENT",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section"
+        ]
+      }
+    ]
+  }
+}

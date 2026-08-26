@@ -24,6 +24,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import { ContractAnalysisResultSchema, type ContractAnalysisResult, type ContractAnalyzerInput } from "./schema";
 import type { ContractAnalyzerProvider } from "./provider";
+import { calculateCostUsd, withRetry, type AnalyzerCallTelemetry } from "./telemetry";
 
 export const DEFAULT_ANALYZER_MODEL = "claude-opus-5";
 export const DEFAULT_GATEWAY_ANALYZER_MODEL = "anthropic/claude-opus-5";
@@ -43,29 +44,82 @@ const SYSTEM_PROMPT = [
 ].join(" ");
 
 export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvider {
+  /** The telemetry for the most recent `analyze()` call (task §26/§27) - real, never fabricated; null until a real call completes. */
+  lastCallTelemetry: AnalyzerCallTelemetry | null = null;
+
   constructor(
     protected readonly client: Anthropic,
-    readonly model: string
+    readonly model: string,
+    protected readonly providerName: string
   ) {}
 
   async analyze(input: ContractAnalyzerInput): Promise<ContractAnalysisResult> {
-    const message = await this.client.messages.parse({
-      model: this.model,
-      max_tokens: 16000,
-      system: SYSTEM_PROMPT,
-      messages: [
-        {
-          role: "user",
-          content: `Defined terms excerpt:\n${input.definitionsText}\n\nNegative covenants article:\n${input.documentText}`,
-        },
-      ],
-      output_config: { format: zodOutputFormat(ContractAnalysisResultSchema) },
-    });
+    const startedAt = Date.now();
+    const timestamp = new Date().toISOString();
+    try {
+      const { value: message, attemptCount, retryCount, rateLimitFailures } = await withRetry(() =>
+        this.client.messages.parse({
+          model: this.model,
+          max_tokens: 16000,
+          system: SYSTEM_PROMPT,
+          messages: [
+            {
+              role: "user",
+              content: `Defined terms excerpt:\n${input.definitionsText}\n\nNegative covenants article:\n${input.documentText}`,
+            },
+          ],
+          output_config: { format: zodOutputFormat(ContractAnalysisResultSchema) },
+        })
+      );
 
-    if (!message.parsed_output) {
-      throw new Error(`${this.constructor.name}: model response did not parse against ContractAnalysisResultSchema (stop_reason=${message.stop_reason})`);
+      const usage = message.usage;
+      const inputTokens = usage?.input_tokens ?? null;
+      const outputTokens = usage?.output_tokens ?? null;
+      this.lastCallTelemetry = {
+        provider: this.providerName,
+        model: this.model,
+        promptVersion: ANALYZER_PROMPT_VERSION,
+        schemaVersion: ANALYZER_SCHEMA_VERSION,
+        stage: "combined_analysis",
+        timestamp,
+        inputTokens,
+        outputTokens,
+        cachedInputTokens: usage?.cache_read_input_tokens ?? null,
+        cacheCreationInputTokens: usage?.cache_creation_input_tokens ?? null,
+        attemptCount,
+        retryCount,
+        rateLimitFailures,
+        latencyMs: Date.now() - startedAt,
+        providerCost: undefined,
+        calculatedCostUsd: calculateCostUsd(inputTokens, outputTokens),
+      };
+
+      if (!message.parsed_output) {
+        throw new Error(`${this.constructor.name}: model response did not parse against ContractAnalysisResultSchema (stop_reason=${message.stop_reason})`);
+      }
+      return message.parsed_output;
+    } catch (err) {
+      this.lastCallTelemetry = {
+        provider: this.providerName,
+        model: this.model,
+        promptVersion: ANALYZER_PROMPT_VERSION,
+        schemaVersion: ANALYZER_SCHEMA_VERSION,
+        stage: "combined_analysis",
+        timestamp,
+        inputTokens: null,
+        outputTokens: null,
+        cachedInputTokens: null,
+        cacheCreationInputTokens: null,
+        attemptCount: 1,
+        retryCount: 0,
+        rateLimitFailures: 0,
+        latencyMs: Date.now() - startedAt,
+        providerCost: undefined,
+        calculatedCostUsd: null,
+        error: err instanceof Error ? err.message : String(err),
+      };
+      throw err;
     }
-    return message.parsed_output;
   }
 }
 
@@ -73,7 +127,7 @@ export class AnthropicContractAnalyzer extends AnthropicMessagesAnalyzer {
   constructor(options?: { apiKey?: string; model?: string }) {
     const client = new Anthropic(options?.apiKey ? { apiKey: options.apiKey } : {});
     const model = options?.model ?? process.env.ANALYZER_MODEL ?? DEFAULT_ANALYZER_MODEL;
-    super(client, model);
+    super(client, model, "anthropic-direct");
   }
 }
 
@@ -85,6 +139,6 @@ export class VercelAIGatewayContractAnalyzer extends AnthropicMessagesAnalyzer {
     }
     const client = new Anthropic({ apiKey, baseURL: options?.baseURL ?? AI_GATEWAY_BASE_URL });
     const model = options?.model ?? process.env.ANALYZER_MODEL ?? DEFAULT_GATEWAY_ANALYZER_MODEL;
-    super(client, model);
+    super(client, model, "vercel-ai-gateway");
   }
 }
