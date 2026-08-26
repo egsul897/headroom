@@ -40,10 +40,25 @@ a {
   color: inherit;
 }
 
+/*
+ * Restore the full covenant overview (docs/full-covenant-overview-restoration.md
+ * §C): a dense institutional table needs more horizontal room than a narrow
+ * card-stack width. Widened globally (780px -> 1180px) rather than only for
+ * the Dashboard route - every existing page's content is card/row-based and
+ * reflows into the extra width without layout damage (checked: app/position,
+ * app/simulate, app/ledger, every app/[companyId] page). Narrows back down on
+ * small viewports via the media query below.
+ */
 main {
-  max-width: 780px;
+  max-width: 1180px;
   margin: 0 auto;
   padding: 18px 16px 64px;
+}
+
+@media (max-width: 860px) {
+  main {
+    padding: 14px 12px 48px;
+  }
 }
 
 .site-header {
@@ -701,4 +716,313 @@ footer.app-footer {
   font-size: 11.5px;
   color: var(--muted);
   margin-top: 2px;
+}
+
+/* -------------------------------------------------------------------------
+ * Full covenant overview (docs/full-covenant-overview-restoration.md).
+ * One dense, scrollable screen: a headline strip, secured/unsecured
+ * headline-capacity cards, then a table-like row per covenant family. Rows
+ * are a CSS grid (not an HTML <table>) so the SAME markup reflows into a
+ * compact stacked card on narrow viewports via the media query at the
+ * bottom, rather than maintaining two separate render paths.
+ * ---------------------------------------------------------------------- */
+
+.headline-metric-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+.headline-metric-tile {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--input-bg);
+}
+.headline-metric-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 18px;
+  font-weight: 600;
+}
+.headline-metric-value.na {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+.headline-metric-label {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.headline-capacity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.headline-capacity-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: var(--input-bg);
+}
+.headline-capacity-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+.headline-capacity-value {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 4px 0 8px;
+}
+.headline-capacity-detail {
+  font-size: 12.5px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.headline-capacity-detail .label {
+  color: var(--muted);
+}
+
+.family-section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  overflow: hidden;
+}
+.family-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--input-bg);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.family-name {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+.family-counts {
+  font-size: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.family-advisory {
+  font-size: 12px;
+  color: var(--amber);
+  padding: 6px 14px;
+  border-bottom: 1px solid var(--line);
+  background: var(--amber-soft);
+}
+.family-advisory:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.covenant-row-head,
+.covenant-row {
+  display: grid;
+  grid-template-columns: minmax(190px, 2.2fr) 108px 100px minmax(170px, 2.4fr) 92px 78px 92px 92px 84px;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--line);
+  align-items: center;
+  font-size: 12.5px;
+}
+.covenant-row:last-child {
+  border-bottom: none;
+}
+.covenant-row-head {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+  background: var(--paper);
+}
+.covenant-row.binding {
+  background: var(--amber-soft);
+}
+.covenant-cell-name {
+  font-weight: 600;
+}
+.covenant-cell-name .entity-scope {
+  display: block;
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+.covenant-cell-doc,
+.covenant-cell-section {
+  color: var(--muted);
+}
+.covenant-cell-formula {
+  color: var(--ink);
+}
+.covenant-cell-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.covenant-cell-mobile-only {
+  display: none;
+}
+
+.status-pill {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.status-pill-binding {
+  background: var(--red-soft);
+  color: var(--red);
+  border-color: var(--red);
+}
+.status-pill-available {
+  background: var(--green-soft);
+  color: var(--green);
+}
+.status-pill-review {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.status-pill-not-evaluable,
+.status-pill-not-tested {
+  background: var(--idle-soft);
+  color: var(--muted);
+}
+.status-pill-unmodeled {
+  background: var(--navy-soft);
+  color: var(--navy);
+}
+
+.util-bar-wrap {
+  grid-column: 1 / -1;
+  padding: 0 0 2px;
+}
+.util-bar-track {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--idle-soft);
+  overflow: hidden;
+  margin-top: 4px;
+}
+.util-bar-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--navy);
+  border-radius: 3px 0 0 3px;
+}
+.util-bar-caption {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.ratio-track {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--idle-soft);
+  margin-top: 4px;
+}
+.ratio-track-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px 0 0 3px;
+  background: var(--green);
+}
+.ratio-track-fill.tight {
+  background: var(--amber);
+}
+
+.empty-state {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--muted);
+}
+.empty-state-title {
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+@media (max-width: 860px) {
+  .covenant-row-head {
+    display: none;
+  }
+  .covenant-row {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "name status"
+      "section section"
+      "formula formula"
+      "used used"
+      "doc doc"
+      "review review";
+    row-gap: 3px;
+    padding: 10px 12px;
+  }
+  .covenant-cell-name {
+    grid-area: name;
+  }
+  .covenant-cell-doc {
+    display: block;
+    grid-area: doc;
+    text-align: left;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .covenant-cell-section {
+    grid-area: section;
+    text-align: left;
+    font-size: 11.5px;
+  }
+  .covenant-cell-formula {
+    grid-area: formula;
+    font-size: 11.5px;
+  }
+  .covenant-cell-capacity,
+  .covenant-cell-used,
+  .covenant-cell-remaining {
+    display: none;
+  }
+  .covenant-cell-review {
+    grid-area: review;
+    text-align: left;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .covenant-cell-status {
+    grid-area: status;
+    text-align: right;
+  }
+  .covenant-cell-mobile-only {
+    display: block;
+    grid-area: used;
+    font-size: 11.5px;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .headline-capacity-value {
+    font-size: 22px;
+  }
 }

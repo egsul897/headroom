@@ -1,77 +1,34 @@
-import { Card, LegalReviewBadge, WarningList } from "@/components/ui";
+import { Card, LegalReviewBadge } from "@/components/ui";
+import { CovenantOverviewView } from "@/components/CovenantOverview";
 import { getCompanyDashboard } from "@/lib/dashboard-service";
-import { fmtDate, fmtM, fmtMaxCapacity, fmtMetric, maxCapacityDetail } from "@/lib/format";
+import { getCovenantOverview } from "@/lib/covenant-overview-service";
+import { fmtDate, fmtM } from "@/lib/format";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
 /**
  * CFO dashboard - the customer's product home (docs/headroom-master-product-architecture.md,
- * "the main landing page is officially Dashboard, never Overview"). Every
- * number is read straight off
- * `getCompanyDashboard`'s already-computed objects (lib/dashboard-service.ts,
- * itself a thin composition over lib/financial-core/** and
- * lib/covenant-engine.ts) - this component performs no calculation, no
- * `preMax - amount` subtraction, and no company-name branching (identical
- * for any companyId the route names).
+ * "the main landing page is officially Dashboard, never Overview"). Restored
+ * to the dense, one-screen covenant-position experience
+ * (docs/full-covenant-overview-restoration.md): `getCovenantOverview`
+ * (lib/covenant-overview-service.ts) supplies headline metrics, headline
+ * secured/unsecured capacity with its binding document/section, and every
+ * modeled covenant family/basket/ratio row with inline citations and
+ * formulas - `getCompanyDashboard` (lib/dashboard-service.ts) still supplies
+ * near-term maturities and the legal-review summary, which
+ * getCovenantOverview does not duplicate. This component performs no
+ * calculation, no `preMax - amount` subtraction, and no company-name
+ * branching (identical for any companyId the route names) - see both
+ * services' own header comments for where every number actually comes from.
  */
 export default async function DashboardPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const dash = await getCompanyDashboard(companyId);
-  const { financialPosition: fp, capacity, legalReview } = dash;
+  const [dash, overview] = await Promise.all([getCompanyDashboard(companyId), getCovenantOverview(companyId)]);
+  const { financialPosition: fp, legalReview } = dash;
 
   return (
     <div className="stack">
-      <WarningList warnings={fp.warnings} />
-
-      <Card>
-        <div className="card-title">Position as of {fmtDate(dash.asOfDate)}</div>
-        <div className="stat-grid">
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtM(fp.liquidity.cash.value)}</div>
-            <div className="stat-tile-label">Cash</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fp.liquidity.totalLiquidity === null ? "Review required" : fmtM(fp.liquidity.totalLiquidity)}</div>
-            <div className="stat-tile-label">Total liquidity</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtM(fp.capitalStructure.grossDebt)}</div>
-            <div className="stat-tile-label">Gross debt</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtM(fp.capitalStructure.netDebt)}</div>
-            <div className="stat-tile-label">Net debt</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtM(fp.capitalStructure.securedDebt)}</div>
-            <div className="stat-tile-label">Secured debt</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtM(fp.interest.totalAnnualizedCashInterest)}</div>
-            <div className="stat-tile-label">Annualized cash interest</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtMetric(fp.metrics.genericGrossLeverage)}</div>
-            <div className="stat-tile-label">Gross leverage</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtMetric(fp.metrics.genericNetLeverage)}</div>
-            <div className="stat-tile-label">Net leverage</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtMetric(fp.metrics.genericSecuredLeverage)}</div>
-            <div className="stat-tile-label">Secured leverage</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtMetric(fp.metrics.genericInterestCoverage)}</div>
-            <div className="stat-tile-label">Interest coverage</div>
-          </div>
-          <div className="stat-tile">
-            <div className="stat-tile-value">{fmtMetric(fp.metrics.ebitdaMarginPct)}</div>
-            <div className="stat-tile-label">EBITDA margin</div>
-          </div>
-        </div>
-      </Card>
+      <CovenantOverviewView overview={overview} />
 
       <Card>
         <div className="card-title">Near-term maturities</div>
@@ -97,30 +54,6 @@ export default async function DashboardPage({ params }: { params: Promise<{ comp
         <div className="row" style={{ borderBottom: "none" }}>
           <div className="row-label">Due within 36 months</div>
           <div className="row-value">{fmtM(fp.maturities.dueWithin36Months)}</div>
-        </div>
-      </Card>
-
-      <Card>
-        <div className="card-title">Covenant / headroom summary</div>
-        <div className="row">
-          <div>
-            <div className="row-label">Maximum secured capacity</div>
-            {maxCapacityDetail(capacity.secured.binding?.maximumCapacity) && (
-              <div className="row-note">{maxCapacityDetail(capacity.secured.binding?.maximumCapacity)}</div>
-            )}
-          </div>
-          <div className="row-value">{capacity.secured.remainingCapacity !== undefined ? fmtM(capacity.secured.remainingCapacity) : fmtMaxCapacity(capacity.secured.binding?.maximumCapacity)}</div>
-        </div>
-        <div className="row" style={{ borderBottom: "none" }}>
-          <div>
-            <div className="row-label">Maximum unsecured capacity</div>
-            {maxCapacityDetail(capacity.unsecured.binding?.maximumCapacity) && (
-              <div className="row-note">{maxCapacityDetail(capacity.unsecured.binding?.maximumCapacity)}</div>
-            )}
-          </div>
-          <div className="row-value">
-            {capacity.unsecured.remainingCapacity !== undefined ? fmtM(capacity.unsecured.remainingCapacity) : fmtMaxCapacity(capacity.unsecured.binding?.maximumCapacity)}
-          </div>
         </div>
       </Card>
 
