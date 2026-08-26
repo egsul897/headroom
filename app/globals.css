@@ -3,7 +3,7 @@
   --card: #ffffff;
   --ink: #1a1b17;
   --muted: #6e6c62;
-  --line: #ddddcf;
+  --line: #dddacf;
   --green: #1e6b4f;
   --green-soft: #e4efe9;
   --red: #a6392f;
@@ -15,9 +15,17 @@
   --idle-soft: #efede6;
   --input-bg: #fcfbf8;
 
-  --font-serif: Georgia, "Times New Roman", serif;
-  --font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  /*
+   * The prototype's exact three typefaces (reference/headroom-coherent.jsx):
+   * Newsreader (serif - section citations, headings), Spline Sans Mono
+   * (every number), Public Sans (labels/body). --font-*-src are the
+   * next/font-generated variables (app/layout.tsx) carrying the actual
+   * loaded font-family names; the named fallback stacks after them are the
+   * prototype's own, so a font-load failure degrades to the same look.
+   */
+  --font-serif: var(--font-serif-src), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-mono-src), ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --font-sans: var(--font-sans-src), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 }
 
 * {
@@ -929,10 +937,33 @@ footer.app-footer {
   background: var(--navy);
   border-radius: 3px 0 0 3px;
 }
+/*
+ * Three-tone bar coloring (task "colored capacity bar - green / amber when
+ * nearly full / red when locked"). Per-basket USAGE isn't tracked anywhere
+ * in this data model (no ledger entry is attributable to one specific
+ * basket - see util-bar-caption's own "usage not tracked" text), so
+ * "nearly full" cannot honestly mean a fill-percentage threshold; these
+ * tones instead reflect the row's own real, already-computed state: green
+ * = modeled and available, amber = review required (a real, computed
+ * status - not an invented threshold), red = locked (zero/no capacity, not
+ * modeled, or not tested). See components/CovenantOverview.tsx's `rowTone`.
+ */
+.util-bar-fill.tone-green {
+  background: var(--green);
+}
+.util-bar-fill.tone-amber {
+  background: var(--amber);
+}
+.util-bar-fill.tone-red {
+  background: var(--red);
+}
 .util-bar-caption {
   font-size: 11px;
   color: var(--muted);
   margin-top: 2px;
+}
+.util-bar-caption.locked-reason {
+  color: var(--red);
 }
 
 .ratio-track {
@@ -952,6 +983,15 @@ footer.app-footer {
 }
 .ratio-track-fill.tight {
   background: var(--amber);
+}
+.ratio-track-fill.tone-green {
+  background: var(--green);
+}
+.ratio-track-fill.tone-amber {
+  background: var(--amber);
+}
+.ratio-track-fill.tone-red {
+  background: var(--red);
 }
 
 .empty-state {

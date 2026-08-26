@@ -1,72 +1,96 @@
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Card } from "@/components/ui";
-import { listCustomerCompanies } from "@/lib/dashboard-service";
+import { listCompanies } from "@/lib/dashboard-service";
 
 export const metadata = { title: "Headroom" };
-// Vercel deployment fix: this page queries Prisma directly with no dynamic
-// route segment above it, so without this Next.js attempts to prerender it
-// at build time - requiring a reachable database during `next build`, which
-// Vercel's build machine has no path to. Forces per-request rendering
-// instead (runtime still requires a real, reachable DATABASE_URL - this does
-// not substitute for database hosting).
 export const dynamic = "force-dynamic";
 
 /**
- * The customer-facing root (docs/headroom-master-product-architecture.md
- * §B/§E - "the user should never need to select a company from a list
- * because the workspace already establishes context"). This is a workspace
- * RESOLVER, not a company picker: it only ever looks at CUSTOMER-tenant
- * companies (never Coherent/Matthews/synthetic/evaluation fixtures - those
- * live at /admin) and decides what a customer sees next.
+ * Fresh-start landing (task "RESET ON OPEN" - "opening Headroom starts a
+ * fresh session every time. No persisted 'current company,' no
+ * auto-resolution into whatever tenant exists"). This page NEVER redirects
+ * based on how many companies exist or which one was viewed last - it is a
+ * stateless read on every request, always rendering the same choice: load
+ * a known company, or connect a new one. There is no session/cookie of any
+ * kind establishing a "current company" anywhere in this app; every other
+ * page's context comes entirely from its own `[companyId]` URL segment.
  *
- * There is no authentication/session layer in this product yet - a real
- * deployment would resolve "which workspace does this logged-in user belong
- * to" from the authenticated session, never by counting rows. Until that
- * exists, this page approximates it honestly: the ONE existing
- * CUSTOMER-tenant company is that workspace. This is a deliberate, narrow
- * placeholder for real per-user tenant resolution, not a claim that
- * multi-tenant auth is built - see docs/headroom-master-product-architecture.md's
- * own "Known limitations" section.
+ * This product has no real multi-tenant auth yet (see
+ * docs/headroom-master-product-architecture.md's own "Known limitations"),
+ * so - per explicit instruction from the person operating this instance -
+ * this landing surfaces every company that exists, not only CUSTOMER-tenant
+ * ones: a real customer deployment with real auth would instead resolve
+ * straight to that customer's own workspace and would never show this
+ * company-selection screen at all (nor a name-your-eval-companies picker).
+ * A "Delete" link sits next to every entry (task: "give me a way to delete
+ * a test company entirely, so evaluation mistakes don't persist") - see
+ * app/companies/[companyId]/delete/page.tsx for the confirmation step.
  */
 export default async function Home() {
-  const customers = await listCustomerCompanies();
+  const companies = await listCompanies();
+  const customer = companies.filter((c) => c.tenantKind === "CUSTOMER");
+  const evaluation = companies.filter((c) => c.tenantKind === "EVALUATION");
 
-  if (customers.length === 1) {
-    const c = customers[0]!;
-    redirect(c.onboardingStatus === "ONBOARDING" ? `/${c.id}/onboarding` : `/${c.id}/dashboard`);
-  }
+  const openHref = (c: (typeof companies)[number]) => (c.onboardingStatus === "ONBOARDING" ? `/${c.id}/onboarding` : `/${c.id}/dashboard`);
 
-  if (customers.length === 0) {
-    return (
-      <div className="stack">
-        <Card>
-          <div className="card-title">Welcome to Headroom</div>
-          <div className="card-subtitle">Headroom is your financial and contractual command center. Connect your company to get started — Headroom will gather your financing documents and financial position, then open your dashboard.</div>
-          <Link className="button button-primary" href="/companies/new">
-            Connect your company
-          </Link>
-        </Card>
-      </div>
-    );
-  }
-
-  // More than one CUSTOMER-tenant workspace exists and there is no session to
-  // disambiguate which one this visitor belongs to - shown in customer
-  // language, never as a developer "select a company" picker.
   return (
     <div className="stack">
       <Card>
-        <div className="card-title">Your organizations</div>
-        <div className="card-subtitle">Choose a workspace to continue.</div>
-        {customers.map((c) => (
-          <div key={c.id} className="row">
-            <div className="row-label">{c.name}</div>
-            <Link className="button button-primary" href={c.onboardingStatus === "ONBOARDING" ? `/${c.id}/onboarding` : `/${c.id}/dashboard`}>
-              Open
-            </Link>
-          </div>
-        ))}
+        <div className="card-title">Headroom</div>
+        <div className="card-subtitle">Covenant capacity and financial analytics platform. Choose a company to open, or connect a new one - nothing is remembered between visits.</div>
+      </Card>
+
+      {customer.length > 0 && (
+        <Card>
+          <div className="card-title">Your companies</div>
+          {customer.map((c) => (
+            <div key={c.id} className="row">
+              <div>
+                <div className="row-label">{c.name}</div>
+                {c.ticker && <div className="row-note">{c.ticker}</div>}
+              </div>
+              <div className="button-row" style={{ marginTop: 0 }}>
+                <Link className="button button-primary" href={openHref(c)}>
+                  Open
+                </Link>
+                <Link className="button" href={`/companies/${c.id}/delete`}>
+                  Delete
+                </Link>
+              </div>
+            </div>
+          ))}
+        </Card>
+      )}
+
+      {evaluation.length > 0 && (
+        <Card>
+          <div className="card-title">Evaluation companies</div>
+          <div className="card-subtitle">Coherent, Matthews, and any test fixtures - used for regression and evaluation, never shown to a real customer once real authentication exists.</div>
+          {evaluation.map((c) => (
+            <div key={c.id} className="row">
+              <div>
+                <div className="row-label">{c.name}</div>
+                {c.ticker && <div className="row-note">{c.ticker}</div>}
+              </div>
+              <div className="button-row" style={{ marginTop: 0 }}>
+                <Link className="button button-primary" href={openHref(c)}>
+                  Open
+                </Link>
+                <Link className="button" href={`/companies/${c.id}/delete`}>
+                  Delete
+                </Link>
+              </div>
+            </div>
+          ))}
+        </Card>
+      )}
+
+      <Card>
+        <div className="card-title">Connect a new company</div>
+        <div className="card-subtitle">Upload financing documents and financial data to start a new workspace.</div>
+        <Link className="button button-primary" href="/companies/new">
+          Connect your company
+        </Link>
       </Card>
     </div>
   );

@@ -4,19 +4,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { OnboardingStatus } from "@prisma/client";
 
-// Order matches docs/headroom-master-product-architecture.md's official
-// customer navigation. Covenants and Obligations are not yet real,
-// independently-navigable pages (their data currently lives inside
-// Dashboard/Capacity) - they are deliberately omitted rather than added as
-// empty/fake pages (task hard requirement: never fake product completeness).
+// Exactly the prototype's 5 tabs (reference/headroom-coherent.jsx - task
+// "MAKE THE UI MATCH THE PROTOTYPE EXACTLY"), in the prototype's own order.
+// The prototype's own tab was named "Position" - renamed to "Dashboard"
+// everywhere per the task's explicit instruction, including this route
+// segment (this app's Dashboard route already existed under this name from
+// an earlier phase - the prototype's Position tab's content now lives
+// there). Capital Structure/Capacity (their content is folded into
+// Dashboard's own covenant overview) and the onboarding-only Sources/Review
+// steps are intentionally not part of this steady-state 5-tab row.
 const PRODUCT_TABS: { segment: string; label: string }[] = [
+  { segment: "feeds", label: "Feeds" },
   { segment: "dashboard", label: "Dashboard" },
-  { segment: "capital-structure", label: "Capital Structure" },
-  { segment: "capacity", label: "Capacity" },
   { segment: "simulate", label: "Simulate" },
-  { segment: "documents", label: "Documents" },
-  { segment: "onboarding/sources", label: "Sources" },
-  { segment: "onboarding/review", label: "Review" },
+  { segment: "docs", label: "Docs" },
+  { segment: "ledger", label: "Ledger" },
 ];
 
 const ONBOARDING_TAB = { segment: "onboarding", label: "Onboarding" };
