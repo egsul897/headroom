@@ -100,6 +100,70 @@ function findHierarchyChildren(targetPrefix: string, rules: CandidateContractRul
   });
 }
 
+/**
+ * Splits a normalized section ref into its structural components, e.g.
+ * "6.08(a)(vi)" -> ["6.08", "(a)", "(vi)"]. Used to reason about EXACT
+ * structural parent/child depth (never fuzzy prefix similarity) so a ref
+ * like "6.081" is never mistaken for a one-level-deeper child of "6.08".
+ */
+function structuralComponents(ref: string): string[] {
+  const groups = ref.match(/\([^)]+\)/g) ?? [];
+  const firstGroup = groups[0];
+  if (!firstGroup) return [ref];
+  const base = ref.slice(0, ref.indexOf(firstGroup));
+  return [base, ...groups];
+}
+
+/** True only when childRef is exactly ONE structural component deeper than parentRef and shares every component up to that depth - never a fuzzy/loose prefix relationship. */
+function isDirectStructuralChild(parentRef: string, childRef: string): boolean {
+  const parentComponents = structuralComponents(parentRef);
+  const childComponents = structuralComponents(childRef);
+  if (childComponents.length !== parentComponents.length + 1) return false;
+  return parentComponents.every((c, i) => c === childComponents[i]);
+}
+
+/** True when descendantRef is structurally beneath ancestorRef at ANY depth (at least one more component), via exact shared components only. */
+function isStructuralDescendant(ancestorRef: string, descendantRef: string): boolean {
+  const ancestorComponents = structuralComponents(ancestorRef);
+  const descendantComponents = structuralComponents(descendantRef);
+  if (descendantComponents.length <= ancestorComponents.length) return false;
+  return ancestorComponents.every((c, i) => c === descendantComponents[i]);
+}
+
+/**
+ * Phase 1A fix: resolves the LSB 6.08-shaped gap generically. When ground
+ * truth targets a bare section (e.g. "6.08") and no rule carries that EXACT
+ * ref, the real economics can still live two structural levels down (e.g.
+ * "6.08(a)(vi)") beneath a one-level-deeper intermediate ancestor (e.g.
+ * "6.08(a)") that findMatch's own exact-match bucket never reaches because
+ * it isn't itself an exact hit on the ground truth's target.
+ *
+ * Safety principle (never relaxed): only an EXACT structural one-level-
+ * deeper child of the target may be treated as an intermediate ancestor,
+ * and ONLY if it is itself a genuine container - i.e. at least one further
+ * rule exists structurally beneath IT. A one-level-deeper sibling with no
+ * children of its own (a leaf, e.g. a genuinely different, already-fully-
+ * resolved provision like "6.08(b)") is never a candidate, so its mere
+ * existence alongside a real container does not create ambiguity. If MORE
+ * THAN ONE one-level-deeper rule qualifies as a container, that is real
+ * structural ambiguity (which branch is "the" target's own decomposition
+ * is genuinely unknown) and this returns undefined rather than guess.
+ */
+function findUnambiguousIntermediateAncestor(targetRef: string, rules: CandidateContractRule[]): CandidateContractRule | undefined {
+  if (!targetRef) return undefined;
+  const candidates = rules.filter((r) => {
+    const ref = normalizeRef(r.sourceSectionRef ?? "");
+    if (!ref || !isDirectStructuralChild(targetRef, ref)) return false;
+    return rules.some((other) => {
+      const otherRef = normalizeRef(other.sourceSectionRef ?? "");
+      return !!otherRef && isStructuralDescendant(ref, otherRef);
+    });
+  });
+  const distinctRefs = new Set(candidates.map((c) => normalizeRef(c.sourceSectionRef ?? "")));
+  if (distinctRefs.size !== 1) return undefined;
+  return candidates[0];
+}
+
 function ruleIsSelfFlagged(rule: CandidateContractRule): boolean {
   if (rule.evaluationClass === "JUDGMENT_REQUIRED" || rule.evaluationClass === "UNSUPPORTED") return true;
   if (rule.action === "OTHER") return true;
@@ -203,18 +267,42 @@ export function evaluateProvision(ground: GroundTruthProvisionLike, extractedRul
   // rule itself (correctly) carries no formula of its own.
   let comparisonRule = match;
   const groundNumbers = extractNumbers(ground.realFigures);
+  const ruleNumbers = (rule: CandidateContractRule) => [rule.thresholdValue, ...extractNumbers([rule.notes ?? ""])].filter((n): n is number => typeof n === "number");
+  const numbersMatch = (candidateNumbers: number[]) => groundNumbers.some((gn) => candidateNumbers.some((mn) => Math.abs(mn - gn) / Math.max(gn, 1) < 0.01));
   if (groundNumbers.length > 0) {
-    const matchNumbers = [match.thresholdValue, ...extractNumbers([match.notes ?? ""])].filter((n): n is number => typeof n === "number");
-    const matchHasNumber = groundNumbers.some((gn) => matchNumbers.some((mn) => Math.abs(mn - gn) / Math.max(gn, 1) < 0.01));
+    const matchHasNumber = numbersMatch(ruleNumbers(match));
     const { target, targetNorm } = groundTruthTargets(ground);
     const matchRef = normalizeRef(match.sourceSectionRef ?? "");
     const matchIsExact = matchRef === target || matchRef === targetNorm;
     if (!matchHasNumber && matchIsExact) {
       for (const child of findHierarchyChildren(matchRef, extractedRules)) {
-        const childNumbers = [child.thresholdValue, ...extractNumbers([child.notes ?? ""])].filter((n): n is number => typeof n === "number");
-        if (groundNumbers.some((gn) => childNumbers.some((mn) => Math.abs(mn - gn) / Math.max(gn, 1) < 0.01))) {
+        if (numbersMatch(ruleNumbers(child))) {
           comparisonRule = child;
           break;
+        }
+      }
+    } else if (!matchHasNumber && !matchIsExact) {
+      // Phase 1A fix: ground truth's own target has no exact rule at all
+      // (match here is only findMatch's loose fallback guess, e.g. a
+      // coarser or looser prefix relationship) - but the real economics can
+      // still live exactly two structural levels below ground truth's own
+      // target, behind a single unambiguous exact intermediate container
+      // (see findUnambiguousIntermediateAncestor's own doc comment for the
+      // exact safety condition). This never widens the search past ground
+      // truth's OWN asserted target - it only widens how deep beneath that
+      // exact target this evaluator is willing to look.
+      const ancestor = findUnambiguousIntermediateAncestor(targetNorm, extractedRules) ?? findUnambiguousIntermediateAncestor(target, extractedRules);
+      if (ancestor) {
+        const ancestorRef = normalizeRef(ancestor.sourceSectionRef ?? "");
+        if (numbersMatch(ruleNumbers(ancestor))) {
+          comparisonRule = ancestor;
+        } else {
+          for (const child of findHierarchyChildren(ancestorRef, extractedRules)) {
+            if (numbersMatch(ruleNumbers(child))) {
+              comparisonRule = child;
+              break;
+            }
+          }
         }
       }
     }
