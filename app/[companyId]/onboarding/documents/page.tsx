@@ -66,13 +66,18 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
             {d.uploadedAt ? ` · uploaded ${fmtDate(d.uploadedAt)}` : ""}
           </div>
           {d.latestRun ? (
-            <div className="button-row" style={{ marginBottom: 8 }}>
-              {d.latestRun.stages.map((s) => (
-                <Chip key={s.stage} tone={s.status === "COMPLETE" ? "pass" : s.status === "FAILED" ? "trip" : "idle"}>
-                  {s.stage}: {s.status}
-                </Chip>
-              ))}
-            </div>
+            <>
+              <div className="row-note" style={{ marginBottom: 4 }}>
+                provider: {d.latestRun.provider} · model: {d.latestRun.model}
+              </div>
+              <div className="button-row" style={{ marginBottom: 8 }}>
+                {d.latestRun.stages.map((s) => (
+                  <Chip key={s.stage} tone={s.status === "COMPLETE" ? "pass" : s.status === "FAILED" ? "trip" : "idle"}>
+                    {s.stage}: {s.status}
+                  </Chip>
+                ))}
+              </div>
+            </>
           ) : (
             <div className="row-note" style={{ marginBottom: 8 }}>No extraction run yet.</div>
           )}

@@ -100,10 +100,20 @@ export interface DocumentWithExtractionStatus {
   uploadedAt: Date | null;
   typeConfirmedByUser: boolean;
   chunkCount: number;
-  latestRun: { id: string; stages: { stage: string; status: string; error: string | null }[] } | null;
+  latestRun: { id: string; provider: string; model: string; stages: { stage: string; status: string; error: string | null }[] } | null;
 }
 
-/** The onboarding wizard's Documents stage listing - one document row per upload, its chunk count, and its most recent extraction run's per-stage status. */
+/**
+ * The onboarding wizard's Documents stage listing - one document row per
+ * upload, its chunk count, and its most recent extraction run's per-stage
+ * status. `latestRun.provider`/`model` (production-readiness fix,
+ * docs/autonomous-ingestion-production-readiness.md) surface
+ * ExtractionRun's own already-recorded provider/model columns - this was
+ * always persisted, just never previously shown, and is the intended way to
+ * confirm which provider actually ran a given extraction ("anthropic" vs.
+ * "synthetic") from the deployed app itself, without inferring it from
+ * response timing.
+ */
 export async function getDocumentsWithExtractionStatus(companyId: string): Promise<DocumentWithExtractionStatus[]> {
   const documents = await prisma.document.findMany({ where: { companyId }, orderBy: { createdAt: "asc" } });
   const results: DocumentWithExtractionStatus[] = [];
@@ -120,7 +130,7 @@ export async function getDocumentsWithExtractionStatus(companyId: string): Promi
       uploadedAt: d.uploadedAt,
       typeConfirmedByUser: d.typeConfirmedByUser,
       chunkCount,
-      latestRun: latestRun ? { id: latestRun.id, stages: latestRun.stages } : null,
+      latestRun: latestRun ? { id: latestRun.id, provider: latestRun.provider, model: latestRun.model, stages: latestRun.stages } : null,
     });
   }
   return results;

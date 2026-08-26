@@ -414,7 +414,7 @@ export async function promoteCompanyCandidates(companyId: string, asOfDate: Date
     const financialFactCandidates = candidates.filter((c) => c.kind === "FINANCIAL_FACT");
     const byAsOfDate = new Map<string, { candidate: ExtractionCandidate; metricName: string; value: number }[]>();
     for (const c of financialFactCandidates) {
-      const value = resolveEffectiveValue(c) as { metricName: string; value: number; asOfDate: string; unit?: string; sourceRecordRef?: string } | null;
+      const value = resolveEffectiveValue(c) as { metricName: string; value: number; asOfDate: string; canonicalUnit?: string; sourceRecordRef?: string } | null;
       if (!value) {
         skipped.push({ candidateId: c.id, kind: c.kind, reason: "Effective value failed re-validation against its own schema - not promoted." });
         continue;
