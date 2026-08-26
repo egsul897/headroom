@@ -22,7 +22,7 @@
  * company identity in the sense the task prohibits (no `if (companyId ===
  * "coherent")` anywhere in this file or any other lib/ or app/ file).
  */
-import type { OnboardingStatus } from "@prisma/client";
+import type { CompanyTenantKind, OnboardingStatus } from "@prisma/client";
 import { prisma } from "./prisma";
 import {
   computeCovenantPosition,
@@ -51,6 +51,11 @@ export interface CompanySummary {
   // company switcher route an ONBOARDING company to its wizard instead of a
   // product page it has no data for yet, with zero company-specific branching.
   onboardingStatus: OnboardingStatus;
+  // Customer-workspace tenancy (docs/headroom-master-product-architecture.md) -
+  // CUSTOMER vs EVALUATION (Coherent/Matthews/synthetic/test fixtures). The
+  // ONLY thing app/** may condition on to decide what a normal customer-facing
+  // surface is allowed to show; never a specific company id/name.
+  tenantKind: CompanyTenantKind;
 }
 
 /**
@@ -65,12 +70,22 @@ export interface CompanySummary {
  */
 export async function listCompanies(): Promise<CompanySummary[]> {
   const rows = await prisma.company.findMany({ orderBy: { name: "asc" } });
-  return rows.map((r) => ({ id: r.id, name: r.name, ticker: r.ticker, onboardingStatus: r.onboardingStatus }));
+  return rows.map((r) => ({ id: r.id, name: r.name, ticker: r.ticker, onboardingStatus: r.onboardingStatus, tenantKind: r.tenantKind }));
 }
 
 export async function getCompanySummary(companyId: string): Promise<CompanySummary> {
   const row = await prisma.company.findUniqueOrThrow({ where: { id: companyId } });
-  return { id: row.id, name: row.name, ticker: row.ticker, onboardingStatus: row.onboardingStatus };
+  return { id: row.id, name: row.name, ticker: row.ticker, onboardingStatus: row.onboardingStatus, tenantKind: row.tenantKind };
+}
+
+/**
+ * Every CUSTOMER-tenant company - the only companies a normal, non-admin
+ * surface may ever enumerate or show (docs/headroom-master-product-architecture.md).
+ * EVALUATION-tenant companies (Coherent, Matthews, synthetic/test fixtures)
+ * are reachable only via listCompanies() from /admin.
+ */
+export async function listCustomerCompanies(): Promise<CompanySummary[]> {
+  return (await listCompanies()).filter((c) => c.tenantKind === "CUSTOMER");
 }
 
 // ---------------------------------------------------------------------------

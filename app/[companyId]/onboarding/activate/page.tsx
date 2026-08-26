@@ -83,8 +83,8 @@ export default async function ActivatePage({ params }: { params: Promise<{ compa
           Once ACTIVE or ACTIVE_WITH_LIMITATIONS, {company.name} is a normal company in the generalized product pages — no separate dashboard.
         </div>
         <div className="button-row" style={{ marginTop: 10 }}>
-          <Link href={`/${companyId}/overview`} className="button button-primary" style={{ textDecoration: "none" }}>
-            Go to Overview
+          <Link href={`/${companyId}/dashboard`} className="button button-primary" style={{ textDecoration: "none" }}>
+            Go to Dashboard
           </Link>
           <Link href={`/${companyId}/onboarding`} className="button" style={{ textDecoration: "none" }}>
             Back to onboarding wizard

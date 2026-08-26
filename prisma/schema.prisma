@@ -21,13 +21,33 @@ enum OnboardingStatus {
   @@map("onboarding_status")
 }
 
+// Customer-workspace tenancy classification (docs/headroom-master-product-architecture.md).
+// CUSTOMER: a real customer's workspace - the ONLY kind of company a normal
+// customer-facing surface (the root landing resolver, the company nav's
+// switcher) may show. EVALUATION: Coherent, Matthews, synthetic/test-fixture
+// companies, and anything else that exists for regression/evaluation/
+// architecture-validation purposes - reachable only via /admin. Defaults to
+// CUSTOMER because the one company-creation path in the product
+// (/companies/new, the onboarding wizard) is exactly how a real customer
+// workspace gets provisioned; the migration that adds this column explicitly
+// backfills every pre-existing row to EVALUATION (see that migration's own
+// comment) so nothing already in the database is silently reclassified as a
+// customer by this default.
+enum CompanyTenantKind {
+  CUSTOMER
+  EVALUATION
+
+  @@map("company_tenant_kind")
+}
+
 model Company {
-  id        String   @id @default(cuid())
-  name      String
-  ticker    String?
-  cik       String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String            @id @default(cuid())
+  name       String
+  ticker     String?
+  cik        String?
+  tenantKind CompanyTenantKind @default(CUSTOMER)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
 
   // Onboarding-pipeline additions (docs/document-onboarding-pipeline-foundation.md).
   // `currency`/`asOfDate` are company-level defaults a later phase's financial
