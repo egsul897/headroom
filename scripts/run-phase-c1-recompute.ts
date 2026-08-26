@@ -132,8 +132,19 @@ async function main() {
 
   const byState = new Map<string, number>();
   for (const d of promotionDecisions) byState.set(d.executabilityState, (byState.get(d.executabilityState) ?? 0) + 1);
-  console.log("\n=== Promotion decisions ===");
+  console.log("\n=== Promotion decisions (executabilityState, Phase 1B: capability-based) ===");
   for (const [state, count] of byState) console.log(`  ${state}: ${count}`);
+
+  const byUnderstanding = new Map<string, number>();
+  for (const d of promotionDecisions) byUnderstanding.set(d.understandingStatus, (byUnderstanding.get(d.understandingStatus) ?? 0) + 1);
+  console.log("\n=== Understanding dimension (Phase 1B) ===");
+  for (const [state, count] of byUnderstanding) console.log(`  ${state}: ${count}`);
+
+  const byCapability = new Map<string, number>();
+  for (const d of promotionDecisions) byCapability.set(d.calculationCapability, (byCapability.get(d.calculationCapability) ?? 0) + 1);
+  console.log("\n=== Calculation capability dimension (Phase 1B) ===");
+  for (const [state, count] of byCapability) console.log(`  ${state}: ${count}`);
+
   console.log(`\nvalidationOk=${validation.output.ok} coverageGapCount=${coverage.output.filter((c) => c.disposition === "REVIEW_REQUIRED" || c.disposition === "UNHANDLED").length}`);
 
   console.log("\n=== Per-provision results (for case-by-case reconciliation) ===");

@@ -46,29 +46,30 @@ describe("Analyzer vertical slice run blind against the real unseen FWRG package
     // per-provision breakdown) - asserted exactly so a future change to the
     // synthetic analyzer, evaluator, or ontology mapping that shifts this baseline
     // is caught rather than silently drifting. This baseline is NOT tuned toward
-    // these numbers after the fact: the only fix applied once this test first ran
-    // was correcting a real bug (every match was mistagged with the same
-    // covenantFamily via a hardcoded string) using a generic section-to-family
-    // table, not anything specific to the 18 ground-truth provisions themselves.
-    expect(summary.matchedCorrect).toBe(1);
+    // these numbers after the fact: the only fixes ever applied once this test
+    // first ran were (1) correcting a real bug (every match was mistagged with
+    // the same covenantFamily via a hardcoded string) using a generic section-
+    // to-family table, and (2) the Phase 1B ground-truth adjudication (see
+    // human-ground-truth.ts's own fwrg-6.10-a comment) removing an incorrectly-
+    // authored formulaRef expectation from a pure maintenance ratio test -
+    // which is why fwrg-6.10-a now correctly resolves instead of being counted
+    // dangerous-unflagged, moving one provision from unflagged to correct.
+    expect(summary.matchedCorrect).toBe(2);
     expect(summary.matchedIncorrectFlagged).toBe(9);
-    expect(summary.matchedIncorrectUnflagged).toBe(2);
+    expect(summary.matchedIncorrectUnflagged).toBe(1);
     expect(summary.missing).toBe(6);
 
-    // The two dangerous-unflagged cases are exactly the two hardest provisions
-    // flagged in advance in human-ground-truth.ts's own stretchNotes: the stepped
-    // leverage covenant (fwrg-6.10-a, where the pattern matches a wrong nearby
-    // dollar figure and reports NO formula/ratio distinction at all - EXECUTABLE,
-    // no hedge) and the equity cure right (fwrg-6.10-c, where a nearby ratio
-    // number is misread as this provision's own threshold). Both are real
-    // instances of the SAME root cause: nearestPrecedingSection's naive
-    // "closest preceding marker" heuristic mis-attributes a match to the wrong
-    // clause when the source text contains internal cross-references - a
-    // generalizable risk for ANY extractor (not only this toy one) working over
-    // densely cross-referenced legal text, worth carrying into the Phase C
-    // architecture decision (docs/phase-c0-validation-spike.md §R).
+    // The remaining dangerous-unflagged case is the equity cure right
+    // (fwrg-6.10-c, where a nearby ratio number is misread as this
+    // provision's own threshold) - a real instance of
+    // nearestPrecedingSection's naive "closest preceding marker" heuristic
+    // mis-attributing a match to the wrong clause when the source text
+    // contains internal cross-references - a generalizable risk for ANY
+    // extractor (not only this toy one) working over densely cross-
+    // referenced legal text, worth carrying into the Phase C architecture
+    // decision (docs/phase-c0-validation-spike.md §R).
     const dangerousIds = summary.results.filter((r) => r.outcome === "MATCHED_INCORRECT_UNFLAGGED").map((r) => r.provisionId);
-    expect(dangerousIds.sort()).toEqual(["fwrg-6.10-a", "fwrg-6.10-c"]);
+    expect(dangerousIds.sort()).toEqual(["fwrg-6.10-c"]);
   });
 
   it("blind evaluator itself correctly distinguishes a confidently-wrong (dangerous-unflagged) rule from a hedged (dangerous-flagged) one, given synthetic fixtures unrelated to the real ground truth", () => {

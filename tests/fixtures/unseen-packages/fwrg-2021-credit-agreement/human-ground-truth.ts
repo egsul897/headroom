@@ -213,7 +213,23 @@ export const HUMAN_PROVISIONS: HumanProvision[] = [
     evaluationClass: "EXECUTABLE",
     posture: "OBLIGATION",
     action: "SATISFY_RATIO",
-    formulaRef: "RATIO_DERIVED_AMOUNT",
+    // GROUND-TRUTH ADJUDICATION (Phase 1B, docs/phase-1b-executability-semantics.md §8):
+    // originally authored as formulaRef: "RATIO_DERIVED_AMOUNT" (see git
+    // history for the exact prior line). Adjudicated GROUND_TRUTH_INCORRECT
+    // and corrected to omit formulaRef: this is a pure maintenance ratio
+    // test (the covenant never derives a permitted dollar amount - it is a
+    // pass/fail comparison of an actual ratio against a threshold), and
+    // CalculationRuleKind/RATIO_DERIVED_AMOUNT is documented (types.ts) as
+    // "representability first" for rules that DERIVE a capacity amount.
+    // lsb-6.15-springing-financial-covenant below - the directly analogous
+    // maintenance/springing ratio covenant in the OTHER unseen package's own
+    // ground truth - already omits formulaRef entirely, confirming this was
+    // an authoring inconsistency, not a considered choice. Removing it loses
+    // no real economic information (the ratio, threshold, and step schedule
+    // are fully captured by realFigures/thresholdValue/conditionTypes) and
+    // no evaluator reads formulaRef for any CalculationRuleKind value today
+    // (lib/contract-model/compiler/evaluator-registry.ts), so adding it back
+    // would not enable any new calculation either.
     conditionTypes: ["TIME_PERIOD", "MATERIAL_ACQUISITION"],
     definedTermRefs: ["Total Rent Adjusted Net Leverage Ratio", "Material Acquisition", "Test Period"],
     classification: "REPRESENTABLE_WITH_STRETCH",
@@ -230,7 +246,13 @@ export const HUMAN_PROVISIONS: HumanProvision[] = [
     evaluationClass: "EXECUTABLE",
     posture: "OBLIGATION",
     action: "SATISFY_RATIO",
-    formulaRef: "RATIO_DERIVED_AMOUNT",
+    // GROUND-TRUTH ADJUDICATION (Phase 1B, docs/phase-1b-executability-semantics.md §8):
+    // same adjudication as fwrg-6.10-a above - originally
+    // formulaRef: "RATIO_DERIVED_AMOUNT" (see git history), corrected to
+    // omit it for the same rationale (pure maintenance ratio test, derives
+    // no amount, inconsistent with the LSB unseen package's own
+    // lsb-6.15-springing-financial-covenant ground-truth precedent, no
+    // evaluator reads formulaRef today, no economic information lost).
     conditionTypes: [],
     definedTermRefs: ["Fixed Charge Coverage Ratio", "Test Period"],
     classification: "REPRESENTABLE_CLEANLY",
