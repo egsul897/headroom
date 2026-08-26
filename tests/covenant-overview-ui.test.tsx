@@ -97,6 +97,7 @@ describe("CovenantOverviewView - empty state", () => {
           securedCapacity: { maximumCapacity: undefined, remainingCapacity: undefined, bindingDocumentName: undefined, bindingSections: [], status: "NOT_MODELED" },
           unsecuredCapacity: { maximumCapacity: undefined, remainingCapacity: undefined, bindingDocumentName: undefined, bindingSections: [], status: "NOT_MODELED" },
           warnings: [],
+          attentionItems: [],
           covenantFamilies: [],
         }}
       />

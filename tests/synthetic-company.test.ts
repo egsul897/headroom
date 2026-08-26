@@ -23,12 +23,14 @@ import {
  * "generalized for Coherent's shape of data."
  *
  * Deliberately NOT exercised here: rendering the actual Next.js page routes
- * for this company. Those routes default to Coherent (DEFAULT_COMPANY_ID in
- * lib/coherent.ts) because there is intentionally no multi-tenant account
- * switcher - per explicit scope, this phase does not add one. Every function
- * a page calls is proven generic below; only the page-level "which company"
- * selection remains hardcoded to Coherent, which is a UI scope decision, not
- * a calculation-engine limitation.
+ * for this company - every app/[companyId]/* route takes companyId
+ * explicitly from the URL (lib/coherent.ts's loaders require it, with no
+ * Coherent-defaulting fallback - see that file's own header comment), so
+ * this company would render through the identical route/component tree
+ * Coherent and Matthews do; that full-page render is covered by
+ * tests/covenant-overview-ui.test.tsx instead, not duplicated here. This
+ * file's job is proving the calculation + data-access layer itself is
+ * company-agnostic, not re-proving page wiring.
  */
 
 const COMPANY_ID = "acme-synthco-test";

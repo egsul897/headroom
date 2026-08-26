@@ -1,28 +1,38 @@
 /**
  * Data access for the app. Every loader below takes `companyId` explicitly
- * (defaulting to Coherent, the only company currently seeded) rather than
- * baking a company id into the function bodies - there's still no
- * multi-tenant account-selection UI, but the data-access layer itself no
- * longer assumes a single tenant, so a page (or a future account switcher)
- * can pass a different id without touching this file.
+ * and required (task "UNIVERSAL HEADROOM PRODUCT EXPERIENCE" §4
+ * generalization audit) - there is no silent "falls back to Coherent"
+ * default anymore. That default existed only for a handful of now-deleted
+ * legacy top-level pages (app/position, app/simulate, app/docs, app/ledger,
+ * app/feeds - all Coherent-hardcoded, superseded by app/[companyId]/*) and
+ * was, honestly, a real production risk: any future call site that forgot
+ * to pass a companyId would have silently rendered Coherent's data instead
+ * of failing loudly. Every real call site already passes an explicit id.
  */
 import { cache } from "react";
 import { prisma } from "./prisma";
 import { computeCovenantPosition, loadCompanyCovenantData, loadCompanySolverStaticData } from "./covenant-engine";
 import { COHERENT_COMPANY, LEDGER_BASKET_LABELS } from "@/prisma/seed-data";
 
-/** The tenant every page falls back to until account selection exists. Not consumed by lib/covenant-engine.ts or any calculation logic - only by page-level call sites below. */
-export const DEFAULT_COMPANY_ID = COHERENT_COMPANY.id;
 /** A fixed label per LedgerBasket enum value - generic across any company using that enum, not Coherent-specific. */
 export { LEDGER_BASKET_LABELS };
 
+/**
+ * The two golden regression companies (task "UNIVERSAL HEADROOM PRODUCT
+ * EXPERIENCE" §79 - "Protected companies: Coherent, Matthews must remain
+ * protected"). An explicit, minimal safety allowlist consumed only by the
+ * delete flow (app/companies/[companyId]/delete/actions.ts) - not a
+ * rendering/UI branch, and no other page reads it.
+ */
+export const PROTECTED_COMPANY_IDS = new Set<string>([COHERENT_COMPANY.id, "matthews"]);
+
 /** Loads a company's documents/provisions/latest snapshot/ledger, deduped per request, date-scoped for amendment precedence. */
-export const getCovenantData = cache(async (companyId: string = DEFAULT_COMPANY_ID, asOfDate: Date = new Date()) => {
+export const getCovenantData = cache(async (companyId: string, asOfDate: Date = new Date()) => {
   return loadCompanyCovenantData(prisma, companyId, asOfDate);
 });
 
 /** getCovenantData() plus the computed position (leverage metrics + per-document capacity). */
-export const getPosition = cache(async (companyId: string = DEFAULT_COMPANY_ID, asOfDate: Date = new Date()) => {
+export const getPosition = cache(async (companyId: string, asOfDate: Date = new Date()) => {
   const data = await getCovenantData(companyId, asOfDate);
   const position = computeCovenantPosition(data);
   return { data, position };
@@ -36,11 +46,11 @@ export const getPosition = cache(async (companyId: string = DEFAULT_COMPANY_ID, 
  * For Coherent this always returns empty arrays for every field (zero
  * Permission rows have ever been populated for Coherent - see report §N).
  */
-export const getSolverStaticData = cache(async (companyId: string = DEFAULT_COMPANY_ID, asOfDate: Date = new Date()) => {
+export const getSolverStaticData = cache(async (companyId: string, asOfDate: Date = new Date()) => {
   return loadCompanySolverStaticData(prisma, companyId, asOfDate);
 });
 
-export const getDebtTranches = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
+export const getDebtTranches = cache(async (companyId: string) => {
   const snapshot = await prisma.financialSnapshot.findFirst({
     where: { companyId },
     orderBy: { asOfDate: "desc" },
@@ -52,31 +62,31 @@ export const getDebtTranches = cache(async (companyId: string = DEFAULT_COMPANY_
   });
 });
 
-export const getLedgerEntries = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
+export const getLedgerEntries = cache(async (companyId: string) => {
   return prisma.ledgerEntry.findMany({
     where: { companyId },
     orderBy: { createdAt: "asc" },
   });
 });
 
-export const getCompany = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
+export const getCompany = cache(async (companyId: string) => {
   return prisma.company.findUniqueOrThrow({ where: { id: companyId } });
 });
 
 /** Raw Document rows (name/governs/notes) for display - the engine's DocumentInput deliberately omits non-computational fields like `notes`. */
-export const getDocuments = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
+export const getDocuments = cache(async (companyId: string) => {
   return prisma.document.findMany({ where: { companyId }, orderBy: { createdAt: "asc" } });
 });
 
 /** Raw FinancialSnapshot row (asOfDate/notes) for display - the engine's FinancialSnapshotInput deliberately omits non-computational fields. */
-export const getFinancialSnapshot = cache(async (companyId: string = DEFAULT_COMPANY_ID, asOfDate: Date = new Date()) => {
+export const getFinancialSnapshot = cache(async (companyId: string, asOfDate: Date = new Date()) => {
   return prisma.financialSnapshot.findFirst({
     where: { companyId, asOfDate: { lte: asOfDate } },
     orderBy: { asOfDate: "desc" },
   });
 });
 
-export const getFeedQueueItems = cache(async (companyId: string = DEFAULT_COMPANY_ID) => {
+export const getFeedQueueItems = cache(async (companyId: string) => {
   return prisma.feedQueueItem.findMany({ where: { companyId }, orderBy: { createdAt: "asc" } });
 });
 
@@ -93,24 +103,22 @@ export interface DefinedTermLite {
  * components like SimulateClient. This is the data behind ProvisionTrace's
  * "defined terms it depends on" expansion.
  */
-export const getDefinedTermsByProvision = cache(
-  async (companyId: string = DEFAULT_COMPANY_ID): Promise<Record<string, DefinedTermLite[]>> => {
-    const provisions = await prisma.covenantProvision.findMany({
-      where: { companyId },
-      include: { definedTerms: { orderBy: { termName: "asc" } } },
-    });
-    const map: Record<string, DefinedTermLite[]> = {};
-    for (const p of provisions) {
-      map[`${p.documentId}:${p.code}`] = p.definedTerms.map((t) => ({
-        termName: t.termName,
-        sectionRef: t.sectionRef,
-        fullText: t.fullText,
-        status: t.status,
-      }));
-    }
-    return map;
+export const getDefinedTermsByProvision = cache(async (companyId: string): Promise<Record<string, DefinedTermLite[]>> => {
+  const provisions = await prisma.covenantProvision.findMany({
+    where: { companyId },
+    include: { definedTerms: { orderBy: { termName: "asc" } } },
+  });
+  const map: Record<string, DefinedTermLite[]> = {};
+  for (const p of provisions) {
+    map[`${p.documentId}:${p.code}`] = p.definedTerms.map((t) => ({
+      termName: t.termName,
+      sectionRef: t.sectionRef,
+      fullText: t.fullText,
+      status: t.status,
+    }));
   }
-);
+  return map;
+});
 
 /**
  * Per-document EBITDA definition, for the Docs tab (task "MAKE THE UI MATCH
@@ -119,7 +127,7 @@ export const getDefinedTermsByProvision = cache(
  * each document, if legal has entered one. A document with none returns
  * `null` for that key rather than fabricating a definition.
  */
-export const getEbitdaDefinitionsByDocument = cache(async (companyId: string = DEFAULT_COMPANY_ID): Promise<Record<string, DefinedTermLite | null>> => {
+export const getEbitdaDefinitionsByDocument = cache(async (companyId: string): Promise<Record<string, DefinedTermLite | null>> => {
   const documents = await prisma.document.findMany({ where: { companyId }, select: { id: true } });
   const terms = await prisma.definedTerm.findMany({
     where: { document: { companyId }, termName: { contains: "EBITDA", mode: "insensitive" } },

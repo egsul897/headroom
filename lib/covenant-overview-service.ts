@@ -19,6 +19,7 @@ import { buildSolverContext, getCompanySummary, type CompanySummary } from "./da
 import { buildCovenantOverview, type CovenantOverviewCore, type PermissionRowInput, type CoverageDeclarationInput } from "./covenant-overview-builder";
 
 export type {
+  AttentionItem,
   BindingState,
   CapacityRow,
   CovenantFamilySection,
@@ -30,6 +31,7 @@ export type {
   RatioRow,
   ReviewStateLabel,
   RowStatus,
+  RowTier,
 } from "./covenant-overview-builder";
 
 export interface CovenantOverview extends CovenantOverviewCore {

@@ -3,12 +3,15 @@ import { Card, Chip, type ChipTone } from "@/components/ui";
 import { getReviewProgress } from "@/lib/onboarding/review";
 import { getCoverageSnapshot } from "@/lib/onboarding/promotion";
 import { prisma } from "@/lib/prisma";
+import { onboardingStatusLabel } from "@/lib/status-labels";
 import { promoteAction, generateGoldenTestsAction } from "./actions";
 
 export const metadata = { title: "Headroom — Activate company" };
 export const dynamic = "force-dynamic";
 
 const STATUS_TONE: Record<string, ChipTone> = { SOLVER_NATIVE: "pass", LEGACY: "navy", NOT_TESTED: "tight" };
+// Customer-facing labels for lib/solver/coverage.ts's own status vocabulary (task §57 - no raw internal enum shown verbatim).
+const STATUS_LABEL: Record<string, string> = { SOLVER_NATIVE: "Solver-native", LEGACY: "Legacy formula", NOT_TESTED: "Not tested" };
 
 export default async function ActivatePage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
@@ -28,7 +31,7 @@ export default async function ActivatePage({ params }: { params: Promise<{ compa
       <Card>
         <div className="card-title">Activate {company.name}</div>
         <div className="card-subtitle">
-          Onboarding status: <Chip tone={company.onboardingStatus === "ACTIVE" ? "pass" : company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS" ? "tight" : "idle"}>{company.onboardingStatus}</Chip>
+          Onboarding status: <Chip tone={company.onboardingStatus === "ACTIVE" ? "pass" : company.onboardingStatus === "ACTIVE_WITH_LIMITATIONS" ? "tight" : "idle"}>{onboardingStatusLabel(company.onboardingStatus)}</Chip>
         </div>
         <div className="row-note">
           {readyToPromote} candidate(s) approved/edited and ready to promote. Promotion is transactional and only ever reads APPROVED/EDITED candidates — a KNOWN_NOT_MODELED permission is excluded even if approved (fail-closed, a documented gap).
@@ -50,7 +53,7 @@ export default async function ActivatePage({ params }: { params: Promise<{ compa
               {c.documentId} · {c.side} · {c.grantType}
             </div>
             <div className="row-value">
-              <Chip tone={STATUS_TONE[c.status] ?? "idle"}>{c.status}</Chip>
+              <Chip tone={STATUS_TONE[c.status] ?? "idle"}>{STATUS_LABEL[c.status] ?? c.status}</Chip>
             </div>
           </div>
         ))}

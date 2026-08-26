@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui";
+import { GlobalBrand } from "@/components/GlobalBrand";
 import { createCompanyAction } from "./actions";
 
 export const metadata = { title: "Headroom — New company" };
@@ -22,8 +23,10 @@ export default async function NewCompanyPage({ searchParams }: { searchParams: P
   const { tenantKind } = await searchParams;
   const isEvaluation = tenantKind === "EVALUATION";
   return (
-    <div className="stack">
-      <Card>
+    <>
+      <GlobalBrand />
+      <div className="stack">
+        <Card>
         <div className="card-title">{isEvaluation ? "Add an evaluation/test company" : "Connect your company"}</div>
         <div className="card-subtitle">This creates the company record and starts the onboarding wizard — document upload, extraction, review, financials, and activation all happen on the next screens.</div>
         <form action={createCompanyAction} className="stack" style={{ gap: 10 }}>
@@ -56,7 +59,8 @@ export default async function NewCompanyPage({ searchParams }: { searchParams: P
             {isEvaluation ? "Create evaluation company" : "Create company & start onboarding"}
           </button>
         </form>
-      </Card>
-    </div>
+        </Card>
+      </div>
+    </>
   );
 }
