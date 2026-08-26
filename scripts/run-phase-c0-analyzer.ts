@@ -52,16 +52,24 @@ async function main() {
   if (existsSync(logPath) && !force) {
     console.log(`[resume] Found existing run at ${logPath} - skipping the model call, re-running evaluation only. Pass --force to re-call the model.`);
     const prior = JSON.parse(readFileSync(logPath, "utf-8")) as RunLog;
-    const evaluationBefore = evaluateAll(HUMAN_PROVISIONS, prior.rawResult.rules);
+    const evaluationBefore = evaluateAll(HUMAN_PROVISIONS, prior.rawResult.rules, prior.rawResult.definedTerms);
     const verifiedRules = verifyAllRulesAgainstSource(prior.rawResult.rules, documentText);
-    log = { ...prior, evaluationBefore, evaluationAfter: evaluateAll(HUMAN_PROVISIONS, verifiedRules) };
+    log = { ...prior, evaluationBefore, evaluationAfter: evaluateAll(HUMAN_PROVISIONS, verifiedRules, prior.rawResult.definedTerms) };
     // Persist back so the on-disk log always reflects the current evaluator/verify
     // logic, not whatever version happened to be in place at the original paid call -
     // a resumed run costs zero tokens, so there is no reason to let the saved
     // evaluation go stale after a real evaluator bug fix (see evaluator.ts's
     // findMatch/completenessScore comment for the bug this specifically corrects).
+    //
+    // NOTE (task §56 - no test-set leakage): this evaluation now also passes
+    // prior.rawResult.definedTerms, and HUMAN_PROVISIONS carries
+    // expectedDefinedTermName on 4 items added AFTER this exact real run's
+    // output was inspected (docs/phase-c0-analyzer-validation.md §M). Any
+    // score produced by this resumed path is POST-ERROR-ANALYSIS, not a
+    // fresh blind result - see docs/phase-c-contract-compiler-v1.md for how
+    // this is reported alongside the original, unmodified C0 blind score.
     writeFileSync(logPath, JSON.stringify(log, null, 2));
-    console.log(`[re-saved with current evaluator] ${logPath}`);
+    console.log(`[re-saved with current evaluator - POST-ERROR-ANALYSIS, not a fresh blind score] ${logPath}`);
   } else {
     console.log(`[run] provider=${providerName} model=${model} promptVersion=${promptVersion} schemaVersion=${schemaVersion}`);
     const failurePath = join(RESULTS_DIR, `${providerName}__${model.replace(/\//g, "-")}__FAILED_${Date.now()}.json`);
@@ -82,9 +90,9 @@ async function main() {
     }
     const telemetry = "lastCallTelemetry" in provider ? ((provider as { lastCallTelemetry: AnalyzerCallTelemetry | null }).lastCallTelemetry) : null;
 
-    const evaluationBefore = evaluateAll(HUMAN_PROVISIONS, rawResult.rules);
+    const evaluationBefore = evaluateAll(HUMAN_PROVISIONS, rawResult.rules, rawResult.definedTerms);
     const verifiedRules = verifyAllRulesAgainstSource(rawResult.rules, documentText);
-    const evaluationAfter = evaluateAll(HUMAN_PROVISIONS, verifiedRules);
+    const evaluationAfter = evaluateAll(HUMAN_PROVISIONS, verifiedRules, rawResult.definedTerms);
 
     log = { providerName, model, promptVersion, schemaVersion, ranAt: new Date().toISOString(), telemetry, rawResult, evaluationBefore, evaluationAfter };
     mkdirSync(RESULTS_DIR, { recursive: true });

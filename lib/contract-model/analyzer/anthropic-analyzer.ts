@@ -22,6 +22,7 @@
  */
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
+import type { ZodType } from "zod";
 import { ContractAnalysisResultSchema, type ContractAnalysisResult, type ContractAnalyzerInput } from "./schema";
 import type { ContractAnalyzerProvider } from "./provider";
 import { calculateCostUsd, withRetry, type AnalyzerCallTelemetry } from "./telemetry";
@@ -57,26 +58,28 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
     protected readonly maxTokens: number = DEFAULT_MAX_TOKENS
   ) {}
 
-  async analyze(input: ContractAnalyzerInput): Promise<ContractAnalysisResult> {
+  /**
+   * Phase C generalization (docs/phase-c-contract-compiler-v1.md) - the one
+   * real, provider-abstract structured-output call primitive every staged
+   * compiler stage (definitions/inventory/rule-extraction/relationships/
+   * adversarial-verification) shares, so staging real LLM calls never means
+   * re-deriving the streaming/retry/telemetry plumbing per stage. `analyze()`
+   * below (C0's original single-combined-call baseline, kept for the
+   * synthetic-vs-real-LLM and single-call-vs-staged comparisons the C0/C
+   * reports both rely on) is now implemented in terms of this method, not the
+   * other way around.
+   */
+  async runStructuredStage<T>(schema: ZodType<T>, stage: string, systemPrompt: string, userContent: string): Promise<T> {
     const startedAt = Date.now();
     const timestamp = new Date().toISOString();
     try {
-      // Streaming (per the SDK's own guidance: non-streaming requests at a
-      // large max_tokens hit a client-side "would take >10 minutes" guard).
-      // Real evidence this spike hit that exact wall at max_tokens=32000
-      // non-streaming - see docs/phase-c0-analyzer-validation.md.
       const { value: message, attemptCount, retryCount, rateLimitFailures } = await withRetry(async () => {
         const stream = this.client.messages.stream({
           model: this.model,
           max_tokens: this.maxTokens,
-          system: SYSTEM_PROMPT,
-          messages: [
-            {
-              role: "user",
-              content: `Defined terms excerpt:\n${input.definitionsText}\n\nNegative covenants article:\n${input.documentText}`,
-            },
-          ],
-          output_config: { format: zodOutputFormat(ContractAnalysisResultSchema) },
+          system: systemPrompt,
+          messages: [{ role: "user", content: userContent }],
+          output_config: { format: zodOutputFormat(schema) },
         });
         return stream.finalMessage();
       });
@@ -89,7 +92,7 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
         model: this.model,
         promptVersion: ANALYZER_PROMPT_VERSION,
         schemaVersion: ANALYZER_SCHEMA_VERSION,
-        stage: "combined_analysis",
+        stage,
         timestamp,
         inputTokens,
         outputTokens,
@@ -104,7 +107,7 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
       };
 
       if (!message.parsed_output) {
-        throw new Error(`${this.constructor.name}: model response did not parse against ContractAnalysisResultSchema (stop_reason=${message.stop_reason})`);
+        throw new Error(`${this.constructor.name}: model response for stage "${stage}" did not parse against its schema (stop_reason=${message.stop_reason})`);
       }
       return message.parsed_output;
     } catch (err) {
@@ -113,7 +116,7 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
         model: this.model,
         promptVersion: ANALYZER_PROMPT_VERSION,
         schemaVersion: ANALYZER_SCHEMA_VERSION,
-        stage: "combined_analysis",
+        stage,
         timestamp,
         inputTokens: null,
         outputTokens: null,
@@ -129,6 +132,10 @@ export abstract class AnthropicMessagesAnalyzer implements ContractAnalyzerProvi
       };
       throw err;
     }
+  }
+
+  async analyze(input: ContractAnalyzerInput): Promise<ContractAnalysisResult> {
+    return this.runStructuredStage(ContractAnalysisResultSchema, "combined_analysis", SYSTEM_PROMPT, `Defined terms excerpt:\n${input.definitionsText}\n\nNegative covenants article:\n${input.documentText}`);
   }
 }
 

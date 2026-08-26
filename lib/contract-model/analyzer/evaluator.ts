@@ -21,7 +21,7 @@
  * action OTHER, or a notes string containing an explicit hedge). These two
  * rates are NEVER averaged together anywhere in this file.
  */
-import type { CandidateContractRule } from "../types";
+import type { CandidateContractRule, CandidateDefinedTerm } from "../types";
 
 export type ProvisionOutcome = "MATCHED_CORRECT" | "MATCHED_INCORRECT_FLAGGED" | "MATCHED_INCORRECT_UNFLAGGED" | "MISSING";
 
@@ -32,6 +32,17 @@ export interface GroundTruthProvisionLike {
   family: string;
   formulaRef?: string;
   conditionTypes: string[];
+  /**
+   * Phase C fix (task §38/§48) for a real, previously-measured evaluator gap
+   * (docs/phase-c0-analyzer-validation.md §M): a ground-truth item that is
+   * itself a defined-term definition (typically family
+   * DEFINITIONS_CALCULATION_RULES) can be correctly extracted into the
+   * model's definedTerms[] output with zero corresponding rules[] entry -
+   * that is not a real miss. Set this to the expected term name so
+   * evaluateProvision checks BOTH output arrays before declaring MISSING,
+   * generalized across any document, not just FWRG.
+   */
+  expectedDefinedTermName?: string;
 }
 
 export interface ProvisionEvalResult {
@@ -40,6 +51,8 @@ export interface ProvisionEvalResult {
   family: string;
   outcome: ProvisionOutcome;
   matchedRule?: CandidateContractRule;
+  /** Which real output array actually satisfied this ground-truth item - "definedTerm" is the case task §38 requires this evaluator to no longer mis-score. */
+  matchedVia?: "rule" | "definedTerm";
   mismatchReasons: string[];
 }
 
@@ -115,10 +128,16 @@ function findMatch(ground: GroundTruthProvisionLike, rules: CandidateContractRul
   return best;
 }
 
-export function evaluateProvision(ground: GroundTruthProvisionLike, extractedRules: CandidateContractRule[]): ProvisionEvalResult {
+export function evaluateProvision(ground: GroundTruthProvisionLike, extractedRules: CandidateContractRule[], extractedDefinedTerms: CandidateDefinedTerm[] = []): ProvisionEvalResult {
   const match = findMatch(ground, extractedRules);
   if (!match) {
-    return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome: "MISSING", mismatchReasons: ["no extracted rule cites this section"] };
+    if (ground.expectedDefinedTermName) {
+      const termMatch = extractedDefinedTerms.find((t) => t.termName.toLowerCase() === ground.expectedDefinedTermName!.toLowerCase());
+      if (termMatch) {
+        return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome: "MATCHED_CORRECT", matchedVia: "definedTerm", mismatchReasons: [] };
+      }
+    }
+    return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome: "MISSING", mismatchReasons: ["no extracted rule cites this section, and no matching defined term either"] };
   }
 
   const reasons: string[] = [];
@@ -142,10 +161,10 @@ export function evaluateProvision(ground: GroundTruthProvisionLike, extractedRul
   }
 
   if (reasons.length === 0) {
-    return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome: "MATCHED_CORRECT", matchedRule: match, mismatchReasons: [] };
+    return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome: "MATCHED_CORRECT", matchedRule: match, matchedVia: "rule", mismatchReasons: [] };
   }
   const outcome: ProvisionOutcome = ruleIsSelfFlagged(match) ? "MATCHED_INCORRECT_FLAGGED" : "MATCHED_INCORRECT_UNFLAGGED";
-  return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome, matchedRule: match, mismatchReasons: reasons };
+  return { provisionId: ground.id, sourceSectionRef: ground.sourceSectionRef, family: ground.family, outcome, matchedRule: match, matchedVia: "rule", mismatchReasons: reasons };
 }
 
 export interface EvaluationSummary {
@@ -161,8 +180,8 @@ export interface EvaluationSummary {
   results: ProvisionEvalResult[];
 }
 
-export function evaluateAll(groundTruth: GroundTruthProvisionLike[], extractedRules: CandidateContractRule[]): EvaluationSummary {
-  const results = groundTruth.map((g) => evaluateProvision(g, extractedRules));
+export function evaluateAll(groundTruth: GroundTruthProvisionLike[], extractedRules: CandidateContractRule[], extractedDefinedTerms: CandidateDefinedTerm[] = []): EvaluationSummary {
+  const results = groundTruth.map((g) => evaluateProvision(g, extractedRules, extractedDefinedTerms));
   const total = results.length;
   const matchedCorrect = results.filter((r) => r.outcome === "MATCHED_CORRECT").length;
   const matchedIncorrectFlagged = results.filter((r) => r.outcome === "MATCHED_INCORRECT_FLAGGED").length;

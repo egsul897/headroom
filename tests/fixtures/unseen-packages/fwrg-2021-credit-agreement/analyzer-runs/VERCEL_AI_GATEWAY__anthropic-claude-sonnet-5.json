@@ -1467,13 +1467,13 @@
   },
   "evaluationBefore": {
     "total": 18,
-    "matchedCorrect": 6,
+    "matchedCorrect": 10,
     "matchedIncorrectFlagged": 1,
     "matchedIncorrectUnflagged": 6,
-    "missing": 5,
+    "missing": 1,
     "dangerousUnflaggedErrorRate": 0.3333333333333333,
     "dangerousFlaggedErrorRate": 0.05555555555555555,
-    "missingRate": 0.2777777777777778,
+    "missingRate": 0.05555555555555555,
     "precisionRecallF1ByFamily": {
       "INDEBTEDNESS": {
         "truePositives": 3,
@@ -1518,11 +1518,11 @@
         "f1": 0
       },
       "DEFINITIONS_CALCULATION_RULES": {
-        "truePositives": 0,
+        "truePositives": 3,
         "total": 3,
-        "precision": 0,
-        "recall": 0,
-        "f1": 0
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
       },
       "ENTITY_SCOPE_RESTRICTIONS": {
         "truePositives": 0,
@@ -1532,11 +1532,11 @@
         "f1": 0
       },
       "AMENDMENT_WAIVER_CONSENT": {
-        "truePositives": 0,
+        "truePositives": 1,
         "total": 1,
-        "precision": 0,
-        "recall": 0,
-        "f1": 0
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
       }
     },
     "results": [
@@ -1567,6 +1567,7 @@
           ],
           "notes": "Basket permits guaranties of supplier/customer/franchisee/licensee obligations in ordinary course up to greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -1598,6 +1599,7 @@
           ],
           "notes": "Basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA for Indebtedness of non-Loan-Party Restricted Subsidiaries."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -1627,6 +1629,7 @@
           ],
           "notes": "Capital Leases and purchase money Indebtedness basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -1657,6 +1660,7 @@
           ],
           "notes": "Base negative covenant prohibiting Liens except Permitted Liens."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -1686,6 +1690,7 @@
           ],
           "notes": "Base prohibition on Restricted Payments."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected BUILDER_BASKET, got (none)"
         ]
@@ -1721,6 +1726,7 @@
           ],
           "notes": "General Restricted Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -1757,6 +1763,7 @@
           ],
           "notes": "Unlimited Restricted Payments permitted if leverage ratio test satisfied and no default."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
         ]
@@ -1794,6 +1801,7 @@
           ],
           "notes": "Restricted Debt Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, plus (at Borrower's election) amount available under Section 6.04(a)(x), with a corresponding reduction to that basket."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -1824,6 +1832,7 @@
           ],
           "notes": "Base prohibition on Investments."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected GREATER_OF_FLAT_OR_PCT_EBITDA, got (none)",
           "no real figure matched: expected one of [15000000, 25], extracted thresholdValue=(none)"
@@ -1862,6 +1871,7 @@
           ],
           "notes": "Base prohibition applies to mergers/dissolutions and voluntary Dispositions outside ordinary course exceeding the greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA in a transaction or series of related transactions."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "family mismatch: expected FUNDAMENTAL_CHANGES, got DISPOSITIONS"
         ]
@@ -1900,6 +1910,7 @@
           ],
           "notes": "Maximum Total Rent Adjusted Net Leverage Ratio: 5.50x (through Q4 2022), 5.25x (through Q4 2023), 5.00x (Q1 2024 onward), each subject to Covenant Acquisition Increase."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
         ]
@@ -1930,6 +1941,7 @@
           ],
           "notes": "Minimum Fixed Charge Coverage Ratio of 1.25:1.00, tested each Test Period commencing with quarter ending March 27, 2022."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
         ]
@@ -1967,6 +1979,7 @@
           ],
           "notes": "Equity cure mechanism recalculating Consolidated Adjusted EBITDA pro forma for financial covenant compliance purposes only, subject to numerous frequency and mechanical limitations."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "no real figure matched: expected one of [5, 2, 4], extracted thresholdValue=(none)"
         ]
@@ -1975,28 +1988,25 @@
         "provisionId": "fwrg-def-available-amount",
         "sourceSectionRef": "Article 1 (Available Amount)",
         "family": "DEFINITIONS_CALCULATION_RULES",
-        "outcome": "MISSING",
-        "mismatchReasons": [
-          "no extracted rule cites this section"
-        ]
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
       },
       {
         "provisionId": "fwrg-def-cadj-ebitda",
         "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDA)",
         "family": "DEFINITIONS_CALCULATION_RULES",
-        "outcome": "MISSING",
-        "mismatchReasons": [
-          "no extracted rule cites this section"
-        ]
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
       },
       {
         "provisionId": "fwrg-def-cadj-ebitdar",
         "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDAR)",
         "family": "DEFINITIONS_CALCULATION_RULES",
-        "outcome": "MISSING",
-        "mismatchReasons": [
-          "no extracted rule cites this section"
-        ]
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
       },
       {
         "provisionId": "fwrg-def-restricted-subsidiary-loan-party",
@@ -2004,29 +2014,28 @@
         "family": "ENTITY_SCOPE_RESTRICTIONS",
         "outcome": "MISSING",
         "mismatchReasons": [
-          "no extracted rule cites this section"
+          "no extracted rule cites this section, and no matching defined term either"
         ]
       },
       {
         "provisionId": "fwrg-def-restricted-debt",
         "sourceSectionRef": "Article 1 (Restricted Debt) / 6.04(b)",
         "family": "AMENDMENT_WAIVER_CONSENT",
-        "outcome": "MISSING",
-        "mismatchReasons": [
-          "no extracted rule cites this section"
-        ]
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
       }
     ]
   },
   "evaluationAfter": {
     "total": 18,
-    "matchedCorrect": 6,
+    "matchedCorrect": 10,
     "matchedIncorrectFlagged": 5,
     "matchedIncorrectUnflagged": 2,
-    "missing": 5,
+    "missing": 1,
     "dangerousUnflaggedErrorRate": 0.1111111111111111,
     "dangerousFlaggedErrorRate": 0.2777777777777778,
-    "missingRate": 0.2777777777777778,
+    "missingRate": 0.05555555555555555,
     "precisionRecallF1ByFamily": {
       "INDEBTEDNESS": {
         "truePositives": 3,
@@ -2071,11 +2080,11 @@
         "f1": 0
       },
       "DEFINITIONS_CALCULATION_RULES": {
-        "truePositives": 0,
+        "truePositives": 3,
         "total": 3,
-        "precision": 0,
-        "recall": 0,
-        "f1": 0
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
       },
       "ENTITY_SCOPE_RESTRICTIONS": {
         "truePositives": 0,
@@ -2085,11 +2094,11 @@
         "f1": 0
       },
       "AMENDMENT_WAIVER_CONSENT": {
-        "truePositives": 0,
+        "truePositives": 1,
         "total": 1,
-        "precision": 0,
-        "recall": 0,
-        "f1": 0
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
       }
     },
     "results": [
@@ -2120,6 +2129,7 @@
           ],
           "notes": "Basket permits guaranties of supplier/customer/franchisee/licensee obligations in ordinary course up to greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA. VERIFICATION_FAILED: cited section \"Section 6.01(g)(i)\" not found verbatim in source text."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -2151,6 +2161,7 @@
           ],
           "notes": "Basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA for Indebtedness of non-Loan-Party Restricted Subsidiaries. VERIFICATION_FAILED: cited section \"Section 6.01(j)\" not found verbatim in source text."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -2180,6 +2191,7 @@
           ],
           "notes": "Capital Leases and purchase money Indebtedness basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA. VERIFICATION_FAILED: thresholdValue 30000000 does not appear within 400 characters of cited section \"Section 6.01(m)\"."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -2210,6 +2222,7 @@
           ],
           "notes": "Base negative covenant prohibiting Liens except Permitted Liens."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -2239,6 +2252,7 @@
           ],
           "notes": "Base prohibition on Restricted Payments."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected BUILDER_BASKET, got (none)"
         ]
@@ -2274,6 +2288,7 @@
           ],
           "notes": "General Restricted Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -2310,6 +2325,7 @@
           ],
           "notes": "Unlimited Restricted Payments permitted if leverage ratio test satisfied and no default. VERIFICATION_FAILED: cited section \"Section 6.04(a)(xi)\" not found verbatim in source text."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
         ]
@@ -2347,6 +2363,7 @@
           ],
           "notes": "Restricted Debt Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, plus (at Borrower's election) amount available under Section 6.04(a)(x), with a corresponding reduction to that basket. VERIFICATION_FAILED: thresholdValue 21000000 does not appear within 400 characters of cited section \"Section 6.04(b)(iv)\"."
         },
+        "matchedVia": "rule",
         "mismatchReasons": []
       },
       {
@@ -2377,6 +2394,7 @@
           ],
           "notes": "Base prohibition on Investments."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected GREATER_OF_FLAT_OR_PCT_EBITDA, got (none)",
           "no real figure matched: expected one of [15000000, 25], extracted thresholdValue=(none)"
@@ -2415,6 +2433,7 @@
           ],
           "notes": "Base prohibition applies to mergers/dissolutions and voluntary Dispositions outside ordinary course exceeding the greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA in a transaction or series of related transactions. VERIFICATION_FAILED: thresholdValue 6000000 does not appear within 400 characters of cited section \"Section 6.07\"."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "family mismatch: expected FUNDAMENTAL_CHANGES, got DISPOSITIONS"
         ]
@@ -2453,6 +2472,7 @@
           ],
           "notes": "Maximum Total Rent Adjusted Net Leverage Ratio: 5.50x (through Q4 2022), 5.25x (through Q4 2023), 5.00x (Q1 2024 onward), each subject to Covenant Acquisition Increase. VERIFICATION_FAILED: thresholdValue 5 does not appear within 400 characters of cited section \"Section 6.10(a)\"."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
         ]
@@ -2483,6 +2503,7 @@
           ],
           "notes": "Minimum Fixed Charge Coverage Ratio of 1.25:1.00, tested each Test Period commencing with quarter ending March 27, 2022. VERIFICATION_FAILED: thresholdValue 1.25 does not appear within 400 characters of cited section \"Section 6.10(b)\"."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
         ]
@@ -2520,6 +2541,7 @@
           ],
           "notes": "Equity cure mechanism recalculating Consolidated Adjusted EBITDA pro forma for financial covenant compliance purposes only, subject to numerous frequency and mechanical limitations. VERIFICATION_FAILED: cited section \"Section 6.10(c)\" not found verbatim in source text."
         },
+        "matchedVia": "rule",
         "mismatchReasons": [
           "no real figure matched: expected one of [5, 2, 4], extracted thresholdValue=(none)"
         ]
@@ -2528,28 +2550,25 @@
         "provisionId": "fwrg-def-available-amount",
         "sourceSectionRef": "Article 1 (Available Amount)",
         "family": "DEFINITIONS_CALCULATION_RULES",
-        "outcome": "MISSING",
-        "mismatchReasons": [
-          "no extracted rule cites this section"
-        ]
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
       },
       {
         "provisionId": "fwrg-def-cadj-ebitda",
         "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDA)",
         "family": "DEFINITIONS_CALCULATION_RULES",
-        "outcome": "MISSING",
-        "mismatchReasons": [
-          "no extracted rule cites this section"
-        ]
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
       },
       {
         "provisionId": "fwrg-def-cadj-ebitdar",
         "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDAR)",
         "family": "DEFINITIONS_CALCULATION_RULES",
-        "outcome": "MISSING",
-        "mismatchReasons": [
-          "no extracted rule cites this section"
-        ]
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
       },
       {
         "provisionId": "fwrg-def-restricted-subsidiary-loan-party",
@@ -2557,17 +2576,16 @@
         "family": "ENTITY_SCOPE_RESTRICTIONS",
         "outcome": "MISSING",
         "mismatchReasons": [
-          "no extracted rule cites this section"
+          "no extracted rule cites this section, and no matching defined term either"
         ]
       },
       {
         "provisionId": "fwrg-def-restricted-debt",
         "sourceSectionRef": "Article 1 (Restricted Debt) / 6.04(b)",
         "family": "AMENDMENT_WAIVER_CONSENT",
-        "outcome": "MISSING",
-        "mismatchReasons": [
-          "no extracted rule cites this section"
-        ]
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
       }
     ]
   }
