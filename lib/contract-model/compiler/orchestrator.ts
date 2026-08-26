@@ -19,7 +19,7 @@ import { buildRuleExtractionBatches, runRuleExtractionStage } from "./stage-rule
 import { resolveDefinedTermDependencies, detectCrossReferences } from "./stage-dependency-resolution";
 import { runRelationshipsStage } from "./stage-relationships";
 import { runAmendmentsStage } from "./stage-amendments";
-import { runVerificationStage, type VerificationResult } from "./stage-verification";
+import { runVerificationStage, MULTI_BASKET_CHECK_VERSION, type VerificationResult } from "./stage-verification";
 import { runValidationStage } from "./stage-validation";
 import { runCoverageStage } from "./stage-coverage";
 import { runPromotionStage, type RulePromotionDecision } from "./stage-promotion";
@@ -194,10 +194,24 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
   }
   const relationshipsPersisted = await persistRuleRelationships(companyId, relationshipsRes.output.relationships, ruleIdBySectionRef);
 
-  // Stage 8: VERIFICATION (deterministic, mandatory + bounded real LLM adversarial pass - task §30).
-  const verificationInputHash = hashParts([useLlmAdversarialPass ? providerIdentity : "deterministic-only", hashJson(extractedRules)]);
+  // Stage 8: VERIFICATION (deterministic, mandatory + bounded real LLM adversarial pass - task §30;
+  // Phase C.1 adds a deterministic section-level basket-completeness pass, task §2-4).
+  // Real, top-level SECTION boundaries per document (charEnd = the next
+  // SECTION's own charStart, or the document's end) - feeds the new
+  // basket-completeness pass's own "what is this section's real source
+  // text" question; ARTICLE nodes are irrelevant here since baskets live
+  // at SECTION granularity.
+  const sectionBoundariesByDocument = new Map<string, { sectionPrefix: string; charStart: number; charEnd: number }[]>();
+  for (const doc of documents) {
+    const docSections = structuralNodes.filter((n) => n.documentId === doc.documentId && n.nodeType === "SECTION").sort((a, b) => a.charStart - b.charStart);
+    sectionBoundariesByDocument.set(
+      doc.documentId,
+      docSections.map((s, i) => ({ sectionPrefix: s.sectionRef.replace(/\s+/g, ""), charStart: s.charStart, charEnd: docSections[i + 1] ? docSections[i + 1]!.charStart : doc.text.length }))
+    );
+  }
+  const verificationInputHash = hashParts([useLlmAdversarialPass ? providerIdentity : "deterministic-only", MULTI_BASKET_CHECK_VERSION, hashJson(extractedRules)]);
   const verificationRes = await getOrRunStage(runId, "VERIFICATION", verificationInputHash, shouldForce("VERIFICATION"), () => {
-    const verificationBatches = documents.map((d) => ({ documentId: d.documentId, sourceText: d.text, rules: rulesByDocument.get(d.documentId) ?? [] }));
+    const verificationBatches = documents.map((d) => ({ documentId: d.documentId, sourceText: d.text, rules: rulesByDocument.get(d.documentId) ?? [], sectionBoundaries: sectionBoundariesByDocument.get(d.documentId) ?? [] }));
     return runVerificationStage(caller, verificationBatches, useLlmAdversarialPass);
   });
   stages.push({ stage: "VERIFICATION", status: verificationRes.status });

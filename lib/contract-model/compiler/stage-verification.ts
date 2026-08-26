@@ -17,8 +17,12 @@
 import type { StageCaller } from "./llm-caller";
 import { BatchVerificationStageSchema, type BatchVerificationStageOutput } from "./schemas";
 import { verifyRuleAgainstSource } from "../analyzer/verify";
+import { checkAllSectionsBasketCompleteness, type BasketCompletenessResult } from "./basket-completeness";
 import type { CandidateContractRule } from "../types";
 import type { StageRunResult } from "./types";
+
+/** Phase C.1 - version identity for the deterministic multi-basket-completeness layer (task §11's own explicit requirement: a verification-logic change must invalidate stale resumed results generally, not just via provider/model identity). Bump this whenever checkSectionBasketCompleteness's own logic changes. */
+export const MULTI_BASKET_CHECK_VERSION = "multi-basket-completeness.v1";
 
 const SYSTEM_PROMPT = [
   "You are an adversarial verifier for a set of ALREADY-EXTRACTED contract rule candidates. Your job is to actively try to DISPROVE each one, not confirm it by default.",
@@ -31,6 +35,8 @@ export interface VerificationBatch {
   documentId: string;
   sourceText: string;
   rules: CandidateContractRule[];
+  /** Real STRUCTURE-stage SECTION boundaries for this document (task §4 - "deterministic support... mapping between source clauses and extracted rules"), used only by the section-level basket-completeness pass below. Optional so existing callers/tests that don't need this layer are unaffected. */
+  sectionBoundaries?: { sectionPrefix: string; charStart: number; charEnd: number }[];
 }
 
 function summarizeRuleForVerification(rule: CandidateContractRule): string {
@@ -46,6 +52,8 @@ export interface VerificationResult {
   finalRules: CandidateContractRule[];
   /** Per-rule final disposition, keyed by sourceSectionRef, for reporting (task §33/§51). */
   dispositions: { sourceSectionRef: string; deterministicFlag: boolean; llmVerdict: "CONFIRMED" | "CORRECTION_PROPOSED" | "REVIEW_REQUIRED" | "NOT_RUN"; correctionApplied: boolean }[];
+  /** Phase C.1 - real, deterministic, section-level basket-completeness results (task §2-4). Never company/document-specific: runs against whatever real STRUCTURE-stage section boundaries and rules this run actually produced. */
+  basketCompletenessResults: BasketCompletenessResult[];
 }
 
 export async function runVerificationStage(caller: StageCaller, batches: VerificationBatch[], useLlmAdversarialPass: boolean): Promise<StageRunResult<VerificationResult>> {
@@ -128,9 +136,46 @@ export async function runVerificationStage(caller: StageCaller, batches: Verific
     }
   }
 
+  // Phase C.1 - deterministic, section-level basket-completeness pass (task
+  // §2-4), applied last, over the FULLY post-verification finalRules set
+  // (so it reflects any LLM-proposed correction actually applied above),
+  // per document. Real evidence motivating this (docs/phase-c-1-multi-basket-verification.md):
+  // the existing PER-RULE deterministic check (verifyRuleAgainstSource)
+  // can never express "does every real number in this section appear
+  // SOMEWHERE in the rules extracted from it" - that requires looking at a
+  // section as a whole, which this pass does. A flagged section
+  // conservatively downgrades every EXECUTABLE rule under that section
+  // prefix to JUDGMENT_REQUIRED, since a section-level inconsistency means
+  // we cannot trust which specific rule under it is actually right.
+  const basketCompletenessResults: BasketCompletenessResult[] = [];
+  for (const batch of batches) {
+    if (!batch.sectionBoundaries || batch.sectionBoundaries.length === 0) continue;
+    const docRules = finalRules.filter((r) => {
+      // finalRules carries no documentId of its own - re-derive membership
+      // via the same section-boundary set this batch owns (a rule belongs
+      // to this document if its own citation falls inside one of this
+      // document's real section spans).
+      const ref = (r.sourceSectionRef ?? "").replace(/^§/, "").replace(/^Section\s+/i, "").replace(/\s+/g, "");
+      return batch.sectionBoundaries!.some((b) => ref === b.sectionPrefix || ref.startsWith(`${b.sectionPrefix}(`));
+    });
+    const results = checkAllSectionsBasketCompleteness(batch.sourceText, docRules, batch.sectionBoundaries);
+    basketCompletenessResults.push(...results);
+    for (const result of results) {
+      if (!result.flagged) continue;
+      for (let i = 0; i < finalRules.length; i++) {
+        const r = finalRules[i]!;
+        const ref = (r.sourceSectionRef ?? "").replace(/^§/, "").replace(/^Section\s+/i, "").replace(/\s+/g, "");
+        const belongsToFlaggedSection = ref === result.sectionPrefix || ref.startsWith(`${result.sectionPrefix}(`);
+        if (belongsToFlaggedSection && r.evaluationClass === "EXECUTABLE") {
+          finalRules[i] = { ...r, evaluationClass: "JUDGMENT_REQUIRED", notes: `${r.notes ?? ""} MULTI_BASKET_COMPLETENESS_FAILED: section ${result.sectionPrefix} has ${result.unmatchedNumbers.length} unmatched real figure(s) and ${result.duplicatedThresholds.length} possible duplicated threshold(s) across its own distinct baskets - downgraded pending review.`.trim() };
+        }
+      }
+    }
+  }
+
   return {
-    status: anyFailed ? "REVIEW_REQUIRED" : "COMPLETED",
-    output: { finalRules, dispositions },
+    status: anyFailed || basketCompletenessResults.some((r) => r.flagged) ? "REVIEW_REQUIRED" : "COMPLETED",
+    output: { finalRules, dispositions, basketCompletenessResults },
     provider: caller.providerName,
     model: caller.model,
     telemetry: lastTelemetry,
