@@ -1,82 +1,53 @@
-import { Card, LegalReviewBadge } from "@/components/ui";
-import { CovenantOverviewView } from "@/components/CovenantOverview";
-import { getCompanyDashboard } from "@/lib/dashboard-service";
-import { getCovenantOverview } from "@/lib/covenant-overview-service";
-import { fmtDate, fmtM } from "@/lib/format";
+import { DashboardClient } from "@/components/DashboardClient";
+import { loadCovenantOverviewInputs } from "@/lib/covenant-overview-service";
+import { fmtDate } from "@/lib/format";
 
 export const metadata = { title: "Headroom — Dashboard" };
 
 /**
- * CFO dashboard - the customer's product home (docs/headroom-master-product-architecture.md,
- * "the main landing page is officially Dashboard, never Overview"). Restored
- * to the dense, one-screen covenant-position experience
- * (docs/full-covenant-overview-restoration.md): `getCovenantOverview`
- * (lib/covenant-overview-service.ts) supplies headline metrics, headline
- * secured/unsecured capacity with its binding document/section, and every
- * modeled covenant family/basket/ratio row with inline citations and
- * formulas - `getCompanyDashboard` (lib/dashboard-service.ts) still supplies
- * near-term maturities and the legal-review summary, which
- * getCovenantOverview does not duplicate. This component performs no
- * calculation, no `preMax - amount` subtraction, and no company-name
- * branching (identical for any companyId the route names) - see both
- * services' own header comments for where every number actually comes from.
+ * The Dashboard tab (task "MAKE THE UI MATCH THE PROTOTYPE EXACTLY" -
+ * reference/headroom-coherent.jsx's "Position" tab, renamed to Dashboard
+ * per the task's explicit instruction). Server component's ENTIRE job is
+ * loading real data and normalizing it into plain, serializable props for
+ * `DashboardClient` (components/DashboardClient.tsx) - every number is
+ * still computed by the real engine (lib/covenant-engine.ts, unmodified),
+ * called from `buildCovenantOverview` (lib/covenant-overview-builder.ts),
+ * client-side for live editable-financials reflow with zero server
+ * round-trip. This file performs no calculation of its own.
  */
 export default async function DashboardPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [dash, overview] = await Promise.all([getCompanyDashboard(companyId), getCovenantOverview(companyId)]);
-  const { financialPosition: fp, legalReview } = dash;
+  const inputs = await loadCovenantOverviewInputs(companyId);
+  const { company, asOfDate, covenantData, financialPosition, solverContext, permissionRows, coverageDeclarations, documentNameById } = inputs;
+
+  const capitalStructure = financialPosition.capitalStructure.facilities.map((f) => ({
+    name: f.facility.name,
+    secured: f.facility.secured,
+    documentName: f.facility.governingDocumentId ? (documentNameById.get(f.facility.governingDocumentId) ?? null) : null,
+    amount: f.outstandingPrincipal,
+  }));
+
+  const nextMaturity = financialPosition.maturities.nextMaturity;
 
   return (
-    <div className="stack">
-      <CovenantOverviewView overview={overview} />
-
-      <Card>
-        <div className="card-title">Near-term maturities</div>
-        {fp.maturities.nextMaturity ? (
-          <div className="row">
-            <div>
-              <div className="row-label">{fp.maturities.nextMaturity.facilityName}</div>
-              <div className="row-note">next maturity, {fmtDate(fp.maturities.nextMaturity.date)}</div>
-            </div>
-            <div className="row-value">{fmtM(fp.maturities.nextMaturity.principal)}</div>
-          </div>
-        ) : (
-          <div className="row-note">No dated maturities on record.</div>
-        )}
-        <div className="row">
-          <div className="row-label">Due within 12 months</div>
-          <div className="row-value">{fmtM(fp.maturities.dueWithin12Months)}</div>
-        </div>
-        <div className="row">
-          <div className="row-label">Due within 24 months</div>
-          <div className="row-value">{fmtM(fp.maturities.dueWithin24Months)}</div>
-        </div>
-        <div className="row" style={{ borderBottom: "none" }}>
-          <div className="row-label">Due within 36 months</div>
-          <div className="row-value">{fmtM(fp.maturities.dueWithin36Months)}</div>
-        </div>
-      </Card>
-
-      <Card>
-        <div className="card-title">Legal review</div>
-        <div className="row">
-          <div className="row-label">Golden questions verified</div>
-          <div className="row-value">
-            {legalReview.goldenTestsVerified} / {legalReview.goldenTestsTotal}
-          </div>
-        </div>
-        <div className="row" style={{ borderBottom: "none" }}>
-          <div className="row-label">Permissions verified</div>
-          <div className="row-value">
-            {legalReview.permissionsVerified} / {legalReview.permissionsTotal}
-          </div>
-        </div>
-        {legalReview.goldenTestsVerified > 0 && (
-          <div style={{ marginTop: 10 }}>
-            <LegalReviewBadge status="VERIFIED" context="golden legal conclusions for this company" />
-          </div>
-        )}
-      </Card>
-    </div>
+    <DashboardClient
+      companyName={company.name}
+      asOfDate={asOfDate.toISOString()}
+      covenantData={covenantData}
+      financialPosition={financialPosition}
+      solverContext={{ ...solverContext, activationState: { ...solverContext.activationState, unknownKeysArray: [...solverContext.activationState.unknownKeys] } }}
+      permissionRows={permissionRows}
+      coverageDeclarations={coverageDeclarations}
+      documentNameEntries={[...documentNameById.entries()]}
+      capitalStructure={capitalStructure}
+      maturities={{
+        nextMaturityLabel: nextMaturity?.facilityName ?? null,
+        nextMaturityDate: nextMaturity ? fmtDate(nextMaturity.date) : null,
+        nextMaturityAmount: nextMaturity?.principal ?? null,
+        dueWithin12: financialPosition.maturities.dueWithin12Months,
+        dueWithin24: financialPosition.maturities.dueWithin24Months,
+        dueWithin36: financialPosition.maturities.dueWithin36Months,
+      }}
+    />
   );
 }

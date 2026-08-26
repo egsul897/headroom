@@ -111,35 +111,96 @@ function remainingText(row: Extract<OverviewRow, { kind: "CAPACITY" }>): string 
   return fmtM(row.remaining);
 }
 
+/**
+ * Green/amber/red tone (task "colored capacity bar - green / amber when
+ * nearly full / red when locked, with locked states explaining why"). No
+ * per-basket usage is tracked anywhere in this data model, so "nearly full"
+ * cannot honestly be a fill-percentage - these tones instead reflect the
+ * row's own real, already-computed state (never an invented threshold):
+ * red = locked (zero/no capacity available, or genuinely not modeled/not
+ * tested), amber = review required (a real computed status), green =
+ * modeled and available (including genuinely unlimited).
+ */
+function rowTone(row: OverviewRow): "green" | "amber" | "red" {
+  if (row.status === "UNMODELED" || row.status === "NOT_TESTED") return "red";
+  if (row.status === "REVIEW_REQUIRED") return "amber";
+  if (row.kind === "CAPACITY") {
+    if (row.capacityUnlimited) return "green";
+    if (row.currentCapacity !== null && row.currentCapacity <= 0) return "red";
+    return "green";
+  }
+  return row.bindingState === "REVIEW_REQUIRED" ? "amber" : "green";
+}
+
+function lockedReason(row: OverviewRow): string | null {
+  if (rowTone(row) !== "red") return null;
+  if (row.reason) return row.reason;
+  if (row.status === "UNMODELED") return "Acknowledged as a real, applicable provision that has not been modeled yet.";
+  if (row.status === "NOT_TESTED") return "No basket configuration entered for this provision.";
+  if (row.kind === "CAPACITY" && row.currentCapacity !== null && row.currentCapacity <= 0) return "No capacity currently available under this basket's own formula.";
+  return "Locked.";
+}
+
 function CapacityBar({ row }: { row: Extract<OverviewRow, { kind: "CAPACITY" }> }) {
-  if (row.status !== "MODELED" || row.capacityUnlimited || row.currentCapacity === null) return null;
+  const tone = rowTone(row);
   // Usage is never tracked per-basket today (no ledger entry is attributable
-  // to one specific basket) - the bar honestly shows 0% used rather than
-  // fabricating a number, per this service's own documented usageState.
-  const pct = row.usageState === "TRACKED" && row.utilizationPct !== null ? row.utilizationPct : 0;
+  // to one specific basket) - the bar's FILL always shows full width at its
+  // own tone color (there is no fill-percentage to show honestly); the
+  // caption states the real capacity figure, or the real reason it's locked.
+  const caption =
+    tone === "red"
+      ? lockedReason(row)
+      : row.status === "MODELED" && row.capacityUnlimited
+        ? "Unlimited"
+        : row.status === "MODELED" && row.currentCapacity !== null
+          ? row.usageState === "NOT_TRACKED"
+            ? `${fmtM(row.currentCapacity)} capacity — usage not tracked`
+            : `${fmtM(row.used ?? 0)} used of ${fmtM(row.currentCapacity)}`
+          : null;
+  if (caption === null) return null;
   return (
     <div className="util-bar-wrap">
       <div className="util-bar-track">
-        <div className="util-bar-fill" style={{ width: `${Math.min(100, Math.max(0, pct))}%` }} />
+        <div className={`util-bar-fill tone-${tone}`} style={{ width: "100%" }} />
       </div>
-      <div className="util-bar-caption">
-        {row.usageState === "NOT_TRACKED" ? `${fmtM(row.currentCapacity)} capacity — usage not tracked` : `${fmtM(row.used ?? 0)} used of ${fmtM(row.currentCapacity)}`}
-      </div>
+      <div className={`util-bar-caption ${tone === "red" ? "locked-reason" : ""}`}>{caption}</div>
     </div>
   );
 }
 
 function RatioBar({ row }: { row: Extract<OverviewRow, { kind: "RATIO" }> }) {
+  const tone = rowTone(row);
+  if (row.status !== "MODELED" || row.currentRatio === null) {
+    const reason = lockedReason(row);
+    if (!reason) return null;
+    return (
+      <div className="util-bar-wrap">
+        <div className="util-bar-track">
+          <div className={`util-bar-fill tone-${tone}`} style={{ width: "100%" }} />
+        </div>
+        <div className="util-bar-caption locked-reason">{reason}</div>
+      </div>
+    );
+  }
   // Only a "does not exceed a maximum" ratio has a natural 0..limit scale to
   // draw a bar against. A "must be at least" minimum (e.g. interest coverage)
   // has no natural upper bound - drawing one would fabricate a scale (task
-  // §17/§20), so those render as text only, below.
-  if (row.status !== "MODELED" || row.comparisonDirection !== "at_or_below" || row.currentRatio === null) return null;
+  // §17/§20), so those render as text only, still tone-colored by their
+  // real computed state.
+  if (row.comparisonDirection !== "at_or_below") {
+    return (
+      <div className="util-bar-wrap">
+        <div className={`util-bar-caption ${tone === "red" ? "locked-reason" : ""}`}>
+          {row.currentRatio.toFixed(2)}x current — {row.ratioLimit.toFixed(2)}x minimum — {row.ratioHeadroom !== null ? `${row.ratioHeadroom.toFixed(2)}x headroom` : ""}
+        </div>
+      </div>
+    );
+  }
   const pct = Math.min(100, Math.max(0, (row.currentRatio / row.ratioLimit) * 100));
   return (
     <div className="util-bar-wrap">
       <div className="ratio-track">
-        <div className={`ratio-track-fill ${pct > 85 ? "tight" : ""}`} style={{ width: `${pct}%` }} />
+        <div className={`ratio-track-fill tone-${tone}`} style={{ width: `${pct}%` }} />
       </div>
       <div className="util-bar-caption">
         {row.currentRatio.toFixed(2)}x current — {row.ratioLimit.toFixed(2)}x limit — {row.ratioHeadroom !== null ? `${row.ratioHeadroom.toFixed(2)}x headroom` : ""}
@@ -170,11 +231,9 @@ function CapacityRowView({ row }: { row: Extract<OverviewRow, { kind: "CAPACITY"
         </div>
         <div className="covenant-cell-review">{reviewLabel(row.reviewState)}</div>
       </div>
-      {row.status === "MODELED" && !row.capacityUnlimited && row.currentCapacity !== null && (
-        <div className="covenant-row" style={{ paddingTop: 0 }}>
-          <CapacityBar row={row} />
-        </div>
-      )}
+      <div className="covenant-row" style={{ paddingTop: 0 }}>
+        <CapacityBar row={row} />
+      </div>
     </>
   );
 }
@@ -274,13 +333,27 @@ function HeadlineCapacityCard({ title, side }: { title: string; side: CovenantOv
   );
 }
 
-export function CovenantOverviewView({ overview }: { overview: CovenantOverview }) {
-  const orderedFamilies = [...overview.covenantFamilies].sort((a, b) => {
+/** Just the covenant-family sections, ordered - reusable by app/[companyId]/dashboard's client-side editable-financials view, which supplies its own navy summary band and headline-metrics presentation instead of this component's own (see components/DashboardClient.tsx). */
+export function CovenantFamiliesView({ families }: { families: CovenantFamilySection[] }) {
+  const orderedFamilies = [...families].sort((a, b) => {
     const ia = FAMILY_ORDER.indexOf(a.family);
     const ib = FAMILY_ORDER.indexOf(b.family);
     return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
   });
+  if (orderedFamilies.length === 0) {
+    return (
+      <Card>
+        <div className="empty-state">
+          <div className="empty-state-title">Covenant model not initialized</div>
+          <div>Connect sources or upload financing documents to begin.</div>
+        </div>
+      </Card>
+    );
+  }
+  return <>{orderedFamilies.map((section) => <FamilySectionView key={section.family} section={section} />)}</>;
+}
 
+export function CovenantOverviewView({ overview }: { overview: CovenantOverview }) {
   return (
     <div className="stack">
       <WarningList warnings={overview.warnings} />
@@ -305,16 +378,7 @@ export function CovenantOverviewView({ overview }: { overview: CovenantOverview 
         </div>
       </Card>
 
-      {orderedFamilies.length === 0 ? (
-        <Card>
-          <div className="empty-state">
-            <div className="empty-state-title">Covenant model not initialized</div>
-            <div>Connect sources or upload financing documents to begin.</div>
-          </div>
-        </Card>
-      ) : (
-        orderedFamilies.map((section) => <FamilySectionView key={section.family} section={section} />)
-      )}
+      <CovenantFamiliesView families={overview.covenantFamilies} />
     </div>
   );
 }

@@ -111,3 +111,27 @@ export const getDefinedTermsByProvision = cache(
     return map;
   }
 );
+
+/**
+ * Per-document EBITDA definition, for the Docs tab (task "MAKE THE UI MATCH
+ * THE PROTOTYPE EXACTLY"). Not derived/computed - just the raw DefinedTerm
+ * row named "EBITDA" (or a defined variant like "Consolidated EBITDA") under
+ * each document, if legal has entered one. A document with none returns
+ * `null` for that key rather than fabricating a definition.
+ */
+export const getEbitdaDefinitionsByDocument = cache(async (companyId: string = DEFAULT_COMPANY_ID): Promise<Record<string, DefinedTermLite | null>> => {
+  const documents = await prisma.document.findMany({ where: { companyId }, select: { id: true } });
+  const terms = await prisma.definedTerm.findMany({
+    where: { document: { companyId }, termName: { contains: "EBITDA", mode: "insensitive" } },
+    orderBy: { termName: "asc" },
+  });
+  const byDoc = new Map<string, DefinedTermLite>();
+  for (const t of terms) {
+    if (!byDoc.has(t.documentId)) {
+      byDoc.set(t.documentId, { termName: t.termName, sectionRef: t.sectionRef, fullText: t.fullText, status: t.status });
+    }
+  }
+  const map: Record<string, DefinedTermLite | null> = {};
+  for (const doc of documents) map[doc.id] = byDoc.get(doc.id) ?? null;
+  return map;
+});
