@@ -302,9 +302,9 @@ async function runExtractStage(job: IngestionJob, connection: CompanySourceConne
 
   const materializedDocumentIds = (classifyOutput?.materializedDocumentIds as string[] | undefined) ?? [];
   if (materializedDocumentIds.length > 0) {
-    const { provider, providerName, model } = getExtractionProvider();
+    const { provider, providerName, model, promptVersion, schemaVersion } = getExtractionProvider();
     for (const documentId of materializedDocumentIds) {
-      await runExtractionForDocument({ companyId: job.companyId, documentId, provider, providerName, model });
+      await runExtractionForDocument({ companyId: job.companyId, documentId, provider, providerName, model, promptVersion, schemaVersion });
       extractedDocuments++;
     }
   }
