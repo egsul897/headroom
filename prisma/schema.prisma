@@ -111,6 +111,23 @@ model Company {
   ingestionJobs       IngestionJob[]
   sourcePriorityRules SourcePriorityRule[]
 
+  // --- Phase B contract model foundation (docs/contract-model-foundation-phase-b.md) ---
+  // Additive only. Zero rows for Coherent/Matthews as of this migration -
+  // both remain fully served by the existing Permission/CovenantProvision
+  // models; see lib/contract-model/compatibility.ts for the read-time
+  // projection instead of a data migration.
+  documentNodes              DocumentNode[]
+  documentRelationshipEdges  DocumentRelationshipEdge[]
+  definedTermNodes           DefinedTermNode[]
+  definedTermDependencyEdges DefinedTermDependencyEdge[]
+  contractReferenceEdges     ContractReferenceEdge[]
+  contractRules              ContractRule[]
+  contractRuleRelationships  ContractRuleRelationship[]
+  amendmentEffects           AmendmentEffect[]
+  contractEventObligations   ContractEventObligation[]
+  contractCoverageRecords    ContractCoverageRecord[]
+  unresolvedContractItems    UnresolvedContractItem[]
+
   @@map("companies")
 }
 
@@ -183,7 +200,7 @@ model Document {
   // pipeline, defaulted to "engineer-authored" by this migration for every
   // pre-existing row (Coherent/Matthews were populated by hand-written
   // population scripts, not a document upload).
-  source String @default("engineer-authored")
+  source           String    @default("engineer-authored")
 
   // Whether a human has confirmed the AI-proposed `type` /
   // `supersedesDocumentId` (STRUCTURE-stage ExtractionCandidate.kind =
@@ -194,7 +211,7 @@ model Document {
   // Matthews' `type`/`supersedesDocumentId` were set directly by an engineer
   // reading the executed document, not proposed-then-reviewed, so they are
   // already "confirmed" in the sense this flag records.
-  typeConfirmedByUser                Boolean @default(true)
+  typeConfirmedByUser                  Boolean @default(true)
   amendmentRelationshipConfirmedByUser Boolean @default(true)
 
   createdAt DateTime @default(now())
@@ -222,6 +239,16 @@ model Document {
   // A SourceArtifact.documentId is set once a DOCUMENT artifact has been
   // materialized into this row - see SourceArtifact's own comment.
   sourceArtifacts SourceArtifact[]
+
+  // --- Phase B contract model foundation (docs/contract-model-foundation-phase-b.md) ---
+  documentNodes                 DocumentNode[]
+  definedTermNodes              DefinedTermNode[]
+  contractRules                 ContractRule[]
+  amendmentEffects              AmendmentEffect[]
+  contractCoverageRecords       ContractCoverageRecord[]
+  relationshipEdgesAsSource     DocumentRelationshipEdge[] @relation("DocumentRelationshipSource")
+  relationshipEdgesAsTarget     DocumentRelationshipEdge[] @relation("DocumentRelationshipTarget")
+  contractReferencesTargetingMe ContractReferenceEdge[]    @relation("ContractReferenceTargetDocument")
 
   @@map("documents")
 }
@@ -658,6 +685,20 @@ enum EntityClassTag {
   UNRESTRICTED_SUB
   SECURITIZATION_SUB
   IMMATERIAL_SUB
+  // Additive (docs/contract-model-foundation-phase-b.md §E - entity/subject
+  // scope). The solver-native model above only ever needed the seven
+  // restricted/unrestricted/guarantor distinctions a debt/lien permission's
+  // entityScope actually varies by; Phase B's generalized ContractRule
+  // reuses this SAME enum (never a parallel one - see that doc's §U
+  // compatibility mapping) for broader covenant families that also scope by
+  // the parent entity, the full loan-party group, a materiality threshold,
+  // or "no restriction, any subsidiary." Zero existing Permission rows
+  // reference these - purely additive, no reinterpretation of the values
+  // above.
+  PARENT
+  LOAN_PARTY
+  MATERIAL_SUBSIDIARY
+  ANY_SUBSIDIARY
 
   @@map("entity_class_tag")
 }
@@ -1211,24 +1252,24 @@ enum DebtEventType {
 // need independent per-fact staleness/citation lifecycle beyond what the
 // embedded wrapper itself carries).
 model FinancialState {
-  id        String     @id @default(cuid())
-  companyId String
-  asOfDate  DateTime
+  id         String     @id @default(cuid())
+  companyId  String
+  asOfDate   DateTime
   periodType PeriodType @default(ACTUAL)
   // design doc §C.1 EntityScopeRef - "CONSOLIDATED" (default) or a specific
   // EntityClassTag subset, encoded as a free string so it never needs a
   // schema change to add a new scope shape.
-  scope     String     @default("CONSOLIDATED")
+  scope      String     @default("CONSOLIDATED")
 
   effectiveFrom DateTime?
   effectiveTo   DateTime?
 
   // { cash, restrictedCash?, totalAssets?, totalDebtPrincipal, securedDebtPrincipal, totalEquity? }
-  balanceSheetFacts   Json
+  balanceSheetFacts    Json
   // { revenue?, gaapEbitda?, gaapNetIncome?, cumulativeNetIncomeSinceIssue, equityProceedsSinceIssue, interestExpense, capex? }
   incomeStatementFacts Json
   // { covenantEbitda?: { value, addbacks: [...], provenance }, assumedNewDebtRatePct }
-  covenantMetricFacts Json
+  covenantMetricFacts  Json
   // Additive extension beyond design doc §C.1's three fact groups, needed by
   // the liquidity engine (§F) for revolver/ABL-specific facts the product
   // acceptance target (task §2) requires that don't fit balance-sheet/
@@ -1236,14 +1277,14 @@ model FinancialState {
   // revolverCommitment?, revolverDrawn?, revolverLcUsage?, borrowingBaseValue? }.
   // Optional and nullable - a FinancialState with no revolver/ABL simply
   // omits it.
-  liquidityFacts Json?
+  liquidityFacts       Json?
 
   notes String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  company              Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company              Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
   externalInputRecords ExternalInputRecord[]
 
   @@index([companyId, asOfDate])
@@ -1266,9 +1307,9 @@ model Facility {
   // informational only (commitmentAmount is the operative ceiling) - kept
   // non-null for schema simplicity, set equal to commitmentAmount for those
   // facility types by convention.
-  originalPrincipal Decimal  @db.Decimal(18, 6)
+  originalPrincipal          Decimal  @db.Decimal(18, 6)
   // REVOLVER/ABL only: total commitment. Null for TERM_LOAN/NOTES.
-  commitmentAmount  Decimal? @db.Decimal(18, 6)
+  commitmentAmount           Decimal? @db.Decimal(18, 6)
   // ABL only: the most recently certified borrowing-base value, when known
   // as a static fact on the facility itself (as opposed to a per-date
   // ExternalInputRecord-backed FinancialState.liquidityFacts.borrowingBaseValue,
@@ -1277,21 +1318,21 @@ model Facility {
   // reference value; may be null.
   borrowingBaseAtOrigination Decimal? @db.Decimal(18, 6)
 
-  secured    Boolean
-  couponType CouponType
-  couponPct  Decimal?    @db.Decimal(9, 6) // FIXED
-  marginBps  Int?                          // FLOATING, over referenceRate
-  referenceRate String?                    // e.g. "SOFR" - free text, never branched on
-  rateFloorPct  Decimal? @db.Decimal(9, 6) // FLOATING floor, where modeled
+  secured       Boolean
+  couponType    CouponType
+  couponPct     Decimal?   @db.Decimal(9, 6) // FIXED
+  marginBps     Int? // FLOATING, over referenceRate
+  referenceRate String? // e.g. "SOFR" - free text, never branched on
+  rateFloorPct  Decimal?   @db.Decimal(9, 6) // FLOATING floor, where modeled
 
   maturityDate DateTime?
   issuedDate   DateTime?
 
   governingDocumentId String?
 
-  obligorEntityClasses   EntityClassTag[]
-  guarantorEntityClasses EntityClassTag[]
-  collateralPoolIds      String[]
+  obligorEntityClasses     EntityClassTag[]
+  guarantorEntityClasses   EntityClassTag[]
+  collateralPoolIds        String[]
   // design doc §D.2 - citation into the solver's own PermissionPath legs
   // that authorized this facility's incurrence, never re-derived.
   originatingPermissionIds String[]
@@ -1314,16 +1355,16 @@ model Facility {
 // facility-scoped and richer than LedgerEntry (which is untouched - design
 // doc §E.2).
 model DebtEvent {
-  id        String        @id @default(cuid())
-  companyId String
+  id         String        @id @default(cuid())
+  companyId  String
   facilityId String
-  eventType DebtEventType
-  date      DateTime
+  eventType  DebtEventType
+  date       DateTime
   // Principal (or, for LC_ISSUANCE/LC_EXPIRATION, LC-usage) effect. Sign
   // convention by eventType, never overloaded (design doc §E.1): ISSUANCE/
   // LC_ISSUANCE positive; REPAYMENT/LC_EXPIRATION positive-magnitude
   // reductions (subtracted by the replay logic, never stored negative).
-  amount Decimal @db.Decimal(18, 6)
+  amount     Decimal       @db.Decimal(18, 6)
 
   refinancesFacilityId String?
   relatedPermissionIds String[]
@@ -1420,7 +1461,7 @@ enum ExtractionStageStatus {
 // company can have several runs (one per document) whose candidates all
 // participate in that company-wide cross-referencing.
 model ExtractionRun {
-  id            String   @id @default(cuid())
+  id            String @id @default(cuid())
   companyId     String
   documentId    String
   provider      String
@@ -1431,8 +1472,8 @@ model ExtractionRun {
   startedAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  company    Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  document   Document               @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  company    Company               @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document   Document              @relation(fields: [documentId], references: [id], onDelete: Cascade)
   stages     ExtractionStage[]
   candidates ExtractionCandidate[]
 
@@ -1448,12 +1489,12 @@ model ExtractionRun {
 // a duplicate INSERT, and what lets a FAILED stage's own retry leave every
 // sibling stage's COMPLETE row (and its persisted candidates) untouched.
 model ExtractionStage {
-  id              String                 @id @default(cuid())
+  id              String                @id @default(cuid())
   extractionRunId String
   stage           ExtractionStageKind
-  status          ExtractionStageStatus  @default(PENDING)
+  status          ExtractionStageStatus @default(PENDING)
   error           String?
-  attemptCount    Int                    @default(0)
+  attemptCount    Int                   @default(0)
   startedAt       DateTime?
   completedAt     DateTime?
 
@@ -1482,7 +1523,7 @@ model ExtractionStage {
 //                        auto-approved)
 //   FINANCIAL_INPUTS -> EXTERNAL_INPUT_REQUIREMENT
 model ExtractionCandidate {
-  id                String @id @default(cuid())
+  id                String                  @id @default(cuid())
   extractionRunId   String
   extractionStageId String
   companyId         String
@@ -1504,7 +1545,7 @@ model ExtractionCandidate {
   // extended-reasoning content before this field is populated).
   rationale     String?
 
-  reviewStatus ExtractionCandidateReviewStatus @default(PENDING)
+  reviewStatus        ExtractionCandidateReviewStatus @default(PENDING)
   // The reviewer's corrected version. `proposedValue` above is NEVER
   // overwritten - it stays the permanent record of what the AI originally
   // proposed, independent of what a reviewer later changed it to.
@@ -1694,27 +1735,27 @@ enum ConnectionStatus {
 // connector type per company for this V1; a company that wants a second
 // EDGAR connection, e.g. for a second ticker, is out of scope here).
 model CompanySourceConnection {
-  id            String            @id @default(cuid())
-  companyId     String
-  connectorType ConnectorType
-  provider      String
-  status        ConnectionStatus  @default(CONNECTED)
-  capabilities  String[]
-  sourcePriority Int              @default(0)
+  id                   String           @id @default(cuid())
+  companyId            String
+  connectorType        ConnectorType
+  provider             String
+  status               ConnectionStatus @default(CONNECTED)
+  capabilities         String[]
+  sourcePriority       Int              @default(0)
   lastSuccessfulSyncAt DateTime?
-  cursor        String?
-  errorState    String?
-  enabled       Boolean           @default(true)
+  cursor               String?
+  errorState           String?
+  enabled              Boolean          @default(true)
   // Opaque reference only (e.g. an env-var name) - NEVER a raw credential
   // value. See this model's own header comment.
-  credentialRef String?
+  credentialRef        String?
   // Connector-specific NON-SECRET config, e.g. EDGAR's { ticker, cik }.
-  config        Json?
+  config               Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  company        Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  company         Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
   sourceArtifacts SourceArtifact[]
   ingestionJobs   IngestionJob[]
 
@@ -1745,7 +1786,7 @@ enum SourceArtifactType {
 // and always null for a FINANCIAL_RECORD artifact (those become
 // ExtractionCandidate rows directly in the EXTRACT stage, never a Document).
 model SourceArtifact {
-  id                 String              @id @default(cuid())
+  id                 String             @id @default(cuid())
   companyId          String
   sourceConnectionId String
   artifactType       SourceArtifactType
@@ -1856,14 +1897,14 @@ enum IngestionStageStatus {
 // lib/connectors/ingestion.ts), consistent with ExtractionCandidate's own
 // "JSON payload, not 8 separate tables" precedent in this codebase.
 model IngestionJobStage {
-  id                String                @id @default(cuid())
+  id                String               @id @default(cuid())
   ingestionJobId    String
   stage             IngestionStageKind
-  status            IngestionStageStatus  @default(PENDING)
+  status            IngestionStageStatus @default(PENDING)
   error             String?
-  attemptCount      Int                   @default(0)
-  recordsDiscovered Int                   @default(0)
-  recordsChanged    Int                   @default(0)
+  attemptCount      Int                  @default(0)
+  recordsDiscovered Int                  @default(0)
+  recordsChanged    Int                  @default(0)
   output            Json?
   startedAt         DateTime?
   completedAt       DateTime?
@@ -1884,7 +1925,7 @@ model IngestionJobStage {
 // Company.onboardingStatus-adjacent SourcePriority-style fields in this
 // codebase already use for sourcePriority on CompanySourceConnection above.
 model SourcePriorityRule {
-  id            String         @id @default(cuid())
+  id            String        @id @default(cuid())
   companyId     String?
   metricName    String
   connectorType ConnectorType
@@ -1896,4 +1937,713 @@ model SourcePriorityRule {
 
   @@index([companyId, metricName])
   @@map("source_priority_rules")
+}
+
+// =============================================================================
+// Phase B - Comprehensive Contract Model Foundation
+// (docs/contract-model-foundation-phase-b.md, docs/comprehensive-contract-compiler-v1.md)
+//
+// EXTENSION, NOT REWRITE (task §3): every model below is additive. Nothing
+// above this line is altered, dropped, or repurposed. Coherent/Matthews'
+// existing Permission/PermissionRelationship/CovenantProvision rows and the
+// legacy + solver-native engines that read them are completely untouched -
+// zero rows are backfilled into any table below for either company. See
+// docs/contract-model-foundation-phase-b.md §U for the read-time
+// compatibility mapping (lib/contract-model/compatibility.ts) that projects
+// existing Permission rows into this shape ON DEMAND, rather than a data
+// migration duplicating them.
+//
+// Stable keys (task §10/§48/§49): every model below carries a `stableKey`
+// String column, always caller-supplied (never server-generated, never
+// derived from the row's own `id`), unique per company
+// (`@@unique([companyId, stableKey])`). This mirrors this schema's own
+// pre-existing `Permission.code`/`CovenantProvision.code` convention exactly
+// (an optional human-chosen stable string, unrelated to the generated primary
+// key) - see lib/contract-model/stable-keys.ts for the deterministic
+// content-hash helper future extraction can use to construct one.
+// =============================================================================
+
+enum CovenantFamily {
+  INDEBTEDNESS
+  LIENS
+  RESTRICTED_PAYMENTS
+  INVESTMENTS
+  ACQUISITIONS
+  ASSET_SALES
+  DISPOSITIONS
+  SALE_LEASEBACKS
+  FINANCIAL_COVENANTS
+  MANDATORY_PREPAYMENTS
+  REPORTING_INFORMATION
+  FUNDAMENTAL_CHANGES
+  AFFILIATE_TRANSACTIONS
+  GUARANTEES
+  GUARANTOR_REQUIREMENTS
+  COLLATERAL_SECURITY
+  CHANGE_OF_CONTROL
+  EVENTS_OF_DEFAULT
+  RATING_TRIGGERS
+  SPRINGING_COVENANTS
+  MFN_PRICING_PROTECTION
+  SUBSIDIARY_DESIGNATIONS
+  ENTITY_SCOPE_RESTRICTIONS
+  AMENDMENT_WAIVER_CONSENT
+  NOTICE_REQUIREMENTS
+  QUALITATIVE_AFFIRMATIVE_COVENANTS
+  QUALITATIVE_NEGATIVE_COVENANTS
+  DEFINITIONS_CALCULATION_RULES
+
+  @@map("covenant_family")
+}
+
+enum ContractRuleType {
+  QUANTITATIVE_PERMISSION
+  QUANTITATIVE_RESTRICTION
+  RATIO_TEST
+  PROHIBITION
+  EVENT_TRIGGER
+  REPORTING_OBLIGATION
+  NOTICE_OBLIGATION
+  MANDATORY_ACTION
+  CONDITIONAL_ACTIVATION
+  CONSENT_REQUIREMENT
+  QUALITATIVE_OBLIGATION
+  DEFINITION
+  CALCULATION_RULE
+  EXCEPTION
+  RECLASSIFICATION_RULE
+  ENTITY_SCOPE_RULE
+  PRIORITY_RULE
+  SOURCE_PRECEDENCE_RULE
+
+  @@map("contract_rule_type")
+}
+
+enum RuleEvaluationClass {
+  EXECUTABLE
+  EVENT_DRIVEN
+  MONITORABLE
+  JUDGMENT_REQUIRED
+  UNSUPPORTED
+
+  @@map("rule_evaluation_class")
+}
+
+// A rule's basic posture - orthogonal to ContractRuleType (a RATIO_TEST can
+// be the PERMISSION gate for an action or a standalone OBLIGATION to satisfy
+// no matter what). N_A covers rule types that are neither (DEFINITION,
+// CALCULATION_RULE).
+enum ContractRulePosture {
+  PERMISSION
+  PROHIBITION
+  OBLIGATION
+  N_A
+
+  @@map("contract_rule_posture")
+}
+
+enum DocumentNodeType {
+  ARTICLE
+  SECTION
+  SUBSECTION
+  CLAUSE
+  SUBCLAUSE
+  PROVISO
+  EXCEPTION
+  SCHEDULE
+  EXHIBIT
+
+  @@map("document_node_type")
+}
+
+enum DocumentRelationshipType {
+  AMENDS
+  RESTATES
+  SUPPLEMENTS
+  SUPERSEDES
+  INCORPORATES_BY_REFERENCE
+  GOVERNS
+  SECURES
+  GUARANTEES
+  SUBORDINATES
+  INTERCREDITOR_WITH
+  MODIFIES_COLLATERAL
+  MODIFIES_GUARANTOR_STRUCTURE
+  REPLACES_SECTION
+  ADDS_SECTION
+  DELETES_SECTION
+
+  @@map("document_relationship_type")
+}
+
+enum AmendmentEffectType {
+  REPLACE_TEXT
+  ADD_TEXT
+  DELETE_TEXT
+  MODIFY_THRESHOLD
+  MODIFY_DEFINITION
+  MODIFY_RELATIONSHIP
+  MODIFY_ENTITY_SCOPE
+  MODIFY_EFFECTIVE_DATE
+  ADD_EXCEPTION
+  REMOVE_EXCEPTION
+  ADD_COVENANT
+  REMOVE_COVENANT
+
+  @@map("amendment_effect_type")
+}
+
+enum DefinitionDependencyType {
+  USES_TERM
+  USES_SECTION
+  USES_FINANCIAL_INPUT
+  USES_ACCOUNTING_CONCEPT
+  EXCLUDES_TERM
+  INCLUDES_TERM
+  SUBJECT_TO_CAP
+  SUBJECT_TO_CONDITION
+  INCORPORATES_RULE
+
+  @@map("definition_dependency_type")
+}
+
+enum ContractReferenceType {
+  SUBJECT_TO
+  EXCEPT_AS_PROVIDED_IN
+  PERMITTED_BY
+  DEFINED_IN
+  CALCULATED_UNDER
+  REQUIRES
+  LIMITED_BY
+  INCORPORATES
+  OVERRIDES
+  SAME_AS
+  LINKED_PERMISSION
+  LIEN_AUTHORITY_FOR
+  DEBT_AUTHORITY_FOR
+  ACTIVATES
+  DEACTIVATES
+
+  @@map("contract_reference_type")
+}
+
+// Discriminates ContractReferenceEdge's polymorphic target (task §17/§19 -
+// "a cross-reference that cannot be resolved is not just a string").
+enum ContractReferenceTargetType {
+  RULE
+  SECTION
+  DEFINED_TERM
+  DOCUMENT
+  UNRESOLVED
+
+  @@map("contract_reference_target_type")
+}
+
+// Unifies/extends the existing solver-native StackingRelationshipType (task
+// §21/§33 - "unify/extend existing PermissionRelationship concepts into a
+// broader relationship taxonomy... do not delete existing tested semantics").
+// StackingRelationshipType itself is UNTOUCHED - see
+// docs/contract-model-foundation-phase-b.md §U for the exact value-by-value
+// mapping table (e.g. ALTERNATIVE -> ALTERNATIVE_TO, MUTUALLY_EXCLUSIVE ->
+// EXCLUDED_FROM) a future adapter uses to project an existing
+// PermissionRelationship row into this broader shape.
+enum ContractRuleRelationshipType {
+  ALTERNATIVE_TO
+  CONCURRENT_COUNTED
+  CONCURRENT_DISREGARDED
+  INDEPENDENT_REQUIREMENT
+  SHARES_CAPACITY_WITH
+  REQUIRES
+  LIMITED_BY
+  AUTOMATIC_LINKED_PERMISSION
+  BASKET_FEEDING
+  COMBINABLE
+  RECLASSIFIABLE_TO
+  REDESIGNATES_TO
+  EXCLUDED_FROM
+  OVERRIDES
+  ACTIVATES
+  DEACTIVATES
+  PARAMETER_ADJUSTMENT_TRIGGER
+  SOURCE_PRECEDENCE
+
+  @@map("contract_rule_relationship_type")
+}
+
+enum ContractConditionType {
+  NO_DEFAULT
+  RATIO_SATISFIED
+  MINIMUM_LIQUIDITY
+  MATERIAL_ACQUISITION
+  RATING_STATUS
+  ENTITY_TYPE
+  SECURITY_SCOPE
+  PURPOSE
+  ACQUISITION_CONTEXT
+  REFINANCING_CONTEXT
+  REINVESTMENT_PERIOD
+  TIME_PERIOD
+  AMOUNT_THRESHOLD
+  OTHER_RULE_SATISFIED
+  UNSUPPORTED
+
+  @@map("contract_condition_type")
+}
+
+enum InputRequirementState {
+  AVAILABLE
+  MISSING
+  STALE
+  CONFLICTING
+  CERTIFIED
+  ESTIMATED
+  REVIEW_REQUIRED
+
+  @@map("input_requirement_state")
+}
+
+enum ObligationSatisfactionState {
+  PENDING
+  SATISFIED
+  OVERDUE
+  WAIVED
+  NOT_APPLICABLE
+
+  @@map("obligation_satisfaction_state")
+}
+
+enum ContractCoverageStatus {
+  FULLY_MODELED
+  PARTIALLY_MODELED
+  REVIEW_REQUIRED
+  UNSUPPORTED
+  NOT_APPLICABLE
+  NOT_TESTED
+
+  @@map("contract_coverage_status")
+}
+
+enum UnresolvedContractItemType {
+  UNRESOLVED_CROSS_REFERENCE
+  MISSING_DEFINITION
+  UNSUPPORTED_RULE_TYPE
+  AMBIGUOUS_SCOPE
+  UNKNOWN_RELATIONSHIP
+  CONFLICTING_AMENDMENT
+  MISSING_EXTERNAL_INPUT
+  OTHER
+
+  @@map("unresolved_contract_item_type")
+}
+
+/// Document structure graph (task §9): Document -> Article -> Section ->
+/// Subsection -> Clause -> Subclause -> Proviso -> Exception -> Schedule ->
+/// Exhibit, as a real self-referencing tree rather than DocumentChunk's flat
+/// per-LLM-window shape (DocumentChunk is untouched - it remains the
+/// extraction pipeline's own processing-window unit; DocumentNode is the
+/// logical/citable hierarchy a ContractRule points back to).
+model DocumentNode {
+  id            String           @id @default(cuid())
+  companyId     String
+  documentId    String
+  stableKey     String
+  parentId      String?
+  nodeType      DocumentNodeType
+  heading       String?
+  sectionRef    String?
+  // Sibling order under the same parent - NOT a global document order.
+  ordinal       Int              @default(0)
+  charStart     Int?
+  charEnd       Int?
+  page          Int?
+  effectiveFrom DateTime?
+  effectiveTo   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company  Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document Document       @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  parent   DocumentNode?  @relation("DocumentNodeChildren", fields: [parentId], references: [id], onDelete: SetNull)
+  children DocumentNode[] @relation("DocumentNodeChildren")
+
+  rulesSourced          ContractRule[]
+  definedTermsSourced   DefinedTermNode[]
+  referencesFromHere    ContractReferenceEdge[] @relation("ContractReferenceSourceNode")
+  referencesTargetingMe ContractReferenceEdge[] @relation("ContractReferenceTargetNode")
+  amendmentEffects      AmendmentEffect[]
+
+  @@unique([companyId, stableKey])
+  @@index([companyId, documentId])
+  @@index([parentId])
+  @@map("document_nodes")
+}
+
+/// Document relationship graph (task §11) - AMENDS/RESTATES/SUPERSEDES/etc
+/// between two documents. Deliberately separate from Document's own
+/// supersedesDocumentId/effectiveFrom/effectiveTo (untouched above): those
+/// three columns remain the ONE mechanism the LEGACY engine's
+/// loadCompanyCovenantData reads for amendment precedence - this table is
+/// the general-purpose graph for every OTHER document relationship the
+/// legacy engine never needed to represent (GUARANTEES, SECURES,
+/// INTERCREDITOR_WITH, section-level AMENDS effects, etc).
+model DocumentRelationshipEdge {
+  id               String                          @id @default(cuid())
+  companyId        String
+  sourceDocumentId String
+  targetDocumentId String
+  relationshipType DocumentRelationshipType
+  effectiveDate    DateTime?
+  sourceCitation   String?
+  scopeNote        String?
+  confidence       Float?
+  reviewStatus     ExtractionCandidateReviewStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+
+  company        Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceDocument Document @relation("DocumentRelationshipSource", fields: [sourceDocumentId], references: [id], onDelete: Cascade)
+  targetDocument Document @relation("DocumentRelationshipTarget", fields: [targetDocumentId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([sourceDocumentId])
+  @@index([targetDocumentId])
+  @@map("document_relationship_edges")
+}
+
+/// Defined terms as first-class nodes (task §14) - never a plain string.
+model DefinedTermNode {
+  id                String                          @id @default(cuid())
+  companyId         String
+  documentId        String
+  stableKey         String
+  termName          String
+  normalizedName    String
+  sourceNodeId      String?
+  definitionTextRef String?
+  effectiveFrom     DateTime?
+  effectiveTo       DateTime?
+  reviewStatus      ExtractionCandidateReviewStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company    Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document   Document      @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  sourceNode DocumentNode? @relation(fields: [sourceNodeId], references: [id], onDelete: SetNull)
+
+  dependenciesFrom       DefinedTermDependencyEdge[] @relation("DefinedTermDependencyFrom")
+  dependenciesTo         DefinedTermDependencyEdge[] @relation("DefinedTermDependencyTo")
+  referencedBy           ContractReferenceEdge[]     @relation("ContractReferenceTargetTerm")
+  amendmentEffects       AmendmentEffect[]
+  UnresolvedContractItem UnresolvedContractItem[]
+
+  @@unique([companyId, stableKey])
+  @@index([companyId, documentId])
+  @@index([companyId, normalizedName])
+  @@map("defined_term_nodes")
+}
+
+/// Defined-term dependency graph (task §15/§16). Exactly one of
+/// toTermId/toSectionRef/toFinancialInputKey is set - enforced by a CHECK
+/// constraint in this model's own migration (never silently ambiguous about
+/// what a dependency edge points at).
+model DefinedTermDependencyEdge {
+  id                  String                   @id @default(cuid())
+  companyId           String
+  fromTermId          String
+  dependencyType      DefinitionDependencyType
+  toTermId            String?
+  toSectionRef        String?
+  toFinancialInputKey String?
+  note                String?
+
+  createdAt DateTime @default(now())
+
+  company  Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  fromTerm DefinedTermNode  @relation("DefinedTermDependencyFrom", fields: [fromTermId], references: [id], onDelete: Cascade)
+  toTerm   DefinedTermNode? @relation("DefinedTermDependencyTo", fields: [toTermId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([fromTermId])
+  @@index([toTermId])
+  @@map("defined_term_dependency_edges")
+}
+
+/// Cross-reference graph (task §17-19). An unresolved reference is
+/// persisted here too (resolved: false), never dropped to a bare string.
+model ContractReferenceEdge {
+  id                   String                          @id @default(cuid())
+  companyId            String
+  sourceNodeId         String?
+  sourceRuleId         String?
+  referenceType        ContractReferenceType
+  referenceText        String
+  targetType           ContractReferenceTargetType
+  targetRuleId         String?
+  targetDocumentNodeId String?
+  targetTermId         String?
+  targetDocumentId     String?
+  resolved             Boolean                         @default(false)
+  unresolvedReason     String?
+  impact               String?
+  confidence           Float?
+  reviewStatus         ExtractionCandidateReviewStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+
+  company            Company                  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceNode         DocumentNode?            @relation("ContractReferenceSourceNode", fields: [sourceNodeId], references: [id], onDelete: SetNull)
+  sourceRule         ContractRule?            @relation("ContractReferenceSourceRule", fields: [sourceRuleId], references: [id], onDelete: Cascade)
+  targetRule         ContractRule?            @relation("ContractReferenceTargetRule", fields: [targetRuleId], references: [id], onDelete: SetNull)
+  targetDocumentNode DocumentNode?            @relation("ContractReferenceTargetNode", fields: [targetDocumentNodeId], references: [id], onDelete: SetNull)
+  targetTerm         DefinedTermNode?         @relation("ContractReferenceTargetTerm", fields: [targetTermId], references: [id], onDelete: SetNull)
+  targetDocument     Document?                @relation("ContractReferenceTargetDocument", fields: [targetDocumentId], references: [id], onDelete: SetNull)
+  unresolvedItems    UnresolvedContractItem[]
+
+  @@index([companyId])
+  @@index([sourceRuleId])
+  @@index([targetRuleId])
+  @@index([companyId, resolved])
+  @@map("contract_reference_edges")
+}
+
+/// The generalized rule model (task §6) - the ContractRule every future
+/// compiler stage/evaluation harness/Ask Headroom/Dashboard query targets.
+/// Preserves the existing Permission model exactly as-is (task §3) - see
+/// lib/contract-model/compatibility.ts for the read-time projection from
+/// Permission into this shape.
+model ContractRule {
+  id               String  @id @default(cuid())
+  companyId        String
+  sourceDocumentId String
+  sourceNodeId     String?
+  stableKey        String
+
+  covenantFamily  CovenantFamily
+  ruleType        ContractRuleType
+  evaluationClass RuleEvaluationClass
+  posture         ContractRulePosture @default(N_A)
+
+  // Free-text, validated at the application boundary against the
+  // ContractAction union (lib/contract-model/types.ts) rather than a Postgres
+  // enum - task §7 is explicit this taxonomy must stay extensible without a
+  // migration per new action verb.
+  action String
+
+  // Entity/subject scope (task §8) - reuses EntityClassTag exactly as
+  // Permission.entityScope already does (see that enum's own comment).
+  entityScope         EntityClassTag[]
+  entityScopeExcluded EntityClassTag[]
+  beneficiary         String?
+
+  thresholdValue Decimal? @db.Decimal(18, 6)
+  // Reuses lib/connectors/units.ts's FinancialUnit union, stored as a
+  // validated string - never inferred from magnitude (this codebase's own
+  // hard-won unit-safety rule, docs/vercel-ai-gateway-extraction.md's
+  // sibling doc autonomous-ingestion-production-readiness fix).
+  thresholdUnit  String?
+  // Free-text calculation-kind descriptor (task §23 - "representability
+  // first", not a full evaluator) - validated against
+  // lib/contract-model/types.ts's CalculationRuleKind union where set.
+  formulaRef     String?
+  operator       String?
+
+  // Structured-JSON-where-relational-querying-isn't-needed (task §6's own
+  // explicit allowance) - each array element validated against
+  // lib/contract-model/types.ts's ContractConditionSchema/ExceptionSchema.
+  conditions Json?
+  exceptions Json?
+
+  sourceSectionRef String
+  definedTermRefs  String[]
+
+  // Operative-version model (task §12/§27, lib/contract-model/service.ts's
+  // getOperativeContractualState) - the SAME mechanism Document.effectiveFrom/
+  // effectiveTo already uses for the legacy engine's amendment precedence.
+  // Superseding a rule means setting THIS rule's effectiveTo to the new
+  // rule's effectiveFrom; supersededByRuleId itself is informational
+  // provenance only ("this rule was replaced by that one") and is never
+  // consulted by the operative-as-of-date filter, so a historical query
+  // before the amendment's effective date still correctly resolves here.
+  effectiveFrom      DateTime?
+  effectiveTo        DateTime?
+  supersededByRuleId String?
+
+  coverageStatus ContractCoverageStatus          @default(NOT_TESTED)
+  reviewStatus   ExtractionCandidateReviewStatus @default(PENDING)
+
+  // Compiler/extraction origin metadata (task §6/§28/§63) - provider/model/
+  // promptVersion/schemaVersion/candidateId. Never chain-of-thought.
+  extractionOrigin Json?
+  notes            String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company          Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceDocument   Document       @relation(fields: [sourceDocumentId], references: [id], onDelete: Cascade)
+  sourceNode       DocumentNode?  @relation(fields: [sourceNodeId], references: [id], onDelete: SetNull)
+  supersededByRule ContractRule?  @relation("ContractRuleVersionChain", fields: [supersededByRuleId], references: [id], onDelete: SetNull)
+  supersedesRules  ContractRule[] @relation("ContractRuleVersionChain")
+
+  relationshipsFrom ContractRuleRelationship[] @relation("ContractRuleRelationshipFrom")
+  relationshipsTo   ContractRuleRelationship[] @relation("ContractRuleRelationshipTo")
+  referencesFrom    ContractReferenceEdge[]    @relation("ContractReferenceSourceRule")
+  referencedBy      ContractReferenceEdge[]    @relation("ContractReferenceTargetRule")
+  amendmentEffects  AmendmentEffect[]
+  eventObligations  ContractEventObligation[]
+  coverageRecords   ContractCoverageRecord[]
+  unresolvedItems   UnresolvedContractItem[]
+
+  @@unique([companyId, stableKey])
+  @@index([companyId, covenantFamily])
+  @@index([companyId, action])
+  @@index([sourceDocumentId])
+  @@map("contract_rules")
+}
+
+/// Unified rule relationship + dependency graph (task §20/§21 - deliberately
+/// ONE edge table for both: a "dependency" like "debt permission requires a
+/// leverage test" is representable as a REQUIRES-typed relationship, so this
+/// phase does not introduce a second, overlapping edge table for the same
+/// concept - see docs/contract-model-foundation-phase-b.md's own design-
+/// decision note). Extends, never replaces, PermissionRelationship.
+model ContractRuleRelationship {
+  id               String                          @id @default(cuid())
+  companyId        String
+  fromRuleId       String
+  toRuleId         String
+  relationshipType ContractRuleRelationshipType
+  parameter        Json?
+  sourceSectionRef String?
+  notes            String?
+  confidence       Float?
+  reviewStatus     ExtractionCandidateReviewStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+
+  company  Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  fromRule ContractRule @relation("ContractRuleRelationshipFrom", fields: [fromRuleId], references: [id], onDelete: Cascade)
+  toRule   ContractRule @relation("ContractRuleRelationshipTo", fields: [toRuleId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([fromRuleId])
+  @@index([toRuleId])
+  @@map("contract_rule_relationships")
+}
+
+/// Amendment effect model (task §13) - representable once identified, no
+/// autonomous amendment parsing yet (that is Phase C).
+model AmendmentEffect {
+  id                   String                          @id @default(cuid())
+  companyId            String
+  amendmentDocumentId  String
+  effectType           AmendmentEffectType
+  targetRuleId         String?
+  targetTermId         String?
+  targetDocumentNodeId String?
+  effectiveDate        DateTime?
+  description          String
+  oldValueSnapshot     Json?
+  newValueSnapshot     Json?
+  sourceSectionRef     String?
+  reviewStatus         ExtractionCandidateReviewStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+
+  company            Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  amendmentDocument  Document         @relation(fields: [amendmentDocumentId], references: [id], onDelete: Cascade)
+  targetRule         ContractRule?    @relation(fields: [targetRuleId], references: [id], onDelete: SetNull)
+  targetTerm         DefinedTermNode? @relation(fields: [targetTermId], references: [id], onDelete: SetNull)
+  targetDocumentNode DocumentNode?    @relation(fields: [targetDocumentNodeId], references: [id], onDelete: SetNull)
+
+  @@index([companyId])
+  @@index([amendmentDocumentId])
+  @@map("amendment_effects")
+}
+
+/// Event/obligation representation foundation (task §25) - representation
+/// only, no scheduling/notification engine this phase.
+model ContractEventObligation {
+  id                   String                          @id @default(cuid())
+  companyId            String
+  stableKey            String
+  sourceRuleId         String?
+  eventType            String
+  conditionDescription String?
+  // "DAYS_AFTER_EVENT" | "FIXED_DATE" | "PERIODIC" - free text, validated at
+  // the application boundary (lib/contract-model/types.ts), not a Postgres
+  // enum, since this is representation scaffolding for a future obligations
+  // engine this phase deliberately does not build (task §25's own "do NOT
+  // build the full obligations engine in Phase B").
+  deadlineKind         String
+  deadlineDays         Int?
+  deadlineDate         DateTime?
+  requiredAction       String
+  satisfactionState    ObligationSatisfactionState     @default(PENDING)
+  sourceSectionRef     String?
+  reviewStatus         ExtractionCandidateReviewStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company    Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceRule ContractRule? @relation(fields: [sourceRuleId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, stableKey])
+  @@index([companyId])
+  @@map("contract_event_obligations")
+}
+
+/// Coverage foundation (task §45) - generalized, covenant-family/document/
+/// rule-scoped coverage, distinct from the existing solver-specific
+/// SolverCoverageDeclaration (untouched - see docs/contract-model-foundation-phase-b.md §U).
+model ContractCoverageRecord {
+  id             String                 @id @default(cuid())
+  companyId      String
+  documentId     String?
+  covenantFamily CovenantFamily?
+  ruleId         String?
+  status         ContractCoverageStatus
+  notes          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company  Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document Document?     @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  rule     ContractRule? @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([companyId, covenantFamily])
+  @@map("contract_coverage_records")
+}
+
+/// Generalized unresolved/review item model (task §46) - what a future
+/// compiler stage populates; this phase provides the structure and a few
+/// manually-constructed fixture rows only.
+model UnresolvedContractItem {
+  id                String                          @id @default(cuid())
+  companyId         String
+  itemType          UnresolvedContractItemType
+  sourceRuleId      String?
+  sourceTermId      String?
+  sourceReferenceId String?
+  description       String
+  impact            String?
+  blocking          Boolean                         @default(true)
+  reviewStatus      ExtractionCandidateReviewStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company         Company                @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceRule      ContractRule?          @relation(fields: [sourceRuleId], references: [id], onDelete: Cascade)
+  sourceTerm      DefinedTermNode?       @relation(fields: [sourceTermId], references: [id], onDelete: Cascade)
+  sourceReference ContractReferenceEdge? @relation(fields: [sourceReferenceId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+  @@index([companyId, blocking])
+  @@map("unresolved_contract_items")
 }
