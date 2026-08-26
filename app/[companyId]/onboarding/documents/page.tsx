@@ -77,6 +77,13 @@ export default async function OnboardingDocumentsPage({ params }: { params: Prom
                   </Chip>
                 ))}
               </div>
+              {d.latestRun.stages
+                .filter((s) => s.status === "FAILED" && s.error)
+                .map((s) => (
+                  <div key={s.stage} className="row-note" style={{ marginBottom: 8, color: "var(--color-danger, #b91c1c)" }}>
+                    {s.stage} error: {s.error}
+                  </div>
+                ))}
             </>
           ) : (
             <div className="row-note" style={{ marginBottom: 8 }}>No extraction run yet.</div>
