@@ -176,8 +176,15 @@ export function resolvePackageRelationships(documents: PackageDocumentInput[], c
 
   // §12: resolve cross-document reference leads the same way, but by TYPE hint alone (no date attached to a bare "the Indenture" mention) - unique-type-match only, otherwise left unresolved (never guessed from name similarity).
   const resolvedCrossDocumentReferenceLeads = crossDocumentReferenceLeads.map((lead): CrossDocumentReferenceLead => {
-    const isIndenture = /indenture/i.test(lead.namedAgreementHint);
-    const targetTypes: DocumentType[] = isIndenture ? ["INDENTURE"] : ["CREDIT_AGREEMENT", "AMENDED_AND_RESTATED_AGREEMENT"];
+    // Reuses the same generic label->type classifier findAllAgreementReferences
+    // already applies to a dated self-reference (task §17's own real-LSB-
+    // Joinder fix) - a bare named mention with no attached date deserves
+    // the identical type vocabulary, not a narrower Indenture/Credit-
+    // Agreement-only guess (a real, previously-dormant gap Phase 2D's own
+    // real testing surfaced: "subject to the Intercreditor Agreement"
+    // could never resolve even when a real Intercreditor Agreement
+    // document was present in the package).
+    const targetTypes: DocumentType[] = TARGET_TYPES_BY_HINT[classifyAgreementLabel(lead.namedAgreementHint)];
     const candidates = classifications.filter((c) => c.documentId !== lead.sourceDocumentId && targetTypes.includes(c.type));
     if (candidates.length === 1) return { ...lead, targetDocumentId: candidates[0]!.documentId, status: "REVIEW_REQUIRED", unresolvedReason: "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation" };
     if (candidates.length === 0) return { ...lead, status: "UNRESOLVED", unresolvedReason: `no document of type ${targetTypes.join("/")} exists in this package` };

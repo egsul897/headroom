@@ -25,7 +25,33 @@ export interface StructuralIndex {
   getSiblings(nodeKey: string): StructuralNode[];
   /** Every node structurally beneath this one, at any depth, in document order. */
   getDescendants(nodeKey: string): StructuralNode[];
-  getDefinition(term: string): DetectedDefinition | undefined;
+  /**
+   * `documentId`, when supplied, disambiguates a term declared in more
+   * than one document of the SAME multi-document index (task §21's own
+   * cross-instrument-isolation requirement, discovered as a real,
+   * previously-dormant gap by Phase 2D: a flat term->definition map is
+   * only safe when the index covers exactly one document at a time, which
+   * was true for every caller before Phase 2D's own multi-document
+   * package index). Omitting it preserves the original single-document
+   * behavior (first/only match) for every existing caller.
+   */
+  getDefinition(term: string, documentId?: string): DetectedDefinition | undefined;
+  /**
+   * Phase 2D extension (docs/phase-2d-covenant-context-retrieval.md §8) -
+   * `getDefinition`'s own DetectedDefinition only carries a bounded
+   * 200-char excerpt (structural-definitions.ts's own EXCERPT_LENGTH); a
+   * downstream analyzer needs the FULL definition body, which real
+   * drafting never marks with an explicit end boundary. Computed
+   * structurally, never by content heuristics: a definition's own span
+   * runs from its declaration's charStart to the NEXT definition
+   * declaration's charStart in the same document (or that document's own
+   * text end for the last definition) - the same "use structural
+   * boundaries, not arbitrary chunks" discipline this codebase already
+   * applies everywhere else (Phase 2B's own batching rule, task §23).
+   */
+  getDefinitionFullText(term: string, documentId?: string): string | undefined;
+  /** Every definition detected in the whole package, in document order - lets a caller scan for known-term mentions without re-deriving the definitions list Phase 2A already built this index from. */
+  allDefinitions(): DetectedDefinition[];
   /** Every reference whose source is this node (or a descendant of it, when includeDescendants is true). */
   findReferencesFrom(nodeKey: string, includeDescendants?: boolean): DetectedReference[];
   /** Reverse lookup (task §9): every reference that resolves TO this node. */
@@ -62,6 +88,13 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
   allNodesSorted.sort((a, b) => a.charStart - b.charStart);
 
   const definitionsByNormalizedTerm = new Map(definitions.map((d) => [d.normalizedTerm, d] as const));
+  const definitionsByDocumentSorted = new Map<string, DetectedDefinition[]>();
+  for (const d of definitions) {
+    const list = definitionsByDocumentSorted.get(d.documentId) ?? [];
+    list.push(d);
+    definitionsByDocumentSorted.set(d.documentId, list);
+  }
+  for (const list of definitionsByDocumentSorted.values()) list.sort((a, b) => a.charStart - b.charStart);
 
   const referencesBySourceKey = new Map<string, DetectedReference[]>();
   const referencesByTargetKey = new Map<string, DetectedReference[]>();
@@ -125,7 +158,24 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
       return siblingPool.filter((n) => n.nodeKey !== nodeKey);
     },
     getDescendants,
-    getDefinition: (term) => definitionsByNormalizedTerm.get(term.toLowerCase().replace(/\s+/g, " ").trim()),
+    getDefinition: (term, documentId) => {
+      const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
+      if (documentId) return (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === normalized);
+      return definitionsByNormalizedTerm.get(normalized);
+    },
+    getDefinitionFullText: (term, documentId) => {
+      const normalized = term.toLowerCase().replace(/\s+/g, " ").trim();
+      const def = documentId ? (definitionsByDocumentSorted.get(documentId) ?? []).find((d) => d.normalizedTerm === normalized) : definitionsByNormalizedTerm.get(normalized);
+      if (!def) return undefined;
+      const doc = nodesByDocument.get(def.documentId);
+      if (!doc) return undefined;
+      const sameDocumentDefs = definitionsByDocumentSorted.get(def.documentId) ?? [];
+      const ownIndex = sameDocumentDefs.findIndex((d) => d.charStart === def.charStart && d.normalizedTerm === def.normalizedTerm);
+      const next = ownIndex >= 0 ? sameDocumentDefs[ownIndex + 1] : undefined;
+      const spanEnd = next ? next.charStart : doc.text.length;
+      return doc.text.slice(def.charStart, spanEnd);
+    },
+    allDefinitions: () => [...definitions],
     findReferencesFrom: (nodeKey, includeDescendants = false) => {
       const direct = referencesBySourceKey.get(nodeKey) ?? [];
       if (!includeDescendants) return [...direct];

@@ -56,6 +56,39 @@ const PATTERNS: ReferencePattern[] = [
   { kind: "EXHIBIT", re: /Exhibit\s+([A-Z0-9]+(?:\.\d+)?)/g, normalize: (m) => m[1]! },
 ];
 
+/**
+ * Phase 2D reuse (docs/phase-2d-covenant-context-retrieval.md §8/§12) -
+ * absolute (never relative-clause, which needs an enclosing SECTION this
+ * caller's text may not have one of) Section/Article/Schedule/Exhibit
+ * mentions in arbitrary text, with no enclosing-node computation - for
+ * detecting references INSIDE a definition's own full text (which is
+ * prose, not itself a StructuralNode Phase 2A's clause tree covers), where
+ * detectStructuralReferences's own enclosing-node/relative-clause logic
+ * would need char offsets relative to the whole document this caller does
+ * not have. Reuses the exact same SECTION/ARTICLE/SCHEDULE/EXHIBIT
+ * patterns as detectStructuralReferences, never a second pattern set.
+ */
+export interface RawReferenceMention {
+  targetKind: ReferenceTargetKind;
+  normalizedTarget: string;
+  referenceText: string;
+  charStart: number;
+}
+
+export function detectAbsoluteReferenceMentions(text: string): RawReferenceMention[] {
+  const results: RawReferenceMention[] = [];
+  for (const pattern of PATTERNS) {
+    if (pattern.kind === "CLAUSE") continue; // relative-only, needs an enclosing SECTION this caller doesn't have.
+    const re = new RegExp(pattern.re.source, pattern.re.flags);
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(text)) !== null) {
+      results.push({ targetKind: pattern.kind, normalizedTarget: pattern.normalize(m), referenceText: m[0], charStart: m.index });
+      if (m.index === re.lastIndex) re.lastIndex++;
+    }
+  }
+  return results.sort((a, b) => a.charStart - b.charStart);
+}
+
 /** Deepest structural node whose owned span contains a given offset - shared with structural-definitions.ts so both use the identical "which node is this text physically inside" rule. */
 export function findEnclosingNode(charStart: number, nodesSortedByStart: StructuralNode[]): StructuralNode | null {
   // Deepest (most specific) node whose owned span contains this offset - nodes are pre-sorted by charStart, so the LAST node starting at-or-before charStart whose charEnd covers it is the tightest containing node found by scanning candidates in reverse start order.
