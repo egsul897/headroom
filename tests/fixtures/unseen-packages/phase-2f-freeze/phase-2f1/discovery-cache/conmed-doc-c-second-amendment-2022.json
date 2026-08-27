@@ -1,0 +1,388 @@
+{
+  "summary": {
+    "documentId": "conmed-doc-c-second-amendment-2022",
+    "nodesInspected": 23,
+    "deterministicCandidatesGenerated": 9,
+    "semanticCandidatesEvaluated": 14,
+    "duplicatesBeforeReconciliation": 2,
+    "finalCandidateCount": 15,
+    "wallClockMs": 57157.87815600005,
+    "modelCalls": 5,
+    "inputTokens": 12249,
+    "outputTokens": 5564
+  },
+  "candidates": [
+    {
+      "discoveryId": "discovery-candidate:82ab68c5c01778a2bb39fe52",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::2(a)(i)"
+      ],
+      "normalizedSourceRef": "2(a)(i)",
+      "families": [
+        "FINANCIAL_COVENANTS",
+        "DEFINITIONS_CALCULATION_RULES"
+      ],
+      "role": "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+      "description": "Amends the definition of Consolidated Senior Secured Leverage Ratio by raising an internal dollar reference from $75,000,000 to $100,000,000, altering how that ratio is calculated.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "dollar_value",
+        "financial_metric"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.7,
+      "sourceCitation": "(i) The definition of \" Consolidated Senior Secured Leverage Ratio \" is hereby amended by deleting the\nreference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\".\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:c20e09142cc0ece17338ee08",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::2(a)(ii)"
+      ],
+      "normalizedSourceRef": "2(a)(ii)",
+      "families": [
+        "FINANCIAL_COVENANTS",
+        "DEFINITIONS_CALCULATION_RULES"
+      ],
+      "role": "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+      "description": "Amends the definition of Consolidated Total Leverage Ratio by raising an internal dollar reference from $75,000,000 to $100,000,000, altering how that ratio is calculated.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "dollar_value",
+        "financial_metric"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.7,
+      "sourceCitation": "(ii) The definition of \" Consolidated Total Leverage Ratio \" is hereby amended by deleting the\nreference therein to \"$75,000,000\" and substituting in lieu thereof the dollar amount \"$100,000,000\".\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:e2222d3cba3f4fe95ac82ab2",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::2(a)(iii)",
+        "conmed-doc-c-second-amendment-2022::2"
+      ],
+      "normalizedSourceRef": "2(a)(iii)",
+      "families": [
+        "INDEBTEDNESS",
+        "DEFINITIONS_CALCULATION_RULES"
+      ],
+      "role": "EXCEPTION",
+      "description": "Adds a proviso to the Indebtedness definition excluding earn-out obligations from any other acquisition from constituting Indebtedness unless and until finally determined due and payable and unpaid within five days thereafter.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(iii) The definition of \" Indebtedness \" is hereby amended by inserting the following proviso at the\nend thereof: \"; provided, further, that no earn-out obligation arising in\nconnection with any other acquisition by the Parent Borrower or any of its Subsidiaries shall constitute Indebtedness unless ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:d8f59970e77dbe9d8f16f016",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::2(b)"
+      ],
+      "normalizedSourceRef": "2(b)",
+      "families": [
+        "FINANCIAL_COVENANTS"
+      ],
+      "role": "FINANCIAL_TEST",
+      "description": "Restates the Consolidated Total Leverage Ratio covenant, prohibiting the ratio from exceeding a schedule of maximum permitted levels for specified quarterly testing periods.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "financial_metric"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(b) Section 7.1(b) ( Consolidated Total Leverage Ratio ) of the\nCredit Agreement is hereby amended and restated as follows: \"Permit the Consolidated Total Leverage Ratio as at the last day of any period of four\nconsecutive fiscal quarters of the Parent Borrower and its Subsidiaries to exceed ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:0b2fc3daa2fd4b3c69dec2b2",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::2"
+      ],
+      "normalizedSourceRef": "2",
+      "families": [
+        "FINANCIAL_COVENANTS",
+        "ACQUISITIONS"
+      ],
+      "role": "RATIO_BASED_PERMISSION",
+      "description": "Permits the Parent Borrower, upon consummating a Material Acquisition and making a timely election, to increase the maximum permitted Consolidated Total Leverage Ratio by up to 0.50x for four consecutive fiscal quarters following the acquisition.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION 2. Amendments .\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f4e59d181c085450fb757e7e",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::2"
+      ],
+      "normalizedSourceRef": "2",
+      "families": [
+        "FINANCIAL_COVENANTS"
+      ],
+      "role": "PROVISO",
+      "description": "Caps the increased (stepped-up) Consolidated Total Leverage Ratio at no more than 6.00 to 1.00 regardless of the scheduled step-up amount.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "SECTION 2. Amendments .\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:079b408979d94db83aa4778e",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::2"
+      ],
+      "normalizedSourceRef": "2",
+      "families": [
+        "NOTICE_REQUIREMENTS",
+        "FINANCIAL_COVENANTS"
+      ],
+      "role": "CONDITION",
+      "description": "Requires the Parent Borrower to deliver notice of its step-up election no later than the earlier of 30 days after consummating the Material Acquisition or the date financial statements for that fiscal quarter are due under Section 6.1(a) or (b).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.75,
+      "sourceCitation": "SECTION 2. Amendments .\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:3c3c3ff7e0160b91097a2fa8",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::3"
+      ],
+      "normalizedSourceRef": "3",
+      "families": [],
+      "otherFamilyDescription": "This is a closing/conditions-precedent provision, not a covenant restricting business conduct; it merely sets conditions for the amendment's effectiveness.",
+      "role": "CONDITION",
+      "description": "Establishes that the amendments become effective on the date on which the enumerated conditions precedent are satisfied.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "headline_heading"
+      ],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.6,
+      "sourceCitation": "SECTION 3. Conditions to Effectiveness of Amendment . The amendments set forth in this Amendment shall become effective on the date\n(the \" Second Amendment Effective Date \") on which the following conditions precedent have been satisfied:\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:2818be2bc53e87ba8a2c0ed1",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::3(a)",
+        "conmed-doc-c-second-amendment-2022::3"
+      ],
+      "normalizedSourceRef": "3(a)",
+      "families": [],
+      "otherFamilyDescription": "Procedural closing condition requiring execution and delivery of the amendment by specified parties; not an economic covenant.",
+      "role": "CONDITION",
+      "description": "Requires the Administrative Agent to have received the Amendment executed by the Administrative Agent, the Parent Borrower, each Foreign Subsidiary Borrower party to the Credit Agreement, and Lenders constituting the Required Lenders.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.7,
+      "sourceCitation": "(a) The Administrative Agent shall have received this Amendment executed and delivered by the Administrative Agent,\nthe Parent Borrower, each Foreign Subsidiary Borrower party to the Credit Agreement on the Second Amendment Effective Date and Lenders constituting the Required Lenders.\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:8b963f39b7b81769ae94cdb0",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::3(b)",
+        "conmed-doc-c-second-amendment-2022::3"
+      ],
+      "normalizedSourceRef": "3(b)",
+      "families": [],
+      "otherFamilyDescription": "Procedural closing condition requiring payment of fees and expenses; not a substantive covenant restricting activity.",
+      "role": "CONDITION",
+      "description": "Requires that Lenders and the Administrative Agent have received all invoiced fees and reasonable documented expenses due on or before the Second Amendment Effective Date, including counsel fees under Section 6.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.7,
+      "sourceCitation": "(b) The Lenders and the Administrative Agent shall have received (to the extent invoiced at least two Business Days\nprior to the Second Amendment Effective Date) all fees and reasonable and documented expenses required to be paid on or before the Second Amendment Effective Date pursuant to the Credi",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:36aa9474f577520c2d443077",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::4(a)",
+        "conmed-doc-c-second-amendment-2022::4"
+      ],
+      "normalizedSourceRef": "4(a)",
+      "families": [
+        "EVENTS_OF_DEFAULT"
+      ],
+      "otherFamilyDescription": "Representation regarding accuracy of existing representations and warranties as a condition tied to the amendment; not a traditional covenant family but functions as a condition precedent.",
+      "role": "CONDITION",
+      "description": "Requires that all representations and warranties in the Loan Documents be true and correct (subject to materiality qualifiers) as of the Second Amendment Effective Date, with a carve-out for representations expressly made as of an earlier date.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.6,
+      "sourceCitation": "(a) each of the representations and warranties made by any Loan Party in or pursuant to the Loan Documents is, after giving effect to this Amendment, true and correct in all material respects\n(or in all respects if qualified by materiality) on and as of the Second Amendment Effective Date as if made",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:7113cd409ae97ee97cc0eaa6",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::4(b)",
+        "conmed-doc-c-second-amendment-2022::4"
+      ],
+      "normalizedSourceRef": "4(b)",
+      "families": [
+        "EVENTS_OF_DEFAULT"
+      ],
+      "role": "CONDITION",
+      "description": "Requires that after giving effect to the Amendment, no Default or Event of Default has occurred and is continuing.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.7,
+      "sourceCitation": "(b) after giving effect to this Amendment, no Default or Event\nof Default has occurred and is continuing. ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:0853d6477ae1eec9eb0fdacf",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::4"
+      ],
+      "normalizedSourceRef": "4",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 4 (Representations and Warranties) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION 4. Representations and Warranties .\nEach Borrower hereby represents and warrants that ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f0ea0c5df2274d530240b1be",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::5"
+      ],
+      "normalizedSourceRef": "5",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 5 (Effects on Credit Documents) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION 5. Effects on Credit Documents . ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:740c456d51b7fac20294e7c4",
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "structuralNodeKeys": [
+        "conmed-doc-c-second-amendment-2022::8"
+      ],
+      "normalizedSourceRef": "8",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 8 (Counterparts) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION 8.\nCounterparts . This Amendment may be executed by one or more of the parties to this Amendment on any number of separate counterparts, and all of said counterparts taken together shall be deemed to constitute one and the same instrument.\nDelivery of an executed signature page of this Amend",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    }
+  ]
+}

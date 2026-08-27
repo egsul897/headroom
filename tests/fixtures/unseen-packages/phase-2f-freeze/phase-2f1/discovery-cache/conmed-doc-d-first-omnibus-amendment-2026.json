@@ -1,0 +1,684 @@
+{
+  "summary": {
+    "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+    "nodesInspected": 28,
+    "deterministicCandidatesGenerated": 10,
+    "semanticCandidatesEvaluated": 26,
+    "duplicatesBeforeReconciliation": 4,
+    "finalCandidateCount": 27,
+    "wallClockMs": 82313.549765,
+    "modelCalls": 8,
+    "inputTokens": 20693,
+    "outputTokens": 7546
+  },
+  "candidates": [
+    {
+      "discoveryId": "discovery-candidate:0533ca8ef166f0f58ce629cf",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::1(a)"
+      ],
+      "normalizedSourceRef": "1(a)",
+      "families": [],
+      "otherFamilyDescription": "This is a mechanical amendment provision effecting textual changes to the Credit Agreement; it is not itself a substantive covenant restriction.",
+      "role": "OTHER_RELEVANT_RULE",
+      "description": "Amends the Credit Agreement (excluding certain Exhibits/Schedules) by deleting stricken text and adding double-underlined text as shown in the attached Amended Credit Agreement.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.4,
+      "sourceCitation": "(a) The Credit Agreement (other than the Exhibits\nand Schedules (other than as set forth in clause ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:fe7c290b62285c0fe5df791d",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::1(b)"
+      ],
+      "normalizedSourceRef": "1(b)",
+      "families": [],
+      "otherFamilyDescription": "Administrative addition of new Term A-2 Commitments to a schedule; not itself a covenant but may create new indebtedness capacity relevant to INDEBTEDNESS family.",
+      "role": "OTHER_RELEVANT_RULE",
+      "description": "Adds newly created Term A-2 Commitments (as set forth on Schedule 1 of the Amendment) to Schedule 1.1 of the Credit Agreement.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.35,
+      "sourceCitation": "(b) below) thereof) is hereby amended effective\nto delete the stricken text (indicated textually in the same manner as the following example:\nstricken text ) and to add the double-underlined\ntext (indicated textually in the same manner as the following example: double-underlined\ntext ) as set forth ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:a4d203452024f28fa74ea18d",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::1(c)"
+      ],
+      "normalizedSourceRef": "1(c)",
+      "families": [
+        "COLLATERAL_SECURITY",
+        "GUARANTEES"
+      ],
+      "otherFamilyDescription": "",
+      "role": "OTHER_RELEVANT_RULE",
+      "description": "Amends the Guarantee and Collateral Agreement (excluding Exhibits/Schedules) by deleting stricken text and adding double-underlined text as shown in the attached Amended Guarantee and Collateral Agreement.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "covenant_verb"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.4,
+      "sourceCitation": "(c) The Guarantee and Collateral Agreement\n(other than the Exhibits and Schedules thereof) is hereby amended effective to delete the\nstricken text (indicated textually in the same manner as the following example: stricken\ntext ) and to add the double-underlined text (indicated textually in the same\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:459716195301d6b812ef269e",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::1"
+      ],
+      "normalizedSourceRef": "1",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 1 (Amendments .) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION 1. Amendments .\nOn and as of the First Amendment Effective Date (as defined below), each party hereto hereby agrees that:\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f3db3f6e6688c482dcbd23b5",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::2(a)"
+      ],
+      "normalizedSourceRef": "2(a)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "PERMISSION",
+      "description": "Each Term A-2 Lender commits to fund its share of new Term A-2 Loans in the amount specified on Schedule 1, effectively authorizing incurrence of this new tranche of indebtedness.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.75,
+      "sourceCitation": "(a) Each Term A-2 Lender party hereto agrees to make Term A-2 Loans in the amount set forth opposite such\nTerm A-2 Lender's name on Schedule 1 hereto under the caption \"Term A-2 Commitments\".\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:ac557ccc0b1a330ce04c06c6",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::2(b)"
+      ],
+      "normalizedSourceRef": "2(b)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "OTHER_RELEVANT_RULE",
+      "description": "The economic and legal terms governing the Term A-2 Facility (pricing, covenants, etc.) are incorporated by reference from Exhibit A and a separate Fee Letter dated May 1, 2026, rather than being set out in this section.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "(b) The terms of the Term A-2 Facility are as set forth in Exhibit A hereto and that certain Fee Letter, dated\nas of May 1, 2026, between the Parent Borrower and the Administrative Agent.\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:bcc9d9998ccb051d153cd542",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::2"
+      ],
+      "normalizedSourceRef": "2",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 2 (Increased) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION 2. Increased\nFacility Activation Notice . The Parent Borrower and each Term A-2 Lender hereby notify the Administrative Agent that, subject to the\nterms and conditions herein:\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:54f2d04b7114ed61de87bb98",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3",
+      "families": [],
+      "otherFamilyDescription": "Overall effectiveness trigger for the amendment - not itself a covenant but a condition precedent that must be satisfied before the amendment (including the Term A-2 loan funding) becomes effective.",
+      "role": "CONDITION",
+      "description": "States that the amendment, related amendments, and the Term A-2 Lender's funding commitment become effective only upon satisfaction of all conditions precedent listed in subsections (a)-(e).",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "SECTION 3. Effectiveness .\nThis Amendment and the amendments set forth herein and, subject to the other conditions set forth in the Amended Credit Agreement, the\nagreement of each Term A-2 Lender party hereto to make a Term A-2 Loan, shall become effective as of the date (the \" First Amendment\nEffec",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:87c15bc0ed846c1062ec25bd",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(a)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(a)",
+      "families": [],
+      "otherFamilyDescription": "General closing-deliverables condition; introduces the list of documents the Administrative Agent must receive.",
+      "role": "CONDITION",
+      "description": "Requires the Administrative Agent to have received specified closing deliverables, in form and substance satisfactory to it, dated as of the First Amendment Effective Date.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.6,
+      "sourceCitation": "(a) The Administrative Agent shall have received each of the following, dated as of the First Amendment Effective\nDate (unless otherwise agreed to by the Administrative Agent), in form and substance satisfactory to the Administrative Agent:\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:610ca84119d668de5eea66f2",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(a)(i)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(a)(i)",
+      "families": [
+        "AMENDMENT_WAIVER_CONSENT"
+      ],
+      "role": "CONDITION",
+      "description": "Requires due execution and delivery of the Amendment by the Parent Borrower, Loan Parties, and each Lender as a condition to effectiveness.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.6,
+      "sourceCitation": "(i) this Amendment, duly executed and delivered by the Parent Borrower, the Loan Parties and each Lender party\nhereto;\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:1d06a29715cbbe2bda346171",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(a)(ii)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(a)(ii)",
+      "families": [],
+      "otherFamilyDescription": "Requirement for customary legal opinions from multiple counsel; not tied to a specific covenant family.",
+      "role": "CONDITION",
+      "description": "Requires delivery of customary legal opinions from named U.S., Dutch, and in-house counsel as a closing condition.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "(ii) a customary legal opinion of each of ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:4b0c408b0ce6d002b0d84646",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(a)(iii)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(a)(iii)",
+      "families": [
+        "GUARANTOR_REQUIREMENTS"
+      ],
+      "role": "CONDITION",
+      "description": "Requires each Loan Party to deliver a certificate, including a long-form good standing certificate (other than the Foreign Subsidiary Borrower), as a condition to effectiveness.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "(iii) a certificate of each Loan Party party to any Loan Document, dated as of the First Amendment Effective\nDate with appropriate insertions and attachments, including a long form good standing certificate for each Loan Party (other than the\nForeign Subsidiary Borrower) from its jurisdiction of org",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:5b28271e85ca146b78fe2808",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(a)(iv)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(a)(iv)",
+      "families": [
+        "FINANCIAL_COVENANTS"
+      ],
+      "otherFamilyDescription": "Solvency certification condition rather than an ongoing financial covenant, but closest related family.",
+      "role": "CONDITION",
+      "description": "Requires a solvency certificate from the Parent Borrower's CFO certifying the consolidated Solvency of the Parent Borrower and its Subsidiaries after giving effect to the new Indebtedness.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "(iv) a solvency certificate from the chief financial officer of the Parent Borrower, certifying that the Parent\nBorrower and its Subsidiaries, on a consolidated basis after giving effect to the incurrence of all Indebtedness in connection herewith\non the First Amendment Effective Date, are Solvent.\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:5ec1e3d21147674bf6df239c",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(b)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(b)",
+      "families": [],
+      "otherFamilyDescription": "Representation and warranty accuracy condition to effectiveness; not a specific covenant family but a bring-down condition.",
+      "role": "CONDITION",
+      "description": "Requires that representations and warranties in the Amended Credit Agreement and other Loan Documents be true and correct (in all material respects or all respects if qualified by materiality) as of the First Amendment Effective Date, subject to a proviso for representations expressly made as of an earlier date.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "(b) Each of the representations and warranties made by any Loan Party in or pursuant to the Amended Credit\nAgreement and the other Loan Documents shall be true and correct in all material respects (or in all respects if qualified by materiality)\non and as of the First Amendment Effective Date as if ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:047b4d99979f0817e8ebbbf0",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(b)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(b)",
+      "families": [],
+      "otherFamilyDescription": "Proviso carving out representations tied to an earlier date from the bring-down requirement.",
+      "role": "PROVISO",
+      "description": "Excepts representations and warranties expressly stated to relate to an earlier date from the as-of-Effective-Date bring-down, requiring instead accuracy as of that earlier date.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.5,
+      "sourceCitation": "(b) Each of the representations and warranties made by any Loan Party in or pursuant to the Amended Credit\nAgreement and the other Loan Documents shall be true and correct in all material respects (or in all respects if qualified by materiality)\non and as of the First Amendment Effective Date as if ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:7433df2009d0e5d7b5f82732",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(c)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(c)",
+      "families": [
+        "EVENTS_OF_DEFAULT"
+      ],
+      "role": "CONDITION",
+      "description": "Requires that no Default or Event of Default has occurred and is continuing on the First Amendment Effective Date or after giving effect to the amendment.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.65,
+      "sourceCitation": "(c) No Default or Event of Default has occurred and is continuing on the First Amendment Effective Date or\nafter giving effect to the amendments contemplated herein.\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:eef261b3f88fe00c09152b39",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(d)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(d)",
+      "families": [],
+      "otherFamilyDescription": "Fee and expense payment condition; not a substantive covenant family.",
+      "role": "CONDITION",
+      "description": "Requires payment of all fees due to Lenders and the Administrative Agent and reimbursement of invoiced expenses as of the First Amendment Effective Date.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "UNCERTAIN",
+      "confidence": 0.55,
+      "sourceCitation": "(d) The Lenders and the Administrative Agent shall have received all fees required to be paid, and all expenses\nfor which invoices have been presented on or before the First Amendment Effective Date.\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:9016e8bf77cd399619caa7ab",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(e)(i)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(e)(i)",
+      "families": [
+        "REPORTING_INFORMATION"
+      ],
+      "role": "CONDITION",
+      "description": "Requires delivery of KYC/AML documentation about the Parent Borrower and Subsidiary Guarantors reasonably requested by the Administrative Agent, per specified notice timing, as a condition to effectiveness.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "(i) The Administrative Agent shall have received, at least three days prior to the First Amendment Effective\nDate, all such documentation and other information about the Parent Borrower and the Subsidiary Guarantors as shall have been reasonably\nrequested by the Administrative Agent in writing at le",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:2e54aff83b51ad81f702b8f2",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::3(e)(ii)",
+        "conmed-doc-d-first-omnibus-amendment-2026::3"
+      ],
+      "normalizedSourceRef": "3(e)(ii)",
+      "families": [
+        "REPORTING_INFORMATION"
+      ],
+      "role": "CONDITION",
+      "description": "Requires delivery of a Beneficial Ownership Certification to a requesting Lender for any Borrower qualifying as a 'legal entity customer' under the Beneficial Ownership Regulation, subject to specified notice timing.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "(ii) to the extent any Borrower qualifies as a \"legal entity customer\" under the Beneficial Ownership\nRegulation, at least three days prior to the First Amendment Effective Date, if any Lender has requested the same in a written notice\nto the Parent Borrower at least 10 days prior to the First Amend",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:ffa2bfb136f58e4bfc47ca6c",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::4(i)"
+      ],
+      "normalizedSourceRef": "4(i)",
+      "families": [
+        "GUARANTEES",
+        "COLLATERAL_SECURITY"
+      ],
+      "role": "OTHER_RELEVANT_RULE",
+      "description": "Each Reaffirming Party consents to the Amendment and reaffirms that its existing guarantees, pledges, grants of security interests, acknowledgements, obligations and consents under the Guarantee and Collateral Agreement and other Loan Documents remain in full force and effect notwithstanding the Amendment and the new Term A-2 borrowing.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "permitted_construct",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "(i) consents to the Amendment and the transactions contemplated hereby and hereby confirms its guarantees, pledges, grants of security,\nacknowledgements, obligations and consents under the Guarantee and Collateral Agreement and the other Loan Documents to which it is a\nparty and agrees that notwiths",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:0a7b238062d937e76b8a3800",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::4"
+      ],
+      "normalizedSourceRef": "4",
+      "families": [
+        "COLLATERAL_SECURITY"
+      ],
+      "role": "OTHER_RELEVANT_RULE",
+      "description": "Each Reaffirming Party ratifies the Security Documents and other Loan Documents to which it is a party.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "SECTION 4. Reaffirmation .\nEach of the Parent Borrower and the Loan Parties party hereto (together with the Parent Borrower, the \" Reaffirming Parties \")\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:a27a354d98983dd81b730114",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::4"
+      ],
+      "normalizedSourceRef": "4",
+      "families": [
+        "LIENS",
+        "COLLATERAL_SECURITY"
+      ],
+      "role": "EXCEPTION",
+      "description": "Confirms that, after giving effect to the Amendment and the Term A-2 borrowing, all Liens and security interests under the Security Documents remain continuously perfected and of the same priority, except as to Permitted Liens.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION 4. Reaffirmation .\nEach of the Parent Borrower and the Loan Parties party hereto (together with the Parent Borrower, the \" Reaffirming Parties \")\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:35df77641bb4f2cbc0429a99",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::4"
+      ],
+      "normalizedSourceRef": "4",
+      "families": [
+        "REPORTING_INFORMATION"
+      ],
+      "role": "CONDITION",
+      "description": "Each Reaffirming Party confirms that its representations and warranties in the Security Documents remain true and correct in all material respects as of the date hereof (or as of the applicable date if expressly dated).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.75,
+      "sourceCitation": "SECTION 4. Reaffirmation .\nEach of the Parent Borrower and the Loan Parties party hereto (together with the Parent Borrower, the \" Reaffirming Parties \")\n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:5d7b558610f155c72c7b7d57",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::5"
+      ],
+      "normalizedSourceRef": "5",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 5 (Effect .) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION 5. Effect .\nExcept as expressly amended hereby, all of the representations, warranties, terms, covenants and conditions of the Loan Documents shall\nremain unamended and not waived and shall continue to be in full force and effect. This Amendment is a Loan Document and an Increased\nFacility A",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:acfd84fbea5737910f45f8b2",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::6"
+      ],
+      "normalizedSourceRef": "6",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 6 (Counterparts .) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION 6. Counterparts .\nThis Amendment may be executed by one or more of the parties to this Amendment on any number of separate counterparts, and all of said\ncounterparts taken together shall be deemed to constitute one and the same instrument. The words \"execution,\" \"signed,\"\n\"signature,\" \"deliv",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:484b95721ad030dc46926817",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::7"
+      ],
+      "normalizedSourceRef": "7",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 7 (Severability .) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "prohibitive_construction"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION 7. Severability .\nAny provision of this Amendment which is prohibited or unenforceable in any jurisdiction shall, as to such jurisdiction, be ineffective\nto the extent of such prohibition or unenforceability without invalidating the remaining provisions hereof, and any such prohibition or\nun",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:083cd6dfef12f2b697085822",
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "structuralNodeKeys": [
+        "conmed-doc-d-first-omnibus-amendment-2026::10"
+      ],
+      "normalizedSourceRef": "10",
+      "families": [
+        "COLLATERAL_SECURITY"
+      ],
+      "role": "OTHER_RELEVANT_RULE",
+      "description": "Confirms that the Amendment does not extinguish outstanding payment obligations under the Credit Agreement or discharge/release the Lien or priority of any Security Document or other security therefor.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "prohibitive_construction",
+        "exception_marker",
+        "covenant_verb"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.55,
+      "sourceCitation": "SECTION 10. NO NOVATION .\nThis Amendment shall not extinguish the obligations for the payment of money outstanding under the Credit Agreement or discharge or release\nthe Lien or priority of any Security Document or any other security therefor. Nothing herein contained shall be construed as a substit",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    }
+  ]
+}
