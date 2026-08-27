@@ -14,7 +14,7 @@ import { z } from "zod";
 import { CovenantFamily, ContractRuleType, RuleEvaluationClass, ContractRuleRelationshipType } from "@prisma/client";
 
 /** Builds a Zod enum from a Prisma-generated enum object's own values - one source of truth, never a hand-duplicated list. */
-function zodEnumFromPrismaEnum<T extends Record<string, string>>(prismaEnum: T) {
+export function zodEnumFromPrismaEnum<T extends Record<string, string>>(prismaEnum: T) {
   const values = Object.values(prismaEnum) as [string, ...string[]];
   return z.enum(values);
 }
