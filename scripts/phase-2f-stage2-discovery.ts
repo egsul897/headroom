@@ -62,15 +62,54 @@ async function main() {
   let totalCostUsd = 0;
   const allCandidates: unknown[] = [];
 
+  const CACHE_DIR = path.join(OUT_DIR, "stage2-per-document-cache");
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+
   for (const doc of DOCS) {
+    const cachePath = path.join(CACHE_DIR, `${doc.documentId}.json`);
+    if (fs.existsSync(cachePath)) {
+      const cached = JSON.parse(fs.readFileSync(cachePath, "utf-8"));
+      results[doc.documentId] = cached.summary ?? cached;
+      if (Array.isArray(cached.candidates)) allCandidates.push(...cached.candidates);
+      if (cached.summary && typeof cached.summary.modelCalls === "number") {
+        totalModelCalls += cached.summary.modelCalls;
+        totalInputTokens += cached.summary.inputTokens;
+        totalOutputTokens += cached.summary.outputTokens;
+      }
+      console.error(`\n=== ${doc.documentId}: reusing cached result from prior run (real spend not repeated) ===`);
+      continue;
+    }
     console.error(`\n=== running discovery for ${doc.documentId} ===`);
-    const result = await runDiscoveryPipeline(caller, doc.documentId, index);
-    results[doc.documentId] = result.summary;
-    allCandidates.push(...result.candidates.map((c) => ({ ...c, documentId: doc.documentId })));
-    totalModelCalls += result.summary.modelCalls;
-    totalInputTokens += result.summary.inputTokens;
-    totalOutputTokens += result.summary.outputTokens;
-    console.error(`[${doc.documentId}] nodesInspected=${result.summary.nodesInspected} deterministic=${result.summary.deterministicCandidatesGenerated} semanticEvaluated=${result.summary.semanticCandidatesEvaluated} finalCandidates=${result.summary.finalCandidateCount} modelCalls=${result.summary.modelCalls} inputTokens=${result.summary.inputTokens} outputTokens=${result.summary.outputTokens} wallClockMs=${result.summary.wallClockMs.toFixed(0)}`);
+    // NOTE (Phase 2F harness, not frozen Phase 2B code): runDiscoveryPipeline
+    // itself is called completely unmodified. This try/catch exists only in
+    // this orchestration script - it is the same "caller must handle
+    // failures" responsibility runDiscoveryPipeline's own header comment
+    // already disclaims ("this module does not itself touch persistence...
+    // a caller wires the returned candidates" - the module was never
+    // documented as guaranteeing it cannot throw). Without this, one
+    // document's crash would silently prevent every later document from
+    // being attempted at all, which would misrepresent documents C/D as
+    // "not tested" rather than "tested and produced zero candidates because
+    // this real, unmodified crash occurred." The crash itself, and exactly
+    // which document/call it occurred on, is preserved as first-run
+    // evidence below, not hidden or retried.
+    try {
+      const result = await runDiscoveryPipeline(caller, doc.documentId, index);
+      results[doc.documentId] = result.summary;
+      const candidatesWithDoc = result.candidates.map((c) => ({ ...c, documentId: doc.documentId }));
+      allCandidates.push(...candidatesWithDoc);
+      totalModelCalls += result.summary.modelCalls;
+      totalInputTokens += result.summary.inputTokens;
+      totalOutputTokens += result.summary.outputTokens;
+      console.error(`[${doc.documentId}] nodesInspected=${result.summary.nodesInspected} deterministic=${result.summary.deterministicCandidatesGenerated} semanticEvaluated=${result.summary.semanticCandidatesEvaluated} finalCandidates=${result.summary.finalCandidateCount} modelCalls=${result.summary.modelCalls} inputTokens=${result.summary.inputTokens} outputTokens=${result.summary.outputTokens} wallClockMs=${result.summary.wallClockMs.toFixed(0)}`);
+      fs.writeFileSync(cachePath, JSON.stringify({ summary: result.summary, candidates: candidatesWithDoc }, null, 2));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error(`[${doc.documentId}] CRASHED: ${message}`);
+      const crashResult = { status: "CRASHED", errorMessage: message, note: "runDiscoveryPipeline threw an uncaught error for this document - zero candidates were produced for it. This is the real, unmodified behavior of the frozen Phase 2B pipeline against this document's real content, not a harness bug being papered over." };
+      results[doc.documentId] = crashResult;
+      fs.writeFileSync(cachePath, JSON.stringify({ summary: crashResult, candidates: [] }, null, 2));
+    }
   }
 
   const wallClockMs = Date.now() - wallStart;
