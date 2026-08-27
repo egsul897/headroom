@@ -1,0 +1,539 @@
+{
+  "generatedAt": "2026-08-27T15:26:32.762Z",
+  "sectionsAttempted": 15,
+  "results": [
+    {
+      "sectionRef": "2",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "This is a guarantee enforcement/subrogation provision, not a covenant restricting operations, indebtedness, liens, dispositions, etc.",
+      "role": "Permits the Administrative Agent or Lenders to pursue remedies against a guarantor without first pursuing remedies against the borrower or other obligors",
+      "description": "Provides that the Administrative Agent or any Lender may, but is not obligated to, make demand or pursue remedies against any Guarantor without first proceeding against any Borrower, other Group Member, other Guarantor, or collateral.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.55,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Guarantee enforcement provision preserving creditor rights, not an economic covenant.",
+      "role": "Provides that failure to pursue other remedies or release of other obligors/collateral does not relieve the Guarantor of liability nor impair the Administrative Agent's or Lenders' rights against the Guarantor",
+      "description": "States that any failure to demand, pursue, collect, or realize upon other obligors or collateral, or any release thereof, shall not relieve any Guarantor of liability or impair the Administrative Agent's or Lenders' rights and remedies against such Guarantor.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.55,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Definitional clarification, not an operative covenant restriction.",
+      "role": "Defines the term 'demand' for purposes of the guarantee provision to include commencement and continuance of legal proceedings",
+      "description": "Clarifies that references to 'demand' hereunder include the commencement and continuance of any legal proceedings.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "confidence": 0.3,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.1",
+      "relativeRef": "(a)",
+      "families": [
+        "Guarantees"
+      ],
+      "role": "imposes an unconditional, irrevocable joint and several guarantee of payment and performance of Primary Obligations",
+      "description": "Each Guarantor jointly and severally guarantees the Borrowers' prompt payment and performance of Primary Obligations (excluding its own).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.95,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.1",
+      "relativeRef": "(b)",
+      "families": [
+        "Guarantees"
+      ],
+      "role": "caps each Guarantor's maximum liability to the amount permissible under insolvency laws",
+      "description": "Limits a Guarantor's aggregate liability under the guarantee to the amount that can be guaranteed without violating fraudulent transfer/insolvency statutes, after giving effect to contribution rights.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.9,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.1",
+      "relativeRef": "(c)",
+      "families": [
+        "Guarantees"
+      ],
+      "role": "provides that fluctuations in the amount of Primary Obligations do not impair the guarantee",
+      "description": "Confirms that the guarantee remains effective even if Primary Obligations exceed the Guarantor's stated liability, without affecting the Agent's or Secured Parties' rights.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.85,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.1",
+      "relativeRef": "(d)",
+      "families": [
+        "Guarantees"
+      ],
+      "role": "defines the term/duration of the guarantee, keeping it in effect until full satisfaction of obligations and termination of commitments",
+      "description": "The guarantee remains in full force until all Primary Obligations (excluding certain swap and contingent obligations) are paid in full, no Letters of Credit are outstanding, and Commitments are terminated, regardless of periods when no Primary Obligations exist.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.85,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.1",
+      "relativeRef": "(e)",
+      "families": [
+        "Guarantees"
+      ],
+      "role": "prevents third-party or partial payments from reducing or releasing a Guarantor's liability except payments made or received directly from that Guarantor",
+      "description": "Clarifies that payments made by or collected from any party other than the specific Guarantor do not modify, reduce, or release that Guarantor's continuing liability up to its maximum guarantee amount until obligations are fully satisfied.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.85,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.2",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Intercompany contribution right among guarantors; not a covenant restricting debt, liens, dispositions, etc.",
+      "role": "grants a right of contribution among co-guarantors for overpayment of guaranteed obligations",
+      "description": "Allows a Subsidiary Guarantor that paid more than its proportionate share of a guaranteed payment to seek contribution from other Subsidiary Guarantors that have not paid their share.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.4,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.2",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Cross-reference limiting the contribution right to another section's conditions; not itself an economic covenant.",
+      "role": "subordinates the contribution right to conditions set forth in Section 2.3",
+      "description": "States that each Subsidiary Guarantor's right of contribution is subject to the terms and conditions of Section 2.3.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "confidence": 0.3,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.2",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Preserves full guarantee liability; not a debt/lien/disposition/restricted payment covenant.",
+      "role": "preserves and does not limit each guarantor's full liability to the Administrative Agent and Lenders",
+      "description": "Clarifies that the contribution right does not limit any Subsidiary Guarantor's obligations and liabilities, and each remains liable for the full amount it guaranteed.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.35,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.3",
+      "relativeRef": "",
+      "families": [
+        "other"
+      ],
+      "otherFamilyDescription": "Guarantor subrogation/contribution waiver provision, not a traditional covenant basket (debt/lien/investment/dividend/asset-sale/affiliate-transaction restriction)",
+      "role": "prohibits guarantors from asserting subrogation, contribution, or reimbursement rights against borrowers, other guarantors, or collateral until all Primary Obligations are indefeasibly paid in full, letters of credit are undrawn/terminated, and commitments are terminated",
+      "description": "This clause bars any Guarantor from exercising subrogation or seeking contribution/reimbursement for payments made under the guarantee until all obligations are fully satisfied and commitments terminated.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.55,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.3",
+      "relativeRef": "",
+      "families": [
+        "other"
+      ],
+      "otherFamilyDescription": "Turnover/trust mechanic for premature subrogation payments received by a guarantor",
+      "role": "requires that any payment received by a Guarantor on account of subrogation prior to full payment of Primary Obligations be held in trust and turned over to the Administrative Agent for application against the obligations",
+      "description": "If a Guarantor nonetheless receives a subrogation-related payment before Primary Obligations are paid in full, it must hold such funds in trust and remit them to the Administrative Agent for application against the obligations.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.5,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.4",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "This provision addresses guarantor liability continuation and lender's rights to modify obligations/collateral without releasing guarantors; it is a guarantee-mechanics provision, not a borrower-facing covenant restricting indebtedness, liens, dispositions, restricted payments, or similar economic activity.",
+      "role": "Preserves guarantor liability and grants administrative agent/lenders broad discretion to amend, renew, extend, compromise, waive, or release Primary Obligations, collateral, or guarantees without discharging the guarantor.",
+      "description": "Each guarantor remains fully obligated under the guarantee even if the agent or lenders modify, extend, compromise, or release the underlying obligations, collateral, or other guarantees, and the agent has no duty to perfect or insure any lien securing the obligations.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.3,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.5",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Waiver of notice/reliance provisions for guarantee; not a financial covenant but a suretyship waiver clause",
+      "role": "waives notice and establishes conclusive reliance presumption regarding guaranteed obligations",
+      "description": "Each Guarantor waives notice of creation/renewal/accrual of Primary Obligations and agrees all dealings are conclusively presumed made in reliance on the guarantee.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.55,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.5",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Waiver of suretyship defenses (diligence, presentment, protest, demand, notice of default) - boilerplate guarantee mechanics, not a financial covenant",
+      "role": "waives diligence, presentment, protest, demand for payment and notice of default/nonpayment",
+      "description": "Each Guarantor waives diligence, presentment, protest, demand for payment and notice of default or nonpayment with respect to the Primary Obligations.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.5,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.5",
+      "relativeRef": "(a)",
+      "families": [],
+      "otherFamilyDescription": "Guarantee unconditionality provision - guarantee remains absolute regardless of validity/enforceability of underlying documents or collateral/offset rights",
+      "role": "provides that the guarantee is unconditional without regard to validity or enforceability of the Credit Agreement, other Loan Documents, Primary Obligations, or any collateral security, guarantee, or offset rights",
+      "description": "The guarantee is construed as continuing and unconditional without regard to the validity or enforceability of the Credit Agreement or other Loan Documents, the Primary Obligations, or any collateral security or right of offset held by the Administrative Agent or Lenders.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.55,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.5",
+      "relativeRef": "(b)",
+      "families": [],
+      "otherFamilyDescription": "Guarantee unconditionality provision - excludes defenses/setoffs/counterclaims (other than payment/performance) from discharging the guarantee",
+      "role": "provides that the guarantee is unconditional regardless of any defense, set-off or counterclaim (other than a defense of payment or performance) available to any Borrower or Group Member",
+      "description": "The guarantee remains absolute despite any defense, set-off, or counterclaim (other than payment or performance) that could be asserted against the Administrative Agent or Lenders.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.55,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.5",
+      "relativeRef": "(c)",
+      "families": [],
+      "otherFamilyDescription": "Guarantee unconditionality provision - excludes any other circumstance that might constitute an equitable or legal discharge from affecting the guarantee",
+      "role": "provides that the guarantee is unconditional regardless of any other circumstance that might constitute an equitable or legal discharge of the Group Member or Guarantor",
+      "description": "The guarantee remains absolute and unconditional notwithstanding any other circumstance, known or unknown, that might otherwise constitute an equitable or legal discharge of the underlying obligations or the guarantee itself.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.55,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.6",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Guarantee reinstatement provision - not a covenant restriction but a boilerplate guarantee mechanics clause governing when the guarantee revives after rescinded payments.",
+      "role": "Provides that the guarantee remains effective or is reinstated if payments on Primary Obligations are rescinded or must be returned due to insolvency or similar proceedings.",
+      "description": "States that the guarantee continues or is reinstated as though payment had not been made if any payment on the guaranteed obligations is later rescinded, avoided, or must be restored due to bankruptcy or similar proceedings.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.9,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.7",
+      "relativeRef": "",
+      "families": [
+        "OtherRestriction"
+      ],
+      "role": "imposes obligation",
+      "description": "Each Guarantor guarantees that payments under the guarantee will be made to the Administrative Agent without set-off or counterclaim, in Dollars or other required currency, at the Funding Office.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.7,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.8",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Keepwell support undertaking for Swap Obligations under the Commodity Exchange Act; not a traditional restrictive covenant (debt, liens, investments, etc.) but a credit support/guarantee-type obligation.",
+      "role": "imposes an affirmative obligation on each Qualified Keepwell Provider to provide funds or support to other Guarantors so they qualify as eligible contract participants for Swap Obligations",
+      "description": "Each Qualified Keepwell Provider jointly and severally undertakes to provide funds or support needed for other Guarantors to qualify as an eligible contract participant under the Commodity Exchange Act during the Swap Guarantee Eligibility Period.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.55,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.8",
+      "relativeRef": "proviso",
+      "families": [],
+      "otherFamilyDescription": "Fraudulent-conveyance savings clause limiting the keepwell obligation amount, not a traditional covenant family.",
+      "role": "caps/limits the liability of each Qualified Keepwell Provider to the maximum amount that would not render its obligations voidable under fraudulent transfer/conveyance law",
+      "description": "The keepwell obligation of each provider is limited to the maximum amount that can be incurred without making the obligation voidable under applicable fraudulent conveyance or fraudulent transfer law.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "confidence": 0.6,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.8",
+      "relativeRef": "second sentence",
+      "families": [],
+      "otherFamilyDescription": "Defines the temporal scope of the keepwell obligation; related to Swap Obligations support, not a standard covenant family.",
+      "role": "specifies the duration/termination conditions for the keepwell obligations (continuing until Loans, Reimbursement Obligations and other Obligations are paid in full, Commitments terminated, and no Letters of Credit outstanding)",
+      "description": "The keepwell obligations remain in effect until the Loans, Reimbursement Obligations and other Obligations (excluding swap and certain contingent obligations) are paid in full, commitments are terminated, and no Letters of Credit remain outstanding.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.5,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "2.8",
+      "relativeRef": "final sentence",
+      "families": [],
+      "otherFamilyDescription": "Interpretive/characterization clause establishing the provision as a 'keepwell, support, or other agreement' under CEA section 1a(18)(A)(v)(II); not itself a restrictive covenant.",
+      "role": "declares that the section constitutes a keepwell, support, or other agreement for purposes of the Commodity Exchange Act eligible contract participant definition",
+      "description": "Each Qualified Keepwell Provider intends and agrees that Section 2.8 constitutes a 'keepwell, support, or other agreement' for purposes of CEA section 1a(18)(A)(v)(II).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "confidence": 0.4,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "",
+      "families": [
+        "Liens"
+      ],
+      "role": "grants",
+      "description": "Each Grantor grants the Administrative Agent, for the ratable benefit of the Secured Parties, a security interest in substantially all of its present and after-acquired property (the Collateral), listed in clauses (a)-(n), to secure the Obligations.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.9,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(i)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes from the security interest any property where the grant is prohibited by law, requires an unobtained governmental consent, would breach or trigger default/termination under an existing contract or shareholder agreement, or would cause a newly acquired license to become non-exclusive or materially diminish its benefits, unless the restriction is legally ineffective.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.85,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(a)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes Capital Stock of CONMED Receivables Corporation or any similar special-purpose entity used for a Receivables Transfer Program, so long as pledging it is prohibited under that program.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.8,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(b)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes any Receivable that remains subject to a security interest granted under a permitted Receivables Transfer Program.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.8,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(c)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes Capital Stock in a non-Wholly-Owned Subsidiary that is restricted from pledge by organizational or shareholder agreements, requires an unobtained third-party consent, or would trigger a right of first refusal/offer held by a non-Group Member.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.8,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(d)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes Foreign Subsidiary Voting Stock in excess of 65.0% of any Foreign Subsidiary or Foreign Subsidiary Holdco from the security interest.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.8,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(e)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes assets, including Capital Stock, whose pledge would result in more than immaterial adverse tax consequences (e.g., under Section 956 of the Code), as reasonably determined by the Parent Borrower and notified to the Administrative Agent.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.8,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(f)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes specified deposit accounts used solely for payroll, withheld employment taxes, or amounts required to be paid to an employee benefit plan.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "confidence": 0.8,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(g)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes any asset where the Administrative Agent and Parent Borrower reasonably determine that the cost or burden of obtaining/perfecting a security interest outweighs the practical benefit to the Lenders, as evidenced in writing.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "confidence": 0.75,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(h)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes Capital Stock of GWH, Ltd or Largo Lakes-I Limited Partnership (or their successors/transferees) so long as it remains subject to a security interest granted in connection with the Largo Acquisition.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.8,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "3",
+      "relativeRef": "(ii)(i)",
+      "families": [
+        "Liens"
+      ],
+      "role": "excepts",
+      "description": "Excludes property of GWH, Ltd or Largo Lakes-I Limited Partnership (or their successors/transferees) held in connection with the Largo Acquisition so long as it remains subject to a security interest granted in connection with that acquisition.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.8,
+      "needsReview": false,
+      "roleWasValidEnum": false
+    },
+    {
+      "sectionRef": "4.1",
+      "relativeRef": "",
+      "families": [],
+      "otherFamilyDescription": "Representation/warranty incorporation provision, not a covenant restriction",
+      "role": "incorporates and affirms representations",
+      "description": "Incorporates by reference the representations and warranties of Article IV of the Credit Agreement as applied to each Guarantor, deeming them true and correct and reliable by the Administrative Agent and Lenders.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "confidence": 0.9,
+      "needsReview": true,
+      "roleWasValidEnum": false
+    }
+  ],
+  "invalidRoleValues": [
+    "Permits the Administrative Agent or Lenders to pursue remedies against a guarantor without first pursuing remedies against the borrower or other obligors",
+    "Provides that failure to pursue other remedies or release of other obligors/collateral does not relieve the Guarantor of liability nor impair the Administrative Agent's or Lenders' rights against the Guarantor",
+    "Defines the term 'demand' for purposes of the guarantee provision to include commencement and continuance of legal proceedings",
+    "imposes an unconditional, irrevocable joint and several guarantee of payment and performance of Primary Obligations",
+    "caps each Guarantor's maximum liability to the amount permissible under insolvency laws",
+    "provides that fluctuations in the amount of Primary Obligations do not impair the guarantee",
+    "defines the term/duration of the guarantee, keeping it in effect until full satisfaction of obligations and termination of commitments",
+    "prevents third-party or partial payments from reducing or releasing a Guarantor's liability except payments made or received directly from that Guarantor",
+    "grants a right of contribution among co-guarantors for overpayment of guaranteed obligations",
+    "subordinates the contribution right to conditions set forth in Section 2.3",
+    "preserves and does not limit each guarantor's full liability to the Administrative Agent and Lenders",
+    "prohibits guarantors from asserting subrogation, contribution, or reimbursement rights against borrowers, other guarantors, or collateral until all Primary Obligations are indefeasibly paid in full, letters of credit are undrawn/terminated, and commitments are terminated",
+    "requires that any payment received by a Guarantor on account of subrogation prior to full payment of Primary Obligations be held in trust and turned over to the Administrative Agent for application against the obligations",
+    "Preserves guarantor liability and grants administrative agent/lenders broad discretion to amend, renew, extend, compromise, waive, or release Primary Obligations, collateral, or guarantees without discharging the guarantor.",
+    "waives notice and establishes conclusive reliance presumption regarding guaranteed obligations",
+    "waives diligence, presentment, protest, demand for payment and notice of default/nonpayment",
+    "provides that the guarantee is unconditional without regard to validity or enforceability of the Credit Agreement, other Loan Documents, Primary Obligations, or any collateral security, guarantee, or offset rights",
+    "provides that the guarantee is unconditional regardless of any defense, set-off or counterclaim (other than a defense of payment or performance) available to any Borrower or Group Member",
+    "provides that the guarantee is unconditional regardless of any other circumstance that might constitute an equitable or legal discharge of the Group Member or Guarantor",
+    "Provides that the guarantee remains effective or is reinstated if payments on Primary Obligations are rescinded or must be returned due to insolvency or similar proceedings.",
+    "imposes obligation",
+    "imposes an affirmative obligation on each Qualified Keepwell Provider to provide funds or support to other Guarantors so they qualify as eligible contract participants for Swap Obligations",
+    "caps/limits the liability of each Qualified Keepwell Provider to the maximum amount that would not render its obligations voidable under fraudulent transfer/conveyance law",
+    "specifies the duration/termination conditions for the keepwell obligations (continuing until Loans, Reimbursement Obligations and other Obligations are paid in full, Commitments terminated, and no Letters of Credit outstanding)",
+    "declares that the section constitutes a keepwell, support, or other agreement for purposes of the Commodity Exchange Act eligible contract participant definition",
+    "grants",
+    "excepts",
+    "incorporates and affirms representations"
+  ],
+  "invalidFamilyValues": []
+}

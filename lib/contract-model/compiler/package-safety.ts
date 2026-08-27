@@ -24,6 +24,7 @@
  */
 import { detectAmendmentAndDefinitionalSignals } from "./coverage-audit/signals";
 import type { StructuralCoverageResult } from "./structural-coverage";
+import type { DiscoveryHealthState } from "./discovery/types";
 
 const AMENDMENT_DOCUMENT_TYPES = new Set(["AMENDMENT", "AMENDED_AND_RESTATED_AGREEMENT", "SUPPLEMENTAL_INDENTURE", "JOINDER"]);
 
@@ -40,6 +41,10 @@ export interface DocumentSafetyEntry {
   likelyAmendment: boolean;
   /** Task §15's own exact signal name - true only when likelyAmendment AND structuralInputInsufficient both hold. */
   potentiallyRelevantAmendmentNotFullyAnalyzed: boolean;
+  /** Phase 2F.2 §18 - Pass B semantic-discovery health for this document, independent of structural health: a document can be STRUCTURE_HEALTHY yet DISCOVERY_PARTIAL/FAILED if one or more section-level Pass B calls failed and were isolated rather than aborting the whole document. Defaults to DISCOVERY_HEALTHY when the caller does not supply discovery health (keeps this an additive, non-breaking extension of the Phase 2F.1 shape). */
+  discoveryHealth: DiscoveryHealthState;
+  /** True when discoveryHealth is not DISCOVERY_HEALTHY - the discovery-side analogue of structuralInputInsufficient. */
+  discoveryInputInsufficient: boolean;
 }
 
 export interface PackageSafetyResult {
@@ -57,6 +62,8 @@ export interface DocumentSafetyInput {
   coverage: StructuralCoverageResult;
   discoveryCandidateCount: number;
   declaredDocumentType?: string | null;
+  /** Phase 2F.2 §18 - optional so existing Phase 2F.1 callers that do not yet run discovery keep working unchanged; defaults to DISCOVERY_HEALTHY (never assumed FAILED merely because a caller omitted it). */
+  discoveryHealth?: DiscoveryHealthState;
 }
 
 export function computePackageSafety(packageKey: string, inputs: DocumentSafetyInput[]): PackageSafetyResult {
@@ -65,6 +72,7 @@ export function computePackageSafety(packageKey: string, inputs: DocumentSafetyI
     const classifiedAsAmendment = d.declaredDocumentType != null && AMENDMENT_DOCUMENT_TYPES.has(d.declaredDocumentType);
     const rawAmendmentSignal = detectAmendmentAndDefinitionalSignals(d.documentText.slice(0, 4000)).some((s) => s.category === "AMENDMENT");
     const likelyAmendment = classifiedAsAmendment || rawAmendmentSignal;
+    const discoveryHealth = d.discoveryHealth ?? "DISCOVERY_HEALTHY";
     return {
       documentId: d.documentId,
       structuralHealth: d.coverage.health,
@@ -73,22 +81,32 @@ export function computePackageSafety(packageKey: string, inputs: DocumentSafetyI
       structuralInputInsufficient,
       likelyAmendment,
       potentiallyRelevantAmendmentNotFullyAnalyzed: likelyAmendment && structuralInputInsufficient,
+      discoveryHealth,
+      discoveryInputInsufficient: discoveryHealth !== "DISCOVERY_HEALTHY",
     };
   });
 
   const failedOrInsufficientCount = documents.filter((d) => d.structuralInputInsufficient).length;
   const dangerousAmendments = documents.filter((d) => d.potentiallyRelevantAmendmentNotFullyAnalyzed);
+  const discoveryFailedDocs = documents.filter((d) => d.discoveryHealth === "DISCOVERY_FAILED");
+  const discoveryPartialDocs = documents.filter((d) => d.discoveryHealth === "DISCOVERY_PARTIAL");
   const reasons: string[] = [];
   let state: PackageSafetyState = "PACKAGE_SAFE";
 
   if (dangerousAmendments.length > 0) {
     state = "PACKAGE_UNSAFE";
     reasons.push(`${dangerousAmendments.length} document(s) are POTENTIALLY_RELEVANT_AMENDMENT_NOT_FULLY_ANALYZED: ${dangerousAmendments.map((d) => d.documentId).join(", ")} - an amendment-shaped document with insufficient structural coverage may alter otherwise correctly analyzed base language without Headroom having seen the change.`);
+  } else if (discoveryFailedDocs.length > 0) {
+    state = "PACKAGE_UNSAFE";
+    reasons.push(`${discoveryFailedDocs.length} document(s) have DISCOVERY_FAILED: ${discoveryFailedDocs.map((d) => d.documentId).join(", ")} - every Pass B section call failed for these documents, so their covenant candidate list cannot be trusted as complete.`);
   } else if (failedOrInsufficientCount > 0) {
     state = "PACKAGE_REVIEW_REQUIRED";
     reasons.push(`${failedOrInsufficientCount} of ${documents.length} document(s) have insufficient structural coverage but are not amendment-shaped.`);
+  } else if (discoveryPartialDocs.length > 0) {
+    state = "PACKAGE_REVIEW_REQUIRED";
+    reasons.push(`${discoveryPartialDocs.length} document(s) have DISCOVERY_PARTIAL: ${discoveryPartialDocs.map((d) => d.documentId).join(", ")} - one or more Pass B section calls failed but were isolated rather than aborting the whole document; the surviving candidates are real but the document's candidate list may be incomplete.`);
   } else {
-    reasons.push("All documents reached STRUCTURE_HEALTHY or STRUCTURE_PARTIAL with no significant unresolved coverage gaps.");
+    reasons.push("All documents reached STRUCTURE_HEALTHY or STRUCTURE_PARTIAL with no significant unresolved coverage gaps, and DISCOVERY_HEALTHY with no isolated section failures.");
   }
 
   return {

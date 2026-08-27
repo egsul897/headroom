@@ -24,10 +24,29 @@ import { runPassADeterministicSignals } from "./pass-a-signals";
 import { runPassBSemanticClassification, DISCOVERY_PROMPT_VERSION, type SectionBatchInput } from "./pass-b-semantic";
 import { runPassCNeighborhoodExpansion } from "./pass-c-neighborhood";
 import { runPassDReconciliation } from "./pass-d-reconcile";
-import type { DiscoveredCandidate, DiscoveryRunSummary } from "./types";
+import type { DiscoveredCandidate, DiscoveryHealthState, DiscoveryRunSummary, DiscoverySectionFailure } from "./types";
 
-export const DISCOVERY_PIPELINE_VERSION = "phase-2b-discovery-pipeline.v1";
+// Phase 2F.2 §8/§22 bump: a single section's Pass B call failure no longer
+// aborts the whole document (see the try/catch in the loop below) - this
+// is an algorithm-level behavior change, so any cache keyed on
+// DISCOVERY_RUN_VERSION correctly treats prior runs as stale rather than
+// silently resuming a pre-fault-isolation result as if it were equivalent.
+export const DISCOVERY_PIPELINE_VERSION = "phase-2b-discovery-pipeline.v2";
 export const DISCOVERY_RUN_VERSION = `${DISCOVERY_PIPELINE_VERSION}+${DISCOVERY_PROMPT_VERSION}`;
+
+/**
+ * Phase 2F.2 §18 - document-level discovery health, mirroring
+ * structural-coverage.ts's own classifyHealth in spirit (several signals,
+ * never a bare count alone) but scoped to Pass B section-call outcomes.
+ * FAILED only when every section that was actually attempted failed
+ * (never merely "some sections had zero candidates" - a section can
+ * legitimately produce zero rules without that being a failure).
+ */
+export function classifyDiscoveryHealth(sectionsAttempted: number, sectionFailures: DiscoverySectionFailure[]): DiscoveryHealthState {
+  if (sectionsAttempted === 0 || sectionFailures.length === 0) return "DISCOVERY_HEALTHY";
+  if (sectionFailures.length >= sectionsAttempted) return "DISCOVERY_FAILED";
+  return "DISCOVERY_PARTIAL";
+}
 
 export function computeDiscoveryInputHash(documentId: string, documentText: string, providerIdentity: string): string {
   return hashParts([documentId, documentText, DISCOVERY_RUN_VERSION, providerIdentity]);
@@ -51,6 +70,8 @@ export async function runDiscoveryPipeline(caller: StageCaller, documentId: stri
   let inputTokens = 0;
   let outputTokens = 0;
   let modelCalls = 0;
+  let sectionsAttempted = 0;
+  const sectionFailures: DiscoverySectionFailure[] = [];
   const allExpanded: ReturnType<typeof runPassCNeighborhoodExpansion>["candidates"] = [];
   let discoveryIdFn: ((c: (typeof allExpanded)[number]) => string) | undefined;
 
@@ -73,7 +94,25 @@ export async function runDiscoveryPipeline(caller: StageCaller, documentId: stri
       passAHints,
     };
 
-    const result = await runPassBSemanticClassification(caller, batch);
+    sectionsAttempted++;
+    // Phase 2F.2 §8 fault isolation: a single section's Pass B call
+    // failing (network error, provider error, or any other unrecoverable
+    // exception) is recorded and skipped, never allowed to abort every
+    // remaining section in the document the way the pre-fix un-guarded
+    // loop did (see baseline-diagnostic.json's "did one invalid item
+    // destroy valid siblings" finding).
+    let result: Awaited<ReturnType<typeof runPassBSemanticClassification>>;
+    try {
+      result = await runPassBSemanticClassification(caller, batch);
+    } catch (err) {
+      sectionFailures.push({
+        sectionNodeKey: section.nodeKey,
+        sectionRef: section.sectionRef,
+        stage: "PASS_B_SEMANTIC_CLASSIFICATION",
+        errorMessage: err instanceof Error ? err.message : String(err),
+      });
+      continue;
+    }
     modelCalls++;
     const telemetry = caller.lastTelemetry();
     inputTokens += telemetry?.inputTokens ?? 0;
@@ -106,6 +145,9 @@ export async function runDiscoveryPipeline(caller: StageCaller, documentId: stri
       modelCalls,
       inputTokens,
       outputTokens,
+      sectionsAttempted,
+      sectionFailures,
+      documentDiscoveryHealth: classifyDiscoveryHealth(sectionsAttempted, sectionFailures),
     },
   };
 }

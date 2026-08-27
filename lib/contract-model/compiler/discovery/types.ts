@@ -13,6 +13,14 @@
  * ContractRuleType remains the authoritative, more precise role assigned
  * once a rule is actually extracted - this is a coarser, upstream guess
  * feeding that later, more precise classification, not a replacement for it.
+ *
+ * Phase 2F.2 §12/§13 added 5 members (GUARANTEE_OBLIGATION, SECURITY_GRANT,
+ * WAIVER, LIABILITY_CAP, REPRESENTATION) after real Document B evidence (a
+ * guarantee-and-collateral agreement) showed these are materially distinct,
+ * reusable operative-role concepts common to guarantee/security agreements
+ * as a document TYPE - not representable by any existing member, and not a
+ * CONMED-specific wording variant (see normalization.ts's own rule
+ * comments for the generalized rationale behind each).
  */
 import type { CovenantFamily } from "@prisma/client";
 
@@ -32,7 +40,37 @@ export type DiscoveryRole =
   | "TRIGGER"
   | "CURE"
   | "DEFINITIONAL_DEPENDENCY_CANDIDATE"
-  | "OTHER_RELEVANT_RULE";
+  | "OTHER_RELEVANT_RULE"
+  | "GUARANTEE_OBLIGATION"
+  | "SECURITY_GRANT"
+  | "WAIVER"
+  | "LIABILITY_CAP"
+  | "REPRESENTATION";
+
+/** Runtime array form of DiscoveryRole, co-located with the type (not in pass-b-semantic.ts/normalization.ts) so both of those modules can import it without an import cycle between them. pass-b-semantic.ts re-exports this for backward-compatible import paths. */
+export const DISCOVERY_ROLES = [
+  "GENERAL_PROHIBITION",
+  "PERMISSION",
+  "BASKET",
+  "EXCEPTION",
+  "RATIO_BASED_PERMISSION",
+  "BUILDER",
+  "CONDITION",
+  "PROVISO",
+  "FINANCIAL_TEST",
+  "SHARED_CAP",
+  "REFINANCING_PERMISSION",
+  "DESIGNATION_RULE",
+  "TRIGGER",
+  "CURE",
+  "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+  "OTHER_RELEVANT_RULE",
+  "GUARANTEE_OBLIGATION",
+  "SECURITY_GRANT",
+  "WAIVER",
+  "LIABILITY_CAP",
+  "REPRESENTATION",
+] as const satisfies readonly DiscoveryRole[];
 
 export type DiscoveryMethod = "DETERMINISTIC_SIGNAL" | "SEMANTIC_CLASSIFICATION" | "NEIGHBORHOOD_EXPANSION";
 
@@ -59,6 +97,12 @@ export interface DiscoveredCandidate {
   families: CovenantFamily[];
   otherFamilyDescription?: string;
   role: DiscoveryRole;
+  /** Phase 2F.2 §7/§9 provenance - the exact raw string the model returned for `role` before normalization, and how confidently normalization.ts mapped it to `role` above. Always populated (even for an exact-enum VALID_CANONICAL match) so no candidate's normalization history is ever silently lost. */
+  roleRaw: string;
+  roleNormalizationStatus: import("./normalization").NormalizationStatus;
+  /** Same provenance for `families`, aggregated across every raw family string the model returned for this candidate. */
+  familiesRaw: string[];
+  familiesNormalizationStatus: import("./normalization").NormalizationStatus;
   description: string;
   /** True when this single structural node likely bundles multiple independently operative rules the structural parser could not safely separate (task §5) - never silently treated as one rule. */
   multipleRulesLikely: boolean;
@@ -72,6 +116,23 @@ export interface DiscoveredCandidate {
   discoveryRunVersion: string;
 }
 
+/**
+ * Phase 2F.2 §18 - document-level discovery health, analogous to (but
+ * independent of) structural-coverage.ts's own StructuralHealthState.
+ * Consumed by package-safety.ts alongside structural health so the
+ * package-safety layer reflects a partially- or fully-failed Pass B run,
+ * not only a structurally-unparseable document.
+ */
+export type DiscoveryHealthState = "DISCOVERY_HEALTHY" | "DISCOVERY_PARTIAL" | "DISCOVERY_FAILED";
+
+/** Phase 2F.2 §8/§10 - one section-level Pass B call that failed outright (network error, non-schema exception, or an unrecoverable parse failure) and was NOT allowed to abort the rest of the document (see pipeline.ts's per-section try/catch). Never silently dropped - every failure here is surfaced in DiscoveryRunSummary.sectionFailures. */
+export interface DiscoverySectionFailure {
+  sectionNodeKey: string;
+  sectionRef: string;
+  stage: "PASS_B_SEMANTIC_CLASSIFICATION";
+  errorMessage: string;
+}
+
 export interface DiscoveryRunSummary {
   documentId: string;
   nodesInspected: number;
@@ -83,4 +144,8 @@ export interface DiscoveryRunSummary {
   modelCalls: number;
   inputTokens: number;
   outputTokens: number;
+  /** Phase 2F.2 §8/§10/§18 - sections whose Pass B call failed and was isolated rather than aborting the document, plus the resulting document-level health verdict. */
+  sectionsAttempted: number;
+  sectionFailures: DiscoverySectionFailure[];
+  documentDiscoveryHealth: DiscoveryHealthState;
 }
