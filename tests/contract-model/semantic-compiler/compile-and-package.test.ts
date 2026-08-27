@@ -70,6 +70,23 @@ describe("Phase 3B synthetic tests - compile orchestration + package-level batch
     expect(second).toBe(first); // same object identity - a literal cache hit, not a re-derivation that happens to match
   });
 
+  it("Phase 3B.1 (task §35): bumping compilerAlgorithmVersion/compilerPromptVersion/toolPolicyVersion on an otherwise-identical input changes the cache key, so a stale Phase-3B-era cached compilation is never silently served after a reliability fix", async () => {
+    const cache = new InMemorySemanticCompilationCache();
+    const caller = fakeCaller(() => successResult(1));
+    const base = testCompilerInput();
+    const first = await compileCovenantToIR(base, { caller, cache });
+
+    const bumpedAlgorithm = await compileCovenantToIR({ ...base, compilerAlgorithmVersion: `${base.compilerAlgorithmVersion}-bumped` }, { caller, cache });
+    const bumpedPrompt = await compileCovenantToIR({ ...base, compilerPromptVersion: `${base.compilerPromptVersion}-bumped` }, { caller, cache });
+    const bumpedToolPolicy = await compileCovenantToIR({ ...base, toolPolicyVersion: `${base.toolPolicyVersion}-bumped` }, { caller, cache });
+
+    expect(bumpedAlgorithm.cacheKey).not.toBe(first.cacheKey);
+    expect(bumpedPrompt.cacheKey).not.toBe(first.cacheKey);
+    expect(bumpedToolPolicy.cacheKey).not.toBe(first.cacheKey);
+    // each version bump forced a real re-invocation of the caller rather than serving a stale hit
+    expect(caller.callCount).toBe(4);
+  });
+
   it("idempotency: two DIFFERENT cache entries built from the same wire output produce the same canonical rule content (deterministic normalization)", async () => {
     const cacheA = new InMemorySemanticCompilationCache();
     const cacheB = new InMemorySemanticCompilationCache();

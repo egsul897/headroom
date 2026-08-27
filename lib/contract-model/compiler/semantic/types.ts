@@ -27,9 +27,20 @@ import type { PackageGraphResult } from "../package-graph/types";
 import type { IRDefinition, IRRule, IRSharedCapacity, OperativeLineageRef } from "../../ir/types";
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "phase-3b-semantic-compiler.v1";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "phase-3b-semantic-compiler-prompt.v1";
-export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b-tool-policy.v1";
+/**
+ * Phase 3B.1 (task §35) - any change to output orchestration, tool-use
+ * policy, prompt wording, or continuation/recovery logic MUST bump the
+ * relevant version constant below, because cache.ts's own computeCacheKey
+ * folds all three into its content hash: bumping one guarantees a stale
+ * Phase 3B-era cached compilation (produced under the old 8192-token
+ * ceiling, the old tool-use prompt, or the old tool policy) is never
+ * silently served after this fix, while leaving unrelated Phase 2 state
+ * (structural index, context bundles, operative state) completely
+ * untouched - this is an additive cache-key input, not a schema migration.
+ */
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "phase-3b1-semantic-compiler.v2";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "phase-3b1-semantic-compiler-prompt.v2";
+export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------
 // Tool budgets (task §7) - bounded, never unlimited retrieval.
@@ -110,7 +121,11 @@ export type SemanticCompilerFailureReason =
   | "UNSUPPORTED_SEMANTICS"
   | "OPERATIVE_STATE_UNRESOLVED"
   | "PROVIDER_FAILURE"
-  | "PARTIAL_COMPILATION";
+  | "PARTIAL_COMPILATION"
+  /** Phase 3B.1 (task §5/§10) - distinct from MODEL_SCHEMA_FAILURE: the provider's own `stop_reason` confirmed the response was cut off at the output-token ceiling (a transport/capacity fact, not a model reasoning mistake). Set only when caller.ts has POSITIVE evidence of truncation (stop_reason === "max_tokens"), never inferred from a schema failure alone - see caller.ts's own recoverPartialSubmission for the accompanying safe-prefix-recovery behavior this pairs with. */
+  | "OUTPUT_TRUNCATED"
+  /** Phase 3B.1 (task §16) - the dependency genuinely exists and is source-referenced, but the specific evidence needed to resolve it (a document, a schedule, an external agreement) is confirmed absent even after an attempted bounded tool retrieval - distinct from UNSUPPORTED_SEMANTICS, which means the IR itself cannot faithfully express a mechanic even with full evidence in hand. */
+  | "TOOL_RESOLUTION_FAILED";
 
 /** Overall attempt-level status - distinct from any one rule's own IR `sufficiency` (task §35's "proposed, never human-approved" distinction: this is about whether the ATTEMPT produced usable output at all, sufficiency is about how COMPLETE each individual rule's own representation is). */
 export type SemanticCompilationStatus = "COMPLETED" | "PARTIAL" | "REVIEW_REQUIRED" | "FAILED";

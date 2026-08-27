@@ -24,7 +24,11 @@ const defaultCache = new InMemorySemanticCompilationCache();
 
 function determineStatus(failureReasons: SemanticCompilerFailureReason[], ruleCount: number, hasReviewRequiredSufficiency: boolean, hasUnresolvedIssues: boolean): SemanticCompilationStatus {
   if (ruleCount === 0 && failureReasons.length > 0) return "FAILED";
-  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
+  // Phase 3B.1 (task §10): OUTPUT_TRUNCATED belongs alongside IR_VALIDATION_FAILURE/
+  // MODEL_SCHEMA_FAILURE here - a response cut off at the output-token ceiling is a
+  // degraded attempt (PARTIAL when a validated prefix was recovered) even when every
+  // recovered rule/definition itself validates cleanly, never a plain REVIEW_REQUIRED.
+  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE") || failureReasons.includes("OUTPUT_TRUNCATED")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
   if (failureReasons.length > 0 || hasReviewRequiredSufficiency || hasUnresolvedIssues) return "REVIEW_REQUIRED";
   return "COMPLETED";
 }
@@ -74,6 +78,11 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   });
 
   const failureReasons: SemanticCompilerFailureReason[] = [];
+  // Phase 3B.1 (task §10): a submission can be non-null yet still carry a caller-level
+  // failureReason - the partial-output-recovery path (caller.ts's recoverPartialSubmission)
+  // returns a validated, truncated-but-usable submission alongside OUTPUT_TRUNCATED. That
+  // must not be silently dropped just because normalization/validation otherwise succeeds.
+  if (callResult.failureReason) failureReasons.push(callResult.failureReason);
   if (!validation.ok) failureReasons.push("IR_VALIDATION_FAILURE");
   if (normalized.rules.length === 0 && normalized.definitions.length === 0) failureReasons.push("PARTIAL_COMPILATION");
   if (normalized.rules.some((r) => r.sufficiency === "MISSING_CONTEXT") || normalized.definitions.some((d) => d.sufficiency === "MISSING_CONTEXT")) failureReasons.push("MISSING_CONTEXT");
@@ -81,7 +90,12 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   if (normalized.rules.some((r) => r.sufficiency === "UNSUPPORTED") || normalized.definitions.some((d) => d.sufficiency === "UNSUPPORTED")) failureReasons.push("UNSUPPORTED_SEMANTICS");
 
   const hasReviewRequiredSufficiency = normalized.rules.some((r) => r.sufficiency !== "COMPLETE") || normalized.definitions.some((d) => d.sufficiency !== "COMPLETE");
-  const unresolvedIssues = [...validation.issues.map((i) => `[${i.kind}]${i.ruleId ? ` (${i.ruleId})` : ""} ${i.message}`), ...normalized.warnings.map((w) => `[${w.scope}] ${w.message}`), ...callResult.submission.overallNotes];
+  const unresolvedIssues = [
+    ...(callResult.failureDetail ? [callResult.failureDetail] : []),
+    ...validation.issues.map((i) => `[${i.kind}]${i.ruleId ? ` (${i.ruleId})` : ""} ${i.message}`),
+    ...normalized.warnings.map((w) => `[${w.scope}] ${w.message}`),
+    ...callResult.submission.overallNotes,
+  ];
 
   const result: SemanticCompilationResult = {
     status: determineStatus(failureReasons, normalized.rules.length + normalized.definitions.length, hasReviewRequiredSufficiency, unresolvedIssues.length > 0),
