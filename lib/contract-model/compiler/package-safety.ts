@@ -26,6 +26,7 @@ import { detectAmendmentAndDefinitionalSignals } from "./coverage-audit/signals"
 import type { StructuralCoverageResult } from "./structural-coverage";
 import type { DiscoveryHealthState } from "./discovery/types";
 import type { RelationshipCandidate } from "./package-graph/types";
+import type { AmendmentEffectCandidate, OperativeContractState } from "./amendment/types";
 
 const AMENDMENT_DOCUMENT_TYPES = new Set(["AMENDMENT", "AMENDED_AND_RESTATED_AGREEMENT", "SUPPLEMENTAL_INDENTURE", "JOINDER"]);
 
@@ -58,6 +59,11 @@ export interface PackageSafetyResult {
   /** Phase 2F.3 §21 - package-graph relationship-resolution safety, additive to the structural/discovery checks above. Never null - defaults to empty when the caller does not supply relationshipCandidates (a Phase 2F.1/2F.2-only caller keeps working unchanged). */
   unresolvedMaterialRelationshipCount: number;
   reviewRequiredRelationshipCount: number;
+  /** Phase 2G §23 - operative-contract-state sufficiency, additive. Counts instruments (not individual provisions) whose computed OperativeContractState carries the given status - never null, defaults to zero when the caller does not supply operativeStates (a pre-2G caller keeps working unchanged). */
+  conflictedInstrumentCount: number;
+  operativeReviewRequiredInstrumentCount: number;
+  /** Phase 2G §17/§30, additive - amendment effects that resolve to a whole DOCUMENT (never a section/definition), so they can never attach to any per-provision OperativeContractState and would otherwise be invisible to operativeReviewRequiredInstrumentCount above (e.g. a marked/conformed-exhibit or schedule-modification amendment - see amendment/markup-exhibit.ts and amendment/schedule-modification.ts). Counted here so a real, material, unresolved whole-document amendment can never silently leave a package looking PACKAGE_SAFE. Never null - defaults to zero when the caller does not supply unattachedAmendmentEffects. */
+  unresolvedWholeDocumentAmendmentCount: number;
 }
 
 export interface DocumentSafetyInput {
@@ -100,7 +106,39 @@ function computeRelationshipSafety(relationshipCandidates: RelationshipCandidate
   };
 }
 
-export function computePackageSafety(packageKey: string, inputs: DocumentSafetyInput[], relationshipCandidates?: RelationshipCandidate[]): PackageSafetyResult {
+/**
+ * Phase 2G §23 - "a future semantic compiler must not receive a
+ * supposedly authoritative current covenant if the underlying amendment
+ * chain is unresolved." CONFLICTED and REVIEW_REQUIRED instrument-level
+ * operative states both downgrade package safety to PACKAGE_REVIEW_REQUIRED
+ * - never PACKAGE_UNSAFE - because both are, by this module's own
+ * construction, surfaced uncertainty rather than a confidently false
+ * result (the whole point of the OperativeStateStatus taxonomy is that a
+ * genuinely unresolved amendment chain is never silently reported as
+ * OPERATIVE_STATE_RESOLVED). PARTIAL (identity known, exact text not
+ * safely renderable) is reported but does not by itself downgrade the
+ * package - the future compiler can still know WHICH document/effect
+ * governs even without the verbatim resulting text.
+ */
+function computeOperativeStateSafety(operativeStates: OperativeContractState[] | undefined): { conflictedInstrumentCount: number; reviewRequiredInstrumentCount: number; conflictedInstrumentKeys: string[]; reviewRequiredInstrumentKeys: string[] } {
+  const states = operativeStates ?? [];
+  const conflicted = states.filter((s) => s.status === "OPERATIVE_STATE_CONFLICTED");
+  const reviewRequired = states.filter((s) => s.status === "OPERATIVE_STATE_REVIEW_REQUIRED");
+  return {
+    conflictedInstrumentCount: conflicted.length,
+    reviewRequiredInstrumentCount: reviewRequired.length,
+    conflictedInstrumentKeys: conflicted.map((s) => s.instrumentKey),
+    reviewRequiredInstrumentKeys: reviewRequired.map((s) => s.instrumentKey),
+  };
+}
+
+export function computePackageSafety(
+  packageKey: string,
+  inputs: DocumentSafetyInput[],
+  relationshipCandidates?: RelationshipCandidate[],
+  operativeStates?: OperativeContractState[],
+  unattachedAmendmentEffects?: AmendmentEffectCandidate[]
+): PackageSafetyResult {
   const documents: DocumentSafetyEntry[] = inputs.map((d) => {
     const structuralInputInsufficient = d.coverage.health === "STRUCTURE_FAILED" || d.coverage.health === "STRUCTURE_INSUFFICIENT";
     const classifiedAsAmendment = d.declaredDocumentType != null && AMENDMENT_DOCUMENT_TYPES.has(d.declaredDocumentType);
@@ -125,6 +163,8 @@ export function computePackageSafety(packageKey: string, inputs: DocumentSafetyI
   const discoveryFailedDocs = documents.filter((d) => d.discoveryHealth === "DISCOVERY_FAILED");
   const discoveryPartialDocs = documents.filter((d) => d.discoveryHealth === "DISCOVERY_PARTIAL");
   const relationshipSafety = computeRelationshipSafety(relationshipCandidates);
+  const operativeStateSafety = computeOperativeStateSafety(operativeStates);
+  const unresolvedWholeDocumentAmendments = (unattachedAmendmentEffects ?? []).filter((e) => e.status === "REVIEW_REQUIRED" || e.status === "UNRESOLVED");
   const reasons: string[] = [];
   let state: PackageSafetyState = "PACKAGE_SAFE";
 
@@ -147,8 +187,22 @@ export function computePackageSafety(packageKey: string, inputs: DocumentSafetyI
     // be partially analyzable... do not force all-or-nothing failure."
     state = "PACKAGE_REVIEW_REQUIRED";
     reasons.push(`${relationshipSafety.unresolvedMaterialRelationshipCount} package-graph relationship candidate(s) from document(s) [${relationshipSafety.unresolvedDocumentIds.join(", ")}] are UNRESOLVED (ambiguous target, missing base document, or amendment target not established) - the affected document(s)' place in the package topology is not yet established, but this does not block analysis of other, resolved documents.`);
+  } else if (operativeStateSafety.conflictedInstrumentCount > 0) {
+    state = "PACKAGE_REVIEW_REQUIRED";
+    reasons.push(`${operativeStateSafety.conflictedInstrumentCount} instrument(s) [${operativeStateSafety.conflictedInstrumentKeys.join(", ")}] have OPERATIVE_STATE_CONFLICTED provisions - two or more amendment effects conflict and cannot be silently resolved; a future semantic compiler must not treat these provisions' current text as authoritative until reviewed.`);
+  } else if (operativeStateSafety.reviewRequiredInstrumentCount > 0) {
+    state = "PACKAGE_REVIEW_REQUIRED";
+    reasons.push(`${operativeStateSafety.reviewRequiredInstrumentCount} instrument(s) [${operativeStateSafety.reviewRequiredInstrumentKeys.join(", ")}] have OPERATIVE_STATE_REVIEW_REQUIRED provisions - at least one amendment effect's sequence position or resolution is uncertain.`);
+  } else if (unresolvedWholeDocumentAmendments.length > 0) {
+    // Task §17/§30 - a whole-document amendment effect (e.g. a marked/
+    // conformed exhibit or schedule modification) never attaches to any
+    // per-provision OperativeContractState, so it would otherwise be
+    // invisible to the two branches above - surfaced here so it can never
+    // silently leave a package looking PACKAGE_SAFE.
+    state = "PACKAGE_REVIEW_REQUIRED";
+    reasons.push(`${unresolvedWholeDocumentAmendments.length} whole-document amendment effect(s) from [${[...new Set(unresolvedWholeDocumentAmendments.map((e) => e.amendmentDocumentId))].join(", ")}] are ${unresolvedWholeDocumentAmendments[0]!.status} (e.g. a marked/conformed exhibit or schedule modification) - the amendment's target document is identified but its specific textual/structured content is not included in the analyzed source text.`);
   } else {
-    reasons.push("All documents reached STRUCTURE_HEALTHY or STRUCTURE_PARTIAL with no significant unresolved coverage gaps, DISCOVERY_HEALTHY with no isolated section failures, and every package-graph relationship candidate resolved or narrowed to a single reviewable candidate.");
+    reasons.push("All documents reached STRUCTURE_HEALTHY or STRUCTURE_PARTIAL with no significant unresolved coverage gaps, DISCOVERY_HEALTHY with no isolated section failures, every package-graph relationship candidate resolved or narrowed to a single reviewable candidate, and no instrument's operative contract state is conflicted or review-required.");
   }
   if (relationshipSafety.reviewRequiredRelationshipCount > 0) {
     reasons.push(`${relationshipSafety.reviewRequiredRelationshipCount} package-graph relationship candidate(s) are REVIEW_REQUIRED (a type-only match with a non-matching execution date) - a real candidate exists but needs human confirmation before being treated as resolved.`);
@@ -161,6 +215,9 @@ export function computePackageSafety(packageKey: string, inputs: DocumentSafetyI
     reasons,
     unresolvedMaterialRelationshipCount: relationshipSafety.unresolvedMaterialRelationshipCount,
     reviewRequiredRelationshipCount: relationshipSafety.reviewRequiredRelationshipCount,
+    conflictedInstrumentCount: operativeStateSafety.conflictedInstrumentCount,
+    operativeReviewRequiredInstrumentCount: operativeStateSafety.reviewRequiredInstrumentCount,
+    unresolvedWholeDocumentAmendmentCount: unresolvedWholeDocumentAmendments.length,
     summarySentence: `${failedOrInsufficientCount} of ${documents.length} documents were not structurally analyzed successfully.`,
   };
 }
