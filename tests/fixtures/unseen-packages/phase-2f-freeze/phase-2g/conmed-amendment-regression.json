@@ -1,0 +1,291 @@
+{
+  "runId": "PHASE_2G_CONMED_AMENDMENT_REGRESSION",
+  "generatedAt": "2026-08-27T19:00:41.956Z",
+  "asOfDate": "2026-08-27",
+  "pipelineSummary": {
+    "documentsProcessed": 4,
+    "deterministicEffectsFound": 8,
+    "semanticCallsMade": 1,
+    "semanticEffectsFound": 1,
+    "semanticEffectsRejectedByValidation": 0,
+    "conflictsDetected": 4,
+    "wallClockMs": 9419.698134,
+    "inputTokens": 1581,
+    "outputTokens": 625
+  },
+  "perAmendmentDocument": [
+    {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "label": "CONMED Eighth Amended and Restated Credit Agreement (2025-06-10)",
+      "targetDocuments": [],
+      "effects": [
+        {
+          "operation": "RESTATE_AGREEMENT",
+          "target": {
+            "kind": "DOCUMENT",
+            "documentId": null,
+            "sectionRef": null,
+            "definedTermRef": null,
+            "hint": "full agreement restatement, target document not resolved"
+          },
+          "effectiveDate": {
+            "date": "June 10, 2025",
+            "status": "INFERRED_FROM_EXECUTION_DATE",
+            "evidence": null,
+            "reason": "No explicit or conditional effective-date statement was found in the amendment's own text; the document's own execution date is used as the best-available inference, not asserted as certain."
+          },
+          "resolutionMethod": "DETERMINISTIC_FULL_RESTATEMENT",
+          "status": "REVIEW_REQUIRED",
+          "unresolvedReason": "This document is classified as a full amendment-and-restatement, but its own restated target document could not be resolved.",
+          "hasCapturedText": false
+        }
+      ]
+    },
+    {
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "label": "CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01)",
+      "targetDocuments": [
+        "conmed-doc-a-eighth-ar-credit-agreement"
+      ],
+      "effects": [
+        {
+          "operation": "MODIFY_DEFINITION",
+          "target": {
+            "kind": "DEFINITION",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sectionRef": null,
+            "definedTermRef": "Consolidated Senior Secured Leverage Ratio",
+            "hint": "the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021"
+          },
+          "effectiveDate": {
+            "date": null,
+            "status": "CONDITIONAL_UNRESOLVED",
+            "evidence": "effective on the date\n(the \" Second Amendment Effective Date \") on which",
+            "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+          },
+          "resolutionMethod": "DETERMINISTIC_EXPLICIT_PATTERN",
+          "status": "REVIEW_REQUIRED",
+          "unresolvedReason": "type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation",
+          "hasCapturedText": false
+        },
+        {
+          "operation": "MODIFY_DEFINITION",
+          "target": {
+            "kind": "DEFINITION",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sectionRef": null,
+            "definedTermRef": "Consolidated Total Leverage Ratio",
+            "hint": "the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021"
+          },
+          "effectiveDate": {
+            "date": null,
+            "status": "CONDITIONAL_UNRESOLVED",
+            "evidence": "effective on the date\n(the \" Second Amendment Effective Date \") on which",
+            "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+          },
+          "resolutionMethod": "DETERMINISTIC_EXPLICIT_PATTERN",
+          "status": "REVIEW_REQUIRED",
+          "unresolvedReason": "type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation",
+          "hasCapturedText": false
+        },
+        {
+          "operation": "MODIFY_DEFINITION",
+          "target": {
+            "kind": "DEFINITION",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sectionRef": null,
+            "definedTermRef": "Indebtedness",
+            "hint": "the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021"
+          },
+          "effectiveDate": {
+            "date": null,
+            "status": "CONDITIONAL_UNRESOLVED",
+            "evidence": "effective on the date\n(the \" Second Amendment Effective Date \") on which",
+            "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+          },
+          "resolutionMethod": "DETERMINISTIC_EXPLICIT_PATTERN",
+          "status": "REVIEW_REQUIRED",
+          "unresolvedReason": "type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation",
+          "hasCapturedText": false
+        },
+        {
+          "operation": "MODIFY_DEFINITION",
+          "target": {
+            "kind": "SECTION",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sectionRef": "1.1",
+            "definedTermRef": null,
+            "hint": "the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021"
+          },
+          "effectiveDate": {
+            "date": null,
+            "status": "CONDITIONAL_UNRESOLVED",
+            "evidence": "effective on the date\n(the \" Second Amendment Effective Date \") on which",
+            "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+          },
+          "resolutionMethod": "SEMANTIC_INTERPRETATION",
+          "status": "REVIEW_REQUIRED",
+          "unresolvedReason": "low model confidence (0.3); The provided amendment clause text is truncated after 'The definition of \"Consolidated Senior Secured Leverage Ratio\"' and does not show the actual substantive change (replacement text, added language, or deletion) being made to that definition.; Cannot confirm whether this is a full replacement of the definition, a partial modification (e.g., threshold change), or an addition, since the operative text following the definition reference is missing.",
+          "hasCapturedText": false
+        }
+      ]
+    },
+    {
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "label": "CONMED First Omnibus Amendment and Increased Facility Activation Notice (2026-05-27)",
+      "targetDocuments": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-b-guarantee-collateral-agreement"
+      ],
+      "effects": [
+        {
+          "operation": "UNKNOWN_CHANGE",
+          "target": {
+            "kind": "DOCUMENT",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sectionRef": null,
+            "definedTermRef": null,
+            "hint": "Credit Agreement"
+          },
+          "effectiveDate": {
+            "date": null,
+            "status": "CONDITIONAL_UNRESOLVED",
+            "evidence": "effective as of the date (the \" First Amendment\nEffective Date \") on which",
+            "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+          },
+          "resolutionMethod": "DETERMINISTIC_EXPLICIT_PATTERN",
+          "status": "REVIEW_REQUIRED",
+          "unresolvedReason": "This amendment modifies the target document via an attached marked/conformed exhibit (a blackline showing \"stricken\" and \"double-underlined\" text) that is not included in the analyzed source text - the specific textual changes cannot be determined from the amendment's own body text alone.",
+          "hasCapturedText": false
+        },
+        {
+          "operation": "UNKNOWN_CHANGE",
+          "target": {
+            "kind": "DOCUMENT",
+            "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+            "sectionRef": null,
+            "definedTermRef": null,
+            "hint": "Guarantee and Collateral Agreement"
+          },
+          "effectiveDate": {
+            "date": null,
+            "status": "CONDITIONAL_UNRESOLVED",
+            "evidence": "effective as of the date (the \" First Amendment\nEffective Date \") on which",
+            "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+          },
+          "resolutionMethod": "DETERMINISTIC_EXPLICIT_PATTERN",
+          "status": "REVIEW_REQUIRED",
+          "unresolvedReason": "This amendment modifies the target document via an attached marked/conformed exhibit (a blackline showing \"stricken\" and \"double-underlined\" text) that is not included in the analyzed source text - the specific textual changes cannot be determined from the amendment's own body text alone.",
+          "hasCapturedText": false
+        },
+        {
+          "operation": "MODIFY_SCHEDULE",
+          "target": {
+            "kind": "DOCUMENT",
+            "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+            "sectionRef": null,
+            "definedTermRef": null,
+            "hint": "Schedule 1.1 of Credit Agreement"
+          },
+          "effectiveDate": {
+            "date": null,
+            "status": "CONDITIONAL_UNRESOLVED",
+            "evidence": "effective as of the date (the \" First Amendment\nEffective Date \") on which",
+            "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+          },
+          "resolutionMethod": "DETERMINISTIC_EXPLICIT_PATTERN",
+          "status": "REVIEW_REQUIRED",
+          "unresolvedReason": "This amendment modifies Schedule 1.1 of Credit Agreement - the schedule's own content (e.g. a lender/commitment/subsidiary/pricing list) is structured data attached separately, not textual language in the amendment's own body, so it cannot be rendered as amended covenant text.",
+          "hasCapturedText": false
+        }
+      ]
+    }
+  ],
+  "operativeStates": [
+    {
+      "instrumentKey": "instrument:conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "summary": "4 amended provision(s) tracked for this instrument as of 2026-08-27: 4 OPERATIVE_STATE_REVIEW_REQUIRED.",
+      "provisions": [
+        {
+          "provisionKey": "instrument:conmed-doc-a-eighth-ar-credit-agreement::DEFINITION::consolidated senior secured leverage ratio",
+          "kind": "DEFINITION",
+          "sectionRef": null,
+          "definedTermRef": "consolidated senior secured leverage ratio",
+          "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+          "currentSourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "chainLength": 1,
+          "unresolvedIssues": [
+            "An amendment effect targeting consolidated senior secured leverage ratio has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.",
+            "b09c8fe71264bea3a74dcabdcd49b0b479d9e2a0d718d57811927a846ec2b07d: type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation"
+          ]
+        },
+        {
+          "provisionKey": "instrument:conmed-doc-a-eighth-ar-credit-agreement::DEFINITION::consolidated total leverage ratio",
+          "kind": "DEFINITION",
+          "sectionRef": null,
+          "definedTermRef": "consolidated total leverage ratio",
+          "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+          "currentSourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "chainLength": 1,
+          "unresolvedIssues": [
+            "An amendment effect targeting consolidated total leverage ratio has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.",
+            "8c381eb6607317ebf012936d888ee4ca84a056fb5338234a3c7c886c43c15de3: type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation"
+          ]
+        },
+        {
+          "provisionKey": "instrument:conmed-doc-a-eighth-ar-credit-agreement::DEFINITION::indebtedness",
+          "kind": "DEFINITION",
+          "sectionRef": null,
+          "definedTermRef": "indebtedness",
+          "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+          "currentSourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "chainLength": 1,
+          "unresolvedIssues": [
+            "An amendment effect targeting indebtedness has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.",
+            "2b40d9cca669ae877e5c94d678904f41dd728b60f79ecd9da8eae6e300b4832c: type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation"
+          ]
+        },
+        {
+          "provisionKey": "instrument:conmed-doc-a-eighth-ar-credit-agreement::SECTION::1.1",
+          "kind": "SECTION",
+          "sectionRef": "1.1",
+          "definedTermRef": null,
+          "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+          "currentSourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+          "chainLength": 1,
+          "unresolvedIssues": [
+            "An amendment effect targeting 1.1 has an effective date that could not be safely established (CONDITIONAL_UNRESOLVED: The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone.) - its position in the amendment chain is unknown, so it cannot be safely applied or safely excluded.",
+            "8cacc5dc57ec255da635f77e12c6adf988d761ba5d9985520b1fb561e23da5c0: low model confidence (0.3); The provided amendment clause text is truncated after 'The definition of \"Consolidated Senior Secured Leverage Ratio\"' and does not show the actual substantive change (replacement text, added language, or deletion) being made to that definition.; Cannot confirm whether this is a full replacement of the definition, a partial modification (e.g., threshold change), or an addition, since the operative text following the definition reference is missing."
+          ]
+        }
+      ]
+    },
+    {
+      "instrumentKey": "instrument:conmed-doc-c-second-amendment-2022",
+      "status": "OPERATIVE_STATE_RESOLVED",
+      "summary": "0 amended provision(s) tracked for this instrument as of 2026-08-27: none.",
+      "provisions": []
+    }
+  ],
+  "packageSafety": {
+    "state": "PACKAGE_REVIEW_REQUIRED",
+    "reasons": [
+      "3 package-graph relationship candidate(s) from document(s) [conmed-doc-a-eighth-ar-credit-agreement, conmed-doc-b-guarantee-collateral-agreement] are UNRESOLVED (ambiguous target, missing base document, or amendment target not established) - the affected document(s)' place in the package topology is not yet established, but this does not block analysis of other, resolved documents.",
+      "1 package-graph relationship candidate(s) are REVIEW_REQUIRED (a type-only match with a non-matching execution date) - a real candidate exists but needs human confirmation before being treated as resolved."
+    ],
+    "unresolvedWholeDocumentAmendmentCount": 4,
+    "conflictedInstrumentCount": 0,
+    "operativeReviewRequiredInstrumentCount": 1
+  },
+  "unattachedEffectsCount": 4,
+  "independentVerification": {
+    "totalEffectsChecked": 8,
+    "allPassed": true,
+    "findings": []
+  },
+  "dangerousUnflaggedAmendmentErrorCount": 0,
+  "modelProvider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "isSyntheticCaller": false
+}

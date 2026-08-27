@@ -1,0 +1,74 @@
+{
+  "task": "PHASE_2F_2_DISCOVERY_SCHEMA_ROBUSTNESS",
+  "generatedAt": "2026-08-27T15:30:00.000Z",
+  "sourceStructuralRegion": {
+    "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+    "documentLabel": "A&R Guarantee and Collateral Agreement",
+    "failingStage": "PASS_B_SEMANTIC_CLASSIFICATION",
+    "note": "The original Phase 2F Stage 2 crash occurred while iterating Document B's SECTION nodes inside runDiscoveryPipeline's per-section for-loop (lib/contract-model/compiler/discovery/pipeline.ts), calling runPassBSemanticClassification once per SECTION Pass A flagged."
+  },
+  "faultGranularity": {
+    "perCandidate": false,
+    "perBatch": true,
+    "perBatchMeaning": "One Pass B model call == one SECTION's full semantic-classification batch (potentially multiple `rules` items per call). A single invalid `role` value anywhere in that batch's JSON response causes the Anthropic SDK's own client-side Zod validation (parseOutputFormat in node_modules/@anthropic-ai/sdk/src/lib/parser.ts) to throw before runStructuredStage's own code ever inspects the response.",
+    "perStage": true,
+    "perStageMeaning": "The thrown error propagates out of runPassBSemanticClassification and out of the pipeline.ts for-loop, which has no per-section try/catch, so the exception aborts ALL remaining sections of the document, not just the offending one.",
+    "perDocument": true,
+    "perDocumentMeaning": "Net effect observed in the original Phase 2F run and reconfirmed in the Phase 2F.1 rerun: Document B's ENTIRE discovery pass produces zero candidates and the whole document is reported as CRASHED, even though Document A/C/D discovery succeeded and even though Document B's own earlier sections (e.g. Section 1) contained zero invalid roles.",
+    "didOneInvalidItemDestroyValidSiblings": true,
+    "evidence": "The real reproduction run (scripts/phase-2f2-reproduce-crash.ts, log in this same directory's console output) shows Section 2 alone returned 3 rules, all with descriptive-sentence (out-of-enum) role values, while Section 1/1.1/1.2 returned 0 rules (no candidates, nothing to lose). Once ANY out-of-enum role appears in the real (non-diagnostic) pipeline, the SDK-level Zod parse for that WHOLE call throws, which is caught nowhere, so every subsequent section (2.1 through 4.1, and everything after in the document) never even gets called - their potentially-valid candidates are never produced, not merely rejected."
+  },
+  "originalCrash": {
+    "erroredField": "rules[].role",
+    "erroredFamiliesField": false,
+    "familiesFieldNeverAppearedInAnyZodIssue": true,
+    "expectedEnumValues": [
+      "GENERAL_PROHIBITION", "PERMISSION", "BASKET", "EXCEPTION",
+      "RATIO_BASED_PERMISSION", "BUILDER", "CONDITION", "PROVISO",
+      "FINANCIAL_TEST", "SHARED_CAP", "REFINANCING_PERMISSION",
+      "DESIGNATION_RULE", "TRIGGER", "CURE",
+      "DEFINITIONAL_DEPENDENCY_CANDIDATE", "OTHER_RELEVANT_RULE"
+    ],
+    "validationStack": [
+      "parseOutputFormat (node_modules/@anthropic-ai/sdk/src/lib/parser.ts:123:11)",
+      "parseMessage (node_modules/@anthropic-ai/sdk/src/lib/parser.ts:81:102)",
+      "maybeParseMessage (node_modules/@anthropic-ai/sdk/src/lib/parser.ts:71:10)",
+      "MessageStream._MessageStream_addStreamEvent (node_modules/@anthropic-ai/sdk/src/lib/MessageStream.ts:504:43)",
+      "MessageStream._createMessage (node_modules/@anthropic-ai/sdk/src/lib/MessageStream.ts:215:29)"
+    ],
+    "note": "The SDK's own error format never included the actual received value - only the list of expected enum members - which is why the raw invalid strings were not visible from the original crash log alone and had to be recovered via a diagnostic tolerant-schema reproduction (see document-b-raw-role-reproduction.json in this directory)."
+  },
+  "reproductionSummary": {
+    "sectionsAttempted": 15,
+    "sectionsWithAtLeastOneOutOfEnumRole": 10,
+    "totalRawRoleValuesObserved": 37,
+    "totalOutOfEnumRoleValuesObserved": 28,
+    "outOfEnumRatePercent": 75.7,
+    "observedFailureShapes": {
+      "fullDescriptiveSentences": {
+        "count": 25,
+        "example": "imposes an unconditional, irrevocable joint and several guarantee of payment and performance of Primary Obligations",
+        "sections": ["2", "2.1", "2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8", "4.1"]
+      },
+      "shortNearMissTokens": {
+        "count": 3,
+        "examples": ["grants", "excepts"],
+        "sections": ["3"],
+        "note": "Section 3 (Grant of Security Interest) returned mostly short bare-verb role values, unlike every other section which returned full descriptive sentences - the model appears to switch style depending on whether the section content maps naturally onto an operative single-verb action (grant/except) versus a compound guarantee mechanic that has no single matching enum member."
+      }
+    }
+  },
+  "rootCause": {
+    "statement": "The Pass B semantic-discovery wire schema binds the model's free-text characterization of 'what this rule does' directly to a closed 16-member Zod enum (DISCOVERY_ROLES) with no tolerant boundary layer between raw model output and the canonical internal type. When Document B's content (a guarantee-and-collateral agreement) contains operative concepts the enum has no close member for - guarantee-obligation mechanics, security grants, waivers of notice/defenses, liability caps, representations - the model does not silently mis-pick the closest wrong enum token; for most of these sections it emits a full descriptive sentence in the role field instead, because none of the 16 enum labels (including the catch-all OTHER_RELEVANT_RULE, which the model apparently avoids reaching for when a more descriptive characterization is available) fit the content believably. The Anthropic SDK performs its own strict client-side Zod validation on the structured-output stream BEFORE application code (runStructuredStage/runPassBSemanticClassification) ever inspects the parsed result, so this mismatch throws inside the SDK itself and propagates as an uncaught exception through pipeline.ts's un-guarded per-section for-loop, destroying the entire document's discovery pass - not just the one offending section, and not just the one offending rule within that section's batch.",
+    "classification": "MODEL_OUTPUT_NORMALIZATION_GAP",
+    "contributingFactors": [
+      "CLOSED_ENUM_TOO_NARROW - the 16-member DISCOVERY_ROLES enum has no member representing guarantee/security-agreement-specific operative concepts (guarantee obligation, security grant, waiver, liability cap, representation), so the model is not just picking a slightly-wrong existing label, it is reaching for prose because no label is a plausible fit.",
+      "BATCH_ATOMICITY - independent of the enum-narrowness issue, pipeline.ts's per-section loop has no fault isolation: any single section's Pass B call throwing (for ANY reason, not only this schema mismatch) aborts every remaining section in the document with no partial-document recovery and no recorded failure state."
+    ],
+    "notClassifiedAs": {
+      "PROVIDER_STRUCTURED_OUTPUT_MISMATCH": "Ruled out - the model successfully returned well-formed JSON matching the schema's shape (correct keys, correct types for every other field); only the semantic CONTENT of the `role` string value fell outside the closed enum. This is a content/vocabulary mismatch, not a provider format/transport mismatch.",
+      "PROMPT_SCHEMA_MISMATCH": "Ruled out as the primary cause - the system prompt already instructs the model to describe 'its operative role (what the rule DOES - prohibits, permits, excepts, tests a ratio, etc, not what it concerns)' in prose-adjacent terms; the prompt does not exhaustively enumerate the 16 valid tokens verbatim to the model, but even if it did, closed-enum narrowness for this document type would remain the dominant driver.",
+      "VALIDATION_POLICY_TOO_STRICT": "Not the frame used - the validation strictness itself (closed enum, no coercion) is appropriate for the CANONICAL internal representation; the defect is the absence of a tolerant BOUNDARY layer in front of that strict internal type, not that the internal type is too strict per se."
+    }
+  }
+}

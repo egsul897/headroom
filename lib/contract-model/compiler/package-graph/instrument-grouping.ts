@@ -16,7 +16,7 @@
 import type { DocumentClassification, DocumentIdentity, InstrumentGroupingResult, RelationshipCandidate } from "./types";
 
 const GROUPING_RELATIONSHIP_TYPES = new Set(["AMENDS", "RESTATES", "SUPPLEMENTS", "JOINS"]);
-const NON_INSTRUMENT_TYPES = new Set(["INTERCREDITOR_AGREEMENT", "GUARANTEE", "SECURITY_AGREEMENT", "COMPLIANCE_CERTIFICATE", "SIDE_LETTER", "FEE_LETTER"]);
+const NON_INSTRUMENT_TYPES = new Set(["INTERCREDITOR_AGREEMENT", "GUARANTEE", "SECURITY_AGREEMENT", "GUARANTEE_AND_SECURITY_AGREEMENT", "COMPLIANCE_CERTIFICATE", "SIDE_LETTER", "FEE_LETTER"]);
 
 class UnionFind {
   private parent = new Map<string, string>();

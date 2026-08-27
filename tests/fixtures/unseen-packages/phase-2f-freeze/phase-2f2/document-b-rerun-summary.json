@@ -1,0 +1,48 @@
+{
+  "runId": "PHASE_2F2_DOCUMENT_B_REGRESSION_RERUN",
+  "generatedAt": "2026-08-27T16:11:05.091Z",
+  "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2",
+  "sectionsTotal": 125,
+  "sectionsAttempted": 96,
+  "sectionFailures": [],
+  "documentDiscoveryHealth": "DISCOVERY_HEALTHY",
+  "modelCalls": 96,
+  "inputTokens": 214492,
+  "outputTokens": 146701,
+  "wallClockMs": 1578375.854702,
+  "rawSemanticItemCount": 461,
+  "duplicatesBeforeReconciliation": 241,
+  "finalCandidateCount": 228,
+  "roleNormalizationStatusCounts": {
+    "VALID_CANONICAL": 461
+  },
+  "familiesNormalizationStatusCounts": {
+    "VALID_CANONICAL": 296,
+    "NORMALIZED_CANONICAL": 139,
+    "FALLBACK_REVIEW_REQUIRED": 26
+  },
+  "canonicalRoleDistribution": {
+    "PERMISSION": 26,
+    "GUARANTEE_OBLIGATION": 34,
+    "WAIVER": 43,
+    "DEFINITIONAL_DEPENDENCY_CANDIDATE": 7,
+    "LIABILITY_CAP": 11,
+    "PROVISO": 17,
+    "CONDITION": 40,
+    "OTHER_RELEVANT_RULE": 89,
+    "DESIGNATION_RULE": 2,
+    "SECURITY_GRANT": 28,
+    "EXCEPTION": 75,
+    "REPRESENTATION": 38,
+    "BASKET": 6,
+    "GENERAL_PROHIBITION": 33,
+    "TRIGGER": 10,
+    "REFINANCING_PERMISSION": 1,
+    "CURE": 1
+  },
+  "renormalizedAt": "2026-08-27T16:13:54.168Z",
+  "note": "families re-normalized offline (zero new LLM calls) against the SAME captured real raw model output, after normalization.ts's camelCase/slash/singular-plural handling + family alias table were added based on inspecting this run's own out-of-enum family values."
+}

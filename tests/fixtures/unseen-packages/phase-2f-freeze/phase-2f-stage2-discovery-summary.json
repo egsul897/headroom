@@ -1,0 +1,60 @@
+{
+  "runId": "PHASE_2F_STAGE2_DISCOVERY",
+  "startedAt": "2026-08-27T13:29:22.863Z",
+  "finishedAt": "2026-08-27T13:38:23.006Z",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+  "perDocument": {
+    "conmed-doc-a-eighth-ar-credit-agreement": {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "nodesInspected": 171,
+      "deterministicCandidatesGenerated": 100,
+      "semanticCandidatesEvaluated": 196,
+      "duplicatesBeforeReconciliation": 33,
+      "finalCandidateCount": 163,
+      "wallClockMs": 342616.053915,
+      "modelCalls": 15,
+      "inputTokens": 47878,
+      "outputTokens": 41996
+    },
+    "conmed-doc-b-guarantee-collateral-agreement": {
+      "status": "CRASHED",
+      "errorMessage": "Failed to parse structured output: Error: Failed to parse structured output: [\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"GENERAL_PROHIBITION\",\n      \"PERMISSION\",\n      \"BASKET\",\n      \"EXCEPTION\",\n      \"RATIO_BASED_PERMISSION\",\n      \"BUILDER\",\n      \"CONDITION\",\n      \"PROVISO\",\n      \"FINANCIAL_TEST\",\n      \"SHARED_CAP\",\n      \"REFINANCING_PERMISSION\",\n      \"DESIGNATION_RULE\",\n      \"TRIGGER\",\n      \"CURE\",\n      \"DEFINITIONAL_DEPENDENCY_CANDIDATE\",\n      \"OTHER_RELEVANT_RULE\"\n    ],\n    \"path\": [\n      \"rules\",\n      0,\n      \"role\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"GENERAL_PROHIBITION\\\"|\\\"PERMISSION\\\"|\\\"BASKET\\\"|\\\"EXCEPTION\\\"|\\\"RATIO_BASED_PERMISSION\\\"|\\\"BUILDER\\\"|\\\"CONDITION\\\"|\\\"PROVISO\\\"|\\\"FINANCIAL_TEST\\\"|\\\"SHARED_CAP\\\"|\\\"REFINANCING_PERMISSION\\\"|\\\"DESIGNATION_RULE\\\"|\\\"TRIGGER\\\"|\\\"CURE\\\"|\\\"DEFINITIONAL_DEPENDENCY_CANDIDATE\\\"|\\\"OTHER_RELEVANT_RULE\\\"\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"GENERAL_PROHIBITION\",\n      \"PERMISSION\",\n      \"BASKET\",\n      \"EXCEPTION\",\n      \"RATIO_BASED_PERMISSION\",\n      \"BUILDER\",\n      \"CONDITION\",\n      \"PROVISO\",\n      \"FINANCIAL_TEST\",\n      \"SHARED_CAP\",\n      \"REFINANCING_PERMISSION\",\n      \"DESIGNATION_RULE\",\n      \"TRIGGER\",\n      \"CURE\",\n      \"DEFINITIONAL_DEPENDENCY_CANDIDATE\",\n      \"OTHER_RELEVANT_RULE\"\n    ],\n    \"path\": [\n      \"rules\",\n      1,\n      \"role\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"GENERAL_PROHIBITION\\\"|\\\"PERMISSION\\\"|\\\"BASKET\\\"|\\\"EXCEPTION\\\"|\\\"RATIO_BASED_PERMISSION\\\"|\\\"BUILDER\\\"|\\\"CONDITION\\\"|\\\"PROVISO\\\"|\\\"FINANCIAL_TEST\\\"|\\\"SHARED_CAP\\\"|\\\"REFINANCING_PERMISSION\\\"|\\\"DESIGNATION_RULE\\\"|\\\"TRIGGER\\\"|\\\"CURE\\\"|\\\"DEFINITIONAL_DEPENDENCY_CANDIDATE\\\"|\\\"OTHER_RELEVANT_RULE\\\"\"\n  },\n  {\n    \"code\": \"invalid_value\",\n    \"values\": [\n      \"GENERAL_PROHIBITION\",\n      \"PERMISSION\",\n      \"BASKET\",\n      \"EXCEPTION\",\n      \"RATIO_BASED_PERMISSION\",\n      \"BUILDER\",\n      \"CONDITION\",\n      \"PROVISO\",\n      \"FINANCIAL_TEST\",\n      \"SHARED_CAP\",\n      \"REFINANCING_PERMISSION\",\n      \"DESIGNATION_RULE\",\n      \"TRIGGER\",\n      \"CURE\",\n      \"DEFINITIONAL_DEPENDENCY_CANDIDATE\",\n      \"OTHER_RELEVANT_RULE\"\n    ],\n    \"path\": [\n      \"rules\",\n      2,\n      \"role\"\n    ],\n    \"message\": \"Invalid option: expected one of \\\"GENERAL_PROHIBITION\\\"|\\\"PERMISSION\\\"|\\\"BASKET\\\"|\\\"EXCEPTION\\\"|\\\"RATIO_BASED_PERMISSION\\\"|\\\"BUILDER\\\"|\\\"CONDITION\\\"|\\\"PROVISO\\\"|\\\"FINANCIAL_TEST\\\"|\\\"SHARED_CAP\\\"|\\\"REFINANCING_PERMISSION\\\"|\\\"DESIGNATION_RULE\\\"|\\\"TRIGGER\\\"|\\\"CURE\\\"|\\\"DEFINITIONAL_DEPENDENCY_CANDIDATE\\\"|\\\"OTHER_RELEVANT_RULE\\\"\"\n  }\n]\nValidation issues:\n  - rules.0.role: Invalid option: expected one of \"GENERAL_PROHIBITION\"|\"PERMISSION\"|\"BASKET\"|\"EXCEPTION\"|\"RATIO_BASED_PERMISSION\"|\"BUILDER\"|\"CONDITION\"|\"PROVISO\"|\"FINANCIAL_TEST\"|\"SHARED_CAP\"|\"REFINANCING_PERMISSION\"|\"DESIGNATION_RULE\"|\"TRIGGER\"|\"CURE\"|\"DEFINITIONAL_DEPENDENCY_CANDIDATE\"|\"OTHER_RELEVANT_RULE\"\n  - rules.1.role: Invalid option: expected one of \"GENERAL_PROHIBITION\"|\"PERMISSION\"|\"BASKET\"|\"EXCEPTION\"|\"RATIO_BASED_PERMISSION\"|\"BUILDER\"|\"CONDITION\"|\"PROVISO\"|\"FINANCIAL_TEST\"|\"SHARED_CAP\"|\"REFINANCING_PERMISSION\"|\"DESIGNATION_RULE\"|\"TRIGGER\"|\"CURE\"|\"DEFINITIONAL_DEPENDENCY_CANDIDATE\"|\"OTHER_RELEVANT_RULE\"\n  - rules.2.role: Invalid option: expected one of \"GENERAL_PROHIBITION\"|\"PERMISSION\"|\"BASKET\"|\"EXCEPTION\"|\"RATIO_BASED_PERMISSION\"|\"BUILDER\"|\"CONDITION\"|\"PROVISO\"|\"FINANCIAL_TEST\"|\"SHARED_CAP\"|\"REFINANCING_PERMISSION\"|\"DESIGNATION_RULE\"|\"TRIGGER\"|\"CURE\"|\"DEFINITIONAL_DEPENDENCY_CANDIDATE\"|\"OTHER_RELEVANT_RULE\"",
+      "note": "runDiscoveryPipeline threw an uncaught error for this document - zero candidates were produced for it. This is the real, unmodified behavior of the frozen Phase 2B pipeline against this document's real content, not a harness bug being papered over."
+    },
+    "conmed-doc-c-second-amendment-2022": {
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "nodesInspected": 0,
+      "deterministicCandidatesGenerated": 0,
+      "semanticCandidatesEvaluated": 0,
+      "duplicatesBeforeReconciliation": 0,
+      "finalCandidateCount": 0,
+      "wallClockMs": 0.10204400005750358,
+      "modelCalls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0
+    },
+    "conmed-doc-d-first-omnibus-amendment-2026": {
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "nodesInspected": 0,
+      "deterministicCandidatesGenerated": 0,
+      "semanticCandidatesEvaluated": 0,
+      "duplicatesBeforeReconciliation": 0,
+      "finalCandidateCount": 0,
+      "wallClockMs": 0.023034999961964786,
+      "modelCalls": 0,
+      "inputTokens": 0,
+      "outputTokens": 0
+    }
+  },
+  "totals": {
+    "documentCount": 4,
+    "totalModelCalls": 15,
+    "totalInputTokens": 47878,
+    "totalOutputTokens": 41996,
+    "estimatedCostUsd": 0.7736,
+    "wallClockMs": 540143,
+    "totalFinalCandidates": 163
+  }
+}

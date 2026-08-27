@@ -30,7 +30,11 @@ export interface ExpandedCandidate {
   structuralNodeKeys: string[];
   normalizedSourceRef: string;
   role: DiscoveryRole;
+  roleRaw: string;
+  roleNormalizationStatus: DiscoveredCandidate["roleNormalizationStatus"];
   families: DiscoveredCandidate["families"];
+  familiesRaw: string[];
+  familiesNormalizationStatus: DiscoveredCandidate["familiesNormalizationStatus"];
   otherFamilyDescription?: string;
   description: string;
   multipleRulesLikely: boolean;
@@ -62,7 +66,11 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
       structuralNodeKeys,
       normalizedSourceRef: anchorNode?.sectionRef ?? sectionRef,
       role: item.role,
+      roleRaw: item.roleRaw,
+      roleNormalizationStatus: item.roleNormalizationStatus,
       families: item.families as DiscoveredCandidate["families"],
+      familiesRaw: item.familiesRaw,
+      familiesNormalizationStatus: item.familiesNormalizationStatus,
       otherFamilyDescription: item.otherFamilyDescription,
       description: item.description,
       multipleRulesLikely: item.multipleRulesLikely,
@@ -85,7 +93,11 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
       structuralNodeKeys: [sectionNodeKey],
       normalizedSourceRef: sectionRef,
       role: "GENERAL_PROHIBITION",
+      roleRaw: "",
+      roleNormalizationStatus: "VALID_CANONICAL",
       families: [],
+      familiesRaw: [],
+      familiesNormalizationStatus: "VALID_CANONICAL",
       description: `Section-level container for ${sectionRef} (${sectionNode?.heading ?? ""}) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.`,
       multipleRulesLikely: candidates.length > 1,
       definedTermDependencyLikely: false,

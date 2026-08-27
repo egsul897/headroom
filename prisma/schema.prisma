@@ -161,6 +161,14 @@ enum DocumentType {
   FEE_LETTER
   OTHER_DEBT_DOCUMENT
   UNKNOWN
+  // Phase 2F.3 (docs/phase-2f3-package-graph-remediation.md §5/§12) -
+  // additive, same ALTER TYPE ADD VALUE safety as every block above. Real
+  // evidence (CONMED's own "Guarantee and Collateral Agreement") showed
+  // GUARANTEE and SECURITY_AGREEMENT alone each drop half of a composite
+  // document's real identity - this is a genuine, reusable leveraged-
+  // finance document concept (a single agreement combining guaranty and
+  // collateral/security grant provisions), not a CONMED-specific title.
+  GUARANTEE_AND_SECURITY_AGREEMENT
 
   @@map("document_type")
 }
@@ -2185,6 +2193,36 @@ enum AmendmentEffectType {
   // not be determined from the text either.
   MODIFY_PROVISION
   UNKNOWN_CHANGE
+  // Phase 2G (docs/phase-2g-amendment-precedence.md §5) - additive, same
+  // ALTER TYPE ADD VALUE safety as every other enum extension in this
+  // file. MODIFY_DEFINITION above was, until this phase, the only
+  // definition-change value - too coarse once real amendment parsing
+  // (not just candidate detection) needs to distinguish a definition
+  // being added outright from one being deleted outright from one being
+  // replaced outright; MODIFY_DEFINITION itself is kept as the honest
+  // fallback for a detected definition change whose exact shape isn't
+  // determinable. RESTATE_AGREEMENT represents a full amendment-and-
+  // restatement (task §14 - "do not apply hundreds of artificial
+  // section-by-section amendments if source/legal structure establishes
+  // a full restatement relationship"), distinct from REPLACE_TEXT's own
+  // section-level scope. REAFFIRM covers an amendment/joinder that
+  // reaffirms an existing obligation (e.g. a guarantee) without altering
+  // its text (task §16/§25 scenario 20). NO_TEXTUAL_CHANGE covers a
+  // detected amendment-shaped statement that, on inspection, changes
+  // nothing operative (e.g. a pure administrative/notice provision).
+  ADD_DEFINITION
+  DELETE_DEFINITION
+  REPLACE_DEFINITION
+  RESTATE_AGREEMENT
+  REAFFIRM
+  NO_TEXTUAL_CHANGE
+  // Phase 2G, added after real CONMED Document D evidence (its own
+  // Section 1(b): "the 'Term A-2 Commitments' set forth on Schedule 1 of
+  // this Amendment are hereby added to Schedule 1.1 of the Credit
+  // Agreement") showed a genuine schedule-modification clause that none
+  // of the values above honestly describes - same additive ALTER TYPE ADD
+  // VALUE safety as every extension above.
+  MODIFY_SCHEDULE
 
   @@map("amendment_effect_type")
 }

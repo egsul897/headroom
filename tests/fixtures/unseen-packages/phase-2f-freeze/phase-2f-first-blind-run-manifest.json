@@ -1,0 +1,26 @@
+{
+  "manifestId": "PHASE_2F_FIRST_BLIND_RUN",
+  "sealedAtCommit": "e7e4066f8453555ced48f6b6918308d9d42fca04",
+  "sealedAt": "2026-08-27T13:44:01.999Z",
+  "description": "This manifest seals the first-blind-run output of the frozen Phase 2A-2E pipeline against the CONMED unseen package, before any ground truth was authored. Ground truth authored after this point must be scored against exactly these artifacts, identified by these hashes - never a later rerun.",
+  "packageSourceHashesFile": "see git history of tests/fixtures/unseen-packages/conmed-2025-credit-facility/ (raw-source/*.htm sha256 in commit 710472e)",
+  "discoveryProvider": "VERCEL_AI_GATEWAY",
+  "discoveryModel": "anthropic/claude-sonnet-5",
+  "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1",
+  "retrievalAlgorithmVersion": "phase-2d-context-retrieval.v2",
+  "auditAlgorithmVersion": "phase-2e-coverage-audit.v1",
+  "artifactHashes": {
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage1-structural-summary.json": "03aa017919ab428a729967677180adba6942174f501a81c11535653528db38e1",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage1-all-nodes.json": "e0a870d8286ba021047a2ebfd6ee7a606b3974c38faf49a7756c3fbeafa1ed22",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage1-all-references.json": "1ef38fcd2d7faccf9d61d7bc682692ea801ea6081862577b65b2f9d8cea47938",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage1-all-definitions.json": "1416797c582322c8082b655b37aa9e3eb097e9aed1537149fe4719bbcce0a33d",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-summary.json": "475c533d70f8513290f4f3a42ec2b72bd21fdeb6ed55d4a46bc8d79fc8b2665f",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage2-discovery-candidates.json": "5f0eb08834f2056f94aafee073bd08f3dcbc81a3f638ace5beb444386c1ea444",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage3-package-graph.json": "77f8a0e3a9fbb612a2a0099f37a353f144cfbdb71e84a6a15b8cec7b0394843b",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage4-context-bundles.json": "c4fb70c3d176dd754f0764fb78f9a2e4deae190779e41f210150c4c869f0fcaf",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage4-summary.json": "ae325bac215c3a6d013169a41df0856578dfa0aee346da6269eb2a2216775bbf",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-findings.json": "a3e10f755b321b61fca8d347875f6535ee31174217fcb6b3433283633102d910",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-audit-coverage-map.json": "480f0b5a8ba393f92aabddcc70169ac678903a64b7444ba8d69d91350f2b17ab",
+    "tests/fixtures/unseen-packages/phase-2f-freeze/phase-2f-stage5-summary.json": "9664983493da85cca7a92a2cecfd4e9b8e42bdc427feee5bbdd895d12a88cc1f"
+  }
+}

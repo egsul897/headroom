@@ -1,0 +1,996 @@
+{
+  "companyId": "phase-2f1-unseen-conmed",
+  "packageKey": "conmed-2025-credit-facility",
+  "classifications": [
+    {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "Amended and Restated Credit Agreement"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "type": "SECURITY_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "COLLATERAL AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "Amended and Restated Credit Agreement"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "type": "SECURITY_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "Collateral Agreement"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    }
+  ],
+  "identities": [
+    {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "title": null,
+      "agreementTypeLabel": null,
+      "executionDate": "June 10, 2025",
+      "effectiveDate": "June 10, 2025",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": null,
+      "facilityOrInstrumentName": null,
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "executionDate": {
+          "text": "dated June 10, 2025",
+          "charStart": 67
+        }
+      }
+    },
+    {
+      "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "title": "AND RESTATED GUARANTEE AND COLLATERAL AGREEMENT",
+      "agreementTypeLabel": "AND RESTATED GUARANTEE AND COLLATERAL AGREEMENT",
+      "executionDate": "June 10, 2025",
+      "effectiveDate": "June 10, 2025",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": "JPMORGAN CHASE BANK, N.A.",
+      "facilityOrInstrumentName": "AND RESTATED GUARANTEE AND COLLATERAL AGREEMENT",
+      "originalAgreementReferenceHint": "the Eighth Amended and Restated Credit Agreement, dated as of June 10, 2025",
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "AND RESTATED GUARANTEE AND COLLATERAL AGREEMENT",
+          "charStart": 50
+        },
+        "executionDate": {
+          "text": "Dated as of June 10, 2025",
+          "charStart": 220
+        },
+        "originalAgreementReferenceHint": {
+          "text": "the Eighth Amended and Restated Credit Agreement, dated as of June 10, 2025",
+          "charStart": 3033
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "JPMORGAN CHASE BANK, N.A.,\nas Administrative Agent",
+          "charStart": 169
+        }
+      }
+    },
+    {
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "title": null,
+      "agreementTypeLabel": null,
+      "executionDate": "August 1, 2022",
+      "effectiveDate": "August 1, 2022",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": null,
+      "facilityOrInstrumentName": null,
+      "originalAgreementReferenceHint": "the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021",
+      "amendmentNumber": 2,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "executionDate": {
+          "text": "dated as of August 1, 2022",
+          "charStart": 92
+        },
+        "amendmentNumber": {
+          "text": "AMENDMENT SECOND",
+          "charStart": 64
+        },
+        "originalAgreementReferenceHint": {
+          "text": "the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021",
+          "charStart": 144
+        }
+      }
+    },
+    {
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "title": null,
+      "agreementTypeLabel": null,
+      "executionDate": "MAY 27, 2026",
+      "effectiveDate": "MAY 27, 2026",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": null,
+      "facilityOrInstrumentName": null,
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "executionDate": {
+          "text": "DATED AS OF MAY 27, 2026",
+          "charStart": 98
+        }
+      }
+    }
+  ],
+  "relationshipCandidates": [
+    {
+      "sourceDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "relationshipType": "RESTATES",
+      "sourceCitation": "CONMED Eighth Amended and Restated Credit Agreement (2025-06-10)",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+      "resolutionMethod": "DETERMINISTIC_NO_SIGNAL"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "relationshipType": "SECURES",
+      "sourceCitation": "CONMED Amended and Restated Guarantee and Collateral Agreement (2025-06-10)",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+      "resolutionMethod": "DETERMINISTIC_NO_SIGNAL"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "relationshipType": "RESTATES",
+      "sourceCitation": "CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01)",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+      "resolutionMethod": "DETERMINISTIC_NO_SIGNAL"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "relationshipType": "SECURES",
+      "sourceCitation": "CONMED First Omnibus Amendment and Increased Facility Activation Notice (2026-05-27)",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+      "resolutionMethod": "DETERMINISTIC_NO_SIGNAL"
+    }
+  ],
+  "modificationCandidates": [
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "sourceNodeCitation": "CONMED Second Amendment to Seventh A&R Credit Agreement (2022-08-01)",
+      "sourceText": ". (a) Section 1.1 ( Defined Terms ) of the Credit Agreement is hereby amended as follows: (i) The definition of \" Consolidated Senior Secured Leverage Ratio",
+      "operation": "UNKNOWN_CHANGE",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "targetSectionRef": null,
+      "targetDefinedTermRef": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "the source document itself has no resolvable reference to another agreement",
+      "confidence": 0.7
+    }
+  ],
+  "crossDocumentReferenceLeads": [
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "pursuant to the Credit Agreement",
+      "charStart": 3488,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 3500,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 3827,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 4222,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 4383,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "subject to the conditions set forth in this Agreement",
+      "charStart": 5316,
+      "namedAgreementHint": "conditions set forth in this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 5489,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 5824,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 5902,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 8016,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 12906,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 13051,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 13600,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 17739,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 20631,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 25259,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 27389,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the\nCredit Agreement",
+      "charStart": 30753,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 35552,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 38731,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 39082,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 39847,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 40185,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 41993,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 43810,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 44593,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 44844,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 45465,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 47524,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 51395,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 52736,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 53325,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 53626,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 62464,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 67216,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 67873,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 68298,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 80769,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 85932,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 86437,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 89651,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 90298,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 90493,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 93214,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 93354,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 94898,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 101198,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 103593,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "referenceText": "the Credit Agreement",
+      "charStart": 104349,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "pursuant to the Credit Agreement",
+      "charStart": 729,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 741,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 930,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1368,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1451,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the\nCredit Agreement",
+      "charStart": 2479,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 4928,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "pursuant to the Credit Agreement",
+      "charStart": 5314,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 5326,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 6565,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 6750,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 6797,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 7200,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 7359,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 7481,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 7560,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-c-second-amendment-2022",
+      "referenceText": "the Credit Agreement",
+      "charStart": 7670,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 583,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1524,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1688,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1747,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 2665,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 2701,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 2959,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 3061,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 3083,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 3200,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 3300,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 3605,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "The Credit Agreement",
+      "charStart": 3943,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 4522,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "subject to the other conditions set forth in the Amended Credit Agreement",
+      "charStart": 5659,
+      "namedAgreementHint": "other conditions set forth in the Amended Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 13807,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 14041,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "referenceText": "the Credit Agreement",
+      "charStart": 15010,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:conmed-doc-a-eighth-ar-credit-agreement",
+      "name": "AMENDED_AND_RESTATED_AGREEMENT",
+      "documentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement"
+      ],
+      "baseDocumentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:conmed-doc-c-second-amendment-2022",
+      "name": "AMENDED_AND_RESTATED_AGREEMENT",
+      "documentIds": [
+        "conmed-doc-c-second-amendment-2022"
+      ],
+      "baseDocumentId": "conmed-doc-c-second-amendment-2022",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "performance": {
+    "documentCount": 4,
+    "totalCharsScanned": 230891,
+    "relationshipCandidatesGenerated": 4,
+    "relationshipsResolved": 0,
+    "relationshipsUnresolved": 4,
+    "modificationCandidatesGenerated": 1,
+    "crossDocumentReferenceLeadsGenerated": 84,
+    "wallClockMs": 9,
+    "semanticCallsUsed": 0
+  }
+}
