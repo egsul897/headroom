@@ -1,0 +1,4442 @@
+[
+  {
+    "discoveryId": "discovery-candidate:8fe38049fe62ea9e9e741511",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.1(a)"
+    ],
+    "normalizedSourceRef": "7.1(a)",
+    "families": [
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "FINANCIAL_TEST",
+    "description": "Prohibits the Consolidated Senior Secured Leverage Ratio, tested quarterly on a trailing four-quarter basis, from exceeding 3.75 to 1.00.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "ratio_expression",
+      "exception_marker",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "sourceCitation": "(a)\nConsolidated Senior Secured Leverage Ratio . Permit the Consolidated Senior Secured Leverage Ratio as at the last day of\nany period of four consecutive fiscal quarters of the Parent Borrower and its Subsidiaries ending on or after the Closing Date to exceed\n3.75 to 1.00.\nNotwithstanding the fore",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:a26970121ceb558846ff8d1c",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.1"
+    ],
+    "normalizedSourceRef": "7.1",
+    "families": [
+      "FINANCIAL_COVENANTS",
+      "ACQUISITIONS"
+    ],
+    "role": "PROVISO",
+    "description": "Allows a temporary 0.50x increase to the Consolidated Senior Secured Leverage Ratio covenant for four quarters following a Material Acquisition, subject to election notice timing, a two-time limit, and minimum spacing between step-ups.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "SECTION 7.1 Financial Condition\nCovenants .\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:cf15af8f5fb1f77bd861a2ac",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.1(b)"
+    ],
+    "normalizedSourceRef": "7.1(b)",
+    "families": [
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "FINANCIAL_TEST",
+    "description": "Prohibits the Consolidated Total Leverage Ratio, tested quarterly on a trailing four-quarter basis, from exceeding 5.50 to 1.00.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "ratio_expression",
+      "permission_construction",
+      "exception_marker",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "sourceCitation": "(b) in respect of the fiscal\nquarter in which such Material Acquisition was consummated), the Consolidated Senior Secured Leverage Ratio may be 0.50 to 1.00 greater\nthan the ratio set forth above for four consecutive fiscal quarters starting with the fiscal quarter in which such Material Acquisition",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:5f83b15ed6cd0ea8b06289a0",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.1(c)"
+    ],
+    "normalizedSourceRef": "7.1(c)",
+    "families": [
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "FINANCIAL_TEST",
+    "description": "Prohibits the Interest Coverage Ratio, tested quarterly on a trailing four-quarter basis, from falling below 2.75 to 1.00.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "ratio_expression",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "sourceCitation": "(c)\nMinimum Interest Coverage Ratio . Permit the Interest Coverage Ratio for any period of four consecutive fiscal quarters of\nthe Parent Borrower and its Subsidiaries ending on or after the Closing Date to be less than 2.75 to 1.00.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:1b08da2e952127a1caebe77d",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.1(d)"
+    ],
+    "normalizedSourceRef": "7.1(d)",
+    "families": [
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "FINANCIAL_TEST",
+    "description": "Once within 91 days of the earliest scheduled maturity of the Convertible Notes and while Early Maturing Debt exceeds $200,000,000, requires Liquidity at all times to be at least the sum of $75,000,000 plus the outstanding principal amount of Early Maturing Debt.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "dollar_value"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.9,
+    "sourceCitation": "(d)\nLiquidity . From and after the date that is 91 days prior to the earliest scheduled maturity date of the Convertible Notes\nand so long as the aggregate outstanding principal amount of the Early Maturing Debt is in excess of $200,000,000, permit the Liquidity\nat any time to be less than the sum o",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:e37352369564a1e784e0560b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.1"
+    ],
+    "normalizedSourceRef": "7.1",
+    "families": [
+      "FINANCIAL_COVENANTS",
+      "DEFINITIONS_CALCULATION_RULES"
+    ],
+    "role": "OTHER_RELEVANT_RULE",
+    "description": "Sets forth the two components (fixed $75,000,000 amount plus outstanding Early Maturing Debt) that together comprise the minimum Liquidity threshold in clause (d).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.6,
+    "sourceCitation": "SECTION 7.1 Financial Condition\nCovenants .\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7f0346ffa36d1e56bcaca604",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "General prohibition on creating, incurring, assuming or suffering to exist any Indebtedness except as permitted by the enumerated exceptions in this Section 7.2.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.97,
+    "sourceCitation": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:4f932341d5cd33c9ee0c3abd",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(a)"
+    ],
+    "normalizedSourceRef": "7.2(a)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Indebtedness of any Loan Party arising under the Loan Documents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(a)\nIndebtedness of any Loan Party pursuant to any Loan Document;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:4bfbc3dbea17aec6bb21a58a",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(b)"
+    ],
+    "normalizedSourceRef": "7.2(b)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits intercompany Indebtedness of the Parent Borrower to any Subsidiary and of any Subsidiary Guarantor to the Parent Borrower or another Subsidiary.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(b)\nIndebtedness of the Parent Borrower to any Subsidiary and of any Subsidiary Guarantor to the Parent Borrower or any other Subsidiary;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7a3f36589dacd05c41331a80",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(c)"
+    ],
+    "normalizedSourceRef": "7.2(c)",
+    "families": [
+      "INDEBTEDNESS",
+      "LIENS",
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "RATIO_BASED_PERMISSION",
+    "description": "Permits Indebtedness secured by Liens permitted under Section 7.3(g), conditioned on pro forma compliance with the Section 7.1 financial covenants.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(c)\nIndebtedness secured by Liens permitted by Section 7.3(g); provided that the Parent Borrower shall be in compliance, on\na pro forma basis after giving effect to the incurrence of such Indebtedness, with the financial covenants contained in Section\n7.1 recomputed as at the last day of the most re",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:19f36eb8514494897cd4a5b6",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(d)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(d)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "BASKET",
+    "description": "Permits Finance Lease Obligations up to a cap equal to the greater of a fixed dollar amount and a percentage of Consolidated Total Assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "greater_lesser_of",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(d)\nFinance Lease Obligations in an aggregate principal amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated\nTotal Assets (measured on the date of incurrence of such Finance Lease Obligations) at any one time outstanding;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:62512247bce898548b6f9b63",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(e)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(e)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Grandfathers Indebtedness outstanding on the Closing Date and listed on a schedule.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(e)\nIndebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions\nthereof (without any increase in the principal amount thereof);\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:31223fa50581f12fb594ec0d",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(e)"
+    ],
+    "normalizedSourceRef": "7.2(e)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "REFINANCING_PERMISSION",
+    "description": "Permits refinancings, refundings, renewals or extensions of the grandfathered Closing Date Indebtedness so long as principal amount is not increased.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(e)\nIndebtedness outstanding on the Closing Date and listed on Schedule 7.2(e) and any refinancings, refundings, renewals or extensions\nthereof (without any increase in the principal amount thereof);\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:1084b12277d101d1e3928d59",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(f)"
+    ],
+    "normalizedSourceRef": "7.2(f)",
+    "families": [
+      "INDEBTEDNESS",
+      "GUARANTEES"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits ordinary course guarantees by the Parent Borrower or its Subsidiaries of obligations of any Subsidiary Guarantor.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(f)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of obligations of any Subsidiary\nGuarantor;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7b3977f0fa58ecd5c864b1fc",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(g)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(g)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "BASKET",
+    "description": "Permits Indebtedness on account of industrial revenue bonds up to a cap equal to the greater of a fixed dollar amount and a percentage of Consolidated Total Assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "greater_lesser_of",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(g)\nIndebtedness of the Parent Borrower or its Subsidiaries on account of industrial revenue bonds in an aggregate principal amount\nnot to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured on the date of incurrence of such Indebtedness)\nat anyone one time outs",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:365e2c75cf8681ecfa480ad2",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(h)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(h)",
+    "families": [
+      "INDEBTEDNESS",
+      "GUARANTEES"
+    ],
+    "role": "BASKET",
+    "description": "Permits ordinary course guarantees of customer lease obligations relating to Equipment sold and leased back to customers, up to a cap equal to the greater of a fixed dollar amount and a percentage of Consolidated Total Assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "greater_lesser_of",
+      "financial_metric",
+      "shared_cap"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(h)\nguarantees made in the ordinary course of business by the Parent Borrower or any of its Subsidiaries of lease obligations of their\ncustomers in respect of Equipment sold by the Parent Borrower or any of its Subsidiaries to a third party and then leased to such customer\nin an aggregate amount out",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7feb9e228591558f958bb0d1",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(i)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "BASKET",
+    "description": "Permits Indebtedness in respect of letters of credit not otherwise permitted under Section 7.2, up to a cap equal to the greater of a fixed dollar amount and a percentage of Consolidated Total Assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "greater_lesser_of",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(i)\nIndebtedness in respect of letters of credit (not otherwise permitted under this Section 7.2) outstanding in the ordinary course\nof business in an aggregate face amount not to exceed the greater of (x) $50,000,000 and (y) 3.0% of Consolidated Total Assets (measured\non the date of incurrence of s",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:06a4e449333717a1dc8bbc58",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(j)"
+    ],
+    "normalizedSourceRef": "7.2(j)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits intercompany Indebtedness among non-Loan Party Subsidiaries and from Subsidiary Guarantors to non-Loan Party Subsidiaries.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(j)\nIndebtedness of ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:28d7bafd7a1fedde253333ef",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(k)"
+    ],
+    "normalizedSourceRef": "7.2(k)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Indebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco owed to the Parent Borrower or another Subsidiary, subject to absence of Default/Event of Default.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.87,
+    "sourceCitation": "(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:abc8af03ac51f922f06ded82",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(k)(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(k)(i)",
+    "families": [
+      "INDEBTEDNESS",
+      "COLLATERAL_SECURITY"
+    ],
+    "role": "CONDITION",
+    "description": "Requires satisfaction of the requirements of Section 6.9 as a condition to permitting the intercompany foreign subsidiary Indebtedness under (k).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i) the requirements of Section 6.9 are satisfied and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:42316093889582e0874f69a6",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(k)(ii)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(k)(ii)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "BASKET",
+    "description": "Caps the aggregate principal amount of Indebtedness permitted under (k) at the greater of a fixed dollar amount and a percentage of Consolidated Total Tangible Assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "greater_lesser_of"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.87,
+    "sourceCitation": "(ii) the aggregate principal amount of such Indebtedness at any time outstanding\nshall not exceed the greater of ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c9999a82a8a6c1c3a9648e22",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(k)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(k)",
+    "families": [
+      "INDEBTEDNESS",
+      "COLLATERAL_SECURITY"
+    ],
+    "role": "PROVISO",
+    "description": "Requires that Indebtedness permitted under (k) be evidenced by a note or similar instrument and pledged in accordance with Section 6.9 and the Guarantee and Collateral Agreement.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(k)\nIndebtedness of any Foreign Subsidiary or Foreign Subsidiary Holdco to the Parent Borrower or any other Subsidiary (so long as\nno Default or Event of Default shall have occurred and be continuing at the time of the incurrence of such Indebtedness); provided\nthat ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:0cdfa0a5a2266bd5aec20849",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(l)(i)"
+    ],
+    "normalizedSourceRef": "7.2(l)(i)",
+    "families": [
+      "INDEBTEDNESS",
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "RATIO_BASED_PERMISSION",
+    "description": "Permits Permitted Unsecured Indebtedness conditioned on absence of Default/Event of Default and pro forma compliance with the Section 7.1(b) financial covenant.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "exception_marker",
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(i) Permitted Unsecured Indebtedness; provided that (x) at the time of, and after giving effect to, the incurrence of such\nIndebtedness, no Default or Event of Default shall have occurred and be continuing and (y) the Parent Borrower shall be in compliance,\non a pro forma basis after giving effect t",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:2fa8e7f8da38b86c6b75629d",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(l)(ii)"
+    ],
+    "normalizedSourceRef": "7.2(l)(ii)",
+    "families": [
+      "INDEBTEDNESS",
+      "GUARANTEES"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Subsidiary guarantees of Permitted Unsecured Indebtedness, provided non-Loan Party Subsidiaries do not guarantee and any such guarantee is unsecured.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "permitted_construct",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.87,
+    "sourceCitation": "(ii) any guarantee\nby any Subsidiary in respect of any Permitted Unsecured Indebtedness; provided that (x) no Subsidiary that is not a Loan Party\nshall guarantee any Permitted Unsecured Indebtedness and (y) any such guarantee in respect of Permitted Unsecured Indebtedness shall be\nunsecured;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:3d233f1364657aeffc32c4a7",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(m)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(m)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "BASKET",
+    "description": "Permits Indebtedness incurred in connection with or substituting/replacing a Receivables Transfer Program, up to a cap equal to the greater of a fixed dollar amount and a percentage of Consolidated Total Assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "greater_lesser_of",
+      "covenant_verb",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(m)\nIndebtedness incurred in connection with or in substitution or replacement of a Receivables Transfer Program in an aggregate principal\namount not to exceed the greater of (x) $125,000,000 and (y) 7.5% of Consolidated Total Assets (measured on the date of incurrence of\nsuch Indebtedness);\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:6da1a256e226a50878be09d8",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(n)(i)"
+    ],
+    "normalizedSourceRef": "7.2(n)(i)",
+    "families": [
+      "INDEBTEDNESS",
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "RATIO_BASED_PERMISSION",
+    "description": "Permits Permitted Subordinated Indebtedness conditioned on pro forma compliance with the Section 7.1(b) financial covenant.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(i) Permitted Subordinated Indebtedness; provided that the Parent Borrower shall be in compliance, on a pro forma basis\nafter giving effect to the incurrence of such Indebtedness, with the financial covenant contained in Section 7.1(b), recomputed on a pro\nforma basis as at the last day of the most ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:63cca6f524f3c06639a35a7b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(n)(ii)"
+    ],
+    "normalizedSourceRef": "7.2(n)(ii)",
+    "families": [
+      "INDEBTEDNESS",
+      "GUARANTEES"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Subsidiary guarantees of Permitted Subordinated Indebtedness, provided non-Loan Party Subsidiaries do not guarantee and any guarantee is subordinated on the same basis as the underlying debt.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "exception_marker",
+      "permitted_construct",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.87,
+    "sourceCitation": "(ii) any guarantee by any Subsidiary\nin respect of any Permitted Subordinated Indebtedness; provided that (x) no Subsidiary that is not a Loan Party shall guarantee\nany Permitted Subordinated Indebtedness and (y) any such guarantee shall be subordinated to the prior payment in full of the Obligation",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:4f89c3b081ac7eb79d270167",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(o)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2(o)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "BASKET",
+    "description": "Catch-all basket permitting unsecured Indebtedness not otherwise permitted by Section 7.2 up to a cap equal to the greater of a fixed dollar amount and a percentage of Consolidated Total Assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "greater_lesser_of"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(o)\nunsecured Indebtedness not otherwise permitted by this Section 7.2 in an aggregate principal amount not to exceed the greater of\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:cdccb3650edb9287f09fb2a9",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(p)(i)"
+    ],
+    "normalizedSourceRef": "7.2(p)(i)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits obligations under interest rate Swap Agreements up to a notional amount not exceeding aggregate Commitments.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i) Obligations under or in respect of interest rate Swap Agreements up to an aggregate notional principal amount not to exceed\nat any time an amount equal to the Commitments of all the Lenders in the aggregate at such time, (ii) Obligations owing under Swap Agreements\nentered into in order to manag",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:4cd22c1476a7c5046da3cc41",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits obligations under Swap Agreements entered to manage existing/anticipated FX or commodity price risk, not for speculation.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:eda577d18f55bdba49232658",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(r)"
+    ],
+    "normalizedSourceRef": "7.2(r)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Indebtedness in respect of the Convertible Notes.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(r)\nIndebtedness in respect of the Convertible Notes and any Permitted Refinancing thereof; and\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:4db3011a2619a9dd89a19330",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(r)"
+    ],
+    "normalizedSourceRef": "7.2(r)",
+    "families": [
+      "INDEBTEDNESS"
+    ],
+    "role": "REFINANCING_PERMISSION",
+    "description": "Permits any Permitted Refinancing of the Convertible Notes.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.83,
+    "sourceCitation": "(r)\nIndebtedness in respect of the Convertible Notes and any Permitted Refinancing thereof; and\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:468b10c82bc07efa732354ac",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(s)"
+    ],
+    "normalizedSourceRef": "7.2(s)",
+    "families": [
+      "INDEBTEDNESS",
+      "ACQUISITIONS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Indebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar Investments, subject to conditions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.87,
+    "sourceCitation": "(s)\nIndebtedness of the Parent Borrower and its Subsidiaries assumed in connection with Permitted Business Acquisitions or similar\nInvestments so long as ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:5b0cf887a4cf4a3b5caa1c81",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2(s)(i)"
+    ],
+    "normalizedSourceRef": "7.2(s)(i)",
+    "families": [
+      "INDEBTEDNESS",
+      "FINANCIAL_COVENANTS",
+      "ACQUISITIONS"
+    ],
+    "role": "FINANCIAL_TEST",
+    "description": "Requires pro forma compliance with the Section 7.1(a) and (b) financial covenants after giving effect to the assumed Indebtedness and related acquisition.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "permission_construction",
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.87,
+    "sourceCitation": "(i) after giving effect to the assumption of such Indebtedness and such Permitted Business Acquisition on a pro\nforma basis as of the last day of the most recent period of four consecutive fiscal quarters have been delivered, the Parent Borrower\nshall be in compliance, on a pro forma basis with the ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:edcb74bc6a76f2b4c25d1eb4",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2",
+    "families": [
+      "INDEBTEDNESS",
+      "ACQUISITIONS",
+      "EVENTS_OF_DEFAULT"
+    ],
+    "role": "CONDITION",
+    "description": "Requires that no Event of Default has occurred and is continuing before and after giving effect to the assumed Indebtedness.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:5b1d66d1c41bfbf973fbc8e3",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2",
+    "families": [
+      "INDEBTEDNESS",
+      "LIENS",
+      "COLLATERAL_SECURITY",
+      "ACQUISITIONS"
+    ],
+    "role": "PROVISO",
+    "description": "Requires that assumed Indebtedness be unsecured or secured only by a mortgage, purchase money security interest, Finance Lease Obligation, or similar arrangement limited to the acquired property, with no Lien extending to other Property.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.86,
+    "sourceCitation": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c76edbc49663c57628ed3cee",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.2"
+    ],
+    "normalizedSourceRef": "7.2",
+    "families": [
+      "DEFINITIONS_CALCULATION_RULES",
+      "INDEBTEDNESS"
+    ],
+    "role": "OTHER_RELEVANT_RULE",
+    "description": "Provides rules for classifying, reclassifying and dividing items of Indebtedness among the various permitted categories in Section 7.2(a)-(s), and allows combination of multiple categories for a single item.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.2 Limitation on Indebtedness.\nCreate, incur, assume or suffer to exist any Indebtedness, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:08919c086272421431dd7aed",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3",
+    "families": [
+      "LIENS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits the Parent Borrower and its Subsidiaries from creating, incurring, assuming or suffering to exist any Lien on their property or revenues except as permitted by the enumerated exceptions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.97,
+    "sourceCitation": "SECTION 7.3 Limitation on Liens .\nCreate, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except\nfor:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7eb2dc07250e5d73988ceed4",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(a)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(a)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Liens for taxes, assessments or charges not yet due or being contested in good faith with adequate reserves maintained.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "permission_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(a)\nLiens for taxes, assessments or charges not yet due or which are being contested in good faith by appropriate proceedings; provided\nthat adequate reserves with respect thereto are maintained on the books of the Parent Borrower or its Subsidiaries, as the case may be,\nin conformity with GAAP;\n97\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:aa625ee78b68bd09e0932fea",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(b)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(b)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits carriers', warehousemen's, mechanics' and similar liens arising in the ordinary course not overdue more than 30 days or being contested, and certain judgment liens not constituting an Event of Default.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(b)\ncarriers', warehousemen's, mechanics', materialmen's, repairmen's, supplier's or other like\nLiens arising in the ordinary course of business which are not overdue for a period of more than 30 days or which are being contested\nin good faith by appropriate proceedings and Liens securing judgments ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:db29c9b94a34be2eb9d38885",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(c)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(c)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits pledges or deposits in connection with workers' compensation, unemployment insurance and social security legislation.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(c)\npledges or deposits in connection with workers' compensation, unemployment insurance and other social security legislation;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:3eb1e00eb8df475c0d2697c2",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(d)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(d)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits deposits to secure bids, trade contracts, leases, statutory obligations, surety/appeal/performance bonds and similar obligations incurred in the ordinary course of business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(d)\ndeposits to secure the performance of bids, trade contracts (other than for borrowed money), leases, statutory obligations, surety\nand appeal bonds, performance bonds and other obligations of a like nature incurred in the ordinary course of business;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c615523fa38fd789d31e9657",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(e)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(e)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits easements, rights-of-way, restrictions and similar encumbrances incurred in the ordinary course of business that are not substantial and do not materially detract from property value or interfere with business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(e)\neasements, rights-of-way, restrictions and other similar encumbrances incurred in the ordinary course of business which, in the\naggregate, are not substantial in amount and which do not in any case materially detract from the value of the Property subject thereto\nor materially interfere with the",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:0a2f4f23dae2b83c3e6c4ed0",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(f)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(f)",
+    "families": [
+      "LIENS",
+      "INDEBTEDNESS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Liens existing on the Closing Date listed on a schedule (and replacements/extensions) securing Indebtedness permitted under Section 7.2(e), provided no spreading of the lien or increase in secured amount.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(f)\nLiens in existence on the Closing Date listed on Schedule 7.3(f) (and any replacements or extensions thereof), securing Indebtedness\npermitted by Section 7.2(e); provided that no such Lien is spread to cover any additional Property after the Closing Date and that\nthe amount of Indebtedness secur",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:082c80836268c7277cc39c18",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(g)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(g)",
+    "families": [
+      "LIENS",
+      "INDEBTEDNESS"
+    ],
+    "role": "BASKET",
+    "description": "Permits Liens on real or tangible personal property acquired after the Closing Date that either predate the acquisition or secure permitted financing of the acquisition cost, subject to provisos.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(g)\nLiens upon real and/or tangible personal Property acquired after the Closing Date (by purchase, construction or otherwise) by the\nParent Borrower or any of its Subsidiaries, each of which Liens either ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:4fc1d579b699d89ba0428259",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(g)(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(g)(i)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "CONDITION",
+    "description": "Requires that the Lien existed on the acquired property before acquisition and was not created in anticipation of the acquisition.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(i) existed on such Property before the time of its acquisition\nand was not created in anticipation thereof or ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:f99359a26388274479373cdb",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(g)(ii)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(g)(ii)",
+    "families": [
+      "LIENS",
+      "INDEBTEDNESS"
+    ],
+    "role": "CONDITION",
+    "description": "Allows the Lien to be created solely to secure financing of the acquisition or construction cost of the property, subject to being permitted Indebtedness under Section 7.2.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "refinancing"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(ii) was created solely for the purpose of securing Indebtedness representing, or incurred\nto finance, refinance or refund, the cost (including the cost of construction) of such Property and permitted by Section 7.2; provided\nthat ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:2983e5f23dbd949b7b58db01",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(g)(ii)(A)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(g)(ii)(A)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "PROVISO",
+    "description": "Restricts such Lien from extending to or covering any property other than the property acquired or financed.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(A) no such Lien shall extend to or cover any Property of the Parent Borrower or such Subsidiary other than the Property so acquired\nor financed, and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:038eb0cd010fc21f941c2555",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(g)(ii)(B)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(g)(ii)(B)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "PROVISO",
+    "description": "Caps the principal amount of Indebtedness secured by such Lien at no more than 80% of the fair market value of the acquired property at time of acquisition.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "percentage"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(B) the principal amount of Indebtedness secured by any such Lien shall at no time exceed 80% of the fair market value\n(as determined in good faith by a Responsible Officer) of such Property at the time it was acquired (by purchase, construction or otherwise);\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:058231fd0222f19b20b9d181",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(h)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(h)",
+    "families": [
+      "LIENS",
+      "COLLATERAL_SECURITY"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Liens created pursuant to the Security Documents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(h)\nLiens created pursuant to the Security Documents;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:4c5fdf9ee2015e2d920b416e",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(i)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits any lessor's interest or title under leases entered into in the ordinary course of business covering only the leased assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i)\nany interest or title of a lessor under any lease entered into by the Parent Borrower or any other Subsidiary in the ordinary course\nof its business and covering only the assets so leased;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:e48d5bf75208a61f8260e190",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(j)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(j)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Liens arising from precautionary UCC financing statement filings regarding operating leases or consignment arrangements entered into in the ordinary course of business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(j)\nLiens arising from precautionary UCC financing statement filings regarding operating leases or consignment arrangements entered\ninto by the Parent Borrower or its Subsidiaries in the ordinary course of business;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c059bb56a36b1af78f5bbe23",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(k)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(k)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Liens in favor of banking institutions encumbering deposits (including rights of setoff) held in the ordinary course of business consistent with banking industry norms.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(k)\nLiens in favor of banking institutions encumbering the deposits (including the right of setoff) held by such banking institutions\nin the ordinary course of business and which are within the general parameters customary in the banking industry;\n98\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:92a453a94fb79b96795a0081",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(l)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(l)",
+    "families": [
+      "LIENS",
+      "ACQUISITIONS",
+      "INVESTMENTS"
+    ],
+    "role": "BASKET",
+    "description": "Permits Liens on property or assets acquired via a Permitted Business Acquisition or similar Investment, or existing on a Person at the time it becomes a Subsidiary, subject to conditions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(l)\nLiens on property or assets acquired pursuant to any Permitted Business Acquisition or similar Investment, or on property or assets\nof a Person in existence at the time such Person is acquired pursuant to such Permitted Business Acquisition or similar Investment or\notherwise becomes a Subsidiary",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:87c0370dad1da9b0c9941d1c",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(l)(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(l)(i)",
+    "families": [
+      "LIENS",
+      "INDEBTEDNESS"
+    ],
+    "role": "CONDITION",
+    "description": "Requires that any Indebtedness secured by such Liens be permitted to exist under Section 7.2.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i) any Indebtedness that is secured by such Liens is permitted\nto exist under Section 7.2, (ii) such Liens are not created in anticipation of such Permitted Business Acquisition or similar Investment\nor such Person otherwise becoming a Subsidiary of the Parent Borrower and do not attach to any othe",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:49cb13d1523f63a4ff464ce4",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3",
+    "families": [
+      "LIENS"
+    ],
+    "role": "CONDITION",
+    "description": "Requires such Liens not be created in anticipation of the acquisition or Person becoming a Subsidiary and not attach to other assets except limited replacements/accessions/proceeds.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.83,
+    "sourceCitation": "SECTION 7.3 Limitation on Liens .\nCreate, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except\nfor:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:b5bb07b092f9863985f89812",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(m)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(m)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "BASKET",
+    "description": "Permits Liens not otherwise permitted under Section 7.3 up to a cap on aggregate secured obligations and aggregate fair market value of assets subject thereto.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(m)\nLiens not otherwise permitted by this Section 7.3 so long as neither ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:ac0b4888228d3f32e7123d6b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(m)(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(m)(i)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "BASKET",
+    "description": "Caps the aggregate outstanding principal amount of obligations secured by liens under this basket.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i) the aggregate outstanding principal amount of the obligations\nsecured thereby nor ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:416e6e08da5964e403f8d78b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(m)(ii)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(m)(ii)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "BASKET",
+    "description": "Caps the aggregate fair market value (as of the date incurred) of assets subject to liens under this basket.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "greater_lesser_of"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(ii) the aggregate fair market value (determined as of the date such Lien is incurred) of the assets subject thereto\nexceeds (as to the Parent Borrower and all Subsidiaries) the greater of ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:998b06bfc970aee50608d465",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(m)(ii)(A)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(m)(ii)(A)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "BASKET",
+    "description": "Sets a fixed dollar component ($50,000,000) of the basket cap for this Liens basket.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(A) $50,000,000 and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:87b494be0746c3d27aa4d2db",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(m)(ii)(B)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(m)(ii)(B)",
+    "families": [
+      "LIENS",
+      "DEFINITIONS_CALCULATION_RULES"
+    ],
+    "role": "BASKET",
+    "description": "Sets an alternative grower component (3.0% of Consolidated Total Assets) of the basket cap for this Liens basket.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "percentage",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(B) 3.0% of Consolidated Total Assets\n(measured on the date of incurrence of such Liens);\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:6382a89b88aee52433a287a9",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(n)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(n)",
+    "families": [
+      "LIENS",
+      "INDEBTEDNESS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Liens securing Indebtedness permitted by Section 7.2(e) on specific real property located in Largo, Florida.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(n)\nLiens securing Indebtedness permitted by Section 7.2(e) on the real property of the Parent Borrower or its Subsidiaries in Largo,\nFlorida;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:d18b92bda1f7a6b6b03245bf",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(o)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(o)",
+    "families": [
+      "LIENS",
+      "ASSET_SALES",
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Liens on accounts receivable and related assets sold or encumbered pursuant to a Receivables Transfer Program in accordance with Section 7.5(k).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(o)\nLiens on accounts receivable or related ancillary rights and assets sold, transferred, encumbered or otherwise disposed of, or\npurported to have been sold, transferred, encumbered or otherwise disposed of pursuant to a Receivables Transfer Program in accordance\nwith Section 7.5(k); and\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:d743c01b399ff5f9bd439df9",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3(p)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3(p)",
+    "families": [
+      "LIENS",
+      "ACQUISITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Liens in the nature of escrow arrangements for deferred payments in connection with a Permitted Business Acquisition, to the extent such payments are permitted under Section 7.8(k), and related beneficiary rights.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(p)\nLiens in the nature of escrow arrangements for deferred payments to be made in connection with a Permitted Business Acquisition\nto the extent such payments constitute amounts permitted under Section 7.8(k) and the rights of any beneficiary thereunder.\nFor purposes of determining compliance with\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:9fda59c688efd0a4baac658f",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.3"
+    ],
+    "normalizedSourceRef": "7.3",
+    "families": [
+      "LIENS",
+      "INDEBTEDNESS",
+      "DEFINITIONS_CALCULATION_RULES"
+    ],
+    "role": "DESIGNATION_RULE",
+    "description": "Allows the Parent Borrower discretion to classify, reclassify or divide a Lien securing Indebtedness among any combination of the permitted categories in clauses (a) through (q), with each portion counted under only one clause.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "SECTION 7.3 Limitation on Liens .\nCreate, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whether now owned or hereafter acquired, except\nfor:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:bb9bb71929fb6d62d0d2df9a",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4"
+    ],
+    "normalizedSourceRef": "7.4",
+    "families": [
+      "FUNDAMENTAL_CHANGES"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "General prohibition on mergers, consolidations, amalgamations, liquidations, dissolutions, Divisions as the Dividing Person, or Dispositions of all or substantially all Property or business, subject to enumerated exceptions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "sourceCitation": "SECTION 7.4 Limitation on Fundamental\nChanges . Enter into any merger, consolidation or amalgamation, or liquidate, wind up or dissolve itself (or suffer any liquidation\nor dissolution), consummate a Division as the Dividing Person or Dispose of all or substantially all of its Property or business e",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7394f8406279afd41fc8210b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(a)(i)"
+    ],
+    "normalizedSourceRef": "7.4(a)(i)",
+    "families": [
+      "FUNDAMENTAL_CHANGES"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits a Subsidiary to merge or consolidate with or into the Parent Borrower, a Subsidiary Guarantor, or an entity that will become a Subsidiary Guarantor following a Permitted Business Acquisition, subject to survivor requirements.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "exception_marker",
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(i) any Subsidiary may be merged or consolidated with or into the Parent Borrower ( provided that the Parent Borrower shall\nbe the continuing or surviving Person), any\n99\nSubsidiary Guarantor ( provided that the Subsidiary Guarantor shall be the continuing\nor surviving Person) or an entity that will",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:ee066977a88258cd6cfcd217",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(a)(ii)"
+    ],
+    "normalizedSourceRef": "7.4(a)(ii)",
+    "families": [
+      "FUNDAMENTAL_CHANGES"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits a non-guarantor Subsidiary to merge or consolidate with or into a Subsidiary Guarantor, provided the Subsidiary Guarantor is the surviving entity.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(ii) any Subsidiary\n(other than a Subsidiary Guarantor) may be merged or consolidated with or into a Subsidiary Guarantor ( provided that the Subsidiary\nGuarantor shall be the continuing or surviving Person), (iii) any Subsidiary that is a limited liability company may consummate a Division\nas the D",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:90d9d73e1fda41693532da4a",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(a)(iii)"
+    ],
+    "normalizedSourceRef": "7.4(a)(iii)",
+    "families": [
+      "FUNDAMENTAL_CHANGES",
+      "DISPOSITIONS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits a limited liability company Subsidiary to consummate a Division as the Dividing Person if resulting asset transfers comply with Section 7.5 disposition baskets, with additional provisos on treatment as basket usage and requirements for Material Domestic/Foreign Subsidiary Division Successors.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "percentage",
+      "covenant_verb"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.85,
+    "sourceCitation": "(iii) above shall be deemed to be a utilization of the applicable baskets in Section 7.5, (x) any such Division of a Material\nDomestic Subsidiary shall only be permitted if each Division Successor is a Material Domestic Subsidiary that is (or upon consummation\nof such Division becomes) a Loan Party,",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:d4ddf49148401c57934b4838",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4"
+    ],
+    "normalizedSourceRef": "7.4",
+    "families": [
+      "FUNDAMENTAL_CHANGES",
+      "DISPOSITIONS"
+    ],
+    "role": "PROVISO",
+    "description": "Any Division relying on clause (iii) is deemed a utilization of the applicable baskets in Section 7.5.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "SECTION 7.4 Limitation on Fundamental\nChanges . Enter into any merger, consolidation or amalgamation, or liquidate, wind up or dissolve itself (or suffer any liquidation\nor dissolution), consummate a Division as the Dividing Person or Dispose of all or substantially all of its Property or business e",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:01215421a15b014f020e2d41",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4"
+    ],
+    "normalizedSourceRef": "7.4",
+    "families": [
+      "FUNDAMENTAL_CHANGES",
+      "GUARANTOR_REQUIREMENTS"
+    ],
+    "role": "CONDITION",
+    "description": "A Division of a Material Domestic Subsidiary is only permitted if each Division Successor is a Material Domestic Subsidiary that is or becomes a Loan Party.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.4 Limitation on Fundamental\nChanges . Enter into any merger, consolidation or amalgamation, or liquidate, wind up or dissolve itself (or suffer any liquidation\nor dissolution), consummate a Division as the Dividing Person or Dispose of all or substantially all of its Property or business e",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:179a1f3046d17abc490af6b9",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(a)(iv)"
+    ],
+    "normalizedSourceRef": "7.4(a)(iv)",
+    "families": [
+      "FUNDAMENTAL_CHANGES"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits the Parent Borrower to merge or consolidate with or into any Subsidiary, subject to detailed conditions if the Parent Borrower is not the surviving entity.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "permission_construction",
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.85,
+    "sourceCitation": "(iv) the Parent Borrower may be merged or consolidated with or into any Subsidiary;\nprovided that if the Parent Borrower shall not be the continuing or surviving Person (any such continuing or surviving Person,\nthe \" Successor Borrower \"), (w) the Successor Borrower shall be an entity organized or e",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:b418a5d0166c0d8d8e6096a6",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4"
+    ],
+    "normalizedSourceRef": "7.4",
+    "families": [
+      "FUNDAMENTAL_CHANGES"
+    ],
+    "role": "OTHER_RELEVANT_RULE",
+    "description": "Provides that upon satisfaction of the requirements, the Successor Borrower succeeds to and is substituted for the Parent Borrower as 'Parent Borrower' under the Loan Documents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.75,
+    "sourceCitation": "SECTION 7.4 Limitation on Fundamental\nChanges . Enter into any merger, consolidation or amalgamation, or liquidate, wind up or dissolve itself (or suffer any liquidation\nor dissolution), consummate a Division as the Dividing Person or Dispose of all or substantially all of its Property or business e",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:3fa3730524870bb58ef593a4",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(b)(i)"
+    ],
+    "normalizedSourceRef": "7.4(b)(i)",
+    "families": [
+      "FUNDAMENTAL_CHANGES",
+      "DISPOSITIONS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits a Subsidiary to Dispose of any or all of its assets to the Parent Borrower or a Subsidiary Guarantor in which the Parent Borrower has an equal or higher ownership percentage.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(i) any Subsidiary may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to the Parent Borrower or\nany Subsidiary Guarantor in which the Parent Borrower has an equal or higher direct or indirect ownership percentage and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:5bc35e5a4b020669b235c00a",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(b)(ii)"
+    ],
+    "normalizedSourceRef": "7.4(b)(ii)",
+    "families": [
+      "FUNDAMENTAL_CHANGES",
+      "DISPOSITIONS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits a non-Loan-Party Subsidiary to Dispose of assets to another non-Loan-Party Subsidiary (with equal or higher Parent Borrower ownership) or to a Subsidiary Guarantor.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(ii) any Subsidiary\nthat is not a Loan Party may Dispose of any or all of its assets (upon voluntary liquidation or otherwise) to any other Subsidiary that\nis not a Loan Party in which the Parent Borrower has an equal or higher direct or indirect ownership percentage or any Subsidiary Guarantor;\n100",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:0ccd597ff16ac8d7809b19e5",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(c)"
+    ],
+    "normalizedSourceRef": "7.4(c)",
+    "families": [
+      "FUNDAMENTAL_CHANGES"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits mergers or consolidations between Foreign Subsidiaries, subject to survivor designation requirements based on Wholly-Owned or Pledge Eligible status.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(c)\nany Foreign Subsidiary may be merged or consolidated with or into any other Foreign Subsidiary ( provided that if ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:2935113412c51d5268d5b0ca",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(c)(1)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4"
+    ],
+    "normalizedSourceRef": "7.4(c)(1)",
+    "families": [
+      "FUNDAMENTAL_CHANGES"
+    ],
+    "role": "CONDITION",
+    "description": "If one merging Foreign Subsidiary is a Wholly-Owned Foreign Subsidiary, that entity must be the surviving Person.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "percentage",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(1) one\nsuch Subsidiary is a Wholly-Owned Foreign Subsidiary, such Wholly-Owned Foreign Subsidiary shall be the continuing or surviving Person,\n(2) one such Subsidiary is a Pledge Eligible Foreign Subsidiary (65%), such Pledge Eligible Foreign Subsidiary (65%) shall be the continuing\nor surviving Pe",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:420b56c046442b528b156245",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4(d)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.4"
+    ],
+    "normalizedSourceRef": "7.4(d)",
+    "families": [
+      "FUNDAMENTAL_CHANGES",
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits Dispositions to the extent permitted by Section 7.5, incorporating that section's basket structure by reference.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.85,
+    "sourceCitation": "(d)\nto the extent permitted by Section 7.5.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:8a5fe6f370c096b100da0d14",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5",
+    "families": [
+      "DISPOSITIONS",
+      "ASSET_SALES"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "General prohibition on disposing of property, business, or issuing/selling Subsidiary Capital Stock, subject to enumerated exceptions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "sourceCitation": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:baca43714b8502cc9c596c23",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(a)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(a)",
+    "families": [
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits disposition of obsolete or worn out property in the ordinary course of business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(a)\nthe Disposition of obsolete or worn out property in the ordinary course of business;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c71e3fc24ba69a95fb59dd41",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(b)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(b)",
+    "families": [
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits sale or disposition of inventory in the ordinary course of business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(b)\nthe sale or other Disposition of Inventory in the ordinary course of business;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:65062d82436b8dbda43a66be",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(c)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(c)",
+    "families": [
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits dispositions that are permitted under Section 7.4(b), incorporating that provision's permission by reference.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.75,
+    "sourceCitation": "(c)\nDispositions permitted by Section 7.4(b);\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:8c32e0a68dc5b7267f9d2152",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(d)(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(d)(i)",
+    "families": [
+      "DISPOSITIONS",
+      "SUBSIDIARY_DESIGNATIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits sale or issuance of a Subsidiary's Capital Stock to the Parent Borrower or any Subsidiary Guarantor.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i) any Subsidiary to the Parent Borrower or any Subsidiary Guarantor, (ii) any Subsidiary\n(other than a Subsidiary Guarantor) to any Subsidiary Guarantor and (iii) any Subsidiary that is not a Loan Party to any other Subsidiary;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:192f0f846ef50bc2eb957eb6",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5",
+    "families": [
+      "DISPOSITIONS",
+      "SUBSIDIARY_DESIGNATIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits sale or issuance of Capital Stock of a Subsidiary (other than a Subsidiary Guarantor) to any Subsidiary Guarantor.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:15cd009747aa780609455c48",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(e)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(e)",
+    "families": [
+      "DISPOSITIONS",
+      "ACQUISITIONS",
+      "SUBSIDIARY_DESIGNATIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits sale or transfer of Capital Stock of a non-Loan Party Subsidiary acquired via a Permitted Business Acquisition to another Subsidiary.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "permitted_construct",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(e)\nthe sale or transfer of any Capital Stock of any Subsidiary that is not a Loan Party acquired pursuant to a Permitted Business\nAcquisition to any other Subsidiary;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:8507d3f28616a4f0af9f74b0",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(f)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(f)",
+    "families": [
+      "ASSET_SALES",
+      "DISPOSITIONS",
+      "SALE_LEASEBACKS"
+    ],
+    "role": "BASKET",
+    "description": "Permits Asset Sales (including sale-leasebacks) and Recovery Events subject to aggregate fair market value and Consolidated EBITDA attribution caps measured annually and over rolling four-year periods.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(f)\nany Asset Sale (including any sale and leaseback transactions permitted by Section 7.11) or Recovery Event; provided that\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:6be98acecf709257ad512776",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(f)(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(f)(i)",
+    "families": [
+      "ASSET_SALES",
+      "DISPOSITIONS"
+    ],
+    "role": "BASKET",
+    "description": "Caps aggregate fair market value of assets sold in Asset Sales under clause (f) at specified percentages of Consolidated Total Assets on an annual and four-year rolling basis.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "percentage",
+      "prohibitive_construction",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(i) the aggregate fair market value of all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed\n(x) 10% of Consolidated Total Assets (measured as of the last day of the immediately preceding fiscal year of the Parent Borrower and\nits Subsidiaries for which audit",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:224e416870eac0d7ae9cafad",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(f)(ii)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(f)(ii)",
+    "families": [
+      "ASSET_SALES",
+      "DISPOSITIONS"
+    ],
+    "role": "BASKET",
+    "description": "Caps aggregate Consolidated EBITDA attributable to assets sold in Asset Sales under clause (f) at specified percentages of Consolidated EBITDA on an annual and four-year rolling basis.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "percentage",
+      "prohibitive_construction",
+      "financial_metric",
+      "shared_cap"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(ii) the aggregate amount of Consolidated\nEBITDA attributable to all assets sold in connection with Asset Sales in reliance on this clause (f) shall not exceed (x) 7.5% of Consolidated\nEBITDA (measured based on Consolidated EBITDA for the immediately preceding fiscal year of the Parent Borrower and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:ddd68f74322901fe0fcc1d0d",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5",
+    "families": [
+      "ASSET_SALES",
+      "MANDATORY_PREPAYMENTS"
+    ],
+    "role": "PROVISO",
+    "description": "Requires compliance with the mandatory prepayment provisions of Section 2.12(b) in connection with any Asset Sale or Recovery Event under clause (f).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:8f16a2f1fc23309fec02928d",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(g)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(g)",
+    "families": [
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits monetary payments made in the ordinary course of business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.75,
+    "sourceCitation": "(g)\nmonetary payments made in the ordinary course of business;\n101\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:184c41389f233b2c2de269a4",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(h)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(h)",
+    "families": [
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits sale or discount without recourse of accounts receivable arising in the ordinary course of business in connection with compromise or collection.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(h)\nthe sale or discount without recourse of accounts receivable arising in the ordinary course of business of the Parent Borrower\nor its Subsidiaries in connection with the compromise or collection thereof;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:61e09fac7c3a7e72b1962e1a",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(i)",
+    "families": [
+      "DISPOSITIONS",
+      "SUBSIDIARY_DESIGNATIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits sale or issuance of a minimal amount of a Foreign Subsidiary's Capital Stock to a foreign national where required by local law.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i)\nthe sale or issuance of a minimal number of any Foreign Subsidiary's Capital Stock to a foreign national to the extent required\nby local law in a jurisdiction outside the United States;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:5aeac47ab31feb23331e4f89",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(j)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(j)",
+    "families": [
+      "DISPOSITIONS",
+      "ASSET_SALES"
+    ],
+    "role": "BASKET",
+    "description": "Permits dispositions or series of related dispositions yielding net proceeds below the greater of a fixed dollar amount and a percentage of Consolidated Total Assets.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "greater_lesser_of",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(j)\nany Disposition of Property or business or series of related Dispositions of Property or businesses which yields net proceeds to\nthe Parent Borrower or any of its Subsidiaries (valued at the initial principal amount thereof in the case of non-cash proceeds consisting\nof notes or other debt secur",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7a871f5e26e8a48783882460",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(k)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(k)",
+    "families": [
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits sale, transfer, encumbrance or other disposition of accounts receivable and related rights pursuant to a Receivables Transfer Program.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(k)\nthe sale, transfer, encumbrance or other disposition of accounts receivable or related ancillary rights and assets pursuant to\na Receivables Transfer Program;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:445f471043ccfc3dd9cfc568",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(l)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(l)",
+    "families": [
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits sale, transfer, encumbrance or other disposition of securities or related ancillary rights and assets pursuant to sales, marketing and distribution arrangements.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "covenant_verb"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.75,
+    "sourceCitation": "(l)\nthe sale, transfer, encumbrance or other disposition of securities or related ancillary rights and assets pursuant to sales, marketing\nand distribution arrangements;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:980d0bd83512327db977a2e8",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(m)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(m)",
+    "families": [
+      "DISPOSITIONS",
+      "SUBSIDIARY_DESIGNATIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits dispositions of property between the Parent Borrower and Subsidiary Guarantors or between Subsidiary Guarantors.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(m)\nDispositions of Property from the Parent Borrower or a Subsidiary Guarantor to the Parent Borrower or another Subsidiary Guarantor;\nand\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:0578fe547dd42317ce0df107",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5(n)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5(n)",
+    "families": [
+      "DISPOSITIONS",
+      "SUBSIDIARY_DESIGNATIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits dispositions of property between Subsidiaries that are not Loan Parties.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(n)\nDispositions of Property from any Subsidiary that is not a Loan Party to any other Subsidiary that is not a Loan Party.\nAny Collateral which is sold, transferred or otherwise conveyed\npursuant to this Section 7.5 to a Person other than the Parent Borrower and its Subsidiaries shall, upon the con",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c74096c68413516b02498d2d",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.5"
+    ],
+    "normalizedSourceRef": "7.5",
+    "families": [
+      "COLLATERAL_SECURITY"
+    ],
+    "role": "OTHER_RELEVANT_RULE",
+    "description": "Provides that Collateral sold or transferred pursuant to this Section to a non-affiliated Person is automatically released from Liens under the Security Documents, with Lenders authorizing the Administrative Agent to effect such release.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "SECTION 7.5 Limitation on Sale\nof Assets . Dispose of any of its Property or business (including receivables and leasehold interests), whether now owned or hereafter\nacquired, or, in the case of any Subsidiary, issue or sell any shares of such Subsidiary's Capital Stock to any Person, except:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:42423b37324ac426d0f961e2",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6"
+    ],
+    "normalizedSourceRef": "7.6",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "General prohibition on declaring or paying dividends, redemptions, or other distributions on Capital Stock (Restricted Payments), subject to enumerated exceptions.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.97,
+    "sourceCitation": "SECTION 7.6 Limitation on Restricted\nPayments . Declare or pay any dividend (other than dividends payable solely in Capital Stock of the Person making such dividend) on,\nor make any payment on account of, or set apart assets for a sinking or other analogous fund for, the purchase, redemption, defeas",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:8befac8ab345ffa1d1e259ee",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(a)(i)"
+    ],
+    "normalizedSourceRef": "7.6(a)(i)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits a Subsidiary that is not a Loan Party to make Restricted Payments to the Parent Borrower or any Wholly-Owned Subsidiary.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.92,
+    "sourceCitation": "(i) any Subsidiary that is not a Loan Party may make Restricted Payments to the Parent Borrower or any Wholly-Owned Subsidiary\nand ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:753e3a550c4f83d63a851184",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(a)(ii)"
+    ],
+    "normalizedSourceRef": "7.6(a)(ii)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits any Subsidiary Guarantor to make Restricted Payments to the Parent Borrower or any Subsidiary Guarantor.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.92,
+    "sourceCitation": "(ii) any Subsidiary Guarantor may make Restricted Payments to the Parent Borrower or any Subsidiary Guarantor;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:488409a7f662ed7814693bc7",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(b)(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6"
+    ],
+    "normalizedSourceRef": "7.6(b)(i)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "BASKET",
+    "description": "Permits repurchases of Capital Stock to fulfill obligations under employee or director stock purchase plans, subject to an aggregate annual cap shared with clause (b)(ii).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(i) repurchases of Capital Stock made in order to fulfill the obligations of the Parent Borrower or any Subsidiary under an employee\nor director stock purchase plan or similar plan covering employees of the Parent Borrower or any Subsidiary as from time to time in effect\n102\nand ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:959f65d2872a027bcae3ddef",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(b)(ii)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6"
+    ],
+    "normalizedSourceRef": "7.6(b)(ii)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "BASKET",
+    "description": "Permits cash payments in lieu of issuing fractional shares of Borrower's Capital Stock, subject to the same aggregate annual cap as clause (b)(i).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "shared_cap"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(ii) cash payments made in lieu of issuing fractional shares of Borrower's Capital Stock, in an aggregate amount for purposes\nof clauses ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:ac354ffa81d6ca806759ba60",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(b)"
+    ],
+    "normalizedSourceRef": "7.6(b)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "SHARED_CAP",
+    "description": "Establishes a shared aggregate cap of $25,000,000 per year applicable jointly to the repurchases and fractional-share cash payments described in clauses (i) and (ii).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(b)\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:565fd64640e534d8a46bbe7a",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(c)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6"
+    ],
+    "normalizedSourceRef": "7.6(c)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "BASKET",
+    "description": "Permits redemptions of Capital Stock in connection with a shareholder rights plan up to an aggregate amount since the Closing Date.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(c)\nredemptions of Capital Stock in connection with a rights plan adopted by the Board of Directors of the Parent Borrower in an aggregate\namount equal to $25,000,000 since the Closing Date;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:9e35243e01539edee04ff6a5",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(d)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6"
+    ],
+    "normalizedSourceRef": "7.6(d)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "BASKET",
+    "description": "Permits the Parent Borrower to make Restricted Payments in any fiscal year up to a specified aggregate annual amount.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "permission_construction",
+      "shared_cap"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.92,
+    "sourceCitation": "(d)\nthe Parent Borrower may make Restricted Payments in any fiscal year in an aggregate amount not to exceed $40,000,000;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:667f625c7ae3602d9972fdea",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(e)(i)"
+    ],
+    "normalizedSourceRef": "7.6(e)(i)",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "RATIO_BASED_PERMISSION",
+    "description": "Permits unlimited Restricted Payments so long as the pro forma Consolidated Senior Secured Leverage Ratio does not exceed a specified level.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "ratio_expression",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.92,
+    "sourceCitation": "(i) the Consolidated Senior Secured Leverage Ratio of the Parent Borrower and its Subsidiaries, computed on a pro\nforma basis (giving effect to such Restricted Payment and any Indebtedness incurred in connection therewith) as at the last day of\nthe most recently ended fiscal quarter of the Parent Bo",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:72e65025f7418737c58d95eb",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(e)(ii)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6"
+    ],
+    "normalizedSourceRef": "7.6(e)(ii)",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "EVENTS_OF_DEFAULT"
+    ],
+    "role": "CONDITION",
+    "description": "Requires that no Event of Default has occurred and is continuing or would result from the Restricted Payment as a condition to the unlimited basket in clause (e).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(ii) no Event of Default has occurred and is continuing or would result therefrom, the Parent Borrower may\nmake Restricted Payments in an unlimited amount;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:e9236b1dc9d46e13db1b7678",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(f)(i)"
+    ],
+    "normalizedSourceRef": "7.6(f)(i)",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits the Parent Borrower to pay premiums or other amounts and perform obligations under Permitted Bond Hedge Transactions or Permitted Warrant Transactions.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i) pay any premium or other amount in respect of, and otherwise perform its obligations under, any Permitted\nBond Hedge Transaction or Permitted Warrant Transaction and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:f66b630df2e63c97a5c9bd90",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(f)(ii)"
+    ],
+    "normalizedSourceRef": "7.6(f)(ii)",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits the Parent Borrower to make Restricted Payments and payments/deliveries required under Permitted Bond Hedge Transactions or Permitted Warrant Transactions, including upon exercise, settlement, or termination.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(ii) make any Restricted Payments and/or payments or deliveries required by\nthe terms of, and otherwise perform its obligations under, any Permitted Bond Hedge Transaction or Permitted Warrant Transaction (including\nmaking payments and/or deliveries due upon exercise and settlement or termination th",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:fec9992df21d56e593ce440e",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.6(g)"
+    ],
+    "normalizedSourceRef": "7.6(g)",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "INDEBTEDNESS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits the Parent Borrower or any Subsidiary Borrower to make Restricted Payments and payments or deliveries in shares (or other securities/property) and/or cash required under Permitted Unsecured Indebtedness, including interest, principal, required repurchase, and conversion payments.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "permitted_construct",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.88,
+    "sourceCitation": "(g)\nthe Parent Borrower or any Subsidiary Borrower may make any Restricted Payments and/or payments or deliveries in shares of common\nstock (or other securities or property following a merger event or other change of the common stock of the Parent Borrower or any such\nSubsidiary Borrower) (and cash ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:856a9684ab5aa752f0018dbe",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "normalizedSourceRef": "7.8",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits the Parent Borrower and its Subsidiaries from making Investments except as permitted by the enumerated exceptions in this Section.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "sourceCitation": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:5c8863c9378ed219563334fb",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(a)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "normalizedSourceRef": "7.8(a)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits extensions of trade credit in the ordinary course of business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(a)\nextensions of trade credit in the ordinary course of business;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:ad1fed61ba3ae3f2f1d64728",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(b)"
+    ],
+    "normalizedSourceRef": "7.8(b)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Investments in Cash Equivalents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(b)\nInvestments in Cash Equivalents;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:b5296614bd927a8e4ea227bc",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(c)"
+    ],
+    "normalizedSourceRef": "7.8(c)",
+    "families": [
+      "INVESTMENTS",
+      "GUARANTEES"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Guarantee Obligations that are otherwise permitted under Section 7.2 to be treated as permitted Investments.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(c)\nGuarantee Obligations permitted by Section 7.2;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:8aaa7b743717492d1a9fa0b2",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(d)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "normalizedSourceRef": "7.8(d)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "BASKET",
+    "description": "Permits loans and advances to employees or directors in the ordinary course of business up to an aggregate $5,000,000 cap outstanding at any time, with a proviso preserving key man insurance.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "prohibitive_construction",
+      "shared_cap"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(d)\nloans and advances to employees or directors of the Parent Borrower or its Subsidiaries in the ordinary course of business (including\nfor travel, entertainment and relocation expenses) in an aggregate amount for the Parent Borrower and its Subsidiaries not to exceed $5,000,000\nat any one time ou",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:e5f0680b399f40d1b03c1ee6",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(e)"
+    ],
+    "normalizedSourceRef": "7.8(e)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits investment of accounts receivable and related rights/assets into a Subsidiary pursuant to a Receivables Transfer Program.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(e)\nthe investment by the Parent Borrower or its Subsidiaries of accounts receivable or related rights and assets pursuant to a Receivables\nTransfer Program into a Subsidiary;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:deff46f63658cfd219009b2b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(f)"
+    ],
+    "normalizedSourceRef": "7.8(f)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Investments made using proceeds of any Reinvestment Deferred Amount.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(f)\nInvestments made by the Parent Borrower or any of its Subsidiaries with the proceeds of any Reinvestment Deferred Amount;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:03a446b1ec89b4309b0572e9",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(g)"
+    ],
+    "normalizedSourceRef": "7.8(g)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Investments by the Parent Borrower or its Subsidiaries in the Parent Borrower or any Subsidiary Guarantor in the ordinary course of business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(g)\nInvestments by the Parent Borrower or any of its Subsidiaries in the Parent Borrower or any Subsidiary Guarantor in the ordinary\ncourse of business;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:86bdf4fb44bc55dbc0deced1",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(h)"
+    ],
+    "normalizedSourceRef": "7.8(h)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Investments (including debt and Capital Stock) received in connection with bankruptcy or reorganization of, or settlement of disputes with, customers and suppliers arising in the ordinary course of business.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(h)\nInvestments (including debt obligations and Capital Stock) by the Parent Borrower or its Subsidiaries received in connection with\nthe bankruptcy or reorganization of suppliers and customers and in settlement of delinquent obligations of, and other disputes with, customers\nand suppliers arising i",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:ac28256f7476a6914247e7c9",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "normalizedSourceRef": "7.8(i)",
+    "families": [
+      "INVESTMENTS",
+      "INDEBTEDNESS"
+    ],
+    "role": "CONDITION",
+    "description": "Permits advances, loans or extensions of credit to a Foreign Subsidiary or Foreign Subsidiary Holdco, conditioned on no Default/Event of Default and on such entity's Indebtedness being permitted under Section 7.2(k).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "permission_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(i)\nso long as no Default or Event of Default shall have occurred and be continuing, the Parent Borrower or any Subsidiary may make\nadvances, loans or extensions of credit to any Foreign Subsidiary or Foreign Subsidiary Holdco; provided that the Indebtedness\nof such Foreign Subsidiary or Foreign Sub",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:718510e2901771adb5a31722",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(j)"
+    ],
+    "normalizedSourceRef": "7.8(j)",
+    "families": [
+      "INVESTMENTS",
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "RATIO_BASED_PERMISSION",
+    "description": "Permits unlimited additional Investments so long as no Default/Event of Default exists and, on a pro forma basis, the Consolidated Senior Secured Leverage Ratio is at least 0.25x lower than the ratio required under Section 7.1(a).",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "ratio_expression",
+      "prohibitive_construction",
+      "exception_marker",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(j)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries; provided that (x) to the extent such Investments\nconsist of equity investments (by w",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:9de79526577afa93ef3c9f1d",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "normalizedSourceRef": "7.8",
+    "families": [
+      "INVESTMENTS",
+      "SUBSIDIARY_DESIGNATIONS"
+    ],
+    "role": "PROVISO",
+    "description": "Requires that equity Investments in a Subsidiary made under clause (j) satisfy the requirements of Section 6.9.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "headline_heading"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.75,
+    "sourceCitation": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:0c86f64e8580df76e45e16f0",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(k)"
+    ],
+    "normalizedSourceRef": "7.8(k)",
+    "families": [
+      "INVESTMENTS",
+      "ACQUISITIONS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits other Investments that constitute Permitted Business Acquisitions.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(k)\nother Investments constituting Permitted Business Acquisitions;\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:3476b082d53dec709a3dca23",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(l)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "normalizedSourceRef": "7.8(l)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "BASKET",
+    "description": "Permits additional Investments up to the greater of $75,000,000 or 3.5% of Consolidated Total Assets outstanding at any time, subject to no Default/Event of Default.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "prohibitive_construction",
+      "greater_lesser_of",
+      "financial_metric",
+      "shared_cap"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(l)\nin addition to Investments otherwise permitted by this Section 7.8, so long as no Default or Event of Default shall have occurred\nand be continuing, Investments by the Parent Borrower or any of its Subsidiaries in an aggregate amount (valued at cost) not to exceed\nthe greater of (x) $75,000,000 ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:e9616549c13c2debd957c533",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8(m)(i)"
+    ],
+    "normalizedSourceRef": "7.8(m)(i)",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits interest rate Swap Agreements entered in the ordinary course of business up to a notional amount not exceeding the aggregate Commitments of all Lenders.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(i) interest rate Swap Agreements in the ordinary course of business up to an aggregate\nnotional principal amount not to exceed at any time an amount equal to the Commitments of all the Lenders in the aggregate at such time,\n(ii) Swap Agreements in the ordinary course of business entered into in ord",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:25a7ac71a68f0535fad268cd",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "normalizedSourceRef": "7.8",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "PERMISSION",
+    "description": "Permits Swap Agreements entered into in the ordinary course of business to manage exchange rate or commodity price risk, not for speculative purposes.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:781a12ea0934d1ec70ca01b7",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.8"
+    ],
+    "normalizedSourceRef": "7.8",
+    "families": [
+      "DEFINITIONS_CALCULATION_RULES",
+      "INVESTMENTS"
+    ],
+    "role": "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+    "description": "Establishes the methodology for valuing an Investment (original cost plus additions, without mark-to-market adjustments, net of principal repayments and capped returns of capital) for purposes of this Agreement.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.75,
+    "sourceCitation": "SECTION 7.8 Limitation on Investments,\nLoans and Advances . Make any advance, loan, extension of credit (by way of guaranty or otherwise) or capital contribution to, or purchase\nany stock, bonds, notes, debentures or other securities of or any assets constituting all or a material part of a business",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:1bf90deb6bd9041e04c8728a",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(a)"
+    ],
+    "normalizedSourceRef": "7.9(a)",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "INDEBTEDNESS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits the Parent Borrower and Subsidiaries from making voluntary prepayments, repurchases, redemptions, defeasances or segregating funds with respect to Permitted Subordinated Indebtedness or Permitted Unsecured Indebtedness unless specified conditions are satisfied.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(a)\nMake or offer to make any voluntary payment, prepayment, repurchase or redemption of or otherwise defease or segregate funds (any\nsuch action, a \" Prepayment \") with respect to Permitted Subordinated Indebtedness or Permitted Unsecured Indebtedness,\nunless ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c95bfdcb359c0a4a81b5fd6b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(a)(i)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9"
+    ],
+    "normalizedSourceRef": "7.9(a)(i)",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "EVENTS_OF_DEFAULT"
+    ],
+    "role": "CONDITION",
+    "description": "Requires that no Default or Event of Default exist immediately before and after giving effect to any permitted Prepayment.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(i) both immediately prior to and immediately after giving effect to any such Prepayment, no Default or Event of Default shall\nhave occurred and be continuing, and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:635980cf26209b960a1e57d1",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(a)(ii)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9"
+    ],
+    "normalizedSourceRef": "7.9(a)(ii)",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "CONDITION",
+    "description": "Requires pro forma compliance with the financial covenants in Section 7.1 (recomputed as of the last fiscal quarter) after giving effect to any permitted Prepayment.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "exception_marker",
+      "permitted_construct",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(ii) the Parent Borrower and the Subsidiaries are in compliance, on a pro forma basis after\ngiving effect to such Prepayment, with the financial covenants contained in Section 7.1, recomputed as at the last day of the most recently\nended fiscal quarter of the Parent Borrower and its Subsidiaries for",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:248f4e6a15e5a2424e2a2397",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9"
+    ],
+    "normalizedSourceRef": "7.9",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "INDEBTEDNESS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Carves out from the Section 7.9(a) prohibition payments/deliveries in common stock (or successor securities) and cash in lieu of fractional shares, and other required cash payments/deliveries under Permitted Unsecured Indebtedness (interest, principal, repurchase, conversion payments).",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.9 Limitation on Optional\nPayments and Modifications of Debt Instruments, etc .\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:3675ce686bd277452c61595b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(b)"
+    ],
+    "normalizedSourceRef": "7.9(b)",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT",
+      "INDEBTEDNESS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits amending, modifying, waiving or otherwise changing (or consenting to changes to) Permitted Subordinated Indebtedness in ways described in the enumerated sub-clauses.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(b)\nAmend, modify, waive or otherwise change, or consent or agree to any amendment, modification, waiver or other change to any Permitted\nSubordinated Indebtedness ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:1aa10f103827a0a5a89b6e58",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(b)(i)"
+    ],
+    "normalizedSourceRef": "7.9(b)(i)",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT",
+      "INDEBTEDNESS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits amendments that modify the subordination provisions of Permitted Subordinated Indebtedness.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(i) which amends or modifies the subordination provisions contained therein; ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:708135ded35624a61b97dcbd",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(b)(ii)"
+    ],
+    "normalizedSourceRef": "7.9(b)(ii)",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT",
+      "INDEBTEDNESS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits amendments that shorten maturity, increase interest rate, shorten payment timing of principal/premium, or accelerate/increase fees on Permitted Subordinated Indebtedness.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(ii) which shortens the fixed maturity,\nor increases the rate or shortens the time of payment of interest on, or increases the amount or shortens the time of payment of any principal\nor premium payable whether at maturity, at a date fixed for prepayment or by acceleration or otherwise of such Indebt",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:d2d61a0f46f53960376211d3",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(b)(iii)"
+    ],
+    "normalizedSourceRef": "7.9(b)(iii)",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT",
+      "INDEBTEDNESS",
+      "QUALITATIVE_NEGATIVE_COVENANTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits amendments to covenants, events of default or remedies of Permitted Subordinated Indebtedness that make them more onerous or restrictive on the Parent Borrower or Subsidiaries.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(iii) which relates to the affirmative\nor negative covenants, events of default or remedies under the documents or instruments evidencing such Indebtedness and the effect of\nwhich is to subject the Parent Borrower or any of its Subsidiaries, to any more onerous or more restrictive provisions; or ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:b8eb584c79ec8bdebef032ad",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(b)(iv)"
+    ],
+    "normalizedSourceRef": "7.9(b)(iv)",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT",
+      "INDEBTEDNESS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits any other amendment that adversely affects the interests of the Lenders as senior creditors or under the Loan Documents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(iv) which\notherwise adversely affects the interests of the Lenders as senior creditors or the interests of the Lenders under this Agreement or any\nother Loan Document in any respect.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:915a72b626950c21a3dee456",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(c)"
+    ],
+    "normalizedSourceRef": "7.9(c)",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT",
+      "INDEBTEDNESS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits amending, modifying, waiving or otherwise changing (or consenting to changes to) Permitted Unsecured Indebtedness in ways described in the enumerated sub-clauses.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(c)\nAmend, modify, waive or otherwise change, or consent or agree to any amendment, modification, waiver or other change to any Permitted\nUnsecured Indebtedness ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:523c83bba21c499f3344a3e7",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(c)(i)"
+    ],
+    "normalizedSourceRef": "7.9(c)(i)",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT",
+      "INDEBTEDNESS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits amendments that shorten the fixed maturity of Permitted Unsecured Indebtedness so principal becomes payable before the Term Loan maturity or Revolving Credit Termination Date.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(i) which shortens the fixed maturity so that any part of the principal of which is stated to be payable or is\nrequired to be paid (whether by way of mandatory sinking fund, mandatory redemption, mandatory prepayment or other mandatory payment)\nprior to the final maturity date of the Term Loans then",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:cabd2697a505333022a0e5cd",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9"
+    ],
+    "normalizedSourceRef": "7.9",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT",
+      "INDEBTEDNESS",
+      "FINANCIAL_COVENANTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits adding any financial maintenance covenant to Permitted Unsecured Indebtedness.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "SECTION 7.9 Limitation on Optional\nPayments and Modifications of Debt Instruments, etc .\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:93b369778c6bbdf6dbc61844",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.9(d)"
+    ],
+    "normalizedSourceRef": "7.9(d)",
+    "families": [
+      "AMENDMENT_WAIVER_CONSENT"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits amending the Parent Borrower's certificate of incorporation in any manner materially adverse to the Lenders without prior written consent of the Required Lenders.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(d)\nAmend its certificate of incorporation in any manner materially adverse to the Lenders without the prior written consent of the\nRequired Lenders.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c86a0310879ebc6a57e4e54b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.10"
+    ],
+    "normalizedSourceRef": "7.10",
+    "families": [
+      "AFFILIATE_TRANSACTIONS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "General prohibition on transactions with Affiliates involving consideration over $2,500,000 unless the transaction satisfies stated conditions or falls within enumerated exceptions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "sourceCitation": "SECTION 7.10 Limitation on Transactions\nwith Affiliates . Enter into any transaction, including any purchase, sale, lease or exchange of Property, the rendering of any service\nor the payment of any management, advisory or similar fees, with any Affiliate (other than transactions between or among the",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:41257e7574b41dd1089b396e",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.10(a)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.10"
+    ],
+    "normalizedSourceRef": "7.10(a)",
+    "families": [
+      "AFFILIATE_TRANSACTIONS"
+    ],
+    "role": "CONDITION",
+    "description": "Condition that the affiliate transaction must not otherwise be prohibited elsewhere under the Agreement.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(a) not\notherwise prohibited under this Agreement and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:cac9b2bceb2e7314970a57f1",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.10(b)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.10"
+    ],
+    "normalizedSourceRef": "7.10(b)",
+    "families": [
+      "AFFILIATE_TRANSACTIONS"
+    ],
+    "role": "CONDITION",
+    "description": "Condition requiring fair and reasonable, arm's-length terms no less favorable than would be obtained with a non-Affiliate.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "permission_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(b) upon fair and reasonable terms no less favorable to the Parent Borrower or such\nSubsidiary, as the case may be, than it would obtain in a comparable arm's length transaction with a Person which is not an Affiliate,\nexcept that this Section 7.10 shall not prohibit ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:94d7194443de9a542a6267bc",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.10"
+    ],
+    "normalizedSourceRef": "7.10",
+    "families": [
+      "AFFILIATE_TRANSACTIONS",
+      "ASSET_SALES",
+      "DISPOSITIONS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Excepts sale, transfer, encumbrance or other disposition of accounts receivable and related rights/assets to a Subsidiary pursuant to a Receivables Transfer Program from the Section 7.10 restriction.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.10 Limitation on Transactions\nwith Affiliates . Enter into any transaction, including any purchase, sale, lease or exchange of Property, the rendering of any service\nor the payment of any management, advisory or similar fees, with any Affiliate (other than transactions between or among the",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:176ac085bab5c6de92914f92",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.10"
+    ],
+    "normalizedSourceRef": "7.10",
+    "families": [
+      "INVESTMENTS",
+      "AFFILIATE_TRANSACTIONS"
+    ],
+    "role": "PROVISO",
+    "description": "Carve-out limiting the (v) exception so it does not cover an Investment not specifically contemplated by Section 7.8 to be made among Affiliates.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "exception_marker"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.75,
+    "sourceCitation": "SECTION 7.10 Limitation on Transactions\nwith Affiliates . Enter into any transaction, including any purchase, sale, lease or exchange of Property, the rendering of any service\nor the payment of any management, advisory or similar fees, with any Affiliate (other than transactions between or among the",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:e543ec9effc5bef6a196de83",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.11"
+    ],
+    "normalizedSourceRef": "7.11",
+    "families": [
+      "SALE_LEASEBACKS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits the Parent Borrower and its Subsidiaries from entering into sale and leaseback arrangements for real or personal property.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "exception_marker",
+      "greater_lesser_of",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.95,
+    "sourceCitation": "SECTION 7.11 Limitation on Sales\nand Leasebacks . Enter into any arrangement with any Person providing for the leasing by the Parent Borrower or any Subsidiary of real\nor personal property which has been or is to be sold or transferred by the Parent Borrower or such Subsidiary to such Person or to a",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:766fe1bf868f87b1a702575c",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.11"
+    ],
+    "normalizedSourceRef": "7.11",
+    "families": [
+      "SALE_LEASEBACKS"
+    ],
+    "role": "BASKET",
+    "description": "Permits sale and leaseback transactions with respect to assets whose aggregate fair market value does not exceed the greater of a fixed dollar amount or a percentage of Consolidated Total Assets, measured at the time of the transaction.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "percentage",
+      "exception_marker",
+      "greater_lesser_of",
+      "financial_metric"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "SECTION 7.11 Limitation on Sales\nand Leasebacks . Enter into any arrangement with any Person providing for the leasing by the Parent Borrower or any Subsidiary of real\nor personal property which has been or is to be sold or transferred by the Parent Borrower or such Subsidiary to such Person or to a",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7f98f97d1da8d415d89cf4c5",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.13"
+    ],
+    "normalizedSourceRef": "7.13",
+    "families": [
+      "LIENS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits the Parent Borrower and its Subsidiaries from entering into or permitting any agreement that would prohibit or limit their ability to grant Liens on their property to secure the Obligations or Guarantee obligations.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "SECTION 7.13 Limitation on Negative\nPledge Clauses . Enter into or suffer to exist or become effective any agreement which prohibits or limits the ability of the Parent\nBorrower or any of its Subsidiaries to create, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whet",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:8cc6d36a3898b45e63d7a0cc",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.13(a)",
+      "conmed-doc-a-eighth-ar-credit-agreement::7.13"
+    ],
+    "normalizedSourceRef": "7.13(a)",
+    "families": [
+      "LIENS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Excludes this Agreement and the other Loan Documents from the negative pledge prohibition.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(a) this Agreement and the other Loan Documents, (b) any agreements governing any purchase money\nLiens, Finance Lease Obligations otherwise permitted hereby or Liens permitted by Sections 7.3(f), (g), or (l) (in which case, any prohibition\nor limitation shall only be effective against the assets fin",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:6c3daaff31337b2767a15b68",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.13"
+    ],
+    "normalizedSourceRef": "7.13",
+    "families": [
+      "LIENS",
+      "INDEBTEDNESS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Excludes agreements governing purchase money Liens, permitted Finance Lease Obligations, or Liens permitted under Sections 7.3(f), (g), or (l) from the prohibition, limited to the financed assets.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.13 Limitation on Negative\nPledge Clauses . Enter into or suffer to exist or become effective any agreement which prohibits or limits the ability of the Parent\nBorrower or any of its Subsidiaries to create, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whet",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:b2d12b09ed22ad6108e0172b",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.13"
+    ],
+    "normalizedSourceRef": "7.13",
+    "families": [
+      "LIENS"
+    ],
+    "role": "PROVISO",
+    "description": "Provides that any permitted limitation on Liens under clause (b) is only effective against the specific assets financed by the related purchase money or lease obligation.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.75,
+    "sourceCitation": "SECTION 7.13 Limitation on Negative\nPledge Clauses . Enter into or suffer to exist or become effective any agreement which prohibits or limits the ability of the Parent\nBorrower or any of its Subsidiaries to create, incur, assume or suffer to exist any Lien upon any of its Property or revenues, whet",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:7a0d88191582f9316837f058",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.14"
+    ],
+    "normalizedSourceRef": "7.14",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "INVESTMENTS",
+      "ASSET_SALES",
+      "DISPOSITIONS",
+      "ENTITY_SCOPE_RESTRICTIONS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits the Parent Borrower and its Subsidiaries from entering into or allowing to exist any consensual encumbrance or restriction on a Subsidiary's ability to (a) pay dividends/distributions or repay intercompany debt, (b) make loans, advances or Investments, or (c) transfer assets to the Parent Borrower or another Subsidiary, subject to enumerated exceptions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "SECTION 7.14 Limitation on Restrictions\non Subsidiary Distributions . Enter into or suffer to exist or become effective any consensual encumbrance or restriction on the ability\nof any Subsidiary to ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:53e4ea586b2732863f2d4c10",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.14(a)"
+    ],
+    "normalizedSourceRef": "7.14(a)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "OTHER_RELEVANT_RULE",
+    "description": "Identifies the first prohibited type of restriction: limits on a Subsidiary's ability to pay dividends/distributions on its Capital Stock or repay Indebtedness owed to the Parent Borrower or another Subsidiary.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker",
+      "covenant_verb"
+    ],
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.7,
+    "sourceCitation": "(a) pay dividends or make any other distributions in respect of any Capital Stock of such\n106\nSubsidiary held by, or\npay any Indebtedness owed to, the Parent Borrower or any other Subsidiary, (b) make loans or advances to, or other Investments in, the\nParent Borrower or any other Subsidiary or (c) t",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:6d475ada38fa539312598179",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.14"
+    ],
+    "normalizedSourceRef": "7.14",
+    "families": [
+      "INVESTMENTS"
+    ],
+    "role": "OTHER_RELEVANT_RULE",
+    "description": "Identifies the second prohibited type of restriction: limits on a Subsidiary's ability to make loans, advances, or other Investments in the Parent Borrower or another Subsidiary.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.7,
+    "sourceCitation": "SECTION 7.14 Limitation on Restrictions\non Subsidiary Distributions . Enter into or suffer to exist or become effective any consensual encumbrance or restriction on the ability\nof any Subsidiary to ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:d3ccba7df54c0fb46055aee4",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.14"
+    ],
+    "normalizedSourceRef": "7.14",
+    "families": [
+      "RESTRICTED_PAYMENTS",
+      "INVESTMENTS",
+      "ASSET_SALES"
+    ],
+    "role": "EXCEPTION",
+    "description": "Excepts from the general prohibition any restrictions existing under or by reason of the Loan Documents themselves.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.14 Limitation on Restrictions\non Subsidiary Distributions . Enter into or suffer to exist or become effective any consensual encumbrance or restriction on the ability\nof any Subsidiary to ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:3985f29e81fa30e1cfec25a0",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.15"
+    ],
+    "normalizedSourceRef": "7.15",
+    "families": [
+      "QUALITATIVE_NEGATIVE_COVENANTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits the Parent Borrower and its Subsidiaries from entering into any business other than the businesses in which they are currently engaged.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "SECTION 7.15 Limitation on Lines\nof Business . Enter into any business, either directly or through any Subsidiary, except for those businesses in which the Parent Borrower\nor any of its Subsidiaries is engaged on the date of this Agreement or which are reasonably related thereto.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:d5922f43d3995e6a4e71c0ec",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.15"
+    ],
+    "normalizedSourceRef": "7.15",
+    "families": [
+      "QUALITATIVE_NEGATIVE_COVENANTS"
+    ],
+    "role": "EXCEPTION",
+    "description": "Permits businesses that are reasonably related to the businesses currently conducted by the Parent Borrower or its Subsidiaries.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.15 Limitation on Lines\nof Business . Enter into any business, either directly or through any Subsidiary, except for those businesses in which the Parent Borrower\nor any of its Subsidiaries is engaged on the date of this Agreement or which are reasonably related thereto.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:f0466a27cbf457478a3eac0e",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.16(a)"
+    ],
+    "normalizedSourceRef": "7.16(a)",
+    "families": [
+      "QUALITATIVE_NEGATIVE_COVENANTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits use of Loan or Letter of Credit proceeds in furtherance of bribery or corruption in violation of Anti-Corruption Laws.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "covenant_verb"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(a) in furtherance of an offer, payment, promise to pay, or authorization of the\npayment or giving of money, or anything else of value, to any Person in violation of any Anti-Corruption Laws, (b) for the purpose of\nfunding, financing or facilitating any activities, business or transaction of or with",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:71cd58e50f8b3598cb7f1ffb",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.16"
+    ],
+    "normalizedSourceRef": "7.16",
+    "families": [
+      "QUALITATIVE_NEGATIVE_COVENANTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits use of proceeds to fund, finance or facilitate activities or transactions with Sanctioned Persons or in Sanctioned Countries where such activity would be prohibited by Sanctions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "SECTION 7.16 Limitation on Use\nof Proceeds . Request any Loan or Letter of Credit, and the Parent Borrower shall not use, shall procure that its Subsidiaries shall\nnot use, and shall use its reasonable best efforts to procure that its or their respective directors, officers, employees and agents sha",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:c84bd941081822735ab8bf70",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.17(a)"
+    ],
+    "normalizedSourceRef": "7.17(a)",
+    "families": [
+      "QUALITATIVE_NEGATIVE_COVENANTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits the Borrower from being or becoming a 'covered foreign person' under the Outbound Investment Rules.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.85,
+    "sourceCitation": "(a) Be or become a \"covered foreign person\",\nas that term is defined in the Outbound Investment Rules, or ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:e52848d1db50133b0ae6b258",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.17(b)(i)"
+    ],
+    "normalizedSourceRef": "7.17(b)(i)",
+    "families": [
+      "QUALITATIVE_NEGATIVE_COVENANTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits engaging directly or indirectly in a 'covered activity' or 'covered transaction' as defined in the Outbound Investment Rules.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.85,
+    "sourceCitation": "(i) a \"covered activity\"\nor a \"covered transaction\", as each such term is defined in the Outbound Investment Rules, (ii) any activity or transaction\nthat would constitute a \"covered activity\" or a \"covered transaction\", as each such term is defined in the Outbound\nInvestment Rules, if the Borrower w",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  },
+  {
+    "discoveryId": "discovery-candidate:d375c748c3fbadc6014d5f26",
+    "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+    "structuralNodeKeys": [
+      "conmed-doc-a-eighth-ar-credit-agreement::7.17"
+    ],
+    "normalizedSourceRef": "7.17",
+    "families": [
+      "QUALITATIVE_NEGATIVE_COVENANTS"
+    ],
+    "role": "GENERAL_PROHIBITION",
+    "description": "Prohibits any activity or transaction that would constitute a covered activity or covered transaction if the Borrower were an Outbound Investment U.S. Person.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "headline_heading"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 7.17 Outbound Investment\nRules\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+  }
+]
