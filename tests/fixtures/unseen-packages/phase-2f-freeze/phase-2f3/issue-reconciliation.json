@@ -1,0 +1,22 @@
+[
+  {
+    "issueId": "PC-01",
+    "disposition": "RESOLVED - Document C now classifies as AMENDMENT (was AMENDED_AND_RESTATED_AGREEMENT), via DETERMINISTIC_SELF_REFERENTIAL_TITLE. Its AMENDS edge now correctly targets Document A as REVIEW_REQUIRED (type-only match, date genuinely does not match since C's real target - the Seventh A&R - is absent from the package) rather than being silently mis-typed as a fresh base agreement."
+  },
+  {
+    "issueId": "PC-02",
+    "disposition": "RESOLVED - Document D now classifies as AMENDMENT (was SECURITY_AGREEMENT). Both real AMENDS edges are RESOLVED: -> Document A (true) and -> Document B (true) - a genuine multi-target amendment, exactly as its real text supports."
+  },
+  {
+    "issueId": "PC-03",
+    "disposition": "RESOLVED - Document B now classifies as the composite GUARANTEE_AND_SECURITY_AGREEMENT type (was SECURITY_AGREEMENT alone) and produces BOTH a RESOLVED GUARANTEES edge and a RESOLVED SECURES edge to Document A - its real dual function is now fully represented, not silently dropped to one half."
+  },
+  {
+    "issueId": "PC-04",
+    "disposition": "RESOLVED - all 84 cross-document reference leads now resolve to REVIEW_REQUIRED (a real, single, unique type-match candidate needing confirmation) instead of the original 67/84 falsely UNRESOLVED due to the PC-01 false-ambiguity cascade. Zero leads remain UNRESOLVED."
+  },
+  {
+    "issueId": "PC-05",
+    "disposition": "CORRECTLY_NOT_FORCED_RESOLVED - the modification candidate now surfaces as REVIEW_REQUIRED against Document A (the only same-type candidate, with a non-matching execution date) rather than silently reporting 'no reference found' as before - more transparent about the real evidence, while still never claiming a confident RESOLVED match. This was flagged in the original Phase 2F report as correctly unresolved (its true target is genuinely absent from the package) and remains honestly non-committal here, never fabricated as certain."
+  }
+]

@@ -161,6 +161,14 @@ enum DocumentType {
   FEE_LETTER
   OTHER_DEBT_DOCUMENT
   UNKNOWN
+  // Phase 2F.3 (docs/phase-2f3-package-graph-remediation.md §5/§12) -
+  // additive, same ALTER TYPE ADD VALUE safety as every block above. Real
+  // evidence (CONMED's own "Guarantee and Collateral Agreement") showed
+  // GUARANTEE and SECURITY_AGREEMENT alone each drop half of a composite
+  // document's real identity - this is a genuine, reusable leveraged-
+  // finance document concept (a single agreement combining guaranty and
+  // collateral/security grant provisions), not a CONMED-specific title.
+  GUARANTEE_AND_SECURITY_AGREEMENT
 
   @@map("document_type")
 }

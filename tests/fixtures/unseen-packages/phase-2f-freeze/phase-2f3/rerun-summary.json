@@ -1,0 +1,144 @@
+{
+  "runId": "PHASE_2F3_PACKAGE_GRAPH_RERUN",
+  "generatedAt": "2026-08-27T17:37:39.329Z",
+  "classifications": [
+    {
+      "documentId": "conmed-doc-a-eighth-ar-credit-agreement",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+      "evidence": [
+        "Amended and Restated Credit Agreement"
+      ]
+    },
+    {
+      "documentId": "conmed-doc-b-guarantee-collateral-agreement",
+      "type": "GUARANTEE_AND_SECURITY_AGREEMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN",
+      "evidence": [
+        "GUARANTEE AND COLLATERAL AGREEMENT"
+      ]
+    },
+    {
+      "documentId": "conmed-doc-c-second-amendment-2022",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+      "evidence": [
+        "(this \" Amendment \")"
+      ]
+    },
+    {
+      "documentId": "conmed-doc-d-first-omnibus-amendment-2026",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE",
+      "evidence": [
+        "(this \" Amendment \")"
+      ]
+    }
+  ],
+  "relationshipCandidates": [
+    {
+      "source": "conmed-doc-a-eighth-ar-credit-agreement",
+      "target": null,
+      "type": "RESTATES",
+      "status": "UNRESOLVED",
+      "reason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text"
+    },
+    {
+      "source": "conmed-doc-b-guarantee-collateral-agreement",
+      "target": "conmed-doc-a-eighth-ar-credit-agreement",
+      "type": "GUARANTEES",
+      "status": "RESOLVED",
+      "reason": null
+    },
+    {
+      "source": "conmed-doc-b-guarantee-collateral-agreement",
+      "target": "conmed-doc-a-eighth-ar-credit-agreement",
+      "type": "SECURES",
+      "status": "RESOLVED",
+      "reason": null
+    },
+    {
+      "source": "conmed-doc-b-guarantee-collateral-agreement",
+      "target": null,
+      "type": "GUARANTEES",
+      "status": "UNRESOLVED",
+      "reason": "no document in this package is classified as GUARANTEE_AND_SECURITY_AGREEMENT/GUARANTEE/SECURITY_AGREEMENT"
+    },
+    {
+      "source": "conmed-doc-b-guarantee-collateral-agreement",
+      "target": null,
+      "type": "SECURES",
+      "status": "UNRESOLVED",
+      "reason": "no document in this package is classified as GUARANTEE_AND_SECURITY_AGREEMENT/GUARANTEE/SECURITY_AGREEMENT"
+    },
+    {
+      "source": "conmed-doc-c-second-amendment-2022",
+      "target": "conmed-doc-a-eighth-ar-credit-agreement",
+      "type": "AMENDS",
+      "status": "REVIEW_REQUIRED",
+      "reason": "type matches but execution date \"July 16, 2021\" does not match the candidate's own executionDate - resolved provisionally, needs human confirmation"
+    },
+    {
+      "source": "conmed-doc-d-first-omnibus-amendment-2026",
+      "target": "conmed-doc-a-eighth-ar-credit-agreement",
+      "type": "AMENDS",
+      "status": "RESOLVED",
+      "reason": null
+    },
+    {
+      "source": "conmed-doc-d-first-omnibus-amendment-2026",
+      "target": "conmed-doc-b-guarantee-collateral-agreement",
+      "type": "AMENDS",
+      "status": "RESOLVED",
+      "reason": null
+    }
+  ],
+  "instruments": [
+    {
+      "key": "instrument:conmed-doc-a-eighth-ar-credit-agreement",
+      "base": "conmed-doc-a-eighth-ar-credit-agreement",
+      "documentIds": [
+        "conmed-doc-a-eighth-ar-credit-agreement",
+        "conmed-doc-d-first-omnibus-amendment-2026"
+      ],
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "key": "instrument:conmed-doc-c-second-amendment-2022",
+      "base": "conmed-doc-c-second-amendment-2022",
+      "documentIds": [
+        "conmed-doc-c-second-amendment-2022"
+      ],
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "modificationCandidates": [
+    {
+      "source": "conmed-doc-c-second-amendment-2022",
+      "operation": "UNKNOWN_CHANGE",
+      "target": "conmed-doc-a-eighth-ar-credit-agreement",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "crossDocumentReferenceLeadsSummary": {
+    "total": 84,
+    "byStatus": {
+      "REVIEW_REQUIRED": 84
+    }
+  },
+  "performance": {
+    "documentCount": 4,
+    "totalCharsScanned": 230890,
+    "relationshipCandidatesGenerated": 8,
+    "relationshipsResolved": 4,
+    "relationshipsUnresolved": 3,
+    "modificationCandidatesGenerated": 1,
+    "crossDocumentReferenceLeadsGenerated": 84,
+    "wallClockMs": 15,
+    "semanticCallsUsed": 0
+  }
+}

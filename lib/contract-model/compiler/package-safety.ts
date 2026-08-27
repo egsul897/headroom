@@ -25,6 +25,7 @@
 import { detectAmendmentAndDefinitionalSignals } from "./coverage-audit/signals";
 import type { StructuralCoverageResult } from "./structural-coverage";
 import type { DiscoveryHealthState } from "./discovery/types";
+import type { RelationshipCandidate } from "./package-graph/types";
 
 const AMENDMENT_DOCUMENT_TYPES = new Set(["AMENDMENT", "AMENDED_AND_RESTATED_AGREEMENT", "SUPPLEMENTAL_INDENTURE", "JOINDER"]);
 
@@ -54,6 +55,9 @@ export interface PackageSafetyResult {
   reasons: string[];
   /** Task §14's own example phrasing, computed exactly: "N of M documents were not structurally analyzed successfully." */
   summarySentence: string;
+  /** Phase 2F.3 §21 - package-graph relationship-resolution safety, additive to the structural/discovery checks above. Never null - defaults to empty when the caller does not supply relationshipCandidates (a Phase 2F.1/2F.2-only caller keeps working unchanged). */
+  unresolvedMaterialRelationshipCount: number;
+  reviewRequiredRelationshipCount: number;
 }
 
 export interface DocumentSafetyInput {
@@ -66,7 +70,37 @@ export interface DocumentSafetyInput {
   discoveryHealth?: DiscoveryHealthState;
 }
 
-export function computePackageSafety(packageKey: string, inputs: DocumentSafetyInput[]): PackageSafetyResult {
+/**
+ * Phase 2F.3 §21 - "a confidently false relationship is dangerous; package
+ * safety should downgrade if a material target relationship is
+ * unresolved, conflicting strong evidence exists, a related base document
+ * is missing, or an amendment target cannot be established." Every
+ * relationship candidate this module's own relationship-resolution.ts
+ * produces already IS a "material" one (task §9's own module-header
+ * rationale: package-proximity-only RELATED_TO edges are deliberately
+ * never generated in the first place, so there is no separate "weak
+ * edge" category to filter out here) - UNRESOLVED means exactly the
+ * §21-named failure modes (ambiguous target, missing base document,
+ * amendment target not established), never a merely-uninteresting edge.
+ * REVIEW_REQUIRED (a real candidate found, but only by a weaker type-only
+ * match) is tracked separately and reported, but does not by itself
+ * downgrade the package state - a package with review-required
+ * relationships is still safely, partially analyzable (task §21's own
+ * "do not force all-or-nothing failure"), whereas an outright unresolved
+ * material relationship is not.
+ */
+function computeRelationshipSafety(relationshipCandidates: RelationshipCandidate[] | undefined): { unresolvedMaterialRelationshipCount: number; reviewRequiredRelationshipCount: number; unresolvedDocumentIds: string[] } {
+  const candidates = relationshipCandidates ?? [];
+  const unresolved = candidates.filter((r) => r.status === "UNRESOLVED");
+  const reviewRequired = candidates.filter((r) => r.status === "REVIEW_REQUIRED");
+  return {
+    unresolvedMaterialRelationshipCount: unresolved.length,
+    reviewRequiredRelationshipCount: reviewRequired.length,
+    unresolvedDocumentIds: [...new Set(unresolved.map((r) => r.sourceDocumentId))],
+  };
+}
+
+export function computePackageSafety(packageKey: string, inputs: DocumentSafetyInput[], relationshipCandidates?: RelationshipCandidate[]): PackageSafetyResult {
   const documents: DocumentSafetyEntry[] = inputs.map((d) => {
     const structuralInputInsufficient = d.coverage.health === "STRUCTURE_FAILED" || d.coverage.health === "STRUCTURE_INSUFFICIENT";
     const classifiedAsAmendment = d.declaredDocumentType != null && AMENDMENT_DOCUMENT_TYPES.has(d.declaredDocumentType);
@@ -90,6 +124,7 @@ export function computePackageSafety(packageKey: string, inputs: DocumentSafetyI
   const dangerousAmendments = documents.filter((d) => d.potentiallyRelevantAmendmentNotFullyAnalyzed);
   const discoveryFailedDocs = documents.filter((d) => d.discoveryHealth === "DISCOVERY_FAILED");
   const discoveryPartialDocs = documents.filter((d) => d.discoveryHealth === "DISCOVERY_PARTIAL");
+  const relationshipSafety = computeRelationshipSafety(relationshipCandidates);
   const reasons: string[] = [];
   let state: PackageSafetyState = "PACKAGE_SAFE";
 
@@ -105,8 +140,18 @@ export function computePackageSafety(packageKey: string, inputs: DocumentSafetyI
   } else if (discoveryPartialDocs.length > 0) {
     state = "PACKAGE_REVIEW_REQUIRED";
     reasons.push(`${discoveryPartialDocs.length} document(s) have DISCOVERY_PARTIAL: ${discoveryPartialDocs.map((d) => d.documentId).join(", ")} - one or more Pass B section calls failed but were isolated rather than aborting the whole document; the surviving candidates are real but the document's candidate list may be incomplete.`);
+  } else if (relationshipSafety.unresolvedMaterialRelationshipCount > 0) {
+    // Task §21 - unresolved is safe-by-construction here (never a
+    // confidently false edge), so this downgrades to REVIEW_REQUIRED,
+    // never UNSAFE - "a package with unresolved relationships may still
+    // be partially analyzable... do not force all-or-nothing failure."
+    state = "PACKAGE_REVIEW_REQUIRED";
+    reasons.push(`${relationshipSafety.unresolvedMaterialRelationshipCount} package-graph relationship candidate(s) from document(s) [${relationshipSafety.unresolvedDocumentIds.join(", ")}] are UNRESOLVED (ambiguous target, missing base document, or amendment target not established) - the affected document(s)' place in the package topology is not yet established, but this does not block analysis of other, resolved documents.`);
   } else {
-    reasons.push("All documents reached STRUCTURE_HEALTHY or STRUCTURE_PARTIAL with no significant unresolved coverage gaps, and DISCOVERY_HEALTHY with no isolated section failures.");
+    reasons.push("All documents reached STRUCTURE_HEALTHY or STRUCTURE_PARTIAL with no significant unresolved coverage gaps, DISCOVERY_HEALTHY with no isolated section failures, and every package-graph relationship candidate resolved or narrowed to a single reviewable candidate.");
+  }
+  if (relationshipSafety.reviewRequiredRelationshipCount > 0) {
+    reasons.push(`${relationshipSafety.reviewRequiredRelationshipCount} package-graph relationship candidate(s) are REVIEW_REQUIRED (a type-only match with a non-matching execution date) - a real candidate exists but needs human confirmation before being treated as resolved.`);
   }
 
   return {
@@ -114,6 +159,8 @@ export function computePackageSafety(packageKey: string, inputs: DocumentSafetyI
     documents,
     state,
     reasons,
+    unresolvedMaterialRelationshipCount: relationshipSafety.unresolvedMaterialRelationshipCount,
+    reviewRequiredRelationshipCount: relationshipSafety.reviewRequiredRelationshipCount,
     summarySentence: `${failedOrInsufficientCount} of ${documents.length} documents were not structurally analyzed successfully.`,
   };
 }

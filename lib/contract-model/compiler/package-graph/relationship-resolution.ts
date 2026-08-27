@@ -29,9 +29,40 @@ const DATE_RE = new RegExp(`(?:${MONTHS})\\s+\\d{1,2},\\s*\\d{4}`, "i");
 // every classification this module maps a relationshipType onto (task §6)
 // can legitimately target one of these, not only a Credit Agreement or
 // Indenture.
-const AGREEMENT_REF_RE = new RegExp(`(?:the|that certain)\\s+((?:First Lien|Second Lien|Senior|Subordinated)?\\s*(?:Credit Agreement|Indenture|Loan Agreement|Intercreditor Agreement|Security Agreement|Guaranty(?: Agreement)?|Guarantee Agreement))\\s*,?\\s*dated (?:as of )?(${DATE_RE.source})`, "gi");
+//
+// Phase 2F.3 §7/§8/§11 root-cause fix: real CONMED Document D's own text
+// references its base facility as "the Eighth Amended and Restated Credit
+// Agreement, dated as of June 10, 2025" and its collateral document as
+// "the Amended and Restated Guarantee and Collateral Agreement, dated as
+// of the June 10, 2025" - the ORIGINAL prefix alternation (First/Second
+// Lien, Senior, Subordinated only) could match neither: an ordinal-
+// numbered "Amended and Restated" restatement is the single most common
+// real-world way a leveraged-finance document refers to its own base
+// facility (not CONMED-specific - "Third Amended and Restated Credit
+// Agreement" etc. is standard across the industry), and "Guarantee and
+// Collateral Agreement"/"Guaranty and Security Agreement" is the standard
+// composite collateral-document name. Both are added generically below.
+// The date clause is also tolerant of a stray "the" ("dated as of the
+// June 10, 2025") - a real, observed SEC-filing text-extraction artifact,
+// not a drafting convention, but one date-parsing must survive rather
+// than silently fail to match at all.
+//
+// `ws()` below converts every literal space in a phrase to `\s+` before it
+// is spliced into the final regex source - real filed-document text
+// extraction (HTML/PDF -> text) routinely wraps mid-phrase ("...Restated
+// Credit\nAgreement, dated...", confirmed real in CONMED Document D's own
+// extracted text), so a literal single-space match is not durable; every
+// multi-word phrase in this module goes through it, not only the ones
+// evidence happened to catch.
+function ws(phrase: string): string {
+  return phrase.replace(/ /g, "\\s+");
+}
 
-type AgreementTypeHint = "CREDIT_AGREEMENT" | "INDENTURE" | "INTERCREDITOR_AGREEMENT" | "SECURITY_AGREEMENT" | "GUARANTEE";
+const RESTATEMENT_PREFIX = `(?:(?:First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth)${ws(" Amended and Restated ")}|${ws("Amended and Restated ")}|${ws("First Lien ")}|${ws("Second Lien ")}|Senior\\s+|Subordinated\\s+)?`;
+const AGREEMENT_LABEL_ALTERNATION = [ws("Credit Agreement"), "Indenture", ws("Loan Agreement"), ws("Intercreditor Agreement"), ws("Guarantee and Collateral Agreement"), ws("Guaranty and Collateral Agreement"), ws("Guarantee and Security Agreement"), ws("Guaranty and Security Agreement"), ws("Pledge and Security Agreement"), ws("Pledge, Guaranty and Security Agreement"), ws("Security Agreement"), ws("Collateral Agreement"), `Guaranty(?:${ws(" Agreement")})?`, ws("Guarantee Agreement")].join("|");
+const AGREEMENT_REF_RE = new RegExp(`(?:the|that certain)\\s+(${RESTATEMENT_PREFIX}(?:${AGREEMENT_LABEL_ALTERNATION}))\\s*,?\\s*dated\\s+(?:as\\s+of\\s+)?(?:the\\s+)?(${DATE_RE.source})`, "gi");
+
+type AgreementTypeHint = "CREDIT_AGREEMENT" | "INDENTURE" | "INTERCREDITOR_AGREEMENT" | "SECURITY_AGREEMENT" | "GUARANTEE" | "GUARANTEE_AND_SECURITY_AGREEMENT";
 
 interface AgreementReference {
   typeHint: AgreementTypeHint;
@@ -44,14 +75,22 @@ const TARGET_TYPES_BY_HINT: Record<AgreementTypeHint, DocumentType[]> = {
   CREDIT_AGREEMENT: ["CREDIT_AGREEMENT", "AMENDED_AND_RESTATED_AGREEMENT"],
   INDENTURE: ["INDENTURE"],
   INTERCREDITOR_AGREEMENT: ["INTERCREDITOR_AGREEMENT"],
-  SECURITY_AGREEMENT: ["SECURITY_AGREEMENT"],
-  GUARANTEE: ["GUARANTEE"],
+  SECURITY_AGREEMENT: ["SECURITY_AGREEMENT", "GUARANTEE_AND_SECURITY_AGREEMENT"],
+  GUARANTEE: ["GUARANTEE", "GUARANTEE_AND_SECURITY_AGREEMENT"],
+  GUARANTEE_AND_SECURITY_AGREEMENT: ["GUARANTEE_AND_SECURITY_AGREEMENT", "GUARANTEE", "SECURITY_AGREEMENT"],
 };
 
+// A composite label ("Guarantee and Collateral Agreement") is classified
+// as its own hint - not folded into plain GUARANTEE - so a reference to it
+// can resolve against a composite-typed document just as readily as a
+// plain guarantee/security one (see TARGET_TYPES_BY_HINT above, which
+// still lets a composite reference reach a plain GUARANTEE/SECURITY_AGREEMENT
+// document too - a package may reasonably have either).
 function classifyAgreementLabel(label: string): AgreementTypeHint {
   if (/indenture/i.test(label)) return "INDENTURE";
   if (/intercreditor/i.test(label)) return "INTERCREDITOR_AGREEMENT";
-  if (/security agreement/i.test(label)) return "SECURITY_AGREEMENT";
+  if (/guarant(?:y|ee)\s+and\s+(?:collateral|security)\s+agreement|pledge,?\s+guarant(?:y|ee)\s+and\s+security\s+agreement/i.test(label)) return "GUARANTEE_AND_SECURITY_AGREEMENT";
+  if (/security\s+agreement|collateral\s+agreement/i.test(label)) return "SECURITY_AGREEMENT";
   if (/guarant/i.test(label)) return "GUARANTEE";
   return "CREDIT_AGREEMENT";
 }
@@ -99,15 +138,26 @@ function resolveAgreementReference(ref: AgreementReference, sourceDocumentId: st
 // DocumentRelationshipType enum (see types.ts's own PackageRelationshipType
 // comment for the full reuse rationale) - AMENDS_AND_RESTATES maps to the
 // real enum's RESTATES, INTERCREDITOR_RELATIONSHIP to INTERCREDITOR_WITH.
-const RELATIONSHIP_TYPE_BY_SOURCE_CLASSIFICATION: Partial<Record<DocumentType, PackageRelationshipType>> = {
-  AMENDMENT: "AMENDS",
-  AMENDED_AND_RESTATED_AGREEMENT: "RESTATES",
-  SUPPLEMENTAL_INDENTURE: "SUPPLEMENTS",
-  JOINDER: "JOINS",
-  COMPLIANCE_CERTIFICATE: "CERTIFIES_COMPLIANCE_WITH",
-  INTERCREDITOR_AGREEMENT: "INTERCREDITOR_WITH",
-  GUARANTEE: "GUARANTEES",
-  SECURITY_AGREEMENT: "SECURES",
+//
+// Phase 2F.3 §6 - VALUES ARE ARRAYS, not a single relationship type: this
+// is the "document type vs document function" separation the task asks
+// for, applied minimally (reusing the existing edge architecture rather
+// than a parallel model) - a document's PRIMARY type may correspond to
+// more than one real relationship FUNCTION toward its target(s). The
+// clearest real case: a composite GUARANTEE_AND_SECURITY_AGREEMENT both
+// guarantees AND secures the obligations it references - one relationship
+// candidate is generated per (relationshipType x reference) pair below,
+// never silently collapsing the two into one.
+const RELATIONSHIP_TYPES_BY_SOURCE_CLASSIFICATION: Partial<Record<DocumentType, PackageRelationshipType[]>> = {
+  AMENDMENT: ["AMENDS"],
+  AMENDED_AND_RESTATED_AGREEMENT: ["RESTATES"],
+  SUPPLEMENTAL_INDENTURE: ["SUPPLEMENTS"],
+  JOINDER: ["JOINS"],
+  COMPLIANCE_CERTIFICATE: ["CERTIFIES_COMPLIANCE_WITH"],
+  INTERCREDITOR_AGREEMENT: ["INTERCREDITOR_WITH"],
+  GUARANTEE: ["GUARANTEES"],
+  SECURITY_AGREEMENT: ["SECURES"],
+  GUARANTEE_AND_SECURITY_AGREEMENT: ["GUARANTEES", "SECURES"],
 };
 
 export interface RelationshipResolutionResult {
@@ -124,37 +174,48 @@ export function resolvePackageRelationships(documents: PackageDocumentInput[], c
   for (const doc of documents) {
     const classification = classById.get(doc.documentId);
     if (!classification) continue;
-    const relationshipType = RELATIONSHIP_TYPE_BY_SOURCE_CLASSIFICATION[classification.type];
-    if (!relationshipType) continue;
+    const relationshipTypes = RELATIONSHIP_TYPES_BY_SOURCE_CLASSIFICATION[classification.type];
+    if (!relationshipTypes || relationshipTypes.length === 0) continue;
 
-    const references = findAllAgreementReferences(doc.text, classification.type === "INTERCREDITOR_AGREEMENT" || classification.type === "GUARANTEE" || classification.type === "SECURITY_AGREEMENT" ? 8000 : 4000);
+    const bigWindowTypes: DocumentType[] = ["INTERCREDITOR_AGREEMENT", "GUARANTEE", "SECURITY_AGREEMENT", "GUARANTEE_AND_SECURITY_AGREEMENT"];
+    const references = findAllAgreementReferences(doc.text, bigWindowTypes.includes(classification.type) ? 8000 : 4000);
     if (references.length === 0) {
-      relationshipCandidates.push({
-        sourceDocumentId: doc.documentId,
-        targetDocumentId: null,
-        targetHint: null,
-        relationshipType,
-        sourceCitation: doc.label,
-        confidence: 0,
-        status: "UNRESOLVED",
-        unresolvedReason: "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
-        resolutionMethod: "DETERMINISTIC_NO_SIGNAL",
-      });
+      for (const relationshipType of relationshipTypes) {
+        relationshipCandidates.push({
+          sourceDocumentId: doc.documentId,
+          targetDocumentId: null,
+          targetHint: null,
+          relationshipType,
+          sourceCitation: doc.label,
+          confidence: 0,
+          status: "UNRESOLVED",
+          unresolvedReason: "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+          resolutionMethod: "DETERMINISTIC_NO_SIGNAL",
+        });
+      }
       continue;
     }
+    // §11 multi-target amendments: every distinct reference this document's
+    // own text supports gets its own candidate, for every relationship
+    // function this document's type implies - a document that both
+    // references two different target agreements (multi-target) AND has
+    // more than one real function (composite type) produces the full
+    // cross-product, never forcing a single choice.
     for (const ref of references) {
       const resolution = resolveAgreementReference(ref, doc.documentId, classifications, identities);
-      relationshipCandidates.push({
-        sourceDocumentId: doc.documentId,
-        targetDocumentId: resolution.targetDocumentId,
-        targetHint: ref.rawText,
-        relationshipType,
-        sourceCitation: ref.rawText,
-        confidence: resolution.confidence,
-        status: resolution.status,
-        unresolvedReason: resolution.unresolvedReason,
-        resolutionMethod: resolution.resolutionMethod,
-      });
+      for (const relationshipType of relationshipTypes) {
+        relationshipCandidates.push({
+          sourceDocumentId: doc.documentId,
+          targetDocumentId: resolution.targetDocumentId,
+          targetHint: ref.rawText,
+          relationshipType,
+          sourceCitation: ref.rawText,
+          confidence: resolution.confidence,
+          status: resolution.status,
+          unresolvedReason: resolution.unresolvedReason,
+          resolutionMethod: resolution.resolutionMethod,
+        });
+      }
     }
   }
 

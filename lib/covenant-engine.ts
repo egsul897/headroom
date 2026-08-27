@@ -186,7 +186,7 @@ export interface AssetSaleConfig {
 // need to change to support them; this is a type-only widening so
 // DbDocumentRow-shaped Prisma results keep type-checking after that schema
 // change.
-export type DocumentType = "CREDIT_AGREEMENT" | "INDENTURE" | "OTHER" | "AMENDMENT" | "INTERCREDITOR_AGREEMENT" | "COMPLIANCE_CERTIFICATE" | "AMENDED_AND_RESTATED_AGREEMENT" | "SUPPLEMENTAL_INDENTURE" | "JOINDER" | "SECURITY_AGREEMENT" | "GUARANTEE" | "SIDE_LETTER" | "FEE_LETTER" | "OTHER_DEBT_DOCUMENT" | "UNKNOWN";
+export type DocumentType = "CREDIT_AGREEMENT" | "INDENTURE" | "OTHER" | "AMENDMENT" | "INTERCREDITOR_AGREEMENT" | "COMPLIANCE_CERTIFICATE" | "AMENDED_AND_RESTATED_AGREEMENT" | "SUPPLEMENTAL_INDENTURE" | "JOINDER" | "SECURITY_AGREEMENT" | "GUARANTEE" | "SIDE_LETTER" | "FEE_LETTER" | "OTHER_DEBT_DOCUMENT" | "UNKNOWN" | "GUARANTEE_AND_SECURITY_AGREEMENT";
 
 export interface DocumentInput {
   id: string;
