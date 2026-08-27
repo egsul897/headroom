@@ -15,6 +15,8 @@ import { auditContextCoverage } from "./context-comparison";
 import { auditDefinitionCompleteness } from "./definition-audit";
 import { buildCoverageMap } from "./coverage-map";
 import { computeContentIdentity } from "./identity";
+import { computeStructuralCoverage } from "../structural-coverage";
+import { partitionUncoveredSpan, scanRawSourceRegion, buildRawSourceFallbackFindings } from "./raw-source-fallback";
 import { COVERAGE_AUDIT_ALGORITHM_VERSION, type AuditFinding, type CoverageAuditRunResult, type CoverageRegion } from "./types";
 
 export interface AuditPackageInput {
@@ -34,13 +36,42 @@ export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageA
   const options: SourceInventoryOptions = { companyId: input.companyId, packageKey: input.packageKey, instrumentKey: input.instrumentKey };
 
   const regions: CoverageRegion[] = [];
+  const findings: AuditFinding[] = [];
+  // Phase 2F.1 §9 - raw-source fallback: for every document, independently
+  // of whether Phase 2A produced any/enough structural nodes, compute
+  // this document's own structural health and audit any significant
+  // uncovered span directly over raw text. This runs BEFORE, and
+  // completely independently of, the structural-node-anchored inventory
+  // below - a document with STRUCTURE_FAILED health (zero nodes) still
+  // gets a real, non-empty audit pass here, never silent zero-region
+  // silence merely because Phase 2A could not represent it.
   for (const documentId of input.documentIds) {
     regions.push(...buildSourceCoverageInventory(documentId, input.index, options));
+
+    const documentText = input.index.getDocumentText(documentId);
+    if (documentText === undefined) continue;
+    const nodes = input.index.allNodes().filter((n) => n.documentId === documentId);
+    const coverage = computeStructuralCoverage(documentId, documentText, nodes);
+    if (coverage.significantUncoveredSpans.length === 0 && coverage.health === "STRUCTURE_HEALTHY") continue;
+
+    const scanResults = coverage.significantUncoveredSpans.flatMap((span) =>
+      partitionUncoveredSpan(documentId, documentText, span, `document structural health is ${coverage.health} (${coverage.coveragePercent}% substantive coverage)`).map(scanRawSourceRegion)
+    );
+    findings.push(
+      ...buildRawSourceFallbackFindings({
+        companyId: input.companyId,
+        packageKey: input.packageKey,
+        instrumentKey: input.instrumentKey,
+        documentId,
+        healthReasons: coverage.healthReasons,
+        includeDocumentLevelFinding: coverage.health !== "STRUCTURE_HEALTHY",
+        scanResults,
+      })
+    );
   }
   const deterministicWallClockMs = Date.now() - start;
 
   const comparisonStart = Date.now();
-  const findings: AuditFinding[] = [];
   findings.push(...auditDiscoveryCoverage(regions, input.candidates, input.index));
 
   for (const bundle of input.bundles) {

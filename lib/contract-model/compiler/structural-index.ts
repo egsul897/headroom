@@ -61,6 +61,8 @@ export interface StructuralIndex {
   searchStructuralNodes(predicate: (node: StructuralNode) => boolean): StructuralNode[];
   /** Every node, in document order - the same evidence a coverage/audit pass needs without a second parse. */
   allNodes(): StructuralNode[];
+  /** Phase 2F.1 §6 - one document's own full raw text, exactly as parsed. Needed by structural-coverage.ts to compute uncovered spans (a node's own OWN/DESCENDANTS text can never reveal a span no node covers at all - by definition nothing points to it) - the same underlying text this index was built from, never re-fetched or re-normalized. */
+  getDocumentText(documentId: string): string | undefined;
 }
 
 function normalizeRef(ref: string): string {
@@ -196,5 +198,6 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
     },
     searchStructuralNodes: (predicate) => allNodesSorted.filter(predicate),
     allNodes: () => [...allNodesSorted],
+    getDocumentText: (documentId) => nodesByDocument.get(documentId)?.text,
   };
 }

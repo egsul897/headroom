@@ -109,7 +109,27 @@ export type AuditFindingType =
   | "SILENT_UNRESOLVED_DEPENDENCY"
   | "STRUCTURAL_COVERAGE_GAP"
   | "POSSIBLE_FALSE_POSITIVE"
-  | "OTHER_MATERIAL_COVERAGE_GAP";
+  | "OTHER_MATERIAL_COVERAGE_GAP"
+  /**
+   * Phase 2F.1 §13 - raw-source auditor independence findings. Emitted
+   * only by the raw-source fallback path (raw-source-fallback.ts), never
+   * by the normal structural-node-anchored inventory path.
+   * STRUCTURAL_ANALYSIS_INSUFFICIENT is the document-level "this
+   * document's own structural health is not good enough to trust its
+   * absence of findings" signal (task §7/§8's STRUCTURE_INSUFFICIENT/
+   * STRUCTURE_FAILED health states, surfaced into the finding stream so
+   * a caller never has to separately consult the coverage/health API to
+   * know something is wrong). RAW_SOURCE_COVENANT_SIGNAL and
+   * RAW_SOURCE_AMENDMENT_SIGNAL are per-region findings: a
+   * structurally-unavailable raw span independently showed a real
+   * covenant-shaped or amendment-shaped deterministic signal and must
+   * not disappear silently even though the auditor cannot yet classify
+   * it precisely (task §13's own "this alone prevents dangerous-
+   * unflagged silence").
+   */
+  | "STRUCTURAL_ANALYSIS_INSUFFICIENT"
+  | "RAW_SOURCE_COVENANT_SIGNAL"
+  | "RAW_SOURCE_AMENDMENT_SIGNAL";
 
 /** §22 - attribution: which subsystem actually owns this gap, never charged to more than one downstream stage merely because outputs cascade. */
 export type RootCauseSubsystem = "STRUCTURAL_SUBSTRATE" | "DISCOVERY_PHASE_2B" | "CONTEXT_RETRIEVAL_PHASE_2D" | "PACKAGE_RELATIONSHIP_PHASE_2C" | "AUDITOR_ITSELF" | "NOT_APPLICABLE";
@@ -195,7 +215,18 @@ export interface CoverageMapEntry {
 // top-level run result
 // ---------------------------------------------------------------------------
 
-export const COVERAGE_AUDIT_ALGORITHM_VERSION = "phase-2e-coverage-audit.v1";
+/**
+ * Phase 2F.1 v2: adds the raw-source fallback path (raw-source-
+ * fallback.ts) - the auditor's independent inventory no longer depends
+ * exclusively on Phase 2A having produced fine-grained structural nodes
+ * for a document (task §9/§22's own "strengthen the independence
+ * contract"). Every v1 behavior (structural-node-anchored regions,
+ * comparison stages, fault-injection scoring) is unchanged when a
+ * document's own structural health is STRUCTURE_HEALTHY - this bump
+ * exists so a cached v1 audit result is never silently reused for a
+ * document the v2 fallback would have audited differently.
+ */
+export const COVERAGE_AUDIT_ALGORITHM_VERSION = "phase-2e-coverage-audit.v2";
 
 export interface CoverageAuditRunResult {
   companyId: string;

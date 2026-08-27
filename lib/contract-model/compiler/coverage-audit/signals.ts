@@ -15,7 +15,7 @@
 
 export interface SignalHit {
   name: string;
-  category: "PROHIBITORY_PERMISSIVE" | "ECONOMIC" | "MECHANIC" | "FAMILY_HEADLINE";
+  category: "PROHIBITORY_PERMISSIVE" | "ECONOMIC" | "MECHANIC" | "FAMILY_HEADLINE" | "AMENDMENT" | "DEFINITIONAL";
 }
 
 interface SignalDef {
@@ -97,11 +97,63 @@ const FAMILY_HEADLINE: SignalDef[] = [
   { name: "reporting_compliance", category: "FAMILY_HEADLINE", re: /\b(?:Reporting|Compliance Certificate)\b/i },
 ];
 
+/**
+ * Phase 2F.1 §11 - the two signal categories the raw-source fallback
+ * auditor needs that had no prior member here: amendment/modification
+ * language (so a structurally-unavailable amendment document's own
+ * operative text - "hereby amended", "restated", "modified" - can be
+ * told apart from a structurally-unavailable ordinary covenant
+ * document), and defined-term-like language (so a raw span carrying real
+ * defined-term declarations, in any of the conventions
+ * structural-definitions.ts now recognizes, is flagged even when no
+ * structural node exists to run that module's own node-scoped detector
+ * against). Same generic, non-package-specific discipline as every
+ * other signal in this file.
+ */
+const AMENDMENT: SignalDef[] = [
+  { name: "hereby_amended", category: "AMENDMENT", re: /\bhereby amend(?:s|ed)?\b/i },
+  { name: "amendment_restatement", category: "AMENDMENT", re: /\bamend(?:ed|ment)?\s+and\s+restat(?:e|ed|ement)\b/i },
+  { name: "amendment_noun", category: "AMENDMENT", re: /\bAmendment\b/ },
+  { name: "modified_supplemented", category: "AMENDMENT", re: /\b(?:modifi(?:ed|cation)|supplement(?:ed|al)?)\b/i },
+  { name: "effective_date_of_amendment", category: "AMENDMENT", re: /\bEffective Date\b/ },
+  { name: "conditions_precedent", category: "AMENDMENT", re: /\bconditions? precedent\b/i },
+  { name: "reaffirm", category: "AMENDMENT", re: /\breaffirm(?:s|ed|ation)?\b/i },
+  { name: "no_novation", category: "AMENDMENT", re: /\bno novation\b/i },
+];
+
+const DEFINITIONAL: SignalDef[] = [
+  { name: "quoted_term_means", category: "DEFINITIONAL", re: /["“”][^"“”]{1,80}["“”]\s*(?:means|shall mean)/i },
+  { name: "quoted_term_colon", category: "DEFINITIONAL", re: /["“”][^"“”]{1,80}["“”]\s*:/ },
+  { name: "defined_terms_heading", category: "DEFINITIONAL", re: /\bDefined Terms\b/i },
+  { name: "capitalized_defined_term_usage", category: "DEFINITIONAL", re: /\bas defined (?:herein|below|above|in)\b/i },
+];
+
 const ALL_SIGNALS: SignalDef[] = [...PROHIBITORY_PERMISSIVE, ...ECONOMIC, ...MECHANIC, ...FAMILY_HEADLINE];
+const FALLBACK_ONLY_SIGNALS: SignalDef[] = [...AMENDMENT, ...DEFINITIONAL];
 
 export function detectIndependentSignals(text: string): SignalHit[] {
   const hits: SignalHit[] = [];
   for (const def of ALL_SIGNALS) {
+    if (def.re.test(text)) hits.push({ name: def.name, category: def.category });
+  }
+  return hits;
+}
+
+/**
+ * Phase 2F.1 §11 - AMENDMENT/DEFINITIONAL signals, deliberately kept OUT
+ * of detectIndependentSignals' own ALL_SIGNALS set and the normal
+ * structural-node-anchored inventory path (source-inventory.ts) that
+ * already has its own established, tested behavior of treating purely
+ * definitional material as non-material for THAT path's own purpose
+ * (task §26's own "do not allow parser improvements to regress" applied
+ * here to the auditor's own pre-existing behavior, not just Phase 2A/2B).
+ * Used only by raw-source-fallback.ts, where an uncovered span carrying
+ * defined-term-like or amendment-shaped language IS exactly the signal
+ * this task's own §13 wants surfaced.
+ */
+export function detectAmendmentAndDefinitionalSignals(text: string): SignalHit[] {
+  const hits: SignalHit[] = [];
+  for (const def of FALLBACK_ONLY_SIGNALS) {
     if (def.re.test(text)) hits.push({ name: def.name, category: def.category });
   }
   return hits;
