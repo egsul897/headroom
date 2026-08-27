@@ -128,7 +128,17 @@ export interface ContextRetrievalPerformance {
   outputTokens: number;
 }
 
-export const RETRIEVAL_ALGORITHM_VERSION = "phase-2d-context-retrieval.v1";
+/**
+ * Bumped to v2 by Phase 2E.1's cross-reference/structural-region boundary
+ * remediation (docs/phase-2e-1-cross-reference-remediation.md):
+ * generalized relative-clause resolution (ancestor self-match, antecedent
+ * Section override, ancestor-chain child search - structural-references.ts)
+ * and bounded referenced-region expansion (region-expansion.ts) replace
+ * v1's direct-parent-only relative resolution and OWN-text-only child/
+ * cross-reference-target retrieval. Any bundle built under v1 must be
+ * treated as stale and recomputed, never resumed as-is (task §18).
+ */
+export const RETRIEVAL_ALGORITHM_VERSION = "phase-2d-context-retrieval.v2";
 
 export interface CovenantContextBundle {
   /** Deterministic, content-derived (never random) - see identity.ts. */

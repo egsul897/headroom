@@ -50,6 +50,18 @@ export function retrieveParentScope(state: RetrievalState, index: StructuralInde
 
 /** Direct children only (not a deep recursive dump) - task §7's "a discovered section may contain independently operative subclauses. Retrieve relevant descendants." */
 export function retrieveChildRules(state: RetrievalState, index: StructuralIndex, documentId: string, nodeKey: string, operativeItemId: string): void {
+  // NOTE (Phase 2E.1): direct children of the CANDIDATE's own primary node
+  // never need referenced-region expansion here - retrieveOperativeSource
+  // already retrieves the primary node's full DESCENDANTS text (pipeline.ts),
+  // which by definition already contains every child's own full nested
+  // content. Applying region-expansion to each child here would silently
+  // duplicate that same text a second time under a separate CHILD_RULE
+  // item, consuming the text budget for zero new information - measured
+  // directly during this remediation's own construction (see the final
+  // report's "why retrieveChildRules was NOT changed" note). The genuine
+  // OWN-text-boundary gap this remediation targets is real for a CROSS-
+  // REFERENCE TARGET (reference-context.ts), which is a distant node the
+  // primary candidate's own DESCENDANTS span never covers.
   const children = index.getChildren(nodeKey);
   for (const child of children) {
     const text = index.getNodeText(child.nodeKey, "OWN");
