@@ -1,0 +1,39 @@
+{
+  "runId": "PHASE_2F_STAGE5_COVERAGE_AUDIT",
+  "generatedAt": "2026-08-27T13:42:50.448Z",
+  "auditAlgorithmVersion": "phase-2e-coverage-audit.v1",
+  "regionsAudited": 281,
+  "totalFindings": 245,
+  "findingsByType": {
+    "STRUCTURAL_COVERAGE_GAP": 41,
+    "PARTIAL_DISCOVERY": 29,
+    "MATERIAL_DISCOVERY_MISS": 103,
+    "MISSING_CONDITION": 41,
+    "MISSING_PROVISO": 16,
+    "MISSING_SHARED_CAP": 14,
+    "MISSING_EXCEPTION": 1
+  },
+  "findingsByMateriality": {
+    "MATERIAL": 55,
+    "UNCERTAIN": 190
+  },
+  "findingsByDocument": {
+    "conmed-doc-a-eighth-ar-credit-agreement": 129,
+    "conmed-doc-b-guarantee-collateral-agreement": 116
+  },
+  "performance": {
+    "documentsAudited": 4,
+    "structuralRegionsAudited": 281,
+    "independentCandidates": 281,
+    "deterministicWallClockMs": 29,
+    "semanticRegionsReviewed": 0,
+    "semanticWallClockMs": 0,
+    "comparisonWallClockMs": 19,
+    "totalFindings": 245,
+    "materialFindings": 55,
+    "uncertainFindings": 190,
+    "semanticCalls": 0,
+    "inputTokens": 0,
+    "outputTokens": 0
+  }
+}
