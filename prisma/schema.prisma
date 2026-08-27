@@ -131,6 +131,7 @@ model Company {
   // --- Phase C production contract compiler v1 (docs/phase-c-contract-compiler-v1.md) ---
   // Additive only. Zero rows for Coherent/Matthews as of this migration.
   contractCompilerRuns ContractCompilerRun[]
+  DebtInstrument       DebtInstrument[]
 
   @@map("companies")
 }
@@ -146,6 +147,20 @@ enum DocumentType {
   AMENDMENT
   INTERCREDITOR_AGREEMENT
   COMPLIANCE_CERTIFICATE
+  // Phase 2C (docs/phase-2c-debt-package-graph.md §4) - additive, same
+  // ALTER TYPE ADD VALUE safety as the block above. UNKNOWN is a real,
+  // legitimate classification result (task §4 - "UNKNOWN with evidence is
+  // preferable to fabricated certainty"), never a placeholder to migrate
+  // away from.
+  AMENDED_AND_RESTATED_AGREEMENT
+  SUPPLEMENTAL_INDENTURE
+  JOINDER
+  SECURITY_AGREEMENT
+  GUARANTEE
+  SIDE_LETTER
+  FEE_LETTER
+  OTHER_DEBT_DOCUMENT
+  UNKNOWN
 
   @@map("document_type")
 }
@@ -218,15 +233,31 @@ model Document {
   typeConfirmedByUser                  Boolean @default(true)
   amendmentRelationshipConfirmedByUser Boolean @default(true)
 
+  // --- Phase 2C debt package graph (docs/phase-2c-debt-package-graph.md §7) ---
+  // The instrument this document PRIMARILY defines or amends (a base Credit
+  // Agreement, an Amendment to it, a Supplemental Indenture, etc) - null
+  // when evidence is insufficient to group it (task §14's "a missing edge
+  // is safer than a wrong one" applied to grouping too) OR when the
+  // document is cross-cutting rather than instrument-defining (an
+  // Intercreditor Agreement, a Guarantee spanning multiple facilities) -
+  // those relate to instruments via DocumentRelationshipEdge (GOVERNS/
+  // SECURES/GUARANTEES/INTERCREDITOR_WITH) to that instrument's own member
+  // documents instead of a direct membership FK, so one cross-cutting
+  // document can be associated with more than one instrument without a
+  // second many-to-many table.
+  instrumentId String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  company            Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  supersedesDocument Document?           @relation("DocumentSupersedes", fields: [supersedesDocumentId], references: [id], onDelete: SetNull)
-  supersededBy       Document[]          @relation("DocumentSupersedes")
-  covenantProvisions CovenantProvision[]
-  ledgerEntries      LedgerEntry[]
-  definedTerms       DefinedTerm[]
+  company                    Company             @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  instrument                 DebtInstrument?     @relation("DebtInstrumentDocuments", fields: [instrumentId], references: [id], onDelete: SetNull)
+  baseDocumentForInstruments DebtInstrument[]    @relation("DebtInstrumentBaseDocument")
+  supersedesDocument         Document?           @relation("DocumentSupersedes", fields: [supersedesDocumentId], references: [id], onDelete: SetNull)
+  supersededBy               Document[]          @relation("DocumentSupersedes")
+  covenantProvisions         CovenantProvision[]
+  ledgerEntries              LedgerEntry[]
+  definedTerms               DefinedTerm[]
 
   // Solver-native permissions sourced from this document (additive; see
   // Permission below). A document may have zero of these (legacy-only) or a
@@ -248,7 +279,7 @@ model Document {
   documentNodes                 DocumentNode[]
   definedTermNodes              DefinedTermNode[]
   contractRules                 ContractRule[]
-  amendmentEffects              AmendmentEffect[]
+  amendmentEffects              AmendmentEffect[]          @relation("AmendmentEffectSourceDocument")
   contractCoverageRecords       ContractCoverageRecord[]
   relationshipEdgesAsSource     DocumentRelationshipEdge[] @relation("DocumentRelationshipSource")
   relationshipEdgesAsTarget     DocumentRelationshipEdge[] @relation("DocumentRelationshipTarget")
@@ -257,7 +288,42 @@ model Document {
   // --- Phase C production contract compiler v1 (docs/phase-c-contract-compiler-v1.md) ---
   compilerRunDocuments ContractCompilerRunDocument[]
 
+  // --- Phase 2C debt package graph (docs/phase-2c-debt-package-graph.md) ---
+  amendmentEffectsTargetingMe AmendmentEffect[] @relation("AmendmentEffectTargetDocument")
+
   @@map("documents")
+}
+
+/// Debt-instrument grouping (task §7) - "Company -> Debt Package -> Debt
+/// Instrument -> Documents". A "Debt Package" is deliberately NOT a new
+/// persisted table here: it already exists as a ContractCompilerRun's own
+/// (companyId, packageKey) + its ContractCompilerRunDocument member set
+/// (see that model's own comment) - this phase reuses that identity rather
+/// than inventing a second one. DebtInstrument is the one genuinely new
+/// grouping layer: the underlying credit facility or note series that a
+/// base agreement plus its amendments/joinders/supplements all belong to,
+/// independent of whether any Facility (financial-core capital-structure
+/// row, prisma/schema.prisma's own Facility model) has been populated for
+/// it yet - this groups DOCUMENTS, not financial facts.
+model DebtInstrument {
+  id             String                          @id @default(cuid())
+  companyId      String
+  name           String
+  instrumentType FacilityType?
+  baseDocumentId String?
+  confidence     Float?
+  reviewStatus   ExtractionCandidateReviewStatus @default(PENDING)
+  notes          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company      Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  baseDocument Document?  @relation("DebtInstrumentBaseDocument", fields: [baseDocumentId], references: [id], onDelete: SetNull)
+  documents    Document[] @relation("DebtInstrumentDocuments")
+
+  @@index([companyId])
+  @@map("debt_instruments")
 }
 
 // The generalized formula archetypes the engine knows how to evaluate.
@@ -2079,6 +2145,18 @@ enum DocumentRelationshipType {
   REPLACES_SECTION
   ADDS_SECTION
   DELETES_SECTION
+  // Phase 2C (task §6) - additive, same ALTER TYPE ADD VALUE safety as
+  // every other enum extension in this file. AMENDS_AND_RESTATES/
+  // INTERCREDITOR_RELATIONSHIP/REFERENCES/RELATED_TO/SUPERSEDES_CANDIDATE
+  // from the task's own §6 list are deliberately NOT added here - they
+  // reuse the closest existing real value instead (RESTATES,
+  // INTERCREDITOR_WITH, INCORPORATES_BY_REFERENCE, and SUPERSEDES with
+  // resolved=false/reviewStatus=REVIEW_REQUIRED standing in for the
+  // "_CANDIDATE" distinction, which the resolution-status fields already
+  // express) - only JOINS and CERTIFIES_COMPLIANCE_WITH have no adequate
+  // existing member to reuse.
+  JOINS
+  CERTIFIES_COMPLIANCE_WITH
 
   @@map("document_relationship_type")
 }
@@ -2096,6 +2174,17 @@ enum AmendmentEffectType {
   REMOVE_EXCEPTION
   ADD_COVENANT
   REMOVE_COVENANT
+  // Phase 2C (task §9) - additive, same ALTER TYPE ADD VALUE safety as
+  // every other enum extension in this file. Pre-legal-construction
+  // MODIFICATION CANDIDATES (an amendment statement has been detected and
+  // its target identified, but which of the fine-grained effect types
+  // above actually applies has not yet been classified) need a coarser,
+  // honest "modifies something, kind not yet determined" value rather than
+  // forcing a specific fine-grained guess; UNKNOWN_CHANGE covers a detected
+  // amendment statement whose operation itself (add/delete/modify) could
+  // not be determined from the text either.
+  MODIFY_PROVISION
+  UNKNOWN_CHANGE
 
   @@map("amendment_effect_type")
 }
@@ -2298,19 +2387,42 @@ model DocumentRelationshipEdge {
   id               String                          @id @default(cuid())
   companyId        String
   sourceDocumentId String
-  targetDocumentId String
+  // Phase 2C (task §14): nullable so a relationship whose SOURCE is known
+  // (e.g. "Amendment No. 3 amends something") but whose TARGET cannot be
+  // deterministically or semantically resolved with adequate confidence can
+  // still be persisted honestly as unresolved, rather than either being
+  // dropped entirely (losing the lead) or attached to a guessed document
+  // (task's own explicit "a missing edge is safer than a wrong one").
+  targetDocumentId String?
   relationshipType DocumentRelationshipType
   effectiveDate    DateTime?
   sourceCitation   String?
+  // Phase 2C: the raw, un-resolved description of what the target LOOKED
+  // like in the source text (e.g. "the Credit Agreement dated as of March
+  // 1, 2021") - preserved even when targetDocumentId stays null, so the
+  // lead itself is never silently lost.
+  targetHint       String?
   scopeNote        String?
   confidence       Float?
   reviewStatus     ExtractionCandidateReviewStatus @default(PENDING)
+  // Phase 2C (task §14): RESOLVED/REVIEW_REQUIRED/UNRESOLVED, orthogonal to
+  // reviewStatus (human-review workflow state) exactly the way
+  // ContractReferenceEdge already separates `resolved`/`unresolvedReason`
+  // from its own reviewStatus.
+  resolved         Boolean                         @default(true)
+  unresolvedReason String?
+  // Phase 2C: free-text provenance of HOW this edge was determined
+  // ("DETERMINISTIC_SUPERSEDES_FIELD" | "DETERMINISTIC_AMENDMENT_STATEMENT" |
+  // "DETERMINISTIC_TITLE_DATE_MATCH" | "SEMANTIC_CLASSIFICATION" | "MANUAL") -
+  // never branched on, matches Document.source's own free-text-provenance
+  // convention rather than a new closed enum per resolution strategy.
+  resolutionMethod String?
 
   createdAt DateTime @default(now())
 
-  company        Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  sourceDocument Document @relation("DocumentRelationshipSource", fields: [sourceDocumentId], references: [id], onDelete: Cascade)
-  targetDocument Document @relation("DocumentRelationshipTarget", fields: [targetDocumentId], references: [id], onDelete: Cascade)
+  company        Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sourceDocument Document  @relation("DocumentRelationshipSource", fields: [sourceDocumentId], references: [id], onDelete: Cascade)
+  targetDocument Document? @relation("DocumentRelationshipTarget", fields: [targetDocumentId], references: [id], onDelete: Cascade)
 
   @@index([companyId])
   @@index([sourceDocumentId])
@@ -2547,26 +2659,51 @@ model AmendmentEffect {
   companyId            String
   amendmentDocumentId  String
   effectType           AmendmentEffectType
+  // Phase 2C (task §9): which OTHER document this amendment targets - was
+  // absent before this phase (an amendment could only point at an
+  // already-resolved ContractRule/DefinedTermNode/DocumentNode row in the
+  // SAME company, never explicitly at the cross-document target itself).
+  // Null when the target document cannot be resolved with adequate
+  // confidence (task §14) - targetHint below preserves the raw lead either
+  // way.
+  targetDocumentId     String?
   targetRuleId         String?
   targetTermId         String?
   targetDocumentNodeId String?
+  // Phase 2C: raw section-reference/defined-term-name text as it appeared
+  // in the amendment ("Section 6.01", "the definition of Consolidated
+  // EBITDA") - preserved even when the corresponding *Id FK above cannot be
+  // resolved (the target document's own structural parse may not exist
+  // yet, or the section/term may not yet exist as a persisted row), so a
+  // modification candidate's target is never silently lost to an
+  // unresolved FK the way it would be if only the FK field existed.
+  targetSectionRef     String?
+  targetDefinedTermRef String?
   effectiveDate        DateTime?
   description          String
   oldValueSnapshot     Json?
   newValueSnapshot     Json?
   sourceSectionRef     String?
   reviewStatus         ExtractionCandidateReviewStatus @default(PENDING)
+  // Phase 2C (task §14) - RESOLVED/REVIEW_REQUIRED/UNRESOLVED signal,
+  // orthogonal to reviewStatus, mirroring DocumentRelationshipEdge's own
+  // new resolved/unresolvedReason pair above.
+  resolved             Boolean                         @default(true)
+  unresolvedReason     String?
+  resolutionMethod     String?
 
   createdAt DateTime @default(now())
 
   company            Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  amendmentDocument  Document         @relation(fields: [amendmentDocumentId], references: [id], onDelete: Cascade)
+  amendmentDocument  Document         @relation("AmendmentEffectSourceDocument", fields: [amendmentDocumentId], references: [id], onDelete: Cascade)
+  targetDocument     Document?        @relation("AmendmentEffectTargetDocument", fields: [targetDocumentId], references: [id], onDelete: SetNull)
   targetRule         ContractRule?    @relation(fields: [targetRuleId], references: [id], onDelete: SetNull)
   targetTerm         DefinedTermNode? @relation(fields: [targetTermId], references: [id], onDelete: SetNull)
   targetDocumentNode DocumentNode?    @relation(fields: [targetDocumentNodeId], references: [id], onDelete: SetNull)
 
   @@index([companyId])
   @@index([amendmentDocumentId])
+  @@index([targetDocumentId])
   @@map("amendment_effects")
 }
 

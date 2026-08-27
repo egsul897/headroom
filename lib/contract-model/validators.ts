@@ -138,6 +138,19 @@ export async function validateTenantIsolation(companyIdA: string, companyIdB: st
   const crossRelationships = await prisma.contractRuleRelationship.findMany({ where: { companyId: companyIdA, OR: [{ fromRuleId: { in: [...idsB] } }, { toRuleId: { in: [...idsB] } }] } });
   if (crossRelationships.length > 0) issues.push({ rule: "tenant-isolation", message: `Company ${companyIdA} has ${crossRelationships.length} ContractRuleRelationship row(s) touching Company ${companyIdB}'s rules` });
 
+  // Phase 2C debt package graph (docs/phase-2c-debt-package-graph.md §23) -
+  // same cross-tenant-leak check extended to DocumentRelationshipEdge and
+  // AmendmentEffect's own new targetDocumentId, using Company B's real
+  // document ids the same way idsB above uses Company B's rule ids.
+  const documentsB = await prisma.document.findMany({ where: { companyId: companyIdB }, select: { id: true } });
+  const documentIdsB = new Set(documentsB.map((d) => d.id));
+
+  const crossDocumentRelationships = await prisma.documentRelationshipEdge.findMany({ where: { companyId: companyIdA, OR: [{ sourceDocumentId: { in: [...documentIdsB] } }, { targetDocumentId: { in: [...documentIdsB] } }] } });
+  if (crossDocumentRelationships.length > 0) issues.push({ rule: "tenant-isolation", message: `Company ${companyIdA} has ${crossDocumentRelationships.length} DocumentRelationshipEdge row(s) touching Company ${companyIdB}'s documents` });
+
+  const crossAmendmentEffects = await prisma.amendmentEffect.findMany({ where: { companyId: companyIdA, OR: [{ amendmentDocumentId: { in: [...documentIdsB] } }, { targetDocumentId: { in: [...documentIdsB] } }] } });
+  if (crossAmendmentEffects.length > 0) issues.push({ rule: "tenant-isolation", message: `Company ${companyIdA} has ${crossAmendmentEffects.length} AmendmentEffect row(s) touching Company ${companyIdB}'s documents` });
+
   // A companyId column mismatch on any of these two rule sets would mean
   // findMany's own `where: { companyId }` filter is not doing its job -
   // impossible under normal Prisma usage, but asserted here as a hard

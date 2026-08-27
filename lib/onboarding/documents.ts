@@ -18,6 +18,7 @@ import { persistDocumentChunks } from "../extraction/persist-chunks";
 import { createExtractionRun, runAllPendingStages } from "../extraction/pipeline";
 import type { ContractExtractionProvider } from "../extraction/provider";
 import { prisma } from "../prisma";
+import type { DocumentType } from "@prisma/client";
 
 const CONTENT_TYPE_BY_EXTENSION: Record<string, string> = {
   pdf: "application/pdf",
@@ -37,7 +38,7 @@ export interface UploadDocumentParams {
   filename: string;
   data: Buffer;
   /** Human-declared best guess at the time of upload - STRUCTURE-stage extraction may later propose a correction, which stays unconfirmed (typeConfirmedByUser: false) until a reviewer approves it. */
-  declaredType: "CREDIT_AGREEMENT" | "INDENTURE" | "OTHER" | "AMENDMENT" | "INTERCREDITOR_AGREEMENT" | "COMPLIANCE_CERTIFICATE";
+  declaredType: DocumentType;
   governs?: string;
 }
 
