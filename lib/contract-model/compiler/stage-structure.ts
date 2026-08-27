@@ -154,7 +154,31 @@ export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNo
     bareIntegerMatchesRaw.push(bm);
     if (bm.index === bareIntegerRe.lastIndex) bareIntegerRe.lastIndex++;
   }
-  const bareIntegerMatches = bareIntegerMatchesRaw.filter((m) => !overlapsAny(m, decimalSectionMatches) && !overlapsAny(m, integerSectionMatches));
+  // The bare "N. Title" pattern (no "Section" keyword at all) is the
+  // riskiest of the three SECTION match sources - real prose routinely
+  // contains an ordinary numbered list ("1. Indebtedness under Loan
+  // Documents. 2. Intercompany Indebtedness. ...") that also happens to
+  // sit at a line start. Task §5's own "distinguish document-level
+  // numbered sections from enumerated items within a section": a bare
+  // match is only accepted when it falls OUTSIDE every already-
+  // established (decimal or keyword-"Section") match's own governed
+  // span (that match's start up to the next established match, or
+  // document end) - i.e. it is never accepted as a new top-level
+  // section while it is textually nested inside an already-recognized
+  // one. A document with NO established matches at all (the task's own
+  // "1. Amendment / 2. Conditions / 3. Representations" example, with no
+  // "Section" keyword anywhere) has no governed spans to fall inside, so
+  // every bare match there is accepted.
+  const established = [...decimalSectionMatches, ...integerSectionMatches].sort((a, b) => a.index - b.index);
+  function fallsInsideAnEstablishedSpan(charStart: number): boolean {
+    for (let i = 0; i < established.length; i++) {
+      const spanStart = established[i]!.index;
+      const spanEnd = established[i + 1]?.index ?? Infinity;
+      if (charStart >= spanStart && charStart < spanEnd) return true;
+    }
+    return false;
+  }
+  const bareIntegerMatches = bareIntegerMatchesRaw.filter((m) => !overlapsAny(m, decimalSectionMatches) && !overlapsAny(m, integerSectionMatches) && !fallsInsideAnEstablishedSpan(m.index));
   // Union, not replacement: a decimal-style document's own matches are completely unaffected (FWRG/LSB regression-safe by construction), and a flat-integer-only document (no decimal matches at all) gets its headings from the integer sets instead.
   const sectionMatches = [...decimalSectionMatches, ...integerSectionMatches, ...bareIntegerMatches].sort((a, b) => a.index - b.index);
 
