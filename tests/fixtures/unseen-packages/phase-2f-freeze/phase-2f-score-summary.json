@@ -1,0 +1,125 @@
+{
+  "scoreId": "PHASE_2F_SCORE",
+  "generatedAt": "2026-08-27T13:49:23.116Z",
+  "documentA": {
+    "sectionRecall": {
+      "expected": 16,
+      "found": 15,
+      "recall": 0.9375,
+      "misses": [
+        "7.12"
+      ]
+    },
+    "basketRecall": {
+      "expected": 32,
+      "found": 32,
+      "recall": 1,
+      "misses": []
+    },
+    "familyRecall": {
+      "FINANCIAL_COVENANTS": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "INDEBTEDNESS": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "LIENS": {
+        "expected": 2,
+        "found": 2,
+        "recall": 1
+      },
+      "MERGERS_FUNDAMENTAL_CHANGES": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "ASSET_DISPOSITIONS": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "RESTRICTED_PAYMENTS": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "INVESTMENTS": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "SUBORDINATED_DEBT_PREPAYMENT": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "AFFILIATE_TRANSACTIONS": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "SALE_LEASEBACK": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      },
+      "OTHER": {
+        "expected": 4,
+        "found": 3,
+        "recall": 0.75
+      },
+      "SUBSIDIARY_RESTRICTIONS": {
+        "expected": 1,
+        "found": 1,
+        "recall": 1
+      }
+    },
+    "candidatePrecisionProxy": {
+      "totalCandidates": 163,
+      "plausibleCandidates": 163,
+      "precision": 1
+    }
+  },
+  "documentB": {
+    "groundTruthUnits": 9,
+    "discoveredCandidates": 0,
+    "auditFindings": 116
+  },
+  "documentC": {
+    "groundTruthUnits": 4,
+    "discoveredCandidates": 0,
+    "auditFindings": 0
+  },
+  "documentD": {
+    "groundTruthUnits": 5,
+    "discoveredCandidates": 0,
+    "auditFindings": 0
+  },
+  "dangerousUnflaggedOmissionCandidates": [
+    {
+      "document": "conmed-doc-b-guarantee-collateral-agreement",
+      "groundTruthMaterialUnits": 6,
+      "discoveredCandidates": 0,
+      "auditorFindingsForThisDoc": 116,
+      "note": "Auditor DID surface 116 findings for Document B (its own independent region inventory reached it even though Phase 2B's discovery crashed) - primary system silent, but auditor caught it. Not a fully unflagged omission."
+    },
+    {
+      "document": "conmed-doc-c-second-amendment-2022",
+      "groundTruthMaterialUnits": 4,
+      "discoveredCandidates": 0,
+      "auditorFindingsForThisDoc": 0,
+      "note": "Zero candidates AND zero audit findings - fully unflagged."
+    },
+    {
+      "document": "conmed-doc-d-first-omnibus-amendment-2026",
+      "groundTruthMaterialUnits": 3,
+      "discoveredCandidates": 0,
+      "auditorFindingsForThisDoc": 0,
+      "note": "Zero candidates AND zero audit findings - fully unflagged."
+    }
+  ]
+}
