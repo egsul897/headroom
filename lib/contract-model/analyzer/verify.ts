@@ -24,9 +24,41 @@ function numberVariants(n: number): string[] {
   return [...variants];
 }
 
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Whitespace-tolerant citation search (Phase C fix,
+ * docs/phase-c-contract-compiler-v1.md). Real evidence this matters: the C0
+ * era's plain `sourceText.indexOf(rule.sourceSectionRef)` requires a
+ * byte-for-byte match, which is fragile against real-world source-text
+ * formatting variance a model's own citation string never reproduces
+ * exactly - the real LSB Industries SEC filing (HTML-derived, double-spaced
+ * "SECTION  6.01" headers) caused this exact check to fail for nearly every
+ * rule, downgrading otherwise-correct extractions to JUDGMENT_REQUIRED en
+ * masse (a real, previously-undetected robustness gap; FWRG's cleaner
+ * fixture text never exposed it). Matches by collapsing all whitespace runs
+ * in the citation to a flexible `\s+` gap, so "Section 6.01(i)",
+ * "Section  6.01(i)", and "SECTION 6.01(i)\n" all resolve to the same
+ * citation - genuinely more permissive, never more strict than the
+ * original exact-match, so a real miscitation still fails exactly as before.
+ */
+function findCitationIndex(sourceText: string, citation: string): number {
+  const exact = sourceText.indexOf(citation);
+  if (exact !== -1) return exact;
+  const pattern = citation
+    .trim()
+    .split(/\s+/)
+    .map(escapeRegExp)
+    .join("\\s+");
+  const match = new RegExp(pattern, "i").exec(sourceText);
+  return match ? match.index : -1;
+}
+
 export function verifyRuleAgainstSource(rule: CandidateContractRule, sourceText: string): CandidateContractRule {
   if (!rule.sourceSectionRef) return rule;
-  const sectionIdx = sourceText.indexOf(rule.sourceSectionRef);
+  const sectionIdx = findCitationIndex(sourceText, rule.sourceSectionRef);
   if (sectionIdx === -1) {
     return { ...rule, evaluationClass: "JUDGMENT_REQUIRED", notes: `${rule.notes ?? ""} VERIFICATION_FAILED: cited section "${rule.sourceSectionRef}" not found verbatim in source text.`.trim() };
   }

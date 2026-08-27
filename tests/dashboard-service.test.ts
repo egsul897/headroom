@@ -30,9 +30,15 @@ const COMPANIES = ["coherent", "matthews"] as const;
 
 describe("listCompanies", () => {
   it("returns both seeded companies", async () => {
+    // Checks coherent/matthews are both listed, not that they are the ONLY
+    // two companies in the shared dev database - the real Phase C
+    // fixture companies (tests/fixtures/unseen-packages/**/compiler-runs)
+    // are deliberately persisted, not torn down, so a closed-world
+    // exact-equality assertion here is inherently fragile against any
+    // other legitimately-persisted fixture company, not specific to Phase C.
     const companies = await listCompanies();
-    const ids = companies.map((c) => c.id).sort();
-    expect(ids).toEqual(["coherent", "matthews"]);
+    const ids = companies.map((c) => c.id);
+    expect(ids).toEqual(expect.arrayContaining(["coherent", "matthews"]));
   });
 });
 

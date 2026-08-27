@@ -1,0 +1,2592 @@
+{
+  "providerName": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "promptVersion": "phase-c0.1",
+  "schemaVersion": "phase-c0.1",
+  "ranAt": "2026-08-26T15:55:00.577Z",
+  "telemetry": {
+    "provider": "vercel-ai-gateway",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-c0.1",
+    "schemaVersion": "phase-c0.1",
+    "stage": "combined_analysis",
+    "timestamp": "2026-08-26T15:50:52.352Z",
+    "inputTokens": 45629,
+    "outputTokens": 35490,
+    "cachedInputTokens": null,
+    "cacheCreationInputTokens": null,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "rateLimitFailures": 0,
+    "latencyMs": 248197,
+    "calculatedCostUsd": 0.44615800000000005
+  },
+  "rawResult": {
+    "definedTerms": [
+      {
+        "termName": "Available Amount",
+        "definitionExcerpt": "means, at any time, an amount equal to, without duplication: (a) the sum of ... CNI Growth Amount ... capital contributions in respect of Qualified Capital Stock ... Net Proceeds ... etc."
+      },
+      {
+        "termName": "CNI Growth Amount",
+        "definitionExcerpt": "an amount ... equal to 50% of Adjusted Consolidated Net Income for each Fiscal Quarter (if positive), determined on a cumulative basis from the Closing Date."
+      },
+      {
+        "termName": "Code",
+        "definitionExcerpt": "means the Internal Revenue Code of 1986."
+      },
+      {
+        "termName": "Collateral",
+        "definitionExcerpt": "means any and all property of any Loan Party subject to a Lien under any Collateral Document ... excludes any Excluded Asset."
+      },
+      {
+        "termName": "Collateral and Guarantee Requirement",
+        "definitionExcerpt": "means, at any time, subject to applicable limitations and time periods in Section 5.12/5.15, the requirement that ..."
+      },
+      {
+        "termName": "Consolidated Adjusted EBITDA",
+        "definitionExcerpt": "means, with respect to any Person, the sum of Consolidated Net Income plus interest, taxes, D&A, non-cash charges, Transaction Costs and other addbacks."
+      },
+      {
+        "termName": "Consolidated Adjusted EBITDAR",
+        "definitionExcerpt": "means Consolidated Adjusted EBITDA for such Test Period plus Consolidated Cash Rental Expense for such Test Period."
+      },
+      {
+        "termName": "Consolidated Cash Rental Expense",
+        "definitionExcerpt": "means all rental expense paid or payable in cash during the Test Period under real property leases, excluding Capital Leases and certain common charges."
+      },
+      {
+        "termName": "Restricted Subsidiary",
+        "definitionExcerpt": "means, as to any Person, any subsidiary of such Person that is not an Unrestricted Subsidiary."
+      },
+      {
+        "termName": "Revolver Replacement Facility",
+        "sourceSectionRef": "Section 9.02(c)(ii)",
+        "definitionExcerpt": "has the meaning assigned to such term in Section 9.02(c)(ii)."
+      },
+      {
+        "termName": "Revolving Credit Commitment",
+        "definitionExcerpt": "means any Initial Revolving Credit Commitment and any Additional Revolving Credit Commitment."
+      },
+      {
+        "termName": "Revolving Credit Exposure",
+        "definitionExcerpt": "means, with respect to any Lender, the aggregate Outstanding Amount of such Lender's Initial and Additional Revolving Credit Exposure."
+      },
+      {
+        "termName": "Revolving Facility",
+        "definitionExcerpt": "means the Initial Revolving Facility, any Incremental Revolving Facility, Extended Revolving Credit Commitments/Loans and any Revolver Replacement Facility."
+      },
+      {
+        "termName": "Revolving Lender",
+        "definitionExcerpt": "means any Initial Revolving Lender and any Additional Revolving Lender, including the Swingline Lender unless context otherwise requires."
+      },
+      {
+        "termName": "Total Rent Adjusted Net Leverage Ratio",
+        "definitionExcerpt": "means the ratio of (a) Consolidated Total Debt plus (Consolidated Cash Rental Expense x 8) to (b) Consolidated Adjusted EBITDAR."
+      },
+      {
+        "termName": "Total Revolving Credit Commitment",
+        "definitionExcerpt": "means, at any time, the aggregate amount of the Revolving Credit Commitments, as in effect at such time."
+      },
+      {
+        "termName": "Trademark",
+        "definitionExcerpt": "means trademarks, service marks, trade names, trade dress, logos and related rights, registrations and goodwill."
+      },
+      {
+        "termName": "Transaction Costs",
+        "definitionExcerpt": "means fees, premiums, expenses and other transaction-related costs (definition truncated in excerpt)."
+      },
+      {
+        "termName": "Fixed Charge Coverage Ratio",
+        "definitionExcerpt": "means the ratio of (a) Consolidated Adjusted EBITDAR minus Maintenance Capital Expenditures minus cash taxes minus certain cash Restricted Payments to (b) Consolidated Fixed Charges."
+      },
+      {
+        "termName": "Fixed Incremental Amount",
+        "definitionExcerpt": "means the greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA as of the last day of the most recently ended Test Period."
+      },
+      {
+        "termName": "Foreign Lender",
+        "definitionExcerpt": "means any Lender or Issuing Bank that is not a US Person."
+      },
+      {
+        "termName": "Foreign Subsidiary",
+        "definitionExcerpt": "means any subsidiary of the Borrower that is not a Domestic Subsidiary."
+      },
+      {
+        "termName": "FSHCO",
+        "definitionExcerpt": "means a Domestic Subsidiary with no material assets other than Capital Stock/Indebtedness of Foreign Subsidiaries (or other FSHCOs)."
+      },
+      {
+        "termName": "Restricted Debt",
+        "definitionExcerpt": "means Indebtedness described in clause (a) of the definition of Indebtedness that is subordinated, Junior Lien Debt, or unsecured, and exceeds the Threshold Amount."
+      },
+      {
+        "termName": "Restricted Debt Payment",
+        "sourceSectionRef": "Section 6.04(b)",
+        "definitionExcerpt": "has the meaning set forth in Section 6.04(b)."
+      },
+      {
+        "termName": "Restricted Payment",
+        "definitionExcerpt": "means (a) dividends/distributions on Capital Stock (other than in Qualified Capital Stock), (b) redemptions/repurchases of Capital Stock, and (c) payments to retire warrants/options."
+      },
+      {
+        "termName": "Refinancing Indebtedness",
+        "sourceSectionRef": "Section 6.01(p)",
+        "definitionExcerpt": "Indebtedness refinancing, refunding or replacing Indebtedness permitted under specified clauses of Section 6.01, and subsequent refinancings thereof."
+      },
+      {
+        "termName": "Ratio Debt",
+        "sourceSectionRef": "Section 6.01(w)",
+        "definitionExcerpt": "Indebtedness incurred pursuant to Section 6.01(w) subject to specified ratio tests and other conditions."
+      },
+      {
+        "termName": "Burdensome Agreement",
+        "sourceSectionRef": "Section 6.05",
+        "definitionExcerpt": "any agreement restricting the ability of any Loan Party to create, permit or grant a Lien on its properties to secure the Secured Obligations."
+      },
+      {
+        "termName": "Treasury Capital Stock",
+        "sourceSectionRef": "Section 6.04(a)(viii)",
+        "definitionExcerpt": "Capital Stock of the Borrower and/or any Restricted Subsidiary redeemed, repurchased, retired or acquired in exchange for Refunding Capital Stock."
+      },
+      {
+        "termName": "Refunding Capital Stock",
+        "sourceSectionRef": "Section 6.04(a)(viii)",
+        "definitionExcerpt": "Qualified Capital Stock proceeds used to redeem Treasury Capital Stock."
+      },
+      {
+        "termName": "Restricted Debt Payments",
+        "sourceSectionRef": "Section 6.04(b)",
+        "definitionExcerpt": "collectively, voluntary prepayments, repurchases, redemptions, retirements, acquisitions or cancellations of Restricted Debt more than one year prior to scheduled maturity."
+      },
+      {
+        "termName": "Successor Borrower",
+        "sourceSectionRef": "Section 6.07(a)",
+        "definitionExcerpt": "the Person formed by or surviving a merger, consolidation, amalgamation or Delaware LLC Division relating to the Borrower, if not the Borrower."
+      },
+      {
+        "termName": "Successor Holdings",
+        "sourceSectionRef": "Section 6.09(b)",
+        "definitionExcerpt": "the surviving or successor Person to Holdings following a permitted consolidation, merger, transfer of assets or dissolution."
+      },
+      {
+        "termName": "Cure Right",
+        "sourceSectionRef": "Section 6.10(c)",
+        "definitionExcerpt": "the Borrower's right to cure a financial covenant default by issuing Qualified Capital Stock or receiving Cash equity contributions, subject to specified limitations."
+      },
+      {
+        "termName": "Cure Amount",
+        "sourceSectionRef": "Section 6.10(c)",
+        "definitionExcerpt": "the amount of Cash proceeds from Qualified Capital Stock or other equity issuance used to cure a financial covenant default."
+      },
+      {
+        "termName": "Covenant Acquisition Increase Period",
+        "sourceSectionRef": "Section 6.10(a)",
+        "definitionExcerpt": "the Fiscal Quarter in which a Material Acquisition is consummated and the three full Fiscal Quarters thereafter, during which the leverage ratio is increased."
+      },
+      {
+        "termName": "Covenant Acquisition Increase",
+        "sourceSectionRef": "Section 6.10(a)",
+        "definitionExcerpt": "a 0.50:1.00 increase to the applicable Total Rent Adjusted Net Leverage Ratio threshold during a Covenant Acquisition Increase Period."
+      }
+    ],
+    "rules": [
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Subject to enumerated exceptions (a) through (kk) of Section 6.01, including intercompany debt, existing debt, general dollar/EBITDA baskets, Ratio Debt, and Refinancing Indebtedness.",
+            "sourceSectionRef": "Section 6.01"
+          }
+        ],
+        "sourceSectionRef": "Section 6.01",
+        "definedTermRefs": [
+          "Indebtedness",
+          "Restricted Subsidiary"
+        ],
+        "notes": "Base negative covenant prohibiting incurrence, assumption or existence of Indebtedness except as permitted."
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "GUARANTEE_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(g)(i)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "placeholder"
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "GUARANTEE_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 2500000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(g)(i)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Basket permits guaranties of supplier/customer/franchisee/licensee obligations in ordinary course up to greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Restricted Subsidiaries that are not Loan Parties"
+        ],
+        "entityScopeExcluded": [
+          "Loan Parties"
+        ],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(j)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA",
+          "Restricted Subsidiary"
+        ],
+        "notes": "Basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA for Indebtedness of non-Loan-Party Restricted Subsidiaries."
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(m)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Capital Leases and purchase money Indebtedness basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(u)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "General basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_SECURED_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 4.5,
+        "thresholdUnit": "x EBITDA (First Lien Rent Adjusted Net Leverage Ratio)",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(w)(i)(z)(A)",
+        "definedTermRefs": [
+          "First Lien Rent Adjusted Net Leverage Ratio"
+        ]
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_SECURED_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 4.5,
+        "thresholdUnit": "x EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "Pro Forma First Lien Rent Adjusted Net Leverage Ratio does not exceed 4.50:1.00 for First Lien Debt incurred as unlimited Ratio Debt."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(w)(i)(z)(A)",
+        "definedTermRefs": [
+          "Ratio Debt",
+          "First Lien Rent Adjusted Net Leverage Ratio"
+        ]
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_SECURED_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 5,
+        "thresholdUnit": "x EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "Pro Forma Secured Rent Adjusted Net Leverage Ratio does not exceed 5.00:1.00 for Junior Lien Debt incurred as unlimited Ratio Debt."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(w)(i)(z)(B)",
+        "definedTermRefs": [
+          "Ratio Debt",
+          "Secured Rent Adjusted Net Leverage Ratio"
+        ]
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 5.25,
+        "thresholdUnit": "x EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "Pro Forma Total Rent Adjusted Net Leverage Ratio does not exceed 5.25:1.00 for unsecured or non-Collateral-secured Ratio Debt."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(w)(i)(z)(C)",
+        "definedTermRefs": [
+          "Ratio Debt",
+          "Total Rent Adjusted Net Leverage Ratio"
+        ]
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_RESTRICTION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Restricted Subsidiaries that are not Loan Parties"
+        ],
+        "entityScopeExcluded": [
+          "Loan Parties"
+        ],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(w)(ii)",
+        "definedTermRefs": [
+          "Ratio Debt",
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Sub-cap on Ratio Debt incurred by non-Loan-Party Restricted Subsidiaries."
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 6000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(hh)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Commercial Letters of Credit basket = greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "ACQUISITIONS",
+        "ruleType": "CONDITIONAL_ACTIVATION",
+        "evaluationClass": "EVENT_DRIVEN",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [
+          {
+            "type": "ACQUISITION_CONTEXT",
+            "description": "Indebtedness existed prior to a Person becoming a Restricted Subsidiary or to acquisition of assets and was not created in contemplation of the acquisition."
+          },
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "After giving Pro Forma effect, the Borrower must be in compliance with the Total Rent Adjusted Net Leverage Ratio covenant in Section 6.10(a)."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(n)",
+        "definedTermRefs": [
+          "Restricted Subsidiary",
+          "Total Rent Adjusted Net Leverage Ratio"
+        ],
+        "notes": "Permits assumption of acquired-target Indebtedness subject to pro forma compliance with financial covenant."
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "EXCEPTION",
+        "evaluationClass": "MONITORABLE",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 5000000,
+        "thresholdUnit": "USD",
+        "operator": ">",
+        "conditions": [
+          {
+            "type": "AMOUNT_THRESHOLD",
+            "description": "Existing Indebtedness/commitments exceeding $5,000,000 must be scheduled on Schedule 6.01."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(i)",
+        "definedTermRefs": [],
+        "notes": "Grandfathering of Closing Date Indebtedness/commitments."
+      },
+      {
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "RECLASSIFICATION_RULE",
+        "evaluationClass": "JUDGMENT_REQUIRED",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [
+          {
+            "type": "REFINANCING_CONTEXT",
+            "description": "Indebtedness must refinance, refund or replace debt permitted under specified clauses, subject to principal amount, maturity, WAL, and 'not materially more favorable to lenders' tests requiring good-faith determination by the Borrower."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.01(p)",
+        "definedTermRefs": [
+          "Refinancing Indebtedness",
+          "Replacement Debt",
+          "Weighted Average Life to Maturity"
+        ],
+        "notes": "Complex refinancing basket with multiple qualitative and quantitative conditions; several determinations are made in the Borrower's good faith judgment."
+      },
+      {
+        "covenantFamily": "LIENS",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "CREATE_LIEN",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Subject to enumerated Permitted Liens (a) through (nn) of Section 6.02.",
+            "sourceSectionRef": "Section 6.02"
+          }
+        ],
+        "sourceSectionRef": "Section 6.02",
+        "definedTermRefs": [
+          "Lien"
+        ],
+        "notes": "Base negative covenant prohibiting Liens except Permitted Liens."
+      },
+      {
+        "covenantFamily": "LIENS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "CREATE_LIEN",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 30000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.02(u)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "General Lien basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA, subject to Intercreditor Agreement on Collateral if requested."
+      },
+      {
+        "covenantFamily": "LIENS",
+        "ruleType": "RECLASSIFICATION_RULE",
+        "evaluationClass": "JUDGMENT_REQUIRED",
+        "action": "CREATE_LIEN",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [
+          {
+            "type": "REFINANCING_CONTEXT",
+            "description": "Lien must secure Refinancing Indebtedness permitted under Section 6.01(p) and satisfy no-extension, intercreditor and priority conditions."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.02(k)",
+        "definedTermRefs": [
+          "Refinancing Indebtedness"
+        ]
+      },
+      {
+        "covenantFamily": "LIENS",
+        "ruleType": "CONSENT_REQUIREMENT",
+        "evaluationClass": "EVENT_DRIVEN",
+        "action": "GRANT_COLLATERAL",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [
+          {
+            "type": "OTHER_RULE_SATISFIED",
+            "description": "Liens securing Ratio Debt or Incremental Equivalent Debt on the Collateral must be subject to an Intercreditor Agreement unless not requested by lenders (for Section 6.01(w) debt)."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.02(s)",
+        "definedTermRefs": [
+          "Ratio Debt",
+          "Intercreditor Agreement"
+        ]
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "PAY_DIVIDEND",
+        "entityScope": [
+          "Borrower"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Subject to enumerated exceptions (i) through (xvii) of Section 6.04(a).",
+            "sourceSectionRef": "Section 6.04(a)"
+          }
+        ],
+        "sourceSectionRef": "Section 6.04(a)",
+        "definedTermRefs": [
+          "Restricted Payment"
+        ],
+        "notes": "Base prohibition on Restricted Payments."
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "REPURCHASE_EQUITY",
+        "entityScope": [
+          "Borrower"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 12000000,
+        "thresholdUnit": "USD per Fiscal Year",
+        "formulaRef": "CUMULATIVE_AMOUNT",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.04(a)(ii)(A)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Employee/management equity repurchase basket = greater of $12,000,000 and 20% of Consolidated Adjusted EBITDA per Fiscal Year, with one-year carryforward, carryforward used first."
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "MONITORABLE",
+        "action": "PAY_DIVIDEND",
+        "entityScope": [
+          "Borrower"
+        ],
+        "entityScopeExcluded": [],
+        "formulaRef": "BUILDER_BASKET",
+        "conditions": [
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "CNI Growth Amount component of Available Amount only accrues if Total Rent Adjusted Net Leverage Ratio does not exceed 4.50:1.00 on a Pro Forma Basis."
+          },
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default under Section 7.01(a),(f) or (g) may exist for Restricted Payments relying on the CNI Growth Amount component."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.04(a)(iii)(A)",
+        "definedTermRefs": [
+          "Available Amount",
+          "Total Rent Adjusted Net Leverage Ratio"
+        ],
+        "notes": "Restricted Payments funded from the cumulative Available Amount 'builder basket'."
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "PAY_DIVIDEND",
+        "entityScope": [
+          "Borrower"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default may exist at the time the Restricted Payment is made."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.04(a)(x)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "General Restricted Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "PAY_DIVIDEND",
+        "entityScope": [
+          "Borrower"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 3.5,
+        "thresholdUnit": "x EBITDAR",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default may exist."
+          },
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "Pro Forma Total Rent Adjusted Net Leverage Ratio must not exceed 3.50:1.00."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.04(a)(xi)",
+        "definedTermRefs": [
+          "Total Rent Adjusted Net Leverage Ratio"
+        ],
+        "notes": "Unlimited Restricted Payments permitted if leverage ratio test satisfied and no default."
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "PAY_JUNIOR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Subject to enumerated exceptions (i) through (viii) of Section 6.04(b).",
+            "sourceSectionRef": "Section 6.04(b)"
+          }
+        ],
+        "sourceSectionRef": "Section 6.04(b)",
+        "definedTermRefs": [
+          "Restricted Debt",
+          "Restricted Debt Payments"
+        ],
+        "notes": "Base prohibition on voluntary prepayments/repurchases of Restricted Debt more than one year prior to scheduled maturity."
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "PAY_JUNIOR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default may exist."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.04(b)(iv)",
+        "definedTermRefs": [
+          "Restricted Debt Payments",
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Restricted Debt Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, plus (at Borrower's election) amount available under Section 6.04(a)(x), with a corresponding reduction to that basket."
+      },
+      {
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "PAY_JUNIOR_DEBT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 3.75,
+        "thresholdUnit": "x EBITDAR",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default may exist."
+          },
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "Pro Forma Total Rent Adjusted Net Leverage Ratio must not exceed 3.75:1.00."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.04(b)(vii)",
+        "definedTermRefs": [
+          "Total Rent Adjusted Net Leverage Ratio"
+        ],
+        "notes": "Unlimited Restricted Debt Payments permitted subject to ratio test and no default."
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Subject to enumerated exceptions (a) through (nn) of Section 6.06.",
+            "sourceSectionRef": "Section 6.06"
+          }
+        ],
+        "sourceSectionRef": "Section 6.06",
+        "definedTermRefs": [
+          "Investment"
+        ],
+        "notes": "Base prohibition on Investments."
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.06(d)(i)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Joint venture Investment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default under Section 7.01(a), (f) or (g) may exist."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.06(d)(ii)",
+        "definedTermRefs": [
+          "Unrestricted Subsidiary",
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Unrestricted Subsidiary Investment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default under Section 7.01(a), (f) or (g) may exist."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.06(q)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA",
+          "Restricted Payment",
+          "Restricted Debt Payment"
+        ],
+        "notes": "General Investment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, plus (at election) amounts available under Section 6.04(a)(x) and Section 6.04(b)(iv)(A), each reducing the source basket; plus amounts for Persons that later become Restricted Subsidiaries."
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 4,
+        "thresholdUnit": "x EBITDAR",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default under Section 7.01(a), (f) or (g) may exist."
+          },
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "Pro Forma Total Rent Adjusted Net Leverage Ratio must not exceed 4.00:1.00."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.06(bb)",
+        "definedTermRefs": [
+          "Total Rent Adjusted Net Leverage Ratio"
+        ],
+        "notes": "Unlimited ratio-based Investment basket."
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.06(u)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Investments in Similar Businesses basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "INVESTMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "MAKE_INVESTMENT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 5000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.06(ff)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Franchisee Investment basket = greater of $5,000,000 and 9% of Consolidated Adjusted EBITDA, with one-year carryforward used first."
+      },
+      {
+        "covenantFamily": "DISPOSITIONS",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SELL_ASSET",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 6000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": ">",
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Subject to enumerated exceptions (a) through (kk) of Section 6.07.",
+            "sourceSectionRef": "Section 6.07"
+          }
+        ],
+        "sourceSectionRef": "Section 6.07",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA",
+          "Disposition"
+        ],
+        "notes": "Base prohibition applies to mergers/dissolutions and voluntary Dispositions outside ordinary course exceeding the greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA in a transaction or series of related transactions."
+      },
+      {
+        "covenantFamily": "FUNDAMENTAL_CHANGES",
+        "ruleType": "CONDITIONAL_ACTIVATION",
+        "evaluationClass": "JUDGMENT_REQUIRED",
+        "action": "MERGE",
+        "entityScope": [
+          "Borrower",
+          "Subsidiary Guarantors",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [
+          {
+            "type": "ENTITY_TYPE",
+            "description": "Successor Borrower must be an entity organized under US, state, or DC law and expressly assume the Obligations; Guarantors must reaffirm Loan Guaranty."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.07(a)",
+        "definedTermRefs": [
+          "Successor Borrower"
+        ],
+        "notes": "Permits mergers/consolidations/amalgamations/Delaware LLC Divisions involving the Borrower or Subsidiary Guarantors subject to successor entity conditions."
+      },
+      {
+        "covenantFamily": "DISPOSITIONS",
+        "ruleType": "QUANTITATIVE_RESTRICTION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SELL_ASSET",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 75,
+        "thresholdUnit": "% of consideration in Cash or Cash Equivalents",
+        "operator": ">=",
+        "conditions": [
+          {
+            "type": "AMOUNT_THRESHOLD",
+            "description": "Applies to Dispositions (other than Permitted Asset Swaps) with purchase price exceeding the greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA."
+          }
+        ],
+        "exceptions": [
+          {
+            "description": "Designated Non-Cash Consideration up to greater of $12,000,000 and 20% of Consolidated Adjusted EBITDA, assumed liabilities, trade-in value, and convertible Securities within 180 days are deemed Cash."
+          }
+        ],
+        "sourceSectionRef": "Section 6.07(h)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA",
+          "Designated Non-Cash Consideration"
+        ]
+      },
+      {
+        "covenantFamily": "DISPOSITIONS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SELL_ASSET",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD per Fiscal Year",
+        "formulaRef": "SHARED_CAP",
+        "operator": "<=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.07(h)(iii)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA"
+        ],
+        "notes": "Combined annual Disposition basket under 6.07(h) and 6.07(aa) = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA per Fiscal Year, with one-year carryforward used first."
+      },
+      {
+        "covenantFamily": "SALE_LEASEBACKS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SELL_ASSET",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "Borrower must be in compliance with Section 6.10(a) and Section 6.10(b) on a Pro Forma Basis."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.07(ee)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA",
+          "Total Rent Adjusted Net Leverage Ratio",
+          "Fixed Charge Coverage Ratio"
+        ],
+        "notes": "Sale and Lease-Back Transactions basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, conditioned on pro forma financial covenant compliance."
+      },
+      {
+        "covenantFamily": "DISPOSITIONS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SELL_ASSET",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 21000000,
+        "thresholdUnit": "USD",
+        "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "NO_DEFAULT",
+            "description": "No Event of Default may exist for franchise Dispositions of Loan Party-owned restaurants."
+          },
+          {
+            "type": "RATIO_SATISFIED",
+            "description": "Borrower must be in compliance with Section 6.10(a) and Section 6.10(b) on a Pro Forma Basis."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.07(kk)",
+        "definedTermRefs": [
+          "Consolidated Adjusted EBITDA",
+          "Total Rent Adjusted Net Leverage Ratio",
+          "Fixed Charge Coverage Ratio"
+        ],
+        "notes": "Franchise granting/Disposition basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
+      },
+      {
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "JUDGMENT_REQUIRED",
+        "action": "OTHER",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Subject to enumerated exceptions (a) through (q) of Section 6.05, including debt-specific restrictions, ordinary course leases/licenses, Closing Date agreements, and 'not materially less favorable' refinancing carve-out.",
+            "sourceSectionRef": "Section 6.05"
+          }
+        ],
+        "sourceSectionRef": "Section 6.05",
+        "definedTermRefs": [
+          "Burdensome Agreement"
+        ],
+        "notes": "Prohibits agreements restricting a Loan Party's ability to grant Liens to secure the Secured Obligations, subject to numerous good-faith-determined exceptions."
+      },
+      {
+        "covenantFamily": "AMENDMENT_WAIVER_CONSENT",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "JUDGMENT_REQUIRED",
+        "action": "AMEND_DOCUMENT",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Does not prohibit otherwise-permitted Refinancing Indebtedness or replacement/refinancing/amendment of Restricted Debt permitted to be incurred hereunder.",
+            "sourceSectionRef": "Section 6.08"
+          }
+        ],
+        "sourceSectionRef": "Section 6.08",
+        "definedTermRefs": [
+          "Restricted Debt"
+        ],
+        "notes": "Prohibits amending subordination terms of Restricted Debt documentation if materially adverse to Lenders, as determined in the Borrower's good faith judgment."
+      },
+      {
+        "covenantFamily": "ENTITY_SCOPE_RESTRICTIONS",
+        "ruleType": "PROHIBITION",
+        "evaluationClass": "EXECUTABLE",
+        "action": "CREATE_LIEN",
+        "entityScope": [
+          "Holdings"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [],
+        "exceptions": [
+          {
+            "description": "Liens under Collateral Documents, Transaction-related Liens, pari passu/junior Guarantee Liens permitted under Section 6.02, and other Section 6.02 Permitted Liens (excluding borrowed-money debt).",
+            "sourceSectionRef": "Section 6.09(a)"
+          }
+        ],
+        "sourceSectionRef": "Section 6.09(a)",
+        "definedTermRefs": [
+          "Collateral Documents"
+        ],
+        "notes": "Holdings-specific negative covenant restricting Liens on Holdings' assets."
+      },
+      {
+        "covenantFamily": "ENTITY_SCOPE_RESTRICTIONS",
+        "ruleType": "CONDITIONAL_ACTIVATION",
+        "evaluationClass": "JUDGMENT_REQUIRED",
+        "action": "MERGE",
+        "entityScope": [
+          "Holdings"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [
+          {
+            "type": "ENTITY_TYPE",
+            "description": "Successor Holdings must be organized under US, state, or DC law and expressly assume Holdings' Obligations."
+          },
+          {
+            "type": "OTHER_RULE_SATISFIED",
+            "description": "Certain asset transfers require no Change of Control results therefrom."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.09(b)",
+        "definedTermRefs": [
+          "Successor Holdings",
+          "Change of Control"
+        ],
+        "notes": "Holdings-specific restriction on consolidation, merger, asset transfer, or dissolution."
+      },
+      {
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SATISFY_RATIO",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 5,
+        "thresholdUnit": "x EBITDAR (current tier; stepped down from 5.50 to 5.25 to 5.00)",
+        "operator": "<=",
+        "conditions": [
+          {
+            "type": "MATERIAL_ACQUISITION",
+            "description": "Applicable ratio threshold increases by 0.50:1.00 for the Fiscal Quarter of a Material Acquisition and the next three Fiscal Quarters (Covenant Acquisition Increase Period), with at least one intervening Fiscal Quarter without an increase between periods."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.10(a)",
+        "definedTermRefs": [
+          "Total Rent Adjusted Net Leverage Ratio",
+          "Covenant Acquisition Increase Period",
+          "Covenant Acquisition Increase",
+          "Material Acquisition"
+        ],
+        "notes": "Maximum Total Rent Adjusted Net Leverage Ratio: 5.50x (through Q4 2022), 5.25x (through Q4 2023), 5.00x (Q1 2024 onward), each subject to Covenant Acquisition Increase."
+      },
+      {
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "RATIO_TEST",
+        "evaluationClass": "EXECUTABLE",
+        "action": "SATISFY_RATIO",
+        "entityScope": [
+          "Borrower",
+          "Restricted Subsidiaries"
+        ],
+        "entityScopeExcluded": [],
+        "thresholdValue": 1.25,
+        "thresholdUnit": "x",
+        "operator": ">=",
+        "conditions": [],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.10(b)",
+        "definedTermRefs": [
+          "Fixed Charge Coverage Ratio"
+        ],
+        "notes": "Minimum Fixed Charge Coverage Ratio of 1.25:1.00, tested each Test Period commencing with quarter ending March 27, 2022."
+      },
+      {
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "CONDITIONAL_ACTIVATION",
+        "evaluationClass": "EVENT_DRIVEN",
+        "action": "OTHER",
+        "entityScope": [
+          "Borrower"
+        ],
+        "entityScopeExcluded": [],
+        "conditions": [
+          {
+            "type": "TIME_PERIOD",
+            "description": "Cure must be exercised by the date 15 Business Days after financial statements for the relevant Fiscal Quarter are required to be delivered."
+          },
+          {
+            "type": "AMOUNT_THRESHOLD",
+            "description": "Cure Amount limited to the amount required to achieve compliance; no more than 5 exercises during the term; at least 2 of every 4 consecutive Fiscal Quarters without a cure exercise."
+          }
+        ],
+        "exceptions": [],
+        "sourceSectionRef": "Section 6.10(c)",
+        "definedTermRefs": [
+          "Cure Right",
+          "Cure Amount",
+          "Qualified Capital Stock"
+        ],
+        "notes": "Equity cure mechanism recalculating Consolidated Adjusted EBITDA pro forma for financial covenant compliance purposes only, subject to numerous frequency and mechanical limitations."
+      }
+    ],
+    "references": [
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "the related Investment is permitted under Section 6.06",
+        "sourceSectionRef": "Section 6.01(b)",
+        "targetSectionRef": "Section 6.06"
+      },
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "if such additional Indebtedness is secured, the Lien securing such Indebtedness satisfies the applicable requirements of Section 6.02",
+        "sourceSectionRef": "Section 6.01(p)",
+        "targetSectionRef": "Section 6.02"
+      },
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "after giving effect to such Indebtedness on a Pro Forma Basis, the Borrower is in compliance with Section 6.10(a)",
+        "sourceSectionRef": "Section 6.01(n)",
+        "targetSectionRef": "Section 6.10(a)"
+      },
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "any amount utilized under this clause (B) to make a Restricted Debt Payment shall result in a reduction in the amount available under Section 6.04(a)(x)",
+        "sourceSectionRef": "Section 6.04(b)(iv)",
+        "targetSectionRef": "Section 6.04(a)(x)"
+      },
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "any amount utilized under this clause (B) to make an Investment shall result in a reduction in the amount available under Section 6.04(a)(x)",
+        "sourceSectionRef": "Section 6.06(q)(i)",
+        "targetSectionRef": "Section 6.04(a)(x)"
+      },
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "any amount utilized under this clause (C) to make an Investment shall result in a reduction in the amount available under Section 6.04(b)(iv)(A)",
+        "sourceSectionRef": "Section 6.06(q)(i)",
+        "targetSectionRef": "Section 6.04(b)(iv)(A)"
+      },
+      {
+        "referenceType": "DEFINED_TERM_REFERENCE",
+        "referenceText": "the portion, if any, of the Available Amount on such date that the Borrower elects to apply",
+        "sourceSectionRef": "Section 6.04(a)(iii)(A)",
+        "targetTermName": "Available Amount"
+      },
+      {
+        "referenceType": "DEFINED_TERM_REFERENCE",
+        "referenceText": "the Total Rent Adjusted Net Leverage Ratio, calculated on a Pro Forma Basis, would not exceed 3.50:1.00",
+        "sourceSectionRef": "Section 6.04(a)(xi)",
+        "targetTermName": "Total Rent Adjusted Net Leverage Ratio"
+      },
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "the Borrower shall be in compliance with Section 6.10(a) and Section 6.10(b) on a Pro Forma Basis",
+        "sourceSectionRef": "Section 6.07(ee)",
+        "targetSectionRef": "Section 6.10(a)"
+      },
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "any Investment made pursuant to Section 6.06(r)(i) (up to the original amount of the Investment permitted in reliance on such clause)",
+        "sourceSectionRef": "Available Amount definition, clause (v)",
+        "targetSectionRef": "Section 6.06(r)(i)"
+      },
+      {
+        "referenceType": "CROSS_SECTION_REFERENCE",
+        "referenceText": "Investments in Similar Businesses ... Section 6.06(u)",
+        "sourceSectionRef": "Section 6.06(u)",
+        "targetSectionRef": "Section 6.06"
+      }
+    ],
+    "relationships": [
+      {
+        "relationshipType": "REDUCES_CAPACITY",
+        "fromRuleRef": "Section 6.04(a)(x)",
+        "toRuleRef": "Section 6.04(b)(iv)",
+        "notes": "Electing to use the general Restricted Payment basket amount for a Restricted Debt Payment reduces the amount available under Section 6.04(a)(x)."
+      },
+      {
+        "relationshipType": "REDUCES_CAPACITY",
+        "fromRuleRef": "Section 6.04(a)(x)",
+        "toRuleRef": "Section 6.06(q)",
+        "notes": "Electing to apply the Section 6.04(a)(x) Restricted Payment basket to an Investment reduces the amount available under Section 6.04(a)(x)."
+      },
+      {
+        "relationshipType": "REDUCES_CAPACITY",
+        "fromRuleRef": "Section 6.04(b)(iv)",
+        "toRuleRef": "Section 6.06(q)",
+        "notes": "Electing to apply the Section 6.04(b)(iv)(A) Restricted Debt Payment basket to an Investment reduces the amount available under Section 6.04(b)(iv)(A)."
+      },
+      {
+        "relationshipType": "FEEDS",
+        "fromRuleRef": "Available Amount",
+        "toRuleRef": "Section 6.04(a)(iii)",
+        "notes": "The Available Amount builder-basket formula feeds capacity into the Section 6.04(a)(iii) Restricted Payment basket (and similarly into Section 6.04(b)(vi) and Section 6.06(r))."
+      },
+      {
+        "relationshipType": "SHARED_CAP",
+        "fromRuleRef": "Section 6.07(h)",
+        "toRuleRef": "Section 6.07(aa)",
+        "notes": "Dispositions under Section 6.07(h) and Section 6.07(aa) draw on the same combined annual dollar/EBITDA cap."
+      },
+      {
+        "relationshipType": "CONDITIONS",
+        "fromRuleRef": "Section 6.10(a)",
+        "toRuleRef": "Section 6.01(n)",
+        "notes": "Incurrence/assumption of acquired-target Indebtedness under Section 6.01(n) is conditioned on pro forma compliance with the Total Rent Adjusted Net Leverage Ratio covenant in Section 6.10(a)."
+      }
+    ]
+  },
+  "evaluationBefore": {
+    "total": 18,
+    "matchedCorrect": 10,
+    "matchedIncorrectFlagged": 1,
+    "matchedIncorrectUnflagged": 6,
+    "missing": 1,
+    "dangerousUnflaggedErrorRate": 0.3333333333333333,
+    "dangerousFlaggedErrorRate": 0.05555555555555555,
+    "missingRate": 0.05555555555555555,
+    "precisionRecallF1ByFamily": {
+      "INDEBTEDNESS": {
+        "truePositives": 3,
+        "total": 3,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "LIENS": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "RESTRICTED_PAYMENTS": {
+        "truePositives": 2,
+        "total": 4,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "INVESTMENTS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "FUNDAMENTAL_CHANGES": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "FINANCIAL_COVENANTS": {
+        "truePositives": 0,
+        "total": 3,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "DEFINITIONS_CALCULATION_RULES": {
+        "truePositives": 3,
+        "total": 3,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "ENTITY_SCOPE_RESTRICTIONS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "AMENDMENT_WAIVER_CONSENT": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      }
+    },
+    "results": [
+      {
+        "provisionId": "fwrg-6.01-g-i",
+        "sourceSectionRef": "6.01(g)(i)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "GUARANTEE_DEBT",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 2500000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.01(g)(i)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "Basket permits guaranties of supplier/customer/franchisee/licensee obligations in ordinary course up to greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.01-j",
+        "sourceSectionRef": "6.01(j)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "INCUR_DEBT",
+          "entityScope": [
+            "Restricted Subsidiaries that are not Loan Parties"
+          ],
+          "entityScopeExcluded": [
+            "Loan Parties"
+          ],
+          "thresholdValue": 30000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.01(j)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA",
+            "Restricted Subsidiary"
+          ],
+          "notes": "Basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA for Indebtedness of non-Loan-Party Restricted Subsidiaries."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.01-m",
+        "sourceSectionRef": "6.01(m)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "INCUR_DEBT",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 30000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.01(m)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "Capital Leases and purchase money Indebtedness basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.02-a",
+        "sourceSectionRef": "6.02(a)",
+        "family": "LIENS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "LIENS",
+          "ruleType": "PROHIBITION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "CREATE_LIEN",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Subject to enumerated Permitted Liens (a) through (nn) of Section 6.02.",
+              "sourceSectionRef": "Section 6.02"
+            }
+          ],
+          "sourceSectionRef": "Section 6.02",
+          "definedTermRefs": [
+            "Lien"
+          ],
+          "notes": "Base negative covenant prohibiting Liens except Permitted Liens."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.04-a-iii",
+        "sourceSectionRef": "6.04(a)(iii)(A)-(B)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "PROHIBITION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "PAY_DIVIDEND",
+          "entityScope": [
+            "Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Subject to enumerated exceptions (i) through (xvii) of Section 6.04(a).",
+              "sourceSectionRef": "Section 6.04(a)"
+            }
+          ],
+          "sourceSectionRef": "Section 6.04(a)",
+          "definedTermRefs": [
+            "Restricted Payment"
+          ],
+          "notes": "Base prohibition on Restricted Payments."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected BUILDER_BASKET, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-a-x",
+        "sourceSectionRef": "6.04(a)(x)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "PAY_DIVIDEND",
+          "entityScope": [
+            "Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [
+            {
+              "type": "NO_DEFAULT",
+              "description": "No Event of Default may exist at the time the Restricted Payment is made."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.04(a)(x)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "General Restricted Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.04-a-xi",
+        "sourceSectionRef": "6.04(a)(xi)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "EXECUTABLE",
+          "action": "PAY_DIVIDEND",
+          "entityScope": [
+            "Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 3.5,
+          "thresholdUnit": "x EBITDAR",
+          "operator": "<=",
+          "conditions": [
+            {
+              "type": "NO_DEFAULT",
+              "description": "No Event of Default may exist."
+            },
+            {
+              "type": "RATIO_SATISFIED",
+              "description": "Pro Forma Total Rent Adjusted Net Leverage Ratio must not exceed 3.50:1.00."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.04(a)(xi)",
+          "definedTermRefs": [
+            "Total Rent Adjusted Net Leverage Ratio"
+          ],
+          "notes": "Unlimited Restricted Payments permitted if leverage ratio test satisfied and no default."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-b",
+        "sourceSectionRef": "6.04(b)(iv)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "PAY_JUNIOR_DEBT",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [
+            {
+              "type": "NO_DEFAULT",
+              "description": "No Event of Default may exist."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.04(b)(iv)",
+          "definedTermRefs": [
+            "Restricted Debt Payments",
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "Restricted Debt Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, plus (at Borrower's election) amount available under Section 6.04(a)(x), with a corresponding reduction to that basket."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.06-b-ii",
+        "sourceSectionRef": "6.06(b)(ii)",
+        "family": "INVESTMENTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "PROHIBITION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "MAKE_INVESTMENT",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Subject to enumerated exceptions (a) through (nn) of Section 6.06.",
+              "sourceSectionRef": "Section 6.06"
+            }
+          ],
+          "sourceSectionRef": "Section 6.06",
+          "definedTermRefs": [
+            "Investment"
+          ],
+          "notes": "Base prohibition on Investments."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected GREATER_OF_FLAT_OR_PCT_EBITDA, got (none)",
+          "no real figure matched: expected one of [15000000, 25], extracted thresholdValue=(none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.07-threshold",
+        "sourceSectionRef": "6.07 (chapeau)",
+        "family": "FUNDAMENTAL_CHANGES",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "DISPOSITIONS",
+          "ruleType": "PROHIBITION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "SELL_ASSET",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": ">",
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Subject to enumerated exceptions (a) through (kk) of Section 6.07.",
+              "sourceSectionRef": "Section 6.07"
+            }
+          ],
+          "sourceSectionRef": "Section 6.07",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA",
+            "Disposition"
+          ],
+          "notes": "Base prohibition applies to mergers/dissolutions and voluntary Dispositions outside ordinary course exceeding the greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA in a transaction or series of related transactions."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "family mismatch: expected FUNDAMENTAL_CHANGES, got DISPOSITIONS"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-a",
+        "sourceSectionRef": "6.10(a)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "EXECUTABLE",
+          "action": "SATISFY_RATIO",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 5,
+          "thresholdUnit": "x EBITDAR (current tier; stepped down from 5.50 to 5.25 to 5.00)",
+          "operator": "<=",
+          "conditions": [
+            {
+              "type": "MATERIAL_ACQUISITION",
+              "description": "Applicable ratio threshold increases by 0.50:1.00 for the Fiscal Quarter of a Material Acquisition and the next three Fiscal Quarters (Covenant Acquisition Increase Period), with at least one intervening Fiscal Quarter without an increase between periods."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.10(a)",
+          "definedTermRefs": [
+            "Total Rent Adjusted Net Leverage Ratio",
+            "Covenant Acquisition Increase Period",
+            "Covenant Acquisition Increase",
+            "Material Acquisition"
+          ],
+          "notes": "Maximum Total Rent Adjusted Net Leverage Ratio: 5.50x (through Q4 2022), 5.25x (through Q4 2023), 5.00x (Q1 2024 onward), each subject to Covenant Acquisition Increase."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-b",
+        "sourceSectionRef": "6.10(b)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "EXECUTABLE",
+          "action": "SATISFY_RATIO",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 1.25,
+          "thresholdUnit": "x",
+          "operator": ">=",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.10(b)",
+          "definedTermRefs": [
+            "Fixed Charge Coverage Ratio"
+          ],
+          "notes": "Minimum Fixed Charge Coverage Ratio of 1.25:1.00, tested each Test Period commencing with quarter ending March 27, 2022."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-c",
+        "sourceSectionRef": "6.10(c)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "CONDITIONAL_ACTIVATION",
+          "evaluationClass": "EVENT_DRIVEN",
+          "action": "OTHER",
+          "entityScope": [
+            "Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "conditions": [
+            {
+              "type": "TIME_PERIOD",
+              "description": "Cure must be exercised by the date 15 Business Days after financial statements for the relevant Fiscal Quarter are required to be delivered."
+            },
+            {
+              "type": "AMOUNT_THRESHOLD",
+              "description": "Cure Amount limited to the amount required to achieve compliance; no more than 5 exercises during the term; at least 2 of every 4 consecutive Fiscal Quarters without a cure exercise."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.10(c)",
+          "definedTermRefs": [
+            "Cure Right",
+            "Cure Amount",
+            "Qualified Capital Stock"
+          ],
+          "notes": "Equity cure mechanism recalculating Consolidated Adjusted EBITDA pro forma for financial covenant compliance purposes only, subject to numerous frequency and mechanical limitations."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "no real figure matched: expected one of [5, 2, 4], extracted thresholdValue=(none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-available-amount",
+        "sourceSectionRef": "Article 1 (Available Amount)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-def-cadj-ebitda",
+        "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDA)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-def-cadj-ebitdar",
+        "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDAR)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-def-restricted-subsidiary-loan-party",
+        "sourceSectionRef": "Article 1 (Restricted Subsidiary / Loan Party)",
+        "family": "ENTITY_SCOPE_RESTRICTIONS",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section, and no matching defined term either"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-restricted-debt",
+        "sourceSectionRef": "Article 1 (Restricted Debt) / 6.04(b)",
+        "family": "AMENDMENT_WAIVER_CONSENT",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      }
+    ]
+  },
+  "evaluationAfter": {
+    "total": 18,
+    "matchedCorrect": 10,
+    "matchedIncorrectFlagged": 5,
+    "matchedIncorrectUnflagged": 2,
+    "missing": 1,
+    "dangerousUnflaggedErrorRate": 0.1111111111111111,
+    "dangerousFlaggedErrorRate": 0.2777777777777778,
+    "missingRate": 0.05555555555555555,
+    "precisionRecallF1ByFamily": {
+      "INDEBTEDNESS": {
+        "truePositives": 3,
+        "total": 3,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "LIENS": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "RESTRICTED_PAYMENTS": {
+        "truePositives": 2,
+        "total": 4,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "INVESTMENTS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "FUNDAMENTAL_CHANGES": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "FINANCIAL_COVENANTS": {
+        "truePositives": 0,
+        "total": 3,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "DEFINITIONS_CALCULATION_RULES": {
+        "truePositives": 3,
+        "total": 3,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "ENTITY_SCOPE_RESTRICTIONS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "AMENDMENT_WAIVER_CONSENT": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      }
+    },
+    "results": [
+      {
+        "provisionId": "fwrg-6.01-g-i",
+        "sourceSectionRef": "6.01(g)(i)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "GUARANTEE_DEBT",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 2500000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.01(g)(i)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "Basket permits guaranties of supplier/customer/franchisee/licensee obligations in ordinary course up to greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA. VERIFICATION_FAILED: cited section \"Section 6.01(g)(i)\" not found verbatim in source text."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.01-j",
+        "sourceSectionRef": "6.01(j)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "INCUR_DEBT",
+          "entityScope": [
+            "Restricted Subsidiaries that are not Loan Parties"
+          ],
+          "entityScopeExcluded": [
+            "Loan Parties"
+          ],
+          "thresholdValue": 30000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.01(j)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA",
+            "Restricted Subsidiary"
+          ],
+          "notes": "Basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA for Indebtedness of non-Loan-Party Restricted Subsidiaries. VERIFICATION_FAILED: cited section \"Section 6.01(j)\" not found verbatim in source text."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.01-m",
+        "sourceSectionRef": "6.01(m)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "INCUR_DEBT",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 30000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.01(m)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "Capital Leases and purchase money Indebtedness basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA. VERIFICATION_FAILED: thresholdValue 30000000 does not appear within 400 characters of cited section \"Section 6.01(m)\"."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.02-a",
+        "sourceSectionRef": "6.02(a)",
+        "family": "LIENS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "LIENS",
+          "ruleType": "PROHIBITION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "CREATE_LIEN",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Subject to enumerated Permitted Liens (a) through (nn) of Section 6.02.",
+              "sourceSectionRef": "Section 6.02"
+            }
+          ],
+          "sourceSectionRef": "Section 6.02",
+          "definedTermRefs": [
+            "Lien"
+          ],
+          "notes": "Base negative covenant prohibiting Liens except Permitted Liens."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.04-a-iii",
+        "sourceSectionRef": "6.04(a)(iii)(A)-(B)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "PROHIBITION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "PAY_DIVIDEND",
+          "entityScope": [
+            "Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Subject to enumerated exceptions (i) through (xvii) of Section 6.04(a).",
+              "sourceSectionRef": "Section 6.04(a)"
+            }
+          ],
+          "sourceSectionRef": "Section 6.04(a)",
+          "definedTermRefs": [
+            "Restricted Payment"
+          ],
+          "notes": "Base prohibition on Restricted Payments."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected BUILDER_BASKET, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-a-x",
+        "sourceSectionRef": "6.04(a)(x)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "PAY_DIVIDEND",
+          "entityScope": [
+            "Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [
+            {
+              "type": "NO_DEFAULT",
+              "description": "No Event of Default may exist at the time the Restricted Payment is made."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.04(a)(x)",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "General Restricted Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.04-a-xi",
+        "sourceSectionRef": "6.04(a)(xi)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "PAY_DIVIDEND",
+          "entityScope": [
+            "Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 3.5,
+          "thresholdUnit": "x EBITDAR",
+          "operator": "<=",
+          "conditions": [
+            {
+              "type": "NO_DEFAULT",
+              "description": "No Event of Default may exist."
+            },
+            {
+              "type": "RATIO_SATISFIED",
+              "description": "Pro Forma Total Rent Adjusted Net Leverage Ratio must not exceed 3.50:1.00."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.04(a)(xi)",
+          "definedTermRefs": [
+            "Total Rent Adjusted Net Leverage Ratio"
+          ],
+          "notes": "Unlimited Restricted Payments permitted if leverage ratio test satisfied and no default. VERIFICATION_FAILED: cited section \"Section 6.04(a)(xi)\" not found verbatim in source text."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.04-b",
+        "sourceSectionRef": "6.04(b)(iv)",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "PAY_JUNIOR_DEBT",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 21000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": "<=",
+          "conditions": [
+            {
+              "type": "NO_DEFAULT",
+              "description": "No Event of Default may exist."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.04(b)(iv)",
+          "definedTermRefs": [
+            "Restricted Debt Payments",
+            "Consolidated Adjusted EBITDA"
+          ],
+          "notes": "Restricted Debt Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, plus (at Borrower's election) amount available under Section 6.04(a)(x), with a corresponding reduction to that basket. VERIFICATION_FAILED: thresholdValue 21000000 does not appear within 400 characters of cited section \"Section 6.04(b)(iv)\"."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-6.06-b-ii",
+        "sourceSectionRef": "6.06(b)(ii)",
+        "family": "INVESTMENTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INVESTMENTS",
+          "ruleType": "PROHIBITION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "MAKE_INVESTMENT",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Subject to enumerated exceptions (a) through (nn) of Section 6.06.",
+              "sourceSectionRef": "Section 6.06"
+            }
+          ],
+          "sourceSectionRef": "Section 6.06",
+          "definedTermRefs": [
+            "Investment"
+          ],
+          "notes": "Base prohibition on Investments."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected GREATER_OF_FLAT_OR_PCT_EBITDA, got (none)",
+          "no real figure matched: expected one of [15000000, 25], extracted thresholdValue=(none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.07-threshold",
+        "sourceSectionRef": "6.07 (chapeau)",
+        "family": "FUNDAMENTAL_CHANGES",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "DISPOSITIONS",
+          "ruleType": "PROHIBITION",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "SELL_ASSET",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 6000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "GREATER_OF_FLAT_OR_PCT_EBITDA",
+          "operator": ">",
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Subject to enumerated exceptions (a) through (kk) of Section 6.07.",
+              "sourceSectionRef": "Section 6.07"
+            }
+          ],
+          "sourceSectionRef": "Section 6.07",
+          "definedTermRefs": [
+            "Consolidated Adjusted EBITDA",
+            "Disposition"
+          ],
+          "notes": "Base prohibition applies to mergers/dissolutions and voluntary Dispositions outside ordinary course exceeding the greater of $6,000,000 and 10% of Consolidated Adjusted EBITDA in a transaction or series of related transactions. VERIFICATION_FAILED: thresholdValue 6000000 does not appear within 400 characters of cited section \"Section 6.07\"."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "family mismatch: expected FUNDAMENTAL_CHANGES, got DISPOSITIONS"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-a",
+        "sourceSectionRef": "6.10(a)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "SATISFY_RATIO",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 5,
+          "thresholdUnit": "x EBITDAR (current tier; stepped down from 5.50 to 5.25 to 5.00)",
+          "operator": "<=",
+          "conditions": [
+            {
+              "type": "MATERIAL_ACQUISITION",
+              "description": "Applicable ratio threshold increases by 0.50:1.00 for the Fiscal Quarter of a Material Acquisition and the next three Fiscal Quarters (Covenant Acquisition Increase Period), with at least one intervening Fiscal Quarter without an increase between periods."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.10(a)",
+          "definedTermRefs": [
+            "Total Rent Adjusted Net Leverage Ratio",
+            "Covenant Acquisition Increase Period",
+            "Covenant Acquisition Increase",
+            "Material Acquisition"
+          ],
+          "notes": "Maximum Total Rent Adjusted Net Leverage Ratio: 5.50x (through Q4 2022), 5.25x (through Q4 2023), 5.00x (Q1 2024 onward), each subject to Covenant Acquisition Increase. VERIFICATION_FAILED: thresholdValue 5 does not appear within 400 characters of cited section \"Section 6.10(a)\"."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-b",
+        "sourceSectionRef": "6.10(b)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "RATIO_TEST",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "SATISFY_RATIO",
+          "entityScope": [
+            "Borrower",
+            "Restricted Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 1.25,
+          "thresholdUnit": "x",
+          "operator": ">=",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.10(b)",
+          "definedTermRefs": [
+            "Fixed Charge Coverage Ratio"
+          ],
+          "notes": "Minimum Fixed Charge Coverage Ratio of 1.25:1.00, tested each Test Period commencing with quarter ending March 27, 2022. VERIFICATION_FAILED: thresholdValue 1.25 does not appear within 400 characters of cited section \"Section 6.10(b)\"."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected RATIO_DERIVED_AMOUNT, got (none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-6.10-c",
+        "sourceSectionRef": "6.10(c)",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_INCORRECT_FLAGGED",
+        "matchedRule": {
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "ruleType": "CONDITIONAL_ACTIVATION",
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "action": "OTHER",
+          "entityScope": [
+            "Borrower"
+          ],
+          "entityScopeExcluded": [],
+          "conditions": [
+            {
+              "type": "TIME_PERIOD",
+              "description": "Cure must be exercised by the date 15 Business Days after financial statements for the relevant Fiscal Quarter are required to be delivered."
+            },
+            {
+              "type": "AMOUNT_THRESHOLD",
+              "description": "Cure Amount limited to the amount required to achieve compliance; no more than 5 exercises during the term; at least 2 of every 4 consecutive Fiscal Quarters without a cure exercise."
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.10(c)",
+          "definedTermRefs": [
+            "Cure Right",
+            "Cure Amount",
+            "Qualified Capital Stock"
+          ],
+          "notes": "Equity cure mechanism recalculating Consolidated Adjusted EBITDA pro forma for financial covenant compliance purposes only, subject to numerous frequency and mechanical limitations. VERIFICATION_FAILED: cited section \"Section 6.10(c)\" not found verbatim in source text."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "no real figure matched: expected one of [5, 2, 4], extracted thresholdValue=(none)"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-available-amount",
+        "sourceSectionRef": "Article 1 (Available Amount)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-def-cadj-ebitda",
+        "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDA)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-def-cadj-ebitdar",
+        "sourceSectionRef": "Article 1 (Consolidated Adjusted EBITDAR)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "fwrg-def-restricted-subsidiary-loan-party",
+        "sourceSectionRef": "Article 1 (Restricted Subsidiary / Loan Party)",
+        "family": "ENTITY_SCOPE_RESTRICTIONS",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section, and no matching defined term either"
+        ]
+      },
+      {
+        "provisionId": "fwrg-def-restricted-debt",
+        "sourceSectionRef": "Article 1 (Restricted Debt) / 6.04(b)",
+        "family": "AMENDMENT_WAIVER_CONSENT",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      }
+    ]
+  }
+}

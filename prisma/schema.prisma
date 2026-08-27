@@ -128,6 +128,10 @@ model Company {
   contractCoverageRecords    ContractCoverageRecord[]
   unresolvedContractItems    UnresolvedContractItem[]
 
+  // --- Phase C production contract compiler v1 (docs/phase-c-contract-compiler-v1.md) ---
+  // Additive only. Zero rows for Coherent/Matthews as of this migration.
+  contractCompilerRuns ContractCompilerRun[]
+
   @@map("companies")
 }
 
@@ -249,6 +253,9 @@ model Document {
   relationshipEdgesAsSource     DocumentRelationshipEdge[] @relation("DocumentRelationshipSource")
   relationshipEdgesAsTarget     DocumentRelationshipEdge[] @relation("DocumentRelationshipTarget")
   contractReferencesTargetingMe ContractReferenceEdge[]    @relation("ContractReferenceTargetDocument")
+
+  // --- Phase C production contract compiler v1 (docs/phase-c-contract-compiler-v1.md) ---
+  compilerRunDocuments ContractCompilerRunDocument[]
 
   @@map("documents")
 }
@@ -2646,4 +2653,126 @@ model UnresolvedContractItem {
   @@index([companyId])
   @@index([companyId, blocking])
   @@map("unresolved_contract_items")
+}
+
+// =============================================================================
+// Phase C production contract compiler v1 (docs/phase-c-contract-compiler-v1.md)
+// Staged, resumable compiler run/stage state machine - mirrors
+// ExtractionRun/ExtractionStage's own real, already-shipped pattern exactly
+// (same partial-failure/retry discipline: a FAILED stage's retry never
+// disturbs a sibling COMPLETED stage's persisted output), extended with
+// content hashing (inputHash/outputHash) for incremental recompilation and a
+// richer stage vocabulary matching the compiler's 11 real stages. A "run" is
+// scoped to one financing PACKAGE (one or more Documents), not one document -
+// see ContractCompilerRunDocument.
+// =============================================================================
+
+enum ContractCompilerStageKind {
+  STRUCTURE
+  DEFINITIONS
+  INVENTORY
+  RULE_EXTRACTION
+  DEPENDENCY_RESOLUTION
+  RELATIONSHIPS
+  AMENDMENTS
+  VERIFICATION
+  VALIDATION
+  COVERAGE
+  PROMOTION
+
+  @@map("contract_compiler_stage_kind")
+}
+
+enum ContractCompilerStageStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  BLOCKED
+  REVIEW_REQUIRED
+
+  @@map("contract_compiler_stage_status")
+}
+
+/// One compiler run over one financing package (task §5/§6). `packageKey` is
+/// a caller-supplied stable identifier for the package (never a raw cuid -
+/// same stable-identity discipline as every other Phase B stableKey), so a
+/// re-run of the same package resumes the same ContractCompilerRun row
+/// rather than creating a duplicate.
+model ContractCompilerRun {
+  id            String @id @default(cuid())
+  companyId     String
+  packageKey    String
+  promptVersion String
+  schemaVersion String
+
+  startedAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+
+  company   Company                       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  documents ContractCompilerRunDocument[]
+  stages    ContractCompilerStage[]
+
+  @@unique([companyId, packageKey])
+  @@index([companyId])
+  @@map("contract_compiler_runs")
+}
+
+/// Join table (task §69 - "compiler must not incorrectly merge distinct
+/// legal authorities"): a package can span multiple real Documents (e.g. a
+/// Credit Agreement + its Indenture + their Intercreditor Agreement), each
+/// preserved as its own row, never flattened into the run itself.
+model ContractCompilerRunDocument {
+  id         String @id @default(cuid())
+  runId      String
+  documentId String
+
+  run      ContractCompilerRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  document Document            @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, documentId])
+  @@map("contract_compiler_run_documents")
+}
+
+/// One (runId, stage) row - the resumability/incremental-recompilation unit
+/// (task §6/§7). `inputHash` is a content hash of everything the stage
+/// actually read (source text + upstream stage outputs it depends on); the
+/// orchestrator (lib/contract-model/compiler/orchestrator.ts) skips re-running
+/// a COMPLETED stage whose freshly-computed inputHash still matches the
+/// persisted one, and reruns it (never mutating sibling stages) the moment it
+/// does not - the generalized version of C0's own resumable-JSON-log
+/// discipline (scripts/run-phase-c0-analyzer.ts), now per-stage rather than
+/// per-document.
+model ContractCompilerStage {
+  id           String                      @id @default(cuid())
+  runId        String
+  stage        ContractCompilerStageKind
+  status       ContractCompilerStageStatus @default(PENDING)
+  inputHash    String?
+  outputHash   String?
+  provider     String?
+  model        String?
+  attemptCount Int                         @default(0)
+  error        String?
+  // Real, never-fabricated telemetry (task §57) - {inputTokens, outputTokens,
+  // latencyMs, retryCount, rateLimitFailures, calculatedCostUsd} per
+  // lib/contract-model/analyzer/telemetry.ts's own AnalyzerCallTelemetry
+  // shape, or null for a deterministic (non-LLM) stage.
+  telemetry    Json?
+  // Durable stage output (task §6 resumability) - lets a later stage, or a
+  // resumed run, read what a completed stage actually produced without
+  // re-running it. Same role ExtractionCandidate rows play for the older
+  // six-stage pipeline, generalized to one JSON blob per compiler stage
+  // rather than a normalized table per candidate kind, since each stage's
+  // shape is already validated by its own Zod schema (lib/contract-model/compiler/schemas.ts)
+  // before ever reaching this column.
+  output       Json?
+  startedAt    DateTime?
+  completedAt  DateTime?
+
+  run ContractCompilerRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, stage])
+  @@map("contract_compiler_stages")
 }

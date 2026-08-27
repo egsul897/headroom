@@ -1,0 +1,1370 @@
+{
+  "packageKey": "lsb-2023-abl-credit-agreement",
+  "runId": "cmtaby8uu0001dm37dohukbpl",
+  "stages": [
+    {
+      "stage": "STRUCTURE",
+      "status": "COMPLETED"
+    },
+    {
+      "stage": "DEFINITIONS",
+      "status": "COMPLETED"
+    },
+    {
+      "stage": "INVENTORY",
+      "status": "COMPLETED"
+    },
+    {
+      "stage": "RULE_EXTRACTION",
+      "status": "COMPLETED"
+    },
+    {
+      "stage": "DEPENDENCY_RESOLUTION",
+      "status": "COMPLETED"
+    },
+    {
+      "stage": "RELATIONSHIPS",
+      "status": "COMPLETED"
+    },
+    {
+      "stage": "AMENDMENTS",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "stage": "VERIFICATION",
+      "status": "COMPLETED"
+    },
+    {
+      "stage": "VALIDATION",
+      "status": "BLOCKED"
+    },
+    {
+      "stage": "COVERAGE",
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "stage": "PROMOTION",
+      "status": "REVIEW_REQUIRED"
+    }
+  ],
+  "evaluation": {
+    "total": 14,
+    "matchedCorrect": 7,
+    "matchedIncorrectFlagged": 0,
+    "matchedIncorrectUnflagged": 6,
+    "missing": 1,
+    "dangerousUnflaggedErrorRate": 0.42857142857142855,
+    "dangerousFlaggedErrorRate": 0,
+    "missingRate": 0.07142857142857142,
+    "precisionRecallF1ByFamily": {
+      "INDEBTEDNESS": {
+        "truePositives": 2,
+        "total": 4,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "LIENS": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "FUNDAMENTAL_CHANGES": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "ASSET_SALES": {
+        "truePositives": 1,
+        "total": 2,
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "RESTRICTED_PAYMENTS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "INVESTMENTS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "AFFILIATE_TRANSACTIONS": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      },
+      "FINANCIAL_COVENANTS": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "DEFINITIONS_CALCULATION_RULES": {
+        "truePositives": 1,
+        "total": 1,
+        "precision": 1,
+        "recall": 1,
+        "f1": 1
+      },
+      "COLLATERAL_SECURITY": {
+        "truePositives": 0,
+        "total": 1,
+        "precision": 0,
+        "recall": 0,
+        "f1": 0
+      }
+    },
+    "results": [
+      {
+        "provisionId": "lsb-6.01-general-ratio-gated",
+        "sourceSectionRef": "6.01",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "action": "INCUR_DEBT",
+          "operator": ">",
+          "ruleType": "RATIO_TEST",
+          "conditions": [
+            {
+              "type": "RATIO_SATISFIED",
+              "description": "After giving effect to incurrence, Fixed Charge Coverage Ratio of Parent and its Subsidiaries for most recently ended trailing four fiscal quarters is greater than 2.0 to 1.0"
+            },
+            {
+              "type": "OTHER_RULE_SATISFIED",
+              "description": "Payment Conditions are satisfied with respect to such incurrence"
+            }
+          ],
+          "exceptions": [],
+          "beneficiary": "Loan Parties",
+          "entityScope": [
+            "Loan Parties",
+            "Subsidiaries"
+          ],
+          "thresholdUnit": "ratio:1.0",
+          "covenantFamily": "INDEBTEDNESS",
+          "thresholdValue": 2,
+          "definedTermRefs": [
+            "Fixed Charge Coverage Ratio",
+            "Payment Conditions"
+          ],
+          "evaluationClass": "EXECUTABLE",
+          "sourceSectionRef": "Section 6.01",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "lsb-6.01-i-flat-or-pct-assets",
+        "sourceSectionRef": "6.01(i)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "INDEBTEDNESS",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "INCUR_DEBT",
+          "entityScope": [
+            "Loan Parties",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 70000000,
+          "thresholdUnit": "USD",
+          "formulaRef": "OTHER",
+          "conditions": [],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.01(i)",
+          "definedTermRefs": [],
+          "notes": "Cap is greater of $70,000,000 and 5.5% of total consolidated assets (asset-based, not EBITDA-based); formulaRef corrected to OTHER and evaluationClass corrected to EXECUTABLE."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected GREATER_OF_FLAT_OR_PCT_EBITDA, got OTHER"
+        ]
+      },
+      {
+        "provisionId": "lsb-6.01-m-secured-notes",
+        "sourceSectionRef": "6.01(m)",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "notes": "Permits Indebtedness under the Secured Notes and guarantees thereof. VERIFICATION_FAILED: cited section \"Section 6.01(m)\" not found verbatim in source text.",
+          "action": "INCUR_DEBT",
+          "ruleType": "EXCEPTION",
+          "conditions": [],
+          "exceptions": [],
+          "entityScope": [
+            "Loan Parties",
+            "Subsidiaries"
+          ],
+          "covenantFamily": "INDEBTEDNESS",
+          "definedTermRefs": [
+            "Secured Notes"
+          ],
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "sourceSectionRef": "Section 6.01(m)",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "lsb-6.02-liens",
+        "sourceSectionRef": "6.02",
+        "family": "LIENS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "action": "CREATE_LIEN",
+          "ruleType": "RECLASSIFICATION_RULE",
+          "conditions": [
+            {
+              "type": "REFINANCING_CONTEXT",
+              "description": "Original Indebtedness refinanced, renewed, replaced or extended under Section 6.01(d)"
+            },
+            {
+              "type": "OTHER_RULE_SATISFIED",
+              "description": "Replacement Liens only encumber assets that secured the refinanced, renewed or extended Indebtedness"
+            }
+          ],
+          "exceptions": [],
+          "entityScope": [
+            "Loan Parties",
+            "Subsidiaries"
+          ],
+          "covenantFamily": "LIENS",
+          "definedTermRefs": [
+            "Permitted Liens"
+          ],
+          "evaluationClass": "EVENT_DRIVEN",
+          "sourceSectionRef": "Section 6.02",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "lsb-6.03-fundamental-changes",
+        "sourceSectionRef": "6.03",
+        "family": "FUNDAMENTAL_CHANGES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "action": "MERGE",
+          "ruleType": "PROHIBITION",
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "Merger/consolidation of a Loan Party or Subsidiary into another Loan Party where a Borrower (if party) survives",
+              "sourceSectionRef": "Section 6.03"
+            },
+            {
+              "description": "Sale/transfer/lease/disposal of assets among Loan Parties",
+              "sourceSectionRef": "Section 6.03"
+            },
+            {
+              "description": "Permitted Dispositions",
+              "sourceSectionRef": "Section 6.03"
+            },
+            {
+              "description": "Acquisitions and other Investments permitted hereunder",
+              "sourceSectionRef": "Section 6.03"
+            },
+            {
+              "description": "Dispositions permitted by Section 6.04",
+              "sourceSectionRef": "Section 6.03"
+            },
+            {
+              "description": "Mergers/liquidations/asset sales among non-Loan Party Subsidiaries",
+              "sourceSectionRef": "Section 6.03"
+            },
+            {
+              "description": "Liquidation/dissolution of a non-Loan Party Subsidiary determined in good faith to be in best interests, not materially disadvantageous to Lenders, with assets transferred to a Loan Party",
+              "sourceSectionRef": "Section 6.03"
+            }
+          ],
+          "entityScope": [
+            "Loan Parties",
+            "Subsidiaries"
+          ],
+          "covenantFamily": "FUNDAMENTAL_CHANGES",
+          "definedTermRefs": [],
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "sourceSectionRef": "Section 6.03(a)",
+          "entityScopeExcluded": [
+            "Parent (as to Stock reclassification only)"
+          ],
+          "notes": "VERIFICATION_FAILED: cited section \"Section 6.03(a)\" not found verbatim in source text."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "lsb-6.04-a-abl-collateral-disposal",
+        "sourceSectionRef": "6.04(a)",
+        "family": "ASSET_SALES",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "covenantFamily": "ASSET_SALES",
+          "ruleType": "QUANTITATIVE_PERMISSION",
+          "evaluationClass": "EXECUTABLE",
+          "action": "SELL_ASSET",
+          "entityScope": [
+            "Loan Parties",
+            "Subsidiaries"
+          ],
+          "entityScopeExcluded": [],
+          "thresholdValue": 10000000,
+          "thresholdUnit": "USD per fiscal year",
+          "formulaRef": "OTHER",
+          "conditions": [
+            {
+              "type": "OTHER_RULE_SATISFIED",
+              "description": "Assets sold for Fair Market Value"
+            },
+            {
+              "type": "OTHER_RULE_SATISFIED",
+              "description": "If disposition involves ABL Priority Collateral, deliver new Borrowing Base Certificate demonstrating compliance with Section 2.01(a) concurrently with or prior to disposition"
+            }
+          ],
+          "exceptions": [],
+          "sourceSectionRef": "Section 6.04(a)",
+          "definedTermRefs": [
+            "ABL Priority Collateral",
+            "Borrowing Base Certificate",
+            "Fair Market Value"
+          ],
+          "notes": "Cap is greater of $10,000,000 and 1.0% of total consolidated assets (asset-based, not EBITDA-based); formulaRef corrected to OTHER."
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected GREATER_OF_FLAT_OR_PCT_EBITDA, got OTHER"
+        ]
+      },
+      {
+        "provisionId": "lsb-6.04-b-notes-collateral-disposal",
+        "sourceSectionRef": "6.04(b)",
+        "family": "ASSET_SALES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "notes": "Upon such sale, Administrative Agent's security interest (if any) automatically released; proceeds applied per Secured Notes Documents/Indenture. VERIFICATION_FAILED: cited section \"Section 6.04(b)\" not found verbatim in source text.",
+          "action": "SELL_ASSET",
+          "ruleType": "EVENT_TRIGGER",
+          "conditions": [
+            {
+              "type": "OTHER_RULE_SATISFIED",
+              "description": "Disposition permitted under Secured Notes Documents or consented to by requisite holders of Secured Notes"
+            }
+          ],
+          "exceptions": [],
+          "entityScope": [
+            "Loan Parties",
+            "Subsidiaries"
+          ],
+          "covenantFamily": "ASSET_SALES",
+          "definedTermRefs": [
+            "Notes Priority Collateral",
+            "Secured Notes"
+          ],
+          "evaluationClass": "JUDGMENT_REQUIRED",
+          "sourceSectionRef": "Section 6.04(b)",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "lsb-6.08-subordinated-debt-payments",
+        "sourceSectionRef": "6.08",
+        "family": "INDEBTEDNESS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "notes": "General prohibition on payments in respect of Indebtedness other than Indebtedness in respect of the Secured Notes.",
+          "action": "PAY_JUNIOR_DEBT",
+          "ruleType": "PROHIBITION",
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "See permitted payments (i)-(vi) of Section 6.08(a)",
+              "sourceSectionRef": "Section 6.08(a)"
+            }
+          ],
+          "entityScope": [
+            "Loan Parties"
+          ],
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "definedTermRefs": [
+            "Secured Notes"
+          ],
+          "evaluationClass": "EXECUTABLE",
+          "sourceSectionRef": "Section 6.08(a)",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "family mismatch: expected INDEBTEDNESS, got RESTRICTED_PAYMENTS",
+          "formula mismatch: expected FIXED_AMOUNT, got (none)",
+          "no real figure matched: expected one of [500000], extracted thresholdValue=(none)"
+        ]
+      },
+      {
+        "provisionId": "lsb-6.11-restricted-payments",
+        "sourceSectionRef": "6.11",
+        "family": "RESTRICTED_PAYMENTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "notes": "General prohibition on distributions, dividends (other than common Stock), and Stock repurchases/redemptions.",
+          "action": "PAY_DIVIDEND",
+          "ruleType": "PROHIBITION",
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "See exceptions (a)-(d) of Section 6.11",
+              "sourceSectionRef": "Section 6.11"
+            }
+          ],
+          "entityScope": [
+            "Loan Parties"
+          ],
+          "covenantFamily": "RESTRICTED_PAYMENTS",
+          "definedTermRefs": [
+            "Restricted Payment"
+          ],
+          "evaluationClass": "EXECUTABLE",
+          "sourceSectionRef": "Section 6.11",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected FIXED_AMOUNT, got (none)",
+          "no real figure matched: expected one of [500000], extracted thresholdValue=(none)"
+        ]
+      },
+      {
+        "provisionId": "lsb-6.13-investments",
+        "sourceSectionRef": "6.13",
+        "family": "INVESTMENTS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "action": "MAKE_INVESTMENT",
+          "ruleType": "PROHIBITION",
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "See enumerated exceptions (a)-(l) of Section 6.13",
+              "sourceSectionRef": "Section 6.13"
+            }
+          ],
+          "entityScope": [
+            "Loan Parties",
+            "Subsidiaries"
+          ],
+          "covenantFamily": "INVESTMENTS",
+          "definedTermRefs": [
+            "Investment"
+          ],
+          "evaluationClass": "EXECUTABLE",
+          "sourceSectionRef": "Section 6.13",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected FIXED_AMOUNT, got (none)",
+          "no real figure matched: expected one of [35000000, 5000000], extracted thresholdValue=(none)"
+        ]
+      },
+      {
+        "provisionId": "lsb-6.14-affiliate-transactions",
+        "sourceSectionRef": "6.14",
+        "family": "AFFILIATE_TRANSACTIONS",
+        "outcome": "MATCHED_INCORRECT_UNFLAGGED",
+        "matchedRule": {
+          "action": "ENTER_AFFILIATE_TRANSACTION",
+          "ruleType": "PROHIBITION",
+          "conditions": [],
+          "exceptions": [
+            {
+              "description": "See exceptions (a)-(d) of Section 6.14",
+              "sourceSectionRef": "Section 6.14"
+            }
+          ],
+          "entityScope": [
+            "Loan Parties"
+          ],
+          "covenantFamily": "AFFILIATE_TRANSACTIONS",
+          "definedTermRefs": [
+            "Affiliate"
+          ],
+          "evaluationClass": "EXECUTABLE",
+          "sourceSectionRef": "Section 6.14",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": [
+          "formula mismatch: expected FIXED_AMOUNT, got (none)",
+          "no real figure matched: expected one of [5000000], extracted thresholdValue=(none)"
+        ]
+      },
+      {
+        "provisionId": "lsb-6.15-springing-financial-covenant",
+        "sourceSectionRef": "6.15",
+        "family": "FINANCIAL_COVENANTS",
+        "outcome": "MATCHED_CORRECT",
+        "matchedRule": {
+          "notes": "Springing financial covenant activated only during an Availability Block Removal Period.",
+          "action": "SATISFY_RATIO",
+          "operator": ">=",
+          "ruleType": "RATIO_TEST",
+          "conditions": [
+            {
+              "type": "TIME_PERIOD",
+              "description": "Applies solely during any Availability Block Removal Period"
+            },
+            {
+              "type": "OTHER_RULE_SATISFIED",
+              "description": "Measured monthly as of last day of each month on trailing twelve-month basis, commencing with the month immediately following the month for which FCCR was tested for delivering the Availability Block Removal Notice under Section 2.01(b)(i)"
+            }
+          ],
+          "exceptions": [],
+          "entityScope": [
+            "Parent",
+            "Subsidiaries"
+          ],
+          "thresholdUnit": "ratio:1.00",
+          "covenantFamily": "FINANCIAL_COVENANTS",
+          "thresholdValue": 1,
+          "definedTermRefs": [
+            "Fixed Charge Coverage Ratio",
+            "Availability Block Removal Period"
+          ],
+          "evaluationClass": "EXECUTABLE",
+          "sourceSectionRef": "Section 6.15",
+          "entityScopeExcluded": []
+        },
+        "matchedVia": "rule",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "lsb-def-payment-conditions",
+        "sourceSectionRef": "Article 1 (Payment Conditions)",
+        "family": "DEFINITIONS_CALCULATION_RULES",
+        "outcome": "MATCHED_CORRECT",
+        "matchedVia": "definedTerm",
+        "mismatchReasons": []
+      },
+      {
+        "provisionId": "lsb-def-abl-notes-priority-collateral",
+        "sourceSectionRef": "Article 1 (ABL Priority Collateral / Notes Priority Collateral)",
+        "family": "COLLATERAL_SECURITY",
+        "outcome": "MISSING",
+        "mismatchReasons": [
+          "no extracted rule cites this section, and no matching defined term either"
+        ]
+      }
+    ]
+  },
+  "promotionDecisions": [
+    {
+      "sourceSectionRef": "Section 6.01",
+      "executabilityState": "BLOCKED_UNRESOLVED_DEPENDENCY",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "unresolved required definition(s): Indebtedness"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01",
+      "executabilityState": "BLOCKED_UNRESOLVED_DEPENDENCY",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "unresolved required definition(s): Indebtedness"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(a)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(b)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(d)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is EVENT_DRIVEN, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(f)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(g)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(j)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(l)",
+      "executabilityState": "EXECUTABLE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "all gates passed: verification confirmed, deterministic validation passed, dependencies resolved, formula/threshold present"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(m)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(n)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(p)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(q)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(r)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(s)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(t)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.02",
+      "executabilityState": "BLOCKED_MISSING_INPUT",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "EXECUTABLE evaluationClass but no thresholdValue or formulaRef present to actually execute against"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.02",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is EVENT_DRIVEN, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.03(a)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.03(b)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.03(c)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04",
+      "executabilityState": "BLOCKED_MISSING_INPUT",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "EXECUTABLE evaluationClass but no thresholdValue or formulaRef present to actually execute against"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(b)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(c)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(d)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(e)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(f)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(g)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(h)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(i)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.07",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.08(a)",
+      "executabilityState": "BLOCKED_MISSING_INPUT",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "EXECUTABLE evaluationClass but no thresholdValue or formulaRef present to actually execute against"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.08(a)(i)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.08(a)(ii)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.08(a)(iii)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.08(a)(iv)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.08(a)(v)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.08(a)(vi)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.08(b)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.11",
+      "executabilityState": "BLOCKED_MISSING_INPUT",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "EXECUTABLE evaluationClass but no thresholdValue or formulaRef present to actually execute against"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.11(a)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.11(b)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.11(c)",
+      "executabilityState": "BLOCKED_MISSING_INPUT",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "EXECUTABLE evaluationClass but no thresholdValue or formulaRef present to actually execute against"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.11(d)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13",
+      "executabilityState": "BLOCKED_UNRESOLVED_DEPENDENCY",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "unresolved required definition(s): Investment"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(a)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(b)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(c)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(d)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(e)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(f)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(g)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(h)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(i)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(k)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(l)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.14",
+      "executabilityState": "BLOCKED_UNRESOLVED_DEPENDENCY",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "unresolved required definition(s): Affiliate"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.14(a)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.14(b)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.14(c)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.14(d)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.15",
+      "executabilityState": "EXECUTABLE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "all gates passed: verification confirmed, deterministic validation passed, dependencies resolved, formula/threshold present"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 1(A)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 1(B)(i)-(ii)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 1(B)(iii)-(v)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 1(B)(vi)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Recital C",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 2(A)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 2(B)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 3",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 4",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 5",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 7",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 8",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(c)",
+      "executabilityState": "NON_EXECUTABLE_QUALITATIVE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "evaluationClass is JUDGMENT_REQUIRED, not EXECUTABLE"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.01(i)",
+      "executabilityState": "EXECUTABLE",
+      "reviewStatus": "PENDING",
+      "reasons": [
+        "all gates passed: verification confirmed, deterministic validation passed, dependencies resolved, formula/threshold present"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.04(a)",
+      "executabilityState": "BLOCKED_UNRESOLVED_DEPENDENCY",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "unresolved required definition(s): Fair Market Value"
+      ]
+    },
+    {
+      "sourceSectionRef": "Section 6.13(j)",
+      "executabilityState": "UNSUPPORTED",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "reasons": [
+        "evaluationClass is UNSUPPORTED - this rule's own semantic primitive is not representable"
+      ]
+    }
+  ],
+  "validationOk": false,
+  "coverageGapCount": 12,
+  "relationshipsPersisted": 66,
+  "referencesPersisted": 9,
+  "stageTelemetry": [
+    {
+      "stage": "INVENTORY",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetry": {
+        "model": "anthropic/claude-sonnet-5",
+        "stage": "material_provision_inventory",
+        "provider": "vercel-ai-gateway",
+        "latencyMs": 41198,
+        "timestamp": "2026-08-26T16:51:22.951Z",
+        "retryCount": 0,
+        "inputTokens": 14527,
+        "attemptCount": 1,
+        "outputTokens": 5368,
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "cachedInputTokens": null,
+        "calculatedCostUsd": 0.082734,
+        "rateLimitFailures": 0,
+        "cacheCreationInputTokens": null
+      }
+    },
+    {
+      "stage": "RULE_EXTRACTION",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetry": {
+        "model": "anthropic/claude-sonnet-5",
+        "stage": "rule_extraction:LSB Intercreditor Joinder Agreement",
+        "provider": "vercel-ai-gateway",
+        "latencyMs": 52462,
+        "timestamp": "2026-08-26T16:54:57.998Z",
+        "retryCount": 0,
+        "inputTokens": 11211,
+        "attemptCount": 1,
+        "outputTokens": 7022,
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "cachedInputTokens": null,
+        "calculatedCostUsd": 0.092642,
+        "rateLimitFailures": 0,
+        "cacheCreationInputTokens": null
+      }
+    },
+    {
+      "stage": "VALIDATION",
+      "provider": null,
+      "model": null,
+      "telemetry": null
+    },
+    {
+      "stage": "RELATIONSHIPS",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetry": {
+        "model": "anthropic/claude-sonnet-5",
+        "stage": "relationship_extraction",
+        "provider": "vercel-ai-gateway",
+        "latencyMs": 113541,
+        "timestamp": "2026-08-26T17:49:22.090Z",
+        "retryCount": 0,
+        "inputTokens": 8917,
+        "attemptCount": 1,
+        "outputTokens": 14369,
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "cachedInputTokens": null,
+        "calculatedCostUsd": 0.161524,
+        "rateLimitFailures": 0,
+        "cacheCreationInputTokens": null
+      }
+    },
+    {
+      "stage": "DEPENDENCY_RESOLUTION",
+      "provider": null,
+      "model": null,
+      "telemetry": null
+    },
+    {
+      "stage": "PROMOTION",
+      "provider": null,
+      "model": null,
+      "telemetry": null
+    },
+    {
+      "stage": "AMENDMENTS",
+      "provider": null,
+      "model": null,
+      "telemetry": null
+    },
+    {
+      "stage": "VERIFICATION",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetry": {
+        "model": "anthropic/claude-sonnet-5",
+        "stage": "adversarial_verification",
+        "provider": "vercel-ai-gateway",
+        "latencyMs": 2703,
+        "timestamp": "2026-08-26T18:00:02.355Z",
+        "retryCount": 0,
+        "inputTokens": 8193,
+        "attemptCount": 1,
+        "outputTokens": 45,
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "cachedInputTokens": null,
+        "calculatedCostUsd": 0.016836,
+        "rateLimitFailures": 0,
+        "cacheCreationInputTokens": null
+      }
+    },
+    {
+      "stage": "COVERAGE",
+      "provider": null,
+      "model": null,
+      "telemetry": null
+    },
+    {
+      "stage": "DEFINITIONS",
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "telemetry": {
+        "model": "anthropic/claude-sonnet-5",
+        "stage": "definitions_inventory",
+        "provider": "vercel-ai-gateway",
+        "latencyMs": 49701,
+        "timestamp": "2026-08-26T16:50:33.195Z",
+        "retryCount": 0,
+        "inputTokens": 14175,
+        "attemptCount": 1,
+        "outputTokens": 6319,
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "cachedInputTokens": null,
+        "calculatedCostUsd": 0.09154000000000001,
+        "rateLimitFailures": 0,
+        "cacheCreationInputTokens": null
+      }
+    },
+    {
+      "stage": "STRUCTURE",
+      "provider": null,
+      "model": null,
+      "telemetry": null
+    }
+  ],
+  "totals": {
+    "totalCostUsd": 0.445276,
+    "totalInputTokens": 57023,
+    "totalOutputTokens": 33123
+  }
+}

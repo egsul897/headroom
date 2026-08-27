@@ -28,7 +28,12 @@ describe("Adversarial verification spike (Task 12): measured before/after danger
     const rawResult = await analyzer.analyze({ documentText, definitionsText });
 
     const before = evaluateAll(HUMAN_PROVISIONS, rawResult.rules);
-    expect(before.matchedIncorrectUnflagged).toBe(2); // baseline established in analyzer-unseen-package.test.ts
+    // Baseline established in analyzer-unseen-package.test.ts - 1 dangerous-
+    // unflagged case (fwrg-6.10-c) after the Phase 1B fwrg-6.10-a/b
+    // ground-truth adjudication (human-ground-truth.ts's own comment)
+    // removed an incorrectly-authored formulaRef expectation, resolving
+    // fwrg-6.10-a to MATCHED_CORRECT.
+    expect(before.matchedIncorrectUnflagged).toBe(1);
 
     const verifiedRules = verifyAllRulesAgainstSource(rawResult.rules, documentText);
     const after = evaluateAll(HUMAN_PROVISIONS, verifiedRules);

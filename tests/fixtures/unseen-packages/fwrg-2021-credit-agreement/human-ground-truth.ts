@@ -33,6 +33,8 @@ export interface HumanProvision {
   formulaRef?: string; // CalculationRuleKind
   conditionTypes: string[]; // ContractConditionType values actually present
   definedTermRefs: string[];
+  /** See evaluator.ts's GroundTruthProvisionLike - Phase C fix (POST-ERROR-ANALYSIS field, see individual entries' own comments) so a definition-shaped item correctly extracted into definedTerms[] with no rules[] entry is not scored MISSING. */
+  expectedDefinedTermName?: string;
   classification: Representability;
   stretchNotes?: string;
 }
@@ -211,7 +213,23 @@ export const HUMAN_PROVISIONS: HumanProvision[] = [
     evaluationClass: "EXECUTABLE",
     posture: "OBLIGATION",
     action: "SATISFY_RATIO",
-    formulaRef: "RATIO_DERIVED_AMOUNT",
+    // GROUND-TRUTH ADJUDICATION (Phase 1B, docs/phase-1b-executability-semantics.md §8):
+    // originally authored as formulaRef: "RATIO_DERIVED_AMOUNT" (see git
+    // history for the exact prior line). Adjudicated GROUND_TRUTH_INCORRECT
+    // and corrected to omit formulaRef: this is a pure maintenance ratio
+    // test (the covenant never derives a permitted dollar amount - it is a
+    // pass/fail comparison of an actual ratio against a threshold), and
+    // CalculationRuleKind/RATIO_DERIVED_AMOUNT is documented (types.ts) as
+    // "representability first" for rules that DERIVE a capacity amount.
+    // lsb-6.15-springing-financial-covenant below - the directly analogous
+    // maintenance/springing ratio covenant in the OTHER unseen package's own
+    // ground truth - already omits formulaRef entirely, confirming this was
+    // an authoring inconsistency, not a considered choice. Removing it loses
+    // no real economic information (the ratio, threshold, and step schedule
+    // are fully captured by realFigures/thresholdValue/conditionTypes) and
+    // no evaluator reads formulaRef for any CalculationRuleKind value today
+    // (lib/contract-model/compiler/evaluator-registry.ts), so adding it back
+    // would not enable any new calculation either.
     conditionTypes: ["TIME_PERIOD", "MATERIAL_ACQUISITION"],
     definedTermRefs: ["Total Rent Adjusted Net Leverage Ratio", "Material Acquisition", "Test Period"],
     classification: "REPRESENTABLE_WITH_STRETCH",
@@ -228,7 +246,13 @@ export const HUMAN_PROVISIONS: HumanProvision[] = [
     evaluationClass: "EXECUTABLE",
     posture: "OBLIGATION",
     action: "SATISFY_RATIO",
-    formulaRef: "RATIO_DERIVED_AMOUNT",
+    // GROUND-TRUTH ADJUDICATION (Phase 1B, docs/phase-1b-executability-semantics.md §8):
+    // same adjudication as fwrg-6.10-a above - originally
+    // formulaRef: "RATIO_DERIVED_AMOUNT" (see git history), corrected to
+    // omit it for the same rationale (pure maintenance ratio test, derives
+    // no amount, inconsistent with the LSB unseen package's own
+    // lsb-6.15-springing-financial-covenant ground-truth precedent, no
+    // evaluator reads formulaRef today, no economic information lost).
     conditionTypes: [],
     definedTermRefs: ["Fixed Charge Coverage Ratio", "Test Period"],
     classification: "REPRESENTABLE_CLEANLY",
@@ -263,6 +287,13 @@ export const HUMAN_PROVISIONS: HumanProvision[] = [
     formulaRef: "CUMULATIVE_AMOUNT",
     conditionTypes: ["RATIO_SATISFIED", "OTHER_RULE_SATISFIED"],
     definedTermRefs: ["CNI Growth Amount", "Total Rent Adjusted Net Leverage Ratio", "Available Excluded Contribution Amount", "Cure Amount"],
+    // Phase C evaluator fix (task §38/§48/§56 - POST-ERROR-ANALYSIS, not a
+    // blind-run field: added after the real C0 run showed "Available Amount"
+    // present in the model's own definedTerms[] with zero rules[] entry -
+    // see docs/phase-c0-analyzer-validation.md §M). Any FWRG re-score using
+    // this field must be reported as POST-ERROR-ANALYSIS / NOT BLIND, never
+    // silently presented as a fresh blind result.
+    expectedDefinedTermName: "Available Amount",
     classification: "REPRESENTABLE_WITH_STRETCH",
     stretchNotes:
       "This is the hardest single provision in the package and the ontology's real stress test. The primitives all exist (CALCULATION_RULE + CUMULATIVE_AMOUNT/BUILDER_BASKET formulaRef; ContractRuleRelationshipType.BASKET_FEEDING for CNI Growth Amount feeding Available Amount; per-component conditions). But faithfully representing it requires DECOMPOSING one dense definitional paragraph into several linked atomic rows - a top-level Available Amount CALCULATION_RULE plus a separate row per lettered sub-clause, each carrying its own conditions - rather than one row with a single conditions[] array, because clause (ii)'s ratio gate and narrow-EOD carve-out do not apply to clauses (iii)/(iv). A single-call extractor that emits one ContractRule for 'Available Amount' with all conditions flattened together would be REPRESENTABLE_CLEANLY-looking but semantically wrong: it would either apply the ratio gate to the whole basket (too restrictive) or drop it entirely (too permissive, and the dangerous direction). This is a decomposition-discipline risk, not a missing taxonomy value - recorded here as the primary predicted source of a dangerous, plausibly-unflagged error and used as the main adversarial probe in Task 12.",
@@ -279,6 +310,7 @@ export const HUMAN_PROVISIONS: HumanProvision[] = [
     formulaRef: "OTHER",
     conditionTypes: [],
     definedTermRefs: ["Consolidated Net Income", "Consolidated Interest Expense"],
+    expectedDefinedTermName: "Consolidated Adjusted EBITDA", // Phase C evaluator fix, POST-ERROR-ANALYSIS - see fwrg-def-available-amount's own comment above.
     classification: "REPRESENTABLE_CLEANLY",
     stretchNotes:
       "Clean for REPRESENTATION (a DEFINITION node with definitionExcerpt plus USES_TERM/USES_FINANCIAL_INPUT dependency edges to each addback concept it references) - not a claim of full line-item EXECUTABILITY, which Phase B never promised for any covenant-defined-EBITDA metric and which RuleEvaluationClass=JUDGMENT_REQUIRED already signals honestly. CALCULATION_RULE_KINDS has no dedicated 'itemized-addback-stack' kind; OTHER is the correct, non-misleading fallback for this specific shape.",
@@ -295,6 +327,7 @@ export const HUMAN_PROVISIONS: HumanProvision[] = [
     formulaRef: "OTHER",
     conditionTypes: [],
     definedTermRefs: ["Consolidated Adjusted EBITDA", "Consolidated Cash Rental Expense"],
+    expectedDefinedTermName: "Consolidated Adjusted EBITDAR", // Phase C evaluator fix, POST-ERROR-ANALYSIS - see fwrg-def-available-amount's own comment above.
     classification: "REPRESENTABLE_CLEANLY",
   },
   {
@@ -321,6 +354,7 @@ export const HUMAN_PROVISIONS: HumanProvision[] = [
     posture: "N_A",
     conditionTypes: ["ENTITY_TYPE", "AMOUNT_THRESHOLD"],
     definedTermRefs: ["Loan Party", "Junior Lien Debt", "Threshold Amount"],
+    expectedDefinedTermName: "Restricted Debt", // Phase C evaluator fix, POST-ERROR-ANALYSIS - see fwrg-def-available-amount's own comment above.
     classification: "REPRESENTABLE_CLEANLY",
     stretchNotes:
       "CovenantFamily has no dedicated 'subordination/payment-priority' member; PRIORITY_RULE (ContractRuleType) and SOURCE_PRECEDENCE_RULE/SOURCE_PRECEDENCE (ContractRuleType/ContractRuleRelationshipType) exist for exactly this concept, so it is representable, but the human modeler had to actively choose AMENDMENT_WAIVER_CONSENT as the least-wrong existing family label - a real, if minor, ontology-fit gap worth flagging for Phase C rather than silently working around.",
