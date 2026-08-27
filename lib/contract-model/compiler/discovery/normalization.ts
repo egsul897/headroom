@@ -45,9 +45,19 @@ export interface FamiliesNormalizationResult {
 const VALID_ROLE_SET = new Set<string>(DISCOVERY_ROLES);
 const VALID_FAMILY_SET = new Set<string>(Object.values(CovenantFamily));
 
-/** Case/punctuation normalization shared by role and family matching - collapses whitespace/hyphens/underscores and lowercases, so "Ratio-Based Permission", "ratio_based_permission", and "RATIO BASED PERMISSION" all compare equal (§15's bounded, deterministic formatting tolerance). */
+/** Case/punctuation normalization shared by role and family matching - splits camelCase boundaries, collapses whitespace/hyphens/underscores/slashes, and lowercases, so "Ratio-Based Permission", "ratio_based_permission", "RATIO BASED PERMISSION", and "RatioBasedPermission" all compare equal (§15's bounded, deterministic formatting tolerance: case, spaces, hyphens, underscores, punctuation). */
 function normalizeToken(raw: string): string {
-  return raw.trim().toLowerCase().replace(/[\s_-]+/g, "_").replace(/[^a-z0-9_]/g, "");
+  return raw
+    .trim()
+    .replace(/([a-z0-9])([A-Z])/g, "$1_$2")
+    .toLowerCase()
+    .replace(/[\s_\-/]+/g, "_")
+    .replace(/[^a-z0-9_]/g, "");
+}
+
+/** §15's explicit "singular/plural" formatting-tolerance requirement - a bounded, deterministic single-trailing-"s" strip, tried only as a fallback comparison after the exact normalized token fails to match, never a general stemmer. */
+function stripTrailingS(token: string): string {
+  return token.endsWith("s") && token.length > 1 ? token.slice(0, -1) : token;
 }
 
 const ROLE_TOKEN_LOOKUP = new Map<string, DiscoveryRole>(DISCOVERY_ROLES.map((r) => [normalizeToken(r), r]));
@@ -125,12 +135,12 @@ export function normalizeDiscoveryRole(raw: string): RoleNormalizationResult {
   }
 
   const token = normalizeToken(trimmed);
-  const tokenMatch = ROLE_TOKEN_LOOKUP.get(token);
+  const tokenMatch = ROLE_TOKEN_LOOKUP.get(token) ?? ROLE_TOKEN_LOOKUP.get(stripTrailingS(token));
   if (tokenMatch) {
-    return { canonical: tokenMatch, status: "NORMALIZED_CANONICAL", rawValue: raw, reason: `Case/punctuation-normalized exact match to ${tokenMatch}.` };
+    return { canonical: tokenMatch, status: "NORMALIZED_CANONICAL", rawValue: raw, reason: `Case/punctuation/singular-plural-normalized exact match to ${tokenMatch}.` };
   }
 
-  const alias = ROLE_ALIASES[token];
+  const alias = ROLE_ALIASES[token] ?? ROLE_ALIASES[stripTrailingS(token)];
   if (alias) {
     return { canonical: alias, status: "NORMALIZED_CANONICAL", rawValue: raw, reason: `Alias match ("${token}" is a documented same-meaning synonym of ${alias}).` };
   }
@@ -151,17 +161,44 @@ export function normalizeDiscoveryRole(raw: string): RoleNormalizationResult {
 }
 
 /**
+ * Small alias table for FAMILY tokens that are common colloquial/
+ * industry-standard shorthand for an existing CovenantFamily member's
+ * full name, independent of any one document - "collateral" and
+ * "security" are the universal shorthand terms practitioners use for
+ * what the schema names COLLATERAL_SECURITY; "reporting" is the
+ * universal shorthand for REPORTING_INFORMATION; "guarantee and
+ * suretyship" is a standard legal pairing for what the schema names
+ * (plural) GUARANTEES. Also covers a model returning one of the new
+ * DiscoveryRole tokens (e.g. SECURITY_GRANT) in the FAMILY field -
+ * a same-provision cross-field slip, mapped to the family it most
+ * directly concerns rather than silently dropped. Every alias here is a
+ * generalized synonym, never a CONMED-specific string.
+ */
+const FAMILY_ALIASES: Record<string, CovenantFamily> = {
+  collateral: "COLLATERAL_SECURITY",
+  security: "COLLATERAL_SECURITY",
+  security_collateral: "COLLATERAL_SECURITY",
+  collateral_security_matters: "COLLATERAL_SECURITY",
+  security_grant: "COLLATERAL_SECURITY",
+  reporting: "REPORTING_INFORMATION",
+  guarantee_and_suretyship: "GUARANTEES",
+};
+
+/**
  * §5/§9 - deterministic canonicalization of one raw model-returned family
  * string against the real closed CovenantFamily Prisma enum. Never
- * throws. Unlike role, no keyword classifier is built here because the
- * real evidence base (Document B reproduction) never showed an
- * out-of-enum family value - CovenantFamily already includes GUARANTEES,
- * GUARANTOR_REQUIREMENTS, and COLLATERAL_SECURITY, which is why families
- * never appeared in the original crash's Zod issue list. This function
- * exists for defense-in-depth per this task's own §5 naming, using only
- * exact-match and case/punctuation normalization - anything else falls
- * back to dropped-with-reason rather than inventing an unvalidated
- * mapping with no evidence behind it.
+ * throws. The real Document B rerun (document-b-rerun-raw-items.json)
+ * showed a small set of out-of-enum family values beyond simple case/
+ * punctuation drift - singular/plural (GUARANTEE vs GUARANTEES),
+ * camelCase joining (AssetSales vs ASSET_SALES, handled by
+ * normalizeToken's camelCase split), and colloquial shorthand
+ * (COLLATERAL, Reporting) - each addressed generically below. Values
+ * with no confident generalizable mapping (e.g. a genuinely absent
+ * concept like "Intellectual Property", or the model's own literal
+ * "OTHER" token, which has no OTHER member in the schema by design - see
+ * this field's own doc-comment: leave families empty and use
+ * otherFamilyDescription instead) are left as an honest, dropped
+ * FALLBACK_REVIEW_REQUIRED rather than a fabricated mapping.
  */
 export function normalizeDiscoveryFamily(raw: string): { canonical: CovenantFamily | null; status: NormalizationStatus; rawValue: string; reason: string } {
   if (VALID_FAMILY_SET.has(raw)) {
@@ -172,16 +209,22 @@ export function normalizeDiscoveryFamily(raw: string): { canonical: CovenantFami
     return { canonical: null, status: "INVALID_UNUSABLE", rawValue: raw, reason: "Raw family value was empty or whitespace-only." };
   }
   const token = normalizeToken(trimmed);
+  const singularToken = stripTrailingS(token);
   for (const family of VALID_FAMILY_SET) {
-    if (normalizeToken(family) === token) {
-      return { canonical: family as CovenantFamily, status: "NORMALIZED_CANONICAL", rawValue: raw, reason: `Case/punctuation-normalized exact match to ${family}.` };
+    const familyToken = normalizeToken(family);
+    if (familyToken === token || familyToken === singularToken || stripTrailingS(familyToken) === token) {
+      return { canonical: family as CovenantFamily, status: "NORMALIZED_CANONICAL", rawValue: raw, reason: `Case/punctuation/singular-plural-normalized exact match to ${family}.` };
     }
+  }
+  const alias = FAMILY_ALIASES[token] ?? FAMILY_ALIASES[singularToken];
+  if (alias) {
+    return { canonical: alias, status: "NORMALIZED_CANONICAL", rawValue: raw, reason: `Alias match ("${token}" is a documented shorthand synonym of ${alias}).` };
   }
   return {
     canonical: null,
     status: "FALLBACK_REVIEW_REQUIRED",
     rawValue: raw,
-    reason: "No exact or normalized match against CovenantFamily - dropped from the canonical families array, preserved in otherFamilyDescription/familiesRaw rather than silently discarded.",
+    reason: "No exact, normalized, or alias match against CovenantFamily - dropped from the canonical families array, preserved in otherFamilyDescription/familiesRaw rather than silently discarded.",
   };
 }
 
