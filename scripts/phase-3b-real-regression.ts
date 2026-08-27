@@ -258,7 +258,7 @@ async function main() {
   console.log("\nAll findings:");
   for (const f of summary.findings) console.log(`  [${f.dangerous ? "DANGEROUS" : "flagged"}] ${f.category} (${f.ref}): ${f.detail}`);
 
-  const outDir = "tests/fixtures/unseen-packages/_phase-3b-real-regression";
+  const outDir = "tests/fixtures/unseen-packages/phase-3b-real-regression-run";
   mkdirSync(outDir, { recursive: true });
   const outFile = `${outDir}/run-${Date.now()}.json`;
   writeFileSync(
