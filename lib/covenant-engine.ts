@@ -178,11 +178,15 @@ export interface AssetSaleConfig {
 // Mirrors prisma/schema.prisma's DocumentType enum for structural typing of
 // query results. AMENDMENT/INTERCREDITOR_AGREEMENT/COMPLIANCE_CERTIFICATE were
 // added additively for the document onboarding pipeline
-// (docs/document-onboarding-pipeline-foundation.md) - the legacy engine
-// itself has no branching on document type and does not need to change to
-// support them; this is a type-only widening so DbDocumentRow-shaped Prisma
-// results keep type-checking after that schema change.
-export type DocumentType = "CREDIT_AGREEMENT" | "INDENTURE" | "OTHER" | "AMENDMENT" | "INTERCREDITOR_AGREEMENT" | "COMPLIANCE_CERTIFICATE";
+// (docs/document-onboarding-pipeline-foundation.md); AMENDED_AND_RESTATED_AGREEMENT/
+// SUPPLEMENTAL_INDENTURE/JOINDER/SECURITY_AGREEMENT/GUARANTEE/SIDE_LETTER/
+// FEE_LETTER/OTHER_DEBT_DOCUMENT/UNKNOWN were added the same way for the
+// Phase 2C debt package graph (docs/phase-2c-debt-package-graph.md §4) -
+// the legacy engine itself has no branching on document type and does not
+// need to change to support them; this is a type-only widening so
+// DbDocumentRow-shaped Prisma results keep type-checking after that schema
+// change.
+export type DocumentType = "CREDIT_AGREEMENT" | "INDENTURE" | "OTHER" | "AMENDMENT" | "INTERCREDITOR_AGREEMENT" | "COMPLIANCE_CERTIFICATE" | "AMENDED_AND_RESTATED_AGREEMENT" | "SUPPLEMENTAL_INDENTURE" | "JOINDER" | "SECURITY_AGREEMENT" | "GUARANTEE" | "SIDE_LETTER" | "FEE_LETTER" | "OTHER_DEBT_DOCUMENT" | "UNKNOWN";
 
 export interface DocumentInput {
   id: string;

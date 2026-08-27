@@ -1,0 +1,2263 @@
+{
+  "candidates": [
+    {
+      "discoveryId": "discovery-candidate:c1aeff2cfc75b906c42530a5",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01",
+      "families": [
+        "INDEBTEDNESS",
+        "GUARANTEES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits Loan Parties and Subsidiaries from creating, incurring, assuming, guaranteeing or otherwise becoming liable for Indebtedness except as permitted.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "ratio_expression",
+        "prohibitive_construction",
+        "permission_construction",
+        "covenant_verb",
+        "financial_metric",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.95,
+      "sourceCitation": "SECTION  6.01 Indebtedness . Create, incur, assume, permit,\nguarantee, or otherwise become or remain, directly or indirectly, liable with respect to any Indebtedness; provided , that, the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if on the date of the\ninc",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:8a1f671c765eb6021a8afdc5",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01",
+      "families": [
+        "INDEBTEDNESS",
+        "FINANCIAL_COVENANTS"
+      ],
+      "role": "RATIO_BASED_PERMISSION",
+      "description": "Permits incurrence of Indebtedness generally if, after giving effect, the Fixed Charge Coverage Ratio exceeds 2.0 to 1.0 and the Payment Conditions are satisfied.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "ratio_expression",
+        "prohibitive_construction",
+        "permission_construction",
+        "covenant_verb",
+        "financial_metric",
+        "headline_heading"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.9,
+      "sourceCitation": "SECTION  6.01 Indebtedness . Create, incur, assume, permit,\nguarantee, or otherwise become or remain, directly or indirectly, liable with respect to any Indebtedness; provided , that, the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if on the date of the\ninc",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:8f90d6eac4202e65071bbcf5",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(a)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(a)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts Indebtedness evidenced by the Credit Agreement and other Loan Documents from the general prohibition.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(a) Indebtedness evidenced by this Agreement and the other Loan Documents; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:7f9dc68409870f67e127c945",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(b)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(b)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts Indebtedness listed on Schedule 6.01 from the general prohibition.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(b) Indebtedness set forth on Schedule 6.01 ; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:7ff6fb1aa587e3fc24c0eda5",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(c)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(c)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "description": "Permits Permitted Purchase Money Indebtedness.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "permitted_construct"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(c) Permitted Purchase Money Indebtedness; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:9c15de699c4f69e1af7207e3",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(d)"
+      ],
+      "normalizedSourceRef": "6.01(d)",
+      "families": [
+        "INDEBTEDNESS",
+        "MFN_PRICING_PROTECTION"
+      ],
+      "role": "REFINANCING_PERMISSION",
+      "description": "Permits refinancings, renewals, replacements or extensions of Indebtedness permitted under clauses (b) and (c), subject to conditions in sub-clauses (i)-(iv).",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permitted_construct"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(d) refinancings, renewals, replacements or extensions of Indebtedness permitted under clauses (b) and (c) of this\n Section  6.01 (and continuance or renewal of any Permitted Liens associated therewith) so long as: ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:5702492d7dce2d5565e15fb6",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "PROVISO",
+      "description": "Requires that such refinancing not increase principal amount or interest rate except for increases up to the amount outstanding on the Effective Date.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "ratio_expression",
+        "prohibitive_construction",
+        "permission_construction",
+        "covenant_verb",
+        "financial_metric",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION  6.01 Indebtedness . Create, incur, assume, permit,\nguarantee, or otherwise become or remain, directly or indirectly, liable with respect to any Indebtedness; provided , that, the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if on the date of the\ninc",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:718133550b5e5d106743178a",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(f)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(f)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts intercompany Indebtedness owed by one Loan Party to another Loan Party.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(f) Indebtedness owing by any Loan Party to any other Loan Party; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:da8edb189792b07c9092cb84",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(g)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(g)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts Subordinated Indebtedness from the general prohibition.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(g) Subordinated Indebtedness; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:954760957805bbc0e2cd589f",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(i)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(i)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "description": "Permits other Indebtedness up to an aggregate principal amount not exceeding the greater of $70,000,000 and 5.5% of total consolidated assets.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value",
+        "percentage",
+        "greater_lesser_of"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(i) other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and\n5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:3dad23f4217974bef5909c01",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(j)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(j)",
+      "families": [
+        "INDEBTEDNESS",
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts Indebtedness constituting Permitted Investments.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "permitted_construct"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(j) Indebtedness constituting Permitted Investments; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:e9344a11c4425a4b9df7ac7b",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(l)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(l)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "description": "Permits Indebtedness for financing insurance premiums in the ordinary course of business, not exceeding the amount of such premiums.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(l) Indebtedness consisting of the financing of insurance premiums in the ordinary course of business, not in excess of the\namount of such premiums; ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:42a845d744056f42af74798a",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(m)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(m)",
+      "families": [
+        "INDEBTEDNESS",
+        "GUARANTEES"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts Indebtedness under the Secured Notes and guarantees thereof.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(m) Indebtedness of the Loan Parties and their Subsidiaries under the Secured Notes and\nguarantees thereof; ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:4193a5cde69ba73393de4554",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(n)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(n)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts Indebtedness in respect of Third Party Swap Obligations.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(n) Indebtedness in respect of Third Party Swap Obligations; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:1cefc285a22e433ff87508bc",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(p)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(p)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "description": "Permits ordinary course Indebtedness in respect of surety, appeal, performance and bid bonds and similar obligations and guarantees thereof.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(p) Indebtedness incurred in the ordinary course of business with respect to\nsurety and appeal bonds, performance bonds, bid bonds, appeal bonds, completion guarantee and similar obligations and guarantees thereof; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:1252d8891aa44f63829bb11d",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(q)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(q)",
+      "families": [
+        "INDEBTEDNESS",
+        "DISPOSITIONS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts customary indemnification obligations to purchasers in connection with Permitted Dispositions and guarantees thereof.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "permitted_construct"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(q) customary indemnification obligations to purchasers in connection with Permitted Dispositions and guarantees thereof; and\n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:eeaa34c907a1db1d81dff380",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(r)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(r)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "description": "Permits ordinary course Indebtedness related to credit cards, debit cards, stored value cards, procurement cards, or Banking Services, capped at $2,000,000 outstanding for amounts owed to non-Lender parties.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(r) Indebtedness incurred in the ordinary course of business in respect of credit cards, credit card processing services,\ndebit cards, stored value cards, commercial cards (including so-called “purchase cards”, “procurement cards” or “p-cards”), or Banking\nServices in an aggregate principal amount n",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:dab328c64a3cab8ffe636c17",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(s)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(s)",
+      "families": [
+        "INDEBTEDNESS",
+        "GUARANTEES"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts guarantees in the form of endorsements of instruments or items of payment for deposit or transmitted to the Administrative Agent.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(s) Guarantees in the form of endorsements of instruments or items of payment for deposit to the account of the Loan Parties or\nwhich are transmitted or turned over to the Administrative Agent; and ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:e9d255ef708d7e228f8e3290",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.01(t)",
+        "lsb::6.01"
+      ],
+      "normalizedSourceRef": "6.01(t)",
+      "families": [
+        "INDEBTEDNESS",
+        "GUARANTEES"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits guarantees of Indebtedness otherwise permitted under Sections 6.01(a) through (n).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(t) Guarantees of Indebtedness permitted under\n Sections 6.01(a) through (n)  above. ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:2a5195dda5a015bcfc2a4f30",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.02"
+      ],
+      "normalizedSourceRef": "6.02",
+      "families": [
+        "LIENS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits creating, incurring, assuming or permitting to exist any Lien on any assets or income/profits therefrom, subject to exceptions.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "permitted_construct",
+        "covenant_verb",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.95,
+      "sourceCitation": "SECTION  6.02 Liens. \n Create, incur, assume, or permit to exist, directly or indirectly, any Lien on or with respect to any of its assets, of any kind, whether now\nowned or hereafter acquired, or any income or profits therefrom, except for Permitted Liens (including Liens that are replacements of P",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:8a714910e3b3ec1b2fc2641b",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.02"
+      ],
+      "normalizedSourceRef": "6.02",
+      "families": [
+        "LIENS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts Permitted Liens from the general prohibition on Liens.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "permitted_construct",
+        "covenant_verb",
+        "headline_heading"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.9,
+      "sourceCitation": "SECTION  6.02 Liens. \n Create, incur, assume, or permit to exist, directly or indirectly, any Lien on or with respect to any of its assets, of any kind, whether now\nowned or hereafter acquired, or any income or profits therefrom, except for Permitted Liens (including Liens that are replacements of P",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:3e087c2485fe1583c6971aa6",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.02"
+      ],
+      "normalizedSourceRef": "6.02",
+      "families": [
+        "LIENS",
+        "INDEBTEDNESS"
+      ],
+      "role": "PERMISSION",
+      "description": "Permits replacement Liens securing Indebtedness that is refinanced, renewed, replaced or extended under Section 6.01(d).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "permitted_construct",
+        "covenant_verb",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION  6.02 Liens. \n Create, incur, assume, or permit to exist, directly or indirectly, any Lien on or with respect to any of its assets, of any kind, whether now\nowned or hereafter acquired, or any income or profits therefrom, except for Permitted Liens (including Liens that are replacements of P",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f130bc96f8222445415cd933",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.02"
+      ],
+      "normalizedSourceRef": "6.02",
+      "families": [
+        "LIENS",
+        "INDEBTEDNESS"
+      ],
+      "role": "CONDITION",
+      "description": "Requires that replacement Liens only encumber the assets that secured the original refinanced, renewed, or extended Indebtedness.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "permitted_construct",
+        "covenant_verb",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION  6.02 Liens. \n Create, incur, assume, or permit to exist, directly or indirectly, any Lien on or with respect to any of its assets, of any kind, whether now\nowned or hereafter acquired, or any income or profits therefrom, except for Permitted Liens (including Liens that are replacements of P",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:d26cc301b196e01d4e54e56e",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.03(a)"
+      ],
+      "normalizedSourceRef": "6.03(a)",
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits any Loan Party (other than the Parent) from entering into a merger, consolidation, reorganization, or reclassifying its Stock.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(a) Enter into any merger, consolidation, or reorganization, or, except for the Parent, reclassify its Stock; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f7b1997c561b53c19da3cee2",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.03(b)"
+      ],
+      "normalizedSourceRef": "6.03(b)",
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits a Loan Party from liquidating, winding up, or dissolving itself or suffering such liquidation/dissolution.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(b) liquidate, wind up, or dissolve itself (or suffer any liquidation or dissolution); or \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:25c1acc8abab9f9f20a20fe0",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.03(c)"
+      ],
+      "normalizedSourceRef": "6.03(c)",
+      "families": [
+        "FUNDAMENTAL_CHANGES",
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits the conveyance, sale, lease, license, assignment, transfer or other disposition, in one or a series of transactions, of all or substantially all assets of the Parent and its Restricted Subsidiaries taken as a whole.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(c) convey, sell, lease, license, assign, transfer, or otherwise dispose of, in one transaction or a series of transactions, all or\nsubstantially all of the assets of the Parent and its Restricted Subsidiaries, taken as a whole; provided , that the foregoing clauses ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:bb85050ae392c2cbccbc82e0",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.03(c)(a)",
+        "lsb::6.03"
+      ],
+      "normalizedSourceRef": "6.03(c)(a)",
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "PROVISO",
+      "description": "Provides that the prohibitions in clauses (a), (b) and (c) do not apply to the enumerated exceptions that follow.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "prohibitive_construction"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(a), (b) and\n(c) shall not apply to ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:5d1d6536ab092281de95eeb4",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.03(c)(a)(i)",
+        "lsb::6.03"
+      ],
+      "normalizedSourceRef": "6.03(c)(a)(i)",
+      "families": [
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits merger or consolidation of a Loan Party or its Subsidiary with and into another Loan Party, provided a Borrower survives if part of the transaction.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "permitted_construct",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(i) the merger or consolidation of a Loan Party or a Subsidiary of a Loan Party with and into another Loan Party (in each such case, so long as a Borrower (to the extent a Borrower is part of such transaction) is the\nsurviving entity of any such merger), (ii) the sale, transfer, lease or other dispo",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:94b354aa0aa621e0de76a529",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.03"
+      ],
+      "normalizedSourceRef": "6.03",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES",
+        "FUNDAMENTAL_CHANGES"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits sale, transfer, lease or other disposal of assets by any Loan Party or its Subsidiary to any other Loan Party.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION  6.03 Restrictions on Fundamental Changes . \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:9b17a56d58808b2c60885829",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.03"
+      ],
+      "normalizedSourceRef": "6.03",
+      "families": [
+        "FUNDAMENTAL_CHANGES",
+        "SUBSIDIARY_DESIGNATIONS"
+      ],
+      "role": "CONDITION",
+      "description": "Permits liquidation or dissolution of a non-Loan Party Subsidiary if the Borrower Representative determines in good faith it is in the best interests of the Parent and its Subsidiaries, not materially disadvantageous to Lenders, and the Subsidiary's assets are transferred to a Loan Party.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "headline_heading"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.8,
+      "sourceCitation": "SECTION  6.03 Restrictions on Fundamental Changes . \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f542bd169beb17d6c99fdd46",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04"
+      ],
+      "normalizedSourceRef": "6.04",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "General prohibition on any Loan Party conveying, selling, leasing, licensing, assigning, transferring or otherwise disposing of its assets, subject to enumerated exceptions and Section 6.03 permitted transactions.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "SECTION  6.04 Disposal of Assets . Other than transactions\npermitted under Section  6.03 , convey, sell, lease, license, assign, transfer, or otherwise dispose of any of the assets of any Loan Party, except that: \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:e79fa4f952a500410c504b81",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(a)",
+        "lsb::6.04"
+      ],
+      "normalizedSourceRef": "6.04(a)",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "BASKET",
+      "description": "Permits a Loan Party or Subsidiary to sell or dispose of other assets subject to Fair Market Value requirement and an annual aggregate cap (greater of $10,000,000 or 1.0% of consolidated total assets).",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "exception_marker",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(a) a Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of any of its other assets, provided that ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:8523d2aeab25a40630654f51",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(a)(i)",
+        "lsb::6.04"
+      ],
+      "normalizedSourceRef": "6.04(a)(i)",
+      "families": [
+        "DISPOSITIONS",
+        "MANDATORY_PREPAYMENTS",
+        "REPORTING_INFORMATION"
+      ],
+      "role": "CONDITION",
+      "description": "Requires delivery of an updated Borrowing Base Certificate demonstrating compliance with Section 2.01(a) when a disposition under (a) involves ABL Priority Collateral.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value",
+        "percentage",
+        "prohibitive_construction",
+        "greater_lesser_of"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "(i) to\nthe extent such disposition involves ABL Priority Collateral, the Borrowers shall have, concurrently with or prior to the occurrence of such disposition, delivered a new Borrowing Base Certificate (giving effect to such disposition and any repayment\nof the Obligations to be made in connection",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:364b69267be61e3d548479f0",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04"
+      ],
+      "normalizedSourceRef": "6.04",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "CONDITION",
+      "description": "Requires that assets sold under clause (a) be sold for Fair Market Value.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "SECTION  6.04 Disposal of Assets . Other than transactions\npermitted under Section  6.03 , convey, sell, lease, license, assign, transfer, or otherwise dispose of any of the assets of any Loan Party, except that: \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:8222c7bd158702d8bb3a4479",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04"
+      ],
+      "normalizedSourceRef": "6.04",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "BASKET",
+      "description": "Caps aggregate Fair Market Value of assets sold under clause (a) in any fiscal year at the greater of $10,000,000 and 1.0% of consolidated total assets.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION  6.04 Disposal of Assets . Other than transactions\npermitted under Section  6.03 , convey, sell, lease, license, assign, transfer, or otherwise dispose of any of the assets of any Loan Party, except that: \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:95de51404f90a97bb78ca2ae",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(b)"
+      ],
+      "normalizedSourceRef": "6.04(b)",
+      "families": [
+        "DISPOSITIONS",
+        "COLLATERAL_SECURITY",
+        "LIENS"
+      ],
+      "role": "PERMISSION",
+      "description": "Permits any Loan Party or Subsidiary to sell, transfer or dispose of Notes Priority Collateral if permitted under the Secured Notes Documents or consented to by requisite Secured Notes holders, with automatic release of Administrative Agent's security interest and application of proceeds per the Secured Notes Documents/Indenture.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "exception_marker",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(b) notwithstanding anything to the contrary contained herein, any Loan Party and any of its respective\nSubsidiaries may sell, transfer or otherwise dispose of any Notes Priority Collateral owned by such Person so long as such disposition is permitted under the Secured Notes Documents or if the requ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:004c832541427691c8d1f606",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(c)",
+        "lsb::6.04"
+      ],
+      "normalizedSourceRef": "6.04(c)",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "BASKET",
+      "description": "Permits a Loan Party or Subsidiary to sell or otherwise dispose of assets subject to multiple conditions including cash consideration threshold, Fair Market Value, Borrowing Base Certificate delivery, and absence of a continuing Event of Default.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "exception_marker",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(c) a Loan Party and any Subsidiary of a Loan Party may sell or otherwise dispose of its assets, provided that ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:4bed333bbf12b038d55ece2b",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(c)(i)",
+        "lsb::6.04"
+      ],
+      "normalizedSourceRef": "6.04(c)(i)",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "CONDITION",
+      "description": "Requires that at least 75% of consideration received in a disposition under clause (c) be paid in cash or Cash Equivalents.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "percentage"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(i) 75% of the\nconsideration received thereunder is paid in cash or Cash Equivalents, (ii) the sale price is at least Fair Market Value, (iii) to the extent such disposition involves ABL Priority Collateral, the Parent shall have, concurrently with or\nprior to the occurrence of such disposition, del",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:26415415cdf63dcc6fcb006c",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(d)"
+      ],
+      "normalizedSourceRef": "6.04(d)",
+      "families": [
+        "DISPOSITIONS"
+      ],
+      "role": "PERMISSION",
+      "description": "Permits the Parent to issue or sell its own Stock at any time, subject to paragraph (n) of Article VII.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.75,
+      "sourceCitation": "(d) the Parent\nmay at any time issue or sell Stock of the Parent (subject to paragraph (n)  of Article VII ); ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:5940b7554eacca1da9f6a119",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(e)"
+      ],
+      "normalizedSourceRef": "6.04(e)",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "PERMISSION",
+      "description": "Permits a Loan Party or Subsidiary to sell, transfer or dispose of Equipment that is substantially worn, damaged, or obsolete in the ordinary course of business.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "(e) any Loan Party and any\nof its respective Subsidiaries may sell, transfer or otherwise dispose of Equipment that is substantially worn, damaged, or obsolete in the ordinary course of the applicable Loan Parties’ business; \n any Loan Party and any of its respective Subsidiaries may sell Inventory ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:bc8bcebbcd40e61b935127ef",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(f)"
+      ],
+      "normalizedSourceRef": "6.04(f)",
+      "families": [
+        "DISPOSITIONS"
+      ],
+      "role": "PERMISSION",
+      "description": "Permits use or transfer of money or Cash Equivalents by a Loan Party or Subsidiary in any manner not otherwise prohibited by the Agreement or other Loan Documents.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.75,
+      "sourceCitation": "(f) any Loan Party and any of its respective Subsidiaries may use or transfer of money or Cash Equivalents in a manner that is not prohibited\nby the terms of this Agreement or the other Loan Documents; ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:42c69e8089aabc67b1dd7eaa",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(g)"
+      ],
+      "normalizedSourceRef": "6.04(g)",
+      "families": [
+        "DISPOSITIONS"
+      ],
+      "role": "PERMISSION",
+      "description": "Permits non-exclusive licensing of patents, trademarks, copyrights and other intellectual property in the ordinary course of business.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "(g) any Loan Party and any of its respective Subsidiaries may license, on a non-exclusive basis, patents, trademarks, copyrights, and other intellectual property rights in the ordinary course of the applicable Loan Parties business; \n   84 \n\n \n\n\n \n \n\n \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:a7577380bb8ff153a51c0930",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(h)"
+      ],
+      "normalizedSourceRef": "6.04(h)",
+      "families": [
+        "DISPOSITIONS",
+        "GUARANTOR_REQUIREMENTS",
+        "ENTITY_SCOPE_RESTRICTIONS"
+      ],
+      "role": "PERMISSION",
+      "description": "Permits intercompany sales, transfers, leases or other dispositions of assets among Loan Parties, provided a Borrower Loan Party may not dispose of assets to a non-Borrower Loan Party.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "exception_marker"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(h) any Loan Party and any of its respective Subsidiaries may consummate sales, transfers,\nleases or other dispositions of assets to any other Loan Party; provided that no Loan Party that is a Borrower may consummate any such disposition to any Loan Party that is not a Borrower; and \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:e38b7be1a9a9f07c719c4941",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.04(i)"
+      ],
+      "normalizedSourceRef": "6.04(i)",
+      "families": [
+        "DISPOSITIONS",
+        "ASSET_SALES"
+      ],
+      "role": "PERMISSION",
+      "description": "Permits a Loan Party or Subsidiary to sell or otherwise dispose of Accounts that are not Eligible Accounts.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "covenant_verb"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "(i) any Loan Party and any of its respective Subsidiaries may sell or otherwise dispose of Accounts which are not Eligible Accounts. \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:1488910e7586a1716553df1e",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.07"
+      ],
+      "normalizedSourceRef": "6.07",
+      "families": [
+        "QUALITATIVE_NEGATIVE_COVENANTS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits any Loan Party from making a material change in the principal nature of the Loan Parties' business taken as a whole.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "prohibitive_construction",
+        "exception_marker",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "SECTION  6.07 Nature of Business . Make any material change in the principal nature of the Loan Parties’\nbusiness, taken as a whole; provided that the foregoing shall not prohibit any Loan Party or Loan Parties from engaging in any substantially similar or ancillary, related and natural extensions o",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f99793324e896be1d745cc77",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.07"
+      ],
+      "normalizedSourceRef": "6.07",
+      "families": [
+        "QUALITATIVE_NEGATIVE_COVENANTS",
+        "DISPOSITIONS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Clarifies that the prohibition does not restrict engaging in substantially similar, ancillary, related or natural extensions of the business, or dispositions otherwise permitted under the agreement.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "prohibitive_construction",
+        "exception_marker",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION  6.07 Nature of Business . Make any material change in the principal nature of the Loan Parties’\nbusiness, taken as a whole; provided that the foregoing shall not prohibit any Loan Party or Loan Parties from engaging in any substantially similar or ancillary, related and natural extensions o",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:34feb9b92f58d02605eec0ff",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08(a)"
+      ],
+      "normalizedSourceRef": "6.08(a)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits any Loan Party from making payments in respect of Indebtedness (other than the Secured Notes) except as expressly permitted by the enumerated exceptions in clauses (i)-(vi).",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "permission_construction",
+        "exception_marker"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(a) Make any payment in respect of Indebtedness (other than Indebtedness in respect of the Secured Notes), except the following payments\nof Indebtedness shall be permitted: ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:4c5592510ba6608e7aff01d5",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08(a)(i)",
+        "lsb::6.08"
+      ],
+      "normalizedSourceRef": "6.08(a)(i)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits payments in respect of the Secured Obligations.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(i) payments in respect of the Secured Obligations; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:91c747fcce91f27db694ad81",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08(a)(ii)",
+        "lsb::6.08"
+      ],
+      "normalizedSourceRef": "6.08(a)(ii)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits scheduled payments of principal, interest, and other required amounts on Indebtedness permitted under Section 6.01, excluding Subordinated Indebtedness which is separately governed by clause (iv).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(ii) scheduled payments of principal and interest, and payment of any other amount, in each case to the extent such payment is\nrequired pursuant to the terms of any Indebtedness permitted under Section  6.01 , other than Subordinated Indebtedness (which is covered by clause  (iv) below); \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:76c62f3e3ebcc23f34e646e6",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08(a)(iii)"
+      ],
+      "normalizedSourceRef": "6.08(a)(iii)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "REFINANCING_PERMISSION",
+      "description": "Permits payments of Indebtedness made as a result of a refinancing permitted under Section 6.01(d).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(iii) payments of Indebtedness as a result of any refinancing of Indebtedness permitted by\n Section  6.01(d) ; ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:44973b4c3442112ab5c9f68c",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08(a)(iv)",
+        "lsb::6.08"
+      ],
+      "normalizedSourceRef": "6.08(a)(iv)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits payments of Subordinated Indebtedness to the extent permitted under the terms of that Indebtedness or its subordination agreement.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(iv) payments of Subordinated Indebtedness to the extent permitted in\naccordance with the terms of such Subordinated Indebtedness or any agreement with respect thereto governing the subordination thereof; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:67064d13c52b6ff4d62fefa3",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08(a)(v)",
+        "lsb::6.08"
+      ],
+      "normalizedSourceRef": "6.08(a)(v)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "CONDITION",
+      "description": "Permits payments of Indebtedness to the extent the Payment Conditions (a defined term not provided) are satisfied.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.8,
+      "sourceCitation": "(v) payments of Indebtedness to the extent the Payment Conditions are satisfied; and \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:7cf5d8bf8b51cb8a788e95e6",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08(a)(vi)",
+        "lsb::6.08"
+      ],
+      "normalizedSourceRef": "6.08(a)(vi)",
+      "families": [
+        "INDEBTEDNESS"
+      ],
+      "role": "BASKET",
+      "description": "Permits payments of Indebtedness up to a $500,000 aggregate annual cap, with a proviso that this basket is only available if the payment is not otherwise permitted under any other clause of Section 6.08(a).",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(vi) payments of Indebtedness not to exceed $500,000 in the aggregate in any fiscal year of the Loan Parties (it being\nunderstood and agreed that any payment of Indebtedness made pursuant this clause (vi) shall only be permitted if such payment would not, at the time thereof, be permitted (or be abl",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:0aedf65770c4567350dba903",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08(b)"
+      ],
+      "normalizedSourceRef": "6.08(b)",
+      "families": [
+        "INDEBTEDNESS",
+        "AMENDMENT_WAIVER_CONSENT"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits any Loan Party from amending, modifying, altering or changing the terms of any document evidencing or concerning Subordinated Indebtedness in a manner materially adverse to the Administrative Agent or Lenders, as determined in the Administrative Agent's Permitted Discretion.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "prohibitive_construction",
+        "permitted_construct"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(b) No Loan Party shall amend, modify, alter, or change any of the terms or conditions of any\nagreement, instrument, document, indenture, or other writing evidencing or concerning Subordinated Indebtedness if such amendment, modification, alteration or change would be materially adverse to the Admin",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:cea37d84cffe6e2e218270d9",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.08"
+      ],
+      "normalizedSourceRef": "6.08",
+      "families": [],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Section-level container for 6.08 (Payments of Indebtedness; Modifications of Subordinated Indebtedness) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "headline_heading"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.5,
+      "sourceCitation": "SECTION  6.08 Payments of Indebtedness; Modifications of Subordinated Indebtedness .\n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:2a19cadc68de7d438449a40c",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.11"
+      ],
+      "normalizedSourceRef": "6.11",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits any Loan Party from making distributions, dividends, or repurchases/redemptions of its Stock, subject to enumerated exceptions.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "prohibitive_construction",
+        "exception_marker",
+        "covenant_verb",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.95,
+      "sourceCitation": "SECTION  6.11 Restricted Payments . Make any\ndistribution or declare or pay any dividends (in cash or other property, other than common Stock) on, or purchase, acquire, redeem, or retire any of any Loan Party’s Stock, of any class, whether now or hereafter outstanding (each, a\n“ Restricted Payment ”",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:cb5377328576a0c9174e8c36",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.11(a)",
+        "lsb::6.11"
+      ],
+      "normalizedSourceRef": "6.11(a)",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Restricted Payments made by one Loan Party to another Loan Party.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(a) Restricted\nPayments by a Loan Party to another Loan Party; ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:7ad342c04f0a60a764d9a41a",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.11(b)",
+        "lsb::6.11"
+      ],
+      "normalizedSourceRef": "6.11(b)",
+      "families": [
+        "RESTRICTED_PAYMENTS",
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Restricted Payments that constitute transactions otherwise permitted under Section 6.03 (Investments).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.85,
+      "sourceCitation": "(b) transactions permitted under Section  6.03 ; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:ee6fe6b75c4886ff38b7b0bc",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.11(c)",
+        "lsb::6.11"
+      ],
+      "normalizedSourceRef": "6.11(c)",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "CONDITION",
+      "description": "Permits Restricted Payments so long as the defined 'Payment Conditions' are satisfied at the time of each such payment.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.85,
+      "sourceCitation": "(c) Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment; and \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:d0f42b104cf5ca9ee7408ea8",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.11(d)",
+        "lsb::6.11"
+      ],
+      "normalizedSourceRef": "6.11(d)",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "BASKET",
+      "description": "Permits Restricted Payments up to an aggregate $500,000 basket per fiscal year of Parent, available only to the extent such payment is not otherwise permitted under another clause of this Section.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value",
+        "shared_cap"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(d) Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any\nRestricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:7cafbe3a7a363d8993be5e7c",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.11(d)",
+        "lsb::6.11"
+      ],
+      "normalizedSourceRef": "6.11(d)",
+      "families": [
+        "RESTRICTED_PAYMENTS"
+      ],
+      "role": "PROVISO",
+      "description": "Limits use of the $500,000 basket in clause (d) to Restricted Payments that would not otherwise be permitted under any other clause of Section 6.11, preventing double-counting.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value",
+        "shared_cap"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.8,
+      "sourceCitation": "(d) Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any\nRestricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:35a3d89a2af1d8c126b418cd",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "Prohibits Loan Parties from making or acquiring any Investment or incurring liabilities in connection with any Investment, subject to enumerated exceptions.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "prohibitive_construction",
+        "covenant_verb",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.97,
+      "sourceCitation": "SECTION  6.13 Investments . Directly or indirectly, make or acquire any Investment, or incur any liabilities\n(including contingent obligations) for or in connection with any Investment; provided , however , that the foregoing shall not prohibit any of the following: \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:83c14bd3d6e1656d0fc2d08d",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(a)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(a)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Investments listed on Schedule 6.13 (grandfathered investments).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(a) Investments set forth on Schedule 6.13 ; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:ba68f8dd721ae3cddd13fcea",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(b)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(b)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Investments in Cash Equivalents.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(b) Investments in Cash Equivalents; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:3bbc7a549f2a7b19edec286c",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(c)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(c)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Investments in negotiable instruments for collection.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(c) Investments in negotiable instruments for collection; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f563d6d8423e751c43ad3662",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(d)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(d)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits advances made in connection with purchases of goods or services in the ordinary course of business.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(d) advances made in connection with purchases of goods or services in the ordinary course of business; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:97e2dc61aeed6644bdbb8a99",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(e)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(e)",
+      "families": [
+        "INVESTMENTS",
+        "ENTITY_SCOPE_RESTRICTIONS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Investments by any Loan Party in any other Loan Party, including Investments in the Parent.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(e) Investments by any Loan Party in any other Loan Party (including Investments made by any Loan Party in the Parent); \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:bc2c909cb08f05ab699bd764",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(f)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(f)",
+      "families": [
+        "INVESTMENTS",
+        "GUARANTEES"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Investments consisting of guarantees permitted under Section 6.01, cross-referencing that indebtedness/guarantee covenant.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(f) guarantees permitted under Section  6.01 ; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:181a383ac2653e428c00a100",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(g)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(g)",
+      "families": [
+        "INVESTMENTS",
+        "SUBSIDIARY_DESIGNATIONS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Investments in a newly created Subsidiary via purchase or acquisition of its Stock, including by merger.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(g) Investments in any newly created Subsidiary by means of purchase or other acquisition of the Stock of such Subsidiary including by way of\nmerger; ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:a5d4c9ee637ec7698370cda1",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(h)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(h)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "BASKET",
+      "description": "Permits Investments in joint ventures up to an aggregate cap of $35,000,000.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value",
+        "shared_cap"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.92,
+      "sourceCitation": "(h) Investments in joint ventures in an aggregate amount not exceeding $35,000,000; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:f488011afdf5072c0effe3c0",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(i)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(i)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Investments in respect of Swap Obligations and Third Party Swap Obligations.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(i) Investments in respect of Swap Obligations and Third Party Swap Obligations; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:6682a6b7aa54e7fbbeebf00b",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(j)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(j)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Permits Special Permitted Investments, a defined category not detailed in this section.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "permitted_construct"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.7,
+      "sourceCitation": "(j) Special Permitted Investments; \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:50ee5d49e4a327b3f2b681a0",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(k)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(k)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "CONDITION",
+      "description": "Permits Investments to the extent the Payment Conditions are satisfied, a defined test not detailed here.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.8,
+      "sourceCitation": "(k) Investments to the extent the Payment Conditions are satisfied; and \n ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:8bcbc5e0af482939736cf162",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(l)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(l)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "BASKET",
+      "description": "Permits a general basket of Investments not exceeding $5,000,000 outstanding at any time, available only if the Investment would not otherwise be permitted under another clause of this Section.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(l) Investments not to exceed $5,000,000 in the aggregate outstanding at any one time (it being understood and agreed that any Investment made\npursuant this clause (l) shall only be permitted if such Investment would not, at the time made, be permitted (or be able to be made) under any other clause ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:54c1456f00169f5bc7f2b308",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.13(l)",
+        "lsb::6.13"
+      ],
+      "normalizedSourceRef": "6.13(l)",
+      "families": [
+        "INVESTMENTS"
+      ],
+      "role": "PROVISO",
+      "description": "Limits use of the clause (l) basket to Investments that would not be permitted or able to be made under any other clause of Section 6.13, preventing double-counting.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "(l) Investments not to exceed $5,000,000 in the aggregate outstanding at any one time (it being understood and agreed that any Investment made\npursuant this clause (l) shall only be permitted if such Investment would not, at the time made, be permitted (or be able to be made) under any other clause ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:e1a2c06d81130c629b5c7825",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.14"
+      ],
+      "normalizedSourceRef": "6.14",
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "GENERAL_PROHIBITION",
+      "description": "General prohibition on Loan Parties directly or indirectly entering into or permitting to exist any transaction with any Affiliate, except as otherwise excepted.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "SECTION  6.14 Transactions With Affiliates . Except for\ntransactions ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:4e5bab2bdc14284f4d1bd1d9",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.14(a)",
+        "lsb::6.14"
+      ],
+      "normalizedSourceRef": "6.14(a)",
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts transactions listed on Schedule 6.14 from the general prohibition on affiliate transactions.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL",
+        "NEIGHBORHOOD_EXPANSION"
+      ],
+      "evidenceSignals": [
+        "dollar_value"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "(a) set forth on Schedule 6.14 , (b) transactions not exceeding $5,000,000 in the aggregate at any time, and (c) transactions that are ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:cc87ac141ce66185965ea122",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.14"
+      ],
+      "normalizedSourceRef": "6.14",
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "BASKET",
+      "description": "Permits affiliate transactions not exceeding $5,000,000 in the aggregate at any time.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "SECTION  6.14 Transactions With Affiliates . Except for\ntransactions ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:48fcef18edd9e49ca428cfaf",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.14"
+      ],
+      "normalizedSourceRef": "6.14",
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "EXCEPTION",
+      "description": "Excepts affiliate transactions that are in the ordinary course of business, on fair and reasonable terms, and no less favorable than an arm's-length transaction with a non-Affiliate.",
+      "multipleRulesLikely": true,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION  6.14 Transactions With Affiliates . Except for\ntransactions ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:090a9613899d1a219ce292fa",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.14"
+      ],
+      "normalizedSourceRef": "6.14",
+      "families": [
+        "AFFILIATE_TRANSACTIONS"
+      ],
+      "role": "CONDITION",
+      "description": "Requires that the transaction be in the ordinary course of the Loan Parties' business as a condition to the exception in (c).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": false,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "exception_marker"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.85,
+      "sourceCitation": "SECTION  6.14 Transactions With Affiliates . Except for\ntransactions ",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:d6b410b5723bffaf35e7505a",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.15"
+      ],
+      "normalizedSourceRef": "6.15",
+      "families": [
+        "FINANCIAL_COVENANTS",
+        "SPRINGING_COVENANTS"
+      ],
+      "role": "FINANCIAL_TEST",
+      "description": "Requires maintenance of a minimum Fixed Charge Coverage Ratio of 1.00:1.00, tested monthly on a trailing twelve-month basis, but only during an Availability Block Removal Period.",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "ratio_expression",
+        "financial_metric",
+        "headline_heading"
+      ],
+      "reviewStatus": "AUTO_ACCEPTED",
+      "confidence": 0.9,
+      "sourceCitation": "SECTION  6.15 Financial Covenant . Solely during any Availability Block Removal Period, fail to maintain a\nFixed Charge Coverage Ratio of not less than 1.00:1.00, measured monthly as of the last day of each month on a trailing twelve-month basis (commencing with the month immediately following the m",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    },
+    {
+      "discoveryId": "discovery-candidate:cfcfb9f2d2486884df97dc1a",
+      "documentId": "lsb",
+      "structuralNodeKeys": [
+        "lsb::6.15"
+      ],
+      "normalizedSourceRef": "6.15",
+      "families": [
+        "SPRINGING_COVENANTS",
+        "REPORTING_INFORMATION"
+      ],
+      "role": "TRIGGER",
+      "description": "The covenant's applicability is triggered by and its testing period keyed to the occurrence of an Availability Block Removal Period and the prior Availability Block Removal Notice testing date under Section 2.01(b)(i).",
+      "multipleRulesLikely": false,
+      "definedTermDependencyLikely": true,
+      "discoveryMethods": [
+        "SEMANTIC_CLASSIFICATION",
+        "DETERMINISTIC_SIGNAL"
+      ],
+      "evidenceSignals": [
+        "ratio_expression",
+        "financial_metric",
+        "headline_heading"
+      ],
+      "reviewStatus": "NEEDS_REVIEW",
+      "confidence": 0.75,
+      "sourceCitation": "SECTION  6.15 Financial Covenant . Solely during any Availability Block Removal Period, fail to maintain a\nFixed Charge Coverage Ratio of not less than 1.00:1.00, measured monthly as of the last day of each month on a trailing twelve-month basis (commencing with the month immediately following the m",
+      "discoveryRunVersion": "phase-2b-discovery-pipeline.v1+phase-2b-discovery.v1"
+    }
+  ],
+  "summary": {
+    "documentId": "lsb",
+    "nodesInspected": 76,
+    "deterministicCandidatesGenerated": 44,
+    "semanticCandidatesEvaluated": 94,
+    "duplicatesBeforeReconciliation": 13,
+    "finalCandidateCount": 82,
+    "wallClockMs": 156696.94617600006,
+    "modelCalls": 10,
+    "inputTokens": 25754,
+    "outputTokens": 18362
+  }
+}

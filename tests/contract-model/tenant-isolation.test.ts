@@ -9,7 +9,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { prisma } from "../../lib/prisma";
 import { computeStableKey } from "../../lib/contract-model/stable-keys";
 import { validateTenantIsolation } from "../../lib/contract-model/validators";
-import { getRulesByCovenantFamily, getUnresolvedReferences } from "../../lib/contract-model/service";
+import { getRulesByCovenantFamily, getUnresolvedReferences, getInstruments, getDocumentsForInstrument } from "../../lib/contract-model/service";
 
 const COMPANY_A = "fixture-tenant-isolation-co-a";
 const COMPANY_B = "fixture-tenant-isolation-co-b";
@@ -68,5 +68,25 @@ describe("Tenant/workspace isolation (task §29/§80)", () => {
     const result = await validateTenantIsolation(COMPANY_A, COMPANY_B);
     expect(result.ok).toBe(false);
     expect(result.issues.some((i) => i.rule === "tenant-isolation")).toBe(true);
+  });
+
+  it("Phase 2C package-graph tables (DebtInstrument/DocumentRelationshipEdge) are tenant-scoped, and validateTenantIsolation catches a deliberately introduced cross-tenant relationship edge", async () => {
+    const instrumentA = await prisma.debtInstrument.create({ data: { companyId: COMPANY_A, baseDocumentId: DOCUMENT_A, name: "Company A's own instrument" } });
+    const instrumentB = await prisma.debtInstrument.create({ data: { companyId: COMPANY_B, baseDocumentId: DOCUMENT_B, name: "Company B's own instrument" } });
+    await prisma.document.update({ where: { id: DOCUMENT_A }, data: { instrumentId: instrumentA.id } });
+    await prisma.document.update({ where: { id: DOCUMENT_B }, data: { instrumentId: instrumentB.id } });
+
+    const instrumentsA = await getInstruments(COMPANY_A);
+    expect(instrumentsA).toHaveLength(1);
+    expect(instrumentsA[0]!.id).toBe(instrumentA.id);
+    const membersA = await getDocumentsForInstrument(instrumentA.id);
+    expect(membersA.map((d) => d.id)).toEqual([DOCUMENT_A]);
+
+    // Deliberately misconfigured: a Company A relationship edge pointing at Company B's document.
+    await prisma.documentRelationshipEdge.create({ data: { companyId: COMPANY_A, sourceDocumentId: DOCUMENT_A, targetDocumentId: DOCUMENT_B, relationshipType: "AMENDS", sourceCitation: "deliberately cross-tenant for this test" } });
+
+    const result = await validateTenantIsolation(COMPANY_A, COMPANY_B);
+    expect(result.ok).toBe(false);
+    expect(result.issues.some((i) => i.message.includes("DocumentRelationshipEdge"))).toBe(true);
   });
 });
