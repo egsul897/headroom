@@ -37,6 +37,8 @@ const REGION: RoutedRegion = {
   admissionReasons: ["INDEPENDENT_SIGNAL"],
   fromRawSourceFallback: false,
   routingAlgorithmVersion: "test",
+  closureDepth: 0,
+  closureSourceNodeKey: null,
 };
 
 const CTX = { companyId: "test-co", packageKey: "test-pkg", instrumentKey: null, operativeVersionRef: null, headingHint: "Section 6.01 Indebtedness" };

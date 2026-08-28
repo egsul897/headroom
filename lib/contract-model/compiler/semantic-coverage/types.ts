@@ -162,7 +162,29 @@ export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3e-semantic-co
 // unit hypothesis generation are deliberately separate steps.
 // ---------------------------------------------------------------------------
 
-export type RoutedRegionAdmissionReason = "INDEPENDENT_SIGNAL" | "HEADLINE_SECTION" | "DEFINITION_NODE" | "UNSTRUCTURED_MULTI_ITEM" | "RAW_SOURCE_FALLBACK";
+export type RoutedRegionAdmissionReason =
+  | "INDEPENDENT_SIGNAL"
+  | "HEADLINE_SECTION"
+  | "DEFINITION_NODE"
+  | "UNSTRUCTURED_MULTI_ITEM"
+  | "RAW_SOURCE_FALLBACK"
+  // Phase 3F.1 Workstream A (F1) - hierarchical routing closure (task §6-18).
+  // A node admitted for NONE of the reasons above (no independent local
+  // signal, not a headline/definition node, no unrepresented inline
+  // enumeration) can still deserve hypothesis-generation attention purely
+  // because of its bounded structural RELATIONSHIP to a node that WAS
+  // independently admitted ("seed" region) - e.g. a lettered basket item
+  // with no local dollar/percentage/keyword token, nested under an
+  // operative "shall not ... except:" seed. Every closure reason below is
+  // evidence-based (derived from real StructuralIndex parent/child/sibling
+  // relationships, never a package-specific lookup table) and bounded
+  // (DocumentRoutingResult.closureStats records the resulting expansion so
+  // this never silently becomes "route the whole document" - task §16/§46).
+  | "CHILD_OF_ROUTED_COVENANT_REGION"
+  | "CHAPEAU_OF_ROUTED_ENUMERATION"
+  | "SIBLING_IN_ROUTED_EXCEPTION_LIST"
+  | "TRAILING_PROVISO_OF_ROUTED_REGION"
+  | "ANCESTOR_SCOPE_CONTEXT";
 
 export interface RoutedRegion {
   /** Deterministic, content-derived. */
@@ -178,6 +200,23 @@ export interface RoutedRegion {
   admissionReasons: RoutedRegionAdmissionReason[];
   fromRawSourceFallback: boolean;
   routingAlgorithmVersion: string;
+  /** 0 for a seed region admitted on its own local evidence (or the raw-source-fallback path); 1+ for a region admitted only via closure, counting hops from the nearest seed. */
+  closureDepth: number;
+  /** The seed (or nearer closure) node that justified this region's closure admission; null for a seed region itself. */
+  closureSourceNodeKey: string | null;
+}
+
+/** Phase 3F.1 §16/§46 - boundedness evidence for the closure pass, so routing expansion is always measurable rather than merely asserted. */
+export interface RoutingClosureStats {
+  seedRegionCount: number;
+  closureAdmittedRegionCount: number;
+  maxClosureDepth: number;
+  /** Largest single connected seed+closure group, by node count. */
+  largestClosureGroupSize: number;
+  /** closureAdmittedRegionCount / max(seedRegionCount, 1) - the headline boundedness metric task §46 asks be tracked and gated. */
+  expansionFactor: number;
+  /** True if the per-seed closure cap (MAX_CLOSURE_NODES_PER_SEED) truncated any seed's closure group - a disclosed, non-silent bound rather than an unbounded walk. */
+  capped: boolean;
 }
 
 export interface DocumentRoutingResult {
@@ -187,6 +226,7 @@ export interface DocumentRoutingResult {
   regions: RoutedRegion[];
   totalNodesScanned: number;
   admittedNodeCount: number;
+  closureStats: RoutingClosureStats;
 }
 
 // ---------------------------------------------------------------------------

@@ -27,9 +27,216 @@ import { detectIndependentSignals, countInlineEnumerationMarkers } from "../cove
 import { HEADLINE_HEADING } from "../coverage-audit/source-inventory";
 import { partitionUncoveredSpan, scanRawSourceRegion } from "../coverage-audit/raw-source-fallback";
 import { hashParts } from "../hashing";
-import { SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION, type DocumentRoutingResult, type RoutedRegion, type RoutedRegionAdmissionReason } from "./types";
+import { SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION, type DocumentRoutingResult, type RoutedRegion, type RoutedRegionAdmissionReason, type RoutingClosureStats } from "./types";
 
 const EXCERPT_LENGTH = 400;
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1 Workstream A (F1) - hierarchical routing closure (task §6-18).
+//
+// Root cause (Phase 3F first-blind error taxonomy): the original router
+// evaluated every structural node in complete isolation - a node was
+// admitted only if ITS OWN text carried an independent signal, a headline
+// heading, definitional language, or an unrepresented inline enumeration.
+// Real DSGR structure showed the actual failure shape: an operative
+// prohibition ("shall not ... except:") and its lettered exception-list
+// items ("(a)", "(b)", "(c)") are SEPARATE STRUCTURAL NODES, each
+// independently evaluated - a qualitative basket item with no inline
+// dollar/percentage/keyword token of its own was silently never routed at
+// all, so no amount of downstream materiality fixing (Workstream B) could
+// recover it: routing, not classification, was the actual gap.
+//
+// Closure never replaces the local-signal seed pass above; it runs AFTER
+// it, and only EXPANDS admission through bounded, evidence-based
+// structural relationships to an already-admitted ("seed") node - never a
+// package-specific lookup table (Architecture Invariants #29). Every
+// closure-admitted region's admissionReasons/closureDepth/
+// closureSourceNodeKey trace exactly which seed and which relationship
+// justified it (task's own explainability requirement), and
+// DocumentRoutingResult.closureStats records the resulting expansion so
+// this mechanism is always measurably bounded, never an unbounded "route
+// the whole document" walk (task §16/§46).
+// ---------------------------------------------------------------------------
+
+/** Hops from the nearest seed a closure admission may travel before the walk stops for that branch. */
+export const MAX_CLOSURE_DEPTH = 3;
+/** Per-seed safety valve: once a single seed's closure group reaches this many admitted nodes, further expansion from that seed stops (a disclosed, non-silent bound - RoutingClosureStats.capped records when this fires). */
+export const MAX_CLOSURE_NODES_PER_SEED = 40;
+
+/** A node's own trailing enumeration marker in its sectionRef ("6.01(b)" -> "(b)"), or null if the node is not itself a lettered/numbered enumerated item. */
+const TRAILING_MARKER_RE = /\([^()]+\)$/;
+function trailingMarker(sectionRef: string): string | null {
+  return sectionRef.match(TRAILING_MARKER_RE)?.[0]?.toLowerCase() ?? null;
+}
+
+/** Local signals whose presence marks a seed as an operative restriction/obligation/exception scope - the only seeds allowed to trigger CHILD_OF_ROUTED_COVENANT_REGION closure. Deliberately excludes HEADLINE_SECTION/DEFINITION_NODE/UNSTRUCTURED_MULTI_ITEM-only admissions and non-operative signals (e.g. bare FAMILY_HEADLINE hits): closure exists to recover exception-list items under a REAL restriction, not to expand every routed node's descendants. */
+const OPERATIVE_CLOSURE_TRIGGER_SIGNALS = new Set(["shall_not", "may_not", "will_not", "shall_not_permit", "except", "permit_permitted", "shall_be_permitted"]);
+
+/** A trailing continuation paragraph ("provided, that...", "notwithstanding the foregoing...") that qualifies an already-routed provision without necessarily carrying its own independent signal or enumeration marker. Generic legal-drafting pattern, never package-specific. */
+const TRAILING_PROVISO_RE = /^\s*(?:provided,?\s+(?:that|further|however)\b|notwithstanding the foregoing\b)/i;
+
+interface ClosureCandidate {
+  node: StructuralNode;
+  reason: RoutedRegionAdmissionReason;
+  depth: number;
+  sourceNodeKey: string;
+}
+
+/**
+ * Expands a document's seed regions through bounded structural closure.
+ * Returns only the NEWLY admitted regions (seeds are untouched by the
+ * caller) plus boundedness stats covering the whole pass.
+ */
+export function closeRoutedRegions(seedRegions: RoutedRegion[], nodes: StructuralNode[], index: StructuralIndex, documentId: string): { closureRegions: RoutedRegion[]; stats: RoutingClosureStats } {
+  const nodeByKey = new Map(nodes.map((n) => [n.nodeKey, n] as const));
+  const admittedNodeKeys = new Set(seedRegions.map((r) => r.structuralNodeKey).filter((k): k is string => k !== null));
+  const rootSeedOf = new Map<string, string>(); // nodeKey -> the seed nodeKey its closure group traces back to
+  for (const seed of seedRegions) if (seed.structuralNodeKey) rootSeedOf.set(seed.structuralNodeKey, seed.structuralNodeKey);
+
+  const closureRegions: RoutedRegion[] = [];
+  let capped = false;
+
+  function admit(candidate: ClosureCandidate): void {
+    if (admittedNodeKeys.has(candidate.node.nodeKey)) return;
+    admittedNodeKeys.add(candidate.node.nodeKey);
+    const root = rootSeedOf.get(candidate.sourceNodeKey) ?? candidate.sourceNodeKey;
+    rootSeedOf.set(candidate.node.nodeKey, root);
+    const ownText = index.getNodeText(candidate.node.nodeKey, "OWN");
+    closureRegions.push({
+      regionId: computeRoutedRegionId(documentId, candidate.node.nodeKey, 0, ownText.length),
+      documentId,
+      structuralNodeKey: candidate.node.nodeKey,
+      sectionRef: candidate.node.sectionRef,
+      charStart: 0,
+      charEnd: ownText.length,
+      excerptText: ownText.slice(0, EXCERPT_LENGTH),
+      detectedSignals: detectIndependentSignals(ownText).map((s) => s.name).sort(),
+      admissionReasons: [candidate.reason],
+      fromRawSourceFallback: false,
+      routingAlgorithmVersion: SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION,
+      closureDepth: candidate.depth,
+      closureSourceNodeKey: candidate.sourceNodeKey,
+    });
+  }
+
+  for (const seed of seedRegions) {
+    if (!seed.structuralNodeKey) continue; // raw-source-fallback seed - no structural node to expand from
+    const seedNode = nodeByKey.get(seed.structuralNodeKey);
+    if (!seedNode) continue;
+    const isOperativeSeed = seed.detectedSignals.some((n) => OPERATIVE_CLOSURE_TRIGGER_SIGNALS.has(n));
+    let seedGroupSize = 1; // the seed itself
+
+    const withinBudget = () => seedGroupSize < MAX_CLOSURE_NODES_PER_SEED;
+
+    // --- CHILD_OF_ROUTED_COVENANT_REGION: bounded BFS over descendants -----
+    if (isOperativeSeed) {
+      const queue: Array<{ node: StructuralNode; depth: number; sourceNodeKey: string }> = index.getChildren(seedNode.nodeKey).map((c) => ({ node: c, depth: 1, sourceNodeKey: seedNode.nodeKey }));
+      while (queue.length > 0) {
+        const { node, depth, sourceNodeKey } = queue.shift()!;
+        if (depth > MAX_CLOSURE_DEPTH) continue;
+        if (!withinBudget()) {
+          capped = true;
+          continue;
+        }
+        if (!admittedNodeKeys.has(node.nodeKey)) {
+          admit({ node, reason: "CHILD_OF_ROUTED_COVENANT_REGION", depth, sourceNodeKey });
+          seedGroupSize += 1;
+        }
+        // Only recurse further into a child's own children when the child is
+        // itself an enumerated item (a nested sub-basket, e.g. "(b)(i)") -
+        // bounds the walk to the exception-list shape this closure targets
+        // rather than following every deep structural subtree.
+        if (depth < MAX_CLOSURE_DEPTH && trailingMarker(node.sectionRef)) {
+          for (const grandchild of index.getChildren(node.nodeKey)) queue.push({ node: grandchild, depth: depth + 1, sourceNodeKey: node.nodeKey });
+        }
+      }
+    }
+
+    // --- SIBLING_IN_ROUTED_EXCEPTION_LIST -----------------------------------
+    // For every admitted enumerated item that traces back to this seed,
+    // pull in siblings under the same parent that share the same
+    // enumerated-list shape but never independently qualified on their own.
+    const enumeratedAdmittedForThisSeed = [seedNode, ...closureRegions.filter((r) => r.structuralNodeKey && rootSeedOf.get(r.structuralNodeKey) === seedNode.nodeKey).map((r) => nodeByKey.get(r.structuralNodeKey!)).filter((n): n is StructuralNode => !!n)].filter((n) => trailingMarker(n.sectionRef));
+    for (const enumNode of enumeratedAdmittedForThisSeed) {
+      const parent = index.getParent(enumNode.nodeKey);
+      if (!parent) continue;
+      for (const sibling of index.getChildren(parent.nodeKey)) {
+        if (sibling.nodeKey === enumNode.nodeKey) continue;
+        if (!trailingMarker(sibling.sectionRef)) continue;
+        if (admittedNodeKeys.has(sibling.nodeKey)) continue;
+        if (!withinBudget()) {
+          capped = true;
+          continue;
+        }
+        admit({ node: sibling, reason: "SIBLING_IN_ROUTED_EXCEPTION_LIST", depth: 1, sourceNodeKey: enumNode.nodeKey });
+        seedGroupSize += 1;
+      }
+    }
+
+    // --- CHAPEAU_OF_ROUTED_ENUMERATION --------------------------------------
+    // The introductory clause governing an admitted enumerated item, when it
+    // was not itself independently routed (e.g. an "as follows:" chapeau
+    // with no prohibition/permission keyword of its own).
+    const allAdmittedForThisSeedNow = [seedNode, ...closureRegions.filter((r) => r.structuralNodeKey && rootSeedOf.get(r.structuralNodeKey) === seedNode.nodeKey).map((r) => nodeByKey.get(r.structuralNodeKey!)).filter((n): n is StructuralNode => !!n)];
+    for (const enumNode of allAdmittedForThisSeedNow.filter((n) => trailingMarker(n.sectionRef))) {
+      const parent = index.getParent(enumNode.nodeKey);
+      if (!parent || admittedNodeKeys.has(parent.nodeKey)) continue;
+      if (!withinBudget()) {
+        capped = true;
+        continue;
+      }
+      admit({ node: parent, reason: "CHAPEAU_OF_ROUTED_ENUMERATION", depth: 1, sourceNodeKey: enumNode.nodeKey });
+      seedGroupSize += 1;
+
+      // --- ANCESTOR_SCOPE_CONTEXT (bounded to exactly one further hop) -----
+      const grandparent = index.getParent(parent.nodeKey);
+      if (grandparent && !admittedNodeKeys.has(grandparent.nodeKey) && (grandparent.nodeType === "SECTION" || grandparent.nodeType === "ARTICLE") && HEADLINE_HEADING.test(grandparent.heading ?? "") && withinBudget()) {
+        admit({ node: grandparent, reason: "ANCESTOR_SCOPE_CONTEXT", depth: 2, sourceNodeKey: parent.nodeKey });
+        seedGroupSize += 1;
+      }
+    }
+
+    // --- TRAILING_PROVISO_OF_ROUTED_REGION ----------------------------------
+    // A continuation paragraph immediately following an admitted node under
+    // the same parent, qualifying it without its own independent signal.
+    const admittedSoFarForThisSeed = [seedNode, ...closureRegions.filter((r) => r.structuralNodeKey && rootSeedOf.get(r.structuralNodeKey) === seedNode.nodeKey).map((r) => nodeByKey.get(r.structuralNodeKey!)).filter((n): n is StructuralNode => !!n)];
+    for (const admittedNode of admittedSoFarForThisSeed) {
+      const parent = index.getParent(admittedNode.nodeKey);
+      const siblingPool = parent ? index.getChildren(parent.nodeKey) : nodes.filter((n) => n.parentSectionRef === null);
+      const next = siblingPool.find((s) => s.ordinal === admittedNode.ordinal + 1);
+      if (!next || admittedNodeKeys.has(next.nodeKey)) continue;
+      const nextOwnText = index.getNodeText(next.nodeKey, "OWN");
+      if (!TRAILING_PROVISO_RE.test(nextOwnText)) continue;
+      if (!withinBudget()) {
+        capped = true;
+        continue;
+      }
+      admit({ node: next, reason: "TRAILING_PROVISO_OF_ROUTED_REGION", depth: 2, sourceNodeKey: admittedNode.nodeKey });
+      seedGroupSize += 1;
+    }
+  }
+
+  const groupSizeByRoot = new Map<string, number>();
+  for (const key of admittedNodeKeys) {
+    const root = rootSeedOf.get(key) ?? key;
+    groupSizeByRoot.set(root, (groupSizeByRoot.get(root) ?? 0) + 1);
+  }
+  const largestClosureGroupSize = groupSizeByRoot.size > 0 ? Math.max(...groupSizeByRoot.values()) : 0;
+  const maxClosureDepth = closureRegions.length > 0 ? Math.max(...closureRegions.map((r) => r.closureDepth)) : 0;
+  const seedRegionCount = seedRegions.length;
+
+  return {
+    closureRegions,
+    stats: {
+      seedRegionCount,
+      closureAdmittedRegionCount: closureRegions.length,
+      maxClosureDepth,
+      largestClosureGroupSize,
+      expansionFactor: closureRegions.length / Math.max(seedRegionCount, 1),
+      capped,
+    },
+  };
+}
 
 function computeRoutedRegionId(documentId: string, key: string, charStart: number, charEnd: number): string {
   return hashParts([documentId, key, String(charStart), String(charEnd), SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION]);
@@ -92,6 +299,8 @@ export function routeDocument(documentId: string, index: StructuralIndex): Docum
       admissionReasons,
       fromRawSourceFallback: false,
       routingAlgorithmVersion: SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION,
+      closureDepth: 0,
+      closureSourceNodeKey: null,
     });
   }
 
@@ -116,15 +325,22 @@ export function routeDocument(documentId: string, index: StructuralIndex): Docum
         admissionReasons: ["RAW_SOURCE_FALLBACK"],
         fromRawSourceFallback: true,
         routingAlgorithmVersion: SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION,
+        closureDepth: 0,
+        closureSourceNodeKey: null,
       });
     }
   }
+
+  const { closureRegions, stats: closureStats } = closeRoutedRegions(regions, nodes, index, documentId);
+  regions.push(...closureRegions);
+  admittedNodeCount += closureRegions.length;
 
   return {
     documentId,
     structuralHealth: coverage.health,
     healthReasons: coverage.healthReasons,
     regions,
+    closureStats,
     totalNodesScanned: nodes.length,
     admittedNodeCount,
   };
