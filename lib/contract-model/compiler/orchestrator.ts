@@ -8,6 +8,21 @@
  * (scripts/run-phase-c0-analyzer.ts) to a real per-stage DB state machine.
  * A stage failure never disturbs a sibling stage's persisted COMPLETED row
  * (task §74 - partial failure must preserve successful work).
+ *
+ * QUARANTINE NOTICE (Phase 3F.1.4, docs/HEADROOM-ROADMAP.md §1 "The
+ * pre-Phase-2 'Phase C' compiler"): this file's own `runContractCompiler`
+ * entry point (below) is the legacy 11-stage pipeline, superseded by the
+ * deterministic Phase 2A-2G substrate. Its RULE_EXTRACTION/VERIFICATION/
+ * PROMOTION stages carry a real, never-closed dangerous-unflagged error
+ * rate (25.0% -> 15.625%, both above this pipeline's own required <=5%
+ * safety gate - see docs/phase-c-1-multi-basket-verification.md) and are
+ * NOT repaired here - quarantine only. `app/**` must never import
+ * `runContractCompiler` from this file, nor `lib/contract-model/service.ts`
+ * or `lib/contract-model/validators.ts` (the legacy query/validation layer
+ * only this pipeline populates). Enforced mechanically by
+ * `.eslintrc.json`'s `no-restricted-imports` override and
+ * `tests/foundation-audit/legacy-phase-c-quarantine.test.ts` - not by
+ * anything in this file's own runtime logic.
  */
 import { prisma } from "../../prisma";
 import { hashParts, hashJson } from "./hashing";
@@ -24,7 +39,7 @@ import { runValidationStage } from "./stage-validation";
 import { runCoverageStage } from "./stage-coverage";
 import { runPromotionStage, type RulePromotionDecision } from "./stage-promotion";
 import { persistStructuralNodes, persistDefinedTerms, persistContractRules, persistRuleRelationships, persistReferences } from "./persistence";
-import type { CompilerPackageInput, StructuralNode } from "./types";
+import { STRUCTURAL_INDEX_VERSION, type CompilerPackageInput, type StructuralNode } from "./types";
 import type { CandidateContractRule, CandidateDefinedTerm } from "../types";
 import { EntityClassTag } from "@prisma/client";
 import type { ContractCompilerStageKind, ContractCompilerStageStatus } from "@prisma/client";
@@ -102,7 +117,19 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
   const entityClassTags = new Set(Object.values(EntityClassTag));
 
   // Stage 1: STRUCTURE (deterministic).
-  const structureInputHash = hashParts(documents.map((d) => `${d.documentId}:${d.text}`));
+  // Phase 3F.1.4 fix (foundation-audit §R / 10-cache-invalidation-assurance.json,
+  // "orchestrator.ts STRUCTURE-stage resumability gate": FAILED) - this hash
+  // MUST include STRUCTURAL_INDEX_VERSION alongside document identity/text.
+  // Before this fix it covered only documentId+text, so a structural-
+  // parsing-ALGORITHM change (a STRUCTURAL_INDEX_VERSION bump, or any
+  // parseDocumentStructure bug fix) over UNCHANGED document text was
+  // invisible to getOrRunStage's cache-check - it would resume and
+  // re-persist the stale, pre-change structural nodes forward into every
+  // downstream stage forever, exactly as if the parser had never changed.
+  // Proven both directions in
+  // tests/foundation-audit/cache-invalidation-audit.test.ts (version bump
+  // now forces recompute; unchanged version + unchanged text still resumes).
+  const structureInputHash = hashParts([STRUCTURAL_INDEX_VERSION, ...documents.map((d) => `${d.documentId}:${d.text}`)]);
   const structureRes = await getOrRunStage(runId, "STRUCTURE", structureInputHash, shouldForce("STRUCTURE"), async () => {
     const r = runStructureStage(documents);
     return { ...r };
@@ -174,7 +201,25 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
   stages.push({ stage: "RELATIONSHIPS", status: relationshipsRes.status });
 
   // Stage 7: AMENDMENTS (deterministic detection; representation-only, task §27 scope).
-  const amendmentsInputHash = hashParts(documents.map((d) => d.label));
+  // Phase 3F.1.4 fix (foundation-audit §R / 10-cache-invalidation-assurance.json,
+  // "orchestrator.ts AMENDMENTS-stage resumability gate": FAILED) - this hash
+  // MUST cover document text, not just label. The real runAmendmentsStage
+  // (stage-amendments.ts) scans BOTH d.label AND d.text.slice(0, 2000) for
+  // amendment markers; before this fix, a text edit that flips a document
+  // from ordinary prose to a genuinely amendment-shaped preamble (same
+  // documentId/label) was invisible to this gate, so getOrRunStage resumed
+  // the stale, not-amendment-shaped cached row instead of the REVIEW_REQUIRED
+  // a fresh call to runAmendmentsStage on that input actually produces.
+  // Hashes the FULL text (not only the 2000-char window the detector reads)
+  // deliberately: this stage is a cheap deterministic regex scan with no LLM
+  // cost, so a conservative over-invalidation on a text change outside that
+  // window (e.g. whitespace-only, or a change past char 2000) costs nothing
+  // real, while staying correct even if the detector's own window size ever
+  // changes independently of this hash. Proven both directions in
+  // tests/foundation-audit/cache-invalidation-audit.test.ts (a text change
+  // that flips amendment-shaped detection now forces recompute; unchanged
+  // label+text still resumes).
+  const amendmentsInputHash = hashParts(documents.map((d) => `${d.label}:${d.text}`));
   const amendmentsRes = await getOrRunStage(runId, "AMENDMENTS", amendmentsInputHash, shouldForce("AMENDMENTS"), async () => runAmendmentsStage(documents));
   stages.push({ stage: "AMENDMENTS", status: amendmentsRes.status });
 
