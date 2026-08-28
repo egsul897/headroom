@@ -276,8 +276,10 @@ export interface MaterialSemanticUnit {
   familyEvidence: string | null;
   postureSignal: DetectedPostureSignal;
   materiality: SemanticUnitMateriality;
-  /** Why this materiality was assigned - never a bare label with no evidence trail. */
+  /** Why this materiality was assigned - never a bare label with no evidence trail. When contextuallyElevated is true, this string also names the structural parent and the floor rule applied (Phase 3F.1 §19-23/F2) - never a bare "no numeric signal" reasoning left standing after context was actually considered. */
   materialityReasoning: string;
+  /** Phase 3F.1 §19-23/F2 - true when this unit's own local-text materiality was raised by the contextual floor pass (applyContextualMaterialityFloor) because it is a structural child of an operative (PROHIBITION/OBLIGATION/exception-bearing), CRITICAL-or-MATERIAL parent - e.g. an enumerated basket item whose own clause references an amount defined elsewhere, with no independent numeric/keyword signal of its own. False for every unit whose materiality is exactly its own local classification (including a unit that had a qualifying parent but was already at or above the floor). */
+  contextuallyElevated: boolean;
   /** Bounded excerpt of this unit's own text (never a full-document dump). */
   excerptText: string;
   /** Deterministically detected economic/legal signal names that fired for this unit - the evidence trail, mirroring coverage-audit's own detectedSignals convention. */

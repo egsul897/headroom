@@ -20,6 +20,7 @@ function makeUnit(overrides: Partial<MaterialSemanticUnit> = {}): MaterialSemant
     postureSignal: "PERMISSION_SIGNAL",
     materiality: "CRITICAL",
     materialityReasoning: "test",
+    contextuallyElevated: false,
     excerptText: "test excerpt",
     detectedSignals: ["currency_value"],
     fromRawSourceFallback: false,

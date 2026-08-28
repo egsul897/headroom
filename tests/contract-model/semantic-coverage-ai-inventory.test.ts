@@ -135,6 +135,7 @@ describe("Phase 3E Layer C - runBoundedAiInventoryForRegion", () => {
         postureSignal: "PROHIBITION_SIGNAL",
         materiality: "MATERIAL",
         materialityReasoning: "test",
+    contextuallyElevated: false,
         excerptText: "The Borrower shall not incur any Indebtedness",
         detectedSignals: ["shall_not"],
         fromRawSourceFallback: false,

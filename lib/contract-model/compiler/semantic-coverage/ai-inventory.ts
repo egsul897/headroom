@@ -192,6 +192,7 @@ export async function runBoundedAiInventoryForRegion(region: RoutedRegion, fullT
         postureSignal,
         materiality,
         materialityReasoning: proposed.reasoning,
+        contextuallyElevated: false,
         excerptText: proposed.sourceQuote.slice(0, 500),
         detectedSignals: [],
         fromRawSourceFallback: region.fromRawSourceFallback,

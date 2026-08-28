@@ -231,6 +231,7 @@ describe("Phase 3E fault injection matrix (task #160)", () => {
       postureSignal: "PERMISSION_SIGNAL",
       materiality: "CRITICAL",
       materialityReasoning: "test",
+    contextuallyElevated: false,
       excerptText: "not to exceed $10,000,000",
       detectedSignals: ["currency_value"],
       fromRawSourceFallback: false,

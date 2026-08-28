@@ -27,6 +27,7 @@ function makeUnit(overrides: Partial<MaterialSemanticUnit> & { semanticUnitId: s
     postureSignal: "PERMISSION_SIGNAL",
     materiality: "CRITICAL",
     materialityReasoning: "test",
+    contextuallyElevated: false,
     excerptText: "Indebtedness not to exceed $10,000,000",
     detectedSignals: ["currency_value"],
     fromRawSourceFallback: false,
