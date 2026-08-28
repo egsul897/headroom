@@ -24,7 +24,7 @@ import { computeSemanticSignature } from "./signature";
 import type { CorrectionDimension, ReviewerCorrection } from "./types";
 import type { IRCapacityExpression, IRExpression, IRRule, IRSharedCapacity } from "../../ir/types";
 
-interface LiteralExtraction {
+export interface LiteralExtraction {
   amounts: number[];
   percents: number[];
   metricNames: string[];
@@ -102,7 +102,14 @@ function walkForLiterals(expr: IRExpression, acc: LiteralExtraction): void {
   }
 }
 
-function extractLiterals(expr: IRCapacityExpression | null): LiteralExtraction {
+/**
+ * Exported for reuse by semantic/precedent-integration.ts's own "source
+ * always wins" mechanical grounding check (task §16/§65(B)) - the same
+ * literal-value extraction this module already needed for AMOUNT/PERCENT/
+ * METRIC correction classification is exactly what that check needs too,
+ * so it is shared here rather than re-implemented a third time.
+ */
+export function extractCapacityLiterals(expr: IRCapacityExpression | null): LiteralExtraction {
   const acc: LiteralExtraction = { amounts: [], percents: [], metricNames: [] };
   if (!expr) return acc;
   if (expr.kind === "UNLIMITED_CAPACITY") {
@@ -187,8 +194,8 @@ export function diffRule(proposed: IRRule, reviewed: IRRule, options: DiffRuleOp
   );
   pushIfDiffer(corrections, "SHARED_CAP", "shared-capacity membership changed", String(proposedSig.hasSharedCapacity), String(reviewedSig.hasSharedCapacity), proposedSig.hasSharedCapacity !== reviewedSig.hasSharedCapacity);
 
-  const proposedLiterals = extractLiterals(proposed.capacityExpression);
-  const reviewedLiterals = extractLiterals(reviewed.capacityExpression);
+  const proposedLiterals = extractCapacityLiterals(proposed.capacityExpression);
+  const reviewedLiterals = extractCapacityLiterals(reviewed.capacityExpression);
   pushIfDiffer(
     corrections,
     "AMOUNT",
