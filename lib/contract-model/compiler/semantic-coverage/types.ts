@@ -402,5 +402,38 @@ export interface PackageCoverageResult {
   contentIdentity: string;
 }
 
+// ---------------------------------------------------------------------------
+// §159 - cross-section relationship + cross-document/operative-state audits.
+// Distinct from per-unit coverage (SemanticUnitCoverageEntry above): a
+// shared cap, reclassification right, or incorporated condition connects
+// TWO OR MORE units/rules - each rule can individually look fully
+// represented while the RELATIONSHIP between them is silently dropped
+// (e.g. two baskets each correctly capped on their own, but sharing one
+// aggregate limit the compiled IR never links - a real double-counting
+// risk no per-unit check alone can see).
+// ---------------------------------------------------------------------------
+
+export type CrossSectionRelationshipType = "SHARED_CAP" | "RECLASSIFICATION_OR_REDESIGNATION" | "CROSS_REFERENCE_PERMISSION" | "INCORPORATED_CONDITION";
+
+export interface CrossSectionRelationshipFinding {
+  relationshipType: CrossSectionRelationshipType;
+  /** The semantic unit(s) whose own detected signal implied this relationship should exist. */
+  sourceUnitIds: string[];
+  /** True when a corresponding IR-level relationship (dependency edge / shared-cap reference) was found anywhere among the document's compiled rules. */
+  found: boolean;
+  reasoning: string;
+  materiality: SemanticUnitMateriality;
+}
+
+export type OperativeStateAuditFindingType = "STALE_SUPERSEDED_TEXT_CREDITED" | "OPERATIVE_STATE_UNRESOLVED_FOR_UNIT";
+
+export interface OperativeStateAuditFinding {
+  findingType: OperativeStateAuditFindingType;
+  semanticUnitId: string;
+  provisionKey: string | null;
+  reasoning: string;
+  materiality: SemanticUnitMateriality;
+}
+
 /** Re-exported for reconciliation-stage modules only - see the independence contract above. */
 export type { CovenantFamily };
