@@ -1,0 +1,58 @@
+================ Phase 3E real LSB Article 6 regression ================
+
+Real StructuralIndex for lsb-article-6: 76 structural nodes (Phase 2A's own real parser, real source text - never a hand-selected section list).
+
+Real Phase 2B discovery run summary (lsb): {"documentId":"lsb","nodesInspected":76,"deterministicCandidatesGenerated":44,"semanticCandidatesEvaluated":94,"duplicatesBeforeReconciliation":13,"finalCandidateCount":82,"wallClockMs":156696.94617600006,"modelCalls":10,"inputTokens":25754,"outputTokens":18362}
+Real Phase 2B discovery: 82 candidates across the ENTIRE document root.
+
+Matching preserved real Phase 3B compiled IR to real discovered candidates:
+  (no matching real discovered candidate found for preserved compile result "lsb-6.01-general-ratio-gated" (sectionRef undefined) - skipped)
+  matched preserved compile "lsb-6.01-i-flat-or-pct-assets" -> real discoveryId discovery-candidate:954760957805bbc0e2cd589f (6.01(i)), status=REVIEW_REQUIRED, rules=1
+  matched preserved compile "lsb-6.11-restricted-payments" -> real discoveryId discovery-candidate:2a19cadc68de7d438449a40c (6.11), status=PARTIAL, rules=5
+  matched preserved compile "lsb-6.13-investments" -> real discoveryId discovery-candidate:35a3d89a2af1d8c126b418cd (6.13), status=REVIEW_REQUIRED, rules=5
+
+3 of 82 real discovered candidates have real, preserved compiled IR in this repository's actual history.
+
+================ RESULT ================
+Total real material semantic units hypothesized (Layer A/B, deterministic, $0 cost): 105
+Raw fully-represented fraction: 1.9%
+Materiality-weighted fully-represented fraction: 7.6%
+Document gate status: DOCUMENT_GATE_FAILED
+Dangerous-unaccounted units: 34
+  - NO_CANDIDATE_EVER_DISCOVERED: 1
+  - COMPILED_BUT_UNIT_OMITTED_FROM_IR: 12
+  - CANDIDATE_DISCOVERED_NEVER_COMPILED: 21
+
+Coverage state breakdown:
+  - UNREPRESENTED: 34
+  - AMBIGUOUS_MATCH: 31
+  - FULLY_REPRESENTED_REVIEW_REQUIRED: 2
+  - SOURCE_CONTEXT_INCOMPLETE: 38
+
+Family summaries:
+  - OTHER_UNCLASSIFIED: 30 unit(s), fully=0, partial=0, unrepresented=9, dangerous=9, entireFamilyMissing=true
+  - INDEBTEDNESS: 35 unit(s), fully=1, partial=0, unrepresented=10, dangerous=10, entireFamilyMissing=false
+  - LIENS: 1 unit(s), fully=0, partial=0, unrepresented=1, dangerous=1, entireFamilyMissing=true
+  - FUNDAMENTAL_CHANGES: 12 unit(s), fully=0, partial=0, unrepresented=4, dangerous=4, entireFamilyMissing=true
+  - DISPOSITIONS: 5 unit(s), fully=0, partial=0, unrepresented=3, dangerous=3, entireFamilyMissing=true
+  - EVENTS_OF_DEFAULT: 1 unit(s), fully=0, partial=0, unrepresented=1, dangerous=1, entireFamilyMissing=true
+  - RESTRICTED_PAYMENTS: 6 unit(s), fully=1, partial=0, unrepresented=2, dangerous=2, entireFamilyMissing=false
+  - INVESTMENTS: 14 unit(s), fully=0, partial=0, unrepresented=3, dangerous=3, entireFamilyMissing=true
+  - FINANCIAL_COVENANTS: 1 unit(s), fully=0, partial=0, unrepresented=1, dangerous=1, entireFamilyMissing=true
+
+Cross-section relationship findings:
+  - RECLASSIFICATION_OR_REDESIGNATION found=false: 1 semantic unit(s) carry a signal implying a RECLASSIFICATION_OR_REDESIGNATION relationship, but no corresponding relationship appears anywhere in this document's compiled IR - each individual unit/rule may still look fully represented on its own while the relationship BETWEEN them is silently missing
+  - CROSS_REFERENCE_PERMISSION found=false: 2 semantic unit(s) carry a signal implying a CROSS_REFERENCE_PERMISSION relationship, but no corresponding relationship appears anywhere in this document's compiled IR - each individual unit/rule may still look fully represented on its own while the relationship BETWEEN them is silently missing
+
+PACKAGE STATUS: PACKAGE_SEMANTICALLY_INCOMPLETE
+  - document lsb-article-6: 9 CRITICAL dangerous-unaccounted semantic unit(s) with no adequate compiled/verified IR representation
+  - document lsb-article-6: 25 MATERIAL dangerous-unaccounted semantic unit(s) with no adequate compiled/verified IR representation
+  - document lsb-article-6: entire family OTHER_UNCLASSIFIED (30 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document lsb-article-6: entire family LIENS (1 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document lsb-article-6: entire family FUNDAMENTAL_CHANGES (12 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document lsb-article-6: entire family DISPOSITIONS (5 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document lsb-article-6: entire family EVENTS_OF_DEFAULT (1 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document lsb-article-6: entire family INVESTMENTS (14 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document lsb-article-6: entire family FINANCIAL_COVENANTS (1 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+
+(Every real candidate not in the compiledResults set above is honestly reported as CANDIDATE_DISCOVERED_NEVER_COMPILED or NO_CANDIDATE_EVER_DISCOVERED where applicable - this reflects genuine historical fact: this codebase has never run the real Phase 3B compiler against the FULL LSB Article 6 document, only a handful of hand-selected sections across earlier phases. This is not a fabricated negative result; it is the honest, real state of the system, and is exactly the gap Phase 3E exists to surface at real document scale.)
