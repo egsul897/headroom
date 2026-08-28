@@ -180,6 +180,18 @@ export type OperativeProvisionKind = "SECTION" | "DEFINITION";
 
 export type OperativeStateStatus = "OPERATIVE_STATE_RESOLVED" | "OPERATIVE_STATE_PARTIAL" | "OPERATIVE_STATE_REVIEW_REQUIRED" | "OPERATIVE_STATE_CONFLICTED";
 
+// ---------------------------------------------------------------------------
+// Phase 3F.1.4 Workstream D (§6A/§6B) - the real target-resolution status of
+// a provision's OWN base reference (a SECTION legal reference or a
+// DEFINITION term), independently derived from the structural index. This
+// is the field the audit's P0 finding required: `newText` on an applied
+// amendment effect is never, by itself, evidence that a target exists or
+// is unique - only this status may gate a confidently-attached
+// currentText.
+// ---------------------------------------------------------------------------
+
+export type ProvisionTargetResolutionStatus = "UNIQUE" | "AMBIGUOUS" | "NOT_FOUND";
+
 export interface AmendmentChainEntry {
   effectId: string;
   amendmentDocumentId: string;
@@ -216,6 +228,18 @@ export interface OperativeProvisionView {
   status: OperativeStateStatus;
   unresolvedIssues: string[];
   conflicts: AmendmentConflict[];
+  /** Phase 3F.1.4 §6A - the real, independently-derived resolution status of this provision's own base reference (never inferred from whether an effect happened to carry newText). Only "UNIQUE" may support a confidently-attached currentText. */
+  targetResolutionStatus: ProvisionTargetResolutionStatus;
+  /** Populated only when targetResolutionStatus !== "UNIQUE" - explains AMBIGUOUS vs NOT_FOUND explicitly (the audit's own disclosure-quality finding: a reviewer must be told WHY, not just THAT). Null when UNIQUE. */
+  targetResolutionReason: string | null;
+  /** Phase 3F.1.4 §6B - the real physical occurrence (SECTION) or definition (DEFINITION) identities the base reference matched when AMBIGUOUS (2+ genuinely distinct candidates) - never a guessed pick among them. Always empty when targetResolutionStatus is UNIQUE or NOT_FOUND. */
+  candidateSourceNodeIds: string[];
+  /** Phase 3F.1.4 §6B - the most recent applied effect's own captured newText, preserved for reviewer visibility EVEN WHEN targetResolutionStatus is not UNIQUE. "We know what the amendment says" (this field, once any effect supplies newText) is never conflated with "we know exactly what operative provision it changes" (currentText, gated on targetResolutionStatus === "UNIQUE"). Null when no applied effect ever supplied newText, or the most recent applied effect was a deletion. */
+  attemptedText: string | null;
+  /** Explicit review-required signal (the audit's own required "review flag" disclosure) - true whenever status is not OPERATIVE_STATE_RESOLVED, so a consumer never needs to enumerate every non-RESOLVED status value itself. */
+  reviewRequired: boolean;
+  /** Phase 3F.1.4 §6D - populated ONLY when status is OPERATIVE_STATE_CONFLICTED: the genuinely competing candidate texts, sorted by effectId (never by array/ingestion order), so no downstream consumer can mistake iteration order for legal precedence. currentText is null whenever this is populated. Empty otherwise. */
+  candidateTexts: string[];
 }
 
 export interface OperativeContractState {
