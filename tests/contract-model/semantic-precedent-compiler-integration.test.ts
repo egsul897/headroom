@@ -180,9 +180,40 @@ describe("compileCovenantToIRWithPrecedent", () => {
     expect(result.baseline.rules[0]?.action).toBe("INCUR_DEBT");
   });
 
-  it("a Pass 2 percentage grounded in the source text (as a %, not a fraction) is accepted", async () => {
-    const percentRule = { ...wireRule(0, "rule-1"), capacityExpression: { kind: "PERCENT", value: 0.125 } };
-    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [percentRule] })]);
+  it("source always wins: a Pass 2 entity-scope change (SCOPE dimension) relative to Pass 1's own baseline is rejected wholesale", async () => {
+    const corruptedScopeRule = { ...wireRule(1_000_000), entityScope: ["BORROWER", "GUARANTOR_RS"] };
+    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [corruptedScopeRule] })]);
+    const input = testCompilerInput({ candidateRef: "cand-corrupted-scope", operativeSourceText: "Indebtedness not to exceed $1,000,000." });
+    const result = await compileCovenantToIRWithPrecedent(input, [precedent()], { caller });
+    expect(result.precedentRejectedAsUnsupported).toBe(true);
+    expect(result.precedentAugmented).toBeNull();
+  });
+
+  it("source always wins: a Pass 2 added condition (CONDITION dimension) relative to Pass 1's own baseline is rejected wholesale", async () => {
+    const corruptedConditionRule = { ...wireRule(1_000_000), conditions: [{ conditionType: "RATIO_SATISFIED", expression: null, referencesDefinitionId: null, description: "x", citation: null, excerpt: null }] };
+    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [corruptedConditionRule] })]);
+    const input = testCompilerInput({ candidateRef: "cand-corrupted-condition", operativeSourceText: "Indebtedness not to exceed $1,000,000." });
+    const result = await compileCovenantToIRWithPrecedent(input, [precedent()], { caller });
+    expect(result.precedentRejectedAsUnsupported).toBe(true);
+    expect(result.precedentAugmented).toBeNull();
+  });
+
+  it("source always wins: a Pass 2 logic change (MAX -> MIN, LOGIC dimension) relative to Pass 1's own baseline is rejected wholesale", async () => {
+    const maxRule = { ...wireRule(0, "rule-1"), capacityExpression: { kind: "MAX", operands: [{ kind: "MONEY", amount: 1_000_000, currency: "USD" }, { kind: "MONEY", amount: 2_000_000, currency: "USD" }] } };
+    const minRule = { ...wireRule(0, "rule-1"), capacityExpression: { kind: "MIN", operands: [{ kind: "MONEY", amount: 1_000_000, currency: "USD" }, { kind: "MONEY", amount: 2_000_000, currency: "USD" }] } };
+    const caller = new ScriptedCaller([submission({ rules: [maxRule] }), submission({ rules: [minRule] })]);
+    const input = testCompilerInput({ candidateRef: "cand-corrupted-logic", operativeSourceText: "Indebtedness not to exceed the greater of $1,000,000 and $2,000,000." });
+    const result = await compileCovenantToIRWithPrecedent(input, [precedent({ signature: signature({ topLevelOperator: "MAX", operatorSet: ["MAX", "MONEY"] }) })], { caller });
+    expect(result.precedentRejectedAsUnsupported).toBe(true);
+    expect(result.precedentAugmented).toBeNull();
+  });
+
+  it("a Pass 2 percentage grounded in the source text (as a %, not a fraction) is accepted, when the surrounding structural shape is unchanged", async () => {
+    // Same MULTIPLY(PERCENT, METRIC) shape in both passes - only the percent VALUE differs (still grounded in the source text), so the categorical/structural gate does not fire.
+    const percentExpr = (value: number) => ({ kind: "MULTIPLY", operands: [{ kind: "PERCENT", value }, { kind: "METRIC_REFERENCE", metricName: "Consolidated EBITDA", valueType: "MONEY" }] });
+    const baseRule = { ...wireRule(0, "rule-1"), capacityExpression: percentExpr(0.1) };
+    const percentRule = { ...wireRule(0, "rule-1"), capacityExpression: percentExpr(0.125) };
+    const caller = new ScriptedCaller([submission({ rules: [baseRule] }), submission({ rules: [percentRule] })]);
     const input = testCompilerInput({ candidateRef: "cand-grounded-percent", operativeSourceText: "Indebtedness not to exceed 12.5% of Consolidated EBITDA." });
     const result = await compileCovenantToIRWithPrecedent(input, [precedent()], { caller });
     expect(result.precedentRejectedAsUnsupported).toBe(false);

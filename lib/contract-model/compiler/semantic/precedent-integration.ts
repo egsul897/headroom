@@ -89,17 +89,26 @@ function extractNumbersFromSourceText(text: string): Set<number> {
  * The mechanical "source always wins" gate (task §16/§65(B)). Two
  * independent checks:
  *
- * 1. CATEGORICAL STABILITY - Pass 1 already made its own action/posture
- *    judgment with ZERO precedent influence. If Pass 2 disagrees on either
- *    field for a rule the two passes otherwise identify as "the same rule"
- *    (matched by ruleId - stable across both calls here since ruleId is
- *    derived from candidateRef+the model's own localRef slot, not rule
+ * 1. CATEGORICAL/STRUCTURAL STABILITY - Pass 1 already made its own
+ *    action/posture/logic/condition/scope/dependency/shared-cap judgment
+ *    with ZERO precedent influence. If Pass 2 disagrees on ANY of those
+ *    dimensions for a rule the two passes otherwise identify as "the same
+ *    rule" (matched by ruleId - stable across both calls here since ruleId
+ *    is derived from candidateRef+the model's own localRef slot, not rule
  *    content, so the same slot in both submissions yields the same
- *    ruleId), or if the two passes propose a different NUMBER of rules
- *    at all, or if a ruleId appears on only one side, that disagreement
- *    itself is treated as contamination - the compiler's own precedent-
- *    free baseline judgment on a categorical field is never overridden by
- *    precedent (task §16's permanent invariant is not limited to numbers).
+ *    ruleId), or if the two passes propose a different NUMBER of rules at
+ *    all, or if a ruleId appears on only one side, that disagreement
+ *    itself is treated as contamination - reusing computeSemanticSignature
+ *    (this module's sibling) for the comparison rather than hand-picking a
+ *    few fields, since task §16's own permanent invariant explicitly names
+ *    "amounts/percentages/ratios/metric names/conditions/entity scope" and
+ *    a signature diff is exactly a structural-shape diff across all of
+ *    those (mirrors corrections.ts's own reuse of the same function for
+ *    the same reason). This is deliberately conservative: it means Pass 2
+ *    can only ever confirm Pass 1's own shape with a possibly-different
+ *    (still separately grounded, below) numeric value, never introduce a
+ *    genuinely new structural conclusion - task's own "validate safety
+ *    before optimizing cost/usefulness" bias, applied here.
  *
  * 2. ECONOMIC GROUNDING - only AMOUNT/PERCENT are checked (never metric
  *    names): a metric-name rephrasing can legitimately differ between two
@@ -117,7 +126,9 @@ function isPrecedentContaminated(baseline: SemanticCompilationResult, precedentA
   for (const [ruleId, baselineRule] of baselineById) {
     const augmentedRule = augmentedById.get(ruleId);
     if (!augmentedRule) return true;
-    if (baselineRule.action !== augmentedRule.action || baselineRule.posture !== augmentedRule.posture) return true;
+    const baselineSignature = computeSemanticSignature(baselineRule, { sharedCapacities: baseline.sharedCapacities });
+    const augmentedSignature = computeSemanticSignature(augmentedRule, { sharedCapacities: precedentAugmented.sharedCapacities });
+    if (JSON.stringify(baselineSignature) !== JSON.stringify(augmentedSignature)) return true;
   }
   for (const ruleId of augmentedById.keys()) {
     if (!baselineById.has(ruleId)) return true;
