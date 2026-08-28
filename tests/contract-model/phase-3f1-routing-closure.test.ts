@@ -19,6 +19,8 @@
  * sweep in unrelated children).
  */
 import { describe, expect, it } from "vitest";
+import fs from "node:fs";
+import path from "node:path";
 import type { StructuralIndex } from "../../lib/contract-model/compiler/structural-index";
 import type { StructuralNode } from "../../lib/contract-model/compiler/types";
 import { closeRoutedRegions, MAX_CLOSURE_DEPTH, MAX_CLOSURE_NODES_PER_SEED, routeDocument } from "../../lib/contract-model/compiler/semantic-coverage/router";
@@ -359,5 +361,59 @@ describe("Phase 3F.1 F1 - closeRoutedRegions unit tests: raw-source-fallback see
     expect(closureRegions).toHaveLength(0);
     expect(stats.closureAdmittedRegionCount).toBe(0);
     expect(stats.capped).toBe(false);
+  });
+
+  it("29. a raw-source-fallback seed coexisting with a real structural operative seed does not interfere with that seed's own closure - mixed seed lists are handled independently", () => {
+    const chapeau = node({ nodeKey: "doc::6.01", sectionRef: "6.01" });
+    const child = node({ nodeKey: "doc::6.01(a)", sectionRef: "6.01(a)" });
+    const fakeNodes: FakeNode[] = [
+      { node: chapeau, text: "The Borrower shall not incur Indebtedness, except:", childKeys: ["doc::6.01(a)"] },
+      { node: child, text: "advances made in the ordinary course of business, with no signal words.", childKeys: [] },
+    ];
+    const index = buildFakeIndex(fakeNodes);
+    const rawSeed: RoutedRegion = {
+      regionId: "raw-1",
+      documentId: "doc",
+      structuralNodeKey: null,
+      sectionRef: null,
+      charStart: 500,
+      charEnd: 600,
+      excerptText: "unrelated raw-fallback text elsewhere in the document",
+      detectedSignals: ["hereby_amended"],
+      admissionReasons: ["RAW_SOURCE_FALLBACK"],
+      fromRawSourceFallback: true,
+      routingAlgorithmVersion: "test",
+      closureDepth: 0,
+      closureSourceNodeKey: null,
+    };
+    const structuralSeed = seedRegionFor(chapeau, ["shall_not", "except"]);
+    const { closureRegions, stats } = closeRoutedRegions([rawSeed, structuralSeed], fakeNodes.map((n) => n.node), index, "doc");
+    expect(closureRegions.find((r) => r.structuralNodeKey === "doc::6.01(a)")).toBeDefined();
+    expect(stats.seedRegionCount).toBe(2);
+    expect(stats.closureAdmittedRegionCount).toBe(1);
+  });
+});
+
+describe("Phase 3F.1 F1 - independence (task §21/§29): closure introduces no new forbidden-module dependency and no package-specific lookup", () => {
+  it("30. router.ts's own source carries no discovery/context-retrieval/compiler/verifier/precedent import - closure was added without widening the Independence Contract boundary", () => {
+    const source = fs.readFileSync(path.join(__dirname, "../../lib/contract-model/compiler/semantic-coverage/router.ts"), "utf-8");
+    const importLines = source.split("\n").filter((l) => /^\s*import\b/.test(l));
+    const forbidden = [/discovery\//, /context-retrieval\//, /semantic\/compile/, /semantic\/caller/, /semantic\/package-compile/, /semantic-verification\//, /semantic-precedent\//];
+    for (const pattern of forbidden) {
+      expect(importLines.some((l) => pattern.test(l)), `router.ts must not import anything matching ${pattern}`).toBe(false);
+    }
+  });
+
+  it("31. no closure trigger set (OPERATIVE_CLOSURE_TRIGGER_SIGNALS) or regex in router.ts's EXECUTABLE source (comments stripped - a doc-comment explaining the DSGR-motivated root cause is expected and is not production logic, task §4's own distinction) references a package-specific identifier", () => {
+    const source = fs.readFileSync(path.join(__dirname, "../../lib/contract-model/compiler/semantic-coverage/router.ts"), "utf-8");
+    const codeOnly = source
+      .replace(/\/\*[\s\S]*?\*\//g, "") // block comments
+      .split("\n")
+      .filter((l) => !/^\s*\/\//.test(l)) // whole-line // comments
+      .join("\n");
+    const forbiddenTokens = [/dsgr/i, /distribution solutions group/i];
+    for (const pattern of forbiddenTokens) {
+      expect(pattern.test(codeOnly), `router.ts's executable code must not reference ${pattern}`).toBe(false);
+    }
   });
 });
