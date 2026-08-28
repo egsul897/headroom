@@ -1,0 +1,30 @@
+{
+  "purpose": "Proposed structural invariants (task §13) for the future occurrence-safe structural index. Design-only; not enforced by any production code yet.",
+  "invariants": [
+    { "id": "I1", "statement": "No two source occurrences share nodeId within one document.", "enforcement": "By construction (Option D span-primary hash) + explicit collision detection at index build time (never silent overwrite)." },
+    { "id": "I2", "statement": "Duplicate display labels (sectionRef) are allowed and expected - not itself unhealthy.", "enforcement": "DUPLICATE_LABEL_EXPECTED diagnostic is informational only, never a health failure." },
+    { "id": "I3", "statement": "Duplicate legal-reference candidates are allowed but represented explicitly as a set, never collapsed to one.", "enforcement": "findByLegalRef/resolveCitation return arrays; AmbiguityReport surfaced when length > 1." },
+    { "id": "I4", "statement": "Parent-child ownership uses occurrence identity (nodeId/parentId), never label (parentSectionRef string).", "enforcement": "childrenByParentId keyed by nodeId, not by a re-normalized label string." },
+    { "id": "I5", "statement": "No silent map overwrite - any identity-map collision at construction time is a hard-fail / health-diagnostic event.", "enforcement": "DUPLICATE_OCCURRENCE_ID diagnostic; construction aborts or downgrades trust for the affected document rather than silently picking a winner." },
+    { "id": "I6", "statement": "No child-list merging across distinct occurrences.", "enforcement": "getChildren(parentNodeId) returns only children whose own parentNodeId equals the queried id - never a label match." },
+    { "id": "I7", "statement": "Every indexed node is retrievable by nodeId.", "enforcement": "getNode(nodeId) never returns undefined for a nodeId present in allNodes()." },
+    { "id": "I8", "statement": "Every indexed source span belongs to the correct occurrence.", "enforcement": "getNodeText(nodeId, \"OWN\") boundary computation only consults that node's own (I6-correct) children." },
+    { "id": "I9", "statement": "Traversal reaches every indexed node exactly once from its intended structural root, except explicitly orphaned/ambiguous nodes.", "enforcement": "Reachability/coverage report (§18 of ADR)." },
+    { "id": "I10", "statement": "Orphaned nodes are explicit.", "enforcement": "orphans() API - never silently rooted or silently dropped." },
+    { "id": "I11", "statement": "Cycles are impossible by construction, or explicitly detected.", "enforcement": "Parent identity assigned strictly top-down from already-existing ancestor ids; cycle-guard retained as a defensive check." },
+    { "id": "I12", "statement": "Source spans satisfy deterministic validity checks.", "enforcement": "charStart < charEnd; charEnd <= documentText.length; own-span nested correctly inside parent's full span." },
+    { "id": "I13", "statement": "Sibling ordering is source order (charStart ascending).", "enforcement": "Unchanged from today's behavior." },
+    { "id": "I14", "statement": "Document boundary is part of the identity domain.", "enforcement": "nodeId always begins with documentId in its hash input - cross-instrument collision impossible by construction, not merely by convention." },
+    { "id": "I15", "statement": "Ambiguous legal references return multiple candidates rather than silently choosing one by collision.", "enforcement": "Same mechanism as I3." },
+    { "id": "I16", "statement": "Structural-health diagnostics surface every invariant violation as a named, queryable condition.", "enforcement": "healthDiagnostics() API (§13/§17 of ADR); never a silent undefined/empty result indistinguishable from legitimate absence." }
+  ],
+  "criticalDesignDiscipline": "DUPLICATE_LABEL_EXPECTED (I2) must never be conflated with DUPLICATE_OCCURRENCE_ID (I1/I5) - today's system conflates 'label duplicated' with 'identity broken'; the new one must not. Only the identity-level invariants (I1, I5, I6, I7) are hard failures.",
+  "additionalDiagnosticsProposed": [
+    "IMPOSSIBLE_PARENT",
+    "MULTIPLE_STRUCTURAL_PARENTS",
+    "OVERLAPPING_INCOMPATIBLE_SPAN",
+    "AMBIGUOUS_LEGAL_REFERENCE (informational, expected to fire routinely)",
+    "DUPLICATE_NORMALIZED_PATH (informational)",
+    "SOURCE_ORDER_VIOLATION"
+  ]
+}

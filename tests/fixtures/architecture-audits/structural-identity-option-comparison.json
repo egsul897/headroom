@@ -1,0 +1,87 @@
+{
+  "purpose": "Evaluation of candidate source-occurrence identity designs (task §7/§33). Design-only; no production code implements any of these yet.",
+  "evaluationCriteria": ["determinism", "uniqueness", "collisionRisk", "stability", "readability", "performance", "migrationComplexity", "parserVersionSensitivity", "extractionVersionSensitivity", "amendmentVersionBehavior", "downstreamErgonomics"],
+  "options": [
+    {
+      "id": "A",
+      "name": "Span-primary",
+      "construction": "computeStableKey(\"structural-node\", documentId, nodeType, String(charStart))",
+      "determinism": "Yes - parseDocumentStructure is a pure function of doc.text; no iteration-order dependency reaches charStart",
+      "uniqueness": "Two nodes of the same type cannot legitimately share a charStart in one parse pass (overlapsAny already prevents accepting overlapping matches); cross-type collision at the same offset is exceptionally unlikely and is caught by explicit collision detection, never silently resolved",
+      "collisionRisk": "Near-zero by construction; residual risk handled by fail-closed detection (I5/§28), not assumed away",
+      "stability": "Level A only (same source bytes + same parser version) - deliberately does not promise stability across a parser algorithm change or re-extraction, which is the correct scope (cross-version stability is a lineage concern, not an occurrence-identity concern)",
+      "readability": "Low (opaque hash) - mitigated by keeping sectionRef/heading/charStart as separate, always-present display fields",
+      "performance": "O(1) per node, no extra text scan",
+      "migrationComplexity": "Low - charStart is already computed and present on every StructuralNode",
+      "parserVersionSensitivity": "Intentionally sensitive (a parser change should mint new identities, not silently keep stale ones)",
+      "extractionVersionSensitivity": "Intentionally sensitive (re-extraction is a different source representation)",
+      "amendmentVersionBehavior": "N/A by design - amendment/version lineage is explicitly a separate mechanism (§11 of the ADR)",
+      "downstreamErgonomics": "Reuses the existing repo-wide computeStableKey convention (stable-keys.ts) - no new hashing scheme introduced",
+      "verdict": "STRONG - selected as the identity mechanism within the preferred hybrid (Option D)"
+    },
+    {
+      "id": "B",
+      "name": "Ancestry path + occurrence ordinal",
+      "construction": "`${documentId}::${ancestryPathOfParentNodeIds.join(\"/\")}#${occurrenceOrdinalAtThisPath}`",
+      "determinism": "Fragile - depends on parent ids already being resolved, which is exactly the question under dispute when labels collide",
+      "uniqueness": "Not self-contained - circular bootstrapping (a node's id depends on its parent's id, all the way to the root)",
+      "collisionRisk": "Fragile to reordering: a future parser-version change to intra-region iteration order could silently shift occurrenceOrdinal for nodes that did not themselves move",
+      "stability": "Worse than Option A - depends transitively on every ancestor's own identity stability",
+      "readability": "High - intuitively debuggable, encodes hierarchy directly",
+      "performance": "Requires a top-down pass; not O(1) per node in isolation",
+      "migrationComplexity": "Higher - needs parent resolution order enforced",
+      "parserVersionSensitivity": "High, and in an uncontrolled way (ordinal can shift without the node itself moving)",
+      "extractionVersionSensitivity": "High, same uncontrolled-shift risk",
+      "amendmentVersionBehavior": "N/A",
+      "downstreamErgonomics": "Good readability, but the bootstrapping/circularity problem disqualifies it as primary identity",
+      "verdict": "REJECTED as primary identity mechanism - retained as a derived, non-identity structuralPath/occurrenceOrdinal display field computed from Option A ids (Option D)"
+    },
+    {
+      "id": "C",
+      "name": "Content-derived hash + source position",
+      "construction": "computeStableKey(\"structural-node\", documentId, nodeType, sectionRef, sha256(ownText.slice(0,120)))",
+      "determinism": "Yes in isolation, but...",
+      "uniqueness": "DISQUALIFYING FLAW: introduces NEW collisions rather than removing them - real drafting contains verbatim-repeated boilerplate opening language across genuinely distinct provisions (e.g. two different baskets both opening identical text in different sections)",
+      "collisionRisk": "Higher than today's scheme for this specific failure mode",
+      "stability": "Superficially attractive (survives whitespace-only re-extraction) but not worth the uniqueness cost",
+      "readability": "Low",
+      "performance": "Extra text scan + hash per node, for no benefit Option A doesn't already provide via charStart",
+      "migrationComplexity": "Medium",
+      "parserVersionSensitivity": "Mixed",
+      "extractionVersionSensitivity": "Partially resistant, but at the cost of uniqueness (the actual goal)",
+      "amendmentVersionBehavior": "N/A",
+      "downstreamErgonomics": "Circular dependency: a node's 'own text' is only correctly knowable once children are occurrence-safely attributed, which is DOWNSTREAM of identity, not independent of it - this option needs the bug already fixed to compute its own input",
+      "verdict": "REJECTED - introduces new collisions and has a circular dependency on the very defect being fixed"
+    },
+    {
+      "id": "D",
+      "name": "Hybrid: span-primary identity + path/ordinal disambiguation metadata (PREFERRED)",
+      "construction": "nodeId identical to Option A's construction; structuralPath (sequence of ancestor nodeIds, computed top-down AFTER nodeIds exist) and occurrenceOrdinal (Option B's sibling-occurrence counter) carried as separate, non-identity, display/debug-only fields",
+      "determinism": "Inherits Option A's determinism for the identity itself; structuralPath/occurrenceOrdinal are derived, never consulted for equality or lookup",
+      "uniqueness": "Inherits Option A's uniqueness guarantee exactly - the metadata fields cannot cause a collision because they play no role in Map keys or lookups",
+      "collisionRisk": "Same as Option A (near-zero, fail-closed on the residual)",
+      "stability": "Same scope as Option A (Level A)",
+      "readability": "High - gets Option A's safety AND Option B's human-legibility, without Option B's circularity, because the legible fields are strictly additive metadata",
+      "performance": "Same as Option A plus one cheap top-down pass to compute display metadata (not on the hot path of any lookup)",
+      "migrationComplexity": "Low-medium - same as A, plus one additional derived-field computation pass",
+      "parserVersionSensitivity": "Same as Option A (intentional)",
+      "extractionVersionSensitivity": "Same as Option A (intentional)",
+      "amendmentVersionBehavior": "Same as Option A - explicitly out of scope, handled by Phase 2G's own lineage mechanism",
+      "downstreamErgonomics": "Best of both: safe map-key identity + legible debug/display fields",
+      "verdict": "SELECTED - matches the task's own §7D framing ('hybrid deterministic identity: span-primary with path-ordinal disambiguation') exactly"
+    },
+    {
+      "id": "E",
+      "name": "Corroborating prior art (not itself a candidate mechanism)",
+      "construction": "N/A - not a construction formula, a reference precedent: Prisma DocumentNode.parentId (real DB-generated FK, @@unique([companyId, stableKey]))",
+      "note": "Confirms the general direction (occurrence-safe identity, parent/child by identity not label) already works correctly one layer over in this same codebase for the legacy/solver-native persistence model. Not adoptable directly for the in-memory index (task explicitly excludes DB-autoincrement dependence for that layer, and a DB round-trip has no place in a pure in-memory parse step) - cited as evidence supporting Option D's direction, not as an alternative construction.",
+      "verdict": "N/A (evidence, not a candidate)"
+    }
+  ],
+  "rejectedAlternativesSummary": {
+    "optionB": "circular bootstrapping + fragile to reordering",
+    "optionC": "introduces new collisions from repeated boilerplate text + circular dependency on the defect being fixed",
+    "secondIndependentParser": "evaluated separately (ADR §19) - cost/complexity/disagreement-resolution problems outweigh marginal independence gain over the cheaper mechanical reachability-invariant approach"
+  },
+  "selectedOption": "D"
+}

@@ -1,0 +1,84 @@
+{
+  "purpose": "Proposed future validation strategy (task §38-42). Design-only; none of this has been executed as remediation - the synthetic collision repro (structural-identity-collision-repro.json) is proof-of-mechanism only, not a pass/fail gate.",
+  "syntheticImplementationTestPlan": [
+    "1. repeated (a) under different sections",
+    "2. repeated (i) under different parents",
+    "3. repeated (A) at multiple depths",
+    "4. duplicate normalized full paths",
+    "5. identical text at two source locations",
+    "6. same label + same text at two locations",
+    "7. continuation paragraphs",
+    "8. trailing provisos",
+    "9. malformed duplicate section numbers",
+    "10. amendment quoting old provision",
+    "11. schedule restarting numbering",
+    "12. definitions with nested enumerations",
+    "13. zero-newline document",
+    "14. extraction whitespace variance",
+    "15. source order determinism",
+    "16. parent-child ownership",
+    "17. no cross-parent child merging",
+    "18. no silent overwrite",
+    "19. all nodes retrievable",
+    "20. all intended nodes reachable"
+  ],
+  "propertyBasedTestingRecommendation": {
+    "recommended": true,
+    "properties": [
+      "unique occurrence IDs (I1)",
+      "parent-child bijection constraints (I4/I6)",
+      "traversal completeness (I9)",
+      "no cycles (I11)",
+      "deterministic source order (I13)",
+      "no map-size loss (allNodes().length === nodesById.size)",
+      "duplicate labels do not reduce node count",
+      "serialization preserves identity (round-trip)"
+    ]
+  },
+  "knownPackageRegressionPlan": {
+    "recommendedOrder": [
+      "1. synthetic adversarial identity tests",
+      "2. existing Phase 2A suite",
+      "3. FWRG",
+      "4. LSB",
+      "5. CONMED",
+      "6. DSGR structural regression",
+      "7. DSGR semantic safety regression",
+      "8. scorer/reconciliation correction (separate workstream, Stage F)",
+      "9. final DSGR known-package safety gate",
+      "10. only then Phase 3F.2"
+    ],
+    "orderChangeRecommendation": "No change recommended - the order already runs cheapest/most-isolated (synthetic, no LLM cost) to most expensive/most-integrated (DSGR semantic safety regression, real package + full pipeline), and defers the scorer workstream (which is orthogonal to structural correctness) until after structural regression has independently gated green, so a scorer defect and a structural defect are never conflated in one gate result."
+  },
+  "dsgrStructuralRegressionMetrics": {
+    "required": [
+      "total structural occurrences",
+      "unique occurrence IDs",
+      "duplicate display labels (informational, expected > 0)",
+      "duplicate normalized paths (informational)",
+      "unreachable nodes (target: 0, excluding genuine PARSE_COVERAGE_MISS cases tracked separately)",
+      "overwritten nodes (target: 0)",
+      "parent-child ownership conflicts (target: 0)",
+      "source-span conflicts (target: 0)",
+      "source coverage (reachability gap measurement, §18 of ADR)",
+      "original 58 structurally-unreachable forensic cases, individually re-evaluated (not assumed all resolved)"
+    ],
+    "targets": {
+      "occurrenceIdentityCollisions": 0,
+      "silentOverwrites": 0,
+      "crossParentChildMerging": 0
+    },
+    "explicitNonTarget": "DSGR strict dangerous-unflagged omissions are NOT required to reach zero solely from this structural fix - approximately 79% of the 89 residual cases trace to structural identity per Phase 3F.1.1; the remainder requires the separate scorer workstream (Stage F) and non-structural residual causes."
+  },
+  "semanticRegressionAfterStructuralFix": {
+    "requiredDispositionSplit": ["RESOLVED_BY_STRUCTURAL_IDENTITY_FIX", "STILL_DANGEROUS_OTHER_CAUSE"],
+    "prohibition": "must not assume all 89 residual cases disappear solely from structural remediation"
+  },
+  "determinismVerification": [
+    "repeated run produces identical nodeIds",
+    "shuffled in-memory input ordering (where ordering is not semantically meaningful) produces identical nodeIds",
+    "serialization round trip preserves nodeIds",
+    "process restart produces identical nodeIds"
+  ],
+  "collisionHandlingRequirement": "collision detection + fail-closed structural-health downgrade + diagnostic - never silent overwrite, even for a residual near-zero-probability same-charStart-different-type case"
+}
