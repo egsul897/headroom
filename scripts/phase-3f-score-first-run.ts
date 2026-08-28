@@ -112,10 +112,12 @@ interface MatchResult {
   gtMateriality: Materiality;
   unitType: string;
 
-  discoveryMatch: "EXACT" | "PARENT" | "NONE";
+  discoveryMatch: "EXACT" | "PARENT" | "DESCENDANT" | "NONE";
   discoveryReviewFlagged: boolean;
 
-  auditMatch: "EXACT" | "PARENT" | "NONE";
+  auditMatch: "EXACT" | "PARENT" | "DESCENDANT" | "NONE";
+  /** true when auditMatch is DESCENDANT-only: the audit captured this section's own lettered sub-items but never a unit anchored at the section's own chapeau/parent address itself. */
+  auditMatchChapeauOnly: boolean;
   auditMaterialityAssigned: Materiality | null;
   auditMaterialityMismatch: boolean;
   coverageState: string | null;
@@ -192,6 +194,19 @@ function main() {
 
   const results: MatchResult[] = [];
 
+  // Descendant lookup: any index key that is a lettered/numbered sub-item of
+  // `ref` (starts with ref immediately followed by "(") - e.g. ref "5.08"
+  // matches keys "5.08(a)", "5.08(b)(i)", but never "5.1" falsely matching
+  // "5.10" (the character right after the prefix must be "(").
+  function findDescendants<T>(indexMap: Map<string, T[]>, ref: string): T[] {
+    if (!ref) return [];
+    const out: T[] = [];
+    for (const [key, items] of indexMap) {
+      if (key.length > ref.length && key.startsWith(ref) && key[ref.length] === "(") out.push(...items);
+    }
+    return out;
+  }
+
   for (const gtDoc of gtDocs) {
     const discIndex: Map<string, DiscoveryCandidate[]> = discByDoc.get(gtDoc.documentId) ?? new Map();
     const auditIndex: Map<string, AuditUnit[]> = auditByDoc.get(gtDoc.documentId) ?? new Map();
@@ -202,7 +217,7 @@ function main() {
       for (const unit of article.units) {
         const base = baseSection(unit.sectionRef ?? "");
 
-        // Discovery match
+        // Discovery match: exact -> base-section parent -> lettered descendants
         let discoveryMatch: MatchResult["discoveryMatch"] = "NONE";
         let discoveryReviewFlagged = false;
         let discCandidates = discIndex.get(unit.sectionRef) ?? [];
@@ -210,17 +225,29 @@ function main() {
         else {
           discCandidates = discIndex.get(base) ?? [];
           if (discCandidates.length > 0) discoveryMatch = "PARENT";
+          else {
+            discCandidates = findDescendants(discIndex, unit.sectionRef ?? "");
+            if (discCandidates.length > 0) discoveryMatch = "DESCENDANT";
+          }
         }
         discoveryReviewFlagged = discCandidates.some((c) => c.reviewStatus === "NEEDS_REVIEW");
 
-        // Audit match
+        // Audit match: exact -> base-section parent -> lettered descendants
+        // (a DESCENDANT-only match means the audit captured this section's
+        // own lettered sub-items but never a unit at the section's own
+        // chapeau/parent address - recorded via auditMatchChapeauOnly).
         let auditMatch: MatchResult["auditMatch"] = "NONE";
         let auditUnits = auditIndex.get(unit.sectionRef) ?? [];
         if (auditUnits.length > 0) auditMatch = "EXACT";
         else {
           auditUnits = auditIndex.get(base) ?? [];
           if (auditUnits.length > 0) auditMatch = "PARENT";
+          else {
+            auditUnits = findDescendants(auditIndex, unit.sectionRef ?? "");
+            if (auditUnits.length > 0) auditMatch = "DESCENDANT";
+          }
         }
+        const auditMatchChapeauOnly = auditMatch === "DESCENDANT";
 
         let auditMaterialityAssigned: Materiality | null = null;
         let coverageState: string | null = null;
@@ -274,6 +301,7 @@ function main() {
           discoveryMatch,
           discoveryReviewFlagged,
           auditMatch,
+          auditMatchChapeauOnly,
           auditMaterialityAssigned,
           auditMaterialityMismatch,
           coverageState,
@@ -296,6 +324,13 @@ function main() {
   const criticalViolationsBroad = criticalViolations.filter((r) => !r.wouldBeSafeUnderBroadReading); // credits discovery-layer NEEDS_REVIEW flags too
 
   const highMatUnits = results.filter((r) => r.gtMateriality === "CRITICAL" || r.gtMateriality === "MATERIAL");
+
+  // True blind spots (no audit unit at ANY level - exact/parent/descendant)
+  // vs. chapeau-only gaps (audit captured lettered sub-items but never the
+  // section's own parent/chapeau address) - two structurally different
+  // findings that were conflated before descendant-matching was added.
+  const trueBlindSpots = highMatUnits.filter((r) => r.auditMatch === "NONE");
+  const chapeauOnlyGaps = highMatUnits.filter((r) => r.auditMatchChapeauOnly);
   const discoveryRecallNumerator = highMatUnits.filter((r) => r.discoveryMatch !== "NONE").length;
   const discoveryRecall = highMatUnits.length > 0 ? discoveryRecallNumerator / highMatUnits.length : 1;
 
@@ -373,6 +408,8 @@ function main() {
       covenantBearingSectionRecall_gateThreshold0_98: covenantSectionRecall,
       operativeRuleRecall_gateThreshold0_95: operativeRuleRecall,
       auditInventoryRecallHighMateriality: auditRecall,
+      trueBlindSpotCount_noAuditUnitAtAnyLevel: trueBlindSpots.length,
+      chapeauOnlyGapCount_subItemsCapturedParentMissed: chapeauOnlyGaps.length,
     },
     byClassification,
     perDocument,
@@ -400,6 +437,8 @@ function main() {
   console.log(`Gate: covenant-bearing section recall >= 98%: ${(covenantSectionRecall * 100).toFixed(2)}% (${covenantSectionRecall >= 0.98 ? "PASS" : "FAIL"})`);
   console.log(`Gate: operative-rule recall >= 95%: ${(operativeRuleRecall * 100).toFixed(2)}% (${operativeRuleRecall >= 0.95 ? "PASS" : "FAIL"})`);
   console.log(`Audit-inventory recall (CRITICAL/MATERIAL): ${(auditRecall * 100).toFixed(2)}%`);
+  console.log(`  of which true blind spots (no audit unit at any level): ${trueBlindSpots.length}`);
+  console.log(`  of which chapeau-only gaps (sub-items captured, parent/chapeau missed): ${chapeauOnlyGaps.length}`);
   console.log(`By classification:`, JSON.stringify(byClassification, null, 2));
   console.log(`\nReport written to ${OUT_PATH}`);
 }
