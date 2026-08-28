@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "P0_RECONCILIATION",
+  "generatedAt": "2026-08-28T23:25:00Z",
+  "reconciliation": [
+    {
+      "id": "P0-1",
+      "originalFinding": "Amendment operative-state false resolution: buildProvisionView set currentText=effect.newText unconditionally, never checking whether the target reference actually resolved uniquely.",
+      "originalCounterexample": "An amendment effect targeting an AMBIGUOUS (2 real physical occurrences) or entirely MISSING section/definition, carrying verbatim newText, produced OPERATIVE_STATE_RESOLVED with zero unresolvedIssues and a confident currentText.",
+      "rootCause": "OPERATIVE_STATE / REFERENCE_RESOLUTION",
+      "filesChanged": ["lib/contract-model/compiler/amendment/operative-state.ts", "lib/contract-model/compiler/amendment/types.ts", "lib/contract-model/compiler/amendment/independent-verification.ts", "lib/contract-model/compiler/amendment/pipeline.ts"],
+      "remediation": "targetResolutionStatus (UNIQUE/AMBIGUOUS/NOT_FOUND, derived independently of newText, covering both SECTION and DEFINITION kinds) is now the sole gate on whether currentText may be populated. independent-verification.ts strengthened to check ambiguity (not just existence) and wired into the live pipeline as a real gate.",
+      "exactRegressionTest": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts 'CENTRAL FINDING' describe block",
+      "generalizedTests": "3-occurrence collisions, DEFINITION-kind variants, deep-chain ambiguous-target scenario, independent-verification wiring proof (7 new tests beyond the original 2)",
+      "postRemediationStatus": "FIXED",
+      "residualLimitation": "Independent verification and operative-state.ts still share the Phase 2A structural-index substrate (Invariant #18's own disclosed limit) - not full isolation from a hypothetical structural-index-layer defect affecting both."
+    },
+    {
+      "id": "P0-2",
+      "originalFinding": "DefinedTermNode cross-instrument silent corruption: persistStructuralDefinitions/persistDefinedTerms's stableKey omitted documentId.",
+      "originalCounterexample": "Two facilities in one company both defining 'Payment Conditions' - only one row survives, internally contradictory (documentId claims Facility A, sourceNodeId resolves into Facility B).",
+      "rootCause": "INSTRUMENT_ISOLATION / PERSISTENCE / IDENTITY",
+      "filesChanged": ["lib/contract-model/compiler/persistence.ts", "lib/contract-model/compiler/amendment/operative-state.ts (narrow fallback fix)", "prisma/schema.prisma"],
+      "remediation": "stableKey now includes documentId, matching DocumentNode/ContractRule's own disambiguator pattern. The related cross-document getDefinition fallback in operative-state.ts was also removed.",
+      "exactRegressionTest": "tests/foundation-audit/tenant-instrument-drafting-collision.test.ts 'P0 REAL FINDING: DefinedTermNode' block",
+      "generalizedTests": "Generalized to 3 facilities, case/whitespace-variant terms, concurrent-write test",
+      "postRemediationStatus": "FIXED, certified against real Postgres (see 09-real-postgres-certification.json)",
+      "residualLimitation": "3 other call sites with the same no-documentId fallback pattern (semantic/tools.ts, amendment/pipeline.ts, amendment/independent-verification.ts) were identified but not in this workstream's assigned files - flagged for a future phase, see 13-remaining-foundation-risks.json."
+    },
+    {
+      "id": "P0-3",
+      "originalFinding": "computeStructuralCoverage ignored real node.charEnd, silently absorbing mid-document and trailing missing structural regions as 'covered'.",
+      "originalCounterexample": "A fabricated 5,000-character missing region between two real nodes (or after the last node) produced coveragePercent=100, significantUncoveredSpans=[], health=STRUCTURE_HEALTHY.",
+      "rootCause": "SOURCE_ACCOUNTING / HIERARCHY",
+      "filesChanged": ["lib/contract-model/compiler/structural-coverage.ts"],
+      "remediation": "Replaced with computeTopLevelSubtreeSpans, using each node's own real, clamped [charStart,charEnd). Gaps classified by shape (LEADING/INTERIOR/TRAILING/WHOLE_DOCUMENT).",
+      "exactRegressionTest": "tests/foundation-audit/discovery-fail-closed.test.ts D/D2",
+      "generalizedTests": "23 new tests in structural-coverage-remediation.test.ts covering varied gap sizes/positions, positive/negative controls, full-pipeline routing",
+      "postRemediationStatus": "FIXED",
+      "residualLimitation": "None identified for the coverage-accounting mechanism itself; the related boundary-anomaly detection (for non-gap swallow shapes like Q1) has its own disclosed limitations - see P0-4."
+    },
+    {
+      "id": "P0-4",
+      "originalFinding": "raw-source-fallback's routing trigger inherited P0-3's blindness, defeating the one independent structural-gap safety net simultaneously with the primary pipeline (a live Architecture Invariant #18 reproduction).",
+      "originalCounterexample": "A case-folded, run-on section heading defeats discovery AND raw-source-fallback never runs, because structural-coverage reports STRUCTURE_HEALTHY.",
+      "rootCause": "SOURCE_ACCOUNTING",
+      "filesChanged": ["lib/contract-model/compiler/coverage-audit/raw-source-fallback.ts", "lib/contract-model/compiler/coverage-audit/pipeline.ts", "lib/contract-model/compiler/structural-index.ts"],
+      "remediation": "P0-3's fix closes the coverage-gap half directly. A new, independent boundary-anomaly detection mechanism (EMBEDDED_HEADING_LIKE_FRAGMENT, SIGNAL_DENSITY_SHIFT, OWN_TEXT_LENGTH_OUTLIER) closes the non-gap swallow half (where every character is nominally covered, just by the wrong node) - the pipeline's skip condition now also checks for SIGNIFICANT boundary anomalies and raw-scans that anomaly's own region.",
+      "exactRegressionTest": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q1 (updated), structural-coverage-remediation.test.ts E2/E3",
+      "generalizedTests": "Full-pipeline routing proof across zero-node failure, density collapse, mid-document swallow, trailing swallow, case/style heading defeat, and a positive control confirming no unreasonable review explosion on a genuinely healthy document",
+      "postRemediationStatus": "FIXED",
+      "residualLimitation": "EMBEDDED_HEADING_LIKE_FRAGMENT only catches heading-defeat mechanisms shaped like a real Section/ARTICLE keyword match with a colon/period variant - a fully non-standard garbling is not caught (matches what the real parser itself can never see either, not a regression). SIGNAL_DENSITY_SHIFT has a known, accepted false-positive shape bounded to one extra raw-scan pass."
+    },
+    {
+      "id": "P0-5",
+      "originalFinding": "Package-graph false AMENDS edge: an amendment merely quoting an unrelated agreement's dated self-reference in a recital produced a confident RESOLVED AMENDS edge to that unrelated document.",
+      "originalCounterexample": "A Second Amendment to a Credit Agreement whose recital references an unrelated Indenture sharing an execution date produces a second, confidence-0.95 RESOLVED AMENDS edge to the Indenture, which instrument-grouping.ts then unions into the wrong instrument cluster.",
+      "rootCause": "PACKAGE_GRAPH / INSTRUMENT_ISOLATION",
+      "filesChanged": ["lib/contract-model/compiler/package-graph/relationship-resolution.ts", "lib/contract-model/compiler/package-graph/instrument-grouping.ts", "lib/contract-model/compiler/package-graph/types.ts"],
+      "remediation": "A real evidence taxonomy (STRONG/SUPPORTING/CONTEXTUAL_MENTION_ONLY/NEGATIVE_EVIDENCE) now gates whether a modification-type relationship may reach RESOLVED - a type+date coincidence alone (SUPPORTING) is downgraded to REVIEW_REQUIRED; a WHEREAS-recital mention with no operative tie (CONTEXTUAL) or an explicit disclaimer (NEGATIVE) is forced UNRESOLVED before the coincidence match is even consulted.",
+      "exactRegressionTest": "tests/foundation-audit/package-graph-adversarial.test.ts test 10",
+      "generalizedTests": "Test 10b (single-quote variant, removing the multi-target trigger entirely - the false edge still never resolves), test 17 (a genuine multi-target amendment, proving the fix discriminates by evidence rather than adding blanket multi-target caution), and re-confirmation of all 9 previously-correct scenarios",
+      "postRemediationStatus": "FIXED",
+      "residualLimitation": "Evidence-taxonomy gating applied only to modification-type relationships (AMENDS/RESTATES/SUPPLEMENTS/JOINS); GUARANTEES/SECURES/INTERCREDITOR_WITH/CERTIFIES_COMPLIANCE_WITH edges still use pre-existing type+date resolution (no counterexample found there). The regex-based recital/negation pattern set is curated, not exhaustive."
+    },
+    {
+      "id": "P0-6",
+      "originalFinding": "Evaluation-methodology circularity: the Phase 3F/3F.1/3F.1.1 scorer's structural/numeric-proximity-substitutes-for-content-correspondence defect is confirmed unchanged and independently confirmed to recur in the older, separately-built Phase C.1 evaluator - a systemic hazard in this codebase's approach to automated grading.",
+      "status": "DEFERRED_TO_PHASE_3F_1_5_BY_DESIGN",
+      "explicitStatement": "P0-6 was NOT fixed in this phase, per the phase charter's explicit instruction (Section 12: 'P0-6 is NOT fixed in this phase... do not modify scorer matching to make results improve'). This is a deliberate, disclosed deferral, not a false claim of resolution.",
+      "whatWasDoneInThisPhase": "Disclosure only (P1-12): a clear, prominent caveat was added to docs/HEADROOM-ROADMAP.md stating the scorer's known circularity defect and that every historical percentage computed with it (including the legacy Phase C 25.0%->15.625% figure) should be read with that caveat. No scorer script, ground-truth JSON, or historical percentage value was modified.",
+      "gateImplication": "Per the phase charter's Section 22, the production-remediation gate may pass with P0-6 explicitly deferred ONLY because this phase does not certify evaluation methodology and no 3F.2/Phase 4 work may begin until Phase 3F.1.5 (Evaluation Methodology V2) and a subsequent Foundation Certification phase both actually pass."
+    }
+  ]
+}

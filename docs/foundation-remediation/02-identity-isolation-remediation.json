@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "IDENTITY_ISOLATION_REMEDIATION",
+  "generatedAt": "2026-08-28T23:12:00Z",
+  "workstream": "B",
+  "findingsAddressed": ["P0-2", "P1-1", "P1-2", "P1-9", "operative-state.ts cross-document definition fallback (contributing to P0-2's family)"],
+  "filesChanged": [
+    "lib/contract-model/compiler/persistence.ts",
+    "lib/contract-model/compiler/semantic/cache.ts",
+    "lib/contract-model/compiler/semantic/compile.ts",
+    "lib/contract-model/validators.ts",
+    "lib/contract-model/compiler/amendment/operative-state.ts (narrow: resolveBaseText DEFINITION-branch fallback only)",
+    "prisma/schema.prisma (new ContractReferenceEdge.stableKey column + migration)"
+  ],
+  "p02Remediation": {
+    "rootCause": "persistStructuralDefinitions/persistDefinedTerms computed stableKey as computeStableKey('defined-term', companyId, normalizedTerm) - omitting documentId. Two documents' definitions of the same term collided onto one @@unique([companyId, stableKey]) row; the upsert's update branch touched sourceNodeId/definitionTextRef but never documentId, producing an internally contradictory row (documentId=Facility-A, sourceNodeId->Facility-B).",
+    "fix": "stableKey now includes documentId: computeStableKey('defined-term', companyId, documentId, normalizedTerm) - making each row a genuine physical definition occurrence, matching DocumentNode's charStart and ContractRule's sourceDocumentId disambiguators. No schema change needed for this specific fix.",
+    "identityModelClarified": "Separated: (a) term LEXICAL identity (the normalized string), (b) a PHYSICAL DEFINITION OCCURRENCE (document/instrument-scoped), (c) document identity, (d) instrument identity, (e) the SEMANTIC RESOLUTION TARGET a consumer wants in a given context. A legal term string is no longer conflated with a single global physical occurrence ID.",
+    "relatedFallbackFix": "operative-state.ts's resolveBaseText DEFINITION branch changed from `index.getDefinition(group.ref, baseDocumentId) ?? index.getDefinition(group.ref)` to `index.getDefinition(group.ref, baseDocumentId)` (no fallback) - the no-documentId fallback was the same root defect class one layer up, silently matching an unrelated document's same-named definition. This is a narrow, single-line fix; Workstream D's own targetResolutionStatus gate (see 04-operative-state-remediation.json) layers on top of it independently.",
+    "beforeAfterProofRealPostgres": {
+      "before": "Two facilities, same company, both defining 'Payment Conditions': one row survives, documentId=Alpha, sourceNodeId resolves into Beta's document.",
+      "after": "Two distinct rows: { documentId: 'facility-alpha', stableKey: 'defined-term:e4de5a8b...', sourceNodeId resolves into facility-alpha } and { documentId: 'facility-beta', stableKey: 'defined-term:1b6a9499...', sourceNodeId resolves into facility-beta } - every row's own documentId now agrees with its own sourceNodeId's document by construction."
+    },
+    "regressionTest": "tests/foundation-audit/tenant-instrument-drafting-collision.test.ts (generalized to 3 facilities), persistence-fault-injection.test.ts (both persist functions, 3 documents with case/whitespace variants, concurrent-write test)",
+    "status": "FIXED"
+  },
+  "p19Remediation": {
+    "rootCause": "persistStructuralNodes/persistStructuralDefinitions/persistContractRules/persistDefinedTerms/persistStructuralReferences were all upsert-only, never deleting rows for content the current run no longer produces.",
+    "designChosen": "Upsert-then-prune, in a single DB transaction, for all five functions: for every document actually represented in the current call's input, delete any previously-persisted row for that (companyId, documentId) whose stableKey the current run did not reproduce.",
+    "designRationale": "Chosen over a version/isCurrent column because it requires no schema change (beyond the separate stableKey addition to ContractReferenceEdge, which had NO identity at all before), preserves row identity/FK links across a legitimate unchanged re-run, and gives a real DB-enforced atomic guarantee.",
+    "failClosedGuard": "An empty candidate array never triggers a tombstone (cannot distinguish genuinely-zero from an upstream failure producing nothing) - only non-empty runs may prune.",
+    "additionalDefectFound": "persistStructuralReferences had ZERO identity at all before this fix (.create() only, no stableKey column existed on ContractReferenceEdge) - every replay literally duplicated every edge. Added a stableKey column (nullable, since the separate LLM-candidate creator persistReferences never sets it and Postgres treats multiple NULLs as non-colliding), converted to upsert, added the same tombstone step.",
+    "beforeAfterProofRealPostgres": {
+      "before": "persistStructuralNodes(CO, [6.01, 6.02]) then re-run with only [6.01]: countAfter=2, stale 6.02 row survives forever.",
+      "after": "countAfter=1, documentNode.findFirst({sectionRef:'6.02'}) returns null."
+    },
+    "regressionTest": "tests/foundation-audit/cache-invalidation-audit.test.ts and document-source-identity-overload.test.ts (updated), persistence-fault-injection.test.ts (positive control, negative control, fail-closed guard, 6-way concurrent-write test)",
+    "status": "FIXED"
+  },
+  "p11Remediation": {
+    "rootCause": "semantic/compile.ts's module-level defaultCache singleton (used by every real current caller omitting options.cache) is keyed by cache.ts's computeCacheKey, which never included companyId/instrumentKey/sourceDocumentId.",
+    "fix": "Added companyId, instrumentKey, sourceDocumentId to computeCacheKey's hash. Design decision: extended the flat key rather than building a per-tenant cache-scope wrapper, since a wrapper would only earn its complexity for a future per-tenant eviction/quota need that doesn't exist yet.",
+    "beforeAfterProof": {
+      "before": "Two companies, identical candidateRef/operativeSourceText/contentIdentity: keyA === keyB, model invoked once, second company served the first's cached result.",
+      "after": "keyA=21672c48a3..., keyB=b758c64265... (different), caller.calls=['proof-p11-co-a','proof-p11-co-b'] (model invoked for BOTH), resultA !== resultB."
+    },
+    "regressionTest": "tests/foundation-audit/semantic-cache-cross-tenant.test.ts (2-tenant fixed case, 3-tenant generalization, same-tenant positive control, companyId-only negative control, direct computeCacheKey unit test)",
+    "status": "FIXED"
+  },
+  "p12Remediation": {
+    "rootCause": "validateTenantIsolation only checked targetRuleId, DocumentRelationshipEdge, and AmendmentEffect fields.",
+    "fix": "Added ContractReferenceEdge.targetTermId/targetDocumentNodeId (audit-named) plus targetDocumentId (found by mechanical sweep), AmendmentEffect.targetRuleId/targetTermId/targetDocumentNodeId (found by sweep), DebtInstrument.baseDocumentId, Document.instrumentId.",
+    "coverageTablePrinciple": "Source-direction relation fields (populated atomically alongside their own row's companyId, from data the same document/company-scoped call already produced) are architecturally low-risk and left unvalidated, disclosed explicitly. Target-direction fields (can legitimately name any row by design) are the real leak vector and are now all checked - see the full field-by-field table below.",
+    "fullCoverageTable": [
+      { "field": "ContractReferenceEdge.targetRuleId", "target": "ContractRule", "direction": "target", "checkedBefore": true, "checkedNow": true },
+      { "field": "ContractReferenceEdge.targetTermId", "target": "DefinedTermNode", "direction": "target", "checkedBefore": false, "checkedNow": true },
+      { "field": "ContractReferenceEdge.targetDocumentNodeId", "target": "DocumentNode", "direction": "target", "checkedBefore": false, "checkedNow": true },
+      { "field": "ContractReferenceEdge.targetDocumentId", "target": "Document", "direction": "target", "checkedBefore": false, "checkedNow": true },
+      { "field": "AmendmentEffect.amendmentDocumentId", "target": "Document", "direction": "target", "checkedBefore": true, "checkedNow": true },
+      { "field": "AmendmentEffect.targetDocumentId", "target": "Document", "direction": "target", "checkedBefore": true, "checkedNow": true },
+      { "field": "AmendmentEffect.targetRuleId", "target": "ContractRule", "direction": "target", "checkedBefore": false, "checkedNow": true },
+      { "field": "AmendmentEffect.targetTermId", "target": "DefinedTermNode", "direction": "target", "checkedBefore": false, "checkedNow": true },
+      { "field": "AmendmentEffect.targetDocumentNodeId", "target": "DocumentNode", "direction": "target", "checkedBefore": false, "checkedNow": true },
+      { "field": "DocumentRelationshipEdge.sourceDocumentId/targetDocumentId", "target": "Document", "direction": "target", "checkedBefore": true, "checkedNow": true },
+      { "field": "ContractRuleRelationship.fromRuleId/toRuleId", "target": "ContractRule", "direction": "target", "checkedBefore": true, "checkedNow": true },
+      { "field": "DebtInstrument.baseDocumentId", "target": "Document", "direction": "target", "checkedBefore": false, "checkedNow": true },
+      { "field": "Document.instrumentId", "target": "DebtInstrument", "direction": "target", "checkedBefore": false, "checkedNow": true },
+      { "field": "ContractReferenceEdge.sourceNodeId / sourceRuleId", "target": "DocumentNode / ContractRule", "direction": "source", "checkedBefore": false, "checkedNow": false, "note": "disclosed residual - source-direction principle" },
+      { "field": "ContractRule.sourceDocumentId / sourceNodeId", "target": "Document / DocumentNode", "direction": "source", "checkedBefore": false, "checkedNow": false, "note": "disclosed residual" },
+      { "field": "DocumentNode.parentId", "target": "DocumentNode (self)", "direction": "source", "checkedBefore": false, "checkedNow": false, "note": "disclosed residual" },
+      { "field": "DefinedTermNode.documentId / sourceNodeId", "target": "Document / DocumentNode", "direction": "source", "checkedBefore": false, "checkedNow": false, "note": "disclosed residual" },
+      { "field": "DefinedTermDependencyEdge.fromTermId/toTermId", "target": "DefinedTermNode", "direction": "source", "checkedBefore": false, "checkedNow": false, "note": "disclosed residual" },
+      { "field": "ContractEventObligation.sourceRuleId", "target": "ContractRule", "direction": "source", "checkedBefore": false, "checkedNow": false, "note": "disclosed residual" },
+      { "field": "ContractCoverageRecord.documentId/ruleId", "target": "Document/ContractRule", "direction": "source", "checkedBefore": false, "checkedNow": false, "note": "disclosed residual" },
+      { "field": "UnresolvedContractItem.sourceRuleId/sourceTermId/sourceReferenceId", "target": "various", "direction": "source", "checkedBefore": false, "checkedNow": false, "note": "disclosed residual" },
+      { "field": "ContractRule.supersededByRuleId", "target": "ContractRule (self)", "direction": "source-ish (versioning)", "checkedBefore": false, "checkedNow": false, "note": "legitimate version chain, not a leak vector" }
+    ],
+    "status": "FIXED (target-direction fields); source-direction fields explicitly disclosed as unverified, not fixed"
+  },
+  "prismaMigration": {
+    "path": "prisma/migrations/20260828221531_p1_9_contract_reference_edge_stable_key/migration.sql",
+    "change": "Adds nullable ContractReferenceEdge.stableKey + @@unique([companyId, stableKey])",
+    "verifiedCleanAgainstRealPostgres": true
+  },
+  "otherFindingsIdentifiedNotFixed": [
+    "3 other call sites with the same no-documentId fallback pattern (semantic/tools.ts, amendment/pipeline.ts, amendment/independent-verification.ts) were identified but intentionally not touched - outside Workstream B's assigned files. Flagged for a future phase.",
+    "getRuleSourceTrace's definedTermRefs lookup (service.ts) appears to assume a stored stableKey format but is populated with raw term names by persistContractRules - a pre-existing, seemingly-latent mismatch noticed but not fixed (service.ts not assigned)."
+  ],
+  "testRunOutput": {
+    "filesRun": "tests/contract-model/ tests/foundation-audit/",
+    "resultAtWorkstreamCompletion": "119 test files passed, 1194 tests passed",
+    "resultAfterFullIntegration": "See 09-real-postgres-certification.json"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "HISTORICAL_INTEGRITY_MANIFEST",
+  "generatedAt": "2026-08-28T23:32:00Z",
+  "verification": {
+    "phase3f13AuditArtifacts": {
+      "scope": "docs/foundation-assurance/00-*.json through 18-*.json (19 files) + docs/phase-3f1-3-foundation-assurance-audit.md",
+      "baselineRecordedIn": "docs/foundation-remediation/00-remediation-freeze-manifest.json",
+      "reVerifiedAtPhaseEnd": true,
+      "result": "BYTE_IDENTICAL - zero mismatches (diff of sorted sha256sum output against the freeze-manifest baseline is empty)"
+    },
+    "historicalPhaseDocsAndFixtures": {
+      "scope": "docs/phase-3f-*.md, docs/phase-3f1-*.md, docs/phase-2*.md (all historical phase reports), tests/fixtures/unseen-packages/phase-3f*/ (recursive - first-blind-run, freeze, ground-truth, forensics, dsgr-remediation-regression fixture directories), tests/fixtures/architecture-audits/ (recursive - the 3F.1.2 ADR/proposal artifacts)",
+      "totalPathsHashed": 97,
+      "baselineHashOfCombinedManifest": "f8bb80ea2ca3d01164dcda9dbd0230d0e43f4dc1843cc41babe1a2c86b614728",
+      "reVerifiedAtPhaseEnd": true,
+      "result": "BYTE_IDENTICAL - diff of the freeze-time and phase-end combined hash listings is empty"
+    }
+  },
+  "noRewritingHistoryConfirmation": "This remediation phase created ONLY new files under docs/foundation-remediation/ and docs/phase-3f1-4-foundation-trust-boundary-remediation.md. No file under docs/foundation-assurance/, docs/phase-3f*.md (pre-existing ones), tests/fixtures/unseen-packages/phase-3f*/, or tests/fixtures/architecture-audits/ was modified, moved, or deleted. The one exception - docs/HEADROOM-ROADMAP.md - received an ADDITIVE disclosure note (P1-12) with zero deletion or alteration of existing content, which is explicitly authorized by the phase charter as a documentation fix, not a historical-evidence rewrite (HEADROOM-ROADMAP.md is a living operational document, not a frozen phase-report artifact)."
+}

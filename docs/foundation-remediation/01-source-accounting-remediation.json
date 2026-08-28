@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "SOURCE_ACCOUNTING_REMEDIATION",
+  "generatedAt": "2026-08-28T23:10:00Z",
+  "workstream": "A",
+  "findingsAddressed": ["P0-3", "P0-4", "P1-10 (Q3)", "Q5", "sibling-span-overlap"],
+  "filesChanged": [
+    "lib/contract-model/compiler/structural-coverage.ts",
+    "lib/contract-model/compiler/coverage-audit/raw-source-fallback.ts",
+    "lib/contract-model/compiler/coverage-audit/pipeline.ts",
+    "lib/contract-model/compiler/structural-index.ts"
+  ],
+  "p03Remediation": {
+    "rootCause": "computeTopLevelSpans defined a node's coverage span as [charStart, nextNode.charStart) - never reading the node's own real charEnd. Any real content between a node's true end and the next recognized node's start (or after the last node) was silently attributed to the preceding node.",
+    "fix": "Replaced with computeTopLevelSubtreeSpans, using each top-level node's own real, clamped [charStart, charEnd). computeUncoveredRegions now classifies every gap by shape (LEADING/INTERIOR/TRAILING/WHOLE_DOCUMENT) via a new gapKind field on UncoveredSpan.",
+    "beforeAfterProof": {
+      "before": "Mid-document and trailing swallows both produced coveragePercent=100, significantUncoveredSpans=[], health=STRUCTURE_HEALTHY.",
+      "after": "Mid-document swallow (test D): coveragePercent=2.24, health=STRUCTURE_PARTIAL, 1 significant uncovered span, gapKind=INTERIOR, span=[50,5050). Trailing swallow (test D2): coveragePercent=1.09, health=STRUCTURE_PARTIAL, gapKind=TRAILING."
+    },
+    "regressionTest": "tests/foundation-audit/discovery-fail-closed.test.ts (D/D2, updated from documenting-the-bug to proving-the-fix per the architecture-proposal-node-identity.test.ts precedent)",
+    "generalizedVariants": "tests/foundation-audit/structural-coverage-remediation.test.ts (23 new tests): varied gap sizes/positions, positive control (genuinely healthy document still reports healthy, no false-positive explosion), negative control.",
+    "status": "FIXED"
+  },
+  "p04Remediation": {
+    "rootCause": "raw-source-fallback.ts's routing trigger (coverage-audit/pipeline.ts's skip condition) was computed from the same defective structural-coverage output, so the ONE independent safety net for structural gaps never ran when P0-3's bug reported false-healthy - a live reproduction of Architecture Invariant #18.",
+    "fix": "Skip condition now also checks for SIGNIFICANT boundary anomalies (new mechanism, see below), and when present, raw-scans that anomaly's own suspect region (never the whole document) in addition to any real gaps. partitionUncoveredSpan's parameter loosened to a minimal RawScanSpanRef so both real gaps and boundary anomalies route through the same partitioner.",
+    "newCapability": "Boundary-anomaly detection (BoundaryAnomalyFinding, computeBoundaryAnomalies) - needed because Q1/Q5's defect class is not a coverage GAP at all (every character is nominally 'covered', just by the wrong node). Three generalized signals per ARTICLE/SECTION/SUBSECTION node: EMBEDDED_HEADING_LIKE_FRAGMENT (a second heading-shaped match found inside a node's own claimed text, using a deliberately more permissive regex than stage-structure.ts's own so it catches the colon-defeat case), SIGNAL_DENSITY_SHIFT (2+ distinct clause-marker tokens with zero real children), OWN_TEXT_LENGTH_OUTLIER (WARNING-only, never gates health on its own).",
+    "beforeAfterProof": "The Q1-shaped colon-defeat case (zero coverage gap, since the swallowed text is nominally covered) now still produces STRUCTURAL_ANALYSIS_INSUFFICIENT + RAW_SOURCE_COVENANT_SIGNAL findings via the new boundary-anomaly route (test E2/E3). A genuinely healthy document produces zero such findings (E4, no false-positive explosion).",
+    "regressionTest": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts (Q1/Q5, updated), structural-coverage-remediation.test.ts (E1-E4, full-pipeline routing proof)",
+    "status": "FIXED"
+  },
+  "q5Remediation": {
+    "description": "A lettered clause placed directly under an ARTICLE with no intervening SECTION previously got no node at all and reported STRUCTURE_HEALTHY (no rank/level sanity check existed).",
+    "fix": "IMPLAUSIBLE_HIERARCHY_RANK (ERROR) health check added to structural-index.ts: a parent/child edge skipping more than one nesting rank now raises a signal.",
+    "status": "FIXED"
+  },
+  "siblingSpanOverlapRemediation": {
+    "description": "Two SIBLING nodes with overlapping [charStart,charEnd) previously produced zero health findings.",
+    "fix": "SIBLING_SPAN_OVERLAP (ERROR) health check added.",
+    "status": "FIXED"
+  },
+  "p110Q3Determination": {
+    "verdict": "ARCHITECTURE_CHANGE_REQUIRED_FOR_CORRECTION_PLUS_BOUNDED_DETECTION_MITIGATION_IMPLEMENTED",
+    "mechanism": "An in-text citation shaped like a real heading (e.g. '...permitted under Section 6.05 Reserved. and subject to...') is accepted by stage-structure.ts as a genuine top-level SECTION raw node. stage-structure.ts's clause-tree region-slicing and its single global rank-based stack pass both treat this spurious node as a legitimate rank-1 boundary, popping the real enclosing section early and re-parenting its own later lettered clauses under the spurious node instead.",
+    "whyNoCorrectionThisPhase": "The fix belongs in stage-structure.ts's rank-stack/region-slicing construction - not in Workstream A's assigned files (structural-coverage.ts/raw-source-fallback.ts/coverage-audit/pipeline.ts/structural-index.ts health-diagnostics only), and the phase charter explicitly says a parser redesign for Q3 is not authorized in this remediation phase. Health-diagnostics are read-only findings; they cannot reassign parentNodeId.",
+    "candidateDesigns": [
+      "Plausibility gate before a same/shallower-rank pop (smallest blast radius, heuristic, could misfire on legitimate non-monotonic numbering)",
+      "Two-pass parse: validate ARTICLE/SECTION raws against a numbering-sequence/position sanity check before clause-tree region slicing runs (cleaner separation, larger blast radius - changes clause-tree's region-boundary contract)",
+      "Confidence-tagged raws with deferred acceptance: tag citation-shaped ambiguous matches as low-confidence, only high-confidence raws close/open rank-stack entries (most surgical, needs a StructuralNode shape change reviewed separately)"
+    ],
+    "affectedInvariants": "Architecture Invariant #18's own precedent (shared-substrate defect defeating independent-seeming systems) reproduced a second time. Blast radius: discovery (candidates anchored to wrong section), context-retrieval (wrong parent/sibling traversal). Package-graph unaffected (doesn't consume clause-level parenting). Coverage-audit now partially mitigated by the detection signal below.",
+    "boundedMitigationImplemented": "SECTION_NUMBER_SEQUENCE_ANOMALY (INFO, non-gating) health check: fires when two same-parent SECTION siblings' decimal numbers share a major component but decrease. Confirmed on the exact Q3 fixture; silent on the Q3b control and a legitimate '6.01A' insertion. Detection-only - does not correct the misattachment, only surfaces a lead. Real-data confirmation: fires exactly 4 times on CONMED and 27 times on DSGR (fully explaining the entire infoFindings delta from the pre-remediation baseline for both packages - see KNOWN_PACKAGE_FOUNDATION_REPLAY artifact)."
+  },
+  "testRunOutput": {
+    "filesRun": "tests/contract-model/ tests/foundation-audit/",
+    "resultAtWorkstreamCompletion": "96 passed / 24 failed (all pre-existing DATABASE_URL-unavailable failures in that isolated worktree, 0 regressions), 1071 passed / 27 failed(DB) / 95 skipped tests",
+    "resultAfterFullIntegration": "See 09-real-postgres-certification.json and the overall full-suite result in 14-phase-3f1-4-final-verdict.json (177 files / 1739 tests / 0 failures with real Postgres available)"
+  },
+  "residualLimitations": [
+    "EMBEDDED_HEADING_LIKE_FRAGMENT only catches heading-defeat mechanisms shaped like a real Section/ARTICLE keyword match with a colon/period variant - a fully non-standard garbling is not caught (matches what the real parser itself can never see either, not a regression).",
+    "SIGNAL_DENSITY_SHIFT's 2-distinct-marker threshold has a known, accepted false-positive shape (ordinary prose citing two different lettered clauses together) - cost is bounded (one extra raw-scan pass, health capped at PARTIAL), not a wrong answer.",
+    "Q3's underlying misattachment (not just its detection) is not corrected - see ARCHITECTURE_CHANGE_REQUIRED above.",
+    "SECTION_NUMBER_SEQUENCE_ANOMALY is a heuristic that could theoretically false-positive on a legitimate non-decimal renumbering convention."
+  ]
+}

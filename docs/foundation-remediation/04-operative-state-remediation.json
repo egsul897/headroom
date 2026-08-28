@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "OPERATIVE_STATE_REMEDIATION",
+  "generatedAt": "2026-08-28T23:16:00Z",
+  "workstream": "D",
+  "findingsAddressed": ["P0-1 (the audit's single most severe finding)", "P1-4", "same-date conflict currentText order-dependence", "DELETE_TEXT mislabeling (P3)"],
+  "filesChanged": [
+    "lib/contract-model/compiler/amendment/operative-state.ts",
+    "lib/contract-model/compiler/amendment/types.ts",
+    "lib/contract-model/compiler/amendment/effective-date.ts",
+    "lib/contract-model/compiler/amendment/independent-verification.ts",
+    "lib/contract-model/compiler/amendment/pipeline.ts"
+  ],
+  "p01Remediation": {
+    "rootCause": "buildProvisionView set currentText = effect.newText UNCONDITIONALLY whenever an applied effect carried captured replacement text, without ever checking whether the provision's own base reference actually resolved to a UNIQUE physical node/definition. resolveUniqueNodeByRef/the new resolveUniqueDefinitionByRef already returned honest UNIQUE/AMBIGUOUS/NOT_FOUND status - the defect was this module discarding that honesty the moment newText was present.",
+    "fix": "targetResolutionStatus (derived once per provision group, independent of any effect's own newText) is now the SOLE gate on whether currentText may ever be populated. 'We know what the amendment says' (newText, preserved separately as attemptedText) is never conflated with 'we know exactly what operative provision it changes' (targetResolutionStatus === UNIQUE). This check fires independent of appliedChain.length, fixing the related combined-failure case where an ambiguous target + not-yet-effective amendment was previously masked as RESOLVED.",
+    "coversBothTargetKinds": "A new, independent DEFINITION-target counterpart (resolveUniqueDefinitionByRef) was built on index.allDefinitions(), document-scoped, mirroring resolveUniqueNodeByRef's own discipline - since getDefinition's own .find() silently returns the first match on a collision and exposes no ambiguity-aware lookup.",
+    "newDisclosureFields": "OperativeProvisionView gained: targetResolutionStatus, targetResolutionReason (names AMBIGUOUS vs NOT_FOUND explicitly), candidateSourceNodeIds, attemptedText, reviewRequired, candidateTexts.",
+    "beforeAfterProof": {
+      "ambiguousSection": "Before: OPERATIVE_STATE_RESOLVED, unresolvedIssues=[], confident currentText. After: non-RESOLVED status, populated unresolvedIssues naming AMBIGUOUS, currentText=null, attemptedText preserves the amendment's own captured text, candidateSourceNodeIds lists the real colliding occurrences.",
+      "notFoundSection": "Same pattern for a target with zero matching nodes.",
+      "ambiguousDefinition": "Same defect/fix, independently proven for the DEFINITION-kind code path.",
+      "notFoundDefinition": "Same defect/fix, independently proven for the DEFINITION-kind code path."
+    },
+    "regressionTest": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts ('CENTRAL FINDING' describe block, extended to 23 tests from 16 - 3-occurrence and DEFINITION-kind variants, deep-chain ambiguous-target test added)",
+    "status": "FIXED"
+  },
+  "independentVerificationDecision": {
+    "decision": "WIRED_IN_AS_A_LIVE_GATE",
+    "reasoning": "Even after fixing buildProvisionView itself, independent-verification.ts remains meaningfully independent under Architecture Invariant #17 (it re-derives resolution directly from the structural index, never importing/calling buildProvisionView) and is real defense-in-depth against a FUTURE regression in that function.",
+    "strengthening": "Previously existence-only (findNodesByRef(...).length > 0, true for an ambiguous 2+ match). Now re-derives a real three-way UNIQUE/AMBIGUOUS/NOT_FOUND status directly against the structural index for BOTH SECTION and DEFINITION targets, added targetResolutionStatus to VerificationFinding, added an ADD_DEFINITION exemption mirroring operative-state.ts's own.",
+    "wiring": "runAmendmentPipeline now calls verifyAmendmentEffectsIndependently; any effect the deterministic/semantic stages marked RESOLVED that this independent check cannot itself confirm is downgraded to REVIEW_REQUIRED before reaching operative-state.ts.",
+    "disclosedBoundedness": "Independent verification and operative-state.ts still share the Phase 2A structural-index substrate (Invariant #18's own disclosed limit) - not full isolation, stated honestly."
+  },
+  "conflictOrderInvarianceRemediation": {
+    "rootCause": "For a genuinely CONFLICTED state (same effective date, same provision, different resulting text), status correctly became OPERATIVE_STATE_CONFLICTED (unchanged), but currentText was still populated with whichever effect happened to be last in the stably-sorted input array - array insertion order, not any evidence-based precedence rule.",
+    "fix": "For OPERATIVE_STATE_CONFLICTED, currentText is now always null; the real competing texts go into a new candidateTexts field, sorted by effectId (never array/ingestion order).",
+    "beforeAfterProof": "Identical two conflicting effects in both array orders now produce identical currentText=null and identical candidateTexts.",
+    "status": "FIXED"
+  },
+  "p14Remediation": {
+    "rootCause": "resolveEffectiveDate checked its EXPLICIT_EFFECTIVE_DATE_RE pattern first and returned immediately on a match, before checking whether the same sentence conditions effectiveness on unsatisfied conditions precedent.",
+    "fix": "resolveEffectiveDate now checks, in both directions, whether conditions-precedent language shares the same clause as an explicit date (bounded 400-char window, sentence/paragraph-break-aware) before accepting the date as unconditional.",
+    "beforeAfterProof": "'...shall become effective as of December 1, 2023, subject to the satisfaction of ... conditions precedent...' now correctly returns CONDITIONAL_UNRESOLVED. Controls (unconditional date, date + unrelated later conditions, signing-date-only, future/retroactive dates, no-resolvable-date) all pass.",
+    "regressionTest": "tests/foundation-audit/effective-dating-adversarial.test.ts (extended to 18 tests from ~11)",
+    "status": "FIXED"
+  },
+  "deleteTextMislabelingFix": {
+    "description": "A clean DELETE_TEXT effect against a UNIQUE target now correctly resolves to RESOLVED (null text is the KNOWN outcome), not PARTIAL. An ambiguous-target deletion still correctly stays PARTIAL (we don't know what was deleted).",
+    "status": "FIXED (P3, bonus fix within scope budget)"
+  },
+  "positiveScenariosConfirmedUnchanged": ["future/retroactive effective dating", "conditional (signing<>effective) dates correctly staying unapplied", "amendment-of-an-amendment chains resolving correctly at 3 query points", "cross-instrument isolation", "F3's zero-provisions/false-RESOLVED guard", "quoted historical language inside an amendment"],
+  "testRunOutput": {
+    "filesAtWorkstreamCompletion": "89 passed, 6 skipped, 1 pre-existing DB-only failure (confirmed identical on baseline via git stash)",
+    "broaderSuiteAtWorkstreamCompletion": "baseline 1048 passed/27 failed(DB)/95 skipped -> after changes 1062 passed/27 failed(DB, identical set)/95 skipped - zero regressions, +14 new tests all passing",
+    "resultAfterFullIntegration": "See 09-real-postgres-certification.json and 14-phase-3f1-4-final-verdict.json"
+  },
+  "residualLimitations": [
+    "Renumbering-across-restatement remains explicitly out of scope/NOT_APPLICABLE, per the original 3F.1.3 audit - not touched.",
+    "Independent verification and operative-state.ts still share the Phase 2A structural-index substrate - not full isolation (disclosed above).",
+    "SECTION-kind ADD_TEXT still requires a UNIQUE existing base target; only DEFINITION's ADD_DEFINITION is exempted from the NOT_FOUND check, since that is the one operation genuinely introducing new content absent from the base document.",
+    "The extraction-corruption/health-diagnostics gap (operative-state.ts never consulting index.healthDiagnostics()) is real but was out of this workstream's assigned scope and remains untouched - see 13-remaining-foundation-risks.json."
+  ]
+}
