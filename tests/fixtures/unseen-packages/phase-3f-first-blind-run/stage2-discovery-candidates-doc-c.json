@@ -1,0 +1,609 @@
+[
+  {
+    "discoveryId": "discovery-candidate:e2a432ddb871d5c73530e556",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2(a)"
+    ],
+    "normalizedSourceRef": "2(a)",
+    "families": [],
+    "otherFamilyDescription": "Margin stock / Regulation U-X compliance representation, not a traditional covenant family | Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): OTHER",
+    "role": "REPRESENTATION",
+    "roleRaw": "REPRESENTATION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "OTHER"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Restates the representation that no Loan Party engages in purchasing or carrying Margin Stock or uses proceeds to do so in violation of Regulation U or Regulation X.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.75,
+    "sourceCitation": "(a) and ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:7067afeec1e5ff7632039d5c",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2(b)",
+      "doc-c::2"
+    ],
+    "normalizedSourceRef": "2(b)",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "BASKET",
+    "roleRaw": "BASKET",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Establishes a general restricted payments basket permitting the Company to make Restricted Payments not otherwise permitted under Section 6.08 up to an aggregate amount per fiscal year, subject to further conditions.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.85,
+    "sourceCitation": "(b) below as of January 1,\n2025):\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:207043fd1261a1eb6cafc1f6",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2"
+    ],
+    "normalizedSourceRef": "2",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Requires that no Default exists immediately prior to or after giving effect to the Restricted Payment made under this basket.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "2. Amendments to the Existing Credit Agreement . As of the Fourth Amendment\nEffective Date, the parties hereto agree that the Existing Credit Agreement is hereby amended as follows (with the parties hereto agreeing to give deemed effect to the amendments described in clauses ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:5003a28496ba68ed8dd01c24",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2"
+    ],
+    "normalizedSourceRef": "2",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "otherFamilyDescription": "Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): FINANCIAL_MAINTENANCE_COVENANTS",
+    "role": "RATIO_BASED_PERMISSION",
+    "roleRaw": "RATIO_BASED_PERMISSION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "RESTRICTED_PAYMENTS",
+      "FINANCIAL_MAINTENANCE_COVENANTS"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Provides that a Restricted Payment made under this basket is excluded from the dollar cap if, after giving pro forma effect, the Total Net Leverage Ratio does not exceed a specified ratio threshold, effectively creating an uncapped ratio-based exception to the dollar limitation.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "headline_heading"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.8,
+    "sourceCitation": "2. Amendments to the Existing Credit Agreement . As of the Fourth Amendment\nEffective Date, the parties hereto agree that the Existing Credit Agreement is hereby amended as follows (with the parties hereto agreeing to give deemed effect to the amendments described in clauses ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:fd152bf5a72276db6004dfd5",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2"
+    ],
+    "normalizedSourceRef": "2",
+    "families": [
+      "RESTRICTED_PAYMENTS"
+    ],
+    "otherFamilyDescription": "Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): FINANCIAL_MAINTENANCE_COVENANTS",
+    "role": "FINANCIAL_TEST",
+    "roleRaw": "FINANCIAL_TEST",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "RESTRICTED_PAYMENTS",
+      "FINANCIAL_MAINTENANCE_COVENANTS"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Sets a fixed 2.50 to 1.00 Total Net Leverage Ratio threshold as one prong of the ratio test determining the lesser applicable threshold for the proviso.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.75,
+    "sourceCitation": "2. Amendments to the Existing Credit Agreement . As of the Fourth Amendment\nEffective Date, the parties hereto agree that the Existing Credit Agreement is hereby amended as follows (with the parties hereto agreeing to give deemed effect to the amendments described in clauses ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:6eedaeafe36f7e1ab323dafa",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3"
+    ],
+    "normalizedSourceRef": "3",
+    "families": [],
+    "otherFamilyDescription": "General procedural condition-precedent framework, not tied to a specific covenant family",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "States that the amendment's effectiveness is contingent on satisfaction (or waiver by Administrative Agent and Required Lenders) of the listed conditions precedent.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "headline_heading"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "3. Conditions of Effectiveness . The effectiveness of this Amendment is subject to the satisfaction of the following conditions\nprecedent (the date on which such conditions precedent are satisfied (or waived by the Administrative Agent and the Required Lenders), the “ Fourth Amendment Effective Date",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:0dfa62ed563344fed6974fbd",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(a)",
+      "doc-c::3"
+    ],
+    "normalizedSourceRef": "3(a)",
+    "families": [],
+    "otherFamilyDescription": "Execution/delivery closing condition, not a covenant family",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Requires the Administrative Agent to have received counterparts of the Amendment executed by each Borrower, each other Loan Party, the Required Lenders, and the Administrative Agent.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(a) the Administrative Agent shall have received counterparts of this Amendment duly executed by ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:223cfd74d66604eec61d8e83",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(b)"
+    ],
+    "normalizedSourceRef": "3(b)",
+    "families": [],
+    "otherFamilyDescription": "Bring-down of representations and warranties as a closing condition, not a substantive covenant restriction",
+    "role": "REPRESENTATION",
+    "roleRaw": "REPRESENTATION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Conditions effectiveness on the representations and warranties in Article III of the Credit Agreement and other Loan Documents being true and correct (in all material respects, or all respects if qualified by materiality/Material Adverse Effect) as of the effective date, with a carve-out for representations made as of an earlier date being true as of that date.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(b) immediately after giving effect to this Amendment, the\nrepresentations and warranties contained in Article III of the Credit Agreement and in the other Loan Documents shall be true and correct in all material respects (or in all respects in the case of any representation or warranty qualified by",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:fcc04718899664b8488744f9",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(c)",
+      "doc-c::3"
+    ],
+    "normalizedSourceRef": "3(c)",
+    "families": [],
+    "otherFamilyDescription": "Default/Event of Default closing condition, not tied to a specific covenant family",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Conditions effectiveness on no Default or Event of Default existing immediately after giving effect to the Amendment.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(c) immediately after giving\neffect to this Amendment, no Default or Event of Default shall exist; and\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:aef237499eb877072d1257fb",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(d)",
+      "doc-c::3"
+    ],
+    "normalizedSourceRef": "3(d)",
+    "families": [],
+    "otherFamilyDescription": "Payment of fees/expenses condition, not a substantive covenant family",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Requires payment of all costs, fees, and reasonable documented out-of-pocket expenses (including legal fees for invoices presented at least three Business Days, or a shorter agreed period, before the Fourth Amendment Effective Date) owed to the Administrative Agent or any Lender in connection with the Amendment and other Loan Documents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "permission_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(d) the Administrative Agent shall have received all costs,\nfees, and all reasonable and documented out-of-pocket expenses (including, without limitation, legal fees and expenses for which invoices have been presented three\n(3) Business Days (or such shorter period as may be agreed upon by the Compa",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:5ff6c7a5fac3becfca58896b",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4(b)"
+    ],
+    "normalizedSourceRef": "4(b)",
+    "families": [],
+    "otherFamilyDescription": "General ratification/continuation of existing credit agreement and loan documents in full force and effect | Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Other",
+    "role": "PERMISSION",
+    "roleRaw": "PERMISSION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Other"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Confirms that except as amended, the Existing Credit Agreement and related documents remain in full force and effect and are ratified and confirmed.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.6,
+    "sourceCitation": "(b) Except as specifically amended above, the Existing Credit Agreement and all other documents, instruments and agreements executed and/or\ndelivered in connection therewith shall remain in full force and effect and are hereby ratified and confirmed. Each Loan Party hereby ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:8a9ea001fd50810f14cbcc9d",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4(b)(i)"
+    ],
+    "normalizedSourceRef": "4(b)(i)",
+    "families": [],
+    "otherFamilyDescription": "Non-limitation of obligations clause | Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Other",
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Other"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Provides that the Amendment and related transactions shall not limit or diminish any Loan Party's obligations under the Credit Agreement or other Loan Documents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.6,
+    "sourceCitation": "(i) agrees that, except as specifically provided herein, this Amendment and the transactions contemplated\nhereby shall not limit or diminish the obligations of any Loan Party arising under or pursuant to the Credit Agreement or the other Loan Documents to which it is a party, (ii) reaffirms its obli",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:822ccd298d7ac97d959b17c3",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4"
+    ],
+    "normalizedSourceRef": "4",
+    "families": [
+      "GUARANTEES"
+    ],
+    "otherFamilyDescription": "",
+    "role": "GUARANTEE_OBLIGATION",
+    "roleRaw": "GUARANTEE_OBLIGATION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Guarantee"
+    ],
+    "familiesNormalizationStatus": "NORMALIZED_CANONICAL",
+    "description": "Each Loan Party reaffirms its obligations under the Credit Agreement and each other Loan Document to which it is a party.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.75,
+    "sourceCitation": "4. Reference to and Effect on the Credit Agreement; Reaffirmation .\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:a8be395f87b096e85f4a579d",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4"
+    ],
+    "normalizedSourceRef": "4",
+    "families": [
+      "LIENS"
+    ],
+    "otherFamilyDescription": "",
+    "role": "SECURITY_GRANT",
+    "roleRaw": "SECURITY_GRANT",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Liens"
+    ],
+    "familiesNormalizationStatus": "NORMALIZED_CANONICAL",
+    "description": "Each Loan Party reaffirms all Liens on the Collateral granted by it in favor of the Administrative Agent and Secured Parties, including related filings.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "4. Reference to and Effect on the Credit Agreement; Reaffirmation .\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:f1e443d87f93cdb3973bd93d",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4(b)"
+    ],
+    "normalizedSourceRef": "4(b)",
+    "families": [],
+    "otherFamilyDescription": "Anti-novation clause | Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Other",
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Other"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "States that the Amendment is not intended to and shall not constitute a novation of the Existing Credit Agreement or any Obligations or Secured Obligations.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.7,
+    "sourceCitation": "(b) Except as specifically amended above, the Existing Credit Agreement and all other documents, instruments and agreements executed and/or\ndelivered in connection therewith shall remain in full force and effect and are hereby ratified and confirmed. Each Loan Party hereby ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:29f96d2fb5abc943bd66d499",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4(c)"
+    ],
+    "normalizedSourceRef": "4(c)",
+    "families": [],
+    "otherFamilyDescription": "Non-waiver of rights and remedies | Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Other",
+    "role": "WAIVER",
+    "roleRaw": "WAIVER",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Other"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Provides that execution, delivery and effectiveness of the Amendment shall not operate as or constitute a waiver of any right, power, or remedy of the Administrative Agent or Lenders, nor waive any provision of the Existing or Amended Credit Agreement or related documents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "exception_marker",
+      "cure_or_trigger"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.75,
+    "sourceCitation": "(c) Except as expressly provided herein, the execution, delivery and effectiveness of this\nAmendment shall not operate as a waiver of any right, power or remedy of the Administrative Agent or the Lenders, nor constitute a waiver of any provision of the Existing Credit Agreement, the Credit Agreement",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:5576a156c96b5fb6026323ab",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4(d)"
+    ],
+    "normalizedSourceRef": "4(d)",
+    "families": [],
+    "otherFamilyDescription": "Designation of instrument as a Loan Document | Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Other",
+    "role": "DESIGNATION_RULE",
+    "roleRaw": "DESIGNATION_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Other"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Declares that this Amendment itself constitutes a Loan Document under the Credit Agreement.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.7,
+    "sourceCitation": "(d) This Amendment is a Loan Document.\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:90f689ec6668c204561afe72",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::5"
+    ],
+    "normalizedSourceRef": "5",
+    "families": [],
+    "role": "GENERAL_PROHIBITION",
+    "roleRaw": "",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Section-level container for 5 (Governing Law . THIS AMENDMENT SHALL BE GOVERNED BY AND CONSTRUED IN ACCORDANCE WITH THE INTERNAL LAWS OF THE STATE OF ILLINOIS, BUT) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "headline_heading"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.5,
+    "sourceCitation": "5. Governing Law . THIS AMENDMENT SHALL BE GOVERNED BY AND CONSTRUED IN ACCORDANCE WITH THE INTERNAL LAWS OF THE STATE OF ILLINOIS, BUT\nGIVING EFFECT TO FEDERAL LAWS APPLICABLE TO NATIONAL BANKS.\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:ae3a8a47b26a1dd29984f16f",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::6"
+    ],
+    "normalizedSourceRef": "6",
+    "families": [],
+    "role": "GENERAL_PROHIBITION",
+    "roleRaw": "",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Section-level container for 6 (Execution . This Amendment may be executed in any number of) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "headline_heading"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.5,
+    "sourceCitation": "6. Execution . This Amendment may be executed in any number of\ncounterparts (and by different parties hereto on different counterparts), each of which shall be deemed to constitute an original, but all of which when taken together shall constitute a single contract. Delivery of an executed counterpa",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  },
+  {
+    "discoveryId": "discovery-candidate:837742374fec0424f711a791",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::7"
+    ],
+    "normalizedSourceRef": "7",
+    "families": [],
+    "role": "GENERAL_PROHIBITION",
+    "roleRaw": "",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Section-level container for 7 (Headings . Section headings used herein are for convenience of reference only, are not part of) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.5,
+    "sourceCitation": "7. Headings . Section headings used herein are for convenience of reference only, are not part of\nthis Amendment and shall not affect the construction of, or be taken into consideration in interpreting, this Amendment.\n\n[ Signature\nPages Follow ]\n\n3\n\nIN WITNESS WHEREOF, this Amendment has been duly ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v2+phase-2b-discovery.v2"
+  }
+]

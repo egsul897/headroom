@@ -12,10 +12,10 @@
  * 2's real pipelines.
  */
 import type { DiscoveredCandidate, DiscoveryRole } from "../discovery/types";
-import { compileCovenantToIR } from "./compile";
+import { classifyFailureCategory, compileCovenantToIR, sanitizeErrorMessage } from "./compile";
 import type { SemanticCaller } from "./caller";
 import type { SemanticCompilationCache } from "./cache";
-import type { SemanticCompilationResult, SemanticCompilerInput } from "./types";
+import type { SemanticCompilationResult, SemanticCompilerErrorDetail, SemanticCompilerInput } from "./types";
 
 /**
  * Deterministic, non-package-specific eligibility (task §60's own "do not
@@ -94,21 +94,34 @@ export async function compilePackageToIR(companyId: string, instrumentKey: strin
     eligible.push(c);
   }
 
+  // Phase 3F.1 §33/F6: compileCovenantToIR itself no longer throws (every
+  // failure path, including a genuine transport/internal exception, now
+  // returns a structured SemanticCompilationResult with populated
+  // errorDetail) - this try/catch is a redundant secondary safety net kept
+  // for defense in depth, using the same sanitized/classified error-detail
+  // shape so a truly unexpected throw here (e.g. from compilerInput
+  // construction itself, outside compileCovenantToIR) is never reduced to a
+  // bare status string either.
   const entries = await runBounded(eligible, concurrency, async (c): Promise<PackageCompilationResultEntry> => {
     try {
       const result = await compileCovenantToIR(c.compilerInput, { caller: options.caller, cache: options.cache });
       return { discoveryId: c.candidate.discoveryId, result };
     } catch (err) {
+      const errorClass = err instanceof Error ? err.constructor.name : "UnknownError";
+      const rawMessage = err instanceof Error ? err.message : String(err);
+      const sanitizedMessage = sanitizeErrorMessage(rawMessage);
+      const errorDetail: SemanticCompilerErrorDetail = { errorClass, sanitizedMessage, failureCategory: classifyFailureCategory(errorClass, rawMessage), retryCount: null, hadPartialOutput: false };
       return {
         discoveryId: c.candidate.discoveryId,
         result: {
           status: "FAILED",
-          failureReasons: ["PROVIDER_FAILURE"],
+          failureReasons: ["TRANSPORT_OR_INTERNAL_ERROR"],
+          errorDetail,
           rules: [],
           definitions: [],
           sharedCapacities: [],
           irExtensionCandidates: [],
-          unresolvedIssues: [`uncaught error compiling candidate ${c.candidate.discoveryId}: ${err instanceof Error ? err.message : String(err)}`],
+          unresolvedIssues: [`uncaught error compiling candidate ${c.candidate.discoveryId}: ${errorClass}: ${sanitizedMessage}`],
           toolCallLog: [],
           rawModelOutput: null,
           provider: options.caller?.providerName ?? "unknown",

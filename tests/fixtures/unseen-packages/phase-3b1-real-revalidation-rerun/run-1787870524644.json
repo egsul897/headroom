@@ -1,0 +1,115 @@
+{
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "totalInputTokens": 0,
+  "totalOutputTokens": 0,
+  "totalCostUsd": 0,
+  "totalLatencyMs": 872,
+  "totalToolCalls": 0,
+  "summary": {
+    "totalExpected": 2,
+    "totalCompiled": 0,
+    "findings": [
+      {
+        "category": "MISSED_RULE",
+        "ref": "lsb-6.01-general-ratio-gated",
+        "detail": "no compiled rule found for expected §6.01 (no candidate rule contained the expectation's own defining content)",
+        "dangerous": true
+      },
+      {
+        "category": "MISSED_RULE",
+        "ref": "lsb-6.11-restricted-payments",
+        "detail": "no compiled rule found for expected §6.11 (no candidate rule contained the expectation's own defining content)",
+        "dangerous": true
+      }
+    ],
+    "dangerousCount": 2,
+    "byCategory": {
+      "MISSED_RULE": 2
+    },
+    "completePrecision": null,
+    "sufficiencyDistribution": {}
+  },
+  "results": [
+    {
+      "id": "lsb-6.01-general-ratio-gated",
+      "result": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE"
+        ],
+        "rules": [],
+        "definitions": [],
+        "sharedCapacities": [],
+        "irExtensionCandidates": [],
+        "unresolvedIssues": [
+          "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $20.01, limit: $20.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+        ],
+        "toolCallLog": [],
+        "rawModelOutput": null,
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "telemetry": {
+          "provider": "vercel-ai-gateway",
+          "model": "anthropic/claude-sonnet-5",
+          "promptVersion": "phase-3b1-semantic-compiler-prompt.v2",
+          "schemaVersion": "headroom-covenant-ir.v1",
+          "stage": "semantic_compilation",
+          "timestamp": "2026-08-27T22:42:04.257Z",
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "attemptCount": 0,
+          "retryCount": 0,
+          "rateLimitFailures": 0,
+          "latencyMs": 491,
+          "calculatedCostUsd": 0,
+          "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $20.01, limit: $20.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+        },
+        "cacheKey": "eaf5843175734eebae6f1b51b2ae5e9c6a9fba25fecc74fa72bf08efb6e90c74",
+        "compiledAt": "2026-08-27T22:42:04.258Z"
+      }
+    },
+    {
+      "id": "lsb-6.11-restricted-payments",
+      "result": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE"
+        ],
+        "rules": [],
+        "definitions": [],
+        "sharedCapacities": [],
+        "irExtensionCandidates": [],
+        "unresolvedIssues": [
+          "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $20.01, limit: $20.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+        ],
+        "toolCallLog": [],
+        "rawModelOutput": null,
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "telemetry": {
+          "provider": "vercel-ai-gateway",
+          "model": "anthropic/claude-sonnet-5",
+          "promptVersion": "phase-3b1-semantic-compiler-prompt.v2",
+          "schemaVersion": "headroom-covenant-ir.v1",
+          "stage": "semantic_compilation",
+          "timestamp": "2026-08-27T22:42:04.643Z",
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "attemptCount": 0,
+          "retryCount": 0,
+          "rateLimitFailures": 0,
+          "latencyMs": 381,
+          "calculatedCostUsd": 0,
+          "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $20.01, limit: $20.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+        },
+        "cacheKey": "a3b762da4cf4f81c909587339c3f06c99e16166d45e9839df31f6ccd463c4a54",
+        "compiledAt": "2026-08-27T22:42:04.643Z"
+      }
+    }
+  ]
+}

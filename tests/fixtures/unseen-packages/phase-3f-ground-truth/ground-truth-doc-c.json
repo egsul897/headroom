@@ -1,0 +1,387 @@
+{
+  "documentId": "doc-c",
+  "sourceFile": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/doc-c-2025-fourth-amendment.txt",
+  "authoredAt": "2026-08-28T13:34:48Z",
+  "authoredFromSourceOnly": true,
+  "methodologyNotes": "Authored by reading the complete raw extracted text of the Fourth Amendment (all 482 lines, including preamble, recitals, Sections 1-7 and all signature pages) in a single pass, then decomposing each numbered section and each sub-clause of the restated Credit Agreement language into independently meaningful units. No pipeline output was consulted; the phase-3f-first-blind-run directory was not opened at all (not even stage1-all-nodes.json, which proved unnecessary because the document is flat-numbered and short enough to read whole). Where the amendment restates Credit Agreement text verbatim, units capture what the provision NOW SAYS (the operative restated language), not merely the fact that an amendment occurred; a separate AMENDMENT_MECHANIC unit records the restatement act itself so that the 'which text is operative' relationship is not lost. Signature-page entity rosters were captured because entity applicability (which Borrowers/Guarantors are bound, and that only Required Lenders rather than all Lenders consented) is substantively load-bearing.",
+  "amendmentEffectivenessConditions": [
+    {
+      "description": "Section 3(a): The Administrative Agent must have received counterparts of the Amendment duly executed by (i) each Borrower and each other Loan Party, (ii) the Required Lenders (NOT all Lenders), and (iii) the Administrative Agent.",
+      "materiality": "MATERIAL"
+    },
+    {
+      "description": "Section 3(b): Immediately after giving effect to the Amendment, the representations and warranties in Article III of the Credit Agreement and in the other Loan Documents must be true and correct in all material respects (in all respects for reps already qualified by materiality or Material Adverse Effect), except reps that speak as of an earlier date, which must be true as of that earlier date.",
+      "materiality": "MATERIAL"
+    },
+    {
+      "description": "Section 3(c): Immediately after giving effect to the Amendment, no Default or Event of Default shall exist.",
+      "materiality": "CRITICAL"
+    },
+    {
+      "description": "Section 3(d): The Administrative Agent must have received all costs, fees and reasonable documented out-of-pocket expenses (including legal fees for which invoices were presented three Business Days, or such shorter period as the Company may agree, prior to the Fourth Amendment Effective Date) due and payable to the Administrative Agent or any Lender in connection with the Amendment and the other Loan Documents on or prior to the Fourth Amendment Effective Date.",
+      "materiality": "MATERIAL"
+    },
+    {
+      "description": "Definitional/mechanical: the 'Fourth Amendment Effective Date' is the date on which the four conditions precedent are satisfied OR waived by the Administrative Agent AND the Required Lenders. Waiver requires both the Administrative Agent and the Required Lenders, not the Administrative Agent alone.",
+      "materiality": "CRITICAL"
+    },
+    {
+      "description": "Timing overlay (Section 2 chapeau): although the amendments take effect 'as of the Fourth Amendment Effective Date', the parties agree to give DEEMED EFFECT to both substantive amendments (clauses (a) and (b), i.e. the Section 3.17 margin-stock representation and the Section 6.08(a)(v) Restricted Payments basket) as of January 1, 2025 — i.e. retroactively, roughly three months before the March 31, 2025 signing date.",
+      "materiality": "CRITICAL"
+    }
+  ],
+  "articles": [
+    {
+      "articleRef": "Preamble and Recitals",
+      "heading": "Preamble, Parties and Recitals",
+      "units": [
+        {
+          "unitId": "doc-c::preamble-parties-and-date",
+          "sectionRef": "Preamble (unnumbered)",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "MATERIAL",
+          "description": "The Fourth Amendment to Amended and Restated Credit Agreement is made as of March 31, 2025 among Distribution Solutions Group, Inc., a Delaware corporation formerly known as Lawson Products, Inc. (the 'Company'), each other Borrower under the Existing Credit Agreement, the other Loan Parties, the Lenders signatory hereto, and JPMorgan Chase Bank, N.A. as Administrative Agent.",
+          "keyDefinedTerms": ["Amendment", "Company", "Borrower", "Loan Parties", "Lenders", "Administrative Agent"],
+          "notes": "Records the corporate name change (Lawson Products, Inc. -> Distribution Solutions Group, Inc.) that matters for entity-applicability analysis; note that Lawson Products, Inc. ALSO separately signs as a Borrower, so the two are distinct entities notwithstanding the 'formerly known as' parenthetical for the parent."
+        },
+        {
+          "unitId": "doc-c::def-existing-credit-agreement-vs-credit-agreement",
+          "sectionRef": "Preamble (unnumbered)",
+          "unitType": "DEFINITION",
+          "materiality": "CRITICAL",
+          "description": "Defines 'Existing Credit Agreement' as the Amended and Restated Credit Agreement dated as of April 1, 2022 among the Company, the other Loan Parties, the lender financial institutions and the Administrative Agent, as amended/restated/supplemented/otherwise modified from time to time IMMEDIATELY PRIOR TO the Fourth Amendment Effective Date; and defines 'Credit Agreement' as the Existing Credit Agreement as further amended by this Amendment.",
+          "keyDefinedTerms": ["Existing Credit Agreement", "Credit Agreement", "Fourth Amendment Effective Date", "Lenders"],
+          "notes": "This is the provision that determines which version of any Credit Agreement provision is operative today. Implicitly confirms the base agreement dates to April 1, 2022 and that prior amendments (First through Third) are folded into the 'Existing Credit Agreement' baseline."
+        },
+        {
+          "unitId": "doc-c::recital-agreement-to-amend",
+          "sectionRef": "WHEREAS recital",
+          "unitType": "BOILERPLATE_SUMMARY",
+          "materiality": "INFORMATIONAL",
+          "description": "Single recital stating that the parties have agreed to amend the Credit Agreement on the terms and conditions set forth in the Amendment, followed by the standard consideration clause.",
+          "keyDefinedTerms": ["Credit Agreement"],
+          "notes": "No independent operative effect."
+        }
+      ]
+    },
+    {
+      "articleRef": "Section 1",
+      "heading": "Defined Terms",
+      "units": [
+        {
+          "unitId": "doc-c::sec-1-defined-terms-incorporation",
+          "sectionRef": "Section 1",
+          "unitType": "DEFINITION",
+          "materiality": "INFORMATIONAL",
+          "description": "Unless otherwise noted, capitalized terms used in the Amendment and not otherwise defined in it have the meanings given to them in the Credit Agreement.",
+          "keyDefinedTerms": ["Credit Agreement"],
+          "notes": "Standard incorporation-by-reference of the credit agreement's defined-term set; note it points to the Credit Agreement (as amended hereby), not the Existing Credit Agreement."
+        }
+      ]
+    },
+    {
+      "articleRef": "Section 2",
+      "heading": "Amendments to the Existing Credit Agreement",
+      "units": [
+        {
+          "unitId": "doc-c::sec-2-chapeau-retroactive-jan-1-2025",
+          "sectionRef": "Section 2 (chapeau)",
+          "unitType": "AMENDMENT_MECHANIC",
+          "materiality": "CRITICAL",
+          "description": "As of the Fourth Amendment Effective Date the Existing Credit Agreement is amended as set out in clauses (a) and (b), with the parties expressly agreeing to give DEEMED EFFECT to both of those amendments as of January 1, 2025 — a retroactive effective date preceding the March 31, 2025 execution date.",
+          "keyDefinedTerms": ["Fourth Amendment Effective Date", "Existing Credit Agreement"],
+          "notes": "Determines which text of Section 3.17 and Section 6.08(a)(v) governs conduct occurring in Q1 2025. Missing this would produce the wrong operative-version conclusion for any test run against January-March 2025 facts."
+        },
+        {
+          "unitId": "doc-c::sec-2-retroactivity-scope-uncertainty",
+          "sectionRef": "Section 2 (chapeau)",
+          "unitType": "CROSS_REFERENCE",
+          "materiality": "REVIEW_UNCERTAIN",
+          "description": "Open question arising from the retroactive deemed-effect language: whether a Restricted Payment actually made, or a margin-stock use of proceeds actually occurring, between January 1, 2025 and the Fourth Amendment Effective Date is tested exclusively under the restated text, and how that interacts with the Section 3(c) condition that no Default exist immediately after giving effect to the Amendment.",
+          "keyDefinedTerms": ["Fourth Amendment Effective Date", "Restricted Payments", "Default"],
+          "notes": "Flagged rather than resolved. The document says only that the parties 'give deemed effect' as of January 1, 2025; it contains no express retroactive waiver or cure language, and the pre-amendment text of Section 3.17 and Section 6.08(a)(v) is not reproduced anywhere in this document, so the direction and magnitude of the change cannot be determined from this document alone."
+        },
+        {
+          "unitId": "doc-c::sec-2a-restatement-of-3-17-first-sentence",
+          "sectionRef": "Section 2(a)",
+          "unitType": "AMENDMENT_MECHANIC",
+          "materiality": "MATERIAL",
+          "description": "The FIRST SENTENCE ONLY of Section 3.17 of the Existing Credit Agreement is amended and restated in its entirety; the balance of Section 3.17 is untouched and remains as previously in effect.",
+          "keyDefinedTerms": ["Existing Credit Agreement"],
+          "notes": "Scope point: this is a surgical first-sentence replacement, not a replacement of all of Section 3.17."
+        },
+        {
+          "unitId": "doc-c::sec-3-17-margin-stock-business-representation",
+          "sectionRef": "Credit Agreement Section 3.17 (as restated by Section 2(a))",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "MATERIAL",
+          "description": "Representation and forward-looking covenant that no Loan Party is engaged, and will not engage, principally or as one of its important activities, in the business of purchasing or carrying Margin Stock, or of extending credit for the purpose of purchasing or carrying Margin Stock.",
+          "keyDefinedTerms": ["Loan Party", "Margin Stock"],
+          "notes": "Regulation U 'engaged principally' test. Drafted as a hybrid present representation plus a forward undertaking ('is engaged and will not engage'), so a breach can arise from future conduct as well as from facts at signing."
+        },
+        {
+          "unitId": "doc-c::sec-3-17-margin-stock-use-of-proceeds-limit",
+          "sectionRef": "Credit Agreement Section 3.17 (as restated by Section 2(a))",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "CRITICAL",
+          "description": "No part of the proceeds of any Borrowing or Letter of Credit under the Credit Agreement will be used to buy or carry any Margin Stock IN VIOLATION OF THE PROVISIONS OF REGULATION U OR REGULATION X. The prohibition is expressly qualified by regulatory violation rather than being an absolute ban on margin-stock use of proceeds.",
+          "keyDefinedTerms": ["Borrowing", "Letter of Credit", "Margin Stock", "Regulation U", "Regulation X"],
+          "notes": "This is the operative permission/prohibition limb: proceeds MAY be used to buy or carry Margin Stock so long as doing so does not violate Regulation U or Regulation X. The 'in violation of' qualifier attaches grammatically to the proceeds limb only, not to the 'engaged principally' limb above. Because the pre-amendment first sentence is not reproduced, this document alone does not show whether the qualifier is newly added; but as restated it is the operative text and it drives use-of-proceeds conclusions."
+        },
+        {
+          "unitId": "doc-c::sec-2b-restatement-of-6-08-a-v",
+          "sectionRef": "Section 2(b)",
+          "unitType": "AMENDMENT_MECHANIC",
+          "materiality": "MATERIAL",
+          "description": "Section 6.08(a)(v) of the Existing Credit Agreement is amended and restated in its entirety. Only clause (v) of Section 6.08(a) is replaced; the rest of Section 6.08 (including the other Restricted Payment permissions in clauses (i)-(iv) and any clauses after (v)) is unchanged.",
+          "keyDefinedTerms": ["Existing Credit Agreement", "Restricted Payments"],
+          "notes": "Scope point for basket-relationship analysis: the other Section 6.08 permissions survive independently, and clause (v) is expressly the residual basket for payments 'not otherwise permitted to be made by this Section 6.08'."
+        },
+        {
+          "unitId": "doc-c::rp-general-basket-25mm-per-fiscal-year",
+          "sectionRef": "Credit Agreement Section 6.08(a)(v) (as restated)",
+          "unitType": "BASKET",
+          "materiality": "CRITICAL",
+          "description": "The Company may make Restricted Payments not otherwise permitted by Section 6.08 in an aggregate amount not to exceed $25,000,000 during any fiscal year of the Company, subject to the two conditions in clauses (x) and (y).",
+          "keyDefinedTerms": ["Company", "Restricted Payments", "Section 6.08", "fiscal year"],
+          "notes": "Residual/general Restricted Payments basket. Capacity resets each fiscal year (it is a per-fiscal-year cap, not a cumulative builder or a grower basket). Available to the Company only — by its terms it does not authorize Restricted Payments by other Loan Parties under this clause."
+        },
+        {
+          "unitId": "doc-c::rp-condition-x-no-default",
+          "sectionRef": "Credit Agreement Section 6.08(a)(v)(x) (as restated)",
+          "unitType": "CONDITION",
+          "materiality": "CRITICAL",
+          "description": "Condition (x) to any Restricted Payment under clause (v): no Default shall exist immediately prior to, or immediately after giving effect to, any such Restricted Payment.",
+          "keyDefinedTerms": ["Default", "Restricted Payments"],
+          "notes": "Double-sided test (before AND after). Keyed to 'Default', which is broader than 'Event of Default'. This condition applies to every payment made in reliance on clause (v), including payments that escape the dollar cap under the proviso — the proviso disapplies only the dollar limitation."
+        },
+        {
+          "unitId": "doc-c::rp-condition-y-pro-forma-6-12-compliance",
+          "sectionRef": "Credit Agreement Section 6.08(a)(v)(y) (as restated)",
+          "unitType": "FINANCIAL_TEST",
+          "materiality": "CRITICAL",
+          "description": "Condition (y) to any Restricted Payment under clause (v): after giving effect to the Restricted Payment AND to any Indebtedness incurred or assumed in connection with it, on a pro forma basis, the Company must be in compliance with the financial covenants set forth in Section 6.12.",
+          "keyDefinedTerms": ["Restricted Payments", "Indebtedness", "Section 6.12", "pro forma basis"],
+          "notes": "Pro forma test must sweep in associated debt incurrence/assumption, not just the cash outflow. Compliance is with the Section 6.12 covenants generally (plural), not solely a leverage ratio."
+        },
+        {
+          "unitId": "doc-c::rp-condition-y-tnlr-adjustment-disregarded",
+          "sectionRef": "Credit Agreement Section 6.08(a)(v)(y) (as restated)",
+          "unitType": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "description": "In running the pro forma Section 6.12 compliance test under condition (y), the test is applied WITHOUT giving effect to any applicable Total Net Leverage Ratio Adjustment — i.e. the acquisition/other step-up to the permitted leverage level is stripped out, so the Company must satisfy the un-stepped-up covenant level to use this basket.",
+          "keyDefinedTerms": ["Total Net Leverage Ratio Adjustment", "Section 6.12", "Total Net Leverage Ratio"],
+          "notes": "Materially tightens condition (y) relative to headline Section 6.12 compliance and is a distinct operative rule that changes ratio-test outcomes; must not be collapsed into the general 'pro forma compliance with 6.12' statement."
+        },
+        {
+          "unitId": "doc-c::rp-proviso-uncapped-if-tnlr-test-met",
+          "sectionRef": "Credit Agreement Section 6.08(a)(v) proviso (as restated)",
+          "unitType": "EXCEPTION",
+          "materiality": "CRITICAL",
+          "description": "Proviso: a Restricted Payment made in reliance on clause (v) is NOT counted against the $25,000,000 annual dollar limitation if, after giving effect to that Restricted Payment and any Indebtedness incurred or assumed in connection therewith (including on a pro forma basis), the Total Net Leverage Ratio is not greater than the LESSER of (A) 2.50 to 1.00 and (B) the ratio that is 0.50 to 1.00 lower than the maximum Total Net Leverage Ratio then permitted under Section 6.12.",
+          "keyDefinedTerms": ["Restricted Payments", "Total Net Leverage Ratio", "Indebtedness", "Section 6.12"],
+          "notes": "Effectively an unlimited (leverage-governed) Restricted Payments capacity: satisfying the leverage test removes the dollar cap entirely rather than merely enlarging it. Two-pronged 'lesser of' floor means the escape hatch tightens automatically whenever the Section 6.12 maximum is below 3.00:1.00. Conditions (x) (no Default) and (y) (pro forma 6.12 compliance without the Total Net Leverage Ratio Adjustment) continue to apply to proviso payments; only the dollar limitation is disapplied. Payments qualifying under the proviso also do not consume the $25,000,000 basket, preserving that capacity for other payments in the same fiscal year."
+        }
+      ]
+    },
+    {
+      "articleRef": "Section 3",
+      "heading": "Conditions of Effectiveness",
+      "units": [
+        {
+          "unitId": "doc-c::def-fourth-amendment-effective-date",
+          "sectionRef": "Section 3 (chapeau)",
+          "unitType": "DEFINITION",
+          "materiality": "CRITICAL",
+          "description": "'Fourth Amendment Effective Date' means the date on which the conditions precedent in Section 3(a)-(d) are satisfied, or are waived by the Administrative Agent AND the Required Lenders. Effectiveness of the entire Amendment is subject to those conditions.",
+          "keyDefinedTerms": ["Fourth Amendment Effective Date", "Administrative Agent", "Required Lenders"],
+          "notes": "Waiver authority is joint (Administrative Agent plus Required Lenders); the Administrative Agent cannot waive alone. This date is the anchor for the 'Existing Credit Agreement' cut-off definition in the preamble."
+        },
+        {
+          "unitId": "doc-c::cp-executed-counterparts",
+          "sectionRef": "Section 3(a)",
+          "unitType": "CONDITION",
+          "materiality": "MATERIAL",
+          "description": "Condition precedent: the Administrative Agent must have received counterparts of the Amendment duly executed by (i) each Borrower and each other Loan Party, (ii) the Required Lenders, and (iii) the Administrative Agent.",
+          "keyDefinedTerms": ["Administrative Agent", "Borrower", "Loan Party", "Required Lenders"],
+          "notes": "Lender-side threshold is Required Lenders, not all Lenders — consistent with this being a Required-Lender-vote amendment rather than an all-lender item. Loan-Party side requires 100 percent (each Borrower and each other Loan Party)."
+        },
+        {
+          "unitId": "doc-c::cp-representations-bring-down",
+          "sectionRef": "Section 3(b)",
+          "unitType": "CONDITION",
+          "materiality": "MATERIAL",
+          "description": "Condition precedent / bring-down: immediately after giving effect to the Amendment, the representations and warranties in Article III of the Credit Agreement and in the other Loan Documents must be true and correct in all material respects (or in all respects for any representation already qualified by materiality or Material Adverse Effect), except representations that by their terms refer to an earlier date, which must be true and correct on the same standard as of that earlier date.",
+          "keyDefinedTerms": ["Article III", "Credit Agreement", "Loan Documents", "Material Adverse Effect"],
+          "notes": "The bring-down is measured against the Credit Agreement as amended, which means the restated Section 3.17 first sentence is the version being brought down."
+        },
+        {
+          "unitId": "doc-c::cp-no-default-or-eod",
+          "sectionRef": "Section 3(c)",
+          "unitType": "CONDITION",
+          "materiality": "CRITICAL",
+          "description": "Condition precedent: immediately after giving effect to the Amendment, no Default or Event of Default shall exist.",
+          "keyDefinedTerms": ["Default", "Event of Default"],
+          "notes": "Covers both Default and Event of Default; tested on a post-effectiveness basis."
+        },
+        {
+          "unitId": "doc-c::cp-fees-costs-expenses",
+          "sectionRef": "Section 3(d)",
+          "unitType": "CONDITION",
+          "materiality": "MATERIAL",
+          "description": "Condition precedent: the Administrative Agent must have received all costs, fees and all reasonable and documented out-of-pocket expenses (including legal fees and expenses for which invoices were presented three Business Days — or such shorter period as the Company may agree — before the Fourth Amendment Effective Date) due and payable to the Administrative Agent or any Lender in connection with the Amendment and the other Loan Documents on or prior to the Fourth Amendment Effective Date.",
+          "keyDefinedTerms": ["Administrative Agent", "Lender", "Business Days", "Fourth Amendment Effective Date", "Loan Documents"],
+          "notes": "This is the only fee/expense provision in the document. Notably, the Amendment contains NO amendment fee, consent fee, ticking fee, or pricing/margin change — expense reimbursement is the sole economic term."
+        }
+      ]
+    },
+    {
+      "articleRef": "Section 4",
+      "heading": "Reference to and Effect on the Credit Agreement; Reaffirmation",
+      "units": [
+        {
+          "unitId": "doc-c::sec-4a-references-mean-amended-agreement",
+          "sectionRef": "Section 4(a)",
+          "unitType": "AMENDMENT_MECHANIC",
+          "materiality": "INFORMATIONAL",
+          "description": "Upon effectiveness, on and after the date of the Amendment, each reference in the Credit Agreement to 'this Agreement', 'hereunder', 'hereof', 'herein' or words of like import means the Credit Agreement after giving effect to the Amendment.",
+          "keyDefinedTerms": ["Credit Agreement"],
+          "notes": "Standard conforming-reference clause."
+        },
+        {
+          "unitId": "doc-c::sec-4b-ratification-full-force-effect",
+          "sectionRef": "Section 4(b)",
+          "unitType": "AMENDMENT_MECHANIC",
+          "materiality": "MATERIAL",
+          "description": "Except as specifically amended, the Existing Credit Agreement and all other documents, instruments and agreements executed and/or delivered in connection therewith remain in full force and effect and are ratified and confirmed.",
+          "keyDefinedTerms": ["Existing Credit Agreement"],
+          "notes": "Confirms that only Sections 3.17 (first sentence) and 6.08(a)(v) are changed; everything else in the 2022 A&R Credit Agreement and prior amendments survives unchanged."
+        },
+        {
+          "unitId": "doc-c::sec-4b-no-diminution-and-reaffirmation-of-obligations",
+          "sectionRef": "Section 4(b)(i)-(ii)",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "MATERIAL",
+          "description": "Each Loan Party (i) agrees that, except as specifically provided in the Amendment, the Amendment and the transactions contemplated by it do not limit or diminish any Loan Party's obligations under the Credit Agreement or the other Loan Documents to which it is a party, and (ii) reaffirms its obligations under the Credit Agreement and each and every other Loan Document to which it is a party.",
+          "keyDefinedTerms": ["Loan Party", "Credit Agreement", "Loan Documents"],
+          "notes": "Guarantor/obligor reaffirmation — preserves guarantee continuity across the amendment."
+        },
+        {
+          "unitId": "doc-c::sec-4b-reaffirmation-of-liens-and-filings",
+          "sectionRef": "Section 4(b)(iii)",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "MATERIAL",
+          "description": "Each Loan Party reaffirms all Liens on the Collateral granted by it in favor of the Administrative Agent (for itself and the other Secured Parties) pursuant to any of the Loan Documents, and all filings made with a Governmental Authority in connection therewith.",
+          "keyDefinedTerms": ["Loan Party", "Liens", "Collateral", "Administrative Agent", "Secured Parties", "Loan Documents", "Governmental Authority"],
+          "notes": "Collateral/perfection continuity — confirms the facility remains secured and that existing UCC and equivalent filings continue to support the reaffirmed Liens."
+        },
+        {
+          "unitId": "doc-c::sec-4b-no-novation",
+          "sectionRef": "Section 4(b) (final sentence)",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "MATERIAL",
+          "description": "The Amendment is not intended to and does not constitute a novation of the Existing Credit Agreement or of any of the Obligations or Secured Obligations.",
+          "keyDefinedTerms": ["Existing Credit Agreement", "Obligations", "Secured Obligations"],
+          "notes": "Anti-novation clause protecting lien priority and continuity of the original debt."
+        },
+        {
+          "unitId": "doc-c::sec-4c-no-waiver-of-rights-or-provisions",
+          "sectionRef": "Section 4(c)",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "MATERIAL",
+          "description": "Except as expressly provided in the Amendment, the execution, delivery and effectiveness of the Amendment does not operate as a waiver of any right, power or remedy of the Administrative Agent or the Lenders, nor constitute a waiver of any provision of the Existing Credit Agreement, the Credit Agreement or any other related documents.",
+          "keyDefinedTerms": ["Administrative Agent", "Lenders", "Existing Credit Agreement", "Credit Agreement"],
+          "notes": "Non-waiver / reservation of rights. Relevant to the retroactivity question: the Amendment grants no express waiver of any pre-existing breach."
+        },
+        {
+          "unitId": "doc-c::sec-4d-amendment-is-a-loan-document",
+          "sectionRef": "Section 4(d)",
+          "unitType": "CROSS_REFERENCE",
+          "materiality": "MATERIAL",
+          "description": "The Amendment is itself a Loan Document.",
+          "keyDefinedTerms": ["Loan Document"],
+          "notes": "Pulls the Amendment inside the Credit Agreement's Loan Document machinery — representations about Loan Documents, cross-default and Event of Default triggers, expense reimbursement, and the security package all extend to it."
+        }
+      ]
+    },
+    {
+      "articleRef": "Section 5",
+      "heading": "Governing Law",
+      "units": [
+        {
+          "unitId": "doc-c::sec-5-governing-law-illinois",
+          "sectionRef": "Section 5",
+          "unitType": "BOILERPLATE_SUMMARY",
+          "materiality": "INFORMATIONAL",
+          "description": "The Amendment is governed by and construed in accordance with the internal laws of the State of Illinois, but giving effect to federal laws applicable to national banks.",
+          "keyDefinedTerms": [],
+          "notes": "All-caps in the source. No separate submission-to-jurisdiction, venue, service-of-process or jury-waiver provision appears in this Amendment; those presumably remain in the Credit Agreement."
+        }
+      ]
+    },
+    {
+      "articleRef": "Section 6",
+      "heading": "Execution",
+      "units": [
+        {
+          "unitId": "doc-c::sec-6-counterparts-and-electronic-signature",
+          "sectionRef": "Section 6",
+          "unitType": "BOILERPLATE_SUMMARY",
+          "materiality": "INFORMATIONAL",
+          "description": "The Amendment may be executed in any number of counterparts (and by different parties on different counterparts), each deemed an original and all together constituting a single contract; delivery of an executed signature page by facsimile or other electronic imaging is as effective as manual delivery.",
+          "keyDefinedTerms": [],
+          "notes": "Standard counterparts/e-signature mechanics."
+        },
+        {
+          "unitId": "doc-c::sec-6-section-9-06b-applies",
+          "sectionRef": "Section 6 (final sentence)",
+          "unitType": "CROSS_REFERENCE",
+          "materiality": "INFORMATIONAL",
+          "description": "For the avoidance of doubt, the provisions of Section 9.06(b) of the Credit Agreement (the Credit Agreement's electronic execution / counterparts provision) apply to the Amendment.",
+          "keyDefinedTerms": ["Section 9.06(b)", "Credit Agreement"],
+          "notes": "Explicit incorporation of the credit agreement's electronic-signature regime; the text of Section 9.06(b) is not reproduced here."
+        }
+      ]
+    },
+    {
+      "articleRef": "Section 7",
+      "heading": "Headings",
+      "units": [
+        {
+          "unitId": "doc-c::sec-7-headings-not-operative",
+          "sectionRef": "Section 7",
+          "unitType": "BOILERPLATE_SUMMARY",
+          "materiality": "INFORMATIONAL",
+          "description": "Section headings used in the Amendment are for convenience of reference only, are not part of the Amendment, and do not affect its construction or interpretation.",
+          "keyDefinedTerms": [],
+          "notes": "Interpretive boilerplate."
+        }
+      ]
+    },
+    {
+      "articleRef": "Signature Pages",
+      "heading": "Execution / Signatory Parties",
+      "units": [
+        {
+          "unitId": "doc-c::signatories-borrowers-and-guarantors",
+          "sectionRef": "Signature Pages (Loan Parties)",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "MATERIAL",
+          "description": "Loan Parties executing the Amendment: as Borrowers — Distribution Solutions Group, Inc. (also as the Company; formerly Lawson Products, Inc.), Lawson Products, Inc., Baron Divestiture Company, Lawson Products Canada Inc., The Bolt Supply House Ltd., GS Operating, LLC, and TestEquity LLC; as Subsidiary Guarantors — 301 HW Opus Holdings, Inc., TestEquity Acquisition, LLC, Interworld Highway, LLC, HIS Company, Inc., and S&S Automotive, LLC. Signed by Ronald Knutson (EVP/CFO/Treasurer of the Company and of Lawson Products, Inc.; VP/Treasurer or SVP/Treasurer roles at several subsidiaries), Robert Connors, Russell S. Frazee and Mark Riordan.",
+          "keyDefinedTerms": ["Borrower", "Subsidiary Guarantor", "Loan Party", "Company"],
+          "notes": "Entity-applicability roster: seven Borrowers (including two Canadian entities, Lawson Products Canada Inc. and The Bolt Supply House Ltd.) and five Subsidiary Guarantors. Establishes the complete set of Loan Parties bound as of March 31, 2025 and satisfies the Section 3(a)(i) condition."
+        },
+        {
+          "unitId": "doc-c::signatories-lender-syndicate",
+          "sectionRef": "Signature Pages (Lenders)",
+          "unitType": "OTHER_OPERATIVE",
+          "materiality": "INFORMATIONAL",
+          "description": "Lenders executing the Amendment: JPMorgan Chase Bank, N.A. (individually as Administrative Agent and as a Lender), Bank of America, N.A., Wells Fargo Bank, National Association, U.S. Bank National Association, TD Bank, N.A., CIBC Bank USA, Regions Bank, Capital One, National Association, KeyBank National Association, Comerica Bank, First Horizon Bank, The Huntington National Bank, Flagstar Bank, N.A., and BOKF, NA d/b/a Bank of Texas — fourteen lenders in total.",
+          "keyDefinedTerms": ["Lender", "Administrative Agent", "Required Lenders"],
+          "notes": "Signing lenders evidence satisfaction of the Section 3(a)(ii) Required Lenders condition. The document does not state commitments, holdings, or whether these constitute all Lenders under the facility."
+        }
+      ]
+    }
+  ],
+  "documentLevelNotes": "This is a short, surgical Required-Lender amendment (roughly 13,800 characters) with only TWO substantive changes to the April 1, 2022 Amended and Restated Credit Agreement: (1) an amended-and-restated FIRST SENTENCE of Section 3.17, the Margin Stock representation, whose operative use-of-proceeds limb now prohibits using Borrowing or Letter of Credit proceeds to buy or carry Margin Stock only 'in violation of the provisions of Regulation U or Regulation X'; and (2) a fully restated Section 6.08(a)(v) residual Restricted Payments basket — $25,000,000 per fiscal year for the Company, conditioned on (x) no Default before and after and (y) pro forma Section 6.12 compliance computed WITHOUT any Total Net Leverage Ratio Adjustment, with a proviso that lifts the dollar cap entirely for any payment after which pro forma Total Net Leverage Ratio is no greater than the lesser of 2.50:1.00 and (maximum permitted Total Net Leverage Ratio under Section 6.12 minus 0.50). Both changes are given DEEMED EFFECT retroactively as of January 1, 2025 even though the Amendment is dated March 31, 2025 and takes formal effect on the Fourth Amendment Effective Date. Everything else in Sections 1 and 3 through 7 is conditions-precedent machinery, reaffirmation/anti-novation/non-waiver language, and boilerplate. NOTABLE ABSENCES that a reader should not assume are present: there is NO amendment or consent fee, NO change to pricing, margins, commitments, maturity, or the Section 6.12 financial covenant levels themselves, NO new lender or assignment mechanics, NO waiver of any existing Default, and NO schedule or exhibit amendments. The pre-amendment text of Section 3.17 and Section 6.08(a)(v) is nowhere reproduced in this document, so the direction and magnitude of each change (e.g. whether the $25,000,000 figure or the 2.50:1.00 threshold went up or down) cannot be determined from this document alone and must be sourced from the underlying credit agreement or prior amendments. Terminology caution: 'Credit Agreement' in this document means the agreement AS AMENDED HEREBY, while 'Existing Credit Agreement' means the pre-Fourth-Amendment version; several sections (e.g. Section 1, Section 3(b), Section 4(a)) refer to the former and others (Section 2, Section 4(b), Section 4(c)) to the latter, and the distinction is operative."
+}

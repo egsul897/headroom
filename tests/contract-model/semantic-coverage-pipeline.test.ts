@@ -1,0 +1,215 @@
+/**
+ * Phase 3E - end-to-end pipeline smoke tests (runSemanticCoverageAudit).
+ * Real parse -> route -> hypothesize -> freeze -> reconcile -> rollup,
+ * using the same real buildTestIndex pipeline every other phase's tests
+ * use. No AI caller supplied - Layers A/B only (a legitimate, cheaper
+ * deterministic-only configuration).
+ */
+import { describe, expect, it } from "vitest";
+import { withExpressionId, computeRuleId } from "../../lib/contract-model/ir/identity";
+import type { IRRule } from "../../lib/contract-model/ir/types";
+import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
+import { runSemanticCoverageAudit } from "../../lib/contract-model/compiler/semantic-coverage/pipeline";
+import { buildTestIndex } from "./context-retrieval-test-utils";
+
+const companyId = "test-co";
+const instrumentKey = "test-instrument";
+const packageKey = "test-pkg";
+
+const SAMPLE_DOCUMENT = `
+ARTICLE VI. NEGATIVE COVENANTS
+
+Section 6.01 Indebtedness. The Borrower shall not, and shall not permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:
+
+(a) Indebtedness existing on the Closing Date in an aggregate principal amount not to exceed $10,000,000;
+(b) Indebtedness incurred to finance the acquisition of fixed assets in an aggregate amount not to exceed $5,000,000 at any time outstanding.
+
+Section 6.02 Liens. The Borrower shall not, and shall not permit any Restricted Subsidiary to, create or suffer to exist any Lien on any property, except Permitted Liens not to exceed $2,000,000 in the aggregate.
+`;
+
+function buildIndex() {
+  return buildTestIndex([{ documentId: "doc-1", label: "Credit Agreement", text: SAMPLE_DOCUMENT }]);
+}
+
+function makeCandidate(discoveryId: string, nodeKeys: string[]): DiscoveredCandidate {
+  return {
+    discoveryId,
+    documentId: "doc-1",
+    structuralNodeKeys: nodeKeys,
+    normalizedSourceRef: nodeKeys[0]!,
+    families: ["INDEBTEDNESS"],
+    role: "BASKET",
+    roleRaw: "BASKET",
+    roleNormalizationStatus: "VALID_CANONICAL",
+    familiesRaw: ["INDEBTEDNESS"],
+    familiesNormalizationStatus: "VALID_CANONICAL",
+    description: "test",
+    multipleRulesLikely: false,
+    definedTermDependencyLikely: false,
+    discoveryMethods: ["DETERMINISTIC_SIGNAL"],
+    evidenceSignals: [],
+    reviewStatus: "AUTO_ACCEPTED",
+    confidence: 0.9,
+    sourceCitation: `doc-1::${nodeKeys[0]}`,
+    discoveryRunVersion: "test",
+  };
+}
+
+function makeRule(sourceSectionRef: string, amount: number): IRRule {
+  return {
+    ruleId: computeRuleId(companyId, instrumentKey, sourceSectionRef, "test"),
+    irSchemaVersion: "headroom-covenant-ir.v1",
+    companyId,
+    instrumentKey,
+    sourceDocumentId: "doc-1",
+    sourceSectionRef,
+    covenantFamily: "INDEBTEDNESS",
+    ruleType: "QUANTITATIVE_PERMISSION",
+    posture: "PERMISSION",
+    action: "INCUR_DEBT",
+    entityScope: [],
+    entityScopeExcluded: [],
+    transactionScope: null,
+    capacityExpression: withExpressionId({ kind: "MONEY", type: "MONEY", amount, currency: "USD" }),
+    conditions: [],
+    exceptions: [],
+    dependsOn: [],
+    operativeLineage: null,
+    sufficiency: "COMPLETE",
+    sufficiencyReasons: [],
+    provenance: { documentId: "doc-1", sourceNodeKey: null, sourceCitation: `doc-1::${sourceSectionRef}`, excerpt: null },
+    compilerVersion: null,
+    sourceContentVersion: null,
+  };
+}
+
+const baseInput = {
+  companyId,
+  packageKey,
+  instrumentKey,
+  operativeState: null,
+  operativeVersionRef: null,
+  structuralParserVersion: "test",
+  providerIdentity: null,
+};
+
+describe("Phase 3E pipeline: runSemanticCoverageAudit", () => {
+  it("classifies both carve-outs as FULLY_REPRESENTED when candidates and matching compiled rules exist for both", async () => {
+    const index = buildIndex();
+    const candidateA = makeCandidate("disc-a", ["doc-1::6.01(a)"]);
+    const candidateB = makeCandidate("disc-b", ["doc-1::6.01(b)"]);
+    const ruleA = makeRule("6.01(a)", 10_000_000);
+    const ruleB = makeRule("6.01(b)", 5_000_000);
+
+    const result = await runSemanticCoverageAudit({
+      ...baseInput,
+      index,
+      documents: [{ documentId: "doc-1" }],
+      discoveredCandidates: [candidateA, candidateB],
+      compiledResults: [
+        { candidateRef: "disc-a", rules: [ruleA], definitions: [] },
+        { candidateRef: "disc-b", rules: [ruleB], definitions: [] },
+      ],
+      verifiedCandidateRefs: new Set(),
+    });
+
+    const doc = result.packageCoverage.documents[0]!;
+    const carveoutAEntry = doc.coverageEntries.find((e) => doc.units.find((u) => u.semanticUnitId === e.semanticUnitId)?.excerptText.includes("$10,000,000"));
+    expect(carveoutAEntry?.coverageState).toBe("FULLY_REPRESENTED_REVIEW_REQUIRED");
+  });
+
+  it("FAULT INJECTION: removing the discovered candidate for a CRITICAL carve-out surfaces a dangerous-unaccounted unit and fails the document/package gate", async () => {
+    const index = buildIndex();
+    // Only 6.01(b) discovered - 6.01(a) (a CRITICAL $10,000,000 carve-out) was never discovered at all.
+    const candidateB = makeCandidate("disc-b", ["doc-1::6.01(b)"]);
+    const ruleB = makeRule("6.01(b)", 5_000_000);
+
+    const result = await runSemanticCoverageAudit({
+      ...baseInput,
+      index,
+      documents: [{ documentId: "doc-1" }],
+      discoveredCandidates: [candidateB],
+      compiledResults: [{ candidateRef: "disc-b", rules: [ruleB], definitions: [] }],
+      verifiedCandidateRefs: new Set(),
+    });
+
+    const doc = result.packageCoverage.documents[0]!;
+    expect(doc.dangerousUnaccounted.length).toBeGreaterThan(0);
+    expect(doc.gateStatus).toBe("DOCUMENT_GATE_FAILED");
+    expect(result.packageCoverage.status).toBe("PACKAGE_SEMANTICALLY_INCOMPLETE");
+  });
+
+  it("FAULT INJECTION: discovering a candidate but never compiling it is caught as CANDIDATE_DISCOVERED_NEVER_COMPILED", async () => {
+    const index = buildIndex();
+    const candidateA = makeCandidate("disc-a", ["doc-1::6.01(a)"]);
+
+    const result = await runSemanticCoverageAudit({
+      ...baseInput,
+      index,
+      documents: [{ documentId: "doc-1" }],
+      discoveredCandidates: [candidateA],
+      compiledResults: [], // never compiled
+      verifiedCandidateRefs: new Set(),
+    });
+
+    const doc = result.packageCoverage.documents[0]!;
+    expect(doc.dangerousUnaccounted.some((d) => d.reason === "CANDIDATE_DISCOVERED_NEVER_COMPILED")).toBe(true);
+  });
+
+  it("FAULT INJECTION: an entire missing family (Liens never discovered/compiled at all) fails the gate regardless of high coverage elsewhere", async () => {
+    const index = buildIndex();
+    const candidateA = makeCandidate("disc-a", ["doc-1::6.01(a)"]);
+    const candidateB = makeCandidate("disc-b", ["doc-1::6.01(b)"]);
+    const ruleA = makeRule("6.01(a)", 10_000_000);
+    const ruleB = makeRule("6.01(b)", 5_000_000);
+    // Section 6.02 Liens is present in the real source text but has ZERO discovered candidates.
+
+    const result = await runSemanticCoverageAudit({
+      ...baseInput,
+      index,
+      documents: [{ documentId: "doc-1" }],
+      discoveredCandidates: [candidateA, candidateB],
+      compiledResults: [
+        { candidateRef: "disc-a", rules: [ruleA], definitions: [] },
+        { candidateRef: "disc-b", rules: [ruleB], definitions: [] },
+      ],
+      verifiedCandidateRefs: new Set(),
+    });
+
+    const doc = result.packageCoverage.documents[0]!;
+    expect(doc.familySummaries.some((f) => f.family === "LIENS" && f.entireFamilyMissing)).toBe(true);
+    expect(doc.gateStatus).toBe("DOCUMENT_GATE_FAILED");
+  });
+
+  it("respects the auditIncomplete flag - PACKAGE_AUDIT_INCOMPLETE takes priority even with otherwise-clean documents", async () => {
+    const index = buildIndex();
+    const result = await runSemanticCoverageAudit({
+      ...baseInput,
+      index,
+      documents: [{ documentId: "doc-1", auditIncomplete: true }],
+      discoveredCandidates: [],
+      compiledResults: [],
+      verifiedCandidateRefs: new Set(),
+    });
+    expect(result.packageCoverage.status).toBe("PACKAGE_AUDIT_INCOMPLETE");
+  });
+
+  it("is deterministic/reproducible - two runs over the same real input produce identical package status and dangerous-unaccounted sets", async () => {
+    const index = buildIndex();
+    const candidateB = makeCandidate("disc-b", ["doc-1::6.01(b)"]);
+    const ruleB = makeRule("6.01(b)", 5_000_000);
+    const runOnce = () =>
+      runSemanticCoverageAudit({
+        ...baseInput,
+        index,
+        documents: [{ documentId: "doc-1" }],
+        discoveredCandidates: [candidateB],
+        compiledResults: [{ candidateRef: "disc-b", rules: [ruleB], definitions: [] }],
+        verifiedCandidateRefs: new Set(),
+      });
+    const first = await runOnce();
+    const second = await runOnce();
+    expect(first.packageCoverage.status).toBe(second.packageCoverage.status);
+    expect(first.documentDetails[0]!.units.map((u) => u.semanticUnitId).sort()).toEqual(second.documentDetails[0]!.units.map((u) => u.semanticUnitId).sort());
+  });
+});

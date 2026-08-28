@@ -218,6 +218,18 @@ export interface OperativeContractState {
   provisions: OperativeProvisionView[];
   status: OperativeStateStatus;
   summary: string;
+  /**
+   * Phase 3F.1 §29-32/F3 - effects that reference this instrument's own
+   * document family but could not be attached to any specific provision
+   * (an unresolved section/definition/instrument target - see
+   * groupEffectsByProvision's own unattachedEffects). NEVER silently
+   * discarded: their presence is exactly what prevents `status` from
+   * defaulting to OPERATIVE_STATE_RESOLVED merely because `provisions` came
+   * back empty (root cause of the DSGR first-blind F3 finding - a status
+   * literally named RESOLVED coexisting with zero provisions and 4 real,
+   * known, unresolved amendment effects for the same instrument).
+   */
+  unattachedEffects: AmendmentEffectCandidate[];
 }
 
 // ---------------------------------------------------------------------------

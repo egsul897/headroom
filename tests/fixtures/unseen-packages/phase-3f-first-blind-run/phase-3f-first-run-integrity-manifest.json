@@ -1,0 +1,129 @@
+{
+  "manifestId": "PHASE_3F_FIRST_RUN_INTEGRITY_MANIFEST",
+  "recordedAt": "2026-08-28T13:28:31.455Z",
+  "runId": "PHASE_3F_FIRST_BLIND_RUN",
+  "runFinishedAt": "2026-08-28T13:27:11.772Z",
+  "statement": "This manifest hashes every artifact produced by the frozen, zero-manual-selection first-blind pipeline run (scripts/phase-3f-first-blind-run.ts) against the DSGR unseen package, recorded immediately after the run finished and before any ground truth was authored (task #170) or any scoring was performed (#171). Any subsequent scoring, diagnosis, or report MUST reference these exact hashes - a re-run, edit, or regeneration of any listed file after this manifest was recorded would change its hash and must be treated as a violation of the frozen-run discipline, not silently accepted as equivalent.",
+  "sealedAtGitCommit": "10c35bda9bd90c03fe0bdf5775c98b9bded2853c",
+  "gitCommitsCarryingRunArtifacts": [
+    "10c35bda9bd90c03fe0bdf5775c98b9bded2853c",
+    "ee886ff6be73bcefdc2108db4dab0fef057042a8",
+    "33e11375feb18f94bdfafad224c97e920b8dde4e",
+    "fd8431c9b220352964c123b8fdc73cd07cb58549",
+    "98e0a262bdbedadd3a694401c450f3611ad97525",
+    "3835667a364ba14d341a456e677976a60bd6a1e8",
+    "fc6a3c6d547b24c448c5e8b678a14b295afcc901",
+    "739cd0e649c673f0f0ebcc6c45bdd8f8b5b87dad"
+  ],
+  "fileCount": 19,
+  "aggregateHash": "a0981605bb04288689d4f8481d8becad94d038c92390e39148283fdc56524e33",
+  "files": [
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/final-summary.json",
+      "bytes": 1150,
+      "sha256": "059cb1029e3f719048b7f3aeb25f7e9b7f0af5f3cd794595c15ebd1cb72e759d"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage1-all-definitions.json",
+      "bytes": 477281,
+      "sha256": "a7d018864aecec68234c82d8da546c2c05b65fccee48c85812dd42acc6d99835"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage1-all-nodes.json",
+      "bytes": 1095990,
+      "sha256": "3065adc60711aa67e0323aaea6a11fd774ac02597031fd7be432c50ac59dd6c4"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage1-all-references.json",
+      "bytes": 957554,
+      "sha256": "dbcede5ad6984018ac7233146f905ba8b388a67879cfe3f859e2108a1b5c18a8"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage1-structural-summary.json",
+      "bytes": 1597,
+      "sha256": "5ffd21836e5c4611c66d801096cad3b319f89437763b66f6bc57cc8acf1448f5"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+      "bytes": 3775445,
+      "sha256": "72ae77094c3224a90c74409bfc2f498dca9f7daefab8b5684b863f66748e160c"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-discovery-candidates-doc-a.json",
+      "bytes": 1216261,
+      "sha256": "81c6d89ad2c511a5e907d3dfb0c183e51fd034cc78e8024ce0394df1f1306dd9"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-discovery-candidates-doc-b.json",
+      "bytes": 1251081,
+      "sha256": "3dd47358310da24b324e807a71501990a588d12121a0aa2a69972cf3a6a57c0d"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-discovery-candidates-doc-c.json",
+      "bytes": 27007,
+      "sha256": "2dd7e3384bdd85c2d4fc0537ec369199d1fd1c6069da38123eef70a6c085bf9a"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-discovery-candidates-doc-d.json",
+      "bytes": 1281102,
+      "sha256": "5f93f3080cd52c14323ddbe7e16291aebd5b33723476f46bf9df05b6e30e81c1"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage2-discovery-summary.json",
+      "bytes": 2035,
+      "sha256": "a4765876a4ac3b51958eb84df503cfb8637998dec213cd3109bde0a2564dce01"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage3-package-graph.json",
+      "bytes": 103333,
+      "sha256": "b9f4f4ae42bea0cfe7d3a764e93216e5c86404b96b7e5f413a605aed7fa7f01b"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage4-summary.json",
+      "bytes": 181,
+      "sha256": "60909fc41bf54cfbbb6e9f2b0c6a2e917987c3e96b5667d9d609e6da5dbf5e7c"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage5-amendment-effects.json",
+      "bytes": 5809,
+      "sha256": "cd7353aa87f31b9976da0fc7cf44403430aaf2a430764fe316a3aba648fc4802"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage5-amendment-summary.json",
+      "bytes": 265,
+      "sha256": "a325b5e297b05350fd9f04e3b02c423ca573a3df9ce4925f06530bace66a9202"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage5-operative-state.json",
+      "bytes": 235,
+      "sha256": "a5fabeff5d0d1599fef00c95010b66c56faff7f645e75aaa287999d1df153477"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage6-compiled-results.json",
+      "bytes": 490525,
+      "sha256": "d4fb0f7790e50ea0f8ec58cb5a565ac2b4efa4ecef2586e224e4b4b2275523d5"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage7-verification-results.json",
+      "bytes": 2718329,
+      "sha256": "5e7238417ed1dedd2542467b4cd9ce07f0a7c8b3721faa7829478e16a1ee19e2"
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json",
+      "bytes": 28181353,
+      "sha256": "2587699b3dcc992ccd928fd756e02aa13cdcd6e6591750e9ff3e3bbbb8b19dda"
+    }
+  ],
+  "finalSummaryRecap": {
+    "totalCostUsd": 9.344626,
+    "budgetCeilingUsd": 30,
+    "documentsProcessed": 4,
+    "totalStructuralNodes": 4149,
+    "totalDiscoveredCandidates": 2847,
+    "eligibleForCompilation": 2687,
+    "candidatesCompiled": 30,
+    "candidatesVerified": 28,
+    "candidatesFullyVerified": 0,
+    "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE"
+  }
+}

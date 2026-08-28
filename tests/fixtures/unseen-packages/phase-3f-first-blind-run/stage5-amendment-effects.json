@@ -1,0 +1,114 @@
+[
+  {
+    "effectId": "dfe541660dafd664ae9f1a76b148ec2fded3c162252cf6c0e9c0b121198ae370",
+    "amendmentDocumentId": "doc-a",
+    "target": {
+      "kind": "DOCUMENT",
+      "targetDocumentId": null,
+      "targetInstrumentKey": null,
+      "targetStructuralNodeKey": null,
+      "targetSectionRef": null,
+      "targetDefinedTermRef": null,
+      "targetHint": "full agreement restatement, target document not resolved"
+    },
+    "operation": "RESTATE_AGREEMENT",
+    "effectiveDate": {
+      "date": null,
+      "status": "UNKNOWN",
+      "evidence": null,
+      "reason": "Neither an explicit effective-date statement nor the document's own execution date could be established from available evidence."
+    },
+    "newText": null,
+    "oldText": null,
+    "sourceCitation": "DSGR 2022 Amended and Restated Credit Agreement",
+    "sourceExcerpt": "EX-10.2 3 d345714dex102.htm EX-10.2 EX-10.2 Exhibit 10.2 EXECUTION VERSION AMENDED AND RESTATED CREDIT AGREEMENT dated as of April 1, 2022 among LAWSON PRODUCTS, INC., a Delaware corporation, LAWSON PRODUCTS, INC., an Illinois corporation, BARON DIVESTITURE COMPANY, an Illinois corporation,",
+    "confidence": 0.3,
+    "status": "REVIEW_REQUIRED",
+    "unresolvedReason": "This document is classified as a full amendment-and-restatement, but its own restated target document could not be resolved.",
+    "resolutionMethod": "DETERMINISTIC_FULL_RESTATEMENT"
+  },
+  {
+    "effectId": "ed1979fbf07c04f497ac1957a938c57ecedbbe842f825153df74a4566070f32c",
+    "amendmentDocumentId": "doc-c",
+    "target": {
+      "kind": "SECTION",
+      "targetDocumentId": null,
+      "targetInstrumentKey": null,
+      "targetStructuralNodeKey": null,
+      "targetSectionRef": "3.17",
+      "targetDefinedTermRef": null,
+      "targetHint": "that certain Amended and Restated Credit Agreement, dated as of April 1, 2022"
+    },
+    "operation": "REPLACE_TEXT",
+    "effectiveDate": {
+      "date": null,
+      "status": "CONDITIONAL_UNRESOLVED",
+      "evidence": "subject to the satisfaction of",
+      "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+    },
+    "newText": null,
+    "oldText": null,
+    "sourceCitation": "DSGR 2025 Fourth Amendment",
+    "sourceExcerpt": "ry 1, 2025): (a) The first sentence of Section 3.17 of the Existing Credit Agreement is hereby amended and restated in its entirety as follows: “No Loan Party is engaged and will not engage, pri",
+    "confidence": 0.1,
+    "status": "UNRESOLVED",
+    "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date (\"April 1, 2022\") - never guessed from title similarity alone",
+    "resolutionMethod": "DETERMINISTIC_EXPLICIT_PATTERN"
+  },
+  {
+    "effectId": "05c17062471fd920607abc0f9fe3a10d520b1142f31aa156dd643c617621df49",
+    "amendmentDocumentId": "doc-c",
+    "target": {
+      "kind": "SECTION",
+      "targetDocumentId": null,
+      "targetInstrumentKey": null,
+      "targetStructuralNodeKey": null,
+      "targetSectionRef": "6.08(a)(v)",
+      "targetDefinedTermRef": null,
+      "targetHint": "that certain Amended and Restated Credit Agreement, dated as of April 1, 2022"
+    },
+    "operation": "REPLACE_TEXT",
+    "effectiveDate": {
+      "date": null,
+      "status": "CONDITIONAL_UNRESOLVED",
+      "evidence": "subject to the satisfaction of",
+      "reason": "The amendment's own text conditions its effectiveness on a future event or the satisfaction of stated conditions, with no concrete calendar date given - the effective date cannot be safely established from text alone."
+    },
+    "newText": null,
+    "oldText": null,
+    "sourceCitation": "DSGR 2025 Fourth Amendment",
+    "sourceExcerpt": "of Regulation U or Regulation X.” (b) Section 6.08(a)(v) is hereby amended and restated in its entirety as follows: “(v) the Company may make Restricted Payments not",
+    "confidence": 0.1,
+    "status": "UNRESOLVED",
+    "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date (\"April 1, 2022\") - never guessed from title similarity alone",
+    "resolutionMethod": "DETERMINISTIC_EXPLICIT_PATTERN"
+  },
+  {
+    "effectId": "2ea60cf66655f5f8385125b9bee32d4c405ce32dfab564b572b234b4a4758d0a",
+    "amendmentDocumentId": "doc-d",
+    "target": {
+      "kind": "DOCUMENT",
+      "targetDocumentId": null,
+      "targetInstrumentKey": null,
+      "targetStructuralNodeKey": null,
+      "targetSectionRef": null,
+      "targetDefinedTermRef": null,
+      "targetHint": "full agreement restatement, target document not resolved"
+    },
+    "operation": "RESTATE_AGREEMENT",
+    "effectiveDate": {
+      "date": null,
+      "status": "UNKNOWN",
+      "evidence": null,
+      "reason": "Neither an explicit effective-date statement nor the document's own execution date could be established from available evidence."
+    },
+    "newText": null,
+    "oldText": null,
+    "sourceCitation": "DSGR 2025 Second Amended and Restated Credit Agreement",
+    "sourceExcerpt": "EX-10.1 2 d83410dex101.htm EX-10.1 EX-10.1 Exhibit 10.1 Certain personally identifiable information has been omitted from this exhibit pursuant to Item 601(a)(6) of Regulation S-K. [***] indicates that information has been redacted. EXECUTION VERSION SECOND AMENDED AND RESTATED CREDIT AGREEMEN",
+    "confidence": 0.3,
+    "status": "REVIEW_REQUIRED",
+    "unresolvedReason": "This document is classified as a full amendment-and-restatement, but its own restated target document could not be resolved.",
+    "resolutionMethod": "DETERMINISTIC_FULL_RESTATEMENT"
+  }
+]

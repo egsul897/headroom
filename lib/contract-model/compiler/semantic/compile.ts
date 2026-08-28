@@ -18,13 +18,66 @@ import { validateCompilationUnit } from "../../ir/validate";
 import { getSemanticCaller, type SemanticCaller } from "./caller";
 import { InMemorySemanticCompilationCache, computeCacheKey, type SemanticCompilationCache } from "./cache";
 import { normalizeSubmission } from "./normalize";
-import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticCompilerFailureReason, SemanticCompilerInput } from "./types";
+import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticCompilerErrorDetail, SemanticCompilerFailureReason, SemanticCompilerInput } from "./types";
 
 const defaultCache = new InMemorySemanticCompilationCache();
 
+const MAX_SANITIZED_MESSAGE_LENGTH = 500;
+/** Redacts common credential/token shapes before a message is ever persisted (task §33's "no secrets" instruction) - defensive even though a compile-time exception message should not ordinarily contain one. */
+const CREDENTIAL_LIKE_PATTERN = /\b(?:sk-|Bearer\s+|api[_-]?key["':=\s]+)[A-Za-z0-9._-]{8,}/gi;
+
+export function sanitizeErrorMessage(message: string): string {
+  const redacted = message.replace(CREDENTIAL_LIKE_PATTERN, "[REDACTED]");
+  return redacted.length > MAX_SANITIZED_MESSAGE_LENGTH ? `${redacted.slice(0, MAX_SANITIZED_MESSAGE_LENGTH)}... [truncated]` : redacted;
+}
+
+export function classifyFailureCategory(errorClass: string, message: string): SemanticCompilerErrorDetail["failureCategory"] {
+  const lower = `${errorClass} ${message}`.toLowerCase();
+  if (/timeout|timedout|network|econnreset|econnrefused|fetch failed|abort|enotfound|socket|connection reset/.test(lower)) return "TRANSPORT";
+  if (/schema|json|parse/.test(lower)) return "SCHEMA";
+  if (/tool/.test(lower)) return "TOOL";
+  if (/model|provider|rate.?limit|overloaded/.test(lower)) return "MODEL";
+  return "INTERNAL";
+}
+
+/** Phase 3F.1 §33/F6 - builds a structured FAILED result for a genuinely thrown exception, so compileCovenantToIR never lets a caller's own try/catch discard the failure's real content (the exact gap the DSGR first-blind run exposed: 2 compile failures preserved only `{candidateRef, status: "FAILED"}`). Never cached - a thrown exception is more likely transient (network blip, timeout) than a structured, deterministic model/schema failure, and caching it would incorrectly treat a transient condition as a permanent verdict for this cache key's lifetime. */
+function buildTransportFailureResult(err: unknown, caller: SemanticCaller, cacheKey: string, retryCount: number | null): SemanticCompilationResult {
+  const errorClass = err instanceof Error ? err.constructor.name : "UnknownError";
+  const rawMessage = err instanceof Error ? err.message : String(err);
+  const sanitizedMessage = sanitizeErrorMessage(rawMessage);
+  const errorDetail: SemanticCompilerErrorDetail = {
+    errorClass,
+    sanitizedMessage,
+    failureCategory: classifyFailureCategory(errorClass, rawMessage),
+    retryCount,
+    hadPartialOutput: false,
+  };
+  return {
+    status: "FAILED",
+    failureReasons: ["TRANSPORT_OR_INTERNAL_ERROR"],
+    errorDetail,
+    rules: [],
+    definitions: [],
+    sharedCapacities: [],
+    irExtensionCandidates: [],
+    unresolvedIssues: [`Compilation threw ${errorClass}: ${sanitizedMessage}`],
+    toolCallLog: [],
+    rawModelOutput: null,
+    provider: caller.providerName,
+    model: caller.model,
+    telemetry: null,
+    cacheKey,
+    compiledAt: new Date().toISOString(),
+  };
+}
+
 function determineStatus(failureReasons: SemanticCompilerFailureReason[], ruleCount: number, hasReviewRequiredSufficiency: boolean, hasUnresolvedIssues: boolean): SemanticCompilationStatus {
   if (ruleCount === 0 && failureReasons.length > 0) return "FAILED";
-  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
+  // Phase 3B.1 (task §10): OUTPUT_TRUNCATED belongs alongside IR_VALIDATION_FAILURE/
+  // MODEL_SCHEMA_FAILURE here - a response cut off at the output-token ceiling is a
+  // degraded attempt (PARTIAL when a validated prefix was recovered) even when every
+  // recovered rule/definition itself validates cleanly, never a plain REVIEW_REQUIRED.
+  if (failureReasons.includes("IR_VALIDATION_FAILURE") || failureReasons.includes("MODEL_SCHEMA_FAILURE") || failureReasons.includes("OUTPUT_TRUNCATED")) return ruleCount > 0 ? "PARTIAL" : "FAILED";
   if (failureReasons.length > 0 || hasReviewRequiredSufficiency || hasUnresolvedIssues) return "REVIEW_REQUIRED";
   return "COMPLETED";
 }
@@ -38,13 +91,25 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   const cached = cache.get(cacheKey);
   if (cached) return cached;
 
-  const callResult = await caller.compile(input);
+  // Phase 3F.1 §33/F6 - this call is never allowed to throw out of
+  // compileCovenantToIR uncaught: a genuine transport/internal exception is
+  // converted into the same structured SemanticCompilationResult shape every
+  // other failure path already returns, so no caller can silently discard a
+  // real failure's content the way the pre-remediation run script's own
+  // try/catch did.
+  let callResult: Awaited<ReturnType<SemanticCaller["compile"]>>;
+  try {
+    callResult = await caller.compile(input);
+  } catch (err) {
+    return buildTransportFailureResult(err, caller, cacheKey, null);
+  }
   const compiledAt = new Date().toISOString();
 
   if (!callResult.submission) {
     const result: SemanticCompilationResult = {
       status: "FAILED",
       failureReasons: [callResult.failureReason ?? "MODEL_SCHEMA_FAILURE"],
+      errorDetail: null,
       rules: [],
       definitions: [],
       sharedCapacities: [],
@@ -62,43 +127,65 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     return result;
   }
 
-  const normalized = normalizeSubmission(callResult.submission, input);
+  // Phase 3F.1 §33/F6 - normalization/validation is deterministic post-
+  // processing over a real model response, but a bug here must still
+  // surface as a structured, diagnosable failure rather than an uncaught
+  // exception that would abort whatever loop called compileCovenantToIR (a
+  // partial submission was already assembled at this point, so
+  // hadPartialOutput is true on this path).
+  try {
+    const normalized = normalizeSubmission(callResult.submission, input);
 
-  const validation = validateCompilationUnit({
-    irSchemaVersion: input.irSchemaVersion,
-    companyId: input.companyId,
-    instrumentKey: input.instrumentKey,
-    rules: normalized.rules,
-    definitions: normalized.definitions,
-    sharedCapacities: normalized.sharedCapacities,
-  });
+    const validation = validateCompilationUnit({
+      irSchemaVersion: input.irSchemaVersion,
+      companyId: input.companyId,
+      instrumentKey: input.instrumentKey,
+      rules: normalized.rules,
+      definitions: normalized.definitions,
+      sharedCapacities: normalized.sharedCapacities,
+    });
 
-  const failureReasons: SemanticCompilerFailureReason[] = [];
-  if (!validation.ok) failureReasons.push("IR_VALIDATION_FAILURE");
-  if (normalized.rules.length === 0 && normalized.definitions.length === 0) failureReasons.push("PARTIAL_COMPILATION");
-  if (normalized.rules.some((r) => r.sufficiency === "MISSING_CONTEXT") || normalized.definitions.some((d) => d.sufficiency === "MISSING_CONTEXT")) failureReasons.push("MISSING_CONTEXT");
-  if (normalized.rules.some((r) => r.sufficiency === "CONFLICTED")) failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
-  if (normalized.rules.some((r) => r.sufficiency === "UNSUPPORTED") || normalized.definitions.some((d) => d.sufficiency === "UNSUPPORTED")) failureReasons.push("UNSUPPORTED_SEMANTICS");
+    const failureReasons: SemanticCompilerFailureReason[] = [];
+    // Phase 3B.1 (task §10): a submission can be non-null yet still carry a caller-level
+    // failureReason - the partial-output-recovery path (caller.ts's recoverPartialSubmission)
+    // returns a validated, truncated-but-usable submission alongside OUTPUT_TRUNCATED. That
+    // must not be silently dropped just because normalization/validation otherwise succeeds.
+    if (callResult.failureReason) failureReasons.push(callResult.failureReason);
+    if (!validation.ok) failureReasons.push("IR_VALIDATION_FAILURE");
+    if (normalized.rules.length === 0 && normalized.definitions.length === 0) failureReasons.push("PARTIAL_COMPILATION");
+    if (normalized.rules.some((r) => r.sufficiency === "MISSING_CONTEXT") || normalized.definitions.some((d) => d.sufficiency === "MISSING_CONTEXT")) failureReasons.push("MISSING_CONTEXT");
+    if (normalized.rules.some((r) => r.sufficiency === "CONFLICTED")) failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
+    if (normalized.rules.some((r) => r.sufficiency === "UNSUPPORTED") || normalized.definitions.some((d) => d.sufficiency === "UNSUPPORTED")) failureReasons.push("UNSUPPORTED_SEMANTICS");
 
-  const hasReviewRequiredSufficiency = normalized.rules.some((r) => r.sufficiency !== "COMPLETE") || normalized.definitions.some((d) => d.sufficiency !== "COMPLETE");
-  const unresolvedIssues = [...validation.issues.map((i) => `[${i.kind}]${i.ruleId ? ` (${i.ruleId})` : ""} ${i.message}`), ...normalized.warnings.map((w) => `[${w.scope}] ${w.message}`), ...callResult.submission.overallNotes];
+    const hasReviewRequiredSufficiency = normalized.rules.some((r) => r.sufficiency !== "COMPLETE") || normalized.definitions.some((d) => d.sufficiency !== "COMPLETE");
+    const unresolvedIssues = [
+      ...(callResult.failureDetail ? [callResult.failureDetail] : []),
+      ...validation.issues.map((i) => `[${i.kind}]${i.ruleId ? ` (${i.ruleId})` : ""} ${i.message}`),
+      ...normalized.warnings.map((w) => `[${w.scope}] ${w.message}`),
+      ...callResult.submission.overallNotes,
+    ];
 
-  const result: SemanticCompilationResult = {
-    status: determineStatus(failureReasons, normalized.rules.length + normalized.definitions.length, hasReviewRequiredSufficiency, unresolvedIssues.length > 0),
-    failureReasons,
-    rules: normalized.rules,
-    definitions: normalized.definitions,
-    sharedCapacities: normalized.sharedCapacities,
-    irExtensionCandidates: normalized.irExtensionCandidates,
-    unresolvedIssues,
-    toolCallLog: callResult.toolCallLog,
-    rawModelOutput: callResult.rawSubmission,
-    provider: caller.providerName,
-    model: caller.model,
-    telemetry: callResult.telemetry,
-    cacheKey,
-    compiledAt,
-  };
-  cache.set(cacheKey, result);
-  return result;
+    const result: SemanticCompilationResult = {
+      status: determineStatus(failureReasons, normalized.rules.length + normalized.definitions.length, hasReviewRequiredSufficiency, unresolvedIssues.length > 0),
+      failureReasons,
+      errorDetail: null,
+      rules: normalized.rules,
+      definitions: normalized.definitions,
+      sharedCapacities: normalized.sharedCapacities,
+      irExtensionCandidates: normalized.irExtensionCandidates,
+      unresolvedIssues,
+      toolCallLog: callResult.toolCallLog,
+      rawModelOutput: callResult.rawSubmission,
+      provider: caller.providerName,
+      model: caller.model,
+      telemetry: callResult.telemetry,
+      cacheKey,
+      compiledAt,
+    };
+    cache.set(cacheKey, result);
+    return result;
+  } catch (err) {
+    const failure = buildTransportFailureResult(err, caller, cacheKey, null);
+    return { ...failure, errorDetail: failure.errorDetail ? { ...failure.errorDetail, hadPartialOutput: true } : null };
+  }
 }

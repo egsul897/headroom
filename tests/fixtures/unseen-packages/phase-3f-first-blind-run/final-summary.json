@@ -1,0 +1,43 @@
+{
+  "runId": "PHASE_3F_FIRST_BLIND_RUN",
+  "finishedAt": "2026-08-28T13:27:11.772Z",
+  "wallClockMs": 25419744,
+  "totalCostUsd": 9.344626,
+  "budgetCeilingUsd": 30,
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "documentsProcessed": 4,
+  "totalStructuralNodes": 4149,
+  "totalDiscoveredCandidates": 2847,
+  "eligibleForCompilation": 2687,
+  "candidatesCompiled": 30,
+  "candidatesVerified": 28,
+  "candidatesFullyVerified": 0,
+  "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+  "documentGateStatuses": [
+    {
+      "documentId": "doc-a",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 2011,
+      "dangerousUnaccountedCount": 696
+    },
+    {
+      "documentId": "doc-b",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 1950,
+      "dangerousUnaccountedCount": 718
+    },
+    {
+      "documentId": "doc-c",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 30,
+      "dangerousUnaccountedCount": 15
+    },
+    {
+      "documentId": "doc-d",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 2219,
+      "dangerousUnaccountedCount": 781
+    }
+  ]
+}

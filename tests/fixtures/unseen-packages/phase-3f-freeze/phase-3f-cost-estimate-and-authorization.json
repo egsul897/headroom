@@ -1,0 +1,39 @@
+{
+  "recordId": "PHASE_3F_COST_ESTIMATE_AND_AUTHORIZATION",
+  "recordedAt": "2026-08-28T05:50:00Z",
+  "package": "dsgr-2022-2025-credit-facility",
+  "scaleInputs": {
+    "totalExtractedChars": 2343859,
+    "conmedDocAReferenceChars": 94258,
+    "conmedDocAReferenceNodes": 171,
+    "conmedDocAReferenceDiscoveryCalls": 15,
+    "conmedDocAReferenceInputTokens": 47878,
+    "conmedDocAReferenceOutputTokens": 42006,
+    "estimatedTotalStructuralNodes": 4252,
+    "scaleFactorVsConmedDocA": 24.9
+  },
+  "discoveryEstimate": {
+    "estimatedModelCalls": 373,
+    "estimatedInputTokens": 1190554,
+    "estimatedOutputTokens": 1044539,
+    "estimatedCostRangeUsd": [12.84, 19.24],
+    "methodology": "Linear extrapolation of CONMED Document A's own real Phase 2B discovery run (per-node call/token rate) to DSGR's estimated total node count. Dollar range computed at two reference rates: the FWRG real Phase 3D compile's own implied blended rate (~$0.667 of a flat $3/$15-per-million-token baseline) as the low end, and the flat $3-input/$15-output-per-million-token baseline as the high end."
+  },
+  "compilationVerificationEstimate": {
+    "referenceRealCostPerCandidateUsd": 0.4171,
+    "referenceSource": "FWRG real Phase 3D compile (single multi-rule candidate, 118297 input + 18052 output tokens, tests/fixtures/unseen-packages/phase-3d-real-precedent-comparison-run/)",
+    "note": "Compiling every discovered candidate at this package's estimated scale (~4000 final candidates, extrapolated the same way as discovery) would cost well into the hundreds of dollars - explicitly not required by task Phase 3F section 18/13 ('does not require full IR compilation of every region on first contact')."
+  },
+  "userAuthorization": {
+    "askedAt": "2026-08-28T05:47:00Z",
+    "totalBudgetCeilingUsd": 30,
+    "userSelectedOption": "~$30 (Recommended): full discovery/context/topology across all 4 documents (~$13-20) plus compilation/verification capped to roughly the first 20-30 discovered candidates in deterministic order.",
+    "credentialPlan": "User will add AI_GATEWAY_API_KEY or ANTHROPIC_API_KEY to the session environment themselves, then confirm."
+  },
+  "deterministicBoundingRule": {
+    "description": "Phase 2A (structural indexing), Phase 2B (discovery), Phase 2C (package graph/relationships - zero LLM calls per its own design), Phase 2D (context retrieval for every discovered candidate), and Phase 2G (operative contract state) run FULLY and UNBOUNDED across all 4 documents - no candidate/section is skipped at these layers, satisfying the task's own 'no manually supplied covenant targets... let the system operate as designed' requirement in full. Phase 3B compilation, Phase 3C verification, and Phase 3E Layer C (bounded AI inventory) are capped to the FIRST 30 eligible discovered candidates in a single fixed, content-blind global order: documents in their preserved README listing order (A, then B, then C, then D), and within each document, candidates in the order Phase 2B's own discovery pipeline emits them (which is itself structural document-traversal order - never re-sorted by family, materiality, dollar amount, or any other content-derived signal). This is a single, pre-committed, non-content-based rule applied identically regardless of what any candidate's own text says - it is not manual section selection, and it is recorded here BEFORE the first-blind run begins so it cannot be adjusted after seeing which candidates it happens to include.",
+    "cap": 30,
+    "orderingKey": "documentOrder(A,B,C,D) then discoveryPipelineEmissionOrder"
+  },
+  "costDisciplineCompliance": "Per Phase 3F section 25: this estimate was computed and this authorization was obtained BEFORE any model call touched the unseen package. No prompt/model configuration will be tuned against this specific package. Actual cost will be disclosed and compared against this estimate in the final report regardless of variance direction."
+}

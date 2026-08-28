@@ -1,0 +1,453 @@
+{
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "totalInputTokens": 60412,
+  "totalOutputTokens": 23413,
+  "totalCostUsd": 0.354954,
+  "totalLatencyMs": 226255,
+  "totalToolCalls": 6,
+  "summary": {
+    "totalExpected": 3,
+    "totalCompiled": 1,
+    "findings": [
+      {
+        "category": "WRONG_RATIO",
+        "ref": "fwrg-6.10-a",
+        "detail": "expected a RATIO leaf of 5, none found",
+        "dangerous": false
+      },
+      {
+        "category": "MISSED_RULE",
+        "ref": "lsb-6.01-general-ratio-gated",
+        "detail": "no compiled rule found for expected §6.01 (no candidate rule contained the expectation's own defining content)",
+        "dangerous": true
+      },
+      {
+        "category": "MISSED_RULE",
+        "ref": "lsb-6.11-restricted-payments",
+        "detail": "no compiled rule found for expected §6.11 (no candidate rule contained the expectation's own defining content)",
+        "dangerous": true
+      }
+    ],
+    "dangerousCount": 2,
+    "byCategory": {
+      "WRONG_RATIO": 1,
+      "MISSED_RULE": 2
+    },
+    "completePrecision": null,
+    "sufficiencyDistribution": {
+      "PARTIAL": 1
+    }
+  },
+  "results": [
+    {
+      "id": "fwrg-6.10-a",
+      "result": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "IR_VALIDATION_FAILURE"
+        ],
+        "rules": [
+          {
+            "ruleId": "ir-rule:3f70c9de913da49b10f185b3",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "fwrg-real-regression",
+            "instrumentKey": "fwrg-instrument",
+            "sourceDocumentId": "fwrg-article-6",
+            "sourceSectionRef": "6.10(a)",
+            "covenantFamily": "FINANCIAL_COVENANTS",
+            "ruleType": "RATIO_TEST",
+            "posture": "OBLIGATION",
+            "action": "SATISFY_RATIO",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": {
+                "kind": "UNSUPPORTED",
+                "type": null,
+                "sourceEvidence": "(no evidence captured)",
+                "semanticDescription": "unrecognized or malformed expression (kind=\"COMPARE\")",
+                "reason": "COMPARE operands are not the same type",
+                "requiredReview": true,
+                "provenance": {
+                  "documentId": "fwrg-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(a)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:6b5e156134e14248fb15326f"
+              },
+              "provenance": {
+                "documentId": "fwrg-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.10(a)",
+                "excerpt": null
+              }
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r1].condition[0]",
+                "conditionType": "RATIO_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "On the last day of each Test Period (commencing with the Test Period ending March 27, 2022), the Total Rent Adjusted Net Leverage Ratio must not exceed the scheduled maximum applicable to that period, increased by 0.50:1.00 during any Covenant Acquisition Increase Period following consummation of a Material Acquisition, subject to the anti-stacking proviso requiring a clean quarter between successive increase periods.",
+                "provenance": {
+                  "documentId": "fwrg-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(a)",
+                  "excerpt": "the Borrower shall not permit the Total Rent Adjusted Net Leverage Ratio to be greater than (A) ... (B) ... and (C) ..."
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "PARTIAL",
+            "sufficiencyReasons": [
+              "The base stepped-threshold schedule and the 0.50:1.00 Material Acquisition step-up mechanism are fully represented.",
+              "The anti-stacking proviso (requiring at least one clean Fiscal Quarter between successive Covenant Acquisition Increase Periods, potentially delaying a subsequent increase period) is a stateful sequencing rule that cannot be faithfully expressed with the available stateless primitives and is therefore captured as UNSUPPORTED within the gating condition rather than discarded.",
+              "Key defined terms ('Total Rent Adjusted Net Leverage Ratio', 'Material Acquisition', 'Test Period', 'Fiscal Quarter') are used but not declared anywhere in the available document package, per Phase 2's own determination; this does not block representing the covenant's operative structure but limits precise computability of the underlying metric and trigger.",
+              "EVENT_ACTIVE triggerCondition must be BOOLEAN",
+              "This is a stateful, historical sequencing constraint (dependent on the timing of prior Material Acquisitions and prior increase periods) that cannot be expressed as a stateless boolean/EVENT_ACTIVE primitive without tracking cross-period history",
+              "AND operands do not type-check together under the IR's own composition rules",
+              "IF condition must be BOOLEAN and both branches must resolve to the same type",
+              "ADD operands do not type-check together under the IR's own composition rules",
+              "COMPARE operands are not the same type",
+              "dependsOn[0].targetRef \"6.10(c)\" did not resolve - dependency dropped rather than left dangling"
+            ],
+            "provenance": {
+              "documentId": "fwrg-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(a)",
+              "excerpt": "On the last day of any Test Period ... the Borrower shall not permit the Total Rent Adjusted Net Leverage Ratio to be greater than (A) ... 5.50:1.00, (B) ... 5.25:1.00, and (C) ... 5.00:1.00; provided that, upon the consummation of a Material Acquisition ... the ratios set forth above ... shall be increased by 0.50:1.00 ...; provided, further, that ... there shall be at least one Fiscal Quarter in which no Covenant Acquisition Increase is in effect between successive Covenant Acquisition Increase Periods ..."
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          }
+        ],
+        "definitions": [],
+        "sharedCapacities": [],
+        "irExtensionCandidates": [
+          {
+            "sourceEvidence": "§6.10(a): 'provided, further, that notwithstanding the foregoing, there shall be at least one Fiscal Quarter in which no Covenant Acquisition Increase is in effect between successive Covenant Acquisition Increase Periods (which, for the avoidance of doubt, may result in the delay of the commencement of a Covenant Acquisition Increase Period with respect to any Material Acquisition that occurs during another Covenant Acquisition Increase Period or such one Fiscal Quarter period).'",
+            "semanticRequirement": "A way to express a recurring 'cooldown/anti-stacking' constraint on a repeatable EVENT_ACTIVE-style temporary override: the override cannot re-activate until at least N periods have elapsed since the prior override period ended, and a new triggering event occurring during an active or cooldown period has its own override period effectively deferred.",
+            "whyExistingPrimitivesFail": "EVENT_ACTIVE models a single trigger->duration override but has no built-in notion of cross-instance history, minimum spacing/cooldown between successive activations, or deferral logic when a new trigger occurs during another instance's active or cooldown window. COMPARE/AND/OR/IF are stateless and cannot reference the sequence of prior activations.",
+            "candidateGeneralizedPrimitive": "COOLDOWN_GATED_EVENT (or an activationHistory-aware extension of EVENT_ACTIVE) taking a base EVENT_ACTIVE plus a minimumCooldownPeriod, which computes activation windows accounting for deferral of overlapping trigger events."
+          }
+        ],
+        "unresolvedIssues": [
+          "[TYPE_ERROR] (ir-rule:3f70c9de913da49b10f185b3) [UNLIMITED_CAPACITY] UnlimitedCapacity.gatedBy must be BOOLEAN",
+          "[rule[r1].UNLIMITED_CAPACITY.gatedBy.COMPARE.right.ADD[1].IF.condition.AND[0]] EVENT_ACTIVE triggerCondition must be BOOLEAN",
+          "[rule[r1].UNLIMITED_CAPACITY.gatedBy.COMPARE.right.ADD[1].IF.condition.AND[1]] This is a stateful, historical sequencing constraint (dependent on the timing of prior Material Acquisitions and prior increase periods) that cannot be expressed as a stateless boolean/EVENT_ACTIVE primitive without tracking cross-period history",
+          "[rule[r1].UNLIMITED_CAPACITY.gatedBy.COMPARE.right.ADD[1].IF.condition] AND operands do not type-check together under the IR's own composition rules",
+          "[rule[r1].UNLIMITED_CAPACITY.gatedBy.COMPARE.right.ADD[1]] IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "[rule[r1].UNLIMITED_CAPACITY.gatedBy.COMPARE.right] ADD operands do not type-check together under the IR's own composition rules",
+          "[rule[r1].UNLIMITED_CAPACITY.gatedBy] COMPARE operands are not the same type",
+          "[rule[r1]] dependsOn[0].targetRef \"6.10(c)\" did not resolve - dependency dropped rather than left dangling",
+          "Compiled Section 6.10(a) as a single stepped, event-modified ratio maintenance covenant (Total Rent Adjusted Net Leverage Ratio).",
+          "The Material Acquisition step-up (+0.50:1.00) is modeled via IF/EVENT_ACTIVE nested inside an ADD against the base SCHEDULE threshold.",
+          "The anti-stacking/cooldown proviso is preserved structurally (as an AND operand) but marked UNSUPPORTED rather than silently dropped or force-fit, per the safety-first instruction.",
+          "Section 6.10(c)'s equity Cure Right is noted via a dependsOn reference since it materially affects how a breach of this test is ultimately assessed, but was not separately compiled as it falls outside the scope of 6.10(a) itself.",
+          "No new tool calls were made beyond the provided context: the listed defined terms (Total Rent Adjusted Net Leverage Ratio, Material Acquisition, Test Period, etc.) were already confirmed by Phase 2 as undeclared anywhere in the document package, so re-querying getDefinition would be redundant."
+        ],
+        "toolCallLog": [],
+        "rawModelOutput": {
+          "rules": [
+            {
+              "localRef": "r1",
+              "sourceSectionRef": "6.10(a)",
+              "covenantFamily": "FINANCIAL_COVENANTS",
+              "ruleType": "RATIO_TEST",
+              "posture": "OBLIGATION",
+              "action": "SATISFY_RATIO",
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "gatedBy": {
+                  "kind": "COMPARE",
+                  "left": {
+                    "kind": "METRIC_REFERENCE",
+                    "metricName": "Total Rent Adjusted Net Leverage Ratio",
+                    "valueType": "RATIO"
+                  },
+                  "operator": "LTE",
+                  "right": {
+                    "kind": "ADD",
+                    "operands": [
+                      {
+                        "kind": "SCHEDULE",
+                        "cases": [
+                          {
+                            "from": "2022-03-27",
+                            "to": "2022-12-25",
+                            "value": {
+                              "kind": "RATIO",
+                              "value": 5.5,
+                              "citation": "§6.10(a)(A)"
+                            },
+                            "description": "Test Periods ending March 27, 2022 through December 25, 2022: 5.50:1.00"
+                          },
+                          {
+                            "from": "2023-03-26",
+                            "to": "2023-12-31",
+                            "value": {
+                              "kind": "RATIO",
+                              "value": 5.25,
+                              "citation": "§6.10(a)(B)"
+                            },
+                            "description": "Test Periods ending March 26, 2023 through December 31, 2023: 5.25:1.00"
+                          }
+                        ],
+                        "defaultValue": {
+                          "kind": "RATIO",
+                          "value": 5,
+                          "citation": "§6.10(a)(C)"
+                        },
+                        "citation": "§6.10(a)",
+                        "excerpt": "(A) ... 5.50:1.00, (B) ... 5.25:1.00, and (C) from the Test Period ending on March 31, 2024 and each Test Period ending thereafter, 5.00:1.00"
+                      },
+                      {
+                        "kind": "IF",
+                        "condition": {
+                          "kind": "AND",
+                          "operands": [
+                            {
+                              "kind": "EVENT_ACTIVE",
+                              "eventDescription": "Consummation of a Material Acquisition",
+                              "triggerCondition": {
+                                "kind": "DEFINED_TERM_REFERENCE",
+                                "termName": "Material Acquisition"
+                              },
+                              "activeDuration": "the Fiscal Quarter in which such Material Acquisition is consummated and the three full Fiscal Quarters ending immediately thereafter (the Covenant Acquisition Increase Period)",
+                              "citation": "§6.10(a)",
+                              "excerpt": "upon the consummation of a Material Acquisition, for the Fiscal Quarter in which such Material Acquisition is consummated and the three full Fiscal Quarters ending immediately thereafter ... the ratios set forth above ... shall be increased by 0.50:1.00"
+                            },
+                            {
+                              "kind": "UNSUPPORTED",
+                              "semanticDescription": "Anti-stacking proviso requiring at least one Fiscal Quarter with no Covenant Acquisition Increase in effect between successive Covenant Acquisition Increase Periods, which may delay commencement of a new increase period",
+                              "reason": "This is a stateful, historical sequencing constraint (dependent on the timing of prior Material Acquisitions and prior increase periods) that cannot be expressed as a stateless boolean/EVENT_ACTIVE primitive without tracking cross-period history",
+                              "sourceEvidence": "§6.10(a): 'provided, further, that notwithstanding the foregoing, there shall be at least one Fiscal Quarter in which no Covenant Acquisition Increase is in effect between successive Covenant Acquisition Increase Periods (which, for the avoidance of doubt, may result in the delay of the commencement of a Covenant Acquisition Increase Period with respect to any Material Acquisition that occurs during another Covenant Acquisition Increase Period or such one Fiscal Quarter period).'"
+                            }
+                          ],
+                          "citation": "§6.10(a)"
+                        },
+                        "then": {
+                          "kind": "RATIO",
+                          "value": 0.5,
+                          "citation": "§6.10(a)"
+                        },
+                        "else": {
+                          "kind": "RATIO",
+                          "value": 0
+                        }
+                      }
+                    ],
+                    "citation": "§6.10(a)"
+                  },
+                  "citation": "§6.10(a)"
+                }
+              },
+              "conditions": [
+                {
+                  "conditionType": "RATIO_SATISFIED",
+                  "description": "On the last day of each Test Period (commencing with the Test Period ending March 27, 2022), the Total Rent Adjusted Net Leverage Ratio must not exceed the scheduled maximum applicable to that period, increased by 0.50:1.00 during any Covenant Acquisition Increase Period following consummation of a Material Acquisition, subject to the anti-stacking proviso requiring a clean quarter between successive increase periods.",
+                  "citation": "§6.10(a)",
+                  "excerpt": "the Borrower shall not permit the Total Rent Adjusted Net Leverage Ratio to be greater than (A) ... (B) ... and (C) ..."
+                }
+              ],
+              "exceptions": [],
+              "dependsOn": [
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "6.10(c)",
+                  "description": "A failure to comply with this ratio test may be retroactively cured via the equity Cure Right under Section 6.10(c), which recalculates compliance by a pro forma increase to Consolidated Adjusted EBITDA."
+                }
+              ],
+              "sufficiency": "PARTIAL",
+              "sufficiencyReasons": [
+                "The base stepped-threshold schedule and the 0.50:1.00 Material Acquisition step-up mechanism are fully represented.",
+                "The anti-stacking proviso (requiring at least one clean Fiscal Quarter between successive Covenant Acquisition Increase Periods, potentially delaying a subsequent increase period) is a stateful sequencing rule that cannot be faithfully expressed with the available stateless primitives and is therefore captured as UNSUPPORTED within the gating condition rather than discarded.",
+                "Key defined terms ('Total Rent Adjusted Net Leverage Ratio', 'Material Acquisition', 'Test Period', 'Fiscal Quarter') are used but not declared anywhere in the available document package, per Phase 2's own determination; this does not block representing the covenant's operative structure but limits precise computability of the underlying metric and trigger."
+              ],
+              "citation": "§6.10(a)",
+              "excerpt": "On the last day of any Test Period ... the Borrower shall not permit the Total Rent Adjusted Net Leverage Ratio to be greater than (A) ... 5.50:1.00, (B) ... 5.25:1.00, and (C) ... 5.00:1.00; provided that, upon the consummation of a Material Acquisition ... the ratios set forth above ... shall be increased by 0.50:1.00 ...; provided, further, that ... there shall be at least one Fiscal Quarter in which no Covenant Acquisition Increase is in effect between successive Covenant Acquisition Increase Periods ..."
+            }
+          ],
+          "definitions": [],
+          "sharedCapacities": [],
+          "irExtensionCandidates": [
+            {
+              "sourceEvidence": "§6.10(a): 'provided, further, that notwithstanding the foregoing, there shall be at least one Fiscal Quarter in which no Covenant Acquisition Increase is in effect between successive Covenant Acquisition Increase Periods (which, for the avoidance of doubt, may result in the delay of the commencement of a Covenant Acquisition Increase Period with respect to any Material Acquisition that occurs during another Covenant Acquisition Increase Period or such one Fiscal Quarter period).'",
+              "semanticRequirement": "A way to express a recurring 'cooldown/anti-stacking' constraint on a repeatable EVENT_ACTIVE-style temporary override: the override cannot re-activate until at least N periods have elapsed since the prior override period ended, and a new triggering event occurring during an active or cooldown period has its own override period effectively deferred.",
+              "whyExistingPrimitivesFail": "EVENT_ACTIVE models a single trigger->duration override but has no built-in notion of cross-instance history, minimum spacing/cooldown between successive activations, or deferral logic when a new trigger occurs during another instance's active or cooldown window. COMPARE/AND/OR/IF are stateless and cannot reference the sequence of prior activations.",
+              "candidateGeneralizedPrimitive": "COOLDOWN_GATED_EVENT (or an activationHistory-aware extension of EVENT_ACTIVE) taking a base EVENT_ACTIVE plus a minimumCooldownPeriod, which computes activation windows accounting for deferral of overlapping trigger events."
+            }
+          ],
+          "overallNotes": [
+            "Compiled Section 6.10(a) as a single stepped, event-modified ratio maintenance covenant (Total Rent Adjusted Net Leverage Ratio).",
+            "The Material Acquisition step-up (+0.50:1.00) is modeled via IF/EVENT_ACTIVE nested inside an ADD against the base SCHEDULE threshold.",
+            "The anti-stacking/cooldown proviso is preserved structurally (as an AND operand) but marked UNSUPPORTED rather than silently dropped or force-fit, per the safety-first instruction.",
+            "Section 6.10(c)'s equity Cure Right is noted via a dependsOn reference since it materially affects how a breach of this test is ultimately assessed, but was not separately compiled as it falls outside the scope of 6.10(a) itself.",
+            "No new tool calls were made beyond the provided context: the listed defined terms (Total Rent Adjusted Net Leverage Ratio, Material Acquisition, Test Period, etc.) were already confirmed by Phase 2 as undeclared anywhere in the document package, so re-querying getDefinition would be redundant."
+          ]
+        },
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "telemetry": {
+          "provider": "vercel-ai-gateway",
+          "model": "anthropic/claude-sonnet-5",
+          "promptVersion": "phase-3b1-semantic-compiler-prompt.v2",
+          "schemaVersion": "headroom-covenant-ir.v1",
+          "stage": "semantic_compilation",
+          "timestamp": "2026-08-27T22:36:08.806Z",
+          "inputTokens": 15607,
+          "outputTokens": 9858,
+          "cachedInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "attemptCount": 1,
+          "retryCount": 0,
+          "rateLimitFailures": 0,
+          "latencyMs": 90355,
+          "calculatedCostUsd": 0.12979400000000002
+        },
+        "cacheKey": "bb7fa17042b0c7ecc0b40348c2400906c4a43aa1f72d789221b9e1a862c4b3e3",
+        "compiledAt": "2026-08-27T22:36:08.806Z"
+      }
+    },
+    {
+      "id": "lsb-6.01-general-ratio-gated",
+      "result": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE"
+        ],
+        "rules": [],
+        "definitions": [],
+        "sharedCapacities": [],
+        "irExtensionCandidates": [],
+        "unresolvedIssues": [
+          "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $20.01, limit: $20.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+        ],
+        "toolCallLog": [
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Payment Conditions"
+            },
+            "outputSummary": "refused: no defined term matching \"Payment Conditions\" found in this instrument's documents",
+            "charsReturned": 82,
+            "timestamp": "2026-08-27T22:36:58.613Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Permitted Purchase Money Indebtedness"
+            },
+            "outputSummary": "definition \"Permitted Purchase Money Indebtedness\"",
+            "charsReturned": 395,
+            "timestamp": "2026-08-27T22:36:58.613Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Subordinated Indebtedness"
+            },
+            "outputSummary": "refused: no defined term matching \"Subordinated Indebtedness\" found in this instrument's documents",
+            "charsReturned": 89,
+            "timestamp": "2026-08-27T22:36:58.613Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Secured Notes"
+            },
+            "outputSummary": "definition \"Secured Notes\"",
+            "charsReturned": 360,
+            "timestamp": "2026-08-27T22:36:58.613Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Permitted Investments"
+            },
+            "outputSummary": "refused: no defined term matching \"Permitted Investments\" found in this instrument's documents",
+            "charsReturned": 85,
+            "timestamp": "2026-08-27T22:36:58.613Z"
+          },
+          {
+            "toolName": "getSharedCapContext",
+            "input": {},
+            "outputSummary": "0 shared-cap context item(s)",
+            "charsReturned": 28,
+            "timestamp": "2026-08-27T22:38:24.140Z"
+          }
+        ],
+        "rawModelOutput": null,
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "telemetry": {
+          "provider": "vercel-ai-gateway",
+          "model": "anthropic/claude-sonnet-5",
+          "promptVersion": "phase-3b1-semantic-compiler-prompt.v2",
+          "schemaVersion": "headroom-covenant-ir.v1",
+          "stage": "semantic_compilation",
+          "timestamp": "2026-08-27T22:38:24.468Z",
+          "inputTokens": 44805,
+          "outputTokens": 13555,
+          "cachedInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "attemptCount": 2,
+          "retryCount": 0,
+          "rateLimitFailures": 0,
+          "latencyMs": 135652,
+          "calculatedCostUsd": 0.22516,
+          "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $20.01, limit: $20.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+        },
+        "cacheKey": "eaf5843175734eebae6f1b51b2ae5e9c6a9fba25fecc74fa72bf08efb6e90c74",
+        "compiledAt": "2026-08-27T22:38:24.468Z"
+      }
+    },
+    {
+      "id": "lsb-6.11-restricted-payments",
+      "result": {
+        "status": "FAILED",
+        "failureReasons": [
+          "PROVIDER_FAILURE"
+        ],
+        "rules": [],
+        "definitions": [],
+        "sharedCapacities": [],
+        "irExtensionCandidates": [],
+        "unresolvedIssues": [
+          "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $20.01, limit: $20.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+        ],
+        "toolCallLog": [],
+        "rawModelOutput": null,
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "telemetry": {
+          "provider": "vercel-ai-gateway",
+          "model": "anthropic/claude-sonnet-5",
+          "promptVersion": "phase-3b1-semantic-compiler-prompt.v2",
+          "schemaVersion": "headroom-covenant-ir.v1",
+          "stage": "semantic_compilation",
+          "timestamp": "2026-08-27T22:38:24.721Z",
+          "inputTokens": 0,
+          "outputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "attemptCount": 0,
+          "retryCount": 0,
+          "rateLimitFailures": 0,
+          "latencyMs": 248,
+          "calculatedCostUsd": 0,
+          "error": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $20.01, limit: $20.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}"
+        },
+        "cacheKey": "a3b762da4cf4f81c909587339c3f06c99e16166d45e9839df31f6ccd463c4a54",
+        "compiledAt": "2026-08-27T22:38:24.721Z"
+      }
+    }
+  ]
+}

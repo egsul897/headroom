@@ -1,0 +1,3493 @@
+{
+  "provider": "vercel-ai-gateway",
+  "model": "anthropic/claude-sonnet-5",
+  "totalInputTokens": 168605,
+  "totalOutputTokens": 42593,
+  "totalCostUsd": 0.7631400000000002,
+  "totalLatencyMs": 375950,
+  "totalToolCalls": 13,
+  "summary": {
+    "totalExpected": 2,
+    "totalCompiled": 23,
+    "findings": [
+      {
+        "category": "WRONG_RATIO",
+        "ref": "lsb-6.01-general-ratio-gated",
+        "detail": "expected a RATIO leaf of 2, none found",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:2afa372937cef77c1799a60e",
+        "detail": "compiled rule (§6.01, action=INCUR_DEBT, posture=PROHIBITION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:770d1acd6a89547de108169e",
+        "detail": "compiled rule (§6.01(a), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:64a0c3e550e4a519072db505",
+        "detail": "compiled rule (§6.01(b), action=INCUR_DEBT, posture=PERMISSION, sufficiency=MISSING_CONTEXT) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:b808c9290dd0f969ea95768e",
+        "detail": "compiled rule (§6.01(c), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:d8b8be9e154511bbe9046874",
+        "detail": "compiled rule (§6.01(d), action=OTHER, posture=PERMISSION, sufficiency=PARTIAL) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:df2bfafd908711dbf2bec780",
+        "detail": "compiled rule (§6.01(f), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:788b3666739cd7afe20ba109",
+        "detail": "compiled rule (§6.01(g), action=INCUR_DEBT, posture=PERMISSION, sufficiency=PARTIAL) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:8f35a31ed8441a53be8339ae",
+        "detail": "compiled rule (§6.01(i), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:e86d5fff405606bbce4129c9",
+        "detail": "compiled rule (§6.01(j), action=INCUR_DEBT, posture=PERMISSION, sufficiency=MISSING_CONTEXT) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:a7d546a7c11f11e23475cde6",
+        "detail": "compiled rule (§6.01(l), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:5ca7e17dc068111be029a7e5",
+        "detail": "compiled rule (§6.01(m), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:04dd1e8cf7765bf8e861053e",
+        "detail": "compiled rule (§6.01(n), action=INCUR_DEBT, posture=PERMISSION, sufficiency=MISSING_CONTEXT) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:ffe3debe27212e4501f0bfd6",
+        "detail": "compiled rule (§6.01(p), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:0e5a11e6ca635cee3139f1d2",
+        "detail": "compiled rule (§6.01(q), action=INCUR_DEBT, posture=PERMISSION, sufficiency=PARTIAL) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:3532b3d7e43c9861a620c002",
+        "detail": "compiled rule (§6.01(r), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:eb9d987859a02bc14842611f",
+        "detail": "compiled rule (§6.01(s), action=INCUR_DEBT, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:5040948db106a9def15674e8",
+        "detail": "compiled rule (§6.01(t), action=GUARANTEE_DEBT, posture=PERMISSION, sufficiency=PARTIAL) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:bb509d053b7642a209981a97",
+        "detail": "compiled rule (§6.11, action=OTHER, posture=PROHIBITION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:d3c11dd5a321989bcc264492",
+        "detail": "compiled rule (§6.11(a), action=OTHER, posture=PERMISSION, sufficiency=COMPLETE) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:ba8823ef407be0bd7b4acc02",
+        "detail": "compiled rule (§6.11(b), action=OTHER, posture=PERMISSION, sufficiency=MISSING_CONTEXT) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      },
+      {
+        "category": "EXTRA_RULE",
+        "ref": "compiled:ir-rule:2683106110cbc87725e1ae0e",
+        "detail": "compiled rule (§6.11(c), action=OTHER, posture=PERMISSION, sufficiency=MISSING_CONTEXT) did not correspond to any ground-truth expectation for this provision - informational only, not necessarily a defect",
+        "dangerous": false
+      }
+    ],
+    "dangerousCount": 0,
+    "byCategory": {
+      "WRONG_RATIO": 1,
+      "EXTRA_RULE": 21
+    },
+    "completePrecision": 1,
+    "sufficiencyDistribution": {
+      "COMPLETE": 12,
+      "PARTIAL": 6,
+      "MISSING_CONTEXT": 5
+    }
+  },
+  "results": [
+    {
+      "id": "lsb-6.01-general-ratio-gated",
+      "result": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "IR_VALIDATION_FAILURE",
+          "MISSING_CONTEXT"
+        ],
+        "rules": [
+          {
+            "ruleId": "ir-rule:2afa372937cef77c1799a60e",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "PROHIBITION",
+            "posture": "PROHIBITION",
+            "action": "INCUR_DEBT",
+            "entityScope": [
+              "LOAN_PARTY"
+            ],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": null,
+            "conditions": [],
+            "exceptions": [
+              {
+                "exceptionId": "rule[r_prohibition].exception[0]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "General permission if pro forma Fixed Charge Coverage Ratio > 2.0:1.0 and Payment Conditions satisfied",
+                "permissionRuleId": "ir-rule:b5b77ae216190c24a212b7b8",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01",
+                  "excerpt": "shall be entitled to incur Indebtedness if ... the Fixed Charge Coverage Ratio ... is greater than 2.0 to 1.0 and ... the Payment Conditions are satisfied"
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[1]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Indebtedness evidenced by this Agreement and other Loan Documents",
+                "permissionRuleId": "ir-rule:770d1acd6a89547de108169e",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(a)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[2]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Indebtedness set forth on Schedule 6.01",
+                "permissionRuleId": "ir-rule:64a0c3e550e4a519072db505",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(b)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[3]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Permitted Purchase Money Indebtedness",
+                "permissionRuleId": "ir-rule:b808c9290dd0f969ea95768e",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(c)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[4]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Refinancings/renewals/extensions of (b) and (c) debt",
+                "permissionRuleId": "ir-rule:d8b8be9e154511bbe9046874",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(d)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[5]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Intercompany Indebtedness among Loan Parties",
+                "permissionRuleId": "ir-rule:df2bfafd908711dbf2bec780",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(f)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[6]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Subordinated Indebtedness",
+                "permissionRuleId": "ir-rule:788b3666739cd7afe20ba109",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(g)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[7]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Other Indebtedness up to greater of $70,000,000 and 5.5% of total consolidated assets",
+                "permissionRuleId": "ir-rule:8f35a31ed8441a53be8339ae",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(i)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[8]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Indebtedness constituting Permitted Investments",
+                "permissionRuleId": "ir-rule:e86d5fff405606bbce4129c9",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(j)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[9]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Ordinary course insurance premium financing",
+                "permissionRuleId": "ir-rule:a7d546a7c11f11e23475cde6",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(l)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[10]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Secured Notes Indebtedness and guarantees thereof",
+                "permissionRuleId": "ir-rule:5ca7e17dc068111be029a7e5",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(m)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[11]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Third Party Swap Obligations",
+                "permissionRuleId": "ir-rule:04dd1e8cf7765bf8e861053e",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(n)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[12]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Ordinary course surety/performance/bid/appeal/completion bonds and guarantees",
+                "permissionRuleId": "ir-rule:ffe3debe27212e4501f0bfd6",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(p)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[13]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Customary indemnification obligations to purchasers re Permitted Dispositions",
+                "permissionRuleId": "ir-rule:0e5a11e6ca635cee3139f1d2",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(q)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[14]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Ordinary course credit card/banking services Indebtedness up to $2,000,000 to non-Lender parties",
+                "permissionRuleId": "ir-rule:3532b3d7e43c9861a620c002",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(r)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[15]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Endorsement guarantees for deposit/transmittal",
+                "permissionRuleId": "ir-rule:eb9d987859a02bc14842611f",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(s)",
+                  "excerpt": null
+                }
+              },
+              {
+                "exceptionId": "rule[r_prohibition].exception[16]",
+                "appliesToRuleId": "ir-rule:2afa372937cef77c1799a60e",
+                "description": "Guarantees of Indebtedness permitted under (a)-(n)",
+                "permissionRuleId": "ir-rule:5040948db106a9def15674e8",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(t)",
+                  "excerpt": null
+                }
+              }
+            ],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Base prohibition and full exception list are stated in the operative text; component baskets are separately modeled."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01",
+              "excerpt": "Create, incur, assume, permit, guarantee, or otherwise become or remain, directly or indirectly, liable with respect to any Indebtedness"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:b5b77ae216190c24a212b7b8",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [
+              "LOAN_PARTY"
+            ],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": {
+                "kind": "UNSUPPORTED",
+                "type": null,
+                "sourceEvidence": "(no evidence captured)",
+                "semanticDescription": "unrecognized or malformed expression (kind=\"AND\")",
+                "reason": "AND operands do not type-check together under the IR's own composition rules",
+                "requiredReview": true,
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:954ad05472fb25cb27d6d8f3"
+              },
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01",
+                "excerpt": null
+              }
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r_general].condition[0]",
+                "conditionType": "RATIO_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Pro forma Fixed Charge Coverage Ratio of Parent and Subsidiaries for most recent four fiscal quarters > 2.0 to 1.0",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01",
+                  "excerpt": "the Fixed Charge Coverage Ratio ... is greater than 2.0 to 1.0"
+                }
+              },
+              {
+                "conditionId": "rule[r_general].condition[1]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Payment Conditions satisfied (term undefined in available evidence)",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01",
+                  "excerpt": "the Payment Conditions are satisfied with respect to such incurrence"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "PARTIAL",
+            "sufficiencyReasons": [
+              "Ratio test fully captured; 'Payment Conditions' term could not be resolved via getDefinition (not declared in instrument), so that half of the gating condition is UNSUPPORTED.",
+              "'Payment Conditions' is a defined term used in §6.01 but not declared anywhere in this instrument's documents; getDefinition returned not found, so its substantive test could not be verified or formalized.",
+              "AND operands do not type-check together under the IR's own composition rules"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01",
+              "excerpt": "the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if ... the Fixed Charge Coverage Ratio ... is greater than 2.0 to 1.0 and (ii) the Payment Conditions are satisfied"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:770d1acd6a89547de108169e",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(a)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": null,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(a)",
+                "excerpt": null
+              }
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Categorical carve-out for Indebtedness under the Loan Documents themselves; no cap stated.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(a)",
+              "excerpt": "Indebtedness evidenced by this Agreement and the other Loan Documents"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:64a0c3e550e4a519072db505",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(b)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§6.01(b): \"Indebtedness set forth on Schedule 6.01\"",
+              "semanticDescription": "Indebtedness amounts listed on Schedule 6.01",
+              "reason": "Schedule 6.01 is not included among this document's structural nodes; getReferencedProvision confirmed the schedule does not resolve within the instrument's documents.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:5a35dd4805d8cb2e03510d21"
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "MISSING_CONTEXT",
+            "sufficiencyReasons": [
+              "Schedule 6.01 content (the actual scheduled Indebtedness) is not available in this instrument's documents; getReferencedProvision was attempted and did not resolve.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+              "Schedule 6.01 is not included among this document's structural nodes; getReferencedProvision confirmed the schedule does not resolve within the instrument's documents."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(b)",
+              "excerpt": "Indebtedness set forth on Schedule 6.01"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:b808c9290dd0f969ea95768e",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(c)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "MAX",
+              "type": "MONEY",
+              "exprId": "ir-expr:032ab197f2c087e7daabae39",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "type": "MONEY",
+                  "amount": 70000000,
+                  "currency": "USD",
+                  "provenance": {
+                    "documentId": "lsb-article-6",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "Definition of 'Permitted Purchase Money Indebtedness'",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:951a03f883bc3b3ed0158969"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:d0366c1f84c9f94d9e837781",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "type": "PERCENT",
+                      "value": 0.055,
+                      "provenance": {
+                        "documentId": "lsb-article-6",
+                        "sourceNodeKey": null,
+                        "sourceCitation": "Definition of 'Permitted Purchase Money Indebtedness'",
+                        "excerpt": null
+                      },
+                      "exprId": "ir-expr:b7c19af0ccc03c90ca270238"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "total consolidated assets of the Loan Parties and their Subsidiaries",
+                      "companyId": "lsb-real-regression",
+                      "instrumentKey": "lsb-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:8622f66c0e86ba16ac46a30c"
+                    }
+                  ],
+                  "provenance": {
+                    "documentId": "lsb-article-6",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "Definition of 'Permitted Purchase Money Indebtedness'",
+                    "excerpt": null
+                  }
+                }
+              ],
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "Definition of 'Permitted Purchase Money Indebtedness'",
+                "excerpt": null
+              }
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Full definition of 'Permitted Purchase Money Indebtedness' retrieved and its cap formula matches the greater-of $70,000,000 / 5.5% of total consolidated assets structure.",
+              "dependsOn[0].targetRef \"Permitted Purchase Money Indebtedness\" did not resolve - dependency dropped rather than left dangling"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(c)",
+              "excerpt": "Permitted Purchase Money Indebtedness"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:d8b8be9e154511bbe9046874",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(d)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "OTHER",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§6.01(d)(ii): \"except for increases in the principal amount of such Indebtedness not exceeding the principal amount of such Indebtedness outstanding on the Effective Date\"",
+              "semanticDescription": "Incremental principal increase permitted on refinancing of (b)/(c) debt, capped at the principal amount of such Indebtedness outstanding on the Effective Date",
+              "reason": "The specific dollar figure of Indebtedness outstanding on the Effective Date under clauses (b)/(c) is not stated in the operative text or available evidence; the refinanced capacity itself mirrors r_b/r_c rather than being an independent new amount.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:9ba8a89362b981a71e181526"
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r_d].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "No increase in principal amount or interest rate of the refinanced Indebtedness, except increases in principal not exceeding the amount outstanding on the Effective Date",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(d)(ii)",
+                  "excerpt": "do not result in an increase in the principal amount of, or interest rate with respect to, the Indebtedness so refinanced"
+                }
+              },
+              {
+                "conditionId": "rule[r_d].condition[1]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "No shortening of weighted average maturity; terms not, taken as a whole, materially more burdensome or restrictive",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(d)(iii)",
+                  "excerpt": "do not result in a shortening of the average weighted maturity ... nor are they on terms ... materially more burdensome or restrictive"
+                }
+              },
+              {
+                "conditionId": "rule[r_d].condition[2]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "If refinanced Indebtedness was subordinated, replacement must carry subordination terms at least as favorable to Lenders",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(d)(iv)",
+                  "excerpt": "the terms and conditions of the refinancing ... must ... include subordination terms and conditions that are at least as favorable to the Lenders"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:64a0c3e550e4a519072db505",
+                "description": "May only refinance Indebtedness originally permitted under clause (b)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:b808c9290dd0f969ea95768e",
+                "description": "May only refinance Indebtedness originally permitted under clause (c)"
+              }
+            ],
+            "operativeLineage": null,
+            "sufficiency": "PARTIAL",
+            "sufficiencyReasons": [
+              "Qualitative conditions (ii)-(iv) fully captured from the text; clause (i) is reserved; the exact incremental dollar headroom cannot be quantified without the Effective Date outstanding-principal figure.",
+              "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+              "The specific dollar figure of Indebtedness outstanding on the Effective Date under clauses (b)/(c) is not stated in the operative text or available evidence; the refinanced capacity itself mirrors r_b/r_c rather than being an independent new amount."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(d)",
+              "excerpt": "refinancings, renewals, replacements or extensions of Indebtedness permitted under clauses (b) and (c) of this Section 6.01"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:df2bfafd908711dbf2bec780",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(f)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [
+              "LOAN_PARTY"
+            ],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": null,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(f)",
+                "excerpt": null
+              }
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Categorical intercompany carve-out among Loan Parties; no cap stated.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(f)",
+              "excerpt": "Indebtedness owing by any Loan Party to any other Loan Party"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:788b3666739cd7afe20ba109",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(g)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": {
+                "kind": "UNSUPPORTED",
+                "type": null,
+                "sourceEvidence": "Definition of 'Subordinated Indebtedness': \"payment of which is subordinated to payment of the Secured Obligations on terms reasonably satisfactory to the Administrative Agent in its Permitted Discretion\"",
+                "semanticDescription": "Subordination terms reasonably satisfactory to the Administrative Agent in its Permitted Discretion",
+                "reason": "This is a subjective lender-approval standard, not a computable boolean/ratio formula expressible with existing comparison primitives.",
+                "requiredReview": true,
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(g)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:2f0c5e312cab42243621d3d9"
+              },
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(g)",
+                "excerpt": null
+              }
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r_g].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Subordination terms must be reasonably satisfactory to the Administrative Agent in its Permitted Discretion",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "Definition of 'Subordinated Indebtedness'",
+                  "excerpt": "on terms reasonably satisfactory to the Administrative Agent in its Permitted Discretion"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "PARTIAL",
+            "sufficiencyReasons": [
+              "Definition confirms no dollar cap; the only gating condition is a subjective agent-satisfaction standard which cannot be formalized as a computable expression.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+              "This is a subjective lender-approval standard, not a computable boolean/ratio formula expressible with existing comparison primitives.",
+              "dependsOn[0].targetRef \"Subordinated Indebtedness\" did not resolve - dependency dropped rather than left dangling"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)",
+              "excerpt": "Subordinated Indebtedness"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:8f35a31ed8441a53be8339ae",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(i)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "MAX",
+              "type": "MONEY",
+              "exprId": "ir-expr:ce1be6dd466d31cd856109c0",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "type": "MONEY",
+                  "amount": 70000000,
+                  "currency": "USD",
+                  "provenance": {
+                    "documentId": "lsb-article-6",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§6.01(i)",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:970518d4abeecd1b534cfe6c"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:5bb595095408a96f537e4d3b",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "type": "PERCENT",
+                      "value": 0.055,
+                      "provenance": {
+                        "documentId": "lsb-article-6",
+                        "sourceNodeKey": null,
+                        "sourceCitation": "§6.01(i)",
+                        "excerpt": null
+                      },
+                      "exprId": "ir-expr:7ed893f827ba7eb6b492dabb"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "total consolidated assets of the Loan Parties and their Subsidiaries",
+                      "companyId": "lsb-real-regression",
+                      "instrumentKey": "lsb-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:8622f66c0e86ba16ac46a30c"
+                    }
+                  ],
+                  "provenance": {
+                    "documentId": "lsb-article-6",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§6.01(i)",
+                    "excerpt": null
+                  }
+                }
+              ],
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(i)",
+                "excerpt": null
+              }
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Threshold, formula, and metric basis are fully stated in the operative text itself."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(i)",
+              "excerpt": "other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and 5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:e86d5fff405606bbce4129c9",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(j)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§6.01(j): \"Indebtedness constituting Permitted Investments\"",
+              "semanticDescription": "Indebtedness constituting Permitted Investments",
+              "reason": "'Permitted Investments' is not declared in this instrument's documents; getDefinition returned not found, so it cannot be confirmed whether the definition itself embeds a cap.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:2542b8890edd9a980d0a7f80"
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "MISSING_CONTEXT",
+            "sufficiencyReasons": [
+              "Defined term 'Permitted Investments' could not be resolved anywhere in the instrument package via getDefinition.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+              "'Permitted Investments' is not declared in this instrument's documents; getDefinition returned not found, so it cannot be confirmed whether the definition itself embeds a cap."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(j)",
+              "excerpt": "Indebtedness constituting Permitted Investments"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:a7d546a7c11f11e23475cde6",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(l)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "TRANSACTION_INPUT_REFERENCE",
+              "type": "MONEY",
+              "inputName": "amount of insurance premiums financed",
+              "exprId": "ir-expr:4e16ce81bce5f1be53fc5541"
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r_l].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Must be ordinary course of business insurance premium financing",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(l)",
+                  "excerpt": "in the ordinary course of business"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Cap is self-referential (equal to the premiums financed) and fully stated in the text."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(l)",
+              "excerpt": "Indebtedness consisting of the financing of insurance premiums in the ordinary course of business, not in excess of the amount of such premiums"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:5ca7e17dc068111be029a7e5",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(m)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": null,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(m)",
+                "excerpt": null
+              }
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Definition of 'Secured Notes' retrieved and confirms this is a fixed, named instrument with no additional cap imposed by §6.01(m) itself.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+              "dependsOn[0].targetRef \"Secured Notes\" did not resolve - dependency dropped rather than left dangling"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(m)",
+              "excerpt": "Indebtedness of the Loan Parties and their Subsidiaries under the Secured Notes and guarantees thereof"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:04dd1e8cf7765bf8e861053e",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(n)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§6.01(n): \"Indebtedness in respect of Third Party Swap Obligations\"",
+              "semanticDescription": "Indebtedness in respect of Third Party Swap Obligations",
+              "reason": "'Third Party Swap Obligations' is not declared in this instrument's documents; getDefinition returned not found, so it cannot be confirmed whether the definition embeds a cap or scope limitation.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:374f32adfe2f290e6e6ce502"
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "MISSING_CONTEXT",
+            "sufficiencyReasons": [
+              "Defined term 'Third Party Swap Obligations' could not be resolved anywhere in the instrument package via getDefinition.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+              "'Third Party Swap Obligations' is not declared in this instrument's documents; getDefinition returned not found, so it cannot be confirmed whether the definition embeds a cap or scope limitation."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(n)",
+              "excerpt": "Indebtedness in respect of Third Party Swap Obligations"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:ffe3debe27212e4501f0bfd6",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(p)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": null,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(p)",
+                "excerpt": null
+              }
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r_p].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Must be incurred in the ordinary course of business",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(p)",
+                  "excerpt": "incurred in the ordinary course of business"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Plain-language categorical carve-out fully stated in the text; no defined term dependency.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(p)",
+              "excerpt": "Indebtedness incurred in the ordinary course of business with respect to surety and appeal bonds, performance bonds, bid bonds, appeal bonds, completion guarantee and similar obligations and guarantees thereof"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:0e5a11e6ca635cee3139f1d2",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(q)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": null,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(q)",
+                "excerpt": null
+              }
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "PARTIAL",
+            "sufficiencyReasons": [
+              "No dollar cap is stated in §6.01(q) itself; however 'Permitted Dispositions' could not be retrieved (tool budget exhausted before this term was attempted), so the precise transactional scope of this carve-out is not independently verified.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+              "dependsOn[0].targetRef \"Permitted Dispositions\" did not resolve - dependency dropped rather than left dangling"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(q)",
+              "excerpt": "customary indemnification obligations to purchasers in connection with Permitted Dispositions and guarantees thereof"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:3532b3d7e43c9861a620c002",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(r)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 2000000,
+              "currency": "USD",
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(r)",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:26190081c2d1fdf1dcc42fce"
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r_r].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Must arise in the ordinary course of business in respect of credit cards, credit card processing, debit cards, stored value/commercial/purchase cards, or Banking Services",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(r)",
+                  "excerpt": "incurred in the ordinary course of business in respect of credit cards, credit card processing services, debit cards, stored value cards, commercial cards ... or Banking Services"
+                }
+              },
+              {
+                "conditionId": "rule[r_r].condition[1]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "$2,000,000 cap applies only to Indebtedness owed to a Person that is not a Lender or an Affiliate of a Lender",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(r)",
+                  "excerpt": "with respect to any such Indebtedness owed to any Person that is not a Lender or any Affiliate of a Lender, $2,000,000 at any one time outstanding"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Numeric cap and scope limitation are fully stated in the operative text; the undefined term 'Banking Services' affects only the descriptive scope of the debt category, not the stated dollar figure."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(r)",
+              "excerpt": "in an aggregate principal amount not to exceed, with respect to any such Indebtedness owed to any Person that is not a Lender or any Affiliate of a Lender, $2,000,000 at any one time outstanding"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:eb9d987859a02bc14842611f",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(s)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "INCUR_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": null,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(s)",
+                "excerpt": null
+              }
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Plain-language categorical carve-out fully stated in the text.",
+              "ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(s)",
+              "excerpt": "Guarantees in the form of endorsements of instruments or items of payment for deposit to the account of the Loan Parties or which are transmitted or turned over to the Administrative Agent"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:5040948db106a9def15674e8",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.01(t)",
+            "covenantFamily": "INDEBTEDNESS",
+            "ruleType": "QUALITATIVE_OBLIGATION",
+            "posture": "PERMISSION",
+            "action": "GUARANTEE_DEBT",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§6.01(t): \"Guarantees of Indebtedness permitted under Sections 6.01(a) through (n) above\"",
+              "semanticDescription": "Capacity to guarantee Indebtedness permitted under clauses (a) through (n)",
+              "reason": "This is a derivative permission coextensive with (not additive to) the capacities of clauses (a)-(n); no IR primitive expresses 'same scope as multiple referenced rules, non-additively' without SUM misleadingly implying stacking.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:ab5de4f4ed1878e23752ac39"
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:770d1acd6a89547de108169e",
+                "description": "guarantee scope mirrors clause (a)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:64a0c3e550e4a519072db505",
+                "description": "guarantee scope mirrors clause (b)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:b808c9290dd0f969ea95768e",
+                "description": "guarantee scope mirrors clause (c)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:d8b8be9e154511bbe9046874",
+                "description": "guarantee scope mirrors clause (d)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:df2bfafd908711dbf2bec780",
+                "description": "guarantee scope mirrors clause (f)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:788b3666739cd7afe20ba109",
+                "description": "guarantee scope mirrors clause (g)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:8f35a31ed8441a53be8339ae",
+                "description": "guarantee scope mirrors clause (i)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:e86d5fff405606bbce4129c9",
+                "description": "guarantee scope mirrors clause (j)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:a7d546a7c11f11e23475cde6",
+                "description": "guarantee scope mirrors clause (l)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:5ca7e17dc068111be029a7e5",
+                "description": "guarantee scope mirrors clause (m)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:04dd1e8cf7765bf8e861053e",
+                "description": "guarantee scope mirrors clause (n)"
+              }
+            ],
+            "operativeLineage": null,
+            "sufficiency": "PARTIAL",
+            "sufficiencyReasons": [
+              "The qualitative structure (guarantees of debt already permitted under (a)-(n)) is fully captured via dependsOn; a single formal capacityExpression cannot be honestly expressed with existing arithmetic primitives without implying additive stacking that the text does not support.",
+              "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+              "This is a derivative permission coextensive with (not additive to) the capacities of clauses (a)-(n); no IR primitive expresses 'same scope as multiple referenced rules, non-additively' without SUM misleadingly implying stacking."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(t)",
+              "excerpt": "Guarantees of Indebtedness permitted under Sections 6.01(a) through (n) above"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          }
+        ],
+        "definitions": [
+          {
+            "definitionId": "ir-definition:609f31cd3dfda9af070f7e09",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "termName": "Permitted Purchase Money Indebtedness",
+            "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+            "calculationExpression": {
+              "kind": "MAX",
+              "type": "MONEY",
+              "exprId": "ir-expr:75dca60f464cbcf8012aa191",
+              "operands": [
+                {
+                  "kind": "MONEY",
+                  "type": "MONEY",
+                  "amount": 70000000,
+                  "currency": "USD",
+                  "provenance": {
+                    "documentId": "lsb-article-6",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§6.01",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:d1a8e17e3c9354a50bcb1c59"
+                },
+                {
+                  "kind": "MULTIPLY",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:b28165c63db78cc241664fe8",
+                  "operands": [
+                    {
+                      "kind": "PERCENT",
+                      "type": "PERCENT",
+                      "value": 0.055,
+                      "provenance": {
+                        "documentId": "lsb-article-6",
+                        "sourceNodeKey": null,
+                        "sourceCitation": "§6.01",
+                        "excerpt": null
+                      },
+                      "exprId": "ir-expr:965e731c7bffb7fa23f9cb09"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "total consolidated assets of the Loan Parties and their Subsidiaries",
+                      "companyId": "lsb-real-regression",
+                      "instrumentKey": "lsb-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:8622f66c0e86ba16ac46a30c"
+                    }
+                  ],
+                  "provenance": {
+                    "documentId": "lsb-article-6",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§6.01",
+                    "excerpt": null
+                  }
+                }
+              ],
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01",
+                "excerpt": null
+              }
+            },
+            "dependsOnTerms": [],
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Full definition text retrieved via getDefinition."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "Definition of 'Permitted Purchase Money Indebtedness' (base document)",
+              "excerpt": "means, as of any date of determination, Purchase Money Indebtedness outstanding as of such date of determination not to exceed the greater of (x) $70,000,000 and (y) 5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "definitionId": "ir-definition:7bbbf1f060040d7b8c10845b",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "termName": "Subordinated Indebtedness",
+            "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+            "calculationExpression": null,
+            "dependsOnTerms": [
+              "Secured Obligations",
+              "Permitted Discretion"
+            ],
+            "sufficiency": "PARTIAL",
+            "sufficiencyReasons": [
+              "Definition confirms no dollar cap, only a subjective agent-satisfaction subordination standard which is not a computable formula."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "Definition of 'Subordinated Indebtedness' (base document)",
+              "excerpt": "means any Indebtedness of such Person, the payment of which is subordinated to payment of the Secured Obligations on terms reasonably satisfactory to the Administrative Agent in its Permitted Discretion"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "definitionId": "ir-definition:6ef2d2626ac45c0e3bf42d8a",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "termName": "Secured Notes",
+            "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+            "calculationExpression": null,
+            "dependsOnTerms": [
+              "Secured Notes Indenture"
+            ],
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Definition identifies a specific fixed instrument (6.250% Senior Secured Notes) with no cap formula of its own."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "Definition of 'Secured Notes' (base document)",
+              "excerpt": "means the 6.250% Senior Secured Notes issued by the Parent under the Secured Notes Indenture"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          }
+        ],
+        "sharedCapacities": [],
+        "irExtensionCandidates": [
+          {
+            "sourceEvidence": "§6.01(t): \"Guarantees of Indebtedness permitted under Sections 6.01(a) through (n) above\"",
+            "semanticRequirement": "A permission whose scope is defined as coextensive with several other already-modeled rules (guaranteeing debt that is itself permitted elsewhere), where the correct economics are 'same envelope as the referenced rules' rather than an additive total.",
+            "whyExistingPrimitivesFail": "SUM/ADD over RULE_REFERENCE operands would misrepresent the relationship as additive stacking of independent capacities, when the guarantee right is really a derivative, non-additive mirror of the underlying baskets' own (already-counted) capacity.",
+            "candidateGeneralizedPrimitive": "MIRRORED_SCOPE(refs: RULE_REFERENCE[]) - a non-additive node meaning 'the same permitted envelope as the union of these referenced rules, not summed with them.'"
+          }
+        ],
+        "unresolvedIssues": [
+          "[TYPE_ERROR] (ir-rule:b5b77ae216190c24a212b7b8) [UNLIMITED_CAPACITY] UnlimitedCapacity.gatedBy must be BOOLEAN",
+          "[TYPE_ERROR] (ir-rule:788b3666739cd7afe20ba109) [UNLIMITED_CAPACITY] UnlimitedCapacity.gatedBy must be BOOLEAN",
+          "[rule[r_general].UNLIMITED_CAPACITY.gatedBy.AND[1]] 'Payment Conditions' is a defined term used in §6.01 but not declared anywhere in this instrument's documents; getDefinition returned not found, so its substantive test could not be verified or formalized.",
+          "[rule[r_general].UNLIMITED_CAPACITY.gatedBy] AND operands do not type-check together under the IR's own composition rules",
+          "[rule[r_a]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_b]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_b]] Schedule 6.01 is not included among this document's structural nodes; getReferencedProvision confirmed the schedule does not resolve within the instrument's documents.",
+          "[rule[r_c]] dependsOn[0].targetRef \"Permitted Purchase Money Indebtedness\" did not resolve - dependency dropped rather than left dangling",
+          "[rule[r_d]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_d]] The specific dollar figure of Indebtedness outstanding on the Effective Date under clauses (b)/(c) is not stated in the operative text or available evidence; the refinanced capacity itself mirrors r_b/r_c rather than being an independent new amount.",
+          "[rule[r_f]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_g]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_g].UNLIMITED_CAPACITY.gatedBy] This is a subjective lender-approval standard, not a computable boolean/ratio formula expressible with existing comparison primitives.",
+          "[rule[r_g]] dependsOn[0].targetRef \"Subordinated Indebtedness\" did not resolve - dependency dropped rather than left dangling",
+          "[rule[r_j]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_j]] 'Permitted Investments' is not declared in this instrument's documents; getDefinition returned not found, so it cannot be confirmed whether the definition itself embeds a cap.",
+          "[rule[r_m]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_m]] dependsOn[0].targetRef \"Secured Notes\" did not resolve - dependency dropped rather than left dangling",
+          "[rule[r_n]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_n]] 'Third Party Swap Obligations' is not declared in this instrument's documents; getDefinition returned not found, so it cannot be confirmed whether the definition embeds a cap or scope limitation.",
+          "[rule[r_p]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_q]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_q]] dependsOn[0].targetRef \"Permitted Dispositions\" did not resolve - dependency dropped rather than left dangling",
+          "[rule[r_s]] ruleType \"CATEGORICAL_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_t]] ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "[rule[r_t]] This is a derivative permission coextensive with (not additive to) the capacities of clauses (a)-(n); no IR primitive expresses 'same scope as multiple referenced rules, non-additively' without SUM misleadingly implying stacking.",
+          "Clauses (e), (h), (k), and (o) are marked [reserved] in the operative text and contain no operative content; no rule was generated for them.",
+          "Definitions for 'Payment Conditions', 'Permitted Investments', and 'Third Party Swap Obligations' were each affirmatively attempted via getDefinition and confirmed not declared anywhere in this instrument's documents; the corresponding components are marked MISSING_CONTEXT/UNSUPPORTED rather than guessed.",
+          "Schedule 6.01 (clause (b)) was confirmed unresolvable via getReferencedProvision; its content is not available in the instrument package.",
+          "'Banking Services' (clause (r)) and 'Permitted Dispositions' (clause (q)) definitions could not be retrieved because the tool-call budget was exhausted before they were reached; neither term is material to the stated dollar figures/caps in those clauses, but their precise categorical scope is not independently verified (clause (q) is accordingly marked PARTIAL).",
+          "Clauses (c) and (i) coincidentally share the identical 'greater of $70,000,000 / 5.5% of total consolidated assets' formula (one directly in text, one via the 'Permitted Purchase Money Indebtedness' definition); getSharedCapContext returned no shared-capacity signal for §6.01, so they are modeled as two independent baskets rather than a shared/aggregated cap.",
+          "This provision has no recorded amendment history (confirmed base, unamended text)."
+        ],
+        "toolCallLog": [
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Payment Conditions"
+            },
+            "outputSummary": "refused: no defined term matching \"Payment Conditions\" found in this instrument's documents",
+            "charsReturned": 82,
+            "timestamp": "2026-08-27T22:46:14.313Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Permitted Purchase Money Indebtedness"
+            },
+            "outputSummary": "definition \"Permitted Purchase Money Indebtedness\"",
+            "charsReturned": 395,
+            "timestamp": "2026-08-27T22:46:14.314Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Subordinated Indebtedness"
+            },
+            "outputSummary": "refused: no defined term matching \"Subordinated Indebtedness\" found in this instrument's documents",
+            "charsReturned": 89,
+            "timestamp": "2026-08-27T22:46:14.314Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Permitted Investments"
+            },
+            "outputSummary": "refused: no defined term matching \"Permitted Investments\" found in this instrument's documents",
+            "charsReturned": 85,
+            "timestamp": "2026-08-27T22:46:14.314Z"
+          },
+          {
+            "toolName": "getSharedCapContext",
+            "input": {},
+            "outputSummary": "0 shared-cap context item(s)",
+            "charsReturned": 28,
+            "timestamp": "2026-08-27T22:46:17.714Z"
+          },
+          {
+            "toolName": "getReferencedProvision",
+            "input": {
+              "ref": "Schedule 6.01"
+            },
+            "outputSummary": "refused: reference \"Schedule 6.01\" did not resolve to any section within this instrument's documents",
+            "charsReturned": 91,
+            "timestamp": "2026-08-27T22:46:39.742Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Secured Notes"
+            },
+            "outputSummary": "definition \"Secured Notes\"",
+            "charsReturned": 360,
+            "timestamp": "2026-08-27T22:47:12.830Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Third Party Swap Obligations"
+            },
+            "outputSummary": "refused: no defined term matching \"Third Party Swap Obligations\" found in this instrument's documents",
+            "charsReturned": 92,
+            "timestamp": "2026-08-27T22:47:12.830Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Banking Services"
+            },
+            "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+            "charsReturned": 0,
+            "timestamp": "2026-08-27T22:47:12.830Z"
+          },
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Permitted Dispositions"
+            },
+            "outputSummary": "refused: tool-call budget exhausted (8 calls already used this attempt) - no further evidence requests will be served; compile with what you have or mark the affected component MISSING_CONTEXT",
+            "charsReturned": 0,
+            "timestamp": "2026-08-27T22:47:12.830Z"
+          }
+        ],
+        "rawModelOutput": {
+          "rules": [
+            {
+              "localRef": "r_prohibition",
+              "sourceSectionRef": "6.01",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "PROHIBITION",
+              "posture": "PROHIBITION",
+              "action": "INCUR_DEBT",
+              "entityScope": [
+                "Loan Party",
+                "Subsidiary"
+              ],
+              "entityScopeExcluded": [],
+              "capacityExpression": null,
+              "conditions": [],
+              "exceptions": [
+                {
+                  "description": "General permission if pro forma Fixed Charge Coverage Ratio > 2.0:1.0 and Payment Conditions satisfied",
+                  "permissionRef": "r_general",
+                  "conditions": [],
+                  "citation": "§6.01",
+                  "excerpt": "shall be entitled to incur Indebtedness if ... the Fixed Charge Coverage Ratio ... is greater than 2.0 to 1.0 and ... the Payment Conditions are satisfied"
+                },
+                {
+                  "description": "Indebtedness evidenced by this Agreement and other Loan Documents",
+                  "permissionRef": "r_a",
+                  "conditions": [],
+                  "citation": "§6.01(a)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Indebtedness set forth on Schedule 6.01",
+                  "permissionRef": "r_b",
+                  "conditions": [],
+                  "citation": "§6.01(b)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Permitted Purchase Money Indebtedness",
+                  "permissionRef": "r_c",
+                  "conditions": [],
+                  "citation": "§6.01(c)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Refinancings/renewals/extensions of (b) and (c) debt",
+                  "permissionRef": "r_d",
+                  "conditions": [],
+                  "citation": "§6.01(d)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Intercompany Indebtedness among Loan Parties",
+                  "permissionRef": "r_f",
+                  "conditions": [],
+                  "citation": "§6.01(f)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Subordinated Indebtedness",
+                  "permissionRef": "r_g",
+                  "conditions": [],
+                  "citation": "§6.01(g)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Other Indebtedness up to greater of $70,000,000 and 5.5% of total consolidated assets",
+                  "permissionRef": "r_i",
+                  "conditions": [],
+                  "citation": "§6.01(i)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Indebtedness constituting Permitted Investments",
+                  "permissionRef": "r_j",
+                  "conditions": [],
+                  "citation": "§6.01(j)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Ordinary course insurance premium financing",
+                  "permissionRef": "r_l",
+                  "conditions": [],
+                  "citation": "§6.01(l)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Secured Notes Indebtedness and guarantees thereof",
+                  "permissionRef": "r_m",
+                  "conditions": [],
+                  "citation": "§6.01(m)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Third Party Swap Obligations",
+                  "permissionRef": "r_n",
+                  "conditions": [],
+                  "citation": "§6.01(n)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Ordinary course surety/performance/bid/appeal/completion bonds and guarantees",
+                  "permissionRef": "r_p",
+                  "conditions": [],
+                  "citation": "§6.01(p)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Customary indemnification obligations to purchasers re Permitted Dispositions",
+                  "permissionRef": "r_q",
+                  "conditions": [],
+                  "citation": "§6.01(q)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Ordinary course credit card/banking services Indebtedness up to $2,000,000 to non-Lender parties",
+                  "permissionRef": "r_r",
+                  "conditions": [],
+                  "citation": "§6.01(r)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Endorsement guarantees for deposit/transmittal",
+                  "permissionRef": "r_s",
+                  "conditions": [],
+                  "citation": "§6.01(s)",
+                  "excerpt": null
+                },
+                {
+                  "description": "Guarantees of Indebtedness permitted under (a)-(n)",
+                  "permissionRef": "r_t",
+                  "conditions": [],
+                  "citation": "§6.01(t)",
+                  "excerpt": null
+                }
+              ],
+              "dependsOn": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Base prohibition and full exception list are stated in the operative text; component baskets are separately modeled."
+              ],
+              "citation": "§6.01",
+              "excerpt": "Create, incur, assume, permit, guarantee, or otherwise become or remain, directly or indirectly, liable with respect to any Indebtedness"
+            },
+            {
+              "localRef": "r_general",
+              "sourceSectionRef": "6.01",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [
+                "Loan Party",
+                "Subsidiary"
+              ],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "gatedBy": {
+                  "kind": "AND",
+                  "operands": [
+                    {
+                      "kind": "COMPARE",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "Fixed Charge Coverage Ratio",
+                        "valueType": "RATIO"
+                      },
+                      "operator": "GT",
+                      "right": {
+                        "kind": "RATIO",
+                        "value": 2
+                      },
+                      "citation": "§6.01"
+                    },
+                    {
+                      "kind": "UNSUPPORTED",
+                      "semanticDescription": "Payment Conditions satisfied with respect to the incurrence",
+                      "reason": "'Payment Conditions' is a defined term used in §6.01 but not declared anywhere in this instrument's documents; getDefinition returned not found, so its substantive test could not be verified or formalized.",
+                      "sourceEvidence": "§6.01: \"(ii) the Payment Conditions are satisfied with respect to such incurrence\""
+                    }
+                  ],
+                  "citation": "§6.01"
+                }
+              },
+              "conditions": [
+                {
+                  "conditionType": "RATIO_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "Pro forma Fixed Charge Coverage Ratio of Parent and Subsidiaries for most recent four fiscal quarters > 2.0 to 1.0",
+                  "citation": "§6.01",
+                  "excerpt": "the Fixed Charge Coverage Ratio ... is greater than 2.0 to 1.0"
+                },
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "Payment Conditions satisfied (term undefined in available evidence)",
+                  "citation": "§6.01",
+                  "excerpt": "the Payment Conditions are satisfied with respect to such incurrence"
+                }
+              ],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "PARTIAL",
+              "sufficiencyReasons": [
+                "Ratio test fully captured; 'Payment Conditions' term could not be resolved via getDefinition (not declared in instrument), so that half of the gating condition is UNSUPPORTED."
+              ],
+              "citation": "§6.01",
+              "excerpt": "the Loan Parties and their respective Subsidiaries shall be entitled to incur Indebtedness if ... the Fixed Charge Coverage Ratio ... is greater than 2.0 to 1.0 and (ii) the Payment Conditions are satisfied"
+            },
+            {
+              "localRef": "r_a",
+              "sourceSectionRef": "6.01(a)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "citation": "§6.01(a)"
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Categorical carve-out for Indebtedness under the Loan Documents themselves; no cap stated."
+              ],
+              "citation": "§6.01(a)",
+              "excerpt": "Indebtedness evidenced by this Agreement and the other Loan Documents"
+            },
+            {
+              "localRef": "r_b",
+              "sourceSectionRef": "6.01(b)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "Indebtedness amounts listed on Schedule 6.01",
+                "reason": "Schedule 6.01 is not included among this document's structural nodes; getReferencedProvision confirmed the schedule does not resolve within the instrument's documents.",
+                "sourceEvidence": "§6.01(b): \"Indebtedness set forth on Schedule 6.01\""
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "MISSING_CONTEXT",
+              "sufficiencyReasons": [
+                "Schedule 6.01 content (the actual scheduled Indebtedness) is not available in this instrument's documents; getReferencedProvision was attempted and did not resolve."
+              ],
+              "citation": "§6.01(b)",
+              "excerpt": "Indebtedness set forth on Schedule 6.01"
+            },
+            {
+              "localRef": "r_c",
+              "sourceSectionRef": "6.01(c)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "MAX",
+                "operands": [
+                  {
+                    "kind": "MONEY",
+                    "amount": 70000000,
+                    "currency": "USD",
+                    "citation": "Definition of 'Permitted Purchase Money Indebtedness'"
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "operands": [
+                      {
+                        "kind": "PERCENT",
+                        "value": 0.055
+                      },
+                      {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "total consolidated assets of the Loan Parties and their Subsidiaries"
+                      }
+                    ],
+                    "citation": "Definition of 'Permitted Purchase Money Indebtedness'"
+                  }
+                ],
+                "citation": "Definition of 'Permitted Purchase Money Indebtedness'"
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "Permitted Purchase Money Indebtedness",
+                  "description": "Capacity amount is sourced entirely from this defined term's own cap formula"
+                }
+              ],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Full definition of 'Permitted Purchase Money Indebtedness' retrieved and its cap formula matches the greater-of $70,000,000 / 5.5% of total consolidated assets structure."
+              ],
+              "citation": "§6.01(c)",
+              "excerpt": "Permitted Purchase Money Indebtedness"
+            },
+            {
+              "localRef": "r_d",
+              "sourceSectionRef": "6.01(d)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "QUALITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "REFINANCE_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "Incremental principal increase permitted on refinancing of (b)/(c) debt, capped at the principal amount of such Indebtedness outstanding on the Effective Date",
+                "reason": "The specific dollar figure of Indebtedness outstanding on the Effective Date under clauses (b)/(c) is not stated in the operative text or available evidence; the refinanced capacity itself mirrors r_b/r_c rather than being an independent new amount.",
+                "sourceEvidence": "§6.01(d)(ii): \"except for increases in the principal amount of such Indebtedness not exceeding the principal amount of such Indebtedness outstanding on the Effective Date\""
+              },
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "No increase in principal amount or interest rate of the refinanced Indebtedness, except increases in principal not exceeding the amount outstanding on the Effective Date",
+                  "citation": "§6.01(d)(ii)",
+                  "excerpt": "do not result in an increase in the principal amount of, or interest rate with respect to, the Indebtedness so refinanced"
+                },
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "No shortening of weighted average maturity; terms not, taken as a whole, materially more burdensome or restrictive",
+                  "citation": "§6.01(d)(iii)",
+                  "excerpt": "do not result in a shortening of the average weighted maturity ... nor are they on terms ... materially more burdensome or restrictive"
+                },
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "If refinanced Indebtedness was subordinated, replacement must carry subordination terms at least as favorable to Lenders",
+                  "citation": "§6.01(d)(iv)",
+                  "excerpt": "the terms and conditions of the refinancing ... must ... include subordination terms and conditions that are at least as favorable to the Lenders"
+                }
+              ],
+              "exceptions": [],
+              "dependsOn": [
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_b",
+                  "description": "May only refinance Indebtedness originally permitted under clause (b)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_c",
+                  "description": "May only refinance Indebtedness originally permitted under clause (c)"
+                }
+              ],
+              "sufficiency": "PARTIAL",
+              "sufficiencyReasons": [
+                "Qualitative conditions (ii)-(iv) fully captured from the text; clause (i) is reserved; the exact incremental dollar headroom cannot be quantified without the Effective Date outstanding-principal figure."
+              ],
+              "citation": "§6.01(d)",
+              "excerpt": "refinancings, renewals, replacements or extensions of Indebtedness permitted under clauses (b) and (c) of this Section 6.01"
+            },
+            {
+              "localRef": "r_f",
+              "sourceSectionRef": "6.01(f)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [
+                "Loan Party"
+              ],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "citation": "§6.01(f)"
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Categorical intercompany carve-out among Loan Parties; no cap stated."
+              ],
+              "citation": "§6.01(f)",
+              "excerpt": "Indebtedness owing by any Loan Party to any other Loan Party"
+            },
+            {
+              "localRef": "r_g",
+              "sourceSectionRef": "6.01(g)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "gatedBy": {
+                  "kind": "UNSUPPORTED",
+                  "semanticDescription": "Subordination terms reasonably satisfactory to the Administrative Agent in its Permitted Discretion",
+                  "reason": "This is a subjective lender-approval standard, not a computable boolean/ratio formula expressible with existing comparison primitives.",
+                  "sourceEvidence": "Definition of 'Subordinated Indebtedness': \"payment of which is subordinated to payment of the Secured Obligations on terms reasonably satisfactory to the Administrative Agent in its Permitted Discretion\""
+                },
+                "citation": "§6.01(g)"
+              },
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "Subordination terms must be reasonably satisfactory to the Administrative Agent in its Permitted Discretion",
+                  "citation": "Definition of 'Subordinated Indebtedness'",
+                  "excerpt": "on terms reasonably satisfactory to the Administrative Agent in its Permitted Discretion"
+                }
+              ],
+              "exceptions": [],
+              "dependsOn": [
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "Subordinated Indebtedness",
+                  "description": "Category scope defined entirely by this defined term"
+                }
+              ],
+              "sufficiency": "PARTIAL",
+              "sufficiencyReasons": [
+                "Definition confirms no dollar cap; the only gating condition is a subjective agent-satisfaction standard which cannot be formalized as a computable expression."
+              ],
+              "citation": "§6.01(g)",
+              "excerpt": "Subordinated Indebtedness"
+            },
+            {
+              "localRef": "r_i",
+              "sourceSectionRef": "6.01(i)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "MAX",
+                "operands": [
+                  {
+                    "kind": "MONEY",
+                    "amount": 70000000,
+                    "currency": "USD"
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "operands": [
+                      {
+                        "kind": "PERCENT",
+                        "value": 0.055
+                      },
+                      {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "total consolidated assets of the Loan Parties and their Subsidiaries"
+                      }
+                    ]
+                  }
+                ],
+                "citation": "§6.01(i)"
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Threshold, formula, and metric basis are fully stated in the operative text itself."
+              ],
+              "citation": "§6.01(i)",
+              "excerpt": "other Indebtedness in an aggregate principal amount outstanding at any time not to exceed the greater of $70,000,000 and 5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP"
+            },
+            {
+              "localRef": "r_j",
+              "sourceSectionRef": "6.01(j)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "Indebtedness constituting Permitted Investments",
+                "reason": "'Permitted Investments' is not declared in this instrument's documents; getDefinition returned not found, so it cannot be confirmed whether the definition itself embeds a cap.",
+                "sourceEvidence": "§6.01(j): \"Indebtedness constituting Permitted Investments\""
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "MISSING_CONTEXT",
+              "sufficiencyReasons": [
+                "Defined term 'Permitted Investments' could not be resolved anywhere in the instrument package via getDefinition."
+              ],
+              "citation": "§6.01(j)",
+              "excerpt": "Indebtedness constituting Permitted Investments"
+            },
+            {
+              "localRef": "r_l",
+              "sourceSectionRef": "6.01(l)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "TRANSACTION_INPUT_REFERENCE",
+                "inputName": "amount of insurance premiums financed",
+                "citation": "§6.01(l)"
+              },
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "Must be ordinary course of business insurance premium financing",
+                  "citation": "§6.01(l)",
+                  "excerpt": "in the ordinary course of business"
+                }
+              ],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Cap is self-referential (equal to the premiums financed) and fully stated in the text."
+              ],
+              "citation": "§6.01(l)",
+              "excerpt": "Indebtedness consisting of the financing of insurance premiums in the ordinary course of business, not in excess of the amount of such premiums"
+            },
+            {
+              "localRef": "r_m",
+              "sourceSectionRef": "6.01(m)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "citation": "§6.01(m)"
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "Secured Notes",
+                  "description": "Category is the specific 6.250% Senior Secured Notes issued under the Secured Notes Indenture; definition confirms no additional dollar cap in this clause"
+                }
+              ],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Definition of 'Secured Notes' retrieved and confirms this is a fixed, named instrument with no additional cap imposed by §6.01(m) itself."
+              ],
+              "citation": "§6.01(m)",
+              "excerpt": "Indebtedness of the Loan Parties and their Subsidiaries under the Secured Notes and guarantees thereof"
+            },
+            {
+              "localRef": "r_n",
+              "sourceSectionRef": "6.01(n)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "Indebtedness in respect of Third Party Swap Obligations",
+                "reason": "'Third Party Swap Obligations' is not declared in this instrument's documents; getDefinition returned not found, so it cannot be confirmed whether the definition embeds a cap or scope limitation.",
+                "sourceEvidence": "§6.01(n): \"Indebtedness in respect of Third Party Swap Obligations\""
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "MISSING_CONTEXT",
+              "sufficiencyReasons": [
+                "Defined term 'Third Party Swap Obligations' could not be resolved anywhere in the instrument package via getDefinition."
+              ],
+              "citation": "§6.01(n)",
+              "excerpt": "Indebtedness in respect of Third Party Swap Obligations"
+            },
+            {
+              "localRef": "r_p",
+              "sourceSectionRef": "6.01(p)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "citation": "§6.01(p)"
+              },
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "Must be incurred in the ordinary course of business",
+                  "citation": "§6.01(p)",
+                  "excerpt": "incurred in the ordinary course of business"
+                }
+              ],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Plain-language categorical carve-out fully stated in the text; no defined term dependency."
+              ],
+              "citation": "§6.01(p)",
+              "excerpt": "Indebtedness incurred in the ordinary course of business with respect to surety and appeal bonds, performance bonds, bid bonds, appeal bonds, completion guarantee and similar obligations and guarantees thereof"
+            },
+            {
+              "localRef": "r_q",
+              "sourceSectionRef": "6.01(q)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "citation": "§6.01(q)"
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "Permitted Dispositions",
+                  "description": "Scope is limited to indemnification obligations arising in connection with transactions qualifying as Permitted Dispositions"
+                }
+              ],
+              "sufficiency": "PARTIAL",
+              "sufficiencyReasons": [
+                "No dollar cap is stated in §6.01(q) itself; however 'Permitted Dispositions' could not be retrieved (tool budget exhausted before this term was attempted), so the precise transactional scope of this carve-out is not independently verified."
+              ],
+              "citation": "§6.01(q)",
+              "excerpt": "customary indemnification obligations to purchasers in connection with Permitted Dispositions and guarantees thereof"
+            },
+            {
+              "localRef": "r_r",
+              "sourceSectionRef": "6.01(r)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [
+                "Lender",
+                "Affiliate of a Lender"
+              ],
+              "capacityExpression": {
+                "kind": "MONEY",
+                "amount": 2000000,
+                "currency": "USD",
+                "citation": "§6.01(r)"
+              },
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "Must arise in the ordinary course of business in respect of credit cards, credit card processing, debit cards, stored value/commercial/purchase cards, or Banking Services",
+                  "citation": "§6.01(r)",
+                  "excerpt": "incurred in the ordinary course of business in respect of credit cards, credit card processing services, debit cards, stored value cards, commercial cards ... or Banking Services"
+                },
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "expression": null,
+                  "referencesDefinitionId": null,
+                  "description": "$2,000,000 cap applies only to Indebtedness owed to a Person that is not a Lender or an Affiliate of a Lender",
+                  "citation": "§6.01(r)",
+                  "excerpt": "with respect to any such Indebtedness owed to any Person that is not a Lender or any Affiliate of a Lender, $2,000,000 at any one time outstanding"
+                }
+              ],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Numeric cap and scope limitation are fully stated in the operative text; the undefined term 'Banking Services' affects only the descriptive scope of the debt category, not the stated dollar figure."
+              ],
+              "citation": "§6.01(r)",
+              "excerpt": "in an aggregate principal amount not to exceed, with respect to any such Indebtedness owed to any Person that is not a Lender or any Affiliate of a Lender, $2,000,000 at any one time outstanding"
+            },
+            {
+              "localRef": "r_s",
+              "sourceSectionRef": "6.01(s)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "CATEGORICAL_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "INCUR_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "citation": "§6.01(s)"
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Plain-language categorical carve-out fully stated in the text."
+              ],
+              "citation": "§6.01(s)",
+              "excerpt": "Guarantees in the form of endorsements of instruments or items of payment for deposit to the account of the Loan Parties or which are transmitted or turned over to the Administrative Agent"
+            },
+            {
+              "localRef": "r_t",
+              "sourceSectionRef": "6.01(t)",
+              "covenantFamily": "INDEBTEDNESS",
+              "ruleType": "QUALITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "GUARANTEE_DEBT",
+              "entityScope": [],
+              "entityScopeExcluded": [],
+              "capacityExpression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "Capacity to guarantee Indebtedness permitted under clauses (a) through (n)",
+                "reason": "This is a derivative permission coextensive with (not additive to) the capacities of clauses (a)-(n); no IR primitive expresses 'same scope as multiple referenced rules, non-additively' without SUM misleadingly implying stacking.",
+                "sourceEvidence": "§6.01(t): \"Guarantees of Indebtedness permitted under Sections 6.01(a) through (n) above\""
+              },
+              "conditions": [],
+              "exceptions": [],
+              "dependsOn": [
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_a",
+                  "description": "guarantee scope mirrors clause (a)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_b",
+                  "description": "guarantee scope mirrors clause (b)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_c",
+                  "description": "guarantee scope mirrors clause (c)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_d",
+                  "description": "guarantee scope mirrors clause (d)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_f",
+                  "description": "guarantee scope mirrors clause (f)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_g",
+                  "description": "guarantee scope mirrors clause (g)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_i",
+                  "description": "guarantee scope mirrors clause (i)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_j",
+                  "description": "guarantee scope mirrors clause (j)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_l",
+                  "description": "guarantee scope mirrors clause (l)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_m",
+                  "description": "guarantee scope mirrors clause (m)"
+                },
+                {
+                  "relationshipType": "REQUIRES",
+                  "targetRef": "r_n",
+                  "description": "guarantee scope mirrors clause (n)"
+                }
+              ],
+              "sufficiency": "PARTIAL",
+              "sufficiencyReasons": [
+                "The qualitative structure (guarantees of debt already permitted under (a)-(n)) is fully captured via dependsOn; a single formal capacityExpression cannot be honestly expressed with existing arithmetic primitives without implying additive stacking that the text does not support."
+              ],
+              "citation": "§6.01(t)",
+              "excerpt": "Guarantees of Indebtedness permitted under Sections 6.01(a) through (n) above"
+            }
+          ],
+          "definitions": [
+            {
+              "localRef": "d_ppmi",
+              "termName": "Permitted Purchase Money Indebtedness",
+              "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+              "calculationExpression": {
+                "kind": "MAX",
+                "operands": [
+                  {
+                    "kind": "MONEY",
+                    "amount": 70000000,
+                    "currency": "USD"
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "operands": [
+                      {
+                        "kind": "PERCENT",
+                        "value": 0.055
+                      },
+                      {
+                        "kind": "METRIC_REFERENCE",
+                        "metricName": "total consolidated assets of the Loan Parties and their Subsidiaries"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "dependsOnTerms": [],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Full definition text retrieved via getDefinition."
+              ],
+              "citation": "Definition of 'Permitted Purchase Money Indebtedness' (base document)",
+              "excerpt": "means, as of any date of determination, Purchase Money Indebtedness outstanding as of such date of determination not to exceed the greater of (x) $70,000,000 and (y) 5.5% of the total consolidated assets of the Loan Parties and their Subsidiaries as reflected on their balance sheet in accordance with GAAP"
+            },
+            {
+              "localRef": "d_subord",
+              "termName": "Subordinated Indebtedness",
+              "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+              "calculationExpression": null,
+              "dependsOnTerms": [
+                "Secured Obligations",
+                "Permitted Discretion"
+              ],
+              "sufficiency": "PARTIAL",
+              "sufficiencyReasons": [
+                "Definition confirms no dollar cap, only a subjective agent-satisfaction subordination standard which is not a computable formula."
+              ],
+              "citation": "Definition of 'Subordinated Indebtedness' (base document)",
+              "excerpt": "means any Indebtedness of such Person, the payment of which is subordinated to payment of the Secured Obligations on terms reasonably satisfactory to the Administrative Agent in its Permitted Discretion"
+            },
+            {
+              "localRef": "d_secnotes",
+              "termName": "Secured Notes",
+              "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+              "calculationExpression": null,
+              "dependsOnTerms": [
+                "Secured Notes Indenture"
+              ],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Definition identifies a specific fixed instrument (6.250% Senior Secured Notes) with no cap formula of its own."
+              ],
+              "citation": "Definition of 'Secured Notes' (base document)",
+              "excerpt": "means the 6.250% Senior Secured Notes issued by the Parent under the Secured Notes Indenture"
+            }
+          ],
+          "sharedCapacities": [],
+          "irExtensionCandidates": [
+            {
+              "sourceEvidence": "§6.01(t): \"Guarantees of Indebtedness permitted under Sections 6.01(a) through (n) above\"",
+              "semanticRequirement": "A permission whose scope is defined as coextensive with several other already-modeled rules (guaranteeing debt that is itself permitted elsewhere), where the correct economics are 'same envelope as the referenced rules' rather than an additive total.",
+              "whyExistingPrimitivesFail": "SUM/ADD over RULE_REFERENCE operands would misrepresent the relationship as additive stacking of independent capacities, when the guarantee right is really a derivative, non-additive mirror of the underlying baskets' own (already-counted) capacity.",
+              "candidateGeneralizedPrimitive": "MIRRORED_SCOPE(refs: RULE_REFERENCE[]) - a non-additive node meaning 'the same permitted envelope as the union of these referenced rules, not summed with them.'"
+            }
+          ],
+          "overallNotes": [
+            "Clauses (e), (h), (k), and (o) are marked [reserved] in the operative text and contain no operative content; no rule was generated for them.",
+            "Definitions for 'Payment Conditions', 'Permitted Investments', and 'Third Party Swap Obligations' were each affirmatively attempted via getDefinition and confirmed not declared anywhere in this instrument's documents; the corresponding components are marked MISSING_CONTEXT/UNSUPPORTED rather than guessed.",
+            "Schedule 6.01 (clause (b)) was confirmed unresolvable via getReferencedProvision; its content is not available in the instrument package.",
+            "'Banking Services' (clause (r)) and 'Permitted Dispositions' (clause (q)) definitions could not be retrieved because the tool-call budget was exhausted before they were reached; neither term is material to the stated dollar figures/caps in those clauses, but their precise categorical scope is not independently verified (clause (q) is accordingly marked PARTIAL).",
+            "Clauses (c) and (i) coincidentally share the identical 'greater of $70,000,000 / 5.5% of total consolidated assets' formula (one directly in text, one via the 'Permitted Purchase Money Indebtedness' definition); getSharedCapContext returned no shared-capacity signal for §6.01, so they are modeled as two independent baskets rather than a shared/aggregated cap.",
+            "This provision has no recorded amendment history (confirmed base, unamended text)."
+          ]
+        },
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "telemetry": {
+          "provider": "vercel-ai-gateway",
+          "model": "anthropic/claude-sonnet-5",
+          "promptVersion": "phase-3b1-semantic-compiler-prompt.v2",
+          "schemaVersion": "headroom-covenant-ir.v1",
+          "stage": "semantic_compilation",
+          "timestamp": "2026-08-27T22:50:22.591Z",
+          "inputTokens": 123276,
+          "outputTokens": 32602,
+          "cachedInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "attemptCount": 5,
+          "retryCount": 0,
+          "rateLimitFailures": 0,
+          "latencyMs": 286551,
+          "calculatedCostUsd": 0.5725720000000001
+        },
+        "cacheKey": "eaf5843175734eebae6f1b51b2ae5e9c6a9fba25fecc74fa72bf08efb6e90c74",
+        "compiledAt": "2026-08-27T22:50:22.591Z"
+      }
+    },
+    {
+      "id": "lsb-6.11-restricted-payments",
+      "result": {
+        "status": "PARTIAL",
+        "failureReasons": [
+          "IR_VALIDATION_FAILURE",
+          "MISSING_CONTEXT"
+        ],
+        "rules": [
+          {
+            "ruleId": "ir-rule:bb509d053b7642a209981a97",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.11",
+            "covenantFamily": "RESTRICTED_PAYMENTS",
+            "ruleType": "PROHIBITION",
+            "posture": "PROHIBITION",
+            "action": "OTHER",
+            "entityScope": [
+              "LOAN_PARTY"
+            ],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": null,
+            "conditions": [],
+            "exceptions": [
+              {
+                "exceptionId": "rule[r1].exception[0]",
+                "appliesToRuleId": "ir-rule:bb509d053b7642a209981a97",
+                "description": "Restricted Payments by a Loan Party to another Loan Party",
+                "permissionRuleId": "ir-rule:d3c11dd5a321989bcc264492",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(a)",
+                  "excerpt": "Restricted Payments by a Loan Party to another Loan Party"
+                }
+              },
+              {
+                "exceptionId": "rule[r1].exception[1]",
+                "appliesToRuleId": "ir-rule:bb509d053b7642a209981a97",
+                "description": "Transactions permitted under Section 6.03",
+                "permissionRuleId": "ir-rule:ba8823ef407be0bd7b4acc02",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(b)",
+                  "excerpt": "transactions permitted under Section 6.03"
+                }
+              },
+              {
+                "exceptionId": "rule[r1].exception[2]",
+                "appliesToRuleId": "ir-rule:bb509d053b7642a209981a97",
+                "description": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment",
+                "permissionRuleId": "ir-rule:2683106110cbc87725e1ae0e",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(c)",
+                  "excerpt": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment"
+                }
+              },
+              {
+                "exceptionId": "rule[r1].exception[3]",
+                "appliesToRuleId": "ir-rule:bb509d053b7642a209981a97",
+                "description": "Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent, available only if not otherwise permitted under clauses (a)-(c)",
+                "permissionRuleId": "ir-rule:439a20e531066af687b1db0a",
+                "conditions": [],
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(d)",
+                  "excerpt": "Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent"
+                }
+              }
+            ],
+            "dependsOn": [
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:d3c11dd5a321989bcc264492",
+                "description": "carve-out (a)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:ba8823ef407be0bd7b4acc02",
+                "description": "carve-out (b)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:2683106110cbc87725e1ae0e",
+                "description": "carve-out (c)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:439a20e531066af687b1db0a",
+                "description": "carve-out (d)"
+              }
+            ],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "General prohibition and its four express carve-outs are fully and unambiguously stated in the operative text; each carve-out is separately modeled as its own permission rule."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.11",
+              "excerpt": "Make any distribution or declare or pay any dividends ... provided, that the foregoing shall not prohibit any of the following: (a) ... (b) ... (c) ... and (d) ..."
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:d3c11dd5a321989bcc264492",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.11(a)",
+            "covenantFamily": "RESTRICTED_PAYMENTS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "OTHER",
+            "entityScope": [
+              "LOAN_PARTY"
+            ],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": null,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.11(a)",
+                "excerpt": null
+              }
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r-a].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Payment must be made by a Loan Party to another Loan Party (intercompany only)",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(a)",
+                  "excerpt": "Restricted Payments by a Loan Party to another Loan Party"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Simple, fully-stated intercompany carve-out with no dollar cap and no undefined dependency."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.11(a)",
+              "excerpt": "Restricted Payments by a Loan Party to another Loan Party"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:ba8823ef407be0bd7b4acc02",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.11(b)",
+            "covenantFamily": "RESTRICTED_PAYMENTS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "OTHER",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§6.11(b): \"transactions permitted under Section 6.03\"",
+              "semanticDescription": "Capacity/economics of Restricted Payments treated as 'transactions permitted under Section 6.03'",
+              "reason": "Section 6.03 was expressly cross-referenced but does not resolve to any section within this instrument's available documents (getReferencedProvision returned no match); the referenced provision's actual scope/economics cannot be retrieved.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.11",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:820933c22e8f3e95d3beedd0"
+            },
+            "conditions": [],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "MISSING_CONTEXT",
+            "sufficiencyReasons": [
+              "Section 6.03 is referenced for the actual scope of this carve-out but could not be resolved via getReferencedProvision; no fallback text was provided in the bundle.",
+              "Section 6.03 was expressly cross-referenced but does not resolve to any section within this instrument's available documents (getReferencedProvision returned no match); the referenced provision's actual scope/economics cannot be retrieved.",
+              "dependsOn[0].targetRef \"6.03\" did not resolve - dependency dropped rather than left dangling"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.11(b)",
+              "excerpt": "transactions permitted under Section 6.03"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:2683106110cbc87725e1ae0e",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.11(c)",
+            "covenantFamily": "RESTRICTED_PAYMENTS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "OTHER",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "UNLIMITED_CAPACITY",
+              "type": "CAPACITY",
+              "gatedBy": {
+                "kind": "UNSUPPORTED",
+                "type": null,
+                "sourceEvidence": "§6.11(c): \"Restricted Payments so long as the Payment Conditions are satisfied\"",
+                "semanticDescription": "Satisfaction of the defined term 'Payment Conditions' as the gating test for this carve-out",
+                "reason": "'Payment Conditions' is used as a defined term but is not defined anywhere in this instrument's available documents (getDefinition returned no match); its substantive content (e.g. ratio/liquidity/EOD tests) cannot be represented.",
+                "requiredReview": true,
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(c)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:c86936a4d4de5696a79e5eab"
+              },
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.11(c)",
+                "excerpt": null
+              }
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r-c].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": "def-payment-conditions",
+                "description": "The Payment Conditions must be satisfied with respect to each such Restricted Payment",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(c)",
+                  "excerpt": "so long as the Payment Conditions are satisfied with respect to each such Restricted Payment"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [],
+            "operativeLineage": null,
+            "sufficiency": "MISSING_CONTEXT",
+            "sufficiencyReasons": [
+              "No dollar cap is stated (capacity is otherwise unlimited) but the sole gating condition, 'Payment Conditions', is an undefined term not present anywhere in the instrument package, so the actual gating test cannot be faithfully represented.",
+              "'Payment Conditions' is used as a defined term but is not defined anywhere in this instrument's available documents (getDefinition returned no match); its substantive content (e.g. ratio/liquidity/EOD tests) cannot be represented."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.11(c)",
+              "excerpt": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "ruleId": "ir-rule:439a20e531066af687b1db0a",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "sourceSectionRef": "6.11(d)",
+            "covenantFamily": "RESTRICTED_PAYMENTS",
+            "ruleType": "QUANTITATIVE_PERMISSION",
+            "posture": "PERMISSION",
+            "action": "OTHER",
+            "entityScope": [],
+            "entityScopeExcluded": [],
+            "transactionScope": null,
+            "capacityExpression": {
+              "kind": "DURING_PERIOD",
+              "type": "MONEY",
+              "exprId": "ir-expr:be46f54eb7660aa216982297",
+              "value": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 500000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(d)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:9bc839431b0051f838d725bb"
+              },
+              "periodDescription": "any fiscal year of Parent",
+              "provenance": {
+                "documentId": "lsb-article-6",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.11(d)",
+                "excerpt": null
+              }
+            },
+            "conditions": [
+              {
+                "conditionId": "rule[r-d].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "(no evidence captured)",
+                  "semanticDescription": "unrecognized or malformed expression (kind=\"NOT\")",
+                  "reason": "NOT operand is not BOOLEAN",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "lsb-article-6",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§6.11",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:5b4329beb9b2443d4719dbb3"
+                },
+                "referencesDefinitionId": null,
+                "description": "This residual $500,000/year basket is available for a given Restricted Payment only if that payment would NOT, at the time thereof, be permitted (or able to be made) under clause (a), (b), or (c) of Section 6.11 - i.e. it is a last-resort/backstop basket, not stackable with the other carve-outs for the same payment.",
+                "provenance": {
+                  "documentId": "lsb-article-6",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.11(d)",
+                  "excerpt": "any Restricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section 6.11"
+                }
+              }
+            ],
+            "exceptions": [],
+            "dependsOn": [
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:d3c11dd5a321989bcc264492",
+                "description": "Clause (d) unavailable if payment is permitted under (a)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:ba8823ef407be0bd7b4acc02",
+                "description": "Clause (d) unavailable if payment is permitted under (b)"
+              },
+              {
+                "relationshipType": "REQUIRES",
+                "targetRuleId": "ir-rule:2683106110cbc87725e1ae0e",
+                "description": "Clause (d) unavailable if payment is permitted under (c)"
+              }
+            ],
+            "operativeLineage": null,
+            "sufficiency": "PARTIAL",
+            "sufficiencyReasons": [
+              "The $500,000-per-fiscal-year cap itself is fully and unambiguously stated and represented.",
+              "The backstop/exclusivity proviso is structurally represented (NOT(OR(other clauses))), but cannot be fully evaluated because clauses (b) and (c), which it depends on, are themselves MISSING_CONTEXT (unresolved Section 6.03 cross-reference and undefined 'Payment Conditions' term).",
+              "OR operands do not type-check together under the IR's own composition rules",
+              "NOT operand is not BOOLEAN",
+              "dependsOn[0].relationshipType \"EXCLUDES\" not recognized - defaulted to REQUIRES",
+              "dependsOn[1].relationshipType \"EXCLUDES\" not recognized - defaulted to REQUIRES",
+              "dependsOn[2].relationshipType \"EXCLUDES\" not recognized - defaulted to REQUIRES"
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.11(d)",
+              "excerpt": "Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any Restricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section 6.11)"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          }
+        ],
+        "definitions": [
+          {
+            "definitionId": "ir-definition:720d482bf46306884c8c85a4",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "termName": "Restricted Payment",
+            "covenantFamily": "RESTRICTED_PAYMENTS",
+            "calculationExpression": null,
+            "dependsOnTerms": [
+              "Stock",
+              "Loan Party"
+            ],
+            "sufficiency": "COMPLETE",
+            "sufficiencyReasons": [
+              "Defined inline in the operative text of §6.11 itself, with no further calculation."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.11",
+              "excerpt": "Make any distribution or declare or pay any dividends (in cash or other property, other than common Stock) on, or purchase, acquire, redeem, or retire any of any Loan Party’s Stock, of any class, whether now or hereafter outstanding (each, a “Restricted Payment”)"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          },
+          {
+            "definitionId": "ir-definition:ef12d6fd08c97f855db45cf9",
+            "irSchemaVersion": "headroom-covenant-ir.v1",
+            "companyId": "lsb-real-regression",
+            "instrumentKey": "lsb-instrument",
+            "sourceDocumentId": "lsb-article-6",
+            "termName": "Payment Conditions",
+            "covenantFamily": "RESTRICTED_PAYMENTS",
+            "calculationExpression": null,
+            "dependsOnTerms": [],
+            "sufficiency": "MISSING_CONTEXT",
+            "sufficiencyReasons": [
+              "Term is used in §6.11(c) as the sole gating test for that carve-out, but is not defined anywhere in this instrument's available documents; getDefinition tool call returned no match."
+            ],
+            "provenance": {
+              "documentId": "lsb-article-6",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.11(c)",
+              "excerpt": "so long as the Payment Conditions are satisfied with respect to each such Restricted Payment"
+            },
+            "compilerVersion": "phase-3b1-semantic-compiler.v2",
+            "sourceContentVersion": null
+          }
+        ],
+        "sharedCapacities": [],
+        "irExtensionCandidates": [],
+        "unresolvedIssues": [
+          "[TYPE_ERROR] (ir-rule:2683106110cbc87725e1ae0e) [UNLIMITED_CAPACITY] UnlimitedCapacity.gatedBy must be BOOLEAN",
+          "[rule[r-b]] Section 6.03 was expressly cross-referenced but does not resolve to any section within this instrument's available documents (getReferencedProvision returned no match); the referenced provision's actual scope/economics cannot be retrieved.",
+          "[rule[r-b]] dependsOn[0].targetRef \"6.03\" did not resolve - dependency dropped rather than left dangling",
+          "[rule[r-c].UNLIMITED_CAPACITY.gatedBy] 'Payment Conditions' is used as a defined term but is not defined anywhere in this instrument's available documents (getDefinition returned no match); its substantive content (e.g. ratio/liquidity/EOD tests) cannot be represented.",
+          "[rule[r-d].condition[0].expression.NOT.operand] OR operands do not type-check together under the IR's own composition rules",
+          "[rule[r-d].condition[0].expression] NOT operand is not BOOLEAN",
+          "[rule[r-d]] dependsOn[0].relationshipType \"EXCLUDES\" not recognized - defaulted to REQUIRES",
+          "[rule[r-d]] dependsOn[1].relationshipType \"EXCLUDES\" not recognized - defaulted to REQUIRES",
+          "[rule[r-d]] dependsOn[2].relationshipType \"EXCLUDES\" not recognized - defaulted to REQUIRES",
+          "Section 6.11 is a standard negative-covenant structure: a blanket prohibition on Restricted Payments subject to four carve-outs (a)-(d), modeled as one PROHIBITION rule (r1) with four separately-modeled PERMISSION rules.",
+          "Two carve-outs depend on content outside the provided instrument package: (b) cross-references Section 6.03, which does not resolve within this instrument's documents (confirmed via getReferencedProvision); (c) gates on the undefined term 'Payment Conditions' (confirmed via getDefinition). Both attempts were made per tool policy before marking MISSING_CONTEXT.",
+          "Clause (d)'s $500,000/fiscal-year cap is fully supported; its backstop proviso (unavailable if the payment would be permitted under (a)-(c)) is structurally represented but its practical evaluation inherits the same gaps as clauses (b) and (c).",
+          "No numeric thresholds were fabricated for the unresolved Section 6.03 reference or the undefined 'Payment Conditions' term; both are represented via UNSUPPORTED nodes with citations to the exact source text, per the escape-hatch policy."
+        ],
+        "toolCallLog": [
+          {
+            "toolName": "getDefinition",
+            "input": {
+              "term": "Payment Conditions"
+            },
+            "outputSummary": "refused: no defined term matching \"Payment Conditions\" found in this instrument's documents",
+            "charsReturned": 82,
+            "timestamp": "2026-08-27T22:50:26.769Z"
+          },
+          {
+            "toolName": "getReferencedProvision",
+            "input": {
+              "ref": "Section 6.03"
+            },
+            "outputSummary": "refused: reference \"Section 6.03\" did not resolve to any section within this instrument's documents",
+            "charsReturned": 90,
+            "timestamp": "2026-08-27T22:50:26.769Z"
+          },
+          {
+            "toolName": "getInstrumentDocuments",
+            "input": {},
+            "outputSummary": "1 document(s) in this instrument",
+            "charsReturned": 32,
+            "timestamp": "2026-08-27T22:50:30.047Z"
+          }
+        ],
+        "rawModelOutput": {
+          "rules": [
+            {
+              "localRef": "r1",
+              "sourceSectionRef": "6.11",
+              "covenantFamily": "RESTRICTED_PAYMENTS",
+              "ruleType": "PROHIBITION",
+              "posture": "PROHIBITION",
+              "action": "MAKE_RESTRICTED_PAYMENT",
+              "entityScope": [
+                "Loan Party"
+              ],
+              "capacityExpression": null,
+              "conditions": [],
+              "exceptions": [
+                {
+                  "description": "Restricted Payments by a Loan Party to another Loan Party",
+                  "permissionRef": "r-a",
+                  "conditions": [],
+                  "citation": "§6.11(a)",
+                  "excerpt": "Restricted Payments by a Loan Party to another Loan Party"
+                },
+                {
+                  "description": "Transactions permitted under Section 6.03",
+                  "permissionRef": "r-b",
+                  "conditions": [],
+                  "citation": "§6.11(b)",
+                  "excerpt": "transactions permitted under Section 6.03"
+                },
+                {
+                  "description": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment",
+                  "permissionRef": "r-c",
+                  "conditions": [],
+                  "citation": "§6.11(c)",
+                  "excerpt": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment"
+                },
+                {
+                  "description": "Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent, available only if not otherwise permitted under clauses (a)-(c)",
+                  "permissionRef": "r-d",
+                  "conditions": [],
+                  "citation": "§6.11(d)",
+                  "excerpt": "Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent"
+                }
+              ],
+              "dependsOn": [
+                {
+                  "targetRef": "r-a",
+                  "relationshipType": "REQUIRES",
+                  "description": "carve-out (a)"
+                },
+                {
+                  "targetRef": "r-b",
+                  "relationshipType": "REQUIRES",
+                  "description": "carve-out (b)"
+                },
+                {
+                  "targetRef": "r-c",
+                  "relationshipType": "REQUIRES",
+                  "description": "carve-out (c)"
+                },
+                {
+                  "targetRef": "r-d",
+                  "relationshipType": "REQUIRES",
+                  "description": "carve-out (d)"
+                }
+              ],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "General prohibition and its four express carve-outs are fully and unambiguously stated in the operative text; each carve-out is separately modeled as its own permission rule."
+              ],
+              "citation": "§6.11",
+              "excerpt": "Make any distribution or declare or pay any dividends ... provided, that the foregoing shall not prohibit any of the following: (a) ... (b) ... (c) ... and (d) ..."
+            },
+            {
+              "localRef": "r-a",
+              "sourceSectionRef": "6.11(a)",
+              "covenantFamily": "RESTRICTED_PAYMENTS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "MAKE_RESTRICTED_PAYMENT",
+              "entityScope": [
+                "Loan Party"
+              ],
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "gatedBy": null,
+                "citation": "§6.11(a)"
+              },
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "description": "Payment must be made by a Loan Party to another Loan Party (intercompany only)",
+                  "citation": "§6.11(a)",
+                  "excerpt": "Restricted Payments by a Loan Party to another Loan Party"
+                }
+              ],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Simple, fully-stated intercompany carve-out with no dollar cap and no undefined dependency."
+              ],
+              "citation": "§6.11(a)",
+              "excerpt": "Restricted Payments by a Loan Party to another Loan Party"
+            },
+            {
+              "localRef": "r-b",
+              "sourceSectionRef": "6.11(b)",
+              "covenantFamily": "RESTRICTED_PAYMENTS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "MAKE_RESTRICTED_PAYMENT",
+              "capacityExpression": {
+                "kind": "UNSUPPORTED",
+                "semanticDescription": "Capacity/economics of Restricted Payments treated as 'transactions permitted under Section 6.03'",
+                "reason": "Section 6.03 was expressly cross-referenced but does not resolve to any section within this instrument's available documents (getReferencedProvision returned no match); the referenced provision's actual scope/economics cannot be retrieved.",
+                "sourceEvidence": "§6.11(b): \"transactions permitted under Section 6.03\""
+              },
+              "dependsOn": [
+                {
+                  "targetRef": "6.03",
+                  "relationshipType": "REQUIRES",
+                  "description": "Cross-references Section 6.03, which is not present/resolvable in the provided instrument package"
+                }
+              ],
+              "sufficiency": "MISSING_CONTEXT",
+              "sufficiencyReasons": [
+                "Section 6.03 is referenced for the actual scope of this carve-out but could not be resolved via getReferencedProvision; no fallback text was provided in the bundle."
+              ],
+              "citation": "§6.11(b)",
+              "excerpt": "transactions permitted under Section 6.03"
+            },
+            {
+              "localRef": "r-c",
+              "sourceSectionRef": "6.11(c)",
+              "covenantFamily": "RESTRICTED_PAYMENTS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "MAKE_RESTRICTED_PAYMENT",
+              "capacityExpression": {
+                "kind": "UNLIMITED_CAPACITY",
+                "gatedBy": {
+                  "kind": "UNSUPPORTED",
+                  "semanticDescription": "Satisfaction of the defined term 'Payment Conditions' as the gating test for this carve-out",
+                  "reason": "'Payment Conditions' is used as a defined term but is not defined anywhere in this instrument's available documents (getDefinition returned no match); its substantive content (e.g. ratio/liquidity/EOD tests) cannot be represented.",
+                  "sourceEvidence": "§6.11(c): \"Restricted Payments so long as the Payment Conditions are satisfied\""
+                },
+                "citation": "§6.11(c)"
+              },
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "description": "The Payment Conditions must be satisfied with respect to each such Restricted Payment",
+                  "referencesDefinitionId": "def-payment-conditions",
+                  "citation": "§6.11(c)",
+                  "excerpt": "so long as the Payment Conditions are satisfied with respect to each such Restricted Payment"
+                }
+              ],
+              "sufficiency": "MISSING_CONTEXT",
+              "sufficiencyReasons": [
+                "No dollar cap is stated (capacity is otherwise unlimited) but the sole gating condition, 'Payment Conditions', is an undefined term not present anywhere in the instrument package, so the actual gating test cannot be faithfully represented."
+              ],
+              "citation": "§6.11(c)",
+              "excerpt": "Restricted Payments so long as the Payment Conditions are satisfied with respect to each such Restricted Payment"
+            },
+            {
+              "localRef": "r-d",
+              "sourceSectionRef": "6.11(d)",
+              "covenantFamily": "RESTRICTED_PAYMENTS",
+              "ruleType": "QUANTITATIVE_PERMISSION",
+              "posture": "PERMISSION",
+              "action": "MAKE_RESTRICTED_PAYMENT",
+              "capacityExpression": {
+                "kind": "DURING_PERIOD",
+                "operand": {
+                  "kind": "MONEY",
+                  "amount": 500000,
+                  "currency": "USD",
+                  "citation": "§6.11(d)"
+                },
+                "periodDescription": "any fiscal year of Parent",
+                "citation": "§6.11(d)"
+              },
+              "conditions": [
+                {
+                  "conditionType": "OTHER_RULE_SATISFIED",
+                  "description": "This residual $500,000/year basket is available for a given Restricted Payment only if that payment would NOT, at the time thereof, be permitted (or able to be made) under clause (a), (b), or (c) of Section 6.11 - i.e. it is a last-resort/backstop basket, not stackable with the other carve-outs for the same payment.",
+                  "expression": {
+                    "kind": "NOT",
+                    "operand": {
+                      "kind": "OR",
+                      "operands": [
+                        {
+                          "kind": "RULE_REFERENCE",
+                          "ruleRef": "r-a"
+                        },
+                        {
+                          "kind": "RULE_REFERENCE",
+                          "ruleRef": "r-b"
+                        },
+                        {
+                          "kind": "RULE_REFERENCE",
+                          "ruleRef": "r-c"
+                        }
+                      ]
+                    }
+                  },
+                  "citation": "§6.11(d)",
+                  "excerpt": "any Restricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section 6.11"
+                }
+              ],
+              "dependsOn": [
+                {
+                  "targetRef": "r-a",
+                  "relationshipType": "EXCLUDES",
+                  "description": "Clause (d) unavailable if payment is permitted under (a)"
+                },
+                {
+                  "targetRef": "r-b",
+                  "relationshipType": "EXCLUDES",
+                  "description": "Clause (d) unavailable if payment is permitted under (b)"
+                },
+                {
+                  "targetRef": "r-c",
+                  "relationshipType": "EXCLUDES",
+                  "description": "Clause (d) unavailable if payment is permitted under (c)"
+                }
+              ],
+              "sufficiency": "PARTIAL",
+              "sufficiencyReasons": [
+                "The $500,000-per-fiscal-year cap itself is fully and unambiguously stated and represented.",
+                "The backstop/exclusivity proviso is structurally represented (NOT(OR(other clauses))), but cannot be fully evaluated because clauses (b) and (c), which it depends on, are themselves MISSING_CONTEXT (unresolved Section 6.03 cross-reference and undefined 'Payment Conditions' term)."
+              ],
+              "citation": "§6.11(d)",
+              "excerpt": "Restricted Payments in an aggregate amount not to exceed $500,000 in any fiscal year of Parent (it being understood and agreed that any Restricted Payment made pursuant this clause (d) shall only be permitted if such Restricted Payment would not, at the time thereof, be permitted (or be able to be made) under any other clause of this Section 6.11)"
+            }
+          ],
+          "definitions": [
+            {
+              "localRef": "def-restricted-payment",
+              "termName": "Restricted Payment",
+              "covenantFamily": "RESTRICTED_PAYMENTS",
+              "calculationExpression": null,
+              "dependsOnTerms": [
+                "Stock",
+                "Loan Party"
+              ],
+              "sufficiency": "COMPLETE",
+              "sufficiencyReasons": [
+                "Defined inline in the operative text of §6.11 itself, with no further calculation."
+              ],
+              "citation": "§6.11",
+              "excerpt": "Make any distribution or declare or pay any dividends (in cash or other property, other than common Stock) on, or purchase, acquire, redeem, or retire any of any Loan Party’s Stock, of any class, whether now or hereafter outstanding (each, a “Restricted Payment”)"
+            },
+            {
+              "localRef": "def-payment-conditions",
+              "termName": "Payment Conditions",
+              "covenantFamily": "RESTRICTED_PAYMENTS",
+              "calculationExpression": null,
+              "dependsOnTerms": [],
+              "sufficiency": "MISSING_CONTEXT",
+              "sufficiencyReasons": [
+                "Term is used in §6.11(c) as the sole gating test for that carve-out, but is not defined anywhere in this instrument's available documents; getDefinition tool call returned no match."
+              ],
+              "citation": "§6.11(c)",
+              "excerpt": "so long as the Payment Conditions are satisfied with respect to each such Restricted Payment"
+            }
+          ],
+          "sharedCapacities": [],
+          "irExtensionCandidates": [],
+          "overallNotes": [
+            "Section 6.11 is a standard negative-covenant structure: a blanket prohibition on Restricted Payments subject to four carve-outs (a)-(d), modeled as one PROHIBITION rule (r1) with four separately-modeled PERMISSION rules.",
+            "Two carve-outs depend on content outside the provided instrument package: (b) cross-references Section 6.03, which does not resolve within this instrument's documents (confirmed via getReferencedProvision); (c) gates on the undefined term 'Payment Conditions' (confirmed via getDefinition). Both attempts were made per tool policy before marking MISSING_CONTEXT.",
+            "Clause (d)'s $500,000/fiscal-year cap is fully supported; its backstop proviso (unavailable if the payment would be permitted under (a)-(c)) is structurally represented but its practical evaluation inherits the same gaps as clauses (b) and (c).",
+            "No numeric thresholds were fabricated for the unresolved Section 6.03 reference or the undefined 'Payment Conditions' term; both are represented via UNSUPPORTED nodes with citations to the exact source text, per the escape-hatch policy."
+          ]
+        },
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "telemetry": {
+          "provider": "vercel-ai-gateway",
+          "model": "anthropic/claude-sonnet-5",
+          "promptVersion": "phase-3b1-semantic-compiler-prompt.v2",
+          "schemaVersion": "headroom-covenant-ir.v1",
+          "stage": "semantic_compilation",
+          "timestamp": "2026-08-27T22:51:52.002Z",
+          "inputTokens": 45329,
+          "outputTokens": 9991,
+          "cachedInputTokens": 0,
+          "cacheCreationInputTokens": 0,
+          "attemptCount": 3,
+          "retryCount": 0,
+          "rateLimitFailures": 0,
+          "latencyMs": 89399,
+          "calculatedCostUsd": 0.19056800000000002
+        },
+        "cacheKey": "a3b762da4cf4f81c909587339c3f06c99e16166d45e9839df31f6ccd463c4a54",
+        "compiledAt": "2026-08-27T22:51:52.002Z"
+      }
+    }
+  ]
+}

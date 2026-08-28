@@ -28,6 +28,23 @@ export interface OperativeStateInput {
   index: StructuralIndex;
   /** Every amendment effect discovered anywhere in the package - filtered internally to this instrument's own provisions. */
   allEffects: AmendmentEffectCandidate[];
+  /**
+   * Phase 3F.1 §29-32/F3 - effects whose target could not be resolved to a
+   * specific (instrument, section/definition) - e.g. target.kind is
+   * "DOCUMENT" (a full restatement whose own target document is itself
+   * ambiguous among multiple same-typed candidates), or targetInstrumentKey
+   * is null - but which the CALLER has independently determined (from real
+   * package/document topology - Phase 2C's package graph, never guessed
+   * inside this function) genuinely belong to this instrument's own
+   * document family. Never inferred here: attributing an effect to an
+   * instrument it does not actually belong to would violate instrument
+   * isolation (Architecture Invariants #20), so this is the caller's
+   * affirmative, evidence-based assertion, not a default. Omit (or pass an
+   * empty array) when the caller has no such knowledge - the function then
+   * behaves exactly as before for the RESOLVED-with-zero-provisions case,
+   * which remains honest whenever no unresolved activity is known at all.
+   */
+  unresolvedTargetEffectsForThisInstrument?: AmendmentEffectCandidate[];
 }
 
 function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: StructuralIndex): { text: string | null; nodeKey: string | null } {
@@ -114,9 +131,17 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
 
 export function computeOperativeContractState(input: OperativeStateInput): OperativeContractState {
   const instrumentEffects = input.allEffects.filter((e) => e.target.targetInstrumentKey === input.instrumentKey);
-  const { groups } = groupEffectsByProvision(instrumentEffects);
+  const { groups, unattachedEffects: unattachedFromResolved } = groupEffectsByProvision(instrumentEffects);
 
   const provisions = groups.map((g) => buildProvisionView(g, input.baseDocumentId, input.asOfDate, input.index));
+
+  // Phase 3F.1 §29-32/F3 - the caller-asserted unresolved-target effects
+  // combine with anything groupEffectsByProvision itself could not attach
+  // (a resolved instrument but no resolvable section/definition ref) into
+  // one honest "known but unattached" list. This is what prevents `status`
+  // from defaulting to RESOLVED merely because `provisions` is empty - see
+  // unattachedEffects on OperativeContractState for the full rationale.
+  const unattachedEffects = [...unattachedFromResolved, ...(input.unresolvedTargetEffectsForThisInstrument ?? [])];
 
   const worstStatus = (statuses: OperativeStateStatus[]): OperativeStateStatus => {
     if (statuses.includes("OPERATIVE_STATE_CONFLICTED")) return "OPERATIVE_STATE_CONFLICTED";
@@ -124,13 +149,24 @@ export function computeOperativeContractState(input: OperativeStateInput): Opera
     if (statuses.includes("OPERATIVE_STATE_PARTIAL")) return "OPERATIVE_STATE_PARTIAL";
     return "OPERATIVE_STATE_RESOLVED";
   };
-  const status = provisions.length === 0 ? "OPERATIVE_STATE_RESOLVED" : worstStatus(provisions.map((p) => p.status));
+  let status: OperativeStateStatus;
+  if (provisions.length === 0) {
+    // Genuinely nothing to report only when there is ALSO no known
+    // unattached amendment activity for this instrument - a status
+    // implying successful resolution must never coexist with real,
+    // unresolved target ambiguity that prevented provisions from being
+    // built at all (the exact DSGR first-blind F3 finding).
+    status = unattachedEffects.length === 0 ? "OPERATIVE_STATE_RESOLVED" : "OPERATIVE_STATE_REVIEW_REQUIRED";
+  } else {
+    status = worstStatus(provisions.map((p) => p.status));
+  }
 
   const byStatus: Record<string, number> = {};
   for (const p of provisions) byStatus[p.status] = (byStatus[p.status] ?? 0) + 1;
-  const summary = `${provisions.length} amended provision(s) tracked for this instrument as of ${input.asOfDate}: ${Object.entries(byStatus).map(([k, v]) => `${v} ${k}`).join(", ") || "none"}.`;
+  const unattachedSummary = unattachedEffects.length > 0 ? ` ${unattachedEffects.length} additional effect(s) reference this instrument's amendment activity but could not be attached to any specific provision (unresolved target).` : "";
+  const summary = `${provisions.length} amended provision(s) tracked for this instrument as of ${input.asOfDate}: ${Object.entries(byStatus).map(([k, v]) => `${v} ${k}`).join(", ") || "none"}.${unattachedSummary}`;
 
-  return { instrumentKey: input.instrumentKey, asOfDate: input.asOfDate, provisions, status, summary };
+  return { instrumentKey: input.instrumentKey, asOfDate: input.asOfDate, provisions, status, summary, unattachedEffects };
 }
 
 export { normalizeDefinedTermRef };
