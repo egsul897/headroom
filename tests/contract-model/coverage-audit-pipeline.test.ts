@@ -74,7 +74,7 @@ describe("Phase 2E discovery attacks (1-18)", () => {
     const index = buildTestIndex([{ documentId: DOC, label: "CA", text }]);
     const regions = buildSourceCoverageInventory(DOC, index, { companyId: "c", packageKey: "p", instrumentKey: null });
     const parentNode = index.getNodeByRef(DOC, "6.03")!;
-    const candidates: DiscoveredCandidate[] = [makeCandidate({ documentId: DOC, structuralNodeKeys: [parentNode.nodeKey], normalizedSourceRef: "6.03" })];
+    const candidates: DiscoveredCandidate[] = [makeCandidate({ documentId: DOC, structuralNodeKeys: [parentNode.nodeKey], structuralNodeIds: [parentNode.nodeId], normalizedSourceRef: "6.03" })];
     const findings = auditDiscoveryCoverage(regions, candidates, index);
     const childFinding = findings.find((f) => f.sourceCitation.includes("6.03(b)"));
     expect(childFinding).toBeDefined();
@@ -170,7 +170,7 @@ describe("Phase 2E context attacks (19-32)", () => {
     const index = buildTestIndex([{ documentId: DOC, label: "CA", text }]);
     const exactTerms = buildExactTermsByDocument([{ documentId: DOC, label: "CA", text }]);
     const node = index.getNodeByRef(DOC, sectionRef)!;
-    const candidate = makeCandidate({ documentId: DOC, structuralNodeKeys: [node.nodeKey], normalizedSourceRef: sectionRef });
+    const candidate = makeCandidate({ documentId: DOC, structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: sectionRef });
     const bundle = buildCovenantContextBundle({ candidate, packageKey: "p", companyId: "c", instrumentKey: null }, { index, packageGraph: null, exactTermsByDocument: exactTerms });
     return { index, bundle, node };
   }
@@ -179,7 +179,7 @@ describe("Phase 2E context attacks (19-32)", () => {
     const text = `SECTION 6.01. Indebtedness . The Borrower shall not incur Indebtedness. (a) Indebtedness not to exceed $5,000,000 shall be permitted.`;
     const { index, bundle } = buildCorrectBundle(text, "6.01(a)");
     const corrupted = removeItem(bundle, "PARENT_SCOPE", "6.01");
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.01(a)")!.nodeKey, index, packageGraph: null, bundle: corrupted });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.01(a)")!.nodeId, index, packageGraph: null, bundle: corrupted });
     expect(findings.some((f) => f.findingType === "MISSING_PARENT_CONTEXT")).toBe(true);
   });
 
@@ -187,7 +187,7 @@ describe("Phase 2E context attacks (19-32)", () => {
     const text = `SECTION 6.01. Indebtedness . (a) Indebtedness not to exceed $5,000,000 shall be permitted. (b) provided that no Default shall have occurred and is continuing at the time of such incurrence.`;
     const { index, bundle } = buildCorrectBundle(text, "6.01(a)");
     const corrupted = removeItem(bundle, "PROVISO", "6.01(b)");
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.01(a)")!.nodeKey, index, packageGraph: null, bundle: corrupted });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.01(a)")!.nodeId, index, packageGraph: null, bundle: corrupted });
     expect(findings.some((f) => f.findingType === "MISSING_PROVISO")).toBe(true);
   });
 
@@ -195,7 +195,7 @@ describe("Phase 2E context attacks (19-32)", () => {
     const text = `SECTION 6.06. Investments . (a) Investments not to exceed $5,000,000 shall be permitted. (b) the aggregate amount of Investments made under clause (a) and this clause (b) shall not exceed $10,000,000.`;
     const { index, bundle } = buildCorrectBundle(text, "6.06(a)");
     const corrupted = removeItem(bundle, "SHARED_CAP", "6.06(b)");
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.06(a)")!.nodeKey, index, packageGraph: null, bundle: corrupted });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.06(a)")!.nodeId, index, packageGraph: null, bundle: corrupted });
     expect(findings.some((f) => f.findingType === "MISSING_SHARED_CAP")).toBe(true);
   });
 
@@ -203,7 +203,7 @@ describe("Phase 2E context attacks (19-32)", () => {
     const text = `SECTION 6.10. Financial Covenant . The Borrower shall not permit "Consolidated Leverage Ratio" to exceed 4.00:1.00. " Consolidated Leverage Ratio " means the ratio of Consolidated Total Debt to "Consolidated EBITDA" . " Consolidated Total Debt " means total funded debt. " Consolidated EBITDA " means net income plus interest, taxes, depreciation and amortization.`;
     const { index, bundle } = buildCorrectBundle(text, "6.10");
     const corrupted = removeUnresolved(removeItem(bundle, "DEFINITION_DEPENDENCY", "Consolidated EBITDA"), "Consolidated EBITDA");
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.10")!.nodeKey, index, packageGraph: null, bundle: corrupted });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.10")!.nodeId, index, packageGraph: null, bundle: corrupted });
     expect(findings.some((f) => f.findingType === "MISSING_DEFINITION_DEPENDENCY")).toBe(true);
   });
 
@@ -221,7 +221,7 @@ describe("Phase 2E context attacks (19-32)", () => {
     const text = `SECTION 6.10. Financial Covenant . The Borrower shall not permit the Leverage Ratio to exceed 4.00:1.00, calculated in accordance with the pro forma methodology set forth in Section 1.05. SECTION 1.05. Pro Forma Calculations . Pro forma compliance shall be determined using the accounting principles set forth herein.`;
     const { index, bundle } = buildCorrectBundle(text, "6.10");
     const corrupted = removeUnresolved(removeItem(bundle, "CALCULATION_PROVISION", "1.05"), "1.05");
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.10")!.nodeKey, index, packageGraph: null, bundle: corrupted });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.10")!.nodeId, index, packageGraph: null, bundle: corrupted });
     expect(findings.some((f) => f.findingType === "SILENT_UNRESOLVED_DEPENDENCY" && f.sourceCitation.includes("1.05"))).toBe(true);
   });
 
@@ -229,7 +229,7 @@ describe("Phase 2E context attacks (19-32)", () => {
     const text = `SECTION 6.01. Indebtedness . (a) Indebtedness not to exceed $5,000,000 shall be permitted. (b) This Section 6.01 shall apply only to Restricted Subsidiaries that are Domestic Subsidiaries.`;
     const { index, bundle } = buildCorrectBundle(text, "6.01(a)");
     const corrupted = removeItem(bundle, "ENTITY_SCOPE", "6.01(b)");
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.01(a)")!.nodeKey, index, packageGraph: null, bundle: corrupted });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.01(a)")!.nodeId, index, packageGraph: null, bundle: corrupted });
     expect(findings.some((f) => f.findingType === "MISSING_ENTITY_SCOPE")).toBe(true);
   });
 
@@ -237,14 +237,14 @@ describe("Phase 2E context attacks (19-32)", () => {
     const text = `SECTION 6.01. Indebtedness . The Borrower shall not incur Indebtedness except as permitted under the calculation methodology in Section 1.06. SECTION 1.06. Calculation of Amounts . For purposes of determination of compliance, accounting principles shall be applied consistently.`;
     const { index, bundle } = buildCorrectBundle(text, "6.01");
     const corrupted = removeUnresolved(removeItem(removeItem(bundle, "CROSS_REFERENCE", "1.06"), "CALCULATION_PROVISION", "1.06"), "1.06");
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.01")!.nodeKey, index, packageGraph: null, bundle: corrupted });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.01")!.nodeId, index, packageGraph: null, bundle: corrupted });
     expect(findings.some((f) => f.findingType === "SILENT_UNRESOLVED_DEPENDENCY" && f.sourceCitation.includes("1.06"))).toBe(true);
   });
 
   it("27. a relative reference already surfaced as unresolved by Phase 2D produces no false auditor claim (known V1 limitation: relative references are not independently modeled)", () => {
     const text = `SECTION 6.01. Indebtedness . Indebtedness permitted under the preceding paragraph shall not exceed $5,000,000.`;
     const { index, bundle } = buildCorrectBundle(text, "6.01");
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.01")!.nodeKey, index, packageGraph: null, bundle });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.01")!.nodeId, index, packageGraph: null, bundle });
     // The auditor does not independently detect relative references (only absolute SECTION/ARTICLE/SCHEDULE/EXHIBIT mentions via Phase 2A's node-anchored index) - it must never fabricate a finding about text it cannot independently evaluate.
     expect(findings.some((f) => f.sourceEvidence.includes("preceding paragraph"))).toBe(false);
   });
@@ -263,7 +263,7 @@ describe("Phase 2E context attacks (19-32)", () => {
       instruments: [],
       performance: { documentCount: 2, totalCharsScanned: 0, relationshipCandidatesGenerated: 0, relationshipsResolved: 0, relationshipsUnresolved: 0, modificationCandidatesGenerated: 1, crossDocumentReferenceLeadsGenerated: 0, wallClockMs: 0, semanticCallsUsed: 0 },
     };
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.01")!.nodeKey, index, packageGraph, bundle });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.01")!.nodeId, index, packageGraph, bundle });
     expect(findings.some((f) => f.findingType === "MISSING_AMENDMENT_LEAD")).toBe(true);
   });
 
@@ -281,7 +281,7 @@ describe("Phase 2E context attacks (19-32)", () => {
       instruments: [],
       performance: { documentCount: 2, totalCharsScanned: 0, relationshipCandidatesGenerated: 0, relationshipsResolved: 0, relationshipsUnresolved: 0, modificationCandidatesGenerated: 1, crossDocumentReferenceLeadsGenerated: 0, wallClockMs: 0, semanticCallsUsed: 0 },
     };
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.02")!.nodeKey, index, packageGraph, bundle });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.02")!.nodeId, index, packageGraph, bundle });
     expect(findings.some((f) => f.findingType === "MISSING_AMENDMENT_LEAD")).toBe(true);
   });
 
@@ -299,7 +299,7 @@ describe("Phase 2E context attacks (19-32)", () => {
       instruments: [],
       performance: { documentCount: 1, totalCharsScanned: 0, relationshipCandidatesGenerated: 0, relationshipsResolved: 0, relationshipsUnresolved: 0, modificationCandidatesGenerated: 0, crossDocumentReferenceLeadsGenerated: 1, wallClockMs: 0, semanticCallsUsed: 0 },
     };
-    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.01")!.nodeKey, index, packageGraph, bundle });
+    const findings = auditContextCoverage({ companyId: "c", packageKey: "p", instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.01")!.nodeId, index, packageGraph, bundle });
     expect(findings.some((f) => f.findingType === "MISSING_CROSS_DOCUMENT_REFERENCE")).toBe(false);
   });
 
@@ -311,7 +311,7 @@ describe("Phase 2E context attacks (19-32)", () => {
       { documentId: "docB", label: "CA-B", text: textB },
     ]);
     const nodeA = index.getNodeByRef("docA", "6.01")!;
-    const expectations = buildIndependentContextExpectations("docA", nodeA.nodeKey, index, null);
+    const expectations = buildIndependentContextExpectations("docA", nodeA.nodeId, index, null);
     const ebitda = expectations.definitions.find((d) => d.normalizedTerm === "consolidated ebitda");
     expect(ebitda?.exactTerm).toBe("Consolidated EBITDA");
     // Verify it resolved to document A's own definition text, not document B's.
@@ -324,7 +324,7 @@ describe("Phase 2E context attacks (19-32)", () => {
     const text = `SECTION 6.01. Indebtedness . The Borrower shall not incur Indebtedness in excess of " Available Amount " . " Available Amount " means an amount determined by reference to the " Cumulative Credit " . " Cumulative Credit " means an amount determined by reference to the " Available Amount " .`;
     const index = buildTestIndex([{ documentId: DOC, label: "CA", text }]);
     const node = index.getNodeByRef(DOC, "6.01")!;
-    const expectations = buildIndependentContextExpectations(DOC, node.nodeKey, index, null);
+    const expectations = buildIndependentContextExpectations(DOC, node.nodeId, index, null);
     expect(expectations.definitions.length).toBeGreaterThan(0);
     expect(expectations.definitions.length).toBeLessThan(10);
   });
@@ -366,7 +366,7 @@ describe("Phase 2E auditor quality controls (33-38)", () => {
     const index = buildTestIndex([{ documentId: DOC, label: "CA", text }]);
     const regions = buildSourceCoverageInventory(DOC, index, { companyId: "c", packageKey: "p", instrumentKey: null });
     const node = index.getNodeByRef(DOC, "6.01")!;
-    const candidates = [makeCandidate({ documentId: DOC, structuralNodeKeys: [node.nodeKey], normalizedSourceRef: "6.01" })];
+    const candidates = [makeCandidate({ documentId: DOC, structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: "6.01" })];
     const findings = auditDiscoveryCoverage(regions, candidates, index);
     expect(findings.filter((f) => f.materiality === "MATERIAL")).toHaveLength(0);
   });

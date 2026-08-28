@@ -129,6 +129,7 @@ export function buildCompilerInputForCase(c: Case, index: ReturnType<typeof buil
   const instrumentKey = `${c.pkg}-instrument`;
 
   let structuralNodeKeys: string[] = [];
+  let structuralNodeIds: string[] = [];
   let operativeSourceText: string;
   if (c.kind === "section") {
     const node = index.getNodeByRef(c.documentId, c.sectionRef!);
@@ -137,7 +138,8 @@ export function buildCompilerInputForCase(c: Case, index: ReturnType<typeof buil
       return null;
     }
     structuralNodeKeys = [node.nodeKey];
-    operativeSourceText = index.getNodeText(node.nodeKey, "DESCENDANTS");
+    structuralNodeIds = [node.nodeId];
+    operativeSourceText = index.getNodeText(node.nodeId, "DESCENDANTS");
   } else {
     let fullText = index.getDefinitionFullText(c.termName!, c.documentId);
     // FWRG's definitions-excerpt.txt lost its opening curly-quote character during curation
@@ -166,6 +168,7 @@ export function buildCompilerInputForCase(c: Case, index: ReturnType<typeof buil
     discoveryId: c.id,
     documentId: c.documentId,
     structuralNodeKeys,
+    structuralNodeIds,
     normalizedSourceRef: c.sectionRef ?? c.termName ?? c.id,
     families: [c.family],
     role: c.role,

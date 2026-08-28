@@ -245,6 +245,7 @@ export function hypothesizeUnitsForRegion(region: RoutedRegion, fullText: string
   const baseAnchor: SourceAnchor = {
     documentId: region.documentId,
     structuralNodeKey: region.structuralNodeKey,
+    structuralNodeId: region.structuralNodeId,
     sectionRef: region.sectionRef,
     charStart: region.charStart,
     charEnd: region.charEnd,
@@ -307,10 +308,10 @@ export function hypothesizeUnitsForRegion(region: RoutedRegion, fullText: string
   return units;
 }
 
-function findNearestHeading(index: StructuralIndex, nodeKey: string): string | null {
-  const node = index.getNode(nodeKey);
+function findNearestHeading(index: StructuralIndex, nodeId: string): string | null {
+  const node = index.getNodeById(nodeId);
   if (node?.nodeType === "SECTION" && node.heading) return node.heading;
-  const ancestors = index.getAncestors(nodeKey);
+  const ancestors = index.getAncestors(nodeId);
   for (let i = ancestors.length - 1; i >= 0; i--) {
     const a = ancestors[i]!;
     if (a.nodeType === "SECTION" && a.heading) return a.heading;
@@ -325,10 +326,10 @@ function findNearestHeading(index: StructuralIndex, nodeKey: string): string | n
  * a raw-source-fallback region) - never the router's own truncated
  * excerptText.
  */
-function parentIsExceptionChapeau(index: StructuralIndex, nodeKey: string): boolean {
-  const parent = index.getParent(nodeKey);
+function parentIsExceptionChapeau(index: StructuralIndex, nodeId: string): boolean {
+  const parent = index.getParent(nodeId);
   if (!parent) return false;
-  const parentOwnText = index.getNodeText(parent.nodeKey, "OWN");
+  const parentOwnText = index.getNodeText(parent.nodeId, "OWN");
   return detectAllSignals(parentOwnText).some((s) => s.name === "except");
 }
 
@@ -362,24 +363,34 @@ const CONTEXTUAL_FLOOR: SemanticUnitMateriality = "MATERIAL";
 export function applyContextualMaterialityFloor(units: MaterialSemanticUnit[], index: StructuralIndex): MaterialSemanticUnit[] {
   if (units.length === 0) return units;
 
-  // The MOST materially-significant unit at each structural node - a node
-  // occasionally yields >1 unit (splitEnumeratedItems' own chapeau+items),
-  // and the chapeau (not a low-materiality sibling item) is what should
-  // represent that node's own materiality/posture for floor purposes.
-  const bestUnitByNodeKey = new Map<string, MaterialSemanticUnit>();
+  // The MOST materially-significant unit at each PHYSICAL structural
+  // occurrence - a node occasionally yields >1 unit (splitEnumeratedItems'
+  // own chapeau+items), and the chapeau (not a low-materiality sibling
+  // item) is what should represent that node's own materiality/posture for
+  // floor purposes. Phase 3F.1.2: keyed by nodeId (real physical occurrence
+  // identity), never the label-shaped structuralNodeKey - this is the exact
+  // mechanism the Phase 3F.1.1 forensic report identified as R11's root
+  // cause (docs/phase-3f1-1-residual-safety-forensics.md): when a parent
+  // occurrence's label collided with another occurrence's, `getParent`
+  // could resolve to the wrong physical ancestor, or the lookup below could
+  // miss the correct parent's own best unit entirely (registered under a
+  // DIFFERENT physical occurrence that happened to share the same label),
+  // silently failing to elevate. Keying by nodeId makes this collision
+  // structurally impossible.
+  const bestUnitByNodeId = new Map<string, MaterialSemanticUnit>();
   for (const u of units) {
-    const nodeKey = u.anchors[0]?.structuralNodeKey;
-    if (!nodeKey) continue;
-    const existing = bestUnitByNodeKey.get(nodeKey);
-    if (!existing || MATERIALITY_RANK[u.materiality] > MATERIALITY_RANK[existing.materiality]) bestUnitByNodeKey.set(nodeKey, u);
+    const nodeId = u.anchors[0]?.structuralNodeId;
+    if (!nodeId) continue;
+    const existing = bestUnitByNodeId.get(nodeId);
+    if (!existing || MATERIALITY_RANK[u.materiality] > MATERIALITY_RANK[existing.materiality]) bestUnitByNodeId.set(nodeId, u);
   }
 
   return units.map((unit) => {
-    const nodeKey = unit.anchors[0]?.structuralNodeKey;
-    if (!nodeKey) return unit; // raw-source-fallback units have no structural parent to inherit from
-    const parentNode = index.getParent(nodeKey);
+    const nodeId = unit.anchors[0]?.structuralNodeId;
+    if (!nodeId) return unit; // raw-source-fallback units have no structural parent to inherit from
+    const parentNode = index.getParent(nodeId);
     if (!parentNode) return unit;
-    const parentUnit = bestUnitByNodeKey.get(parentNode.nodeKey);
+    const parentUnit = bestUnitByNodeId.get(parentNode.nodeId);
     if (!parentUnit) return unit; // parent was never admitted/hypothesized - nothing to inherit from (a genuine remaining routing gap, Workstream A's own concern)
 
     const parentIsOperative = parentUnit.postureSignal === "PROHIBITION_SIGNAL" || parentUnit.postureSignal === "OBLIGATION_SIGNAL" || parentUnit.detectedSignals.includes("except");
@@ -391,7 +402,7 @@ export function applyContextualMaterialityFloor(units: MaterialSemanticUnit[], i
     return {
       ...unit,
       materiality: CONTEXTUAL_FLOOR,
-      materialityReasoning: `${unit.materialityReasoning} | ELEVATED to ${CONTEXTUAL_FLOOR} by contextual floor (Phase 3F.1 §19-21): structural child of ${parentNode.nodeKey} (parent materiality ${parentUnit.materiality}, posture ${parentUnit.postureSignal}) - a nested item under an operative restriction/obligation/exception list carries real legal or economic effect regardless of whether its own text independently states a number.`,
+      materialityReasoning: `${unit.materialityReasoning} | ELEVATED to ${CONTEXTUAL_FLOOR} by contextual floor (Phase 3F.1 §19-21): structural child of ${parentNode.nodeId} (parent materiality ${parentUnit.materiality}, posture ${parentUnit.postureSignal}) - a nested item under an operative restriction/obligation/exception list carries real legal or economic effect regardless of whether its own text independently states a number.`,
       contextuallyElevated: true,
     };
   });
@@ -400,9 +411,9 @@ export function applyContextualMaterialityFloor(units: MaterialSemanticUnit[], i
 export function hypothesizeUnitsForDocument(routing: DocumentRoutingResult, index: StructuralIndex, ctx: HypothesisContext): MaterialSemanticUnit[] {
   const units: MaterialSemanticUnit[] = [];
   for (const region of routing.regions) {
-    const fullText = region.structuralNodeKey ? index.getNodeText(region.structuralNodeKey, "OWN") : (index.getDocumentText(region.documentId) ?? "").slice(region.charStart, region.charEnd);
-    const headingHint = region.structuralNodeKey ? findNearestHeading(index, region.structuralNodeKey) : null;
-    const parentException = region.structuralNodeKey ? parentIsExceptionChapeau(index, region.structuralNodeKey) : false;
+    const fullText = region.structuralNodeId ? index.getNodeText(region.structuralNodeId, "OWN") : (index.getDocumentText(region.documentId) ?? "").slice(region.charStart, region.charEnd);
+    const headingHint = region.structuralNodeId ? findNearestHeading(index, region.structuralNodeId) : null;
+    const parentException = region.structuralNodeId ? parentIsExceptionChapeau(index, region.structuralNodeId) : false;
     units.push(...hypothesizeUnitsForRegion(region, fullText, headingHint, ctx, parentException));
   }
   return applyContextualMaterialityFloor(units, index);

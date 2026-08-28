@@ -1,11 +1,16 @@
 /**
  * Structural Node Identity & Index Integrity architecture proposal - tests
  * for the proposal's own artifacts and evidence (task §41 equivalent).
- * Production code is frozen for this phase: these tests validate the
- * synthetic collision reproduction, the machine-readable artifacts, and
- * the freeze/integrity claims - not new production behavior. No production
- * source is modified by this suite; the reproduction script imports and
- * calls the real, unmodified parseDocumentStructure/buildStructuralIndex.
+ * Production code was frozen when this suite was originally written (the
+ * ARCH-PROP phase, before the ADR's design was implemented); Phase 3F.1.2
+ * then implemented the ADR exactly as proposed, which intentionally changes
+ * the one behavior this suite's first test originally documented as a
+ * DEFECT (getNodeByRef silently picking an arbitrary occurrence on
+ * ambiguity) - that assertion was updated in 3F.1.2 to assert the new,
+ * fixed, safe-by-omission behavior instead of the old bug, since asserting
+ * a bug's continued presence after it has been deliberately fixed would be
+ * asserting the wrong thing, not preserving a real safety gate. Every other
+ * test in this file (artifact/freeze/integrity checks) is unchanged.
  */
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
@@ -41,12 +46,17 @@ Section 6.05 Limitation on Investments . Neither party shall make any investment
     const index = buildStructuralIndex(new Map([["synthetic-doc-a", { text, nodes }]]), [], []);
     expect(index.allNodes().length).toBe(nodes.length);
 
-    // The defect: only the later occurrence is reachable by identity lookup, even though both exist in allNodes().
+    // Phase 3F.1.2 FIX (was the defect this test originally documented): the deprecated
+    // getNodeByRef is now safe-by-omission - undefined on an ambiguous reference, never an
+    // arbitrary pick of one colliding occurrence over the other.
     const resolved = index.getNodeByRef("synthetic-doc-a", "6.04");
-    expect(resolved?.charStart).toBe(Math.max(...collided.map((c) => c.charStart)));
-    const earlierOccurrence = collided.find((c) => c.charStart !== resolved?.charStart)!;
-    expect(index.allNodes().some((n) => n.charStart === earlierOccurrence.charStart)).toBe(true);
-    expect(index.getNode(earlierOccurrence.nodeKey)?.charStart).not.toBe(earlierOccurrence.charStart);
+    expect(resolved).toBeUndefined();
+    const resolution = index.resolveUniqueNodeByRef("synthetic-doc-a", "6.04");
+    expect(resolution.status).toBe("AMBIGUOUS");
+    // Both physical occurrences remain independently reachable by their own real nodeId - neither is unreachable, unlike the pre-3F.1.2 defect.
+    for (const occ of collided) {
+      expect(index.getNodeById(occ.nodeId)?.charStart).toBe(occ.charStart);
+    }
   });
 
   it("a non-colliding, ordinary section is completely unaffected (the defect does not corrupt the common case)", () => {
@@ -61,7 +71,7 @@ Section 6.05 Limitation on Investments . Neither party shall make any investment
     const index = buildStructuralIndex(new Map([["synthetic-doc-clean", { text, nodes }]]), [], []);
     const section = index.getNodeByRef("synthetic-doc-clean", "6.05");
     expect(section).toBeDefined();
-    expect(index.getChildren(section!.nodeKey).map((c) => c.sectionRef).sort()).toEqual(["6.05(a)", "6.05(b)"]);
+    expect(index.getChildren(section!.nodeId).map((c) => c.sectionRef).sort()).toEqual(["6.05(a)", "6.05(b)"]);
   });
 
   it("the preserved collision-repro artifact's own recorded conclusion matches a fresh re-run", () => {

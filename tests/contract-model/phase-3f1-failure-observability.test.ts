@@ -46,6 +46,7 @@ function discoveredCandidate(discoveryId: string): DiscoveredCandidate {
     discoveryId,
     documentId: "sem-test-doc",
     structuralNodeKeys: [],
+    structuralNodeIds: [],
     normalizedSourceRef: "9.01",
     families: [],
     role: "BASKET",

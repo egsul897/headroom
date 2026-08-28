@@ -21,8 +21,9 @@
  * pass - never a second full-document rescan per node.
  */
 import { hashParts } from "./hashing";
+import { computeStableKey } from "../stable-keys";
 import { buildClauseTree } from "./clause-hierarchy";
-import type { CompilerDocumentInput, StageRunResult, StructuralNode } from "./types";
+import { STRUCTURAL_INDEX_VERSION, type CompilerDocumentInput, type StageRunResult, type StructuralNode } from "./types";
 
 /**
  * Phase 2A finding: the original line-anchored (`^...$`) patterns silently
@@ -224,13 +225,36 @@ export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNo
     return ord;
   });
 
-  // Owned text span (own text + every descendant) via one rank-based stack pass - O(n), no per-node rescanning.
+  // Phase 3F.1.2 - the unique PHYSICAL SOURCE OCCURRENCE identity for each raw
+  // node, computed up front from documentId + nodeType + charStart (the
+  // approved ADR's "Option D" span-primary construction, via the repo's
+  // existing computeStableKey convention - never a second hashing scheme).
+  // Unlike sectionRef/nodeKey (labels, which real drafting can legitimately
+  // repeat - a cross-reference sentence, a table-of-contents entry, a
+  // duplicate/malformed section number - see
+  // docs/architecture/STRUCTURAL-NODE-IDENTITY-ADR.md), no two raws in this
+  // array can ever collide on nodeId: charStart is unique per physical match
+  // within one parse pass (overlapsAny already prevents accepting two
+  // overlapping matches into the same candidate set).
+  const nodeIds = raws.map((r) => computeStableKey("structural-node", doc.documentId, r.nodeType, String(r.charStart)));
+
+  // Owned text span (own text + every descendant) AND the true physical
+  // parent occurrence via one rank-based stack pass - O(n), no per-node
+  // rescanning. The stack top at push time (after popping every entry whose
+  // rank is >= this node's own rank) is, by construction, the nearest
+  // enclosing node of shallower rank - i.e. this node's real, physical
+  // parent occurrence, determined from actual nesting position, never by
+  // re-matching parentSectionRef against a label (which is exactly the
+  // mechanism that let two distinct physical occurrences merge children
+  // under the pre-3F.1.2 label-keyed scheme).
   const charEndByIndex = new Map<number, number>();
+  const parentIndexByIndex = new Map<number, number>();
   const stack: number[] = [];
   raws.forEach((r, i) => {
     while (stack.length > 0 && RANK[raws[stack[stack.length - 1]!]!.nodeType] >= RANK[r.nodeType]) {
       charEndByIndex.set(stack.pop()!, r.charStart);
     }
+    if (stack.length > 0) parentIndexByIndex.set(i, stack[stack.length - 1]!);
     stack.push(i);
   });
   while (stack.length > 0) charEndByIndex.set(stack.pop()!, doc.text.length);
@@ -242,10 +266,12 @@ export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNo
       heading: r.heading,
       sectionRef: r.sectionRef,
       nodeKey: `${doc.documentId}::${r.sectionRef.replace(/\s+/g, "")}`,
+      nodeId: nodeIds[i]!,
       charStart: r.charStart,
       charEnd: charEndByIndex.get(i) ?? doc.text.length,
       ordinal: ordinals[i]!,
       parentSectionRef: r.parentSectionRef,
+      parentNodeId: parentIndexByIndex.has(i) ? nodeIds[parentIndexByIndex.get(i)!]! : null,
     }))
     .sort((a, b) => a.charStart - b.charStart);
 }
@@ -259,5 +285,5 @@ export function runStructureStage(documents: CompilerDocumentInput[]): StageRunR
 }
 
 export function structureOutputHash(nodes: StructuralNode[]): string {
-  return hashParts(nodes.map((n) => `${n.documentId}|${n.nodeType}|${n.sectionRef}|${n.charStart}`));
+  return hashParts([STRUCTURAL_INDEX_VERSION, ...nodes.map((n) => `${n.documentId}|${n.nodeType}|${n.sectionRef}|${n.charStart}|${n.nodeId}`)]);
 }

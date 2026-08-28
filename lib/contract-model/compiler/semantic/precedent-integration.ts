@@ -172,6 +172,7 @@ function buildPrecedentContextItem(precedents: GeneralizedPrecedent[], sourceDoc
     type: "OTHER_REQUIRED_CONTEXT",
     documentId: sourceDocumentId,
     structuralNodeKey: null,
+    structuralNodeId: null,
     normalizedRef,
     sourceCitation: "reviewed semantic precedent library (Phase 3D)",
     excerptText: [

@@ -61,7 +61,7 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
       rule({ relativeRef: "(b)", role: "BASKET", families: ["INDEBTEDNESS"] }),
       rule({ relativeRef: "(c)", role: "BASKET", families: ["INDEBTEDNESS"] }),
     ];
-    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "6.01", items, "v1");
+    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "6.01", items, "v1");
     const basketRefs = candidates.filter((c) => c.role === "BASKET").map((c) => c.normalizedSourceRef);
     expect(basketRefs.sort()).toEqual(["6.01(a)", "6.01(b)", "6.01(c)"]);
   });
@@ -70,7 +70,7 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
     const index = indexFor({ documentId: "d1", label: "d1", text: "Section 6.02. Liens. The Company shall not grant Liens, except: (a) Permitted Liens; (b) Liens on the Collateral." });
     const section = index.getNodeByRef("d1", "6.02")!;
     const items: SemanticRuleItem[] = [rule({ relativeRef: "(a)", role: "EXCEPTION" }), rule({ relativeRef: "(b)", role: "EXCEPTION" })];
-    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "6.02", items, "v1");
+    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "6.02", items, "v1");
     expect(candidates.some((c) => c.normalizedSourceRef === "6.02" && c.role === "GENERAL_PROHIBITION")).toBe(true);
     expect(candidates.filter((c) => c.role === "EXCEPTION")).toHaveLength(2);
   });
@@ -116,7 +116,7 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
     const index = indexFor({ documentId: "d1", label: "d1", text: "Section 6.01. Indebtedness. Except: (a) up to $10,000,000; provided that no Default has occurred and is continuing." });
     const section = index.getNodeByRef("d1", "6.01")!;
     const items: SemanticRuleItem[] = [rule({ relativeRef: "(a)", role: "BASKET" }), rule({ relativeRef: "(a)", role: "PROVISO", description: "no-default proviso narrowing (a)" })];
-    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "6.01", items, "v1");
+    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "6.01", items, "v1");
     const proviso = candidates.find((c) => c.role === "PROVISO");
     expect(proviso).toBeDefined();
     expect(proviso!.structuralNodeKeys).toContain(section.nodeKey);
@@ -135,7 +135,7 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
     // the real guarantee is at Pass B/reconciliation: a definition-only item is never forced into a covenant role.
     const items: SemanticRuleItem[] = [rule({ relativeRef: "", role: "DEFINITIONAL_DEPENDENCY_CANDIDATE", families: [], description: "defined term, not itself a covenant" })];
     const section = index.getNodeByRef("d1", "1.01")!;
-    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "1.01", items, "v1");
+    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "1.01", items, "v1");
     expect(candidates.every((c) => c.role !== "BASKET" && c.role !== "GENERAL_PROHIBITION" || c.description.includes("synthesized"))).toBe(true);
   });
 
@@ -143,7 +143,7 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
     const index = indexFor({ documentId: "d1", label: "d1", text: "Section 6.07. Fundamental Changes; Dispositions. (a) the Company may merge with a Subsidiary; (b) the Company may dispose of assets not exceeding $5,000,000." });
     const section = index.getNodeByRef("d1", "6.07")!;
     const items: SemanticRuleItem[] = [rule({ relativeRef: "(a)", role: "PERMISSION", families: ["FUNDAMENTAL_CHANGES"] }), rule({ relativeRef: "(b)", role: "BASKET", families: ["ASSET_SALES"] })];
-    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "6.07", items, "v1");
+    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "6.07", items, "v1");
     const families = new Set(candidates.flatMap((c) => c.families));
     expect(families.has("FUNDAMENTAL_CHANGES")).toBe(true);
     expect(families.has("ASSET_SALES")).toBe(true);
@@ -153,7 +153,7 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
     const index = indexFor({ documentId: "d1", label: "d1", text: "Section 6.09. Holdings. Holdings shall not create any Lien or merge with any Person." });
     const section = index.getNodeByRef("d1", "6.09")!;
     const items: SemanticRuleItem[] = [rule({ relativeRef: "", role: "GENERAL_PROHIBITION", families: ["LIENS", "FUNDAMENTAL_CHANGES", "ENTITY_SCOPE_RESTRICTIONS"] })];
-    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "6.09", items, "v1");
+    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "6.09", items, "v1");
     expect(candidates[0]!.families).toEqual(expect.arrayContaining(["LIENS", "FUNDAMENTAL_CHANGES", "ENTITY_SCOPE_RESTRICTIONS"]));
   });
 
@@ -161,7 +161,7 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
     const index = indexFor({ documentId: "d1", label: "d1", text: "Section 6.04. Disposals. (a) disposals permitted under Section 6.06; (b) disposals not exceeding $1,000,000." });
     const section = index.getNodeByRef("d1", "6.04")!;
     const items: SemanticRuleItem[] = [rule({ relativeRef: "(a)", role: "PERMISSION", description: "delegates to Section 6.06", definedTermDependencyLikely: false }), rule({ relativeRef: "(b)", role: "BASKET" })];
-    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "6.04", items, "v1");
+    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "6.04", items, "v1");
     expect(candidates.some((c) => c.normalizedSourceRef === "6.04(a)" && c.description.includes("Section 6.06"))).toBe(true);
   });
 
@@ -185,7 +185,7 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
     const index = indexFor({ documentId: "d1", label: "d1", text: "Section 6.11. Restricted Payments. The Company shall not make Restricted Payments except: (a) dividends to the extent of $500,000 per year." });
     const section = index.getNodeByRef("d1", "6.11")!;
     const items: SemanticRuleItem[] = [rule({ relativeRef: "(a)", role: "BASKET", families: ["RESTRICTED_PAYMENTS"] })];
-    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "6.11", items, "v1");
+    const { candidates } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "6.11", items, "v1");
     const basket = candidates.find((c) => c.role === "BASKET")!;
     expect(basket.structuralNodeKeys).toContain(section.nodeKey);
   });
@@ -195,10 +195,10 @@ describe("Phase 2B discovery - 18 required synthetic scenarios", () => {
     const section = index.getNodeByRef("d1", "6.01")!;
     const nodeA = index.getNodeByRef("d1", "6.01(a)")!;
     const deterministic = runPassADeterministicSignals("d1", index);
-    const deterministicByNodeKey = new Map(deterministic.map((c) => [c.nodeKey, c] as const));
+    const deterministicByNodeId = new Map(deterministic.map((c) => [c.nodeId, c] as const));
     const items: SemanticRuleItem[] = [rule({ relativeRef: "(a)", role: "BASKET" }), rule({ relativeRef: "(a)", role: "BASKET", description: "second, overlapping signal for the same basket" })];
-    const { candidates: expanded, discoveryId } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "6.01", items, "v1");
-    const { candidates: reconciled, duplicatesBeforeReconciliation } = runPassDReconciliation({ documentId: "d1", discoveryRunVersion: "v1", expanded, discoveryId, deterministicByNodeKey });
+    const { candidates: expanded, discoveryId } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "6.01", items, "v1");
+    const { candidates: reconciled, duplicatesBeforeReconciliation } = runPassDReconciliation({ documentId: "d1", discoveryRunVersion: "v1", expanded, discoveryId, deterministicByNodeId });
     const basketCandidates = reconciled.filter((c) => c.structuralNodeKeys.includes(nodeA.nodeKey) && c.role === "BASKET");
     expect(basketCandidates).toHaveLength(1);
     expect(duplicatesBeforeReconciliation).toBeGreaterThan(0);

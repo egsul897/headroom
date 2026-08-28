@@ -95,7 +95,7 @@ function retrieveCrossDocumentDefinitionFallback(state: RetrievalState, access: 
       const fullText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
       if (fullText.trim().length === 0) continue;
       if (!withinBudget(state, fullText.length)) return;
-      const item = addItem(state, makeItemInput("DEFINITION", resolved.documentId, null, resolved.exactTerm, `Definition of "${resolved.exactTerm}" (${resolved.documentId})`, fullText, `Term used in the covenant's own text but not declared in this document - resolved via ${resolved.resolutionPath}, never a whole-package search (task §21).`, 1, [operativeItemId], "PACKAGE_GRAPH", 0.8));
+      const item = addItem(state, makeItemInput("DEFINITION", resolved.documentId, null, null, resolved.exactTerm, `Definition of "${resolved.exactTerm}" (${resolved.documentId})`, fullText, `Term used in the covenant's own text but not declared in this document - resolved via ${resolved.resolutionPath}, never a whole-package search (task §21).`, 1, [operativeItemId], "PACKAGE_GRAPH", 0.8));
       addEdge(state, operativeItemId, item.itemId, "DEPENDS_ON_DEFINITION", `Cross-document definition dependency (${resolved.resolutionPath}).`);
     } else {
       // Only surfaced as unresolved if the phrase is not a common non-defined capitalized phrase - a conservative bar (>=2 words, appears at least once) already filters most false positives; still, this is reported as LOW severity since many such phrases are legitimately not defined terms at all (a proper noun, a party name).
@@ -124,31 +124,31 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   const { candidate } = input;
   const documentId = candidate.documentId;
 
-  const primaryNodeKey = candidate.structuralNodeKeys[0];
-  if (!primaryNodeKey) {
+  const primaryNodeId = candidate.structuralNodeIds[0];
+  if (!primaryNodeId) {
     // No structural node at all - nothing to retrieve; report INCOMPLETE honestly rather than fabricating a bundle (never SUFFICIENT merely because there was nothing to traverse - task §25).
-    state.unresolved.push({ originatingNodeKey: null, dependencyType: "OTHER", sourceText: candidate.normalizedSourceRef, attemptedResolution: "The discovered candidate carries no structural node key at all.", reason: "Cannot retrieve context for a candidate with no anchoring structural node.", candidateTargets: [], citation: candidate.sourceCitation, severity: "HIGH" });
+    state.unresolved.push({ originatingNodeKey: null, dependencyType: "OTHER", sourceText: candidate.normalizedSourceRef, attemptedResolution: "The discovered candidate carries no structural node identity at all.", reason: "Cannot retrieve context for a candidate with no anchoring structural node.", candidateTargets: [], citation: candidate.sourceCitation, severity: "HIGH" });
     return finalize(input, state, documentId, start);
   }
 
-  const operativeItem = retrieveOperativeSource(state, access.index, documentId, primaryNodeKey);
+  const operativeItem = retrieveOperativeSource(state, access.index, documentId, primaryNodeId);
   if (!operativeItem) {
-    state.unresolved.push({ originatingNodeKey: primaryNodeKey, dependencyType: "OTHER", sourceText: candidate.normalizedSourceRef, attemptedResolution: `Looked up nodeKey "${primaryNodeKey}" in the structural index.`, reason: "The candidate's own structural node does not exist in the supplied index.", candidateTargets: [], citation: candidate.sourceCitation, severity: "HIGH" });
+    state.unresolved.push({ originatingNodeKey: primaryNodeId, dependencyType: "OTHER", sourceText: candidate.normalizedSourceRef, attemptedResolution: `Looked up nodeId "${primaryNodeId}" in the structural index.`, reason: "The candidate's own structural node does not exist in the supplied index.", candidateTargets: [], citation: candidate.sourceCitation, severity: "HIGH" });
     return finalize(input, state, documentId, start);
   }
 
   // Any additional structural nodes the discovery candidate itself already spans (Pass C neighborhood expansion) are retrieved as further operative source items, never dropped.
-  for (const extraNodeKey of candidate.structuralNodeKeys.slice(1)) {
-    retrieveOperativeSource(state, access.index, documentId, extraNodeKey);
+  for (const extraNodeId of candidate.structuralNodeIds.slice(1)) {
+    retrieveOperativeSource(state, access.index, documentId, extraNodeId);
   }
 
-  retrieveParentScope(state, access.index, documentId, primaryNodeKey, operativeItem.itemId);
-  retrieveChildRules(state, access.index, documentId, primaryNodeKey, operativeItem.itemId);
-  retrieveSiblingContext(state, access.index, documentId, primaryNodeKey, operativeItem.itemId);
+  retrieveParentScope(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+  retrieveChildRules(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
+  retrieveSiblingContext(state, access.index, documentId, primaryNodeId, operativeItem.itemId);
 
-  const operativeText = access.index.getNodeText(primaryNodeKey, "DESCENDANTS");
+  const operativeText = access.index.getNodeText(primaryNodeId, "DESCENDANTS");
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
-  retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeKey, operativeItem.itemId, 1, true);
+  retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true);
 
   // Definition-fallback and reference-detection-within-definitions run
   // regardless of whether a package graph is available - an undeclared
@@ -161,7 +161,7 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   retrieveCrossDocumentDependenciesForDefinitions(state, access, documentId);
 
   if (access.packageGraph) {
-    const sectionRef = access.index.getNode(primaryNodeKey)?.sectionRef ?? candidate.normalizedSourceRef;
+    const sectionRef = access.index.getNodeById(primaryNodeId)?.sectionRef ?? candidate.normalizedSourceRef;
     retrieveAmendmentLeadsForSection(state, access.packageGraph, documentId, sectionRef, operativeItem.itemId);
     retrieveCrossDocumentReferenceLeads(state, access.packageGraph, documentId, operativeItem.itemId);
   }
@@ -189,6 +189,7 @@ function finalize(input: BuildContextBundleInput, state: RetrievalState, documen
     originatingDocumentId: documentId,
     originatingDiscoveryId: candidate.discoveryId,
     originatingStructuralNodeKeys: candidate.structuralNodeKeys,
+    originatingStructuralNodeIds: candidate.structuralNodeIds,
     normalizedSourceRef: candidate.normalizedSourceRef,
     originatingFamilies: candidate.families,
     items: [...state.items.values()],

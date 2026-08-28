@@ -68,9 +68,9 @@ function auditPackage(label: string, dir: string, benchmark: typeof FWRG_CONTEXT
     const candidate = candidates.find((x) => x.discoveryId === c.discoveryId);
     if (!candidate) continue;
     const bundle = buildCovenantContextBundle({ candidate, packageKey: label, companyId: label, instrumentKey: null }, { index: access.index, packageGraph: null, exactTermsByDocument: access.exactTermsByDocument });
-    const nodeKey = bundle.originatingStructuralNodeKeys[0];
-    if (!nodeKey) continue;
-    contextFindings.push(...auditContextCoverage({ companyId: label, packageKey: label, instrumentKey: null, documentId: label, nodeKey, index: access.index, packageGraph: null, bundle }));
+    const nodeId = bundle.originatingStructuralNodeIds[0];
+    if (!nodeId) continue;
+    contextFindings.push(...auditContextCoverage({ companyId: label, packageKey: label, instrumentKey: null, documentId: label, nodeId, index: access.index, packageGraph: null, bundle }));
     contextFindings.push(...auditDefinitionCompleteness(bundle, access.index, label, label, label, null));
   }
   summarizeFindings(`${label} CONTEXT coverage (12-case Phase 2D benchmark, independently re-audited from source)`, contextFindings);

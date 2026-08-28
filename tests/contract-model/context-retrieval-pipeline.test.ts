@@ -21,6 +21,7 @@ function candidate(overrides: Partial<DiscoveredCandidate>): DiscoveredCandidate
     discoveryId: "discovery-candidate:test",
     documentId: "doc1",
     structuralNodeKeys: [],
+    structuralNodeIds: [],
     normalizedSourceRef: "6.01(a)",
     families: ["INDEBTEDNESS"],
     role: "BASKET",
@@ -55,7 +56,7 @@ function build(docs: TestDocument[], sectionRef: string, overrides: Partial<Disc
   const a = access ?? accessFor(docs);
   const node = a.index.getNodeByRef(overrides.documentId ?? "doc1", sectionRef);
   if (!node) throw new Error(`test setup error: no node for ${sectionRef}`);
-  return buildCovenantContextBundle({ candidate: candidate({ documentId: overrides.documentId ?? "doc1", structuralNodeKeys: [node.nodeKey], normalizedSourceRef: sectionRef, ...overrides }), packageKey: "pkg", companyId: "co", instrumentKey: null, budget }, a);
+  return buildCovenantContextBundle({ candidate: candidate({ documentId: overrides.documentId ?? "doc1", structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: sectionRef, ...overrides }), packageKey: "pkg", companyId: "co", instrumentKey: null, budget }, a);
 }
 
 // ---------------------------------------------------------------------------

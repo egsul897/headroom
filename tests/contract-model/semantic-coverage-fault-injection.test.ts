@@ -42,11 +42,22 @@ function buildIndex() {
   return buildTestIndex([{ documentId: "doc-1", label: "Credit Agreement", text: SAMPLE_DOCUMENT }]);
 }
 
+// buildTestIndex/parseDocumentStructure is deterministic over identical
+// source text - the same real charStart-derived nodeId is produced by
+// every fresh buildIndex() call below, so this module-level index is only
+// ever used to resolve the real nodeId for a given sectionRef, never
+// passed into the pipeline itself (each `it()` builds its own real index).
+const nodeIdIndex = buildIndex();
+function nodeIdFor(sectionRef: string): string {
+  return nodeIdIndex.getNodeByRef("doc-1", sectionRef)!.nodeId;
+}
+
 function makeCandidate(discoveryId: string, nodeKeys: string[]): DiscoveredCandidate {
   return {
     discoveryId,
     documentId: "doc-1",
     structuralNodeKeys: nodeKeys,
+    structuralNodeIds: nodeKeys.map((k) => nodeIdFor(k.split("::")[1]!)),
     normalizedSourceRef: nodeKeys[0]!,
     families: ["INDEBTEDNESS"],
     role: "BASKET",
@@ -309,10 +320,12 @@ describe("Phase 3E fault injection matrix (task #160)", () => {
       asOfDate: "2026-01-01",
       currentSourceDocumentId: "doc-2",
       currentSourceNodeKey: "doc-2::6.01(a)-amended",
+      currentSourceNodeId: "id-doc-2-6.01(a)-amended",
       currentText: "amended text",
       fullChain: [],
       appliedChain: [],
       supersededSourceNodeKeys: ["doc-1::6.01(a)"],
+      supersededSourceNodeIds: [nodeIdFor("6.01(a)")],
       status: "OPERATIVE_STATE_RESOLVED",
       unresolvedIssues: [],
       conflicts: [],
@@ -345,10 +358,12 @@ describe("Phase 3E fault injection matrix (task #160)", () => {
       asOfDate: "2026-01-01",
       currentSourceDocumentId: "doc-1",
       currentSourceNodeKey: "doc-1::6.01(a)",
+      currentSourceNodeId: nodeIdFor("6.01(a)"),
       currentText: "test",
       fullChain: [],
       appliedChain: [],
       supersededSourceNodeKeys: [],
+      supersededSourceNodeIds: [],
       status: "OPERATIVE_STATE_CONFLICTED",
       unresolvedIssues: ["two amendments conflict"],
       conflicts: [],

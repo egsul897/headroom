@@ -44,7 +44,10 @@ function anySignal(text: string, patterns: RegExp[]): boolean {
 export type IndependentSiblingRole = "PROVISO" | "EXCEPTION" | "CONDITION" | "SHARED_CAP" | "ENTITY_SCOPE";
 
 export interface IndependentSiblingExpectation {
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `nodeId`. */
   nodeKey: string;
+  /** Phase 3F.1.2 - the real physical occurrence identity of this sibling. */
+  nodeId: string;
   sectionRef: string;
   role: IndependentSiblingRole;
 }
@@ -105,12 +108,12 @@ function collectDefinitionsRecursive(index: StructuralIndex, documentId: string,
   }
 }
 
-export function buildIndependentContextExpectations(documentId: string, nodeKey: string, index: StructuralIndex, packageGraph: PackageGraphResult | null): IndependentContextExpectations {
-  const parentSectionRefs = index.getAncestors(nodeKey).filter((n) => n.nodeType !== "ARTICLE").map((n) => n.sectionRef);
-  const childSectionRefs = index.getChildren(nodeKey).map((n) => n.sectionRef);
+export function buildIndependentContextExpectations(documentId: string, nodeId: string, index: StructuralIndex, packageGraph: PackageGraphResult | null): IndependentContextExpectations {
+  const parentSectionRefs = index.getAncestors(nodeId).filter((n) => n.nodeType !== "ARTICLE").map((n) => n.sectionRef);
+  const childSectionRefs = index.getChildren(nodeId).map((n) => n.sectionRef);
 
   const siblings: IndependentSiblingExpectation[] = [];
-  for (const sib of index.getSiblings(nodeKey)) {
+  for (const sib of index.getSiblings(nodeId)) {
     // A sibling that is itself a top-level ARTICLE/SECTION is a distinct,
     // separate covenant (a different Section 6.0X entirely), never a
     // trailing proviso/exception/condition/shared-cap/entity-scope
@@ -122,15 +125,15 @@ export function buildIndependentContextExpectations(documentId: string, nodeKey:
     // "except:" wording as a "missing exception" for 6.07 - measured and
     // fixed here as a generic, non-package-specific precision fix).
     if (sib.nodeType === "SECTION" || sib.nodeType === "ARTICLE") continue;
-    const text = index.getNodeText(sib.nodeKey, "OWN");
-    if (anySignal(text, SHARED_CAP_LIKE)) siblings.push({ nodeKey: sib.nodeKey, sectionRef: sib.sectionRef, role: "SHARED_CAP" });
-    else if (anySignal(text, PROVISO_LIKE)) siblings.push({ nodeKey: sib.nodeKey, sectionRef: sib.sectionRef, role: "PROVISO" });
-    else if (anySignal(text, EXCEPTION_LIKE)) siblings.push({ nodeKey: sib.nodeKey, sectionRef: sib.sectionRef, role: "EXCEPTION" });
-    else if (anySignal(text, CONDITION_LIKE)) siblings.push({ nodeKey: sib.nodeKey, sectionRef: sib.sectionRef, role: "CONDITION" });
-    else if (anySignal(text, ENTITY_SCOPE_LIKE)) siblings.push({ nodeKey: sib.nodeKey, sectionRef: sib.sectionRef, role: "ENTITY_SCOPE" });
+    const text = index.getNodeText(sib.nodeId, "OWN");
+    if (anySignal(text, SHARED_CAP_LIKE)) siblings.push({ nodeKey: sib.nodeKey, nodeId: sib.nodeId, sectionRef: sib.sectionRef, role: "SHARED_CAP" });
+    else if (anySignal(text, PROVISO_LIKE)) siblings.push({ nodeKey: sib.nodeKey, nodeId: sib.nodeId, sectionRef: sib.sectionRef, role: "PROVISO" });
+    else if (anySignal(text, EXCEPTION_LIKE)) siblings.push({ nodeKey: sib.nodeKey, nodeId: sib.nodeId, sectionRef: sib.sectionRef, role: "EXCEPTION" });
+    else if (anySignal(text, CONDITION_LIKE)) siblings.push({ nodeKey: sib.nodeKey, nodeId: sib.nodeId, sectionRef: sib.sectionRef, role: "CONDITION" });
+    else if (anySignal(text, ENTITY_SCOPE_LIKE)) siblings.push({ nodeKey: sib.nodeKey, nodeId: sib.nodeId, sectionRef: sib.sectionRef, role: "ENTITY_SCOPE" });
   }
 
-  const operativeText = index.getNodeText(nodeKey, "DESCENDANTS");
+  const operativeText = index.getNodeText(nodeId, "DESCENDANTS");
   const definitions: IndependentDefinitionExpectation[] = [];
   collectDefinitionsRecursive(index, documentId, operativeText, new Set(), 1, 3, definitions);
 
@@ -146,13 +149,13 @@ export function buildIndependentContextExpectations(documentId: string, nodeKey:
   // distinguishes a calculation-bearing covenant from a purely
   // administrative one (task §17).
   const hasCalculationSignal = anySignal(operativeText, CALCULATION_LIKE);
-  const crossReferences: IndependentCrossReferenceExpectation[] = index.findReferencesFrom(nodeKey, true).map((ref) => ({
+  const crossReferences: IndependentCrossReferenceExpectation[] = index.findReferencesFrom(nodeId, true).map((ref) => ({
     normalizedTarget: ref.normalizedTarget,
     material: hasCalculationSignal,
     reason: hasCalculationSignal ? "the covenant's own operative text carries a calculation/interpretation signal" : "no calculation/interpretation signal in the covenant's own operative text - administrative in nature",
   }));
 
-  const allSectionRefs = new Set([index.getNode(nodeKey)?.sectionRef, ...parentSectionRefs].filter((x): x is string => !!x));
+  const allSectionRefs = new Set([index.getNodeById(nodeId)?.sectionRef, ...parentSectionRefs].filter((x): x is string => !!x));
   const definedTermSet = new Set(definitions.map((d) => d.normalizedTerm));
   const amendmentLeads: IndependentAmendmentExpectation[] =
     packageGraph?.modificationCandidates

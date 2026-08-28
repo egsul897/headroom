@@ -29,27 +29,27 @@ function classifySiblingSignal(text: string): { type: "PROVISO" | "EXCEPTION" | 
   return null;
 }
 
-export function retrieveOperativeSource(state: RetrievalState, index: StructuralIndex, documentId: string, nodeKey: string): ContextItem | null {
-  const node = index.getNode(nodeKey);
+export function retrieveOperativeSource(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string): ContextItem | null {
+  const node = index.getNodeById(nodeId);
   if (!node) return null;
-  const text = index.getNodeText(nodeKey, "DESCENDANTS");
-  return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, nodeKey, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1));
+  const text = index.getNodeText(nodeId, "DESCENDANTS");
+  return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1));
 }
 
 /** Every ancestor closer than the enclosing ARTICLE (an ARTICLE heading is never itself operative language) - task §7's "the individual exception cannot be interpreted correctly without that [parent] scope." */
-export function retrieveParentScope(state: RetrievalState, index: StructuralIndex, documentId: string, nodeKey: string, operativeItemId: string): void {
-  const ancestors = index.getAncestors(nodeKey).filter((n) => n.nodeType !== "ARTICLE");
+export function retrieveParentScope(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, operativeItemId: string): void {
+  const ancestors = index.getAncestors(nodeId).filter((n) => n.nodeType !== "ARTICLE");
   for (const ancestor of ancestors) {
-    const text = index.getNodeText(ancestor.nodeKey, "OWN");
+    const text = index.getNodeText(ancestor.nodeId, "OWN");
     if (text.trim().length === 0) continue;
     if (!withinBudget(state, text.length)) return;
-    const item = addItem(state, makeItemInput("PARENT_SCOPE", documentId, ancestor.nodeKey, ancestor.sectionRef, `Section ${ancestor.sectionRef}`, text, `Enclosing scope for Section ${ancestor.sectionRef} - the operative prohibition/permission language a nested exception or basket depends on.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1));
+    const item = addItem(state, makeItemInput("PARENT_SCOPE", documentId, ancestor.nodeKey, ancestor.nodeId, ancestor.sectionRef, `Section ${ancestor.sectionRef}`, text, `Enclosing scope for Section ${ancestor.sectionRef} - the operative prohibition/permission language a nested exception or basket depends on.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1));
     addEdge(state, item.itemId, operativeItemId, "PARENT_OF", "Encloses the operative provision.");
   }
 }
 
 /** Direct children only (not a deep recursive dump) - task §7's "a discovered section may contain independently operative subclauses. Retrieve relevant descendants." */
-export function retrieveChildRules(state: RetrievalState, index: StructuralIndex, documentId: string, nodeKey: string, operativeItemId: string): void {
+export function retrieveChildRules(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, operativeItemId: string): void {
   // NOTE (Phase 2E.1): direct children of the CANDIDATE's own primary node
   // never need referenced-region expansion here - retrieveOperativeSource
   // already retrieves the primary node's full DESCENDANTS text (pipeline.ts),
@@ -62,36 +62,36 @@ export function retrieveChildRules(state: RetrievalState, index: StructuralIndex
   // OWN-text-boundary gap this remediation targets is real for a CROSS-
   // REFERENCE TARGET (reference-context.ts), which is a distant node the
   // primary candidate's own DESCENDANTS span never covers.
-  const children = index.getChildren(nodeKey);
+  const children = index.getChildren(nodeId);
   for (const child of children) {
-    const text = index.getNodeText(child.nodeKey, "OWN");
+    const text = index.getNodeText(child.nodeId, "OWN");
     if (text.trim().length === 0) continue;
     if (!withinBudget(state, text.length)) return;
-    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.sectionRef, `Section ${child.sectionRef}`, text, `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1));
+    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1));
     addEdge(state, operativeItemId, item.itemId, "CHILD_OF", "Independently operative sub-rule of the discovered section.");
   }
 }
 
 /** Siblings included ONLY on a real textual signal (task §7 - "do not automatically include every sibling"). */
-export function retrieveSiblingContext(state: RetrievalState, index: StructuralIndex, documentId: string, nodeKey: string, operativeItemId: string): void {
-  const siblings = index.getSiblings(nodeKey);
+export function retrieveSiblingContext(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, operativeItemId: string): void {
+  const siblings = index.getSiblings(nodeId);
   for (const sibling of siblings) {
-    const text = index.getNodeText(sibling.nodeKey, "OWN");
+    const text = index.getNodeText(sibling.nodeId, "OWN");
     if (text.trim().length === 0) continue;
     const classification = classifySiblingSignal(text);
     if (!classification) continue;
     if (!withinBudget(state, text.length)) return;
     const item = addItem(
       state,
-      makeItemInput(classification.type, documentId, sibling.nodeKey, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision containing ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") that may modify or limit the discovered candidate.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.7)
+      makeItemInput(classification.type, documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision containing ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") that may modify or limit the discovered candidate.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.7)
     );
     addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Trailing/neighboring ${classification.type.toLowerCase()} language.`);
   }
 }
 
-export function findEnclosingSectionNode(index: StructuralIndex, nodeKey: string): StructuralNode | undefined {
-  const node = index.getNode(nodeKey);
+export function findEnclosingSectionNode(index: StructuralIndex, nodeId: string): StructuralNode | undefined {
+  const node = index.getNodeById(nodeId);
   if (!node) return undefined;
   if (node.nodeType === "SECTION") return node;
-  return index.getAncestors(nodeKey).find((n) => n.nodeType === "SECTION");
+  return index.getAncestors(nodeId).find((n) => n.nodeType === "SECTION");
 }

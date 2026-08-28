@@ -47,7 +47,7 @@ function baseUnit(overrides: Partial<MaterialSemanticUnit> = {}): MaterialSemant
     instrumentKey: null,
     operativeVersionRef: null,
     granularity: "SEMANTIC_UNIT",
-    anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01", sectionRef: "6.01", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01" }],
+    anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01", structuralNodeId: "id-6.01", sectionRef: "6.01", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01" }],
     family: "INDEBTEDNESS",
     familyEvidence: null,
     postureSignal: "UNCLEAR_SIGNAL",
@@ -81,9 +81,9 @@ describe("Phase 3F.1 F2 - classifyMateriality cross-reference bump (§27)", () =
 
 describe("Phase 3F.1 F2 - applyContextualMaterialityFloor unit tests", () => {
   it("12. an exception-list item referencing a definition elsewhere (no local signal) inherits a MATERIAL floor from its operative MATERIAL/PROHIBITION parent", () => {
-    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01", sectionRef: "6.01", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "MATERIAL", postureSignal: "PROHIBITION_SIGNAL" });
-    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(c)", sectionRef: "6.01(c)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "INFORMATIONAL", postureSignal: "PERMISSION_SIGNAL" });
-    const indexStub = { getParent: (nodeKey: string) => (nodeKey === "doc-1::6.01(c)" ? { nodeKey: "doc-1::6.01" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
+    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01", structuralNodeId: "id-6.01", sectionRef: "6.01", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "MATERIAL", postureSignal: "PROHIBITION_SIGNAL" });
+    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(c)", structuralNodeId: "id-6.01(c)", sectionRef: "6.01(c)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "INFORMATIONAL", postureSignal: "PERMISSION_SIGNAL" });
+    const indexStub = { getParent: (nodeId: string) => (nodeId === "id-6.01(c)" ? { nodeId: "id-6.01" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
     const [, result] = applyContextualMaterialityFloor([parent, child], indexStub);
     expect(result!.materiality).toBe("MATERIAL");
     expect(result!.contextuallyElevated).toBe(true);
@@ -91,50 +91,50 @@ describe("Phase 3F.1 F2 - applyContextualMaterialityFloor unit tests", () => {
   });
 
   it("14. a purely explanatory child under a MATERIAL parent whose own local materiality is already at/above MATERIAL is left unchanged (no downgrade, no double-elevation noise)", () => {
-    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01", sectionRef: "6.01", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "MATERIAL", postureSignal: "PROHIBITION_SIGNAL" });
-    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "CRITICAL", postureSignal: "PERMISSION_SIGNAL" });
-    const indexStub = { getParent: (nodeKey: string) => (nodeKey === "doc-1::6.01(a)" ? { nodeKey: "doc-1::6.01" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
+    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01", structuralNodeId: "id-6.01", sectionRef: "6.01", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "MATERIAL", postureSignal: "PROHIBITION_SIGNAL" });
+    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", structuralNodeId: "id-6.01(a)", sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "CRITICAL", postureSignal: "PERMISSION_SIGNAL" });
+    const indexStub = { getParent: (nodeId: string) => (nodeId === "id-6.01(a)" ? { nodeId: "id-6.01" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
     const [, result] = applyContextualMaterialityFloor([parent, child], indexStub);
     expect(result!.materiality).toBe("CRITICAL"); // own independent signal preserved, never downgraded to the floor
     expect(result!.contextuallyElevated).toBe(false);
   });
 
   it("20. a list item under a non-operative (informational/definitional) parent does NOT automatically inherit MATERIAL - selective, not universal", () => {
-    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::9.01", sectionRef: "9.01", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "INFORMATIONAL", postureSignal: "UNCLEAR_SIGNAL" });
-    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::9.01(a)", sectionRef: "9.01(a)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "INFORMATIONAL", postureSignal: "UNCLEAR_SIGNAL" });
-    const indexStub = { getParent: (nodeKey: string) => (nodeKey === "doc-1::9.01(a)" ? { nodeKey: "doc-1::9.01" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
+    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::9.01", structuralNodeId: "id-9.01", sectionRef: "9.01", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "INFORMATIONAL", postureSignal: "UNCLEAR_SIGNAL" });
+    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::9.01(a)", structuralNodeId: "id-9.01(a)", sectionRef: "9.01(a)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "INFORMATIONAL", postureSignal: "UNCLEAR_SIGNAL" });
+    const indexStub = { getParent: (nodeId: string) => (nodeId === "id-9.01(a)" ? { nodeId: "id-9.01" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
     const [, result] = applyContextualMaterialityFloor([parent, child], indexStub);
     expect(result!.materiality).toBe("INFORMATIONAL");
     expect(result!.contextuallyElevated).toBe(false);
   });
 
   it("a child of a MATERIAL parent whose posture is merely DEFINITIONAL_SIGNAL (not an operative restriction/obligation/exception) does not inherit the floor - materiality alone is not sufficient, posture matters too", () => {
-    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::1.01", sectionRef: "1.01", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "MATERIAL", postureSignal: "DEFINITIONAL_SIGNAL" });
-    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::1.01(a)", sectionRef: "1.01(a)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "INFORMATIONAL", postureSignal: "UNCLEAR_SIGNAL" });
-    const indexStub = { getParent: (nodeKey: string) => (nodeKey === "doc-1::1.01(a)" ? { nodeKey: "doc-1::1.01" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
+    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::1.01", structuralNodeId: "id-1.01", sectionRef: "1.01", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "MATERIAL", postureSignal: "DEFINITIONAL_SIGNAL" });
+    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::1.01(a)", structuralNodeId: "id-1.01(a)", sectionRef: "1.01(a)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "INFORMATIONAL", postureSignal: "UNCLEAR_SIGNAL" });
+    const indexStub = { getParent: (nodeId: string) => (nodeId === "id-1.01(a)" ? { nodeId: "id-1.01" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
     const [, result] = applyContextualMaterialityFloor([parent, child], indexStub);
     expect(result!.materiality).toBe("INFORMATIONAL");
   });
 
   it("a REVIEW_UNCERTAIN unit under an operative MATERIAL parent is floored to MATERIAL, not left ambiguous", () => {
-    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.08", sectionRef: "6.08", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "CRITICAL", postureSignal: "OBLIGATION_SIGNAL" });
-    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.08(a)", sectionRef: "6.08(a)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "REVIEW_UNCERTAIN", postureSignal: "UNCLEAR_SIGNAL" });
-    const indexStub = { getParent: (nodeKey: string) => (nodeKey === "doc-1::6.08(a)" ? { nodeKey: "doc-1::6.08" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
+    const parent = baseUnit({ semanticUnitId: "parent", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.08", structuralNodeId: "id-6.08", sectionRef: "6.08", charStart: 0, charEnd: 10, sourceCitation: "x" }], materiality: "CRITICAL", postureSignal: "OBLIGATION_SIGNAL" });
+    const child = baseUnit({ semanticUnitId: "child", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.08(a)", structuralNodeId: "id-6.08(a)", sectionRef: "6.08(a)", charStart: 0, charEnd: 10, sourceCitation: "y" }], materiality: "REVIEW_UNCERTAIN", postureSignal: "UNCLEAR_SIGNAL" });
+    const indexStub = { getParent: (nodeId: string) => (nodeId === "id-6.08(a)" ? { nodeId: "id-6.08" } : undefined) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
     const [, result] = applyContextualMaterialityFloor([parent, child], indexStub);
     expect(result!.materiality).toBe("MATERIAL");
     // the floor never manufactures a second CRITICAL merely by nesting under a CRITICAL parent (types.ts's own documented reasoning for the 4-tier split)
   });
 
   it("a unit with no structural node (raw-source-fallback) is left entirely unchanged - nothing to inherit from", () => {
-    const unit = baseUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: null, sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "raw" }] });
+    const unit = baseUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: null, structuralNodeId: null, sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "raw" }] });
     const indexStub = { getParent: () => undefined } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1];
     const [result] = applyContextualMaterialityFloor([unit], indexStub);
     expect(result).toEqual(unit);
   });
 
   it("a unit whose parent node was never itself hypothesized (a genuine remaining routing gap) is left unchanged rather than crashing or guessing", () => {
-    const child = baseUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(z)", sectionRef: "6.01(z)", charStart: 0, charEnd: 10, sourceCitation: "y" }] });
-    const indexStub = { getParent: () => ({ nodeKey: "doc-1::6.01" }) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1]; // parent node exists structurally, but no unit was ever built for it
+    const child = baseUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(z)", structuralNodeId: "id-6.01(z)", sectionRef: "6.01(z)", charStart: 0, charEnd: 10, sourceCitation: "y" }] });
+    const indexStub = { getParent: () => ({ nodeId: "id-6.01" }) } as unknown as Parameters<typeof applyContextualMaterialityFloor>[1]; // parent node exists structurally, but no unit was ever built for it
     const [result] = applyContextualMaterialityFloor([child], indexStub);
     expect(result!.materiality).toBe("INFORMATIONAL");
     expect(result!.contextuallyElevated).toBe(false);

@@ -75,15 +75,15 @@ export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageA
   findings.push(...auditDiscoveryCoverage(regions, input.candidates, input.index));
 
   for (const bundle of input.bundles) {
-    const nodeKey = bundle.originatingStructuralNodeKeys[0];
-    if (!nodeKey) continue;
+    const nodeId = bundle.originatingStructuralNodeIds[0];
+    if (!nodeId) continue;
     findings.push(
       ...auditContextCoverage({
         companyId: input.companyId,
         packageKey: input.packageKey,
         instrumentKey: input.instrumentKey,
         documentId: bundle.originatingDocumentId,
-        nodeKey,
+        nodeId,
         index: input.index,
         packageGraph: input.packageGraph,
         bundle,
@@ -93,8 +93,8 @@ export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageA
   }
   const comparisonWallClockMs = Date.now() - comparisonStart;
 
-  const discoveredNodeKeys = new Set(input.candidates.flatMap((c) => c.structuralNodeKeys));
-  const coverageMap = buildCoverageMap(regions, findings, discoveredNodeKeys);
+  const discoveredNodeIds = new Set(input.candidates.flatMap((c) => c.structuralNodeIds));
+  const coverageMap = buildCoverageMap(regions, findings, discoveredNodeIds);
 
   const contentIdentity = computeContentIdentity({
     companyId: input.companyId,

@@ -172,21 +172,30 @@ function node(overrides: Partial<StructuralNode> & { nodeKey: string; sectionRef
     charEnd: 0,
     ordinal: 0,
     parentSectionRef: null,
+    // Fake-index test harness: nodeId is given the same value as nodeKey
+    // (both already unique per node within a single test's fixture) so
+    // every call site below keeps working unchanged; parentNodeId is
+    // derived from parentSectionRef using this file's own "doc::<ref>"
+    // nodeKey convention. buildFakeIndex's own child/parent traversal is
+    // driven by FakeNode.childKeys, never by this field, so it only needs
+    // to be a well-typed, non-colliding value, not independently exercised.
+    nodeId: overrides.nodeKey,
+    parentNodeId: overrides.parentSectionRef ? `doc::${overrides.parentSectionRef}` : null,
     ...overrides,
   };
 }
 
 function buildFakeIndex(fakeNodes: FakeNode[]): StructuralIndex {
-  const byKey = new Map(fakeNodes.map((n) => [n.node.nodeKey, n] as const));
+  const byId = new Map(fakeNodes.map((n) => [n.node.nodeId, n] as const));
   const parentOf = new Map<string, string>();
-  for (const n of fakeNodes) for (const c of n.childKeys) parentOf.set(c, n.node.nodeKey);
+  for (const n of fakeNodes) for (const c of n.childKeys) parentOf.set(c, n.node.nodeId);
   return {
-    getChildren: (nodeKey: string) => (byKey.get(nodeKey)?.childKeys ?? []).map((k) => byKey.get(k)!.node),
-    getParent: (nodeKey: string) => {
-      const p = parentOf.get(nodeKey);
-      return p ? byKey.get(p)!.node : undefined;
+    getChildren: (nodeId: string) => (byId.get(nodeId)?.childKeys ?? []).map((k) => byId.get(k)!.node),
+    getParent: (nodeId: string) => {
+      const p = parentOf.get(nodeId);
+      return p ? byId.get(p)!.node : undefined;
     },
-    getNodeText: (nodeKey: string) => byKey.get(nodeKey)?.text ?? "",
+    getNodeText: (nodeId: string) => byId.get(nodeId)?.text ?? "",
     getDocumentText: () => "",
     allNodes: () => fakeNodes.map((n) => n.node),
     searchStructuralNodes: () => [],
@@ -195,9 +204,10 @@ function buildFakeIndex(fakeNodes: FakeNode[]): StructuralIndex {
 
 function seedRegionFor(n: StructuralNode, detectedSignals: string[]): RoutedRegion {
   return {
-    regionId: `seed-${n.nodeKey}`,
+    regionId: `seed-${n.nodeId}`,
     documentId: "doc",
     structuralNodeKey: n.nodeKey,
+    structuralNodeId: n.nodeId,
     sectionRef: n.sectionRef,
     charStart: 0,
     charEnd: 0,
@@ -208,6 +218,7 @@ function seedRegionFor(n: StructuralNode, detectedSignals: string[]): RoutedRegi
     routingAlgorithmVersion: "test",
     closureDepth: 0,
     closureSourceNodeKey: null,
+    closureSourceNodeId: null,
   };
 }
 
@@ -345,6 +356,7 @@ describe("Phase 3F.1 F1 - closeRoutedRegions unit tests: raw-source-fallback see
       regionId: "raw-1",
       documentId: "doc",
       structuralNodeKey: null,
+      structuralNodeId: null,
       sectionRef: null,
       charStart: 0,
       charEnd: 10,
@@ -355,6 +367,7 @@ describe("Phase 3F.1 F1 - closeRoutedRegions unit tests: raw-source-fallback see
       routingAlgorithmVersion: "test",
       closureDepth: 0,
       closureSourceNodeKey: null,
+      closureSourceNodeId: null,
     };
     const index = buildFakeIndex([]);
     const { closureRegions, stats } = closeRoutedRegions([rawSeed], [], index, "doc");
@@ -375,6 +388,7 @@ describe("Phase 3F.1 F1 - closeRoutedRegions unit tests: raw-source-fallback see
       regionId: "raw-1",
       documentId: "doc",
       structuralNodeKey: null,
+      structuralNodeId: null,
       sectionRef: null,
       charStart: 500,
       charEnd: 600,
@@ -385,6 +399,7 @@ describe("Phase 3F.1 F1 - closeRoutedRegions unit tests: raw-source-fallback see
       routingAlgorithmVersion: "test",
       closureDepth: 0,
       closureSourceNodeKey: null,
+      closureSourceNodeId: null,
     };
     const structuralSeed = seedRegionFor(chapeau, ["shall_not", "except"]);
     const { closureRegions, stats } = closeRoutedRegions([rawSeed, structuralSeed], fakeNodes.map((n) => n.node), index, "doc");

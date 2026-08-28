@@ -1,0 +1,359 @@
+{
+  "purpose": "Phase 3F.1.2 - per-file consumer migration classification (A: physical occurrence identity / B: legal-reference search / C: display only / E: unresolved-ambiguous reference resolution), never a blind nodeKey->nodeId find-replace.",
+  "classificationLegend": {
+    "A_PHYSICAL_OCCURRENCE_IDENTITY": "Consumer needs to distinguish physically distinct occurrences - migrated to nodeId/parentNodeId/structuralNodeId(s).",
+    "B_LEGAL_REFERENCE_SEARCH": "Consumer performs an existence-only lookup by legal reference (never needs a single specific occurrence) - migrated to findNodesByRef/count-based existence checks.",
+    "C_DISPLAY_ONLY": "Consumer only threads a field through for logging/display/wire-shape completeness - additive field only, no lookup-safety change needed.",
+    "E_UNRESOLVED_AMBIGUOUS_REFERENCE": "Consumer resolves a legal reference to a SPECIFIC occurrence and must handle ambiguity explicitly - migrated to resolveUniqueNodeByRef with explicit UNIQUE/NOT_FOUND/AMBIGUOUS branches, never a silent pick.",
+    "MECHANICAL_COMPILE_FIX_ONLY": "Historical script source, fixed only to keep compiling under the renamed/extended types - not itself a structural-identity consumer."
+  },
+  "fileCount": 48,
+  "allFilesVerifiedToExist": true,
+  "missingFiles": [],
+  "entries": [
+    {
+      "file": "lib/contract-model/compiler/types.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "StructuralNode gained nodeId/parentNodeId (authoritative); nodeKey/parentSectionRef marked @deprecated display-only. STRUCTURAL_INDEX_VERSION added."
+    },
+    {
+      "file": "lib/contract-model/compiler/stage-structure.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "Mints nodeId via computeStableKey(documentId,nodeType,charStart); captures true parentNodeId from the existing RANK stack pass (never re-derived from a label)."
+    },
+    {
+      "file": "lib/contract-model/compiler/structural-index.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY",
+        "E_UNRESOLVED_AMBIGUOUS_REFERENCE"
+      ],
+      "summary": "V2 rewrite: nodesById/childrenByParentId/parentByChildId authoritative maps, no-silent-overwrite on nodeId collision, resolveUniqueNodeByRef/findNodesByRef cardinality-aware, full structural health pass (I1-I16), deprecated getNodeByRef made safe-by-omission."
+    },
+    {
+      "file": "lib/contract-model/compiler/persistence.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY",
+        "E_UNRESOLVED_AMBIGUOUS_REFERENCE"
+      ],
+      "summary": "stableKey formula gains charStart (closes confirmed DB-level silent-overwrite defect); PersistedNodeIndex{idByNodeId,idsByLegalRef}; resolveUniquePersistedNodeByRef mirrors in-memory UNIQUE/AMBIGUOUS discipline; parent linking via node.parentNodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/orchestrator.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "nodeIdBySectionRef->nodeIndex variable rename; 3 call sites updated to the new PersistedNodeIndex shape."
+    },
+    {
+      "file": "lib/contract-model/compiler/structural-references.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY",
+        "E_UNRESOLVED_AMBIGUOUS_REFERENCE"
+      ],
+      "summary": "DetectedReference gained sourceNodeId/targetNodeId/targetAmbiguous; detection rewritten with local nodeId maps; resolveRelativeClauseTarget walks parentNodeId chain instead of label-prefix matching."
+    },
+    {
+      "file": "lib/contract-model/compiler/structural-definitions.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "DetectedDefinition gained sourceNodeId via existing position-safe findEnclosingNode."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic/tools.ts",
+      "classification": [
+        "E_UNRESOLVED_AMBIGUOUS_REFERENCE"
+      ],
+      "summary": "CRITICAL SAFETY FIX (LLM-facing evidence tools): getOperativeProvision/getReferencedProvision use resolveUniqueNodeByRef with explicit NOT_FOUND/AMBIGUOUS/UNIQUE branches - the model can no longer be handed an arbitrary occurrence at the same confidence as a unique resolution."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "R11 forensic mechanism fix: bestUnitByNodeId (materiality contextual-floor inheritance) keyed by structuralNodeId, not label."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-coverage/types.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "RoutedRegion/SourceAnchor gained structuralNodeId/closureSourceNodeId alongside deprecated label fields."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-coverage/router.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "closeRoutedRegions and routeDocument's main loop fully migrated to nodeId-keyed maps."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "auditOperativeStateForUnits migrated to structuralNodeId/supersededSourceNodeIds/currentSourceNodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-coverage/pipeline.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "AI-inventory region lookup (getNodeText) and already-found-unit comparison migrated from region.structuralNodeKey to region.structuralNodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-coverage/reconciliation.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "candidatesCoveringUnit's containment check replaced a label-prefix startsWith() hack with real ancestor-chain matching via index.getAncestors(anchor.structuralNodeId) - closes a real silent-merge risk class in coverage reconciliation."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-coverage/identity.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "anchorKey (semanticUnitId hashing input) now keyed by structuralNodeId - two distinct occurrences sharing a label can no longer collapse onto the same semanticUnitId."
+    },
+    {
+      "file": "lib/contract-model/compiler/amendment/types.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "OperativeProvisionView gained currentSourceNodeId/supersededSourceNodeIds."
+    },
+    {
+      "file": "lib/contract-model/compiler/amendment/operative-state.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY",
+        "E_UNRESOLVED_AMBIGUOUS_REFERENCE"
+      ],
+      "summary": "resolveBaseText/buildProvisionView track nodeId fields in parallel; SECTION branch uses resolveUniqueNodeByRef with explicit UNIQUE check."
+    },
+    {
+      "file": "lib/contract-model/compiler/amendment/pipeline.ts",
+      "classification": [
+        "B_LEGAL_REFERENCE_SEARCH",
+        "E_UNRESOLVED_AMBIGUOUS_REFERENCE"
+      ],
+      "summary": "disambiguateMultiTargetSection: existence-only check via findNodesByRef (never the deprecated singleton). getTargetCurrentText: resolveUniqueNodeByRef with explicit UNIQUE check - an ambiguous target has no single 'current text' and is never guessed."
+    },
+    {
+      "file": "lib/contract-model/compiler/amendment/independent-verification.ts",
+      "classification": [
+        "B_LEGAL_REFERENCE_SEARCH"
+      ],
+      "summary": "targetSectionOrDefinitionExists existence probe migrated to findNodesByRef; also fixed a pre-existing bug where the old getNodeByRef(...) !== null comparison was always true (getNodeByRef returns undefined, never null, on a miss)."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-coverage/ai-inventory.ts",
+      "classification": [
+        "C_DISPLAY_ONLY"
+      ],
+      "summary": "2 SourceAnchor literals extended with structuralNodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/discovery/types.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "DeterministicCandidate gained nodeId; DiscoveredCandidate gained structuralNodeIds[]."
+    },
+    {
+      "file": "lib/contract-model/compiler/discovery/pass-a-signals.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "Migrated to node.nodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY",
+        "E_UNRESOLVED_AMBIGUOUS_REFERENCE"
+      ],
+      "summary": "resolveRelativeRef rewritten using resolveUniqueNodeByRef; ExpandedCandidate gained structuralNodeIds; full nodeId migration of neighborhood expansion."
+    },
+    {
+      "file": "lib/contract-model/compiler/discovery/pipeline.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "deterministicByNodeId/candidateIds renames; full nodeId migration of the per-section loop."
+    },
+    {
+      "file": "lib/contract-model/compiler/discovery/pass-b-semantic.ts",
+      "classification": [
+        "C_DISPLAY_ONLY"
+      ],
+      "summary": "SectionBatchInput gained sectionNodeId (wire passthrough field)."
+    },
+    {
+      "file": "lib/contract-model/compiler/discovery/pass-d-reconcile.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "HIGHEST-CONSEQUENCE fix: mergeKey built from structuralNodeIds[0] instead of the label-shaped array - closes the silent cross-occurrence candidate-merge defect at the discovery-reconciliation layer."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/types.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "ContextItem gained structuralNodeId; CovenantContextBundle gained originatingStructuralNodeIds."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/state.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "makeItemInput signature extended with structuralNodeId param."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/structural-context.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "All 5 exported functions fully migrated to nodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/region-expansion.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "includedNodeKeys/excludedNodeKeys renamed to includedNodeIds/excludedNodeIds; fully migrated."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/reference-context.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY",
+        "E_UNRESOLVED_AMBIGUOUS_REFERENCE"
+      ],
+      "summary": "retrieveCrossReferencesFromNode migrated with explicit targetAmbiguous handling; retrieveCrossReferencesFromDefinitionText upgraded to resolveUniqueNodeByRef."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "primaryNodeId migration throughout buildCovenantContextBundle."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/definition-graph.ts",
+      "classification": [
+        "C_DISPLAY_ONLY"
+      ],
+      "summary": "makeItemInput call site updated with the new structuralNodeId argument."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/cross-document-context.ts",
+      "classification": [
+        "C_DISPLAY_ONLY"
+      ],
+      "summary": "makeItemInput call site updated with the new structuralNodeId argument."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic/precedent-integration.ts",
+      "classification": [
+        "C_DISPLAY_ONLY"
+      ],
+      "summary": "One ContextItem literal (advisory precedent evidence, not structurally anchored) fixed with structuralNodeId: null."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/types.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "CoverageRegion/AuditFinding gained structuralNodeId (required alongside deprecated structuralNodeKey)."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/identity.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "computeRegionId/computeFindingId params renamed to nodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/source-inventory.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "buildSourceCoverageInventory fully migrated."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/context-inventory.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "IndependentSiblingExpectation gained nodeId; buildIndependentContextExpectations fully migrated."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/context-comparison.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY",
+        "C_DISPLAY_ONLY"
+      ],
+      "summary": "ContextComparisonInput.nodeId; push() helper derives the legacy structuralNodeKey display field from index.getNodeById(structuralNodeId)?.nodeKey rather than hardcoding null."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/coverage-map.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "buildCoverageMap fully migrated to discoveredNodeIds/structuralNodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/pipeline.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "runIndependentCoverageAudit's bundle loop and discoveredNodeIds computation migrated."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/discovery-comparison.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "candidatesTouchingNode/compareRegionToDiscovery (exact/descendant/ancestor matching) and makeFinding fully migrated to nodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/definition-audit.ts",
+      "classification": [
+        "A_PHYSICAL_OCCURRENCE_IDENTITY"
+      ],
+      "summary": "computeFindingId call and AuditFinding literal migrated to item.structuralNodeId."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/raw-source-fallback.ts",
+      "classification": [
+        "C_DISPLAY_ONLY"
+      ],
+      "summary": "3 AuditFinding literals (genuinely no structural node - raw-source-fallback path) gained structuralNodeId: null alongside the existing structuralNodeKey: null."
+    },
+    {
+      "file": "scripts/phase-2f2-renormalize-doc-b.ts",
+      "classification": [
+        "MECHANICAL_COMPILE_FIX_ONLY"
+      ],
+      "summary": "Historical script source kept compiling under the renamed types - not a data artifact."
+    },
+    {
+      "file": "scripts/phase-2f2-rerun-document-b.ts",
+      "classification": [
+        "MECHANICAL_COMPILE_FIX_ONLY"
+      ],
+      "summary": "Historical script source kept compiling under the renamed types - not a data artifact."
+    },
+    {
+      "file": "scripts/phase-3b-real-regression.ts",
+      "classification": [
+        "MECHANICAL_COMPILE_FIX_ONLY"
+      ],
+      "summary": "Historical script source kept compiling under the renamed types; reused unmodified by this phase's own known-package regression."
+    }
+  ]
+}

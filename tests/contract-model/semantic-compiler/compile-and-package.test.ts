@@ -39,6 +39,7 @@ function discoveredCandidate(discoveryId: string, role: DiscoveredCandidate["rol
     discoveryId,
     documentId: "sem-test-doc",
     structuralNodeKeys: [],
+    structuralNodeIds: [],
     normalizedSourceRef: "9.01",
     families: [],
     role,

@@ -88,8 +88,8 @@ export async function runSemanticCoverageAudit(input: SemanticCoverageAuditInput
     let aiInventoryRejectedQuotes = 0;
     if (input.aiCaller) {
       for (const region of routing.regions) {
-        const fullText = region.structuralNodeKey ? input.index.getNodeText(region.structuralNodeKey, "OWN") : (input.index.getDocumentText(region.documentId) ?? "").slice(region.charStart, region.charEnd);
-        const alreadyFound = units.filter((u) => u.anchors.some((a) => a.documentId === region.documentId && a.structuralNodeKey === region.structuralNodeKey));
+        const fullText = region.structuralNodeId ? input.index.getNodeText(region.structuralNodeId, "OWN") : (input.index.getDocumentText(region.documentId) ?? "").slice(region.charStart, region.charEnd);
+        const alreadyFound = units.filter((u) => u.anchors.some((a) => a.documentId === region.documentId && a.structuralNodeId === region.structuralNodeId));
         const aiResult = await runBoundedAiInventoryForRegion(region, fullText, alreadyFound, { ...hypothesisCtx, headingHint: null }, input.aiCaller);
         if (aiResult.failed) aiInventoryFailed = true;
         aiInventoryRejectedQuotes += aiResult.rejectedUnverifiableQuotes;
@@ -102,7 +102,7 @@ export async function runSemanticCoverageAudit(input: SemanticCoverageAuditInput
     allUnitFingerprints.push({ documentId: doc.documentId, text: frozen.frozenContentHash });
 
     // Reconciliation + rollup - the only stage permitted to read Phase 2B/3B/3C real output.
-    const { entries: reconciledEntries, dangerousUnaccounted: reconciledDangerous } = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: input.discoveredCandidates, compiledResults: input.compiledResults, verifiedCandidateRefs: input.verifiedCandidateRefs });
+    const { entries: reconciledEntries, dangerousUnaccounted: reconciledDangerous } = reconcileFrozenInventory({ frozenInventory: frozen, index: input.index, discoveredCandidates: input.discoveredCandidates, compiledResults: input.compiledResults, verifiedCandidateRefs: input.verifiedCandidateRefs });
     const documentRules = input.compiledResults.flatMap((c) => c.rules);
     const crossSectionFindings = auditCrossSectionRelationships(units, documentRules);
     const operativeStateFindings = input.operativeState ? auditOperativeStateForUnits(units, input.operativeState) : [];

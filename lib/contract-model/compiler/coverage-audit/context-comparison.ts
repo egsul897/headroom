@@ -27,25 +27,26 @@ export interface ContextComparisonInput {
   packageKey: string;
   instrumentKey: string | null;
   documentId: string;
-  nodeKey: string;
+  nodeId: string;
   index: StructuralIndex;
   packageGraph: PackageGraphResult | null;
   bundle: CovenantContextBundle;
 }
 
 export function auditContextCoverage(input: ContextComparisonInput): AuditFinding[] {
-  const { companyId, packageKey, instrumentKey, documentId, nodeKey, index, packageGraph, bundle } = input;
-  const expectations = buildIndependentContextExpectations(documentId, nodeKey, index, packageGraph);
+  const { companyId, packageKey, instrumentKey, documentId, nodeId, index, packageGraph, bundle } = input;
+  const expectations = buildIndependentContextExpectations(documentId, nodeId, index, packageGraph);
   const findings: AuditFinding[] = [];
 
-  const push = (findingType: AuditFinding["findingType"], sourceCitation: string, structuralNodeKey: string | null, sourceEvidence: string, reasoning: string, comparisonResult: AuditFinding["comparisonResult"], rootCause: AuditFinding["rootCauseSubsystem"], materiality: AuditFinding["materiality"] = "MATERIAL") => {
+  const push = (findingType: AuditFinding["findingType"], sourceCitation: string, structuralNodeId: string | null, sourceEvidence: string, reasoning: string, comparisonResult: AuditFinding["comparisonResult"], rootCause: AuditFinding["rootCauseSubsystem"], materiality: AuditFinding["materiality"] = "MATERIAL") => {
     findings.push({
-      findingId: computeFindingId(documentId, structuralNodeKey, findingType, sourceEvidence),
+      findingId: computeFindingId(documentId, structuralNodeId, findingType, sourceEvidence),
       companyId,
       packageKey,
       instrumentKey,
       documentId,
-      structuralNodeKey,
+      structuralNodeKey: structuralNodeId ? (index.getNodeById(structuralNodeId)?.nodeKey ?? null) : null,
+      structuralNodeId,
       sourceCitation,
       findingType,
       materiality,
@@ -92,7 +93,7 @@ export function auditContextCoverage(input: ContextComparisonInput): AuditFindin
   for (const sib of expectations.siblings) {
     const { type, findingType } = siblingTypeMap[sib.role]!;
     const materiality: AuditFinding["materiality"] = AMBIGUOUS_SIBLING_ROLES.has(sib.role) ? "UNCERTAIN" : "MATERIAL";
-    if (!hasItem(bundle, sib.sectionRef, [type, "SIBLING_CONTEXT"])) push(findingType, `${documentId}::${sib.sectionRef}`, sib.nodeKey, `Sibling ${sib.sectionRef} independently carries a ${sib.role} signal.`, `Independent sibling scan matched a ${sib.role}-shaped keyword in ${sib.sectionRef}'s own text, not represented as a ${type} item in the bundle.`, "CONTEXT_ITEM_MISSING", "CONTEXT_RETRIEVAL_PHASE_2D", materiality);
+    if (!hasItem(bundle, sib.sectionRef, [type, "SIBLING_CONTEXT"])) push(findingType, `${documentId}::${sib.sectionRef}`, sib.nodeId, `Sibling ${sib.sectionRef} independently carries a ${sib.role} signal.`, `Independent sibling scan matched a ${sib.role}-shaped keyword in ${sib.sectionRef}'s own text, not represented as a ${type} item in the bundle.`, "CONTEXT_ITEM_MISSING", "CONTEXT_RETRIEVAL_PHASE_2D", materiality);
   }
   for (const def of expectations.definitions) {
     const findingType = def.depth === 1 ? "MISSING_DEFINITION" : "MISSING_DEFINITION_DEPENDENCY";

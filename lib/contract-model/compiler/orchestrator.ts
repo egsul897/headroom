@@ -109,7 +109,7 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
   });
   stages.push({ stage: "STRUCTURE", status: structureRes.status });
   const structuralNodes = structureRes.output;
-  const nodeIdBySectionRef = await persistStructuralNodes(companyId, structuralNodes);
+  const nodeIndex = await persistStructuralNodes(companyId, structuralNodes);
   const documentIdBySectionRef = new Map(structuralNodes.filter((n) => n.nodeType === "SECTION").map((n) => [n.sectionRef.replace(/\s+/g, ""), n.documentId] as const));
 
   // Provider/model identity is part of every LLM-calling stage's inputHash
@@ -165,7 +165,7 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
   }
   let referencesPersisted = 0;
   for (const doc of documents) {
-    referencesPersisted += await persistReferences(companyId, doc.documentId, depResRes.output.refsByDocument[doc.documentId] ?? [], nodeIdBySectionRef);
+    referencesPersisted += await persistReferences(companyId, doc.documentId, depResRes.output.refsByDocument[doc.documentId] ?? [], nodeIndex);
   }
 
   // Stage 6: RELATIONSHIPS (real LLM call, given already-extracted rules - task §24).
@@ -189,7 +189,7 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
     rulesByDocument.set(docId, [...(rulesByDocument.get(docId) ?? []), rule]);
   }
   for (const [docId, docRules] of rulesByDocument) {
-    const ids = await persistContractRules(companyId, docId, docRules, nodeIdBySectionRef, entityClassTags);
+    const ids = await persistContractRules(companyId, docId, docRules, nodeIndex, entityClassTags);
     ruleIdBySectionRef = new Map([...ruleIdBySectionRef, ...ids]);
   }
   const relationshipsPersisted = await persistRuleRelationships(companyId, relationshipsRes.output.relationships, ruleIdBySectionRef);

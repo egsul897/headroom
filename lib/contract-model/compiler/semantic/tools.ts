@@ -92,9 +92,21 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           charsUsedRef.current += text.length;
           return ok({ sectionRef, status: view.status, currentText: text, truncated, unresolvedIssues: view.unresolvedIssues }, text, `operative provision ${sectionRef} (status ${view.status})`);
         }
-        const node = access.structuralIndex.getNodeByRef(homeDocumentId, sectionRef);
-        if (!node) return refuse(`no section "${sectionRef}" found in this instrument's documents, and it has no recorded amendment history`);
-        const { text, truncated } = truncate(access.structuralIndex.getNodeText(node.nodeKey, "OWN"));
+        // Phase 3F.1.2 (task §15, critical safety fix): a legal-reference
+        // lookup can legitimately match more than one physical structural
+        // occurrence (a cross-reference sentence, a table-of-contents
+        // entry, duplicate/malformed section numbering). The pre-3F.1.2
+        // getNodeByRef silently returned an arbitrary one with the SAME
+        // full-confidence framing as a genuinely unique match - the model
+        // had no way to know it might be reading the wrong physical text.
+        // resolveUniqueNodeByRef makes that distinction explicit: only a
+        // UNIQUE resolution is served as evidence; AMBIGUOUS is refused
+        // with the honest reason and candidate count, never guessed.
+        const resolution = access.structuralIndex.resolveUniqueNodeByRef(homeDocumentId, sectionRef);
+        if (resolution.status === "NOT_FOUND") return refuse(`no section "${sectionRef}" found in this instrument's documents, and it has no recorded amendment history`);
+        if (resolution.status === "AMBIGUOUS") return refuse(`section reference "${sectionRef}" matches ${resolution.candidates.length} distinct physical locations in this document (e.g. a cross-reference mention and the section's real header can share the same number) - cannot serve this as uniquely-resolved evidence; try getReferencedProvision with a fromNodeId for a context-scoped resolution, or narrow the reference`);
+        const node = resolution.node;
+        const { text, truncated } = truncate(access.structuralIndex.getNodeText(node.nodeId, "OWN"));
         charsUsedRef.current += text.length;
         return ok({ sectionRef, status: "OPERATIVE_STATE_RESOLVED", currentText: text, truncated, unresolvedIssues: [] }, text, `base-document provision ${sectionRef} (never amended)`);
       },
@@ -136,7 +148,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
     },
     {
       name: "getParentClause",
-      description: "Get the parent structural clause of a given node (by its nodeKey, e.g. 'doc-1::6.01(a)') - use when a sub-clause's meaning depends on the chapeau/lead-in language of the section or clause it sits inside.",
+      description: "Get the parent structural clause of a given node (by its nodeId, obtained from a prior tool's response) - use when a sub-clause's meaning depends on the chapeau/lead-in language of the section or clause it sits inside.",
       inputSchema: { type: "object", properties: { nodeId: { type: "string" } }, required: ["nodeId"] },
       execute: (input) => {
         const budgetErr = guardBudget();
@@ -146,27 +158,27 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
         const parent = access.structuralIndex.getParent(nodeId);
         if (!parent) return refuse(`node "${nodeId}" has no parent clause (it is a top-level node)`);
-        const { text, truncated } = truncate(access.structuralIndex.getNodeText(parent.nodeKey, "OWN"));
+        const { text, truncated } = truncate(access.structuralIndex.getNodeText(parent.nodeId, "OWN"));
         charsUsedRef.current += text.length;
-        return ok({ nodeKey: parent.nodeKey, sectionRef: parent.sectionRef, heading: parent.heading, text, truncated }, text, `parent clause ${parent.sectionRef}`);
+        return ok({ nodeId: parent.nodeId, sectionRef: parent.sectionRef, heading: parent.heading, text, truncated }, text, `parent clause ${parent.sectionRef}`);
       },
     },
     {
       name: "getChildren",
-      description: "Get the direct child clauses of a given structural node (by nodeKey) - use to see every lettered/numbered sub-clause of a section you are compiling.",
+      description: "Get the direct child clauses of a given structural node (by nodeId) - use to see every lettered/numbered sub-clause of a section you are compiling.",
       inputSchema: { type: "object", properties: { nodeId: { type: "string" } }, required: ["nodeId"] },
       execute: (input) => {
         const nodeId = String(input.nodeId ?? "");
         const node = access.structuralIndex.getNode(nodeId);
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
-        const children = access.structuralIndex.getChildren(nodeId).map((c) => ({ nodeKey: c.nodeKey, sectionRef: c.sectionRef, heading: c.heading }));
+        const children = access.structuralIndex.getChildren(nodeId).map((c) => ({ nodeId: c.nodeId, sectionRef: c.sectionRef, heading: c.heading }));
         const summary = `${children.length} child clause(s) of ${node.sectionRef}`;
         return ok({ children }, summary, summary);
       },
     },
     {
       name: "getSiblingClauses",
-      description: "Get the sibling clauses of a given structural node (by nodeKey) - use when a basket's economics depend on a shared proviso or trailing cap stated in a sibling clause of the SAME section (task §16's own multi-basket-per-section case).",
+      description: "Get the sibling clauses of a given structural node (by nodeId) - use when a basket's economics depend on a shared proviso or trailing cap stated in a sibling clause of the SAME section (task §16's own multi-basket-per-section case).",
       inputSchema: { type: "object", properties: { nodeId: { type: "string" } }, required: ["nodeId"] },
       execute: (input) => {
         const budgetErr = guardBudget();
@@ -175,7 +187,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const node = access.structuralIndex.getNode(nodeId);
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
         const siblings = access.structuralIndex.getSiblings(nodeId);
-        const rendered = siblings.map((s) => ({ nodeKey: s.nodeKey, sectionRef: s.sectionRef, heading: s.heading, text: truncate(access.structuralIndex.getNodeText(s.nodeKey, "OWN")).text }));
+        const rendered = siblings.map((s) => ({ nodeId: s.nodeId, sectionRef: s.sectionRef, heading: s.heading, text: truncate(access.structuralIndex.getNodeText(s.nodeId, "OWN")).text }));
         charsUsedRef.current += rendered.reduce((sum, r) => sum + r.text.length, 0);
         const summary = `${siblings.length} sibling clause(s) of ${node.sectionRef}`;
         return ok({ siblings: rendered }, summary, summary);
@@ -194,24 +206,38 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           const fromNode = access.structuralIndex.getNode(fromNodeId);
           if (fromNode && allowedDocs.has(fromNode.documentId)) {
             const found = access.structuralIndex.findReferencesFrom(fromNodeId).find((r) => r.referenceText === ref || r.normalizedTarget === ref.replace(/\s+/g, ""));
-            if (found?.resolved && found.targetNodeKey) {
-              const targetNode = access.structuralIndex.getNode(found.targetNodeKey);
+            if (found?.targetAmbiguous) {
+              return refuse(`reference "${ref}" (from node "${fromNodeId}") matches more than one physical location in this document - ambiguous, not resolved. Try an absolute section reference or getSourceSpan on a candidate you can otherwise identify.`);
+            }
+            if (found?.resolved && found.targetNodeId) {
+              const targetNode = access.structuralIndex.getNode(found.targetNodeId);
               if (targetNode) {
-                const { text, truncated } = truncate(access.structuralIndex.getNodeText(targetNode.nodeKey, "OWN"));
+                const { text, truncated } = truncate(access.structuralIndex.getNodeText(targetNode.nodeId, "OWN"));
                 charsUsedRef.current += text.length;
-                return ok({ ref, resolvedSectionRef: targetNode.sectionRef, text, truncated }, text, `resolved reference "${ref}" -> ${targetNode.sectionRef}`);
+                return ok({ ref, resolvedSectionRef: targetNode.sectionRef, nodeId: targetNode.nodeId, text, truncated }, text, `resolved reference "${ref}" -> ${targetNode.sectionRef}`);
               }
             }
           }
         }
+        // Phase 3F.1.2 (task §15): resolve per-document with explicit
+        // cardinality, never silently taking whichever document in
+        // allowedDocs' iteration order happens to produce a hit first when
+        // that hit is itself ambiguous within its own document.
+        let anyAmbiguous = false;
         for (const documentId of allowedDocs) {
-          const node = access.structuralIndex.getNodeByRef(documentId, ref);
-          if (node) {
-            const { text, truncated } = truncate(access.structuralIndex.getNodeText(node.nodeKey, "OWN"));
+          const resolution = access.structuralIndex.resolveUniqueNodeByRef(documentId, ref);
+          if (resolution.status === "AMBIGUOUS") {
+            anyAmbiguous = true;
+            continue;
+          }
+          if (resolution.status === "UNIQUE") {
+            const node = resolution.node;
+            const { text, truncated } = truncate(access.structuralIndex.getNodeText(node.nodeId, "OWN"));
             charsUsedRef.current += text.length;
-            return ok({ ref, resolvedSectionRef: node.sectionRef, documentId, text, truncated }, text, `resolved reference "${ref}" -> ${node.sectionRef}`);
+            return ok({ ref, resolvedSectionRef: node.sectionRef, nodeId: node.nodeId, documentId, text, truncated }, text, `resolved reference "${ref}" -> ${node.sectionRef}`);
           }
         }
+        if (anyAmbiguous) return refuse(`reference "${ref}" matches more than one physical location within this instrument's documents - ambiguous, not resolved. Provide a fromNodeId for context-scoped resolution, or narrow the reference.`);
         return refuse(`reference "${ref}" did not resolve to any section within this instrument's documents`);
       },
     },
@@ -283,7 +309,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
     },
     {
       name: "getSourceSpan",
-      description: "Get the raw source text of a structural node by its nodeKey, without interpretation - use for the exact quoted text of a specific clause.",
+      description: "Get the raw source text of a structural node by its nodeId, without interpretation - use for the exact quoted text of a specific clause.",
       inputSchema: { type: "object", properties: { nodeId: { type: "string" }, includeDescendants: { type: "boolean" } }, required: ["nodeId"] },
       execute: (input) => {
         const budgetErr = guardBudget();
@@ -293,7 +319,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
         const { text, truncated } = truncate(access.structuralIndex.getNodeText(nodeId, input.includeDescendants ? "DESCENDANTS" : "OWN"));
         charsUsedRef.current += text.length;
-        return ok({ nodeKey: nodeId, sectionRef: node.sectionRef, text, truncated }, text, `source span for ${node.sectionRef}`);
+        return ok({ nodeId, sectionRef: node.sectionRef, text, truncated }, text, `source span for ${node.sectionRef}`);
       },
     },
     {

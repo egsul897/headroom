@@ -94,7 +94,7 @@ describe("Phase 2F.2 §14 - 16 required discovery schema-robustness scenarios", 
         ],
       }),
     ]);
-    const batch: SectionBatchInput = { documentId: "d1", sectionNodeKey: "d1::6.01", sectionRef: "6.01", heading: "Indebtedness", text: "text", passAHints: [] };
+    const batch: SectionBatchInput = { documentId: "d1", sectionNodeKey: "d1::6.01", sectionNodeId: "n-6.01", sectionRef: "6.01", heading: "Indebtedness", text: "text", passAHints: [] };
     const result = await runPassBSemanticClassification(caller, batch);
     expect(result.rules).toHaveLength(3);
     expect(result.rules[0]!.role).toBe("BASKET");
@@ -115,7 +115,7 @@ describe("Phase 2F.2 §14 - 16 required discovery schema-robustness scenarios", 
         ],
       }),
     ]);
-    const batch: SectionBatchInput = { documentId: "d1", sectionNodeKey: "d1::3", sectionRef: "3", heading: "Grant of Security Interest", text: "text", passAHints: [] };
+    const batch: SectionBatchInput = { documentId: "d1", sectionNodeKey: "d1::3", sectionNodeId: "n-3", sectionRef: "3", heading: "Grant of Security Interest", text: "text", passAHints: [] };
     const result = await runPassBSemanticClassification(caller, batch);
     expect(result.rules.map((r) => r.role)).toEqual(["EXCEPTION", "SECURITY_GRANT", "PERMISSION"]);
     expect(result.rules.every((r) => r.roleNormalizationStatus === "NORMALIZED_CANONICAL")).toBe(true);
@@ -146,8 +146,8 @@ describe("Phase 2F.2 §14 - 16 required discovery schema-robustness scenarios", 
         needsReview: false,
       },
     ];
-    const { candidates: expanded, discoveryId } = runPassCNeighborhoodExpansion(index, "d1", section.nodeKey, "3", items, "v1");
-    const { candidates } = runPassDReconciliation({ documentId: "d1", discoveryRunVersion: "v1", expanded, discoveryId, deterministicByNodeKey: new Map() });
+    const { candidates: expanded, discoveryId } = runPassCNeighborhoodExpansion(index, "d1", section.nodeId, "3", items, "v1");
+    const { candidates } = runPassDReconciliation({ documentId: "d1", discoveryRunVersion: "v1", expanded, discoveryId, deterministicByNodeId: new Map() });
     const found = candidates.find((c) => c.role === "SECURITY_GRANT")!;
     expect(found).toBeDefined();
     expect(found.roleRaw).toBe("grants");
@@ -158,7 +158,7 @@ describe("Phase 2F.2 §14 - 16 required discovery schema-robustness scenarios", 
     const caller = new ScriptedStageCaller([
       () => ({ rules: [{ relativeRef: "", role: "an entirely novel unclassifiable characterization", description: "r1", confidence: 0.9, needsReview: false }] }),
     ]);
-    const batch: SectionBatchInput = { documentId: "d1", sectionNodeKey: "d1::1", sectionRef: "1", heading: "H", text: "text", passAHints: [] };
+    const batch: SectionBatchInput = { documentId: "d1", sectionNodeKey: "d1::1", sectionNodeId: "n-1", sectionRef: "1", heading: "H", text: "text", passAHints: [] };
     const result = await runPassBSemanticClassification(caller, batch);
     expect(result.rules[0]!.roleNormalizationStatus).toBe("FALLBACK_REVIEW_REQUIRED");
     expect(result.rules[0]!.needsReview).toBe(true);
@@ -177,7 +177,7 @@ describe("Phase 2F.2 §14 - 16 required discovery schema-robustness scenarios", 
 
   it("14. an empty candidate response (zero rules) is handled without error and without fabricating a candidate", async () => {
     const caller = new ScriptedStageCaller([() => ({ rules: [] })]);
-    const batch: SectionBatchInput = { documentId: "d1", sectionNodeKey: "d1::1", sectionRef: "1", heading: "H", text: "text", passAHints: [] };
+    const batch: SectionBatchInput = { documentId: "d1", sectionNodeKey: "d1::1", sectionNodeId: "n-1", sectionRef: "1", heading: "H", text: "text", passAHints: [] };
     const result = await runPassBSemanticClassification(caller, batch);
     expect(result.rules).toEqual([]);
   });

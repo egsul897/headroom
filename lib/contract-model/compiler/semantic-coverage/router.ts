@@ -79,33 +79,45 @@ interface ClosureCandidate {
   node: StructuralNode;
   reason: RoutedRegionAdmissionReason;
   depth: number;
-  sourceNodeKey: string;
+  /** Phase 3F.1.2 - the physical occurrence identity of the seed/closure node that justified this admission. Never the label-shaped nodeKey. */
+  sourceNodeId: string;
 }
 
 /**
  * Expands a document's seed regions through bounded structural closure.
  * Returns only the NEWLY admitted regions (seeds are untouched by the
  * caller) plus boundedness stats covering the whole pass.
+ *
+ * Phase 3F.1.2 - every identity-bearing map/set below is keyed by `nodeId`
+ * (real physical occurrence identity), never `nodeKey` (a label two
+ * distinct physical occurrences can share). This directly closes the
+ * R1_ROUTER_SEED_MISS / closure-boundary residual population Phase 3F.1.1's
+ * forensic report traced to this file: under the pre-3F.1.2 label-keyed
+ * scheme, `getParent`/`getChildren` could silently resolve to the wrong
+ * physical ancestor/sibling set whenever a node's own label collided with
+ * another occurrence's, corrupting every closure reason below without any
+ * error or signal.
  */
 export function closeRoutedRegions(seedRegions: RoutedRegion[], nodes: StructuralNode[], index: StructuralIndex, documentId: string): { closureRegions: RoutedRegion[]; stats: RoutingClosureStats } {
-  const nodeByKey = new Map(nodes.map((n) => [n.nodeKey, n] as const));
-  const admittedNodeKeys = new Set(seedRegions.map((r) => r.structuralNodeKey).filter((k): k is string => k !== null));
-  const rootSeedOf = new Map<string, string>(); // nodeKey -> the seed nodeKey its closure group traces back to
-  for (const seed of seedRegions) if (seed.structuralNodeKey) rootSeedOf.set(seed.structuralNodeKey, seed.structuralNodeKey);
+  const nodeById = new Map(nodes.map((n) => [n.nodeId, n] as const));
+  const admittedNodeIds = new Set(seedRegions.map((r) => r.structuralNodeId).filter((k): k is string => k !== null));
+  const rootSeedOf = new Map<string, string>(); // nodeId -> the seed nodeId its closure group traces back to
+  for (const seed of seedRegions) if (seed.structuralNodeId) rootSeedOf.set(seed.structuralNodeId, seed.structuralNodeId);
 
   const closureRegions: RoutedRegion[] = [];
   let capped = false;
 
   function admit(candidate: ClosureCandidate): void {
-    if (admittedNodeKeys.has(candidate.node.nodeKey)) return;
-    admittedNodeKeys.add(candidate.node.nodeKey);
-    const root = rootSeedOf.get(candidate.sourceNodeKey) ?? candidate.sourceNodeKey;
-    rootSeedOf.set(candidate.node.nodeKey, root);
-    const ownText = index.getNodeText(candidate.node.nodeKey, "OWN");
+    if (admittedNodeIds.has(candidate.node.nodeId)) return;
+    admittedNodeIds.add(candidate.node.nodeId);
+    const root = rootSeedOf.get(candidate.sourceNodeId) ?? candidate.sourceNodeId;
+    rootSeedOf.set(candidate.node.nodeId, root);
+    const ownText = index.getNodeText(candidate.node.nodeId, "OWN");
     closureRegions.push({
-      regionId: computeRoutedRegionId(documentId, candidate.node.nodeKey, 0, ownText.length),
+      regionId: computeRoutedRegionId(documentId, candidate.node.nodeId, 0, ownText.length),
       documentId,
       structuralNodeKey: candidate.node.nodeKey,
+      structuralNodeId: candidate.node.nodeId,
       sectionRef: candidate.node.sectionRef,
       charStart: 0,
       charEnd: ownText.length,
@@ -115,13 +127,14 @@ export function closeRoutedRegions(seedRegions: RoutedRegion[], nodes: Structura
       fromRawSourceFallback: false,
       routingAlgorithmVersion: SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION,
       closureDepth: candidate.depth,
-      closureSourceNodeKey: candidate.sourceNodeKey,
+      closureSourceNodeKey: nodeById.get(candidate.sourceNodeId)?.nodeKey ?? null,
+      closureSourceNodeId: candidate.sourceNodeId,
     });
   }
 
   for (const seed of seedRegions) {
-    if (!seed.structuralNodeKey) continue; // raw-source-fallback seed - no structural node to expand from
-    const seedNode = nodeByKey.get(seed.structuralNodeKey);
+    if (!seed.structuralNodeId) continue; // raw-source-fallback seed - no structural node to expand from
+    const seedNode = nodeById.get(seed.structuralNodeId);
     if (!seedNode) continue;
     const isOperativeSeed = seed.detectedSignals.some((n) => OPERATIVE_CLOSURE_TRIGGER_SIGNALS.has(n));
     let seedGroupSize = 1; // the seed itself
@@ -130,16 +143,16 @@ export function closeRoutedRegions(seedRegions: RoutedRegion[], nodes: Structura
 
     // --- CHILD_OF_ROUTED_COVENANT_REGION: bounded BFS over descendants -----
     if (isOperativeSeed) {
-      const queue: Array<{ node: StructuralNode; depth: number; sourceNodeKey: string }> = index.getChildren(seedNode.nodeKey).map((c) => ({ node: c, depth: 1, sourceNodeKey: seedNode.nodeKey }));
+      const queue: Array<{ node: StructuralNode; depth: number; sourceNodeId: string }> = index.getChildren(seedNode.nodeId).map((c) => ({ node: c, depth: 1, sourceNodeId: seedNode.nodeId }));
       while (queue.length > 0) {
-        const { node, depth, sourceNodeKey } = queue.shift()!;
+        const { node, depth, sourceNodeId } = queue.shift()!;
         if (depth > MAX_CLOSURE_DEPTH) continue;
         if (!withinBudget()) {
           capped = true;
           continue;
         }
-        if (!admittedNodeKeys.has(node.nodeKey)) {
-          admit({ node, reason: "CHILD_OF_ROUTED_COVENANT_REGION", depth, sourceNodeKey });
+        if (!admittedNodeIds.has(node.nodeId)) {
+          admit({ node, reason: "CHILD_OF_ROUTED_COVENANT_REGION", depth, sourceNodeId });
           seedGroupSize += 1;
         }
         // Only recurse further into a child's own children when the child is
@@ -147,7 +160,7 @@ export function closeRoutedRegions(seedRegions: RoutedRegion[], nodes: Structura
         // bounds the walk to the exception-list shape this closure targets
         // rather than following every deep structural subtree.
         if (depth < MAX_CLOSURE_DEPTH && trailingMarker(node.sectionRef)) {
-          for (const grandchild of index.getChildren(node.nodeKey)) queue.push({ node: grandchild, depth: depth + 1, sourceNodeKey: node.nodeKey });
+          for (const grandchild of index.getChildren(node.nodeId)) queue.push({ node: grandchild, depth: depth + 1, sourceNodeId: node.nodeId });
         }
       }
     }
@@ -156,19 +169,19 @@ export function closeRoutedRegions(seedRegions: RoutedRegion[], nodes: Structura
     // For every admitted enumerated item that traces back to this seed,
     // pull in siblings under the same parent that share the same
     // enumerated-list shape but never independently qualified on their own.
-    const enumeratedAdmittedForThisSeed = [seedNode, ...closureRegions.filter((r) => r.structuralNodeKey && rootSeedOf.get(r.structuralNodeKey) === seedNode.nodeKey).map((r) => nodeByKey.get(r.structuralNodeKey!)).filter((n): n is StructuralNode => !!n)].filter((n) => trailingMarker(n.sectionRef));
+    const enumeratedAdmittedForThisSeed = [seedNode, ...closureRegions.filter((r) => r.structuralNodeId && rootSeedOf.get(r.structuralNodeId) === seedNode.nodeId).map((r) => nodeById.get(r.structuralNodeId!)).filter((n): n is StructuralNode => !!n)].filter((n) => trailingMarker(n.sectionRef));
     for (const enumNode of enumeratedAdmittedForThisSeed) {
-      const parent = index.getParent(enumNode.nodeKey);
+      const parent = index.getParent(enumNode.nodeId);
       if (!parent) continue;
-      for (const sibling of index.getChildren(parent.nodeKey)) {
-        if (sibling.nodeKey === enumNode.nodeKey) continue;
+      for (const sibling of index.getChildren(parent.nodeId)) {
+        if (sibling.nodeId === enumNode.nodeId) continue;
         if (!trailingMarker(sibling.sectionRef)) continue;
-        if (admittedNodeKeys.has(sibling.nodeKey)) continue;
+        if (admittedNodeIds.has(sibling.nodeId)) continue;
         if (!withinBudget()) {
           capped = true;
           continue;
         }
-        admit({ node: sibling, reason: "SIBLING_IN_ROUTED_EXCEPTION_LIST", depth: 1, sourceNodeKey: enumNode.nodeKey });
+        admit({ node: sibling, reason: "SIBLING_IN_ROUTED_EXCEPTION_LIST", depth: 1, sourceNodeId: enumNode.nodeId });
         seedGroupSize += 1;
       }
     }
@@ -177,21 +190,21 @@ export function closeRoutedRegions(seedRegions: RoutedRegion[], nodes: Structura
     // The introductory clause governing an admitted enumerated item, when it
     // was not itself independently routed (e.g. an "as follows:" chapeau
     // with no prohibition/permission keyword of its own).
-    const allAdmittedForThisSeedNow = [seedNode, ...closureRegions.filter((r) => r.structuralNodeKey && rootSeedOf.get(r.structuralNodeKey) === seedNode.nodeKey).map((r) => nodeByKey.get(r.structuralNodeKey!)).filter((n): n is StructuralNode => !!n)];
+    const allAdmittedForThisSeedNow = [seedNode, ...closureRegions.filter((r) => r.structuralNodeId && rootSeedOf.get(r.structuralNodeId) === seedNode.nodeId).map((r) => nodeById.get(r.structuralNodeId!)).filter((n): n is StructuralNode => !!n)];
     for (const enumNode of allAdmittedForThisSeedNow.filter((n) => trailingMarker(n.sectionRef))) {
-      const parent = index.getParent(enumNode.nodeKey);
-      if (!parent || admittedNodeKeys.has(parent.nodeKey)) continue;
+      const parent = index.getParent(enumNode.nodeId);
+      if (!parent || admittedNodeIds.has(parent.nodeId)) continue;
       if (!withinBudget()) {
         capped = true;
         continue;
       }
-      admit({ node: parent, reason: "CHAPEAU_OF_ROUTED_ENUMERATION", depth: 1, sourceNodeKey: enumNode.nodeKey });
+      admit({ node: parent, reason: "CHAPEAU_OF_ROUTED_ENUMERATION", depth: 1, sourceNodeId: enumNode.nodeId });
       seedGroupSize += 1;
 
       // --- ANCESTOR_SCOPE_CONTEXT (bounded to exactly one further hop) -----
-      const grandparent = index.getParent(parent.nodeKey);
-      if (grandparent && !admittedNodeKeys.has(grandparent.nodeKey) && (grandparent.nodeType === "SECTION" || grandparent.nodeType === "ARTICLE") && HEADLINE_HEADING.test(grandparent.heading ?? "") && withinBudget()) {
-        admit({ node: grandparent, reason: "ANCESTOR_SCOPE_CONTEXT", depth: 2, sourceNodeKey: parent.nodeKey });
+      const grandparent = index.getParent(parent.nodeId);
+      if (grandparent && !admittedNodeIds.has(grandparent.nodeId) && (grandparent.nodeType === "SECTION" || grandparent.nodeType === "ARTICLE") && HEADLINE_HEADING.test(grandparent.heading ?? "") && withinBudget()) {
+        admit({ node: grandparent, reason: "ANCESTOR_SCOPE_CONTEXT", depth: 2, sourceNodeId: parent.nodeId });
         seedGroupSize += 1;
       }
     }
@@ -199,25 +212,25 @@ export function closeRoutedRegions(seedRegions: RoutedRegion[], nodes: Structura
     // --- TRAILING_PROVISO_OF_ROUTED_REGION ----------------------------------
     // A continuation paragraph immediately following an admitted node under
     // the same parent, qualifying it without its own independent signal.
-    const admittedSoFarForThisSeed = [seedNode, ...closureRegions.filter((r) => r.structuralNodeKey && rootSeedOf.get(r.structuralNodeKey) === seedNode.nodeKey).map((r) => nodeByKey.get(r.structuralNodeKey!)).filter((n): n is StructuralNode => !!n)];
+    const admittedSoFarForThisSeed = [seedNode, ...closureRegions.filter((r) => r.structuralNodeId && rootSeedOf.get(r.structuralNodeId) === seedNode.nodeId).map((r) => nodeById.get(r.structuralNodeId!)).filter((n): n is StructuralNode => !!n)];
     for (const admittedNode of admittedSoFarForThisSeed) {
-      const parent = index.getParent(admittedNode.nodeKey);
-      const siblingPool = parent ? index.getChildren(parent.nodeKey) : nodes.filter((n) => n.parentSectionRef === null);
+      const parent = index.getParent(admittedNode.nodeId);
+      const siblingPool = parent ? index.getChildren(parent.nodeId) : nodes.filter((n) => n.parentNodeId === null);
       const next = siblingPool.find((s) => s.ordinal === admittedNode.ordinal + 1);
-      if (!next || admittedNodeKeys.has(next.nodeKey)) continue;
-      const nextOwnText = index.getNodeText(next.nodeKey, "OWN");
+      if (!next || admittedNodeIds.has(next.nodeId)) continue;
+      const nextOwnText = index.getNodeText(next.nodeId, "OWN");
       if (!TRAILING_PROVISO_RE.test(nextOwnText)) continue;
       if (!withinBudget()) {
         capped = true;
         continue;
       }
-      admit({ node: next, reason: "TRAILING_PROVISO_OF_ROUTED_REGION", depth: 2, sourceNodeKey: admittedNode.nodeKey });
+      admit({ node: next, reason: "TRAILING_PROVISO_OF_ROUTED_REGION", depth: 2, sourceNodeId: admittedNode.nodeId });
       seedGroupSize += 1;
     }
   }
 
   const groupSizeByRoot = new Map<string, number>();
-  for (const key of admittedNodeKeys) {
+  for (const key of admittedNodeIds) {
     const root = rootSeedOf.get(key) ?? key;
     groupSizeByRoot.set(root, (groupSizeByRoot.get(root) ?? 0) + 1);
   }
@@ -267,13 +280,13 @@ export function routeDocument(documentId: string, index: StructuralIndex): Docum
   let admittedNodeCount = 0;
 
   for (const node of nodes) {
-    const ownText = index.getNodeText(node.nodeKey, "OWN");
+    const ownText = index.getNodeText(node.nodeId, "OWN");
     const signals = detectIndependentSignals(ownText);
     const signalNames = signals.map((s) => s.name).sort();
     const isHeadline = node.nodeType === "SECTION" && HEADLINE_HEADING.test(node.heading ?? "");
     const isDefinition = isDefinitionNode(node, ownText);
 
-    const childRefs = new Set(index.getChildren(node.nodeKey).map((c) => c.sectionRef.toLowerCase().replace(/^.*\(/, "(")));
+    const childRefs = new Set(index.getChildren(node.nodeId).map((c) => c.sectionRef.toLowerCase().replace(/^.*\(/, "(")));
     const ownLeadingMarker = node.sectionRef.match(/\([^()]+\)$/)?.[0]?.toLowerCase();
     const inlineMarkers = countInlineEnumerationMarkers(ownText).filter((m) => m !== ownLeadingMarker);
     const unrepresentedMarkers = inlineMarkers.filter((m) => !childRefs.has(m));
@@ -288,9 +301,10 @@ export function routeDocument(documentId: string, index: StructuralIndex): Docum
 
     admittedNodeCount += 1;
     regions.push({
-      regionId: computeRoutedRegionId(documentId, node.nodeKey, 0, ownText.length),
+      regionId: computeRoutedRegionId(documentId, node.nodeId, 0, ownText.length),
       documentId,
       structuralNodeKey: node.nodeKey,
+      structuralNodeId: node.nodeId,
       sectionRef: node.sectionRef,
       charStart: 0,
       charEnd: ownText.length,
@@ -301,6 +315,7 @@ export function routeDocument(documentId: string, index: StructuralIndex): Docum
       routingAlgorithmVersion: SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION,
       closureDepth: 0,
       closureSourceNodeKey: null,
+      closureSourceNodeId: null,
     });
   }
 
@@ -317,6 +332,7 @@ export function routeDocument(documentId: string, index: StructuralIndex): Docum
         regionId: computeRoutedRegionId(documentId, "raw", result.region.charStart, result.region.charEnd),
         documentId,
         structuralNodeKey: null,
+        structuralNodeId: null,
         sectionRef: null,
         charStart: result.region.charStart,
         charEnd: result.region.charEnd,
@@ -327,6 +343,7 @@ export function routeDocument(documentId: string, index: StructuralIndex): Docum
         routingAlgorithmVersion: SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION,
         closureDepth: 0,
         closureSourceNodeKey: null,
+        closureSourceNodeId: null,
       });
     }
   }

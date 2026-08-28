@@ -96,7 +96,10 @@ const SYSTEM_PROMPT = [
 
 export interface SectionBatchInput {
   documentId: string;
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `sectionNodeId`. */
   sectionNodeKey: string;
+  /** Phase 3F.1.2 - the real physical occurrence identity of this section. */
+  sectionNodeId: string;
   sectionRef: string;
   heading: string;
   text: string;

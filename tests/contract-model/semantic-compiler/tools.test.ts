@@ -20,8 +20,8 @@ const DEFINITION_TEXT = '"Consolidated EBITDA" means, for any period, the consol
 const FULL_TEXT = SECTION_TEXT + DEFINITION_TEXT;
 
 function buildRealIndex() {
-  const sectionNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Indebtedness", sectionRef: "9.01", nodeKey: `${TEST_DOCUMENT_ID}::9.01`, charStart: 0, charEnd: SECTION_TEXT.length, ordinal: 0, parentSectionRef: null };
-  const definitionSectionNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Definitions", sectionRef: "1.01", nodeKey: `${TEST_DOCUMENT_ID}::1.01`, charStart: SECTION_TEXT.length, charEnd: FULL_TEXT.length, ordinal: 1, parentSectionRef: null };
+  const sectionNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Indebtedness", sectionRef: "9.01", nodeKey: `${TEST_DOCUMENT_ID}::9.01`, nodeId: `n-${TEST_DOCUMENT_ID}-9.01`, charStart: 0, charEnd: SECTION_TEXT.length, ordinal: 0, parentSectionRef: null, parentNodeId: null };
+  const definitionSectionNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Definitions", sectionRef: "1.01", nodeKey: `${TEST_DOCUMENT_ID}::1.01`, nodeId: `n-${TEST_DOCUMENT_ID}-1.01`, charStart: SECTION_TEXT.length, charEnd: FULL_TEXT.length, ordinal: 1, parentSectionRef: null, parentNodeId: null };
   const nodes = [sectionNode, definitionSectionNode];
   const definitions = detectStructuralDefinitions(TEST_DOCUMENT_ID, FULL_TEXT, nodes);
   const references = detectStructuralReferences(TEST_DOCUMENT_ID, FULL_TEXT, nodes);
@@ -44,7 +44,7 @@ describe("Phase 3B synthetic tests - controlled evidence tools", () => {
     const { index, sectionNode, definitionSectionNode } = buildRealIndex();
     const charsUsed = { current: 0 };
     const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, charsUsed, DEFAULT_TOOL_BUDGET);
-    const siblings = tools.find((t) => t.name === "getSiblingClauses")!.execute({ nodeId: sectionNode.nodeKey });
+    const siblings = tools.find((t) => t.name === "getSiblingClauses")!.execute({ nodeId: sectionNode.nodeId });
     expect(siblings.ok).toBe(true);
     expect((siblings.result as { siblings: { sectionRef: string }[] }).siblings.map((s) => s.sectionRef)).toContain(definitionSectionNode.sectionRef);
   });
@@ -103,7 +103,7 @@ describe("Phase 3B synthetic tests - controlled evidence tools", () => {
   });
 
   it("getSharedCapContext and getContextBundleComponent surface only what is already in the bundle, never invent evidence", () => {
-    const bundle = emptyContextBundle({ items: [{ itemId: "item-1", type: "SHARED_CAP", documentId: TEST_DOCUMENT_ID, structuralNodeKey: null, normalizedRef: "9.01", sourceCitation: "§9.01", excerptText: "shared cap text", reason: "test", retrievalDepth: 0, retrievalPath: [], retrievalMethod: "STRUCTURAL_TRAVERSAL", confidence: null }] });
+    const bundle = emptyContextBundle({ items: [{ itemId: "item-1", type: "SHARED_CAP", documentId: TEST_DOCUMENT_ID, structuralNodeKey: null, structuralNodeId: null, normalizedRef: "9.01", sourceCitation: "§9.01", excerptText: "shared cap text", reason: "test", retrievalDepth: 0, retrievalPath: [], retrievalMethod: "STRUCTURAL_TRAVERSAL", confidence: null }] });
     const { index } = buildRealIndex();
     const charsUsed = { current: 0 };
     const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: bundle }, TEST_DOCUMENT_ID, charsUsed, DEFAULT_TOOL_BUDGET);

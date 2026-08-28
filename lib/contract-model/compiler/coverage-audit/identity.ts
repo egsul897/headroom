@@ -12,12 +12,13 @@ function normalizeForIdentity(value: string): string {
   return value.toLowerCase().replace(/\s+/g, " ").trim();
 }
 
-export function computeRegionId(documentId: string, structuralNodeKey: string, signalSetKey: string): string {
-  return hashParts([documentId, structuralNodeKey, normalizeForIdentity(signalSetKey), COVERAGE_AUDIT_ALGORITHM_VERSION]);
+/** `nodeId`: Phase 3F.1.2 - the real physical occurrence identity (never the label-shaped nodeKey), so two distinct physical occurrences sharing a section-number label always get distinct region ids. */
+export function computeRegionId(documentId: string, nodeId: string, signalSetKey: string): string {
+  return hashParts([documentId, nodeId, normalizeForIdentity(signalSetKey), COVERAGE_AUDIT_ALGORITHM_VERSION]);
 }
 
-export function computeFindingId(documentId: string, structuralNodeKey: string | null, findingType: string, sourceEvidence: string): string {
-  return hashParts([documentId, structuralNodeKey ?? "", findingType, normalizeForIdentity(sourceEvidence), COVERAGE_AUDIT_ALGORITHM_VERSION]);
+export function computeFindingId(documentId: string, nodeId: string | null, findingType: string, sourceEvidence: string): string {
+  return hashParts([documentId, nodeId ?? "", findingType, normalizeForIdentity(sourceEvidence), COVERAGE_AUDIT_ALGORITHM_VERSION]);
 }
 
 export function computeInjectionId(packageKey: string, documentId: string, sourceLocation: string, defectType: string): string {

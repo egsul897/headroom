@@ -29,28 +29,28 @@ describe("Structural hierarchy", () => {
   it("ancestry: getAncestors returns root-to-parent order", () => {
     const { index } = indexFor([{ documentId: "doc1", label: "CA", text: SAMPLE }]);
     const clause = index.getNodeByRef("doc1", "6.01(b)(i)")!;
-    const ancestors = index.getAncestors(clause.nodeKey);
+    const ancestors = index.getAncestors(clause.nodeId);
     expect(ancestors.map((a) => a.sectionRef)).toEqual(["6", "6.01", "6.01(b)"]);
   });
 
   it("siblings: getSiblings excludes the node itself and returns only same-parent nodes", () => {
     const { index } = indexFor([{ documentId: "doc1", label: "CA", text: SAMPLE }]);
     const b = index.getNodeByRef("doc1", "6.01(b)")!;
-    const siblings = index.getSiblings(b.nodeKey);
+    const siblings = index.getSiblings(b.nodeId);
     expect(siblings.map((s) => s.sectionRef).sort()).toEqual(["6.01(a)", "6.01(c)"]);
   });
 
   it("descendants: getDescendants returns every nested node at any depth, in document order", () => {
     const { index } = indexFor([{ documentId: "doc1", label: "CA", text: SAMPLE }]);
     const section = index.getNodeByRef("doc1", "6.01")!;
-    const descendants = index.getDescendants(section.nodeKey);
+    const descendants = index.getDescendants(section.nodeId);
     expect(descendants.map((d) => d.sectionRef)).toEqual(["6.01(a)", "6.01(b)", "6.01(b)(i)", "6.01(b)(ii)", "6.01(c)"]);
   });
 
   it("children: getChildren returns only direct children, not grandchildren", () => {
     const { index } = indexFor([{ documentId: "doc1", label: "CA", text: SAMPLE }]);
     const section = index.getNodeByRef("doc1", "6.01")!;
-    const children = index.getChildren(section.nodeKey);
+    const children = index.getChildren(section.nodeId);
     expect(children.map((c) => c.sectionRef)).toEqual(["6.01(a)", "6.01(b)", "6.01(c)"]);
   });
 });
@@ -83,8 +83,8 @@ describe("Structural identity", () => {
     expect(a601.documentId).toBe("docA");
     expect(b601.documentId).toBe("docB");
     // A's children must never appear when querying B's own tree.
-    const aChildren = index.getChildren(a601.nodeKey);
-    const bChildren = index.getChildren(b601.nodeKey);
+    const aChildren = index.getChildren(a601.nodeId);
+    const bChildren = index.getChildren(b601.nodeId);
     expect(aChildren.every((c) => c.documentId === "docA")).toBe(true);
     expect(bChildren.every((c) => c.documentId === "docB")).toBe(true);
   });
@@ -94,8 +94,8 @@ describe("Text boundaries", () => {
   it("OWN text for a leaf clause equals DESCENDANTS text (no children to exclude)", () => {
     const { index } = indexFor([{ documentId: "doc1", label: "CA", text: SAMPLE }]);
     const clause = index.getNodeByRef("doc1", "6.01(c)")!;
-    const own = index.getNodeText(clause.nodeKey, "OWN");
-    const desc = index.getNodeText(clause.nodeKey, "DESCENDANTS");
+    const own = index.getNodeText(clause.nodeId, "OWN");
+    const desc = index.getNodeText(clause.nodeId, "DESCENDANTS");
     expect(own).toBe(desc);
     expect(own).toContain("$5,000,000");
   });
@@ -103,8 +103,8 @@ describe("Text boundaries", () => {
   it("OWN text for a container excludes its children's text; DESCENDANTS includes it", () => {
     const { index } = indexFor([{ documentId: "doc1", label: "CA", text: SAMPLE }]);
     const b = index.getNodeByRef("doc1", "6.01(b)")!;
-    const own = index.getNodeText(b.nodeKey, "OWN");
-    const desc = index.getNodeText(b.nodeKey, "DESCENDANTS");
+    const own = index.getNodeText(b.nodeId, "OWN");
+    const desc = index.getNodeText(b.nodeId, "DESCENDANTS");
     expect(own).not.toContain("(ii)"); // the child clause's own marker/text is excluded from OWN.
     expect(desc).toContain("(ii)");
     expect(desc.length).toBeGreaterThan(own.length);
@@ -113,7 +113,7 @@ describe("Text boundaries", () => {
   it("a section's text never bleeds into the next section's text", () => {
     const { index } = indexFor([{ documentId: "doc1", label: "CA", text: SAMPLE }]);
     const s601 = index.getNodeByRef("doc1", "6.01")!;
-    const text = index.getNodeText(s601.nodeKey, "DESCENDANTS");
+    const text = index.getNodeText(s601.nodeId, "DESCENDANTS");
     expect(text).not.toContain("Liens");
     expect(text).not.toContain("Permitted Liens");
   });
@@ -121,7 +121,7 @@ describe("Text boundaries", () => {
   it("requesting one specific deep clause returns exactly that clause, not the whole section", () => {
     const { index } = indexFor([{ documentId: "doc1", label: "CA", text: SAMPLE }]);
     const clause = index.getNodeByRef("doc1", "6.01(b)(i)")!;
-    const text = index.getNodeText(clause.nodeKey, "DESCENDANTS");
+    const text = index.getNodeText(clause.nodeId, "DESCENDANTS");
     expect(text).toContain("the Company");
     expect(text).not.toContain("Senior Obligations");
     expect(text).not.toContain("(ii)");

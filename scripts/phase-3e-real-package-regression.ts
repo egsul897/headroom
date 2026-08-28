@@ -34,10 +34,23 @@ export function loadRealDiscoveredCandidates(pkg: RealPackage): DiscoveredCandid
   const documentId = documentIdFor(pkg);
   const raw: { candidates: RawDiscoveryCandidate[]; summary: Record<string, unknown> } = JSON.parse(readFileSync(DISCOVERY_RUN_PATHS[pkg], "utf-8"));
   console.log(`Real Phase 2B discovery run summary (${pkg}): ${JSON.stringify(raw.summary)}`);
+  // Phase 3F.1.2: this frozen, preserved discovery-run JSON predates nodeId/structuralNodeIds
+  // (it only ever carried the label-shaped structuralNodeKeys) - it is real historical evidence
+  // and is never re-derived or rewritten. Real physical occurrence identity is resolved here,
+  // at load time, against the REAL current structural index (never re-parsed or altered) so
+  // reconciliation.ts's occurrence-safe containment check has real nodeIds to work with.
+  const { index } = loadFwrgLsbStructuralIndex();
   // The preserved run used bare documentId (e.g. "fwrg"/"lsb") - remap to the "${pkg}-article-6"
   // convention loadFwrgLsbStructuralIndex() uses, a pure identity relabeling, never a
   // re-derivation of the discovery itself.
-  return raw.candidates.map((c) => ({ ...c, documentId, structuralNodeKeys: c.structuralNodeKeys.map((k) => k.replace(new RegExp(`^${pkg}::`), `${documentId}::`)) }));
+  return raw.candidates.map((c) => {
+    const structuralNodeKeys = c.structuralNodeKeys.map((k) => k.replace(new RegExp(`^${pkg}::`), `${documentId}::`));
+    const structuralNodeIds = structuralNodeKeys.flatMap((key) => {
+      const sectionRef = key.slice(`${documentId}::`.length);
+      return index.findNodesByRef(documentId, sectionRef).map((n) => n.nodeId);
+    });
+    return { ...c, documentId, structuralNodeKeys, structuralNodeIds };
+  });
 }
 
 interface PreservedCompileResult {

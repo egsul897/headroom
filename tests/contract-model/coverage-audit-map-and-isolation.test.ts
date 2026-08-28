@@ -15,9 +15,9 @@ describe("Phase 2E coverage map (task §35)", () => {
     const index = buildTestIndex([{ documentId: "doc", label: "CA", text }]);
     const regions = buildSourceCoverageInventory("doc", index, { companyId: "c", packageKey: "p", instrumentKey: null });
     const node = index.getNodeByRef("doc", "6.01")!;
-    const candidates = [makeCandidate({ documentId: "doc", structuralNodeKeys: [node.nodeKey], normalizedSourceRef: "6.01" })];
+    const candidates = [makeCandidate({ documentId: "doc", structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: "6.01" })];
     const findings = auditDiscoveryCoverage(regions, candidates, index);
-    const map = buildCoverageMap(regions, findings, new Set(candidates.flatMap((c) => c.structuralNodeKeys)));
+    const map = buildCoverageMap(regions, findings, new Set(candidates.flatMap((c) => c.structuralNodeIds)));
     const entry = map.find((m) => m.sectionRef === "6.01")!;
     expect(entry.state).toBe("AUDITED_NO_GAP_FOUND");
     expect(entry.primaryDiscovered).toBe(true);

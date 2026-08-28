@@ -7,17 +7,18 @@
 import type { AuditFinding, CoverageMapEntry, CoverageRegion, RegionAuditState } from "./types";
 import { regionMateriality } from "./source-inventory";
 
-export function buildCoverageMap(regions: CoverageRegion[], findings: AuditFinding[], discoveredNodeKeys: ReadonlySet<string>): CoverageMapEntry[] {
+export function buildCoverageMap(regions: CoverageRegion[], findings: AuditFinding[], discoveredNodeIds: ReadonlySet<string>): CoverageMapEntry[] {
+  // Phase 3F.1.2: keyed by nodeId (real physical occurrence identity), never the label-shaped structuralNodeKey.
   const findingsByNode = new Map<string, AuditFinding[]>();
   for (const f of findings) {
-    if (!f.structuralNodeKey) continue;
-    const list = findingsByNode.get(f.structuralNodeKey) ?? [];
+    if (!f.structuralNodeId) continue;
+    const list = findingsByNode.get(f.structuralNodeId) ?? [];
     list.push(f);
-    findingsByNode.set(f.structuralNodeKey, list);
+    findingsByNode.set(f.structuralNodeId, list);
   }
 
   return regions.map((region): CoverageMapEntry => {
-    const nodeFindings = findingsByNode.get(region.structuralNodeKey) ?? [];
+    const nodeFindings = findingsByNode.get(region.structuralNodeId) ?? [];
     const materiality = regionMateriality(region);
     const materialFindingCount = nodeFindings.filter((f) => f.materiality === "MATERIAL").length;
     const unresolvedFindingCount = nodeFindings.filter((f) => f.findingType === "SILENT_UNRESOLVED_DEPENDENCY").length;
@@ -33,7 +34,7 @@ export function buildCoverageMap(regions: CoverageRegion[], findings: AuditFindi
       documentId: region.documentId,
       sectionRef: region.sectionRef,
       state,
-      primaryDiscovered: discoveredNodeKeys.has(region.structuralNodeKey),
+      primaryDiscovered: discoveredNodeIds.has(region.structuralNodeId),
       auditorCandidate: true,
       materialFindingCount,
       unresolvedFindingCount,

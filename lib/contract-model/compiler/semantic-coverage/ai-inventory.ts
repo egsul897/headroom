@@ -164,6 +164,7 @@ export async function runBoundedAiInventoryForRegion(region: RoutedRegion, fullT
             {
               documentId: region.documentId,
               structuralNodeKey: region.structuralNodeKey,
+              structuralNodeId: region.structuralNodeId,
               sectionRef: region.sectionRef,
               charStart: region.charStart + quoteStart,
               charEnd: region.charStart + quoteStart + proposed.sourceQuote.length,
@@ -181,6 +182,7 @@ export async function runBoundedAiInventoryForRegion(region: RoutedRegion, fullT
           {
             documentId: region.documentId,
             structuralNodeKey: region.structuralNodeKey,
+            structuralNodeId: region.structuralNodeId,
             sectionRef: region.sectionRef,
             charStart: region.charStart + quoteStart,
             charEnd: region.charStart + quoteStart + proposed.sourceQuote.length,

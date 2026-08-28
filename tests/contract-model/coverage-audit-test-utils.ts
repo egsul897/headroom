@@ -14,7 +14,7 @@ export { buildTestIndex, buildExactTermsByDocument };
 export type { TestDocument };
 
 let seq = 0;
-export function makeCandidate(overrides: Partial<DiscoveredCandidate> & { documentId: string; structuralNodeKeys: string[]; normalizedSourceRef: string }): DiscoveredCandidate {
+export function makeCandidate(overrides: Partial<DiscoveredCandidate> & { documentId: string; structuralNodeKeys: string[]; structuralNodeIds: string[]; normalizedSourceRef: string }): DiscoveredCandidate {
   seq++;
   return {
     discoveryId: `discovery-candidate:test-${seq}`,
@@ -41,6 +41,7 @@ export function makeContextItem(overrides: Partial<ContextItem> & { type: Contex
   return {
     itemId: `item:${overrides.documentId}:${overrides.normalizedRef}:${overrides.type}`,
     structuralNodeKey: null,
+    structuralNodeId: null,
     sourceCitation: `${overrides.documentId}::${overrides.normalizedRef}`,
     excerptText: "synthetic excerpt",
     reason: "synthetic test item",
@@ -52,7 +53,7 @@ export function makeContextItem(overrides: Partial<ContextItem> & { type: Contex
   };
 }
 
-export function makeBundle(overrides: Partial<CovenantContextBundle> & { originatingDocumentId: string; originatingStructuralNodeKeys: string[]; normalizedSourceRef: string }): CovenantContextBundle {
+export function makeBundle(overrides: Partial<CovenantContextBundle> & { originatingDocumentId: string; originatingStructuralNodeKeys: string[]; originatingStructuralNodeIds: string[]; normalizedSourceRef: string }): CovenantContextBundle {
   return {
     bundleId: `bundle:${overrides.originatingDocumentId}:${overrides.normalizedSourceRef}`,
     packageKey: "test-package",

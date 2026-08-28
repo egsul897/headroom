@@ -1,0 +1,25 @@
+{
+  "purpose": "Phase 3F.1.2 - persistence-layer regression summary for the stableKey/PersistedNodeIndex remediation in lib/contract-model/compiler/persistence.ts.",
+  "disclosedLimitation": "This environment has no reachable Postgres instance (`npx prisma db pull` fails with P1001: connection refused to localhost:5432). tests/contract-model/structural-persistence.test.ts (real-DB coverage, mechanically migrated to the new PersistedNodeIndex-based signatures) could not be executed here and remains the authoritative persistence test for any environment where a DB IS reachable (e.g. CI). No DB pass is claimed or fabricated by this artifact.",
+  "deterministicSubstitute": {
+    "testFile": "tests/contract-model/structural-persistence-identity.test.ts",
+    "mechanism": "Hand-rolled in-memory fake for the documentNode surface of lib/prisma (vi.mock), reproducing the real @@unique([companyId, stableKey]) constraint semantics persistence.ts's upsert calls depend on.",
+    "testsRun": 7,
+    "testsPassed": 7,
+    "casesCovered": [
+      "Two distinct physical occurrences sharing (documentId,nodeType,sectionRef) persist as two distinct rows, not one silently overwritten (the confirmed pre-3F.1.2 DB-level defect)",
+      "idsByLegalRef carries both persisted row ids for a shared legal reference",
+      "resolveUniquePersistedNodeByRef returns undefined (never an arbitrary pick) when ambiguous",
+      "resolveUniquePersistedNodeByRef returns the real row id when unambiguous",
+      "Parent linking uses the real parentNodeId, attaching a child to the SPECIFIC same-labeled parent it actually belongs to",
+      "Idempotent replay never duplicates rows and preserves the nodeId->id mapping",
+      "Document isolation: identical section number+charStart in two documents never collide"
+    ]
+  },
+  "productionCodeChangeUnderTest": {
+    "file": "lib/contract-model/compiler/persistence.ts",
+    "function": "persistStructuralNodes",
+    "stableKeyFormulaBefore": "computeStableKey(\"document-node\", companyId, node.documentId, node.nodeType, node.sectionRef)",
+    "stableKeyFormulaAfter": "computeStableKey(\"document-node\", companyId, node.documentId, node.nodeType, node.sectionRef, String(node.charStart))"
+  }
+}

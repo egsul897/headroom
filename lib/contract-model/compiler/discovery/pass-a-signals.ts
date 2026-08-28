@@ -58,13 +58,13 @@ export function runPassADeterministicSignals(documentId: string, index: Structur
   const candidates: DeterministicCandidate[] = [];
 
   for (const node of nodes) {
-    const ownText = index.getNodeText(node.nodeKey, "OWN");
+    const ownText = index.getNodeText(node.nodeId, "OWN");
     const signals = detectSignals(ownText);
     const isHeadlineSection = node.nodeType === "SECTION" && HEADLINE_HEADING_WORDS.test(node.heading);
     if (isHeadlineSection && !signals.includes("headline_heading")) signals.push("headline_heading");
 
     if (signals.length === 0) continue;
-    candidates.push({ documentId, nodeKey: node.nodeKey, sectionRef: node.sectionRef, signals, signalScore: signals.length });
+    candidates.push({ documentId, nodeKey: node.nodeKey, nodeId: node.nodeId, sectionRef: node.sectionRef, signals, signalScore: signals.length });
   }
 
   return candidates;

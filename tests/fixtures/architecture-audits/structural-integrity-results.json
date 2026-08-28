@@ -1,0 +1,169 @@
+{
+  "purpose": "Phase 3F.1.2 - consolidated structural-integrity results: the 16 invariants (I1-I16), which test(s) assert each, and the known-package aggregate outcome.",
+  "invariants": [
+    {
+      "id": "I1",
+      "description": "No two source occurrences share nodeId within one document.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I1",
+        "structural-node-identity-property.test.ts (every fuzz case)",
+        "known-package regression (all 4 packages)"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I2",
+      "description": "Duplicate sectionRef/label values are allowed and expected.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I2",
+        "known-package regression (informational duplicate counts)"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I3",
+      "description": "Duplicate legal-reference candidates are represented as a set, never collapsed to one.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I3"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I4",
+      "description": "Parent-child ownership uses occurrence identity, never label.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I4/I6"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I5",
+      "description": "No silent map overwrite on identity collision.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I5",
+        "structural-persistence-identity.test.ts (DB-layer analogue)"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I6",
+      "description": "No child-list merging across distinct occurrences.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I4/I6",
+        "structural-node-identity-property.test.ts (repeated-markers/quoted-amendment categories)",
+        "post-remediation repro script case B"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I7",
+      "description": "Every indexed node is retrievable by nodeId.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I7",
+        "structural-node-identity-property.test.ts (every fuzz case)"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I8",
+      "description": "Own-text boundary only ever consults the node's own (occurrence-correct) children.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I8"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I9",
+      "description": "Every indexed node is reachable via traversal from its root, except explicit orphans.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I9",
+        "structural-node-identity-property.test.ts (every fuzz case)"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I10",
+      "description": "Orphaned nodes are explicit, never silently re-rooted or dropped.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I10"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I11",
+      "description": "Cycles are impossible by construction, and explicitly detected if synthesized.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I11"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I12",
+      "description": "Source spans satisfy deterministic validity checks (bounds + parent nesting).",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I12 (4 cases including the new OVERLAPPING_INCOMPATIBLE_SPAN check)"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I13",
+      "description": "Sibling ordering is source order (charStart ascending).",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I13",
+        "structural-node-identity-property.test.ts (every fuzz case)"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I14",
+      "description": "Document boundary is part of the identity domain.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I14 (2 cases)"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I15",
+      "description": "Ambiguous legal-reference lookups return multiple candidates, never a silent pick.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I15 (3 cases)",
+        "post-remediation repro script"
+      ],
+      "status": "HOLDS"
+    },
+    {
+      "id": "I16",
+      "description": "Structural-health diagnostics surface every invariant violation as a named, queryable condition.",
+      "assertedBy": [
+        "structural-node-identity-invariants.test.ts > I16 (3 cases)",
+        "known-package regression health-findings artifact"
+      ],
+      "status": "HOLDS"
+    }
+  ],
+  "structuralHealthFindingCodesImplemented": [
+    "DUPLICATE_OCCURRENCE_ID",
+    "IMPOSSIBLE_PARENT",
+    "MULTIPLE_STRUCTURAL_PARENTS (declared, structurally unreachable under the current single-parentNodeId-field data model)",
+    "ORPHANED_NODE",
+    "CYCLE",
+    "INVALID_SOURCE_SPAN",
+    "OVERLAPPING_INCOMPATIBLE_SPAN",
+    "AMBIGUOUS_LEGAL_REFERENCE",
+    "DUPLICATE_LABEL_EXPECTED",
+    "DUPLICATE_NORMALIZED_PATH",
+    "SOURCE_ORDER_VIOLATION",
+    "CROSS_DOCUMENT_PARENT"
+  ],
+  "knownPackageAggregate": {
+    "totalNodeIdCollisions": 0,
+    "totalErrorSeverityHealthFindings": 0,
+    "totalCrossParentMergeViolations": 0,
+    "allPackagesPassStructuralIdentityGate": true
+  },
+  "testFileSummary": {
+    "structural-node-identity-invariants.test.ts": "24 tests, 24 passed",
+    "structural-node-identity-property.test.ts": "13 tests, 13 passed (includes the 1500-case seeded fuzz loop)",
+    "structural-persistence-identity.test.ts": "7 tests, 7 passed (DB-independent, mocked prisma - see structural-persistence-regression.json for the disclosed DB-availability limitation)"
+  }
+}

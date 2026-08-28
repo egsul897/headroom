@@ -42,47 +42,47 @@ const MAX_CHILDREN_FOR_MULTI_CHILD_EXPANSION = 3;
 
 export interface RegionExpansionResult {
   text: string;
-  /** Descendant nodeKeys whose own text was folded into `text`, in traversal order. */
-  includedNodeKeys: string[];
-  /** Descendant nodeKeys considered (a real child of an included multi-child node) but excluded because their own text showed no operative signal - disclosed, never silently dropped without a trace. */
-  excludedNodeKeys: string[];
+  /** Descendant nodeIds whose own text was folded into `text`, in traversal order. Phase 3F.1.2: physical occurrence identity, never the label-shaped nodeKey. */
+  includedNodeIds: string[];
+  /** Descendant nodeIds considered (a real child of an included multi-child node) but excluded because their own text showed no operative signal - disclosed, never silently dropped without a trace. */
+  excludedNodeIds: string[];
 }
 
-function expandRecursive(index: StructuralIndex, nodeKey: string, depth: number): RegionExpansionResult {
-  const ownText = index.getNodeText(nodeKey, "OWN");
-  if (depth >= MAX_EXPANSION_DEPTH) return { text: ownText, includedNodeKeys: [], excludedNodeKeys: [] };
+function expandRecursive(index: StructuralIndex, nodeId: string, depth: number): RegionExpansionResult {
+  const ownText = index.getNodeText(nodeId, "OWN");
+  if (depth >= MAX_EXPANSION_DEPTH) return { text: ownText, includedNodeIds: [], excludedNodeIds: [] };
 
-  const children = index.getChildren(nodeKey);
-  if (children.length === 0) return { text: ownText, includedNodeKeys: [], excludedNodeKeys: [] };
+  const children = index.getChildren(nodeId);
+  if (children.length === 0) return { text: ownText, includedNodeIds: [], excludedNodeIds: [] };
 
   if (children.length === 1) {
     const child = children[0]!;
-    const sub = expandRecursive(index, child.nodeKey, depth + 1);
-    return { text: `${ownText} ${sub.text}`.trim(), includedNodeKeys: [child.nodeKey, ...sub.includedNodeKeys], excludedNodeKeys: sub.excludedNodeKeys };
+    const sub = expandRecursive(index, child.nodeId, depth + 1);
+    return { text: `${ownText} ${sub.text}`.trim(), includedNodeIds: [child.nodeId, ...sub.includedNodeIds], excludedNodeIds: sub.excludedNodeIds };
   }
 
   if (children.length > MAX_CHILDREN_FOR_MULTI_CHILD_EXPANSION) {
     // A genuine multi-basket fan-out - never auto-expanded (see the
     // threshold's own doc comment). OWN text only, no per-child disclosure.
-    return { text: ownText, includedNodeKeys: [], excludedNodeKeys: [] };
+    return { text: ownText, includedNodeIds: [], excludedNodeIds: [] };
   }
 
   let text = ownText;
   const included: string[] = [];
   const excluded: string[] = [];
   for (const child of children) {
-    const childOwn = index.getNodeText(child.nodeKey, "OWN");
+    const childOwn = index.getNodeText(child.nodeId, "OWN");
     if (OPERATIVE_SIGNAL.test(childOwn)) {
       text += ` ${childOwn}`;
-      included.push(child.nodeKey);
+      included.push(child.nodeId);
     } else {
-      excluded.push(child.nodeKey);
+      excluded.push(child.nodeId);
     }
   }
-  return { text: text.trim(), includedNodeKeys: included, excludedNodeKeys: excluded };
+  return { text: text.trim(), includedNodeIds: included, excludedNodeIds: excluded };
 }
 
 /** Entry point: bounded expansion of one structural node's own retrievable region. */
-export function expandReferencedRegion(index: StructuralIndex, nodeKey: string): RegionExpansionResult {
-  return expandRecursive(index, nodeKey, 0);
+export function expandReferencedRegion(index: StructuralIndex, nodeId: string): RegionExpansionResult {
+  return expandRecursive(index, nodeId, 0);
 }

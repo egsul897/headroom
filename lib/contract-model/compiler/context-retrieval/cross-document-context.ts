@@ -68,7 +68,7 @@ function addAmendmentLeadItem(state: RetrievalState, packageGraph: PackageGraphR
   const itemType = sourceRel?.relationshipType === "SUPPLEMENTS" ? "SUPPLEMENT_LEAD" : "AMENDMENT_LEAD";
   const excerpt = `[AMENDMENT_RESOLUTION_REQUIRED] ${mc.sourceNodeCitation}: ${mc.sourceText}`;
   if (!withinBudget(state, excerpt.length)) return;
-  const item = addItem(state, makeItemInput(itemType, mc.sourceDocumentId, null, mc.targetSectionRef ?? mc.targetDefinedTermRef ?? "document-level", mc.sourceNodeCitation, excerpt, `A modification candidate from ${mc.sourceNodeCitation} appears to target this provision/definition - operative precedence is NOT determined here (task §19); flagged for the later amendment-precedence phase.`, 1, [parentItemId], "PACKAGE_GRAPH", mc.confidence));
+  const item = addItem(state, makeItemInput(itemType, mc.sourceDocumentId, null, null, mc.targetSectionRef ?? mc.targetDefinedTermRef ?? "document-level", mc.sourceNodeCitation, excerpt, `A modification candidate from ${mc.sourceNodeCitation} appears to target this provision/definition - operative precedence is NOT determined here (task §19); flagged for the later amendment-precedence phase.`, 1, [parentItemId], "PACKAGE_GRAPH", mc.confidence));
   addEdge(state, item.itemId, parentItemId, "AMENDMENT_CANDIDATE", "Candidate amendment target - resolution required before treating as operative.");
   state.crossDocumentLeads++;
 }
@@ -93,7 +93,7 @@ export function retrieveCrossDocumentReferenceLeads(state: RetrievalState, packa
     const itemType = /intercreditor/i.test(lead.namedAgreementHint) ? "INTERCREDITOR_LEAD" : "CROSS_DOCUMENT_REFERENCE";
     const excerpt = `Reference to "${lead.namedAgreementHint}": ${lead.referenceText}`;
     if (!withinBudget(state, excerpt.length)) return;
-    const item = addItem(state, makeItemInput(itemType, documentId, null, lead.namedAgreementHint, lead.referenceText, excerpt, `This document's own text references another agreement in the package (resolution status: ${lead.status}).`, 1, [parentItemId], "PACKAGE_GRAPH", lead.status === "RESOLVED" ? 0.9 : 0.5));
+    const item = addItem(state, makeItemInput(itemType, documentId, null, null, lead.namedAgreementHint, lead.referenceText, excerpt, `This document's own text references another agreement in the package (resolution status: ${lead.status}).`, 1, [parentItemId], "PACKAGE_GRAPH", lead.status === "RESOLVED" ? 0.9 : 0.5));
     addEdge(state, parentItemId, item.itemId, "CROSS_DOCUMENT_LEAD", `"${lead.referenceText}"`);
     state.crossDocumentLeads++;
   }

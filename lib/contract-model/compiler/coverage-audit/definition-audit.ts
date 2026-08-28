@@ -47,12 +47,13 @@ export function auditDefinitionCompleteness(bundle: CovenantContextBundle, index
 
     const evidence = `"${item.normalizedRef}"'s own real full text carries sub-structure signal(s) [${missing.join(", ")}] not present in the bundle's retrieved excerpt for this definition.`;
     findings.push({
-      findingId: computeFindingId(item.documentId, item.structuralNodeKey, "MISSING_DEFINITION_DEPENDENCY", evidence),
+      findingId: computeFindingId(item.documentId, item.structuralNodeId, "MISSING_DEFINITION_DEPENDENCY", evidence),
       companyId,
       packageKey,
       instrumentKey,
       documentId: item.documentId,
       structuralNodeKey: item.structuralNodeKey,
+      structuralNodeId: item.structuralNodeId,
       sourceCitation: item.sourceCitation,
       findingType: "MISSING_DEFINITION_DEPENDENCY",
       materiality: "MATERIAL",

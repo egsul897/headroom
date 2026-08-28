@@ -96,16 +96,20 @@ export function auditOperativeStateForUnits(units: MaterialSemanticUnit[], opera
   const findings: OperativeStateAuditFinding[] = [];
 
   for (const unit of units) {
-    const nodeKey = unit.anchors[0]?.structuralNodeKey;
-    if (!nodeKey) continue;
+    // Phase 3F.1.2: nodeId (real physical occurrence identity), never the
+    // label-shaped structuralNodeKey - two distinct physical provisions
+    // sharing a section-number label must never be conflated into one
+    // supersession/coverage conclusion here.
+    const nodeId = unit.anchors[0]?.structuralNodeId;
+    if (!nodeId) continue;
 
-    const supersededBy = operativeState.provisions.find((p) => p.supersededSourceNodeKeys.includes(nodeKey));
+    const supersededBy = operativeState.provisions.find((p) => p.supersededSourceNodeIds.includes(nodeId));
     if (supersededBy) {
-      findings.push({ findingType: "STALE_SUPERSEDED_TEXT_CREDITED", semanticUnitId: unit.semanticUnitId, provisionKey: supersededBy.provisionKey, reasoning: `this unit was inventoried from a source node (${nodeKey}) that Phase 2G's own operative-state resolution has already determined is SUPERSEDED for provision ${supersededBy.provisionKey} - crediting it as currently operative would contradict the authoritative operative-state conclusion`, materiality: unit.materiality });
+      findings.push({ findingType: "STALE_SUPERSEDED_TEXT_CREDITED", semanticUnitId: unit.semanticUnitId, provisionKey: supersededBy.provisionKey, reasoning: `this unit was inventoried from a source node (${nodeId}) that Phase 2G's own operative-state resolution has already determined is SUPERSEDED for provision ${supersededBy.provisionKey} - crediting it as currently operative would contradict the authoritative operative-state conclusion`, materiality: unit.materiality });
       continue;
     }
 
-    const coveringProvision = operativeState.provisions.find((p) => p.currentSourceNodeKey === nodeKey || (p.sectionRef && unit.anchors[0]?.sectionRef && p.sectionRef === unit.anchors[0].sectionRef));
+    const coveringProvision = operativeState.provisions.find((p) => p.currentSourceNodeId === nodeId || (p.sectionRef && unit.anchors[0]?.sectionRef && p.sectionRef === unit.anchors[0].sectionRef));
     if (coveringProvision && coveringProvision.status !== "OPERATIVE_STATE_RESOLVED") {
       findings.push({ findingType: "OPERATIVE_STATE_UNRESOLVED_FOR_UNIT", semanticUnitId: unit.semanticUnitId, provisionKey: coveringProvision.provisionKey, reasoning: `this unit's covering provision (${coveringProvision.provisionKey}) has operative status ${coveringProvision.status}, not RESOLVED - its current governing text is itself uncertain`, materiality: unit.materiality });
     }

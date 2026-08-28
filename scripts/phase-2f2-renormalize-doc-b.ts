@@ -34,7 +34,7 @@ function main() {
   const nodesByDocument = new Map([[documentId, { text, nodes }]]);
   const index = buildStructuralIndex(nodesByDocument, [], []);
   const deterministic = runPassADeterministicSignals(documentId, index);
-  const deterministicByNodeKey = new Map(deterministic.map((c) => [c.nodeKey, c] as const));
+  const deterministicByNodeId = new Map(deterministic.map((c) => [c.nodeId, c] as const));
 
   const oldSummary = JSON.parse(fs.readFileSync(path.join(OUT_DIR, "document-b-rerun-summary.json"), "utf-8"));
   const rawItems: RawItemRecord[] = JSON.parse(fs.readFileSync(path.join(OUT_DIR, "document-b-rerun-raw-items.json"), "utf-8"));
@@ -63,7 +63,7 @@ function main() {
   for (const [sectionRef, items] of bySectionRef) {
     const sectionNode = index.getNodeByRef(documentId, sectionRef);
     if (!sectionNode) continue;
-    const { candidates: expanded, discoveryId } = runPassCNeighborhoodExpansion(index, documentId, sectionNode.nodeKey, sectionRef, items, DISCOVERY_RUN_VERSION);
+    const { candidates: expanded, discoveryId } = runPassCNeighborhoodExpansion(index, documentId, sectionNode.nodeId, sectionRef, items, DISCOVERY_RUN_VERSION);
     discoveryIdFn = discoveryId;
     allExpanded.push(...expanded);
   }
@@ -73,7 +73,7 @@ function main() {
     discoveryRunVersion: DISCOVERY_RUN_VERSION,
     expanded: allExpanded,
     discoveryId: discoveryIdFn ?? (() => ""),
-    deterministicByNodeKey,
+    deterministicByNodeId,
   });
 
   const roleStatusCounts: Record<string, number> = {};
