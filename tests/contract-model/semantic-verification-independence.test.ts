@@ -21,6 +21,18 @@
  * not compiler reasoning), semantic/types.ts (shared type definitions),
  * anything under lib/contract-model/ir/ (the IR itself, being verified),
  * and low-level structural infrastructure.
+ *
+ * Phase 3D addition (task §21's own correlation-risk requirement, decided
+ * in tests/contract-model/semantic-precedent-verifier-integration-decision.test.ts):
+ * semantic-precedent/ is ALSO forbidden here. Feeding the same reviewed-
+ * precedent evidence that may have influenced the compiler's own proposal
+ * into this independent adversarial reviewer would remove the very
+ * independence this Independence Contract exists to guarantee - a
+ * misleading precedent could then cause the compiler AND its own "second
+ * opinion" to agree on the same mistake (the dangerous correlated-failure
+ * mode task §21 names explicitly). This is a permanent V1 decision, not an
+ * oversight - do not remove this line to "wire up" precedent for the
+ * verifier without redoing that correlation-risk analysis first.
  */
 import { describe, expect, it } from "vitest";
 import fs from "node:fs";
@@ -28,7 +40,7 @@ import path from "node:path";
 
 const VERIFIER_DIR = path.join(__dirname, "../../lib/contract-model/compiler/semantic-verification");
 
-const FORBIDDEN_ANYWHERE = [/semantic\/compile["']/, /semantic\/caller["']/, /semantic\/normalize["']/, /semantic\/package-compile["']/, /semantic\/grading["']/];
+const FORBIDDEN_ANYWHERE = [/semantic\/compile["']/, /semantic\/caller["']/, /semantic\/normalize["']/, /semantic\/package-compile["']/, /semantic\/grading["']/, /semantic-precedent\//];
 
 function importLines(file: string): string[] {
   const content = fs.readFileSync(path.join(VERIFIER_DIR, file), "utf-8");

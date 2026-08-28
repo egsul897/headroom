@@ -86,15 +86,43 @@ function extractNumbersFromSourceText(text: string): Set<number> {
 }
 
 /**
- * The mechanical "source always wins" gate. Only AMOUNT/PERCENT are
- * checked (never metric names): a metric-name rephrasing can legitimately
- * differ between two honest compilations of the same source (defined-term
- * normalization) even with zero precedent influence, so treating that as
- * contamination would produce false rejections and defeat Pass 2
- * unnecessarily - a real economic-value hallucination is what this gate
- * exists to catch.
+ * The mechanical "source always wins" gate (task §16/§65(B)). Two
+ * independent checks:
+ *
+ * 1. CATEGORICAL STABILITY - Pass 1 already made its own action/posture
+ *    judgment with ZERO precedent influence. If Pass 2 disagrees on either
+ *    field for a rule the two passes otherwise identify as "the same rule"
+ *    (matched by ruleId - stable across both calls here since ruleId is
+ *    derived from candidateRef+the model's own localRef slot, not rule
+ *    content, so the same slot in both submissions yields the same
+ *    ruleId), or if the two passes propose a different NUMBER of rules
+ *    at all, or if a ruleId appears on only one side, that disagreement
+ *    itself is treated as contamination - the compiler's own precedent-
+ *    free baseline judgment on a categorical field is never overridden by
+ *    precedent (task §16's permanent invariant is not limited to numbers).
+ *
+ * 2. ECONOMIC GROUNDING - only AMOUNT/PERCENT are checked (never metric
+ *    names): a metric-name rephrasing can legitimately differ between two
+ *    honest compilations of the same source (defined-term normalization)
+ *    even with zero precedent influence, so treating that as contamination
+ *    would produce false rejections and defeat Pass 2 unnecessarily - a
+ *    real economic-value hallucination is what this half of the gate
+ *    exists to catch.
  */
 function isPrecedentContaminated(baseline: SemanticCompilationResult, precedentAugmented: SemanticCompilationResult, operativeSourceText: string): boolean {
+  if (baseline.rules.length !== precedentAugmented.rules.length) return true;
+
+  const baselineById = new Map(baseline.rules.map((r) => [r.ruleId, r] as const));
+  const augmentedById = new Map(precedentAugmented.rules.map((r) => [r.ruleId, r] as const));
+  for (const [ruleId, baselineRule] of baselineById) {
+    const augmentedRule = augmentedById.get(ruleId);
+    if (!augmentedRule) return true;
+    if (baselineRule.action !== augmentedRule.action || baselineRule.posture !== augmentedRule.posture) return true;
+  }
+  for (const ruleId of augmentedById.keys()) {
+    if (!baselineById.has(ruleId)) return true;
+  }
+
   const groundedAmounts = new Set<number>();
   const groundedPercents = new Set<number>();
   for (const rule of baseline.rules) {

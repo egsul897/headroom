@@ -153,7 +153,7 @@ describe("compileCovenantToIRWithPrecedent", () => {
   });
 
   it("source always wins: a Pass 2 amount grounded in the operative source text is accepted", async () => {
-    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [wireRule(2_000_000, "rule-2")] })]);
+    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [wireRule(2_000_000, "rule-1")] })]);
     const input = testCompilerInput({ candidateRef: "cand-grounded-amount", operativeSourceText: "Indebtedness not to exceed $1,000,000, or $2,000,000 in the case of a Qualified IPO." });
     const result = await compileCovenantToIRWithPrecedent(input, [precedent()], { caller });
     expect(result.precedentRejectedAsUnsupported).toBe(false);
@@ -161,7 +161,7 @@ describe("compileCovenantToIRWithPrecedent", () => {
   });
 
   it("source always wins: a Pass 2 amount NOT grounded in Pass 1 or the source text is rejected wholesale, falling back to baseline", async () => {
-    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [wireRule(35_000_000, "rule-2")] })]);
+    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [wireRule(35_000_000, "rule-1")] })]);
     const input = testCompilerInput({ candidateRef: "cand-ungrounded-amount", operativeSourceText: "Indebtedness not to exceed $1,000,000." });
     const result = await compileCovenantToIRWithPrecedent(input, [precedent()], { caller });
     expect(result.precedentRejectedAsUnsupported).toBe(true);
@@ -169,8 +169,18 @@ describe("compileCovenantToIRWithPrecedent", () => {
     expect(result.baseline.rules[0]?.capacityExpression).toMatchObject({ kind: "MONEY", amount: 1_000_000 });
   });
 
+  it("source always wins: a Pass 2 action/posture change relative to Pass 1's own baseline is rejected wholesale, even with no numeric change at all (task §21 correlation-risk motivation - see the verifier-integration-decision test for the fuller argument)", async () => {
+    const corruptedActionRule = { ...wireRule(1_000_000), action: "OTHER", posture: "N_A" };
+    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [corruptedActionRule] })]);
+    const input = testCompilerInput({ candidateRef: "cand-corrupted-action", operativeSourceText: "Indebtedness not to exceed $1,000,000." });
+    const result = await compileCovenantToIRWithPrecedent(input, [precedent()], { caller });
+    expect(result.precedentRejectedAsUnsupported).toBe(true);
+    expect(result.precedentAugmented).toBeNull();
+    expect(result.baseline.rules[0]?.action).toBe("INCUR_DEBT");
+  });
+
   it("a Pass 2 percentage grounded in the source text (as a %, not a fraction) is accepted", async () => {
-    const percentRule = { ...wireRule(0, "rule-2"), capacityExpression: { kind: "PERCENT", value: 0.125 } };
+    const percentRule = { ...wireRule(0, "rule-1"), capacityExpression: { kind: "PERCENT", value: 0.125 } };
     const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [percentRule] })]);
     const input = testCompilerInput({ candidateRef: "cand-grounded-percent", operativeSourceText: "Indebtedness not to exceed 12.5% of Consolidated EBITDA." });
     const result = await compileCovenantToIRWithPrecedent(input, [precedent()], { caller });
