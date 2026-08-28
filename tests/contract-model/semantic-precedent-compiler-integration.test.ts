@@ -227,4 +227,15 @@ describe("compileCovenantToIRWithPrecedent", () => {
     expect(result.precedentMatches.length).toBeGreaterThan(0);
     expect(result.precedentAugmented).toBeNull();
   });
+
+  it("provenance firewall (task §18/§66): the precedent advisory context item's own documentId is always the CURRENT candidate's real operative document, never a foreign/precedent-originating one, and its citation is explicitly labeled as the precedent library, never claimed as current-source provenance", async () => {
+    const caller = new ScriptedCaller([submission({ rules: [wireRule(1_000_000)] }), submission({ rules: [wireRule(1_000_000)] })]);
+    const input = testCompilerInput({ candidateRef: "cand-provenance-firewall", sourceDocumentId: "real-current-document", operativeSourceText: "Indebtedness not to exceed $1,000,000." });
+    await compileCovenantToIRWithPrecedent(input, [precedent()], { caller });
+
+    const advisoryItem = caller.calls[1]!.contextBundle.items.find((i) => i.excerptText.includes("REVIEWED ANALOGICAL EVIDENCE"))!;
+    expect(advisoryItem.documentId).toBe("real-current-document");
+    expect(advisoryItem.sourceCitation).toBe("reviewed semantic precedent library (Phase 3D)");
+    expect(advisoryItem.sourceCitation).not.toBe(input.sourceSectionRef ?? "");
+  });
 });
