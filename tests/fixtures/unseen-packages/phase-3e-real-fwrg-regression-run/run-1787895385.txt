@@ -1,0 +1,61 @@
+================ Phase 3E real FWRG Article 6 regression (task #161) ================
+
+Real StructuralIndex for fwrg-article-6: 418 structural nodes (Phase 2A's own real parser, real source text - never a hand-selected section list).
+
+Real Phase 2B discovery run summary: {"documentId":"fwrg","nodesInspected":418,"deterministicCandidatesGenerated":171,"semanticCandidatesEvaluated":289,"duplicatesBeforeReconciliation":38,"finalCandidateCount":252,"wallClockMs":512443.10477599996,"modelCalls":9,"inputTokens":54907,"outputTokens":66961}
+Real Phase 2B discovery: 252 candidates across the ENTIRE document root.
+
+Matching preserved real Phase 3B compiled IR to real discovered candidates:
+  matched preserved compile "fwrg-6.01-g-i" -> real discoveryId discovery-candidate:988b2632bbac125249b87257 (6.01(g)(i)), status=REVIEW_REQUIRED, rules=3
+  matched preserved compile "fwrg-6.04-a-x" -> real discoveryId discovery-candidate:75d817a09585baf740049b57 (6.04(a)(x)), status=REVIEW_REQUIRED, rules=1
+  matched preserved compile "fwrg-6.04-a-xi" -> real discoveryId discovery-candidate:f5e9943acaa199496176a56d (6.04(a)(xi)), status=REVIEW_REQUIRED, rules=1
+  matched preserved compile "fwrg-6.04-b" -> real discoveryId discovery-candidate:5f4faef029cf12b8bb57cb68 (6.04(b)(iv)), status=REVIEW_REQUIRED, rules=1
+  (no matching real discovered candidate found for preserved compile result "fwrg-6.10-a" (sectionRef undefined) - skipped)
+  matched preserved compile "fwrg-6.10-b" -> real discoveryId discovery-candidate:0fde9e859b84b7486783ed92 (6.10(b)), status=REVIEW_REQUIRED, rules=1
+
+5 of 252 real discovered candidates have real, preserved compiled IR in this repository's actual history.
+
+================ RESULT ================
+Total real material semantic units hypothesized (Layer A/B, deterministic, $0 cost): 608
+Raw fully-represented fraction: 0.5%
+Materiality-weighted fully-represented fraction: 2.1%
+Document gate status: DOCUMENT_GATE_FAILED
+Dangerous-unaccounted units: 227
+  - COMPILED_BUT_UNIT_OMITTED_FROM_IR: 89
+  - CANDIDATE_DISCOVERED_NEVER_COMPILED: 138
+
+Coverage state breakdown:
+  - UNREPRESENTED: 227
+  - AMBIGUOUS_MATCH: 103
+  - FULLY_REPRESENTED_REVIEW_REQUIRED: 3
+  - SOURCE_CONTEXT_INCOMPLETE: 275
+
+Family summaries:
+  - INDEBTEDNESS: 134 unit(s), fully=1, partial=0, unrepresented=70, dangerous=70, entireFamilyMissing=false
+  - LIENS: 132 unit(s), fully=0, partial=0, unrepresented=34, dangerous=34, entireFamilyMissing=true
+  - RESTRICTED_PAYMENTS: 70 unit(s), fully=2, partial=0, unrepresented=23, dangerous=23, entireFamilyMissing=false
+  - OTHER_UNCLASSIFIED: 20 unit(s), fully=0, partial=0, unrepresented=6, dangerous=6, entireFamilyMissing=true
+  - ACQUISITIONS: 1 unit(s), fully=0, partial=0, unrepresented=1, dangerous=1, entireFamilyMissing=true
+  - DISPOSITIONS: 105 unit(s), fully=0, partial=0, unrepresented=38, dangerous=38, entireFamilyMissing=true
+  - INVESTMENTS: 103 unit(s), fully=0, partial=0, unrepresented=39, dangerous=39, entireFamilyMissing=true
+  - FUNDAMENTAL_CHANGES: 2 unit(s), fully=0, partial=0, unrepresented=1, dangerous=1, entireFamilyMissing=true
+  - CHANGE_OF_CONTROL: 1 unit(s), fully=0, partial=0, unrepresented=0, dangerous=0, entireFamilyMissing=false
+  - GUARANTEES: 1 unit(s), fully=0, partial=0, unrepresented=1, dangerous=1, entireFamilyMissing=true
+  - FINANCIAL_COVENANTS: 39 unit(s), fully=0, partial=0, unrepresented=14, dangerous=14, entireFamilyMissing=true
+
+Cross-section relationship findings:
+  - CROSS_REFERENCE_PERMISSION found=false: 21 semantic unit(s) carry a signal implying a CROSS_REFERENCE_PERMISSION relationship, but no corresponding relationship appears anywhere in this document's compiled IR - each individual unit/rule may still look fully represented on its own while the relationship BETWEEN them is silently missing
+
+PACKAGE STATUS: PACKAGE_SEMANTICALLY_INCOMPLETE
+  - document fwrg-article-6: 42 CRITICAL dangerous-unaccounted semantic unit(s) with no adequate compiled/verified IR representation
+  - document fwrg-article-6: 185 MATERIAL dangerous-unaccounted semantic unit(s) with no adequate compiled/verified IR representation
+  - document fwrg-article-6: entire family LIENS (132 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document fwrg-article-6: entire family OTHER_UNCLASSIFIED (20 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document fwrg-article-6: entire family ACQUISITIONS (1 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document fwrg-article-6: entire family DISPOSITIONS (105 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document fwrg-article-6: entire family INVESTMENTS (103 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document fwrg-article-6: entire family FUNDAMENTAL_CHANGES (2 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document fwrg-article-6: entire family GUARANTEES (1 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+  - document fwrg-article-6: entire family FINANCIAL_COVENANTS (39 unit(s), at least one CRITICAL/MATERIAL) has zero representation anywhere in the compiled/verified IR
+
+(Every real candidate not in the compiledResults set above is honestly reported as CANDIDATE_DISCOVERED_NEVER_COMPILED or NO_CANDIDATE_EVER_DISCOVERED where applicable - this reflects genuine historical fact: this codebase has never run the real Phase 3B compiler against the FULL FWRG Article 6 document, only ~6 hand-selected sections across earlier phases. This is not a fabricated negative result; it is the honest, real state of the system, and is exactly the gap Phase 3E exists to surface at real document scale.)
