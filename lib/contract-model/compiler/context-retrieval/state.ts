@@ -88,6 +88,6 @@ export function addEdge(state: RetrievalState, fromItemId: string, toItemId: str
   state.edges.push({ fromItemId, toItemId, edgeType, reason });
 }
 
-export function makeItemInput(type: ContextItemType, documentId: string, structuralNodeKey: string | null, normalizedRef: string, sourceCitation: string, excerptText: string, reason: string, retrievalDepth: number, retrievalPath: string[], retrievalMethod: RetrievalMethod, confidence: number | null): Omit<ContextItem, "itemId"> {
-  return { type, documentId, structuralNodeKey, normalizedRef, sourceCitation, excerptText, reason, retrievalDepth, retrievalPath, retrievalMethod, confidence };
+export function makeItemInput(type: ContextItemType, documentId: string, structuralNodeKey: string | null, structuralNodeId: string | null, normalizedRef: string, sourceCitation: string, excerptText: string, reason: string, retrievalDepth: number, retrievalPath: string[], retrievalMethod: RetrievalMethod, confidence: number | null): Omit<ContextItem, "itemId"> {
+  return { type, documentId, structuralNodeKey, structuralNodeId, normalizedRef, sourceCitation, excerptText, reason, retrievalDepth, retrievalPath, retrievalMethod, confidence };
 }

@@ -37,14 +37,14 @@ for (const c of FWRG_CONTEXT_BENCHMARK) {
   const candidate = candidates.find((x) => x.discoveryId === c.discoveryId);
   if (!candidate) continue;
   const bundle = buildCovenantContextBundle({ candidate, packageKey: label, companyId: label, instrumentKey: null }, { index, packageGraph: null, exactTermsByDocument });
-  const nodeKey = bundle.originatingStructuralNodeKeys[0];
-  if (!nodeKey) continue;
-  const findings = [...auditContextCoverage({ companyId: label, packageKey: label, instrumentKey: null, documentId: label, nodeKey, index, packageGraph: null, bundle }), ...auditDefinitionCompleteness(bundle, index, label, label, label, null)];
+  const nodeId = bundle.originatingStructuralNodeIds[0];
+  if (!nodeId) continue;
+  const findings = [...auditContextCoverage({ companyId: label, packageKey: label, instrumentKey: null, documentId: label, nodeId, index, packageGraph: null, bundle }), ...auditDefinitionCompleteness(bundle, index, label, label, label, null)];
   const material = findings.filter((f) => f.materiality === "MATERIAL");
   if (material.length === 0) continue;
 
   console.log(`\n################ CASE ${c.caseId} (sectionRef=${c.sectionRef}, family=${c.covenantFamily}) ################`);
-  console.log(`Originating structural node: ${nodeKey}`);
+  console.log(`Originating structural node: ${nodeId}`);
   console.log(`Bundle sufficiencyState: ${bundle.sufficiencyState}`);
   console.log(`Bundle stopReasons: ${JSON.stringify(bundle.stopReasons)}`);
   console.log(`Bundle items (${bundle.items.length}):`);

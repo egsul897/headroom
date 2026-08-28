@@ -1,0 +1,158 @@
+{
+  "purpose": "Phase 3F.1.2 known-package structural-identity regression (FWRG/LSB/CONMED/DSGR) - structural-identity integrity only, never a re-score of semantic/discovery/coverage output, never production logic tuned to these known assets.",
+  "scopeDisclaimer": "This report makes NO claim about DSGR's (or any package's) semantic/discovery/coverage completeness - it verifies ONLY that buildStructuralIndex/parseDocumentStructure produce zero occurrence-ID collisions, zero silent overwrites, and zero cross-parent child merges over real, previously-committed source text.",
+  "perPackage": {
+    "FWRG": {
+      "packageKey": "FWRG",
+      "documents": [
+        {
+          "documentId": "fwrg-article-6",
+          "charLength": 104183
+        },
+        {
+          "documentId": "fwrg-definitions",
+          "charLength": 16544
+        }
+      ],
+      "totalNodes": 418,
+      "distinctNodeIds": 418,
+      "distinctNodeKeys": 418,
+      "nodeIdCollisions": 0,
+      "duplicateLegalReferenceOccurrenceCount": 0,
+      "healthFindingsBySeverity": {},
+      "healthFindingsByCode": {},
+      "errorSeverityFindingCount": 0,
+      "orphanCount": 0,
+      "cycleCount": 0,
+      "crossParentMergeViolations": 0,
+      "ambiguousLegalReferencesDetected": 0
+    },
+    "LSB": {
+      "packageKey": "LSB",
+      "documents": [
+        {
+          "documentId": "lsb-article-6",
+          "charLength": 16826
+        },
+        {
+          "documentId": "lsb-definitions",
+          "charLength": 8065
+        }
+      ],
+      "totalNodes": 76,
+      "distinctNodeIds": 76,
+      "distinctNodeKeys": 76,
+      "nodeIdCollisions": 0,
+      "duplicateLegalReferenceOccurrenceCount": 0,
+      "healthFindingsBySeverity": {},
+      "healthFindingsByCode": {},
+      "errorSeverityFindingCount": 0,
+      "orphanCount": 0,
+      "cycleCount": 0,
+      "crossParentMergeViolations": 0,
+      "ambiguousLegalReferencesDetected": 0
+    },
+    "CONMED": {
+      "packageKey": "CONMED",
+      "documents": [
+        {
+          "documentId": "conmed-doc-a",
+          "charLength": 514823
+        },
+        {
+          "documentId": "conmed-doc-b",
+          "charLength": 107187
+        },
+        {
+          "documentId": "conmed-doc-c",
+          "charLength": 11837
+        },
+        {
+          "documentId": "conmed-doc-d",
+          "charLength": 666773
+        }
+      ],
+      "totalNodes": 2736,
+      "distinctNodeIds": 2736,
+      "distinctNodeKeys": 2323,
+      "nodeIdCollisions": 0,
+      "duplicateLegalReferenceOccurrenceCount": 413,
+      "healthFindingsBySeverity": {
+        "INFO": 1096
+      },
+      "healthFindingsByCode": {
+        "DUPLICATE_LABEL_EXPECTED": 377,
+        "AMBIGUOUS_LEGAL_REFERENCE": 377,
+        "DUPLICATE_NORMALIZED_PATH": 342
+      },
+      "errorSeverityFindingCount": 0,
+      "orphanCount": 0,
+      "cycleCount": 0,
+      "crossParentMergeViolations": 0,
+      "ambiguousLegalReferencesDetected": 377
+    },
+    "DSGR": {
+      "packageKey": "DSGR",
+      "documents": [
+        {
+          "documentId": "doc-a",
+          "charLength": 739530
+        },
+        {
+          "documentId": "doc-b",
+          "charLength": 737387
+        },
+        {
+          "documentId": "doc-c",
+          "charLength": 13810
+        },
+        {
+          "documentId": "doc-d",
+          "charLength": 840654
+        }
+      ],
+      "totalNodes": 4149,
+      "distinctNodeIds": 4149,
+      "distinctNodeKeys": 3469,
+      "nodeIdCollisions": 0,
+      "duplicateLegalReferenceOccurrenceCount": 680,
+      "healthFindingsBySeverity": {
+        "INFO": 1568
+      },
+      "healthFindingsByCode": {
+        "DUPLICATE_LABEL_EXPECTED": 546,
+        "AMBIGUOUS_LEGAL_REFERENCE": 546,
+        "DUPLICATE_NORMALIZED_PATH": 476
+      },
+      "errorSeverityFindingCount": 0,
+      "orphanCount": 0,
+      "cycleCount": 0,
+      "crossParentMergeViolations": 0,
+      "ambiguousLegalReferencesDetected": 546
+    }
+  },
+  "aggregate": {
+    "totalNodeIdCollisions": 0,
+    "totalErrorSeverityHealthFindings": 0,
+    "totalCrossParentMergeViolations": 0,
+    "allPackagesPassStructuralIdentityGate": true
+  },
+  "dsgrReconciliation": {
+    "frozenBaseline": {
+      "source": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage1-all-nodes.json",
+      "totalNodes": 4149,
+      "distinctNodeKeys": 3469,
+      "duplicatedNodeKeyCount": 546,
+      "excessDuplicateInstances": 680,
+      "note": "Pre-remediation frozen evidence, unmodified - cited verbatim in docs/architecture/STRUCTURAL-NODE-IDENTITY-ADR.md's own collision census and the ARCH-PROP phase's structural-identity-current-state.json artifact."
+    },
+    "currentRun": {
+      "totalNodes": 4149,
+      "distinctNodeIds": 4149,
+      "nodeIdCollisionCount": 0,
+      "distinctNodeKeys": 3469,
+      "duplicatedNodeKeyCount": 546
+    },
+    "interpretation": "The frozen pre-remediation run showed 546 distinct nodeKeys shared by more than one physical occurrence (680 excess duplicate instances that, under the old byKey.set() scheme, would each have silently overwritten an earlier same-labeled occurrence). The current post-remediation run over the same real DSGR source produces 0 nodeId collisions (I1 holds) and 546 duplicated legal-reference labels - the same real duplicate-label population as before (labels legitimately repeat - I2), but every one of those occurrences now has its own distinct, independently-reachable nodeId rather than silently overwriting another. This is NOT a claim that DSGR's semantic/discovery/coverage omissions (Phase 3F.1.1's own 89-case residual population) are fixed - only that the structural-identity substrate underneath them no longer corrupts occurrence identity."
+  }
+}

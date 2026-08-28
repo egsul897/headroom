@@ -202,8 +202,10 @@ export interface RoutedRegion {
   /** Deterministic, content-derived. */
   regionId: string;
   documentId: string;
-  /** Null for a region reached only via the raw-source fallback path (no structural node anchors it). */
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `structuralNodeId` for identity. Null for a region reached only via the raw-source fallback path (no structural node anchors it). */
   structuralNodeKey: string | null;
+  /** Phase 3F.1.2 - the real physical occurrence identity backing this region (null iff structuralNodeKey is null - same raw-source-fallback exception). Use this, never structuralNodeKey, for any StructuralIndex lookup. */
+  structuralNodeId: string | null;
   sectionRef: string | null;
   charStart: number;
   charEnd: number;
@@ -214,8 +216,10 @@ export interface RoutedRegion {
   routingAlgorithmVersion: string;
   /** 0 for a seed region admitted on its own local evidence (or the raw-source-fallback path); 1+ for a region admitted only via closure, counting hops from the nearest seed. */
   closureDepth: number;
-  /** The seed (or nearer closure) node that justified this region's closure admission; null for a seed region itself. */
+  /** @deprecated legacy label-shaped key. Use `closureSourceNodeId`. The seed (or nearer closure) node that justified this region's closure admission; null for a seed region itself. */
   closureSourceNodeKey: string | null;
+  /** Phase 3F.1.2 - occurrence-safe counterpart of closureSourceNodeKey. */
+  closureSourceNodeId: string | null;
 }
 
 /** Phase 3F.1 §16/§46 - boundedness evidence for the closure pass, so routing expansion is always measurable rather than merely asserted. */
@@ -294,8 +298,10 @@ export type SemanticUnitMateriality = "CRITICAL" | "MATERIAL" | "REVIEW_UNCERTAI
 
 export interface SourceAnchor {
   documentId: string;
-  /** Null when this anchor comes from the raw-source fallback path (no structural node exists for this span). */
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `structuralNodeId` for identity. Null when this anchor comes from the raw-source fallback path (no structural node exists for this span). */
   structuralNodeKey: string | null;
+  /** Phase 3F.1.2 - the real physical occurrence identity for this anchor (null iff structuralNodeKey is null). */
+  structuralNodeId: string | null;
   sectionRef: string | null;
   charStart: number;
   charEnd: number;

@@ -103,7 +103,7 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
     const type = depth === 1 ? "DEFINITION" : "DEFINITION_DEPENDENCY";
     const item = addItem(
       state,
-      makeItemInput(type, documentId, null, mention.exactTerm, `Definition of "${mention.exactTerm}"`, fullText, depth === 1 ? `Defined term used directly in the discovered covenant's own text.` : `Defined term used within the definition of "${pathTermsStack[pathTermsStack.length - 1]}", ${depth - 1} level(s) removed from the covenant's own text.`, depth, [parentItemId], "DEFINITION_INDEX", 1)
+      makeItemInput(type, documentId, null, null, mention.exactTerm, `Definition of "${mention.exactTerm}"`, fullText, depth === 1 ? `Defined term used directly in the discovered covenant's own text.` : `Defined term used within the definition of "${pathTermsStack[pathTermsStack.length - 1]}", ${depth - 1} level(s) removed from the covenant's own text.`, depth, [parentItemId], "DEFINITION_INDEX", 1)
     );
     addEdge(state, parentItemId, item.itemId, "DEPENDS_ON_DEFINITION", depth === 1 ? "Directly used defined term." : "Transitive definition dependency.");
 

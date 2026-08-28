@@ -47,15 +47,22 @@ export interface OperativeStateInput {
   unresolvedTargetEffectsForThisInstrument?: AmendmentEffectCandidate[];
 }
 
-function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: StructuralIndex): { text: string | null; nodeKey: string | null } {
+function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: StructuralIndex): { text: string | null; nodeKey: string | null; nodeId: string | null } {
   if (group.kind === "SECTION") {
-    const node = index.getNodeByRef(baseDocumentId, group.ref);
-    if (!node) return { text: null, nodeKey: null };
-    return { text: index.getNodeText(node.nodeKey, "DESCENDANTS"), nodeKey: node.nodeKey };
+    // Phase 3F.1.2: resolveUniqueNodeByRef, not the deprecated getNodeByRef
+    // wrapper, so an ambiguous section reference here is explicit (falls
+    // through to null/not-found) rather than silently resolving to an
+    // arbitrary same-labeled physical occurrence for operative-state
+    // purposes - a materially worse failure mode than a plain miss, since
+    // operative state is treated as authoritative downstream.
+    const resolution = index.resolveUniqueNodeByRef(baseDocumentId, group.ref);
+    if (resolution.status !== "UNIQUE") return { text: null, nodeKey: null, nodeId: null };
+    const node = resolution.node;
+    return { text: index.getNodeText(node.nodeId, "DESCENDANTS"), nodeKey: node.nodeKey, nodeId: node.nodeId };
   }
   const def = index.getDefinition(group.ref, baseDocumentId) ?? index.getDefinition(group.ref);
-  if (!def) return { text: null, nodeKey: null };
-  return { text: index.getDefinitionFullText(def.exactTerm, def.documentId) ?? null, nodeKey: def.sourceNodeKey };
+  if (!def) return { text: null, nodeKey: null, nodeId: null };
+  return { text: index.getDefinitionFullText(def.exactTerm, def.documentId) ?? null, nodeKey: def.sourceNodeKey, nodeId: def.sourceNodeId };
 }
 
 function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfDate: string, index: StructuralIndex): OperativeProvisionView {
@@ -67,24 +74,30 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
   let currentText = base.text;
   let currentSourceDocumentId = baseDocumentId;
   let currentSourceNodeKey = base.nodeKey;
+  let currentSourceNodeId = base.nodeId;
   const supersededSourceNodeKeys: string[] = [];
+  const supersededSourceNodeIds: string[] = [];
 
   for (const applied of appliedChain) {
     const effect = group.effects.find((e) => e.effectId === applied.effectId)!;
     if (currentSourceNodeKey) supersededSourceNodeKeys.push(currentSourceNodeKey);
+    if (currentSourceNodeId) supersededSourceNodeIds.push(currentSourceNodeId);
     if (effect.operation === "DELETE_TEXT" || effect.operation === "DELETE_DEFINITION" || effect.operation === "REMOVE_COVENANT" || effect.operation === "REMOVE_EXCEPTION") {
       currentText = null;
       currentSourceDocumentId = effect.amendmentDocumentId;
       currentSourceNodeKey = null;
+      currentSourceNodeId = null;
     } else if (effect.newText) {
       currentText = effect.newText;
       currentSourceDocumentId = effect.amendmentDocumentId;
       currentSourceNodeKey = null;
+      currentSourceNodeId = null;
     } else {
       // Effect genuinely applies (real evidence, resolved target, real effective date) but did not supply capturable resulting text (e.g. a threshold change or a bare "is hereby amended" with no quoted replacement) - the FACT that this effect governs is known; the resulting TEXT is honestly not safely renderable, never fabricated.
       currentText = null;
       currentSourceDocumentId = effect.amendmentDocumentId;
       currentSourceNodeKey = null;
+      currentSourceNodeId = null;
     }
   }
 
@@ -119,10 +132,12 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
     asOfDate,
     currentSourceDocumentId,
     currentSourceNodeKey,
+    currentSourceNodeId,
     currentText,
     fullChain,
     appliedChain,
     supersededSourceNodeKeys,
+    supersededSourceNodeIds,
     status,
     unresolvedIssues,
     conflicts,

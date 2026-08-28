@@ -1,0 +1,83 @@
+{
+  "purpose": "POST-REMEDIATION counterpart to scripts/architecture-proposal-node-identity-repro.ts (preserved unchanged as frozen 'before' evidence) - proves, over the byte-identical synthetic documents, that the collision mechanism no longer produces occurrence-unreachability or cross-parent child merging under Phase 3F.1.2's occurrence-safe (nodeId/parentNodeId) identity substrate.",
+  "remediationAdr": "docs/architecture/STRUCTURAL-NODE-IDENTITY-ADR.md",
+  "productionFunctionsCalled": [
+    "parseDocumentStructure (lib/contract-model/compiler/stage-structure.ts, post-remediation)",
+    "buildStructuralIndex (lib/contract-model/compiler/structural-index.ts, post-remediation)"
+  ],
+  "productionCodeModified": false,
+  "caseA_crossReferenceCollision": {
+    "documentId": "synthetic-doc-a",
+    "rawNodeCount": 9,
+    "duplicateNodeIds": {},
+    "duplicateNodeKeys": {
+      "synthetic-doc-a::6.04": 2
+    },
+    "physicalOccurrencesOfSix04": 2,
+    "allBothOccurrencesReachableByNodeId": true,
+    "resolveUniqueNodeByRefStatus": "AMBIGUOUS",
+    "findNodesByRefCount": 2,
+    "deprecatedGetNodeByRefIsUndefinedOnAmbiguity": true,
+    "childrenPerOccurrence": [
+      {
+        "nodeId": "structural-node:3a7b6f3624bb92bf34ece2fb",
+        "charStart": 117,
+        "children": []
+      },
+      {
+        "nodeId": "structural-node:209ef73cae712363a119c056",
+        "charStart": 252,
+        "children": [
+          "6.04(a)",
+          "6.04(b)"
+        ]
+      }
+    ],
+    "healthErrorFindingCount": 0,
+    "healthInfoFindingCount": 3,
+    "healthFindings": [
+      {
+        "code": "DUPLICATE_LABEL_EXPECTED",
+        "severity": "INFO",
+        "documentId": "synthetic-doc-a",
+        "message": "2 physical occurrences share legal reference \"synthetic-doc-a::6.04\" - normal drafting/extraction reality (repeated section numbers, cross-references, ToC entries), not a defect. resolveUniqueNodeByRef returns AMBIGUOUS for this reference; findNodesByRef returns all 2 candidates."
+      },
+      {
+        "code": "AMBIGUOUS_LEGAL_REFERENCE",
+        "severity": "INFO",
+        "documentId": "synthetic-doc-a",
+        "message": "resolveUniqueNodeByRef/getNodeByRef for legal reference \"synthetic-doc-a::6.04\" returns AMBIGUOUS/undefined (2 candidates) rather than an arbitrary pick - callers needing a specific occurrence must disambiguate via findNodesByRef or nodeId."
+      },
+      {
+        "code": "DUPLICATE_NORMALIZED_PATH",
+        "severity": "INFO",
+        "documentId": "synthetic-doc-a",
+        "message": "2 physical occurrences share the identical normalized ancestor path \"synthetic-doc-a::ARTICLE:VI/SECTION:6.04\" - a duplicated structural branch, not merely one duplicated leaf label; each occurrence remains independently addressable by its own nodeId."
+      }
+    ]
+  },
+  "caseB_previouslyForcedChildMerge": {
+    "documentId": "synthetic-doc-b",
+    "physicalOccurrencesOfSix06": 2,
+    "childrenPerOccurrence": [
+      {
+        "nodeId": "structural-node:b0b0350cc4b0cb42b38c7e01",
+        "charStart": 22,
+        "children": [
+          "6.06(a)@139",
+          "6.06(b)@225"
+        ]
+      },
+      {
+        "nodeId": "structural-node:f1b0793e38f372651ce96270",
+        "charStart": 274,
+        "children": [
+          "6.06(a)@330"
+        ]
+      }
+    ],
+    "noCrossOccurrenceChildOverlap": true,
+    "healthErrorFindingCount": 0
+  },
+  "conclusion": "Both physical occurrences of a collided legal reference remain independently reachable via nodeId/getNodeById after remediation, whereas the pre-remediation getNode/getNodeByRef could only ever surface one. resolveUniqueNodeByRef correctly reports AMBIGUOUS rather than a silent pick, and the deprecated getNodeByRef shim now safely returns undefined instead of an arbitrary occurrence. getChildren(nodeId) is scoped per physical parent occurrence with zero cross-occurrence overlap in the forced-merge case. Structural health reports zero ERROR-severity findings for both cases (only expected INFO-severity DUPLICATE_LABEL_EXPECTED/AMBIGUOUS_LEGAL_REFERENCE, per I2/I15's own discipline that a shared label is normal, not a defect) - the identity-level invariants (I1/I5/I6/I7) hold."
+}

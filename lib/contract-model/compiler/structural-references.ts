@@ -22,14 +22,26 @@ export type ReferenceTargetKind = "ARTICLE" | "SECTION" | "CLAUSE" | "SCHEDULE" 
 
 export interface DetectedReference {
   documentId: string;
-  /** The enclosing structural node's nodeKey this reference physically appears inside, or null if it appears before any structural node was found (e.g. in a preamble). */
+  /**
+   * @deprecated legacy label-shaped key, kept for backward-compatible
+   * display/logging only. Use `sourceNodeId` for identity.
+   */
   sourceNodeKey: string | null;
+  /** Phase 3F.1.2 - the enclosing structural node's real physical occurrence identity (`findEnclosingNode` is position-based, so this was always correct even before 3F.1.2 - only its DOWNSTREAM lookup via the label-keyed nodeKey was unsafe). */
+  sourceNodeId: string | null;
   referenceText: string;
   targetKind: ReferenceTargetKind;
   /** Normalized target ref exactly as it would appear in a StructuralNode.sectionRef, e.g. "6.01", "6.01(a)", "VI" - or the raw schedule/exhibit label when not a section/article/clause. */
   normalizedTarget: string;
-  /** The resolved node's nodeKey, only when an EXACT match exists among this document's own structural nodes. */
+  /**
+   * @deprecated legacy label-shaped key, kept for backward-compatible
+   * display/logging only. Use `targetNodeId` for identity.
+   */
   targetNodeKey: string | null;
+  /** Phase 3F.1.2 - the resolved node's real physical occurrence identity, set ONLY when exactly one node matches normalizedTarget (never an arbitrary pick among multiple matches - see `targetAmbiguous`). */
+  targetNodeId: string | null;
+  /** Phase 3F.1.2 - true when normalizedTarget matched MORE THAN ONE physical occurrence in this document; `resolved` is false and `targetNodeId` is null in this case (task §11: preserve ambiguity, never guess a target). */
+  targetAmbiguous: boolean;
   resolved: boolean;
   unresolvedReason: string | null;
   charStart: number;
@@ -131,14 +143,25 @@ const ANTECEDENT_WINDOW_CHARS = 120;
 export interface RelativeClauseResolution {
   normalizedTarget: string;
   resolved: boolean;
+  /** @deprecated legacy label-shaped key; use `targetNodeId`. */
   targetNodeKey: string | null;
+  targetNodeId: string | null;
+  targetAmbiguous: boolean;
 }
 
-function ancestorChain(enclosing: StructuralNode, bySectionRef: Map<string, StructuralNode>): StructuralNode[] {
+/**
+ * Phase 3F.1.2 - walks the REAL physical parent chain via `parentNodeId`
+ * (assigned at parse time in stage-structure.ts from actual nesting
+ * position, never re-derived from a label). No label lookup, no
+ * label-keyed map, and therefore no possibility of walking into the wrong
+ * physical ancestor merely because it shares a `parentSectionRef` label
+ * with another occurrence.
+ */
+function ancestorChain(enclosing: StructuralNode, nodesById: Map<string, StructuralNode>): StructuralNode[] {
   const chain: StructuralNode[] = [enclosing];
   let current = enclosing;
-  while (current.parentSectionRef) {
-    const parent = bySectionRef.get(current.parentSectionRef);
+  while (current.parentNodeId) {
+    const parent = nodesById.get(current.parentNodeId);
     if (!parent) break;
     chain.push(parent);
     current = parent;
@@ -146,22 +169,39 @@ function ancestorChain(enclosing: StructuralNode, bySectionRef: Map<string, Stru
   return chain;
 }
 
-export function resolveRelativeClauseTarget(rawMarker: string, enclosing: StructuralNode | null, text: string, referenceCharStart: number, byNodeKey: Map<string, StructuralNode>, bySectionRef: Map<string, StructuralNode>, documentId: string): RelativeClauseResolution {
+/**
+ * `nodesById`: this document's own nodes keyed by physical occurrence
+ * identity (nodeId) - used for the ancestor walk. `byLegalRef`: this
+ * document's own nodes grouped by normalized sectionRef (MULTI-valued,
+ * never a silent last-write-wins singleton) - used for the composed-label
+ * candidate checks in steps 2/3. Exactly one match resolves; zero falls
+ * through to the next strategy; more than one is reported as ambiguous and
+ * never guessed (task §11).
+ */
+export function resolveRelativeClauseTarget(rawMarker: string, enclosing: StructuralNode | null, text: string, referenceCharStart: number, nodesById: Map<string, StructuralNode>, byLegalRef: Map<string, StructuralNode[]>, documentId: string): RelativeClauseResolution {
+  void documentId; // retained in the signature for call-site stability; candidate lookups below are already document-scoped by construction (byLegalRef/nodesById are built from one document's own nodes only).
   const directParentRef = enclosing ? (enclosing.nodeType === "SECTION" ? enclosing.sectionRef : enclosing.parentSectionRef) : null;
   const fallbackTarget = `${directParentRef ?? ""}${rawMarker}`;
 
-  if (!enclosing) return { normalizedTarget: fallbackTarget, resolved: false, targetNodeKey: null };
+  if (!enclosing) return { normalizedTarget: fallbackTarget, resolved: false, targetNodeKey: null, targetNodeId: null, targetAmbiguous: false };
 
-  const chain = ancestorChain(enclosing, bySectionRef);
+  const chain = ancestorChain(enclosing, nodesById);
 
-  // 1. Ancestor self-match.
+  // 1. Ancestor self-match - the physical ancestor object is already in hand, so this is occurrence-safe by construction (no lookup at all).
   for (const ancestor of chain) {
     if (ancestor.sectionRef.endsWith(rawMarker)) {
-      return { normalizedTarget: ancestor.sectionRef, resolved: true, targetNodeKey: ancestor.nodeKey };
+      return { normalizedTarget: ancestor.sectionRef, resolved: true, targetNodeKey: ancestor.nodeKey, targetNodeId: ancestor.nodeId, targetAmbiguous: false };
     }
   }
 
-  // 2. Antecedent Section override - only ever accepted if the composed candidate is a real node.
+  function resolveComposedCandidate(candidate: string): RelativeClauseResolution | null {
+    const matches = byLegalRef.get(candidate) ?? [];
+    if (matches.length === 1) return { normalizedTarget: candidate, resolved: true, targetNodeKey: matches[0]!.nodeKey, targetNodeId: matches[0]!.nodeId, targetAmbiguous: false };
+    if (matches.length > 1) return { normalizedTarget: candidate, resolved: false, targetNodeKey: null, targetNodeId: null, targetAmbiguous: true };
+    return null; // no match at all - try the next strategy.
+  }
+
+  // 2. Antecedent Section override - only ever accepted if the composed candidate resolves unambiguously.
   const windowStart = Math.max(0, referenceCharStart - ANTECEDENT_WINDOW_CHARS);
   const window = text.slice(windowStart, referenceCharStart);
   let antecedentMatch: RegExpExecArray | null = null;
@@ -170,10 +210,8 @@ export function resolveRelativeClauseTarget(rawMarker: string, enclosing: Struct
   while ((m = antecedentRe.exec(window)) !== null) antecedentMatch = m;
   if (antecedentMatch) {
     const antecedentRef = antecedentMatch[1]!.replace(/\s+/g, "");
-    const candidate = `${antecedentRef}${rawMarker}`;
-    const candidateKey = `${documentId}::${candidate}`;
-    const candidateNode = byNodeKey.get(candidateKey);
-    if (candidateNode) return { normalizedTarget: candidate, resolved: true, targetNodeKey: candidateNode.nodeKey };
+    const result = resolveComposedCandidate(`${antecedentRef}${rawMarker}`);
+    if (result) return result;
   }
 
   // 3. Ancestor-chain child search, nearest ancestor first, case-sensitive
@@ -187,13 +225,11 @@ export function resolveRelativeClauseTarget(rawMarker: string, enclosing: Struct
   // edge case this remediation's own test suite found and must not
   // resolve against).
   for (const ancestor of chain.slice(1)) {
-    const candidate = `${ancestor.sectionRef}${rawMarker}`;
-    const candidateKey = `${documentId}::${candidate}`;
-    const candidateNode = byNodeKey.get(candidateKey);
-    if (candidateNode) return { normalizedTarget: candidate, resolved: true, targetNodeKey: candidateNode.nodeKey };
+    const result = resolveComposedCandidate(`${ancestor.sectionRef}${rawMarker}`);
+    if (result) return result;
   }
 
-  return { normalizedTarget: fallbackTarget, resolved: false, targetNodeKey: null };
+  return { normalizedTarget: fallbackTarget, resolved: false, targetNodeKey: null, targetNodeId: null, targetAmbiguous: false };
 }
 
 /** Deepest structural node whose owned span contains a given offset - shared with structural-definitions.ts so both use the identical "which node is this text physically inside" rule. */
@@ -217,8 +253,20 @@ export function findEnclosingNode(charStart: number, nodesSortedByStart: Structu
  */
 export function detectStructuralReferences(documentId: string, text: string, nodes: StructuralNode[]): DetectedReference[] {
   const sorted = [...nodes].sort((a, b) => a.charStart - b.charStart);
-  const byKey = new Map(sorted.map((n) => [n.nodeKey, n] as const));
-  const bySectionRef = new Map(sorted.map((n) => [n.sectionRef, n] as const));
+  // Phase 3F.1.2: occurrence-safe local structures, built directly from
+  // this document's own already-correctly-identified nodes (nodeId/
+  // parentNodeId are minted once, in stage-structure.ts, never re-derived
+  // here from a label). `nodesById` supports the ancestor walk;
+  // `byLegalRef` is a MULTI-map (never a silent last-write-wins singleton)
+  // supporting composed-label candidate lookups, so a duplicate-labeled
+  // section can never silently substitute for the intended target.
+  const nodesById = new Map(sorted.map((n) => [n.nodeId, n] as const));
+  const byLegalRef = new Map<string, StructuralNode[]>();
+  for (const n of sorted) {
+    const list = byLegalRef.get(n.sectionRef) ?? [];
+    list.push(n);
+    byLegalRef.set(n.sectionRef, list);
+  }
   const results: DetectedReference[] = [];
 
   for (const pattern of PATTERNS) {
@@ -231,6 +279,8 @@ export function detectStructuralReferences(documentId: string, text: string, nod
       let normalizedTarget = pattern.normalize(m);
       let targetKind = pattern.kind;
       let targetNodeKey: string | null = null;
+      let targetNodeId: string | null = null;
+      let targetAmbiguous = false;
       let resolved = false;
 
       if (pattern.kind === "CLAUSE") {
@@ -238,11 +288,15 @@ export function detectStructuralReferences(documentId: string, text: string, nod
         // absolute meaning on its own - resolveRelativeClauseTarget tries
         // ancestor self-match, an explicit nearby antecedent Section
         // override, and an ancestor-chain child search, in that order,
-        // never guessing (Phase 2E.1 §4-§6).
-        const resolution = resolveRelativeClauseTarget(normalizedTarget, enclosing, text, charStart, byKey, bySectionRef, documentId);
+        // never guessing (Phase 2E.1 §4-§6; Phase 3F.1.2: each step is now
+        // occurrence-safe and reports ambiguity rather than silently
+        // picking among multiple same-labeled candidates).
+        const resolution = resolveRelativeClauseTarget(normalizedTarget, enclosing, text, charStart, nodesById, byLegalRef, documentId);
         normalizedTarget = resolution.normalizedTarget;
         targetKind = "SECTION";
         targetNodeKey = resolution.targetNodeKey;
+        targetNodeId = resolution.targetNodeId;
+        targetAmbiguous = resolution.targetAmbiguous;
         resolved = resolution.resolved;
       } else {
         // SCHEDULE/EXHIBIT references can never resolve against this tree:
@@ -250,21 +304,28 @@ export function detectStructuralReferences(documentId: string, text: string, nod
         // all (task §13 - deferred), so a "Schedule 6.01" reference must
         // never be matched against a SECTION node that coincidentally shares
         // the same number - a real false-resolution risk this guard closes.
-        const candidateKey = `${documentId}::${normalizedTarget}`;
-        const resolvedNode = targetKind === "SCHEDULE" || targetKind === "EXHIBIT" ? undefined : byKey.get(candidateKey);
-        resolved = !!resolvedNode;
-        targetNodeKey = resolved ? candidateKey : null;
+        const matches = targetKind === "SCHEDULE" || targetKind === "EXHIBIT" ? [] : (byLegalRef.get(normalizedTarget) ?? []);
+        if (matches.length === 1) {
+          resolved = true;
+          targetNodeKey = matches[0]!.nodeKey;
+          targetNodeId = matches[0]!.nodeId;
+        } else if (matches.length > 1) {
+          targetAmbiguous = true; // never arbitrarily pick among same-labeled candidates (task §11).
+        }
       }
 
       results.push({
         documentId,
         sourceNodeKey: enclosing?.nodeKey ?? null,
+        sourceNodeId: enclosing?.nodeId ?? null,
         referenceText: m[0],
         targetKind,
         normalizedTarget,
         targetNodeKey,
+        targetNodeId,
+        targetAmbiguous,
         resolved,
-        unresolvedReason: resolved ? null : `no ${targetKind} node with ref "${normalizedTarget}" exists among this document's own structural nodes`,
+        unresolvedReason: resolved ? null : targetAmbiguous ? `${targetKind} ref "${normalizedTarget}" matches more than one physical occurrence in this document - ambiguous, not resolved` : `no ${targetKind} node with ref "${normalizedTarget}" exists among this document's own structural nodes`,
         charStart,
         charEnd,
       });

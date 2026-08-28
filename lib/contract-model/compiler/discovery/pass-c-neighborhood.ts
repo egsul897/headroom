@@ -15,19 +15,25 @@ import type { SemanticRuleItem } from "./pass-b-semantic";
 import type { DiscoveredCandidate, DiscoveryRole } from "./types";
 import { computeStableKey } from "../../stable-keys";
 
-function resolveRelativeRef(index: StructuralIndex, documentId: string, sectionRef: string, relativeRef: string): string {
-  if (!relativeRef) return `${documentId}::${sectionRef.replace(/\s+/g, "")}`;
-  const composed = `${sectionRef}${relativeRef.replace(/\s+/g, "")}`;
-  return `${documentId}::${composed}`;
-}
-
-/** True when a candidate node exists in this document's own real structural index - exact lookup, never a guess. */
-function nodeExists(index: StructuralIndex, nodeKey: string): boolean {
-  return !!index.getNode(nodeKey);
+/**
+ * Phase 3F.1.2: resolves the composed section reference via
+ * `resolveUniqueNodeByRef` - cardinality-aware (UNIQUE/NOT_FOUND/AMBIGUOUS),
+ * never a hand-constructed label string probed against a raw `.get()`
+ * (the pre-3F.1.2 shape, which was itself a third independent
+ * re-implementation of stage-structure.ts's own nodeKey-construction
+ * template, and inherited the same collision risk: an AMBIGUOUS composed
+ * reference would previously have silently resolved to whichever physical
+ * occurrence the index's last-write-wins map happened to keep).
+ */
+function resolveRelativeRef(index: StructuralIndex, documentId: string, sectionRef: string, relativeRef: string): string | null {
+  const composed = relativeRef ? `${sectionRef}${relativeRef.replace(/\s+/g, "")}` : sectionRef;
+  const resolution = index.resolveUniqueNodeByRef(documentId, composed);
+  return resolution.status === "UNIQUE" ? resolution.node.nodeId : null;
 }
 
 export interface ExpandedCandidate {
   structuralNodeKeys: string[];
+  structuralNodeIds: string[];
   normalizedSourceRef: string;
   role: DiscoveryRole;
   roleRaw: string;
@@ -44,26 +50,31 @@ export interface ExpandedCandidate {
   sourceCitation: string;
 }
 
-export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId: string, sectionNodeKey: string, sectionRef: string, semanticItems: SemanticRuleItem[], discoveryRunVersion: string): { candidates: ExpandedCandidate[]; discoveryId: (c: ExpandedCandidate) => string } {
+export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId: string, sectionNodeId: string, sectionRef: string, semanticItems: SemanticRuleItem[], discoveryRunVersion: string): { candidates: ExpandedCandidate[]; discoveryId: (c: ExpandedCandidate) => string } {
   const candidates: ExpandedCandidate[] = [];
 
   for (const item of semanticItems) {
-    const resolvedKey = resolveRelativeRef(index, documentId, sectionRef, item.relativeRef);
+    const resolvedId = resolveRelativeRef(index, documentId, sectionRef, item.relativeRef);
     // Exact-resolution-only, matching Phase 1A's own safety discipline: if
-    // the model's relativeRef does not correspond to a real structural
-    // node, fall back to the section itself as the evidence anchor rather
-    // than fabricating a node reference that does not exist.
-    const anchorKey = nodeExists(index, resolvedKey) ? resolvedKey : sectionNodeKey;
-    const anchorNode = index.getNode(anchorKey);
-    const structuralNodeKeys = [anchorKey];
+    // the model's relativeRef does not correspond to a real, UNIQUELY
+    // resolved structural node (not found, or ambiguous among more than
+    // one physical occurrence), fall back to the section itself as the
+    // evidence anchor rather than fabricating a node reference that does
+    // not exist or guessing among colliding candidates.
+    const anchorId = resolvedId ?? sectionNodeId;
+    const anchorNode = index.getNodeById(anchorId);
+    const structuralNodeIds = [anchorId];
+    const structuralNodeKeys = [anchorNode?.nodeKey ?? ""];
     // Neighborhood guarantee: an EXCEPTION/BASKET/PROVISO is always linked
     // back to its containing section node too, so a downstream consumer
     // asking "what does this exception modify" never has to guess.
-    if (anchorKey !== sectionNodeKey && (item.role === "EXCEPTION" || item.role === "BASKET" || item.role === "PROVISO" || item.role === "CONDITION")) {
-      structuralNodeKeys.push(sectionNodeKey);
+    if (anchorId !== sectionNodeId && (item.role === "EXCEPTION" || item.role === "BASKET" || item.role === "PROVISO" || item.role === "CONDITION")) {
+      structuralNodeIds.push(sectionNodeId);
+      structuralNodeKeys.push(index.getNodeById(sectionNodeId)?.nodeKey ?? "");
     }
     candidates.push({
       structuralNodeKeys,
+      structuralNodeIds,
       normalizedSourceRef: anchorNode?.sectionRef ?? sectionRef,
       role: item.role,
       roleRaw: item.roleRaw,
@@ -77,7 +88,7 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
       definedTermDependencyLikely: item.definedTermDependencyLikely,
       confidence: item.confidence,
       needsReview: item.needsReview,
-      sourceCitation: anchorNode ? index.getNodeText(anchorNode.nodeKey, "OWN").slice(0, 300) : "",
+      sourceCitation: anchorNode ? index.getNodeText(anchorNode.nodeId, "OWN").slice(0, 300) : "",
     });
   }
 
@@ -86,11 +97,12 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
   // every semantic item Pass B returned resolved to a deeper sub-node -
   // never silently missing because Pass B happened to only describe
   // children.
-  const sectionAlreadyRepresented = candidates.some((c) => c.structuralNodeKeys.includes(sectionNodeKey) && c.normalizedSourceRef === sectionRef);
+  const sectionAlreadyRepresented = candidates.some((c) => c.structuralNodeIds.includes(sectionNodeId) && c.normalizedSourceRef === sectionRef);
   if (!sectionAlreadyRepresented) {
-    const sectionNode = index.getNode(sectionNodeKey);
+    const sectionNode = index.getNodeById(sectionNodeId);
     candidates.push({
-      structuralNodeKeys: [sectionNodeKey],
+      structuralNodeKeys: [sectionNode?.nodeKey ?? ""],
+      structuralNodeIds: [sectionNodeId],
       normalizedSourceRef: sectionRef,
       role: "GENERAL_PROHIBITION",
       roleRaw: "",
@@ -103,7 +115,7 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
       definedTermDependencyLikely: false,
       confidence: 0.5,
       needsReview: true,
-      sourceCitation: sectionNode ? index.getNodeText(sectionNode.nodeKey, "OWN").slice(0, 300) : "",
+      sourceCitation: sectionNode ? index.getNodeText(sectionNode.nodeId, "OWN").slice(0, 300) : "",
     });
   }
 

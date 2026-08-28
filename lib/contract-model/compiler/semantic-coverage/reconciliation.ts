@@ -23,6 +23,7 @@
  * walker for the same expression tree shapes.
  */
 import type { DiscoveredCandidate } from "../discovery/types";
+import type { StructuralIndex } from "../structural-index";
 import type { IRDefinition, IRRule } from "../../ir/types";
 import { buildIrInventory } from "../semantic-verification/ir-inventory";
 import type { IrInventoryItem } from "../semantic-verification/types";
@@ -52,11 +53,18 @@ export function extractNumericValue(text: string): number | null {
   return null;
 }
 
-/** Generic containment check (no company/package-specific logic): a discovered candidate covers a unit when the unit's own structural node IS one of the candidate's nodes, or is nested under one (task's own real drafting pattern: "6.01(a)" nests under "6.01"). Raw-source-fallback-anchored units (no structural node) are never covered by any candidate - Phase 2B's own discovery never saw that text, which is itself real, material information this reconciliation surfaces rather than approximates. */
-function candidatesCoveringUnit(unit: MaterialSemanticUnit, candidates: DiscoveredCandidate[]): DiscoveredCandidate[] {
+/** Generic containment check (no company/package-specific logic): a discovered candidate covers a unit when the unit's own structural node IS one of the candidate's nodes, or is nested under one (task's own real drafting pattern: "6.01(a)" nests under "6.01"). Raw-source-fallback-anchored units (no structural node) are never covered by any candidate - Phase 2B's own discovery never saw that text, which is itself real, material information this reconciliation surfaces rather than approximates.
+ *
+ * Phase 3F.1.2: nesting is resolved via the unit's own real ancestor chain
+ * (physical occurrence identity), never a label-prefix string hack - a
+ * label-shaped "startsWith" match could conflate two different physical
+ * occurrences that merely share a numbering prefix (e.g. a ToC duplicate),
+ * which is exactly the silent-merge class this remediation closes. */
+function candidatesCoveringUnit(unit: MaterialSemanticUnit, candidates: DiscoveredCandidate[], index: StructuralIndex): DiscoveredCandidate[] {
   const anchor = unit.anchors[0];
-  if (!anchor || !anchor.structuralNodeKey) return [];
-  return candidates.filter((c) => c.documentId === anchor.documentId && c.structuralNodeKeys.some((ck) => anchor.structuralNodeKey === ck || anchor.structuralNodeKey!.startsWith(ck)));
+  if (!anchor || !anchor.structuralNodeId) return [];
+  const ancestorIds = new Set(index.getAncestors(anchor.structuralNodeId).map((n) => n.nodeId));
+  return candidates.filter((c) => c.documentId === anchor.documentId && c.structuralNodeIds.some((id) => id === anchor.structuralNodeId || ancestorIds.has(id)));
 }
 
 /** Finds the compiled IR rule whose own provenance citation corresponds to this unit's anchor - the anchor-based matching this reconciliation relies on primarily (a stronger, more specific signal than "does this number appear ANYWHERE in the whole document's compiled IR"). */
@@ -77,6 +85,8 @@ export interface CompiledCandidateResult {
 
 export interface ReconciliationInput {
   frozenInventory: FrozenSourceInventory;
+  /** Phase 3F.1.2 - required for occurrence-safe ancestor-chain containment in candidatesCoveringUnit; never used to look up or alter the frozen inventory itself. */
+  index: StructuralIndex;
   /** Every candidate Phase 2B discovered for this document/package - used only to check whether a unit's own source region was ever discovered at all. */
   discoveredCandidates: DiscoveredCandidate[];
   /** Every compiled result for every candidate that WAS compiled. */
@@ -100,7 +110,7 @@ function entry(unit: MaterialSemanticUnit, coverageState: SemanticCoverageState,
 }
 
 function reconcileOneUnit(unit: MaterialSemanticUnit, input: ReconciliationInput): { entry: SemanticUnitCoverageEntry; dangerous: DangerousUnaccountedSemanticUnit | null } {
-  const coveringCandidates = candidatesCoveringUnit(unit, input.discoveredCandidates);
+  const coveringCandidates = candidatesCoveringUnit(unit, input.discoveredCandidates, input.index);
 
   if (coveringCandidates.length === 0) {
     if (unit.materiality === "INFORMATIONAL") return { entry: entry(unit, "UNREPRESENTED", [], null, "no discovered candidate covers this unit's source region, but the unit itself is INFORMATIONAL - not treated as dangerous"), dangerous: null };

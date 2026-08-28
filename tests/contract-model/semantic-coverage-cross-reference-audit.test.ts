@@ -22,7 +22,7 @@ function makeUnit(overrides: Partial<MaterialSemanticUnit> = {}): MaterialSemant
     instrumentKey,
     operativeVersionRef: null,
     granularity: "SEMANTIC_UNIT",
-    anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::7.02(a)", sectionRef: "7.02(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::7.02(a)" }],
+    anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::7.02(a)", structuralNodeId: "id-doc-1-7.02(a)", sectionRef: "7.02(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::7.02(a)" }],
     family: "INDEBTEDNESS",
     familyEvidence: null,
     postureSignal: "PERMISSION_SIGNAL",
@@ -98,7 +98,7 @@ describe("Phase 3E cross-section relationship audit", () => {
   });
 
   it("finds the reclassification relationship when a real dependsOn edge exists on ANY rule in the document, not just the signaled unit's own anchored rule", () => {
-    const unit = makeUnit({ detectedSignals: ["reclassification"], anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::7.02(a)", sectionRef: "7.02(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::7.02(a)" }] });
+    const unit = makeUnit({ detectedSignals: ["reclassification"], anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::7.02(a)", structuralNodeId: "id-doc-1-7.02(a)", sectionRef: "7.02(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::7.02(a)" }] });
     const ruleA = makeRule({ sourceSectionRef: "7.02(a)" });
     const ruleB = makeRule({ sourceSectionRef: "7.02(b)", dependsOn: [{ relationshipType: "RECLASSIFIABLE_TO", targetRuleId: ruleA.ruleId, description: "cross-basket reclassification right" }] });
     const findings = auditCrossSectionRelationships([unit], [ruleA, ruleB]);
@@ -123,10 +123,12 @@ function makeProvision(overrides: Partial<OperativeProvisionView> = {}): Operati
     asOfDate: "2026-01-01",
     currentSourceDocumentId: "doc-1",
     currentSourceNodeKey: "doc-1::7.02(a)",
+    currentSourceNodeId: "id-doc-1-7.02(a)",
     currentText: "test",
     fullChain: [],
     appliedChain: [],
     supersededSourceNodeKeys: [],
+    supersededSourceNodeIds: [],
     status: "OPERATIVE_STATE_RESOLVED",
     unresolvedIssues: [],
     conflicts: [],
@@ -141,7 +143,7 @@ function makeOperativeState(provisions: OperativeProvisionView[]): OperativeCont
 describe("Phase 3E operative-state audit for units", () => {
   it("flags STALE_SUPERSEDED_TEXT_CREDITED when a unit's anchor node is in a provision's supersededSourceNodeKeys", () => {
     const unit = makeUnit();
-    const provision = makeProvision({ supersededSourceNodeKeys: ["doc-1::7.02(a)"], currentSourceNodeKey: "doc-2::7.02(a)-amended" });
+    const provision = makeProvision({ supersededSourceNodeKeys: ["doc-1::7.02(a)"], supersededSourceNodeIds: ["id-doc-1-7.02(a)"], currentSourceNodeKey: "doc-2::7.02(a)-amended", currentSourceNodeId: "id-doc-2-7.02(a)-amended" });
     const findings = auditOperativeStateForUnits([unit], makeOperativeState([provision]));
     expect(findings).toHaveLength(1);
     expect(findings[0]!.findingType).toBe("STALE_SUPERSEDED_TEXT_CREDITED");
@@ -163,7 +165,7 @@ describe("Phase 3E operative-state audit for units", () => {
   });
 
   it("emits no finding for a raw-source-fallback unit with no structural node anchor (cannot be checked against operative state)", () => {
-    const unit = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: null, sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "doc-1::raw[0-10]" }] });
+    const unit = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: null, structuralNodeId: null, sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "doc-1::raw[0-10]" }] });
     const findings = auditOperativeStateForUnits([unit], makeOperativeState([makeProvision()]));
     expect(findings).toHaveLength(0);
   });

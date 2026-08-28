@@ -1,0 +1,43 @@
+{
+  "purpose": "Proposed staged migration sequence (task §49-51). Design-only; no stage has been implemented.",
+  "guidingPrinciple": "Avoid a big-bang rewrite. Substitute the identity substrate underneath unchanged consumer logic, one Headroom phase at a time, each with its own targeted regression before moving to the next.",
+  "stages": [
+    { "stage": "A", "name": "Introduce nodeId alongside legacy nodeKey", "description": "Add Option D's nodeId (+ structuralPath/occurrenceOrdinal metadata) to every StructuralNode, computed at parse time. Zero consumer changes yet - nodeKey remains authoritative for all existing callers.", "risk": "Low - additive only." },
+    { "stage": "B", "name": "Dual-run invariant comparison", "description": "Build both the legacy index and the new occurrence-safe index from the same parsed nodes; diff node count, reachable-occurrence count, parent-child ownership, source spans, reference-resolution results. Legacy output is a diff target for understanding blast radius, never a constraint on what counts as correct in the new index.", "risk": "Low - read-only comparison, not yet load-bearing." },
+    { "stage": "C", "name": "Migrate structural consumers, in dependency order", "description": "2A (index itself) -> 2B discovery -> 2D context retrieval -> 2E/3E coverage-audit and semantic-coverage router/reconciliation -> 2G amendment/operative-state -> 3A IR provenance -> 3B semantic compiler tools -> persistence layer. Each consumer repointed from label-keyed lookups to nodeId-keyed ones; singleton-assuming call sites updated to handle the now-explicit multi-match case.", "risk": "Medium - the highest-severity consumers (semantic/tools.ts, pass-d-reconcile.ts, persistence.ts) require the most careful before/after comparison." },
+    { "stage": "D", "name": "Remove authoritative legacy nodeKey-as-map-key usage", "description": "nodeKey/sectionRef remain present as display fields only; no code path treats them as a unique lookup key any more.", "risk": "Low once Stage C is complete for all consumers." },
+    { "stage": "E", "name": "Known-package regression sequence", "description": "Synthetic adversarial identity tests -> existing Phase 2A suite -> FWRG -> LSB -> CONMED -> DSGR structural regression -> DSGR semantic safety regression.", "risk": "Gate - must pass before Stage F." },
+    { "stage": "F", "name": "Scorer / reconciliation semantic-match correction (SEPARATE FUTURE WORKSTREAM)", "description": "Coverage credit requires semantic correspondence, not merely topical/descendant proximity - addresses the 14-16 false-credit cases Phase 3F.1.1 found. Explicitly NOT bundled into the structural-identity implementation phase.", "risk": "Not scoped by this ADR; a distinct future phase." },
+    { "stage": "G", "name": "New unseen-package validation (Phase 3F.2)", "description": "Only after both Stage E and Stage F have independently gated green, and the zero-dangerous-omissions gate is met.", "risk": "Not authorized by this ADR; explicitly out of scope." }
+  ],
+  "dualRunRecommendation": {
+    "recommended": true,
+    "scope": "Stage B only - not a permanent dual-parser architecture (which ADR §19 explicitly rejects as a permanent design)",
+    "compareOn": ["nodeCount", "reachableOccurrenceCount", "parentChildOwnership", "sourceSpans", "referenceResolutionOutput"],
+    "discardedAfter": "Stage B - retained only as migration evidence, not an ongoing architecture"
+  },
+  "legacyAdapterPolicy": {
+    "ifUsed": "must be explicit and named as legacy; one-way (new nodeId -> legacy label-shaped nodeKey string for any not-yet-migrated caller, never the reverse); never treated as authoritative by new code; scheduled for removal once the consumer inventory is fully migrated",
+    "prohibition": "legacy nodeKey must never remain the hidden canonical identity behind a nodeId-shaped wrapper"
+  },
+  "compatibilityRiskClassification": {
+    "expectedChangesNotRegressions": [
+      "previously-merged contexts splitting apart into their correct distinct occurrences",
+      "source spans becoming smaller/more precise",
+      "reference resolution returning multiple candidates where it used to silently return one",
+      "caches invalidating once (identity-version bump)",
+      "golden/fixture outputs changing where the old output was demonstrably a corrupted merge",
+      "semantic candidate counts changing accordingly"
+    ],
+    "genuineRegressionDefinition": "any output change for a document/section that had ZERO duplicate-key involvement before and after - provably should be impossible under Option D (a non-colliding node's nodeId construction is a strict superset of information, never a different answer for the non-ambiguous case) and must be release-blocking if observed"
+  },
+  "cacheInvalidationMechanism": {
+    "proposed": "STRUCTURAL_INDEX_VERSION constant, bumped once at Stage A/C, participating in stage cache keys (structureOutputHash already includes charStart, so it is already more correct than the identity scheme it caches output of), persisted-artifact schema version tags, and historical-compatibility tags."
+  },
+  "persistenceMigration": {
+    "schemaChangeRequired": false,
+    "reasoning": "DocumentNode's parentId is already a real FK (correct shape). Only persistStructuralNodes' stableKey FORMULA needs the disambiguating component (mirroring nodeId's construction) - no new column, no new model, no Prisma migration strictly required.",
+    "optionalFutureAddition": "An explicit, queryable 'which physical occurrence' debug column would be additive and optional, not required for correctness."
+  },
+  "contaminationCheckForFutureImplementation": "grep the diff for dsgr/fwrg/lsb/conmed (case-insensitive) outside test/script/doc paths; manually review any conditional branching in stage-structure.ts/structural-index.ts for logic keyed on a literal section number or document name rather than a general structural property."
+}

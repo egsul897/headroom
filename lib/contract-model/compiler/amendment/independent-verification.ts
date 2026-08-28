@@ -59,7 +59,10 @@ export function verifyAmendmentEffectsIndependently(effects: AmendmentEffectCand
 
     let targetSectionOrDefinitionExists: boolean | null = null;
     if (effect.target.targetDocumentId && effect.target.targetSectionRef) {
-      targetSectionOrDefinitionExists = index.getNodeByRef(effect.target.targetDocumentId, effect.target.targetSectionRef) !== null;
+      // Phase 3F.1.2: existence-only probe via findNodesByRef (never the
+      // deprecated singleton getNodeByRef, whose `!== null` comparison was
+      // also always true since it returns undefined, not null, on a miss).
+      targetSectionOrDefinitionExists = index.findNodesByRef(effect.target.targetDocumentId, effect.target.targetSectionRef).length > 0;
       if (!targetSectionOrDefinitionExists) issues.push(`Cited section "${effect.target.targetSectionRef}" does not resolve in document "${effect.target.targetDocumentId}"'s own structural index.`);
     } else if (effect.target.targetDocumentId && effect.target.targetDefinedTermRef) {
       targetSectionOrDefinitionExists = index.getDefinitionFullText(effect.target.targetDefinedTermRef, effect.target.targetDocumentId) !== null || index.getDefinitionFullText(effect.target.targetDefinedTermRef) !== null;

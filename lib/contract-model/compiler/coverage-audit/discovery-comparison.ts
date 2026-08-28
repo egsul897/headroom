@@ -28,8 +28,8 @@ import { computeFindingId } from "./identity";
 import type { AuditFinding, CoverageRegion, DiscoveryComparisonStatus, RootCauseSubsystem } from "./types";
 import { COVERAGE_AUDIT_ALGORITHM_VERSION } from "./types";
 
-function candidatesTouchingNode(candidates: DiscoveredCandidate[], nodeKey: string): DiscoveredCandidate[] {
-  return candidates.filter((c) => c.structuralNodeKeys.includes(nodeKey));
+function candidatesTouchingNode(candidates: DiscoveredCandidate[], nodeId: string): DiscoveredCandidate[] {
+  return candidates.filter((c) => c.structuralNodeIds.includes(nodeId));
 }
 
 export interface DiscoveryComparisonResult {
@@ -44,15 +44,15 @@ export interface DiscoveryComparisonResult {
  * handled separately in auditDiscoveryCoverage (see header).
  */
 export function compareRegionToDiscovery(region: CoverageRegion, candidates: DiscoveredCandidate[], index: StructuralIndex): DiscoveryComparisonResult {
-  const exact = candidatesTouchingNode(candidates, region.structuralNodeKey);
+  const exact = candidatesTouchingNode(candidates, region.structuralNodeId);
   if (exact.length > 0) return { status: "DISCOVERED_EXACTLY", relatedCandidateIds: exact.map((c) => c.discoveryId) };
 
-  const descendantKeys = new Set(index.getDescendants(region.structuralNodeKey).map((n) => n.nodeKey));
-  const byDescendant = candidates.filter((c) => c.structuralNodeKeys.some((k) => descendantKeys.has(k)));
+  const descendantIds = new Set(index.getDescendants(region.structuralNodeId).map((n) => n.nodeId));
+  const byDescendant = candidates.filter((c) => c.structuralNodeIds.some((id) => descendantIds.has(id)));
   if (byDescendant.length > 0) return { status: "DISCOVERED_BY_DESCENDANT", relatedCandidateIds: byDescendant.map((c) => c.discoveryId) };
 
-  const ancestorKeys = new Set(index.getAncestors(region.structuralNodeKey).map((n) => n.nodeKey));
-  const byAncestor = candidates.filter((c) => c.structuralNodeKeys.some((k) => ancestorKeys.has(k)));
+  const ancestorIds = new Set(index.getAncestors(region.structuralNodeId).map((n) => n.nodeId));
+  const byAncestor = candidates.filter((c) => c.structuralNodeIds.some((id) => ancestorIds.has(id)));
   if (byAncestor.length > 0) {
     // Task §9's own warning: do not over-credit a coarse parent candidate
     // when this region is economically distinct from its siblings. A
@@ -65,7 +65,7 @@ export function compareRegionToDiscovery(region: CoverageRegion, candidates: Dis
     // DISCOVERED_BY_ANCESTOR is reserved for the genuinely single-child
     // case (no siblings at all), where the ancestor candidate legitimately
     // represents the one real item beneath it.
-    const siblings = index.getSiblings(region.structuralNodeKey);
+    const siblings = index.getSiblings(region.structuralNodeId);
     if (siblings.length > 0) return { status: "PARTIALLY_DISCOVERED", relatedCandidateIds: byAncestor.map((c) => c.discoveryId) };
     return { status: "DISCOVERED_BY_ANCESTOR", relatedCandidateIds: byAncestor.map((c) => c.discoveryId) };
   }
@@ -75,12 +75,13 @@ export function compareRegionToDiscovery(region: CoverageRegion, candidates: Dis
 
 function makeFinding(region: CoverageRegion, findingType: AuditFinding["findingType"], materiality: AuditFinding["materiality"], comparisonResult: AuditFinding["comparisonResult"], rootCause: RootCauseSubsystem, evidence: string, reasoning: string, affectedDiscoveryId: string | null): AuditFinding {
   return {
-    findingId: computeFindingId(region.documentId, region.structuralNodeKey, findingType, evidence),
+    findingId: computeFindingId(region.documentId, region.structuralNodeId, findingType, evidence),
     companyId: region.companyId,
     packageKey: region.packageKey,
     instrumentKey: region.instrumentKey,
     documentId: region.documentId,
     structuralNodeKey: region.structuralNodeKey,
+    structuralNodeId: region.structuralNodeId,
     sourceCitation: region.sourceCitation,
     findingType,
     materiality,
@@ -118,7 +119,7 @@ export function auditDiscoveryCoverage(regions: CoverageRegion[], candidates: Di
       // that DOES touch this exact node never flagged multipleRulesLikely,
       // despite the node's own (unseparated) text being fully available to
       // read - a real classification miss independent of the structural gap.
-      if (comparison.status === "DISCOVERED_EXACTLY" && !candidatesTouchingNode(candidates, region.structuralNodeKey).some((c) => c.multipleRulesLikely)) {
+      if (comparison.status === "DISCOVERED_EXACTLY" && !candidatesTouchingNode(candidates, region.structuralNodeId).some((c) => c.multipleRulesLikely)) {
         findings.push(makeFinding(region, "PARTIAL_DISCOVERY", materiality, comparison.status, "DISCOVERY_PHASE_2B", `The discovered candidate for ${region.sectionRef} does not flag multipleRulesLikely despite this node's own full text independently showing multiple enumerated items.`, "Independent scan found a real, additional classification gap distinct from the structural gap above: the candidate had the node's own full text available and could have flagged the ambiguity even without a separate child node for each item.", comparison.relatedCandidateIds[0] ?? null));
       }
       continue;

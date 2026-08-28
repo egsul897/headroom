@@ -49,8 +49,10 @@ export interface ContextItem {
   itemId: string;
   type: ContextItemType;
   documentId: string;
-  /** Null only for a definition whose full-text span is not itself a StructuralNode (definitions live in prose, not the lettered-clause tree Phase 2A parses). */
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `structuralNodeId` for identity. Null only for a definition whose full-text span is not itself a StructuralNode (definitions live in prose, not the lettered-clause tree Phase 2A parses). */
   structuralNodeKey: string | null;
+  /** Phase 3F.1.2 - the real physical occurrence identity for this item (null iff structuralNodeKey is null). */
+  structuralNodeId: string | null;
   /** sectionRef for a structural item, or the exact defined term name for a definition/definition-dependency item. */
   normalizedRef: string;
   sourceCitation: string;
@@ -148,7 +150,10 @@ export interface CovenantContextBundle {
   instrumentKey: string | null;
   originatingDocumentId: string;
   originatingDiscoveryId: string;
+  /** @deprecated legacy label-shaped keys, kept for backward-compatible display/logging only. Use `originatingStructuralNodeIds` for identity. */
   originatingStructuralNodeKeys: string[];
+  /** Phase 3F.1.2 - occurrence-safe counterpart of originatingStructuralNodeKeys. */
+  originatingStructuralNodeIds: string[];
   normalizedSourceRef: string;
   originatingFamilies: CovenantFamily[];
 

@@ -1,0 +1,82 @@
+{
+  "purpose": "Reconstruction of the CURRENT structural node identity/index mechanism, from production code, before any replacement design. Read-only analysis; no production code was modified to produce this artifact.",
+  "nodeKeyOrigin": {
+    "file": "lib/contract-model/compiler/stage-structure.ts",
+    "line": 244,
+    "construction": "nodeKey: `${doc.documentId}::${r.sectionRef.replace(/\\s+/g, \"\")}`",
+    "isUniquenessIntended": true,
+    "isUniquenessEnforced": false,
+    "evidence": "types.ts:48 doc-comment calls nodeKey 'the stable identity the task asks for... never derived from fuzzy string matching' - true of matching exactness, false of uniqueness; nothing in stage-structure.ts or structural-index.ts ever checks whether a nodeKey has already been produced for a different physical occurrence."
+  },
+  "discardedDisambiguatingField": {
+    "field": "StructuralNode.ordinal",
+    "computedAt": "stage-structure.ts:219-225 (ordinalByParent)",
+    "note": "Already computed per-occurrence at parse time (sibling order under the same parent) but never folded into nodeKey - the disambiguating information already exists and is discarded before identity is formed."
+  },
+  "indexConstruction": {
+    "file": "lib/contract-model/compiler/structural-index.ts",
+    "function": "buildStructuralIndex",
+    "lines": "72-89",
+    "byKeyMap": {
+      "line": 74,
+      "type": "Map<nodeKey, StructuralNode>",
+      "collisionBehavior": "last-charStart occurrence silently overwrites any earlier occurrence sharing the same nodeKey (ordinary JS Map.set semantics on a key that was never actually guaranteed unique)"
+    },
+    "childrenByParentKeyMap": {
+      "line": "82-87",
+      "type": "Map<parentKey, StructuralNode[]>",
+      "collisionBehavior": "every node whose parentSectionRef label matches a given key is pushed onto ONE shared list, regardless of which physical parent occurrence it actually structurally descends from"
+    },
+    "allNodesArray": {
+      "note": "allNodesSorted retains EVERY physical occurrence (nothing is lost from the flat list) - only the identity-keyed maps (byKey, childrenByParentKey) lose information. This is why the defect is describable as 'unreachable', not 'missing': the data exists but cannot be retrieved by identity."
+    }
+  },
+  "mapsKeyedByNodeKeyOrLabel_repoWide": [
+    { "file": "lib/contract-model/compiler/structural-index.ts", "map": "byKey", "line": 74 },
+    { "file": "lib/contract-model/compiler/structural-index.ts", "map": "childrenByParentKey", "line": 82 },
+    { "file": "lib/contract-model/compiler/structural-references.ts", "map": "byKey", "line": 220, "note": "independent Map, built BEFORE structural-index.ts even runs, over the same collision-prone nodeKey" },
+    { "file": "lib/contract-model/compiler/structural-references.ts", "map": "bySectionRef", "line": 221 },
+    { "file": "lib/contract-model/compiler/persistence.ts", "map": "idByLookupKey", "line": 46, "note": "in-memory map feeding a DB upsert - collision propagates to a persisted row overwrite, not just a wrong read" },
+    { "file": "lib/contract-model/compiler/discovery/pipeline.ts", "map": "deterministicByNodeKey", "line": 65 },
+    { "file": "lib/contract-model/compiler/discovery/pass-d-reconcile.ts", "map": "deterministicByNodeKey (mergeKey-keyed)", "line": 28, "note": "highest-consequence discovery-layer finding: deliberately MERGES two discovered candidates sharing a colliding key" },
+    { "file": "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts", "map": "bestUnitByNodeKey", "line": 371, "note": "materiality contextual-floor inheritance (R11 forensic mechanism) keyed on this map" }
+  ],
+  "independentKeyConstructionReimplementations": [
+    { "file": "lib/contract-model/compiler/stage-structure.ts", "line": 244, "role": "canonical origin" },
+    { "file": "lib/contract-model/compiler/persistence.ts", "line": "29-31", "function": "nodeLookupKey", "role": "independent re-derivation #1" },
+    { "file": "lib/contract-model/compiler/structural-index.ts", "lines": "133,138,145,158", "role": "4 inline re-derivations inside getNodeByRef/getParent/getAncestors/getSiblings" },
+    { "file": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts", "lines": "18-22", "function": "resolveRelativeRef", "role": "independent re-derivation #2" },
+    { "file": "lib/contract-model/compiler/structural-references.ts", "lines": "172-176,190-193", "role": "independent re-derivation #3 and #4 (inside resolveRelativeClauseTarget)" }
+  ],
+  "collisionCensusOnDsgrEvidence": {
+    "source": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage1-all-nodes.json (frozen, historical, unmodified)",
+    "totalNodes": 4149,
+    "distinctNodeKeys": 3469,
+    "duplicatedNodeKeys": 546,
+    "excessDuplicateInstances": 680,
+    "note": "This is real-world evidence the collision mechanism is not a theoretical/synthetic-only concern; it is preserved historical evidence, not re-derived or modified by this proposal."
+  },
+  "childrenByParentKeyLevel2Recursion": {
+    "evidence": "scripts/architecture-proposal-node-identity-repro.ts Case B, synthetic-doc-b::6.06(a) collides a SECOND time one nesting level down, proving the defect recurses at every level, not only at the top SECTION level."
+  },
+  "persistenceLayerIndependentCollision": {
+    "file": "lib/contract-model/compiler/persistence.ts",
+    "function": "persistStructuralNodes",
+    "lines": "45-64",
+    "stableKeyFormula": "computeStableKey(\"document-node\", companyId, node.documentId, node.nodeType, node.sectionRef)",
+    "line": 48,
+    "missingDisambiguator": "charStart (or any occurrence-distinguishing value) is not part of this formula",
+    "dbConstraint": "prisma/schema.prisma DocumentNode @@unique([companyId, stableKey]) (line ~2410)",
+    "collisionConsequence": "the second physical occurrence's upsert `update` branch (persistence.ts:52) silently overwrites the first occurrence's persisted heading/ordinal/charStart/charEnd - a DB-level silent row overwrite, not merely an in-memory wrong-read",
+    "authorsOwnStatedRationale": "persistence.ts:19-27 doc-comment explicitly states this reuses the same nodeKey-format scheme deliberately ('one real identity scheme, not two') - the defect is a considered design choice that turned out to be wrong, not an oversight in that one function."
+  },
+  "priorArtInSameRepo": {
+    "model": "Prisma DocumentNode (schema.prisma line ~2380)",
+    "note": "A separate, earlier persistence layer (used by lib/contract-model/validators.ts, service.ts, stage-dependency-resolution.ts) already implements occurrence-safe parent/child ownership correctly: parentId is a real foreign key to another row's own server-generated id, never a label match. Confirms the general direction (occurrence-safe identity, not label-based) already works elsewhere in this codebase; Phase 2A's later in-memory structural-index.ts diverged from it."
+  },
+  "twoDistinctFailureMechanismsProducingUnreachable": {
+    "mechanismA_PARSE_COVERAGE_MISS": "no regex family ever matches a real heading, so no node is created at all - a pattern-completeness gap, out of this ADR's scope (see ADR §12)",
+    "mechanismB_OCCURRENCE_IDENTITY_COLLISION": "a node IS parsed (possibly more than once under the same label) but the identity scheme cannot tell physically distinct occurrences apart - this ADR's subject",
+    "note": "Phase 3F.1.1's forensic taxonomy combined both under R17_STRUCTURAL_PARSER_EFFECT (58 of 89 residual cases); this proposal treats them as related but separately remediated."
+  }
+}

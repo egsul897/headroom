@@ -1,0 +1,54 @@
+{
+  "purpose": "Minimal, generalized (non-DSGR) synthetic reproduction of the structural-index nodeKey collision mechanism identified in Phase 3F.1.1's forensic report.",
+  "productionFunctionsCalled": [
+    "parseDocumentStructure (lib/contract-model/compiler/stage-structure.ts)",
+    "buildStructuralIndex (lib/contract-model/compiler/structural-index.ts)"
+  ],
+  "productionCodeModified": false,
+  "caseA_crossReferenceCollision": {
+    "documentId": "synthetic-doc-a",
+    "rawNodeCount": 9,
+    "duplicateNodeKeys": {
+      "synthetic-doc-a::6.04": 2
+    },
+    "physicalOccurrencesOfCollidedKey": [
+      {
+        "charStart": 117,
+        "charEnd": 252,
+        "nodeType": "SECTION"
+      },
+      {
+        "charStart": 252,
+        "charEnd": 530,
+        "nodeType": "SECTION"
+      }
+    ],
+    "allNodesCount": 9,
+    "getNodeByRefResolvesToCharStart": 252,
+    "earlierOccurrenceUnreachableViaIdentityLookup": true,
+    "childrenOfCollidedKeyCount": 2
+  },
+  "caseB_forcedChildMerge": {
+    "documentId": "synthetic-doc-b",
+    "rawNodeCount": 6,
+    "duplicateNodeKeys": {
+      "synthetic-doc-b::6.06": 2,
+      "synthetic-doc-b::6.06(a)": 2
+    },
+    "mergedChildrenOfCollidedKey": [
+      {
+        "sectionRef": "6.06(a)",
+        "charStart": 139
+      },
+      {
+        "sectionRef": "6.06(b)",
+        "charStart": 225
+      },
+      {
+        "sectionRef": "6.06(a)",
+        "charStart": 330
+      }
+    ]
+  },
+  "conclusion": "A repeated (documentId, sectionRef) STRING pair — arising from any source occurrence that satisfies the same heading regex twice (cross-reference sentence, table-of-contents entry, malformed duplicate numbering, amendment-quoted text) — collides into one nodeKey. buildStructuralIndex's byKey map silently retains only the last-charStart occurrence (earlier occurrences become permanently unreachable via getNode/getNodeByRef despite still existing in allNodes()), while childrenByParentKey merges every occurrence's children into one shared list keyed by the same collided label, with no ownership check against which physical occurrence a child actually descends from. This is a general property of the current nodeKey construction (documentId + normalized sectionRef, stage-structure.ts line ~244) — not a DSGR-specific artifact."
+}

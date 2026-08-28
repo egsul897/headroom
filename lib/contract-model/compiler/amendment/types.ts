@@ -199,14 +199,20 @@ export interface OperativeProvisionView {
   asOfDate: string;
   /** The document currently governing this provision at asOfDate - the base document when no in-scope effect has yet applied. */
   currentSourceDocumentId: string;
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `currentSourceNodeId` for identity. */
   currentSourceNodeKey: string | null;
+  /** Phase 3F.1.2 - the real physical occurrence identity of the node currently governing this provision (null iff currentSourceNodeKey is null). */
+  currentSourceNodeId: string | null;
   /** Best-effort operative text - null whenever it cannot be deterministically derived from real source evidence alone (task §19: never fabricated), even if the provision itself is otherwise RESOLVED. */
   currentText: string | null;
   /** Full amendment chain affecting this provision, oldest to newest, regardless of asOfDate - task §13's own "historical versions remain queryable." */
   fullChain: AmendmentChainEntry[];
   /** Subset of fullChain whose effectiveDate is on or before asOfDate - what was actually APPLIED for this query. */
   appliedChain: AmendmentChainEntry[];
+  /** @deprecated legacy label-shaped keys. Use `supersededSourceNodeIds`. */
   supersededSourceNodeKeys: string[];
+  /** Phase 3F.1.2 - occurrence-safe counterpart of supersededSourceNodeKeys. */
+  supersededSourceNodeIds: string[];
   status: OperativeStateStatus;
   unresolvedIssues: string[];
   conflicts: AmendmentConflict[];

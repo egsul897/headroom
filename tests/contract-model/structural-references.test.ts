@@ -61,16 +61,16 @@ describe("detectStructuralReferences", () => {
   it("reverse-reference lookup: findReferencesTo returns every reference resolving to a given node", () => {
     const { index, nodes } = parse("d1", TEXT);
     const section606 = nodes.find((n) => n.sectionRef === "6.06")!;
-    const incoming = index.findReferencesTo(section606.nodeKey);
+    const incoming = index.findReferencesTo(section606.nodeId);
     expect(incoming.length).toBeGreaterThan(0);
-    expect(incoming.every((r) => r.targetNodeKey === section606.nodeKey)).toBe(true);
+    expect(incoming.every((r) => r.targetNodeId === section606.nodeId)).toBe(true);
   });
 
   it("findReferencesFrom returns only references whose source is that exact node, unless includeDescendants is set", () => {
     const { index, nodes } = parse("d1", TEXT);
     const section601 = nodes.find((n) => n.sectionRef === "6.01")!;
-    const directOnly = index.findReferencesFrom(section601.nodeKey);
-    const withDescendants = index.findReferencesFrom(section601.nodeKey, true);
+    const directOnly = index.findReferencesFrom(section601.nodeId);
+    const withDescendants = index.findReferencesFrom(section601.nodeId, true);
     expect(withDescendants.length).toBeGreaterThanOrEqual(directOnly.length);
   });
 

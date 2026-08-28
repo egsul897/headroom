@@ -31,11 +31,22 @@ function buildIndex() {
   return buildTestIndex([{ documentId: "doc-1", label: "Credit Agreement", text: SAMPLE_DOCUMENT }]);
 }
 
+// buildTestIndex/parseDocumentStructure is deterministic over identical
+// source text - the same real charStart-derived nodeId is produced by
+// every fresh buildIndex() call below, so this module-level index is only
+// ever used to resolve the real nodeId for a given sectionRef, never
+// passed into the pipeline itself (each `it()` builds its own real index).
+const nodeIdIndex = buildIndex();
+function nodeIdFor(sectionRef: string): string {
+  return nodeIdIndex.getNodeByRef("doc-1", sectionRef)!.nodeId;
+}
+
 function makeCandidate(discoveryId: string, nodeKeys: string[]): DiscoveredCandidate {
   return {
     discoveryId,
     documentId: "doc-1",
     structuralNodeKeys: nodeKeys,
+    structuralNodeIds: nodeKeys.map((k) => nodeIdFor(k.split("::")[1]!)),
     normalizedSourceRef: nodeKeys[0]!,
     families: ["INDEBTEDNESS"],
     role: "BASKET",

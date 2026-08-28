@@ -107,7 +107,12 @@ function runDeterministicPass(input: AmendmentPipelineInput): AmendmentEffectCan
         resolvedTargetDocumentIds.length > 1
           ? (sectionRef, definedTermRef) => {
               const matches = resolvedTargetDocumentIds.filter((targetDocId) => {
-                if (sectionRef) return !!input.index.getNodeByRef(targetDocId, sectionRef);
+                // Phase 3F.1.2: existence-only check (which document has this
+                // section at all), not identity resolution - findNodesByRef's
+                // count is used rather than the deprecated singleton
+                // getNodeByRef, since an ambiguous (multi-occurrence) match is
+                // still real evidence the section exists in this document.
+                if (sectionRef) return input.index.findNodesByRef(targetDocId, sectionRef).length > 0;
                 if (definedTermRef) return !!input.index.getDefinitionFullText(definedTermRef, targetDocId);
                 return false;
               });
@@ -152,8 +157,11 @@ function runDeterministicPass(input: AmendmentPipelineInput): AmendmentEffectCan
 function getTargetCurrentText(index: StructuralIndex, target: AmendmentTarget): string | null {
   if (!target.targetDocumentId) return null;
   if (target.targetSectionRef) {
-    const node = index.getNodeByRef(target.targetDocumentId, target.targetSectionRef);
-    return node ? index.getNodeText(node.nodeKey, "DESCENDANTS") : null;
+    // Phase 3F.1.2: an ambiguous target (multiple physical occurrences share
+    // this legal reference) has no single "current text" to report - never
+    // silently pick one; treat it the same as not-found.
+    const resolution = index.resolveUniqueNodeByRef(target.targetDocumentId, target.targetSectionRef);
+    return resolution.status === "UNIQUE" ? index.getNodeText(resolution.node.nodeId, "DESCENDANTS") : null;
   }
   if (target.targetDefinedTermRef) {
     return index.getDefinitionFullText(target.targetDefinedTermRef, target.targetDocumentId) ?? index.getDefinitionFullText(target.targetDefinedTermRef) ?? null;

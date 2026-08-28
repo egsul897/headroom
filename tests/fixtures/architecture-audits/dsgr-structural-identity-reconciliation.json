@@ -1,0 +1,58 @@
+{
+  "purpose": "Phase 3F.1.2 - DSGR-specific structural-identity reconciliation, extracted from known-package-structural-regression.json for standalone citation. Structural-identity-integrity ONLY - makes no claim about DSGR's semantic/discovery/coverage omissions (Phase 3F.1.1's own 89-case residual population).",
+  "frozenBaseline": {
+    "source": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage1-all-nodes.json",
+    "totalNodes": 4149,
+    "distinctNodeKeys": 3469,
+    "duplicatedNodeKeyCount": 546,
+    "excessDuplicateInstances": 680,
+    "note": "Pre-remediation frozen evidence, unmodified - cited verbatim in docs/architecture/STRUCTURAL-NODE-IDENTITY-ADR.md's own collision census and the ARCH-PROP phase's structural-identity-current-state.json artifact."
+  },
+  "currentRun": {
+    "totalNodes": 4149,
+    "distinctNodeIds": 4149,
+    "nodeIdCollisionCount": 0,
+    "distinctNodeKeys": 3469,
+    "duplicatedNodeKeyCount": 546
+  },
+  "interpretation": "The frozen pre-remediation run showed 546 distinct nodeKeys shared by more than one physical occurrence (680 excess duplicate instances that, under the old byKey.set() scheme, would each have silently overwritten an earlier same-labeled occurrence). The current post-remediation run over the same real DSGR source produces 0 nodeId collisions (I1 holds) and 546 duplicated legal-reference labels - the same real duplicate-label population as before (labels legitimately repeat - I2), but every one of those occurrences now has its own distinct, independently-reachable nodeId rather than silently overwriting another. This is NOT a claim that DSGR's semantic/discovery/coverage omissions (Phase 3F.1.1's own 89-case residual population) are fixed - only that the structural-identity substrate underneath them no longer corrupts occurrence identity.",
+  "dsgrPackageStructuralMetrics": {
+    "packageKey": "DSGR",
+    "documents": [
+      {
+        "documentId": "doc-a",
+        "charLength": 739530
+      },
+      {
+        "documentId": "doc-b",
+        "charLength": 737387
+      },
+      {
+        "documentId": "doc-c",
+        "charLength": 13810
+      },
+      {
+        "documentId": "doc-d",
+        "charLength": 840654
+      }
+    ],
+    "totalNodes": 4149,
+    "distinctNodeIds": 4149,
+    "distinctNodeKeys": 3469,
+    "nodeIdCollisions": 0,
+    "duplicateLegalReferenceOccurrenceCount": 680,
+    "healthFindingsBySeverity": {
+      "INFO": 1568
+    },
+    "healthFindingsByCode": {
+      "DUPLICATE_LABEL_EXPECTED": 546,
+      "AMBIGUOUS_LEGAL_REFERENCE": 546,
+      "DUPLICATE_NORMALIZED_PATH": 476
+    },
+    "errorSeverityFindingCount": 0,
+    "orphanCount": 0,
+    "cycleCount": 0,
+    "crossParentMergeViolations": 0,
+    "ambiguousLegalReferencesDetected": 546
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "purpose": "Deterministic reproduction config for tests/contract-model/structural-node-identity-property.test.ts's seeded fuzz suite.",
+  "testFile": "tests/contract-model/structural-node-identity-property.test.ts",
+  "prng": "mulberry32",
+  "seedHex": "0x5f3759df",
+  "caseCount": 1500,
+  "categoryProbabilities": {
+    "duplicateSectionProb": 0.25,
+    "tocProb": 0.2,
+    "repeatedMarkerProb": 0.15,
+    "quotedAmendmentProb": 0.15,
+    "scheduleRestartProb": 0.1,
+    "embeddedHeadingDefProb": 0.15,
+    "parentheticalCrossRefProb": 0.2,
+    "malformedHierarchyProb": 0.1,
+    "whitespaceCorruptionProb": 0.15,
+    "zeroNewlineProb": 0.05
+  },
+  "namedCategoryTests": [
+    "duplicate sections",
+    "table-of-contents + operative duplicates",
+    "repeated lettered/numbered markers",
+    "quoted amendment text",
+    "schedule/exhibit numbering restarts",
+    "embedded-heading definitions",
+    "parenthetical cross-references",
+    "malformed hierarchy",
+    "missing levels",
+    "zero-newline text",
+    "whitespace corruption"
+  ],
+  "invariantsAssertedPerCase": [
+    "I1 (no duplicate nodeId)",
+    "I7 (getNodeById resolves every indexed nodeId)",
+    "I9 (every non-orphan node reachable from a root)",
+    "I13 (children charStart-ascending)",
+    "zero ERROR-severity health findings"
+  ],
+  "note": "Re-running the test file reproduces identical documents and identical assertions every time - the seed is fixed, never randomized per-run."
+}

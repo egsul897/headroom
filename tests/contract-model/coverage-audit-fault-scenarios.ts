@@ -54,9 +54,9 @@ function buildBaseline() {
   const childA = index.getNodeByRef(DOC, "6.01(a)")!;
 
   const candidates: DiscoveredCandidate[] = [
-    makeCandidate({ documentId: DOC, structuralNodeKeys: [parentNode.nodeKey], normalizedSourceRef: "6.01", multipleRulesLikely: true }),
-    makeCandidate({ documentId: DOC, structuralNodeKeys: [childA.nodeKey], normalizedSourceRef: "6.01(a)" }),
-    makeCandidate({ documentId: DOC, structuralNodeKeys: [index.getNodeByRef(DOC, "6.01(b)")!.nodeKey], normalizedSourceRef: "6.01(b)" }),
+    makeCandidate({ documentId: DOC, structuralNodeKeys: [parentNode.nodeKey], structuralNodeIds: [parentNode.nodeId], normalizedSourceRef: "6.01", multipleRulesLikely: true }),
+    makeCandidate({ documentId: DOC, structuralNodeKeys: [childA.nodeKey], structuralNodeIds: [childA.nodeId], normalizedSourceRef: "6.01(a)" }),
+    makeCandidate({ documentId: DOC, structuralNodeKeys: [index.getNodeByRef(DOC, "6.01(b)")!.nodeKey], structuralNodeIds: [index.getNodeByRef(DOC, "6.01(b)")!.nodeId], normalizedSourceRef: "6.01(b)" }),
   ];
 
   const modificationCandidate: ModificationCandidate = {
@@ -110,7 +110,7 @@ export function buildFaultScenarios(): { baselineFindings: AuditFinding[]; scena
   const regions = buildSourceCoverageInventory(DOC, index, { companyId: COMPANY, packageKey: PACKAGE, instrumentKey: null });
 
   const runDiscovery = (cands: DiscoveredCandidate[]) => auditDiscoveryCoverage(regions, cands, index);
-  const runContext = (b: CovenantContextBundle, pg: PackageGraphResult | null = packageGraph) => [...auditContextCoverage({ companyId: COMPANY, packageKey: PACKAGE, instrumentKey: null, documentId: DOC, nodeKey: index.getNodeByRef(DOC, "6.01(a)")!.nodeKey, index, packageGraph: pg, bundle: b }), ...auditDefinitionCompleteness(b, index, DOC, COMPANY, PACKAGE, null)];
+  const runContext = (b: CovenantContextBundle, pg: PackageGraphResult | null = packageGraph) => [...auditContextCoverage({ companyId: COMPANY, packageKey: PACKAGE, instrumentKey: null, documentId: DOC, nodeId: index.getNodeByRef(DOC, "6.01(a)")!.nodeId, index, packageGraph: pg, bundle: b }), ...auditDefinitionCompleteness(b, index, DOC, COMPANY, PACKAGE, null)];
 
   const baselineFindings = [...runDiscovery(candidates), ...runContext(bundle)].filter((f) => f.materiality === "MATERIAL");
 
@@ -213,7 +213,7 @@ export function buildFaultScenarios(): { baselineFindings: AuditFinding[]; scena
         const miIndex = buildTestIndex([{ documentId: "multi-item-doc", label: "CA", text: multiItemText }]);
         const miRegions = buildSourceCoverageInventory("multi-item-doc", miIndex, { companyId: COMPANY, packageKey: PACKAGE, instrumentKey: null });
         const leafNode = miIndex.getNodeByRef("multi-item-doc", "6.02(i)")!;
-        return auditDiscoveryCoverage(miRegions, [makeCandidate({ documentId: "multi-item-doc", structuralNodeKeys: [leafNode.nodeKey], normalizedSourceRef: "6.02(i)", multipleRulesLikely: false })], miIndex);
+        return auditDiscoveryCoverage(miRegions, [makeCandidate({ documentId: "multi-item-doc", structuralNodeKeys: [leafNode.nodeKey], structuralNodeIds: [leafNode.nodeId], normalizedSourceRef: "6.02(i)", multipleRulesLikely: false })], miIndex);
       },
       matchesExpectedFinding: (f) => f.some((x) => x.findingType === "PARTIAL_DISCOVERY" && x.sourceCitation.includes("6.02(i)")),
     },

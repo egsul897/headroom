@@ -79,7 +79,10 @@ export type DiscoveryReviewStatus = "AUTO_ACCEPTED" | "NEEDS_REVIEW" | "UNCERTAI
 /** Pass A's own output before semantic classification - deliberately over-inclusive (task §2/§8 Pass A). */
 export interface DeterministicCandidate {
   documentId: string;
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `nodeId` for identity. */
   nodeKey: string;
+  /** Phase 3F.1.2 - the real physical occurrence identity backing this candidate. */
+  nodeId: string;
   sectionRef: string;
   /** Which cheap signals fired on this node's own text - the evidence trail for why Pass A selected it, never the final semantic decision. */
   signals: string[];
@@ -91,8 +94,10 @@ export interface DiscoveredCandidate {
   /** Deterministic, content-derived (never random) - stable across reruns of the identical algorithm version over identical content. */
   discoveryId: string;
   documentId: string;
-  /** One or more structural nodes this discovery's evidence spans - more than one only after Pass C neighborhood expansion links a genuinely related node (e.g. a prohibition + the exception that makes it operative). */
+  /** @deprecated legacy label-shaped keys, kept for backward-compatible display/logging only. Use `structuralNodeIds` for identity. One or more structural nodes this discovery's evidence spans - more than one only after Pass C neighborhood expansion links a genuinely related node (e.g. a prohibition + the exception that makes it operative). */
   structuralNodeKeys: string[];
+  /** Phase 3F.1.2 - occurrence-safe counterpart of structuralNodeKeys, same order/length. */
+  structuralNodeIds: string[];
   normalizedSourceRef: string;
   families: CovenantFamily[];
   otherFamilyDescription?: string;

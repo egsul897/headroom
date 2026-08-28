@@ -16,7 +16,10 @@ function normalizeForIdentity(value: string): string {
 }
 
 function anchorKey(anchor: SourceAnchor): string {
-  return `${anchor.documentId}::${anchor.structuralNodeKey ?? ""}::${anchor.charStart}-${anchor.charEnd}`;
+  // Phase 3F.1.2: keyed by structuralNodeId (real physical occurrence
+  // identity), never structuralNodeKey - two distinct occurrences sharing a
+  // label must never collapse into the same semanticUnitId.
+  return `${anchor.documentId}::${anchor.structuralNodeId ?? ""}::${anchor.charStart}-${anchor.charEnd}`;
 }
 
 /**

@@ -45,7 +45,7 @@ describe("Phase 3B synthetic tests - security", () => {
 
   it("62: injected instruction-like text inside a tool argument is treated as inert string data, never specially parsed or executed", () => {
     const sectionText = "The Company may incur Indebtedness in an amount not to exceed $1,000,000.\n";
-    const node: StructuralNode = { documentId: "doc-1", nodeType: "SECTION", heading: "Indebtedness", sectionRef: "9.01", nodeKey: "doc-1::9.01", charStart: 0, charEnd: sectionText.length, ordinal: 0, parentSectionRef: null };
+    const node: StructuralNode = { documentId: "doc-1", nodeType: "SECTION", heading: "Indebtedness", sectionRef: "9.01", nodeKey: "doc-1::9.01", nodeId: "n-doc-1-9.01", charStart: 0, charEnd: sectionText.length, ordinal: 0, parentSectionRef: null, parentNodeId: null };
     const index = buildStructuralIndex(new Map([["doc-1", { text: sectionText, nodes: [node] }]]), [], []);
     const charsUsed = { current: 0 };
     const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, "doc-1", charsUsed, DEFAULT_TOOL_BUDGET);
@@ -57,9 +57,9 @@ describe("Phase 3B synthetic tests - security", () => {
 
   it("61: getReferencedProvision refuses a reference that only resolves in a document OUTSIDE this instrument (no packageGraph grouping supplied, so scope defaults to home document only)", () => {
     const homeText = "See Section 6.01(b) for further restrictions.\n";
-    const homeNode: StructuralNode = { documentId: "doc-1", nodeType: "SECTION", heading: "Indebtedness", sectionRef: "9.01", nodeKey: "doc-1::9.01", charStart: 0, charEnd: homeText.length, ordinal: 0, parentSectionRef: null };
+    const homeNode: StructuralNode = { documentId: "doc-1", nodeType: "SECTION", heading: "Indebtedness", sectionRef: "9.01", nodeKey: "doc-1::9.01", nodeId: "n-doc-1-9.01", charStart: 0, charEnd: homeText.length, ordinal: 0, parentSectionRef: null, parentNodeId: null };
     // A section with the SAME sectionRef exists in a DIFFERENT, foreign document - it must never be served for a request scoped to doc-1.
-    const foreignNode: StructuralNode = { documentId: "doc-2-foreign", nodeType: "SECTION", heading: "Indebtedness", sectionRef: "6.01(b)", nodeKey: "doc-2-foreign::6.01(b)", charStart: 0, charEnd: 10, ordinal: 0, parentSectionRef: null };
+    const foreignNode: StructuralNode = { documentId: "doc-2-foreign", nodeType: "SECTION", heading: "Indebtedness", sectionRef: "6.01(b)", nodeKey: "doc-2-foreign::6.01(b)", nodeId: "n-doc-2-foreign-6.01(b)", charStart: 0, charEnd: 10, ordinal: 0, parentSectionRef: null, parentNodeId: null };
     const index = buildStructuralIndex(
       new Map([
         ["doc-1", { text: homeText, nodes: [homeNode] }],

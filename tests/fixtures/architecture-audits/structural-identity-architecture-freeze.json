@@ -1,0 +1,54 @@
+{
+  "purpose": "Hard production-code freeze verification for the Structural Node Identity & Index Integrity architecture proposal (task §2/§56 final report items 1-4).",
+  "startingGitSha": "08dfe5af9d0fe995da5c0816ec8e692c71a32f73",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "workingTreeStatusAtFreezeStart": "clean",
+  "priorPhaseFinalSha": "08dfe5af9d0fe995da5c0816ec8e692c71a32f73",
+  "priorPhaseVerdict": "PHASE_3F_1_1_RESIDUAL_FORENSIC_GATE_PASSED",
+  "productionCodeHash": {
+    "method": "sha256sum of every *.ts/*.tsx/*.prisma file under lib/, app/, prisma/, sorted by path, aggregate sha256 of the resulting listing",
+    "aggregateHashAtFreezeStart": "50813ccbded4fdddbdc62955f88e9b57de8b1ad0c227a4d5499cb057c0790f5d",
+    "aggregateHashAtProposalEnd": "50813ccbded4fdddbdc62955f88e9b57de8b1ad0c227a4d5499cb057c0790f5d",
+    "identical": true,
+    "fileCount": 241
+  },
+  "keyProductionFileHashes": {
+    "lib/contract-model/compiler/structural-index.ts": "11ca5c9755deecbcb85a92748ed41cd6052e7ac08c5ae2e82f7a762814c1b2a7",
+    "lib/contract-model/compiler/stage-structure.ts": "3f786dd5347021080800e1584a673826d4ec860979ba9ea67bc9c677c7429f1d",
+    "lib/contract-model/compiler/persistence.ts": "f6320de7aae0e35ed3a0843ee25d45bc7dab75a98fc415cf0fcc7b217176a900",
+    "note": "Unchanged throughout this proposal - no production code was modified. These hashes are recorded for a future implementation phase to diff against."
+  },
+  "historicalArtifactIntegrity": {
+    "method": "Direct sha256 comparison of every path listed under historicalPhase3FArtifactHashes and phase3F1ArtifactHashes in tests/fixtures/unseen-packages/phase-3f1-1-forensics/phase-3f1-1-freeze-manifest.json against the live file on disk",
+    "filesChecked": 20,
+    "mismatches": [],
+    "byteIdentical": true
+  },
+  "newArtifactsProducedByThisProposal": {
+    "docs": ["docs/architecture/STRUCTURAL-NODE-IDENTITY-ADR.md"],
+    "scripts": ["scripts/architecture-proposal-node-identity-repro.ts"],
+    "testFixtures": [
+      "tests/fixtures/architecture-audits/structural-identity-collision-repro.json",
+      "tests/fixtures/architecture-audits/structural-identity-current-state.json",
+      "tests/fixtures/architecture-audits/structural-identity-consumer-inventory.json",
+      "tests/fixtures/architecture-audits/structural-identity-option-comparison.json",
+      "tests/fixtures/architecture-audits/structural-identity-proposed-invariants.json",
+      "tests/fixtures/architecture-audits/structural-identity-migration-plan.json",
+      "tests/fixtures/architecture-audits/structural-identity-validation-plan.json",
+      "tests/fixtures/architecture-audits/structural-identity-architecture-freeze.json"
+    ],
+    "tests": ["tests/contract-model/architecture-proposal-node-identity.test.ts"]
+  },
+  "noNewPackageContamination": {
+    "verified": true,
+    "method": "no new directory created under tests/fixtures/unseen-packages/; no DSGR/FWRG/LSB/CONMED source bytes read or fetched in this proposal beyond preserved, already-historical evidence (phase-3f-first-blind-run/stage1-all-nodes.json census figures, already public in docs/phase-3f1-1-residual-safety-forensics.md)"
+  },
+  "noPhase4Work": {
+    "verified": true,
+    "method": "no expression runtime, metric evaluator, capacity graph, ledger computation, solver, or financial connector work performed"
+  },
+  "noProductionBehaviorChange": {
+    "verified": true,
+    "method": "aggregate production hash identical at proposal start and end; no lib/, app/, or prisma/ file appears in `git status --short` as modified"
+  }
+}

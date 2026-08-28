@@ -29,7 +29,7 @@ function buildFor(text: string, sectionRef: string, budget?: Parameters<typeof b
   const index = buildStructuralIndex(new Map([[DOC, { text, nodes }]]), defs, refs);
   const exactTermsByDocument = new Map([[DOC, new Map(defs.map((d) => [d.normalizedTerm, d.exactTerm] as const))]]);
   const node = index.getNodeByRef(DOC, sectionRef)!;
-  const candidate = makeCandidate({ documentId: DOC, structuralNodeKeys: [node.nodeKey], normalizedSourceRef: sectionRef });
+  const candidate = makeCandidate({ documentId: DOC, structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: sectionRef });
   const bundle = buildCovenantContextBundle({ candidate, packageKey: "p", companyId: "c", instrumentKey: null, budget }, { index, packageGraph: null, exactTermsByDocument });
   return { index, bundle, node };
 }
@@ -142,7 +142,18 @@ describe("Phase 2E.1 - the five original FWRG findings, regressed against the re
     const runDir = path.join(dir, "discovery-runs");
     const files = fs.readdirSync(runDir).filter((f) => f.endsWith(".json"));
     const raw = JSON.parse(fs.readFileSync(path.join(runDir, files[0]!), "utf-8")) as { candidates: DiscoveredCandidate[] };
-    const candidate = raw.candidates.find((c) => c.discoveryId === discoveryId)!;
+    const legacyCandidate = raw.candidates.find((c) => c.discoveryId === discoveryId)!;
+    // This committed fixture predates Phase 3F.1.2's nodeId field - it only
+    // carries the legacy label-shaped structuralNodeKeys. Backfill real
+    // structuralNodeIds by resolving each key's own section reference
+    // against this run's freshly-built real index, never a synthetic
+    // placeholder - buildCovenantContextBundle's primaryNodeId lookup needs
+    // a real, resolvable physical occurrence id to retrieve anything.
+    const structuralNodeIds = legacyCandidate.structuralNodeKeys.map((key) => {
+      const sectionRef = key.slice(key.indexOf("::") + 2);
+      return index.getNodeByRef(label, sectionRef)?.nodeId ?? "";
+    });
+    const candidate: DiscoveredCandidate = { ...legacyCandidate, structuralNodeIds };
     return buildCovenantContextBundle({ candidate, packageKey: label, companyId: label, instrumentKey: null }, { index, packageGraph: null, exactTermsByDocument });
   }
 

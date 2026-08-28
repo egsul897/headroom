@@ -58,7 +58,10 @@ export interface CoverageRegion {
   packageKey: string;
   instrumentKey: string | null;
   documentId: string;
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `structuralNodeId` for identity. */
   structuralNodeKey: string;
+  /** Phase 3F.1.2 - the real physical occurrence identity for this region. */
+  structuralNodeId: string;
   sectionRef: string;
   sourceCitation: string;
   /** Bounded excerpt of this region's own text (not full DESCENDANTS dump). */
@@ -143,7 +146,10 @@ export interface AuditFinding {
   packageKey: string;
   instrumentKey: string | null;
   documentId: string;
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `structuralNodeId` for identity. */
   structuralNodeKey: string | null;
+  /** Phase 3F.1.2 - the real physical occurrence identity for this finding (null iff structuralNodeKey is null). */
+  structuralNodeId: string | null;
   sourceCitation: string;
   findingType: AuditFindingType;
   materiality: Materiality;

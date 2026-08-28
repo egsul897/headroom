@@ -29,6 +29,7 @@ const REGION: RoutedRegion = {
   regionId: "region-1",
   documentId: "doc-1",
   structuralNodeKey: "doc-1::6.01",
+  structuralNodeId: "id-doc-1-6.01",
   sectionRef: "6.01",
   charStart: 0,
   charEnd: REGION_TEXT.length,
@@ -39,6 +40,7 @@ const REGION: RoutedRegion = {
   routingAlgorithmVersion: "test",
   closureDepth: 0,
   closureSourceNodeKey: null,
+  closureSourceNodeId: null,
 };
 
 const CTX = { companyId: "test-co", packageKey: "test-pkg", instrumentKey: null, operativeVersionRef: null, headingHint: "Section 6.01 Indebtedness" };

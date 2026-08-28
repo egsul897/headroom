@@ -23,7 +23,10 @@ export interface DetectedDefinition {
   exactTerm: string;
   /** Lowercased, whitespace-collapsed - the same normalization persistDefinedTerms already uses for termName, so both paths converge on one identity. */
   normalizedTerm: string;
+  /** @deprecated legacy label-shaped key, kept for backward-compatible display/logging only. Use `sourceNodeId` for identity. */
   sourceNodeKey: string | null;
+  /** Phase 3F.1.2 - the enclosing node's real physical occurrence identity (findEnclosingNode is position-based, so this was always the correct physical node; only its downstream lookup via the label-keyed nodeKey was unsafe before 3F.1.2). */
+  sourceNodeId: string | null;
   charStart: number;
   charEnd: number;
   /** A bounded excerpt starting at the definition declaration - never the full (potentially page-spanning) defined text, matching CandidateDefinedTerm's own "excerpt, not full dump" convention. */
@@ -146,6 +149,7 @@ export function detectStructuralDefinitions(documentId: string, text: string, no
       exactTerm,
       normalizedTerm: exactTerm.toLowerCase().replace(/\s+/g, " "),
       sourceNodeKey: enclosing?.nodeKey ?? null,
+      sourceNodeId: enclosing?.nodeId ?? null,
       charStart,
       charEnd,
       definitionExcerpt: text.slice(charStart, Math.min(text.length, charStart + EXCERPT_LENGTH)),

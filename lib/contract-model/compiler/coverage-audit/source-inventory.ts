@@ -71,12 +71,12 @@ export function buildSourceCoverageInventory(documentId: string, index: Structur
   const regions: CoverageRegion[] = [];
 
   for (const node of nodes) {
-    const ownText = index.getNodeText(node.nodeKey, "OWN");
+    const ownText = index.getNodeText(node.nodeId, "OWN");
     const signals = detectIndependentSignals(ownText);
     const isHeadline = node.nodeType === "SECTION" && HEADLINE_HEADING.test(node.heading);
     if (signals.length === 0 && !isHeadline) continue;
 
-    const childRefs = new Set(index.getChildren(node.nodeKey).map((c) => c.sectionRef.toLowerCase().replace(/^.*\(/, "(")));
+    const childRefs = new Set(index.getChildren(node.nodeId).map((c) => c.sectionRef.toLowerCase().replace(/^.*\(/, "(")));
     // Exclude this node's OWN leading marker (e.g. node "6.02(i)" naturally
     // opens with the literal text "(i)") from the unrepresented count - that
     // marker identifies the node itself, not an unrepresented sibling item.
@@ -87,12 +87,13 @@ export function buildSourceCoverageInventory(documentId: string, index: Structur
 
     const signalNames = signals.map((s) => s.name).sort();
     regions.push({
-      regionId: computeRegionId(documentId, node.nodeKey, signalNames.join(",")),
+      regionId: computeRegionId(documentId, node.nodeId, signalNames.join(",")),
       companyId: options.companyId,
       packageKey: options.packageKey,
       instrumentKey: options.instrumentKey,
       documentId,
       structuralNodeKey: node.nodeKey,
+      structuralNodeId: node.nodeId,
       sectionRef: node.sectionRef,
       sourceCitation: `${documentId}::${node.sectionRef}`,
       excerptText: ownText.slice(0, EXCERPT_LENGTH),

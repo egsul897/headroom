@@ -1,0 +1,31 @@
+{
+  "package": "DSGR (4 real documents, 4149 structural nodes - the largest known real package)",
+  "runs": 20,
+  "oldImplementation": {
+    "commit": "d1d48da (last committed pre-3F.1.2 structural-index.ts)",
+    "nodeCount": 4149,
+    "timingsMs": {
+      "mean": 2.414,
+      "median": 2.21,
+      "min": 1.47,
+      "max": 5.473
+    }
+  },
+  "newImplementation": {
+    "commit": "working tree (post-3F.1.2 remediation, includes the full I1-I16 health diagnostic pass)",
+    "nodeCount": 4149,
+    "timingsMs": {
+      "mean": 15.598,
+      "median": 14.459,
+      "min": 11.55,
+      "max": 24.984
+    }
+  },
+  "deltaMs": {
+    "mean": 13.184,
+    "median": 12.249
+  },
+  "deltaPercent": {
+    "mean": 546.1
+  }
+}

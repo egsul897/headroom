@@ -34,8 +34,8 @@ async function main() {
   console.error(`provider=${caller.providerName} model=${caller.model} isSynthetic=${caller.isSynthetic}`);
 
   const deterministic = runPassADeterministicSignals(documentId, index);
-  const deterministicByNodeKey = new Map(deterministic.map((c) => [c.nodeKey, c] as const));
-  const candidateKeys = new Set(deterministic.map((c) => c.nodeKey));
+  const deterministicByNodeId = new Map(deterministic.map((c) => [c.nodeId, c] as const));
+  const candidateIds = new Set(deterministic.map((c) => c.nodeId));
   const allNodes = index.allNodes().filter((n) => n.documentId === documentId);
   const sections = allNodes.filter((n) => n.nodeType === "SECTION");
 
@@ -50,21 +50,22 @@ async function main() {
   const start = performance.now();
 
   for (const section of sections) {
-    const descendantKeys = index.getDescendants(section.nodeKey).map((d) => d.nodeKey);
-    const hasCandidate = candidateKeys.has(section.nodeKey) || descendantKeys.some((k) => candidateKeys.has(k));
+    const descendantIds = index.getDescendants(section.nodeId).map((d) => d.nodeId);
+    const hasCandidate = candidateIds.has(section.nodeId) || descendantIds.some((id) => candidateIds.has(id));
     if (!hasCandidate) continue;
 
-    const passAHints = [section.nodeKey, ...descendantKeys]
-      .filter((k) => candidateKeys.has(k))
-      .map((k) => index.getNode(k)?.sectionRef ?? k)
+    const passAHints = [section.nodeId, ...descendantIds]
+      .filter((id) => candidateIds.has(id))
+      .map((id) => index.getNodeById(id)?.sectionRef ?? id)
       .filter((ref) => ref !== section.sectionRef);
 
     const batch: SectionBatchInput = {
       documentId,
       sectionNodeKey: section.nodeKey,
+      sectionNodeId: section.nodeId,
       sectionRef: section.sectionRef,
       heading: section.heading,
-      text: index.getNodeText(section.nodeKey, "DESCENDANTS"),
+      text: index.getNodeText(section.nodeId, "DESCENDANTS"),
       passAHints,
     };
 
@@ -84,7 +85,7 @@ async function main() {
     for (const item of result.rules) allRawItems.push({ ...item, sectionRef: section.sectionRef });
     console.error(`[${section.sectionRef}] ${result.rules.length} rules - roles: ${result.rules.map((r) => `${r.role}(${r.roleNormalizationStatus})`).join(", ")}`);
 
-    const { candidates: expanded, discoveryId } = runPassCNeighborhoodExpansion(index, documentId, section.nodeKey, section.sectionRef, result.rules, DISCOVERY_RUN_VERSION);
+    const { candidates: expanded, discoveryId } = runPassCNeighborhoodExpansion(index, documentId, section.nodeId, section.sectionRef, result.rules, DISCOVERY_RUN_VERSION);
     discoveryIdFn = discoveryId;
     allExpanded.push(...expanded);
   }
@@ -94,7 +95,7 @@ async function main() {
     discoveryRunVersion: DISCOVERY_RUN_VERSION,
     expanded: allExpanded,
     discoveryId: discoveryIdFn ?? (() => ""),
-    deterministicByNodeKey,
+    deterministicByNodeId,
   });
 
   const documentDiscoveryHealth = classifyDiscoveryHealth(sectionsAttempted, sectionFailures);

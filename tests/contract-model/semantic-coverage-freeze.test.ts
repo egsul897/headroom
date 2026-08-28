@@ -14,7 +14,7 @@ function makeUnit(overrides: Partial<MaterialSemanticUnit> = {}): MaterialSemant
     instrumentKey: null,
     operativeVersionRef: null,
     granularity: "SEMANTIC_UNIT",
-    anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01(a)" }],
+    anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", structuralNodeId: "id-doc-1-6.01(a)", sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01(a)" }],
     family: "INDEBTEDNESS",
     familyEvidence: null,
     postureSignal: "PERMISSION_SIGNAL",

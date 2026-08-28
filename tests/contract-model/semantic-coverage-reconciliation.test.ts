@@ -10,9 +10,27 @@ import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/disc
 import { reconcileFrozenInventory, extractNumericValue } from "../../lib/contract-model/compiler/semantic-coverage/reconciliation";
 import { freezeSourceInventory } from "../../lib/contract-model/compiler/semantic-coverage/freeze";
 import type { FrozenSourceInventory, MaterialSemanticUnit } from "../../lib/contract-model/compiler/semantic-coverage/types";
+import { buildTestIndex } from "./context-retrieval-test-utils";
 
 const companyId = "test-co";
 const instrumentKey = "test-instrument";
+
+// A real, parsed structural index (Phase 3F.1.2 - reconcileFrozenInventory's
+// candidatesCoveringUnit now needs a real StructuralIndex for occurrence-safe
+// ancestor-chain containment, never a fuzzy label match). Section 6.01 has
+// real lettered children 6.01(a)/6.01(b), so nodeIdFor below hands out real,
+// distinct, correctly-nested nodeIds - the exact containment shape
+// (6.01(a) physically nested under 6.01) every test case in this file relies on.
+const SAMPLE_DOCUMENT = `
+Section 6.01 Indebtedness. The Borrower shall not incur Indebtedness, except:
+
+(a) Indebtedness not to exceed $10,000,000;
+(b) other Indebtedness not to exceed $5,000,000.
+`;
+const index = buildTestIndex([{ documentId: "doc-1", label: "Credit Agreement", text: SAMPLE_DOCUMENT }]);
+function nodeIdFor(sectionRef: string): string {
+  return index.getNodeByRef("doc-1", sectionRef)!.nodeId;
+}
 
 function makeUnit(overrides: Partial<MaterialSemanticUnit> & { semanticUnitId: string }): MaterialSemanticUnit {
   return {
@@ -21,7 +39,7 @@ function makeUnit(overrides: Partial<MaterialSemanticUnit> & { semanticUnitId: s
     instrumentKey,
     operativeVersionRef: null,
     granularity: "SEMANTIC_UNIT",
-    anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01(a)" }],
+    anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", structuralNodeId: nodeIdFor("6.01(a)"), sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01(a)" }],
     family: "INDEBTEDNESS",
     familyEvidence: null,
     postureSignal: "PERMISSION_SIGNAL",
@@ -50,6 +68,7 @@ function makeCandidate(discoveryId: string, nodeKeys: string[]): DiscoveredCandi
     discoveryId,
     documentId: "doc-1",
     structuralNodeKeys: nodeKeys,
+    structuralNodeIds: nodeKeys.map((k) => nodeIdFor(k.split("::")[1]!)),
     normalizedSourceRef: nodeKeys[0]!,
     families: ["INDEBTEDNESS"],
     role: "BASKET",
@@ -109,7 +128,7 @@ describe("Phase 3E reconciliation: DANGEROUS_UNACCOUNTED cases", () => {
   it("flags a CRITICAL unit with no discovered candidate as NO_CANDIDATE_EVER_DISCOVERED", () => {
     const unit = makeUnit({ semanticUnitId: "u1" });
     const frozen = makeFrozen([unit]);
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [], compiledResults: [], verifiedCandidateRefs: new Set() });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [], compiledResults: [], verifiedCandidateRefs: new Set() });
     expect(result.entries[0]!.coverageState).toBe("UNREPRESENTED");
     expect(result.dangerousUnaccounted).toHaveLength(1);
     expect(result.dangerousUnaccounted[0]!.reason).toBe("NO_CANDIDATE_EVER_DISCOVERED");
@@ -118,7 +137,7 @@ describe("Phase 3E reconciliation: DANGEROUS_UNACCOUNTED cases", () => {
   it("does not flag an INFORMATIONAL unit with no discovered candidate as dangerous", () => {
     const unit = makeUnit({ semanticUnitId: "u1", materiality: "INFORMATIONAL" });
     const frozen = makeFrozen([unit]);
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [], compiledResults: [], verifiedCandidateRefs: new Set() });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [], compiledResults: [], verifiedCandidateRefs: new Set() });
     expect(result.dangerousUnaccounted).toHaveLength(0);
   });
 
@@ -126,18 +145,18 @@ describe("Phase 3E reconciliation: DANGEROUS_UNACCOUNTED cases", () => {
     const unit = makeUnit({ semanticUnitId: "u1", materiality: "MATERIAL" });
     const frozen = makeFrozen([unit]);
     const candidate = makeCandidate("disc-1", ["doc-1::6.01(a)"]);
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [candidate], compiledResults: [], verifiedCandidateRefs: new Set() });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [], verifiedCandidateRefs: new Set() });
     expect(result.entries[0]!.coverageState).toBe("UNREPRESENTED");
     expect(result.dangerousUnaccounted[0]!.reason).toBe("CANDIDATE_DISCOVERED_NEVER_COMPILED");
   });
 
   it("flags a CRITICAL unit whose covering candidate compiled but omitted its economic value as COMPILED_BUT_UNIT_OMITTED_FROM_IR", () => {
-    const unit = makeUnit({ semanticUnitId: "u1", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01(a)" }] });
+    const unit = makeUnit({ semanticUnitId: "u1", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", structuralNodeId: nodeIdFor("6.01(a)"), sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01(a)" }] });
     const frozen = makeFrozen([unit]);
     const candidate = makeCandidate("disc-1", ["doc-1::6.01(a)"]);
     // The compiled rule is anchored to a DIFFERENT section entirely and carries a different amount.
     const rule = makeRule({ sourceSectionRef: "6.01(b)", capacityExpression: withExpressionId({ kind: "MONEY", type: "MONEY", amount: 999, currency: "USD" }) });
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
     expect(result.entries[0]!.coverageState).toBe("UNREPRESENTED");
     expect(result.dangerousUnaccounted[0]!.reason).toBe("COMPILED_BUT_UNIT_OMITTED_FROM_IR");
   });
@@ -149,7 +168,7 @@ describe("Phase 3E reconciliation: FULLY_REPRESENTED / PARTIALLY_REPRESENTED cas
     const frozen = makeFrozen([unit]);
     const candidate = makeCandidate("disc-1", ["doc-1::6.01(a)"]);
     const rule = makeRule({ sourceSectionRef: "6.01(a)" }); // $10,000,000, matches unit's excerpt
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
     expect(result.entries[0]!.coverageState).toBe("FULLY_REPRESENTED_REVIEW_REQUIRED");
     expect(result.entries[0]!.matchedIrIds).toContain(rule.ruleId);
     expect(result.dangerousUnaccounted).toHaveLength(0);
@@ -160,7 +179,7 @@ describe("Phase 3E reconciliation: FULLY_REPRESENTED / PARTIALLY_REPRESENTED cas
     const frozen = makeFrozen([unit]);
     const candidate = makeCandidate("disc-1", ["doc-1::6.01(a)"]);
     const rule = makeRule({ sourceSectionRef: "6.01(a)" });
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set(["disc-1"]) });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set(["disc-1"]) });
     expect(result.entries[0]!.coverageState).toBe("FULLY_REPRESENTED_VERIFIED");
   });
 
@@ -169,7 +188,7 @@ describe("Phase 3E reconciliation: FULLY_REPRESENTED / PARTIALLY_REPRESENTED cas
     const frozen = makeFrozen([unit]);
     const candidate = makeCandidate("disc-1", ["doc-1::6.01(a)"]);
     const rule = makeRule({ sourceSectionRef: "6.01(a)", capacityExpression: withExpressionId({ kind: "MONEY", type: "MONEY", amount: 5_000_000, currency: "USD" }) });
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
     expect(result.entries[0]!.coverageState).toBe("PARTIALLY_REPRESENTED");
     expect(result.entries[0]!.missingEconomicElement).toBe("capacityExpression");
     // A PARTIALLY_REPRESENTED unit is surfaced, not silently dropped - never counted as dangerous-unaccounted.
@@ -177,13 +196,13 @@ describe("Phase 3E reconciliation: FULLY_REPRESENTED / PARTIALLY_REPRESENTED cas
   });
 
   it("falls back to a whole-candidate-set numeric search when no rule is anchored to this exact citation", () => {
-    const unit = makeUnit({ semanticUnitId: "u1", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01(a)" }] });
+    const unit = makeUnit({ semanticUnitId: "u1", anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::6.01(a)", structuralNodeId: nodeIdFor("6.01(a)"), sectionRef: "6.01(a)", charStart: 0, charEnd: 10, sourceCitation: "doc-1::6.01(a)" }] });
     const frozen = makeFrozen([unit]);
     const candidate = makeCandidate("disc-1", ["doc-1::6.01(a)"]);
     // Rule is anchored to a DIFFERENT citation but carries the SAME dollar figure - simulates a
     // legitimate merge into a broader rule during compilation.
     const rule = makeRule({ sourceSectionRef: "6.01(merged)" });
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
     expect(result.entries[0]!.coverageState).toBe("FULLY_REPRESENTED_REVIEW_REQUIRED");
     expect(result.dangerousUnaccounted).toHaveLength(0);
   });
@@ -193,7 +212,7 @@ describe("Phase 3E reconciliation: FULLY_REPRESENTED / PARTIALLY_REPRESENTED cas
     const frozen = makeFrozen([unit]);
     const candidate = makeCandidate("disc-1", ["doc-1::6.01(a)"]);
     const rule = makeRule({ sourceSectionRef: "6.01(a)" });
-    const result = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
+    const result = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set() });
     expect(result.entries[0]!.coverageState).toBe("FULLY_REPRESENTED_REVIEW_REQUIRED");
   });
 
@@ -202,7 +221,7 @@ describe("Phase 3E reconciliation: FULLY_REPRESENTED / PARTIALLY_REPRESENTED cas
     const frozen = makeFrozen([unit]);
     const candidate = makeCandidate("disc-1", ["doc-1::6.01(a)"]);
     const rule = makeRule({ sourceSectionRef: "6.01(a)" });
-    const input = { frozenInventory: frozen, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set<string>() };
+    const input = { frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: "disc-1", rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set<string>() };
     const first = reconcileFrozenInventory(input);
     const second = reconcileFrozenInventory(input);
     expect(first.entries).toEqual(second.entries);

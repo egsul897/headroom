@@ -1,0 +1,108 @@
+{
+  "purpose": "Machine-readable inventory of every meaningful consumer of structural node identity (nodeKey/StructuralIndex/sectionRef-as-key) across production code (lib/, app/), built for the Structural Node Identity & Index Integrity architecture proposal. Read-only research artifact; no production code was modified to produce it.",
+  "methodology": "Combined a targeted background research pass (Explore agent, worktree-isolated, covering lib/contract-model/compiler/{amendment,context-retrieval,coverage-audit,discovery,semantic,semantic-verification}, ir/, persistence.ts, prisma/schema.prisma, app/) with a direct follow-up audit of lib/contract-model/compiler/semantic-coverage/{router,unit-hypothesis,cross-reference-audit}.ts (the Phase 3E layer the background pass's worktree did not resolve), performed directly against the working tree.",
+  "totals": {
+    "distinctUnguardedSingletonLookupSites": 55,
+    "independentKeyConstructionReimplementations": 6,
+    "filesTouchingStructuralIdentity": 33
+  },
+  "consumersByPhase": [
+    {
+      "phase": "2A structural (origin + upstream detection)",
+      "files": [
+        { "path": "lib/contract-model/compiler/stage-structure.ts", "role": "canonical nodeKey construction (line 244)" },
+        { "path": "lib/contract-model/compiler/structural-index.ts", "role": "index build; byKey/childrenByParentKey; 4 inline key re-derivations" },
+        { "path": "lib/contract-model/compiler/structural-references.ts", "role": "independent last-write-wins byKey/bySectionRef maps built BEFORE structural-index.ts runs; 2 more independent inline key re-derivations (lines 172-176, 190-193); findEnclosingNode (lines 200-210) is a positive counter-example - position-based, not label-keyed" },
+        { "path": "lib/contract-model/compiler/structural-definitions.ts", "role": "captures sourceNodeKey from a genuinely position-safe lookup (findEnclosingNode) - ambiguity is introduced later, whenever the captured key is looked back up" },
+        { "path": "lib/contract-model/compiler/structural-coverage.ts", "role": "POSITIVE COUNTER-EXAMPLE: operates purely on charStart/charEnd arithmetic, never nodeKey-as-identity - immune to the collision by construction; template for the collision-safe pattern" }
+      ]
+    },
+    {
+      "phase": "2B discovery",
+      "files": [
+        { "path": "lib/contract-model/compiler/discovery/pass-a-signals.ts", "role": "writes node.nodeKey into DeterministicCandidate.nodeKey" },
+        { "path": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts", "role": "independent key-construction re-derivation (resolveRelativeRef, lines 18-22); nodeExists/getNode singleton lookups" },
+        { "path": "lib/contract-model/compiler/discovery/pass-d-reconcile.ts", "role": "HIGHEST-CONSEQUENCE non-LLM finding: mergeKey = `${primaryNodeKey}::${role}` (lines 27-28) deliberately merges two candidates sharing a colliding key, silently folding two physically distinct provisions into one DiscoveredCandidate - violates the module's own documented provenance-preservation invariant" },
+        { "path": "lib/contract-model/compiler/discovery/pipeline.ts", "role": "deterministicByNodeKey Map (last-write-wins, line 65); per-key sectionRef fallback on lookup miss (line 85)" }
+      ]
+    },
+    {
+      "phase": "2D context retrieval",
+      "files": [
+        { "path": "lib/contract-model/compiler/context-retrieval/structural-context.ts", "role": "getNode/getAncestors/getChildren/getSiblings - densest single-file consumer" },
+        { "path": "lib/contract-model/compiler/context-retrieval/reference-context.ts", "role": "getNode/getNodeByRef for cross-reference target resolution" },
+        { "path": "lib/contract-model/compiler/context-retrieval/region-expansion.ts", "role": "recursive expansion via getNodeText/getChildren - a collision at any ancestor step propagates arbitrarily deep" },
+        { "path": "lib/contract-model/compiler/context-retrieval/definition-graph.ts", "role": "parallel identity scheme keyed on normalizedTerm (computeItemId), same class of risk" },
+        { "path": "lib/contract-model/compiler/context-retrieval/cross-document-context.ts", "role": "cross-document term resolution via plain-string map lookups; explicitly nulls originatingNodeKey for cross-document leads (honest, not a bug)" },
+        { "path": "lib/contract-model/compiler/context-retrieval/pipeline.ts", "role": "candidate.structuralNodeKeys[0] treated as THE primary anchor (line 127); falls back to raw label on lookup miss (line 164)" }
+      ]
+    },
+    {
+      "phase": "2E coverage auditor",
+      "files": [
+        { "path": "lib/contract-model/compiler/coverage-audit/source-inventory.ts", "role": "folds node.nodeKey into a new derived CoverageRegion.regionId" },
+        { "path": "lib/contract-model/compiler/coverage-audit/context-inventory.ts", "role": "6 traversal-primitive call sites in one function (buildIndependentContextExpectations); builds a 3rd independent label-based matching scheme (allSectionRefs Set + string-prefix match)" },
+        { "path": "lib/contract-model/compiler/coverage-audit/context-comparison.ts", "role": "persists structuralNodeKey into AuditFinding" },
+        { "path": "lib/contract-model/compiler/coverage-audit/definition-audit.ts", "role": "folds item.structuralNodeKey into computeFindingId - a 4th place a nodeKey feeds a downstream identity hash" },
+        { "path": "lib/contract-model/compiler/coverage-audit/discovery-comparison.ts", "role": "POSITIVE COUNTER-EXAMPLE: uses array-membership/Set-membership (.includes()), naturally collision-tolerant since multiple entries can share a key without clobbering" },
+        { "path": "lib/contract-model/compiler/coverage-audit/pipeline.ts", "role": "bundle.originatingStructuralNodeKeys[0] treated as primary (line 78), same pattern as context-retrieval/pipeline.ts:127" }
+      ]
+    },
+    {
+      "phase": "3E semantic-coverage (router / materiality / reconciliation) - directly implicated by the DSGR forensic findings",
+      "files": [
+        { "path": "lib/contract-model/compiler/semantic-coverage/router.ts", "role": "39 nodeKey-touching lines; entire hierarchical-closure logic (seed admission, SIBLING_IN_ROUTED_EXCEPTION_LIST, CHAPEAU_OF_ROUTED_ENUMERATION, TRAILING_PROVISO_OF_ROUTED_REGION) built on getParent/getChildren/getNodeText with zero independent disambiguation - direct code-level explanation of the R1/closure-boundary residual population" },
+        { "path": "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts", "role": "CONFIRMS THE R11 FORENSIC MECHANISM AT CODE LEVEL: parentIsExceptionChapeau (lines 328-382) computes const parentNode = index.getParent(nodeKey) (line 380) then bestUnitByNodeKey.get(parentNode.nodeKey) (line 382) for the Phase 3F.1 contextual-materiality-floor elevation; a duplicate-collided parent silently breaks this exact chain, matching Phase 3F.1.1's independent second-pass review (92.3% agreement) via direct code-path confirmation" },
+        { "path": "lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts", "role": "operativeState.provisions.find() by supersededSourceNodeKeys.includes(nodeKey) / currentSourceNodeKey === nodeKey - label-equality matching over the same collision-prone key" }
+      ]
+    },
+    {
+      "phase": "2G amendment / operative-state",
+      "files": [
+        { "path": "lib/contract-model/compiler/amendment/independent-verification.ts", "role": "getNodeByRef singleton lookup; ALSO an unrelated, incidentally-discovered bug (line 62): `!== null` compared against getNodeByRef's real `| undefined` return type makes the existence check always true - noted for a future fix, out of scope here" },
+        { "path": "lib/contract-model/compiler/amendment/operative-state.ts", "role": "currentSourceNodeKey/supersededSourceNodeKeys[] accumulate as a de facto supersession chain; a collision could conflate two distinct provisions' amendment histories" },
+        { "path": "lib/contract-model/compiler/amendment/pipeline.ts", "role": "getNodeByRef singleton lookups (x2)" }
+      ]
+    },
+    {
+      "phase": "3A IR",
+      "files": [
+        { "path": "lib/contract-model/ir/types.ts", "role": "SourceProvenance.sourceNodeKey (line 102) - real documented field; IRRule.ruleId (line 524) derived partly from sourceSectionRef" },
+        { "path": "lib/contract-model/ir/identity.ts", "role": "computeRuleId folds sourceSectionRef (a label) into rule identity - lower-severity downstream ergonomics risk, not a blocking dependency" },
+        { "path": "lib/contract-model/ir/legacy-adapter.ts", "role": "always writes sourceNodeKey: null - sidesteps the collision by never using it" }
+      ]
+    },
+    {
+      "phase": "3B semantic compiler tools - HIGHEST SEVERITY (LLM-facing)",
+      "files": [
+        { "path": "lib/contract-model/compiler/semantic/tools.ts", "role": "getOperativeProvision, getParentClause, getChildren, getSiblingClauses, getReferencedProvision, getSourceSpan all thin-wrap the collision-prone index; NONE distinguish lookup-miss from wrong-occurrence-hit - a silently-wrong occurrence is returned with full-confidence framing, handed to the model as ground truth with no ambiguity signal. ToolRunner.seenRequests dedup cache can also silently suppress a legitimately-different colliding-label request." },
+        { "path": "lib/contract-model/compiler/semantic/normalize.ts", "role": "always writes sourceNodeKey: null" },
+        { "path": "lib/contract-model/compiler/semantic/types.ts", "role": "SemanticToolAccess.structuralIndex carries the whole collision-prone index by reference into every compilation attempt" }
+      ]
+    },
+    {
+      "phase": "Persistence (2A -> DB)",
+      "files": [
+        { "path": "lib/contract-model/compiler/persistence.ts", "role": "nodeLookupKey independent re-derivation; persistStructuralNodes stableKey formula omits any occurrence disambiguator (line 48) - DB-level silent row overwrite on collision, the single highest-severity persistence finding" },
+        { "path": "prisma/schema.prisma", "role": "DocumentNode model - no raw nodeKey column; stableKey is the persisted analog; @@unique([companyId, stableKey]) is the constraint that turns the collision into a silent upsert overwrite. Separately: DocumentNode.parentId is a real FK (positive prior-art pattern, see ADR Option E)." }
+      ]
+    },
+    {
+      "phase": "UI (app/)",
+      "files": [
+        { "path": "app/ and components/ (broad grep)", "role": "ZERO current matches for nodeKey/structuralNodeKey/sourceNodeKey - no UI blast radius today. Displayed sectionRef values (ProvisionTrace.tsx, CovenantOverview.tsx, capacity/page.tsx) all originate from the legacy ContractRule.sourceSectionRef Prisma column, unrelated to Phase 2A's StructuralIndex." }
+      ]
+    }
+  ],
+  "positiveCounterExamplePatterns": [
+    { "file": "lib/contract-model/compiler/structural-coverage.ts", "pattern": "charStart/charEnd arithmetic over raw node array, never nodeKey-as-map-key" },
+    { "file": "lib/contract-model/compiler/structural-references.ts", "function": "findEnclosingNode", "pattern": "containment computed by charStart/charEnd scan, not label lookup" },
+    { "file": "lib/contract-model/compiler/coverage-audit/discovery-comparison.ts", "pattern": "array/Set membership instead of Map.get() - naturally collision-tolerant" }
+  ],
+  "highestSeverityFindings": [
+    { "rank": 1, "file": "lib/contract-model/compiler/semantic/tools.ts", "why": "LLM-facing evidence-retrieval tools cannot distinguish a lookup miss from a silently-wrong occurrence; the model receives full-confidence framing either way" },
+    { "rank": 2, "file": "lib/contract-model/compiler/persistence.ts", "why": "collision causes a silent DATABASE row overwrite (upsert update branch), not merely an in-memory wrong read" },
+    { "rank": 3, "file": "lib/contract-model/compiler/discovery/pass-d-reconcile.ts", "why": "collision causes two physically distinct discovered provisions to be silently merged into one candidate, violating the module's own stated provenance invariant" },
+    { "rank": 4, "file": "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts", "why": "directly confirms, at the code level, the R11_MATERIALITY_INHERITANCE_NOT_TRIGGERED forensic mechanism from Phase 3F.1.1" }
+  ]
+}

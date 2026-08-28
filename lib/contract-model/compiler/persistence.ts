@@ -17,17 +17,42 @@ import type { DetectedDefinition } from "./structural-definitions";
 import type { EntityClassTag } from "@prisma/client";
 
 /**
- * Key used everywhere a rule/reference needs to look up "the node for this
- * section, in this document" - documentId-scoped so two documents in the
- * same package sharing a section number (e.g. both have a "6.01") never
- * collide. Identical in format to StructuralNode.nodeKey (both are
- * `${documentId}::${sectionRef with whitespace stripped}`), so the map
- * persistStructuralNodes returns doubles as the nodeKey->id map
- * persistStructuralReferences/persistStructuralDefinitions need - one real
- * identity scheme, not two.
+ * @deprecated Phase 3F.1.2: this label-shaped key (`${documentId}::${sectionRef}`)
+ * is NOT a unique physical occurrence identity - two distinct physical
+ * structural occurrences can share it (a cross-reference sentence, a
+ * table-of-contents entry, duplicate/malformed numbering - see
+ * docs/architecture/STRUCTURAL-NODE-IDENTITY-ADR.md). It is retained ONLY
+ * as the lookup key for `PersistedNodeIndex.idsByLegalRef` below, which is
+ * explicitly a MANY-valued (`string[]`) map for exactly this reason - never
+ * use it to construct a singleton lookup.
  */
 export function nodeLookupKey(documentId: string, sectionRef: string): string {
   return `${documentId}::${sectionRef.replace(/\s+/g, "")}`;
+}
+
+/**
+ * Phase 3F.1.2 - result of persisting a document's structural nodes.
+ * `idByNodeId` is the authoritative, occurrence-safe map (physical
+ * occurrence identity -> DB row id) - use this whenever the caller already
+ * holds a real StructuralNode/DetectedReference/DetectedDefinition object
+ * (i.e. already has a real nodeId, never re-derived from a label).
+ * `idsByLegalRef` is the citation-based lookup a caller with ONLY a
+ * section-reference STRING (e.g. an LLM-produced CandidateContractRule.
+ * sourceSectionRef, which never carries a nodeId) must use instead - always
+ * many-valued, since a legal reference is not guaranteed unique; a caller
+ * must treat >1 candidate as ambiguous and never silently pick one (the
+ * exact discipline structural-index.ts's resolveUniqueNodeByRef already
+ * applies in memory, mirrored here for the persisted layer).
+ */
+export interface PersistedNodeIndex {
+  idByNodeId: Map<string, string>;
+  idsByLegalRef: Map<string, string[]>;
+}
+
+/** Resolves a bare legal-reference STRING (never a real occurrence id) against `idsByLegalRef`, returning the DB row id only when exactly one physical occurrence matches - undefined for both "no match" and "ambiguous, more than one match" (never an arbitrary pick, mirroring resolveUniqueNodeByRef's UNIQUE/NOT_FOUND/AMBIGUOUS discipline). */
+export function resolveUniquePersistedNodeByRef(index: PersistedNodeIndex, documentId: string, sectionRef: string): string | undefined {
+  const candidates = index.idsByLegalRef.get(nodeLookupKey(documentId, sectionRef)) ?? [];
+  return candidates.length === 1 ? candidates[0] : undefined;
 }
 
 /**
@@ -40,27 +65,46 @@ export function nodeLookupKey(documentId: string, sectionRef: string): string {
  * before their children in the sorted input, but this makes no assumption
  * about that - it simply cannot set a child's parentId before the parent
  * row exists), then every row's parentId is set once every node's real id
- * is known, keyed by the same nodeKey-derived stableKey scheme.
+ * is known - via `node.parentNodeId`, the true PHYSICAL parent occurrence
+ * determined at parse time (stage-structure.ts), never by re-matching a
+ * parentSectionRef LABEL (Phase 3F.1.2: this is what previously let two
+ * distinct physical parent occurrences sharing a label silently collide
+ * into one DB row, reparenting children to whichever occurrence's upsert
+ * happened to run last).
+ *
+ * `stableKey` now includes `charStart` as a disambiguator (Phase 3F.1.2) -
+ * the pre-3F.1.2 formula (companyId, documentId, nodeType, sectionRef only)
+ * let two distinct physical occurrences sharing a label collide onto the
+ * SAME unique-constrained row, so the second upsert's `update` branch
+ * silently overwrote the first occurrence's persisted heading/ordinal/
+ * charStart/charEnd - a genuine, confirmed DB-level instance of the same
+ * defect structural-index.ts's byKey map had in memory, not merely a
+ * theoretical risk (see the ADR's "persistence layer" finding).
  */
-export async function persistStructuralNodes(companyId: string, nodes: StructuralNode[]): Promise<Map<string, string>> {
-  const idByLookupKey = new Map<string, string>();
+export async function persistStructuralNodes(companyId: string, nodes: StructuralNode[]): Promise<PersistedNodeIndex> {
+  const idByNodeId = new Map<string, string>();
+  const idsByLegalRef = new Map<string, string[]>();
   for (const node of nodes) {
-    const stableKey = computeStableKey("document-node", companyId, node.documentId, node.nodeType, node.sectionRef);
+    const stableKey = computeStableKey("document-node", companyId, node.documentId, node.nodeType, node.sectionRef, String(node.charStart));
     const row = await prisma.documentNode.upsert({
       where: { companyId_stableKey: { companyId, stableKey } },
       create: { companyId, documentId: node.documentId, stableKey, nodeType: node.nodeType, heading: node.heading, sectionRef: node.sectionRef, ordinal: node.ordinal, charStart: node.charStart, charEnd: node.charEnd },
       update: { heading: node.heading, ordinal: node.ordinal, charStart: node.charStart, charEnd: node.charEnd },
     });
-    idByLookupKey.set(nodeLookupKey(node.documentId, node.sectionRef), row.id);
+    idByNodeId.set(node.nodeId, row.id);
+    const legalRefKey = nodeLookupKey(node.documentId, node.sectionRef);
+    const list = idsByLegalRef.get(legalRefKey) ?? [];
+    list.push(row.id);
+    idsByLegalRef.set(legalRefKey, list);
   }
   for (const node of nodes) {
-    if (!node.parentSectionRef) continue;
-    const parentId = idByLookupKey.get(nodeLookupKey(node.documentId, node.parentSectionRef));
+    if (!node.parentNodeId) continue;
+    const parentId = idByNodeId.get(node.parentNodeId);
     if (!parentId) continue; // parent wasn't itself a recognized structural node (e.g. an ARTICLE-less top-level SECTION) - leave parentId null rather than guess.
-    const childId = idByLookupKey.get(node.nodeKey)!;
+    const childId = idByNodeId.get(node.nodeId)!;
     await prisma.documentNode.update({ where: { id: childId }, data: { parentId } });
   }
-  return idByLookupKey;
+  return { idByNodeId, idsByLegalRef };
 }
 
 /**
@@ -68,15 +112,16 @@ export async function persistStructuralNodes(companyId: string, nodes: Structura
  * (structural-references.ts), fixing the same real gap the LLM-candidate
  * path (persistReferences below) always had: sourceNodeId was never set,
  * so "what references this node" (task §9) could never be answered from
- * persisted data. idByNodeKey must come from persistStructuralNodes's own
- * return value's underlying node-key map (exposed via the second return
- * value here) so both sides agree on identity.
+ * persisted data. Phase 3F.1.2: resolved via `nodeIndex.idByNodeId`, keyed
+ * by DetectedReference's own real `sourceNodeId`/`targetNodeId` fields
+ * (physical occurrence identity), never the deprecated label-shaped
+ * `sourceNodeKey`/`targetNodeKey`.
  */
-export async function persistStructuralReferences(companyId: string, references: DetectedReference[], idByNodeKey: Map<string, string>): Promise<number> {
+export async function persistStructuralReferences(companyId: string, references: DetectedReference[], nodeIndex: PersistedNodeIndex): Promise<number> {
   let persisted = 0;
   for (const ref of references) {
-    const sourceNodeId = ref.sourceNodeKey ? idByNodeKey.get(ref.sourceNodeKey) : undefined;
-    const targetDocumentNodeId = ref.targetNodeKey ? idByNodeKey.get(ref.targetNodeKey) : undefined;
+    const sourceNodeId = ref.sourceNodeId ? nodeIndex.idByNodeId.get(ref.sourceNodeId) : undefined;
+    const targetDocumentNodeId = ref.targetNodeId ? nodeIndex.idByNodeId.get(ref.targetNodeId) : undefined;
     await prisma.contractReferenceEdge.create({
       data: {
         companyId,
@@ -101,13 +146,15 @@ export async function persistStructuralReferences(companyId: string, references:
  * name) so a term found by both the deterministic detector and the LLM
  * DEFINITIONS stage converges on one row rather than creating a duplicate -
  * this call additionally fills in sourceNodeId/definitionTextRef, which the
- * LLM path alone never populated with a real structural anchor.
+ * LLM path alone never populated with a real structural anchor. Phase
+ * 3F.1.2: resolved via DetectedDefinition's own real `sourceNodeId` field
+ * (physical occurrence identity), never the deprecated `sourceNodeKey`.
  */
-export async function persistStructuralDefinitions(companyId: string, definitions: DetectedDefinition[], idByNodeKey: Map<string, string>): Promise<Map<string, string>> {
+export async function persistStructuralDefinitions(companyId: string, definitions: DetectedDefinition[], nodeIndex: PersistedNodeIndex): Promise<Map<string, string>> {
   const idByTermName = new Map<string, string>();
   for (const def of definitions) {
     const stableKey = computeStableKey("defined-term", companyId, def.normalizedTerm);
-    const sourceNodeId = def.sourceNodeKey ? idByNodeKey.get(def.sourceNodeKey) : undefined;
+    const sourceNodeId = def.sourceNodeId ? nodeIndex.idByNodeId.get(def.sourceNodeId) : undefined;
     const row = await prisma.definedTermNode.upsert({
       where: { companyId_stableKey: { companyId, stableKey } },
       create: { companyId, documentId: def.documentId, stableKey, termName: def.exactTerm, normalizedName: def.normalizedTerm, sourceNodeId, definitionTextRef: def.definitionExcerpt },
@@ -137,11 +184,18 @@ function toEntityClassTags(raw: string[], validTags: Set<string>): EntityClassTa
   return raw.filter((t): t is EntityClassTag => validTags.has(t)) as EntityClassTag[];
 }
 
-export async function persistContractRules(companyId: string, documentId: string, rules: CandidateContractRule[], nodeIdByLookupKey: Map<string, string>, entityClassTags: Set<string>): Promise<Map<string, string>> {
+/**
+ * `rule.sourceSectionRef` is an LLM-produced citation STRING, never a real
+ * occurrence id - Phase 3F.1.2: resolved via `resolveUniquePersistedNodeByRef`,
+ * which returns undefined (never an arbitrary pick) when the citation
+ * matches more than one physical occurrence in this document, exactly as
+ * structural-index.ts's in-memory `resolveUniqueNodeByRef` already does.
+ */
+export async function persistContractRules(companyId: string, documentId: string, rules: CandidateContractRule[], nodeIndex: PersistedNodeIndex, entityClassTags: Set<string>): Promise<Map<string, string>> {
   const idBySectionRef = new Map<string, string>();
   for (const rule of rules) {
     const stableKey = computeStableKey("contract-rule", companyId, documentId, rule.sourceSectionRef, rule.action);
-    const sourceNodeId = nodeIdByLookupKey.get(nodeLookupKey(documentId, rule.sourceSectionRef)) ?? null;
+    const sourceNodeId = resolveUniquePersistedNodeByRef(nodeIndex, documentId, rule.sourceSectionRef) ?? null;
     const row = await prisma.contractRule.upsert({
       where: { companyId_stableKey: { companyId, stableKey } },
       create: {
@@ -223,10 +277,10 @@ export async function persistRuleRelationships(companyId: string, relationships:
   return persisted;
 }
 
-export async function persistReferences(companyId: string, documentId: string, references: CandidateContractReference[], nodeIdByLookupKey: Map<string, string>): Promise<number> {
+export async function persistReferences(companyId: string, documentId: string, references: CandidateContractReference[], nodeIndex: PersistedNodeIndex): Promise<number> {
   let persisted = 0;
   for (const ref of references) {
-    const targetNodeId = ref.targetSectionRef ? nodeIdByLookupKey.get(nodeLookupKey(documentId, ref.targetSectionRef)) : undefined;
+    const targetNodeId = ref.targetSectionRef ? resolveUniquePersistedNodeByRef(nodeIndex, documentId, ref.targetSectionRef) : undefined;
     const resolved = !!targetNodeId;
     await prisma.contractReferenceEdge.create({
       data: {
