@@ -133,27 +133,75 @@ SECTION 6.10 Event of Default Limitation. No Restricted Payment shall be made if
       },
     ];
     const bundle = build(docs, "6.03(a)");
-    // The proviso attached is 6.03's OWN parent-scope proviso language
-    // (retrieved via PARENT_SCOPE, since it's the candidate's own
-    // enclosing section's chapeau), not clause (b)'s unrelated proviso
-    // about Investments.
+    // The proviso attached with NORMAL confidence/shape is 6.03's OWN
+    // parent-scope proviso language (retrieved via PARENT_SCOPE, since
+    // it's the candidate's own enclosing section's chapeau) - never clause
+    // (b)'s unrelated proviso about Investments.
     const provisoItems = bundle.items.filter((i) => i.type === "PROVISO");
     // eslint-disable-next-line no-console
     console.log("[4] proviso items:", JSON.stringify(provisoItems.map((p) => ({ ref: p.normalizedRef, text: p.excerptText.slice(0, 80) })), null, 2));
-    // FINDING CTX-02 (confirmed, real behavior — WRONG-CONTEXT
-    // CONTAMINATION): clause (b)'s own proviso — about a completely
-    // different subject (Investments under Section 6.06), textually
-    // unrelated to candidate (a) (Dispositions of obsolete equipment) — IS
-    // retrieved and attached to (a) via a SIBLING_OF edge with the claim
-    // "may modify or limit the discovered candidate," purely because it
-    // contains the generic keyword "provided that." retrieveSiblingContext
-    // (structural-context.ts) never checks whether the matched sibling's
-    // proviso/exception/condition/shared-cap language actually concerns
-    // the SAME subject as the candidate — only that SOME sibling under the
-    // same parent contains the keyword. See test 12 for the same
-    // architecture defect via the SHARED_CAP signal.
-    expect(provisoItems.some((p) => /contemplation of such Disposition/.test(p.excerptText))).toBe(true);
-    expect(provisoItems.find((p) => p.normalizedRef === "6.03(b)")?.type).toBe("PROVISO");
+    // CTX-01/PARENT_SCOPE: the candidate's OWN enclosing proviso ("...the
+    // Net Proceeds are applied to prepay the Term Loans...") is still
+    // retrieved and attached normally.
+    const parentProviso = bundle.items.find((i) => i.type === "PARENT_SCOPE" && /prepay the Term Loans/.test(i.excerptText));
+    expect(parentProviso).toBeDefined();
+    // CTX-02 FIX (was: WRONG-CONTEXT CONTAMINATION): clause (b)'s own
+    // proviso — about a completely different subject (Investments under
+    // Section 6.06), textually unrelated to candidate (a) (Dispositions of
+    // obsolete equipment) — must NEVER be attached as a normal-confidence
+    // PROVISO purely because it contains the generic keyword "provided
+    // that." retrieveSiblingContext (structural-context.ts) now requires
+    // real evidence of subject correspondence (clause backreference,
+    // shared named resource, enclosing-scope linkage, or grammatical
+    // continuation) before attaching at normal confidence/shape - none of
+    // which clause (b) has relative to clause (a). It is still disclosed
+    // (recall preserved), but only as a distinctly-shaped, low-confidence
+    // UNVERIFIED_SIBLING_SIGNAL a downstream reader cannot mistake for a
+    // verified item. See test 12 for the same fix via the SHARED_CAP
+    // signal, and test 4b below for a genuinely relevant cross-clause
+    // proviso that DOES still attach normally.
+    expect(provisoItems.some((p) => /contemplation of such Disposition/.test(p.excerptText))).toBe(false);
+    const sibling603b = bundle.items.find((i) => i.normalizedRef === "6.03(b)");
+    expect(sibling603b?.type).toBe("UNVERIFIED_SIBLING_SIGNAL");
+    expect(sibling603b?.confidence).toBeLessThan(0.7);
+  });
+
+  it("4b. (positive control) a GENUINE cross-clause proviso explicitly naming the candidate's own clause letter still attaches normally", () => {
+    const docs: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "CA",
+        text: `SECTION 6.03 Asset Sales.
+(a) Dispositions of obsolete equipment.
+(b) Dispositions of surplus real property.
+(c) provided that clauses (a) and (b) shall not apply if a Default has occurred and is continuing.`,
+      },
+    ];
+    const bundle = build(docs, "6.03(a)");
+    const item = bundle.items.find((i) => i.normalizedRef === "6.03(c)");
+    expect(item?.type).toBe("PROVISO");
+    expect(item?.confidence).toBe(0.7);
+  });
+
+  // 4c. generalized adversarial variant: a "provided that" sibling about a
+  // completely different covenant family (not merely a different basket
+  // within the same family, as in test 4) - proves the fix generalizes
+  // beyond the exact audited fixture shape.
+  it("4c. ADVERSARIAL (generalized): a 'provided that' sibling belonging to an entirely different covenant family is never attached at normal confidence merely on the keyword", () => {
+    const docs: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "CA",
+        text: `SECTION 6.11 Miscellaneous Covenants.
+(a) Permitted Liens on after-acquired property in the ordinary course of business.
+(b) Restricted Payments to equityholders, provided that the Borrower first delivers a solvency certificate to the Administrative Agent.`,
+      },
+    ];
+    const bundle = build(docs, "6.11(a)");
+    const sibling = bundle.items.find((i) => i.normalizedRef === "6.11(b)");
+    expect(sibling?.type).toBe("UNVERIFIED_SIBLING_SIGNAL");
+    expect(sibling?.confidence).toBeLessThanOrEqual(0.3);
+    expect(bundle.items.some((i) => i.type === "PROVISO" && i.normalizedRef === "6.11(b)")).toBe(false);
   });
 
   // 5. shared-cap reference
@@ -228,7 +276,7 @@ SECTION 6.01 Indebtedness. The Borrower will not incur Indebtedness in excess of
   });
 
   // 9. amended provision reference — does context retrieval pull CURRENT or STALE text, and is the amendment even visible?
-  it("9. ADVERSARIAL: a reference to a section that has SINCE been amended by another package document — the referenced section's PENDING AMENDMENT is never surfaced anywhere in the bundle for a CROSS-REFERENCED target (only for the primary candidate's own section)", () => {
+  it("9. CTX-01 FIX: a reference to a section that has SINCE been amended by another package document — the referenced section's PENDING AMENDMENT is now surfaced for a CROSS-REFERENCED target too, not only for the primary candidate's own section", () => {
     const docs: TestDocument[] = [
       {
         documentId: "doc1",
@@ -274,14 +322,19 @@ Section 6.09 of the Credit Agreement is hereby amended and restated in its entir
     // eslint-disable-next-line no-console
     console.log("[9] amendmentLeadFor609:", amendmentLeadFor609, "anyMentionOf609Amendment:", anyMentionOf609Amendment);
     console.log("[9] all item types:", bundle.items.map((i) => `${i.type}:${i.normalizedRef}`));
-    // FINDING CTX-01 (confirmed, real behavior): retrieveAmendmentLeadsForSection
-    // is only ever called ONCE, for the PRIMARY candidate's own sectionRef
-    // (pipeline.ts line ~165) — never for any CROSS_REFERENCE target
-    // retrieved via reference-context.ts. A downstream analyst sees 6.09's
-    // original text with no flag whatsoever that a real, resolved
-    // modification candidate targets it elsewhere in the same package.
-    expect(amendmentLeadFor609).toBeUndefined();
-    expect(anyMentionOf609Amendment).toBe(false);
+    // CTX-01 FIX (was: retrieveAmendmentLeadsForSection only ever called
+    // ONCE, for the PRIMARY candidate's own sectionRef - never for any
+    // CROSS_REFERENCE target retrieved via reference-context.ts). Now
+    // generalized: every materially-retrieved cross-reference target gets
+    // the same amendment-lead check, so a downstream analyst sees an
+    // explicit AMENDMENT_LEAD for 6.09 alongside its (honestly
+    // pre-amendment) retrieved text.
+    expect(amendmentLeadFor609).toBeDefined();
+    expect(amendmentLeadFor609!.excerptText).toMatch(/AMENDMENT_RESOLUTION_REQUIRED/);
+    expect(amendmentLeadFor609!.excerptText).toMatch(/5\.00 to 1\.00/);
+    const edgeToAmendment = bundle.edges.find((e) => e.toItemId === item609!.itemId && e.fromItemId === amendmentLeadFor609!.itemId && e.edgeType === "AMENDMENT_CANDIDATE");
+    expect(edgeToAmendment).toBeDefined();
+    void anyMentionOf609Amendment;
   });
 
   it("9b. (control) the PRIMARY candidate's own section DOES get its amendment lead surfaced correctly", () => {
@@ -350,7 +403,7 @@ SECTION 6.04 Investments. The Borrower may make Investments not exceeding $8,000
   });
 
   // 12. WRONG-CONTEXT CONTAMINATION probe: an unrelated sibling containing an unrelated dollar figure must not be pulled in merely by proximity
-  it("12. WRONG-CONTEXT CONTAMINATION probe: an unrelated numerically-similar sibling clause is NOT retrieved merely because it is nearby and shares a similar dollar figure", () => {
+  it("12. CTX-02 FIX: an unrelated numerically-similar sibling clause is NOT attached at normal confidence merely because it is nearby and shares a similar dollar figure", () => {
     const docs: TestDocument[] = [
       {
         documentId: "doc1",
@@ -364,22 +417,140 @@ SECTION 6.04 Investments. The Borrower may make Investments not exceeding $8,000
     const siblingItem = bundle.items.find((i) => i.normalizedRef === "6.08(b)");
     // eslint-disable-next-line no-console
     console.log("[12] sibling item retrieved?", !!siblingItem, siblingItem?.type, JSON.stringify(siblingItem));
-    // FINDING CTX-02 (confirmed, real behavior — WRONG-CONTEXT
-    // CONTAMINATION): clause (b) — about director compensation, whose own
-    // text explicitly disclaims any economic relationship to clause (a) —
-    // IS retrieved and classified SHARED_CAP, attached via a SIBLING_OF
-    // edge asserting it "may modify or limit the discovered candidate,"
-    // purely because it contains the boilerplate phrase "in the
-    // aggregate." SHARED_CAP_SIGNALS/PROVISO_SIGNALS/EXCEPTION_SIGNALS/
-    // CONDITION_SIGNALS in structural-context.ts fire on ANY sibling under
-    // the same parent whose OWN text matches a generic keyword regex —
-    // there is no check that the matched language actually concerns the
-    // SAME economic capacity/condition as the specific candidate it gets
-    // attached to. This directly matches the audit's own warning that
-    // wrong-context contamination from proximity/keyword coincidence can
-    // be MORE dangerous than a missing item, because it is delivered with
-    // the SAME shape and confidence (0.7) as a genuinely relevant item.
+    // CTX-02 FIX (was: WRONG-CONTEXT CONTAMINATION - clause (b), whose own
+    // text explicitly disclaims any economic relationship to clause (a),
+    // was classified SHARED_CAP and attached at the SAME confidence/shape
+    // as a genuinely relevant item purely because it contains "in the
+    // aggregate"). Note the adversarial subtlety: clause (b)'s text also
+    // literally contains the string "clause (a)" - but only inside an
+    // explicit relationship-negation ("bears no economic relationship to
+    // clause (a) at all"), which is a hard veto, not confirming evidence.
+    // The sibling is still disclosed (never silently dropped - recall is
+    // preserved) but only as a distinctly-shaped, low-confidence
+    // UNVERIFIED_SIBLING_SIGNAL a downstream reader cannot mistake for a
+    // verified SHARED_CAP item.
     expect(siblingItem).toBeDefined();
+    expect(siblingItem?.type).toBe("UNVERIFIED_SIBLING_SIGNAL");
+    expect(siblingItem?.type).not.toBe("SHARED_CAP");
+    expect(siblingItem?.confidence).toBeLessThanOrEqual(0.3);
+    expect(bundle.items.some((i) => i.type === "SHARED_CAP" && i.normalizedRef === "6.08(b)")).toBe(false);
+  });
+
+  // 12b. NEGATION-BLIND-SPOT control: a sibling that mentions the
+  // candidate's clause letter WITHOUT any negation must still attach
+  // normally - proves the negation veto in test 12 isn't just refusing
+  // every mention of "clause (a)" outright.
+  it("12b. (positive control) a sibling that references the candidate's clause letter WITHOUT a relationship negation still attaches normally", () => {
+    const docs: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "CA",
+        text: `SECTION 6.08 Affiliate Transactions. The Borrower will not enter into any transaction with an Affiliate except:
+(a) transactions on arm's-length terms;
+(b) in the aggregate, all transactions permitted under clause (a) above shall not exceed $10,000,000 per fiscal year.`,
+      },
+    ];
+    const bundle = build(docs, "6.08(a)");
+    const siblingItem = bundle.items.find((i) => i.normalizedRef === "6.08(b)");
     expect(siblingItem?.type).toBe("SHARED_CAP");
+    expect(siblingItem?.confidence).toBe(0.7);
+  });
+
+  // 13. CTX-01 generalized: a 2-hop cross-reference chain where the
+  // amendment targets the SECOND hop, not the first - proves the
+  // amendment-lead check runs at every depth level the cross-reference
+  // traversal visits, not merely depth 1.
+  it("13. CTX-01 (generalized, 2-hop): an amendment targeting the SECOND hop of a cross-reference chain is surfaced, not just the first hop", () => {
+    const docs: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "Credit Agreement",
+        text: `CREDIT AGREEMENT dated as of January 1, 2021, among Harrow Logistics Inc., as Borrower.
+
+SECTION 6.01 Restricted Payments. The Borrower may make Restricted Payments as calculated in accordance with Section 1.07.
+
+SECTION 1.07 Pro Forma Calculations. All pro forma calculations shall give effect to the accounting principles set forth in Section 1.08.
+
+SECTION 1.08 Accounting Principles. All calculations shall be made in accordance with GAAP as in effect on the Closing Date.`,
+      },
+      {
+        documentId: "doc2",
+        label: "First Amendment",
+        text: `FIRST AMENDMENT TO CREDIT AGREEMENT, dated as of June 1, 2023 (this "Amendment"), to the Credit Agreement dated as of January 1, 2021, among Harrow Logistics Inc.
+
+Section 1.08 of the Credit Agreement is hereby amended and restated in its entirety to require GAAP as in effect on the date of determination rather than the Closing Date.`,
+      },
+    ];
+    const access = packageAccessFor(docs);
+    const modCandidate = access.packageGraph!.modificationCandidates.find((m) => m.targetDocumentId === "doc1" && m.targetSectionRef === "1.08");
+    expect(modCandidate).toBeDefined();
+
+    const bundle = build(docs, "6.01", {}, access);
+    // Both hops are reached.
+    const item107 = bundle.items.find((i) => i.normalizedRef === "1.07");
+    const item108 = bundle.items.find((i) => i.normalizedRef === "1.08");
+    expect(item107).toBeDefined();
+    expect(item108).toBeDefined();
+    expect(bundle.performance.maxCrossReferenceDepthReached).toBeGreaterThanOrEqual(2);
+
+    // The amendment targets ONLY the second hop (1.08) - it must be
+    // surfaced there, and NOT fabricated for the first hop (1.07).
+    const leadFor108 = bundle.items.find((i) => (i.type === "AMENDMENT_LEAD" || i.type === "SUPPLEMENT_LEAD") && i.normalizedRef === "1.08");
+    const leadFor107 = bundle.items.find((i) => (i.type === "AMENDMENT_LEAD" || i.type === "SUPPLEMENT_LEAD") && i.normalizedRef === "1.07");
+    expect(leadFor108).toBeDefined();
+    expect(leadFor108!.excerptText).toMatch(/date of determination/);
+    expect(leadFor107).toBeUndefined();
+  });
+
+  // 14. CTX-01 generalized: a genuine reference cycle (A -> B -> A) must
+  // not infinite-loop or explode retrieval depth - bounded recursion and
+  // cycle protection proof.
+  it("14. CTX-01 (generalized, cycle protection): a genuine reference cycle (A -> B -> A) terminates cleanly, with amendment leads still surfaced for both cycle members", () => {
+    const docs: TestDocument[] = [
+      {
+        documentId: "doc1",
+        label: "Credit Agreement",
+        text: `CREDIT AGREEMENT dated as of January 1, 2021, among Harrow Logistics Inc., as Borrower.
+
+SECTION 6.01 Restricted Payments. The Borrower may make Restricted Payments as calculated in accordance with Section 1.07.
+
+SECTION 1.07 Pro Forma Calculations. All calculations shall give effect to the accounting principles set forth in Section 1.08.
+
+SECTION 1.08 Accounting Principles. All calculations of pro forma amounts shall be made in accordance with Section 1.07.`,
+      },
+      {
+        documentId: "doc2",
+        label: "First Amendment",
+        text: `FIRST AMENDMENT TO CREDIT AGREEMENT, dated as of June 1, 2023 (this "Amendment"), to the Credit Agreement dated as of January 1, 2021, among Harrow Logistics Inc.
+
+Section 1.08 of the Credit Agreement is hereby amended and restated in its entirety to change the applicable accounting standard.`,
+      },
+    ];
+    const access = packageAccessFor(docs);
+    const start = Date.now();
+    const bundle = build(docs, "6.01", {}, access);
+    const elapsedMs = Date.now() - start;
+
+    // No infinite loop / no runaway retrieval - completes fast and stays
+    // within the configured cross-reference depth budget.
+    expect(elapsedMs).toBeLessThan(2000);
+    expect(bundle.performance.maxCrossReferenceDepthReached).toBeLessThanOrEqual(3);
+
+    // No duplicate items despite the cycle - deduplicated by itemId exactly
+    // as the pre-existing (non-amendment) cycle protection already
+    // guaranteed (see tests/contract-model/context-retrieval-pipeline.test.ts
+    // #30, unaffected by this remediation).
+    // Filtered to the CROSS_REFERENCE/CALCULATION_PROVISION items
+    // specifically (the AMENDMENT_LEAD item for 1.08 legitimately shares
+    // normalizedRef "1.08" too - it is a distinct item/type, not a dedup
+    // failure).
+    const items107 = bundle.items.filter((i) => i.normalizedRef === "1.07" && (i.type === "CROSS_REFERENCE" || i.type === "CALCULATION_PROVISION"));
+    const items108 = bundle.items.filter((i) => i.normalizedRef === "1.08" && (i.type === "CROSS_REFERENCE" || i.type === "CALCULATION_PROVISION"));
+    expect(items107).toHaveLength(1);
+    expect(items108).toHaveLength(1);
+
+    // The amendment lead for 1.08 is still surfaced despite the cycle.
+    const leadFor108 = bundle.items.find((i) => (i.type === "AMENDMENT_LEAD" || i.type === "SUPPLEMENT_LEAD") && i.normalizedRef === "1.08");
+    expect(leadFor108).toBeDefined();
   });
 });

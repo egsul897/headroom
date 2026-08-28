@@ -39,7 +39,27 @@ export type ContextItemType =
   | "SUPPLEMENT_LEAD"
   | "INTERCREDITOR_LEAD"
   | "RELATED_COVENANT"
-  | "OTHER_REQUIRED_CONTEXT";
+  | "OTHER_REQUIRED_CONTEXT"
+  /**
+   * Phase 3F.1.4 (CTX-02 remediation, WRONG-CONTEXT CONTAMINATION fix) - a
+   * sibling under the same structural parent whose OWN text matched one of
+   * the generic PROVISO/EXCEPTION/CONDITION/SHARED_CAP keyword signals, but
+   * for which retrieveSiblingContext (structural-context.ts) could NOT
+   * establish any real evidence that the sibling's language actually
+   * concerns the same subject/economic mechanism as the specific candidate
+   * it would otherwise be attached to (no clause backreference, no shared
+   * named defined term/dollar figure, no section-wide scope phrase, no
+   * bare-qualifier grammatical continuation of the candidate's own
+   * enumerated list). Deliberately a DIFFERENT type (never PROVISO/
+   * EXCEPTION/CONDITION/SHARED_CAP) and always confidence <= 0.3, so a
+   * downstream consumer can never mistake this for a genuinely-verified
+   * relevant item merely by reading `type`/`confidence` - the audit's own
+   * finding was that the false and the true item were otherwise byte-
+   * identical in shape. Never silently dropped (recall is preserved - the
+   * sibling is still disclosed, just honestly flagged), and never silently
+   * promoted to normal confidence.
+   */
+  | "UNVERIFIED_SIBLING_SIGNAL";
 
 export type RetrievalMethod = "STRUCTURAL_TRAVERSAL" | "DEFINITION_INDEX" | "CROSS_REFERENCE_INDEX" | "PACKAGE_GRAPH" | "SEMANTIC_RELEVANCE";
 
