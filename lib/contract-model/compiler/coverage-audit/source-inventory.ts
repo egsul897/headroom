@@ -20,7 +20,8 @@ import { computeRegionId } from "./identity";
 import { countInlineEnumerationMarkers, detectIndependentSignals, type SignalHit } from "./signals";
 import { COVERAGE_AUDIT_ALGORITHM_VERSION, type CoverageRegion, type CoverageRegionRole } from "./types";
 
-const HEADLINE_HEADING = /\b(?:Indebtedness|Liens?|Restricted Payments?|Investments?|Dispositions?|Asset Sales?|Affiliate Transactions?|Financial Covenants?|Guarant(?:y|ies|ee)|Security|Subsidiar(?:y|ies)|Merger|Consolidation|Fundamental Changes?|Change of Control|Sale.?Leaseback|Subordinat|Refinanc)/i;
+/** Exported so other independent-inventory modules that scan the same document root (e.g. Phase 3E's semantic-coverage router) can reuse the same generic headline classification without re-deriving a parallel copy - this regex has no Phase 2B/2D conclusion dependency, only a fixed list of generic covenant-article headings. */
+export const HEADLINE_HEADING = /\b(?:Indebtedness|Liens?|Restricted Payments?|Investments?|Dispositions?|Asset Sales?|Affiliate Transactions?|Financial Covenants?|Guarant(?:y|ies|ee)|Security|Subsidiar(?:y|ies)|Merger|Consolidation|Fundamental Changes?|Change of Control|Sale.?Leaseback|Subordinat|Refinanc)/i;
 
 const EXCERPT_LENGTH = 400;
 

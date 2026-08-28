@@ -145,9 +145,49 @@
  * in principle, since it never sees anything Phase 2B didn't first select.
  */
 import type { CovenantFamily } from "@prisma/client";
+import type { StructuralHealthState } from "../structural-coverage";
 
 export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3e-semantic-coverage.v1";
 export const SEMANTIC_COVERAGE_PROMPT_VERSION = "phase-3e-semantic-coverage-prompt.v1";
+export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3e-semantic-coverage-router.v1";
+
+// ---------------------------------------------------------------------------
+// §154 - document-root traversal / high-recall region routing. This is the
+// layer BEFORE semantic-unit hypothesis generation: it decides which raw
+// spans of a document are worth hypothesis-generation attention at all,
+// favoring recall over precision (task's own "false positives are
+// filterable later, missed regions are unrecoverable" - a human-curated
+// section list is FORBIDDEN in production routing logic). One RoutedRegion
+// may later yield zero, one, or many MaterialSemanticUnits - routing and
+// unit hypothesis generation are deliberately separate steps.
+// ---------------------------------------------------------------------------
+
+export type RoutedRegionAdmissionReason = "INDEPENDENT_SIGNAL" | "HEADLINE_SECTION" | "DEFINITION_NODE" | "UNSTRUCTURED_MULTI_ITEM" | "RAW_SOURCE_FALLBACK";
+
+export interface RoutedRegion {
+  /** Deterministic, content-derived. */
+  regionId: string;
+  documentId: string;
+  /** Null for a region reached only via the raw-source fallback path (no structural node anchors it). */
+  structuralNodeKey: string | null;
+  sectionRef: string | null;
+  charStart: number;
+  charEnd: number;
+  excerptText: string;
+  detectedSignals: string[];
+  admissionReasons: RoutedRegionAdmissionReason[];
+  fromRawSourceFallback: boolean;
+  routingAlgorithmVersion: string;
+}
+
+export interface DocumentRoutingResult {
+  documentId: string;
+  structuralHealth: StructuralHealthState;
+  healthReasons: string[];
+  regions: RoutedRegion[];
+  totalNodesScanned: number;
+  admittedNodeCount: number;
+}
 
 // ---------------------------------------------------------------------------
 // Inventory granularity (task §7) - never forced 1:1 with a structural node.
