@@ -25,7 +25,7 @@ import { freezeSourceInventory } from "./freeze";
 import { reconcileFrozenInventory, type CompiledCandidateResult } from "./reconciliation";
 import { computeDocumentCoverage } from "./document-coverage";
 import { computePackageCoverage } from "./package-coverage";
-import { auditCrossSectionRelationships, auditOperativeStateForUnits } from "./cross-reference-audit";
+import { applyOperativeStateFindingsToCoverage, auditCrossSectionRelationships, auditOperativeStateForUnits } from "./cross-reference-audit";
 import type { MaterialSemanticUnit, OperativeStateAuditFinding, PackageCoverageResult, CrossSectionRelationshipFinding } from "./types";
 
 export interface DocumentAuditInput {
@@ -102,10 +102,15 @@ export async function runSemanticCoverageAudit(input: SemanticCoverageAuditInput
     allUnitFingerprints.push({ documentId: doc.documentId, text: frozen.frozenContentHash });
 
     // Reconciliation + rollup - the only stage permitted to read Phase 2B/3B/3C real output.
-    const { entries, dangerousUnaccounted } = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: input.discoveredCandidates, compiledResults: input.compiledResults, verifiedCandidateRefs: input.verifiedCandidateRefs });
+    const { entries: reconciledEntries, dangerousUnaccounted: reconciledDangerous } = reconcileFrozenInventory({ frozenInventory: frozen, discoveredCandidates: input.discoveredCandidates, compiledResults: input.compiledResults, verifiedCandidateRefs: input.verifiedCandidateRefs });
     const documentRules = input.compiledResults.flatMap((c) => c.rules);
     const crossSectionFindings = auditCrossSectionRelationships(units, documentRules);
     const operativeStateFindings = input.operativeState ? auditOperativeStateForUnits(units, input.operativeState) : [];
+    // Phase 3F.1 §29-32/F3 - fold operative-state findings back into coverage
+    // BEFORE rollup, so OPERATIVE_STATE_UNRESOLVED (already checked by both
+    // document-coverage.ts's gate and package-coverage.ts's package status)
+    // actually becomes reachable rather than a dead branch.
+    const { entries, dangerousUnaccounted } = applyOperativeStateFindingsToCoverage(reconciledEntries, reconciledDangerous, operativeStateFindings, units);
 
     documentCoverages.push(computeDocumentCoverage(doc.documentId, units, entries, dangerousUnaccounted));
     documentDetails.push({ documentId: doc.documentId, units, crossSectionFindings, operativeStateFindings, aiInventoryFailed, aiInventoryRejectedQuotes });

@@ -134,7 +134,7 @@ function makeProvision(overrides: Partial<OperativeProvisionView> = {}): Operati
 }
 
 function makeOperativeState(provisions: OperativeProvisionView[]): OperativeContractState {
-  return { instrumentKey, asOfDate: "2026-01-01", provisions, status: "OPERATIVE_STATE_RESOLVED", summary: "test" };
+  return { instrumentKey, asOfDate: "2026-01-01", provisions, status: "OPERATIVE_STATE_RESOLVED", summary: "test", unattachedEffects: [] };
 }
 
 describe("Phase 3E operative-state audit for units", () => {

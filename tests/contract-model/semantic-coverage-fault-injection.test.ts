@@ -316,11 +316,20 @@ describe("Phase 3E fault injection matrix (task #160)", () => {
       unresolvedIssues: [],
       conflicts: [],
     };
-    const operativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [supersededProvision], status: "OPERATIVE_STATE_RESOLVED", summary: "test" };
+    const operativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [supersededProvision], status: "OPERATIVE_STATE_RESOLVED", summary: "test", unattachedEffects: [] };
     const result = await runSemanticCoverageAudit({ ...baseInput, index, operativeState, documents: [{ documentId: "doc-1" }], discoveredCandidates: [candidateA], compiledResults: [{ candidateRef: "disc-a", rules: [ruleA], definitions: [] }], verifiedCandidateRefs: new Set() });
     const caught = result.documentDetails[0]!.operativeStateFindings.some((f) => f.findingType === "STALE_SUPERSEDED_TEXT_CREDITED");
     record("stale-superseded-text", caught);
     expect(caught).toBe(true);
+    // Phase 3F.1 §29-32/F3: the finding must not remain a parallel, unread
+    // list - it must actually flip the affected unit's own coverageState
+    // and (since this rule was compiled/verified) prevent package status
+    // from reading as a clean covered/resolved state despite crediting
+    // stale text.
+    const doc = result.packageCoverage.documents[0]!;
+    const staleEntry = doc.coverageEntries.find((e) => e.semanticUnitId === result.documentDetails[0]!.operativeStateFindings.find((f) => f.findingType === "STALE_SUPERSEDED_TEXT_CREDITED")!.semanticUnitId);
+    expect(staleEntry?.coverageState).toBe("OPERATIVE_STATE_UNRESOLVED");
+    expect(result.packageCoverage.status).toBe("PACKAGE_OPERATIVE_STATE_UNRESOLVED");
   });
 
   it("11. An unresolved (conflicted) operative state for a covering provision is caught", async () => {
@@ -343,11 +352,15 @@ describe("Phase 3E fault injection matrix (task #160)", () => {
       unresolvedIssues: ["two amendments conflict"],
       conflicts: [],
     };
-    const operativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [conflictedProvision], status: "OPERATIVE_STATE_CONFLICTED", summary: "test" };
+    const operativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [conflictedProvision], status: "OPERATIVE_STATE_CONFLICTED", summary: "test", unattachedEffects: [] };
     const result = await runSemanticCoverageAudit({ ...baseInput, index, operativeState, documents: [{ documentId: "doc-1" }], discoveredCandidates: [candidateA], compiledResults: [{ candidateRef: "disc-a", rules: [ruleA], definitions: [] }], verifiedCandidateRefs: new Set() });
     const caught = result.documentDetails[0]!.operativeStateFindings.some((f) => f.findingType === "OPERATIVE_STATE_UNRESOLVED_FOR_UNIT");
     record("unresolved-operative-state", caught);
     expect(caught).toBe(true);
+    // Phase 3F.1 §29-32/F3: same wiring check as the stale-superseded case above.
+    const doc = result.packageCoverage.documents[0]!;
+    expect(doc.coverageEntries.some((e) => e.coverageState === "OPERATIVE_STATE_UNRESOLVED")).toBe(true);
+    expect(result.packageCoverage.status).toBe("PACKAGE_OPERATIVE_STATE_UNRESOLVED");
   });
 
   it("12. A document flagged auditIncomplete is never silently rolled up into a passing package status", async () => {
