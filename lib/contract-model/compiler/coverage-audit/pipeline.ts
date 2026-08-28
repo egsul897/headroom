@@ -9,6 +9,7 @@ import type { StructuralIndex } from "../structural-index";
 import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
 import type { CovenantContextBundle } from "../context-retrieval/types";
+import { STRUCTURAL_INDEX_VERSION } from "../types";
 import { buildSourceCoverageInventory, type SourceInventoryOptions } from "./source-inventory";
 import { auditDiscoveryCoverage } from "./discovery-comparison";
 import { auditContextCoverage } from "./context-comparison";
@@ -45,6 +46,26 @@ export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageA
   // below - a document with STRUCTURE_FAILED health (zero nodes) still
   // gets a real, non-empty audit pass here, never silent zero-region
   // silence merely because Phase 2A could not represent it.
+  //
+  // Phase 3F.1.4 (P0-4 remediation, docs/foundation-assurance/
+  // 05-discovery-package-context-findings.json DISC-01's downstream half):
+  // the skip condition below used to read `coverage.significantUncoveredSpans
+  // .length === 0 && coverage.health === "STRUCTURE_HEALTHY"` - correct in
+  // shape, but it inherited P0-3's own bug for free, since
+  // significantUncoveredSpans and health were BOTH computed from the same
+  // defective accounting. Now that structural-coverage.ts's own accounting
+  // is fixed (real charEnd-bounded spans, plus the new independent
+  // boundaryAnomalies signal for the Q1/Q5-shaped swallow that even
+  // correct span accounting can never see - text that is nominally
+  // "covered" by the wrong node), this skip condition is re-verified
+  // correct on its own terms: it now also treats a SIGNIFICANT boundary
+  // anomaly as a reason to run the raw-source scan, over that anomaly's
+  // OWN specific suspect region (never the whole document - "a genuinely
+  // healthy document must not trigger an unreasonable full-document raw
+  // scan" per this workstream's own instructions). A WARNING-severity
+  // anomaly (e.g. a merely-long section, or a single stray "(a)"
+  // cross-reference) never triggers a scan by itself - exactly the
+  // over-triggering this fix must avoid.
   for (const documentId of input.documentIds) {
     regions.push(...buildSourceCoverageInventory(documentId, input.index, options));
 
@@ -52,11 +73,16 @@ export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageA
     if (documentText === undefined) continue;
     const nodes = input.index.allNodes().filter((n) => n.documentId === documentId);
     const coverage = computeStructuralCoverage(documentId, documentText, nodes);
-    if (coverage.significantUncoveredSpans.length === 0 && coverage.health === "STRUCTURE_HEALTHY") continue;
+    const significantAnomalies = coverage.boundaryAnomalies.filter((a) => a.severity === "SIGNIFICANT");
+    if (coverage.significantUncoveredSpans.length === 0 && significantAnomalies.length === 0 && coverage.health === "STRUCTURE_HEALTHY") continue;
 
-    const scanResults = coverage.significantUncoveredSpans.flatMap((span) =>
-      partitionUncoveredSpan(documentId, documentText, span, `document structural health is ${coverage.health} (${coverage.coveragePercent}% substantive coverage)`).map(scanRawSourceRegion)
+    const gapScanResults = coverage.significantUncoveredSpans.flatMap((span) =>
+      partitionUncoveredSpan(documentId, documentText, span, `document structural health is ${coverage.health} (${coverage.coveragePercent}% substantive coverage) - ${span.gapKind} gap`).map(scanRawSourceRegion)
     );
+    const anomalyScanResults = significantAnomalies.flatMap((anomaly) =>
+      partitionUncoveredSpan(documentId, documentText, anomaly.span, `boundary anomaly ${anomaly.code} on node ${anomaly.nodeId}: ${anomaly.message}`).map(scanRawSourceRegion)
+    );
+    const scanResults = [...gapScanResults, ...anomalyScanResults];
     findings.push(
       ...buildRawSourceFallbackFindings({
         companyId: input.companyId,
@@ -99,7 +125,14 @@ export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageA
   const contentIdentity = computeContentIdentity({
     companyId: input.companyId,
     packageKey: input.packageKey,
-    structuralParserVersion: "phase-2a-structural-index",
+    // Phase 3F.1.4: was a hardcoded, stale literal ("phase-2a-structural-index")
+    // that already disagreed with the real, current STRUCTURAL_INDEX_VERSION
+    // constant (types.ts) - meaning a genuine structural-identity/parsing
+    // change (a STRUCTURAL_INDEX_VERSION bump) would silently NOT invalidate
+    // this audit's own content identity/cache key, exactly the kind of stale-
+    // cache risk this identity hash exists to prevent (see identity.ts's own
+    // docstring and tests/foundation-audit/cache-invalidation-audit.test.ts).
+    structuralParserVersion: STRUCTURAL_INDEX_VERSION,
     auditAlgorithmVersion: COVERAGE_AUDIT_ALGORITHM_VERSION,
     semanticPromptVersion: null,
     providerIdentity: null,

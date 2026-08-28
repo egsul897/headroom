@@ -14,6 +14,21 @@
  * tests/contract-model/phase-2f2-discovery-schema-robustness.test.ts) —
  * this is the documented $0-cost convention for exercising Layers A/C/D
  * plus a controlled Pass B response, never a weakening of what's tested.
+ *
+ * Phase 3F.1.4 (Workstream A) update: production code was frozen when
+ * tests D/D2 were originally written to DOCUMENT finding DISC-01/P0-3
+ * (computeStructuralCoverage ignoring node.charEnd, silently absorbing
+ * mid-document/trailing gaps as "covered"). That defect has now been
+ * deliberately fixed in structural-coverage.ts (real charEnd-bounded
+ * top-level spans, replacing the old "next node's charStart" construction)
+ * - D/D2's own assertions were UPDATED below to assert the new, fixed,
+ * fail-closed behavior (a real significant uncovered span, non-100%
+ * coverage, non-HEALTHY health, and a non-empty raw-source-fallback
+ * finding list) instead of continuing to assert the old bug's presence,
+ * exactly the precedent already set by
+ * tests/contract-model/architecture-proposal-node-identity.test.ts's own
+ * header comment. D3 (the leading-gap control, which was already correct
+ * before this fix) is unchanged.
  */
 import { describe, it, expect } from "vitest";
 import type { ZodType } from "zod";
@@ -239,43 +254,39 @@ Section 6.04 Restricted Payments. The Borrower shall not declare or make any Res
     // eslint-disable-next-line no-console
     console.log("[D] coverage:", JSON.stringify({ coveragePercent: coverage.coveragePercent, health: coverage.health, significantUncoveredSpans: coverage.significantUncoveredSpans.length }, null, 2));
 
-    // THE FINDING: computeTopLevelSpans treats [articleV.charStart, articleVII.charStart)
-    // as ARTICLE V's own "span" for coverage purposes — completely ignoring
-    // articleV.charEnd (its REAL owned span, 0..50). The ~5000 real
-    // substantive characters between them, which correspond to ZERO real
-    // structural nodes, are silently reported as "covered by Article V"
-    // rather than flagged as a significant uncovered span.
-    expect(coverage.significantUncoveredSpans.length).toBe(0); // <-- should be >0 if the gap were detected
-    expect(coverage.coveragePercent).toBe(100); // <-- falsely reports 100% coverage
-    expect(coverage.health).toBe("STRUCTURE_HEALTHY"); // <-- falsely reports healthy
+    // Phase 3F.1.4 FIX VERIFIED: computeTopLevelSpans (now
+    // computeTopLevelSubtreeSpans) uses each node's own REAL charEnd
+    // (articleV.charEnd=50) instead of the next node's charStart
+    // (articleVII.charStart=5050) - the ~5000 real substantive characters
+    // between them, which correspond to ZERO real structural nodes, are
+    // now correctly reported as a significant, INTERIOR uncovered span,
+    // never silently folded into Article V's own coverage.
+    expect(coverage.significantUncoveredSpans.length).toBe(1);
+    expect(coverage.significantUncoveredSpans[0]!.gapKind).toBe("INTERIOR");
+    expect(coverage.significantUncoveredSpans[0]!.charStart).toBe(50);
+    expect(coverage.significantUncoveredSpans[0]!.charEnd).toBe(5050);
+    expect(coverage.coveragePercent).toBeLessThan(100);
+    expect(coverage.health).not.toBe("STRUCTURE_HEALTHY");
 
-    // Downstream consequence: because structural-coverage.ts never flags
-    // this as an uncovered span, raw-source-fallback.ts — the ONE
-    // independent safety net this architecture relies on for exactly this
-    // failure mode (see docs/HEADROOM-ARCHITECTURE-INVARIANTS.md #18) —
-    // never even attempts to scan this region, because it is only ever
-    // invoked over structural-coverage.ts's own reported UncoveredSpan[].
-    // Confirmed directly: buildRawSourceFallbackFindings produces NOTHING
-    // for the missing Article VI text, because scanRawSourceRegion is only
-    // ever called over spans structural-coverage.ts reports as uncovered —
-    // and it reported none.
+    // Downstream consequence, ALSO fixed (P0-4): raw-source-fallback.ts —
+    // the ONE independent safety net this architecture relies on for
+    // exactly this failure mode (see docs/HEADROOM-ARCHITECTURE-INVARIANTS.md
+    // #18) — now DOES receive this real, non-empty uncovered span and
+    // scans it directly over raw text, exactly as intended.
     const regions = coverage.significantUncoveredSpans.map((s) => partitionUncoveredSpan(documentId, fullText, s, "structural coverage gap")).flat();
-    expect(regions.length).toBe(0);
+    expect(regions.length).toBeGreaterThan(0);
     const scanResults = regions.map(scanRawSourceRegion);
     const findings = buildRawSourceFallbackFindings({ companyId: "test-co", packageKey: "test-pkg", instrumentKey: null, documentId, healthReasons: coverage.healthReasons, includeDocumentLevelFinding: coverage.health !== "STRUCTURE_HEALTHY", scanResults });
-    // Zero findings of ANY kind — the missing ARTICLE VI is completely
-    // invisible to both the discovery pipeline (no node -> no Pass A
-    // candidate -> never sent to Pass B) AND the independent raw-source
-    // fallback auditor (no uncovered span -> never scanned) — a genuine,
-    // silent, dual-path blind spot. This directly contradicts invariant
-    // #10 ("missing context must be surfaced, never silently treated as
-    // nothing more to find") and reproduces the exact shared-substrate
-    // failure mode invariant #18 names as the standing precedent to guard
-    // against (Phase 2F's Document B — except this is a NEW instance,
-    // triggered by a middle-of-document gap rather than a whole-document
-    // structural collapse, which is a materially different trigger
-    // condition than what #18's own precedent covers).
-    expect(findings.length).toBe(0);
+    // At minimum, the document-level STRUCTURAL_ANALYSIS_INSUFFICIENT
+    // finding fires (health is no longer HEALTHY) - the missing ARTICLE VI
+    // is no longer invisible to the one independent safety net that exists
+    // specifically to catch exactly this failure mode. (The synthetic
+    // "missing region" text here is repeated filler prose, not real
+    // covenant-shaped language, so RAW_SOURCE_COVENANT_SIGNAL is not
+    // expected to fire on it too - the document-level finding alone is the
+    // fix this test exists to verify.)
+    expect(findings.length).toBeGreaterThan(0);
+    expect(findings.some((f) => f.findingType === "STRUCTURAL_ANALYSIS_INSUFFICIENT")).toBe(true);
   });
 
   it("D2. a TRAILING missing region (after the LAST top-level node) is ALSO silently absorbed — the blind spot is not limited to mid-document gaps", () => {
@@ -306,11 +317,14 @@ Section 6.04 Restricted Payments. The Borrower shall not declare or make any Res
     const coverage = computeStructuralCoverage(documentId, fullText, [articleV]);
     // eslint-disable-next-line no-console
     console.log("[D2] coverage:", JSON.stringify({ coveragePercent: coverage.coveragePercent, health: coverage.health, significantUncoveredSpans: coverage.significantUncoveredSpans.length }));
-    // ACTUAL (adversarially confirmed) behavior: the trailing gap is ALSO
-    // invisible — same root cause as test D, a different trigger shape.
-    expect(coverage.significantUncoveredSpans.length).toBe(0);
-    expect(coverage.coveragePercent).toBe(100);
-    expect(coverage.health).toBe("STRUCTURE_HEALTHY");
+    // Phase 3F.1.4 FIX VERIFIED: the trailing gap (after the ARTICLE's real
+    // charEnd=50) is now correctly detected too - same fix as test D,
+    // applied uniformly to the TRAILING gap shape.
+    expect(coverage.significantUncoveredSpans.length).toBe(1);
+    expect(coverage.significantUncoveredSpans[0]!.gapKind).toBe("TRAILING");
+    expect(coverage.significantUncoveredSpans[0]!.charStart).toBe(50);
+    expect(coverage.coveragePercent).toBeLessThan(100);
+    expect(coverage.health).not.toBe("STRUCTURE_HEALTHY");
   });
 
   it("D3. (true control) a LEADING gap (real text BEFORE the first top-level node) IS correctly detected — this is the ONLY uncovered-region shape computeStructuralCoverage's own architecture can ever see", () => {
