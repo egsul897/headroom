@@ -101,8 +101,19 @@ describe("1a. Identical-file-uploaded-twice through the REAL wired upload action
   });
 });
 
-describe("1b. Re-extraction produces stale, orphaned DocumentNode rows under the SAME documentId", () => {
-  it("REPRODUCED: persistStructuralNodes never deletes a prior extraction's rows - old and new nodes silently coexist with no field marking which is current", async () => {
+describe("1b. Re-extraction no longer produces stale, orphaned DocumentNode rows under the SAME documentId (P1-9 remediation)", () => {
+  // Phase 3F.1.4 (P1-9 remediation) updated this test's own assertions:
+  // persistStructuralNodes (lib/contract-model/compiler/persistence.ts) now
+  // tombstones, inside the same transaction as its upserts, any
+  // previously-persisted row for a document represented in its input whose
+  // stableKey the current run no longer produces - so a genuine
+  // re-extraction call for the SAME document no longer leaves the prior
+  // extraction's row behind. Asserting the orphan's continued survival
+  // after this has been deliberately fixed would be asserting the wrong
+  // thing, not preserving a real safety gate - matching the precedent set
+  // by tests/contract-model/architecture-proposal-node-identity.test.ts's
+  // own header comment for the same situation.
+  it("FIXED: persistStructuralNodes now tombstones a prior extraction's row for the SAME documentId when a later call re-persists that document with different content", async () => {
     await ensureCompany(COMPANY_A);
     const documentId = "fixture-audit-doc-identity-reextract-doc";
     await prisma.document.upsert({ where: { id: documentId }, create: { id: documentId, companyId: COMPANY_A, name: "Reextract Test Doc", type: "CREDIT_AGREEMENT" }, update: {} });
@@ -116,31 +127,32 @@ describe("1b. Re-extraction produces stale, orphaned DocumentNode rows under the
     // A genuine re-extraction: same documentId, same sectionRef/label, but a
     // DIFFERENT charStart - exactly what StructuralNode.nodeId's own doc
     // comment says SHOULD legitimately mint a different nodeId ("NOT promised
-    // stable across a parser algorithm change or a re-extraction").
+    // stable across a parser algorithm change or a re-extraction"). This
+    // SECOND call's own input represents documentId with ONLY the v2 node -
+    // exactly the shape persistStructuralNodes' own tombstone step scopes to.
     const v2Nodes: StructuralNode[] = [
       { documentId, nodeType: "SECTION", heading: "Indebtedness", sectionRef: "6.01", nodeKey: `${documentId}::6.01`, nodeId: "v2-node-601", charStart: 137, charEnd: 240, parentNodeId: null, parentSectionRef: null, ordinal: 0 } as unknown as StructuralNode,
     ];
     const idx2 = await persistStructuralNodes(COMPANY_A, v2Nodes);
     const row2Id = idx2.idByNodeId.get("v2-node-601")!;
 
-    // ACTUAL, OBSERVED behavior: these are two DIFFERENT DB rows (different
-    // stableKey, since stableKey includes charStart) - the old row is never
-    // updated, superseded-flagged, or removed.
+    // These are still two DIFFERENT stableKeys (charStart differs), so row2
+    // is a genuinely new row, not an update-in-place of row1 - but row1 is
+    // now GONE, not left behind as an orphan.
     expect(row1Id).not.toBe(row2Id);
 
     const allRowsForDoc = await prisma.documentNode.findMany({ where: { companyId: COMPANY_A, documentId } });
-    expect(allRowsForDoc.length).toBe(2);
-    expect(allRowsForDoc.map((r) => r.charStart).sort()).toEqual([100, 137]);
+    expect(allRowsForDoc.length).toBe(1); // FIXED: only the current extraction's row survives.
+    expect(allRowsForDoc[0]!.id).toBe(row2Id);
+    expect(allRowsForDoc[0]!.charStart).toBe(137);
 
-    // No field on DocumentNode distinguishes "produced by the current
-    // extraction" from "orphaned by a since-superseded extraction" - a
-    // consumer doing `documentNode.findMany({ where: { documentId } })`
+    // A consumer doing `documentNode.findMany({ where: { documentId } })`
     // (the exact query lib/contract-model/service.ts:22 and
-    // lib/contract-model/validators.ts:31/58/96 actually issue in production)
-    // gets BOTH the live and the stale row back, indistinguishable.
-    const row1 = allRowsForDoc.find((r) => r.id === row1Id)!;
-    const row2 = allRowsForDoc.find((r) => r.id === row2Id)!;
-    expect(row1.sectionRef).toBe(row2.sectionRef); // same legal label, both "6.01" - a caller resolving by sectionRef would find TWO candidate rows and (per this file's own AMBIGUOUS-safe convention elsewhere) would have to refuse rather than silently pick one, but nothing today PRODUCES that refusal for the persisted DocumentNode layer.
+    // lib/contract-model/validators.ts:31/58/96 actually issue in
+    // production) now genuinely gets only the live row back - the stale
+    // row from the superseded extraction is not silently mixed in.
+    const staleRow = await prisma.documentNode.findUnique({ where: { id: row1Id } });
+    expect(staleRow).toBeNull();
 
     // Cleanup this specific doc's rows explicitly for isolation from later tests in this file.
     await prisma.documentNode.deleteMany({ where: { companyId: COMPANY_A, documentId } });

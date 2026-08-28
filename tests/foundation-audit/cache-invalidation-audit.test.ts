@@ -231,7 +231,17 @@ describe("Section 16 / §R — cache invalidation assurance: STRUCTURE-stage cac
     expect(replay.structuralNodes).toEqual(fresh.structuralNodes);
   });
 
-  it("FINDING (unchanged, out of scope for this fix — persistence.ts): persistStructuralNodes never tombstones a row for a node the current parse no longer produces (orphan survives indefinitely)", async () => {
+  // Phase 3F.1.4 (P1-9 remediation, Workstream B) updated this test's own
+  // assertions: persistStructuralNodes (lib/contract-model/compiler/
+  // persistence.ts) now tombstones, inside the same transaction as its
+  // upserts, any previously-persisted row for a document actually
+  // represented in its input whose stableKey the current run no longer
+  // produces. Asserting the orphan's continued survival after this has been
+  // deliberately fixed would be asserting the wrong thing, not preserving a
+  // real safety gate - matching the precedent set by tests/contract-model/
+  // architecture-proposal-node-identity.test.ts's own header comment for the
+  // same situation.
+  it("FIXED (P1-9 remediation): persistStructuralNodes now tombstones a row for a node the current parse no longer produces (orphan no longer survives)", async () => {
     const { persistStructuralNodes } = await import("../../lib/contract-model/compiler/persistence");
     // "Old algorithm": produces 6.01 and 6.02.
     await persistStructuralNodes(COMPANY_ID, [
@@ -247,16 +257,84 @@ describe("Section 16 / §R — cache invalidation assurance: STRUCTURE-stage cac
       { documentId: DOCUMENT_ID, nodeType: "SECTION" as const, heading: "Indebtedness", sectionRef: "6.01", nodeKey: `${DOCUMENT_ID}::6.01`, nodeId: "audit-orphan-601", charStart: 10, charEnd: 120, ordinal: 0, parentSectionRef: null, parentNodeId: null },
     ]);
     const countAfter = await prisma.documentNode.count({ where: { companyId: COMPANY_ID, documentId: DOCUMENT_ID } });
-    // THE DEFECT: the stale 6.02 row is never deleted — persistStructuralNodes
-    // only upserts nodes present in its current input; it has no
-    // "delete every row not in this run's output" step. The orphan survives
-    // indefinitely and is returned by every plain findMany({ documentId })
-    // read (e.g. lib/contract-model/service.ts:22), forever mixed in with
-    // genuinely current nodes. NOT fixed by this workstream (persistence.ts
-    // is out of scope here) — left exactly as originally documented.
-    expect(countAfter).toBe(2); // NOT 1.
+    // FIXED: the stale 6.02 row IS now deleted, in the same transaction as
+    // the 6.01 upsert - the orphan no longer survives, and no longer shows
+    // up mixed in with genuinely current nodes on a plain
+    // findMany({ documentId }) read (e.g. lib/contract-model/service.ts:22).
+    expect(countAfter).toBe(1);
     const stillThere = await prisma.documentNode.findFirst({ where: { companyId: COMPANY_ID, documentId: DOCUMENT_ID, sectionRef: "6.02" } });
-    expect(stillThere).not.toBeNull();
+    expect(stillThere).toBeNull();
+    const survivor = await prisma.documentNode.findFirst({ where: { companyId: COMPANY_ID, documentId: DOCUMENT_ID, sectionRef: "6.01" } });
+    expect(survivor).not.toBeNull(); // the row the current run DID reproduce is untouched, not merely "everything deleted."
+  });
+
+  it("FIXED (P1-9 remediation) positive control: re-persisting the EXACT SAME nodes twice never tombstones anything - a legitimate, unchanged re-run leaves every row in place", async () => {
+    const { persistStructuralNodes } = await import("../../lib/contract-model/compiler/persistence");
+    const nodes = [
+      { documentId: DOCUMENT_ID, nodeType: "SECTION" as const, heading: "Indebtedness", sectionRef: "6.01", nodeKey: `${DOCUMENT_ID}::6.01`, nodeId: "audit-stable-601", charStart: 10, charEnd: 120, ordinal: 0, parentSectionRef: null, parentNodeId: null },
+      { documentId: DOCUMENT_ID, nodeType: "SECTION" as const, heading: "Liens", sectionRef: "6.02", nodeKey: `${DOCUMENT_ID}::6.02`, nodeId: "audit-stable-602", charStart: 130, charEnd: 200, ordinal: 1, parentSectionRef: null, parentNodeId: null },
+    ];
+    const first = await persistStructuralNodes(COMPANY_ID, nodes);
+    const firstIds = new Set([...first.idByNodeId.values()]);
+    await persistStructuralNodes(COMPANY_ID, nodes); // identical replay
+    const count = await prisma.documentNode.count({ where: { companyId: COMPANY_ID, documentId: DOCUMENT_ID } });
+    expect(count).toBe(2); // both rows still present
+    const rows = await prisma.documentNode.findMany({ where: { companyId: COMPANY_ID, documentId: DOCUMENT_ID } });
+    expect(new Set(rows.map((r) => r.id))).toEqual(firstIds); // same row ids as before - no spurious delete+recreate churn.
+  });
+
+  it("FIXED (P1-9 remediation) negative control: a document NOT represented at all in a persistStructuralNodes call is never touched by that call's own tombstone step", async () => {
+    const { persistStructuralNodes } = await import("../../lib/contract-model/compiler/persistence");
+    const OTHER_DOC_ID = "audit-p19-untouched-doc";
+    await prisma.document.create({ data: { id: OTHER_DOC_ID, companyId: COMPANY_ID, name: "Untouched sibling document", type: "CREDIT_AGREEMENT" } });
+    try {
+      await persistStructuralNodes(COMPANY_ID, [
+        { documentId: OTHER_DOC_ID, nodeType: "SECTION" as const, heading: "Untouched", sectionRef: "1.01", nodeKey: `${OTHER_DOC_ID}::1.01`, nodeId: "audit-untouched-101", charStart: 0, charEnd: 50, ordinal: 0, parentSectionRef: null, parentNodeId: null },
+      ]);
+      // A separate call that only mentions DOCUMENT_ID (not OTHER_DOC_ID at all) must never delete OTHER_DOC_ID's own row.
+      await persistStructuralNodes(COMPANY_ID, [
+        { documentId: DOCUMENT_ID, nodeType: "SECTION" as const, heading: "Indebtedness", sectionRef: "6.01", nodeKey: `${DOCUMENT_ID}::6.01`, nodeId: "audit-orphan-601-v2", charStart: 10, charEnd: 120, ordinal: 0, parentSectionRef: null, parentNodeId: null },
+      ]);
+      const otherDocRow = await prisma.documentNode.findFirst({ where: { companyId: COMPANY_ID, documentId: OTHER_DOC_ID, sectionRef: "1.01" } });
+      expect(otherDocRow).not.toBeNull(); // never touched - this call's own input never mentioned OTHER_DOC_ID.
+    } finally {
+      await prisma.documentNode.deleteMany({ where: { companyId: COMPANY_ID, documentId: OTHER_DOC_ID } });
+      await prisma.document.deleteMany({ where: { id: OTHER_DOC_ID } });
+    }
+  });
+
+  it("FIXED (P1-9 remediation) fail-closed guard: an EMPTY `rules` array passed to persistContractRules/persistDefinedTerms never wipes previously-persisted rows for that document - only a non-empty, genuinely-reproduced run may tombstone", async () => {
+    const { persistDefinedTerms, persistContractRules, persistStructuralNodes } = await import("../../lib/contract-model/compiler/persistence");
+    const term = { termName: "Guard Term", sourceSectionRef: "1.01", entityScope: [] } as unknown as import("../../lib/contract-model/types").CandidateDefinedTerm;
+    await persistDefinedTerms(COMPANY_ID, DOCUMENT_ID, [term]);
+    const beforeTerms = await prisma.definedTermNode.count({ where: { companyId: COMPANY_ID, documentId: DOCUMENT_ID } });
+    expect(beforeTerms).toBeGreaterThan(0);
+    await persistDefinedTerms(COMPANY_ID, DOCUMENT_ID, []); // e.g. an upstream stage failure producing zero candidates this run
+    const afterTerms = await prisma.definedTermNode.count({ where: { companyId: COMPANY_ID, documentId: DOCUMENT_ID } });
+    expect(afterTerms).toBe(beforeTerms); // NOT wiped to 0 - the empty-array guard held.
+
+    const nodeIndex = await persistStructuralNodes(COMPANY_ID, [
+      { documentId: DOCUMENT_ID, nodeType: "SECTION" as const, heading: "Guard Section", sectionRef: "1.01", nodeKey: `${DOCUMENT_ID}::1.01`, nodeId: "audit-guard-101", charStart: 500, charEnd: 550, ordinal: 0, parentSectionRef: null, parentNodeId: null },
+    ]);
+    const rule = { sourceSectionRef: "1.01", action: "GUARD_ACTION", covenantFamily: "RESTRICTED_PAYMENTS", ruleType: "QUANTITATIVE_PERMISSION", evaluationClass: "EXECUTABLE", entityScope: [], entityScopeExcluded: [], conditions: [], exceptions: [], definedTermRefs: [] } as unknown as import("../../lib/contract-model/types").CandidateContractRule;
+    await persistContractRules(COMPANY_ID, DOCUMENT_ID, [rule], nodeIndex, new Set());
+    const beforeRules = await prisma.contractRule.count({ where: { companyId: COMPANY_ID, sourceDocumentId: DOCUMENT_ID } });
+    expect(beforeRules).toBeGreaterThan(0);
+    await persistContractRules(COMPANY_ID, DOCUMENT_ID, [], nodeIndex, new Set());
+    const afterRules = await prisma.contractRule.count({ where: { companyId: COMPANY_ID, sourceDocumentId: DOCUMENT_ID } });
+    expect(afterRules).toBe(beforeRules); // NOT wiped to 0 either.
+  });
+
+  it("FIXED (P1-9 remediation) concurrent-write safety: repeated concurrent persistStructuralNodes calls for a colliding key resolve to one consistent row, and the tombstone step never races into deleting a row a concurrent writer just (re-)created for the SAME current-run content", async () => {
+    const { persistStructuralNodes } = await import("../../lib/contract-model/compiler/persistence");
+    const nodes = [
+      { documentId: DOCUMENT_ID, nodeType: "SECTION" as const, heading: "Race Section", sectionRef: "8.01", nodeKey: `${DOCUMENT_ID}::8.01`, nodeId: "audit-race-801", charStart: 700, charEnd: 750, ordinal: 0, parentSectionRef: null, parentNodeId: null },
+    ];
+    const results = await Promise.all(Array.from({ length: 6 }, () => persistStructuralNodes(COMPANY_ID, nodes)));
+    const rows = await prisma.documentNode.findMany({ where: { companyId: COMPANY_ID, documentId: DOCUMENT_ID, sectionRef: "8.01" } });
+    expect(rows).toHaveLength(1); // exactly one row survives 6 concurrent identical persist calls - never a duplicate, never fully deleted by another writer's tombstone step.
+    const rowId = rows[0]!.id;
+    for (const r of results) expect(r.idByNodeId.get("audit-race-801")).toBe(rowId); // every concurrent caller's own returned index agrees on the SAME real row id.
   });
 });
 

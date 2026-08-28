@@ -2546,6 +2546,16 @@ model ContractReferenceEdge {
   impact               String?
   confidence           Float?
   reviewStatus         ExtractionCandidateReviewStatus @default(PENDING)
+  // Phase 3F.1.4 (P1-9 remediation) - content-derived identity, populated
+  // ONLY by persistStructuralReferences (lib/contract-model/compiler/
+  // persistence.ts), the one caller of this model that produces
+  // deterministic, replay-safe edges (documentId + sourceNode/targetNode
+  // charStart + referenceText). Nullable because the OTHER creator of this
+  // model - persistReferences, the LLM-CandidateContractReference path,
+  // deliberately out of this remediation's scope - never sets it and has no
+  // stable identity of its own; Postgres's unique index treats multiple NULLs
+  // as non-colliding, so this never constrains that other, untouched path.
+  stableKey            String?
 
   createdAt DateTime @default(now())
 
@@ -2558,6 +2568,7 @@ model ContractReferenceEdge {
   targetDocument     Document?                @relation("ContractReferenceTargetDocument", fields: [targetDocumentId], references: [id], onDelete: SetNull)
   unresolvedItems    UnresolvedContractItem[]
 
+  @@unique([companyId, stableKey])
   @@index([companyId])
   @@index([sourceRuleId])
   @@index([targetRuleId])

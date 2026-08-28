@@ -20,6 +20,16 @@ import { InMemorySemanticCompilationCache, computeCacheKey, type SemanticCompila
 import { normalizeSubmission } from "./normalize";
 import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticCompilerErrorDetail, SemanticCompilerFailureReason, SemanticCompilerInput } from "./types";
 
+// Phase 3F.1.4 (P1-1 remediation) - this module-level singleton is used by
+// EVERY real current caller that omits `options.cache` (every script under
+// scripts/phase-3*.ts, semantic/precedent-integration.ts:217), so its own
+// safety is exactly as strong as computeCacheKey's (cache.ts). That formula
+// now includes companyId/instrumentKey/sourceDocumentId (see cache.ts's own
+// header comment for the full finding and the "flat key vs. per-tenant
+// wrapper" design decision) - two different companies' otherwise-identical
+// compile requests can no longer collide onto the same entry here, the same
+// way they never could for two different candidateRefs. This singleton
+// itself was never the defect; the key formula it was given was.
 const defaultCache = new InMemorySemanticCompilationCache();
 
 const MAX_SANITIZED_MESSAGE_LENGTH = 500;

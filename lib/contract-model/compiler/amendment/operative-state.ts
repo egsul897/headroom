@@ -60,7 +60,20 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
     const node = resolution.node;
     return { text: index.getNodeText(node.nodeId, "DESCENDANTS"), nodeKey: node.nodeKey, nodeId: node.nodeId };
   }
-  const def = index.getDefinition(group.ref, baseDocumentId) ?? index.getDefinition(group.ref);
+  // Phase 3F.1.4 (P0-2 remediation, docs/foundation-assurance/12-fault-
+  // injection-results.json "cross-document definition leakage"): the
+  // no-documentId fallback this used to have (`?? index.getDefinition(group.ref)`)
+  // silently matched an unrelated document's own same-named definition
+  // whenever the base document genuinely lacked one - proven by
+  // tests/foundation-audit/combined-failures.test.ts's own
+  // "missing definition... resolveBaseText silently falls back" case. Base
+  // text resolution for a DEFINITION provision is scoped to baseDocumentId
+  // ONLY now, with no fallback: a term the base document does not itself
+  // define resolves to an honest not-found (base.text stays null) rather
+  // than a confident-looking but wrong cross-document match, mirroring the
+  // SECTION branch immediately above (resolveUniqueNodeByRef never falls
+  // back to an arbitrary/cross-document match either).
+  const def = index.getDefinition(group.ref, baseDocumentId);
   if (!def) return { text: null, nodeKey: null, nodeId: null };
   return { text: index.getDefinitionFullText(def.exactTerm, def.documentId) ?? null, nodeKey: def.sourceNodeKey, nodeId: def.sourceNodeId };
 }

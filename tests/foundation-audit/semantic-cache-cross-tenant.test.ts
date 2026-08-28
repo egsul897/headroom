@@ -1,4 +1,22 @@
 /**
+ * Phase 3F.1.4 (P1-1 remediation) updated this suite's own core assertions
+ * below: computeCacheKey (lib/contract-model/compiler/semantic/cache.ts) now
+ * includes companyId/instrumentKey/sourceDocumentId, so the scenario this
+ * file documents no longer collides. Asserting the leak's continued
+ * presence after it has been deliberately fixed would be asserting the
+ * wrong thing, not preserving a real safety gate - matching the precedent
+ * set by tests/contract-model/architecture-proposal-node-identity.test.ts's
+ * own header comment for the same situation. The ORIGINAL adversarial
+ * scenario (byte-identical Section 6.01(a) drafting, same candidateRef,
+ * same contextBundle.contentIdentity, different companyId) is preserved
+ * verbatim below and now proves the FIXED, safe outcome: the model IS
+ * invoked for both companies and each gets its own, correct result. New
+ * tests were added alongside it for a 3-tenant generalization, a
+ * same-tenant positive control (legitimate cache hits still work), and an
+ * explicit fail-closed assertion that cache.ts's own key formula really
+ * does fold in all three tenant/instrument fields (not just that this one
+ * scenario happens to no longer collide).
+ *
  * Phase 3F.1.3 - Foundation Assurance Audit, Job 1: cross-tenant leakage
  * through lib/contract-model/compiler/semantic/compile.ts's DEFAULT cache.
  *
@@ -89,8 +107,8 @@ function resultFor(companyId: string): SemanticCallerResult {
   };
 }
 
-describe("Foundation Audit Job 1 - semantic-compiler default cache cross-tenant leak (invariant #19)", () => {
-  it("P0/P1 REAL FINDING: two different companies' byte-identical Section 6.01(a) drafting collide onto the SAME defaultCache entry - Company B's compile is served Company A's cached result and the caller is never invoked for Company B", async () => {
+describe("Foundation Audit Job 1 - semantic-compiler default cache cross-tenant leak (invariant #19) - FIXED (P1-1 remediation)", () => {
+  it("FIXED: two different companies' byte-identical Section 6.01(a) drafting no longer collide onto the SAME defaultCache entry - Company B's compile genuinely re-invokes the model and gets its own, correct result", async () => {
     const caller = fakeCaller((companyId) => resultFor(companyId));
 
     // Identical drafting for two DIFFERENT companies (the exact adversarial
@@ -106,12 +124,14 @@ describe("Foundation Audit Job 1 - semantic-compiler default cache cross-tenant 
 
     const inputA = testCompilerInput({
       companyId: "audit-a-cache-tenant-a",
+      instrumentKey: "audit-a-cache-tenant-a-instrument",
       sourceDocumentId: "audit-a-cache-tenant-a-doc",
       candidateRef: "6.01(a)", // bare section ref, no document/company scoping of its own
       operativeSourceText: sharedOperativeText,
     });
     const inputB = testCompilerInput({
       companyId: "audit-a-cache-tenant-b",
+      instrumentKey: "audit-a-cache-tenant-b-instrument",
       sourceDocumentId: "audit-a-cache-tenant-b-doc",
       candidateRef: "6.01(a)", // identical bare ref - a different company's own document, independently drafted
       operativeSourceText: sharedOperativeText,
@@ -122,6 +142,9 @@ describe("Foundation Audit Job 1 - semantic-compiler default cache cross-tenant 
       // legitimately produce a contentIdentity that does not vary by
       // company (see lib/contract-model/compiler/context-retrieval/identity.ts's
       // computeContentIdentity - it is not a company-scoped hash by design).
+      // This is deliberately the WORST case for the fix: every field the
+      // OLD key formula looked at is byte-identical between A and B: only
+      // companyId/instrumentKey/sourceDocumentId (the NEW fields) differ.
     });
 
     // No `cache` option passed for EITHER call - both use compile.ts's own
@@ -130,19 +153,83 @@ describe("Foundation Audit Job 1 - semantic-compiler default cache cross-tenant 
     const resultA = await compileCovenantToIR(inputA, { caller });
     const resultB = await compileCovenantToIR(inputB, { caller });
 
-    // The actual defect, reproduced: the caller (i.e. the LLM) was invoked
-    // exactly ONCE, for Company A. Company B's own request never reached
-    // the model at all - it was served Company A's cached compilation.
-    expect(caller.calls).toEqual(["audit-a-cache-tenant-a"]);
+    // FIXED: the caller (i.e. the LLM) was invoked ONCE PER COMPANY - Company
+    // B's own request genuinely reached the model, it was never served
+    // Company A's cached compilation.
+    expect(caller.calls).toEqual(["audit-a-cache-tenant-a", "audit-a-cache-tenant-b"]);
 
-    // Company B's "own" result is, byte-for-byte, Company A's result -
-    // including a citation string that says so explicitly.
-    expect(resultB).toBe(resultA); // same object identity: a literal cross-tenant cache hit.
-    expect(resultB.rules[0]!.provenance?.sourceCitation).toContain("audit-a-cache-tenant-a");
-    expect(resultB.rules[0]!.provenance?.sourceCitation).not.toContain("audit-a-cache-tenant-b");
+    // Company B's result is its OWN result, not Company A's, including a
+    // citation string that says so explicitly.
+    expect(resultB).not.toBe(resultA); // different object identity: no cross-tenant cache hit.
+    expect(resultA.rules[0]!.provenance?.sourceCitation).toContain("audit-a-cache-tenant-a");
+    expect(resultB.rules[0]!.provenance?.sourceCitation).toContain("audit-a-cache-tenant-b");
+    expect(resultB.rules[0]!.provenance?.sourceCitation).not.toContain("audit-a-cache-tenant-a");
   });
 
-  it("control: the SAME scenario, given an explicit per-call fresh cache (as precedent-integration.ts's own augmented-pass branch already does), does NOT leak - proving the fix is 'always pass a real cache', not a change this audit is making to production code", async () => {
+  it("generalized adversarial variant: THREE tenants (not just two), byte-identical drafting across all three, each gets its own real compile call and its own result on the shared defaultCache", async () => {
+    const caller = fakeCaller((companyId) => resultFor(companyId));
+    const sharedOperativeText = `SECTION 6.01. Payment Conditions. Three-tenant generalization of the adversarial scenario. $100,000,000.`;
+
+    const companies = ["audit-a-cache-3t-alpha", "audit-a-cache-3t-beta", "audit-a-cache-3t-gamma"];
+    const results = [];
+    for (const companyId of companies) {
+      const input = testCompilerInput({ companyId, instrumentKey: `${companyId}-instrument`, sourceDocumentId: `${companyId}-doc`, candidateRef: "6.01(a)", operativeSourceText: sharedOperativeText });
+      results.push(await compileCovenantToIR(input, { caller }));
+    }
+
+    // Every one of the three tenants genuinely reached the model - none served from another tenant's entry.
+    expect(caller.calls).toEqual(companies);
+    // Every pairwise result is a distinct object, and each carries only its own company's citation.
+    for (let i = 0; i < results.length; i++) {
+      for (let j = 0; j < results.length; j++) {
+        if (i === j) continue;
+        expect(results[i]).not.toBe(results[j]);
+      }
+      expect(results[i]!.rules[0]!.provenance?.sourceCitation).toContain(companies[i]!);
+    }
+  });
+
+  it("positive control: the SAME company, SAME instrument, SAME document, byte-identical content genuinely still HITS the cache (the fix must not degrade legitimate same-tenant reuse) - the model is invoked exactly once", async () => {
+    const caller = fakeCaller((companyId) => resultFor(companyId));
+    const sharedOperativeText = `SECTION 6.02. Positive Control. Same tenant, same everything, repeated call.`;
+    const input = testCompilerInput({ companyId: "audit-a-cache-positive-control", instrumentKey: "audit-a-cache-positive-control-instrument", sourceDocumentId: "audit-a-cache-positive-control-doc", candidateRef: "6.02", operativeSourceText: sharedOperativeText });
+
+    const first = await compileCovenantToIR(input, { caller });
+    const second = await compileCovenantToIR(input, { caller }); // identical input object, same call pattern every real caller uses (no explicit cache option)
+
+    expect(caller.calls).toEqual(["audit-a-cache-positive-control"]); // model invoked exactly once - the second call is a genuine, legitimate cache hit.
+    expect(second).toBe(first); // same object identity: this IS supposed to be a cache hit.
+  });
+
+  it("negative control / fail-closed: changing ONLY companyId (identical instrumentKey/sourceDocumentId/candidateRef/text) still produces a cache miss - proves the isolation comes from companyId specifically, not incidentally from instrumentKey or sourceDocumentId also differing in the scenarios above", async () => {
+    const caller = fakeCaller((companyId) => resultFor(companyId));
+    const sharedOperativeText = `SECTION 6.03. CompanyId-only variation.`;
+    const inputA = testCompilerInput({ companyId: "audit-a-cache-companyid-only-a", instrumentKey: "shared-instrument", sourceDocumentId: "shared-doc", candidateRef: "6.03", operativeSourceText: sharedOperativeText });
+    const inputB = testCompilerInput({ companyId: "audit-a-cache-companyid-only-b", instrumentKey: "shared-instrument", sourceDocumentId: "shared-doc", candidateRef: "6.03", operativeSourceText: sharedOperativeText });
+
+    const resultA = await compileCovenantToIR(inputA, { caller });
+    const resultB = await compileCovenantToIR(inputB, { caller });
+    expect(caller.calls).toEqual(["audit-a-cache-companyid-only-a", "audit-a-cache-companyid-only-b"]);
+    expect(resultB).not.toBe(resultA);
+  });
+
+  it("fail-closed unit assertion on computeCacheKey itself: companyId, instrumentKey, and sourceDocumentId EACH independently change the key when every other field is held fixed", async () => {
+    const { computeCacheKey } = await import("../../lib/contract-model/compiler/semantic/cache");
+    const base = testCompilerInput({ companyId: "key-co-a", instrumentKey: "key-instr-a", sourceDocumentId: "key-doc-a" });
+    const baseKey = computeCacheKey(base, "fake::model");
+
+    const diffCompany = computeCacheKey({ ...base, companyId: "key-co-b" }, "fake::model");
+    const diffInstrument = computeCacheKey({ ...base, instrumentKey: "key-instr-b" }, "fake::model");
+    const diffDocument = computeCacheKey({ ...base, sourceDocumentId: "key-doc-b" }, "fake::model");
+    const identical = computeCacheKey({ ...base }, "fake::model");
+
+    expect(diffCompany).not.toBe(baseKey);
+    expect(diffInstrument).not.toBe(baseKey);
+    expect(diffDocument).not.toBe(baseKey);
+    expect(identical).toBe(baseKey); // fixed-point: no spurious variation when nothing actually changed.
+  });
+
+  it("control: the SAME scenario, given an explicit per-call fresh cache (as precedent-integration.ts's own augmented-pass branch already does), ALSO does not leak - this fix does not depend on callers passing their own cache; the shared default is now safe by construction", async () => {
     const caller = fakeCaller((companyId) => resultFor(companyId));
     const sharedOperativeText = `SECTION 9.01. Control Scenario. Identical text used only to prove the isolated-cache control case.`;
     const inputA = testCompilerInput({ companyId: "audit-a-cache-control-a", candidateRef: "9.01", operativeSourceText: sharedOperativeText });

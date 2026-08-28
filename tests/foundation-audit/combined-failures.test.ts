@@ -100,6 +100,21 @@ describe("Combined failure: ambiguous amendment target (via duplicate label) + n
 });
 
 describe("Combined failure: amendment target ambiguity/missing-definition + cross-document definition leakage in resolveBaseText's own fallback", () => {
+  // Phase 3F.1.4 (P0-2 remediation) updated this suite's own assertions
+  // below: resolveBaseText's DEFINITION branch (lib/contract-model/compiler/
+  // amendment/operative-state.ts:63) no longer falls back to a no-documentId
+  // `index.getDefinition(group.ref)` call - it was THIS exact fallback that
+  // let a missing base-document definition silently resolve to an unrelated
+  // document's own same-named definition, which is the bug this test
+  // originally documented. Asserting the leak's continued presence after it
+  // has been deliberately fixed would be asserting the wrong thing, not
+  // preserving a real safety gate - matching the precedent set by
+  // tests/contract-model/architecture-proposal-node-identity.test.ts's own
+  // header comment for the same situation. The test still proves the
+  // SAME two faults individually (missing base definition; a real,
+  // not-yet-effective amendment targeting it) - it now proves the honest,
+  // fixed outcome (null/not-found, never a wrong-but-confident cross-document
+  // answer) rather than the leak.
   const defOtherDoc: DetectedDefinition = {
     documentId: "unrelated-other-doc",
     exactTerm: "Excluded Subsidiary",
@@ -111,7 +126,7 @@ describe("Combined failure: amendment target ambiguity/missing-definition + cros
     definitionExcerpt: "means, with respect to UNRELATED INSTRUMENT, any Subsidiary designated under a COMPLETELY DIFFERENT agreement's own Section 9.09",
   };
 
-  it("base document does NOT define the amended term (missing definition) - operative-state's resolveBaseText silently falls back to a DIFFERENT, unrelated document's own same-named definition, with zero signal that this happened", () => {
+  it("base document does NOT define the amended term (missing definition) - operative-state's resolveBaseText now returns an honest not-found instead of silently falling back to a DIFFERENT, unrelated document's own same-named definition", () => {
     const baseDocText = "x".repeat(500); // base-doc's own text - genuinely contains NO definition of "Excluded Subsidiary" (a dropped/missing definition)
     const otherDocText = "TEXT FROM A COMPLETELY UNRELATED DOCUMENT, NEVER PART OF base-doc's OWN OWN INSTRUMENT. " + "y".repeat(400);
     const index = buildStructuralIndex(
@@ -130,12 +145,11 @@ describe("Combined failure: amendment target ambiguity/missing-definition + cros
     const state = computeOperativeContractState({ instrumentKey: "instrument-1", baseDocumentId: "base-doc", asOfDate: "2024-06-01", index, allEffects: [amendEffect] });
 
     const provision = state.provisions[0]!;
-    // CONFIRMED cross-document leakage: resolveBaseText's DEFINITION branch is `index.getDefinition(group.ref, baseDocumentId) ?? index.getDefinition(group.ref)`
-    // (lib/contract-model/compiler/amendment/operative-state.ts:63) - the second, no-documentId call silently matches the UNRELATED document's own definition.
+    // FIXED: resolveBaseText's DEFINITION branch is now `index.getDefinition(group.ref, baseDocumentId)` with no fallback -
+    // a term base-doc does not itself define resolves honestly to null, never an unrelated document's own definition.
     expect(provision.currentSourceDocumentId).toBe("base-doc"); // the view's OWN documentId field still claims base-doc (never overwritten - no applied effect ran)...
-    expect(provision.currentText).toContain("COMPLETELY UNRELATED DOCUMENT"); // ...but the text substance is fetched from a wholly unrelated document (in fact its ENTIRE raw text, since getDefinitionFullText spans to the next definition or document end and this fixture doc has no other definition) once def itself is the wrong-document match.
-    expect(provision.status).toBe("OPERATIVE_STATE_RESOLVED"); // no applied effect + no conflict + no review-flagged effect -> confidently RESOLVED, carrying leaked cross-document text.
-    expect(provision.unresolvedIssues.some((i) => i.toLowerCase().includes("cross-document") || i.toLowerCase().includes("different document"))).toBe(false);
+    expect(provision.currentText).toBeNull(); // ...and the text is honestly absent, never silently fetched from a wholly unrelated document.
+    expect(provision.status).toBe("OPERATIVE_STATE_RESOLVED"); // no applied effect + no conflict + no review-flagged effect -> RESOLVED, but now carrying an honest null instead of leaked cross-document text (the residual "populated-looking RESOLVED can mask a real gap" concern this audit's finding M separately tracks is out of this workstream's scope - see operative-state.ts's own header comment on V1 scope).
   });
 });
 
