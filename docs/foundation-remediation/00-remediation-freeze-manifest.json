@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "REMEDIATION_FREEZE_MANIFEST",
+  "generatedAt": "2026-08-28T20:00:00Z",
+  "startingSha": "d0fbfb49fd7df777ae5700ca4474efd7e92bdd7c",
+  "startingShaSubject": "Merge pull request #30 from egsul897/claude/headroom-scaffold-covenant-engine-jrijk8",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "branchRestartNote": "This branch's PR (#30) had already been merged into main. Per repository convention for follow-up work on an already-merged branch, the branch was restarted from origin/main (git checkout -B claude/headroom-scaffold-covenant-engine-jrijk8 origin/main) rather than stacked on the old, now-merged tip. Confirmed zero content divergence (git diff --stat against the old tip 01e9a08 is empty) - this is a pure rebase-to-latest, not a loss of any work.",
+  "workingTreeCleanAtStart": true,
+  "postgresAvailable": true,
+  "postgresMigrationStatus": "up to date, 25 migrations",
+  "governingDocumentsReRead": [
+    "docs/HEADROOM-NORTH-STAR.md",
+    "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md",
+    "docs/HEADROOM-ROADMAP.md",
+    "docs/phase-3f1-3-foundation-assurance-audit.md",
+    "docs/foundation-assurance/00-regression-suite-certification.json through 18-final-verdict-record.json (all 19 files)"
+  ],
+  "phase3f13AuditArtifactHashes_sha256": {
+    "docs/foundation-assurance/00-regression-suite-certification.json": "5af02010c73167036c1ca592b38eb8dbc900347257f8f6248b6bba2283e5d97a",
+    "docs/foundation-assurance/01-freeze-and-baseline-manifest.json": "405fd5a42ebee2c28d09f758d014c80114d03c680d2e7878f4f41b8135a74b0f",
+    "docs/foundation-assurance/02-tenant-instrument-isolation-results.json": "22268bec94c4a2206e191ec304dc1c4e1aff74a6a2a8946405dec68ccab6fa40",
+    "docs/foundation-assurance/03-model-classification.json": "571a241c1b9a5dfe9a03d2f9bb9c7a5a8b8b9baffef8c51f341e56fb7f41969c",
+    "docs/foundation-assurance/04-document-identity-dating-provenance-review-findings.json": "30e5bcebd42cbf779cde71d75f85f2d58a9e122e2c650e66c90f57f993cb5cda",
+    "docs/foundation-assurance/05-discovery-package-context-findings.json": "23fa407674ae628e1a66b04ba9d3aff2779faeaf8eb93d3bca073b9c55cd255a",
+    "docs/foundation-assurance/06-structural-consumer-assurance.json": "f7ae03edc56d37f86a9ad6824138c838b3d0a3f371565633bff601ae3eb421a3",
+    "docs/foundation-assurance/07-source-span-accounting.json": "f5a4912fd7407c0a919178ed0aaa95c838cd7551d1c891e5d383ed6d229806d0",
+    "docs/foundation-assurance/08-shared-dependency-independence-matrix.json": "c44073c6c82e5a6c400802f2c12df91dd332f406c5bf9d0e3d80d4e7c57300c1",
+    "docs/foundation-assurance/09-amendment-operative-state-assurance.json": "b88ce6540420ce9940cc4beb84d0318cf456925c6078b9821d1019cde282c413",
+    "docs/foundation-assurance/10-cache-invalidation-assurance.json": "bdc855954d2ffecaa8a002146bbd4610f6e3c31938919f8ed42e9673d9b061d2",
+    "docs/foundation-assurance/11-test-evidence-classification.json": "d4d09a2956288d4bc10cdbba8f46f38f9c29804fe459bc1e5f0e7a95f5f146f4",
+    "docs/foundation-assurance/12-fault-injection-results.json": "c9f1d43fcd456041838cfa6a28f07e2742609b500b27c887d5ebbdd35cd3e49b",
+    "docs/foundation-assurance/13-combined-failure-results.json": "f03f15a5124caa860f5c15fb36b90c82a3c820aac3fa10cfb436a8ded4fe0ece",
+    "docs/foundation-assurance/14-known-package-foundation-replay.json": "6fbbda2bac84b22cf74835b02a0a03db47cea7de910d0048b69b9fcf360bc31f",
+    "docs/foundation-assurance/15-suspicious-pattern-inventory.json": "b284527cb7d390a313db4fd46ec99692252aadfef465a6026777c24559e28611",
+    "docs/foundation-assurance/16-foundation-certification-matrix.json": "f5fec2caba59935ba70f7d6183b4ff47a34c84d8c6b9a3823b181faa57dd98fa",
+    "docs/foundation-assurance/17-remediation-priority-map.json": "381f7226d1494516b0e673dc2c2542b409b71d46c37b826086314c433c12b972",
+    "docs/foundation-assurance/18-final-verdict-record.json": "9fdabc906f92b56ccfcb1faa4cab178a2067643c238a19db6eed169aa9e9b1db",
+    "docs/phase-3f1-3-foundation-assurance-audit.md": "b2f39d70eb5342bc6517b5a03733c01ae266678f754339f4aaac174f92981c38"
+  },
+  "historicalArtifactIntegrityBaseline": {
+    "note": "Combined manifest of 97 hashed paths across docs/phase-3f*.md, docs/phase-2*.md, tests/fixtures/unseen-packages/phase-3f*/ (recursive), and tests/fixtures/architecture-audits/ (recursive) - computed at remediation start and re-verified at remediation end (see 12-historical-integrity-manifest.json). Full path list omitted here for brevity; the combined hash of the manifest file itself at freeze time was f8bb80ea2ca3d01164dcda9dbd0230d0e43f4dc1843cc41babe1a2c86b614728.",
+    "reVerificationRequired": "docs/foundation-remediation/12-historical-integrity-manifest.json must show zero mismatches against this baseline at phase end."
+  },
+  "scopeExclusions": {
+    "noUnseenPackageSelection": true,
+    "noPhase4Work": true,
+    "noScorerRewrite": true,
+    "knownPackagesRegressionOnly": ["FWRG", "LSB", "CONMED", "DSGR"],
+    "p06Status": "explicitly deferred to Phase 3F.1.5 by design, not remediated here"
+  },
+  "remediationPlan": {
+    "executionModel": "6 parallel workstreams (A-F), each dispatched to an isolated git worktree off this starting SHA, merged back sequentially in dependency order after independent validation.",
+    "fileOwnershipToAvoidConflicts": [
+      { "workstream": "A", "scope": "P0-3/P0-4 source accounting + P1-10 investigation", "files": ["lib/contract-model/compiler/structural-coverage.ts", "lib/contract-model/compiler/coverage-audit/raw-source-fallback.ts", "lib/contract-model/compiler/coverage-audit/pipeline.ts", "lib/contract-model/compiler/structural-index.ts (health checks only)"] },
+      { "workstream": "B", "scope": "P0-2 identity/isolation + P1-1/P1-2/P1-9", "files": ["lib/contract-model/compiler/persistence.ts", "lib/contract-model/compiler/semantic/cache.ts", "lib/contract-model/compiler/semantic/compile.ts", "lib/contract-model/validators.ts"] },
+      { "workstream": "C", "scope": "P0-5/P1-7 package relationships", "files": ["lib/contract-model/compiler/package-graph/relationship-resolution.ts", "lib/contract-model/compiler/package-graph/instrument-grouping.ts", "lib/contract-model/compiler/package-graph/types.ts"] },
+      { "workstream": "D", "scope": "P0-1/P1-4 operative state", "files": ["lib/contract-model/compiler/amendment/operative-state.ts", "lib/contract-model/compiler/amendment/independent-verification.ts", "lib/contract-model/compiler/amendment/effective-date.ts", "lib/contract-model/compiler/amendment/chain.ts", "lib/contract-model/compiler/amendment/types.ts"] },
+      { "workstream": "E", "scope": "P1-5/P1-6 context integrity", "files": ["lib/contract-model/compiler/context-retrieval/pipeline.ts", "lib/contract-model/compiler/context-retrieval/structural-context.ts", "lib/contract-model/compiler/context-retrieval/reference-context.ts", "lib/contract-model/compiler/context-retrieval/types.ts"] },
+      { "workstream": "F", "scope": "cache/replay reproducibility + legacy quarantine + scorer disclosure", "files": ["lib/contract-model/compiler/orchestrator.ts", ".eslintrc.json (new import-boundary rule)", "docs/HEADROOM-ROADMAP.md (disclosure only)"] }
+    ],
+    "zeroFileOverlapBetweenWorkstreams": true
+  }
+}
