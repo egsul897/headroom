@@ -1,0 +1,250 @@
+{
+  "note": "119 = the permanent, sealed original strict CRITICAL count (phase-3f-scoring-report.json, never modified). 93 = the SAME 119 cases re-scored with the corrected (descendant-union) methodology against the SAME first-blind coverage (no code change) - the 26-case difference is a pure scoring-methodology artifact, present even before any Phase 3F.1 remediation code ran. 89 = those same 93 re-scored against the DSGR remediation regression's actual coverage output - only 4 of the 93 were genuinely resolved by the Workstream A-D code changes.",
+  "counts": {
+    "original119": 119,
+    "scorerArtifactCorrected": 26,
+    "corrected93Baseline": 93,
+    "resolvedBy3F1Code": 4,
+    "stillDangerous89": 89
+  },
+  "invariant": "119 = 26 (scorer artifact) + 4 (resolved) + 89 (still dangerous) = 119",
+  "adversarialAudit": {
+    "note": "Section 6/7's own required adversarial audit: sampled the corrected scorer's own union-descendant matching against ground truth's described content. Of the 26 scorer-artifact-corrected cases, a manual source-level review found 14-16 are FALSE CREDITS (the scorer's 'best materiality among exact+descendant' pick is a topically UNRELATED descendant, not content that represents the same claim the ground-truth chapeau/lead-in/flush-clause unit describes) - e.g. ground truth 'doc-a::VI::6.01-chapeau' (the general Indebtedness prohibition) was credited via '6.01(b)(i)' (a narrow, unrelated intercompany-debt sub-cap). This means the TRUE, semantically-honest 93 baseline is itself likely an UNDERCOUNT - a real residual scoring/reconciliation defect, disclosed here, NOT fixed (production/scorer code is frozen for this phase).",
+    "scorerArtifactTotal": 26,
+    "falseCreditSuspectCount": 14,
+    "falseCreditSuspectIds": [
+      "doc-a::VI::6.01-chapeau",
+      "doc-a::VI::6.04-chapeau",
+      "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "doc-a::VI::6.05-chapeau",
+      "doc-a::VI::6.05-ip-flush-prohibition",
+      "doc-a::VI::6.08b-chapeau",
+      "doc-a::VI::6.10-chapeau",
+      "doc-b::VI::6-01-lead-in",
+      "doc-b::VI::6-04-lead-in",
+      "doc-b::VI::6-05-lead-in",
+      "doc-d::VI::6-01-chapeau",
+      "doc-d::VI::6-04-chapeau",
+      "doc-d::VI::6-05-chapeau",
+      "doc-d::VI::6-08-b-chapeau"
+    ],
+    "semanticallyAdjustedResidualEstimate": 103,
+    "semanticallyAdjustedResidualNote": "If the false-credit suspects are counted as still-dangerous (their own real content is not adequately represented), the TRUE residual is closer to 89 + 14 = 103, not the mechanically-reported 89. This is reported as a finding, not corrected in-place (no scorer/production code change in this phase)."
+  },
+  "perCaseBridge": [
+    {
+      "gtUnitId": "doc-a::II::2.09-incremental-facility",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "(e)-(i) Incremental facility: the Borrowers may increase Revolving Commitments or add Incremental Term Loan tranches, from existing Lenders or new lenders (excluding Ineligible Institutions), subject ",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.01-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "No Loan Party will, nor permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except as permitted by clauses (a) through (q).",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.04-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "No Loan Party will, nor permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or acquire or hold Equity Interests, evidences of indebtedness or securities of, make or perm",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "Flush valuation rules for Sections 5.15 and 6.04: designating a Subsidiary as Unrestricted is an 'investment' equal to the Company's proportionate share of the fair market value of that Subsidiary's n",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.05-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "No Loan Party will, nor permit any Restricted Subsidiary to, Dispose of any asset (including Equity Interests it owns), nor permit any Restricted Subsidiary to issue additional Equity Interests other ",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.05-ip-flush-prohibition",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "Flush prohibition: notwithstanding any other clause, no Loan Party or Restricted Subsidiary may consummate any transaction - whether by Restricted Payment, investment, Lien, sale, conveyance, transfer",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.08b-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "No Loan Party will, nor permit any Restricted Subsidiary to, make or agree to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purch",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.10-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "No Loan Party will, nor permit any Restricted Subsidiary to, enter into, incur or permit to exist any agreement prohibiting, restricting or conditioning (a) the ability of a Loan Party or Restricted S",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-b::II::2-11-prepayment-of-loans",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "Prepayments as restated: (a) voluntary prepayment at any time without premium or penalty subject to notice and Section 2.16 break funding; (b) mandatory revolver paydown/cash collateralization wheneve",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-01-lead-in",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "Debt covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness except as permitted by clauses (a) through (q).",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-01-m",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "Section 6.01(m) permits indebtedness (i) of the Company or a Restricted Subsidiary incurred, assumed or issued in connection with a Permitted Acquisition and (ii) of Persons acquired by, or merged/ama",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-04-lead-in",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "Investment covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire Equity Interests, evidences of inde",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-lead-in",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "Asset sale covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, Dispose of any asset (including Equity Interests it owns), nor permit any Restricted Subsidiary to issue addit",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-k",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "Section 6.05(k) permits dispositions of assets, including Sale and Leaseback Transactions not otherwise permitted by clause (e)(ii), not permitted by any other clause (excluding Equity Interests in a ",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-ip-to-unrestricted-sub-prohibition",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "Overriding prohibition: notwithstanding the Section 6.05 exceptions, no Loan Party or Restricted Subsidiary may consummate any transaction resulting in the Disposition (by Restricted Payment, investme",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-b::X::10-01-guaranty",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "(a) Each U.S. Loan Guarantor is jointly and severally liable for, and as primary obligor absolutely, unconditionally and irrevocably guarantees, prompt payment of the Secured Obligations plus Section ",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-d::I::sec-1-06-pro-forma-and-lca",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "(a) Acquisitions and out-of-ordinary-course Dispositions in the trailing four quarters, and any transaction requiring pro forma calculation, are given pro forma effect for the First Lien / Secured / T",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-d::II::sec-2-11-prepayments",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "(a) Voluntary prepayment at any time without premium or penalty, subject to notice and Section 2.16 breakage. (b) Mandatory revolver paydown/cash collateralization whenever the Dollar Equivalent of Ag",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-d::V::cov-5-02-notices",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "Prompt written notice of: (a) any Default; (b) investigations, litigation or proceedings seeking damages reasonably expected to exceed $10,000,000, injunctive relief against material assets, claims ag",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-d::V::cov-5-15-unrestricted-subsidiary-designation",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "The Company may designate Restricted Subsidiaries as Unrestricted and vice versa, provided: no Default before or pro forma after and pro forma compliance with Section 6.12; no Loan Party may be design",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-01-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "General prohibition on creating, incurring, assuming or suffering to exist any Indebtedness, subject to the exceptions in clauses (a) through (r).",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-01-m",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "Indebtedness of the Company or a Restricted Subsidiary incurred, assumed or issued in connection with any Permitted Acquisition, and Indebtedness of Persons acquired by or merged into the Company or a",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-04-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "General prohibition on forming subsidiaries after the Effective Date, purchasing or holding Equity Interests, evidences of indebtedness or securities, making or permitting loans or advances, Guarantee",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-05-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "No Loan Party or Restricted Subsidiary may Dispose of any asset, including Equity Interests it owns, and no Restricted Subsidiary may issue additional Equity Interests (other than to another Loan Part",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-05-k",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": false,
+      "sourceFact": "General disposition basket: Dispositions of assets, including Sale and Leaseback Transactions not permitted by clause (e)(ii), other than Equity Interests in a Borrower or in a Restricted Subsidiary (",
+      "whyCorrectedIsMoreOrLessFaithful": "the corrected scorer's descendant union appears to genuinely represent the same claim (same specific lettered clause or closely related sub-provision)"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-08-b-chapeau",
+      "oldScorerResult": "VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED",
+      "correctedScorerResult": "SAFE_FLAGGED_DANGEROUS",
+      "isFalseCreditSuspect": true,
+      "sourceFact": "General prohibition on making or agreeing to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purchase, redemption, retirement, acqu",
+      "whyCorrectedIsMoreOrLessFaithful": "SUSPECT: the corrected scorer's best-materiality pick is a topically unrelated descendant unit, not genuine coverage of this ground-truth unit's own claim"
+    }
+  ],
+  "resolvedByCodeChangeIds": [
+    "doc-b::VI::6-02-b",
+    "doc-b::VI::6-05-e",
+    "doc-b::VI::6-08b-lead-in",
+    "doc-d::VI::6-05-b"
+  ]
+}

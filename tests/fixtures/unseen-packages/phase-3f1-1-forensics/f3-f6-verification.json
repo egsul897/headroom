@@ -1,0 +1,13 @@
+{
+  "f3": {
+    "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "provisionsCount": 0,
+    "unattachedEffectsCount": 4,
+    "pass": true,
+    "note": "Verified against the Phase 3F.1 DSGR regression's own recomputed operative state (stage5-operative-state-recomputed.json) - the exact real-package instance of the original F3 finding."
+  },
+  "f6": {
+    "firstBlindFailedCandidateCount": 2,
+    "note": "stage6-compiled-results.json is frozen/reused unchanged in the DSGR regression (task's own cost-discipline requirement forbids recompiling) - F6's fix cannot be re-exercised against these 2 specific historical failures without recompiling, which this phase does not do. F6 is independently verified via its own dedicated synthetic test suite (tests/contract-model/phase-3f1-failure-observability.test.ts, 10 tests, unaffected by this phase's freeze) - re-run in the regression-suite step below."
+  }
+}
