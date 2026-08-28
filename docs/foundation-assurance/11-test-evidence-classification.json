@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "TEST_EVIDENCE_CLASSIFICATION",
+  "generatedAt": "2026-08-28T17:11:00Z",
+  "sourceWorkstream": "WS1",
+  "content": {
+    "schemaVersion": "1.0",
+    "testFamilies": [
+      {
+        "family": "tests/contract-model/structural-node-identity-invariants.test.ts + -property.test.ts (I1-I16)",
+        "classification": "INVARIANT_DERIVED",
+        "reasoning": "Expected outcomes follow from the identity formula's own construction (nodeId=f(documentId,nodeType,charStart), unique charStart per accepted match) or from index-integrity invariants (no duplicate nodeId, no orphan/cycle) that must hold regardless of whether the parser's semantic section-detection judgment is itself correct. Not dependent on trusting the SUT's own answer as truth."
+      },
+      {
+        "family": "FWRG/LSB/CONMED tests/fixtures/unseen-packages/*/human-ground-truth.ts",
+        "classification": "INDEPENDENTLY_ADJUDICATED",
+        "reasoning": "Explicitly authored by direct reading of the real source text before any extractor ran, per each file's own header. Caveat: 'independent' means a separate AI reading pass, not an external human/lawyer domain expert, and single-pass with no second independent reviewer."
+      },
+      {
+        "family": "Phase 3F/DSGR ground truth (tests/fixtures/unseen-packages/phase-3f-ground-truth/, dsgr-2022-2025-credit-facility ground-truth JSON)",
+        "classification": "INDEPENDENTLY_ADJUDICATED",
+        "reasoning": "authoredFromSourceOnly:true, methodologyNotes describe reading the source text plus the mechanical structural index only, before scoring. Same human-vs-AI-author caveat as FWRG/LSB."
+      },
+      {
+        "family": "Phase 3F/3F.1/3F.1.1 scorer (scripts/phase-3f-score-first-run.ts, phase-3f1-score-dsgr-regression.ts, phase-3f1-1-forensics.ts)",
+        "classification": "CIRCULAR",
+        "reasoning": "The matching logic credits coverage based on section-ref/descendant structural proximity and picks the highest-materiality matched unit, with no check that the matched unit's own content addresses the ground-truth claim. Confirmed unchanged in the current codebase (Phase 3F.1.2 explicitly disclaims any scorer correction). Already directly evidenced to produce false credits on 14-16 of 26 cases in Phase 3F.1.1's own adversarial audit \u2014 the scorer effectively validates itself against its own structural-proximity assumption rather than against independent semantic correspondence."
+      },
+      {
+        "family": "Phase C.1 evaluator (lib/contract-model/analyzer/evaluator.ts, findHierarchyChildren/findMatch, used for FWRG/LSB 25%->15.625% figures)",
+        "classification": "CIRCULAR",
+        "reasoning": "Same defect class as the Phase 3F scorer, partially mitigated: crediting a child/ancestor rule requires a real numeric-figure match (numbersMatch) when ground truth carries figures, but falls back to pure section-ref proximity (no content check) for qualitative ground-truth provisions with no dollar figure."
+      },
+      {
+        "family": "scripts/golden-test.ts / GoldenTest rows (prisma/seed-data.ts, docs/founder-legal-review-2026-08-25.md)",
+        "classification": "INDEPENDENTLY_ADJUDICATED",
+        "reasoning": "reviewerNotes cite real contract sections/figures; a named human (the founder) confirmed all 48 rows per the cited doc. Caveats: single-reviewer, not the two-reviewer standard the schema's own enum implies; the review is a confirmation of existing rows, not documented as a blind ex-ante derivation; 3/48 rows are explicitly disclosed with an unconfirmed, possibly-overstating engineering bug despite review; and no code path gates on GoldenTest.status at all (informational only)."
+      },
+      {
+        "family": "tests/contract-model/coverage-audit-fault-injection.test.ts + coverage-audit-fault-scenarios.ts",
+        "classification": "INVARIANT_DERIVED",
+        "reasoning": "Expected result ('the auditor must flag a surgically-removed known-material item') is a logical requirement of the injection, not derived by running the SUT and trusting its answer. Genuinely independent at the algorithm level (auditor never reads primary pipeline conclusions), but the baseline discovery candidates and the auditor's source inventory are built from the SAME buildTestIndex/structural substrate - an already-disclosed (Roadmap \u00a71/\u00a710), not newly hidden, shared-substrate limitation, directly confirmed to have mattered for real in Phase 3F.1.1 \u00a731 (15/20 quadrant-D cases)."
+      }
+    ],
+    "scorerRemediationRequirements": [
+      "Coverage credit must require the matched candidate unit's own excerpt text to semantically support the SPECIFIC ground-truth claim, never merely its section-ref/descendant location - a chapeau/lead-in/flush-clause ground-truth unit must never be satisfiable by an unrelated numbered sub-clause beneath it.",
+      "When multiple candidate units match a location, do not silently select by highest-materiality rank; either require every candidate in the set to independently satisfy the content-correspondence check before crediting, or emit an explicit ambiguous-match finding instead of guessing.",
+      "Require a real-figure/defined-term/condition-type correspondence check (generalizing evaluator.ts's numbersMatch) unconditionally, including for qualitative provisions with no numeric figures, via a semantic/key-phrase similarity check between ground-truth description and candidate excerpt.",
+      "Every scoring run must persist the matched excerpt text alongside each credited case so a reviewer can re-verify correctness without re-running the pipeline - the exact discipline that made the 14-16/26 false-credit finding possible in the first place.",
+      "Any report publishing an aggregate coverage percentage computed by a scorer with this known, disclosed, unfixed defect must carry the caveat inline in that same report, not only in a separately-filed forensics document."
+    ],
+    "unfixedScorerDefectDisclosureAdequate": false,
+    "legacyPhaseCQuarantine": {
+      "reachableFromApp": false,
+      "mechanicalGuardrailExists": false,
+      "recommendedGuardrail": "An ESLint no-restricted-imports rule scoped to app/** forbidding imports of lib/contract-model/compiler/orchestrator.ts and lib/contract-model/service.ts/validators.ts, paired with a small grep-based import-boundary test under tests/ that fails CI the moment such an import becomes reachable from app/."
+    }
+  }
+}

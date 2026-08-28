@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "SHARED_DEPENDENCY_INDEPENDENCE_MATRIX",
+  "generatedAt": "2026-08-28T18:21:00Z",
+  "sourceWorkstream": "WS2",
+  "content": {
+    "schemaVersion": "1.0",
+    "sharedDependencies": [
+      {
+        "component": "stage-structure.ts (heading-recognition regexes, parseDocumentStructure)",
+        "usedByPrimary": true,
+        "usedByAuditor": true,
+        "classification": "SHARED_SINGLE_POINT_OF_FAILURE",
+        "evidence": "Live-tested tests/foundation-audit/shared-substrate-live-retest.test.ts: a case-folded, mid-paragraph section heading is invisible to every SECTION_PATTERNS/INTEGER_SECTION_PATTERNS variant. Both discovery/pass-a-signals.ts (via index.allNodes()) and coverage-audit/source-inventory.ts (via the identical index.allNodes()) miss the swallowed section identically, because both consume the same StructuralNode[] this file produces. No code-level guard distinguishes their failure."
+      },
+      {
+        "component": "structural-index.ts (buildStructuralIndex, StructuralIndex)",
+        "usedByPrimary": true,
+        "usedByAuditor": true,
+        "classification": "SHARED_SINGLE_POINT_OF_FAILURE",
+        "evidence": "3F.1.2 fixed nodeId collision/cross-parent-merge (verified: zero nodeId collisions across FWRG/LSB/CONMED/DSGR). But it is still the single index instance both discovery and coverage-audit query; it cannot recover information stage-structure.ts never gave it (see stage-structure.ts row) and its own resolveUniqueNodeByRef AMBIGUOUS/NOT_FOUND results are consumed identically by both sides with no cross-check."
+      },
+      {
+        "component": "structural-coverage.ts (computeStructuralCoverage, health classification)",
+        "usedByPrimary": false,
+        "usedByAuditor": true,
+        "classification": "PARTIALLY_GUARDED",
+        "evidence": "This is the auditor's own trigger for its raw-source-fallback safety net. Live-tested: correctly flags STRUCTURE_FAILED (zero nodes) and STRUCTURE_INSUFFICIENT (density collapse) - genuine, working guards for those two failure shapes (positive controls in shared-substrate-live-retest.test.ts, both passing). But it defines 'uncovered' only as inter-top-level-node gaps, so a section silently swallowed into a neighboring node's span is invisible to it (coverage-audit/pipeline.ts:55's own skip condition evaluates true) - narrower than the real failure surface it is meant to guard."
+      },
+      {
+        "component": "raw-source-fallback.ts (scanRawSourceRegion, partitionUncoveredSpan)",
+        "usedByPrimary": false,
+        "usedByAuditor": true,
+        "classification": "INDEPENDENTLY_GUARDED",
+        "evidence": "Its own scanning logic genuinely never calls getNodeText/getChildren - it operates on raw text slices via regex only, verified by reading the full file. Independent for the failure modes structural-coverage.ts actually routes to it. Not independent of structural-coverage.ts's own trigger condition (see that row) - it can only audit a span it is told is uncovered."
+      },
+      {
+        "component": "discovery/pass-a-signals.ts's signal table vs. coverage-audit/signals.ts",
+        "usedByPrimary": true,
+        "usedByAuditor": true,
+        "classification": "INDEPENDENTLY_GUARDED",
+        "evidence": "Grep-confirmed: signals.ts has zero imports from discovery/*; Phase 2E's own report documents it was authored from scratch against the task's own signal list. Genuinely separate keyword/regex sets, mechanically enforced not to cross-import by coverage-audit-independence.test.ts (not re-run in this audit, but its import-boundary logic was read and matches the grep evidence found here)."
+      },
+      {
+        "component": "package-graph/*.ts (PackageGraphResult, used by context-retrieval and coverage-audit)",
+        "usedByPrimary": true,
+        "usedByAuditor": true,
+        "classification": "PARTIALLY_GUARDED",
+        "evidence": "Grep-confirmed package-graph/*.ts imports only PackageDocumentInput (raw text) and its own types - never StructuralIndex/StructuralNode. Genuinely different code path from stage-structure.ts (not the same substrate that dominates 3F.1.1's residual). Still reads the same raw extracted document text as everything else, so an extraction-layer defect (see raw extraction row) would still be shared."
+      },
+      {
+        "component": "lib/extraction/parse.ts (raw document text extraction, upstream of stage-structure.ts)",
+        "usedByPrimary": true,
+        "usedByAuditor": true,
+        "classification": "UNKNOWN",
+        "evidence": "Not live-tested in this workstream (out of scope depth given time budget). Structurally reasoned, not measured: coverage-audit's raw-source-fallback reads index.getDocumentText(), which is the identical extracted string stage-structure.ts parsed - if extraction itself drops or corrupts a page/section (e.g. a botched HTML-to-text pass), neither discovery nor raw-source-fallback can recover content that was never in the string at all, since both read the same string. Flagged as a real, plausible, unverified gap for a future workstream, not asserted as confirmed."
+      },
+      {
+        "component": "structural-references.ts / structural-definitions.ts (DetectedReference/DetectedDefinition, baked into StructuralIndex at construction)",
+        "usedByPrimary": true,
+        "usedByAuditor": true,
+        "classification": "PARTIALLY_GUARDED",
+        "evidence": "Neither coverage-audit/*.ts file directly imports these modules (grep-confirmed), but StructuralIndex is constructed once from their output and shared by reference - a defect in reference/definition detection (e.g. the already-disclosed relative-reference V1 limitation) would be baked into the one index both primary and auditor query. Phase 2E's own context-inventory.ts does perform its own independent signal-based cross-reference materiality check layered on top, which is a real, separate mitigation for the specific case of missed cross-reference MATERIALITY, though not for a missed DetectedReference entry itself."
+      }
+    ],
+    "liveFailureModeRetest": {
+      "scenario": "A case-folded, mid-paragraph section heading ('section 6.05 limitation on affiliate transactions...') defeats every stage-structure.ts heading pattern; its real $5,000,000 affiliate-transaction text is silently absorbed into the preceding Section 6.04's OWN text.",
+      "discoveryResult": "No candidate for 6.05 is ever produced; the 6.04 candidate's own signal list is contaminated with a dollar_value signal that actually belongs to 6.05's text (misattributed citation).",
+      "rawSourceFallbackResult": "Never runs at all for this document - structural-coverage.ts reports STRUCTURE_HEALTHY, 100% coverage, 0 significant uncovered spans, so coverage-audit/pipeline.ts's own skip condition (line 55) short-circuits before any raw-text scan occurs.",
+      "didFallbackCatchWhatDiscoveryMissed": false,
+      "conclusion": "On CURRENT (post-3F.1.2) code, the independent coverage auditor's safety net does not catch this exact live re-test of the Phase 2F/3F.1.1 failure mode. 3F.1.2 fixed the node-IDENTITY layer (collisions/cross-parent-merge) but never touched stage-structure.ts's heading-RECOGNITION layer or structural-coverage.ts's document-wide health model, both of which remain a genuine, demonstrated shared single point of failure for a mid-document swallowed section boundary specifically. Positive controls confirm the fallback is real and does work for total-parser-failure and density-collapse shapes - it is not a sham, only narrower than the actual failure surface."
+    },
+    "invariant18Reassessment": "Invariant #18 is not satisfied for this failure mode on current code. Mechanical independence (never reading the other's conclusions) holds and is real - coverage-audit/* genuinely never imports discovery/context-retrieval conclusion types. But substrate independence does not: raw-source-fallback's claimed independence from StructuralIndex is true for its own scanning step but false for its trigger condition, which is computed from the identical stage-structure.ts node array discovery consumes. This reproduces, on a different concrete trigger, the exact 3F.1.1 finding (a Phase 2A gap defeating discovery and audit together) that 3F.1.2 was scoped to fix - 3F.1.2's own scope (node-identity/occurrence safety) did not include heading-recognition regex coverage or the coverage-health model's definition of 'uncovered', so this is not a regression of 3F.1.2, it is a documented boundary of what 3F.1.2 was ever going to fix. Recommend a narrowly-scoped follow-on (extend structural-coverage.ts's health signal to detect an unrecognized-heading-shaped fragment inside a node's own OWN text, not just document-wide top-level density) rather than a second parser."
+  }
+}

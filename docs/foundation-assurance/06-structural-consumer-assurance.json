@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "STRUCTURAL_CONSUMER_ASSURANCE",
+  "generatedAt": "2026-08-28T19:12:00Z",
+  "sourceWorkstream": "WS5",
+  "content": {
+    "schemaVersion": "1.0",
+    "i1ThroughI16Reverification": {
+      "status": "ALL_16_INVARIANTS_INDEPENDENTLY_RECONFIRMED_NO_REGRESSION",
+      "newTestsAdded": 26,
+      "filesCited": [
+        "tests/foundation-audit/part1-independent-reverification.test.ts",
+        "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts",
+        "tests/foundation-audit/part4-fuzz-suite-extension.test.ts",
+        "scripts/foundation-audit-source-span-accounting.ts",
+        "tests/fixtures/foundation-audit/source-span-accounting.json",
+        "tests/contract-model/structural-node-identity-invariants.test.ts",
+        "tests/contract-model/structural-node-identity-property.test.ts",
+        "tests/contract-model/structural-persistence-identity.test.ts",
+        "lib/contract-model/compiler/stage-structure.ts",
+        "lib/contract-model/compiler/structural-index.ts",
+        "lib/contract-model/compiler/structural-coverage.ts",
+        "lib/contract-model/compiler/clause-hierarchy.ts",
+        "lib/contract-model/compiler/coverage-audit/raw-source-fallback.ts",
+        "lib/contract-model/compiler/coverage-audit/source-inventory.ts",
+        "lib/contract-model/compiler/discovery/pass-a-signals.ts",
+        "lib/contract-model/compiler/amendment/operative-state.ts",
+        "docs/architecture/STRUCTURAL-NODE-IDENTITY-ADR.md",
+        "docs/phase-3f1-2-structural-identity-remediation.md"
+      ]
+    },
+    "newAssumptionsFound": [
+      {
+        "question": "Q1: Can a structurally-valid occurrence have materially wrong boundaries because a sibling's heading failed to match, silently absorbing the sibling's whole body into the preceding node's own span?",
+        "status": "PROVEN",
+        "evidence": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q1: a colon-instead-of-period heading defeats all SECTION_PATTERNS candidates; the preceding section's charEnd/OWN text silently extends through the entire missing sibling's real prose; zero ERROR health findings; structural-coverage.ts reports STRUCTURE_HEALTHY/100% coverage for the same document.",
+        "counterexample": "Single-line doc: 'Section 6.01 ... . Section 6.02: Liens . <real 6.02 prose> Section 6.03 ... .' -> no node for '6.02'; 6.01.charEnd === 6.03.charStart, swallowing all of 6.02's prose into 6.01's OWN text.",
+        "severity": "P1"
+      },
+      {
+        "question": "Q2: Can text/clauses be attributed to a different, structurally valid, distinct occurrence than the one drafting-wise intended?",
+        "status": "PROVEN",
+        "evidence": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q2: Section 6.02's real lettered clauses (a)/(b) become children of Section 6.01 once 6.02's heading fails to match - a real, valid, but wrong parent occurrence, with zero I1-I16 findings.",
+        "counterexample": "Same document as Q1's, with 6.02 given real (a)/(b) clauses: index.getChildren(section601.nodeId) returns ['6.01(a)','6.01(b)'] containing 6.02's own drafted content.",
+        "severity": "P1"
+      },
+      {
+        "question": "Q3: Can a plausible-but-semantically-wrong hierarchy pass every I1-I16 identity invariant because an intervening false-positive heading-shaped match corrupts the global RANK-based stack pass, truncating a real section and misattaching its later real clauses to the spurious node?",
+        "status": "PROVEN",
+        "evidence": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q3, extending the ADR's own already-acknowledged \u00a72.3 Case A collision (an ordinary in-text citation 'Section 6.05 Reserved .' that satisfies SECTION_PATTERNS): the spurious SECTION-rank node pops the real enclosing section off the global charStart-ordered stack early, and the real section's own later lettered clauses attach to the spurious node instead. A control case (Q3b) confirms depth-tracking IS correct per real section absent such an intervening false match - this is specifically a stack-corruption risk from a rank-shallow false positive, not a general depth-tracking bug. Not verified against a specific real instance in FWRG/LSB/CONMED/DSGR within this audit's budget, but DSGR alone carries 680 excess duplicate-label instances from the same collision family per the ADR's own forensics, making this plausible in production data.",
+        "counterexample": "'Section 6.01 Indebtedness . ... except as permitted under Section 6.05 Reserved . and subject to: (a) ...; (b) ...' -> the real (a)/(b) clauses attach under the spurious 6.05 node, not the real 6.01.",
+        "severity": "P1"
+      },
+      {
+        "question": "Q4: Can an operative clause become an orphan without downstream consumers reacting, or without any visible signal distinguishing 'orphaned' from 'nothing found'?",
+        "status": "PROVEN",
+        "evidence": "Static grep over lib/contract-model/compiler confirms zero production consumers (discovery/coverage-audit/context-retrieval/amendment/semantic*) call index.orphans() - only structural-index.ts's own definition and test/regression scripts do. Part 1 angle-5 test independently confirms the real parser essentially never produces a true orphan today, so this is a currently-dormant (not actively firing) gap. A mis-scoped clause (Q3's mechanism) is discoverable only via explicit healthDiagnostics()/orphans() cross-checks; a normal consumer walking getChildren() from the section it expects to own the clause sees only silent absence.",
+        "counterexample": null,
+        "severity": "P2"
+      },
+      {
+        "question": "Q5: Can malformed hierarchy (e.g. a clause directly under an ARTICLE, skipping SECTION) remain reported STRUCTURE_HEALTHY by structural-coverage.ts - does 'healthy' check only span coverage, or also rank/level sanity?",
+        "status": "PROVEN",
+        "evidence": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q5: computeTopLevelSpans only ever inspects ARTICLE/SECTION nodes; a lettered clause directly under an ARTICLE gets NO node at all (buildClauseTree only runs inside a SECTION's own region) yet the whole malformed span is still reported STRUCTURE_HEALTHY/100% coverage because it falls inside the ARTICLE's own top-level span. The health check is pure span arithmetic with no rank/level sanity concept at all.",
+        "counterexample": "'ARTICLE VI COVENANTS\\n(a) stray clause;\\n(b) second stray clause.\\n\\nSection 6.01 ... .' -> zero CLAUSE/SUBSECTION nodes created; computeStructuralCoverage reports health=STRUCTURE_HEALTHY, coveragePercent=100.",
+        "severity": "P2"
+      },
+      {
+        "question": "Q6: Can a Schedule/Exhibit's own numbered list be structurally indistinguishable from operative body text, so a schedule's list could be discovered as if it were a real covenant basket?",
+        "status": "PROVEN",
+        "evidence": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q6: a 'Section N' heading inside a SCHEDULE region parses to an ordinary nodeType SECTION with an identical field set to Article VI's own operative sections - no SCHEDULE nodeType or region marker exists anywhere in the parser's output. discovery/pass-a-signals.ts and coverage-audit/source-inventory.ts both iterate index.allNodes() with no Schedule/Exhibit exclusion filter.",
+        "counterexample": "'SCHEDULE I PERMITTED LIENS\\n\\nSection 1 General . ... up to $75,000,000.' produces a SECTION node with the exact same shape and field set as 'Section 6.01 Indebtedness . ... up to $50,000,000.'",
+        "severity": "P2"
+      },
+      {
+        "question": "Q7: Can a Table of Contents entry, now correctly given its own distinct nodeId post-3F.1.2, still receive 'operative' treatment downstream because nothing flags it as probably-not-operative?",
+        "status": "PROVEN",
+        "evidence": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q7: the ToC occurrence and the real operative occurrence are both independently reachable (3F.1.2's fix working as designed) but structurally identical in shape - no field distinguishes them. The only real signal (drastically shorter own-text) exists in the data but is not a first-class field any consumer checks.",
+        "counterexample": "A document with a ToC line 'Section 6.01 Indebtedness .' followed later by the real 'ARTICLE VI ... Section 6.01 Indebtedness . <real prose>' produces 2 occurrences of '6.01' with identical field sets; the ToC occurrence's own text is near-empty but nothing surfaces that fact as a marker.",
+        "severity": "P2"
+      },
+      {
+        "question": "Q8: Can quoted/superseded language be treated as current, equally-live text by anything that scans structural nodes directly, now that both the old and new occurrences correctly get their own distinct nodeId post-3F.1.2?",
+        "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+        "evidence": "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q8: the original and amendment-quoted occurrences are both plain SECTION nodes with no superseded/isCurrent field. Supersession is tracked only by the separate, opt-in amendment/operative-state.ts (supersededSourceNodeIds), which correctly resolves it WHEN invoked with a successfully-resolved amendment effect - bounding this gap to consumers (source-inventory.ts, pass-a-signals.ts, both confirmed via grep to iterate index.allNodes() directly) that bypass that pipeline stage.",
+        "counterexample": "A base '$5,000,000' limit and an amendment-quoted '$25,000,000' limit for the same section both appear as ordinary, equally-shaped SECTION nodes with neither JSON-serialized node containing any 'superseded' marker.",
+        "severity": "P1"
+      },
+      {
+        "question": "Part 3: Does the raw-source-accounting/coverage mechanism (structural-coverage.ts feeding raw-source-fallback.ts) depend circularly on successful structural traversal to know what's covered, i.e. is it blind to a region silently absorbed into an adjacent node's own span (Q1's mechanism)?",
+        "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+        "evidence": "Confirmed mechanically: the mechanism DOES independently catch wholesale non-recognition (FWRG/LSB definitions documents produce zero top-level nodes and are correctly flagged STRUCTURE_FAILED by computeStructuralCoverage, per scripts/foundation-audit-source-span-accounting.ts's real run). It does NOT catch Q1/Q2's swallow, because uncovered spans are only ever gaps BETWEEN recognized top-level node boundaries, never a check on whether a recognized node's own end boundary is materially correct.",
+        "counterexample": "Q1's own repro: significantUncoveredSpans is empty and coveragePercent is 100 for a document where a whole real section's content was silently absorbed into its neighbor.",
+        "severity": "P1"
+      }
+    ],
+    "fuzzSuiteReview": {
+      "circularityRisk": "Real and confirmed by reading generateDocument in full: every corruption knob (whitespace/newline/repetition/duplication) perturbs content SURROUNDING a heading that is always emitted in the exact well-formed 'Section ${num} ${title} .' shape SECTION_PATTERNS is built to match; it never emits a heading the parser's own regex family was not designed to recognize, so the suite structurally cannot discover the Q1/Q2/Q3 failure mode (a heading that fails to match at all) or a truly unanticipated malformation.",
+      "diversityAssessment": "Moderate compositional diversity (10 independent probability knobs combined randomly across 1500 cases, exercising real cross-category interaction) but narrow underlying vocabulary: one fixed heading template, a 10-item fixed title list, and a 4-letter fixed marker set (LETTERS=['a','b','c','d'], never reaching 'z'->'aa'); no ARTICLE-level duplication is ever generated. assertCoreInvariants itself is correctly invariant-derived (I1/I7/I9/I13/zero-ERROR, matching ADR text), not circular.",
+      "extensionsAdded": [
+        "OCR-like character substitution inside the heading keyword/title itself (not surrounding whitespace) - tests/foundation-audit/part4-fuzz-suite-extension.test.ts Extension category 1",
+        "Alpha/roman numeral ambiguity at clause markers (sequences crossing i/v/x) - Extension category 2",
+        "Double-letter clause continuation past 'z' ('(aa)','(bb)','(cc)') - Extension category 3",
+        "Inline deleted/replacement-text markup ('[Reserved]', '[intentionally omitted]') - Extension category 4",
+        "Duplicated ARTICLE-level (not merely SECTION-level) numbering - Extension category 5",
+        "300-case combined stress loop composing all 5 new categories together"
+      ]
+    }
+  }
+}

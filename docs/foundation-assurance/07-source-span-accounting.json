@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "SOURCE_SPAN_ACCOUNTING",
+  "generatedAt": "2026-08-28T19:12:00Z",
+  "sourceWorkstream": "WS5",
+  "content": {
+    "schemaVersion": "1.0",
+    "materialTextCannotDisappearGuarantee": "PROVEN_WITH_BOUNDED_LIMITATION",
+    "perPackage": [
+      {
+        "packageKey": "FWRG",
+        "totalSourceChars": 120727,
+        "claimedByNodesChars": 104183,
+        "uncoveredChars": 16544,
+        "uncoveredPercent": 13.7036,
+        "invalidOrOverlappingSpans": 0,
+        "uncoveredRegionClassification": {
+          "whitespace": 0,
+          "toc": 0,
+          "signatureBlock": 0,
+          "exhibitSchedule": 0,
+          "definitions": 16544,
+          "unknown": 0
+        }
+      },
+      {
+        "packageKey": "LSB",
+        "totalSourceChars": 24891,
+        "claimedByNodesChars": 16826,
+        "uncoveredChars": 8065,
+        "uncoveredPercent": 32.4013,
+        "invalidOrOverlappingSpans": 0,
+        "uncoveredRegionClassification": {
+          "whitespace": 0,
+          "toc": 0,
+          "signatureBlock": 0,
+          "exhibitSchedule": 0,
+          "definitions": 8065,
+          "unknown": 0
+        }
+      },
+      {
+        "packageKey": "CONMED",
+        "totalSourceChars": 1300620,
+        "claimedByNodesChars": 1294525,
+        "uncoveredChars": 6095,
+        "uncoveredPercent": 0.4686,
+        "invalidOrOverlappingSpans": 0,
+        "uncoveredRegionClassification": {
+          "whitespace": 0,
+          "toc": 748,
+          "signatureBlock": 0,
+          "exhibitSchedule": 5347,
+          "definitions": 0,
+          "unknown": 0
+        }
+      },
+      {
+        "packageKey": "DSGR",
+        "totalSourceChars": 2331381,
+        "claimedByNodesChars": 2322622,
+        "uncoveredChars": 8759,
+        "uncoveredPercent": 0.3757,
+        "invalidOrOverlappingSpans": 0,
+        "uncoveredRegionClassification": {
+          "whitespace": 0,
+          "toc": 2119,
+          "signatureBlock": 0,
+          "exhibitSchedule": 6640,
+          "definitions": 0,
+          "unknown": 0
+        }
+      }
+    ],
+    "mechanismIndependenceFromTraversal": "NOT fully circular: wholesale non-recognition IS independently caught - real evidence is FWRG's and LSB's own *-definitions.txt documents, which produce zero top-level (ARTICLE/SECTION) nodes and are correctly, independently flagged STRUCTURE_FAILED by computeStructuralCoverage (topLevelNodeCount===0 branch), exactly the case the coverage mechanism is designed to catch without needing the rest of the package to have failed too. HOWEVER it IS blind to the specific failure mode proven in Part 2 Q1/Q2: a region whose real content was silently absorbed into an ADJACENT, successfully-recognized node's own [charStart,charEnd) span reports zero uncovered span and 100% coverage, because uncoveredRegions/significantUncoveredSpans are computed purely as gaps BETWEEN already-recognized top-level node boundaries (computeTopLevelSpans), never as a check on whether a recognized node's own end boundary is itself correct. Across the four real known packages, zero INVALID_SOURCE_SPAN/OVERLAPPING_INCOMPATIBLE_SPAN findings were observed (I12 holds in practice on real data) and every uncovered region mechanically classified as toc/exhibitSchedule/definitions-shaped (zero UNKNOWN) - but a generic, package-agnostic 'own-text length >=5x SECTION-sibling median' proxy heuristic (built fresh for this audit, never previously computed by production code) flagged 48 sections in CONMED and 76 in DSGR as review-worthy for a possible undetected swallow; these are NOT proof of an actual defect (several are plausibly legitimate long sections) but are a real signal with no existing production consumer."
+  }
+}
