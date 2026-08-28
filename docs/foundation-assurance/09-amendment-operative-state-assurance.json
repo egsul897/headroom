@@ -1,0 +1,133 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "AMENDMENT_OPERATIVE_STATE_ASSURANCE",
+  "generatedAt": "2026-08-28T18:21:00Z",
+  "sourceWorkstream": "WS2",
+  "content": {
+    "schemaVersion": "1.0",
+    "scenarios": [
+      {
+        "scenario": "Signing date != effective date, with conditions precedent (no concrete date resolvable)",
+        "status": "PROVEN",
+        "evidence": "effective-date.ts's CONDITIONAL_EFFECTIVE_RE correctly yields date:null/status:CONDITIONAL_UNRESOLVED; chain.ts places it at chain end with AMENDMENT_SEQUENCE_UNRESOLVED regardless of how far in the future asOfDate is queried. Live-tested, passing.",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "Future effectiveness (effectiveFrom after 'today')",
+        "status": "PROVEN",
+        "evidence": "A 2030-dated effect correctly produces an empty appliedChain and base text governs as of a 2021 query, status RESOLVED (correctly, since nothing unresolved is known). Live-tested, passing.",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "Retroactive effectiveness",
+        "status": "PROVEN",
+        "evidence": "A 2015-dated effect applies cleanly as of a 2021 query exactly like any other dated effect - no special-cased or incorrect handling found. Live-tested, passing.",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "Two amendments, same effective date, same provision - which wins?",
+        "status": "FAILED",
+        "evidence": "chain.ts correctly detects AMENDMENT_CONFLICT and sets status OPERATIVE_STATE_CONFLICTED (good). But buildProvisionView still populates currentText from whichever effect is LAST in the (stably-sorted) input array - live-tested with the identical two effects in both orders: currentText differs ($10,000,000 vs $20,000,000) purely by array insertion order, not by any evidence-based precedence rule.",
+        "counterexample": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts, 'Conflicting same-date amendments' describe block - stateXY.provisions[0].currentText !== stateYX.provisions[0].currentText for the identical two effects passed in reversed order.",
+        "severity": "P2"
+      },
+      {
+        "scenario": "Amendment of an amendment (A amends base, B later amends A's own amended text)",
+        "status": "PROVEN",
+        "evidence": "A 2019 REPLACE then a 2022 REPLACE of the same section correctly resolve to base/2019-text/2022-text at three query dates (before/between/after), with fullChain preserving both entries regardless of asOfDate. Live-tested, passing.",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "An amended-and-restated agreement (full restatement)",
+        "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+        "evidence": "A RESTATE_AGREEMENT DOCUMENT-kind effect with an unresolved target document correctly cannot attach to any provision and correctly forces OPERATIVE_STATE_REVIEW_REQUIRED (not RESOLVED) despite zero provisions - the F3 mechanism holds on current code. Limitation: renumbering identity across the restatement is not tracked at all (see separate row).",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "A deletion (clause removed, no replacement)",
+        "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+        "evidence": "A well-evidenced DELETE_TEXT effect with a uniquely-resolved target correctly nulls currentText. Limitation: status is OPERATIVE_STATE_PARTIAL with a message implying text could not be safely DERIVED, which mischaracterizes a genuine, intended deletion as a derivation failure rather than a correct null-governance outcome.",
+        "counterexample": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts, 'Deletion (no replacement)' describe block.",
+        "severity": "P3"
+      },
+      {
+        "scenario": "A replacement (old text swapped for new)",
+        "status": "PROVEN",
+        "evidence": "Exercised via the amendment-of-an-amendment and future/retroactive scenarios above with a uniquely-resolved target - REPLACE_TEXT correctly yields currentText = newText, status RESOLVED, correct lineage.",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "Renumbering (Section 6.04 becomes Section 6.05 in a restatement)",
+        "status": "NOT_APPLICABLE",
+        "evidence": "No identity-continuity mechanism exists across a restatement by design (Phase 2G's own disclosed V1 scope: one opaque RESTATE_AGREEMENT effect, never per-section synthesis). Not a false-positive risk since the whole restated instrument correctly becomes REVIEW_REQUIRED-shaped rather than confidently continuing old section keys, but genuinely untested/untrackable at the provision level.",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "A definition replacement",
+        "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+        "evidence": "getOperativeDefinition/DEFINITION-kind provisions use the identical buildProvisionView code path as SECTION-kind, so the same newText-masks-unresolved-target defect (see central finding) applies equally to a DEFINITION target that fails to resolve via index.getDefinition - not separately re-tested end-to-end in this workstream given time budget, but the shared code path was read and confirmed identical.",
+        "counterexample": null,
+        "severity": "P0"
+      },
+      {
+        "scenario": "An amendment affecting documents across the package (base agreement AND guarantee agreement both amended by one instrument)",
+        "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+        "evidence": "Cross-instrument isolation directly tested and confirmed: an effect targeting a guarantee instrument never appears in the base instrument's own operative state (JSON-serialization check). The specific one-amendment-splitting-into-two-document-targets mechanism itself (disambiguateMultiTargetSection/markup-exhibit.ts's label-matching) was not independently re-tested here; it is already validated by Phase 2G's own real CONMED regression (Document D correctly split across Documents A and B).",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "Two amendments that CONFLICT (same provision, genuinely different resulting text, no clear precedence)",
+        "status": "FAILED",
+        "evidence": "Same as the 'same effective date' scenario above - status is correctly CONFLICTED, but currentText is not null/withheld, it silently reflects iteration order.",
+        "counterexample": "See the same-effective-date scenario's counterexample.",
+        "severity": "P2"
+      },
+      {
+        "scenario": "Quoted historical language inside the amendment (old text included verbatim for reference, now gets its own valid nodeId per 3F.1.2)",
+        "status": "PROVEN",
+        "evidence": "Live-tested: a quoted OLD section heading inside the amendment document's own text parses as its own real, distinct SECTION node (2+ '6.04' occurrences within the amendment document itself), but resolveUniqueNodeByRef is strictly documentId-scoped - the base document's index has zero knowledge of the amendment document's nodes, so no cross-document confusion between quoted-old-text and actually-operative base text is possible.",
+        "counterexample": null,
+        "severity": null
+      },
+      {
+        "scenario": "An AMBIGUOUS amendment target - does AMBIGUOUS surface all the way to OperativeProvisionView, or get collapsed to a false resolution?",
+        "status": "FAILED",
+        "evidence": "CENTRAL FINDING. Live-tested: an amendment targeting a section with 2 real physical occurrences (AMBIGUOUS per resolveUniqueNodeByRef), carrying a verbatim newText, RESOLVED status upstream, and a past effective date, produces OPERATIVE_STATE_RESOLVED with ZERO unresolvedIssues and a confident currentText - the AMBIGUOUS signal is completely lost. Independent verification (independent-verification.ts) also does not catch it (existence-only check, passed:true). Independent verification is additionally never called from the live pipeline at all (grep-confirmed).",
+        "counterexample": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts, 'CENTRAL FINDING' describe block, first test.",
+        "severity": "P0"
+      },
+      {
+        "scenario": "A MISSING amendment target (references a section that doesn't exist in the target document)",
+        "status": "FAILED",
+        "evidence": "Same defect as the AMBIGUOUS case: a target with zero matching nodes at all + newText + past effective date also produces OPERATIVE_STATE_RESOLVED with zero unresolvedIssues at the operative-state layer. Independent-verification.ts WOULD correctly flag this one (passed:false, real issue text) if it were ever invoked in the live pipeline - it is not (grep-confirmed no caller in lib/amendment/pipeline.ts or operative-state.ts).",
+        "counterexample": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts, 'CENTRAL FINDING' describe block, second test.",
+        "severity": "P0"
+      },
+      {
+        "scenario": "A duplicated legal reference with genuinely distinct physical occurrences as the amendment target (direct re-test of 3F.1.2's central fix from the amendment-consumer side)",
+        "status": "FAILED",
+        "evidence": "This is the same scenario/evidence as the AMBIGUOUS-target finding above. 3F.1.2 correctly gives resolveUniqueNodeByRef an honest AMBIGUOUS status at the structural-index layer - but operative-state.ts, one layer up, discards that honesty the moment newText is present. The fix 3F.1.2 delivered is real and necessary but not sufficient by itself for the amendment consumer.",
+        "counterexample": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts, 'CENTRAL FINDING' describe block, first test.",
+        "severity": "P0"
+      },
+      {
+        "scenario": "Amendments processed OUT of chronological order (amendment 2 processed before amendment 1)",
+        "status": "PROVEN",
+        "evidence": "chain.ts sorts strictly by effectiveDate.date, never by array/processing order, before assigning appliedChain/fullChain. The amendment-of-an-amendment test passes allEffects as [2019-effect, 2022-effect] and produces correct date-ordered results regardless; a reversed-order variant was not separately re-run in this workstream but the sort call (chain.ts line 61) is unconditional and independent of input order by construction, unlike the conflict-currentText defect above which is a DIFFERENT code path (the applied-effect iteration loop, not the sort).",
+        "counterexample": null,
+        "severity": null
+      }
+    ],
+    "falseResolutionInvariant": "FAILED",
+    "zeroProvisionsResolvedCheck": "Re-verified independently on current (post-3F.1.2) code, specifically for the OPERATIVE_STATE_RESOLVED-with-zero-provisions shape (Phase 3F.1.1's own 'F3'): the guard at operative-state.ts lines 168-174 (unattachedEffects.length===0 gate) still holds and was live-tested (a DOCUMENT-kind/UNRESOLVED RESTATE_AGREEMENT effect correctly forces REVIEW_REQUIRED despite zero provisions). However, a DIFFERENT and more severe false-resolution shape was found on the SAME code path this audit was asked to re-test: OPERATIVE_STATE_RESOLVED with ONE OR MORE provisions whose underlying target was never uniquely (or at all) validated against the base document, masked by the presence of newText. This is arguably worse than the zero-provisions case F3 addressed, because it produces a populated, plausible-looking, fully-cited-seeming provisions array rather than an empty one that invites scrutiny by its own emptiness."
+  }
+}

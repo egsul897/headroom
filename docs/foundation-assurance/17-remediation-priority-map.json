@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "REMEDIATION_PRIORITY_MAP",
+  "generatedAt": "2026-08-28T19:45:00Z",
+  "constructionMethod": "Evidence-derived: ordering follows the foundational chain's own dependency order (a fix upstream of a defect can change or moot what needs fixing downstream) and blast-radius/severity, never a manufactured or hypothetical roadmap. This map is NOT authorization to implement - per this audit's charter, production code remains frozen and no remediation is performed in this phase.",
+  "tiers": [
+    {
+      "tier": 1,
+      "rationale": "Foundational silent-corruption and false-confidence defects that directly violate the audit's own central invariant ('where Headroom does not know, Headroom must know that it does not know'). Each is P0, independently reproduced with an executable test, and would corrupt or misrepresent contractual state without any error signal if the module carrying it were ever load-bearing.",
+      "items": [
+        { "id": "P0-1", "title": "Amendment operative-state false resolution on AMBIGUOUS/MISSING targets", "rootCause": "OPERATIVE_STATE", "fix": "buildProvisionView must check resolveUniqueNodeByRef's actual status (UNIQUE/AMBIGUOUS/NOT_FOUND) before trusting effect.newText; independent-verification.ts must be wired into the live pipeline as a real gate, not left as a diagnostic-script-only mechanism.", "blockedBy": [], "blocks": ["Any future consumer of computeOperativeContractState/OperativeProvisionView, including the AI Covenant Semantic Compiler Phase 2G's own report names as its recommended next phase."] },
+        { "id": "P0-2", "title": "DefinedTermNode instrument-isolation silent corruption", "rootCause": "INSTRUMENT_ISOLATION / PERSISTENCE / IDENTITY", "fix": "Extend computeStableKey('defined-term', ...) to include documentId/instrument scoping, matching the pattern 3F.1.2 already established for DocumentNode (charStart) and ContractRule (sourceDocumentId).", "blockedBy": [], "blocks": ["Any future phase that increases DefinedTermNode's real population beyond its current near-zero level."] },
+        { "id": "P0-3", "title": "computeStructuralCoverage ignores real charEnd, silently absorbing mid/trailing missing regions", "rootCause": "SOURCE_ACCOUNTING / HIERARCHY", "fix": "computeTopLevelSpans must validate a node's own end boundary against material content, not merely measure gaps between recognized top-level node starts; extend the health model with a local density/signal anomaly check at node-neighbor boundaries (recommended by WS2, not a second parser).", "blockedBy": [], "blocks": ["P0-4 (raw-source-fallback's blindness is a direct downstream consequence of this same defect)."] },
+        { "id": "P0-4", "title": "raw-source-fallback's own trigger inherits P0-3's blind spot, defeating the one independent safety net simultaneously with discovery", "rootCause": "SOURCE_ACCOUNTING", "fix": "Once P0-3 is fixed, re-verify raw-source-fallback's coverage against the corrected uncovered-span computation; do not treat this as a separate structural change.", "blockedBy": ["P0-3"], "blocks": [] },
+        { "id": "P0-5", "title": "Package-graph false AMENDS edge from incidental recital date/type match, causing real cross-instrument contamination", "rootCause": "PACKAGE_GRAPH / INSTRUMENT_ISOLATION", "fix": "relationship-resolution.ts needs a discriminator between 'the document this amendment actually targets' and 'an agreement mentioned in a recital for context' - e.g. requiring the amending clause's own grammatical subject to name the target, not merely any dated agreement reference in the preamble window.", "blockedBy": [], "blocks": [] },
+        { "id": "P0-6", "title": "Evaluation-methodology circularity: two independently-built scorers share the same structural/numeric-proximity-substitutes-for-content-correspondence defect class", "rootCause": "EVALUATION_METHODOLOGY / TEST_CIRCULARITY", "fix": "Per the 5 explicit scorer-remediation requirements in CACHE_INVALIDATION_ASSURANCE/TEST_EVIDENCE_CLASSIFICATION (content-correspondence check, no silent best-materiality pick, unconditional real-figure/phrase correspondence, persisted matched-excerpt evidence, inline caveat on every published coverage percentage). This is a prerequisite for trusting ANY future coverage percentage this codebase publishes, including a future 3F.2 unseen-package run.", "blockedBy": [], "blocks": ["Trustworthy interpretation of any historical or future coverage percentage (93%, 89%, 103/105-estimate, and any 3F.2 result)."] }
+      ]
+    },
+    {
+      "tier": 2,
+      "rationale": "P1 defects that are real, reproduced, and either already latent-live (would activate the moment a currently-dormant code path is wired up) or already reachable today in a bounded way.",
+      "items": [
+        { "id": "P1-1", "title": "Semantic-compiler default cache is tenant-blind (module-level singleton, key excludes companyId/instrumentKey/sourceDocumentId)", "rootCause": "TENANT_ISOLATION / CACHE_INVALIDATION", "fix": "Include companyId/instrumentKey/sourceDocumentId in computeCacheKey, or require an explicit per-tenant cache instance rather than a module-level default.", "blockedBy": [] },
+        { "id": "P1-2", "title": "validateTenantIsolation blind spot for ContractReferenceEdge.targetTermId/targetDocumentNodeId", "rootCause": "TENANT_ISOLATION", "fix": "Extend the validator to check these two fields alongside the three it already checks." },
+        { "id": "P1-3", "title": "Real, wired onboarding upload path bypasses content-hash dedup", "rootCause": "SOURCE_ACCOUNTING", "fix": "Route app/[companyId]/onboarding/documents/actions.ts through the existing, tested uploadDocumentThroughIngestion wrapper instead of uploadAndChunkDocument directly." },
+        { "id": "P1-4", "title": "resolveEffectiveDate misclassifies a dated-but-conditional amendment as unconditionally EXPLICIT_EFFECTIVE_DATE", "rootCause": "OPERATIVE_STATE", "fix": "Check for conditions-precedent language before returning on an EXPLICIT_EFFECTIVE_DATE_RE match, not after." },
+        { "id": "P1-5", "title": "CTX-01: a cross-referenced section's own pending amendment is never surfaced", "rootCause": "CONTEXT", "fix": "Call retrieveAmendmentLeadsForSection for every section reached via CROSS_REFERENCE, not only the primary candidate's own section." },
+        { "id": "P1-6", "title": "CTX-02: wrong-context contamination from generic keyword-only sibling matching", "rootCause": "CONTEXT", "fix": "Require a subject-matter correspondence check before attaching a sibling as PROVISO/SHARED_CAP/etc., not merely a keyword regex hit." },
+        { "id": "P1-7", "title": "PKG-02: REVIEW_REQUIRED on contaminated instruments is coincidental, not a designed defense", "rootCause": "PACKAGE_GRAPH", "fix": "Once P0-5 is fixed at the source, re-verify whether this coincidental signal is still needed as defense-in-depth." , "blockedBy": ["P0-5"]},
+        { "id": "P1-8", "title": "orchestrator.ts cache gates miss STRUCTURAL_INDEX_VERSION (STRUCTURE stage) and document text (AMENDMENTS stage)", "rootCause": "CACHE_INVALIDATION", "fix": "Fold both missing inputs into their respective stage input hashes." },
+        { "id": "P1-9", "title": "persistence.ts upserts never tombstone stale rows", "rootCause": "PERSISTENCE / CACHE_INVALIDATION", "fix": "Add a delete-then-recreate or explicit isCurrent/extractionVersion step, scoped per documentId, for all persist* functions." },
+        { "id": "P1-10", "title": "Q3: intervening false-positive heading corrupts the global rank-stack, misattaching real later clauses to a spurious node", "rootCause": "HIERARCHY", "fix": "Requires deeper structural-parser design work (out of scope for this audit); plausible in production data per DSGR's own 680 excess duplicate-label instances from the same collision family." },
+        { "id": "P1-11", "title": "Q8: no supersession marker on structural nodes bypassed by consumers that read nodes directly instead of going through amendment/operative-state.ts", "rootCause": "AMENDMENT_PRECEDENCE", "fix": "Either add a first-class supersession field to StructuralNode, or require source-inventory.ts/pass-a-signals.ts to consult operative-state before treating a node as current." },
+        { "id": "P1-12", "title": "Undisclosed known scorer defect: absent from HEADROOM-ROADMAP.md and every subsequent phase report citing coverage numbers", "rootCause": "EVALUATION_METHODOLOGY", "fix": "Add the caveat inline to the Roadmap and to any report publishing an aggregate coverage percentage until P0-6 is actually fixed.", "blockedBy": ["P0-6 (fix supersedes disclosure, but disclosure should happen immediately regardless of fix timeline)"] }
+      ]
+    },
+    {
+      "tier": 3,
+      "rationale": "P2 robustness weaknesses - real, reproduced, but bounded by low current population, dormant code paths, or fail-safe (not fail-silent) behavior.",
+      "items": [
+        "FA-DOCID-02 (stale DocumentNode rows on re-extraction)",
+        "FA-PROV-01 (ContextItem loses discoveryId once separated from bundle)",
+        "FA-REVSTATE-01 (confirmation-flag DB-column default true with no code guardrail)",
+        "Q4 (orphans() has zero production consumers - dormant safety mechanism)",
+        "Q5 (malformed hierarchy under an ARTICLE reports STRUCTURE_HEALTHY - no rank/level sanity check)",
+        "Q6 (Schedule/Exhibit text structurally indistinguishable from operative text)",
+        "Q7 (ToC entries carry no non-operative signal)",
+        "resolveBaseText's DEFINITION-branch cross-document fallback (silent cross-document text leak in amendment resolution)",
+        "persistStructuralReferences has no per-item fault isolation (a single stale nodeId can abort the whole references-persistence step)",
+        "6 service.ts query functions with no companyId parameter (latent IDOR-shaped gap, zero current callers)",
+        "getRulesByCovenantFamily returns rules from multiple instruments undifferentiated",
+        "sibling span overlap undetected by structural health checks",
+        "coverage-audit/pipeline.ts's array[0] pick on a multi-valued originatingStructuralNodeIds field",
+        "ContractReferenceEdge.targetRuleId's declared onDelete:SetNull is unreachable due to a CHECK constraint (fails safe, not silently)",
+        "coverage-audit/pipeline.ts's hardcoded stale structuralParserVersion literal"
+      ]
+    },
+    {
+      "tier": 4,
+      "rationale": "P3 maintainability/disclosure-quality items.",
+      "items": [
+        "FA-DOCID-03 (supersedesDocumentId populated but unconsulted)",
+        "FA-REVSTATE-02 (no review-consuming code re-validates against supersession/extraction-version)",
+        "Over-conservative PARTIAL status label for a clean, well-evidenced deletion (mischaracterizes intended deletion as derivation failure)",
+        "Ambiguous-target-with-no-newText case doesn't disclose WHY it's ambiguous",
+        "Renumbering across a full restatement has no identity-continuity mechanism (disclosed gap, not silently wrong)",
+        "No mechanical guardrail (lint rule/import-boundary test) enforcing legacy Phase C quarantine - currently enforced only by a Roadmap paragraph"
+      ]
+    }
+  ],
+  "explicitNonRecommendation": "Per this audit's charter (Section 33/34 of the governing task), this map is diagnostic only. It does not authorize implementation, does not select a Phase 3F.2 package, and does not start Phase 4 work. Whether and in what order to act on this map is a decision for whoever runs the next phase."
+}

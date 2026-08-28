@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "TENANT_INSTRUMENT_ISOLATION_RESULTS",
+  "generatedAt": "2026-08-28T19:11:00Z",
+  "sourceWorkstream": "WS6 (Tenant/instrument isolation + DB certification)",
+  "startingSha": "3b1b037f0606814ad2c9b520d1078f7bd2d97d6e",
+  "methodNote": "Two independently-created documents with byte-identical Section 6.01 headed 'Payment Conditions', subsection 6.01(a), a defined term 'Payment Conditions', and a $100,000,000 threshold - once across two companies (Tenant A/B), once across two facilities in one company. Real Postgres, no mocks. Test ids prefixed audit-a-, verified cleaned up after run.",
+  "tests": [
+    { "id": "structural-retrieval-cross-tenant", "attackVector": "structural retrieval (DocumentNode)", "status": "PROVEN" },
+    { "id": "definitions-cross-tenant", "attackVector": "definitions (DefinedTermNode) across companies", "status": "PROVEN" },
+    {
+      "id": "definitions-cross-instrument-P0",
+      "attackVector": "definitions (DefinedTermNode) across two instruments in ONE company",
+      "status": "FAILED",
+      "severity": "P0",
+      "summary": "Only ONE DefinedTermNode row survives for two facilities both defining 'Payment Conditions'; the row is internally contradictory - documentId frozen at Facility Alpha (create-time), sourceNodeId (the real citation anchor) silently points into Facility Beta.",
+      "counterexample": "computeStableKey('defined-term', companyId, normalizedTerm) at lib/contract-model/compiler/persistence.ts:156,171 omits documentId/instrument scoping entirely, unlike DocumentNode's stableKey (includes charStart, 3F.1.2) and ContractRule's (includes sourceDocumentId).",
+      "corroboration": "Independently re-discovered by WS7's fault-injection workstream (see FAULT_INJECTION_RESULTS 'cross-document definition collision at PERSISTENCE layer'), which classified it P1 rather than P0. This audit reconciles the disagreement in favor of P0: the defect produces silent, internally-contradictory persisted state that misattributes a real definition to the wrong instrument with zero error signal, meeting this audit's own P0 bar ('silent corruption... without warning')."
+    },
+    { "id": "references-cross-tenant", "attackVector": "references (ContractReferenceEdge)", "status": "PROVEN" },
+    {
+      "id": "validate-tenant-isolation-blind-spot",
+      "attackVector": "validateTenantIsolation audit-tool completeness",
+      "status": "FAILED",
+      "severity": "P1",
+      "summary": "validateTenantIsolation (lib/contract-model/validators.ts:128-162) only checks targetRuleId, DocumentRelationshipEdge, and AmendmentEffect for cross-tenant leakage - never ContractReferenceEdge.targetTermId or targetDocumentNodeId. An injected cross-tenant edge via those fields passes clean."
+    },
+    { "id": "package-graph-instrument-grouping", "attackVector": "package graph (DebtInstrument, DocumentRelationshipEdge)", "status": "PROVEN" },
+    { "id": "contract-rule-instrument-isolation-holds", "attackVector": "package graph / rule persistence", "status": "PROVEN" },
+    {
+      "id": "rule-query-layer-no-instrument-scoping",
+      "attackVector": "query-layer instrument scoping",
+      "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+      "severity": "P2",
+      "summary": "getRulesByCovenantFamily returns both facilities' rules merged into one undifferentiated array; ContractRule carries no instrumentId column. Not a leak (both legitimately belong to the company) but no way to ask for just one instrument's rules."
+    },
+    {
+      "id": "service-bare-documentid-functions",
+      "attackVector": "context retrieval / query-layer defense-in-depth",
+      "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+      "severity": "P2",
+      "summary": "6 service.ts functions (getAmendmentsForDocument, getSupplementsForDocument, getRelatedDocuments, getModificationCandidates, findDocumentsReferencing, getDocumentsForInstrument) take a bare id with no companyId check. Zero current production callers (grep-confirmed) - latent IDOR-shaped gap, not exploitable today."
+    },
+    { "id": "discovery-persistence-not-applicable", "attackVector": "discovery persistence", "status": "NOT_APPLICABLE", "summary": "Zero prisma.* calls under discovery/** - pure in-memory, per-call companyId parameter, nothing to leak through." },
+    {
+      "id": "semantic-compiler-default-cache-cross-tenant",
+      "attackVector": "context retrieval / semantic-compiler caching",
+      "status": "FAILED",
+      "severity": "P1",
+      "summary": "compile.ts's module-level defaultCache (used by every real current caller that omits options.cache) is keyed by cache.ts's computeCacheKey, which never includes companyId/instrumentKey/sourceDocumentId. Company B's compile request was served Company A's cached result with the model never invoked for Company B. Currently latent (no app/ route wired), but is the default for the entire semantic-compiler surface.",
+      "corroboration": "Independently confirmed by WS7 (SUSPICIOUS_PATTERN_INVENTORY) via a separate code-inspection method reaching the same conclusion."
+    },
+    {
+      "id": "amendment-operative-state-scoping",
+      "attackVector": "amendment/operative state",
+      "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+      "summary": "Pure functions over a caller-supplied OperativeContractState - architecturally sound (no shared state), but this workstream did not construct a full adversarial cross-instrument amendment chain to positively prove it end-to-end."
+    },
+    {
+      "id": "covenant-engine-no-instrument-concept",
+      "attackVector": "covenant/operative state computation - instrument isolation (invariant #20)",
+      "status": "NOT_PROVEN_INSUFFICIENT_EVIDENCE",
+      "summary": "lib/covenant-engine.ts (the LIVE legacy engine powering the dashboard today) has zero instrumentId/instrumentKey/Facility concept in its Prisma queries - every query is companyId-scoped only. Whether this causes actual computational conflation of two instruments' covenant capacity, or is safe because each Permission is already independently evaluated, requires solver-internals tracing beyond this workstream's time budget. Honestly reported as inconclusive rather than rounded up."
+    }
+  ],
+  "dbCertification": {
+    "dbAvailable": true,
+    "migrationStatus": "up to date, 25 migrations",
+    "fullSuiteResult": { "testFiles": 175, "tests": 1659, "passed": 1659, "failed": 0 },
+    "realDbCertifiedGuarantees": [
+      { "guarantee": "3F.1.2's stableKey/charStart fix prevents a silent DB-level overwrite of two physically distinct structural occurrences sharing one section label, even within a single document.", "status": "CERTIFIED (new coverage this audit)" },
+      { "guarantee": "DocumentNode and ContractRule correctly isolate across two debt instruments sharing identical section numbering/drafting in one company.", "status": "CERTIFIED for these two models only" },
+      { "guarantee": "DefinedTermNode isolates across instruments within one company.", "status": "NOT CERTIFIED - FAILED (see P0 above)" },
+      { "guarantee": "validateTenantIsolation catches every real cross-tenant leak shape in the current schema.", "status": "NOT CERTIFIED - partial gap (see P1 above)" },
+      { "guarantee": "compileCovenantToIR's default caching path never serves one company's compiled result to another.", "status": "NOT CERTIFIED - FAILED under the default call pattern every real caller uses" },
+      { "guarantee": "Company deletion cascades correctly through every declared onDelete: Cascade FK; SetNull FKs null rather than cascade.", "status": "CERTIFIED (first time tested in this repository)" },
+      { "guarantee": "ContractReferenceEdge.targetRuleId's declared onDelete: SetNull actually completes cleanly.", "status": "NOT CERTIFIED - contradicts schema annotation (P2, fails safe: a CHECK constraint makes the FK action unreachable, delete is rejected outright, no corruption)" },
+      { "guarantee": "Real concurrent persistStructuralNodes calls for a colliding stableKey never produce duplicate rows under Postgres's real unique constraint.", "status": "CERTIFIED (5/5 repeated runs)" }
+    ]
+  }
+}

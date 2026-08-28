@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "CACHE_INVALIDATION_ASSURANCE",
+  "generatedAt": "2026-08-28T17:11:00Z",
+  "sourceWorkstream": "WS1",
+  "content": {
+    "schemaVersion": "1.0",
+    "cacheKeys": [
+      {
+        "name": "structureOutputHash() (stage-structure.ts:287) \u2014 per-node structural content hash",
+        "coversInputs": [
+          "STRUCTURAL_INDEX_VERSION",
+          "documentId",
+          "nodeType",
+          "sectionRef",
+          "charStart",
+          "nodeId"
+        ],
+        "missingInputs": [
+          "heading text (not hashed; a heading-only correction with unchanged charStart is invisible)"
+        ],
+        "invalidationTested": true,
+        "result": "PROVEN_WITH_BOUNDED_LIMITATION"
+      },
+      {
+        "name": "orchestrator.ts STRUCTURE-stage resumability gate (structureInputHash / getOrRunStage, orchestrator.ts:105)",
+        "coversInputs": [
+          "documentId",
+          "raw document text"
+        ],
+        "missingInputs": [
+          "STRUCTURAL_INDEX_VERSION",
+          "parseDocumentStructure algorithm identity"
+        ],
+        "invalidationTested": true,
+        "result": "FAILED"
+      },
+      {
+        "name": "orchestrator.ts AMENDMENTS-stage resumability gate (amendmentsInputHash, orchestrator.ts:177)",
+        "coversInputs": [
+          "document label"
+        ],
+        "missingInputs": [
+          "document text (runAmendmentsStage itself reads text.slice(0,2000))"
+        ],
+        "invalidationTested": true,
+        "result": "FAILED"
+      },
+      {
+        "name": "persistence.ts upsert stableKeys (persistStructuralNodes/persistStructuralDefinitions/persistContractRules/persistDefinedTerms)",
+        "coversInputs": [
+          "companyId",
+          "documentId",
+          "nodeType/sectionRef/charStart or sourceSectionRef+action or term name"
+        ],
+        "missingInputs": [
+          "algorithm/extraction version; no tombstone/delete step for rows absent from the current run's output"
+        ],
+        "invalidationTested": true,
+        "result": "FAILED"
+      },
+      {
+        "name": "semantic-coverage/identity.ts computeSemanticUnitId/computeCoverageEntryId (SEMANTIC_COVERAGE_ALGORITHM_VERSION)",
+        "coversInputs": [
+          "documentId",
+          "structuralNodeId",
+          "span",
+          "detection signature",
+          "algorithm version"
+        ],
+        "missingInputs": [],
+        "invalidationTested": false,
+        "result": "PROVEN_WITH_BOUNDED_LIMITATION"
+      },
+      {
+        "name": "coverage-audit/identity.ts computeRegionId/computeFindingId (COVERAGE_AUDIT_ALGORITHM_VERSION)",
+        "coversInputs": [
+          "documentId",
+          "nodeId",
+          "signal/finding data",
+          "algorithm version"
+        ],
+        "missingInputs": [],
+        "invalidationTested": false,
+        "result": "PROVEN_WITH_BOUNDED_LIMITATION"
+      },
+      {
+        "name": "coverage-audit/pipeline.ts computeContentIdentity's structuralParserVersion field (pipeline.ts:102)",
+        "coversInputs": [
+          "companyId",
+          "packageKey",
+          "a hardcoded literal string",
+          "COVERAGE_AUDIT_ALGORITHM_VERSION",
+          "read spans"
+        ],
+        "missingInputs": [
+          "the real, current STRUCTURAL_INDEX_VERSION constant \u2014 hardcoded to the stale literal \"phase-2a-structural-index\" instead"
+        ],
+        "invalidationTested": false,
+        "result": "FAILED"
+      },
+      {
+        "name": "semantic/cache.ts computeCacheKey (InMemorySemanticCompilationCache)",
+        "coversInputs": [
+          "candidateRef",
+          "operativeSourceText",
+          "contextBundle.contentIdentity",
+          "operativeLineage status+sourceDoc",
+          "irSchemaVersion",
+          "compilerAlgorithmVersion",
+          "compilerPromptVersion",
+          "toolPolicyVersion",
+          "providerIdentity"
+        ],
+        "missingInputs": [],
+        "invalidationTested": false,
+        "result": "PROVEN_WITH_BOUNDED_LIMITATION"
+      },
+      {
+        "name": "semantic-precedent/store.ts InMemoryPrecedentStore review-state handling",
+        "coversInputs": [
+          "append-only PrecedentReviewEvent log",
+          "versioned supersede-never-mutate GeneralizedPrecedent objects"
+        ],
+        "missingInputs": [
+          "durable persistence (process-lifetime in-memory Map only)"
+        ],
+        "invalidationTested": false,
+        "result": "PROVEN_WITH_BOUNDED_LIMITATION"
+      }
+    ],
+    "stalenessRisksFound": [
+      {
+        "description": "A structural-parsing algorithm change (STRUCTURAL_INDEX_VERSION bump or any parseDocumentStructure fix) over unchanged document text is invisible to orchestrator.ts's STRUCTURE-stage cache gate; getOrRunStage silently resumes and re-persists the pre-change structural nodes.",
+        "severity": "P1",
+        "filesCited": [
+          "lib/contract-model/compiler/orchestrator.ts:105",
+          "lib/contract-model/compiler/stage-structure.ts:287",
+          "tests/foundation-audit/cache-invalidation-audit.test.ts"
+        ]
+      },
+      {
+        "description": "orchestrator.ts's AMENDMENTS-stage cache gate is keyed only on document label, not text, while the real stage function also inspects text \u2014 a text edit that flips amendment-shaped detection is not recompiled.",
+        "severity": "P1",
+        "filesCited": [
+          "lib/contract-model/compiler/orchestrator.ts:177",
+          "lib/contract-model/compiler/stage-amendments.ts:24",
+          "tests/foundation-audit/cache-invalidation-audit.test.ts"
+        ]
+      },
+      {
+        "description": "persistence.ts's upsert functions never delete a previously-persisted row for content the current run no longer produces; orphaned DocumentNode/DefinedTermNode/ContractRule rows survive indefinitely and are returned by plain reads (e.g. service.ts's findMany by documentId) alongside current rows.",
+        "severity": "P1",
+        "filesCited": [
+          "lib/contract-model/compiler/persistence.ts:84-108",
+          "lib/contract-model/service.ts:22",
+          "tests/foundation-audit/cache-invalidation-audit.test.ts"
+        ]
+      },
+      {
+        "description": "coverage-audit/pipeline.ts hardcodes a stale structuralParserVersion literal (\"phase-2a-structural-index\") into its own content-identity fingerprint instead of importing the real, current STRUCTURAL_INDEX_VERSION constant \u2014 already visibly wrong today (types.ts now defines \"phase-3f1-2-structural-identity.v1\"); this field cannot currently detect a structural-parser-version change at all.",
+        "severity": "P2",
+        "filesCited": [
+          "lib/contract-model/compiler/coverage-audit/pipeline.ts:102",
+          "lib/contract-model/compiler/types.ts:45"
+        ]
+      },
+      {
+        "description": "The legacy Phase C compiler's own dangerous-unflagged safety gap (25.0% then 15.625%, both above its required \u22645% gate) was never closed and remains in still-present, unmodified code (RULE_EXTRACTION/VERIFICATION/PROMOTION stages); combined with the STRUCTURE/AMENDMENTS cache-gate defects above, any future re-run of this pipeline against a real package risks silently compounding stale/incorrect structural input on top of an already-known-unsafe extraction path.",
+        "severity": "P1",
+        "filesCited": [
+          "lib/contract-model/compiler/orchestrator.ts",
+          "docs/phase-c-1-multi-basket-verification.md"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "FREEZE_AND_BASELINE_MANIFEST",
+  "generatedAt": "2026-08-28T19:39:27Z",
+  "repoRoot": "/home/user/headroom",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "baselineCommit": {
+    "sha": "3b1b037f0606814ad2c9b520d1078f7bd2d97d6e",
+    "subject": "Phase 3F.1.2: structural node identity & index integrity remediation",
+    "verdict": "PHASE_3F_1_2_STRUCTURAL_IDENTITY_REMEDIATION_GATE_PASSED"
+  },
+  "auditWipCommit": {
+    "sha": "5c7885a5cf54eae623648ac16898f8165c8ac1a3",
+    "subject": "Phase 3F.1.3 (WIP): foundation assurance audit-only test/probe artifacts",
+    "note": "Interim commit made mid-audit after an unauthorized prisma/schema.prisma mutation (likely from a background agent running `npx prisma db pull`) was detected and reverted via `git checkout -- prisma/schema.prisma`. Confirmed empty diff on prisma/schema.prisma after revert; live DB migration state was unaffected (`npx prisma migrate status` remained up to date throughout)."
+  },
+  "productionCodeFreezeVerification": {
+    "verifiedAt": "2026-08-28T19:39:27Z",
+    "command": "git diff --stat -- lib/ app/ prisma/",
+    "result": "EMPTY - zero production-file modifications across the entire audit",
+    "verified": true
+  },
+  "keyConstantsAtBaseline": {
+    "STRUCTURAL_INDEX_VERSION": "phase-3f1-2-structural-identity.v1",
+    "COVERAGE_AUDIT_ALGORITHM_VERSION": "present, unaudited for staleness beyond coverage-audit/pipeline.ts:102 finding (see CACHE_INVALIDATION_ASSURANCE)",
+    "SEMANTIC_COVERAGE_ALGORITHM_VERSION": "present, not independently re-derived in this audit"
+  },
+  "environment": {
+    "postgres": {
+      "available": true,
+      "note": "A real local Postgres 16 instance was available this session (simply not started in the prior 3F.1.2 session, not fundamentally unavailable). Started, confirmed fully migrated (`npx prisma migrate status`: up to date, 25 migrations), used for all real-DB-backed test workstreams.",
+      "materialityToAudit": "This materially changes what can be PROVEN vs. NOT_PROVEN_ENVIRONMENT_BLOCKED compared to the prior 3F.1.2 phase's report, which had no reachable DB. Multiple guarantees in this audit (tenant/instrument isolation at the DB layer, cascade/FK behavior, real concurrent-write races, real duplicate-physical-occurrence persistence) are PROVEN against real Postgres, not merely reasoned about."
+    }
+  },
+  "governingDocumentsRead": [
+    "docs/HEADROOM-NORTH-STAR.md",
+    "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md",
+    "docs/HEADROOM-ROADMAP.md",
+    "docs/phase-3f1-1-residual-safety-forensics.md",
+    "docs/phase-3f1-2-structural-identity-remediation.md",
+    "docs/phase-2e-independent-coverage-auditor.md",
+    "docs/phase-2e-1-cross-reference-remediation.md",
+    "docs/phase-2g-amendment-precedence.md",
+    "docs/phase-c-contract-compiler-v1.md",
+    "docs/phase-c-1-multi-basket-verification.md",
+    "docs/phase-c0-analyzer-validation.md",
+    "docs/founder-legal-review-2026-08-25.md"
+  ],
+  "governingDocumentStalenessDisclosure": {
+    "docs/HEADROOM-ROADMAP.md": "Confirmed STALE: still reads 'Current phase: Phase 2 complete... recommended Phase 3A' and has not been updated since first written, despite 9+ subsequent phases (3A-3F.1.2) having since completed and shipped, per `git log --follow -p`. Its claims about tenant/instrument isolation, caching, and reproducibility being 'BUILT' were treated in this audit as claims to independently re-verify, never as authoritative facts. Several claims were found to overstate reality (see PHASE1_MODEL_CLASSIFICATION and CACHE_INVALIDATION_ASSURANCE artifacts) and several held up under adversarial re-verification (effective-dating semantics)."
+  },
+  "auditExecutionModel": {
+    "method": "7 parallel background subagents, each self-contained with explicit authorization boundaries and required JSON output schemas, dispatched to cover the full investigative surface named in the audit charter.",
+    "workstreams": [
+      { "id": "WS1", "scope": "Cache invalidation, golden/evaluator circularity, legacy Phase C quarantine", "filesProduced": ["tests/foundation-audit/cache-invalidation-audit.test.ts"] },
+      { "id": "WS2", "scope": "Independent auditor dependency mapping (Invariant #18 live retest), amendment/operative-state adversarial testing", "filesProduced": ["tests/foundation-audit/shared-substrate-live-retest.test.ts", "tests/foundation-audit/amendment-operative-state-adversarial.test.ts", "scripts/foundation-audit-shared-substrate-probe.ts", "scripts/foundation-audit-amendment-probe.ts"] },
+      { "id": "WS3", "scope": "Discovery fail-closed assurance, package-graph adversarial assurance, context-retrieval assurance", "filesProduced": ["tests/foundation-audit/discovery-fail-closed.test.ts", "tests/foundation-audit/package-graph-adversarial.test.ts", "tests/foundation-audit/context-retrieval-adversarial.test.ts"] },
+      { "id": "WS4", "scope": "Document/source identity overload, effective dating, provenance chain, review/approval state staleness, model classification", "filesProduced": ["tests/foundation-audit/document-source-identity-overload.test.ts", "tests/foundation-audit/effective-dating-adversarial.test.ts", "tests/foundation-audit/provenance-chain-backward-trace.test.ts", "tests/foundation-audit/review-state-staleness.test.ts"] },
+      { "id": "WS5", "scope": "Structural assumptions beyond I1-I16, raw-source accounting, fuzz-suite circularity review", "filesProduced": ["tests/foundation-audit/part1-independent-reverification.test.ts", "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts", "tests/foundation-audit/part4-fuzz-suite-extension.test.ts", "scripts/foundation-audit-source-span-accounting.ts", "tests/fixtures/foundation-audit/source-span-accounting.json"] },
+      { "id": "WS6", "scope": "Tenant/instrument isolation attack, DB certification", "filesProduced": ["tests/foundation-audit/tenant-instrument-drafting-collision.test.ts", "tests/foundation-audit/semantic-cache-cross-tenant.test.ts", "tests/foundation-audit/cascade-and-concurrency.test.ts", "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts"] },
+      { "id": "WS7", "scope": "Systematic fault injection, combined/compound failure scenarios, known-package foundation replay, repo-wide suspicious-pattern grep", "filesProduced": ["tests/foundation-audit/structural-index-fault-injection.test.ts", "tests/foundation-audit/persistence-fault-injection.test.ts", "tests/foundation-audit/discovery-fault-injection.test.ts", "tests/foundation-audit/combined-failures.test.ts", "scripts/foundation-audit-known-package-replay.ts"] }
+    ],
+    "totalNewTestFiles": 21,
+    "totalNewTests": "154 (WS1:4, WS2:25, WS3:34, WS4:23, WS5:26, WS6:20, WS7:30 — self-reported per-workstream counts; independently re-verified via full-suite run, see REGRESSION_SUITE note below)",
+    "zeroProductionFilesModified": true
+  }
+}

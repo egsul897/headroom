@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "DISCOVERY_PACKAGE_CONTEXT_FINDINGS",
+  "generatedAt": "2026-08-28T19:15:00Z",
+  "sourceWorkstream": "WS3 (Discovery fail-closed, package-graph adversarial, context-retrieval assurance)",
+  "content":
+{
+  "schemaVersion": "1.0",
+  "findings": [
+    {
+      "id": "DISC-01",
+      "area": "DISCOVERY",
+      "title": "computeStructuralCoverage ignores real node.charEnd, silently absorbing mid-document and trailing missing structural regions as 'covered'",
+      "status": "PROVEN",
+      "severity": "P0",
+      "rootCause": "computeTopLevelSpans (structural-coverage.ts) defines each top-level node's own coverage span as [node.charStart, nextTopLevelNode.charStart ?? textLength) \u2014 never consulting the node's actual charEnd. Any real content between a node's true end and the next recognized node's start (or after the last node, since the last node's span extends to textLength unconditionally) is attributed to the preceding node's coverage rather than reported as an uncovered span. The function's own docstring incorrectly asserts only two uncovered-region shapes are possible (leading preamble, or zero-node whole document); a middle or trailing gap is a third, real, undetectable shape.",
+      "evidence": "tests/foundation-audit/discovery-fail-closed.test.ts tests D, D2, D3 (real production code, no mocking). D: a fabricated 5,000-char 'missing ARTICLE' sandwiched between two real top-level nodes produces coveragePercent=100, significantUncoveredSpans=0, health=STRUCTURE_HEALTHY. D2: an identical gap placed AFTER the last node produces the same false-healthy result. D3 (control): the SAME gap placed BEFORE the first node IS correctly detected (significantUncoveredSpans>0, health!=HEALTHY) \u2014 proving the defect is specific to non-leading gaps, not a general parsing issue. Downstream: buildRawSourceFallbackFindings, which only ever scans structural-coverage.ts's own reported uncovered spans, produces zero findings for the missing region \u2014 both the discovery pipeline (no node -> no Pass A candidate -> never sent to Pass B) and its one independent safety net are blind to the same gap simultaneously.",
+      "counterexample": "Nodes: ARTICLE V [charStart=0, charEnd=50] and ARTICLE VII [charStart=5050, charEnd=fullText.length] over a document whose real text runs 0..5150+, with 5000 real substantive characters between them (a fabricated missing ARTICLE VI) belonging to zero structural nodes. computeStructuralCoverage(doc, fullText, [articleV, articleVII]) returns coveragePercent=100, significantUncoveredSpans=[], health='STRUCTURE_HEALTHY'.",
+      "filesCited": [
+        "lib/contract-model/compiler/structural-coverage.ts",
+        "lib/contract-model/compiler/coverage-audit/raw-source-fallback.ts",
+        "tests/foundation-audit/discovery-fail-closed.test.ts"
+      ]
+    },
+    {
+      "id": "DISC-02",
+      "area": "DISCOVERY",
+      "title": "documentDiscoveryHealth and structural health are correctly independent signals, but a naive caller consulting only discoveryHealth would see a false HEALTHY for a totally unparseable document",
+      "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+      "severity": "P2",
+      "rootCause": "classifyDiscoveryHealth returns DISCOVERY_HEALTHY whenever sectionsAttempted===0, which is definitionally true for a document with zero recognized SECTION nodes \u2014 this is correct given discovery's own scope (nothing to attempt), but the field name alone invites misreading as 'this document is fine.'",
+      "evidence": "tests/foundation-audit/discovery-fail-closed.test.ts tests C and E: a garbage/near-empty document produces STRUCTURE_FAILED (structural-coverage) simultaneously with DISCOVERY_HEALTHY (discovery pipeline) for the identical document. E confirms the raw-source fallback independently produces STRUCTURAL_ANALYSIS_INSUFFICIENT + RAW_SOURCE_COVENANT_SIGNAL findings for the same document, correctly giving a caller who consults BOTH signals the full picture.",
+      "counterexample": null,
+      "filesCited": [
+        "lib/contract-model/compiler/discovery/pipeline.ts",
+        "lib/contract-model/compiler/structural-coverage.ts",
+        "tests/foundation-audit/discovery-fail-closed.test.ts"
+      ]
+    },
+    {
+      "id": "PKG-01",
+      "area": "PACKAGE_GRAPH",
+      "title": "An amendment that merely quotes an unrelated agreement's dated self-reference for recital context produces a false, confident RESOLVED AMENDS edge, causing real cross-instrument contamination",
+      "status": "PROVEN",
+      "severity": "P0",
+      "rootCause": "resolvePackageRelationships (relationship-resolution.ts) calls findAllAgreementReferences over the WHOLE preamble window (4000-8000 chars) of a source document classified as amendment-shaped, and generates one independent RelationshipCandidate per matched dated agreement reference, resolving each purely by (type, execution date) match against the rest of the package. There is no mechanism distinguishing 'the document this amendment actually targets' from 'an agreement mentioned in a WHEREAS recital for unrelated context' (even when the text explicitly disclaims amending it) \u2014 a coincidental type+date match (realistic: sibling debt instruments closing on the same date routinely share an execution date) is treated as equally strong evidence for AMENDS.",
+      "evidence": "tests/foundation-audit/package-graph-adversarial.test.ts test 10 (real buildPackageGraph, no mocking): a Second Amendment to a Credit Agreement whose recital states 'a cross-default may arise under the Indenture dated as of January 1, 2021... without amending such Indenture in any way' produces TWO AMENDS edges: one correctly RESOLVED to the true target (Credit Agreement), and a second RESOLVED (confidence 0.95, resolutionMethod DETERMINISTIC_TITLE_DATE_MATCH) edge to the unrelated Indenture. Independently confirmed downstream consequence: groupPackageIntoInstruments (instrument-grouping.ts) then merges the unrelated Indenture into the SAME instrument cluster as the real Credit Agreement and its amendment (documentIds: ['base','unrelated-indenture','amend']), a real cross-instrument contamination.",
+      "counterexample": "Documents: base Credit Agreement dated 2021-01-01; an unrelated Notes Indenture ALSO dated 2021-01-01 (same closing date, a realistic coincidence); an amendment to the Credit Agreement whose recital quotes the Indenture's own dated self-reference purely for cross-default context while explicitly stating it is not amended. buildPackageGraph produces a RESOLVED AMENDS edge from the amendment to the unrelated Indenture.",
+      "filesCited": [
+        "lib/contract-model/compiler/package-graph/relationship-resolution.ts",
+        "lib/contract-model/compiler/package-graph/instrument-grouping.ts",
+        "tests/foundation-audit/package-graph-adversarial.test.ts"
+      ]
+    },
+    {
+      "id": "PKG-02",
+      "area": "PACKAGE_GRAPH",
+      "title": "The REVIEW_REQUIRED signal that happens to appear on the contaminated instrument in PKG-01 is a side effect of multi-target ambiguity, not a designed defense against false edges",
+      "status": "PROVEN_WITH_BOUNDED_LIMITATION",
+      "severity": "P1",
+      "rootCause": "groupPackageIntoInstruments marks an instrument REVIEW_REQUIRED only when more than one member document has zero RESOLVED edge pointing away from it inside the cluster (an ambiguous 'which is the base' condition). In the PKG-01 scenario this happens to fire because the single amending document points at two different targets, but the underlying false RelationshipCandidate itself remains status RESOLVED / confidence 0.95 with no distinguishing flag \u2014 a caller reading getAmendmentsForDocument('unrelated-indenture') or relationshipCandidates directly (rather than the derived instrument grouping) sees an ordinary, confidently-resolved edge.",
+      "evidence": "tests/foundation-audit/package-graph-adversarial.test.ts test 10 output: the false edge object is byte-identical in shape/confidence to the true edge; only the derived InstrumentGroupingResult happens to carry reviewStatus REVIEW_REQUIRED, and only because this specific fixture has one source document pointing at two targets.",
+      "counterexample": null,
+      "filesCited": [
+        "lib/contract-model/compiler/package-graph/instrument-grouping.ts",
+        "lib/contract-model/compiler/package-graph/types.ts"
+      ]
+    },
+    {
+      "id": "PKG-03",
+      "area": "PACKAGE_GRAPH",
+      "title": "Control scenarios (base+amendment, guarantee/security targeting, multi-target joinder, restatement-vs-new-facility, supplemental indenture, intercreditor typing/exclusion, same-borrower isolation, obsolete/current non-conflation, bare-mention honesty) all resolve or correctly stay unresolved as documented",
+      "status": "PROVEN",
+      "severity": null,
+      "rootCause": "N/A - positive confirmation, not a defect.",
+      "evidence": "tests/foundation-audit/package-graph-adversarial.test.ts tests 1-9, 11, and the evidence-substring check, all passing against the real buildPackageGraph pipeline.",
+      "counterexample": null,
+      "filesCited": [
+        "lib/contract-model/compiler/package-graph/pipeline.ts",
+        "tests/foundation-audit/package-graph-adversarial.test.ts"
+      ]
+    },
+    {
+      "id": "CTX-01",
+      "area": "CONTEXT_RETRIEVAL",
+      "title": "A cross-referenced section's own pending amendment (a real, resolved package-graph modification candidate) is never surfaced when that section is retrieved only as CROSS_REFERENCE context, unlike the primary candidate's own section",
+      "status": "PROVEN",
+      "severity": "P1",
+      "rootCause": "buildCovenantContextBundle (context-retrieval/pipeline.ts) calls retrieveAmendmentLeadsForSection exactly once, using the PRIMARY candidate's own sectionRef. retrieveCrossReferencesFromNode (reference-context.ts), which retrieves any OTHER section reached via an explicit reference ('subject to Section X'), never calls retrieveAmendmentLeadsForSection for that target section. The retrieved text itself is honestly pre-amendment (not silently presented as falsely 'current' - consistent with invariant #13), but no AMENDMENT_LEAD item or unresolved-dependency entry anywhere in the bundle discloses that the referenced section has a real pending modification elsewhere in the package.",
+      "evidence": "tests/foundation-audit/context-retrieval-adversarial.test.ts test 9 (real buildCovenantContextBundle + buildPackageGraph): a candidate at Section 6.01 references 'subject to Section 6.09'; a second package document is a real, resolved-or-review-required amendment to Section 6.09. The built bundle retrieves 6.09's original text but contains no AMENDMENT_LEAD/SUPPLEMENT_LEAD item for 6.09 and no unresolvedDependency naming it. Test 9b (control) confirms the identical amendment IS correctly surfaced as an AMENDMENT_LEAD when 6.09 is the PRIMARY candidate's own section, isolating the gap to cross-referenced targets specifically.",
+      "counterexample": "Doc1: Section 6.01 ('...subject to Section 6.09') and Section 6.09 ('...4.00 to 1.00'). Doc2: a First Amendment restating Section 6.09 to '5.00 to 1.00'. buildCovenantContextBundle for the candidate at 6.01 returns a CROSS_REFERENCE item for 6.09 with the original 4.00-to-1.00 text and zero amendment-lead/unresolved signal anywhere in the bundle.",
+      "filesCited": [
+        "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+        "lib/contract-model/compiler/context-retrieval/reference-context.ts",
+        "lib/contract-model/compiler/context-retrieval/cross-document-context.ts",
+        "tests/foundation-audit/context-retrieval-adversarial.test.ts"
+      ]
+    },
+    {
+      "id": "CTX-02",
+      "area": "CONTEXT_RETRIEVAL",
+      "title": "Sibling proviso/exception/condition/shared-cap inclusion fires on generic keyword match alone, attaching semantically unrelated sibling clauses to a candidate with the same confidence/shape as genuinely relevant context",
+      "status": "PROVEN",
+      "severity": "P1",
+      "rootCause": "retrieveSiblingContext (structural-context.ts) classifies and includes ANY sibling under the same structural parent whose OWN text matches one of a small set of generic regexes (PROVISO_SIGNALS, EXCEPTION_SIGNALS, CONDITION_SIGNALS, SHARED_CAP_SIGNALS, e.g. /\\bin the aggregate\\b/i, /\\bprovided(?:,)? that\\b/i) - there is no check that the matched sibling's language actually concerns the same subject/economic mechanism as the specific candidate node it gets attached to via a SIBLING_OF edge and the fixed description 'may modify or limit the discovered candidate.'",
+      "evidence": "tests/foundation-audit/context-retrieval-adversarial.test.ts test 4: candidate 6.03(a) (Dispositions of obsolete equipment) receives sibling 6.03(b)'s own proviso about an entirely different subject (Investments under Section 6.06) as a PROVISO item, purely because it contains 'provided that.' Test 12: candidate 6.08(a) (arm's-length Affiliate Transactions) receives sibling 6.08(b) - director compensation, whose own text explicitly states it 'bears no economic relationship to clause (a) at all' - as a SHARED_CAP item, purely because it contains 'in the aggregate.' Both delivered with retrievalMethod STRUCTURAL_TRAVERSAL, confidence 0.7, identical shape to a genuinely relevant item.",
+      "counterexample": "SECTION 6.08 Affiliate Transactions: (a) transactions on arm's-length terms; (b) director compensation not exceeding $5,000,000 in the aggregate per year, which bears no economic relationship to clause (a) at all. buildCovenantContextBundle for candidate 6.08(a) returns a SHARED_CAP item for 6.08(b) with reason 'Sibling provision containing shared cap language (\"\\bin the aggregate\\b\") that may modify or limit the discovered candidate.'",
+      "filesCited": [
+        "lib/contract-model/compiler/context-retrieval/structural-context.ts",
+        "tests/foundation-audit/context-retrieval-adversarial.test.ts"
+      ]
+    },
+    {
+      "id": "CTX-03",
+      "area": "CONTEXT_RETRIEVAL",
+      "title": "Ambiguous same-label references, unresolved defined terms, cross-document leads, definition-dependency chains, and cross-section/cross-reference retrieval all behave correctly and honestly",
+      "status": "PROVEN",
+      "severity": null,
+      "rootCause": "N/A - positive confirmation, not a defect.",
+      "evidence": "tests/foundation-audit/context-retrieval-adversarial.test.ts tests 1,2,3,5,6,7,8,10,11 all pass against the real buildCovenantContextBundle/buildPackageGraph pipeline. Test 10 specifically confirms 3F.1.2's ambiguity plumbing reaches this consumer: a real duplicate-labeled 'Section 6.04' produces resolveUniqueNodeByRef status AMBIGUOUS, which reference-context.ts correctly turns into an AMBIGUOUS_RELATIVE_REFERENCE/HIGH unresolvedDependency, with neither physical occurrence's text silently retrieved as a resolved CROSS_REFERENCE item.",
+      "counterexample": null,
+      "filesCited": [
+        "lib/contract-model/compiler/context-retrieval/reference-context.ts",
+        "lib/contract-model/compiler/structural-references.ts",
+        "tests/foundation-audit/context-retrieval-adversarial.test.ts"
+      ]
+    }
+  ],
+  "discoveryFailClosedInvariant": "FAILED",
+  "packageGraphEvidenceInvariant": "FAILED",
+  "contextRetrievalMetrics": {
+    "requiredRecallAssessment": "All 9 required reference shapes tested (relative positional, subject-to/notwithstanding, except-as-provided, trailing proviso, shared-cap, definition dependency chain, cross-section, cross-document, ambiguous-same-label) retrieved their truly-necessary context successfully when the reference itself was structurally resolvable. The one exception is CTX-01: a cross-referenced section's own pending amendment is never surfaced (a recall gap specific to amendment-awareness, not to the underlying reference resolution itself, which worked correctly).",
+    "wrongContextContaminationFound": true,
+    "unresolvedReferenceHonesty": "Confirmed strong: genuinely undeclared defined terms, ambiguous same-label references, and referenced-but-absent documents are all surfaced as explicit, typed UnresolvedDependency entries (UNRESOLVED_DEFINED_TERM, AMBIGUOUS_RELATIVE_REFERENCE/HIGH, REFERENCED_DOCUMENT_ABSENT) rather than silently omitted, in every scenario tested (tests 8, 10, 11)."
+  }
+}
+}

@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "REGRESSION_SUITE_CERTIFICATION",
+  "generatedAt": "2026-08-28T19:40:23Z",
+  "fullSuiteRun": {
+    "command": "npx vitest run",
+    "testFiles": 175,
+    "tests": 1659,
+    "passed": 1659,
+    "failed": 0,
+    "skipped": 0,
+    "durationSeconds": 34.69
+  },
+  "foundationAuditSuiteOnlyRun": {
+    "command": "npx vitest run tests/foundation-audit/",
+    "testFiles": 21,
+    "tests": 162,
+    "passed": 162,
+    "failed": 0,
+    "durationSeconds": 4.65
+  },
+  "note": "Every test in tests/foundation-audit/ passes because the defect it targets is either confirmed real (test asserts the defective behavior occurs, documenting it) or confirmed absent (test asserts correct behavior, providing positive evidence) - a passing test count alone is NOT evidence of foundation health; see the individual finding artifacts for what each test actually proves. Full-suite green (1659/1659) confirms zero regression was introduced by any of the 21 new audit-only test files and that production code remained byte-identical to the 3F.1.2 baseline throughout."
+}

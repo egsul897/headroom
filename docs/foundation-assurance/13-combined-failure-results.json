@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "COMBINED_FAILURE_RESULTS",
+  "generatedAt": "2026-08-28T19:15:00Z",
+  "sourceWorkstream": "WS7",
+  "content": {
+    "schemaVersion": "1.0",
+    "scenarios": [
+      {"description":"Extraction corruption (INVALID_SOURCE_SPAN-flagged section) + a real resolved amendment targeting that exact section","individualFaultsInjected":["corrupted source span","amendment effect application"],"emergentFalseCertaintyFound":true,"evidence":"operative-state.ts never calls index.healthDiagnostics(); computeOperativeContractState returns OPERATIVE_STATE_RESOLVED for a node the index's own health pass had already flagged ERROR/INVALID_SOURCE_SPAN.","severity":"P2"},
+      {"description":"Ambiguous amendment target (duplicate-labeled base section) + amendment effect not yet effective as of the query date","individualFaultsInjected":["duplicate legal label / AMBIGUOUS resolution","amendment with future effectiveDate"],"emergentFalseCertaintyFound":true,"evidence":"textMissingDespiteAppliedEffect only fires when appliedChain.length>0; with a future-dated effect appliedChain is empty, so status=OPERATIVE_STATE_RESOLVED, currentText=null, unresolvedIssues=[] - indistinguishable from an ordinary unamended provision.","severity":"P2"},
+      {"description":"Amendment target ambiguity via missing definition in the base document + cross-document definition-resolution fallback","individualFaultsInjected":["missing definition in base document","getDefinition/getDefinitionFullText no-documentId fallback"],"emergentFalseCertaintyFound":true,"evidence":"operative-state.ts:63's '?? index.getDefinition(group.ref)' fallback (no documentId) resolves to an unrelated document's own definition; provision.currentSourceDocumentId still claims the base document while currentText is the unrelated document's full raw text, with zero unresolvedIssues flagging the leakage.","severity":"P1"},
+      {"description":"Out-of-order amendment ingestion + two amendments sharing an identical effective date","individualFaultsInjected":["same-day effective dates (real AMENDMENT_CONFLICT detector)","reversed ingestion order"],"emergentFalseCertaintyFound":true,"evidence":"OPERATIVE_STATE_CONFLICTED status is correctly order-independent (GOOD - invariant 21 holds at the status level), but buildProvisionChain's stable sort preserves ingestion-order ties, so currentText differs by ingestion order alone for the identical two real documents - a narrower non-determinism inside an already-flagged CONFLICTED provision.","severity":"P2"},
+      {"description":"Persistence reload + duplicated labels (two colliding-label, distinct-nodeId occurrences, real DB round-trip)","individualFaultsInjected":["duplicate legal label","real Postgres persist+reload (not in-memory)"],"emergentFalseCertaintyFound":false,"evidence":"resolveUniquePersistedNodeByRef correctly reports undefined (AMBIGUOUS) both immediately after persisting AND after a genuine fresh-query DB round-trip - no degradation introduced by combining these two conditions.","severity":null}
+    ]
+  }
+}

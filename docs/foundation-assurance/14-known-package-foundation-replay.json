@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "KNOWN_PACKAGE_FOUNDATION_REPLAY",
+  "generatedAt": "2026-08-28T19:15:00Z",
+  "sourceWorkstream": "WS7 (with corroborating span-accounting numbers from WS5, see SOURCE_SPAN_ACCOUNTING)",
+  "generalizationCaveat": "Per Architecture Invariant #28, none of the below proves anything about generalization to an unseen package - FWRG/LSB/CONMED/DSGR are permanent regression evidence only, never re-treated as blind/unseen.",
+  "content": {
+    "schemaVersion": "1.0",
+    "packages": [
+      {"packageKey":"FWRG","sourceIntegrity":"reproducible - identical sha256 content hash and structureOutputHash across two independent extractions","structuralHealth":{"errorFindings":0,"infoFindings":0},"discoveryHealthWhereRunnable":"Layer A (deterministic Pass A) only, $0: 171 candidate signals across 418 structural nodes; Layer B (LLM Pass B) not run in this replay","packageGraphHealth":"2 instruments detected, 0 relationship candidates, 0 unresolved","unresolvedMaterialRegions":"none identified in this replay's bounded scope","invariantViolations":0},
+      {"packageKey":"LSB","sourceIntegrity":"reproducible - identical hashes across two independent extractions","structuralHealth":{"errorFindings":0,"infoFindings":0},"discoveryHealthWhereRunnable":"Layer A only, $0: 44 candidate signals across 76 structural nodes","packageGraphHealth":"2 instruments detected, 0 relationship candidates, 0 unresolved","unresolvedMaterialRegions":"none identified in this replay's bounded scope","invariantViolations":0},
+      {"packageKey":"CONMED","sourceIntegrity":"reproducible - identical hashes across two independent real HTML-parse extractions","structuralHealth":{"errorFindings":0,"infoFindings":1096},"discoveryHealthWhereRunnable":"Layer A only, $0: 1216 candidate signals across 2736 structural nodes","packageGraphHealth":"2 instruments detected, 8 relationship candidates, 4 unresolved (50%)","unresolvedMaterialRegions":"4 of 8 package-graph relationship candidates remain unresolved - a real, disclosed, pre-existing gap this audit did not remediate (production code frozen)","invariantViolations":0},
+      {"packageKey":"DSGR","sourceIntegrity":"reproducible - identical hashes across two independent extractions","structuralHealth":{"errorFindings":0,"infoFindings":1568},"discoveryHealthWhereRunnable":"Layer A only, $0: 1931 candidate signals across 4149 structural nodes","packageGraphHealth":"4 instruments detected, 4 relationship candidates, 4 unresolved (100%)","unresolvedMaterialRegions":"ALL 4 package-graph relationship candidates remain unresolved - matches DSGR's known, permanent NEEDS_ITERATION status (Architecture Invariant #28); not remediated here","invariantViolations":0}
+    ],
+    "dsgrReconciliation": {"structuralOccurrences":4149,"duplicateLegalLabels":546,"physicalIdentityCollisions":0,"matchesHistoricalRecord":true},
+    "generalizationClaimMade": false
+  },
+  "crossCorroboratingSourceSpanNumbers": {
+    "note": "WS5's independently-built span-accounting script (see SOURCE_SPAN_ACCOUNTING artifact) computed real per-package uncovered-character percentages on the SAME structural indexes: FWRG 13.70% uncovered (all = definitions doc, zero top-level nodes -> STRUCTURE_FAILED), LSB 32.40% (same), CONMED 0.469% (toc+exhibitSchedule only), DSGR 0.376% (toc+exhibitSchedule only). Zero UNKNOWN regions, zero INVALID_SOURCE_SPAN/OVERLAPPING_INCOMPATIBLE_SPAN findings across all four - I12 holds in practice on real data."
+  }
+}

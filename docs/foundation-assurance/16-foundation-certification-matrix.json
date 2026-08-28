@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "FOUNDATION_CERTIFICATION_MATRIX",
+  "generatedAt": "2026-08-28T19:45:00Z",
+  "taxonomyNote": "Status values: PROVEN / PROVEN_WITH_BOUNDED_LIMITATION / NOT_PROVEN_ENVIRONMENT_BLOCKED / NOT_PROVEN_INSUFFICIENT_EVIDENCE / FAILED / NOT_APPLICABLE. Each arrow of the foundational chain is rated across 5 dimensions: correctness, completeness/fail-closed, independence, persistence equivalence, reproducibility.",
+  "chain": [
+    {
+      "arrow": "raw source -> extraction (lib/extraction/parse.ts)",
+      "correctness": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Identical hashes across two independent extractions for all 4 known packages (KNOWN_PACKAGE_FOUNDATION_REPLAY). Not independently re-tested for HTML/PDF-conversion artifacts (case-folding, mid-paragraph run-ons) beyond the one live-retested shape in SHARED_DEPENDENCY_INDEPENDENCE_MATRIX." },
+      "completenessFailClosed": { "status": "NOT_PROVEN_INSUFFICIENT_EVIDENCE", "evidence": "SHARED_DEPENDENCY_INDEPENDENCE_MATRIX explicitly flags: 'if extraction itself drops or corrupts a page/section, neither discovery nor raw-source-fallback can recover content that was never in the string at all' - flagged as real, plausible, unverified, not asserted as confirmed." },
+      "independence": { "status": "FAILED", "evidence": "Every downstream consumer (structural index, discovery, coverage-audit, package-graph) reads the identical extracted string - a single shared substrate for the entire chain." },
+      "persistenceEquivalence": { "status": "PROVEN", "evidence": "Document.storageRef + chunking verified real; content-hash dedup exists (SourceArtifact) but is bypassed by the live wired upload path (FA-DOCID-01)." },
+      "reproducibility": { "status": "PROVEN", "evidence": "Byte-identical hashes across independent runs, all 4 known packages." }
+    },
+    {
+      "arrow": "extraction -> document identity (Document model, stableKey/contentHash)",
+      "correctness": { "status": "FAILED", "evidence": "FA-DOCID-01 (P1): the real wired onboarding upload path bypasses all content-hash dedup; a correct, tested dedup wrapper exists but is unused." },
+      "completenessFailClosed": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "FA-DOCID-02 (P2): re-extraction never tombstones stale DocumentNode rows - bounded by near-zero current population." },
+      "independence": { "status": "PROVEN", "evidence": "Cross-instrument double-counting structurally prevented; instrumentId scalar FK confined to base-document-defining types." },
+      "persistenceEquivalence": { "status": "FAILED", "evidence": "Document has no stableKey/contentHash/@@unique of its own (only SourceArtifact does, one layer above, populated only via the connector path the live UI doesn't use)." },
+      "reproducibility": { "status": "NOT_APPLICABLE", "evidence": "Document identity is DB-row identity (cuid), not content-derived, by design at this layer." }
+    },
+    {
+      "arrow": "document identity -> structural representation (stage-structure.ts, structural-index.ts, I1-I16)",
+      "correctness": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "All 16 invariants (I1-I16) independently reconfirmed with no regression (26 new tests, WS5). New assumptions Q1/Q2/Q3 (P1) proven: a sibling heading that fails every SECTION_PATTERNS regex silently absorbs into the preceding node's span; its clauses attach to the wrong (but structurally valid) parent; an intervening false-positive heading-shaped match can corrupt the global rank-stack and misattach real later clauses to a spurious node." },
+      "completenessFailClosed": { "status": "FAILED", "evidence": "DISC-01 (P0): computeStructuralCoverage ignores real node.charEnd, silently absorbing mid-document AND trailing missing structural regions as 'covered' - zero findings of any kind for a fabricated 5,000-character missing region." },
+      "independence": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Mechanical independence (auditor never reads primary conclusions) holds; substrate independence does not - see SHARED_DEPENDENCY_INDEPENDENCE_MATRIX (stage-structure.ts and structural-index.ts both rated SHARED_SINGLE_POINT_OF_FAILURE)." },
+      "persistenceEquivalence": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "3F.1.2's stableKey/charStart fix newly certified against real Postgres this audit (real-db-duplicate-physical-occurrence.test.ts). persistence.ts never tombstones stale rows on re-extraction (P1, CACHE_INVALIDATION_ASSURANCE)." },
+      "reproducibility": { "status": "PROVEN", "evidence": "structureOutputHash identical across repeated parses of identical text; identical across all 4 known packages across independent runs." }
+    },
+    {
+      "arrow": "structural representation -> definitions/references (structural-references.ts, structural-definitions.ts)",
+      "correctness": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Exact normalized-term match discipline holds (fault injection: wrong-similarly-named-term correctly not matched). Q6/Q7/Q8 (P1/P2, WS5): Schedule/Exhibit text is structurally indistinguishable from operative text; ToC entries carry no non-operative marker; no supersession marker on nodes themselves." },
+      "completenessFailClosed": { "status": "FAILED", "evidence": "Cross-document definition leakage: getDefinition/getDefinitionFullText called without documentId at 4 confirmed real call sites resolves silently to an unrelated document's definition, with zero ambiguity signal (fault injection, P1/P2 depending on layer)." },
+      "independence": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Baked into the one shared StructuralIndex both primary and auditor query (PARTIALLY_GUARDED per SHARED_DEPENDENCY_INDEPENDENCE_MATRIX)." },
+      "persistenceEquivalence": { "status": "FAILED", "evidence": "P0: persistDefinedTerms/persistStructuralDefinitions stableKey omits documentId - two instruments in one company defining the same term collapse onto one internally-contradictory DB row (documentId vs sourceNodeId disagree). Confirmed independently by two workstreams (WS6, WS7)." },
+      "reproducibility": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Idempotent upsert correctness proven under real concurrent writes and real replay; the persistence-layer collision above is a correctness defect, not a reproducibility one." }
+    },
+    {
+      "arrow": "definitions/references -> discovery (discovery/pipeline.ts, pass-a/b/c/d)",
+      "correctness": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Healthy/partial/near-empty/garbage discovery scenarios all behave as documented; tolerant canonicalization forces needsReview on out-of-vocabulary model output." },
+      "completenessFailClosed": { "status": "FAILED", "evidence": "Direct consequence of DISC-01: a region silently absorbed into a neighboring node's span never produces a Pass A candidate and is invisible to discovery entirely, with no health signal raised." },
+      "independence": { "status": "PROVEN", "evidence": "Per-section fault isolation (Phase 2F.2) re-verified: one section's Pass B failure never drops its siblings; total-failure correctly downgrades to DISCOVERY_FAILED with zero fabricated candidates." },
+      "persistenceEquivalence": { "status": "NOT_APPLICABLE", "evidence": "Discovery is deliberately pure in-memory, no persistence layer (confirmed by grep: zero prisma.* calls under discovery/**)." },
+      "reproducibility": { "status": "PROVEN", "evidence": "Deterministic Layer A/B candidate counts identical across independent runs for all 4 known packages." }
+    },
+    {
+      "arrow": "discovery -> package graph (package-graph/relationship-resolution.ts, instrument-grouping.ts)",
+      "correctness": { "status": "FAILED", "evidence": "PKG-01 (P0): an amendment merely quoting an unrelated agreement's dated self-reference in its recital produces a false, confident RESOLVED AMENDS edge (confidence 0.95), which instrument-grouping.ts then unions into the same instrument cluster as the real target - real cross-instrument contamination. 9 of 11 other adversarial scenarios (base+amendment, guarantee targeting, joinder, restatement-vs-new-facility, supplemental indenture, intercreditor typing, same-borrower isolation, obsolete/current non-conflation, bare-mention honesty) held correctly." },
+      "completenessFailClosed": { "status": "FAILED", "evidence": "PKG-02 (P1): the REVIEW_REQUIRED flag that happens to catch PKG-01's scenario is a coincidental multi-target side effect, not a designed defense - a single-quote variant would produce a silent, unflagged false edge." },
+      "independence": { "status": "PROVEN", "evidence": "package-graph/*.ts operates on raw text via its own regex classifiers, never imports StructuralIndex/StructuralNode - a genuinely separate code path from the structural-substrate single point of failure (PARTIALLY_GUARDED, still shares raw extracted text)." },
+      "persistenceEquivalence": { "status": "PROVEN", "evidence": "ContractRule stableKey correctly includes sourceDocumentId; instrument isolation holds for DocumentNode/ContractRule at the DB layer (TENANT_INSTRUMENT_ISOLATION_RESULTS)." },
+      "reproducibility": { "status": "PROVEN", "evidence": "Identical relationship-candidate counts across independent runs for all 4 known packages (KNOWN_PACKAGE_FOUNDATION_REPLAY)." }
+    },
+    {
+      "arrow": "package graph -> context retrieval (context-retrieval/pipeline.ts, structural-context.ts, reference-context.ts)",
+      "correctness": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Strong required-context recall across 9 of 9 tested reference shapes; unresolved-term/ambiguous-reference honesty confirmed strong (typed UnresolvedDependency entries, never silent omission)." },
+      "completenessFailClosed": { "status": "FAILED", "evidence": "CTX-01 (P1): a cross-referenced section's own pending, real, resolved amendment is never surfaced - retrieveAmendmentLeadsForSection is called only for the primary candidate's own section." },
+      "independence": { "status": "FAILED", "evidence": "CTX-02 (P1, WRONG-CONTEXT CONTAMINATION): sibling proviso/shared-cap inclusion fires on generic keyword match alone with no subject-matter check, attaching semantically unrelated clauses with the same confidence/shape as genuinely relevant context - the danger mode the audit charter calls out as potentially worse than a missing item." },
+      "persistenceEquivalence": { "status": "NOT_APPLICABLE", "evidence": "Context-retrieval output is in-memory, not persisted." },
+      "reproducibility": { "status": "PROVEN", "evidence": "Deterministic retrieval given identical structural/package-graph inputs; no LLM call in the tested code paths." }
+    },
+    {
+      "arrow": "context retrieval -> coverage audit (coverage-audit/pipeline.ts, raw-source-fallback.ts, source-inventory.ts)",
+      "correctness": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Raw-source-fallback genuinely catches total parser failure and severe density collapse (positive controls, real evidence)." },
+      "completenessFailClosed": { "status": "FAILED", "evidence": "Direct consequence of DISC-01/the live shared-substrate retest: raw-source-fallback never runs at all for a mid-document swallowed section, because structural-coverage.ts (its own trigger) reports STRUCTURE_HEALTHY/100% coverage for the identical defect. Both the primary pipeline and its one independent safety net are blind to the same gap simultaneously - a live recurrence of the Phase 3F.1.1-dominant failure class, via a different trigger than the one 3F.1.2 fixed." },
+      "independence": { "status": "FAILED", "evidence": "Invariant #18 reassessment: mechanical independence (never reading the other's conclusions) holds; substrate independence does not, for this specific failure mode. See SHARED_DEPENDENCY_INDEPENDENCE_MATRIX." },
+      "persistenceEquivalence": { "status": "FAILED", "evidence": "coverage-audit/pipeline.ts:102 hardcodes a stale structuralParserVersion literal ('phase-2a-structural-index') instead of importing the real, current STRUCTURAL_INDEX_VERSION constant - already visibly wrong today, cannot currently detect a structural-parser-version change." },
+      "reproducibility": { "status": "PROVEN", "evidence": "coverage-audit-fault-injection.test.ts (15 tests, re-run clean this audit) confirms deterministic, invariant-derived expected outcomes." }
+    },
+    {
+      "arrow": "coverage audit -> amendment precedence (amendment/pipeline.ts, effective-date.ts, chain.ts)",
+      "correctness": { "status": "FAILED", "evidence": "FA-EFFDATE-01 (P1): an amendment with an explicit date AND unsatisfied conditions precedent in the same sentence is classified EXPLICIT_EFFECTIVE_DATE (confidently applicable), not CONDITIONAL_UNRESOLVED - the inverse of Invariant #13's concern." },
+      "completenessFailClosed": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Conditional (signing<>effective) dates correctly stay unapplied; same-day AMENDMENT_CONFLICT correctly detected at the status level." },
+      "independence": { "status": "PROVEN", "evidence": "Cross-instrument isolation directly tested and confirmed: an effect targeting a guarantee instrument never appears in the base instrument's own operative state." },
+      "persistenceEquivalence": { "status": "NOT_APPLICABLE", "evidence": "Amendment/operative-state types are in-memory only, not yet DB-persisted." },
+      "reproducibility": { "status": "PROVEN", "evidence": "chain.ts sorts strictly by effectiveDate, never by array/processing order - amendments out of chronological ingestion order resolve identically." }
+    },
+    {
+      "arrow": "amendment precedence -> operative state (operative-state.ts buildProvisionView, computeOperativeContractState)",
+      "correctness": { "status": "FAILED", "evidence": "CENTRAL P0 FINDING: an amendment effect whose target is AMBIGUOUS (real duplicate label) or entirely MISSING still produces OPERATIVE_STATE_RESOLVED with zero unresolvedIssues and a confident currentText, as long as the effect carries verbatim newText. buildProvisionView sets currentText=effect.newText unconditionally, never checking resolveUniqueNodeByRef's actual UNIQUE/AMBIGUOUS/NOT_FOUND result. This directly violates this audit's own charter invariant, Architecture Invariant #13, and Invariant #11. independent-verification.ts could catch the MISSING case but has zero real callers in the live pipeline (grep-confirmed)." },
+      "completenessFailClosed": { "status": "FAILED", "evidence": "The one true positive control (F3's zero-provisions guard) still holds, but a populated, plausible-looking, fully-cited-seeming provisions array masking an unresolved target is arguably worse than the empty-array case F3 addressed, because it does not invite scrutiny by its own emptiness." },
+      "independence": { "status": "FAILED", "evidence": "The one mechanism designed to independently re-check exactly this class of claim (independent-verification.ts) is real, would catch the MISSING case, but is never invoked by pipeline.ts or operative-state.ts - not wired into any live gate." },
+      "persistenceEquivalence": { "status": "NOT_APPLICABLE", "evidence": "In-memory only." },
+      "reproducibility": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Deterministic given fixed input array order; a genuine same-date CONFLICTED case's currentText (though not its status) is order-dependent (P2)." }
+    },
+    {
+      "arrow": "operative state -> persistence (persistence.ts upserts, orchestrator.ts cache gates)",
+      "correctness": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Real concurrent-write races (5/5) and real cascade/FK behavior (4/4) newly certified against live Postgres this audit - both untested prior to this phase." },
+      "completenessFailClosed": { "status": "FAILED", "evidence": "orchestrator.ts's STRUCTURE-stage cache gate ignores STRUCTURAL_INDEX_VERSION entirely (P1); its AMENDMENTS-stage cache gate is keyed on document label only, never text, while the real stage function inspects both (P1). Both proven live against real, unmocked production code." },
+      "independence": { "status": "FAILED", "evidence": "Cross-tenant: the semantic-compiler's default in-memory cache (used by every real current caller) is keyed without companyId/instrumentKey/sourceDocumentId - proven to serve one company's cached compile result to another (P1, corroborated by two independent workstreams)." },
+      "persistenceEquivalence": { "status": "FAILED", "evidence": "persistence.ts's upsert functions never tombstone a row for content the current run no longer produces - proven live: a corrected algorithm that stops emitting a spurious duplicate leaves the old row in place forever, returned by plain reads mixed in with current rows (P1)." },
+      "reproducibility": { "status": "PROVEN", "evidence": "'Same document, unchanged' invariant already proven in structural-persistence.test.ts (structureOutputHash identical across two parses); re-confirmed this audit for the real-DB duplicate-physical-occurrence scenario 3F.1.2 fixed." }
+    }
+  ],
+  "crossCuttingDimensions": {
+    "tenantIsolation": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Holds for DocumentNode, ContractRule, DefinedTermNode (across tenants), ContractReferenceEdge. validateTenantIsolation has a real, confirmed blind spot for ContractReferenceEdge.targetTermId/targetDocumentNodeId (P1)." },
+    "instrumentIsolation": { "status": "FAILED", "evidence": "DefinedTermNode does NOT isolate across instruments within one company - P0, silent, internally-contradictory row corruption. DocumentNode/ContractRule do isolate correctly." },
+    "evaluationMethodologyIntegrity": { "status": "FAILED", "evidence": "The Phase 3F/3F.1/3F.1.1 scorer's known false-credit defect (structural/section-ref proximity substituting for content correspondence, 14-16/26 false credits in 3F.1.1's own forensics) is confirmed UNCHANGED in current code and now independently confirmed to recur in the older, separately-built Phase C.1 evaluator - a systemic hazard in this codebase's approach to automated grading, not a one-off bug. Disclosure of this known defect is confirmed INADEQUATE: it exists only in one forensics doc, is absent from the Roadmap and every subsequent phase report that cites coverage numbers." },
+    "legacyQuarantine": { "status": "PROVEN_WITH_BOUNDED_LIMITATION", "evidence": "Zero imports of orchestrator.ts/service.ts/validators.ts anywhere under app/ (grep-confirmed) - currently unreachable. No mechanical guardrail exists (no lint rule, no import-boundary test) - only a paragraph in the Roadmap stops a future session from wiring it in." }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0",
+  "auditVersion": "phase-3f1-3-foundation-assurance-audit.v1",
+  "artifactId": "DOCUMENT_IDENTITY_DATING_PROVENANCE_REVIEW_FINDINGS",
+  "generatedAt": "2026-08-28T19:29:32Z",
+  "sourceWorkstream": "WS4",
+  "environmentNote": "Real Postgres reachable this session; all DB-backed claims verified against a real database, not merely reasoned about.",
+  "positiveFindings": [
+    "Cross-instrument double-counting is structurally prevented (instrumentId is a scalar FK confined to base-document-defining types; cross-cutting documents relate only via DocumentRelationshipEdge).",
+    "An amendment uploaded before its base document is handled gracefully (resolvePackageRelationships is order-independent, returns UNRESOLVED/REVIEW_REQUIRED, never a crash or a guess).",
+    "All four effective-dating consumers (covenant-engine.ts, service.ts, solver/coverage.ts, amendment/operative-state.ts) are genuinely consistent: closed-open [effectiveFrom, effectiveTo), both-null=always-effective, verified at the source-text level (actual lte/gt and </>= operators pattern-matched, not just behaviorally inferred).",
+    "Same-day-amendment conflicts correctly detected (AMENDMENT_CONFLICT) and propagate to OPERATIVE_STATE_CONFLICTED, never silently resolved by iteration order at the STATUS level (currentText itself is a separate, lower-severity finding - see AMENDMENT_OPERATIVE_STATE_ASSURANCE).",
+    "Null/unresolvable effective dates never treated as already-effective; retroactive and future-dated amendments both resolve correctly relative to a query date.",
+    "The forward provenance chain (DiscoveredCandidate -> CovenantContextBundle) is real and complete: discoveryId, structuralNodeIds, sourceCitation, discoveryRunVersion, originatingDiscoveryId, retrievalAlgorithmVersion, contentIdentity all present and correct.",
+    "reviewCandidate() genuinely refuses to alter a decision once ExtractionCandidate.promotedAt is set - 'a promoted candidate's review decision is final' is real, not aspirational.",
+    "The Phase 3D semantic-precedent store's supersedePrecedent never mutates in place; superseded precedent is excluded from listings by default - a real positive precedent for staleness-safety, though in-memory-only and not yet reachable from any product surface."
+  ],
+  "findings": [
+    {
+      "id": "FA-DOCID-01", "title": "Real, wired onboarding upload action bypasses all content-hash dedup, creating duplicate Document rows for identical files",
+      "area": "DOCUMENT_IDENTITY", "severity": "P1", "rootCause": "SOURCE_ACCOUNTING",
+      "reproduction": "app/[companyId]/onboarding/documents/actions.ts:16 calls lib/onboarding/documents.ts's uploadAndChunkDocument directly - zero content-hash check anywhere. A dedup-safe wrapper (lib/connectors/upload-connector.ts's uploadDocumentThroughIngestion) exists, is tested, and correctly refuses a second Document row for identical bytes - but nothing in the real UI path calls it.",
+      "filesCited": ["app/[companyId]/onboarding/documents/actions.ts:16", "lib/onboarding/documents.ts:62-94", "lib/connectors/upload-connector.ts:99-121", "prisma/schema.prisma:1895"]
+    },
+    {
+      "id": "FA-DOCID-02", "title": "persistStructuralNodes never deletes stale DocumentNode rows after a legitimate re-extraction",
+      "area": "DOCUMENT_IDENTITY", "severity": "P2", "rootCause": "PERSISTENCE",
+      "reproduction": "Re-running STRUCTURE over the same documentId with corrected charStart values does not update the old row - it silently adds a second one, both returned together by every real documentNode.findMany({where:{documentId}}) call site, nothing marks either as current. Low-blast-radius today only because DocumentNode has near-zero real population (2 rows in the whole live database).",
+      "filesCited": ["lib/contract-model/compiler/persistence.ts:84-108", "lib/contract-model/compiler/types.ts:80-89", "lib/contract-model/service.ts:22", "lib/contract-model/validators.ts:31,58,96"]
+    },
+    {
+      "id": "FA-DOCID-03", "title": "Document.supersedesDocumentId is populated but never consulted by any amendment-precedence or calculation logic",
+      "area": "DOCUMENT_IDENTITY", "severity": "P3", "rootCause": "OTHER",
+      "reproduction": "covenant-engine.ts's real effectiveDateFilter references only effectiveFrom/effectiveTo. The field's only real reader (canonical-state.ts:147) uses it solely for a display count. The Roadmap's characterization of this field as 'genuinely used by the legacy production engine today' overstates its role.",
+      "filesCited": ["prisma/schema.prisma:196-203", "lib/covenant-engine.ts:1553-1568", "lib/company-state/canonical-state.ts:147", "lib/onboarding/promotion.ts:141"]
+    },
+    {
+      "id": "FA-EFFDATE-01", "title": "resolveEffectiveDate classifies an amendment as EXPLICIT_EFFECTIVE_DATE even when the same sentence conditions effectiveness on unsatisfied conditions precedent",
+      "area": "EFFECTIVE_DATING", "severity": "P1", "rootCause": "OPERATIVE_STATE",
+      "reproduction": "'This Amendment shall become effective as of December 1, 2023, subject to the satisfaction of the following conditions precedent...' is classified EXPLICIT_EFFECTIVE_DATE with a concrete, immediately-applicable date. The identical conditional language WITHOUT a date is correctly caught as CONDITIONAL_UNRESOLVED, isolating the gap to 'date present + condition present'. independent-verification.ts contains zero references to conditions/effective dates, so nothing downstream catches this. This is the inverse of Invariant #13's concern: here, not-yet-effective language silently appears current.",
+      "filesCited": ["lib/contract-model/compiler/amendment/effective-date.ts:46-64", "lib/contract-model/compiler/amendment/operative-state.ts:71", "lib/contract-model/compiler/amendment/independent-verification.ts"]
+    },
+    {
+      "id": "FA-PROV-01", "title": "Individual ContextItems lose their originating discoveryId once separated from their containing CovenantContextBundle - already exercised by a live consumer",
+      "area": "PROVENANCE", "severity": "P2", "rootCause": "PROVENANCE",
+      "reproduction": "A real CovenantContextBundle built via the unmodified buildCovenantContextBundle has bundle.originatingDiscoveryId present and correct, but no item in bundle.items[] carries a discoveryId/bundleId property. semantic/tools.ts's summarizeItem() (line 59) already hands the LLM a bare summary stripped of bundle context. Primary source-citation (Invariant #1) is intact (sourceCitation/documentId present) - this is loss of the secondary 'which discovery run produced this' audit trail, not a citation-integrity break.",
+      "filesCited": ["lib/contract-model/compiler/context-retrieval/types.ts:47-67,145-174", "lib/contract-model/compiler/context-retrieval/pipeline.ts:120", "lib/contract-model/compiler/semantic/tools.ts:59"]
+    },
+    {
+      "id": "FA-REVSTATE-01", "title": "Document.typeConfirmedByUser/amendmentRelationshipConfirmedByUser default to true at the DB-column level with no code-level guardrail against a future creation path omitting the override",
+      "area": "REVIEW_STATE", "severity": "P2", "rootCause": "REVIEW_STATE",
+      "reproduction": "A bare prisma.document.create() with no confirmation flags produces a row that reads as fully human-confirmed with zero review. package-graph/persistence.ts's real classification-write guard trusts this flag completely. Every currently-wired code path correctly overrides this to false - no reachable defect today, but a landmine for a future connector or bulk-import script that doesn't know the convention.",
+      "filesCited": ["prisma/schema.prisma:241-242", "prisma/migrations/20260825190617_add_document_onboarding_pipeline_foundation/migration.sql:65-66", "lib/contract-model/compiler/package-graph/persistence.ts:54-57", "lib/onboarding/documents.ts:80-81"]
+    },
+    {
+      "id": "FA-REVSTATE-02", "title": "No review/approval-consuming code re-validates a stored confirmation or reviewStatus flag against document supersession or extraction-version identity",
+      "area": "REVIEW_STATE", "severity": "P3", "rootCause": "REVIEW_STATE",
+      "reproduction": "package-graph/persistence.ts's typeConfirmedByUser gate and lib/onboarding/review.ts confirmed to reference neither supersedesDocumentId nor any extraction-version field. Currently more theoretical than reachable since FA-DOCID-02 established there is no real in-place re-extraction concept.",
+      "filesCited": ["lib/contract-model/compiler/package-graph/persistence.ts", "lib/onboarding/review.ts"]
+    }
+  ]
+}
