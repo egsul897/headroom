@@ -1,0 +1,2429 @@
+{
+  "companyId": "dsgr-phase-3f-unseen",
+  "packageKey": "dsgr-2022-2025-credit-facility",
+  "classifications": [
+    {
+      "documentId": "doc-a",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "doc-b",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "evidence": [
+        "(this “ Amendment ”)"
+      ],
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE"
+    },
+    {
+      "documentId": "doc-c",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "evidence": [
+        "(this\n“ Amendment ”)"
+      ],
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE"
+    },
+    {
+      "documentId": "doc-d",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    }
+  ],
+  "identities": [
+    {
+      "documentId": "doc-a",
+      "title": "AMENDED AND RESTATED CREDIT AGREEMENT",
+      "agreementTypeLabel": "AMENDED AND RESTATED CREDIT AGREEMENT",
+      "executionDate": null,
+      "effectiveDate": null,
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": "JPMORGAN CHASE BANK, N.A.",
+      "facilityOrInstrumentName": "AMENDED AND RESTATED CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nAMENDED AND RESTATED CREDIT AGREEMENT",
+          "charStart": 78
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "JPMORGAN CHASE BANK, N.A.,\n\nas Administrative Agent",
+          "charStart": 682
+        }
+      }
+    },
+    {
+      "documentId": "doc-b",
+      "title": "THIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "agreementTypeLabel": "THIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "executionDate": "April 1, 2022",
+      "effectiveDate": "April 1, 2022",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": null,
+      "facilityOrInstrumentName": "THIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nTHIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+          "charStart": 59
+        },
+        "executionDate": {
+          "text": "dated as of April 1, 2022",
+          "charStart": 1554
+        }
+      }
+    },
+    {
+      "documentId": "doc-c",
+      "title": "AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "agreementTypeLabel": "AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "executionDate": "April 1, 2022",
+      "effectiveDate": "April 1, 2022",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": null,
+      "facilityOrInstrumentName": "AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+          "charStart": 86
+        },
+        "executionDate": {
+          "text": "dated as of April 1, 2022",
+          "charStart": 716
+        }
+      }
+    },
+    {
+      "documentId": "doc-d",
+      "title": "SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+      "agreementTypeLabel": "SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+      "executionDate": null,
+      "effectiveDate": null,
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": "JPMORGAN CHASE BANK, N.A.",
+      "facilityOrInstrumentName": "SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nSECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+          "charStart": 256
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "JPMORGAN CHASE BANK, N.A.,\n\nas Administrative Agent",
+          "charStart": 855
+        }
+      }
+    }
+  ],
+  "relationshipCandidates": [
+    {
+      "sourceDocumentId": "doc-a",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "relationshipType": "RESTATES",
+      "sourceCitation": "DSGR 2022 Amended and Restated Credit Agreement",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+      "resolutionMethod": "DETERMINISTIC_NO_SIGNAL"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": null,
+      "targetHint": "that certain Amended and Restated Credit Agreement,\ndated as of April 1, 2022",
+      "relationshipType": "AMENDS",
+      "sourceCitation": "that certain Amended and Restated Credit Agreement,\ndated as of April 1, 2022",
+      "confidence": 0.1,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date (\"April 1, 2022\") - never guessed from title similarity alone",
+      "resolutionMethod": "DETERMINISTIC_AMBIGUOUS"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "targetDocumentId": null,
+      "targetHint": "that certain Amended and Restated Credit Agreement, dated as of April 1, 2022",
+      "relationshipType": "AMENDS",
+      "sourceCitation": "that certain Amended and Restated Credit Agreement, dated as of April 1, 2022",
+      "confidence": 0.1,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date (\"April 1, 2022\") - never guessed from title similarity alone",
+      "resolutionMethod": "DETERMINISTIC_AMBIGUOUS"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "targetDocumentId": null,
+      "targetHint": null,
+      "relationshipType": "RESTATES",
+      "sourceCitation": "DSGR 2025 Second Amended and Restated Credit Agreement",
+      "confidence": 0,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no explicit reference to another agreement (by name + execution date) was found in this document's own text",
+      "resolutionMethod": "DETERMINISTIC_NO_SIGNAL"
+    }
+  ],
+  "modificationCandidates": [
+    {
+      "sourceDocumentId": "doc-c",
+      "sourceNodeCitation": "DSGR 2025 Fourth Amendment",
+      "sourceText": "ry 1, 2025): (a) The first sentence of Section 3.17 of the Existing Credit Agreement is hereby amended and restated in its entirety as follows: “No Loan Party is engaged and will not engage, pri",
+      "operation": "RESTATE",
+      "targetDocumentId": null,
+      "targetHint": "that certain Amended and Restated Credit Agreement, dated as of April 1, 2022",
+      "targetSectionRef": "3.17",
+      "targetDefinedTermRef": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date (\"April 1, 2022\") - never guessed from title similarity alone",
+      "confidence": 0.1
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "sourceNodeCitation": "DSGR 2025 Fourth Amendment",
+      "sourceText": "of Regulation U or Regulation X.” (b) Section 6.08(a)(v) is hereby amended and restated in its entirety as follows: “(v) the Company may make Restricted Payments not",
+      "operation": "RESTATE",
+      "targetDocumentId": null,
+      "targetHint": "that certain Amended and Restated Credit Agreement, dated as of April 1, 2022",
+      "targetSectionRef": "6.08(a)(v)",
+      "targetDefinedTermRef": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date (\"April 1, 2022\") - never guessed from title similarity alone",
+      "confidence": 0.1
+    }
+  ],
+  "crossDocumentReferenceLeads": [
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 10421,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the TestEquity Acquisition Agreement",
+      "charStart": 63846,
+      "namedAgreementHint": "TestEquity Acquisition Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Gexpro Acquisition Agreement",
+      "charStart": 64177,
+      "namedAgreementHint": "Gexpro Acquisition Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 64300,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the TestEquity Acquisition Agreement",
+      "charStart": 64664,
+      "namedAgreementHint": "TestEquity Acquisition Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 64791,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the Gexpro Acquisition Agreement",
+      "charStart": 112720,
+      "namedAgreementHint": "Gexpro Acquisition Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 166007,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the TestEquity Acquisition Agreement",
+      "charStart": 178744,
+      "namedAgreementHint": "TestEquity Acquisition Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 199295,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 207433,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 208748,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 208990,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the\nExisting Credit Agreement",
+      "charStart": 209157,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 211789,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 211976,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 212186,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the applicable Security Agreement",
+      "charStart": 431242,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "subject to the Lien under the applicable Security Agreement",
+      "charStart": 431453,
+      "namedAgreementHint": "Lien under the applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the applicable Security Agreement",
+      "charStart": 456359,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the applicable Security Agreement",
+      "charStart": 457165,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "charStart": 587308,
+      "namedAgreementHint": "terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the guaranty",
+      "charStart": 665219,
+      "namedAgreementHint": "guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 681299,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 681488,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 682115,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 683410,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 685279,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 685864,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 686039,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 686765,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 687178,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 687736,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 688044,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 688489,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of the Credit Agreement",
+      "charStart": 689156,
+      "namedAgreementHint": "terms of the Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 689181,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 690648,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 690662,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 690814,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 690828,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the\nCredit Agreement",
+      "charStart": 696924,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 698239,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 698317,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the\nCredit Agreement",
+      "charStart": 699266,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 700417,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 701441,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 703297,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the\nCredit Agreement",
+      "charStart": 704320,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 706476,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 706554,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the\n\nCredit Agreement",
+      "charStart": 706704,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 707720,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 708014,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 708192,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 708568,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 708651,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 709114,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 709457,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 709519,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 710049,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 711421,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 712073,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 715526,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 715717,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 716262,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 720292,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 722192,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 724660,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 724742,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 724905,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 725215,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the\nCredit Agreement",
+      "charStart": 725306,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the guaranty",
+      "charStart": 725345,
+      "namedAgreementHint": "guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 725396,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 725581,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 726969,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 727061,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the guaranty",
+      "charStart": 727195,
+      "namedAgreementHint": "guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 729194,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 729383,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 729913,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 731145,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 732990,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 733463,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 733601,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 734353,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 734767,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 735321,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 735629,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 736074,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of the Credit Agreement",
+      "charStart": 736738,
+      "namedAgreementHint": "terms of the Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 736763,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 737245,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 738291,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 739107,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 739121,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 739273,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Credit Agreement",
+      "charStart": 739287,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-d",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 3760,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the terms of the Amended Credit Agreement",
+      "charStart": 9074,
+      "namedAgreementHint": "terms of the Amended Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Credit Agreement",
+      "charStart": 15084,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 16407,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 16569,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 16653,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Credit Agreement",
+      "charStart": 16730,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the Credit Agreement",
+      "charStart": 17558,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Credit Agreement",
+      "charStart": 17570,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Credit Agreement",
+      "charStart": 36609,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the TestEquity Acquisition Agreement",
+      "charStart": 93543,
+      "namedAgreementHint": "TestEquity Acquisition Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Gexpro Acquisition Agreement",
+      "charStart": 93874,
+      "namedAgreementHint": "Gexpro Acquisition Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Credit Agreement",
+      "charStart": 93997,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the TestEquity Acquisition Agreement",
+      "charStart": 94361,
+      "namedAgreementHint": "TestEquity Acquisition Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Credit Agreement",
+      "charStart": 94488,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the Gexpro Acquisition Agreement",
+      "charStart": 145822,
+      "namedAgreementHint": "Gexpro Acquisition Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the HISCO Acquisition Agreement",
+      "charStart": 149677,
+      "namedAgreementHint": "HISCO Acquisition Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 201609,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 206394,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Credit Agreement",
+      "charStart": 206408,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the TestEquity Acquisition Agreement",
+      "charStart": 219813,
+      "namedAgreementHint": "TestEquity Acquisition Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 243497,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 251638,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 252948,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 253361,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the\nExisting Credit Agreement",
+      "charStart": 255988,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 256175,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 256385,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the\nCredit Agreement",
+      "charStart": 313041,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 313194,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Credit Agreement",
+      "charStart": 313208,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "as defined in the applicable Security Agreement",
+      "charStart": 483952,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "subject to the Lien under the applicable Security Agreement",
+      "charStart": 484163,
+      "namedAgreementHint": "Lien under the applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the applicable Security Agreement",
+      "charStart": 509063,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the applicable Security Agreement",
+      "charStart": 509874,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "charStart": 645137,
+      "namedAgreementHint": "terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the guaranty",
+      "charStart": 723497,
+      "namedAgreementHint": "guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1231,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1716,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 4470,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 5668,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 5801,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 5932,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "pursuant to the Credit Agreement",
+      "charStart": 6459,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 6471,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 6581,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 7374,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 8267,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "pursuant to the HISCO Acquisition Agreement",
+      "charStart": 116797,
+      "namedAgreementHint": "HISCO Acquisition Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 168420,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 208217,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 220495,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 221805,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 222047,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the\nExisting Credit Agreement",
+      "charStart": 224845,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 225032,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Existing Credit Agreement",
+      "charStart": 225242,
+      "namedAgreementHint": "Existing Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the applicable Security Agreement",
+      "charStart": 442984,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "pursuant to the applicable Security Agreement",
+      "charStart": 475916,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "pursuant to the applicable Security Agreement",
+      "charStart": 476722,
+      "namedAgreementHint": "applicable Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "charStart": 623180,
+      "namedAgreementHint": "terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the guaranty",
+      "charStart": 703501,
+      "namedAgreementHint": "guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 784723,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 785350,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 786757,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 788641,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 789276,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 789451,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 790177,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 790590,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 791148,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 791456,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 791901,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "pursuant to the terms of the Credit Agreement",
+      "charStart": 792568,
+      "namedAgreementHint": "terms of the Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 792593,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 794060,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 794074,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 794226,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 794240,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 795463,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 796778,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 796856,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 797870,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 799021,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 800110,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 801966,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 803054,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 805210,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 805288,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the\n\nCredit Agreement",
+      "charStart": 805438,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 806519,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 806818,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 806996,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 807372,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 807455,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 807918,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 808261,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 808323,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 808852,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 810277,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 810929,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 814631,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 814822,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 815624,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 820334,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 822657,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 823142,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 823486,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 825317,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 825636,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 825718,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 825881,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 826046,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 826191,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 826282,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the guaranty",
+      "charStart": 826321,
+      "namedAgreementHint": "guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 826372,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 826557,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 826742,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 827945,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the guaranty",
+      "charStart": 828171,
+      "namedAgreementHint": "guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 830177,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 830366,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 830896,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 832182,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 834114,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 834587,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 834725,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 835477,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 835891,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 836445,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 836753,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 837198,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "pursuant to the terms of the Credit Agreement",
+      "charStart": 837862,
+      "namedAgreementHint": "terms of the Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 837887,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 838369,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 839415,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 840231,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 840245,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "as defined in the Credit Agreement",
+      "charStart": 840397,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-d",
+      "referenceText": "the Credit Agreement",
+      "charStart": 840411,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "name": "AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-a"
+      ],
+      "baseDocumentId": "doc-a",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "name": "THIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-b"
+      ],
+      "baseDocumentId": "doc-b",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-c",
+      "name": "AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-c"
+      ],
+      "baseDocumentId": "doc-c",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-d",
+      "name": "SECOND AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-d"
+      ],
+      "baseDocumentId": "doc-d",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "performance": {
+    "documentCount": 4,
+    "totalCharsScanned": 2331381,
+    "relationshipCandidatesGenerated": 4,
+    "relationshipsResolved": 0,
+    "relationshipsUnresolved": 4,
+    "modificationCandidatesGenerated": 2,
+    "crossDocumentReferenceLeadsGenerated": 240,
+    "wallClockMs": 44,
+    "semanticCallsUsed": 0
+  }
+}
