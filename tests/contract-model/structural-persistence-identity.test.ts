@@ -24,6 +24,18 @@
  * anything about real Postgres transaction semantics, constraint
  * enforcement, or concurrent-write behavior - only about the JS-level
  * stableKey/PersistedNodeIndex logic this fake can faithfully model.
+ *
+ * Phase 3F.1.4 (P1-9 remediation): persistStructuralNodes now wraps its own
+ * upsert+tombstone sequence in `prisma.$transaction(async (tx) => ...)` and
+ * calls `tx.documentNode.deleteMany(...)` to prune stale rows - this fake's
+ * own `$transaction` simply invokes the callback with this SAME fake
+ * `documentNode` object (no real isolation semantics to fake; every method
+ * already shares the one in-memory Map), and `deleteMany` was added
+ * alongside it. The REAL transactional/concurrent-write guarantees this
+ * fix adds are certified separately against real Postgres in
+ * tests/foundation-audit/cache-invalidation-audit.test.ts and
+ * tests/foundation-audit/persistence-fault-injection.test.ts, per this
+ * file's own disclosed scope (JS-level identity logic only).
  */
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import type { StructuralNode } from "../../lib/contract-model/compiler/types";
@@ -75,8 +87,19 @@ vi.mock("../../lib/prisma", () => {
     findMany: vi.fn(async ({ where }: { where: { companyId: string; documentId?: string; sectionRef?: string } }) => {
       return [...state.documentNodeRows.values()].filter((r) => r.companyId === where.companyId && (where.documentId === undefined || r.documentId === where.documentId) && (where.sectionRef === undefined || r.sectionRef === where.sectionRef));
     }),
+    deleteMany: vi.fn(async ({ where }: { where: { companyId: string; documentId: string; stableKey?: { notIn: string[] } } }) => {
+      const toDelete = [...state.documentNodeRows.values()].filter((r) => r.companyId === where.companyId && r.documentId === where.documentId && (!where.stableKey || !where.stableKey.notIn.includes(r.stableKey)));
+      for (const row of toDelete) state.documentNodeRows.delete(row.id);
+      return { count: toDelete.length };
+    }),
   };
-  return { prisma: { documentNode } };
+  const client = { documentNode };
+  // Phase 3F.1.4 (P1-9 remediation): persistStructuralNodes now runs inside
+  // `prisma.$transaction(async (tx) => ...)` - this fake has no real
+  // isolation to offer, so it simply invokes the callback with the SAME
+  // fake `documentNode` object every other method here already shares.
+  const $transaction = vi.fn(async (fn: (tx: typeof client) => Promise<unknown>) => fn(client));
+  return { prisma: { ...client, $transaction } };
 });
 
 // Imported AFTER vi.mock so persistence.ts picks up the faked prisma module.

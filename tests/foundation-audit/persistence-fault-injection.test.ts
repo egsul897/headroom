@@ -10,6 +10,7 @@ import { prisma } from "../../lib/prisma";
 import { parseDocumentStructure } from "../../lib/contract-model/compiler/stage-structure";
 import { persistStructuralNodes, persistStructuralDefinitions, persistDefinedTerms, persistStructuralReferences, resolveUniquePersistedNodeByRef } from "../../lib/contract-model/compiler/persistence";
 import { detectStructuralDefinitions } from "../../lib/contract-model/compiler/structural-definitions";
+import { detectStructuralReferences } from "../../lib/contract-model/compiler/structural-references";
 import type { DetectedReference } from "../../lib/contract-model/compiler/structural-references";
 import type { StructuralNode } from "../../lib/contract-model/compiler/types";
 import type { CandidateDefinedTerm } from "../../lib/contract-model/types";
@@ -117,8 +118,18 @@ describe("Persistence fault injection (real DB)", () => {
     });
   });
 
-  describe("Cross-document definition leakage at the PERSISTENCE layer - persistStructuralDefinitions (dead code, never called by orchestrator.ts)", () => {
-    it("stableKey = computeStableKey('defined-term', companyId, def.normalizedTerm) has NO documentId component - two documents' own DIFFERENT definitions of the identically-named term collide onto ONE row", async () => {
+  describe("Cross-document definition leakage at the PERSISTENCE layer - persistStructuralDefinitions (dead code, never called by orchestrator.ts) - FIXED (P0-2 remediation)", () => {
+    // Phase 3F.1.4 (P0-2 remediation) updated this test's own assertions:
+    // computeStableKey('defined-term', companyId, def.documentId, def.normalizedTerm)
+    // now includes documentId, so two documents' own definitions of the
+    // identically-named term persist as two genuinely separate,
+    // internally-consistent rows instead of colliding onto one
+    // contradictory row. Asserting the collision's continued presence
+    // after it has been deliberately fixed would be asserting the wrong
+    // thing, not preserving a real safety gate - matching the precedent set
+    // by tests/contract-model/architecture-proposal-node-identity.test.ts's
+    // own header comment for the same situation.
+    it("stableKey now includes documentId - two documents' own DIFFERENT definitions of the identically-named term persist as two separate, internally-consistent rows, never colliding", async () => {
       const nodesA = parseDocumentStructure({ documentId: DOC_1, label: "CA", text: TEXT_1 });
       const nodesB = parseDocumentStructure({ documentId: DOC_2, label: "Indenture", text: TEXT_1.replace("Schedule 6.02", "Schedule 9.02 of the Indenture") });
       const nodeIndexA = await persistStructuralNodes(COMPANY, nodesA);
@@ -127,32 +138,85 @@ describe("Persistence fault injection (real DB)", () => {
       const defsB = detectStructuralDefinitions(DOC_2, TEXT_1.replace("Schedule 6.02", "Schedule 9.02 of the Indenture"), nodesB); // ALSO declares "Permitted Liens" - a different document, a legitimately different definition in real drafting
 
       await persistStructuralDefinitions(COMPANY, defsA, nodeIndexA);
-      const afterA = await prisma.definedTermNode.findFirstOrThrow({ where: { companyId: COMPANY, normalizedName: "permitted liens" } });
+      const afterA = await prisma.definedTermNode.findFirstOrThrow({ where: { companyId: COMPANY, normalizedName: "permitted liens", documentId: DOC_1 } });
       expect(afterA.documentId).toBe(DOC_1);
 
       await persistStructuralDefinitions(COMPANY, defsB, nodeIndexB);
-      const rows = await prisma.definedTermNode.findMany({ where: { companyId: COMPANY, normalizedName: "permitted liens" } });
-      expect(rows).toHaveLength(1); // CONFIRMED BUG: two distinct documents' own definitions of "Permitted Liens" collapse to ONE persisted row, not two.
-      const afterB = rows[0]!;
-      expect(afterB.id).toBe(afterA.id); // same row silently reused across documents
-      expect(afterB.documentId).toBe(DOC_1); // `documentId` column is never updated on the upsert's update branch - it stays pinned to whichever document created the row first...
-      const sourceNode = await prisma.documentNode.findUniqueOrThrow({ where: { id: afterB.sourceNodeId! } });
-      expect(sourceNode.documentId).toBe(DOC_2); // ...while sourceNodeId now points into DOC_2's own structural tree. The row is now internally inconsistent: documentId says DOC_1, sourceNodeId's real node says DOC_2.
+      const rows = await prisma.definedTermNode.findMany({ where: { companyId: COMPANY, normalizedName: "permitted liens" }, orderBy: { documentId: "asc" } });
+      expect(rows).toHaveLength(2); // FIXED: two distinct documents' own definitions of "Permitted Liens" now persist as two genuinely separate rows.
+      expect(new Set(rows.map((r) => r.documentId))).toEqual(new Set([DOC_1, DOC_2]));
+      expect(rows.map((r) => r.id)).not.toContain(undefined);
+      expect(new Set(rows.map((r) => r.id)).size).toBe(2); // two distinct row ids, never the same row silently reused.
+
+      // Each row is now internally CONSISTENT: its own documentId and its own sourceNodeId's documentId always agree (never one for Alpha's document, one for Beta's, on the SAME row).
+      for (const row of rows) {
+        const sourceNode = await prisma.documentNode.findUniqueOrThrow({ where: { id: row.sourceNodeId! } });
+        expect(sourceNode.documentId).toBe(row.documentId);
+      }
+    });
+
+    it("re-persisting the SAME document's definitions again (idempotent replay) still converges on that document's own single row - the fix adds document scoping, it does not regress idempotency", async () => {
+      const nodesA = parseDocumentStructure({ documentId: DOC_1, label: "CA", text: TEXT_1 });
+      const nodeIndexA = await persistStructuralNodes(COMPANY, nodesA);
+      const defsA = detectStructuralDefinitions(DOC_1, TEXT_1, nodesA);
+
+      await persistStructuralDefinitions(COMPANY, defsA, nodeIndexA);
+      const firstRow = await prisma.definedTermNode.findFirstOrThrow({ where: { companyId: COMPANY, normalizedName: "permitted liens", documentId: DOC_1 } });
+      await persistStructuralDefinitions(COMPANY, defsA, nodeIndexA); // exact same input, replayed
+      const rowsAfterReplay = await prisma.definedTermNode.findMany({ where: { companyId: COMPANY, normalizedName: "permitted liens", documentId: DOC_1 } });
+      expect(rowsAfterReplay).toHaveLength(1);
+      expect(rowsAfterReplay[0]!.id).toBe(firstRow.id); // same row, updated in place - not a second insert.
     });
   });
 
-  describe("Cross-document definition leakage - persistDefinedTerms (the LLM-candidate path actually wired into orchestrator.ts)", () => {
-    it("same stableKey shape (companyId + lowercased term only) reproduces the identical collision for the function real production code calls", async () => {
+  describe("Cross-document definition leakage - persistDefinedTerms (the LLM-candidate path actually wired into orchestrator.ts) - FIXED (P0-2 remediation)", () => {
+    // Phase 3F.1.4 (P0-2 remediation) updated this test's own assertions -
+    // see the sibling describe block immediately above for the full
+    // rationale (matches tests/contract-model/architecture-proposal-node-
+    // identity.test.ts's own precedent for updating a test after a
+    // deliberate fix).
+    it("stableKey now includes documentId - the production-wired function no longer collides two unrelated documents' own same-named terms", async () => {
       const termA: CandidateDefinedTerm = { termName: "Applicable Margin", sourceSectionRef: "1.01", entityScope: [] } as unknown as CandidateDefinedTerm;
       const termB: CandidateDefinedTerm = { termName: "Applicable Margin", sourceSectionRef: "1.01", entityScope: [] } as unknown as CandidateDefinedTerm;
       await persistDefinedTerms(COMPANY, DOC_1, [termA]);
-      const afterA = await prisma.definedTermNode.findFirstOrThrow({ where: { companyId: COMPANY, normalizedName: "applicable margin" } });
+      const afterA = await prisma.definedTermNode.findFirstOrThrow({ where: { companyId: COMPANY, normalizedName: "applicable margin", documentId: DOC_1 } });
       expect(afterA.documentId).toBe(DOC_1);
 
       await persistDefinedTerms(COMPANY, DOC_2, [termB]); // a SECOND, unrelated document in the SAME company that also defines "Applicable Margin" (an extremely common term name across multiple credit facilities for one borrower)
-      const rows = await prisma.definedTermNode.findMany({ where: { companyId: COMPANY, normalizedName: "applicable margin" } });
-      expect(rows).toHaveLength(1); // CONFIRMED: identical collision in the production-wired function.
-      expect(rows[0]!.documentId).toBe(DOC_1); // DOC_2's own term silently vanishes into DOC_1's row identity - DOC_2's "Applicable Margin" is now unreachable by (companyId, DOC_2, "applicable margin").
+      const rows = await prisma.definedTermNode.findMany({ where: { companyId: COMPANY, normalizedName: "applicable margin" }, orderBy: { documentId: "asc" } });
+      expect(rows).toHaveLength(2); // FIXED: DOC_2's own term is now its own separate, reachable row - never a silent collision into DOC_1's row identity.
+      expect(new Set(rows.map((r) => r.documentId))).toEqual(new Set([DOC_1, DOC_2]));
+      const doc2Row = rows.find((r) => r.documentId === DOC_2)!;
+      expect(doc2Row).toBeDefined();
+      expect(doc2Row.id).not.toBe(afterA.id);
+    });
+
+    it("generalized adversarial variant: THREE documents (not just two) in one company all defining the identically-named term, with case/whitespace variation, all persist as three separate rows", async () => {
+      const DOC_3_LOCAL = "audit-g-persist-doc-3-defterms"; // a third document, distinct from the shared DOC_3 fixture (which belongs to COMPANY_2 in this file's own setup)
+      await prisma.document.create({ data: { id: DOC_3_LOCAL, companyId: COMPANY, name: "Audit-G Doc 3 (defined-terms variant)", type: "CREDIT_AGREEMENT" } });
+      try {
+        const variants: [string, CandidateDefinedTerm][] = [
+          [DOC_1, { termName: "Consolidated EBITDA", sourceSectionRef: "1.01", entityScope: [] } as unknown as CandidateDefinedTerm],
+          [DOC_2, { termName: "consolidated ebitda", sourceSectionRef: "1.01", entityScope: [] } as unknown as CandidateDefinedTerm], // lowercase variant - same normalizedName
+          [DOC_3_LOCAL, { termName: "  Consolidated   EBITDA  ", sourceSectionRef: "1.01", entityScope: [] } as unknown as CandidateDefinedTerm], // extra whitespace variant - CandidateDefinedTerm's own termName.toLowerCase() does NOT collapse internal whitespace, so this is a genuinely different normalizedName; included to prove the fix handles it as a real, distinct, correctly-scoped row rather than mis-colliding it with the other two.
+        ];
+        for (const [documentId, term] of variants) await persistDefinedTerms(COMPANY, documentId, [term]);
+
+        const rows = await prisma.definedTermNode.findMany({ where: { companyId: COMPANY, documentId: { in: [DOC_1, DOC_2, DOC_3_LOCAL] }, normalizedName: { contains: "consolidated" } } });
+        expect(rows).toHaveLength(3); // three documents, three separate rows - no cross-document collision regardless of case/whitespace variation.
+        expect(new Set(rows.map((r) => r.documentId))).toEqual(new Set([DOC_1, DOC_2, DOC_3_LOCAL]));
+        expect(new Set(rows.map((r) => r.id)).size).toBe(3);
+      } finally {
+        await prisma.definedTermNode.deleteMany({ where: { companyId: COMPANY, documentId: DOC_3_LOCAL } });
+        await prisma.document.deleteMany({ where: { id: DOC_3_LOCAL } });
+      }
+    });
+
+    it("concurrent-write safety: repeated concurrent persistDefinedTerms calls for the SAME colliding (company, document, term) resolve to one consistent, correct row - never a duplicate, never a race", async () => {
+      const term: CandidateDefinedTerm = { termName: "Concurrent Term", sourceSectionRef: "1.01", entityScope: [] } as unknown as CandidateDefinedTerm;
+      await Promise.all(Array.from({ length: 8 }, () => persistDefinedTerms(COMPANY, DOC_1, [term])));
+      const rows = await prisma.definedTermNode.findMany({ where: { companyId: COMPANY, documentId: DOC_1, normalizedName: "concurrent term" } });
+      expect(rows).toHaveLength(1); // Postgres's own (companyId, stableKey) unique constraint + upsert resolves 8 concurrent writers to exactly one row.
     });
   });
 
@@ -188,8 +252,64 @@ describe("Persistence fault injection (real DB)", () => {
       await persistDefinedTerms(COMPANY, DOC_1, [termA]);
       await persistDefinedTerms(COMPANY_2, DOC_3, [termA]);
       const termRows = await prisma.definedTermNode.findMany({ where: { normalizedName: "permitted liens", companyId: { in: [COMPANY, COMPANY_2] } }, orderBy: { companyId: "asc" } });
-      expect(termRows).toHaveLength(2); // NOT collapsed - companyId IS part of persistDefinedTerms' stableKey (unlike documentId, which is not). Confirms tenant isolation holds here even though document isolation for this same function does not.
+      expect(termRows).toHaveLength(2); // NOT collapsed - companyId is (and always was) part of persistDefinedTerms' stableKey, and (post-P0-2 remediation) documentId now is too. Confirms tenant isolation holds here.
       expect(new Set(termRows.map((r) => r.companyId))).toEqual(new Set([COMPANY, COMPANY_2]));
+    });
+  });
+
+  describe("Phase 3F.1.4 (P1-9 remediation) - persistStructuralReferences idempotency + tombstone lifecycle", () => {
+    it("replaying the SAME document's reference-detection pass twice is now idempotent - no duplicate ContractReferenceEdge rows (previously this function used a plain `.create()` with no stableKey at all, so every replay duplicated every edge)", async () => {
+      const nodes = parseDocumentStructure({ documentId: DOC_1, label: "CA", text: TEXT_1 });
+      const nodeIndex = await persistStructuralNodes(COMPANY, nodes);
+      const refs = detectStructuralReferences(DOC_1, TEXT_1, nodes);
+      expect(refs.length).toBeGreaterThan(0);
+
+      await persistStructuralReferences(COMPANY, refs, nodeIndex);
+      const countAfterFirst = await prisma.contractReferenceEdge.count({ where: { companyId: COMPANY } });
+      await persistStructuralReferences(COMPANY, refs, nodeIndex); // identical replay
+      const countAfterSecond = await prisma.contractReferenceEdge.count({ where: { companyId: COMPANY } });
+      expect(countAfterSecond).toBe(countAfterFirst); // FIXED: no longer doubles on replay.
+      expect(countAfterFirst).toBeGreaterThan(0);
+    });
+
+    it("a corrected reference-detection pass that stops emitting a spurious reference tombstones the stale edge (P1-9) - the orphan no longer survives", async () => {
+      const nodes = parseDocumentStructure({ documentId: DOC_1, label: "CA", text: TEXT_1 });
+      const nodeIndex = await persistStructuralNodes(COMPANY, nodes);
+      const refs = detectStructuralReferences(DOC_1, TEXT_1, nodes);
+      await persistStructuralReferences(COMPANY, refs, nodeIndex);
+      const countBefore = await prisma.contractReferenceEdge.count({ where: { companyId: COMPANY } });
+      expect(countBefore).toBeGreaterThan(1);
+
+      // "Corrected algorithm": stops emitting the LAST detected reference (simulates a fixed false-positive).
+      const correctedRefs = refs.slice(0, -1);
+      await persistStructuralReferences(COMPANY, correctedRefs, nodeIndex);
+      const countAfter = await prisma.contractReferenceEdge.count({ where: { companyId: COMPANY } });
+      expect(countAfter).toBe(correctedRefs.length); // the dropped reference's own edge is gone, not merely un-updated.
+    });
+
+    it("negative control: the LLM-candidate reference path (persistReferences), which never sets a stableKey, is never touched by persistStructuralReferences' own tombstone step", async () => {
+      const nodes = parseDocumentStructure({ documentId: DOC_1, label: "CA", text: TEXT_1 });
+      const nodeIndex = await persistStructuralNodes(COMPANY, nodes);
+      const { persistReferences } = await import("../../lib/contract-model/compiler/persistence");
+      const candidateRef = { referenceType: "SUBJECT_TO", referenceText: "an LLM-candidate reference, no stableKey", targetSectionRef: null } as unknown as import("../../lib/contract-model/types").CandidateContractReference;
+      await persistReferences(COMPANY, DOC_1, [candidateRef], nodeIndex);
+      const llmRowBefore = await prisma.contractReferenceEdge.findFirstOrThrow({ where: { companyId: COMPANY, referenceText: "an LLM-candidate reference, no stableKey" } });
+      expect(llmRowBefore.stableKey).toBeNull();
+
+      // Now run persistStructuralReferences for the SAME document with an EMPTY detected-reference list - if the tombstone step were not scoped to non-null stableKeys, this could wipe the LLM-candidate row too.
+      await persistStructuralReferences(COMPANY, [], nodeIndex);
+      const llmRowAfter = await prisma.contractReferenceEdge.findFirst({ where: { id: llmRowBefore.id } });
+      expect(llmRowAfter).not.toBeNull(); // untouched.
+    });
+
+    it("concurrent-write safety: repeated concurrent persistStructuralReferences calls for the SAME colliding reference resolve to one consistent row, never a duplicate", async () => {
+      const nodes = parseDocumentStructure({ documentId: DOC_1, label: "CA", text: TEXT_1 });
+      const nodeIndex = await persistStructuralNodes(COMPANY, nodes);
+      const refs = detectStructuralReferences(DOC_1, TEXT_1, nodes);
+      expect(refs.length).toBeGreaterThan(0);
+      await Promise.all(Array.from({ length: 6 }, () => persistStructuralReferences(COMPANY, refs, nodeIndex)));
+      const count = await prisma.contractReferenceEdge.count({ where: { companyId: COMPANY } });
+      expect(count).toBe(refs.length); // 6 concurrent identical replays still converge on exactly one row per real reference.
     });
   });
 });
