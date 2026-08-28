@@ -28,6 +28,20 @@ Phase C's real, validated result on two unseen packages (FWRG, LSB): `DANGEROUS_
 
 **This is a real, disclosed, never-closed safety gap sitting in a still-present code path.** It is not currently reachable from any live system (see §4 below — nothing under `app/` references `ContractRule`), so it is not an active production risk today. But it means the 11-stage orchestrator's own `RULE_EXTRACTION`/`VERIFICATION` stages should not be assumed safe or reused as-is by Phase 3 — see §3's migration table.
 
+### Known limitations — scorer/evaluator circularity defect (read before trusting ANY coverage/accuracy percentage in this repository)
+
+**Status as of Phase 3F.1.4: confirmed, unfixed, and deliberately deferred.** This is a disclosure added to close a gap the Phase 3F.1.3 foundation-assurance audit found: this document (`docs/HEADROOM-ROADMAP.md`) is the file most likely to be a future session's first stop, and it previously reported coverage/accuracy percentages — including the 25.0% → 15.625% figure two paragraphs above — with no caveat about the grading logic that produced them.
+
+The Phase C.1 evaluator that produced that 25.0% → 15.625% figure (`lib/contract-model/analyzer/evaluator.ts`), and separately the later Phase 3F/3F.1/3F.1.1 scorer (`scripts/phase-3f1-1-forensics.ts` and siblings: `scripts/phase-3f-score-first-run.ts`, `scripts/phase-3f1-score-dsgr-regression.ts`), share the **same underlying defect class**: both credit coverage based on structural/section-ref proximity to a matched candidate unit — picking the nearest or highest-materiality match by location — rather than checking that the matched unit's own content actually corresponds to the specific ground-truth claim. Concretely:
+
+- The Phase 3F.1.1 forensics' own adversarial re-audit of its prior "resolved" cases found this produced **14–16 of 26 false credits** — cases the scorer counted as correctly covered that were not.
+- The same defect independently recurs in the earlier, separately-built Phase C.1 evaluator, with only a partial mitigation: it requires a real numeric-figure match when ground truth carries a dollar figure, but falls back to pure section-ref proximity (no content check at all) for qualitative provisions with no figure — which is exactly the evaluator that produced this section's own 25.0% → 15.625% number above.
+- This defect is **confirmed still present and unmodified** as of this writing. It is explicitly out of scope for Phase 3F.1.4 (this remediation pass touches production trust-boundary defects only, never scorer/grading code) and is deliberately deferred to a future **Phase 3F.1.5 — Evaluation Methodology V2**.
+
+**Practical consequence: every historical coverage or accuracy percentage in this repository computed by either the Phase C.1 evaluator or the Phase 3F/3F.1/3F.1.1 scorer — including the 25.0% → 15.625% figure above — should be read as a potentially-overstated estimate, by an unquantified margin, not a validated number.** This does not apply to the `INVARIANT_DERIVED` test families (e.g. the I1–I16 structural-identity invariant suites, the coverage-audit fault-injection suite), which do not depend on trusting either scorer's own judgment.
+
+Full forensic detail: `docs/phase-3f1-1-residual-safety-forensics.md` §17–20. The Phase 3F.1.3 audit's own structured findings: `docs/foundation-assurance/10-cache-invalidation-assurance.json` and `docs/foundation-assurance/11-test-evidence-classification.json` (the latter's `scorerRemediationRequirements` list is the concrete spec for what Phase 3F.1.5 needs to fix).
+
 ### Is Phase 2 sufficiently complete for Phase 3 to begin?
 
 **Yes, on the specific, evidenced claim the repository actually supports — which is narrower than an unconditional "no systemic issues remain."**
