@@ -1,0 +1,102 @@
+{
+  "taxonomyId": "PHASE_3F_ERROR_TAXONOMY",
+  "recordedAt": "2026-08-28T00:00:00Z",
+  "scope": "Post-score diagnosis of scripts/phase-3f-first-blind-run.ts's real output against tests/fixtures/unseen-packages/phase-3f-ground-truth/*.json, per the frozen first-run integrity manifest. Root-cause analysis only - no remediation code was written or planned in detail, per the task's own explicit stop condition (task #172/§27-30).",
+  "findings": [
+    {
+      "findingId": "F1",
+      "title": "Semantic-coverage router admits a structural node only if its OWN text (excluding descendants) independently trips one of four narrow detectors",
+      "category": "AUDIT_INVENTORY_RECALL_GAP",
+      "severity": "HIGH - directly drives the controlling safety gate failure",
+      "location": "lib/contract-model/compiler/semantic-coverage/router.ts:62-96, specifically the admission gate at line 80 (`if (admissionReasons.length === 0) continue;`)",
+      "mechanism": "routeDocument() iterates every structural node independently and computes ownText = index.getNodeText(node.nodeKey, \"OWN\") - explicitly excluding descendant text. A node is only admitted into the routed-region set (and therefore only ever receives a semantic-unit hypothesis in Stage 8's Layer A/B inventory) if ownText independently trips one of exactly four checks: an INDEPENDENT_SIGNAL keyword/pattern, a HEADLINE_HEADING regex match, a DEFINITION_NODE pattern, or UNSTRUCTURED_MULTI_ITEM (unrepresented inline enumeration markers). A SECTION node whose own chapeau text is a short, generic sentence (e.g. a scope-defining clause like \"No Loan Party will, nor will it permit any Restricted Subsidiary to:\", or a single-paragraph provision like \"5.08 Use of Proceeds\") and whose real substance lives entirely in its own leaf-level prose or in child SUBSECTION/CLAUSE nodes (indexed and checked separately) can fail all four checks and is silently dropped - with zero downstream trace anywhere in Phase 3E's coverage report, dangerousUnaccounted list, or family rollups.",
+      "evidence": {
+        "trueBlindSpots_noAuditUnitAtAnyLevel": 90,
+        "chapeauOnlyGaps_subItemsCapturedParentMissed": 112,
+        "auditInventoryRecallHighMateriality_afterDescendantMatching": "88.79%",
+        "sampledMissingSections_docA": ["5.01 Financial Reporting chapeau", "5.08 Use of Proceeds", "5.13(chapeau) Additional Collateral", "2.01 Commitments chapeau", "2.06 Letters of Credit chapeau", "2.10 Repayment/Amortization chapeau", "2.13 Interest chapeau", "2.18 Payments Waterfall chapeau", "4.01 Conditions chapeau (both occurrences)", "V/VI Article-level chapeaus", "1.11 Amendment and Restatement"],
+        "confirmedByDirectQuery": "None of these sectionRefs appear anywhere among the 656 distinct sectionRefs Phase 3E's own Layer A/B inventory produced for doc-a, out of 1341 total structural nodes - independently confirmed by querying stage8-coverage-result.json's documentDetails[doc-a].units directly, not inferred from the scoring script's matching logic alone."
+      },
+      "relationToSafetyGate": "This is the single largest contributor to the DANGEROUS_UNFLAGGED_OMISSION count: a unit the router never routes can never receive a semantic-unit hypothesis, can never appear in coverageEntries, and can therefore never appear in dangerousUnaccounted - so Phase 3E's own reconciliation engine has structurally no way to flag it, regardless of how well that engine's own downstream logic performs.",
+      "remediationImplemented": false
+    },
+    {
+      "findingId": "F2",
+      "title": "classifyMateriality() ignores exception-list/posture context, so basket items without an inline numeric token default to INFORMATIONAL",
+      "category": "MATERIALITY_MISCLASSIFICATION",
+      "severity": "HIGH - directly drives the controlling safety gate failure",
+      "location": "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts:161-169 (classifyMateriality), called at line 193 without the isExceptionItem flag that classifyPostureSignal (line 142) does receive",
+      "mechanism": "classifyMateriality(signals) is a pure function of a unit's own detected text signals: an ECONOMIC_SIGNAL_NAMES hit (dollar amount, percentage, ratio, cap language) -> CRITICAL; a REAL_MECHANIC_SIGNAL_NAMES hit -> MATERIAL; any weak signal -> REVIEW_UNCERTAIN; no signal at all -> INFORMATIONAL. It is never told whether the unit is a member of an enumerated exception/basket list (isExceptionItem, computed separately and passed only to classifyPostureSignal at line 192). A basket item whose own clause text references an amount or condition defined elsewhere (e.g. \"Indebtedness described in clause (c) of the definition of Permitted Indebtedness\", or a purely qualitative carve-out with no inline numeric token) trips none of the three signal sets and is classified INFORMATIONAL by default - even though the file's own header comment (lines 1-12) explicitly states the architectural intent that every enumerated carve-out in an \"except:\" list is a real basket/permission in its own right, capped or not.",
+      "evidence": {
+        "violationMaterialityMisclassifiedUnflagged_total": 213,
+        "sampledCriticalCases": ["doc-a 6.01(c) [Indebtedness basket item]", "doc-a 6.01(g)", "doc-a 6.01(h)", "doc-a 6.01(m)", "doc-a 6.01(p)", "doc-a 6.01 chapeau itself", "doc-a 2.09 Incremental Facility", "doc-a 2.11(e)/(g) prepayment application/declined amounts"],
+        "pattern": "Concentrated in Article VI (Negative Covenants) lettered sub-baskets - exactly the highest-materiality content class in the entire package, and exactly the class the task's own basket/exception discovery-recall gate (95%, independently measured PASSING at 98.80% for the discovery layer) shows the pipeline is otherwise good at finding."
+      },
+      "relationToSafetyGate": "A basket item downgraded to INFORMATIONAL is excluded from the materiality-weighted dangerousUnaccounted rollup even when the audit DID hypothesize a unit at that exact address - so the gap here is not recall (the unit exists in the inventory) but a silent severity downgrade that defeats the entire purpose of materiality-weighting.",
+      "remediationImplemented": false
+    },
+    {
+      "findingId": "F3",
+      "title": "Amendment-effect / operative-state resolver's conservative multi-candidate refusal leaves OperativeContractState with 0 resolved provisions despite a RESOLVED status",
+      "category": "OPERATIVE_STATE_COVERAGE_GAP",
+      "severity": "MEDIUM - safe (no false-positive operative conclusion) but a real usefulness/coverage gap, and the status label itself risks misreading",
+      "location": "Phase 2G amendment pipeline (scripts/phase-3f-first-blind-run.ts Stage 5 output: tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage5-amendment-effects.json, stage5-operative-state.json)",
+      "mechanism": "The package graph correctly classifies doc-a and doc-d as two independent CREDIT_AGREEMENT-type documents (both full agreements: the 2022 original and the 2025 restatement). When doc-b/doc-c's own amendment text refers to \"the Existing Credit Agreement\" or similar without an unambiguous document identifier the deterministic resolver can match without guessing, the resolver correctly refuses to guess from title similarity alone (an explicitly disclosed, safety-conscious design choice - see the unresolvedReason field: \"2 candidate documents of type CREDIT_AGREEMENT exist in this package and none matches the referenced execution date... never guessed from title similarity alone\"). All 4 detected amendment effects end up REVIEW_REQUIRED or UNRESOLVED, so OperativeContractState.provisions is empty and its own status field reads \"OPERATIVE_STATE_RESOLVED\" - which describes the resolution PROCESS completing without error, not that any provision was successfully resolved. A downstream reader skimming only the status field, without also checking provisions.length, could misread \"RESOLVED\" as \"nothing to disclose\" rather than \"nothing could be confidently resolved.\"",
+      "evidence": {
+        "operativeStateProvisions": 0,
+        "operativeStateStatus": "OPERATIVE_STATE_RESOLVED",
+        "amendmentEffectsTotal": 4,
+        "amendmentEffectsResolved": 0,
+        "amendmentEffectsReviewRequiredOrUnresolved": 4,
+        "note": "The underlying documents DO contain deterministically extractable disambiguating signal the resolver did not use here - explicit execution dates (\"dated as of April 1, 2022\") and explicit \"Existing Credit Agreement\" cross-references appear directly in the amendment preambles (confirmed by the independent ground-truth authoring for doc-b/doc-c, which resolved this same ambiguity by reading the same text) - so the conservative refusal, while safe, is not obviously the only available deterministic answer."
+      },
+      "relationToSafetyGate": "Not a source of DANGEROUS_UNFLAGGED_OMISSION on its own (the resolver's own REVIEW_REQUIRED/UNRESOLVED statuses on all 4 effects are themselves a correct, honest signal of uncertainty), but it does mean the pipeline currently cannot answer the basic question \"which text is operative today\" from its own operative-state output alone.",
+      "remediationImplemented": false
+    },
+    {
+      "findingId": "F4",
+      "title": "Structural parser produces duplicate/garbled ARTICLE-type matches and runaway nested lettering in at least one document",
+      "category": "STRUCTURAL_PARSER_NOISE",
+      "severity": "LOW - cosmetic/noise, did not visibly corrupt downstream discovery or audit results in this run, but degrades signal quality",
+      "location": "Phase 2A structural indexing (upstream of this run; observed in tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage1-all-nodes.json)",
+      "mechanism": "doc-b's ARTICLE-level node list includes spurious entries whose \"heading\" text is a mid-sentence fragment rather than a real article title (e.g. a fragment beginning \"2692 of the Civil Code of Quebec in order to hold any hypothec...\" and another beginning \"or to compliance and no Default certificates...\"), consistent with the parser's ARTICLE-heading regex matching numbered/roman-numeral-looking text embedded in ordinary prose rather than a true heading. Separately, doc-a's structural index contains a section-reference lettering pattern that grows unboundedly nested under 6.01 (\"6.01(i)(i)(ii)(i)(ii)(i)\", \"...(ii)(ii)\", etc.) rather than terminating at a shallow, realistic nesting depth - consistent with the parser's lettered-clause detector re-matching an already-consumed \"(i)\" marker as a fresh nesting level instead of advancing past it.",
+      "evidence": {
+        "docB_spuriousArticleHeadings": 2,
+        "docA_runawayNestingExample": "6.01(i)(i)(ii)(i)(ii)(i), 6.01(i)(i)(ii)(i)(ii)(ii)"
+      },
+      "relationToSafetyGate": "No direct evidence this specific defect caused a dangerous omission in this run (the affected regions did not correspond to any ground-truth CRITICAL unit sampled), but noise of this kind degrades the reliability of any sectionRef-keyed matching downstream, including this scoring script's own matching and the router's own per-node admission logic (F1).",
+      "remediationImplemented": false
+    },
+    {
+      "findingId": "F5",
+      "title": "Discovery-layer recall falls short of the frozen covenant-bearing-section (>=98%) and operative-rule (>=95%) gates, though basket/exception recall clears its own 95% gate",
+      "category": "DISCOVERY_LAYER_RECALL_GAP",
+      "severity": "MEDIUM - below the frozen gate thresholds, but the shortfall is modest and concentrated outside the highest-materiality basket content",
+      "location": "Phase 2B discovery pipeline (lib/contract-model/compiler/discovery/*) - the specific per-family/per-signal cause was not traced to a single code location within this diagnosis's scope",
+      "mechanism": "Measured directly from stage2-all-discovery-candidates.json cross-referenced against ground truth: covenant-bearing section recall (Articles V/VI/VII, CRITICAL/MATERIAL) = 87.21% against a 98% gate; operative-rule recall (COVENANT/BASKET/EXCEPTION/CONDITION/EVENT_OF_DEFAULT/FINANCIAL_TEST unit types, CRITICAL/MATERIAL) = 94.42% against a 95% gate. By contrast, basket/exception recall specifically = 98.80%, clearing its own 95% gate comfortably - the shortfall is not evenly distributed, it is concentrated in non-basket operative content (conditions, events of default, mechanics) rather than the negative-covenant baskets that are Headroom's primary domain.",
+      "evidence": {
+        "covenantBearingSectionRecall": "87.21% (gate: >=98%, FAIL)",
+        "operativeRuleRecall": "94.42% (gate: >=95%, FAIL, narrowly)",
+        "basketExceptionRecall": "98.80% (gate: >=95%, PASS)"
+      },
+      "relationToSafetyGate": "Indirect - a unit discovery never found cannot be compiled, but per the frozen compilationVerificationScopeRule this alone does not violate the controlling gate as long as Phase 3E's own audit correctly flags the gap; F1 and F2 are what make that flagging unreliable for a meaningful fraction of this shortfall.",
+      "remediationImplemented": false
+    },
+    {
+      "findingId": "F6",
+      "title": "Compile-stage failures do not preserve their own error message in the persisted artifact",
+      "category": "OBSERVABILITY_GAP",
+      "severity": "LOW - limits this diagnosis's own ability to root-cause 2 real failures, not itself a correctness defect",
+      "location": "scripts/phase-3f-first-blind-run.ts Stage 6 loop (try/catch around compileCovenantToIR) and/or the compiled-result persistence format in stage6-compiled-results.json",
+      "mechanism": "2 of the 30 compiled candidates (discovery-candidate:c33f093187ec7ab5d88d638c, discovery-candidate:ea3279a3972c8cee9d206cd2) show status: \"FAILED\" in the sealed stage6-compiled-results.json artifact with no accompanying error/errorMessage field, so the specific cause of either failure cannot be determined from the preserved evidence alone without re-running the compiler against the same candidates outside the frozen run - which this diagnosis does not do, per the task's own frozen-run/no-remediation discipline.",
+      "evidence": {
+        "failedCandidateCount": 2,
+        "errorFieldPresent": false
+      },
+      "relationToSafetyGate": "Minimal direct effect (2 of 30 compiled candidates is a small fraction of the sample), but represents a gap in this validation's own completeness.",
+      "remediationImplemented": false
+    }
+  ],
+  "summaryOfControllingGateDrivers": "The DANGEROUS_UNFLAGGED_OMISSION count (119 strict / 34 broad, both non-zero) is driven overwhelmingly by two architectural findings in Phase 3E's own semantic-coverage audit, not by the discovery layer or the compilation cap: F1 (router admission logic silently drops nodes whose own text doesn't independently trip one of four narrow detectors, producing true blind spots the audit has no way to ever flag) and F2 (materiality classification ignores exception-list membership, causing real CRITICAL/MATERIAL baskets the audit DID find to be silently downgraded to INFORMATIONAL and excluded from dangerous-unaccounted flagging). Both are precisely located, both are architectural rather than one-off bugs, and both would need to be addressed for Phase 3E's own auditor to reliably serve as the safety net the frozen compilationVerificationScopeRule relies on it being.",
+  "remediationStatus": "NONE IMPLEMENTED. Per task §27-30's explicit stop condition, this diagnosis identifies root causes only; no code fix, prompt change, or algorithm-version bump was made or planned in this task."
+}
