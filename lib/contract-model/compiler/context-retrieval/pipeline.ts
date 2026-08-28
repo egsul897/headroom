@@ -67,7 +67,7 @@ function computeSufficiencyState(state: RetrievalState): SufficiencyState {
 function retrieveCrossDocumentDependenciesForDefinitions(state: RetrievalState, access: PackageAccess, documentId: string): void {
   for (const item of [...state.items.values()]) {
     if (item.type !== "DEFINITION" && item.type !== "DEFINITION_DEPENDENCY") continue;
-    retrieveCrossReferencesFromDefinitionText(state, access.index, item.documentId, item.excerptText, item.itemId, item.retrievalDepth + 1);
+    retrieveCrossReferencesFromDefinitionText(state, access.index, item.documentId, item.excerptText, item.itemId, item.retrievalDepth + 1, access.packageGraph);
     if (access.packageGraph) retrieveAmendmentLeadsForDefinition(state, access.packageGraph, item.documentId, item.normalizedRef, item.itemId);
   }
   void documentId;
@@ -148,7 +148,7 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
 
   const operativeText = access.index.getNodeText(primaryNodeId, "DESCENDANTS");
   retrieveDirectDefinitions(state, access.index, documentId, operativeText, operativeItem.itemId);
-  retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true);
+  retrieveCrossReferencesFromNode(state, access.index, documentId, primaryNodeId, operativeItem.itemId, 1, true, access.packageGraph);
 
   // Definition-fallback and reference-detection-within-definitions run
   // regardless of whether a package graph is available - an undeclared
