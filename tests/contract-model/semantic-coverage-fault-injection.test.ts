@@ -329,6 +329,12 @@ describe("Phase 3E fault injection matrix (task #160)", () => {
       status: "OPERATIVE_STATE_RESOLVED",
       unresolvedIssues: [],
       conflicts: [],
+      targetResolutionStatus: "UNIQUE",
+      targetResolutionReason: null,
+      candidateSourceNodeIds: [],
+      attemptedText: null,
+      reviewRequired: false,
+      candidateTexts: [],
     };
     const operativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [supersededProvision], status: "OPERATIVE_STATE_RESOLVED", summary: "test", unattachedEffects: [] };
     const result = await runSemanticCoverageAudit({ ...baseInput, index, operativeState, documents: [{ documentId: "doc-1" }], discoveredCandidates: [candidateA], compiledResults: [{ candidateRef: "disc-a", rules: [ruleA], definitions: [] }], verifiedCandidateRefs: new Set() });
@@ -367,6 +373,12 @@ describe("Phase 3E fault injection matrix (task #160)", () => {
       status: "OPERATIVE_STATE_CONFLICTED",
       unresolvedIssues: ["two amendments conflict"],
       conflicts: [],
+      targetResolutionStatus: "UNIQUE",
+      targetResolutionReason: null,
+      candidateSourceNodeIds: [],
+      attemptedText: null,
+      reviewRequired: true,
+      candidateTexts: [],
     };
     const operativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [conflictedProvision], status: "OPERATIVE_STATE_CONFLICTED", summary: "test", unattachedEffects: [] };
     const result = await runSemanticCoverageAudit({ ...baseInput, index, operativeState, documents: [{ documentId: "doc-1" }], discoveredCandidates: [candidateA], compiledResults: [{ candidateRef: "disc-a", rules: [ruleA], definitions: [] }], verifiedCandidateRefs: new Set() });

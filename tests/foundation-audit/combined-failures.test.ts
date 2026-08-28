@@ -78,8 +78,8 @@ describe("Combined failure: extraction corruption + amendment", () => {
   });
 });
 
-describe("Combined failure: ambiguous amendment target (via duplicate label) + no CURRENTLY-applying effect as of the query date", () => {
-  it("a duplicate-labeled base section (AMBIGUOUS under resolveUniqueNodeByRef) + a real amendment effect whose effective date is AFTER the query asOfDate -> still reports OPERATIVE_STATE_RESOLVED with null text, silently indistinguishable from 'never amended, base text is authoritative'", () => {
+describe("Combined failure: ambiguous amendment target (via duplicate label) + no CURRENTLY-applying effect as of the query date - FIXED", () => {
+  it("a duplicate-labeled base section (AMBIGUOUS under resolveUniqueNodeByRef) + a real amendment effect whose effective date is AFTER the query asOfDate -> FIXED: no longer masked as RESOLVED merely because nothing has applied yet", () => {
     const sectionA = n({ documentId: "base-doc", nodeType: "SECTION", sectionRef: "6.04", charStart: 0, charEnd: 100, nodeId: "sec-604-a" });
     const sectionB = n({ documentId: "base-doc", nodeType: "SECTION", sectionRef: "6.04", charStart: 500, charEnd: 600, nodeId: "sec-604-b" }); // same label, second physical occurrence - genuine ambiguity
     const index = buildStructuralIndex(new Map([["base-doc", { text: "x".repeat(1000), nodes: [sectionA, sectionB] }]]), [], []);
@@ -89,13 +89,18 @@ describe("Combined failure: ambiguous amendment target (via duplicate label) + n
     const futureEffect = effect({ effectId: "eff-2", targetSectionRef: "6.04", effectiveDate: { date: "2030-01-01", status: "EXPLICIT_EFFECTIVE_DATE", evidence: "e", reason: "r" } });
     const state = computeOperativeContractState({ instrumentKey: "instrument-1", baseDocumentId: "base-doc", asOfDate: "2024-01-01", index, allEffects: [futureEffect] });
 
-    expect(state.status).toBe("OPERATIVE_STATE_RESOLVED"); // CONFIRMED false certainty: textMissingDespiteAppliedEffect only fires when appliedChain.length>0; a not-yet-effective amendment means appliedChain is empty, so the ambiguous-base signal (base.text===null because AMBIGUOUS, not because "no amendment ever touched it") is completely lost.
+    // FIXED (Phase 3F.1.4 §6A/§6B): the provision's own base target
+    // resolution status is now checked independently of appliedChain -
+    // an AMBIGUOUS base reference is disclosed regardless of whether any
+    // effect has applied yet, closing exactly the "false certainty" gap
+    // this combined-failure scenario proved.
+    expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
     expect(state.provisions[0]!.currentText).toBeNull();
-    expect(state.provisions[0]!.unresolvedIssues).toHaveLength(0); // nothing tells a caller WHY currentText is null - it is indistinguishable from "this section legitimately has no captured text yet."
-    // Contrast: an UNAMBIGUOUS section with zero amendment activity at all would never even generate a provision (task's own documented V1 scope:
-    // "only provisions with >=1 recorded amendment effect are represented") - so a caller reading `status: RESOLVED, currentText: null` for THIS
-    // provision has no way to tell "ambiguous base, unresolved" apart from any other RESOLVED-with-a-future-effect provision. This is the
-    // "does the missing/ambiguous-region signal get lost, making it look like a clean case" failure mode the audit brief specifically names.
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+    expect(state.provisions[0]!.unresolvedIssues.length).toBeGreaterThan(0);
+    expect(state.provisions[0]!.unresolvedIssues.join(" ")).toMatch(/ambiguous/i); // a reviewer can now tell WHY, not just THAT.
+    expect(state.provisions[0]!.candidateSourceNodeIds.sort()).toEqual(["sec-604-a", "sec-604-b"]);
   });
 });
 
@@ -111,7 +116,7 @@ describe("Combined failure: amendment target ambiguity/missing-definition + cros
     definitionExcerpt: "means, with respect to UNRELATED INSTRUMENT, any Subsidiary designated under a COMPLETELY DIFFERENT agreement's own Section 9.09",
   };
 
-  it("base document does NOT define the amended term (missing definition) - operative-state's resolveBaseText silently falls back to a DIFFERENT, unrelated document's own same-named definition, with zero signal that this happened", () => {
+  it("base document does NOT define the amended term (missing definition) - FIXED: operative-state.ts's own independent, document-scoped ambiguity/uniqueness check (§6A) now gates currentText, so the cross-document fallback's leaked value is never trusted as a confident answer even though the fallback line itself is untouched", () => {
     const baseDocText = "x".repeat(500); // base-doc's own text - genuinely contains NO definition of "Excluded Subsidiary" (a dropped/missing definition)
     const otherDocText = "TEXT FROM A COMPLETELY UNRELATED DOCUMENT, NEVER PART OF base-doc's OWN OWN INSTRUMENT. " + "y".repeat(400);
     const index = buildStructuralIndex(
@@ -130,17 +135,28 @@ describe("Combined failure: amendment target ambiguity/missing-definition + cros
     const state = computeOperativeContractState({ instrumentKey: "instrument-1", baseDocumentId: "base-doc", asOfDate: "2024-06-01", index, allEffects: [amendEffect] });
 
     const provision = state.provisions[0]!;
-    // CONFIRMED cross-document leakage: resolveBaseText's DEFINITION branch is `index.getDefinition(group.ref, baseDocumentId) ?? index.getDefinition(group.ref)`
-    // (lib/contract-model/compiler/amendment/operative-state.ts:63) - the second, no-documentId call silently matches the UNRELATED document's own definition.
-    expect(provision.currentSourceDocumentId).toBe("base-doc"); // the view's OWN documentId field still claims base-doc (never overwritten - no applied effect ran)...
-    expect(provision.currentText).toContain("COMPLETELY UNRELATED DOCUMENT"); // ...but the text substance is fetched from a wholly unrelated document (in fact its ENTIRE raw text, since getDefinitionFullText spans to the next definition or document end and this fixture doc has no other definition) once def itself is the wrong-document match.
-    expect(provision.status).toBe("OPERATIVE_STATE_RESOLVED"); // no applied effect + no conflict + no review-flagged effect -> confidently RESOLVED, carrying leaked cross-document text.
-    expect(provision.unresolvedIssues.some((i) => i.toLowerCase().includes("cross-document") || i.toLowerCase().includes("different document"))).toBe(false);
+    // FIXED (Phase 3F.1.4 §6A - Workstream D, not the narrow line-63
+    // fallback fix itself, which remains untouched and is a separate
+    // workstream's own remediation): resolveBaseText's DEFINITION branch
+    // now derives targetResolutionStatus independently, from
+    // index.allDefinitions() scoped strictly to baseDocumentId - since
+    // "Excluded Subsidiary" has ZERO matches in base-doc specifically,
+    // this is NOT_FOUND regardless of what the line-63 fallback's `def`
+    // value resolves to. currentText is therefore never populated from
+    // the leaked cross-document text, as a direct (and correct) side
+    // effect of the P0 fix's own "only UNIQUE may confidently attach"
+    // discipline applying uniformly to both SECTION and DEFINITION kinds.
+    expect(provision.currentSourceDocumentId).toBe("base-doc");
+    expect(provision.currentText).toBeNull(); // no leaked cross-document text - the P0 fix closes this incidentally.
+    expect(provision.status).not.toBe("OPERATIVE_STATE_RESOLVED");
+    expect(provision.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(provision.targetResolutionStatus).toBe("NOT_FOUND");
+    expect(provision.unresolvedIssues.some((i) => i.toLowerCase().includes("not found"))).toBe(true);
   });
 });
 
-describe("Combined failure: out-of-order amendment ingestion + same-day effective dates", () => {
-  it("AMENDMENT_CONFLICT status IS correctly order-independent (both ingestion orders reach CONFLICTED) - but the reported currentText is NOT: it reflects whichever effect happens to sort last among same-day ties, which is ingestion order, not legal precedence", () => {
+describe("Combined failure: out-of-order amendment ingestion + same-day effective dates - FIXED (§6D)", () => {
+  it("AMENDMENT_CONFLICT status IS correctly order-independent (both ingestion orders reach CONFLICTED), and currentText is now ALSO order-invariant - withheld entirely, with the real competing candidates exposed via candidateTexts in a stable (effectId-sorted) order regardless of ingestion order", () => {
     const sectionNode = n({ documentId: "base-doc", nodeType: "SECTION", sectionRef: "8.01", charStart: 0, charEnd: 100, nodeId: "sec-801" });
     const index = buildStructuralIndex(new Map([["base-doc", { text: "x".repeat(200), nodes: [sectionNode] }]]), [], []);
 
@@ -153,12 +169,14 @@ describe("Combined failure: out-of-order amendment ingestion + same-day effectiv
     expect(orderAB.status).toBe("OPERATIVE_STATE_CONFLICTED"); // correctly detected regardless of order - GOOD, invariant 21 holds at the STATUS level.
     expect(orderBA.status).toBe("OPERATIVE_STATE_CONFLICTED");
 
-    // But the underlying currentText differs by ingestion order alone (stable-sort ties preserve original array order) - a real, if narrower,
-    // invariant-21 concern: "re-running the same inputs" (the same two real amendment documents) with a different arrival order (a genuine
-    // real-world possibility - two amendments uploaded/processed in parallel) produces a DIFFERENT currentText value for a byte-identical
-    // legal question, even though both are correctly gated behind CONFLICTED status.
-    expect(orderAB.provisions[0]!.currentText).toBe("Text from Amendment B.");
-    expect(orderBA.provisions[0]!.currentText).toBe("Text from Amendment A.");
-    expect(orderAB.provisions[0]!.currentText).not.toBe(orderBA.provisions[0]!.currentText);
+    // FIXED: currentText no longer follows ingestion order - it is
+    // withheld entirely (null) in BOTH orders, and candidateTexts (sorted
+    // by effectId, never by array/chain position) is byte-identical
+    // regardless of which order the same two real amendment documents
+    // were ingested in - proving input-order invariance directly.
+    expect(orderAB.provisions[0]!.currentText).toBeNull();
+    expect(orderBA.provisions[0]!.currentText).toBeNull();
+    expect(orderAB.provisions[0]!.candidateTexts).toEqual(["Text from Amendment A.", "Text from Amendment B."]);
+    expect(orderBA.provisions[0]!.candidateTexts).toEqual(orderAB.provisions[0]!.candidateTexts);
   });
 });

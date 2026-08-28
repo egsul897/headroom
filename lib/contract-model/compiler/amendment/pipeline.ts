@@ -24,6 +24,7 @@ import { detectScheduleModificationEffects, type ScheduleModificationResolutionC
 import { interpretAmendmentClause, AMENDMENT_INTERPRETATION_PROMPT_VERSION } from "./semantic-interpreter";
 import { validateSemanticAmendmentCandidate } from "./validation";
 import { groupEffectsByProvision, buildProvisionChain } from "./chain";
+import { verifyAmendmentEffectsIndependently } from "./independent-verification";
 import type { AmendmentEffectCandidate, AmendmentPipelineSummary, AmendmentTarget } from "./types";
 
 /**
@@ -214,12 +215,39 @@ export async function runAmendmentPipeline(caller: StageCaller, input: Amendment
     finalEffects.push(validated);
   }
 
-  const { unattachedEffects } = groupEffectsByProvision(finalEffects);
-  const { groups } = groupEffectsByProvision(finalEffects);
+  // Phase 3F.1.4 §6C - independent verification, wired in as a REAL gate
+  // (the audit's own P0 finding: this function previously had zero real
+  // callers outside one-off diagnostic scripts). Re-derives target
+  // resolution directly against the structural index, deliberately never
+  // sharing operative-state.ts's own buildProvisionView code path
+  // (Architecture Invariant #17 - "the system that proposes and the
+  // system that checks must not be the same pass"), so a RESOLVED effect
+  // this SEPARATE check cannot itself confirm is downgraded to
+  // REVIEW_REQUIRED before it ever reaches operative-state.ts's own
+  // target-resolution consumption - real defense-in-depth against a
+  // FUTURE regression there, not merely a second copy of the same fix.
+  // Retained even after buildProvisionView's own P0 fix (this phase) per
+  // the task's own explicit "err toward wiring it in" guidance: it is the
+  // only check in the live pipeline that re-derives target resolution
+  // from the raw index rather than consuming operative-state.ts's own
+  // computation of it, so it remains meaningfully independent under
+  // Architecture Invariant #17 despite still sharing Phase 2A's
+  // structural-index substrate with it (Invariant #18's own disclosed
+  // caveat - real but bounded independence, not full isolation).
+  const verificationFindings = verifyAmendmentEffectsIndependently(finalEffects, input.documents, input.index);
+  const findingByEffectId = new Map(verificationFindings.map((f) => [f.effectId, f] as const));
+  const gatedEffects = finalEffects.map((effect) => {
+    const finding = findingByEffectId.get(effect.effectId);
+    if (!finding || finding.passed || effect.status !== "RESOLVED") return effect;
+    return { ...effect, status: "REVIEW_REQUIRED" as const, unresolvedReason: `Independent verification failed: ${finding.issues.join(" ")}` };
+  });
+
+  const { unattachedEffects } = groupEffectsByProvision(gatedEffects);
+  const { groups } = groupEffectsByProvision(gatedEffects);
   const totalConflictsAcrossPackage = groups.reduce((n, g) => n + buildProvisionChain(g).conflicts.length, 0);
 
   return {
-    effects: finalEffects,
+    effects: gatedEffects,
     unattachedEffects,
     totalConflictsAcrossPackage,
     summary: {

@@ -22,23 +22,26 @@
  *  3. A null/unresolvable effective date is correctly NEVER treated as
  *     "already effective" - it is excluded from the applied chain and
  *     raises OPERATIVE_STATE_REVIEW_REQUIRED via AMENDMENT_SEQUENCE_UNRESOLVED.
- *  4. REAL DEFECT: resolveEffectiveDate (effective-date.ts) checks its
- *     EXPLICIT_EFFECTIVE_DATE regex FIRST and returns immediately on a hit,
- *     without checking whether the SAME sentence also conditions
- *     effectiveness on unsatisfied conditions precedent. A very common
- *     real-world credit-agreement drafting pattern - "This Amendment shall
- *     become effective as of [DATE], subject to the satisfaction of the
- *     following conditions precedent: ..." - is classified
- *     EXPLICIT_EFFECTIVE_DATE with a concrete, immediately-applicable date,
- *     even though the amendment's own text conditions that same
- *     effectiveness on conditions the pipeline never checks are satisfied.
- *     This is exactly the failure mode Architecture Invariant #13 exists to
- *     prevent ("superseded language must never silently appear current") -
- *     here inverted: NOT-YET-effective language silently appears current.
- *     independent-verification.ts (the module invariant #17/#18 rely on to
- *     catch exactly this class of error) contains no check of
- *     effectiveDate/conditions-precedent logic at all (grep confirms zero
- *     matches), so nothing downstream catches this either.
+ *  4. FIXED (Phase 3F.1.4 Workstream D, §P1-4): resolveEffectiveDate
+ *     (effective-date.ts) used to check its EXPLICIT_EFFECTIVE_DATE regex
+ *     FIRST and return immediately on a hit, without checking whether the
+ *     SAME sentence also conditions effectiveness on unsatisfied
+ *     conditions precedent. A very common real-world credit-agreement
+ *     drafting pattern - "This Amendment shall become effective as of
+ *     [DATE], subject to the satisfaction of the following conditions
+ *     precedent: ..." - was classified EXPLICIT_EFFECTIVE_DATE with a
+ *     concrete, immediately-applicable date, even though the amendment's
+ *     own text conditions that same effectiveness on conditions the
+ *     pipeline never checks are satisfied. This was exactly the failure
+ *     mode Architecture Invariant #13 exists to prevent ("superseded
+ *     language must never silently appear current") - inverted: NOT-YET-
+ *     effective language silently appeared current. Fixed by checking, in
+ *     both directions, whether conditions-precedent language shares the
+ *     SAME clause as the explicit date before ever accepting that date as
+ *     unconditionally applicable - if so, the result is now
+ *     CONDITIONAL_UNRESOLVED, matching the treatment the identical
+ *     conditional language already correctly received when no date was
+ *     present at all.
  */
 import { describe, expect, it } from "vitest";
 import { readFile } from "node:fs/promises";
@@ -67,33 +70,71 @@ function makeEffect(overrides: Partial<AmendmentEffectCandidate> & Pick<Amendmen
   };
 }
 
-describe("2a. Conditions-precedent bug: EXPLICIT date regex fires before conditional-effectiveness language is even checked", () => {
-  it("REPRODUCED: an amendment effective 'as of [DATE], subject to satisfaction of conditions precedent' is classified EXPLICIT_EFFECTIVE_DATE, not CONDITIONAL_UNRESOLVED", () => {
+describe("2a. Conditions-precedent bug: EXPLICIT date regex used to fire before conditional-effectiveness language was even checked - FIXED", () => {
+  it("FIXED: an amendment effective 'as of [DATE], subject to satisfaction of conditions precedent' is now classified CONDITIONAL_UNRESOLVED, never a confidently-applicable EXPLICIT_EFFECTIVE_DATE", () => {
     const text =
       "This Amendment shall become effective as of December 1, 2023, subject to the satisfaction of each of the following conditions precedent set forth in Section 4 hereof: " +
       "(a) execution of this Amendment by each party hereto; (b) payment of the amendment fee described herein; and (c) delivery of a certificate of the Borrower confirming no Default has occurred.";
 
     const result = resolveEffectiveDate({ amendmentText: text, executionDate: null });
 
-    // ACTUAL, OBSERVED behavior - this is the defect, not the desired outcome.
-    expect(result.status).toBe("EXPLICIT_EFFECTIVE_DATE");
-    expect(result.date).toBe("December 1, 2023");
-
-    // The amendment's own text plainly conditions effectiveness on
-    // conditions precedent that this function never checked - a downstream
-    // consumer (operative-state.ts's appliedChain filter) will treat this
-    // amendment as governing on/after Dec 1 2023 unconditionally.
+    // FIXED behavior - the SAME sentence's conditions-precedent language is
+    // now checked before an explicit date is ever accepted as
+    // unconditionally applicable.
+    expect(result.status).toBe("CONDITIONAL_UNRESOLVED");
+    expect(result.date).toBeNull();
+    expect(result.reason).toMatch(/same sentence\/clause/i);
     expect(text).toMatch(/conditions precedent/i);
   });
 
-  it("CONTRAST: the SAME conditional language with NO concrete date attached IS correctly caught as CONDITIONAL_UNRESOLVED - confirming the gap is specifically 'date present + condition present', not 'condition detection is broken in general'", () => {
+  it("CONTRAST: the SAME conditional language with NO concrete date attached is ALSO correctly caught as CONDITIONAL_UNRESOLVED - confirming the fix generalizes rather than merely special-casing the exact bug sentence", () => {
     const text = "This Amendment shall become effective upon satisfaction of the conditions set forth in Section 4 hereof, on a date to be confirmed by the Administrative Agent.";
     const result = resolveEffectiveDate({ amendmentText: text, executionDate: null });
     expect(result.status).toBe("CONDITIONAL_UNRESOLVED");
     expect(result.date).toBeNull();
   });
 
-  it("independent-verification.ts contains no check of effective-date/conditions-precedent logic - nothing downstream catches the above defect", async () => {
+  it("CONTROL: an explicit date with NO conditions-precedent language anywhere nearby is still classified EXPLICIT_EFFECTIVE_DATE - the fix does not turn every explicit date into a false conditional flag", () => {
+    const text = "This Amendment shall become effective as of December 1, 2023. The parties further agree that Section 6.01 is hereby amended as set forth below.";
+    const result = resolveEffectiveDate({ amendmentText: text, executionDate: null });
+    expect(result.status).toBe("EXPLICIT_EFFECTIVE_DATE");
+    expect(result.date).toBe("December 1, 2023");
+  });
+
+  it("CONTROL: an explicit date followed, in a LATER unrelated sentence, by generic conditions-precedent language for a different purpose (e.g. a lender's funding obligation) does not suppress the explicit date - only SAME-CLAUSE conditions-precedent language does", () => {
+    const text =
+      "This Amendment shall become effective as of December 1, 2023. Separately, the Lenders' obligation to fund any Loan hereunder remains subject to the satisfaction of the conditions precedent set forth in Section 4.02 of the Credit Agreement.";
+    const result = resolveEffectiveDate({ amendmentText: text, executionDate: null });
+    expect(result.status).toBe("EXPLICIT_EFFECTIVE_DATE");
+    expect(result.date).toBe("December 1, 2023");
+  });
+
+  it("signing-date-only (no effective-date or conditional language at all) falls back to INFERRED_FROM_EXECUTION_DATE, never treated as explicit", () => {
+    const text = "AMENDMENT NO. 1 dated as of June 1, 2022 to the Credit Agreement dated as of January 15, 2021, among Acme LLC, as Borrower.\n\nSection 6.01 is hereby amended and restated.";
+    const result = resolveEffectiveDate({ amendmentText: text, executionDate: "2022-06-01" });
+    expect(result.status).toBe("INFERRED_FROM_EXECUTION_DATE");
+    expect(result.date).toBe("2022-06-01");
+  });
+
+  it("a future-dated explicit effective date is still classified EXPLICIT_EFFECTIVE_DATE (whether it has already occurred is operative-state.ts's own asOfDate concern, not this function's)", () => {
+    const result = resolveEffectiveDate({ amendmentText: "This Amendment shall become effective as of January 1, 2030.", executionDate: null });
+    expect(result.status).toBe("EXPLICIT_EFFECTIVE_DATE");
+    expect(result.date).toBe("January 1, 2030");
+  });
+
+  it("a retroactive explicit effective date (before the amendment's own likely drafting date) is still classified EXPLICIT_EFFECTIVE_DATE - retroactivity is a real, legitimate drafting choice, never suppressed", () => {
+    const result = resolveEffectiveDate({ amendmentText: "This Amendment shall become effective as of January 1, 2015.", executionDate: "2022-06-01" });
+    expect(result.status).toBe("EXPLICIT_EFFECTIVE_DATE");
+    expect(result.date).toBe("January 1, 2015");
+  });
+
+  it("no-resolvable-date at all (no explicit date, no conditional language, no execution date) is honestly UNKNOWN, never guessed", () => {
+    const result = resolveEffectiveDate({ amendmentText: "This Amendment amends Section 6.01 of the Credit Agreement.", executionDate: null });
+    expect(result.status).toBe("UNKNOWN");
+    expect(result.date).toBeNull();
+  });
+
+  it("independent-verification.ts contains no check of effective-date/conditions-precedent logic - the fix lives entirely in effective-date.ts's own text-classification logic, not in a downstream independent check", async () => {
     const src = await readFile(new URL("../../lib/contract-model/compiler/amendment/independent-verification.ts", import.meta.url), "utf-8");
     expect(src).not.toMatch(/condition/i);
     expect(src).not.toMatch(/effectiveDate/);
@@ -198,10 +239,25 @@ describe("2e. Retroactive and future-dated amendments", () => {
       provisionKey: "instr-1::SECTION::6.04",
       effects: [makeEffect({ effectId: "e-retro", effectiveDate: { date: "2019-01-01", status: "EXPLICIT_EFFECTIVE_DATE", evidence: null, reason: "explicit retroactive date" }, newText: "Retroactively amended 6.04." })],
     };
-    const fakeIndex = { resolveUniqueNodeByRef: () => ({ status: "NOT_FOUND" }), getDefinition: () => undefined } as unknown as StructuralIndex;
+    // Phase 3F.1.4 §6A: a realistic, ref-aware fake index is required here
+    // (rather than the always-NOT_FOUND fake used elsewhere in this file)
+    // because operative-state.ts now gates currentText on the provision's
+    // own real targetResolutionStatus, never on newText alone - an
+    // always-NOT_FOUND index would now (correctly) produce
+    // OPERATIVE_STATE_PARTIAL, which is not what this specific test is
+    // exercising (retroactive-date application against a UNIQUELY
+    // resolved target).
+    const fakeIndex = {
+      // Note: makeEffect()'s own default target.targetSectionRef is "6.01" (never overridden by this test), so the real
+      // ProvisionGroup.ref this reaches is "6.01", not the "6.04" used only in this test's own (otherwise-unused) ProvisionGroup label - resolveUniqueNodeByRef is ref-agnostic here to avoid coupling to that detail.
+      resolveUniqueNodeByRef: (_documentId: string, ref: string) => ({ status: "UNIQUE", node: { nodeId: `base-doc::${ref}`, nodeKey: `base-doc::${ref}` } }),
+      getNodeText: () => "Base text for 6.04.",
+      getDefinition: () => undefined,
+    } as unknown as StructuralIndex;
     const stateNow = computeOperativeContractState({ instrumentKey: "instr-1", baseDocumentId: "base-doc", asOfDate: "2026-08-28", index: fakeIndex, allEffects: group.effects });
     expect(stateNow.provisions[0]!.currentText).toBe("Retroactively amended 6.04.");
     expect(stateNow.provisions[0]!.status).toBe("OPERATIVE_STATE_RESOLVED");
+    expect(stateNow.provisions[0]!.targetResolutionStatus).toBe("UNIQUE");
   });
 
   it("a future-effective amendment (effectiveFrom after 'today') is correctly NOT yet applied for an as-of-date before it", () => {
@@ -212,10 +268,33 @@ describe("2e. Retroactive and future-dated amendments", () => {
       provisionKey: "instr-1::SECTION::6.05",
       effects: [makeEffect({ effectId: "e-future", effectiveDate: { date: "2030-01-01", status: "EXPLICIT_EFFECTIVE_DATE", evidence: null, reason: "future date" }, newText: "Future text for 6.05." })],
     };
-    const fakeIndex = { resolveUniqueNodeByRef: () => ({ status: "NOT_FOUND" }), getDefinition: () => undefined } as unknown as StructuralIndex;
+    const fakeIndex = {
+      resolveUniqueNodeByRef: (_documentId: string, ref: string) => ({ status: "UNIQUE", node: { nodeId: `base-doc::${ref}`, nodeKey: `base-doc::${ref}` } }),
+      getNodeText: () => "Base text for 6.05.",
+      getDefinition: () => undefined,
+    } as unknown as StructuralIndex;
     const stateNow = computeOperativeContractState({ instrumentKey: "instr-1", baseDocumentId: "base-doc", asOfDate: "2026-08-28", index: fakeIndex, allEffects: group.effects });
     // No provision view is even produced with an APPLIED effect - fullChain exists but appliedChain is empty, so the base document's own (unamended) text remains the correct answer for "as of today."
     expect(stateNow.provisions[0]!.appliedChain.length).toBe(0);
-    expect(stateNow.provisions[0]!.currentText).toBeNull(); // base resolution returns null here only because fakeIndex has no real section - in production this would be the base document's real, unamended text, per resolveBaseText.
+    expect(stateNow.provisions[0]!.currentText).toBe("Base text for 6.05."); // the real, unamended base text governs - never the future effect's own text.
+    expect(stateNow.provisions[0]!.status).toBe("OPERATIVE_STATE_RESOLVED");
+  });
+
+  it("CENTRAL FINDING regression guard: an AMBIGUOUS/NOT_FOUND base target combined with a not-yet-effective (future-dated) amendment is NEVER masked as RESOLVED merely because nothing has applied yet (Phase 3F.1.4 combined-failure finding: textMissingDespiteAppliedEffect used to only fire when appliedChain.length>0, silently losing the ambiguous-base signal for a future effect)", () => {
+    const group: ProvisionGroup = {
+      instrumentKey: "instr-1",
+      kind: "SECTION",
+      ref: "6.06",
+      provisionKey: "instr-1::SECTION::6.06",
+      effects: [makeEffect({ effectId: "e-future-ambiguous", target: { kind: "SECTION", targetDocumentId: "base-doc", targetInstrumentKey: "instr-1", targetStructuralNodeKey: null, targetSectionRef: "6.06", targetDefinedTermRef: null, targetHint: null }, effectiveDate: { date: "2030-01-01", status: "EXPLICIT_EFFECTIVE_DATE", evidence: null, reason: "future date" }, newText: "Future text for 6.06." })],
+    };
+    const fakeIndex = { resolveUniqueNodeByRef: () => ({ status: "AMBIGUOUS", candidates: [{ nodeId: "n1" }, { nodeId: "n2" }] }), getDefinition: () => undefined } as unknown as StructuralIndex;
+    const state = computeOperativeContractState({ instrumentKey: "instr-1", baseDocumentId: "base-doc", asOfDate: "2026-08-28", index: fakeIndex, allEffects: group.effects });
+    expect(state.provisions[0]!.appliedChain.length).toBe(0); // nothing has applied yet
+    expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED"); // the ambiguous base target is disclosed regardless
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+    expect(state.provisions[0]!.unresolvedIssues.length).toBeGreaterThan(0);
+    expect(state.provisions[0]!.currentText).toBeNull();
   });
 });
