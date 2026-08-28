@@ -1,0 +1,47 @@
+Using provider=vercel-ai-gateway model=anthropic/claude-sonnet-5 synthetic=false dryRun=false
+
+Built precedent 427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 (dimensions=EXCEPTIONS,STRUCTURAL_ATTACHMENT, granularity=STRUCTURAL_ATTACHMENT_PATTERN)
+Lesson: When a prohibition or general negative covenant enumerates a list of itemized exceptions/carve-outs, and one of those enumerated exceptions itself states a specific numeric dollar (or other quantitative) limitation, that carve-out should be modeled as its own separately-represented quantitative permission rule with that figure as its capacityExpression - not left as a bare textual description with no separately-modeled economics. A carve-out with a stated cap is a basket in its own right, structurally, even when it appears inside a longer prose list of otherwise unlimited/qualitative carve-outs.
+
+Running real compileCovenantToIRWithPrecedent against lsb-6.13-investments (fresh compiler version)...
+
+================ BASELINE (Pass 1, no precedent) ================
+status=PARTIAL rules=13 definitions=2
+  rule ir-rule:dc1ca1a5e5ec0efd... action=MAKE_INVESTMENT posture=PROHIBITION sufficiency=COMPLETE exceptions=12 capacityExpression.kind=(null)
+  rule ir-rule:5eb74b280f696efb... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=MISSING_CONTEXT exceptions=0 capacityExpression.kind=UNSUPPORTED
+  rule ir-rule:5b2f182d51ffe76a... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=COMPLETE exceptions=0 capacityExpression.kind=UNLIMITED_CAPACITY
+  rule ir-rule:ac409b90db550daf... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=COMPLETE exceptions=0 capacityExpression.kind=UNLIMITED_CAPACITY
+  rule ir-rule:d48955c3ea78a7ff... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=COMPLETE exceptions=0 capacityExpression.kind=UNLIMITED_CAPACITY
+  rule ir-rule:5dd77bcfc550f5d1... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=COMPLETE exceptions=0 capacityExpression.kind=UNLIMITED_CAPACITY
+  rule ir-rule:f06f1f49483fb749... action=OTHER posture=PERMISSION sufficiency=PARTIAL exceptions=0 capacityExpression.kind=UNSUPPORTED
+  rule ir-rule:1a76089c35b75354... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=COMPLETE exceptions=0 capacityExpression.kind=UNLIMITED_CAPACITY
+  rule ir-rule:fb8f946d8cd9dfb2... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=COMPLETE exceptions=0 capacityExpression.kind=MONEY
+  rule ir-rule:76b77a9b69b36732... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=COMPLETE exceptions=0 capacityExpression.kind=UNLIMITED_CAPACITY
+  rule ir-rule:92dcaf12d2df0c30... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=MISSING_CONTEXT exceptions=0 capacityExpression.kind=UNSUPPORTED
+  rule ir-rule:97aa112aa62c2ecc... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=MISSING_CONTEXT exceptions=0 capacityExpression.kind=UNLIMITED_CAPACITY
+  rule ir-rule:401797be5f636cf7... action=MAKE_INVESTMENT posture=PERMISSION sufficiency=COMPLETE exceptions=0 capacityExpression.kind=MONEY
+telemetry: inputTokens=118297 outputTokens=18052 cost=$0.4171 latencyMs=166657
+
+================ RETRIEVAL ================
+matches considered: 13
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=2.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=1.00 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=1.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+  precedent=427c6576d97dd8a9993d966b22706aac6247738c76e71142fd54fc320d975ae6 score=0.50 applicability=INSUFFICIENT_EVIDENCE
+precedentAugmented ran: false
+precedentRejectedAsUnsupported: false
+
+No precedent-augmented pass ran (either no APPLICABLE match was found, or Pass 2 was rejected by the source-always-wins gate) - this is a legitimate, honest real-world outcome per task §43's own 'must work WITH and WITHOUT precedent' requirement.
+
+================ TOTAL REAL COST THIS RUN: $0.4171 ================
+
+[exited with code 0]
