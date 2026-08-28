@@ -125,7 +125,23 @@ export type SemanticCompilerFailureReason =
   /** Phase 3B.1 (task §5/§10) - distinct from MODEL_SCHEMA_FAILURE: the provider's own `stop_reason` confirmed the response was cut off at the output-token ceiling (a transport/capacity fact, not a model reasoning mistake). Set only when caller.ts has POSITIVE evidence of truncation (stop_reason === "max_tokens"), never inferred from a schema failure alone - see caller.ts's own recoverPartialSubmission for the accompanying safe-prefix-recovery behavior this pairs with. */
   | "OUTPUT_TRUNCATED"
   /** Phase 3B.1 (task §16) - the dependency genuinely exists and is source-referenced, but the specific evidence needed to resolve it (a document, a schedule, an external agreement) is confirmed absent even after an attempted bounded tool retrieval - distinct from UNSUPPORTED_SEMANTICS, which means the IR itself cannot faithfully express a mechanic even with full evidence in hand. */
-  | "TOOL_RESOLUTION_FAILED";
+  | "TOOL_RESOLUTION_FAILED"
+  /** Phase 3F.1 §33/F6 - a genuine thrown exception escaped the model-call/tool-use loop (network/transport error, timeout, an unexpected internal error) rather than compileCovenantToIR's own structured MODEL_SCHEMA_FAILURE/IR_VALIDATION_FAILURE paths, which only ever trigger on a returned-but-unusable response. Distinct because the caller never even received a response to classify - see errorDetail below for the specific failure class/message. */
+  | "TRANSPORT_OR_INTERNAL_ERROR";
+
+/** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
+export interface SemanticCompilerErrorDetail {
+  /** e.g. "TypeError", "AbortError", "Error" - the thrown value's own constructor name, or "UnknownError" when the thrown value was not an Error instance. */
+  errorClass: string;
+  /** Bounded (<=500 chars), sanitized: any substring matching a common credential/token/bearer-header shape is redacted before storage. */
+  sanitizedMessage: string;
+  /** Best-effort coarse bucket for triage - inferred from the error class/message, never authoritative. */
+  failureCategory: "TRANSPORT" | "SCHEMA" | "MODEL" | "TOOL" | "INTERNAL";
+  /** Number of retry attempts already made by the caller before this exception was thrown, when the caller tracks retries; null when not tracked. */
+  retryCount: number | null;
+  /** True when a partial submission had already been assembled (e.g. a partial tool-use transcript) before the exception interrupted compilation - distinct from OUTPUT_TRUNCATED, which is a completed-but-truncated response. */
+  hadPartialOutput: boolean;
+}
 
 /** Overall attempt-level status - distinct from any one rule's own IR `sufficiency` (task §35's "proposed, never human-approved" distinction: this is about whether the ATTEMPT produced usable output at all, sufficiency is about how COMPLETE each individual rule's own representation is). */
 export type SemanticCompilationStatus = "COMPLETED" | "PARTIAL" | "REVIEW_REQUIRED" | "FAILED";
@@ -141,6 +157,8 @@ export interface IRExtensionCandidate {
 export interface SemanticCompilationResult {
   status: SemanticCompilationStatus;
   failureReasons: SemanticCompilerFailureReason[];
+  /** Phase 3F.1 §33/F6 - non-null only when failureReasons includes TRANSPORT_OR_INTERNAL_ERROR. */
+  errorDetail: SemanticCompilerErrorDetail | null;
   rules: IRRule[];
   definitions: IRDefinition[];
   sharedCapacities: IRSharedCapacity[];

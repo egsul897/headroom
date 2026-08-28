@@ -87,7 +87,7 @@ function wrongActionRule(): IRRule {
 }
 
 function compilationResult(rules: IRRule[]): SemanticCompilationResult {
-  return { status: "REVIEW_REQUIRED", failureReasons: [], rules, definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {}, provider: "test", model: "test-model", telemetry: null, cacheKey: "k", compiledAt: new Date().toISOString() };
+  return { status: "REVIEW_REQUIRED", failureReasons: [], errorDetail: null, rules, definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {}, provider: "test", model: "test-model", telemetry: null, cacheKey: "k", compiledAt: new Date().toISOString() };
 }
 
 function fakeReviewCaller(response: unknown): StageCaller {

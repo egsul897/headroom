@@ -77,7 +77,7 @@ function rule(overrides: Partial<IRRule>): IRRule {
 }
 
 function compilationResult(overrides: Partial<SemanticCompilationResult> = {}): SemanticCompilationResult {
-  return { status: "REVIEW_REQUIRED", failureReasons: [], rules: [], definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {}, provider: "test", model: "test-model", telemetry: null, cacheKey: "k", compiledAt: new Date().toISOString(), ...overrides };
+  return { status: "REVIEW_REQUIRED", failureReasons: [], errorDetail: null, rules: [], definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {}, provider: "test", model: "test-model", telemetry: null, cacheKey: "k", compiledAt: new Date().toISOString(), ...overrides };
 }
 
 function money(amount: number): IRExpression {

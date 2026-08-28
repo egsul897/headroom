@@ -13,6 +13,7 @@ function compilationResult(overrides: Partial<SemanticCompilationResult> = {}): 
   return {
     status: "REVIEW_REQUIRED",
     failureReasons: [],
+    errorDetail: null,
     rules: [],
     definitions: [],
     sharedCapacities: [],

@@ -25,7 +25,7 @@ function fakeCaller(response: () => unknown, opts: { throws?: boolean } = {}): S
 }
 
 function compilationResult(overrides: Partial<SemanticCompilationResult> = {}): SemanticCompilationResult {
-  return { status: "REVIEW_REQUIRED", failureReasons: [], rules: [], definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {}, provider: "test", model: "test-model", telemetry: null, cacheKey: "k", compiledAt: new Date().toISOString(), ...overrides };
+  return { status: "REVIEW_REQUIRED", failureReasons: [], errorDetail: null, rules: [], definitions: [], sharedCapacities: [], irExtensionCandidates: [], unresolvedIssues: [], toolCallLog: [], rawModelOutput: {}, provider: "test", model: "test-model", telemetry: null, cacheKey: "k", compiledAt: new Date().toISOString(), ...overrides };
 }
 
 const emptyReconciliation: ReconciliationResult = { candidateRef: "candidate-1", items: [], materialUnresolvedCount: 0 };
