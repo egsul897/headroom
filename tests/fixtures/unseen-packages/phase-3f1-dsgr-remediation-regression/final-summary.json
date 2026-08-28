@@ -1,0 +1,66 @@
+{
+  "runId": "PHASE_3F_1_DSGR_REMEDIATION_REGRESSION",
+  "finishedAt": "2026-08-28T15:51:03.173Z",
+  "wallClockMs": 1956,
+  "totalCostUsd": 0,
+  "note": "DSGR is a KNOWN regression package for this run - not a blind/unseen validation.",
+  "reusedFrozenFrom": "tests/fixtures/unseen-packages/phase-3f-first-blind-run",
+  "recomputedStages": [
+    "phase2gOperativeState (Workstream C)",
+    "phase3eSemanticCoverage (Workstreams A/B/C)"
+  ],
+  "documentsProcessed": 4,
+  "totalStructuralNodes": 4149,
+  "totalDiscoveredCandidates": 2847,
+  "candidatesCompiled": 30,
+  "candidatesVerified": 28,
+  "candidatesFullyVerified": 0,
+  "operativeStateStatus": "OPERATIVE_STATE_REVIEW_REQUIRED",
+  "operativeStateUnattachedEffectsCount": 4,
+  "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+  "documentGateStatuses": [
+    {
+      "documentId": "doc-a",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 2439,
+      "dangerousUnaccountedCount": 863
+    },
+    {
+      "documentId": "doc-b",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 2388,
+      "dangerousUnaccountedCount": 883
+    },
+    {
+      "documentId": "doc-c",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 35,
+      "dangerousUnaccountedCount": 17
+    },
+    {
+      "documentId": "doc-d",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 2655,
+      "dangerousUnaccountedCount": 999
+    }
+  ],
+  "unitInventory": {
+    "totalUnits": 7517,
+    "byMateriality": {
+      "INFORMATIONAL": 3667,
+      "MATERIAL": 2335,
+      "REVIEW_UNCERTAIN": 1084,
+      "CRITICAL": 431
+    },
+    "contextuallyElevatedCount": 552
+  },
+  "firstBlindBaselineForComparison": {
+    "totalUnits": 6210,
+    "byMateriality": {
+      "INFORMATIONAL": 2906,
+      "REVIEW_UNCERTAIN": 1090,
+      "MATERIAL": 1783,
+      "CRITICAL": 431
+    }
+  }
+}
