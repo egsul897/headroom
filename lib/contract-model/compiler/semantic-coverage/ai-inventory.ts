@@ -104,6 +104,8 @@ function buildUserContent(region: RoutedRegion, fullText: string, alreadyFoundEx
 export interface AiInventoryResult {
   units: MaterialSemanticUnit[];
   rejectedUnverifiableQuotes: number;
+  /** Task §156 fault-injection finding: the prompt's own "do not restate" instruction is not a deterministic guarantee - a model can still resubmit a unit Layer A/B already found despite being shown it. Deterministically dropped here (a quote substantially overlapping an already-found unit's own excerpt) rather than relying on the instruction alone, so a duplicate never inflates the unit count or double-counts one piece of source text as two separate semantic units. */
+  rejectedDuplicatesOfAlreadyFound: number;
   overallNotes: string[];
   provider: string;
   model: string;
@@ -135,12 +137,20 @@ export async function runBoundedAiInventoryForRegion(region: RoutedRegion, fullT
     const wireResult = await caller.call(SubmitAiInventorySchema, "semantic_coverage_ai_inventory", systemPrompt, userContent);
     const units: MaterialSemanticUnit[] = [];
     let rejectedUnverifiableQuotes = 0;
+    let rejectedDuplicatesOfAlreadyFound = 0;
 
     for (const proposed of wireResult.proposedUnits) {
       // The anti-hallucination gate: a quote that is not a real substring of the text the
       // model was actually shown is dropped, never trusted merely because the JSON validated.
       if (!proposed.sourceQuote || !fullText.includes(proposed.sourceQuote)) {
         rejectedUnverifiableQuotes += 1;
+        continue;
+      }
+      // The anti-duplication gate: the prompt asks the model not to restate an already-found
+      // unit, but that instruction is advisory, not enforced - a quote that substantially
+      // overlaps an already-found unit's own excerpt is dropped deterministically here.
+      if (alreadyFoundUnits.some((u) => u.excerptText.includes(proposed.sourceQuote) || proposed.sourceQuote.includes(u.excerptText))) {
+        rejectedDuplicatesOfAlreadyFound += 1;
         continue;
       }
       const postureSignal = matchEnum(proposed.postureSignal, VALID_POSTURE_SIGNALS, "UNCLEAR_SIGNAL");
@@ -194,8 +204,8 @@ export async function runBoundedAiInventoryForRegion(region: RoutedRegion, fullT
       });
     }
 
-    return { units, rejectedUnverifiableQuotes, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: false, failureDetail: null };
+    return { units, rejectedUnverifiableQuotes, rejectedDuplicatesOfAlreadyFound, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: false, failureDetail: null };
   } catch (err) {
-    return { units: [], rejectedUnverifiableQuotes: 0, overallNotes: [], provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: true, failureDetail: err instanceof Error ? err.message : String(err) };
+    return { units: [], rejectedUnverifiableQuotes: 0, rejectedDuplicatesOfAlreadyFound: 0, overallNotes: [], provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: true, failureDetail: err instanceof Error ? err.message : String(err) };
   }
 }

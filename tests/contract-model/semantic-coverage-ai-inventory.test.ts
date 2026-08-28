@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import type { ZodType } from "zod";
 import { runBoundedAiInventoryForRegion } from "../../lib/contract-model/compiler/semantic-coverage/ai-inventory";
 import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
-import type { RoutedRegion } from "../../lib/contract-model/compiler/semantic-coverage/types";
+import type { MaterialSemanticUnit, RoutedRegion } from "../../lib/contract-model/compiler/semantic-coverage/types";
 
 function fakeCaller(response: () => unknown, opts: { throws?: boolean } = {}): StageCaller {
   return {
@@ -118,5 +118,44 @@ describe("Phase 3E Layer C - runBoundedAiInventoryForRegion", () => {
     }));
     const result = await runBoundedAiInventoryForRegion(REGION, REGION_TEXT, [], CTX, caller);
     expect(result.units[0]!.family).toBe("INDEBTEDNESS");
+  });
+
+  it("FAULT INJECTION: drops a proposed unit that restates an already-found unit despite the prompt's own instruction not to - the model ignoring that instruction must not double-count the same source text as two units", async () => {
+    const alreadyFound: MaterialSemanticUnit[] = [
+      {
+        semanticUnitId: "existing-1",
+        companyId: "test-co",
+        packageKey: "test-pkg",
+        instrumentKey: null,
+        operativeVersionRef: null,
+        granularity: "SEMANTIC_UNIT",
+        anchors: [],
+        family: "INDEBTEDNESS",
+        familyEvidence: null,
+        postureSignal: "PROHIBITION_SIGNAL",
+        materiality: "MATERIAL",
+        materialityReasoning: "test",
+        excerptText: "The Borrower shall not incur any Indebtedness",
+        detectedSignals: ["shall_not"],
+        fromRawSourceFallback: false,
+        detectionMethod: "STRUCTURAL_HYPOTHESIS",
+        aiInventoryPromptVersion: null,
+        confidence: "HIGH",
+        uncertaintyReasons: [],
+        inventoryAlgorithmVersion: "test",
+        provenance: "test",
+      },
+    ];
+    const caller = fakeCaller(() => ({
+      proposedUnits: [
+        { sourceQuote: "The Borrower shall not incur any Indebtedness", postureSignal: "PROHIBITION_SIGNAL", materiality: "MATERIAL", whyDeterministicLayerMightMiss: "restated despite instruction", reasoning: "duplicate" },
+        { sourceQuote: "an amount equal to the Available Amount", postureSignal: "PERMISSION_SIGNAL", materiality: "CRITICAL", whyDeterministicLayerMightMiss: "genuinely new", reasoning: "genuinely new unit" },
+      ],
+      overallNotes: [],
+    }));
+    const result = await runBoundedAiInventoryForRegion(REGION, REGION_TEXT, alreadyFound, CTX, caller);
+    expect(result.rejectedDuplicatesOfAlreadyFound).toBe(1);
+    expect(result.units).toHaveLength(1);
+    expect(result.units[0]!.excerptText).toContain("Available Amount");
   });
 });
