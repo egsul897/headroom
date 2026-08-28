@@ -147,9 +147,21 @@
 import type { CovenantFamily } from "@prisma/client";
 import type { StructuralHealthState } from "../structural-coverage";
 
-export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3e-semantic-coverage.v1";
+// Phase 3F.1 (F1/F2 remediation) materially changed both the routing
+// algorithm (bounded hierarchical closure, router.ts) and the unit
+// hypothesis algorithm (contextual materiality floor + cross-reference
+// bump, unit-hypothesis.ts) - both version strings below are bumped to
+// v2 so every region/unit identity computed from now on is content-hash
+// distinct from anything computed under the pre-remediation v1 algorithm
+// (the exact identity these hashes exist to guarantee - see
+// computeRoutedRegionId/computeSemanticUnitId). The frozen Phase 3F
+// first-blind artifacts under tests/fixtures/unseen-packages/phase-3f-*
+// permanently retain the v1 strings they were sealed with and are never
+// rewritten. The AI Layer C prompt itself (ai-inventory.ts) was not
+// changed by this phase, so SEMANTIC_COVERAGE_PROMPT_VERSION stays v1.
+export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v2";
 export const SEMANTIC_COVERAGE_PROMPT_VERSION = "phase-3e-semantic-coverage-prompt.v1";
-export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3e-semantic-coverage-router.v1";
+export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3f1-semantic-coverage-router.v2";
 
 // ---------------------------------------------------------------------------
 // §154 - document-root traversal / high-recall region routing. This is the
