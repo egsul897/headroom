@@ -1,0 +1,1456 @@
+{
+  "purpose": "Foundation Assurance Audit Part 3 - real per-package source-span accounting (FWRG/LSB/CONMED/DSGR) + independence analysis of the raw-source-coverage mechanism from successful structural traversal.",
+  "loaderCrossCheck": {
+    "canonicalFwrgLsbNodeCount": 494,
+    "thisScriptFwrgLsbNodeCount": 494,
+    "passed": true
+  },
+  "mechanismIndependenceAnalysis": {
+    "claim": "structural-coverage.ts's computeStructuralCoverage (and this script's own independently-recomputed gap logic, which agrees with it) measures uncovered regions ONLY as gaps BETWEEN already-recognized top-level (ARTICLE/SECTION, or more generally root()) node boundaries. It has no mechanism to detect that a recognized node's own [charStart,charEnd) span is materially too large because a SIBLING heading failed to match (tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts Q1/Q2, reproduced against the real parser). In that exact scenario, the swallowed region reports ZERO uncovered span and 100% coverage - it is fully 'claimed' by the wrong node's own span. The mechanism is therefore CIRCULAR with respect to this specific failure mode: it can only ever notice a gap the parser's own top-level recognizer left unrecognized as a node BOUNDARY, never a gap the parser recognized a node for but attributed a materially incorrect END boundary to.",
+    "whatItCanDetect": "Wholesale non-recognition: if NO top-level node is ever recognized for a whole document (STRUCTURE_FAILED) or a genuine gap exists between two top-level nodes' own charStart values with nothing else claiming that byte range at all (e.g. an un-headed preamble/recitals block), this IS independently and correctly caught - it does not require the parser to have gotten every internal detail right, only that top-level node boundaries exist where real ones do.",
+    "whatItCannotDetect": "A sibling's silently-swallowed content (Q1/Q2) - proven via the real parser in part2-adversarial-structural-assumptions.test.ts. This is a real, bounded blind spot, not a hypothetical one.",
+    "anomalousOwnSpanSizeProxyResults": "A generic, package-agnostic 'is any node's own-text length anomalously large relative to its SECTION-level sibling group' proxy heuristic was run (>=5x sibling median AND >=500 absolute chars) as a best-effort INDEPENDENT-of-the-gap-mechanism secondary signal. Results per package are in perPackageDetail[].anomalousOwnSpanSizeFlags below - a non-empty result is NOT proof of an actual swallow (a genuinely long single section is a normal, expected real-world case), it is a review-worthy signal only."
+  },
+  "perPackageSummary": [
+    {
+      "packageKey": "FWRG",
+      "totalSourceChars": 120727,
+      "claimedByNodesChars": 104183,
+      "uncoveredChars": 16544,
+      "uncoveredPercent": 13.7036,
+      "invalidOrOverlappingSpans": 0,
+      "uncoveredRegionClassification": {
+        "whitespace": 0,
+        "toc": 0,
+        "signatureBlock": 0,
+        "exhibitSchedule": 0,
+        "definitions": 16544,
+        "unknown": 0
+      },
+      "anomalousOwnSpanSizeFlagCount": 0
+    },
+    {
+      "packageKey": "LSB",
+      "totalSourceChars": 24891,
+      "claimedByNodesChars": 16826,
+      "uncoveredChars": 8065,
+      "uncoveredPercent": 32.4013,
+      "invalidOrOverlappingSpans": 0,
+      "uncoveredRegionClassification": {
+        "whitespace": 0,
+        "toc": 0,
+        "signatureBlock": 0,
+        "exhibitSchedule": 0,
+        "definitions": 8065,
+        "unknown": 0
+      },
+      "anomalousOwnSpanSizeFlagCount": 0
+    },
+    {
+      "packageKey": "CONMED",
+      "totalSourceChars": 1300620,
+      "claimedByNodesChars": 1294525,
+      "uncoveredChars": 6095,
+      "uncoveredPercent": 0.4686,
+      "invalidOrOverlappingSpans": 0,
+      "uncoveredRegionClassification": {
+        "whitespace": 0,
+        "toc": 748,
+        "signatureBlock": 0,
+        "exhibitSchedule": 5347,
+        "definitions": 0,
+        "unknown": 0
+      },
+      "anomalousOwnSpanSizeFlagCount": 48
+    },
+    {
+      "packageKey": "DSGR",
+      "totalSourceChars": 2331381,
+      "claimedByNodesChars": 2322622,
+      "uncoveredChars": 8759,
+      "uncoveredPercent": 0.3757,
+      "invalidOrOverlappingSpans": 0,
+      "uncoveredRegionClassification": {
+        "whitespace": 0,
+        "toc": 2119,
+        "signatureBlock": 0,
+        "exhibitSchedule": 6640,
+        "definitions": 0,
+        "unknown": 0
+      },
+      "anomalousOwnSpanSizeFlagCount": 76
+    }
+  ],
+  "perPackageDetail": [
+    {
+      "packageKey": "FWRG",
+      "totalSourceChars": 120727,
+      "claimedByNodesChars": 104183,
+      "uncoveredChars": 16544,
+      "uncoveredPercent": 13.7036,
+      "invalidOrOverlappingSpans": 0,
+      "uncoveredRegionClassification": {
+        "whitespace": 0,
+        "toc": 0,
+        "signatureBlock": 0,
+        "exhibitSchedule": 0,
+        "definitions": 16544,
+        "unknown": 0
+      },
+      "documents": [
+        {
+          "documentId": "fwrg-article-6",
+          "totalChars": 104183,
+          "claimedByNodesChars": 104183,
+          "uncoveredChars": 0,
+          "uncoveredRegions": [],
+          "productionCoverage": {
+            "documentId": "fwrg-article-6",
+            "totalChars": 104183,
+            "totalSubstantiveChars": 87926,
+            "coveredSubstantiveChars": 87926,
+            "uncoveredSubstantiveChars": 0,
+            "coveragePercent": 100,
+            "significantUncoveredSpans": [],
+            "topLevelNodeCount": 11,
+            "totalNodeCount": 418,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "11 top-level node(s), 100% substantive coverage, 0 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        },
+        {
+          "documentId": "fwrg-definitions",
+          "totalChars": 16544,
+          "claimedByNodesChars": 0,
+          "uncoveredChars": 16544,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 16544,
+              "chars": 16544,
+              "substantiveChars": 13988,
+              "classification": "definitions",
+              "excerpt": "Available Amount &#148; means, at any time, an amount equal to, without duplication: (a) the sum of: (i) [reserved]; plus (ii) an amount, not less than zero for any period, equal to the CNI Growth Amo"
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "fwrg-definitions",
+            "totalChars": 16544,
+            "totalSubstantiveChars": 13988,
+            "coveredSubstantiveChars": 0,
+            "uncoveredSubstantiveChars": 13988,
+            "coveragePercent": 0,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 16544,
+                "substantiveChars": 13988,
+                "excerpt": "Available Amount &#148; means, at any time, an amount equal to, without duplication: (a) the sum of: (i) [reserved]; plus (ii) an amount, not less than zero for any period, equal to the CNI Growth Amount ( provided that no amount shall be available pursuant to this clause (ii) (x) unless the Total R"
+              }
+            ],
+            "topLevelNodeCount": 0,
+            "totalNodeCount": 0,
+            "health": "STRUCTURE_FAILED",
+            "healthReasons": [
+              "Zero ARTICLE or SECTION nodes were recognized anywhere in 13988 substantive characters of text - no structural representation exists for this document at all."
+            ]
+          }
+        }
+      ],
+      "anomalousOwnSpanSizeFlags": []
+    },
+    {
+      "packageKey": "LSB",
+      "totalSourceChars": 24891,
+      "claimedByNodesChars": 16826,
+      "uncoveredChars": 8065,
+      "uncoveredPercent": 32.4013,
+      "invalidOrOverlappingSpans": 0,
+      "uncoveredRegionClassification": {
+        "whitespace": 0,
+        "toc": 0,
+        "signatureBlock": 0,
+        "exhibitSchedule": 0,
+        "definitions": 8065,
+        "unknown": 0
+      },
+      "documents": [
+        {
+          "documentId": "lsb-article-6",
+          "totalChars": 16826,
+          "claimedByNodesChars": 16826,
+          "uncoveredChars": 0,
+          "uncoveredRegions": [],
+          "productionCoverage": {
+            "documentId": "lsb-article-6",
+            "totalChars": 16826,
+            "totalSubstantiveChars": 13950,
+            "coveredSubstantiveChars": 13950,
+            "uncoveredSubstantiveChars": 0,
+            "coveragePercent": 100,
+            "significantUncoveredSpans": [],
+            "topLevelNodeCount": 13,
+            "totalNodeCount": 76,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "13 top-level node(s), 100% substantive coverage, 0 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        },
+        {
+          "documentId": "lsb-definitions",
+          "totalChars": 8065,
+          "claimedByNodesChars": 0,
+          "uncoveredChars": 8065,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 8065,
+              "chars": 8065,
+              "substantiveChars": 6768,
+              "classification": "definitions",
+              "excerpt": "“ Availability ” means, (a) at any time other\nthan an Availability Block Removal Period, an amount equal to (i) the lesser of (A) the Aggregate Revolving Commitment and (B) the Borrowing Base, minus ("
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "lsb-definitions",
+            "totalChars": 8065,
+            "totalSubstantiveChars": 6768,
+            "coveredSubstantiveChars": 0,
+            "uncoveredSubstantiveChars": 6768,
+            "coveragePercent": 0,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 8065,
+                "substantiveChars": 6768,
+                "excerpt": "“ Availability ” means, (a) at any time other\nthan an Availability Block Removal Period, an amount equal to (i) the lesser of (A) the Aggregate Revolving Commitment and (B) the Borrowing Base, minus (ii) the Aggregate Revolving Exposure (calculated, with\nrespect to any Defaulting Lender, as if such "
+              }
+            ],
+            "topLevelNodeCount": 0,
+            "totalNodeCount": 0,
+            "health": "STRUCTURE_FAILED",
+            "healthReasons": [
+              "Zero ARTICLE or SECTION nodes were recognized anywhere in 6768 substantive characters of text - no structural representation exists for this document at all."
+            ]
+          }
+        }
+      ],
+      "anomalousOwnSpanSizeFlags": []
+    },
+    {
+      "packageKey": "CONMED",
+      "totalSourceChars": 1300620,
+      "claimedByNodesChars": 1294525,
+      "uncoveredChars": 6095,
+      "uncoveredPercent": 0.4686,
+      "invalidOrOverlappingSpans": 0,
+      "uncoveredRegionClassification": {
+        "whitespace": 0,
+        "toc": 748,
+        "signatureBlock": 0,
+        "exhibitSchedule": 5347,
+        "definitions": 0,
+        "unknown": 0
+      },
+      "documents": [
+        {
+          "documentId": "conmed-doc-a",
+          "totalChars": 514823,
+          "claimedByNodesChars": 514075,
+          "uncoveredChars": 748,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 748,
+              "chars": 748,
+              "substantiveChars": 609,
+              "classification": "toc",
+              "excerpt": "EX-10.1\n2\nex10-1.htm\nEX-10.1\n\nExhibit 10.1\n\nEIGHTH AMENDED AND RESTATED CREDIT AGREEMENT\n\namong\n\nCONMED CORPORATION,\n\nas Parent Borrower,\n\nThe Foreign Subsidiary Borrowers From Time\nto Time Party Here"
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "conmed-doc-a",
+            "totalChars": 514823,
+            "totalSubstantiveChars": 430762,
+            "coveredSubstantiveChars": 430153,
+            "uncoveredSubstantiveChars": 609,
+            "coveragePercent": 99.86,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 748,
+                "substantiveChars": 609,
+                "excerpt": "EX-10.1\n2\nex10-1.htm\nEX-10.1\n\nExhibit 10.1\n\nEIGHTH AMENDED AND RESTATED CREDIT AGREEMENT\n\namong\n\nCONMED CORPORATION,\n\nas Parent Borrower,\n\nThe Foreign Subsidiary Borrowers From Time\nto Time Party Hereto,\n\nThe Several Lenders from Time to Time Party\nHereto,\n\nand\n\nJPMORGAN CHASE BANK, N.A.,\n\nas Admini"
+              }
+            ],
+            "topLevelNodeCount": 300,
+            "totalNodeCount": 1097,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "300 top-level node(s), 99.86% substantive coverage, 1 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        },
+        {
+          "documentId": "conmed-doc-b",
+          "totalChars": 107187,
+          "claimedByNodesChars": 106906,
+          "uncoveredChars": 281,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 281,
+              "chars": 281,
+              "substantiveChars": 227,
+              "classification": "exhibitSchedule",
+              "excerpt": "EX-10.2\n3\nex10-2.htm\nEX-10.2\n\nExhibit 10.2\n\nAMENDED\nAND RESTATED GUARANTEE AND COLLATERAL AGREEMENT\n\nmade by\n\nCONMED CORPORATION\n\nand certain of its Subsidiaries\n\nin favor of\n\nJPMORGAN CHASE BANK, N.A"
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "conmed-doc-b",
+            "totalChars": 107187,
+            "totalSubstantiveChars": 89750,
+            "coveredSubstantiveChars": 89523,
+            "uncoveredSubstantiveChars": 227,
+            "coveragePercent": 99.75,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 281,
+                "substantiveChars": 227,
+                "excerpt": "EX-10.2\n3\nex10-2.htm\nEX-10.2\n\nExhibit 10.2\n\nAMENDED\nAND RESTATED GUARANTEE AND COLLATERAL AGREEMENT\n\nmade by\n\nCONMED CORPORATION\n\nand certain of its Subsidiaries\n\nin favor of\n\nJPMORGAN CHASE BANK, N.A.,\n\nas Administrative Agent\n\nDated as of June 10, 2025\n\nTable\nof Contents\n\nPage"
+              }
+            ],
+            "topLevelNodeCount": 125,
+            "totalNodeCount": 263,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "125 top-level node(s), 99.75% substantive coverage, 1 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        },
+        {
+          "documentId": "conmed-doc-c",
+          "totalChars": 11837,
+          "claimedByNodesChars": 10596,
+          "uncoveredChars": 1241,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 1241,
+              "chars": 1241,
+              "substantiveChars": 1034,
+              "classification": "exhibitSchedule",
+              "excerpt": "EX-10.2\n3\nd220699dex102.htm\nEX-10.2\n\nEX-10.2\n\nExhibit 10.2\n\nSECOND AMENDMENT\nSECOND\nAMENDMENT, dated as of August 1, 2022 (this  Amendment ), to the Seventh Amended and Restated Credit Agreement, da"
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "conmed-doc-c",
+            "totalChars": 11837,
+            "totalSubstantiveChars": 9827,
+            "coveredSubstantiveChars": 8793,
+            "uncoveredSubstantiveChars": 1034,
+            "coveragePercent": 89.48,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 1241,
+                "substantiveChars": 1034,
+                "excerpt": "EX-10.2\n3\nd220699dex102.htm\nEX-10.2\n\nEX-10.2\n\nExhibit 10.2\n\nSECOND AMENDMENT\nSECOND\nAMENDMENT, dated as of August 1, 2022 (this  Amendment ), to the Seventh Amended and Restated Credit Agreement, dated as of July 16, 2021 (as amended, supplemented or otherwise modified from time to time, the\n Cre"
+              }
+            ],
+            "topLevelNodeCount": 9,
+            "totalNodeCount": 23,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "9 top-level node(s), 89.48% substantive coverage, 1 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        },
+        {
+          "documentId": "conmed-doc-d",
+          "totalChars": 666773,
+          "claimedByNodesChars": 662948,
+          "uncoveredChars": 3825,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 3825,
+              "chars": 3825,
+              "substantiveChars": 3198,
+              "classification": "exhibitSchedule",
+              "excerpt": "EX-10.1\n2\nea029246401ex10-1.htm\nFIRST OMNIBUS AMENDMENT AND INCREASED FACILITY ACTIVATION NOTICE, DATED AS OF MAY 27, 2026, AMONG CONMED CORPORATION, LINVATEC NEDERLAND B.V\n\nExhibit 10.1\n\nExecution Ve"
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "conmed-doc-d",
+            "totalChars": 666773,
+            "totalSubstantiveChars": 557984,
+            "coveredSubstantiveChars": 554786,
+            "uncoveredSubstantiveChars": 3198,
+            "coveragePercent": 99.43,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 3825,
+                "substantiveChars": 3198,
+                "excerpt": "EX-10.1\n2\nea029246401ex10-1.htm\nFIRST OMNIBUS AMENDMENT AND INCREASED FACILITY ACTIVATION NOTICE, DATED AS OF MAY 27, 2026, AMONG CONMED CORPORATION, LINVATEC NEDERLAND B.V\n\nExhibit 10.1\n\nExecution Version\n\nFIRST OMNIBUS AMENDMENT AND INCREASED FACILITY\nACTIVATION NOTICE\n\nFIRST AMENDMENT AND INCREAS"
+              }
+            ],
+            "topLevelNodeCount": 332,
+            "totalNodeCount": 1353,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "332 top-level node(s), 99.43% substantive coverage, 1 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        }
+      ],
+      "anomalousOwnSpanSizeFlags": [
+        {
+          "nodeId": "structural-node:00f92196220a62f5498b5fe3",
+          "sectionRef": "10.23",
+          "ownTextChars": 1874,
+          "siblingMedianChars": 38,
+          "ratio": 49.32
+        },
+        {
+          "nodeId": "structural-node:dc47abf5e85e8a06197e3b0d",
+          "sectionRef": "2.28",
+          "ownTextChars": 3671,
+          "siblingMedianChars": 565,
+          "ratio": 6.5
+        },
+        {
+          "nodeId": "structural-node:c0253634a2f60540114e176f",
+          "sectionRef": "2.15",
+          "ownTextChars": 531,
+          "siblingMedianChars": 52,
+          "ratio": 10.21
+        },
+        {
+          "nodeId": "structural-node:468d0633e3be86ae835cbaf4",
+          "sectionRef": "2.14",
+          "ownTextChars": 637,
+          "siblingMedianChars": 52,
+          "ratio": 12.25
+        },
+        {
+          "nodeId": "structural-node:1c32eb9ae674678e661bb73c",
+          "sectionRef": "2.23",
+          "ownTextChars": 825,
+          "siblingMedianChars": 52,
+          "ratio": 15.87
+        },
+        {
+          "nodeId": "structural-node:59028cb1a06aaf8676e08d58",
+          "sectionRef": "2.10",
+          "ownTextChars": 944,
+          "siblingMedianChars": 52,
+          "ratio": 18.15
+        },
+        {
+          "nodeId": "structural-node:0f080bf124fe3d41b19f480e",
+          "sectionRef": "3.2",
+          "ownTextChars": 1541,
+          "siblingMedianChars": 306,
+          "ratio": 5.04
+        },
+        {
+          "nodeId": "structural-node:8b0fb90b722fdf461826c74d",
+          "sectionRef": "3.6",
+          "ownTextChars": 1819,
+          "siblingMedianChars": 306,
+          "ratio": 5.94
+        },
+        {
+          "nodeId": "structural-node:aa5a53e976227162c35a36dc",
+          "sectionRef": "4.4",
+          "ownTextChars": 578,
+          "siblingMedianChars": 44,
+          "ratio": 13.14
+        },
+        {
+          "nodeId": "structural-node:d82aec6adab7102721579244",
+          "sectionRef": "8.10",
+          "ownTextChars": 580,
+          "siblingMedianChars": 44,
+          "ratio": 13.18
+        },
+        {
+          "nodeId": "structural-node:4b2087e0ed9d5ef63dd43b40",
+          "sectionRef": "3",
+          "ownTextChars": 641,
+          "siblingMedianChars": 44,
+          "ratio": 14.57
+        },
+        {
+          "nodeId": "structural-node:619684e8ab94b06c61b44708",
+          "sectionRef": "8.15",
+          "ownTextChars": 649,
+          "siblingMedianChars": 44,
+          "ratio": 14.75
+        },
+        {
+          "nodeId": "structural-node:3738b57b162c352dea254eef",
+          "sectionRef": "4.1",
+          "ownTextChars": 667,
+          "siblingMedianChars": 44,
+          "ratio": 15.16
+        },
+        {
+          "nodeId": "structural-node:f7666c6883fa239f5fbc5492",
+          "sectionRef": "2.6",
+          "ownTextChars": 771,
+          "siblingMedianChars": 44,
+          "ratio": 17.52
+        },
+        {
+          "nodeId": "structural-node:be8c6a4cfb40270b27470f1a",
+          "sectionRef": "7.3",
+          "ownTextChars": 777,
+          "siblingMedianChars": 44,
+          "ratio": 17.66
+        },
+        {
+          "nodeId": "structural-node:a7f1ca7ec7b80f3d02ac094d",
+          "sectionRef": "2.2",
+          "ownTextChars": 834,
+          "siblingMedianChars": 44,
+          "ratio": 18.95
+        },
+        {
+          "nodeId": "structural-node:6b654f4b17d25c815c5f8981",
+          "sectionRef": "7.4",
+          "ownTextChars": 931,
+          "siblingMedianChars": 44,
+          "ratio": 21.16
+        },
+        {
+          "nodeId": "structural-node:ffafd7734eb321fab3566886",
+          "sectionRef": "8.3",
+          "ownTextChars": 1118,
+          "siblingMedianChars": 44,
+          "ratio": 25.41
+        },
+        {
+          "nodeId": "structural-node:09dc6795c8a9b02fc77a9655",
+          "sectionRef": "6.4",
+          "ownTextChars": 1160,
+          "siblingMedianChars": 44,
+          "ratio": 26.36
+        },
+        {
+          "nodeId": "structural-node:435c9add238608c097399913",
+          "sectionRef": "2.5",
+          "ownTextChars": 1286,
+          "siblingMedianChars": 44,
+          "ratio": 29.23
+        },
+        {
+          "nodeId": "structural-node:40fc2b87b1d6c724fcbc5200",
+          "sectionRef": "4.2",
+          "ownTextChars": 1299,
+          "siblingMedianChars": 44,
+          "ratio": 29.52
+        },
+        {
+          "nodeId": "structural-node:bcd31fbecddac789dccf721c",
+          "sectionRef": "8.7",
+          "ownTextChars": 1392,
+          "siblingMedianChars": 44,
+          "ratio": 31.64
+        },
+        {
+          "nodeId": "structural-node:f76c6f5cfa79083d7f9a809d",
+          "sectionRef": "7.2",
+          "ownTextChars": 1437,
+          "siblingMedianChars": 44,
+          "ratio": 32.66
+        },
+        {
+          "nodeId": "structural-node:1a84ec8a307d193c43327a40",
+          "sectionRef": "2",
+          "ownTextChars": 1469,
+          "siblingMedianChars": 44,
+          "ratio": 33.39
+        },
+        {
+          "nodeId": "structural-node:f96b522962506656136d412f",
+          "sectionRef": "2.8",
+          "ownTextChars": 1575,
+          "siblingMedianChars": 44,
+          "ratio": 35.8
+        },
+        {
+          "nodeId": "structural-node:5d62b14982fb81c1188deab9",
+          "sectionRef": "2.4",
+          "ownTextChars": 1629,
+          "siblingMedianChars": 44,
+          "ratio": 37.02
+        },
+        {
+          "nodeId": "structural-node:b5d5de81c3e67002ed30e758",
+          "sectionRef": "2.3",
+          "ownTextChars": 1656,
+          "siblingMedianChars": 44,
+          "ratio": 37.64
+        },
+        {
+          "nodeId": "structural-node:0098eba5384fcd80fbcf5ca3",
+          "sectionRef": "8.6",
+          "ownTextChars": 2240,
+          "siblingMedianChars": 44,
+          "ratio": 50.91
+        },
+        {
+          "nodeId": "structural-node:ed86d44afff798d33d6f6035",
+          "sectionRef": "5.4",
+          "ownTextChars": 2446,
+          "siblingMedianChars": 44,
+          "ratio": 55.59
+        },
+        {
+          "nodeId": "structural-node:cde0cb20d064475d42338798",
+          "sectionRef": "6.6",
+          "ownTextChars": 3307,
+          "siblingMedianChars": 44,
+          "ratio": 75.16
+        },
+        {
+          "nodeId": "structural-node:3235dcd74b4c949705576183",
+          "sectionRef": "8.17",
+          "ownTextChars": 3497,
+          "siblingMedianChars": 44,
+          "ratio": 79.48
+        },
+        {
+          "nodeId": "structural-node:865ed72cf9f102d497c63d20",
+          "sectionRef": "9",
+          "ownTextChars": 3015,
+          "siblingMedianChars": 215,
+          "ratio": 14.02
+        },
+        {
+          "nodeId": "structural-node:bcf44afcd984c0b3011183d7",
+          "sectionRef": "10",
+          "ownTextChars": 5347,
+          "siblingMedianChars": 393,
+          "ratio": 13.61
+        },
+        {
+          "nodeId": "structural-node:500d00adf0141cbcafa5e8b1",
+          "sectionRef": "10.23",
+          "ownTextChars": 1878,
+          "siblingMedianChars": 41,
+          "ratio": 45.8
+        },
+        {
+          "nodeId": "structural-node:8b4a41ae7337519ef4be92bf",
+          "sectionRef": "1.4",
+          "ownTextChars": 2145,
+          "siblingMedianChars": 252,
+          "ratio": 8.51
+        },
+        {
+          "nodeId": "structural-node:987ea67f20e9ca46e26ec65b",
+          "sectionRef": "2.14",
+          "ownTextChars": 637,
+          "siblingMedianChars": 49,
+          "ratio": 13
+        },
+        {
+          "nodeId": "structural-node:306a4b6ef4527a7c0b6ea06b",
+          "sectionRef": "2.23",
+          "ownTextChars": 676,
+          "siblingMedianChars": 49,
+          "ratio": 13.8
+        },
+        {
+          "nodeId": "structural-node:2f1d7348f4b62184306162e5",
+          "sectionRef": "10.6",
+          "ownTextChars": 1215,
+          "siblingMedianChars": 49,
+          "ratio": 24.8
+        },
+        {
+          "nodeId": "structural-node:b322ce1d41c804f9c1715480",
+          "sectionRef": "5.3",
+          "ownTextChars": 1508,
+          "siblingMedianChars": 49,
+          "ratio": 30.78
+        },
+        {
+          "nodeId": "structural-node:c08eab2520967b20dd9d452d",
+          "sectionRef": "87",
+          "ownTextChars": 5031,
+          "siblingMedianChars": 49,
+          "ratio": 102.67
+        },
+        {
+          "nodeId": "structural-node:7248d65e7e7dc86603e97b6a",
+          "sectionRef": "3.2",
+          "ownTextChars": 1541,
+          "siblingMedianChars": 301,
+          "ratio": 5.12
+        },
+        {
+          "nodeId": "structural-node:566865a1e48cc080160cef54",
+          "sectionRef": "3.6",
+          "ownTextChars": 1819,
+          "siblingMedianChars": 301,
+          "ratio": 6.04
+        },
+        {
+          "nodeId": "structural-node:570e53353bd48dc8e552a39e",
+          "sectionRef": "7.5",
+          "ownTextChars": 2104,
+          "siblingMedianChars": 295,
+          "ratio": 7.13
+        },
+        {
+          "nodeId": "structural-node:0a4bc11f4f47ceda227df6ea",
+          "sectionRef": "10.1",
+          "ownTextChars": 1557,
+          "siblingMedianChars": 277,
+          "ratio": 5.62
+        },
+        {
+          "nodeId": "structural-node:4f2479bc40fe3412d19db5e5",
+          "sectionRef": "10.16",
+          "ownTextChars": 1606,
+          "siblingMedianChars": 277,
+          "ratio": 5.8
+        },
+        {
+          "nodeId": "structural-node:80cfe10f8649f98d15aef0d1",
+          "sectionRef": "4",
+          "ownTextChars": 2391,
+          "siblingMedianChars": 277,
+          "ratio": 8.63
+        },
+        {
+          "nodeId": "structural-node:a14dfdef9bb6528d0d0ad06a",
+          "sectionRef": "11",
+          "ownTextChars": 2420,
+          "siblingMedianChars": 277,
+          "ratio": 8.74
+        },
+        {
+          "nodeId": "structural-node:ba4349ade6eec29053c2daf1",
+          "sectionRef": "8",
+          "ownTextChars": 4056,
+          "siblingMedianChars": 277,
+          "ratio": 14.64
+        }
+      ]
+    },
+    {
+      "packageKey": "DSGR",
+      "totalSourceChars": 2331381,
+      "claimedByNodesChars": 2322622,
+      "uncoveredChars": 8759,
+      "uncoveredPercent": 0.3757,
+      "invalidOrOverlappingSpans": 0,
+      "uncoveredRegionClassification": {
+        "whitespace": 0,
+        "toc": 2119,
+        "signatureBlock": 0,
+        "exhibitSchedule": 6640,
+        "definitions": 0,
+        "unknown": 0
+      },
+      "documents": [
+        {
+          "documentId": "doc-a",
+          "totalChars": 739530,
+          "claimedByNodesChars": 738653,
+          "uncoveredChars": 877,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 877,
+              "chars": 877,
+              "substantiveChars": 735,
+              "classification": "toc",
+              "excerpt": "EX-10.2\n3\nd345714dex102.htm\nEX-10.2\n\nEX-10.2\n\nExhibit 10.2\n\nEXECUTION VERSION\n\nAMENDED AND RESTATED CREDIT AGREEMENT\n\ndated as of\n\nApril 1, 2022\n\namong\n\nLAWSON PRODUCTS,\nINC., a Delaware corporation, "
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "doc-a",
+            "totalChars": 739530,
+            "totalSubstantiveChars": 619025,
+            "coveredSubstantiveChars": 618290,
+            "uncoveredSubstantiveChars": 735,
+            "coveragePercent": 99.88,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 877,
+                "substantiveChars": 735,
+                "excerpt": "EX-10.2\n3\nd345714dex102.htm\nEX-10.2\n\nEX-10.2\n\nExhibit 10.2\n\nEXECUTION VERSION\n\nAMENDED AND RESTATED CREDIT AGREEMENT\n\ndated as of\n\nApril 1, 2022\n\namong\n\nLAWSON PRODUCTS,\nINC., a Delaware corporation, LAWSON PRODUCTS, INC., an Illinois corporation, BARON DIVESTITURE COMPANY, an Illinois corporation, "
+              }
+            ],
+            "topLevelNodeCount": 352,
+            "totalNodeCount": 1341,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "352 top-level node(s), 99.88% substantive coverage, 1 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        },
+        {
+          "documentId": "doc-b",
+          "totalChars": 737387,
+          "claimedByNodesChars": 732305,
+          "uncoveredChars": 5082,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 5082,
+              "chars": 5082,
+              "substantiveChars": 4309,
+              "classification": "exhibitSchedule",
+              "excerpt": "EX-10.1\n2\nd885541dex101.htm\nEX-10.1\n\nEX-10.1\n\nExhibit 10.1\n\nTHIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT\n\nTHIS THIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT (this “ Amendment ”)"
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "doc-b",
+            "totalChars": 737387,
+            "totalSubstantiveChars": 617484,
+            "coveredSubstantiveChars": 613175,
+            "uncoveredSubstantiveChars": 4309,
+            "coveragePercent": 99.3,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 5082,
+                "substantiveChars": 4309,
+                "excerpt": "EX-10.1\n2\nd885541dex101.htm\nEX-10.1\n\nEX-10.1\n\nExhibit 10.1\n\nTHIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT\n\nTHIS THIRD AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT (this “ Amendment ”) is made as of August 14, 2024 by and\namong DISTRIBUTION SOLUTIONS GROUP, INC., a Delaware corporati"
+              }
+            ],
+            "topLevelNodeCount": 361,
+            "totalNodeCount": 1379,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "361 top-level node(s), 99.3% substantive coverage, 1 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        },
+        {
+          "documentId": "doc-c",
+          "totalChars": 13810,
+          "claimedByNodesChars": 12252,
+          "uncoveredChars": 1558,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 1558,
+              "chars": 1558,
+              "substantiveChars": 1310,
+              "classification": "exhibitSchedule",
+              "excerpt": "EX-10.1\n2\nd906948dex101.htm\nEX-10.1\n\nEX-10.1\n\nExhibit 10.1\n\nEXECUTION VERSION\n\nFOURTH\nAMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT\n\nTHIS FOURTH AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT"
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "doc-c",
+            "totalChars": 13810,
+            "totalSubstantiveChars": 11474,
+            "coveredSubstantiveChars": 10164,
+            "uncoveredSubstantiveChars": 1310,
+            "coveragePercent": 88.58,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 1558,
+                "substantiveChars": 1310,
+                "excerpt": "EX-10.1\n2\nd906948dex101.htm\nEX-10.1\n\nEX-10.1\n\nExhibit 10.1\n\nEXECUTION VERSION\n\nFOURTH\nAMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT\n\nTHIS FOURTH AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT (this\n“ Amendment ”) is made as of March 31, 2025 by and among DISTRIBUTION SOLUTIONS GROUP, INC., "
+              }
+            ],
+            "topLevelNodeCount": 7,
+            "totalNodeCount": 23,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "7 top-level node(s), 88.58% substantive coverage, 1 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        },
+        {
+          "documentId": "doc-d",
+          "totalChars": 840654,
+          "claimedByNodesChars": 839412,
+          "uncoveredChars": 1242,
+          "uncoveredRegions": [
+            {
+              "charStart": 0,
+              "charEnd": 1242,
+              "chars": 1242,
+              "substantiveChars": 1048,
+              "classification": "toc",
+              "excerpt": "EX-10.1\n2\nd83410dex101.htm\nEX-10.1\n\nEX-10.1\n\nExhibit 10.1\n\nCertain personally identifiable information has been omitted from this exhibit pursuant to Item 601(a)(6) of Regulation S-K.\n\n[***] indicates"
+            }
+          ],
+          "productionCoverage": {
+            "documentId": "doc-d",
+            "totalChars": 840654,
+            "totalSubstantiveChars": 702638,
+            "coveredSubstantiveChars": 701590,
+            "uncoveredSubstantiveChars": 1048,
+            "coveragePercent": 99.85,
+            "significantUncoveredSpans": [
+              {
+                "charStart": 0,
+                "charEnd": 1242,
+                "substantiveChars": 1048,
+                "excerpt": "EX-10.1\n2\nd83410dex101.htm\nEX-10.1\n\nEX-10.1\n\nExhibit 10.1\n\nCertain personally identifiable information has been omitted from this exhibit pursuant to Item 601(a)(6) of Regulation S-K.\n\n[***] indicates that information has been redacted.\n\nEXECUTION VERSION\n\nSECOND AMENDED AND RESTATED CREDIT AGREEMEN"
+              }
+            ],
+            "topLevelNodeCount": 354,
+            "totalNodeCount": 1406,
+            "health": "STRUCTURE_HEALTHY",
+            "healthReasons": [
+              "354 top-level node(s), 99.85% substantive coverage, 1 significant uncovered span(s) - within normal range for real drafted contract text."
+            ]
+          }
+        }
+      ],
+      "anomalousOwnSpanSizeFlags": [
+        {
+          "nodeId": "structural-node:be08493ca827eb95d66c9ad3",
+          "sectionRef": "2.22",
+          "ownTextChars": 857,
+          "siblingMedianChars": 80,
+          "ratio": 10.71
+        },
+        {
+          "nodeId": "structural-node:0137bce053f67eddfb9f75f7",
+          "sectionRef": "2.14",
+          "ownTextChars": 1030,
+          "siblingMedianChars": 80,
+          "ratio": 12.88
+        },
+        {
+          "nodeId": "structural-node:213928849c1d73f9d9aeb325",
+          "sectionRef": "2.04",
+          "ownTextChars": 1075,
+          "siblingMedianChars": 80,
+          "ratio": 13.44
+        },
+        {
+          "nodeId": "structural-node:7c1f76c208037997c0bdf131",
+          "sectionRef": "2.03",
+          "ownTextChars": 1170,
+          "siblingMedianChars": 80,
+          "ratio": 14.63
+        },
+        {
+          "nodeId": "structural-node:bdba35a53153c2bff56f970a",
+          "sectionRef": "2.21",
+          "ownTextChars": 1216,
+          "siblingMedianChars": 80,
+          "ratio": 15.2
+        },
+        {
+          "nodeId": "structural-node:8b00378fcf97ed53ecfff170",
+          "sectionRef": "2.13",
+          "ownTextChars": 1503,
+          "siblingMedianChars": 80,
+          "ratio": 18.79
+        },
+        {
+          "nodeId": "structural-node:32e8366902fd522715bb4bad",
+          "sectionRef": "2.22",
+          "ownTextChars": 1528,
+          "siblingMedianChars": 80,
+          "ratio": 19.1
+        },
+        {
+          "nodeId": "structural-node:f5afe26f9b8ec2ea1f300074",
+          "sectionRef": "2.07",
+          "ownTextChars": 2091,
+          "siblingMedianChars": 80,
+          "ratio": 26.14
+        },
+        {
+          "nodeId": "structural-node:ac9f383852623e536f35b778",
+          "sectionRef": "2.05",
+          "ownTextChars": 2605,
+          "siblingMedianChars": 80,
+          "ratio": 32.56
+        },
+        {
+          "nodeId": "structural-node:b5fe7f191922e16deab344c7",
+          "sectionRef": "2.07",
+          "ownTextChars": 3068,
+          "siblingMedianChars": 80,
+          "ratio": 38.35
+        },
+        {
+          "nodeId": "structural-node:32f1cfe5d4b21cb8551ebce4",
+          "sectionRef": "14",
+          "ownTextChars": 3094,
+          "siblingMedianChars": 80,
+          "ratio": 38.67
+        },
+        {
+          "nodeId": "structural-node:a3f45f15f7707d6444c30434",
+          "sectionRef": "3.16",
+          "ownTextChars": 949,
+          "siblingMedianChars": 185,
+          "ratio": 5.13
+        },
+        {
+          "nodeId": "structural-node:51bcd768904c0dcb1127bd91",
+          "sectionRef": "3.15",
+          "ownTextChars": 1566,
+          "siblingMedianChars": 185,
+          "ratio": 8.46
+        },
+        {
+          "nodeId": "structural-node:4c9c99c52ba5611a56c1ba4f",
+          "sectionRef": "5.06",
+          "ownTextChars": 1488,
+          "siblingMedianChars": 249,
+          "ratio": 5.98
+        },
+        {
+          "nodeId": "structural-node:7bcd129ab0d6b10c60f5417f",
+          "sectionRef": "5.09",
+          "ownTextChars": 1639,
+          "siblingMedianChars": 249,
+          "ratio": 6.58
+        },
+        {
+          "nodeId": "structural-node:6b6143568dfb59c38116354f",
+          "sectionRef": "6.12",
+          "ownTextChars": 1057,
+          "siblingMedianChars": 103,
+          "ratio": 10.26
+        },
+        {
+          "nodeId": "structural-node:a37bae813c32aaade5bdd2b3",
+          "sectionRef": "5.01",
+          "ownTextChars": 1534,
+          "siblingMedianChars": 103,
+          "ratio": 14.89
+        },
+        {
+          "nodeId": "structural-node:dd65e57958662dc936b281e3",
+          "sectionRef": "8.08",
+          "ownTextChars": 503,
+          "siblingMedianChars": 63,
+          "ratio": 7.98
+        },
+        {
+          "nodeId": "structural-node:7429e5bce82eeaaeeeb7eea8",
+          "sectionRef": "8.10",
+          "ownTextChars": 774,
+          "siblingMedianChars": 63,
+          "ratio": 12.29
+        },
+        {
+          "nodeId": "structural-node:95b2a2b6dc97bfd40af50e9d",
+          "sectionRef": "8.04",
+          "ownTextChars": 1155,
+          "siblingMedianChars": 63,
+          "ratio": 18.33
+        },
+        {
+          "nodeId": "structural-node:e15561c7c8b8589e24587d90",
+          "sectionRef": "8.11",
+          "ownTextChars": 1274,
+          "siblingMedianChars": 63,
+          "ratio": 20.22
+        },
+        {
+          "nodeId": "structural-node:541808a3a8e6250772e10902",
+          "sectionRef": "9.21",
+          "ownTextChars": 2635,
+          "siblingMedianChars": 519,
+          "ratio": 5.08
+        },
+        {
+          "nodeId": "structural-node:8cccd720027eb6d0cca12c54",
+          "sectionRef": "9.03",
+          "ownTextChars": 3091,
+          "siblingMedianChars": 519,
+          "ratio": 5.96
+        },
+        {
+          "nodeId": "structural-node:bd31fb973f234b6e5b480676",
+          "sectionRef": "9.04",
+          "ownTextChars": 3985,
+          "siblingMedianChars": 519,
+          "ratio": 7.68
+        },
+        {
+          "nodeId": "structural-node:450476803f900b3c288ba814",
+          "sectionRef": "8",
+          "ownTextChars": 6928,
+          "siblingMedianChars": 206,
+          "ratio": 33.63
+        },
+        {
+          "nodeId": "structural-node:0b72274cdf4c4181c8e1d4ae",
+          "sectionRef": "2.06",
+          "ownTextChars": 654,
+          "siblingMedianChars": 64,
+          "ratio": 10.22
+        },
+        {
+          "nodeId": "structural-node:e356e693d2b83389979156ff",
+          "sectionRef": "2.11",
+          "ownTextChars": 995,
+          "siblingMedianChars": 64,
+          "ratio": 15.55
+        },
+        {
+          "nodeId": "structural-node:bb2005d3979bc72e048e8e5e",
+          "sectionRef": "2.04",
+          "ownTextChars": 1075,
+          "siblingMedianChars": 64,
+          "ratio": 16.8
+        },
+        {
+          "nodeId": "structural-node:6d364b854989e6ae0c382ad4",
+          "sectionRef": "2.03",
+          "ownTextChars": 1149,
+          "siblingMedianChars": 64,
+          "ratio": 17.95
+        },
+        {
+          "nodeId": "structural-node:5500c1d740a7279d7e9eff5d",
+          "sectionRef": "2.21",
+          "ownTextChars": 1220,
+          "siblingMedianChars": 64,
+          "ratio": 19.06
+        },
+        {
+          "nodeId": "structural-node:6dfb23fde46d624ee159bb9f",
+          "sectionRef": "2.22",
+          "ownTextChars": 1524,
+          "siblingMedianChars": 64,
+          "ratio": 23.81
+        },
+        {
+          "nodeId": "structural-node:6b737c7ffccdc10f203ab239",
+          "sectionRef": "2.05",
+          "ownTextChars": 2551,
+          "siblingMedianChars": 64,
+          "ratio": 39.86
+        },
+        {
+          "nodeId": "structural-node:943606e0f83d9c295a99995d",
+          "sectionRef": "9.01",
+          "ownTextChars": 3671,
+          "siblingMedianChars": 64,
+          "ratio": 57.36
+        },
+        {
+          "nodeId": "structural-node:9adf355a1ad845896a712a39",
+          "sectionRef": "2.18",
+          "ownTextChars": 5055,
+          "siblingMedianChars": 64,
+          "ratio": 78.98
+        },
+        {
+          "nodeId": "structural-node:2cd2b3282eb35322f439af7f",
+          "sectionRef": "3.16",
+          "ownTextChars": 944,
+          "siblingMedianChars": 185,
+          "ratio": 5.1
+        },
+        {
+          "nodeId": "structural-node:d6435b864321b0fd9edbf586",
+          "sectionRef": "3.15",
+          "ownTextChars": 1566,
+          "siblingMedianChars": 185,
+          "ratio": 8.46
+        },
+        {
+          "nodeId": "structural-node:7709b87dd4f47760da6df654",
+          "sectionRef": "5.06",
+          "ownTextChars": 1488,
+          "siblingMedianChars": 252,
+          "ratio": 5.9
+        },
+        {
+          "nodeId": "structural-node:5b75d963f5b26c84959a44d3",
+          "sectionRef": "5.09",
+          "ownTextChars": 1644,
+          "siblingMedianChars": 252,
+          "ratio": 6.52
+        },
+        {
+          "nodeId": "structural-node:f87089697d34c0ebc429ed7d",
+          "sectionRef": "7.03",
+          "ownTextChars": 528,
+          "siblingMedianChars": 103,
+          "ratio": 5.13
+        },
+        {
+          "nodeId": "structural-node:10f934941f300cf69f846ddf",
+          "sectionRef": "5.01",
+          "ownTextChars": 1534,
+          "siblingMedianChars": 103,
+          "ratio": 14.89
+        },
+        {
+          "nodeId": "structural-node:19f2202b9469068d715294b8",
+          "sectionRef": "7.01",
+          "ownTextChars": 3985,
+          "siblingMedianChars": 103,
+          "ratio": 38.69
+        },
+        {
+          "nodeId": "structural-node:e0a8f4a3469e90f07f83e64f",
+          "sectionRef": "8.08",
+          "ownTextChars": 503,
+          "siblingMedianChars": 70,
+          "ratio": 7.19
+        },
+        {
+          "nodeId": "structural-node:adeb449230ff51e78b29d71b",
+          "sectionRef": "8.10",
+          "ownTextChars": 774,
+          "siblingMedianChars": 70,
+          "ratio": 11.06
+        },
+        {
+          "nodeId": "structural-node:bacec23f3aaf4666eae3b648",
+          "sectionRef": "8.04",
+          "ownTextChars": 1155,
+          "siblingMedianChars": 70,
+          "ratio": 16.5
+        },
+        {
+          "nodeId": "structural-node:9caf9655094166d214cb8620",
+          "sectionRef": "9.04",
+          "ownTextChars": 2346,
+          "siblingMedianChars": 70,
+          "ratio": 33.51
+        },
+        {
+          "nodeId": "structural-node:9339181ed0c8027eaa286ca9",
+          "sectionRef": "9.04",
+          "ownTextChars": 3026,
+          "siblingMedianChars": 603,
+          "ratio": 5.02
+        },
+        {
+          "nodeId": "structural-node:311c3abed4b10810b36a36d3",
+          "sectionRef": "9.03",
+          "ownTextChars": 3271,
+          "siblingMedianChars": 603,
+          "ratio": 5.42
+        },
+        {
+          "nodeId": "structural-node:ec38e3bcb04b6e469c9a3373",
+          "sectionRef": "7",
+          "ownTextChars": 5490,
+          "siblingMedianChars": 276,
+          "ratio": 19.89
+        },
+        {
+          "nodeId": "structural-node:23bed27e302471ccf67daf22",
+          "sectionRef": "2.03",
+          "ownTextChars": 666,
+          "siblingMedianChars": 93,
+          "ratio": 7.16
+        },
+        {
+          "nodeId": "structural-node:5b438edf3cd1cdc3a2d3c1d9",
+          "sectionRef": "2.06",
+          "ownTextChars": 873,
+          "siblingMedianChars": 93,
+          "ratio": 9.39
+        },
+        {
+          "nodeId": "structural-node:f40a56f0b35767b691083ff0",
+          "sectionRef": "2.11",
+          "ownTextChars": 990,
+          "siblingMedianChars": 93,
+          "ratio": 10.65
+        },
+        {
+          "nodeId": "structural-node:254d6160789c4a867c61d243",
+          "sectionRef": "2.12",
+          "ownTextChars": 1014,
+          "siblingMedianChars": 93,
+          "ratio": 10.9
+        },
+        {
+          "nodeId": "structural-node:f2191faacf98c9f060969cb7",
+          "sectionRef": "2.04",
+          "ownTextChars": 1075,
+          "siblingMedianChars": 93,
+          "ratio": 11.56
+        },
+        {
+          "nodeId": "structural-node:8d6749df3c0c7e35dd24391e",
+          "sectionRef": "2.21",
+          "ownTextChars": 1216,
+          "siblingMedianChars": 93,
+          "ratio": 13.08
+        },
+        {
+          "nodeId": "structural-node:644adf495c851018796d31b9",
+          "sectionRef": "2.03",
+          "ownTextChars": 1311,
+          "siblingMedianChars": 93,
+          "ratio": 14.1
+        },
+        {
+          "nodeId": "structural-node:ec5e0fa7cc61acdfbfacb3ed",
+          "sectionRef": "2.22",
+          "ownTextChars": 1528,
+          "siblingMedianChars": 93,
+          "ratio": 16.43
+        },
+        {
+          "nodeId": "structural-node:aacc101224ad3ac63913c45a",
+          "sectionRef": "2.16",
+          "ownTextChars": 1703,
+          "siblingMedianChars": 93,
+          "ratio": 18.31
+        },
+        {
+          "nodeId": "structural-node:df5bbc0886c47765da5c2076",
+          "sectionRef": "2.07",
+          "ownTextChars": 2027,
+          "siblingMedianChars": 93,
+          "ratio": 21.8
+        },
+        {
+          "nodeId": "structural-node:262cd10dd6d2e17090195c63",
+          "sectionRef": "2.05",
+          "ownTextChars": 2418,
+          "siblingMedianChars": 93,
+          "ratio": 26
+        },
+        {
+          "nodeId": "structural-node:01dbceb6744e3eef92959557",
+          "sectionRef": "14",
+          "ownTextChars": 3098,
+          "siblingMedianChars": 93,
+          "ratio": 33.31
+        },
+        {
+          "nodeId": "structural-node:cabef0c9e3ae68eca5ba8744",
+          "sectionRef": "9.01",
+          "ownTextChars": 3670,
+          "siblingMedianChars": 93,
+          "ratio": 39.46
+        },
+        {
+          "nodeId": "structural-node:39e765c902ca1ae4b585dca6",
+          "sectionRef": "3.17",
+          "ownTextChars": 853,
+          "siblingMedianChars": 161,
+          "ratio": 5.3
+        },
+        {
+          "nodeId": "structural-node:80a386a8835bfa3a20d3e72a",
+          "sectionRef": "3.16",
+          "ownTextChars": 944,
+          "siblingMedianChars": 161,
+          "ratio": 5.86
+        },
+        {
+          "nodeId": "structural-node:4e207940bc16ace1c6bf58bb",
+          "sectionRef": "3.15",
+          "ownTextChars": 1566,
+          "siblingMedianChars": 161,
+          "ratio": 9.73
+        },
+        {
+          "nodeId": "structural-node:bdc5a68d9edb71046e9fe3ce",
+          "sectionRef": "5.11",
+          "ownTextChars": 1429,
+          "siblingMedianChars": 285,
+          "ratio": 5.01
+        },
+        {
+          "nodeId": "structural-node:1087c19578925ed0188dc9ed",
+          "sectionRef": "5.06",
+          "ownTextChars": 1493,
+          "siblingMedianChars": 285,
+          "ratio": 5.24
+        },
+        {
+          "nodeId": "structural-node:22b1b65f8552fb263b6b63b6",
+          "sectionRef": "5.09",
+          "ownTextChars": 1644,
+          "siblingMedianChars": 285,
+          "ratio": 5.77
+        },
+        {
+          "nodeId": "structural-node:b181466843a6c96917d059fc",
+          "sectionRef": "7.03",
+          "ownTextChars": 528,
+          "siblingMedianChars": 29,
+          "ratio": 18.21
+        },
+        {
+          "nodeId": "structural-node:0fe31e2a39cf50528bbe7dff",
+          "sectionRef": "8.08",
+          "ownTextChars": 503,
+          "siblingMedianChars": 63,
+          "ratio": 7.98
+        },
+        {
+          "nodeId": "structural-node:3fb9a858498c238cebed5bc8",
+          "sectionRef": "8.10",
+          "ownTextChars": 774,
+          "siblingMedianChars": 63,
+          "ratio": 12.29
+        },
+        {
+          "nodeId": "structural-node:3a1972d4f7a3579b23dbda5f",
+          "sectionRef": "8.04",
+          "ownTextChars": 1155,
+          "siblingMedianChars": 63,
+          "ratio": 18.33
+        },
+        {
+          "nodeId": "structural-node:9fa22b43336c3e7dd7119548",
+          "sectionRef": "8.11",
+          "ownTextChars": 1275,
+          "siblingMedianChars": 63,
+          "ratio": 20.24
+        },
+        {
+          "nodeId": "structural-node:386f53fe3f3da2dc1ade797f",
+          "sectionRef": "9.08",
+          "ownTextChars": 2505,
+          "siblingMedianChars": 63,
+          "ratio": 39.76
+        },
+        {
+          "nodeId": "structural-node:5df71674a506e1ed57374bc7",
+          "sectionRef": "9.21",
+          "ownTextChars": 2635,
+          "siblingMedianChars": 476,
+          "ratio": 5.54
+        },
+        {
+          "nodeId": "structural-node:c72c2c116115812549369ced",
+          "sectionRef": "9.03",
+          "ownTextChars": 3294,
+          "siblingMedianChars": 476,
+          "ratio": 6.92
+        },
+        {
+          "nodeId": "structural-node:6c60360f3e22f71996170602",
+          "sectionRef": "9.04",
+          "ownTextChars": 3985,
+          "siblingMedianChars": 476,
+          "ratio": 8.37
+        }
+      ]
+    }
+  ]
+}
