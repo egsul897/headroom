@@ -1,0 +1,155 @@
+{
+  "manifestId": "PHASE_3F_1_PRE_DSGR_FREEZE_MANIFEST",
+  "createdAt": "2026-08-28T15:45:30.000Z",
+  "codeShaAtFreeze": "3e0b16f",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "description": "Phase 3F.1 (F1/F2/F3/F6 remediation) hard freeze recorded per task §48, BEFORE the DSGR remediation regression rerun (task §49-50) and BEFORE seeing that rerun's results. All algorithm versions, the full synthetic-test result set, the pre-DSGR benchmark-contamination grep result, and this task's own frozen false-positive/review-burden thresholds are sealed here. The historical Phase 3F first-blind result and its own freeze manifest (tests/fixtures/unseen-packages/phase-3f-freeze/phase-3f-freeze-manifest.json) are permanent, separate, and are NEVER read as authority for the numbers in this file beyond the baseline comparison values quoted below (which are copied read-only from the already-sealed phase-3f-scoring-report.json / stage8-coverage-result.json, not recomputed).",
+
+  "scopeOfThisRemediation": {
+    "workstreamsImplemented": [
+      "A (F1) - hierarchical routing closure, lib/contract-model/compiler/semantic-coverage/router.ts",
+      "B (F2) - contextual materiality propagation, lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts",
+      "C (F3) - operative-state honesty, lib/contract-model/compiler/amendment/operative-state.ts + semantic-coverage/cross-reference-audit.ts + pipeline.ts",
+      "D (F6) - compile-failure observability, lib/contract-model/compiler/semantic/compile.ts + package-compile.ts"
+    ],
+    "explicitlyOutOfScope": [
+      "F4 (structural parser noise) - not touched unless a bounded supporting fix was mechanically required by A/B (none was required)",
+      "F5 (discovery-layer recall) - not touched; Phase 2B discovery output is reused frozen, not recomputed",
+      "DSGR compiler semantic-repair, Phase 2B expansion, Phase 4, financial data ingestion, UI, or acquiring a genuinely new unseen package (task §73's stop condition)"
+    ],
+    "commitsInScope": ["ba69777 (D)", "b9454c2 (C)", "a9c8826 (B)", "2a2c591 (A)", "c391da1 (A test extension)", "3e0b16f (version bump)"]
+  },
+
+  "algorithmVersions": {
+    "semanticCoverageAlgorithmVersion": {
+      "preRemediation_v1": "phase-3e-semantic-coverage.v1",
+      "postRemediation_v2_atThisFreeze": "phase-3f1-semantic-coverage.v2",
+      "changedBy": "Workstream B - classifyMateriality's ownText cross-reference bump + applyContextualMaterialityFloor + contextuallyElevated field"
+    },
+    "semanticCoverageRoutingAlgorithmVersion": {
+      "preRemediation_v1": "phase-3e-semantic-coverage-router.v1",
+      "postRemediation_v2_atThisFreeze": "phase-3f1-semantic-coverage-router.v2",
+      "changedBy": "Workstream A - closeRoutedRegions bounded hierarchical closure"
+    },
+    "semanticCoveragePromptVersion": {
+      "unchanged": "phase-3e-semantic-coverage-prompt.v1",
+      "reason": "the AI Layer C prompt (ai-inventory.ts) was not modified by this phase"
+    },
+    "unaffectedAndReusedFromFrozenFirstBlindRun": [
+      "phase2aStructuralParser (no version const; identity is source-file hash, unchanged)",
+      "phase2bDiscoveryPipelineVersion phase-2b-discovery-pipeline.v2",
+      "phase2bDiscoveryPromptVersion phase-2b-discovery.v2",
+      "phase2cPackageGraphPipelineVersion phase-2c-package-graph-pipeline.v1",
+      "phase2dRetrievalAlgorithmVersion phase-2d-context-retrieval.v2",
+      "phase2gAmendmentPipelineVersion phase-2g-amendment-pipeline.v1+phase-2g-amendment-interpretation.v1 (operative-state COMPUTATION logic changed in Workstream C - see below - but the amendment PARSING/interpretation pipeline itself did not change)",
+      "phase3aIrSchemaVersion headroom-covenant-ir.v1",
+      "phase3bSemanticCompilerAlgorithmVersion phase-3b1-semantic-compiler.v2 (unchanged compile logic; only failure-path observability/error-detail changed in Workstream D, which does not alter a successful compile's output)",
+      "phase3cSemanticVerifierAlgorithmVersion phase-3c-semantic-verifier.v1"
+    ],
+    "workstreamCNote": "Workstream C changed computeOperativeContractState's status-defaulting behavior and added applyOperativeStateFindingsToCoverage; it did not change the amendment-effect PARSER or the effective-date resolver. No version constant exists for operative-state.ts specifically (same disclosed gap the original Phase 2G freeze manifest already carried); its behavioral change is captured by the code SHA above, not a bumped string constant."
+  },
+
+  "syntheticTestResults": {
+    "capturedAt": "2026-08-28T15:45:00Z",
+    "command": "npx vitest run tests/contract-model/phase-3f1-*.test.ts tests/contract-model/semantic-coverage-*.test.ts",
+    "totalTests": 148,
+    "passed": 148,
+    "failed": 0,
+    "testFiles": 16,
+    "byWorkstream": {
+      "D_F6_failureObservability": { "file": "tests/contract-model/phase-3f1-failure-observability.test.ts", "tests": 10, "passed": 10 },
+      "C_F3_operativeStateHonesty": { "file": "tests/contract-model/phase-3f1-operative-state-honesty.test.ts", "tests": 6, "passed": 6 },
+      "B_F2_contextualMateriality": { "file": "tests/contract-model/phase-3f1-contextual-materiality.test.ts", "tests": 11, "passed": 11 },
+      "A_F1_routingClosure": { "file": "tests/contract-model/phase-3f1-routing-closure.test.ts", "tests": 19, "passed": 19 }
+    },
+    "preExistingSuiteRegressionCheck": {
+      "command": "npx vitest run tests/contract-model/",
+      "totalTests": 938,
+      "passed": 852,
+      "failed": 14,
+      "skipped": 72,
+      "failureCause": "all 14 failures across 17 files are the pre-existing sandbox DB-connectivity limitation (Prisma 'Can't reach database server at localhost:5432') - confirmed unrelated to this phase's changes via git-stash isolation during Workstream C (identical failure reproduced on the pre-Workstream-C tree with zero Phase 3F.1 changes applied). Zero new test failures introduced by Workstreams A-D.",
+      "typecheck": "npx tsc --noEmit -p tsconfig.json - clean, zero errors, at code SHA 3e0b16f"
+    },
+    "realZeroCostRegressionUnchanged": "tests/contract-model/semantic-coverage-real-fwrg-regression.test.ts and semantic-coverage-real-lsb-regression.test.ts (real FWRG/LSB Article 6 evidence) produce identical node/candidate/unit counts before and after all four workstreams - the remediation adds no new admissions on documents whose content already carries local signals at every exception-list item, which is the expected, disclosed behavior (closure is additive only where local signal is absent)."
+  },
+
+  "preDsgrBenchmarkContaminationGrep": {
+    "capturedAt": "2026-08-28T15:45:00Z",
+    "scope": "lib/ (all production code), *.ts",
+    "commands": [
+      "grep -rniE \"dsgr|distribution solutions group\" lib/ --include=\"*.ts\"",
+      "grep -rnE \"\\b119\\b\" lib/ --include=\"*.ts\"",
+      "grep -rniE \"unseen-packages|dsgr-2022|cik[0-9]\" lib/ --include=\"*.ts\""
+    ],
+    "rawHitCount": 4,
+    "executableHitCount": 0,
+    "rawHitLocations": [
+      "lib/contract-model/compiler/semantic-coverage/router.ts:41 (doc comment, root-cause explanation)",
+      "lib/contract-model/compiler/semantic/compile.ts:43 (doc comment, root-cause explanation)",
+      "lib/contract-model/compiler/amendment/operative-state.ts:158 (doc comment, root-cause explanation)",
+      "lib/contract-model/compiler/amendment/types.ts:228 (doc comment, root-cause explanation)"
+    ],
+    "verdict": "PASS - all 4 raw hits are doc-comments explaining the DSGR-motivated root cause of a generic fix (task §4's own distinction between documentation and production logic); zero hits inside executable code (conditionals, lookup tables, string comparisons, constants used at runtime). No dangerous-count literals (119/34/90/112/213), CIK numbers, or DSGR fixture-path references found anywhere in lib/. Pre-existing 'credit-facility'/'unseen-packages' references in edgar-connector.ts/metrics.ts/evaluator.ts/pass-b-semantic.ts are generic conventions established in earlier phases (Phase 2B/2F, the EDGAR connector), not DSGR-specific, and were not touched by this phase.",
+    "reGrepAfterDsgrRerun": "task §183 will re-run this exact grep after the DSGR remediation regression rerun (task §181) to confirm the rerun script itself introduced no package-specific logic."
+  },
+
+  "frozenFirstBlindBaseline_readOnly_copiedFromSealedArtifacts": {
+    "source": "tests/fixtures/unseen-packages/phase-3f-ground-truth/phase-3f-scoring-report.json and tests/fixtures/unseen-packages/phase-3f-first-blind-run/stage8-coverage-result.json - PERMANENT, read here only for comparison, never modified or recomputed",
+    "groundTruth": {
+      "groundTruthTotalUnits": 1016,
+      "groundTruthHighMaterialityUnits": 803,
+      "dangerousUnflaggedOmissionCount_strict": 119,
+      "dangerousUnflaggedOmissionCount_broad": 34,
+      "trueBlindSpotCount_noAuditUnitAtAnyLevel": 90,
+      "chapeauOnlyGapCount_subItemsCapturedParentMissed": 112,
+      "auditInventoryRecallHighMateriality": 0.887920298879203
+    },
+    "frozenAuditInventoryByMateriality": {
+      "totalUnits": 6210,
+      "INFORMATIONAL": 2906,
+      "REVIEW_UNCERTAIN": 1090,
+      "MATERIAL": 1783,
+      "CRITICAL": 431,
+      "MATERIAL_plus_CRITICAL": 2214,
+      "MATERIAL_plus_CRITICAL_plus_REVIEW_UNCERTAIN": 3304
+    }
+  },
+
+  "frozenThresholds_setBeforeSeeingDsgrRerunResults": {
+    "note": "Every threshold below is derived from the frozen baseline numbers above and the disclosed, code-level bounds already built into Workstream A (MAX_CLOSURE_DEPTH=3, MAX_CLOSURE_NODES_PER_SEED=40) and Workstream B (floor caps at MATERIAL, never CRITICAL; selective per-parent-posture, never universal). They are written now, before the DSGR rerun (task §181) is executed, and MUST NOT be loosened after seeing that rerun's actual numbers - only tightened in a later phase if the rerun clears them with room to spare.",
+    "maxTotalUnitCountGrowthRatio": {
+      "threshold": 1.5,
+      "meaning": "post-remediation totalUnits (across all 4 documents) must not exceed 1.5x the frozen baseline of 6210 (i.e. <= 9315). Guards against closure adding an implausibly large number of new regions.",
+      "rationale": "closure is bounded per-seed (max 39 new admissions per operative seed after the cap) and only fires from seeds carrying a real prohibition/permission/exception signal - a real Negative Covenants article has on the order of dozens of such seeds, not hundreds, so a multiplicative blowup past 1.5x would indicate a bounding bug, not genuine recovery."
+    },
+    "maxMaterialCriticalInflationRatio": {
+      "threshold": 2.5,
+      "meaning": "post-remediation (MATERIAL + CRITICAL) unit count must not exceed 2.5x the frozen baseline of 2214 (i.e. <= 5535).",
+      "rationale": "the ground truth records 112 chapeau-only-gap cases and 90 true-blind-spot cases (202 combined, mostly F1-shaped) plus a portion of the 213 VIOLATION_MATERIALITY_MISCLASSIFIED_UNFLAGGED cases attributable to F2 - recovering these should add low hundreds of MATERIAL/CRITICAL units, not multiply the tier by many times. 2.5x is generous headroom for genuine recovery while still catching a floor/closure defect that over-elevates broadly rather than selectively."
+    },
+    "maxReviewBurdenGrowthRatio": {
+      "threshold": 2.0,
+      "meaning": "post-remediation (MATERIAL + CRITICAL + REVIEW_UNCERTAIN) unit count must not exceed 2.0x the frozen baseline of 3304 (i.e. <= 6608).",
+      "rationale": "REVIEW_UNCERTAIN is the tier a human reviewer is asked to look at; the remediation must not fix dangerous omissions by dumping an unreasonable volume of new items into human review queues. classifyMateriality's own cross-reference bump (§27) deliberately caps at REVIEW_UNCERTAIN rather than MATERIAL for exactly this reason - this threshold bounds how far that discipline is allowed to slip in aggregate."
+    },
+    "maxClosureExpansionFactorPerDocument": {
+      "threshold": 3.0,
+      "meaning": "DocumentRoutingResult.closureStats.expansionFactor (closureAdmittedRegionCount / seedRegionCount) must not exceed 3.0 for any single document in the package - a mechanically checkable number already produced by router.ts itself, not a post-hoc estimate.",
+      "rationale": "ties the gate directly to the boundedness telemetry the closure mechanism already emits (task §16/§46), rather than inventing a separate proxy metric."
+    },
+    "selectiveNotUniversalCheck": {
+      "type": "qualitative, code-level, not purely statistical",
+      "requirement": "at least one operative-parent group in the DSGR rerun must contain a child that is NOT contextuallyElevated despite the parent being an operative CRITICAL/MATERIAL prohibition/obligation - i.e. the floor must demonstrably discriminate by the child's own posture (a purely DEFINITIONAL/procedural child) rather than elevating every descendant of every operative parent unconditionally. If every single admitted child of every operative parent across the whole package is contextuallyElevated with zero exceptions, that is treated as evidence the selectivity logic did not actually engage on this real document and the gate fails even if the numeric ratios above pass."
+    },
+    "controllingSafetyGateUnchanged": "DANGEROUS_UNFLAGGED_OMISSION (strict interpretation, same as the original Phase 3F scoring) must reach 0 in the DSGR remediation regression rerun - this is the primary pass/fail criterion task §51-54 requires and is not weakened by any threshold above; the thresholds above are secondary false-positive/review-burden guards that apply ONLY IF the primary safety gate is met."
+  },
+
+  "dsgrRerunPlan_notYetExecuted": {
+    "runIdentifier": "PHASE_3F_1_DSGR_REMEDIATION_REGRESSION",
+    "reuseFrozen": "Phase 2A/2B/2C/2D structural/discovery/package-graph/context-retrieval output AND Phase 3B/3C compiled+verified IR are reused byte-for-byte from the sealed tests/fixtures/unseen-packages/phase-3f-first-blind-run/ artifacts - never re-spent, per task §49's explicit cost-discipline requirement.",
+    "recomputeOnly": "Phase 3E routing/inventory/materiality/reconciliation/coverage (router.ts + unit-hypothesis.ts + reconciliation.ts + cross-reference-audit.ts + family/document/package coverage), using the frozen Phase 2A structural index + the frozen Phase 3B/3C compiled/verified results as reconciliation-stage input (permitted per the Independence Contract's own reconciliation-stage carve-out) and Workstream C's operative-state findings wiring.",
+    "outputLocation": "tests/fixtures/unseen-packages/phase-3f1-dsgr-remediation-regression/ (new directory, fully separate from tests/fixtures/unseen-packages/phase-3f-first-blind-run/)",
+    "neverModifies": ["tests/fixtures/unseen-packages/phase-3f-first-blind-run/*", "tests/fixtures/unseen-packages/phase-3f-ground-truth/*", "docs/phase-3f-unseen-package-validation.md", "tests/fixtures/unseen-packages/phase-3f-freeze/*"]
+  }
+}
