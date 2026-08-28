@@ -42,6 +42,7 @@ function precedent(overrides: Partial<GeneralizedPrecedent> = {}): GeneralizedPr
     supersedesPrecedentId: null,
     supersededByPrecedentId: null,
     tenancy: "SYSTEM_REVIEWED",
+    ownerCompanyId: null,
     dimensions: ["EXPRESSION_SHAPE"],
     granularity: "EXPRESSION_PATTERN",
     lessonDescription: "test lesson",

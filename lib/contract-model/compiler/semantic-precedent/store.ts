@@ -35,6 +35,17 @@ export interface GeneralizedPrecedentFilter {
   /** task §57's own "excluding all precedent derived from the target package" - filters on supporting-instance provenance, resolved by the caller against the ReviewedInstance store (this store has no cross-reference join of its own). */
   excludePrecedentIds?: string[];
   includeSuperseded?: boolean;
+  /**
+   * Task §46's own tenant-isolation invariant, enforced here regardless of
+   * any other filter field: a TENANT_PRIVATE precedent is visible ONLY when
+   * viewerCompanyId is supplied AND equals that precedent's own
+   * ownerCompanyId - SYSTEM_REVIEWED precedent is unaffected by this field
+   * and remains visible to every viewer. Omitting viewerCompanyId is the
+   * SAFE default (excludes every TENANT_PRIVATE precedent, never leaks one
+   * company's private precedent to a caller that forgot to scope its
+   * query) - it is never an escape hatch back to "return everything."
+   */
+  viewerCompanyId?: string;
 }
 
 function matchesReviewedInstanceFilter(instance: ReviewedInstance, filter?: ReviewedInstanceFilter): boolean {
@@ -56,6 +67,7 @@ function matchesGeneralizedPrecedentFilter(precedent: GeneralizedPrecedent, filt
   if (filter?.reviewStatus && !filter.reviewStatus.includes(precedent.reviewStatus)) return false;
   if (filter?.excludePrecedentIds && filter.excludePrecedentIds.includes(precedent.precedentId)) return false;
   if (!filter?.includeSuperseded && precedent.supersededByPrecedentId !== null) return false;
+  if (precedent.tenancy === "TENANT_PRIVATE" && (!filter?.viewerCompanyId || filter.viewerCompanyId !== precedent.ownerCompanyId)) return false;
   return true;
 }
 

@@ -78,11 +78,15 @@ export interface GeneralizationEntry {
 
 export interface ProposeGeneralizedPrecedentOptions {
   tenancy: PrecedentTenancyScope;
+  /** Required, and must equal every entry's own provenance.companyId, when tenancy is TENANT_PRIVATE (task §46's own tenant-isolation requirement) - never inferred from the entries themselves, so a caller cannot accidentally mislabel a precedent's ownership. */
+  ownerCompanyId?: string;
   caller?: StageCaller;
 }
 
 export class InconsistentGeneralizationInputError extends Error {}
 export class UnreviewedGeneralizationInputError extends Error {}
+/** Task §46's own "raw customer clauses must not be globally reused by default" - thrown when a TENANT_PRIVATE proposal's ownerCompanyId does not match every grounding entry's own companyId (never let one company's reviewed instance be attributed to another), or when a SYSTEM_REVIEWED proposal is grounded in an entry whose own ReviewedInstance is still TENANT_PRIVATE (never silently promote a customer's private review into the shared library). */
+export class CrossTenantGeneralizationError extends Error {}
 
 const ELIGIBLE_REVIEW_STATUSES = new Set(["APPROVED", "APPROVED_WITH_LIMITATIONS"]);
 
@@ -101,6 +105,39 @@ function computeSupportMetadata(entries: GeneralizationEntry[]) {
     distinctCompanyCount: new Set(entries.map((e) => e.instance.provenance.companyId)).size,
     knownCounterexampleInstanceIds: [] as string[],
   };
+}
+
+/**
+ * Task §46's own tenant-isolation requirement, enforced BEFORE any model
+ * call is made (never discovered after the fact). Two directions:
+ *  - TENANT_PRIVATE: options.ownerCompanyId is required and must equal
+ *    every grounding entry's own provenance.companyId - a caller can never
+ *    attribute a private precedent to a company that did not actually
+ *    supply the underlying reviewed instance(s).
+ *  - SYSTEM_REVIEWED: every grounding entry's own ReviewedInstance must
+ *    ALREADY be tenancy=SYSTEM_REVIEWED - a single customer's
+ *    TENANT_PRIVATE reviewed instance can never be silently promoted into
+ *    the shared, cross-tenant library by this function alone.
+ */
+function validateTenancyAndDeriveOwner(entries: GeneralizationEntry[], options: ProposeGeneralizedPrecedentOptions): string | null {
+  if (options.tenancy === "TENANT_PRIVATE") {
+    if (!options.ownerCompanyId) {
+      throw new CrossTenantGeneralizationError("a TENANT_PRIVATE precedent requires an explicit ownerCompanyId");
+    }
+    for (const entry of entries) {
+      if (entry.instance.provenance.companyId !== options.ownerCompanyId) {
+        throw new CrossTenantGeneralizationError(`instance ${entry.instance.instanceId} belongs to company ${entry.instance.provenance.companyId}, not ownerCompanyId ${options.ownerCompanyId} - a precedent can never be attributed to a company that did not supply the underlying reviewed instance`);
+      }
+    }
+    return options.ownerCompanyId;
+  }
+
+  for (const entry of entries) {
+    if (entry.instance.tenancy !== "SYSTEM_REVIEWED") {
+      throw new CrossTenantGeneralizationError(`instance ${entry.instance.instanceId} is tenancy=${entry.instance.tenancy} - a SYSTEM_REVIEWED (shared, cross-tenant) precedent may only be grounded in already-SYSTEM_REVIEWED reviewed instances; promoting a private instance requires a separate, explicit step this function never performs implicitly`);
+    }
+  }
+  return null;
 }
 
 function normalizeProposal(wire: GeneralizationProposal, signature: SemanticSignature): {
@@ -146,6 +183,8 @@ export async function proposeGeneralizedPrecedent(entries: GeneralizationEntry[]
     }
   }
 
+  const ownerCompanyId = validateTenancyAndDeriveOwner(entries, options);
+
   const caller = options.caller ?? getStageCaller();
   const systemPrompt = buildGeneralizationSystemPrompt();
   const userContent = buildUserContent(entries);
@@ -171,6 +210,7 @@ export async function proposeGeneralizedPrecedent(entries: GeneralizationEntry[]
     supersedesPrecedentId: null,
     supersededByPrecedentId: null,
     tenancy: options.tenancy,
+    ownerCompanyId,
     dimensions,
     granularity,
     lessonDescription: wireProposal.lessonDescription,

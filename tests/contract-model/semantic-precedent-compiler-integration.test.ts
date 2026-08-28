@@ -93,6 +93,7 @@ function precedent(overrides: Partial<GeneralizedPrecedent> = {}): GeneralizedPr
     supersedesPrecedentId: null,
     supersededByPrecedentId: null,
     tenancy: "SYSTEM_REVIEWED",
+    ownerCompanyId: null,
     dimensions: ["EXPRESSION_SHAPE"],
     granularity: "EXPRESSION_PATTERN",
     lessonDescription: "when a basket states a flat dollar cap, do not also infer a percentage-of-metric alternative unless the source states one",

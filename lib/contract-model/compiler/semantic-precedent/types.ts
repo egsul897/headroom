@@ -270,6 +270,8 @@ export interface GeneralizedPrecedent {
   supersededByPrecedentId: string | null;
 
   tenancy: PrecedentTenancyScope;
+  /** Task §46's own tenant-isolation requirement, made enforceable: null for SYSTEM_REVIEWED (a global precedent no single company owns); the owning company's id for TENANT_PRIVATE - store.ts's own filter uses this to keep one company's private precedent invisible to every other company by default. */
+  ownerCompanyId: string | null;
   dimensions: PrecedentDimension[];
   granularity: PrecedentGranularity;
 
