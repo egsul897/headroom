@@ -8,6 +8,28 @@
  * correct - a passing assertion here means "this is what the system actually
  * does," which the accompanying prose in the final report evaluates for
  * whether it constitutes a defect.
+ *
+ * Phase 3F.1.4 (Workstream A) update: production code was frozen when Q1 and
+ * Q5's own coverage assertions were originally written to DOCUMENT that
+ * structural-coverage.ts's span/health accounting could not see their
+ * respective defects (Q1: a swallowed sibling's own content silently folded
+ * into the preceding node's span; Q5: a malformed hierarchy with zero
+ * corresponding nodes). structural-coverage.ts now ALSO reasons about
+ * "boundary anomalies" (a heading-shaped fragment embedded in a node's own
+ * claimed text; a lettered/numbered clause-marker density with zero real
+ * children) independently of pure span/charEnd accounting - Q1 and Q5's own
+ * `coverage.health` assertions were UPDATED below to assert the new,
+ * fixed STRUCTURE_PARTIAL verdict (with a real boundaryAnomalies finding)
+ * instead of continuing to assert the old blind spot's STRUCTURE_HEALTHY,
+ * the same precedent already set by
+ * tests/contract-model/architecture-proposal-node-identity.test.ts's own
+ * header comment. `coverage.significantUncoveredSpans` legitimately stays
+ * empty for both (this is not a coverage-GAP defect - every character is
+ * still nominally claimed by some node; it is the separate,
+ * boundary-anomaly defect class this fix adds). Q2/Q3/Q3b/Q4/Q6/Q7/Q8 are
+ * unchanged (Q2/Q3's own parent-attachment defect and Q4's orphan-signal gap
+ * remain out of this workstream's fixed scope - see the final report's Q3
+ * determination).
  */
 import { describe, expect, it } from "vitest";
 import { parseDocumentStructure, runStructureStage } from "../../lib/contract-model/compiler/stage-structure";
@@ -61,13 +83,24 @@ describe("Q1 - a malformed sibling heading is silently absorbed into the PRECEDI
     // as having materially correct boundaries.
     expect(index.healthDiagnostics().filter((f) => f.severity === "ERROR")).toHaveLength(0);
 
-    // The mechanical top-level coverage accounting (structural-coverage.ts,
-    // Part 3's subject) ALSO reports this region as fully "covered" - it
-    // measures gaps BETWEEN top-level node charStarts, not whether a node's
-    // own span was legitimately its own. See Q1/Part-3 cross-reference below.
+    // Phase 3F.1.4 FIX VERIFIED: every character is still nominally
+    // "covered" by some node (6.01's own span is legitimately contiguous
+    // with 6.03's) - significantUncoveredSpans correctly stays empty, this
+    // was never a coverage-GAP defect. But structural-coverage.ts's NEW
+    // boundary-anomaly detection independently recognizes the embedded
+    // "Section 6.02: Liens ." heading-shaped fragment inside 6.01's own
+    // claimed text (using a deliberately more permissive heading pattern
+    // than stage-structure.ts's own, which is exactly what let this
+    // fragment defeat the real parser in the first place) and downgrades
+    // health accordingly - this document is no longer falsely reported
+    // STRUCTURE_HEALTHY.
     const coverage = computeStructuralCoverage("q1-swallowed-sibling", text, nodes);
     expect(coverage.significantUncoveredSpans).toHaveLength(0);
-    expect(coverage.health).toBe("STRUCTURE_HEALTHY");
+    expect(coverage.health).toBe("STRUCTURE_PARTIAL");
+    const embeddedHeadingFindings = coverage.boundaryAnomalies.filter((a) => a.code === "EMBEDDED_HEADING_LIKE_FRAGMENT");
+    expect(embeddedHeadingFindings.length).toBeGreaterThan(0);
+    expect(embeddedHeadingFindings[0]!.severity).toBe("SIGNIFICANT");
+    expect(embeddedHeadingFindings[0]!.nodeId).toBe(section601.node.nodeId);
   });
 });
 
@@ -254,18 +287,26 @@ Section 6.01 Indebtedness . Neither party shall incur Indebtedness except Permit
     expect(index.getChildren(article!.nodeId).filter((c) => c.nodeType !== "SECTION")).toHaveLength(0);
 
     const coverage = computeStructuralCoverage("q5-malformed-hierarchy-healthy", text, nodes);
-    // OBSERVED: computeStructuralCoverage only ever inspects ARTICLE/SECTION
-    // top-level spans (computeTopLevelSpans filters to exactly those two
-    // nodeTypes) - "is every byte inside SOME top-level span," never "does a
-    // node actually represent the finer-grained content within that span,
-    // at a sane rank." The two dropped clause lines fall inside the
-    // ARTICLE's own (correctly-computed) top-level span purely because the
-    // ARTICLE's span runs up to the next top-level node (6.01) regardless of
-    // whether anything explains the (a)/(b) text in between - so this
-    // wholesale silent drop is reported as fully, healthily covered.
-    expect(coverage.health).toBe("STRUCTURE_HEALTHY");
+    // computeStructuralCoverage's span/charEnd accounting alone still only
+    // ever inspects ARTICLE/SECTION top-level spans ("is every byte inside
+    // SOME top-level span") - the two dropped clause lines legitimately fall
+    // inside the ARTICLE's own real span (its charEnd correctly runs up to
+    // the next top-level node, 6.01 - there is no coverage GAP here at all),
+    // so significantUncoveredSpans and coveragePercent are unchanged by this
+    // fix, exactly as before.
     expect(coverage.significantUncoveredSpans).toHaveLength(0);
     expect(coverage.coveragePercent).toBe(100);
+    // Phase 3F.1.4 FIX VERIFIED: the NEW boundary-anomaly rank/level sanity
+    // signal (SIGNAL_DENSITY_SHIFT - a node's own claimed text containing
+    // 2+ distinct lettered/numbered clause markers with zero real
+    // SUBSECTION/CLAUSE/SUBCLAUSE children) independently catches exactly
+    // this malformed-hierarchy shape and downgrades health - this document
+    // is no longer falsely reported STRUCTURE_HEALTHY.
+    expect(coverage.health).toBe("STRUCTURE_PARTIAL");
+    const densityFindings = coverage.boundaryAnomalies.filter((a) => a.code === "SIGNAL_DENSITY_SHIFT");
+    expect(densityFindings.length).toBeGreaterThan(0);
+    expect(densityFindings[0]!.severity).toBe("SIGNIFICANT");
+    expect(densityFindings[0]!.nodeId).toBe(article!.nodeId);
   });
 });
 
