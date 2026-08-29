@@ -1,0 +1,75 @@
+{
+  "artifactId": "PHASE_3F_1_5_REPRODUCIBILITY_AND_COST",
+  "phase": "PHASE_3F_1_5_EVALUATION_METHODOLOGY_V2",
+  "purpose": "Fresh-run vs replay comparison over byte-identical frozen inputs, plus the honest cost and performance record for this phase.",
+  "versions": {
+    "schemaVersion": "evaluation-v2-schema.v1",
+    "algorithmVersion": "evaluation-v2-algorithm.v1",
+    "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+    "matchPolicyVersion": "evaluation-v2-match-policy.v1"
+  },
+  "generatedBy": "lib/contract-model/evaluation-v2/runner",
+  "reproducibility": {
+    "datasetKey": "dsgr-2022-2025-credit-facility",
+    "inputHashes": {
+      "source:doc-a": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+      "source:doc-b": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+      "source:doc-c": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+      "source:doc-d": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "groundTruth:doc-a": "8092af8afac9f47d3a2a367c18474e432e976ebd08afabd2454c317f9189c765",
+      "groundTruth:doc-b": "3b57ca873204030a79d6391c08c8dc81d75df22004bd70f16dccdc9e1527d52f",
+      "groundTruth:doc-c": "a5d24da9b7d8b7b3ac15abeb8ef9ba12a514e749713be86c79b930296006dc46",
+      "groundTruth:doc-d": "959c5cf2d988695d25e30f5e43586c6c1c00c0d5e78e16fb24fe5e711de6374a",
+      "stage2": "72ae77094c3224a90c74409bfc2f498dca9f7daefab8b5684b863f66748e160c",
+      "stage8": "2587699b3dcc992ccd928fd756e02aa13cdcd6e6591750e9ff3e3bbbb8b19dda",
+      "stage6": "d4fb0f7790e50ea0f8ec58cb5a565ac2b4efa4ecef2586e224e4b4b2275523d5",
+      "stage7": "5e7238417ed1dedd2542467b4cd9ce07f0a7c8b3721faa7829478e16a1ee19e2",
+      "stage5": "cd7353aa87f31b9976da0fc7cf44403430aaf2a430764fe316a3aba648fc4802"
+    },
+    "runIdentityFresh": "a834847098233533fe4e3ae7b36eb41ef0a0efa74f2eead9cd79deadc64b6a67",
+    "runIdentityReplay": "a834847098233533fe4e3ae7b36eb41ef0a0efa74f2eead9cd79deadc64b6a67",
+    "runIdentityMatches": true,
+    "unitDispositionHashFresh": "7718fa4918dee5aa369fe73a8837808a978d256816aefb7b1119ff7d2e09ca3d",
+    "unitDispositionHashReplay": "7718fa4918dee5aa369fe73a8837808a978d256816aefb7b1119ff7d2e09ca3d",
+    "unitDispositionHashMatches": true,
+    "aggregateMetricsHashFresh": "21573cab632a1dec7e7cc3da11fe899663b06bb4f64241b17772db07112ca0b5",
+    "aggregateMetricsHashReplay": "21573cab632a1dec7e7cc3da11fe899663b06bb4f64241b17772db07112ca0b5",
+    "aggregateMetricsHashMatches": true,
+    "differenceReport": {
+      "differingUnitCount": 0,
+      "differences": []
+    },
+    "verdict": "BYTE_IDENTICAL_DISPOSITIONS_AND_METRICS",
+    "nonDeterminismDisclosure": "The engine ran in deterministic-only mode: no model call was made, so there is no model non-determinism to disclose for this run. Ordering is fixed by sorting ground-truth units and candidate postings by id/content-hash, so array order is stable across runs."
+  },
+  "judgeCacheReplay": {
+    "mechanism": "Every semantic-judge judgment is keyed by evidenceIdentity(), which hashes the ground-truth evidence, the candidate evidence, the provider, the model and ALL FOUR version constants. Changing the match policy therefore invalidates every cached judgment by construction; a stale judgment cannot survive a methodology change.",
+    "versions": {
+      "schemaVersion": "evaluation-v2-schema.v1",
+      "algorithmVersion": "evaluation-v2-algorithm.v1",
+      "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+      "matchPolicyVersion": "evaluation-v2-match-policy.v1"
+    },
+    "cacheEntriesAtStart": 0,
+    "judgeUsedInThisRun": "NONE_DETERMINISTIC_ONLY"
+  },
+  "cost": {
+    "aiCallCount": 0,
+    "aiCacheHitCount": 0,
+    "estimatedCostUsd": 0,
+    "costDisclosure": "ZERO model calls were made anywhere in this phase, and the estimated cost is $0.00. This is not a design preference: no model credential (ANTHROPIC_API_KEY or equivalent) is available in the execution environment, so the Layer-2 semantic judge could not be exercised against a live provider. The judge interface, prompt, structured-output schema, bounded call budget, provider/model recording and evidence-identity cache are all implemented and unit-tested against a scripted responder; they have never been run against a real model. Every number published in this phase therefore comes from the deterministic layers alone.",
+    "consequence": "Deterministic-only operation is conservative in one direction and one direction only: a pair the deterministic layers cannot decide stays INDETERMINATE, which withholds credit. Reported recall is therefore a LOWER BOUND, and the population of INDETERMINATE pairs is the specific place where a live judge would change the numbers."
+  },
+  "performance": {
+    "freshRunMs": 71926,
+    "replayRunMs": 71842,
+    "totalWallMs": 167477,
+    "groundTruthUnits": 1016,
+    "candidatePool": 8949,
+    "generatedPairs": 60960,
+    "evaluatedPairs": 60960,
+    "pairsPerGroundTruthUnit": 60,
+    "fullCrossProductPairsAvoided": 9031224,
+    "filteringNote": "Candidate generation uses inverted postings over content terms, action tags, families, defined terms and section bases, then caps at 60 candidates per ground-truth unit ordered by breadth of content evidence. Those filters decide which pairs are LOOKED AT; they never decide which are credited."
+  }
+}

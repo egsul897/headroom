@@ -1,0 +1,343 @@
+{
+  "artifactId": "PHASE_3F_1_5_GROUND_TRUTH_QUALITY_AUDIT",
+  "phase": "PHASE_3F_1_5_EVALUATION_METHODOLOGY_V2",
+  "purpose": "Ground-truth defects and ambiguities discovered while evaluating. The frozen ground-truth files are NEVER edited; any adjudication is recorded as an overlay and any exclusion from clean aggregates carries a written reason.",
+  "versions": {
+    "schemaVersion": "evaluation-v2-schema.v1",
+    "algorithmVersion": "evaluation-v2-algorithm.v1",
+    "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+    "matchPolicyVersion": "evaluation-v2-match-policy.v1"
+  },
+  "generatedBy": "lib/contract-model/evaluation-v2/runner",
+  "groundTruthAdjudicationProvenance": {
+    "finding": "All four DSGR ground-truth documents declare `authoredFromSourceOnly: true` and record no external human-lawyer review. Every DSGR ground-truth unit is therefore classified AI_ADJUDICATED_FROM_SOURCE_ONLY with externallyHumanReviewed=false. Metrics computed against it measure agreement with an AI-authored answer key, not with a lawyer's.",
+    "affectedUnits": 1016
+  },
+  "verdictCounts": {
+    "GT_REQUIRES_DOMAIN_REVIEW": 39
+  },
+  "excludedFromCleanAggregates": [],
+  "productionDefectObservationsNotGroundTruthDefects": {
+    "note": "Observed while evaluating, recorded as findings and NOT fixed. Nothing in this phase modified any production module. These are defects in the frozen first-blind pipeline output, not in the ground truth.",
+    "observations": [
+      {
+        "id": "PROD-OBS-1",
+        "severity": "HIGH",
+        "title": "The production coverage auditor's own FULLY_REPRESENTED_REVIEW_REQUIRED state is granted on a numeric coincidence",
+        "evidence": "stage8-coverage-result.json records exactly 4 FULLY_REPRESENTED_REVIEW_REQUIRED entries and 0 FULLY_REPRESENTED_VERIFIED entries. Every one of the 4 carries the auditor's own reasoning: \"no rule is anchored to this unit's exact citation, but its numeric value 0.01 [or 0.25] appears elsewhere in the covering candidate(s)' compiled IR - review required to confirm this is the same economic figure, not a coincidental match\".",
+        "why": "This is the same circularity class the Phase 3F.1.1 forensics found in the SCORER, but it sits inside the production coverage auditor: representation credit is inferred from a bare number appearing somewhere in a covering candidate's IR, with no demonstrated correspondence. Values as generic as 0.01 make coincidence near-certain.",
+        "v2Handling": "Evaluation V2 classifies FULLY_REPRESENTED_REVIEW_REQUIRED as HONEST_UNRESOLVED, not as a substantive representation, so it never grants V2 credit.",
+        "notFixed": true
+      },
+      {
+        "id": "PROD-OBS-2",
+        "severity": "HIGH",
+        "title": "The structural substrate emits deeply nested, non-existent section addresses that the coverage auditor then anchors units to",
+        "evidence": "631 coverage units carry a sectionRef with three or more nested parenthetical levels, including addresses such as doc-a::1.01(b)(b)(b)(b)(b)(a), doc-a::6.05(A)(a)(B)(b) (whose excerpt text is EBITDA add-back language from the definitions section, not asset-sale language) and doc-b::6.08(b)(c)(b)(b)(b)(c).",
+        "why": "Any address-based descendant union inherits these. It is a direct cause of the enormous unions the corrected historical scorer built (up to 135 members for a single doc-d §6.05 ground-truth unit), and of definitional text being filed under an operative covenant address.",
+        "notFixed": true
+      },
+      {
+        "id": "PROD-OBS-3",
+        "severity": "MEDIUM",
+        "title": "Discovery candidates at the exact addresses involved in the false-credit cases carry no source citation at all",
+        "evidence": "378 of 2,847 first-blind discovery candidates (13.3%) have an empty sourceCitation. That includes ALL 11 candidates anchored at doc-a §6.01, all 5 at doc-a §6.05 and all 4 at doc-d §6.01 — precisely the addresses of the confirmed false credits. By contrast the FWRG, LSB and CONMED discovery runs carry real excerpt text on their candidates.",
+        "why": "Architecture invariants #1 and #3 require a real, checkable citation behind every contractual conclusion. A candidate with no citation cannot substantiate anything, and a proximity-based scorer cannot notice that it is crediting an empty record.",
+        "notFixed": true
+      },
+      {
+        "id": "PROD-OBS-4",
+        "severity": "MEDIUM",
+        "title": "Duplicate coverage-unit rows",
+        "evidence": "stage8-coverage-result.json contains 6,210 documentDetails unit rows collapsing to 5,725 distinct semanticUnitIds (485 duplicate rows). Some ids appear three times with identical content.",
+        "why": "Duplicates inflate any count taken over rows rather than ids, and inflate address unions. Evaluation V2 de-duplicates by semanticUnitId at load.",
+        "notFixed": true
+      },
+      {
+        "id": "PROD-OBS-5",
+        "severity": "CONTEXT",
+        "title": "The first-blind run compiled almost nothing",
+        "evidence": "30 compiled units (70 IR rules, 80 IR definitions) against 2,847 discovery candidates and 5,725 coverage units; 2,210 dangerous-unaccounted entries.",
+        "why": "This is the reason Evaluation V2's measured DSGR recall is near zero. The metric is reporting the state of that run, not a defect in the metric. It is recorded here so the low recall is not mistaken for an evaluator failure.",
+        "notFixed": true
+      }
+    ]
+  },
+  "overlayApplied": null,
+  "overlayPolicy": "No adjudication overlay was applied for this run: no ground-truth unit was found to be substantively wrong about the source. The findings below are excerpt-resolution limitations of THIS evaluator's independent raw-source resolver, not defects in the answer key, and none is excluded from the clean aggregates.",
+  "findings": [
+    {
+      "gtUnitId": "doc-b::AMENDMENT::exhibit-b-solvency-certificate-form",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Exhibit B\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-b::AMENDMENT::recitals-incremental-request",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Recitals\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-b::AMENDMENT::schedule-i-omitted",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Schedule I\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-b::AMENDMENT::signatory-lenders",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Signature Pages\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-b::AMENDMENT::signatory-loan-parties",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Signature Pages\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-b::I::def-section-1-02-through-1-11",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"1.02-1.11\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::cp-representations-bring-down",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 3(b)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::def-existing-credit-agreement-vs-credit-agreement",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Preamble (unnumbered)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::preamble-parties-and-date",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Preamble (unnumbered)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::recital-agreement-to-amend",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"WHEREAS recital\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::rp-condition-x-no-default",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Credit Agreement Section 6.08(a)(v)(x) (as restated)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::rp-condition-y-pro-forma-6-12-compliance",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Credit Agreement Section 6.08(a)(v)(y) (as restated)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::rp-condition-y-tnlr-adjustment-disregarded",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Credit Agreement Section 6.08(a)(v)(y) (as restated)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::rp-general-basket-25mm-per-fiscal-year",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Credit Agreement Section 6.08(a)(v) (as restated)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::rp-proviso-uncapped-if-tnlr-test-met",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Credit Agreement Section 6.08(a)(v) proviso (as restated)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-1-defined-terms-incorporation",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 1\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-2-chapeau-retroactive-jan-1-2025",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 2 (chapeau)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-2-retroactivity-scope-uncertainty",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 2 (chapeau)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-2a-restatement-of-3-17-first-sentence",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 2(a)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-2b-restatement-of-6-08-a-v",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 2(b)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-3-17-margin-stock-business-representation",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Credit Agreement Section 3.17 (as restated by Section 2(a))\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-3-17-margin-stock-use-of-proceeds-limit",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Credit Agreement Section 3.17 (as restated by Section 2(a))\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-4a-references-mean-amended-agreement",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 4(a)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-4b-no-diminution-and-reaffirmation-of-obligations",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 4(b)(i)-(ii)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-4b-no-novation",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 4(b) (final sentence)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-4b-ratification-full-force-effect",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 4(b)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-4b-reaffirmation-of-liens-and-filings",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 4(b)(iii)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-4c-no-waiver-of-rights-or-provisions",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 4(c)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-4d-amendment-is-a-loan-document",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 4(d)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-5-governing-law-illinois",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 5\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::sec-7-headings-not-operative",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Section 7\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::signatories-borrowers-and-guarantors",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Signature Pages (Loan Parties)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-c::signatories-lender-syndicate",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Signature Pages (Lenders)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-d::I::preamble-parties-and-restatement",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Preamble / Recitals\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-d::V::cov-chapeau",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Article V chapeau\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-d::VI::cov-chapeau",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Article VI chapeau\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-d::XII::cam-a",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Article XII(a)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-d::XII::cam-b",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Article XII(b)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    },
+    {
+      "gtUnitId": "doc-d::XII::cam-c",
+      "verdict": "GT_REQUIRES_DOMAIN_REVIEW",
+      "evidence": "The ground truth's own sectionRef \"Article XII(c)\" could not be located in the raw source text by an independent (non-structural-index) resolver. The unit's semantic description is still evaluated; only its verbatim excerpt is unavailable.",
+      "excludedFromCleanAggregates": false,
+      "exclusionReason": null
+    }
+  ]
+}

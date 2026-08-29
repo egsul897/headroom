@@ -1,0 +1,317 @@
+{
+  "artifactId": "PHASE_3F_1_5_METHODOLOGY_SPEC",
+  "phase": "PHASE_3F_1_5_EVALUATION_METHODOLOGY_V2",
+  "purpose": "The complete Evaluation V2 design as structured data: layers, types, taxonomies and dimension definitions.",
+  "versions": {
+    "schemaVersion": "evaluation-v2-schema.v1",
+    "algorithmVersion": "evaluation-v2-algorithm.v1",
+    "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+    "matchPolicyVersion": "evaluation-v2-match-policy.v1"
+  },
+  "generatedBy": "lib/contract-model/evaluation-v2/runner",
+  "centralPrinciple": {
+    "statement": "Coverage credit requires semantic correspondence. Structural proximity is navigation evidence, never proof.",
+    "consequences": [
+      "A ground-truth unit is never credited because a candidate is in the same section, is a descendant, is an ancestor, sits near a similar dollar figure, sits near a higher-materiality unit, or shares a legal citation.",
+      "Those facts may cause a candidate to be EVALUATED (candidate-generation.ts records why each pair was generated) and can never cause it to be CREDITED.",
+      "The evaluator judges the system; the system is never altered to satisfy the evaluator."
+    ]
+  },
+  "versioningRule": "Every result identity and every cached semantic judgment is keyed by evidenceIdentity(), which folds in all four version constants. A changed match policy invalidates every cached judgment by construction.",
+  "layers": [
+    {
+      "layer": 1,
+      "name": "Deterministic signal correspondence",
+      "module": "lib/contract-model/evaluation-v2/signals.ts",
+      "reads": "TEXT AND STRUCTURED CONTENT ONLY. Never a section number, node key, parent/child relation or document position.",
+      "extracts": [
+        "money amounts (with currency and scale)",
+        "percentages WITH the metric they are taken of",
+        "ratios WITH the ratio metric they test",
+        "greater-of / lesser-of cap structure",
+        "comparison direction (NOT_EXCEED / AT_LEAST / EXCEED / EQUAL)",
+        "canonical metrics (EBITDA, Total Assets, leverage/coverage ratios, Available Amount, Borrowing Base, Availability, ...)",
+        "defined terms",
+        "canonical action tags (32 values covering incurrence, liens, investments, dispositions, restricted payments, junior prepayments, fundamental changes, affiliate transactions, restrictive agreements, swaps, unrestricted-subsidiary designation, reporting, collateral, ...)",
+        "legal posture and its deontic class",
+        "provision role and PROVISION BREADTH (universal restriction vs narrow carve-out vs specific obligation vs definitional)",
+        "entity scope, with negated-entity handling so 'Restricted Subsidiaries that are NOT Loan Parties' never registers LOAN_PARTY",
+        "instrument distinctions (secured/unsecured, first/second lien, senior/subordinated, revolving/term, capital lease, LC, swingline)",
+        "time periods",
+        "conditions (no-Default, Payment Conditions, pro forma compliance, ratio satisfied, notice, consent, certificate, solvency, ordinary course, FMV, cash-consideration minimum, subordination, availability)",
+        "exceptions (ordinary course, except-as-permitted, notwithstanding override, grandfathered, de minimis, permitted-acquisition, intercompany)",
+        "cap sharing, builder/grower semantics, reclassification rights, step-up/step-down",
+        "cross-references",
+        "substantive content lemmas (supporting evidence for the object dimension only)"
+      ],
+      "role": "Produces SUPPORT / CONFLICT / MISSING evidence. Does NOT determine semantic equivalence on its own."
+    },
+    {
+      "layer": 2,
+      "name": "Semantic correspondence analysis",
+      "module": "lib/contract-model/evaluation-v2/semantic-correspondence.ts",
+      "question": "Does this candidate substantively represent this ground-truth claim — considering meaning, never location?",
+      "output": "A per-dimension assessment, never a single opaque similarity scalar.",
+      "scalarUse": "A correspondenceStrength scalar exists but is used ONLY to order candidates that have already passed the categorical gate. It can never promote a candidate past that gate.",
+      "aiAssist": {
+        "when": "Only for pairs the deterministic layer marks INDETERMINATE.",
+        "canDo": "Confirm or downgrade an indeterminate pair.",
+        "cannotDo": [
+          "Override a material conflict found by Layer 3.",
+          "Decide any aggregate coverage number.",
+          "See the ground truth's own disposition or any 'correct answer'."
+        ],
+        "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+        "systemPrompt": "You are adjudicating whether a candidate representation substantively represents a specific legal/economic claim taken from a credit agreement or indenture.\n\nRules you must follow:\n1. Correspondence is about MEANING. Two provisions that sit in the same section, share a section number, share a dollar figure, or cite the same defined term do NOT correspond unless they assert the same claim.\n2. A narrow enumerated exception does not represent the general restriction it sits under, and a general restriction does not represent one of its exceptions.\n3. A permission does not represent a prohibition, and vice versa.\n4. A matching number on a different basis (e.g. a percentage of a different metric, a ratio of a different test) is NOT a match.\n5. If the candidate omits a condition, exception, entity-scope limit or cap structure the claim depends on, answer PARTIAL and name what is missing.\n6. If two readings are genuinely defensible, answer AMBIGUOUS. Do not guess.\n\nAnswer ONLY with a JSON object of the form:\n{\"corresponds\":\"YES|PARTIAL|NO|AMBIGUOUS\",\"supportingEvidence\":[string],\"conflictingEvidence\":[string],\"missingDimensions\":[string],\"confidence\":\"HIGH|MEDIUM|LOW\",\"rationale\":string}",
+        "requiredStructuredOutputFields": [
+          "corresponds (YES|PARTIAL|NO|AMBIGUOUS)",
+          "supportingEvidence",
+          "conflictingEvidence",
+          "missingDimensions",
+          "confidence",
+          "rationale"
+        ],
+        "noPackageSpecificExamples": true,
+        "rawOutputPreserved": true,
+        "cachedBy": "evidenceIdentity(groundTruthEvidenceHash, candidateEvidenceHash, provider, model, all four version constants)",
+        "executedInThisPhase": false,
+        "executedInThisPhaseReason": "No model credential is available in the execution environment. See 11-reproducibility-and-cost.json."
+      }
+    },
+    {
+      "layer": 3,
+      "name": "Contradiction / omission checks",
+      "module": "lib/contract-model/evaluation-v2/conflicts.ts",
+      "runsEvenFor": "candidates that already look like a partial match",
+      "severities": [
+        "MATERIAL_CONFLICT",
+        "NON_MATERIAL_VARIANCE",
+        "MISSING_REQUIRED_DIMENSION"
+      ],
+      "conflictCodes": [
+        "WRONG_ACTION",
+        "INVERTED_LEGAL_POSTURE",
+        "WRONG_OBJECT_RESOURCE",
+        "WRONG_ENTITY_SCOPE",
+        "WRONG_AMOUNT",
+        "WRONG_PERCENT_BASIS",
+        "WRONG_METRIC",
+        "WRONG_RATIO",
+        "WRONG_COMPARISON_DIRECTION",
+        "WRONG_CAP_STRUCTURE",
+        "WRONG_TIME_PERIOD",
+        "WRONG_INSTRUMENT",
+        "SCOPE_BREADTH_MISMATCH",
+        "MISSING_CONDITION",
+        "MISSING_EXCEPTION",
+        "MISSING_BASKET",
+        "MISSING_DEPENDENCY",
+        "MISSING_ECONOMICS",
+        "WRONG_OPERATIVE_VERSION",
+        "INCORRECT_SHARED_CAP_RELATIONSHIP",
+        "MISSING_REVIEW_FLAG",
+        "UNSUPPORTED_SEMANTICS_PRESENTED_AS_COMPLETE"
+      ],
+      "rule": "A material conflict recorded here always controls its dimension's outcome, so a conflict can never be outvoted by a positive test on the same dimension."
+    },
+    {
+      "layer": 4,
+      "name": "Match cardinality resolution",
+      "module": "lib/contract-model/evaluation-v2/matching.ts",
+      "statuses": {
+        "EXACT_SINGLE": "one substantive representation fully represents the claim",
+        "EXACT_COMPOSITE": "a SET of substantive representations jointly represents it, and EVERY member corresponds independently on the core dimensions — a union of structurally adjacent nodes is never a composite match",
+        "PARTIAL": "correspondence established against a substantive representation, but a required dimension is missing",
+        "AMBIGUOUS": "two or more mutually irreconcilable candidate clusters correspond about equally well; no winner is forced",
+        "CONTRADICTORY": "the system offered a substantive representation here that materially contradicts the claim",
+        "UNREPRESENTED": "nothing substantively represents the claim",
+        "HONESTLY_UNRESOLVED": "a corresponding candidate explicitly surfaces the claim as unresolved",
+        "HONESTLY_UNSUPPORTED": "a corresponding candidate explicitly declares the claim cannot be represented"
+      },
+      "accountingGate": {
+        "rule": "Semantic correspondence establishes that a candidate is ABOUT the claim. Credit additionally requires that the corresponding candidate's accounting role is a SUBSTANTIVE_REPRESENTATION.",
+        "roles": {
+          "SUBSTANTIVE_REPRESENTATION": "a compiled/verified representation the system offers as its answer",
+          "HONEST_UNSUPPORTED": "the system says it cannot represent this",
+          "HONEST_UNRESOLVED": "the system says it could not resolve this",
+          "SAFETY_FLAG": "the system flags a gap here (dangerous-unaccounted, review-required, verifier finding)",
+          "INVENTORY_ONLY": "the system noticed the provision and produced no representation of it"
+        },
+        "why": "A discovery candidate that correctly describes a covenant but was never compiled is an inventory finding, not a representation. Correspondence without representation is not credit."
+      }
+    }
+  ],
+  "dimensions": {
+    "all": [
+      "A_SUBJECT_ACTION",
+      "B_LEGAL_POSTURE",
+      "C_OBJECT_RESOURCE",
+      "D_SCOPE_ENTITY",
+      "E_ECONOMICS",
+      "F_CONDITIONS_EXCEPTIONS",
+      "G_OPERATIVE_PROVENANCE",
+      "H_PROVISION_ROLE_BREADTH"
+    ],
+    "core": {
+      "list": [
+        "A_SUBJECT_ACTION",
+        "B_LEGAL_POSTURE",
+        "C_OBJECT_RESOURCE"
+      ],
+      "rule": "Must AFFIRMATIVELY correspond (or be NOT_APPLICABLE) before any credit is possible. An INDETERMINATE reading withholds credit rather than granting it."
+    },
+    "blocking": {
+      "list": [
+        "D_SCOPE_ENTITY",
+        "E_ECONOMICS",
+        "F_CONDITIONS_EXCEPTIONS",
+        "G_OPERATIVE_PROVENANCE",
+        "H_PROVISION_ROLE_BREADTH"
+      ],
+      "rule": "Cannot earn credit on their own, but a MATERIAL_CONFLICT on any of them defeats a match however well the core dimensions line up."
+    },
+    "definitions": {
+      "A_SUBJECT_ACTION": "the governed activity (incur debt, create lien, make investment, dispose, pay a Restricted Payment, ...)",
+      "B_LEGAL_POSTURE": "prohibition / permission / obligation / condition / definition / representation / event of default, compared by deontic class so that 'shall not permit X below 3.00x' and 'shall maintain X of at least 3.00x' correspond while a permission and a prohibition never do",
+      "C_OBJECT_RESOURCE": "what the provision is about, measured by classified family, object tags and substantive-vocabulary overlap",
+      "D_SCOPE_ENTITY": "which obligors the provision reaches",
+      "E_ECONOMICS": "amounts, percentages WITH basis, ratios WITH metric, cap structure, comparison direction, time period",
+      "F_CONDITIONS_EXCEPTIONS": "material gates and carve-outs, plus shared-capacity and dependency relationships",
+      "G_OPERATIVE_PROVENANCE": "which document/version the claim is asserted as of",
+      "H_PROVISION_ROLE_BREADTH": "universal restriction vs narrow carve-out vs specific obligation vs definitional"
+    },
+    "breadthRule": "The dimension the historical scorers had no concept of. A universal prohibition and one enumerated carve-out beneath it are different legal claims even when they share a section number, a covenant family, a governed action and most of their vocabulary. When the ground truth asserts a determinate breadth and the candidate cannot be shown to have one, breadth is a MISSING_REQUIRED_DIMENSION — which caps the pair at PARTIAL rather than crediting it."
+  },
+  "numericCorrespondence": {
+    "rule": "Numeric matching alone is never sufficient for credit, and a matching number on a different basis is a CONFLICT, not a match.",
+    "checks": [
+      "exact value",
+      "currency",
+      "percentage value AND the metric it is taken of",
+      "ratio value AND the ratio metric",
+      "greater-of / lesser-of structure",
+      "comparison direction",
+      "time period"
+    ],
+    "worked": [
+      "$35m is not $5m",
+      "12.5% of EBITDA is not 12.5% of Total Assets",
+      "4.00x leverage is not 4.00x fixed-charge coverage",
+      "'greater of $50m and 10% EBITDA' is not '$50m' alone"
+    ],
+    "persistence": "Every comparison is persisted as a NumericComparisonRecord inside the evidence packet."
+  },
+  "qualitativeCorrespondence": {
+    "rule": "For a claim with no numeric figures, real semantic evidence is required. The absence of numbers must NEVER cause a fallback to location-only credit.",
+    "contrastWithHistoricalDefect": "The Phase C evaluator's hierarchy-child and intermediate-ancestor fallbacks were gated on `numbersMatch`, so a provision with figures could be credited by finding its number anywhere beneath its address. Evaluation V2 has no numeric gate on any fallback because it has no positional fallback at all.",
+    "examples": [
+      "subject to Payment Conditions",
+      "except dispositions in the ordinary course",
+      "no Default shall exist",
+      "Restricted Subsidiary only",
+      "US Borrowers only",
+      "may reclassify",
+      "shared with basket X"
+    ]
+  },
+  "coverageStates": {
+    "representationStatus": [
+      "REPRESENTED",
+      "PARTIALLY_REPRESENTED",
+      "UNREPRESENTED",
+      "HONESTLY_UNSUPPORTED",
+      "HONESTLY_UNRESOLVED",
+      "AMBIGUOUS"
+    ],
+    "semanticCorrectness": [
+      "CORRECT",
+      "PARTIALLY_CORRECT",
+      "INCORRECT",
+      "NOT_APPLICABLE",
+      "NOT_VERIFIABLE"
+    ],
+    "rule": "Two independent dimensions, never collapsed into one boolean. A compiler that honestly says UNSUPPORTED is poor executability and GOOD safety behaviour; it never scores the same as a silent omission."
+  },
+  "dangerousUnaccountedV2": {
+    "name": "DANGEROUS_UNACCOUNTED_SEMANTIC_UNIT_V2",
+    "conditions": [
+      "materiality is CRITICAL or MATERIAL",
+      "no semantically-corresponding representation adequately accounts for the claim",
+      "the system does not explicitly surface the claim as unresolved / unsupported / review-required / missing-context / otherwise-unsafe THROUGH A SEMANTICALLY-CORRESPONDING CANDIDATE",
+      "no candidate excerpt actually substantiates the claim"
+    ],
+    "criticalQualifier": "Condition 3's qualifier is the whole point. The historical scorer treated a dangerous-unaccounted flag anywhere under the same section number as accounting for the claim; that is how an unrelated intercompany-debt basket came to 'cover' a general Indebtedness prohibition. Here a flag accounts for a claim only when it sits on a candidate that actually represents that claim.",
+    "neverGrants": [
+      "descendant credit",
+      "ancestor credit",
+      "location-only credit",
+      "nearby-figure credit",
+      "neighbouring-materiality credit"
+    ]
+  },
+  "candidateGeneration": {
+    "module": "lib/contract-model/evaluation-v2/candidate-generation.ts",
+    "allowedCoarseFilters": [
+      "SAME_DOCUMENT",
+      "SECTION_REF_EXACT",
+      "SECTION_REF_ANCESTOR",
+      "SECTION_REF_DESCENDANT",
+      "SECTION_REF_SIBLING",
+      "SHARED_SEMANTIC_FAMILY",
+      "SHARED_ACTION_TAG",
+      "SHARED_NUMERIC_FIGURE",
+      "SHARED_DEFINED_TERM",
+      "SHARED_CONTENT_TERMS",
+      "DEPENDENCY_LINK"
+    ],
+    "rule": "These generate pairs to evaluate. They never grant credit. Every reason a pair was generated is recorded on the pair so a reviewer can see that a SECTION_REF_DESCENDANT pairing still had to pass Layers 2 and 3 on content alone.",
+    "options": {
+      "maxCandidatesPerUnit": 60,
+      "minContentContainment": 0.15
+    },
+    "thresholds": {
+      "OBJECT_CORRESPONDENCE_THRESHOLD": 0.3,
+      "OBJECT_MATERIAL_CONFLICT_THRESHOLD": 0.12,
+      "MIN_SHARED_TERMS_FOR_CORRESPONDENCE": 4,
+      "MIN_SHARED_TERMS_WITH_FAMILY_SUPPORT": 3
+    }
+  },
+  "groundTruthQualityTaxonomy": {
+    "verdicts": [
+      "GT_CONFIRMED",
+      "GT_AMBIGUOUS",
+      "GT_INCOMPLETE",
+      "GT_CONFLICT_WITH_SOURCE",
+      "GT_REQUIRES_DOMAIN_REVIEW"
+    ],
+    "rule": "The frozen ground-truth files are NEVER edited. A defect is recorded as an adjudication OVERLAY, and any exclusion from clean aggregates carries a written reason.",
+    "adjudicationProvenance": {
+      "kinds": [
+        "AI_ADJUDICATED_FROM_SOURCE_ONLY",
+        "AI_ADJUDICATED_REVIEWED_BY_NON_LAWYER",
+        "HUMAN_AUTHORED_NOT_EXTERNALLY_REVIEWED",
+        "EXTERNAL_HUMAN_LAWYER_REVIEWED",
+        "UNKNOWN_PROVENANCE"
+      ],
+      "rule": "externallyHumanReviewed is set true only when an external human lawyer is RECORDED as having reviewed the unit. It is never inferred."
+    }
+  },
+  "aggregateMetrics": {
+    "rule": "Computed only after unit-level evidence is frozen. Every percentage carries the exact unit ids behind its numerator and denominator.",
+    "published": [
+      "criticalSemanticRecall",
+      "materialSemanticRecall",
+      "combinedCriticalMaterialRecall",
+      "exactSemanticCorrectnessRate",
+      "partialRepresentationRate",
+      "honestUnresolvedOrUnsupportedRate",
+      "ambiguousMatchRate",
+      "falseCreditRate",
+      "candidateGenerationPrecision",
+      "creditedCandidateShare",
+      "inventoryOnlySurfacedRate",
+      "noCorrespondingCandidateRate",
+      "dangerousUnaccountedCount (+ the full unit id list)"
+    ]
+  }
+}

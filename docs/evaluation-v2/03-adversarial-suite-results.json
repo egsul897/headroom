@@ -1,0 +1,2307 @@
+{
+  "artifactId": "PHASE_3F_1_5_ADVERSARIAL_SUITE_RESULTS",
+  "phase": "PHASE_3F_1_5_EVALUATION_METHODOLOGY_V2",
+  "purpose": "The adversarial synthetic suite: every case isolates one semantic distinction, with positive and negative controls throughout. All drafting is invented; nothing is copied from or tuned to any real package. Enforced permanently by tests/evaluation-v2/adversarial-suite.test.ts.",
+  "versions": {
+    "schemaVersion": "evaluation-v2-schema.v1",
+    "algorithmVersion": "evaluation-v2-algorithm.v1",
+    "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+    "matchPolicyVersion": "evaluation-v2-match-policy.v1"
+  },
+  "generatedBy": "lib/contract-model/evaluation-v2/runner",
+  "mode": "DETERMINISTIC_ONLY (no model calls, zero cost, fully reproducible)",
+  "totals": {
+    "cases": 33,
+    "passed": 33,
+    "failed": 0,
+    "positiveControls": 12,
+    "negativeControls": 21
+  },
+  "byCategory": {
+    "SAME_SECTION_DIFFERENT_SEMANTICS": {
+      "positive": 1,
+      "negative": 1
+    },
+    "SAME_NUMBER_DIFFERENT_METRIC": {
+      "positive": 0,
+      "negative": 2
+    },
+    "SAME_METRIC_DIFFERENT_NUMBER": {
+      "positive": 0,
+      "negative": 1
+    },
+    "CAP_STRUCTURE": {
+      "positive": 1,
+      "negative": 1
+    },
+    "SAME_ACTION_DIFFERENT_SCOPE": {
+      "positive": 1,
+      "negative": 1
+    },
+    "SAME_SCOPE_DIFFERENT_ACTION": {
+      "positive": 0,
+      "negative": 1
+    },
+    "OMITTED_CONDITION": {
+      "positive": 1,
+      "negative": 2
+    },
+    "OMITTED_EXCEPTION": {
+      "positive": 0,
+      "negative": 1
+    },
+    "INVERTED_POSTURE": {
+      "positive": 0,
+      "negative": 1
+    },
+    "BREADTH_SUBSTITUTION": {
+      "positive": 1,
+      "negative": 1
+    },
+    "WRONG_OPERATIVE_VERSION": {
+      "positive": 1,
+      "negative": 1
+    },
+    "WRONG_INSTRUMENT": {
+      "positive": 0,
+      "negative": 1
+    },
+    "COMPOSITE": {
+      "positive": 1,
+      "negative": 0
+    },
+    "AMBIGUITY": {
+      "positive": 0,
+      "negative": 1
+    },
+    "HONEST_SELF_DECLARATION": {
+      "positive": 3,
+      "negative": 1
+    },
+    "LEXICAL_TRAP": {
+      "positive": 0,
+      "negative": 1
+    },
+    "SEMANTIC_EQUIVALENCE": {
+      "positive": 1,
+      "negative": 0
+    },
+    "SHARED_CAPACITY": {
+      "positive": 0,
+      "negative": 1
+    },
+    "RECLASSIFICATION": {
+      "positive": 0,
+      "negative": 1
+    },
+    "STEP_SCHEDULE": {
+      "positive": 0,
+      "negative": 1
+    },
+    "SILENT_OMISSION": {
+      "positive": 1,
+      "negative": 1
+    }
+  },
+  "whyPositiveControlsMatter": "An evaluator that refuses every candidate would pass every negative control and be useless. The positive controls — semantically equivalent drafting with different wording, a preserved greater-of cap, a preserved condition, a correctly represented chapeau, a genuine composite match, honest UNSUPPORTED/UNRESOLVED declarations — are what prove the refusals are discriminating rather than blanket.",
+  "cases": [
+    {
+      "caseId": "A01-same-section-different-semantics",
+      "category": "SAME_SECTION_DIFFERENT_SEMANTICS",
+      "control": "NEGATIVE",
+      "description": "Two provisions share a section address but govern unrelated subjects. Address identity must not produce credit.",
+      "groundTruth": {
+        "sectionRef": "5.04",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "The Borrower shall deliver to the Administrative Agent, within 45 days after the end of each fiscal quarter, its consolidated balance sheet and related statements of operations for such quarter."
+      },
+      "candidates": [
+        {
+          "candidateId": "A01-c1",
+          "sectionRef": "5.04",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": null,
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "The Borrower shall maintain, with financially sound and reputable insurers, insurance in such amounts and against such risks as are customarily maintained by companies engaged in the same business."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "dangerousUnaccounted": true
+      },
+      "observed": {
+        "matchStatus": "UNREPRESENTED",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Nothing represents this claim. 1 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was A01-c1: Material conflict on WRONG_ACTION, WRONG_OBJECT_RESOURCE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A01-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.4778,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "MATERIAL_CONFLICT",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "MATERIAL_CONFLICT",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_ACTION",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "A_SUBJECT_ACTION",
+                "explanation": "Ground truth governs [MERGE_CONSOLIDATE]; the candidate governs [MAINTAIN_INSURANCE] — disjoint sets, so the candidate is about a different transaction."
+              },
+              {
+                "code": "WRONG_OBJECT_RESOURCE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "C_OBJECT_RESOURCE",
+                "explanation": "The two provisions share too little substantive vocabulary to be about the same thing (overlap coefficient 0.071, 1 shared substantive term(s) over a smaller vocabulary of 14). Ground-truth object/resource tags [none] vs candidate [INSURANCE]."
+              }
+            ],
+            "reason": "Material conflict on WRONG_ACTION, WRONG_OBJECT_RESOURCE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A02-same-section-same-semantics",
+      "category": "SAME_SECTION_DIFFERENT_SEMANTICS",
+      "control": "POSITIVE",
+      "description": "Positive control for A01: the same reporting obligation, correctly represented. Refusing everything is not the goal.",
+      "groundTruth": {
+        "sectionRef": "5.04",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "The Borrower shall deliver to the Administrative Agent, within 45 days after the end of each fiscal quarter, its consolidated balance sheet and related statements of operations for such quarter."
+      },
+      "candidates": [
+        {
+          "candidateId": "A02-c1",
+          "sectionRef": "5.04",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": null,
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "The Borrower shall furnish to the Administrative Agent its consolidated balance sheet and related statements of operations within 45 days after the end of each fiscal quarter."
+        }
+      ],
+      "expectation": {
+        "credited": true,
+        "allowedMatchStatuses": [
+          "EXACT_SINGLE",
+          "EXACT_COMPOSITE"
+        ]
+      },
+      "observed": {
+        "matchStatus": "EXACT_SINGLE",
+        "representationStatus": "REPRESENTED",
+        "semanticCorrectness": "CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A02-c1"
+        ],
+        "reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+        "pairs": [
+          {
+            "candidateId": "A02-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.98,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A03-same-number-different-metric",
+      "category": "SAME_NUMBER_DIFFERENT_METRIC",
+      "control": "NEGATIVE",
+      "description": "12.5% of Consolidated EBITDA is not 12.5% of Total Assets. A matching number on a different basis is a different economic claim.",
+      "groundTruth": {
+        "sectionRef": "6.01(p)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(p) Indebtedness in an aggregate principal amount not to exceed 12.5% of Consolidated EBITDA at any time outstanding."
+      },
+      "candidates": [
+        {
+          "candidateId": "A03-c1",
+          "sectionRef": "6.01(p)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(p) Indebtedness in an aggregate principal amount not to exceed 12.5% of Consolidated Total Assets at any time outstanding."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "WRONG_PERCENT_BASIS"
+        ]
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A03-c1: Material conflict on WRONG_PERCENT_BASIS, WRONG_METRIC — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A03-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.8646,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "MATERIAL_CONFLICT",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_PERCENT_BASIS",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "The numeric value matches (12.5) but the basis does not: ground truth EBITDA vs candidate TOTAL_ASSETS. A matching number on a different basis is a different economic claim."
+              },
+              {
+                "code": "WRONG_PERCENT_BASIS",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "No ground-truth PERCENT figure [12.5/EBITDA] is represented by any candidate figure [12.5/TOTAL_ASSETS]."
+              },
+              {
+                "code": "WRONG_METRIC",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "Ground truth's metric basis is [EBITDA]; the candidate's is [TOTAL_ASSETS]."
+              }
+            ],
+            "reason": "Material conflict on WRONG_PERCENT_BASIS, WRONG_METRIC — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A04-same-metric-different-number",
+      "category": "SAME_METRIC_DIFFERENT_NUMBER",
+      "control": "NEGATIVE",
+      "description": "$35,000,000 is not $5,000,000, even on the same metric and in the same basket position.",
+      "groundTruth": {
+        "sectionRef": "6.02(h)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(h) Liens securing Indebtedness in an aggregate principal amount not to exceed $35,000,000 at any time outstanding."
+      },
+      "candidates": [
+        {
+          "candidateId": "A04-c1",
+          "sectionRef": "6.02(h)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(h) Liens securing Indebtedness in an aggregate principal amount not to exceed $5,000,000 at any time outstanding."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "WRONG_AMOUNT"
+        ]
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A04-c1: Material conflict on WRONG_AMOUNT — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A04-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.9056,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "MATERIAL_CONFLICT",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_AMOUNT",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "No ground-truth MONEY figure [35000000] is represented by any candidate figure [5000000]."
+              }
+            ],
+            "reason": "Material conflict on WRONG_AMOUNT — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A05-ratio-value-same-test-different",
+      "category": "SAME_NUMBER_DIFFERENT_METRIC",
+      "control": "NEGATIVE",
+      "description": "4.00x leverage is not 4.00x fixed-charge coverage. Same number, different ratio test.",
+      "groundTruth": {
+        "sectionRef": "6.12(a)",
+        "unitType": "FINANCIAL_TEST",
+        "materiality": "CRITICAL",
+        "excerpt": "The Borrower shall not permit the Total Net Leverage Ratio as at the last day of any fiscal quarter to exceed 4.00 to 1.00."
+      },
+      "candidates": [
+        {
+          "candidateId": "A05-c1",
+          "sectionRef": "6.12(a)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "FINANCIAL_TEST",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "The Borrower shall not permit the Fixed Charge Coverage Ratio as at the last day of any fiscal quarter to be less than 4.00 to 1.00."
+        }
+      ],
+      "expectation": {
+        "credited": false
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A05-c1: Material conflict on WRONG_RATIO, WRONG_METRIC — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A05-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.84,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "MATERIAL_CONFLICT",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_RATIO",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "The numeric value matches (4) but the basis does not: ground truth TOTAL_NET_LEVERAGE_RATIO vs candidate FIXED_CHARGE_COVERAGE_RATIO. A matching number on a different basis is a different economic claim."
+              },
+              {
+                "code": "WRONG_RATIO",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "No ground-truth RATIO figure [4/TOTAL_NET_LEVERAGE_RATIO] is represented by any candidate figure [4/FIXED_CHARGE_COVERAGE_RATIO]."
+              },
+              {
+                "code": "WRONG_METRIC",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "Ground truth's metric basis is [TOTAL_NET_LEVERAGE_RATIO]; the candidate's is [FIXED_CHARGE_COVERAGE_RATIO]."
+              }
+            ],
+            "reason": "Material conflict on WRONG_RATIO, WRONG_METRIC — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A06-greater-of-flattened-to-single-figure",
+      "category": "CAP_STRUCTURE",
+      "control": "NEGATIVE",
+      "description": "\"Greater of $50,000,000 and 10% of Consolidated EBITDA\" is not \"$50,000,000\" alone — the grower half of the cap is lost.",
+      "groundTruth": {
+        "sectionRef": "6.04(m)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(m) Investments in an aggregate amount not to exceed the greater of $50,000,000 and 10% of Consolidated EBITDA."
+      },
+      "candidates": [
+        {
+          "candidateId": "A06-c1",
+          "sectionRef": "6.04(m)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(m) Investments in an aggregate amount not to exceed $50,000,000."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "WRONG_CAP_STRUCTURE"
+        ]
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A06-c1: Material conflict on WRONG_CAP_STRUCTURE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A06-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.8413,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "MATERIAL_CONFLICT",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "MISSING_ECONOMICS",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "E_ECONOMICS",
+                "explanation": "Ground truth asserts PERCENT figure(s) [10% of EBITDA]; the candidate carries none."
+              },
+              {
+                "code": "WRONG_CAP_STRUCTURE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "Ground truth's cap is a GREATER_OF structure; the candidate's is SINGLE. A single fixed figure does not represent a greater-of/lesser-of cap."
+              }
+            ],
+            "reason": "Material conflict on WRONG_CAP_STRUCTURE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A07-greater-of-preserved",
+      "category": "CAP_STRUCTURE",
+      "control": "POSITIVE",
+      "description": "Positive control for A06: the same greater-of cap, correctly represented with both operands.",
+      "groundTruth": {
+        "sectionRef": "6.04(m)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(m) Investments in an aggregate amount not to exceed the greater of $50,000,000 and 10% of Consolidated EBITDA."
+      },
+      "candidates": [
+        {
+          "candidateId": "A07-c1",
+          "sectionRef": "6.04(m)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(m) Investments capped at the greater of $50,000,000 and 10% of Consolidated EBITDA."
+        }
+      ],
+      "expectation": {
+        "credited": true
+      },
+      "observed": {
+        "matchStatus": "EXACT_SINGLE",
+        "representationStatus": "REPRESENTED",
+        "semanticCorrectness": "CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A07-c1"
+        ],
+        "reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+        "pairs": [
+          {
+            "candidateId": "A07-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.925,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A08-same-action-different-scope",
+      "category": "SAME_ACTION_DIFFERENT_SCOPE",
+      "control": "NEGATIVE",
+      "description": "The same permitted action, granted to a different entity class. Entity scope is part of the claim.",
+      "groundTruth": {
+        "sectionRef": "6.01(j)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(j) Indebtedness of Restricted Subsidiaries that are not Loan Parties in an aggregate principal amount not to exceed $30,000,000."
+      },
+      "candidates": [
+        {
+          "candidateId": "A08-c1",
+          "sectionRef": "6.01(j)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(j) Indebtedness of the Loan Parties in an aggregate principal amount not to exceed $30,000,000."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "WRONG_ENTITY_SCOPE"
+        ]
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A08-c1: Material conflict on WRONG_ENTITY_SCOPE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A08-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.8604,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "NOT_APPLICABLE",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "MATERIAL_CONFLICT",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_ENTITY_SCOPE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "D_SCOPE_ENTITY",
+                "explanation": "Ground truth and candidate sit on opposite sides of the LOAN_PARTY / NON_LOAN_PARTY_SUBSIDIARY distinction. These entity classes are mutually exclusive as drafted, so one cannot represent the other."
+              },
+              {
+                "code": "WRONG_ENTITY_SCOPE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "D_SCOPE_ENTITY",
+                "explanation": "Ground truth is scoped to [NON_LOAN_PARTY_SUBSIDIARY, RESTRICTED_SUBSIDIARY, ANY_SUBSIDIARY]; the candidate is scoped to [LOAN_PARTY]. The two entity sets are disjoint, so the candidate governs a different set of obligors."
+              }
+            ],
+            "reason": "Material conflict on WRONG_ENTITY_SCOPE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A09-same-scope-different-action",
+      "category": "SAME_SCOPE_DIFFERENT_ACTION",
+      "control": "NEGATIVE",
+      "description": "The same entity class, but a different governed transaction: incurring debt is not creating liens.",
+      "groundTruth": {
+        "sectionRef": "6.01(f)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(f) the Restricted Subsidiaries may create, incur or assume Indebtedness in an aggregate principal amount not to exceed $12,000,000."
+      },
+      "candidates": [
+        {
+          "candidateId": "A09-c1",
+          "sectionRef": "6.02(f)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(f) the Restricted Subsidiaries may create or permit to exist Liens on their property securing obligations in an aggregate amount not to exceed $12,000,000."
+        }
+      ],
+      "expectation": {
+        "credited": false
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A09-c1: Material conflict on WRONG_ACTION — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A09-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.7363,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "MATERIAL_CONFLICT",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_ACTION",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "A_SUBJECT_ACTION",
+                "explanation": "Ground truth governs [INCUR_DEBT]; the candidate governs [CREATE_LIEN] — disjoint sets, so the candidate is about a different transaction."
+              }
+            ],
+            "reason": "Material conflict on WRONG_ACTION — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A10-scope-subset-is-not-a-conflict",
+      "category": "SAME_ACTION_DIFFERENT_SCOPE",
+      "control": "POSITIVE",
+      "description": "Positive control for A08: a candidate naming the same entity class in slightly different words must still be credited.",
+      "groundTruth": {
+        "sectionRef": "6.01(j)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(j) Indebtedness of Restricted Subsidiaries that are not Loan Parties in an aggregate principal amount not to exceed $30,000,000."
+      },
+      "candidates": [
+        {
+          "candidateId": "A10-c1",
+          "sectionRef": "6.01(j)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(j) Indebtedness incurred by any Restricted Subsidiary that is not a Loan Party, capped at $30,000,000 in aggregate principal amount."
+        }
+      ],
+      "expectation": {
+        "credited": true
+      },
+      "observed": {
+        "matchStatus": "EXACT_SINGLE",
+        "representationStatus": "REPRESENTED",
+        "semanticCorrectness": "CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A10-c1"
+        ],
+        "reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+        "pairs": [
+          {
+            "candidateId": "A10-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.9591,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "NOT_APPLICABLE",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A11-omitted-no-default-condition",
+      "category": "OMITTED_CONDITION",
+      "control": "NEGATIVE",
+      "description": "A basket represented without its no-Default gate would present the capacity as more freely available than it is.",
+      "groundTruth": {
+        "sectionRef": "6.08(a)(iii)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(iii) the Company may make Restricted Payments in an aggregate amount not to exceed $15,000,000 in any fiscal year, so long as no Default or Event of Default shall exist immediately before or after giving effect thereto."
+      },
+      "candidates": [
+        {
+          "candidateId": "A11-c1",
+          "sectionRef": "6.08(a)(iii)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(iii) the Company may make Restricted Payments in an aggregate amount not to exceed $15,000,000 in any fiscal year."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "allowedMatchStatuses": [
+          "PARTIAL"
+        ],
+        "requiredConflictCodes": [
+          "MISSING_CONDITION"
+        ]
+      },
+      "observed": {
+        "matchStatus": "PARTIAL",
+        "representationStatus": "PARTIALLY_REPRESENTED",
+        "semanticCorrectness": "PARTIALLY_CORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A11-c1"
+        ],
+        "reason": "Core dimensions correspond against a substantive representation, but it is silent on: F_CONDITIONS_EXCEPTIONS. Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS.",
+        "pairs": [
+          {
+            "candidateId": "A11-c1",
+            "correspondence": "CORRESPONDS_PARTIALLY",
+            "correspondenceStrength": 0.8438,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "MISSING_REQUIRED_DIMENSION",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "MISSING_CONDITION",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "F_CONDITIONS_EXCEPTIONS",
+                "explanation": "Ground truth gates this provision on NO_DEFAULT; the candidate carries no such condition, so it would present the provision as more freely available than it is."
+              }
+            ],
+            "reason": "Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A12-omitted-payment-conditions",
+      "category": "OMITTED_CONDITION",
+      "control": "NEGATIVE",
+      "description": "A qualitative, non-numeric gate (\"subject to the Payment Conditions\") must be tested for, exactly like a numeric one.",
+      "groundTruth": {
+        "sectionRef": "6.05(g)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(g) the Loan Parties may Dispose of assets so long as the Payment Conditions are satisfied with respect to such Disposition."
+      },
+      "candidates": [
+        {
+          "candidateId": "A12-c1",
+          "sectionRef": "6.05(g)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(g) the Loan Parties may Dispose of assets."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "MISSING_CONDITION"
+        ]
+      },
+      "observed": {
+        "matchStatus": "PARTIAL",
+        "representationStatus": "PARTIALLY_REPRESENTED",
+        "semanticCorrectness": "PARTIALLY_CORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A12-c1"
+        ],
+        "reason": "Core dimensions correspond against a substantive representation, but it is silent on: F_CONDITIONS_EXCEPTIONS. Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS.",
+        "pairs": [
+          {
+            "candidateId": "A12-c1",
+            "correspondence": "CORRESPONDS_PARTIALLY",
+            "correspondenceStrength": 0.8317,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "MISSING_REQUIRED_DIMENSION",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "MISSING_CONDITION",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "F_CONDITIONS_EXCEPTIONS",
+                "explanation": "Ground truth gates this provision on PAYMENT_CONDITIONS; the candidate carries no such condition, so it would present the provision as more freely available than it is."
+              }
+            ],
+            "reason": "Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A13-omitted-ordinary-course-exception",
+      "category": "OMITTED_EXCEPTION",
+      "control": "NEGATIVE",
+      "description": "An ordinary-course carve-out changes the reach of the restriction; omitting it is a real gap.",
+      "groundTruth": {
+        "sectionRef": "6.05",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "No Loan Party will Dispose of any asset, except for Dispositions of inventory and obsolete equipment in the ordinary course of business."
+      },
+      "candidates": [
+        {
+          "candidateId": "A13-c1",
+          "sectionRef": "6.05",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "GENERAL_PROHIBITION",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "No Loan Party will Dispose of any asset."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "MISSING_EXCEPTION"
+        ]
+      },
+      "observed": {
+        "matchStatus": "PARTIAL",
+        "representationStatus": "PARTIALLY_REPRESENTED",
+        "semanticCorrectness": "PARTIALLY_CORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A13-c1"
+        ],
+        "reason": "Core dimensions correspond against a substantive representation, but it is silent on: F_CONDITIONS_EXCEPTIONS. Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS.",
+        "pairs": [
+          {
+            "candidateId": "A13-c1",
+            "correspondence": "CORRESPONDS_PARTIALLY",
+            "correspondenceStrength": 0.815,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "MISSING_REQUIRED_DIMENSION",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "MISSING_EXCEPTION",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "F_CONDITIONS_EXCEPTIONS",
+                "explanation": "Ground truth carries a ORDINARY_COURSE carve-out the candidate omits."
+              }
+            ],
+            "reason": "Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A14-condition-preserved",
+      "category": "OMITTED_CONDITION",
+      "control": "POSITIVE",
+      "description": "Positive control for A11/A12: the gate is present in the candidate, differently worded.",
+      "groundTruth": {
+        "sectionRef": "6.08(a)(iii)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(iii) the Company may make Restricted Payments in an aggregate amount not to exceed $15,000,000 in any fiscal year, so long as no Default or Event of Default shall exist immediately before or after giving effect thereto."
+      },
+      "candidates": [
+        {
+          "candidateId": "A14-c1",
+          "sectionRef": "6.08(a)(iii)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(iii) the Company is permitted to pay Restricted Payments of up to $15,000,000 per fiscal year provided that no Default or Event of Default exists at the time of, or would result from, such payment."
+        }
+      ],
+      "expectation": {
+        "credited": true
+      },
+      "observed": {
+        "matchStatus": "EXACT_SINGLE",
+        "representationStatus": "REPRESENTED",
+        "semanticCorrectness": "CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A14-c1"
+        ],
+        "reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+        "pairs": [
+          {
+            "candidateId": "A14-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.9022,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A15-inverted-legal-posture",
+      "category": "INVERTED_POSTURE",
+      "control": "NEGATIVE",
+      "description": "A permission is the opposite legal claim to a prohibition, even over the identical subject matter.",
+      "groundTruth": {
+        "sectionRef": "6.09",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "No Loan Party will enter into any transaction with any Affiliate."
+      },
+      "candidates": [
+        {
+          "candidateId": "A15-c1",
+          "sectionRef": "6.09",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "PERMISSION",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "Each Loan Party may enter into transactions with any Affiliate."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "INVERTED_LEGAL_POSTURE"
+        ]
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A15-c1: Material conflict on INVERTED_LEGAL_POSTURE, SCOPE_BREADTH_MISMATCH — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A15-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.7167,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "MATERIAL_CONFLICT",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "MATERIAL_CONFLICT"
+            },
+            "conflicts": [
+              {
+                "code": "INVERTED_LEGAL_POSTURE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "B_LEGAL_POSTURE",
+                "explanation": "Ground truth posture is PROHIBITION (RESTRICTIVE); candidate posture is PERMISSION (PERMISSIVE). A permission does not represent a restriction, and a restriction does not represent one of its permissions — they are opposite legal claims over the same subject."
+              },
+              {
+                "code": "SCOPE_BREADTH_MISMATCH",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "H_PROVISION_ROLE_BREADTH",
+                "explanation": "Ground truth breadth is UNIVERSAL_RESTRICTION (role GENERAL_PROHIBITION_CHAPEAU); candidate breadth is NARROW_CARVEOUT (role ENUMERATED_EXCEPTION). A narrow enumerated carve-out does not represent the universal restriction it sits under, and vice versa — the claims differ in breadth and legal effect even when they share a section, a family, a governed action and most of their vocabulary."
+              }
+            ],
+            "reason": "Material conflict on INVERTED_LEGAL_POSTURE, SCOPE_BREADTH_MISMATCH — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A16-chapeau-vs-descendant-basket",
+      "category": "BREADTH_SUBSTITUTION",
+      "control": "NEGATIVE",
+      "description": "The historical false-credit vector: a universal prohibition credited via one narrow enumerated carve-out beneath it.",
+      "groundTruth": {
+        "sectionRef": "6.01",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except as permitted by clauses (a) through (q)."
+      },
+      "candidates": [
+        {
+          "candidateId": "A16-c1",
+          "sectionRef": "6.01(c)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(c) Indebtedness incurred to finance the acquisition of fixed assets, in an aggregate principal amount not to exceed $8,000,000."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "SCOPE_BREADTH_MISMATCH"
+        ],
+        "dangerousUnaccounted": true
+      },
+      "observed": {
+        "matchStatus": "UNREPRESENTED",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Nothing represents this claim. 1 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was A16-c1: Material conflict on WRONG_ACTION, INVERTED_LEGAL_POSTURE, SCOPE_BREADTH_MISMATCH, WRONG_OBJECT_RESOURCE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A16-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.1763,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "MATERIAL_CONFLICT",
+              "B_LEGAL_POSTURE": "MATERIAL_CONFLICT",
+              "C_OBJECT_RESOURCE": "MATERIAL_CONFLICT",
+              "D_SCOPE_ENTITY": "MISSING_REQUIRED_DIMENSION",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "MATERIAL_CONFLICT"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_ACTION",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "A_SUBJECT_ACTION",
+                "explanation": "Ground truth governs [INCUR_DEBT]; the candidate governs [ACQUIRE_BUSINESS] — disjoint sets, so the candidate is about a different transaction."
+              },
+              {
+                "code": "INVERTED_LEGAL_POSTURE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "B_LEGAL_POSTURE",
+                "explanation": "Ground truth posture is PROHIBITION (RESTRICTIVE); candidate posture is PERMISSION (PERMISSIVE). A permission does not represent a restriction, and a restriction does not represent one of its permissions — they are opposite legal claims over the same subject."
+              },
+              {
+                "code": "SCOPE_BREADTH_MISMATCH",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "H_PROVISION_ROLE_BREADTH",
+                "explanation": "Ground truth breadth is UNIVERSAL_RESTRICTION (role GENERAL_PROHIBITION_CHAPEAU); candidate breadth is NARROW_CARVEOUT (role ENUMERATED_EXCEPTION). A narrow enumerated carve-out does not represent the universal restriction it sits under, and vice versa — the claims differ in breadth and legal effect even when they share a section, a family, a governed action and most of their vocabulary."
+              },
+              {
+                "code": "WRONG_OBJECT_RESOURCE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "C_OBJECT_RESOURCE",
+                "explanation": "The two provisions share too little substantive vocabulary to be about the same thing (overlap coefficient 0.100, 1 shared substantive term(s) over a smaller vocabulary of 10). Ground-truth object/resource tags [INDEBTEDNESS, SUBSIDIARY, LOAN_OR_COMMITMENT] vs candidate [INDEBTEDNESS]."
+              },
+              {
+                "code": "WRONG_ENTITY_SCOPE",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "D_SCOPE_ENTITY",
+                "explanation": "Ground truth restricts the provision to [RESTRICTED_SUBSIDIARY, LOAN_PARTY, ANY_SUBSIDIARY]; the candidate carries no entity scope, so it would overstate who the provision reaches."
+              }
+            ],
+            "reason": "Material conflict on WRONG_ACTION, INVERTED_LEGAL_POSTURE, SCOPE_BREADTH_MISMATCH, WRONG_OBJECT_RESOURCE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A17-chapeau-correctly-represented",
+      "category": "BREADTH_SUBSTITUTION",
+      "control": "POSITIVE",
+      "description": "Positive control for A16: the universal prohibition itself, represented as a universal prohibition.",
+      "groundTruth": {
+        "sectionRef": "6.01",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except as permitted by clauses (a) through (q)."
+      },
+      "candidates": [
+        {
+          "candidateId": "A17-c1",
+          "sectionRef": "6.01",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "GENERAL_PROHIBITION",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "General prohibition: no Loan Party, and no Restricted Subsidiary, may create, incur, assume or suffer to exist any Indebtedness other than as expressly permitted by the enumerated exceptions in clauses (a) through (q)."
+        }
+      ],
+      "expectation": {
+        "credited": true
+      },
+      "observed": {
+        "matchStatus": "EXACT_SINGLE",
+        "representationStatus": "REPRESENTED",
+        "semanticCorrectness": "CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A17-c1"
+        ],
+        "reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+        "pairs": [
+          {
+            "candidateId": "A17-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.9475,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A18-wrong-amendment-version",
+      "category": "WRONG_OPERATIVE_VERSION",
+      "control": "NEGATIVE",
+      "description": "Superseded language must never be presented as the operative provision, however well it matches on content.",
+      "groundTruth": {
+        "sectionRef": "6.12(b)",
+        "unitType": "FINANCIAL_TEST",
+        "materiality": "CRITICAL",
+        "excerpt": "The Borrower shall not permit the Interest Coverage Ratio as at the last day of any fiscal quarter to be less than 3.00 to 1.00."
+      },
+      "candidates": [
+        {
+          "candidateId": "A18-c1",
+          "sectionRef": "6.12(b)",
+          "documentId": "synthetic-doc-original",
+          "declaredRole": "FINANCIAL_TEST",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "The Borrower shall not permit the Interest Coverage Ratio as at the last day of any fiscal quarter to be less than 3.00 to 1.00."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "WRONG_OPERATIVE_VERSION"
+        ]
+      },
+      "observed": {
+        "matchStatus": "UNREPRESENTED",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Nothing represents this claim. 1 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was A18-c1: Material conflict on WRONG_OPERATIVE_VERSION — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A18-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.9227,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "MATERIAL_CONFLICT",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_OPERATIVE_VERSION",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "G_OPERATIVE_PROVENANCE",
+                "explanation": "Ground truth asserts this claim as of synthetic-doc-restated (as stated in synthetic-doc-restated); the candidate is anchored in synthetic-doc-original. Superseded or not-yet-effective language must never be presented as the operative provision."
+              }
+            ],
+            "reason": "Material conflict on WRONG_OPERATIVE_VERSION — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A19-correct-operative-version",
+      "category": "WRONG_OPERATIVE_VERSION",
+      "control": "POSITIVE",
+      "description": "Positive control for A18: the same provision, represented from the operative document.",
+      "groundTruth": {
+        "sectionRef": "6.12(b)",
+        "unitType": "FINANCIAL_TEST",
+        "materiality": "CRITICAL",
+        "excerpt": "The Borrower shall not permit the Interest Coverage Ratio as at the last day of any fiscal quarter to be less than 3.00 to 1.00."
+      },
+      "candidates": [
+        {
+          "candidateId": "A19-c1",
+          "sectionRef": "6.12(b)",
+          "documentId": "synthetic-doc-restated",
+          "declaredRole": "FINANCIAL_TEST",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "Financial maintenance covenant: the Borrower shall maintain an Interest Coverage Ratio of not less than 3.00 to 1.00, tested as at the last day of each fiscal quarter."
+        }
+      ],
+      "expectation": {
+        "credited": true
+      },
+      "observed": {
+        "matchStatus": "EXACT_SINGLE",
+        "representationStatus": "REPRESENTED",
+        "semanticCorrectness": "CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A19-c1"
+        ],
+        "reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+        "pairs": [
+          {
+            "candidateId": "A19-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.9308,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "INVERTED_LEGAL_POSTURE",
+                "severity": "NON_MATERIAL_VARIANCE",
+                "dimension": "B_LEGAL_POSTURE",
+                "explanation": "Ground truth posture is PROHIBITION (RESTRICTIVE); candidate posture is OBLIGATION (RESTRICTIVE)."
+              }
+            ],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A20-wrong-instrument",
+      "category": "WRONG_INSTRUMENT",
+      "control": "NEGATIVE",
+      "description": "First-lien and second-lien capacity are different instruments even at an identical cap.",
+      "groundTruth": {
+        "sectionRef": "6.01(r)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(r) first lien Indebtedness in an aggregate principal amount not to exceed $60,000,000."
+      },
+      "candidates": [
+        {
+          "candidateId": "A20-c1",
+          "sectionRef": "6.01(r)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(r) second lien Indebtedness in an aggregate principal amount not to exceed $60,000,000."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "WRONG_INSTRUMENT"
+        ]
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A20-c1: Material conflict on WRONG_INSTRUMENT — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A20-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.7196,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "NOT_APPLICABLE",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "MATERIAL_CONFLICT",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_INSTRUMENT",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "C_OBJECT_RESOURCE",
+                "explanation": "Ground truth concerns FIRST_LIEN obligations; the candidate concerns SECOND_LIEN obligations. The distinction changes the legal effect of the provision."
+              }
+            ],
+            "reason": "Material conflict on WRONG_INSTRUMENT — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A21-composite-match",
+      "category": "COMPOSITE",
+      "control": "POSITIVE",
+      "description": "One claim represented by two mutually consistent representations. Each must correspond independently for the composite to count.",
+      "groundTruth": {
+        "sectionRef": "6.08(a)(v)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(v) the Company may declare and make Restricted Payments in an aggregate amount not to exceed $25,000,000 in any fiscal year, so long as no Default has occurred and is continuing."
+      },
+      "candidates": [
+        {
+          "candidateId": "A21-c1",
+          "sectionRef": "6.08(a)(v)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(v) the Company may declare and make Restricted Payments of up to $25,000,000 in any fiscal year, so long as no Default has occurred and is continuing."
+        },
+        {
+          "candidateId": "A21-c2",
+          "sectionRef": "6.08(a)(v)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(v) Restricted Payments by the Company are permitted up to an aggregate of $25,000,000 per fiscal year provided no Default has occurred and is continuing."
+        }
+      ],
+      "expectation": {
+        "credited": true,
+        "allowedMatchStatuses": [
+          "EXACT_COMPOSITE"
+        ]
+      },
+      "observed": {
+        "matchStatus": "EXACT_COMPOSITE",
+        "representationStatus": "REPRESENTED",
+        "semanticCorrectness": "CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A21-c1",
+          "A21-c2"
+        ],
+        "reason": "Composite match: 2 substantive representations jointly represent the claim, and EACH corresponds independently on every core dimension (action, posture, object/resource) with no material conflict on breadth, scope, economics, conditions or provenance. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+        "pairs": [
+          {
+            "candidateId": "A21-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.9679,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          },
+          {
+            "candidateId": "A21-c2",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.94,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A22-ambiguous-cluster",
+      "category": "AMBIGUITY",
+      "control": "NEGATIVE",
+      "description": "Two irreconcilable candidates correspond equally well to a claim that is silent on the distinguishing detail. The evaluator must say AMBIGUOUS rather than pick one.",
+      "groundTruth": {
+        "sectionRef": "6.05(d)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(d) the Loan Parties may Dispose of assets in the ordinary course of business."
+      },
+      "candidates": [
+        {
+          "candidateId": "A22-c1",
+          "sectionRef": "6.05(d)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(d) the Loan Parties may Dispose of assets in the ordinary course of business in an aggregate amount not to exceed $10,000,000."
+        },
+        {
+          "candidateId": "A22-c2",
+          "sectionRef": "6.05(d)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(d) the Loan Parties may Dispose of assets in the ordinary course of business in an aggregate amount not to exceed $60,000,000."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "allowedMatchStatuses": [
+          "AMBIGUOUS"
+        ]
+      },
+      "observed": {
+        "matchStatus": "AMBIGUOUS",
+        "representationStatus": "AMBIGUOUS",
+        "semanticCorrectness": "NOT_VERIFIABLE",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "2 mutually irreconcilable candidate clusters correspond about equally well (0.955 vs 0.955). Forcing a winner would manufacture a match that the evidence does not support.",
+        "pairs": [
+          {
+            "candidateId": "A22-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.955,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          },
+          {
+            "candidateId": "A22-c2",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.955,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A23-explicit-unsupported",
+      "category": "HONEST_SELF_DECLARATION",
+      "control": "POSITIVE",
+      "description": "A compiler that says UNSUPPORTED is exhibiting good safety behaviour. It must never score the same as a silent omission.",
+      "groundTruth": {
+        "sectionRef": "6.11",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "No Loan Party will amend, modify or waive any provision of any Material Indebtedness document in a manner materially adverse to the Lenders."
+      },
+      "candidates": [
+        {
+          "candidateId": "A23-c1",
+          "sectionRef": "6.11",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": null,
+          "accountingRole": "HONEST_UNSUPPORTED",
+          "excerpt": "Prohibition on amending, modifying or waiving Material Indebtedness documents in a manner materially adverse to the Lenders. The materiality judgment cannot be reduced to an executable rule."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "allowedMatchStatuses": [
+          "HONESTLY_UNSUPPORTED"
+        ],
+        "dangerousUnaccounted": false,
+        "explicitlySurfacedAsUnsafe": true
+      },
+      "observed": {
+        "matchStatus": "HONESTLY_UNSUPPORTED",
+        "representationStatus": "HONESTLY_UNSUPPORTED",
+        "semanticCorrectness": "NOT_APPLICABLE",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": true,
+        "matchedCandidateIds": [
+          "A23-c1"
+        ],
+        "reason": "A semantically-corresponding candidate explicitly declares that the system cannot represent this claim. Poor executability, correct safety behaviour - never scored as a silent omission.",
+        "pairs": [
+          {
+            "candidateId": "A23-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.8435,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "INDETERMINATE"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A24-explicit-unresolved",
+      "category": "HONEST_SELF_DECLARATION",
+      "control": "POSITIVE",
+      "description": "An explicitly unresolved representation is honest, not dangerous.",
+      "groundTruth": {
+        "sectionRef": "6.06",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "No Loan Party will enter into any Sale and Leaseback Transaction except as permitted by Section 6.01 and Section 6.02."
+      },
+      "candidates": [
+        {
+          "candidateId": "A24-c1",
+          "sectionRef": "6.06",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": null,
+          "accountingRole": "HONEST_UNRESOLVED",
+          "excerpt": "Prohibition on Sale and Leaseback Transactions except as permitted elsewhere; the cross-referenced capacity could not be resolved from the available context."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "allowedMatchStatuses": [
+          "HONESTLY_UNRESOLVED"
+        ],
+        "dangerousUnaccounted": false,
+        "explicitlySurfacedAsUnsafe": true
+      },
+      "observed": {
+        "matchStatus": "HONESTLY_UNRESOLVED",
+        "representationStatus": "HONESTLY_UNRESOLVED",
+        "semanticCorrectness": "NOT_VERIFIABLE",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": true,
+        "matchedCandidateIds": [
+          "A24-c1"
+        ],
+        "reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+        "pairs": [
+          {
+            "candidateId": "A24-c1",
+            "correspondence": "CORRESPONDS_PARTIALLY",
+            "correspondenceStrength": 0.7454,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "MISSING_REQUIRED_DIMENSION",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "INDETERMINATE"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_ENTITY_SCOPE",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "D_SCOPE_ENTITY",
+                "explanation": "Ground truth restricts the provision to [LOAN_PARTY]; the candidate carries no entity scope, so it would overstate who the provision reaches."
+              }
+            ],
+            "reason": "Core dimensions correspond, but the candidate is silent on D_SCOPE_ENTITY."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A25-partial-but-safely-flagged",
+      "category": "HONEST_SELF_DECLARATION",
+      "control": "POSITIVE",
+      "description": "A partial representation whose gap the system itself surfaces is not a dangerous unaccounted omission.",
+      "groundTruth": {
+        "sectionRef": "6.04(k)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(k) Investments in joint ventures in an aggregate amount not to exceed $18,000,000, so long as the Payment Conditions are satisfied."
+      },
+      "candidates": [
+        {
+          "candidateId": "A25-c1",
+          "sectionRef": "6.04(k)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(k) Investments in joint ventures in an aggregate amount not to exceed $18,000,000."
+        },
+        {
+          "candidateId": "A25-c2",
+          "sectionRef": "6.04(k)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SAFETY_FLAG",
+          "excerpt": "(k) Investments in joint ventures in an aggregate amount not to exceed $18,000,000, subject to conditions that were not fully resolved during compilation."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "allowedMatchStatuses": [
+          "PARTIAL"
+        ],
+        "dangerousUnaccounted": false,
+        "explicitlySurfacedAsUnsafe": true
+      },
+      "observed": {
+        "matchStatus": "PARTIAL",
+        "representationStatus": "PARTIALLY_REPRESENTED",
+        "semanticCorrectness": "PARTIALLY_CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": true,
+        "matchedCandidateIds": [
+          "A25-c1"
+        ],
+        "reason": "Core dimensions correspond against a substantive representation, but it is silent on: F_CONDITIONS_EXCEPTIONS. Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS.",
+        "pairs": [
+          {
+            "candidateId": "A25-c1",
+            "correspondence": "CORRESPONDS_PARTIALLY",
+            "correspondenceStrength": 0.855,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "MISSING_REQUIRED_DIMENSION",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "MISSING_CONDITION",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "F_CONDITIONS_EXCEPTIONS",
+                "explanation": "Ground truth gates this provision on PAYMENT_CONDITIONS; the candidate carries no such condition, so it would present the provision as more freely available than it is."
+              }
+            ],
+            "reason": "Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS."
+          },
+          {
+            "candidateId": "A25-c2",
+            "correspondence": "CORRESPONDS_PARTIALLY",
+            "correspondenceStrength": 0.8306,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "MISSING_REQUIRED_DIMENSION",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "MISSING_CONDITION",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "F_CONDITIONS_EXCEPTIONS",
+                "explanation": "Ground truth gates this provision on PAYMENT_CONDITIONS; the candidate carries no such condition, so it would present the provision as more freely available than it is."
+              }
+            ],
+            "reason": "Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A26-matching-words-wrong-meaning",
+      "category": "LEXICAL_TRAP",
+      "control": "NEGATIVE",
+      "description": "Heavy vocabulary overlap with the opposite legal meaning: a restriction ON restrictive agreements versus a restrictive agreement being permitted.",
+      "groundTruth": {
+        "sectionRef": "6.10",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "No Loan Party will enter into any agreement that prohibits or restricts the ability of any Restricted Subsidiary to pay dividends to the Borrower."
+      },
+      "candidates": [
+        {
+          "candidateId": "A26-c1",
+          "sectionRef": "6.10(a)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "EXCEPTION",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(a) any Restricted Subsidiary may enter into an agreement that restricts its ability to pay dividends, if such agreement is a customary restriction contained in an agreement governing Indebtedness permitted under Section 6.01."
+        }
+      ],
+      "expectation": {
+        "credited": false
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A26-c1: Material conflict on INVERTED_LEGAL_POSTURE, SCOPE_BREADTH_MISMATCH — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A26-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.6229,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "MATERIAL_CONFLICT",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "MATERIAL_CONFLICT"
+            },
+            "conflicts": [
+              {
+                "code": "INVERTED_LEGAL_POSTURE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "B_LEGAL_POSTURE",
+                "explanation": "Ground truth posture is PROHIBITION (RESTRICTIVE); candidate posture is PERMISSION (PERMISSIVE). A permission does not represent a restriction, and a restriction does not represent one of its permissions — they are opposite legal claims over the same subject."
+              },
+              {
+                "code": "SCOPE_BREADTH_MISMATCH",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "H_PROVISION_ROLE_BREADTH",
+                "explanation": "Ground truth breadth is UNIVERSAL_RESTRICTION (role GENERAL_PROHIBITION_CHAPEAU); candidate breadth is NARROW_CARVEOUT (role ENUMERATED_EXCEPTION). A narrow enumerated carve-out does not represent the universal restriction it sits under, and vice versa — the claims differ in breadth and legal effect even when they share a section, a family, a governed action and most of their vocabulary."
+              }
+            ],
+            "reason": "Material conflict on INVERTED_LEGAL_POSTURE, SCOPE_BREADTH_MISMATCH — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A27-equivalent-drafting-different-wording",
+      "category": "SEMANTIC_EQUIVALENCE",
+      "control": "POSITIVE",
+      "description": "The decisive positive control: the same claim drafted very differently must still be credited. An evaluator that refuses this is useless.",
+      "groundTruth": {
+        "sectionRef": "6.02(c)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(c) Liens existing on the Effective Date and set forth on Schedule 6.02, securing Indebtedness in an aggregate principal amount not to exceed $22,000,000."
+      },
+      "candidates": [
+        {
+          "candidateId": "A27-c1",
+          "sectionRef": "6.02(c)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(c) grandfathered Liens outstanding on the Effective Date and scheduled on Schedule 6.02, which secure Indebtedness of no more than $22,000,000 in aggregate principal amount."
+        }
+      ],
+      "expectation": {
+        "credited": true
+      },
+      "observed": {
+        "matchStatus": "EXACT_SINGLE",
+        "representationStatus": "REPRESENTED",
+        "semanticCorrectness": "CORRECT",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A27-c1"
+        ],
+        "reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+        "pairs": [
+          {
+            "candidateId": "A27-c1",
+            "correspondence": "CORRESPONDS_FULLY",
+            "correspondenceStrength": 0.925,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "NOT_APPLICABLE",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [],
+            "reason": "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role)."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A28-shared-cap-omitted",
+      "category": "SHARED_CAPACITY",
+      "control": "NEGATIVE",
+      "description": "A basket whose capacity is shared with another basket must not be represented as standalone capacity — that permits double counting.",
+      "groundTruth": {
+        "sectionRef": "6.01(k)",
+        "unitType": "BASKET",
+        "materiality": "CRITICAL",
+        "excerpt": "(k) Indebtedness in an aggregate principal amount not to exceed $40,000,000, which amount shall be shared with, and reduce availability under, the general Lien basket in Section 6.02(k)."
+      },
+      "candidates": [
+        {
+          "candidateId": "A28-c1",
+          "sectionRef": "6.01(k)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "BASKET",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(k) Indebtedness in an aggregate principal amount not to exceed $40,000,000."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "INCORRECT_SHARED_CAP_RELATIONSHIP"
+        ]
+      },
+      "observed": {
+        "matchStatus": "PARTIAL",
+        "representationStatus": "PARTIALLY_REPRESENTED",
+        "semanticCorrectness": "PARTIALLY_CORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [
+          "A28-c1"
+        ],
+        "reason": "Core dimensions correspond against a substantive representation, but it is silent on: F_CONDITIONS_EXCEPTIONS. Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS.",
+        "pairs": [
+          {
+            "candidateId": "A28-c1",
+            "correspondence": "CORRESPONDS_PARTIALLY",
+            "correspondenceStrength": 0.8119,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "NOT_APPLICABLE",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "CORRESPONDS",
+              "F_CONDITIONS_EXCEPTIONS": "MISSING_REQUIRED_DIMENSION",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "INCORRECT_SHARED_CAP_RELATIONSHIP",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "F_CONDITIONS_EXCEPTIONS",
+                "explanation": "Ground truth ties this basket's capacity to a shared cap; the candidate represents it as standalone capacity, which would allow double counting."
+              }
+            ],
+            "reason": "Core dimensions correspond, but the candidate is silent on F_CONDITIONS_EXCEPTIONS."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A29-reclassification-semantics",
+      "category": "RECLASSIFICATION",
+      "control": "NEGATIVE",
+      "description": "A reclassification right changes how capacity is consumed; a representation that omits it understates flexibility.",
+      "groundTruth": {
+        "sectionRef": "6.01(s)",
+        "unitType": "OTHER_OPERATIVE",
+        "materiality": "CRITICAL",
+        "excerpt": "(s) the Borrower may divide and classify, and may later reclassify, any item of Indebtedness among the clauses of this Section in its sole discretion."
+      },
+      "candidates": [
+        {
+          "candidateId": "A29-c1",
+          "sectionRef": "6.01(s)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "PROVISO",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "(s) each item of Indebtedness shall be classified under a single clause of this Section at the time of incurrence."
+        }
+      ],
+      "expectation": {
+        "credited": false
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A29-c1: Material conflict on WRONG_OBJECT_RESOURCE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A29-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.5057,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "NOT_APPLICABLE",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "MATERIAL_CONFLICT",
+              "D_SCOPE_ENTITY": "MISSING_REQUIRED_DIMENSION",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_OBJECT_RESOURCE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "C_OBJECT_RESOURCE",
+                "explanation": "The two provisions share too little substantive vocabulary to be about the same thing (overlap coefficient 0.333, 2 shared substantive term(s) over a smaller vocabulary of 6). Ground-truth object/resource tags [INDEBTEDNESS] vs candidate [INDEBTEDNESS]."
+              },
+              {
+                "code": "WRONG_ENTITY_SCOPE",
+                "severity": "MISSING_REQUIRED_DIMENSION",
+                "dimension": "D_SCOPE_ENTITY",
+                "explanation": "Ground truth restricts the provision to [BORROWER]; the candidate carries no entity scope, so it would overstate who the provision reaches."
+              }
+            ],
+            "reason": "Material conflict on WRONG_OBJECT_RESOURCE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A30-step-down-schedule-flattened",
+      "category": "STEP_SCHEDULE",
+      "control": "NEGATIVE",
+      "description": "A stepped covenant level is not a single flat level, even when one step matches.",
+      "groundTruth": {
+        "sectionRef": "6.12(a)",
+        "unitType": "FINANCIAL_TEST",
+        "materiality": "CRITICAL",
+        "excerpt": "The maximum Total Net Leverage Ratio shall be 4.50 to 1.00 for fiscal quarters ending in 2024, stepping down to 4.00 to 1.00 for fiscal quarters ending in 2025 and thereafter."
+      },
+      "candidates": [
+        {
+          "candidateId": "A30-c1",
+          "sectionRef": "6.12(a)",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": "FINANCIAL_TEST",
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "The Borrower shall not permit the Total Net Leverage Ratio to exceed 4.00 to 1.00 at any time."
+        }
+      ],
+      "expectation": {
+        "credited": false
+      },
+      "observed": {
+        "matchStatus": "CONTRADICTORY",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Every generated candidate materially contradicts the claim. Closest was A30-c1: Material conflict on WRONG_COMPARISON_DIRECTION — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A30-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.7081,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "NOT_APPLICABLE",
+              "B_LEGAL_POSTURE": "NOT_APPLICABLE",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "NOT_APPLICABLE",
+              "E_ECONOMICS": "MATERIAL_CONFLICT",
+              "F_CONDITIONS_EXCEPTIONS": "NOT_APPLICABLE",
+              "G_OPERATIVE_PROVENANCE": "CORRESPONDS",
+              "H_PROVISION_ROLE_BREADTH": "CORRESPONDS"
+            },
+            "conflicts": [
+              {
+                "code": "WRONG_COMPARISON_DIRECTION",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "E_ECONOMICS",
+                "explanation": "Ground truth tests [NOT_EXCEED]; the candidate tests [EXCEED]."
+              }
+            ],
+            "reason": "Material conflict on WRONG_COMPARISON_DIRECTION — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A31-unsupported-presented-as-complete",
+      "category": "HONEST_SELF_DECLARATION",
+      "control": "NEGATIVE",
+      "description": "A representation that carries unresolved reasons while being presented as complete is itself a conflict, not a match.",
+      "groundTruth": {
+        "sectionRef": "6.07",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "No Loan Party will enter into any Swap Agreement other than in the ordinary course of business to hedge or mitigate risks to which it is exposed."
+      },
+      "candidates": [
+        {
+          "candidateId": "A31-c1",
+          "sectionRef": "6.07",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": null,
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "No Loan Party will enter into any Swap Agreement other than in the ordinary course of business to hedge or mitigate risks to which it is exposed."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "requiredConflictCodes": [
+          "UNSUPPORTED_SEMANTICS_PRESENTED_AS_COMPLETE"
+        ]
+      },
+      "observed": {
+        "matchStatus": "UNREPRESENTED",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "INCORRECT",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "Nothing represents this claim. 1 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was A31-c1: Material conflict on UNSUPPORTED_SEMANTICS_PRESENTED_AS_COMPLETE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+        "pairs": [
+          {
+            "candidateId": "A31-c1",
+            "correspondence": "CONTRADICTS",
+            "correspondenceStrength": 0.8512,
+            "dimensionOutcomes": {
+              "A_SUBJECT_ACTION": "CORRESPONDS",
+              "B_LEGAL_POSTURE": "CORRESPONDS",
+              "C_OBJECT_RESOURCE": "CORRESPONDS",
+              "D_SCOPE_ENTITY": "CORRESPONDS",
+              "E_ECONOMICS": "NOT_APPLICABLE",
+              "F_CONDITIONS_EXCEPTIONS": "CORRESPONDS",
+              "G_OPERATIVE_PROVENANCE": "MATERIAL_CONFLICT",
+              "H_PROVISION_ROLE_BREADTH": "INDETERMINATE"
+            },
+            "conflicts": [
+              {
+                "code": "UNSUPPORTED_SEMANTICS_PRESENTED_AS_COMPLETE",
+                "severity": "MATERIAL_CONFLICT",
+                "dimension": "G_OPERATIVE_PROVENANCE",
+                "explanation": "The candidate is presented as a complete representation while carrying unresolved reasons: hedging-purpose test could not be formalized."
+              }
+            ],
+            "reason": "Material conflict on UNSUPPORTED_SEMANTICS_PRESENTED_AS_COMPLETE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document."
+          }
+        ]
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A32-no-candidate-at-all",
+      "category": "SILENT_OMISSION",
+      "control": "NEGATIVE",
+      "description": "A CRITICAL claim with nothing corresponding to it at all is the canonical dangerous unaccounted omission.",
+      "groundTruth": {
+        "sectionRef": "5.15",
+        "unitType": "COVENANT",
+        "materiality": "CRITICAL",
+        "excerpt": "The Company may designate any Restricted Subsidiary as an Unrestricted Subsidiary only if no Default exists and the Company is in pro forma compliance with Section 6.12."
+      },
+      "candidates": [
+        {
+          "candidateId": "A32-c1",
+          "sectionRef": "9.01",
+          "documentId": "synthetic-doc-a",
+          "declaredRole": null,
+          "accountingRole": "SUBSTANTIVE_REPRESENTATION",
+          "excerpt": "All notices and other communications shall be in writing and delivered by hand or overnight courier service to the address specified on Schedule 9.01."
+        }
+      ],
+      "expectation": {
+        "credited": false,
+        "allowedMatchStatuses": [
+          "UNREPRESENTED"
+        ],
+        "dangerousUnaccounted": true
+      },
+      "observed": {
+        "matchStatus": "UNREPRESENTED",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "NOT_VERIFIABLE",
+        "dangerousUnaccountedV2": true,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "No candidate shared any content-bearing signal with this claim, so no pair was even generated. Structural adjacency alone does not generate a pair, and would not have granted credit if it had.",
+        "pairs": []
+      },
+      "verdict": "PASS",
+      "failures": []
+    },
+    {
+      "caseId": "A33-low-materiality-omission-is-not-dangerous",
+      "category": "SILENT_OMISSION",
+      "control": "POSITIVE",
+      "description": "An INFORMATIONAL claim with no representation is not a dangerous unaccounted omission. The metric must not inflate itself with boilerplate.",
+      "groundTruth": {
+        "sectionRef": "9.10",
+        "unitType": "BOILERPLATE_SUMMARY",
+        "materiality": "INFORMATIONAL",
+        "excerpt": "The headings of Articles and Sections used in this Agreement are for convenience of reference only and shall not affect the construction of this Agreement."
+      },
+      "candidates": [],
+      "expectation": {
+        "credited": false,
+        "allowedMatchStatuses": [
+          "UNREPRESENTED"
+        ],
+        "dangerousUnaccounted": false
+      },
+      "observed": {
+        "matchStatus": "UNREPRESENTED",
+        "representationStatus": "UNREPRESENTED",
+        "semanticCorrectness": "NOT_VERIFIABLE",
+        "dangerousUnaccountedV2": false,
+        "explicitlySurfacedAsUnsafe": false,
+        "matchedCandidateIds": [],
+        "reason": "No candidate shared any content-bearing signal with this claim, so no pair was even generated. Structural adjacency alone does not generate a pair, and would not have granted credit if it had.",
+        "pairs": []
+      },
+      "verdict": "PASS",
+      "failures": []
+    }
+  ]
+}

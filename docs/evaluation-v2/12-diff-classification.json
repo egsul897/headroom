@@ -1,0 +1,335 @@
+{
+  "artifactId": "PHASE_3F_1_5_DIFF_CLASSIFICATION",
+  "phase": "PHASE_3F_1_5_EVALUATION_METHODOLOGY_V2",
+  "purpose": "Every file this phase changed or created, classified. Derived from the actual working-tree status rather than asserted by hand.",
+  "versions": {
+    "schemaVersion": "evaluation-v2-schema.v1",
+    "algorithmVersion": "evaluation-v2-algorithm.v1",
+    "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+    "matchPolicyVersion": "evaluation-v2-match-policy.v1"
+  },
+  "generatedBy": "lib/contract-model/evaluation-v2/runner",
+  "permittedDirectories": [
+    "lib/contract-model/evaluation-v2/",
+    "docs/evaluation-v2/",
+    "tests/evaluation-v2/"
+  ],
+  "classificationBuckets": {
+    "permitted": [
+      "EVALUATOR_IMPLEMENTATION",
+      "EVALUATOR_TEST",
+      "EVALUATOR_ARTIFACT",
+      "DOCUMENTATION",
+      "NECESSARY_NON_SEMANTIC_INTERFACE_CHANGE"
+    ],
+    "forbidden": [
+      "PRODUCTION_SEMANTIC_TUNING",
+      "PACKAGE_SPECIFIC_FIX",
+      "GROUND_TRUTH_MUTATION",
+      "HISTORICAL_ARTIFACT_MUTATION"
+    ]
+  },
+  "counts": {
+    "EVALUATOR_ARTIFACT": 13,
+    "DOCUMENTATION": 1,
+    "EVALUATOR_IMPLEMENTATION": 27,
+    "EVALUATOR_TEST": 7
+  },
+  "forbiddenBucketCount": 0,
+  "forbiddenBucketEntries": [],
+  "productionCodeTouched": {
+    "count": 0,
+    "statement": "No file under app/, prisma/, scripts/, or any production module of lib/ (discovery, structural parsing, package graph, context retrieval, amendment/operative state, semantic compiler, Covenant IR, precedent, semantic coverage) was created, modified or deleted. No NECESSARY_NON_SEMANTIC_INTERFACE_CHANGE was required: every field the evaluator needed was already exposed by the frozen artifacts, so no read-only export had to be added to production code."
+  },
+  "gitDiffStat": "",
+  "entries": [
+    {
+      "path": "docs/evaluation-v2/_stratified-sample-for-second-pass.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/_stratified-sample-v2-labels-SEALED.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/01-methodology-spec.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/02-independence-matrix.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/03-adversarial-suite-results.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/04-dsgr-unit-level-reconciliation.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/05-dsgr-old-vs-v2.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/06-known-false-credit-reconciliation.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/07-dsgr-v2-aggregate-metrics.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/09-cross-dataset-generalization.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/10-ground-truth-quality-audit.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/11-reproducibility-and-cost.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/12-diff-classification.json",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_ARTIFACT",
+      "rationale": "Machine-readable evaluation artifact produced by this phase's runners."
+    },
+    {
+      "path": "docs/evaluation-v2/README.md",
+      "gitStatus": "??",
+      "classification": "DOCUMENTATION",
+      "rationale": "Prose index and reading guide for this phase's artifact set."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/adapters/common.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/adapters/dsgr.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/adapters/legacy-package.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/adjudication.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/aggregate.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/candidate-generation.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/conflicts.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/evidence.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/identity.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/index.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/matching.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/reconciliation.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/artifacts.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/debug-pair.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/debug-unit.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/run-adversarial.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/run-all.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/run-cross-dataset.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/run-dsgr.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/run-reproducibility.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/smoke.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/write-diff-classification.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/runner/write-spec.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/semantic-correspondence.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/signals.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/source-excerpt.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "lib/contract-model/evaluation-v2/types.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_IMPLEMENTATION",
+      "rationale": "New, self-contained evaluation system. Imports no historical scorer and no production answer path; enforced by tests/evaluation-v2/import-boundary.test.ts."
+    },
+    {
+      "path": "tests/evaluation-v2/adversarial-cases.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_TEST",
+      "rationale": "New test directory for the evaluator: false-credit prohibitions, adversarial suite, import boundary, DSGR false-credit gate, determinism."
+    },
+    {
+      "path": "tests/evaluation-v2/adversarial-suite.test.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_TEST",
+      "rationale": "New test directory for the evaluator: false-credit prohibitions, adversarial suite, import boundary, DSGR false-credit gate, determinism."
+    },
+    {
+      "path": "tests/evaluation-v2/determinism-and-signals.test.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_TEST",
+      "rationale": "New test directory for the evaluator: false-credit prohibitions, adversarial suite, import boundary, DSGR false-credit gate, determinism."
+    },
+    {
+      "path": "tests/evaluation-v2/dsgr-false-credit-gate.test.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_TEST",
+      "rationale": "New test directory for the evaluator: false-credit prohibitions, adversarial suite, import boundary, DSGR false-credit gate, determinism."
+    },
+    {
+      "path": "tests/evaluation-v2/false-credit-prohibitions.test.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_TEST",
+      "rationale": "New test directory for the evaluator: false-credit prohibitions, adversarial suite, import boundary, DSGR false-credit gate, determinism."
+    },
+    {
+      "path": "tests/evaluation-v2/import-boundary.test.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_TEST",
+      "rationale": "New test directory for the evaluator: false-credit prohibitions, adversarial suite, import boundary, DSGR false-credit gate, determinism."
+    },
+    {
+      "path": "tests/evaluation-v2/synthetic-fixtures.ts",
+      "gitStatus": "??",
+      "classification": "EVALUATOR_TEST",
+      "rationale": "New test directory for the evaluator: false-credit prohibitions, adversarial suite, import boundary, DSGR false-credit gate, determinism."
+    }
+  ]
+}
