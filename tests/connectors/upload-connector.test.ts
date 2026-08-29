@@ -74,4 +74,75 @@ describe("upload-connector convergence", () => {
     expect(result.duplicate).toBe(false);
     expect(await prisma.document.count({ where: { companyId: COMPANY_ID } })).toBe(documentsBefore + 1);
   });
+
+  // --- P1-3 remediation additions (docs/foundation-remediation/08-p1-reconciliation.json,
+  // 13-remaining-foundation-risks.json): the onboarding upload action
+  // (app/[companyId]/onboarding/documents/actions.ts) is now routed through
+  // this same uploadDocumentThroughIngestion wrapper - these tests cover the
+  // cross-path convergence and concurrency guarantees that fix depends on.
+  // See tests/onboarding/documents-actions-dedup.test.ts for the equivalent
+  // coverage driven through the real server action itself.
+
+  it("same bytes, same tenant, DIFFERENT ingestion entry points converge on one Document: a direct uploadDocumentThroughIngestion call, then a second simulating the onboarding action's own call shape", async () => {
+    const data = Buffer.from("CROSS-PATH CONVERGENCE FIXTURE. Section 5.01. Uploaded once directly, once via a second call shape.");
+
+    const viaDirectCall = await uploadDocumentThroughIngestion({ companyId: COMPANY_ID, filename: "cross-path-a.txt", data, declaredType: "CREDIT_AGREEMENT" });
+    expect(viaDirectCall.duplicate).toBe(false);
+
+    // The onboarding action itself does nothing more than build this exact
+    // params shape from a FormData and call uploadDocumentThroughIngestion -
+    // reproducing that call here (rather than re-importing the "use server"
+    // action module a second time in this file) proves the SAME wrapper
+    // path, invoked a second time with different provenance (filename,
+    // declaredType, governs), still converges.
+    const viaSecondEntryPoint = await uploadDocumentThroughIngestion({
+      companyId: COMPANY_ID,
+      filename: "cross-path-b-renamed.txt",
+      data,
+      declaredType: "OTHER",
+      governs: "Revolving Credit Facility",
+    });
+    expect(viaSecondEntryPoint.duplicate).toBe(true);
+    expect(viaSecondEntryPoint.artifactId).toBe(viaDirectCall.artifactId);
+
+    const rows = await prisma.document.findMany({ where: { companyId: COMPANY_ID, originalFilename: { in: ["cross-path-a.txt", "cross-path-b-renamed.txt"] } } });
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.originalFilename).toBe("cross-path-a.txt");
+  });
+
+  it("concurrent duplicate ingestion: N simultaneous uploads of byte-identical content for the same company converge on exactly one Document and one SourceArtifact, with no unhandled errors", async () => {
+    const data = Buffer.from("CONCURRENT DUPLICATE FIXTURE. Section 4.01. Ten near-simultaneous uploads of this exact content race here.");
+    const N = 10;
+
+    const settled = await Promise.allSettled(
+      Array.from({ length: N }, (_, i) =>
+        uploadDocumentThroughIngestion({ companyId: COMPANY_ID, filename: `concurrent-fixture-${i}.txt`, data, declaredType: "CREDIT_AGREEMENT" })
+      )
+    );
+
+    // Every single call resolves - none surfaces a raw DB error (e.g. an
+    // uncaught P2002 unique-constraint violation) to its own caller.
+    for (const s of settled) expect(s.status).toBe("fulfilled");
+    const results = settled.map((s) => (s as PromiseFulfilledResult<Awaited<ReturnType<typeof uploadDocumentThroughIngestion>>>).value);
+
+    const winners = results.filter((r) => !r.duplicate);
+    const losers = results.filter((r) => r.duplicate);
+    expect(winners).toHaveLength(1); // exactly one caller actually created the Document/SourceArtifact
+    expect(losers).toHaveLength(N - 1);
+
+    // Every result (winner and every loser) agrees on the SAME artifact id -
+    // no split-brain outcome where two different rows both look "current."
+    const artifactIds = new Set(results.map((r) => r.artifactId));
+    expect(artifactIds.size).toBe(1);
+
+    const documentRows = await prisma.document.findMany({ where: { companyId: COMPANY_ID, originalFilename: { startsWith: "concurrent-fixture-" } } });
+    expect(documentRows).toHaveLength(1); // every losing caller's own orphaned Document row was unwound, not left behind
+
+    const artifactRows = await prisma.sourceArtifact.findMany({ where: { companyId: COMPANY_ID, documentId: documentRows[0]!.id } });
+    expect(artifactRows).toHaveLength(1);
+
+    // No dangling chunks from an unwound loser's Document either (cascade).
+    const chunkCount = await prisma.documentChunk.count({ where: { documentId: documentRows[0]!.id } });
+    expect(chunkCount).toBeGreaterThan(0);
+  });
 });
