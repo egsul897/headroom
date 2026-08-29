@@ -23,8 +23,11 @@ export const EVALUATION_V2_SCHEMA_VERSION = "evaluation-v2-schema.v1";
  * excerpt-resolution fallback (source-excerpt.ts) both changed what evidence
  * the algorithm considers sufficient - see
  * docs/evaluation-v2-iteration-2/05-generalized-remediation-record.json.
+ * Bumped to v3 in Phase 3F.1.5.3: added the I_CLAIM_IDENTITY dimension
+ * (claim-identity.ts) implementing SAME_COVENANT_FAMILY_IS_NOT_SAME_
+ * SEMANTIC_CLAIM - see docs/evaluation-v2-final-resolution/03-matcher-remediation.json.
  */
-export const EVALUATION_V2_ALGORITHM_VERSION = "evaluation-v2-algorithm.v2";
+export const EVALUATION_V2_ALGORITHM_VERSION = "evaluation-v2-algorithm.v3";
 
 /** The Layer-2 semantic-correspondence prompt (adjudication.ts). Bumped independently of the algorithm. */
 export const EVALUATION_V2_PROMPT_VERSION = "evaluation-v2-correspondence-prompt.v1";

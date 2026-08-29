@@ -19,6 +19,7 @@
  *    deterministic layer found materially conflicting, and it never decides an
  *    aggregate number (adjudication.ts).
  */
+import { compareClaimIdentity } from "./claim-identity";
 import { detectConflicts, MIN_SHARED_TERMS_FOR_CORRESPONDENCE, MIN_SHARED_TERMS_WITH_FAMILY_SUPPORT, OBJECT_CORRESPONDENCE_THRESHOLD, OBJECT_MATERIAL_CONFLICT_THRESHOLD, SOLE_DIMENSION_MIN_SHARED_TERMS, SOLE_DIMENSION_OBJECT_THRESHOLD } from "./conflicts";
 import { extractSignals, jaccard, overlapDetail, postureClass } from "./signals";
 import type {
@@ -238,6 +239,31 @@ function assessDimensions(ctx: DimensionContext): DimensionAssessment[] {
     ),
   );
 
+  // Phase 3F.1.5.3, Workstream A: SAME_COVENANT_FAMILY_IS_NOT_SAME_SEMANTIC_CLAIM.
+  // Purely structural (section-reference shape only, via claim-identity.ts) —
+  // see that module's header comment for the full root-cause rationale. This
+  // dimension never EARNS credit (it has no CORRESPONDS-based positive case
+  // it contributes beyond confirming siblings are NOT in conflict); its only
+  // job is to surface INDETERMINATE when two candidates are structurally
+  // siblings under the same parent, so evaluatePair() can route the pair to
+  // semantic-judge review instead of letting shared family vocabulary alone
+  // resolve it to CORRESPONDS_FULLY/PARTIALLY.
+  const claimIdentity = compareClaimIdentity(gt, candidate);
+  out.push(
+    build(
+      "I_CLAIM_IDENTITY",
+      false,
+      [claimIdentity.gtSubReference ?? "(not a comparable sub-provision)"],
+      [claimIdentity.candidateSubReference ?? "(not a comparable sub-provision)"],
+      conflicts,
+      () => {
+        if (claimIdentity.outcome === "NOT_COMPARABLE") return "NOT_APPLICABLE";
+        if (claimIdentity.outcome === "SAME_SUBPROVISION") return "CORRESPONDS";
+        return "INDETERMINATE";
+      },
+    ),
+  );
+
   return out;
 }
 
@@ -297,6 +323,13 @@ export function evaluatePair(input: PairEvaluationInput, options: SemanticCorres
   // asserted something on that dimension, so it is counted regardless of the
   // separately-computed `requiredByGroundTruth` flag.
   const requiredMissing = dimensions.filter((d) => d.outcome === "MISSING_REQUIRED_DIMENSION");
+  // Phase 3F.1.5.3, Workstream A (Section 8's routing requirement): a sibling
+  // sub-provision mismatch must never be resolved by shared family/lexical
+  // overlap alone. Checked BEFORE the core-dimension gate below, so it can
+  // downgrade what would otherwise be a confident CORRESPONDS_FULLY/PARTIALLY
+  // to INDETERMINATE — the one outcome that actually reaches the live
+  // semantic judge (evaluatePair's judge-consultation branch, below).
+  const claimIdentityAmbiguous = byDim.get("I_CLAIM_IDENTITY")?.outcome === "INDETERMINATE";
 
   let correspondence: PairCorrespondence;
   let reason: string;
@@ -304,6 +337,10 @@ export function evaluatePair(input: PairEvaluationInput, options: SemanticCorres
     correspondence = "CONTRADICTS";
     const codes = conflicts.filter((c) => c.severity === "MATERIAL_CONFLICT").map((c) => c.code);
     reason = `Material conflict on ${[...new Set(codes)].join(", ")} — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.`;
+  } else if (claimIdentityAmbiguous) {
+    correspondence = "INDETERMINATE";
+    const idDim = byDim.get("I_CLAIM_IDENTITY")!;
+    reason = `Ground truth (${idDim.groundTruthEvidence[0]}) and candidate (${idDim.candidateEvidence[0]}) are structural siblings under the same parent section — different enumerated sub-provisions. Shared covenant-family vocabulary between siblings is not evidence of claim identity, so this pair requires semantic judgment rather than a deterministic resolution.`;
   } else if (coreAllPresent && requiredMissing.length === 0) {
     correspondence = "CORRESPONDS_FULLY";
     reason = "Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).";

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "SIBLING_CLAIM_ROOT_CAUSE",
+  "generatedAt": "2026-08-29T17:10:00Z",
+  "invariantBeingImplemented": "SAME_COVENANT_FAMILY_IS_NOT_SAME_SEMANTIC_CLAIM",
+  "priorDiagnosis": "docs/evaluation-v2-iteration-2/16-remaining-evaluator-risks.json, Risk R3: a candidate representing a DIFFERENT sibling/sub-provision inside the same covenant section can pass deterministic correspondence (CORRESPONDS_PARTIALLY) because of shared covenant-family vocabulary, and therefore never reaches the live semantic judge (which only ever reconsiders INDETERMINATE pairs).",
+  "confirmedMechanism": {
+    "statement": "None of the existing 8 correspondence dimensions (A-H) checks sub-provision IDENTITY. H_PROVISION_ROLE_BREADTH classifies drafting SHAPE (chapeau vs. specific-exception vs. affirmative-obligation), not identity among same-shape siblings: two different lettered exceptions under the same chapeau (e.g. 6.02(h) and 6.02(d)) have the IDENTICAL shape classification. The dimensions that would otherwise distinguish two specific sub-provisions (E_ECONOMICS, F_CONDITIONS_EXCEPTIONS) typically resolve MISSING_REQUIRED_DIMENSION (silent) rather than MATERIAL_CONFLICT, because a wrong sibling candidate does not affirmatively CONTRADICT the claim's specific figures/conditions - it simply never mentions them. The pair therefore resolves deterministically to CORRESPONDS_PARTIALLY, a TERMINAL deterministic outcome that evaluatePair() (semantic-correspondence.ts) never refers to the live semantic judge (the judge is consulted ONLY when correspondence === 'INDETERMINATE').",
+    "verifiedAgainstRealData": true,
+    "verificationMethod": "Re-examined the exact repeat-offender candidates already identified in Phase 3F.1.5.2's rerun (docs/evaluation-v2-iteration-2/11-detailed-confusion-matrix.json's repeatOffenderCandidates): coverage-unit:0b33f42d... (sectionRef 6.02(j)(i)) was matched against BOTH doc-a::III::3.03-no-conflicts (an unrelated section - not a sibling case) and doc-a::VI::6.02h (GT sectionRef 6.02(h) - a TRUE sibling of 6.02(j)(i) under parent 6.02). Direct debug inspection confirmed: before this phase's fix, this candidate's pair against 6.02h resolved to CORRESPONDS_PARTIALLY; after the fix, the new I_CLAIM_IDENTITY dimension correctly detects '6.02(h)' vs '6.02(j)(i)' as DIFFERENT_SUBPROVISION_SAME_PARENT and downgrades the pair to INDETERMINATE."
+  },
+  "scopeOfThisDefectVsOtherOpenDefects": {
+    "whatThisFixTargets": "Sibling sub-provisions sharing a common PARENT section but differing in their top-level enumerated sub-item (e.g. 6.02(h) vs 6.02(d), 6.06(b)(ii) vs 6.06(hh)). This is a purely structural, sectionRef-shape-based signal.",
+    "whatThisFixDoesNotTarget": [
+      "Candidates anchored at a COMPLETELY DIFFERENT base section that happen to share generic covenant-family vocabulary (e.g. Section 1.06 pro-forma calculation methodology matched against Section 6.05(b) intercompany transfers) - confirmed still open; this is the C_OBJECT_RESOURCE lexical-threshold problem, a distinct mechanism from sub-provision identity, out of this fix's scope.",
+      "The definitional-candidate weak-lexical over-match within an UNDIFFERENTIATED section (both GT and candidate anchored at the bare '1.01' definitions section, neither carrying an enumerated sub-item) - this is Risk R4 from Phase 3F.1.5.2 (the 'Acquisition' IR-definition's second confirmed false-match pathway), a distinct mechanism, disclosed as still open in 16-remaining-evaluator-risks.json.",
+      "Ancestor/descendant relationships (chapeau vs. one of its own enumerated exceptions) - already correctly handled by the pre-existing H_PROVISION_ROLE_BREADTH dimension; this fix deliberately does not duplicate that mechanism (compareClaimIdentity() returns NOT_COMPARABLE whenever either side lacks an enumerated sub-item, exactly to avoid interfering with H's existing, already-tested job)."
+    ],
+    "honestAssessment": "This fix closes the SPECIFIC sibling sub-provision pathway with concrete, verified evidence (see 04-matcher-adversarial-results.json), but is NOT a complete solution to 'same covenant family is not same semantic claim' in full generality. The remaining, distinct mechanisms are disclosed, not silently left unaddressed - see 24-remaining-evaluator-risks.json."
+  }
+}
