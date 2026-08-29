@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "LIVE_SEMANTIC_JUDGE_RUN",
+  "generatedAt": "2026-08-29T16:01:59.601Z",
+  "status": "EXECUTED",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-haiku-4-5",
+  "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+  "schemaVersionUsed": "evaluation-v2-schema.v1",
+  "algorithmVersion": "evaluation-v2-algorithm.v2",
+  "matchPolicyVersion": "evaluation-v2-match-policy.v1",
+  "scope": {
+    "description": "The SAME frozen 51-case Phase 3F.1.5 stratified sample (no new draw), evaluated against the Phase 3F.1.5.2-remediated evaluator (algorithm v2). Deterministic layer resolves first; the live judge is consulted only for pairs it marks INDETERMINATE.",
+    "sampleFile": "docs/evaluation-v2/_stratified-sample-for-second-pass.json",
+    "scopedGroundTruthUnitCount": 51,
+    "totalDsgrGroundTruthUnitCount": 1016
+  },
+  "callStats": {
+    "generatedPairCount": 3060,
+    "evaluatedPairCount": 3060,
+    "aiCallCount": 735,
+    "aiCacheHitCount": 0,
+    "failedCalls": 0,
+    "totalInputTokens": 922809,
+    "totalOutputTokens": 264656,
+    "wallClockMs": 3647502,
+    "estimatedCostUsd": 2.25,
+    "estimatedCostUsdNote": "Rough planning-time estimate (Claude Haiku 4.5 approximate blended per-token pricing); the safety cap (createVercelGatewaySemanticJudge's maxCalls/estimatedCostPerCallUsd) is the enforced budget control, this field is informational only."
+  },
+  "inputDisciplineCompliance": "buildJudgeUserPrompt (unchanged from ./adjudication.ts) sends only the GT excerpt/semantic description and the candidate's own excerpts/normalized semantics/provenance - never V2's own historical disposition, never the second-pass result, never whether a case is one of the 14 known false credits.",
+  "comparisonAgainstPriorPhaseSealedLabels": {
+    "note": "Compares this run's per-unit matchStatus against Phase 3F.1.5.1's live-informed sealed labels (docs/evaluation-v2-iteration/06-frozen-sample-labels-live-SEALED.json, byte-identical, unmodified) for the same 51 gtUnitIds - shows exactly what the evaluator fix changed, independent of anything the fresh second-pass reviewer produces."
+  }
+}

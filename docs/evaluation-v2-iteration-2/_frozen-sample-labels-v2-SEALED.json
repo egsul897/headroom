@@ -1,0 +1,913 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "PHASE_3F1_5_2_FROZEN_SAMPLE_LABELS_V2_SEALED",
+  "generatedAt": "2026-08-29T16:01:59.600Z",
+  "warning": "SEALED. DO NOT SHOW TO THE SECOND-PASS ADJUDICATOR BEFORE ITS REVIEW IS COMPLETE.",
+  "algorithmVersion": "evaluation-v2-algorithm.v2",
+  "matchPolicyVersion": "evaluation-v2-match-policy.v1",
+  "caseCount": 51,
+  "labels": [
+    {
+      "gtUnitId": "doc-a::I::commitments-and-facility-sizes",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:15ba266f8af8215af8c00796da5dd8bc59a6ed7143348846589664ea3ffa82d1"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    },
+    {
+      "gtUnitId": "doc-a::I::net-income",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:48862b4fdc3c57e78fe80f944b4a0586fb4c12c7e0ebcb3bcdcc275442be5b2b"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    },
+    {
+      "gtUnitId": "doc-a::I::permitted-supply-chain-financing",
+      "v2MatchStatus": "PARTIAL",
+      "v2RepresentationStatus": "PARTIALLY_REPRESENTED",
+      "v2SemanticCorrectness": "PARTIALLY_CORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "MEDIUM",
+      "v2MatchedCandidateIds": [
+        "ir-definition:ir-definition:007a5206dfd349a2dec8b9c0"
+      ],
+      "v2Reason": "Core dimensions correspond against a substantive representation, but it is silent on: E_ECONOMICS. Core dimensions correspond, but the candidate is silent on E_ECONOMICS.",
+      "v2StateTaxonomyMapping": "PARTIAL_SEMANTIC_REPRESENTATION"
+    },
+    {
+      "gtUnitId": "doc-a::II::2.21-returned-payments",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:28532e1379827af0b6d08f89",
+        "discovery:discovery-candidate:ef9f59aecf13b4cfc0929208"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-a::III::3.03-no-conflicts",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:6d4fa3ab5d297dec9dc195f5",
+        "discovery:discovery-candidate:bd1b4d0b70303b7648ca9c24"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:0b33f42dd50fa68e22d367efdfb1168e24ca7fd5a7986803db979019e75c122f"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-a::IX::9.11-headings",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:61fccc17d0a51cf4f9e91e881a29caa4034795e353558226a21ed3b1b2016642"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.01-chapeau",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "INCORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": false,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": true,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "Nothing represents this claim. 58 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was coverage-unit:9e3f535fc05550bce3d74eb8da44cd0cf3820d53fb1762f3bceec99664740fbb: Material conflict on WRONG_OPERATIVE_VERSION — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNSUPPORTED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.02b",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "INCORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": false,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": true,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "Nothing represents this claim. 60 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was discovery:discovery-candidate:a9bbffbd989881cb2cf40375: Material conflict on WRONG_OBJECT_RESOURCE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNSUPPORTED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.02h",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:6d4fa3ab5d297dec9dc195f5",
+        "discovery:discovery-candidate:bd1b4d0b70303b7648ca9c24"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:0b33f42dd50fa68e22d367efdfb1168e24ca7fd5a7986803db979019e75c122f"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.04-chapeau",
+      "v2MatchStatus": "CONTRADICTORY",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "INCORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": false,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": true,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "Every generated candidate materially contradicts the claim. Closest was ir-definition:ir-definition:007a5206dfd349a2dec8b9c0: Material conflict on SCOPE_BREADTH_MISMATCH — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+      "v2StateTaxonomyMapping": "CONTRADICTORY_REPRESENTATION"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:6d4fa3ab5d297dec9dc195f5"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.05-chapeau",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.05-ip-flush-prohibition",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.05b",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:5590a5dcc1015b5f8df59315",
+        "discovery:discovery-candidate:57a06de5ab3f9b0e971813b7"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "ir-rule:ir-rule:263e0f016860e15ea79398da"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.08b-chapeau",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:5590a5dcc1015b5f8df59315",
+        "discovery:discovery-candidate:d7b63c362b2436f34a6b5aa6",
+        "discovery:discovery-candidate:82d1c61751db318a6b4cecc0"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "ir-rule:ir-rule:263e0f016860e15ea79398da"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.10-chapeau",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:687801163841c62f94bbf685",
+        "discovery:discovery-candidate:9bd452237f2a408c952d0005",
+        "discovery:discovery-candidate:f98b3ca30dbc7e8aecaebd0f",
+        "discovery:discovery-candidate:2dde2b718794930dce2dac24",
+        "discovery:discovery-candidate:6d4fa3ab5d297dec9dc195f5",
+        "discovery:discovery-candidate:bd1b4d0b70303b7648ca9c24"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 4 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.11-amendment-material-documents",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:990b35f279e3dc53e2ef705d",
+        "discovery:discovery-candidate:9fd0bc8464f7c4a46af16dc8"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:dd1bf00405e0f33e63c65df61fe197dab2a93bf14a440c8cf57fd87326d1c60f"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-a::VII::7.01l",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 1 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-a::X::10.01a-us-guaranty",
+      "v2MatchStatus": "EXACT_SINGLE",
+      "v2RepresentationStatus": "REPRESENTED",
+      "v2SemanticCorrectness": "CORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:fb3aa6e535d67990682b6dd3",
+        "discovery:discovery-candidate:5004400a5e2b784a9ea5b370",
+        "discovery:discovery-candidate:def5df943603d59d4b92c8eb"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "ir-rule:ir-rule:8543f9e7e76785c96a99e512"
+      ],
+      "v2Reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+      "v2StateTaxonomyMapping": "VERIFIED_SEMANTIC_REPRESENTATION"
+    },
+    {
+      "gtUnitId": "doc-a::X::10.04-defenses-waived",
+      "v2MatchStatus": "EXACT_SINGLE",
+      "v2RepresentationStatus": "REPRESENTED",
+      "v2SemanticCorrectness": "CORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:fb3aa6e535d67990682b6dd3",
+        "discovery:discovery-candidate:4ad40b48befc5fe44817f80f",
+        "discovery:discovery-candidate:732e47bc01adfb18e5a0155d"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "ir-rule:ir-rule:fb5206d45cb1d00d6e414d2b"
+      ],
+      "v2Reason": "Single exact match against a substantive representation. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+      "v2StateTaxonomyMapping": "VERIFIED_SEMANTIC_REPRESENTATION"
+    },
+    {
+      "gtUnitId": "doc-a::X::10.06-reinstatement",
+      "v2MatchStatus": "EXACT_COMPOSITE",
+      "v2RepresentationStatus": "REPRESENTED",
+      "v2SemanticCorrectness": "CORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:ce230a3e63dac0260af4a04a",
+        "discovery:discovery-candidate:fb3aa6e535d67990682b6dd3"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "ir-rule:ir-rule:fb5206d45cb1d00d6e414d2b",
+        "ir-rule:ir-rule:8543f9e7e76785c96a99e512"
+      ],
+      "v2Reason": "Composite match: 2 substantive representations jointly represent the claim, and EACH corresponds independently on every core dimension (action, posture, object/resource) with no material conflict on breadth, scope, economics, conditions or provenance. Every dimension the ground truth asserts corresponds, including all four core dimensions (action, posture, object/resource, provision role).",
+      "v2StateTaxonomyMapping": "VERIFIED_SEMANTIC_REPRESENTATION"
+    },
+    {
+      "gtUnitId": "doc-a::XI::11.06-execution-of-documents",
+      "v2MatchStatus": "CONTRADICTORY",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "INCORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": false,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": true,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "Every generated candidate materially contradicts the claim. Closest was ir-rule:ir-rule:c62dbd59b266481e891b81e4: Material conflict on WRONG_OBJECT_RESOURCE, WRONG_ENTITY_SCOPE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+      "v2StateTaxonomyMapping": "CONTRADICTORY_REPRESENTATION"
+    },
+    {
+      "gtUnitId": "doc-b::AMENDMENT::signatory-loan-parties",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:20ef641c718313e9e966e9863adae0321362096442f56aa95beeb019855acb51"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    },
+    {
+      "gtUnitId": "doc-b::I::def-first-amendment-cluster",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:19a6dd2d600cdff97fde7a1f099166c099667ed5ec23777530f979038531b76d"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    },
+    {
+      "gtUnitId": "doc-b::I::def-permitted-investments",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:49149198cb32e42b84028d6e24566e7264f964792b7f69d3b40dbf9d5005b6bd"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    },
+    {
+      "gtUnitId": "doc-b::I::def-sanctions-cluster",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:7b5db0aa9aee7be59e533a01b48350d97f1b3675c5ba0d6676c099f11d214032"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    },
+    {
+      "gtUnitId": "doc-b::I::def-third-amendment",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 1 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    },
+    {
+      "gtUnitId": "doc-b::III::3-16",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 1 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-b::III::3-21",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 1 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-b::V::5-03-existence-conduct-of-business",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:12f85fa9a7015c600abd0917",
+        "discovery:discovery-candidate:439af296f91d5bd98f832b62"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-01-lead-in",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:9e3f535fc05550bce3d74eb8da44cd0cf3820d53fb1762f3bceec99664740fbb"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-04-lead-in",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:c38a45beaaba2ac934b40009"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:a3b87ebf450594546ecdcd8c76a6ba6e4b37f5a702b4964d8c7ca5988616407d"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-h",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "INCORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": false,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": true,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "Nothing represents this claim. 60 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was coverage-unit:d24c37e1959d1024ccc8f0ff48617f0675d26cf433af8c9a4a9abe0aa691aca9: Material conflict on INVERTED_LEGAL_POSTURE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNSUPPORTED"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-k",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:9ea72cf3f475b0a17470e9d1",
+        "discovery:discovery-candidate:b5f27b743f15d70688742e90",
+        "discovery:discovery-candidate:cbe96c7550c883944022b0ea",
+        "discovery:discovery-candidate:df52f55f0e10493bffe418cc"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:db5fbcd9f89f2fb5cb7338e8c13680f945dd94a4e050c0b77651ffe5565d8251"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-lead-in",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:00cdf19b0eba46cf653158eed62f96d59c07c8a62982e8d0e9f3ca03ce7c5726"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-c::recital-agreement-to-amend",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:6eedaeafe36f7e1ab323dafa"
+      ],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:4d30fb8f5ed15982b9b0800ac5918fae66beef0f0a22b16eecbe783998f7d367"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    },
+    {
+      "gtUnitId": "doc-d::I::def-interest-coverage-ratio",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:0c962e2916b28c2c72fac8391d5080fec25b1f8168c15fb07931d1d78c584a0f"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-d::III::rep-3-19",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 2 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-d::V::cov-5-03-existence",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:8a09f9473377927c366f324b",
+        "discovery:discovery-candidate:cee71a4d64c8be65af324e47"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 4 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-01-chapeau",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "INCORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": false,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": true,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "Nothing represents this claim. 57 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was coverage-unit:4872c7a9f25e4de3e7536cc7024bde0d4267ab3eaf9842d8cbe026e926721212: Material conflict on WRONG_ENTITY_SCOPE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNSUPPORTED"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-01-f",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "INCORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": false,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:8895fae34c1d68c9e09ef9be"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": true,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "1 candidate(s) semantically correspond to this claim, but every one of them is inventory-only: the system noticed the provision and produced no representation of it, and did not flag the omission. Correspondence without representation is not credit.",
+      "v2StateTaxonomyMapping": "DISCOVERED_ONLY"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-02-e",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:3ae422f19af6bc0a09494033ba837040978fa64c4e11b2ceb54cbde28b751170"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-04-chapeau",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:3b51abe6c83cff81578e1cc4"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:9a877438a5259adfdae889f63b8499909c00fe1267311f48074787054a85bcaa"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-05-chapeau",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "INCORRECT",
+      "v2ExplicitlySurfacedAsUnsafe": false,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": true,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "Nothing represents this claim. 59 candidate(s) were near enough to be evaluated but each conflicts materially with it; none is a substantive representation the system offered as an answer here, so this is an omission rather than a wrong answer. Closest was coverage-unit:1c9300693ee2fa4872fa3cedc08428dc1db6c133e8f1a0b84faa3e66e132cc7b: Material conflict on INVERTED_LEGAL_POSTURE — the candidate asserts something the ground-truth claim contradicts, so it cannot represent it regardless of where it sits in the document.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNSUPPORTED"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-08-b-chapeau",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-09-chapeau",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:c4c3ade75a577e17b962b1bd",
+        "discovery:discovery-candidate:3b51abe6c83cff81578e1cc4",
+        "discovery:discovery-candidate:7f0a5512922bb2fbc2818fed"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:226d21f12a31f555af48e47356d06c068989a48324c99ed003a94bdfa7efc94d"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-09-f",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:c3ecd90b753b0ce5cb31efac",
+        "discovery:discovery-candidate:cddbc4f9368db8c8b52ec77a",
+        "discovery:discovery-candidate:dd426d72501695aca98045b2"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:8b7beaa082652e2053270af2d987301283ed355ac0cdef82614aed89d9d30763"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-10-chapeau",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:1217ed111a2dae6798506c4f",
+        "discovery:discovery-candidate:5c7a358f5faddfabe79c9d4f",
+        "discovery:discovery-candidate:d03ea51a51610831bbcb0812",
+        "discovery:discovery-candidate:5cdc7492001a82662c059d56",
+        "discovery:discovery-candidate:7f0a5512922bb2fbc2818fed",
+        "discovery:discovery-candidate:9521cdd7f9eaeb9279573760"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 6 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-d::VII::7-01-chapeau",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2RepresentationStatus": "UNREPRESENTED",
+      "v2SemanticCorrectness": "NOT_APPLICABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [],
+      "v2Reason": "No substantive representation of this claim exists, but 1 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "v2StateTaxonomyMapping": "DISCOVERED_REVIEW_REQUIRED"
+    },
+    {
+      "gtUnitId": "doc-d::XI::11-04",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [
+        "discovery:discovery-candidate:5957c3875a0ac7d70cb6ea05",
+        "discovery:discovery-candidate:8a09f9473377927c366f324b",
+        "discovery:discovery-candidate:c7631f108e6c7c706d5434cc",
+        "discovery:discovery-candidate:cee71a4d64c8be65af324e47",
+        "discovery:discovery-candidate:e92174d6d600bb263c00fe4c"
+      ],
+      "v2GroundTruthExcerptResolution": "RESOLVED_FROM_RAW_SOURCE",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:23a84b7c1a66caf5719f2ebf8aeb9dd6045f6b09e439ecb1c427f7d7d306acb0"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "HONESTLY_UNRESOLVED"
+    },
+    {
+      "gtUnitId": "doc-d::XII::cam-b",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2RepresentationStatus": "HONESTLY_UNRESOLVED",
+      "v2SemanticCorrectness": "NOT_VERIFIABLE",
+      "v2ExplicitlySurfacedAsUnsafe": true,
+      "v2SurfacedByInventoryOnly": [],
+      "v2GroundTruthExcerptResolution": "UNRESOLVED_DESCRIPTION_ONLY",
+      "v2GroundTruthQuality": "GT_CONFIRMED",
+      "v2DangerousUnaccounted": false,
+      "v2Confidence": "HIGH",
+      "v2MatchedCandidateIds": [
+        "coverage-unit:06f6a4c2eddf6f65aba8233264bb7d023f4c0fbb6d4082f3a5f4c6028fe813a6"
+      ],
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "v2StateTaxonomyMapping": "INCOMPARABLE"
+    }
+  ]
+}
