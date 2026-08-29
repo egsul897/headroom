@@ -2,35 +2,53 @@
   "schemaVersion": "1.0",
   "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
   "artifactId": "LIVE_SEMANTIC_JUDGE_RUN",
-  "generatedAt": "2026-08-29T03:50:00Z",
-  "status": "BLOCKED_NO_AUTHORIZED_MODEL_CREDENTIAL",
-  "credentialCheckPerformed": {
-    "methodology": "The codebase's OWN documented credential-resolution order was used as the authority for what counts as 'an authorized model credential' (lib/extraction/get-provider.ts's getExtractionProvider(), which is the canonical selection logic this repository already uses in production): (1) AI_GATEWAY_API_KEY, (2) ANTHROPIC_API_KEY. Both were checked directly in the running shell environment, not assumed.",
-    "checksRun": [
-      "env | grep -iE \"anthropic|claude|openai|api_key\" - no ANTHROPIC_API_KEY, AI_GATEWAY_API_KEY, or OPENAI_API_KEY present",
-      "echo ${ANTHROPIC_API_KEY:+yes}${ANTHROPIC_API_KEY:-no} -> no",
-      "echo ${ANTHROPIC_AUTH_TOKEN:+yes}${ANTHROPIC_AUTH_TOKEN:-no} -> no",
-      "echo ${OPENAI_API_KEY:+yes}${OPENAI_API_KEY:-no} -> no",
-      "Full env scan for any key/token/secret/credential-shaped variable name: only CLAUDE_CODE_* session-management tokens (the harness's own OAuth token for running this CLI session, not a general-purpose model API credential usable from arbitrary evaluator code), GH_TOKEN/GITHUB_TOKEN (source control), and AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY were present",
-      "Confirmed the codebase has NO Bedrock/AWS-hosted-model provider implementation anywhere (grep -rli bedrock|AWS_ACCESS_KEY|@aws-sdk across lib/ and package.json returned zero matches) - so the AWS credentials present are not a usable path to a Claude/Anthropic model call under this repository's own architecture and are not assumed to be one.",
-      "@anthropic-ai/sdk is present in node_modules (a normal dependency of the codebase's own provider files) but an SDK package is not itself a credential - without ANTHROPIC_API_KEY or AI_GATEWAY_API_KEY it cannot make an authenticated call."
+  "generatedAt": "2026-08-29T04:37:23.312Z",
+  "status": "EXECUTED",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-haiku-4-5",
+  "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+  "schemaVersionUsed": "evaluation-v2-schema.v1",
+  "algorithmVersion": "evaluation-v2-algorithm.v1",
+  "matchPolicyVersion": "evaluation-v2-match-policy.v1",
+  "scope": {
+    "description": "The frozen 51-case Phase 3F.1.5 stratified sample only (not the full DSGR dataset, which would trigger ~14,238 calls). All generated pairs for these 51 gtUnitIds were deterministically evaluated first; the live judge was consulted only for pairs the deterministic layer marked INDETERMINATE.",
+    "sampleFile": "docs/evaluation-v2/_stratified-sample-for-second-pass.json",
+    "scopedGroundTruthUnitCount": 51,
+    "totalDsgrGroundTruthUnitCount": 1016
+  },
+  "callStats": {
+    "generatedPairCount": 3060,
+    "evaluatedPairCount": 3060,
+    "aiCallCount": 592,
+    "aiCacheHitCount": 0,
+    "failedCalls": 0,
+    "totalInputTokens": 777455,
+    "totalOutputTokens": 220720,
+    "wallClockMs": 3060366,
+    "estimatedCostUsd": 1.88,
+    "costMethodology": "777,455 input + 220,720 output tokens against Claude Haiku 4.5's published per-token pricing (~$1/MTok in, ~$5/MTok out) - an estimate from public rate cards, not authoritative Vercel AI Gateway billing data. Well within the $15 budget the user authorized (12.5% used); the run never approached the 2,000-call safety cap (592 of 2,000 used) because only 592 of the sample's 3,060 generated pairs were deterministically INDETERMINATE.",
+    "authorizedBudgetUsd": 15,
+    "maxCallsCap": 2000
+  },
+  "inputDisciplineCompliance": "buildJudgeUserPrompt (unchanged from ./adjudication.ts) sends only the GT excerpt/semantic description and the candidate's own excerpts/normalized semantics/provenance - never V2's own historical disposition, never the second-pass result, never whether a case is one of the 14 known false credits.",
+  "comparisonAgainstDeterministicOnlyBaseline": {
+    "note": "Compares this live-informed run's per-unit matchStatus/representationStatus against the ORIGINAL deterministic-only sealed labels (docs/evaluation-v2/_stratified-sample-v2-labels-SEALED.json, byte-identical, unmodified) for the same 51 gtUnitIds.",
+    "unitsWithChangedDisposition": 2,
+    "unitsUnchanged": 49,
+    "changes": [
+      {
+        "gtUnitId": "doc-a::VII::7.01l",
+        "before": { "matchStatus": "CONTRADICTORY", "representationStatus": "UNREPRESENTED" },
+        "after": { "matchStatus": "UNREPRESENTED", "representationStatus": "UNREPRESENTED" },
+        "creditImplication": "No change - both dispositions are NO_CREDIT. The live judge downgraded an active contradiction flag to a plain non-match, a refinement in kind of explanation, not in credit outcome."
+      },
+      {
+        "gtUnitId": "doc-d::VI::6-02-e",
+        "before": { "matchStatus": "UNREPRESENTED", "representationStatus": "UNREPRESENTED" },
+        "after": { "matchStatus": "HONESTLY_UNRESOLVED", "representationStatus": "HONESTLY_UNRESOLVED" },
+        "creditImplication": "No change - both dispositions are NO_CREDIT. The live judge found a candidate that surfaces uncertainty rather than confirming the deterministic layer's 'nothing corresponds' reading - a safer classification, but not a credit change."
+      }
     ],
-    "conclusion": "No authorized model credential (AI_GATEWAY_API_KEY or ANTHROPIC_API_KEY, per this repository's own canonical selection order) is available in this execution environment. This is the same conclusion Phase 3F.1.5's Agent 1 independently reached in the same kind of sandboxed environment; this phase re-verified it directly rather than assuming it carried over unchanged."
-  },
-  "phaseCharterInstructionApplied": "Section 7 of the Phase 3F.1.5.1 charter: 'This phase requires an authorized model credential. If no credential is available: STOP. Return: PHASE_3F_1_5_1_EVALUATION_CALIBRATION_ENVIRONMENT_BLOCKED. Do not claim the phase passed using mocks alone.'",
-  "actionTaken": "STOP, per the charter's explicit instruction. No live semantic judge call was made. No mock, scripted responder, or synthetic stand-in was substituted for a live model and none of the downstream artifacts (05 through 12) claim to represent a real rerun.",
-  "downstreamSectionsAffected": {
-    "rationale": "Section 12's mandated rerun order is: live semantic judgment -> deterministic V2 aggregation -> independent second-pass adjudication -> compute agreement -> freeze results. With the first step blocked, the entire ordered rerun cannot execute as specified.",
-    "section8_judgeInputDiscipline": "NOT_EXECUTED - no live judge call was made, so the input-discipline requirement (judge sees only GT excerpt/claim + candidate excerpt/semantics, never a desired answer or historical disposition) is documented as a REQUIREMENT for the future run in 05-second-pass-protocol.json but was not exercised.",
-    "section9_10_newProtocolAndSample": "DESIGNED but NOT EXECUTED - see 05-second-pass-protocol.json and 06-frozen-sample.json, both explicitly marked as forward-looking specifications ready for a future unblocked iteration, not as records of an actual rerun.",
-    "section11_agreementComputation": "PRE-REGISTERED FORMULA RESTATED, NOT APPLIED to any new data - see 07-preregistered-agreement-computation.json.",
-    "section12_rerunExecution": "NOT_EXECUTED for the reason stated above.",
-    "section13_falseCreditRegression": "EXECUTED - this does NOT require a live judge; it is a deterministic re-verification that the 14 known false credits and the existing test suites still hold with zero code changes. See 09-known-false-credit-regression.json and 10-adversarial-regression.json.",
-    "section15_separatedMetrics": "REPORTED AS UNCHANGED FROM PHASE 3F.1.5 - no new rerun occurred to produce new numbers. See 11-separated-product-metrics.json."
-  },
-  "estimatedCostIfUnblocked": {
-    "note": "Preserved from Phase 3F.1.5 for planning purposes only - not incurred in this phase.",
-    "callVolumeEstimate": "Up to 51-100+ INDETERMINATE pairs across a fresh, larger stratified sample (Section 10 requires a larger sample than the prior 51), each requiring at most one bounded Layer-2 judge call under createBoundedJudge's maxCalls cap and full evidence-identity caching (lib/contract-model/evaluation-v2/adjudication.ts).",
-    "providerAssumedIfAvailable": "Anthropic API via ANTHROPIC_API_KEY or Vercel AI Gateway via AI_GATEWAY_API_KEY, per this repository's own existing provider-selection convention."
+    "criticalFinding": "NEITHER changed unit overlaps with the 32 detailed disagreements (or the 11 binary disagreements) forensically classified in 01-original-disagreement-forensics.json - confirmed by direct set-intersection against that artifact's full case list, which is empty. In other words: on this exact sample, actually running a live semantic judge - the second of Phase 3F.1.5's two hypothesized confounders - changed ZERO of the original disagreement cases' dispositions, and even the 2 unrelated cases it did touch stayed within the same credit outcome (NO_CREDIT). This is a direct, now-tested answer to the open question 13-remaining-evaluation-risks.json flagged: the absence of a live judge does NOT appear to be a material driver of the original second-pass disagreement on this sample. The 'communication gap' hypothesis (the taxonomy-vocabulary mismatch documented in 01-original-disagreement-forensics.json, responsible for 65.6% of detailed disagreements) remains the only confounder with real, demonstrated explanatory power; the live-judge confounder is now tested and does not hold up on this evidence."
   }
 }
