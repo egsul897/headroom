@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "TAXONOMY_CONFUSION_ANALYSIS",
+  "generatedAt": "2026-08-29T19:20:00Z",
+  "purpose": "Section 20: diagnose, from the actual confusion-matrix evidence (12-inter-reviewer-agreement.json) and the adjudicators' own written rationales, WHY detailed agreement failed - without presuming which states are confusable in advance. Evidence, not assumption, drives every claim below.",
+  "dominantConfusionCluster": {
+    "states": ["DISCOVERED_ONLY", "DISCOVERED_REVIEW_REQUIRED", "HONESTLY_UNSUPPORTED"],
+    "pairwiseConfusionCounts": {
+      "DISCOVERED_REVIEW_REQUIRED_vs_DISCOVERED_ONLY": 16,
+      "DISCOVERED_REVIEW_REQUIRED_vs_HONESTLY_UNSUPPORTED": 16,
+      "HONESTLY_UNSUPPORTED_vs_DISCOVERED_ONLY": 6
+    },
+    "casesEntirelyWithinTheTriangle": {
+      "count": 17,
+      "shareOfSample": 0.2615,
+      "caseIds": ["a-7.2", "a-7.3", "a-7.6", "a-7.8", "a-7.8-j", "doc-a::I::change-in-control", "doc-a::VI::6.01-chapeau", "doc-a::VI::6.04-chapeau", "doc-a::VI::6.05-chapeau", "doc-a::VI::6.08b-chapeau", "doc-a::VI::6.10-chapeau", "doc-b::VI::6-01-lead-in", "doc-b::VI::6-04-lead-in", "doc-b::VI::6-05-lead-in", "doc-d::VI::6-04-chapeau", "doc-d::VI::6-05-chapeau", "fwrg-6.06-b-ii"],
+      "note": "This one triangle alone accounts for 17 of the sample's 65 cases and for the majority of all non-agreement across the entire study."
+    },
+    "structuralCorrelation": "13 of these 17 cases (76%) are isChapeauShape=True in the underlying manifest (a chapeau/lead-in sentence introducing an enumerated list of sibling sub-baskets, sibling counts ranging 3-22). All 4 remaining cases involve either a nearby sibling sub-item (a-7.8-j, fwrg-6.06-b-ii) or dispersed candidates for a definitional claim with no single anchor (doc-a::I::change-in-control, doc-a::VI::6.08b-chapeau). This is not a random scatter across the 65-case sample - it is concentrated almost entirely in cases with a specific structural shape."
+  },
+  "rootCauseDiagnosis": {
+    "mechanism": "The rubric's necessary condition shared by DISCOVERED_ONLY, DISCOVERED_REVIEW_REQUIRED, and HONESTLY_UNSUPPORTED is 'a candidate exists that textually overlaps the claim's source location' (or does not). For an ordinary single-provision claim this is unambiguous. For a CHAPEAU/COMPOSITE claim - a claim whose ground-truth unit IS the introductory sentence of an enumerated list, distinct from every enumerated sub-item it introduces - 'the claim's source location' is genuinely underspecified by the rubric as written: does it mean ONLY the chapeau sentence's own exact textual span, or does it mean the chapeau sentence PLUS everything in the enumerated family it introduces?",
+    "evidenceFromRationales": [
+      {
+        "pattern": "Adjudicator B consistently answered 'the whole family' - crediting DISCOVERED_REVIEW_REQUIRED whenever ANY safety-flag or verification-finding marker existed anywhere among the chapeau's enumerated sub-baskets, even when that marker's own sectionRef named a specific different sibling sub-item.",
+        "representativeQuote": "a-7.3 (Adjudicator B): 'Chapeau and 16 Lien baskets are all INVENTORY_ONLY discovery text; several VERIFICATION_FINDING safety-flag markers (MISSING_PROVISO, MISSING_CONDITION...) exist' -> DISCOVERED_REVIEW_REQUIRED."
+      },
+      {
+        "pattern": "Adjudicators A and C consistently answered 'the chapeau sentence's own exact span only' - requiring a candidate to specifically quote or anchor to the chapeau's own introductory language before crediting DISCOVERED_ONLY or DISCOVERED_REVIEW_REQUIRED for the chapeau claim itself; when no candidate did so (even though many candidates existed for its enumerated siblings), they assigned HONESTLY_UNSUPPORTED or (when at least one candidate technically overlapped) DISCOVERED_ONLY.",
+        "representativeQuote": "doc-a::VI::6.01-chapeau (Adjudicator A): 'No candidate anywhere in the packet textually quotes or is anchored to the Section 6.01 general-prohibition/chapeau sentence itself' -> HONESTLY_UNSUPPORTED. (Adjudicator C independently reached the identical HONESTLY_UNSUPPORTED disposition with the identical reasoning pattern.)"
+      },
+      {
+        "pattern": "The secondary case (fwrg-6.06-b-ii) shows the SAME underlying mechanism at the candidate level rather than the chapeau level: the nearest candidate is anchored at the SIBLING sub-clause 6.06(b)(i), not the claim's own 6.06(b)(ii), and its excerpt text spatially runs into the target's own span. Two adjudicators (B, C) counted this sibling-adjacent overlap as 'textual overlap with the location' (DISCOVERED_ONLY); one (A) did not (HONESTLY_UNSUPPORTED)."
+      }
+    ],
+    "relationToWorkstreamA": "This is the SAME underlying principle Workstream A froze into the evaluator's matching logic (SAME_COVENANT_FAMILY_IS_NOT_SAME_SEMANTIC_CLAIM / I_CLAIM_IDENTITY) - shared covenant-family vocabulary or section proximity between siblings does not establish they are the same specific claim - but it was never carried into 06-taxonomy-operational-rubric.json's DISCOVERY-LAYER state definitions (DISCOVERED_ONLY / DISCOVERED_REVIEW_REQUIRED / HONESTLY_UNSUPPORTED), which is a REVIEWER-FACING rubric entirely independent of, and never read by, the frozen (Section 10) matcher code. The confirmed defect is in the rubric's own operational precision, not in the underlying taxonomy's conceptual design, and not in the frozen Workstream A matcher (which this analysis does not touch)."
+  },
+  "secondaryDisagreementPattern": {
+    "cases": ["SEMANTICALLY_REPRESENTED_UNVERIFIED vs PARTIAL_SEMANTIC_REPRESENTATION vs SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE vs HONESTLY_UNRESOLVED"],
+    "confusionCounts": {
+      "SEMANTICALLY_REPRESENTED_UNVERIFIED_vs_PARTIAL_SEMANTIC_REPRESENTATION": 3,
+      "SEMANTICALLY_REPRESENTED_UNVERIFIED_vs_HONESTLY_UNRESOLVED": 3,
+      "PARTIAL_SEMANTIC_REPRESENTATION_vs_SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE": 2,
+      "CONTRADICTORY_REPRESENTATION_vs_SEMANTICALLY_REPRESENTED_UNVERIFIED": 2
+    },
+    "diagnosis": "A much smaller, second cluster (single-digit counts, no single dominant pair) among the REPRESENTATION-layer states, arising from cases where a composite claim's sub-components had mixed evidence quality (some compiled, some not) or where a citation-technicality hedge sat alongside an otherwise-confident substantive assertion - genuinely hard judgment calls that do not share one common structural driver the way the chapeau/sibling cluster does. This pattern is disclosed for completeness but is NOT large enough on its own to explain the gate failure, and is not obviously fixable by a single rubric clarification the way the dominant cluster is - it is carried forward as an open residual risk (24-remaining-evaluator-risks.json) rather than acted on in this phase's one permitted redesign."
+  },
+  "statesNotImplicatedInAnyMeaningfulConfusion": [
+    "VERIFIED_SEMANTIC_REPRESENTATION (never assigned by any adjudicator across all 65 cases and all 3 raters - see 14-product-actionability-analysis.json for why)",
+    "AMBIGUOUS (never assigned - no case in the sample presented a genuine 2-candidate tie)",
+    "INCOMPARABLE (never assigned - the sample's ground-truth units were all resolvable)",
+    "CONTRADICTORY_REPRESENTATION (assigned exactly once across all 195 ratings [3 raters x 65 cases] - one rater on one case; the other two raters agreed with each other on SEMANTICALLY_REPRESENTED_UNVERIFIED for that same case, producing 2 symmetric off-diagonal confusion-matrix entries from a single underlying disagreement, not a repeated pattern)"
+  ],
+  "conclusionForOntologyDecision": "The evidence does NOT support merging DISCOVERED_ONLY, DISCOVERED_REVIEW_REQUIRED, and HONESTLY_UNSUPPORTED into a single state - see 14-product-actionability-analysis.json for why these three states remain independently product-actionable. The evidence DOES support a precise, minimal, evidence-backed clarification to the OPERATIONAL RUBRIC (not the state taxonomy or its names/count) that resolves 'what counts as textual overlap with a composite/chapeau claim's own location' and applies the already-frozen sibling-identity discipline to the discovery-layer states. This is the minimum evidence-backed intervention the data supports; see 15-ontology-redesign.json."
+}
