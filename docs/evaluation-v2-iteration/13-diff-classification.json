@@ -2,9 +2,8 @@
   "schemaVersion": "1.0",
   "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
   "artifactId": "DIFF_CLASSIFICATION",
-  "generatedAt": "2026-08-29T04:40:00Z",
-  "methodology": "git diff --stat 7304cd2 -- . (the phase's starting SHA) plus git status --short, evaluated immediately before this artifact was written.",
-  "verifiedResult": "Zero tracked files were modified. The only changes in the working tree are NEW, untracked files under docs/evaluation-v2-iteration/ (this phase's own artifacts) and the accompanying narrative report docs/phase-3f1-5-1-evaluation-calibration.md.",
+  "generatedAt": "2026-08-29T13:35:00Z",
+  "methodology": "git diff --stat 7304cd2 -- . (the phase's starting SHA), full file-by-file classification below.",
   "allowedCategories": ["EVALUATOR_IMPLEMENTATION", "EVALUATOR_TEST", "EVALUATOR_PROTOCOL", "EVALUATOR_ARTIFACT", "DOCUMENTATION", "NECESSARY_NON_SEMANTIC_INTERFACE"],
   "forbiddenCategories": ["PRODUCTION_SEMANTIC_TUNING", "PACKAGE_SPECIFIC_TUNING", "GROUND_TRUTH_MUTATION", "HISTORICAL_ARTIFACT_MUTATION"],
   "fileClassification": [
@@ -15,6 +14,9 @@
     { "path": "docs/evaluation-v2-iteration/04-live-semantic-judge-run.json", "category": "EVALUATOR_ARTIFACT" },
     { "path": "docs/evaluation-v2-iteration/05-second-pass-protocol.json", "category": "EVALUATOR_PROTOCOL" },
     { "path": "docs/evaluation-v2-iteration/06-frozen-sample.json", "category": "EVALUATOR_PROTOCOL" },
+    { "path": "docs/evaluation-v2-iteration/06-frozen-sample-packets-BLINDED.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/06-frozen-sample-labels-live-SEALED.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/06-frozen-sample-full-unit-detail-INTERNAL.json", "category": "EVALUATOR_ARTIFACT" },
     { "path": "docs/evaluation-v2-iteration/07-preregistered-agreement-computation.json", "category": "EVALUATOR_PROTOCOL" },
     { "path": "docs/evaluation-v2-iteration/08-second-pass-results.json", "category": "EVALUATOR_ARTIFACT" },
     { "path": "docs/evaluation-v2-iteration/09-known-false-credit-regression.json", "category": "EVALUATOR_ARTIFACT" },
@@ -24,17 +26,27 @@
     { "path": "docs/evaluation-v2-iteration/13-diff-classification.json", "category": "EVALUATOR_ARTIFACT" },
     { "path": "docs/evaluation-v2-iteration/14-remaining-evaluator-risks.json", "category": "EVALUATOR_ARTIFACT" },
     { "path": "docs/evaluation-v2-iteration/15-final-verdict.json", "category": "EVALUATOR_ARTIFACT" },
-    { "path": "docs/phase-3f1-5-1-evaluation-calibration.md", "category": "DOCUMENTATION" }
+    { "path": "docs/evaluation-v2-iteration/16-second-pass-rerun-disagreement-forensics.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/_second-pass-adjudication-RAW.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/phase-3f1-5-1-evaluation-calibration.md", "category": "DOCUMENTATION" },
+    { "path": "lib/contract-model/evaluation-v2/live-judge.ts", "category": "EVALUATOR_IMPLEMENTATION", "note": "New file: a real, network-calling SemanticJudge transport over Vercel AI Gateway, mirroring lib/extraction/vercel-ai-gateway-provider.ts's existing transport-swap pattern exactly. Sends the same unchanged prompt from adjudication.ts; adds transport only." },
+    { "path": "lib/contract-model/evaluation-v2/runner/live-rerun-sample.ts", "category": "EVALUATOR_IMPLEMENTATION" },
+    { "path": "lib/contract-model/evaluation-v2/runner/live-rerun-full-packets.ts", "category": "EVALUATOR_IMPLEMENTATION" },
+    { "path": "lib/contract-model/evaluation-v2/runner/replay-from-frozen-cache.ts", "category": "EVALUATOR_IMPLEMENTATION", "note": "Zero-cost, zero-network replay utility used only for a partial (52/592) cross-check attempt, disclosed as such in 08-second-pass-results.json." }
   ],
   "forbiddenCategoryInstanceCount": 0,
   "productionCodeTouchedCount": 0,
   "evaluationV2ProductionMatchingLogicTouchedCount": 0,
+  "matchingLogicFilesVerifiedUntouched": ["lib/contract-model/evaluation-v2/signals.ts", "lib/contract-model/evaluation-v2/semantic-correspondence.ts", "lib/contract-model/evaluation-v2/conflicts.ts", "lib/contract-model/evaluation-v2/matching.ts", "lib/contract-model/evaluation-v2/aggregate.ts", "lib/contract-model/evaluation-v2/adjudication.ts", "lib/contract-model/evaluation-v2/index.ts"],
   "packageSpecificRuleAddedCount": 0,
   "groundTruthFileTouchedCount": 0,
   "historicalIntegrityCheck": {
-    "method": "Re-hashed all 19 files listed in 00-freeze-manifest.json's phase3f15ArtifactsPreservedByteForByte.perFileHashes immediately before writing this classification.",
-    "combinedManifestHashAtPhaseEnd": "226116503ffbe1b13aec1a552bc36e4895450f1ab9d75877b03acbe5f9293dd7",
-    "comparisonToFreezeTimeHash": "IDENTICAL to 00-freeze-manifest.json's combinedManifestHashAtFreezeTime (226116503ffbe1b13aec1a552bc36e4895450f1ab9d75877b03acbe5f9293dd7) - zero drift across all 19 historical files, confirmed via direct diff of the two per-file hash listings, not merely by comparing the combined hash alone."
+    "method": "sha256 over all 19 files in 00-freeze-manifest.json's phase3f15ArtifactsPreservedByteForByte, re-verified at multiple checkpoints across this phase (before live-judge run, after, before/after second-pass dispatch).",
+    "combinedManifestHashAtEveryCheckpoint": "226116503ffbe1b13aec1a552bc36e4895450f1ab9d75877b03acbe5f9293dd7",
+    "comparisonToFreezeTimeHash": "IDENTICAL at every checkpoint, zero drift across all 19 historical files."
   },
-  "gateResult": "PASS - zero forbidden-category instances, zero production or evaluation-v2-matching-logic files touched."
+  "credentialHandling": {
+    "note": "The AI_GATEWAY_API_KEY credential was stored only in a local, git-ignored .env.local file (verified via git check-ignore and git status at every checkpoint), never inlined into a command, never committed, never written into any artifact. The Claude Code sandbox's own safety classifier blocked one attempt to pass it inline as a Bash argument, confirming the guardrail works as intended; the git-ignored-file + --env-file pattern was used instead."
+  },
+  "gateResult": "PASS - zero forbidden-category instances, zero production or evaluation-v2-matching-logic files touched, across the entire phase including the live rerun."
 }

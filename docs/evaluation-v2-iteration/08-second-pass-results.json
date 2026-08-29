@@ -2,9 +2,72 @@
   "schemaVersion": "1.0",
   "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
   "artifactId": "SECOND_PASS_RESULTS",
-  "generatedAt": "2026-08-29T04:15:00Z",
-  "status": "NOT_EXECUTED_ENVIRONMENT_BLOCKED",
-  "reason": "Per 04-live-semantic-judge-run.json, no authorized model credential is available, and the phase charter's Section 12 mandates live semantic judgment as the FIRST step of the rerun sequence, before deterministic V2 aggregation and before independent second-pass adjudication. No second-pass rerun was performed in Phase 3F.1.5.1. The 05-second-pass-protocol.json and 06-frozen-sample.json artifacts describe what this step WOULD execute once unblocked; this artifact intentionally contains no results, per the phase charter's explicit instruction not to substitute mocks for the live-model requirement and not to claim the phase passed without one.",
-  "whatRemainsTrueAndUnchanged": "The original Phase 3F.1.5 second-pass results (docs/evaluation-v2/08-second-pass-adjudication.json, 51 cases, binary agreement 78.4%/84.3%, detailed agreement 37.3%) remain the only actual second-pass adjudication evidence that exists. Nothing in Phase 3F.1.5.1 supersedes, replaces, or invalidates that record - it is preserved byte-for-byte (00-freeze-manifest.json) and remains the basis for 01-original-disagreement-forensics.json's classification.",
-  "whatThisPhaseAddedInstead": "A full forensic explanation of WHY that original result came in below threshold (01-original-disagreement-forensics.json), showing that the great majority of the shortfall (65.6% of detailed disagreements) is a taxonomy-vocabulary artifact rather than a genuine credit-direction disagreement, that the largest genuine disagreement cluster is traceable to a disclosed, deliberate design choice which is independently validated as CORRECT by at least one case (doc-a::VI::6.10-chapeau reproducing a confirmed historical false credit), and that a smaller, separate, newly-discovered V2_LOGIC_DEFECT (the over-broad 'Acquisition' definition match) also contributes. None of this changes the numeric gate outcome, which remains a miss - only a live rerun with a real credential can determine whether the taxonomy/protocol fix and the live semantic judge together would close the gap."
+  "generatedAt": "2026-08-29T13:15:00Z",
+  "status": "EXECUTED",
+  "supersedes": "08-second-pass-results.json's prior NOT_EXECUTED_ENVIRONMENT_BLOCKED status (04-live-semantic-judge-run.json since unblocked; this artifact records the actual second-pass rerun that followed).",
+  "executionOrderCompliance": "Executed in the charter's mandated order: (1) live semantic judgment against the frozen 51-case sample (04-live-semantic-judge-run.json, then re-executed with full evidence packets in 06-frozen-sample-packets-BLINDED.json / 06-frozen-sample-labels-live-SEALED.json - same scope, same model, same protocol, no new network calls beyond reproducing the same live judgment); (2) deterministic V2 aggregation over that live-informed judgment; (3) independent second-pass adjudication (dispatched as an isolated agent with zero knowledge of V2's own dispositions, the false-credit history, or any prior phase's results - given only 05-second-pass-protocol.json and the blinded packets); (4) agreement computation per 07-preregistered-agreement-computation.json's frozen formula; (5) this verdict.",
+  "sampleScope": "The SAME 51 gtUnitIds as Phase 3F.1.5's original sample - not a new draw, per the user's explicit instruction not to change the sample before seeing results.",
+  "secondPassReviewerRecord": {
+    "dispatchMethod": "Isolated Agent tool dispatch (general-purpose, opus), given ONLY docs/evaluation-v2-iteration/05-second-pass-protocol.json and docs/evaluation-v2-iteration/06-frozen-sample-packets-BLINDED.json - no access to this conversation's history, no access to docs/evaluation-v2/_stratified-sample-v2-labels-SEALED.json, docs/evaluation-v2-iteration/06-frozen-sample-labels-live-SEALED.json, 01-original-disagreement-forensics.json, the 14 known-false-credit list, or any other file revealing a prior disposition.",
+    "casesJudged": 51,
+    "perCandidateJudgmentsRecorded": 255,
+    "outputFile": "docs/evaluation-v2-iteration/_second-pass-adjudication-RAW.json",
+    "dispositionCounts": {
+      "UNSUPPORTED_SILENT": 28,
+      "REVIEW_REQUIRED_FLAG_ONLY": 16,
+      "DISCOVERY_ONLY_NOT_REPRESENTED": 4,
+      "GT_NOT_RESOLVABLE": 3,
+      "VERIFIED_OR_UNVERIFIED_REPRESENTATION": 0,
+      "PARTIAL_REPRESENTATION": 0,
+      "HONESTLY_UNRESOLVED": 0,
+      "CONTRADICTORY": 0,
+      "AMBIGUOUS": 0
+    },
+    "reviewerSelfReportedDataQualityObservations": "At least 8 packets have a mis-resolved groundTruthExcerpt despite being marked RESOLVED_FROM_RAW_SOURCE (resolved to unrelated definition text); several candidates carry WRONG_OPERATIVE_VERSION conflicts (doc-d or doc-b text offered against a doc-a claim). These are pre-existing excerpt-resolution limitations disclosed in Phase 3F.1.5's own 13-remaining-evaluation-risks.json, not new defects introduced by this phase."
+  },
+  "v2ToTaxonomyMappingUsedForComparison": {
+    "necessity": "V2's native code output uses matchStatus/representationStatus enum values (UNREPRESENTED, PARTIAL, EXACT_SINGLE, EXACT_COMPOSITE, HONESTLY_UNRESOLVED, AMBIGUOUS, CONTRADICTORY), not the second-pass protocol's 9-state vocabulary directly - V2's own production matching code was correctly never modified to emit a different vocabulary (that would be a production/evaluator-matching-logic change, forbidden after seeing results, and was never attempted). A translation was therefore required to perform the detailed comparison at all.",
+    "translationRule": {
+      "EXACT_SINGLE_or_EXACT_COMPOSITE": "VERIFIED_OR_UNVERIFIED_REPRESENTATION",
+      "PARTIAL": "PARTIAL_REPRESENTATION",
+      "HONESTLY_UNRESOLVED": "HONESTLY_UNRESOLVED",
+      "AMBIGUOUS": "AMBIGUOUS",
+      "CONTRADICTORY": "CONTRADICTORY",
+      "UNREPRESENTED_subSplit": {
+        "rule": "V2's own already-computed reasonForNoCredit text (frozen in 06-frozen-sample-labels-live-SEALED.json's v2Reason field, written in the SAME run that produced the frozen packets, BEFORE the second-pass reviewer was dispatched) already distinguishes three patterns in its own wording, corresponding exactly to the three states 02-state-taxonomy.json already defined before this rerun: '...explicitly flag the gap...' -> REVIEW_REQUIRED_FLAG_ONLY; '...every one of them is inventory-only...' -> DISCOVERY_ONLY_NOT_REPRESENTED; '...Nothing represents this claim...' -> UNSUPPORTED_SILENT.",
+        "integrityNote": "This pattern-match rule was derived and finalized BEFORE the agreement numbers were computed, from data (V2's own reasonForNoCredit strings) that was itself frozen before the second-pass reviewer's judgments were seen. It is a mechanical extraction of a distinction V2's matching.ts logic had already made internally, not a discretionary choice made to influence the outcome - it was applied uniformly to all 18 UNREPRESENTED cases in the sealed labels with zero manual overrides or exceptions."
+      }
+    },
+    "goldenPathVerification": "Attempted a full mechanical replay from the frozen packets' own embedded semanticJudgeOutputs (docs/evaluation-v2-iteration/06-frozen-sample-full-unit-detail-INTERNAL.json) to cross-check this text-pattern rule against a from-scratch recomputation; the replay could only recover 52 of the original 592 judge outputs (buildEvidencePacket's evidence packets, by design, retain judge outputs only for the trimmed top-5-candidate view, not all originally-evaluated pairs) and was therefore insufficient for a full independent cross-check. The text-pattern rule above is the one actually used; this limitation is disclosed rather than hidden."
+  },
+  "agreementResults": {
+    "totalCasesInSample": 51,
+    "excludedFromComputation": {
+      "count": 3,
+      "reason": "Second-pass reviewer classified GT_NOT_RESOLVABLE (empty/unusable ground-truth excerpt) - excluded from both binary and detailed computation per 07-preregistered-agreement-computation.json's binaryCollapseRule.excludedFromBinaryComputation, applied symmetrically to detailed agreement for the same reason.",
+      "gtUnitIds": ["doc-b::AMENDMENT::signatory-loan-parties", "doc-c::recital-agreement-to-amend", "doc-d::XII::cam-b"]
+    },
+    "computedOverCaseCount": 48,
+    "preRegisteredThresholds": { "binaryAgreementRequired": 0.90, "detailedAgreementRequired": 0.85 },
+    "binaryAgreement_inclusivePartialAsCredit_PRIMARY": { "agree": 42, "disagree": 6, "rate": 0.875, "thresholdMet": false },
+    "binaryAgreement_strictExactMatchOnlyAsCredit_sensitivityCheck": { "agree": 45, "disagree": 3, "rate": 0.9375, "thresholdMet": true, "note": "Sensitivity check only, not the primary gate metric per 07's own pre-registration." },
+    "detailedDispositionAgreement": { "agree": 9, "disagree": 39, "rate": 0.1875, "thresholdMet": false },
+    "gateOutcome": "THRESHOLDS_MISSED",
+    "comparisonToOriginalPhase3F15Result": {
+      "originalBinaryInclusive": 0.7843,
+      "newBinaryInclusive": 0.875,
+      "binaryDelta": "+9.07 points - improved, but still below the 90% threshold",
+      "originalDetailed": 0.3725,
+      "newDetailed": 0.1875,
+      "detailedDelta": "-18.5 points - WORSE in raw terms, explained below, not a regression in substance"
+    }
+  },
+  "whyDetailedAgreementGotNumericallyWorseDespiteTheTaxonomyFix": "01-original-disagreement-forensics.json's headline finding was that 65.6% of the ORIGINAL detailed disagreements were pure vocabulary mismatches (V2 had a richer disposition set than the second-pass reviewer's old 6-option rubric). This phase gave the reviewer V2's own richer vocabulary specifically to remove that artifact. It worked in the sense that the reviewer now correctly distinguishes 'HONESTLY_UNRESOLVED'-style states from plain non-existence - but doing so surfaced a NEW, finer-grained, genuine disagreement: V2's own internal criteria for what counts as REVIEW_REQUIRED_FLAG_ONLY vs DISCOVERY_ONLY_NOT_REPRESENTED vs UNSUPPORTED_SILENT (or CONTRADICTORY) do not match a careful independent reviewer's criteria for the same three-way (or four-way) distinction, even though almost all of these disagreements (31 of 39, 79.5%) leave the CREDIT decision unchanged. This is real progress on the specific problem the taxonomy fix targeted (see the false-credit gate result below) revealing a DIFFERENT, previously-invisible-because-masked-by-vocabulary-mismatch calibration gap underneath it.",
+  "knownFalseCreditRegressionOnThisRun": {
+    "note": "All 14 confirmed Phase 3F.1.1 false credits present in this 51-case sample remain correctly rejected on BOTH sides - V2's live-informed labels AND the second-pass reviewer's independent judgments.",
+    "v2SideAllRejected": true,
+    "secondPassSideAllRejected": true,
+    "notableImprovement": "doc-a::VI::6.10-chapeau (the case that Phase 3F.1.5's original second-pass reviewer incorrectly re-credited, reproducing a confirmed historical false credit) was this time correctly classified DISCOVERY_ONLY_NOT_REPRESENTED (no credit) by the new, independently-dispatched reviewer. This is direct evidence that the new protocol's abstract worked example on the discovery-vs-representation distinction (05-second-pass-protocol.json) is doing real, effective work, even though the overall agreement gate still misses its thresholds for other reasons."
+  },
+  "rewriteProhibitionCompliance": "No V2 matching/signal/conflict logic, no second-pass protocol wording, no sample composition, and no pre-registered threshold was altered at any point during or after this run. The V2-to-taxonomy translation rule (above) was fixed using only data that predates the second-pass reviewer's dispatch. Per the user's explicit instruction, since the pre-registered gate was missed, no patch or iteration follows this result within this phase."
 }
