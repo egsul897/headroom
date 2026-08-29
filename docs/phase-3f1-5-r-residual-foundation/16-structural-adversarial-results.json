@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "STRUCTURAL_ADVERSARIAL_RESULTS",
+  "generatedAt": "2026-08-30T00:13:00Z",
+  "purpose": "Section 26: results of the required generalized parser adversarial tests for P1-10.",
+  "testFile": "tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts",
+  "result": "24 tests, all pass.",
+  "categoriesCovered": ["nested numeric headings", "roman numerals", "alphabetic clauses", "malformed rank jumps", "typography resembling headings (citation-shaped in-text references, across all signal phrases)", "continuation paragraphs", "schedules/exhibits", "definitions containing heading-like text", "repeated section labels", "sibling occurrence identity", "amendment text", "valid deep nesting"],
+  "noPackageSpecificLogic": "Confirmed - the plausibility gate is a general preceding-phrase heuristic, never keyed to FWRG/LSB/CONMED/DSGR content.",
+  "existingTestsUpdatedToProveFix": ["tests/contract-model/architecture-proposal-node-identity.test.ts (Case A)", "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts (Q3/Q4)", "tests/foundation-audit/structural-coverage-remediation.test.ts (G1)"],
+  "regressionSuiteConfirmation": "Full repo vitest run at merge time: 189 files / 1938 tests pass (see 20-test-quality-gates.json) - includes all pre-existing structural-index/stage-structure tests alongside these new adversarial cases, zero regressions."
+}

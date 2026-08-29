@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "RANK_STACK_REMEDIATION",
+  "generatedAt": "2026-08-30T00:06:00Z",
+  "purpose": "Section 16: the actual generalized fix implemented for P1-10.",
+  "defectId": "P1-10",
+  "designChosen": "Candidate design 1 from the prior determination (smallest blast radius): a plausibility gate before a same/shallower-rank pop.",
+  "implementation": {
+    "file": "lib/contract-model/compiler/stage-structure.ts",
+    "functionsAdded": ["isPlausibleTopLevelHeading", "rejectByPrecedingContext"],
+    "mechanism": "Applied to ARTICLE/SECTION regex match candidates immediately after bestMatches selects the winning pattern, BEFORE any raw node is constructed - protects both the clause-tree region-slicing and the rank-stack, not just the stack-pop step. A candidate directly preceded, with no intervening sentence break, by a citation-signal phrase (under, pursuant to, referred to in, as defined in, set forth in, described in, specified in, contemplated by, required by, permitted by, governed by, in accordance with, subject to, provided (for) in) is rejected outright and never becomes a node.",
+    "heuristicConsideredAndRejected": "A companion 'sentence-fragment continuation' heuristic (reject if a lowercase word immediately follows) was evaluated and deliberately NOT adopted - it produced a real false positive against an existing legitimate fixture (cross-reference-boundary-remediation.test.ts's 'SECTION 1.10. Calculations. the greater of...'), documented in the code rather than silently discarded.",
+    "detectionSignalDisposition": "SECTION_NUMBER_SEQUENCE_ANOMALY left untouched as defense-in-depth for non-citation-shaped irregularities - confirmed via a new test (G1b) that it still fires on genuinely non-citation-shaped sequence irregularities even after the root fix."
+  },
+  "noPackageSpecificLogic": "The plausibility gate is a general structural/typographic heuristic (preceding-phrase detection), never keyed to FWRG/LSB/CONMED/DSGR content.",
+  "testResults": "24-test adversarial suite (tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts) covering citation typography across all signal phrases, nested numeric/roman/alphabetic/deep nesting, malformed rank jumps, continuation paragraphs, schedules/definitions with heading-like text, repeated labels, sibling occurrence identity, amendment-quoted text - all pass. 4 existing tests documenting the prior bug (Case A in architecture-proposal-node-identity.test.ts; Q3/Q4 in part2-adversarial-structural-assumptions.test.ts; G1 in structural-coverage-remediation.test.ts) updated to prove the fix.",
+  "realDataRegression": {
+    "source": "scripts/foundation-audit-known-package-replay.ts, before vs. after",
+    "fwrg": { "change": "byte-identical output, hash unchanged - 0 change" },
+    "lsb": { "change": "byte-identical output, hash unchanged - 0 change" },
+    "conmed": { "sectionNumberSequenceAnomaly": "4 -> 1", "totalNodes": "2736 -> 2695", "duplicateLegalLabels": "377 -> 366", "interpretation": "Real misattachments corrected in a live package." },
+    "dsgr": { "sectionNumberSequenceAnomaly": "27 -> 6", "totalNodes": "4149 -> 4155", "duplicateLegalLabels": "546 -> 517", "interpretation": "Real misattachments corrected in the largest real dataset." },
+    "invariantsPreserved": "errorFindings stayed 0, nodeIdCollisions stayed 0, package-graph relationship/unresolved counts unchanged, source-integrity and structure-output-hash reproducibility intact across all 4 packages.",
+    "residualAnomalies": "The remaining 1 (CONMED) / 6 (DSGR) SECTION_NUMBER_SEQUENCE_ANOMALY findings are non-citation-shaped irregularities (e.g. amendment-restated sections) - consistent with the detection signal's own disclosed heuristic limitation, not evidence the fix is incomplete for the defect it targets."
+  },
+  "verdict": "GENUINELY REMEDIATED - not merely detection-mitigated. This is a stronger outcome than the bounded architecture-change-proposal path Section 16 anticipated as a fallback."
+}

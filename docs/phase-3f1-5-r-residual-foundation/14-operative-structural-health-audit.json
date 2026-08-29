@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "OPERATIVE_STRUCTURAL_HEALTH_AUDIT",
+  "generatedAt": "2026-08-30T00:12:00Z",
+  "purpose": "Section 22: determine and fix whether operative-state resolution composes structural health.",
+  "gap": "operative-state.ts never called the structural index's healthDiagnostics() method anywhere - a section already flagged INVALID_SOURCE_SPAN/ERROR by the structural index could still be confidently reported OPERATIVE_STATE_RESOLVED by the amendment pipeline. Reproduced by tests/foundation-audit/combined-failures.test.ts's first describe block, which previously only documented the gap via a comment.",
+  "fix": {
+    "newFunction": "structuralHealthForNode(index, nodeId) in amendment/operative-state.ts - checks a resolved node plus its structural descendants (a SECTION's own reported text is getNodeText(nodeId, 'DESCENDANTS'), so a corrupted descendant corrupts that text just as surely as a corrupted node itself) against healthDiagnostics()'s ERROR-severity findings only. INFO findings (AMBIGUOUS_LEGAL_REFERENCE, DUPLICATE_LABEL_EXPECTED, DUPLICATE_NORMALIZED_PATH, SECTION_NUMBER_SEQUENCE_ANOMALY) never gate anything, matching every other consumer of this API - these are normal, expected drafting realities per structural-index.ts's own header comment.",
+    "compositionRule": "OPERATIVE_CONFIDENCE now requires STRUCTURAL_HEALTH_SUFFICIENT in addition to a UNIQUE target-resolution match. New structuralHealthStatus/structuralHealthIssues fields added to OperativeProvisionView (types.ts). currentText is withheld and status downgraded to OPERATIVE_STATE_PARTIAL when the underlying structural interpretation is known unsafe - attemptedText stays visible (mirrors the existing targetResolutionStatus gate's own disclosed-but-withheld pattern).",
+    "independenceFromTargetResolution": "Deliberately independent of resolveUniqueNodeByRef/resolveUniqueDefinitionByRef's own UNIQUE/AMBIGUOUS/NOT_FOUND axis - a reference can be genuinely UNIQUE (exactly one physical occurrence carries this legal reference) while that SAME occurrence is independently known-corrupted at the structural layer. This is exactly the emergent, compound risk Architecture Invariant #18 (shared-substrate defects defeating independent-seeming systems) already names."
+  },
+  "testUpdates": "combined-failures.test.ts's first describe block updated to assert the FIXED behavior (no longer just documenting the gap via comment). 3 additional tests added: no-amendment scope unchanged, healthy-node no-regression, corrupted-descendant propagation. Also required fixing 2 pre-existing fake StructuralIndex mocks in tests/foundation-audit/effective-dating-adversarial.test.ts that lacked getDescendants/healthDiagnostics methods, since the composition now calls those on the UNIQUE-resolution path.",
+  "regressionConfirmation": "semantic-coverage-real-fwrg-regression.test.ts and semantic-coverage-real-lsb-regression.test.ts (real document fixtures) produced identical discovery/compile/coverage output before and after. All CONMED/DSGR-shaped tests pass unchanged.",
+  "verdict": "GENUINELY REMEDIATED - fail-closed composition now real, not merely disclosed as a gap."
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "REAL_DATA_REGRESSION",
+  "generatedAt": "2026-08-30T00:14:00Z",
+  "purpose": "Section 29: known-package regression on FWRG/LSB/CONMED/DSGR after all 4 workstream fixes are integrated together (no new unseen package).",
+  "structuralRegressionP1_10": {
+    "source": "Workstream A, scripts/foundation-audit-known-package-replay.ts",
+    "fwrg": "byte-identical, 0 change",
+    "lsb": "byte-identical, 0 change",
+    "conmed": { "sectionNumberSequenceAnomaly": "4 -> 1", "totalNodes": "2736 -> 2695", "duplicateLegalLabels": "377 -> 366" },
+    "dsgr": { "sectionNumberSequenceAnomaly": "27 -> 6", "totalNodes": "4149 -> 4155", "duplicateLegalLabels": "546 -> 517" },
+    "invariants": "errorFindings=0, nodeIdCollisions=0 across all 4, unchanged."
+  },
+  "operativeStateRegressionP1_11": {
+    "source": "Workstream B, real fixtures mirroring scripts/phase-2g-rerun-conmed.ts's exact document assembly (no paid LLM calls - SyntheticStageCaller fallback since no API key configured this session)",
+    "fwrgLsb": "Single-document, no amendments - identical candidate/node sets with and without the fix; every candidate defaults to UNKNOWN_SUPERSESSION_STATUS - purely additive, zero behavior change.",
+    "conmed": "Real 4-document package: amendment pipeline found 8 deterministic + 1 semantic effect, 4 real amended provisions attach to the base instrument - but every one has appliedChain.length===0 (CONDITIONAL_UNRESOLVED effective dates, matching this repo's own previously-frozen phase-2f-freeze/phase-2g/conmed-amendment-regression.json). Correctly, ZERO nodes are flagged KNOWN_SUPERSEDED - an unapplied effect must never mark its target superseded. Not new/silent staleness; a pre-existing, previously-disclosed CONMED characteristic now made explicit (100 nodes go from silent to affirmatively CURRENT_OPERATIVE, backed by a real check).",
+    "dsgr": "The package graph does not link doc-B/C/D as amendments of doc-A in this fixture (0 provisions attach to any instrument) - a pre-existing, disclosed DSGR package-graph characteristic, unrelated to P1-11. Reports CURRENT_OPERATIVE everywhere, honestly reflecting 'no supersession evidence found.'",
+    "noPreviouslySilentStaleDataUncovered": "No production code outside tests/scripts currently constructs a full SemanticCompilerInput/calls runDiscoveryPipeline with real operative-state (confirmed by grep) - the mechanism now exists and generalizes correctly (no CONMED/DSGR-specific tuning), and will flag KNOWN_SUPERSEDED the moment a real orchestrator wires it in or CONMED's conditional dates resolve concretely."
+  },
+  "definitionOperativeStructuralHealthRegressionWorkstreamD": {
+    "source": "Workstream D",
+    "semanticCoverageFwrgLsb": "semantic-coverage-real-fwrg-regression.test.ts and semantic-coverage-real-lsb-regression.test.ts (real document fixtures) produced identical discovery/compile/coverage output before and after.",
+    "conmedDsgrShapedTests": "All pass unchanged: ir/covenant-mechanics.test.ts, phase-2f*-robustness.test.ts, phase-2g-amendment-precedence.test.ts, architecture-proposal-node-identity.test.ts, phase-3f1-1-forensic-machinery.test.ts, compiler-orchestrator.test.ts (including its VALIDATION-stage assertions)."
+  },
+  "safeFailureVolumeRealData": {
+    "source": "18-review-event-volume-analysis.json, this phase's own zero-cost real FWRG+LSB run",
+    "summary": "827 real semantic units audited (477 at CRITICAL/MATERIAL tier); 477 distinct ClaimReviewItem rows created, one per genuinely distinct unresolved material claim."
+  },
+  "combinedFullSuiteConfirmation": "20-test-quality-gates.json's own full vitest run (189 files / 1938 tests, all passing) is the final, authoritative confirmation that all 4 workstreams plus the new safe-failure architecture compose correctly together with zero regressions across every existing FWRG/LSB/CONMED/DSGR-touching test in the repository.",
+  "noNewUnseenPackageUsed": true
+}

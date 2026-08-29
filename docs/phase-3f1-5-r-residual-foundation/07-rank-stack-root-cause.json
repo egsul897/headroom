@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "RANK_STACK_ROOT_CAUSE",
+  "generatedAt": "2026-08-30T00:05:00Z",
+  "purpose": "Section 16: reproduce and classify P1-10's failure mechanism before remediation.",
+  "defectId": "P1-10",
+  "mechanism": "In lib/contract-model/compiler/stage-structure.ts, an in-text citation shaped like a real heading (e.g. '...permitted under Section 6.05 Reserved. and subject to...') satisfied the ARTICLE/SECTION regex patterns just as well as a genuine heading. Once accepted as a raw top-level SECTION, it corrupted two consumers of the same raw list: the clause-tree region-slicing (which bounds each SECTION's clause-parsing region by the NEXT top-level raw's charStart, truncating the real section's region before its own later lettered clauses) and the global rank-based stack pass (which popped the real enclosing section early and re-parented its own later lettered clauses under the spurious node).",
+  "verificationMethod": "Workstream A traced parseDocumentStructure's raw-construction and rank-stack loop directly against the known Q3/Q3b fixtures from Phase 3F.1.4's own determination (docs/foundation-remediation/01-source-accounting-remediation.json p110Q3Determination).",
+  "priorMitigationStatus": "SECTION_NUMBER_SEQUENCE_ANOMALY (INFO, non-gating) detection signal was already live (Phase 3F.1.4) - detection only, never corrected the misattachment.",
+  "classification": "Confirmed real, reproducible, production-relevant structural defect - matches the prior phase's determination exactly, with no new surprises."
+}
