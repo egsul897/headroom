@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "KNOWN_FALSE_CREDIT_REGRESSION",
+  "generatedAt": "2026-08-29T04:20:00Z",
+  "purpose": "Section 13's mandatory negative-control regression: verify zero of the 14 Phase 3F.1.1 confirmed false credits regained silent credit as a result of any work performed in Phase 3F.1.5.1.",
+  "methodology": "The dsgr-false-credit-gate test suite (tests/evaluation-v2/dsgr-false-credit-gate.test.ts) independently re-derives V2's disposition for all 26 scorer-artifact-corrected cases from raw frozen evidence (ground truth + first-blind-run fixtures + the scorer-bridge false-credit list) on every run - it is not a cached/committed-result check. It was re-run fresh in Phase 3F.1.5.1 rather than merely citing the Phase 3F.1.5 committed result. Note: the underlying runner script (lib/contract-model/evaluation-v2/runner/run-dsgr.ts) writes directly into the FROZEN docs/evaluation-v2/ artifact directory and was deliberately NOT invoked in this phase, to avoid overwriting the byte-preserved historical artifacts recorded in 00-freeze-manifest.json; the test suite exercises the identical reconciliation logic (reconcileKnownFalseCredits / evaluateFalseCreditGate from lib/contract-model/evaluation-v2/reconciliation.ts) without writing any file, so it is a safe, equivalent regression check.",
+  "commandRun": "npx vitest run tests/evaluation-v2/dsgr-false-credit-gate.test.ts",
+  "result": {
+    "testFile": "tests/evaluation-v2/dsgr-false-credit-gate.test.ts",
+    "testsRun": 4,
+    "testsPassed": 4,
+    "testsFailed": 0,
+    "durationMs": 12114,
+    "keyAssertion": "GATE: every one of the 14 previously-confirmed false credits is rejected or flagged, none silently upheld - PASSED. gate.silentlyUpheld === []",
+    "allFourteenConfirmedRejectedOrFlagged": [
+      "doc-a::VI::6.01-chapeau", "doc-a::VI::6.04-chapeau", "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "doc-a::VI::6.05-chapeau", "doc-a::VI::6.05-ip-flush-prohibition", "doc-a::VI::6.08b-chapeau",
+      "doc-a::VI::6.10-chapeau", "doc-b::VI::6-01-lead-in", "doc-b::VI::6-04-lead-in", "doc-b::VI::6-05-lead-in",
+      "doc-d::VI::6-01-chapeau", "doc-d::VI::6-04-chapeau", "doc-d::VI::6-05-chapeau", "doc-d::VI::6-08-b-chapeau"
+    ],
+    "notableCrossReference": "doc-a::VI::6.10-chapeau is independently confirmed rejected here AND is the subject of this phase's most important forensic finding (01-original-disagreement-forensics.json): the Phase 3F.1.5 second-pass reviewer, unaware of its false-credit history, credited it anyway. This regression check confirms V2's own disposition on this unit has not drifted or been weakened."
+  },
+  "regressionStatus": "NO_REGRESSION - identical outcome to Phase 3F.1.5's committed docs/evaluation-v2/06-known-false-credit-reconciliation.json (silentlyUpheld: [], passed: true, 4 FALSE_CREDIT_CONFIRMED_AND_REJECTED + 22 AMBIGUOUS_NEEDS_REVIEW across the 26-case bridge population).",
+  "gatePassed": true
+}

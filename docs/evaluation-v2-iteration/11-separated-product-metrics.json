@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "SEPARATED_PRODUCT_METRICS",
+  "generatedAt": "2026-08-29T04:30:00Z",
+  "status": "REPORTED_UNCHANGED_FROM_PHASE_3F1_5_NO_NEW_RERUN",
+  "reason": "No live-judge rerun occurred (04-live-semantic-judge-run.json), so no new aggregate numbers exist to report. These are the same DSGR numbers already committed in docs/evaluation-v2/07-dsgr-v2-aggregate-metrics.json, restated here explicitly split across the five metric categories Section 15 requires be reported separately and never combined into one score.",
+  "fiveSeparatedMetrics": {
+    "1_discoveryRecall": {
+      "note": "Not separately broken out as its own top-line number in the Phase 3F.1.5 artifact - inventoryOnlySurfacedRate + noCorrespondingCandidateRate's complement approximates it, but a precise discovery-only recall figure (using this phase's DISCOVERED_ONLY + DISCOVERED_REVIEW_REQUIRED states from 02-state-taxonomy.json) was not computed in Phase 3F.1.5 and is NOT computed retroactively here, since doing so would require re-deriving from the same frozen evidence with a metric definition invented after seeing the numbers - exactly the kind of after-the-fact metric engineering this phase's charter prohibits. This gap is itself recorded as a remaining risk in 14-remaining-evaluator-risks.json: a future rerun should compute this as a genuinely new, first-class metric rather than reusing an old byte-identical run."
+    },
+    "2_semanticRepresentationRecall": {
+      "criticalMateriality": { "numerator": 1, "denominator": 326, "rate": 0.003067 },
+      "materialMateriality": { "numerator": 4, "denominator": 477, "rate": 0.008386 },
+      "source": "docs/evaluation-v2/07-dsgr-v2-aggregate-metrics.json criticalSemanticRecall / materialSemanticRecall - these numbers already correspond to this phase's semanticRepresentationRecallNumeratorStates definition (02-state-taxonomy.json), since V2's original REPRESENTED/PARTIALLY_REPRESENTED dispositions map directly onto SEMANTICALLY_REPRESENTED_* / PARTIAL_SEMANTIC_REPRESENTATION."
+    },
+    "3_verifiedSemanticRepresentationRecall": {
+      "note": "V2's deterministic-only run (no live judge ever exercised) makes 'verified' and 'semantically represented' collapse to the same thing for every EXACT/COMPOSITE disposition in this dataset, since Layer 3's verification-consistency check IS part of the deterministic pipeline and was already applied. The numbers above (2) are therefore also the correct answer for this metric under a deterministic-only run. A live judge run could, in principle, separate these two numbers further (e.g. finding a compiled representation the deterministic layer missed, or finding a verification contradiction it missed) - this remains untested (04-live-semantic-judge-run.json)."
+    },
+    "4_safeSurfacingRate": {
+      "note": "Not separately broken out as a first-class top-line metric in the Phase 3F.1.5 artifact. honestUnresolvedOrUnsupportedRate exists but, per this phase's own forensic finding (01-original-disagreement-forensics.json), conflates the SAFE state (HONESTLY_UNRESOLVED) with the DANGEROUS state (HONESTLY_UNSUPPORTED) under one combined rate. This conflation is itself flagged in 14-remaining-evaluator-risks.json as a concrete, actionable fix for the next V2 code iteration: the metric should be split using the exact taxonomy in 02-state-taxonomy.json."
+    },
+    "5_dangerousUnaccountedSemanticUnitCount": {
+      "count": 175, "materialityScope": "CRITICAL + MATERIAL combined",
+      "source": "docs/evaluation-v2/07-dsgr-v2-aggregate-metrics.json dangerousUnaccountedCount, unchanged."
+    }
+  },
+  "explicitNonCombination": "These five numbers are reported side by side and are never averaged, weighted, or folded into a single 'coverage score.' A lower semantic-representation number and a higher dangerous-omission count remain acceptable, expected outcomes of an honest measurement, per Section 16 of the phase charter and Phase 3F.1.5's own final verdict's whatThisVerdictDoesNotMean statement, both of which this phase leaves entirely undisturbed."
+}

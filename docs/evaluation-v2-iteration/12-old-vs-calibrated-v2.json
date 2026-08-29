@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "OLD_VS_CALIBRATED_V2_COMPARISON",
+  "generatedAt": "2026-08-29T04:35:00Z",
+  "status": "NOT_APPLICABLE_NO_CALIBRATION_RERUN_EXECUTED",
+  "reason": "This artifact is only meaningful once a calibrated rerun (with live semantic judgment, the new state taxonomy, and the new second-pass protocol) has actually produced a second set of numbers to compare against Phase 3F.1.5's original run. Since 04-live-semantic-judge-run.json establishes that no rerun occurred in Phase 3F.1.5.1, 'Evaluation V2' as measured is byte-identical to Phase 3F.1.5's version - there is no calibrated variant yet to compare it against.",
+  "whatWouldBeComparedInAFutureIteration": [
+    "Binary and detailed agreement rates, old (78.4%/84.3% binary, 37.3% detailed) vs. new, computed under the new preregistered formula in 07-preregistered-agreement-computation.json.",
+    "Whether giving the second-pass reviewer the full state vocabulary (05-second-pass-protocol.json) closes most of the 65.6%-of-disagreements taxonomy-mismatch gap identified in 01-original-disagreement-forensics.json, as predicted, or whether some other confound emerges once actually tested.",
+    "Whether a live semantic judge changes any INDETERMINATE dimension's disposition on the DSGR dataset or the fresh sample, and in which direction.",
+    "Whether the doc-a::VI::6.10-chapeau known-false-credit-reproduction pattern recurs under the new protocol, or whether the abstract worked examples in the new protocol are sufficient to prevent a reviewer from reproducing it while still blind to the specific false-credit list."
+  ]
+}

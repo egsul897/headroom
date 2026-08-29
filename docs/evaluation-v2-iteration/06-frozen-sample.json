@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "FROZEN_SAMPLE_DESIGN_V2",
+  "generatedAt": "2026-08-29T04:05:00Z",
+  "status": "DESIGNED_NOT_EXECUTED",
+  "whyNotExecuted": "Per 05-second-pass-protocol.json's whyNotExecuted rationale - the mandated rerun order requires live semantic judgment first (Section 12), which is blocked (04-live-semantic-judge-run.json). No sample IDs are drawn in this phase; drawing them now without ever using them for an actual adjudication would create a stale, effectively-unfrozen artifact by the time a future iteration runs (new commits may add/remove candidates), so the sampling STRATEGY is frozen here, and the actual deterministic draw is deferred to the moment a future iteration is ready to execute it.",
+  "samplingStrategySpecification": {
+    "targetSampleSize": "At least 90 cases (roughly double Phase 3F.1.5's 51), to materially increase statistical power on the pre-registered 90%/85% thresholds - at n=51 a single-case swing moves detailed agreement by ~2 points, which is too coarse to distinguish 'real disagreement' from 'noise' near the threshold.",
+    "mustInclude": [
+      "Every one of the 51 Phase 3F.1.5 packets (all 11 binary disagreements, all 21 additional detailed-only disagreements, and all agreements) - reusing the exact same evidence lets the new protocol/taxonomy be evaluated on cases whose 'true' classification is already forensically understood (01-original-disagreement-forensics.json), which is the most direct test of whether the taxonomy fix (not a different sample) resolves the disagreement.",
+      "At least 40 NEW cases not in the original 51, stratified across: (a) all four documents (doc-a/b/c/d), (b) all four materiality classes (CRITICAL/MATERIAL/INFORMATIONAL, plus GT_REQUIRES_DOMAIN_REVIEW cases handled as INCOMPARABLE), (c) numeric/quantitative claims and qualitative/posture claims in roughly equal number, (d) chapeau/lead-in units and their enumerated descendants in the same family (to re-test the sibling-sub-basket false-credit boundary under the new protocol), (e) cross-reference-heavy units (a claim whose meaning depends on a cross-referenced section elsewhere), (f) amendment-sensitive units (operative-state-dependent claims from doc-b/doc-c, which showed a UNRESOLVED_DESCRIPTION_ONLY excerpt-resolution issue in the original sample and should be deliberately over-sampled to see if that issue is systemic or was original-sample noise)."
+    ],
+    "explicitInclusionOfKnownFalseCredits": "All 14 confirmed Phase 3F.1.1 false-credit gtUnitIds (00-freeze-manifest.json's confirmedFalseCreditSuspectIds_14, carried over unchanged from Phase 3F.1.5's own freeze manifest) MUST be present in the sample as mandatory negative controls, exactly as Section 13 of the charter requires - this is not new, but is restated here because the sample draw must not accidentally omit any of them through random stratification.",
+    "determinismRequirement": "The actual draw, when executed, must use a fixed, recorded seed and a documented, mechanical stratification procedure (no manual hand-picking of 'interesting' cases beyond the mustInclude categories above) - the exact same discipline Phase 3F.1.5 already used for its 51-case sample.",
+    "freezeSequencing": "Sample IDs are drawn and hashed BEFORE any adjudication (second-pass or live-judge) sees them, exactly as in Phase 3F.1.5. This artifact records the STRATEGY; a future execution appends the actual drawn ID list and its hash to this same artifact ID before proceeding, never silently swapping cases after seeing early results."
+  }
+}

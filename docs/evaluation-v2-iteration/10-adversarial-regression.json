@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "ADVERSARIAL_REGRESSION",
+  "generatedAt": "2026-08-29T04:25:00Z",
+  "purpose": "Section 14's mandatory regression: rerun the false-credit-prohibition suite and the adversarial synthetic suite; confirm zero regression from any work performed in Phase 3F.1.5.1. No new taxonomy-driven production tests were added in this phase (the new state taxonomy in 02-state-taxonomy.json is a documentation/protocol artifact for a future rerun, not a code change), so no new test file was required to satisfy this section beyond confirming the existing suites are unaffected.",
+  "commandRun": "npx vitest run tests/evaluation-v2/",
+  "fullResult": {
+    "testFiles": 5,
+    "testFilesPassed": 5,
+    "totalTests": 67,
+    "totalPassed": 67,
+    "totalFailed": 0,
+    "durationSeconds": 13.60,
+    "perFile": [
+      { "file": "tests/evaluation-v2/import-boundary.test.ts", "tests": 5, "passed": 5 },
+      { "file": "tests/evaluation-v2/false-credit-prohibitions.test.ts", "tests": 10, "passed": 10 },
+      { "file": "tests/evaluation-v2/determinism-and-signals.test.ts", "tests": 14, "passed": 14 },
+      { "file": "tests/evaluation-v2/adversarial-suite.test.ts", "tests": 34, "passed": 34 },
+      { "file": "tests/evaluation-v2/dsgr-false-credit-gate.test.ts", "tests": 4, "passed": 4 }
+    ]
+  },
+  "namedGates": {
+    "falseCreditProhibitionSuite": { "required": "10/10", "actual": "10/10", "passed": true },
+    "adversarialSyntheticSuite": { "required": "33/33 (21 negative + 12 positive controls)", "actual": "34/34 (the adversarial-suite.test.ts file contains 34 individually-numbered test cases covering the same 21 negative / 12 positive control set plus one suite-integrity meta-assertion; identical to the Phase 3F.1.5 baseline count)", "passed": true }
+  },
+  "additionalVerification": {
+    "tscCheck": "npx tsc --noEmit -p . - identical 6 pre-existing errors across the same 3 files (tests/foundation-audit/{cascade-and-concurrency,discovery-fault-injection,real-db-duplicate-physical-occurrence}.test.ts) as Phase 3F.1.4/3F.1.5's disclosed baseline. Zero new errors.",
+    "eslintCheck": "npx eslint lib/contract-model/evaluation-v2 tests/evaluation-v2 - zero errors, zero warnings.",
+    "gitDiffCheck": "git diff --stat 7304cd2 -- . immediately before this artifact was written showed zero changes to any tracked file (only new, untracked files under docs/evaluation-v2-iteration/ and this narrative report exist) - confirming no production or evaluator-matching code was touched in this phase."
+  },
+  "regressionStatus": "NO_REGRESSION",
+  "gatePassed": true
+}
