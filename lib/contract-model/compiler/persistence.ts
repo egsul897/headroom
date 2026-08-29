@@ -7,6 +7,47 @@
  * other Phase B table already uses - so replaying the same package (task
  * §72/§73 idempotency/replay safety) never duplicates a row; it updates the
  * existing one in place.
+ *
+ * Phase 3F.1.4 (P0-2/P1-9 remediation, docs/foundation-assurance/02-tenant-
+ * instrument-isolation-results.json + 12-fault-injection-results.json):
+ *
+ * P0-2 - `defined-term` stableKeys (persistStructuralDefinitions,
+ * persistDefinedTerms) now include `documentId`, matching DocumentNode
+ * (charStart) and ContractRule (sourceDocumentId)'s own disambiguators. A
+ * DefinedTermNode row's identity is the PHYSICAL DEFINITION OCCURRENCE - "this
+ * document's own declaration of this term" - never the bare lexical string
+ * alone. Two facilities independently defining "Payment Conditions" now
+ * persist as two genuinely separate, internally-consistent rows (each row's
+ * own documentId and sourceNodeId always agree, because each row belongs to
+ * exactly one document by construction) instead of colliding onto one
+ * contradictory row. This does NOT change the DB-level tenant/lexical
+ * scoping already correct for every other model; it only adds the missing
+ * instrument/document axis defined-term identity was missing. A caller that
+ * wants "the term this company uses, regardless of which document defines
+ * it" was never a coherent request in real multi-instrument drafting (the
+ * whole point of this fix) and must now explicitly choose a documentId/
+ * instrument scope or accept an honestly-ambiguous multi-row result - never
+ * an arbitrary single implicit answer.
+ *
+ * P1-9 - every persist* function below that previously only ever upserted
+ * (never deleted) now also tombstones, in the SAME database transaction,
+ * any previously-persisted row for a (companyId, documentId) pair actually
+ * represented in the current call's own input that the current run no
+ * longer produces - e.g. a corrected extraction that stops emitting a
+ * spurious duplicate. This is a real DELETE, not a soft "isCurrent" flag:
+ * no current consumer in this codebase (service.ts, validators.ts, the
+ * amendment/context-retrieval layers) reads or needs prior-extraction-run
+ * history for these five models - the codebase's own real historical-
+ * lineage mechanism (ContractRule.effectiveFrom/effectiveTo/
+ * supersededByRuleId, driven by AMENDMENTS across DIFFERENT documents, never
+ * by re-parsing the SAME document) is untouched by this change, since
+ * tombstoning here is always scoped to one document's own re-persisted
+ * output, never across documents. Scoping is always (companyId, documentId)
+ * for a document actually present in this call's input - never a broader
+ * company-wide or table-wide delete - and every persist* function's entire
+ * upsert+tombstone sequence runs inside one `prisma.$transaction`, so a
+ * partial failure rolls back atomically rather than leaving stale rows
+ * deleted with their replacements only half-written.
  */
 import { prisma } from "../../prisma";
 import { computeStableKey } from "../stable-keys";
@@ -82,29 +123,44 @@ export function resolveUniquePersistedNodeByRef(index: PersistedNodeIndex, docum
  * theoretical risk (see the ADR's "persistence layer" finding).
  */
 export async function persistStructuralNodes(companyId: string, nodes: StructuralNode[]): Promise<PersistedNodeIndex> {
-  const idByNodeId = new Map<string, string>();
-  const idsByLegalRef = new Map<string, string[]>();
-  for (const node of nodes) {
-    const stableKey = computeStableKey("document-node", companyId, node.documentId, node.nodeType, node.sectionRef, String(node.charStart));
-    const row = await prisma.documentNode.upsert({
-      where: { companyId_stableKey: { companyId, stableKey } },
-      create: { companyId, documentId: node.documentId, stableKey, nodeType: node.nodeType, heading: node.heading, sectionRef: node.sectionRef, ordinal: node.ordinal, charStart: node.charStart, charEnd: node.charEnd },
-      update: { heading: node.heading, ordinal: node.ordinal, charStart: node.charStart, charEnd: node.charEnd },
-    });
-    idByNodeId.set(node.nodeId, row.id);
-    const legalRefKey = nodeLookupKey(node.documentId, node.sectionRef);
-    const list = idsByLegalRef.get(legalRefKey) ?? [];
-    list.push(row.id);
-    idsByLegalRef.set(legalRefKey, list);
-  }
-  for (const node of nodes) {
-    if (!node.parentNodeId) continue;
-    const parentId = idByNodeId.get(node.parentNodeId);
-    if (!parentId) continue; // parent wasn't itself a recognized structural node (e.g. an ARTICLE-less top-level SECTION) - leave parentId null rather than guess.
-    const childId = idByNodeId.get(node.nodeId)!;
-    await prisma.documentNode.update({ where: { id: childId }, data: { parentId } });
-  }
-  return { idByNodeId, idsByLegalRef };
+  return prisma.$transaction(async (tx) => {
+    const idByNodeId = new Map<string, string>();
+    const idsByLegalRef = new Map<string, string[]>();
+    const currentKeysByDocument = new Map<string, Set<string>>();
+    for (const node of nodes) {
+      const stableKey = computeStableKey("document-node", companyId, node.documentId, node.nodeType, node.sectionRef, String(node.charStart));
+      const row = await tx.documentNode.upsert({
+        where: { companyId_stableKey: { companyId, stableKey } },
+        create: { companyId, documentId: node.documentId, stableKey, nodeType: node.nodeType, heading: node.heading, sectionRef: node.sectionRef, ordinal: node.ordinal, charStart: node.charStart, charEnd: node.charEnd },
+        update: { heading: node.heading, ordinal: node.ordinal, charStart: node.charStart, charEnd: node.charEnd },
+      });
+      idByNodeId.set(node.nodeId, row.id);
+      const legalRefKey = nodeLookupKey(node.documentId, node.sectionRef);
+      const list = idsByLegalRef.get(legalRefKey) ?? [];
+      list.push(row.id);
+      idsByLegalRef.set(legalRefKey, list);
+      const keys = currentKeysByDocument.get(node.documentId) ?? new Set<string>();
+      keys.add(stableKey);
+      currentKeysByDocument.set(node.documentId, keys);
+    }
+    for (const node of nodes) {
+      if (!node.parentNodeId) continue;
+      const parentId = idByNodeId.get(node.parentNodeId);
+      if (!parentId) continue; // parent wasn't itself a recognized structural node (e.g. an ARTICLE-less top-level SECTION) - leave parentId null rather than guess.
+      const childId = idByNodeId.get(node.nodeId)!;
+      await tx.documentNode.update({ where: { id: childId }, data: { parentId } });
+    }
+    // Phase 3F.1.4 (P1-9) - tombstone: for every document actually
+    // represented in `nodes`, delete any previously-persisted DocumentNode
+    // row for THAT (companyId, documentId) pair whose stableKey the current
+    // run did not (re-)produce. A document with zero nodes in this call is
+    // never touched - this asserts nothing about documents this call was
+    // not given evidence for.
+    for (const [documentId, currentKeys] of currentKeysByDocument) {
+      await tx.documentNode.deleteMany({ where: { companyId, documentId, stableKey: { notIn: [...currentKeys] } } });
+    }
+    return { idByNodeId, idsByLegalRef };
+  }, { timeout: 30_000 });
 }
 
 /**
@@ -116,67 +172,183 @@ export async function persistStructuralNodes(companyId: string, nodes: Structura
  * by DetectedReference's own real `sourceNodeId`/`targetNodeId` fields
  * (physical occurrence identity), never the deprecated label-shaped
  * `sourceNodeKey`/`targetNodeKey`.
+ *
+ * Phase 3F.1.4 (P1-9) - this previously used a plain `.create()` with no
+ * stableKey at all (ContractReferenceEdge had none), so replaying the same
+ * document's reference-detection pass duplicated every edge on every run,
+ * and a corrected pass that stopped emitting a spurious reference left the
+ * stale edge in place forever. Now upserts on a real content-derived
+ * stableKey (documentId + this occurrence's own charStart/charEnd +
+ * referenceText - the same charStart-based physical-occurrence discipline
+ * DocumentNode already uses) and tombstones, per document actually present
+ * in `references`, any previously-persisted edge with that stableKey scheme
+ * the current run no longer produces. The OTHER creator of this model,
+ * persistReferences below (the LLM-candidate path), is deliberately
+ * untouched - it has no stableKey of its own and this function's tombstone
+ * step only ever matches non-null stableKeys, so it can never delete a row
+ * that function created.
  */
 export async function persistStructuralReferences(companyId: string, references: DetectedReference[], nodeIndex: PersistedNodeIndex): Promise<number> {
-  let persisted = 0;
-  for (const ref of references) {
-    const sourceNodeId = ref.sourceNodeId ? nodeIndex.idByNodeId.get(ref.sourceNodeId) : undefined;
-    const targetDocumentNodeId = ref.targetNodeId ? nodeIndex.idByNodeId.get(ref.targetNodeId) : undefined;
-    await prisma.contractReferenceEdge.create({
-      data: {
-        companyId,
-        sourceNodeId,
-        referenceType: "REQUIRES",
-        referenceText: ref.referenceText,
-        targetType: ref.resolved ? "SECTION" : "UNRESOLVED",
-        targetDocumentNodeId,
-        resolved: ref.resolved,
-        unresolvedReason: ref.unresolvedReason ?? undefined,
-      },
-    });
-    persisted++;
-  }
-  return persisted;
+  return prisma.$transaction(async (tx) => {
+    let persisted = 0;
+    const currentKeysByDocument = new Map<string, Set<string>>();
+    for (const ref of references) {
+      const sourceNodeId = ref.sourceNodeId ? nodeIndex.idByNodeId.get(ref.sourceNodeId) : undefined;
+      const targetDocumentNodeId = ref.targetNodeId ? nodeIndex.idByNodeId.get(ref.targetNodeId) : undefined;
+      const stableKey = computeStableKey("reference-edge", companyId, ref.documentId, String(ref.charStart), String(ref.charEnd), ref.referenceText);
+      await tx.contractReferenceEdge.upsert({
+        where: { companyId_stableKey: { companyId, stableKey } },
+        create: {
+          companyId,
+          stableKey,
+          sourceNodeId,
+          referenceType: "REQUIRES",
+          referenceText: ref.referenceText,
+          targetType: ref.resolved ? "SECTION" : "UNRESOLVED",
+          targetDocumentNodeId,
+          resolved: ref.resolved,
+          unresolvedReason: ref.unresolvedReason ?? undefined,
+        },
+        update: {
+          sourceNodeId,
+          targetType: ref.resolved ? "SECTION" : "UNRESOLVED",
+          targetDocumentNodeId,
+          resolved: ref.resolved,
+          unresolvedReason: ref.unresolvedReason ?? undefined,
+        },
+      });
+      persisted++;
+      const keys = currentKeysByDocument.get(ref.documentId) ?? new Set<string>();
+      keys.add(stableKey);
+      currentKeysByDocument.set(ref.documentId, keys);
+    }
+    // Tombstone: for every document actually represented in `references`,
+    // delete any previously-persisted edge THIS function created for that
+    // (companyId, documentId) (identified by a non-null stableKey - never
+    // touching persistReferences' own null-stableKey rows) that the current
+    // run did not reproduce. Scoping the stableKey match to this document's
+    // own charStart/charEnd namespace (via the deterministic formula above,
+    // never a bare `stableKey: { not: null }`) means this can only ever
+    // match rows this same function persisted for this same document.
+    for (const [documentId, currentKeys] of currentKeysByDocument) {
+      await tx.contractReferenceEdge.deleteMany({
+        where: { companyId, stableKey: { not: null, notIn: [...currentKeys] }, sourceNode: { documentId } },
+      });
+    }
+    return persisted;
+  }, { timeout: 30_000 });
 }
 
 /**
  * Phase 2A - persists deterministically-detected defined-term declarations
  * (structural-definitions.ts). Uses the SAME stableKey scheme as
- * persistDefinedTerms below (keyed only by companyId + lowercased term
- * name) so a term found by both the deterministic detector and the LLM
- * DEFINITIONS stage converges on one row rather than creating a duplicate -
- * this call additionally fills in sourceNodeId/definitionTextRef, which the
- * LLM path alone never populated with a real structural anchor. Phase
- * 3F.1.2: resolved via DetectedDefinition's own real `sourceNodeId` field
- * (physical occurrence identity), never the deprecated `sourceNodeKey`.
+ * persistDefinedTerms below (keyed by companyId + documentId + lowercased
+ * term name - see the P0-2 header comment above) so a term found by both the
+ * deterministic detector and the LLM DEFINITIONS stage for the SAME
+ * document converges on one row rather than creating a duplicate, while a
+ * legitimately different document's own same-named definition never
+ * collides onto it - this call additionally fills in sourceNodeId/
+ * definitionTextRef, which the LLM path alone never populated with a real
+ * structural anchor. Phase 3F.1.2: resolved via DetectedDefinition's own
+ * real `sourceNodeId` field (physical occurrence identity), never the
+ * deprecated `sourceNodeKey`.
+ *
+ * Phase 3F.1.4 (P0-2): stableKey now includes `def.documentId` - the fix for
+ * docs/foundation-assurance/02-tenant-instrument-isolation-results.json's
+ * `definitions-cross-instrument-P0` finding. Every row this upsert ever
+ * creates or updates now belongs to exactly one document by construction,
+ * so `documentId` and `sourceNodeId` (via nodeIndex, itself always scoped to
+ * the document that built it) can never disagree the way they did before -
+ * the internal-contradiction defect is closed structurally, not just
+ * papered over with an extra check.
+ *
+ * Phase 3F.1.4 (P1-9): tombstones, per document actually represented in
+ * `definitions`, any previously-persisted DefinedTermNode row for that
+ * (companyId, documentId) whose stableKey the current run did not
+ * reproduce - e.g. a corrected detector that stops emitting a spurious
+ * duplicate declaration. Runs in the same transaction as the upserts.
  */
 export async function persistStructuralDefinitions(companyId: string, definitions: DetectedDefinition[], nodeIndex: PersistedNodeIndex): Promise<Map<string, string>> {
-  const idByTermName = new Map<string, string>();
-  for (const def of definitions) {
-    const stableKey = computeStableKey("defined-term", companyId, def.normalizedTerm);
-    const sourceNodeId = def.sourceNodeId ? nodeIndex.idByNodeId.get(def.sourceNodeId) : undefined;
-    const row = await prisma.definedTermNode.upsert({
-      where: { companyId_stableKey: { companyId, stableKey } },
-      create: { companyId, documentId: def.documentId, stableKey, termName: def.exactTerm, normalizedName: def.normalizedTerm, sourceNodeId, definitionTextRef: def.definitionExcerpt },
-      update: { sourceNodeId, definitionTextRef: def.definitionExcerpt },
-    });
-    idByTermName.set(def.normalizedTerm, row.id);
-  }
-  return idByTermName;
+  return prisma.$transaction(async (tx) => {
+    // Keyed by normalizedTerm only, matching this function's pre-existing
+    // return-type contract - if `definitions` spans multiple documents that
+    // each define the same term name (now legitimately two separate rows,
+    // per the P0-2 fix above), this convenience map retains only the LAST
+    // one seen; callers needing a specific document's own term id must go
+    // through the real DB row (companyId, documentId, stableKey), not this
+    // map - there is no current caller of this map across multiple
+    // documents in one call (grep-confirmed: persistStructuralDefinitions
+    // has no production caller at all today; its own tests exercise one
+    // document at a time).
+    const idByTermName = new Map<string, string>();
+    const currentKeysByDocument = new Map<string, Set<string>>();
+    for (const def of definitions) {
+      const stableKey = computeStableKey("defined-term", companyId, def.documentId, def.normalizedTerm);
+      const sourceNodeId = def.sourceNodeId ? nodeIndex.idByNodeId.get(def.sourceNodeId) : undefined;
+      const row = await tx.definedTermNode.upsert({
+        where: { companyId_stableKey: { companyId, stableKey } },
+        create: { companyId, documentId: def.documentId, stableKey, termName: def.exactTerm, normalizedName: def.normalizedTerm, sourceNodeId, definitionTextRef: def.definitionExcerpt },
+        update: { sourceNodeId, definitionTextRef: def.definitionExcerpt },
+      });
+      idByTermName.set(def.normalizedTerm, row.id);
+      const keys = currentKeysByDocument.get(def.documentId) ?? new Set<string>();
+      keys.add(stableKey);
+      currentKeysByDocument.set(def.documentId, keys);
+    }
+    for (const [documentId, currentKeys] of currentKeysByDocument) {
+      await tx.definedTermNode.deleteMany({ where: { companyId, documentId, stableKey: { notIn: [...currentKeys] } } });
+    }
+    return idByTermName;
+  }, { timeout: 30_000 });
 }
 
+/**
+ * Phase 3F.1.4 (P0-2): stableKey now includes `documentId` - see the P0-2
+ * header comment above and persistStructuralDefinitions' own comment; this
+ * is the production-wired twin of that function (orchestrator.ts calls this
+ * one, per-document, for the LLM DEFINITIONS stage's candidates) and carried
+ * the identical defect (confirmed independently in
+ * docs/foundation-assurance/12-fault-injection-results.json's "cross-
+ * document definition collision at PERSISTENCE layer" finding).
+ *
+ * Phase 3F.1.4 (P1-9): tombstones any previously-persisted DefinedTermNode
+ * row for this (companyId, documentId) whose stableKey the current run did
+ * not reproduce, in the same transaction as the upserts. Already
+ * document-scoped by this function's own signature, so no per-item grouping
+ * is needed here the way the other four persist* functions require.
+ */
 export async function persistDefinedTerms(companyId: string, documentId: string, terms: CandidateDefinedTerm[]): Promise<Map<string, string>> {
-  const idByTermName = new Map<string, string>();
-  for (const term of terms) {
-    const stableKey = computeStableKey("defined-term", companyId, term.termName.toLowerCase());
-    const row = await prisma.definedTermNode.upsert({
-      where: { companyId_stableKey: { companyId, stableKey } },
-      create: { companyId, documentId, stableKey, termName: term.termName, normalizedName: term.termName.toLowerCase(), definitionTextRef: term.sourceSectionRef },
-      update: { definitionTextRef: term.sourceSectionRef },
-    });
-    idByTermName.set(term.termName.toLowerCase(), row.id);
-  }
-  return idByTermName;
+  return prisma.$transaction(async (tx) => {
+    const idByTermName = new Map<string, string>();
+    const currentKeys = new Set<string>();
+    for (const term of terms) {
+      const stableKey = computeStableKey("defined-term", companyId, documentId, term.termName.toLowerCase());
+      const row = await tx.definedTermNode.upsert({
+        where: { companyId_stableKey: { companyId, stableKey } },
+        create: { companyId, documentId, stableKey, termName: term.termName, normalizedName: term.termName.toLowerCase(), definitionTextRef: term.sourceSectionRef },
+        update: { definitionTextRef: term.sourceSectionRef },
+      });
+      idByTermName.set(term.termName.toLowerCase(), row.id);
+      currentKeys.add(stableKey);
+    }
+    // Fail-closed guard (disclosed, not silently incomplete): an EMPTY
+    // `terms` array never triggers a tombstone. This function's own
+    // documentId scoping means an empty call could mean either "this
+    // document genuinely has zero defined terms" OR "an upstream stage
+    // failed/produced nothing this run" - those are indistinguishable from
+    // this function's own signature alone, and silently deleting every
+    // previously-known term for a document on the strength of an empty
+    // array would risk exactly the kind of silent, catastrophic data loss
+    // this whole remediation phase exists to prevent. A genuine
+    // "this document truly has zero terms now" correction requires a
+    // non-empty call this function can actually compare against (or an
+    // explicit administrative action), never an implicit side effect of an
+    // ordinary empty re-run.
+    if (currentKeys.size > 0) {
+      await tx.definedTermNode.deleteMany({ where: { companyId, documentId, stableKey: { notIn: [...currentKeys] } } });
+    }
+    return idByTermName;
+  }, { timeout: 30_000 });
 }
 
 /** Maps the Candidate*'s free-text entityScope tags onto the real EntityClassTag enum, dropping anything that isn't a real member rather than throwing - task §20's "do not default unknown entity scope to company-wide" is honored by dropping to an empty/explicit set, never silently substituting a broad default. */
@@ -190,51 +362,72 @@ function toEntityClassTags(raw: string[], validTags: Set<string>): EntityClassTa
  * which returns undefined (never an arbitrary pick) when the citation
  * matches more than one physical occurrence in this document, exactly as
  * structural-index.ts's in-memory `resolveUniqueNodeByRef` already does.
+ *
+ * Phase 3F.1.4 (P1-9): tombstones, inside the same transaction as the
+ * upserts, any previously-persisted ContractRule row for this
+ * (companyId, sourceDocumentId=documentId) whose stableKey the current run
+ * did not reproduce - e.g. a corrected extraction that stops emitting a
+ * spurious duplicate rule. Never fires on an EMPTY `rules` array (see
+ * persistDefinedTerms' identical guard's comment for why) - an upstream
+ * failure that yields zero candidates must never be indistinguishable from
+ * "this document was re-examined and genuinely has zero rules now."
+ * Pre-existing FK semantics (ContractReferenceEdge.sourceRuleId: Cascade;
+ * targetRuleId/AmendmentEffect.targetRuleId/ContractRule.supersededByRuleId:
+ * SetNull; ContractRuleRelationship: Cascade) already govern what happens to
+ * dependents of a tombstoned rule - this fix does not change any of that,
+ * it only makes the tombstone itself actually happen.
  */
 export async function persistContractRules(companyId: string, documentId: string, rules: CandidateContractRule[], nodeIndex: PersistedNodeIndex, entityClassTags: Set<string>): Promise<Map<string, string>> {
-  const idBySectionRef = new Map<string, string>();
-  for (const rule of rules) {
-    const stableKey = computeStableKey("contract-rule", companyId, documentId, rule.sourceSectionRef, rule.action);
-    const sourceNodeId = resolveUniquePersistedNodeByRef(nodeIndex, documentId, rule.sourceSectionRef) ?? null;
-    const row = await prisma.contractRule.upsert({
-      where: { companyId_stableKey: { companyId, stableKey } },
-      create: {
-        companyId,
-        sourceDocumentId: documentId,
-        sourceNodeId,
-        stableKey,
-        covenantFamily: rule.covenantFamily as never,
-        ruleType: rule.ruleType as never,
-        evaluationClass: rule.evaluationClass as never,
-        action: rule.action,
-        entityScope: toEntityClassTags(rule.entityScope, entityClassTags),
-        entityScopeExcluded: toEntityClassTags(rule.entityScopeExcluded, entityClassTags),
-        thresholdValue: rule.thresholdValue,
-        thresholdUnit: rule.thresholdUnit,
-        formulaRef: rule.formulaRef,
-        operator: rule.operator,
-        conditions: rule.conditions as object[],
-        exceptions: rule.exceptions as object[],
-        sourceSectionRef: rule.sourceSectionRef,
-        definedTermRefs: rule.definedTermRefs,
-        notes: rule.notes,
-        extractionOrigin: { provider: "phase-c-compiler-v1", model: "see ContractCompilerStage.model", promptVersion: "phase-c.1", schemaVersion: "phase-c.1" },
-      },
-      update: {
-        covenantFamily: rule.covenantFamily as never,
-        ruleType: rule.ruleType as never,
-        evaluationClass: rule.evaluationClass as never,
-        thresholdValue: rule.thresholdValue,
-        thresholdUnit: rule.thresholdUnit,
-        formulaRef: rule.formulaRef,
-        conditions: rule.conditions as object[],
-        exceptions: rule.exceptions as object[],
-        notes: rule.notes,
-      },
-    });
-    idBySectionRef.set(rule.sourceSectionRef, row.id);
-  }
-  return idBySectionRef;
+  return prisma.$transaction(async (tx) => {
+    const idBySectionRef = new Map<string, string>();
+    const currentKeys = new Set<string>();
+    for (const rule of rules) {
+      const stableKey = computeStableKey("contract-rule", companyId, documentId, rule.sourceSectionRef, rule.action);
+      const sourceNodeId = resolveUniquePersistedNodeByRef(nodeIndex, documentId, rule.sourceSectionRef) ?? null;
+      const row = await tx.contractRule.upsert({
+        where: { companyId_stableKey: { companyId, stableKey } },
+        create: {
+          companyId,
+          sourceDocumentId: documentId,
+          sourceNodeId,
+          stableKey,
+          covenantFamily: rule.covenantFamily as never,
+          ruleType: rule.ruleType as never,
+          evaluationClass: rule.evaluationClass as never,
+          action: rule.action,
+          entityScope: toEntityClassTags(rule.entityScope, entityClassTags),
+          entityScopeExcluded: toEntityClassTags(rule.entityScopeExcluded, entityClassTags),
+          thresholdValue: rule.thresholdValue,
+          thresholdUnit: rule.thresholdUnit,
+          formulaRef: rule.formulaRef,
+          operator: rule.operator,
+          conditions: rule.conditions as object[],
+          exceptions: rule.exceptions as object[],
+          sourceSectionRef: rule.sourceSectionRef,
+          definedTermRefs: rule.definedTermRefs,
+          notes: rule.notes,
+          extractionOrigin: { provider: "phase-c-compiler-v1", model: "see ContractCompilerStage.model", promptVersion: "phase-c.1", schemaVersion: "phase-c.1" },
+        },
+        update: {
+          covenantFamily: rule.covenantFamily as never,
+          ruleType: rule.ruleType as never,
+          evaluationClass: rule.evaluationClass as never,
+          thresholdValue: rule.thresholdValue,
+          thresholdUnit: rule.thresholdUnit,
+          formulaRef: rule.formulaRef,
+          conditions: rule.conditions as object[],
+          exceptions: rule.exceptions as object[],
+          notes: rule.notes,
+        },
+      });
+      idBySectionRef.set(rule.sourceSectionRef, row.id);
+      currentKeys.add(stableKey);
+    }
+    if (currentKeys.size > 0) {
+      await tx.contractRule.deleteMany({ where: { companyId, sourceDocumentId: documentId, stableKey: { notIn: [...currentKeys] } } });
+    }
+    return idBySectionRef;
+  }, { timeout: 30_000 });
 }
 
 function normalizeSectionRef(ref: string): string {

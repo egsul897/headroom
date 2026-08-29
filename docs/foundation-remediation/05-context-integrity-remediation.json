@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "CONTEXT_INTEGRITY_REMEDIATION",
+  "generatedAt": "2026-08-28T23:18:00Z",
+  "workstream": "E",
+  "findingsAddressed": ["P1-5 (CTX-01)", "P1-6 (CTX-02)"],
+  "filesChanged": [
+    "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+    "lib/contract-model/compiler/context-retrieval/reference-context.ts",
+    "lib/contract-model/compiler/context-retrieval/structural-context.ts",
+    "lib/contract-model/compiler/context-retrieval/types.ts"
+  ],
+  "ctx01Remediation": {
+    "rootCause": "retrieveAmendmentLeadsForSection was invoked exactly once, only for the primary candidate's own section. A CROSS_REFERENCE item retrieved from elsewhere in the document never got checked against the package graph's own modification candidates, even when a real amendment targeted that exact referenced section.",
+    "fix": "retrieveCrossReferencesFromNode and retrieveCrossReferencesFromDefinitionText now accept an optional packageGraph parameter; after adding a CROSS_REFERENCE/CALCULATION_PROVISION item for a target section, both call retrieveAmendmentLeadsForSection against the target's own documentId/sectionRef - the same disclosure the primary candidate's own section already got, generalized to every cross-reference target at any traversal depth.",
+    "boundedRecursionAndCycleProtection": "Added a visitedNodeIds Set threaded through the recursive CALCULATION_PROVISION traversal: a node whose outgoing references were already expanded earlier in the same chain is not re-expanded, independent of and strictly tighter than the pre-existing depth > maxCrossReferenceDepth bound (which remains as the backstop, unchanged).",
+    "beforeAfterProof": "Test 9 (flipped from capturing-the-bug to proving-the-fix): candidate at 6.01 cross-references 6.09; doc2's First Amendment restates 6.09. Bundle now contains an AMENDMENT_LEAD item for 6.09 (matching '5.00 to 1.00') plus an AMENDMENT_CANDIDATE edge, while 6.09's retrieved text is still honestly pre-amendment ('4.00 to 1.00' - Invariant #13 preserved).",
+    "generalizedVariants": "Test 13 (new, 2-hop): amendment targets the SECOND hop of a 6.01->1.07->1.08 chain, surfaced at 1.08, absent at 1.07. Test 14 (new, cycle): genuine A<->B cycle completes in <2s with no duplication, amendment lead for the cycled node still surfaced.",
+    "regressionTest": "tests/foundation-audit/context-retrieval-adversarial.test.ts (test 9/9b, 13, 14)",
+    "status": "FIXED"
+  },
+  "ctx02Remediation": {
+    "rootCause": "retrieveSiblingContext classified and attached ANY sibling under the same structural parent whose OWN text matched a generic regex pattern (PROVISO_SIGNALS/EXCEPTION_SIGNALS/CONDITION_SIGNALS/SHARED_CAP_SIGNALS), with zero check that the matched sibling's language actually concerned the same subject/economic mechanism as the candidate it was being attached to.",
+    "fix": "assessSiblingRelevance added - a deterministic evidence gate checked in addition to the existing keyword classification (classifySiblingSignal, untouched): clause backreference ('clause (a)', 'the foregoing'), a shared NAMED quoted defined term, an enclosing-Section/Article-wide scope phrase, or a grammatical continuation (sibling opens with a bare qualifier rather than stating its own independent subject first). An explicit relationship-negation ('bears no economic relationship to...') is a hard veto regardless of any other match - closing the exact adversarial hole where the false counterexample literally contains 'clause (a)' inside a negation.",
+    "newRepresentation": "A keyword hit is now only a precondition. If evidence is found, the sibling attaches exactly as before (same type/edge/confidence 0.7). If not, it is disclosed as a new UNVERIFIED_SIBLING_SIGNAL item at confidence 0.2, rather than silently attached at normal confidence - recall is preserved (still disclosed), precision is fixed (never mistaken for verified).",
+    "midImplementationCorrection": "The sibling's OWN-text slice can be truncated short of real evidence by an unrelated structural-parser quirk; evidence assessment reads the sibling's DESCENDANTS span instead (the classified/stored excerpt itself is untouched).",
+    "beforeAfterProof": {
+      "test4": "6.03(b)'s unrelated Investments proviso no longer appears as PROVISO; now UNVERIFIED_SIBLING_SIGNAL at confidence 0.2. The candidate's own chapeau proviso (via PARENT_SCOPE) is still retrieved normally.",
+      "test12": "6.08(b) (the negation counterexample, literally containing 'clause (a)' inside a negation) is UNVERIFIED_SIBLING_SIGNAL, never SHARED_CAP."
+    },
+    "positiveControlsPreserved": {
+      "test4b": "A genuine 'clauses (a) and (b) shall not apply if...' still attaches as PROVISO/0.7.",
+      "test12b": "A clause-letter reference WITHOUT negation still attaches as SHARED_CAP/0.7.",
+      "test4c": "Generalized: unrelated covenant family, same keyword - also correctly gated."
+    },
+    "regressionTest": "tests/foundation-audit/context-retrieval-adversarial.test.ts (tests 4, 4b, 4c, 12, 12b)",
+    "status": "FIXED"
+  },
+  "newSurfaceAreaDisclosed": "UNVERIFIED_SIBLING_SIGNAL is a new ContextItemType. Checked coverage-audit/*, semantic/*, semantic-coverage/* for exhaustive type handling and found none - all use plain string equality - so nothing silently breaks, but a downstream author consuming context items should be aware the type exists.",
+  "crossAgentIncidentDisclosed": {
+    "description": "Mid-task, this workstream's use of `git stash && npx tsc ...; git stash pop` collided with Workstream A's own concurrent stash operation, because refs/stash is shared across all git worktrees of a repository (not worktree-local), not because of anything in the production code itself.",
+    "recovery": "Workstream E recovered fully: backed up the foreign diff, reverted its worktree's foreign files to clean HEAD, located its own stash via a still-reachable dangling commit, and restored its exact edits (verified byte-identical to what it had originally written).",
+    "verificationByOrchestrator": "Confirmed at integration time: both Workstream A's and Workstream E's final git diff --stat outputs showed only their own assigned files, with no cross-contamination reaching either final commit.",
+    "processNote": "No `git stash` command should be used again by any agent in a multi-worktree environment sharing one repository - this is a process/tooling lesson for future phases, not a production-code finding."
+  },
+  "testRunOutput": {
+    "resultAtWorkstreamCompletion": "context-retrieval-pipeline.test.ts 36/36 unchanged, context-retrieval-adversarial.test.ts 18/18 (13 original + 5 new), cross-reference-boundary-remediation.test.ts unchanged, npx tsc --noEmit zero errors in context-retrieval files, broader suite 1053 passed/27 failed(DB, pre-existing)/95 skipped",
+    "resultAfterFullIntegration": "See 14-phase-3f1-4-final-verdict.json"
+  },
+  "residualLimitations": [
+    "The evidence gate is regex/heuristic, like the rest of this module - a sufficiently well-disguised false positive could still slip through; this is a large improvement, not a semantic guarantee.",
+    "classifySiblingSignal's own OWN-text basis was not changed (only the new relevance assessment reads DESCENDANTS) - preserves existing recall/classification decisions exactly, but the initial keyword-match precondition still has the same OWN-text-truncation quirk as before (out of scope for CTX-02)."
+  ]
+}

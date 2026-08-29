@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "CACHE_PERSISTENCE_REMEDIATION",
+  "generatedAt": "2026-08-28T23:20:00Z",
+  "workstream": "F",
+  "findingsAddressed": ["8A (STRUCTURE-stage cache gate)", "8B (AMENDMENTS-stage cache gate)", "8D (replay equivalence)", "Legacy Phase C quarantine", "P1-12 (scorer disclosure)"],
+  "filesChanged": [
+    "lib/contract-model/compiler/orchestrator.ts",
+    ".eslintrc.json",
+    "tests/foundation-audit/legacy-phase-c-quarantine.test.ts (new)",
+    "docs/HEADROOM-ROADMAP.md"
+  ],
+  "s8ARemediation": {
+    "rootCause": "orchestrator.ts's structureInputHash = hashParts(documents.map(d => `${d.documentId}:${d.text}`)) never referenced STRUCTURAL_INDEX_VERSION or any structural-algorithm identity - a structural-algorithm change over unchanged text was silently invisible to getOrRunStage's cache-check, which resumed and re-persisted stale nodes.",
+    "fix": "structureInputHash now includes STRUCTURAL_INDEX_VERSION (imported as a value from types.ts).",
+    "beforeAfterProof": "With unchanged text but a mocked STRUCTURAL_INDEX_VERSION bump (v1->v2), the persisted inputHash changes, attemptCount increments (real recompute, not resume), and the new algorithm's output actually surfaces ('6.02' now present), matching fresh persisted DocumentNode rows.",
+    "status": "FIXED"
+  },
+  "s8BRemediation": {
+    "rootCause": "amendmentsInputHash = hashParts(documents.map(d => d.label)) - keyed on label only, while the real runAmendmentsStage scans both d.label AND d.text.slice(0, 2000).",
+    "fix": "amendmentsInputHash now hashes `${d.label}:${d.text}` per document (deliberately the full text, not just the 2000-char window the stage reads - justified as a correctness-over-precision tradeoff since AMENDMENTS is a free deterministic scan, so over-invalidation costs nothing real).",
+    "beforeAfterProof": "Same documentId/label, text changed to an amendment-shaped preamble: inputHash changes, attemptCount increments, orchestrator's AMENDMENTS stage now reports REVIEW_REQUIRED, matching a fresh direct call to the same function (previously silently stayed COMPLETED/stale).",
+    "acceptedTradeoff": "A whitespace-only text edit that does NOT affect amendment detection will still force recompute under this fix - an explicit, documented, deliberate over-invalidation trade-off, not a smart content-fingerprint, justified by the stage's zero real cost.",
+    "status": "FIXED"
+  },
+  "s8DReplayEquivalence": {
+    "proof": "For both STRUCTURE and AMENDMENTS stages: an unchanged-input second call left attemptCount and inputHash identical, and the real stage function was never re-invoked (proven via vi.fn() call count for STRUCTURE), with output byte-identical to the fresh run - both directions of 8D proven (fresh vs. replay equivalence when unchanged; forced recompute when a relevant input changes)."
+  },
+  "legacyPhaseCQuarantine": {
+    "guardrailImplemented": "ESLint no-restricted-imports rule scoped to app/**/*.{ts,tsx}, blocking any import from contract-model/service or contract-model/validators (whole module), and blocking the specific named import runContractCompiler from contract-model/compiler/orchestrator (via patterns.group + importNames, matching both relative and @/-aliased specifiers).",
+    "testAdded": "tests/foundation-audit/legacy-phase-c-quarantine.test.ts - a grep/regex-based import-boundary scanner mirroring the audit's own manual reachability check. Test 1 scans the real app/ tree and asserts zero violations. Tests 2-3 build throwaway fixture trees (never under real app/) proving the detector actually catches all three forbidden import shapes and doesn't false-positive on legitimate imports.",
+    "verification": "npx eslint app --ext .ts,.tsx -> 0 errors (confirms zero current reachability). A manual fixture import of runContractCompiler/service.ts/validators.ts under a throwaway app/ probe produced exactly 3 ESLint errors, exit code 1. A legitimate import of parseDocumentStructure and CompilerRunOptions from orchestrator.ts produced 0 errors - the rule is correctly scoped, not blanket.",
+    "runtimeLogicUntouched": "Zero runtime logic in orchestrator.ts's legacy RULE_EXTRACTION/VERIFICATION/PROMOTION stages was modified - only a QUARANTINE NOTICE doc comment was added near the top of the file, plus the two cache-gate hash lines for STRUCTURE/AMENDMENTS (the current, non-legacy Phase 2A-2G stages within the same function).",
+    "status": "FIXED (mechanical guardrail added; legacy extraction logic itself deliberately not repaired, per phase charter)"
+  },
+  "p112ScorerDisclosure": {
+    "location": "docs/HEADROOM-ROADMAP.md, new subsection 'Known limitations - scorer/evaluator circularity defect', inserted right after the existing Phase C 25.0%->15.625% citation (since that number was itself produced by the CIRCULAR-classified Phase C.1 evaluator).",
+    "content": "States plainly that the Phase C.1 evaluator and the Phase 3F/3F.1/3F.1.1 scorer share a confirmed, unfixed circularity defect (structural-proximity substituting for content correspondence), producing 14-16/26 false credits per 3F.1.1's own forensics; deferred to Phase 3F.1.5; every historical percentage from either scorer (including the 25.0%->15.625% figure) should be read as a potentially-overstated estimate. Points to docs/phase-3f1-1-residual-safety-forensics.md §17-20 and the two relevant foundation-assurance JSON files.",
+    "scopeDiscipline": "Documentation-only fix - no scorer script, ground-truth JSON, or historical percentage value was modified; nothing else in HEADROOM-ROADMAP.md was touched.",
+    "status": "FIXED (disclosure only, per phase charter's explicit instruction that P0-6's algorithmic correction is out of scope)"
+  },
+  "testRunOutput": {
+    "filesAtWorkstreamCompletion": "120 test files passed, 1176 tests passed, 0 failed (with DATABASE_URL explicitly set, since it was unset by default in that shell)",
+    "resultAfterFullIntegration": "See 14-phase-3f1-4-final-verdict.json"
+  },
+  "residualLimitations": [
+    "The STRUCTURE fix only detects change via the DECLARED STRUCTURAL_INDEX_VERSION constant - matching the codebase-wide convention (DISCOVERY_RUN_VERSION, COVERAGE_AUDIT_ALGORITHM_VERSION, etc.). It cannot detect an undisciplined code change to parseDocumentStructure that ships without a version bump - a process-discipline dependency, not a hashing gap, consistent with every other versioned stage in this codebase.",
+    "The AMENDMENTS fix deliberately over-invalidates on any full-text change - an accepted trade-off, not a smart fingerprint."
+  ]
+}

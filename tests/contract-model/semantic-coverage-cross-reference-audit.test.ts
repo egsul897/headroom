@@ -132,6 +132,12 @@ function makeProvision(overrides: Partial<OperativeProvisionView> = {}): Operati
     status: "OPERATIVE_STATE_RESOLVED",
     unresolvedIssues: [],
     conflicts: [],
+    targetResolutionStatus: "UNIQUE",
+    targetResolutionReason: null,
+    candidateSourceNodeIds: [],
+    attemptedText: null,
+    reviewRequired: false,
+    candidateTexts: [],
     ...overrides,
   };
 }

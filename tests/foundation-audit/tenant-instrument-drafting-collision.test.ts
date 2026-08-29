@@ -152,7 +152,19 @@ describe("Foundation Audit Job 1 - identical-drafting cross-tenant attack (invar
     expect(result.issues).toEqual([]);
   });
 
-  it("REAL FINDING: validateTenantIsolation does NOT check ContractReferenceEdge.targetDocumentNodeId/targetTermId for cross-tenant leakage - a deliberately injected cross-tenant reference to a DocumentNode/DefinedTermNode is silently missed (see lib/contract-model/validators.ts:128-162, which only checks targetRuleId, DocumentRelationshipEdge, and AmendmentEffect)", async () => {
+  it("FIXED (P1-2 remediation): validateTenantIsolation now DOES check ContractReferenceEdge.targetDocumentNodeId/targetTermId for cross-tenant leakage - a deliberately injected cross-tenant reference to a DocumentNode/DefinedTermNode is caught, not silently missed", async () => {
+    // Phase 3F.1.4 (P1-2 remediation) updated this test's own assertions:
+    // lib/contract-model/validators.ts's validateTenantIsolation now checks
+    // ContractReferenceEdge.targetTermId/targetDocumentNodeId (plus
+    // targetDocumentId and several AmendmentEffect/DebtInstrument/Document
+    // target-direction fields found by this fix's own mechanical schema
+    // sweep - see that function's own header comment for the full coverage
+    // table). Asserting the leak's continued presence after it has been
+    // deliberately fixed would be asserting the wrong thing, not preserving
+    // a real safety gate - matching the precedent set by
+    // tests/contract-model/architecture-proposal-node-identity.test.ts's own
+    // header comment for the same situation. The injected cross-tenant rows
+    // themselves are unchanged; only the expected (now correct) outcome is.
     const termB = await prisma.definedTermNode.findFirstOrThrow({ where: { companyId: TENANT_B, normalizedName: "payment conditions" } });
     const nodeB = await prisma.documentNode.findFirstOrThrow({ where: { companyId: TENANT_B, sectionRef: "6.01" } });
 
@@ -161,18 +173,19 @@ describe("Foundation Audit Job 1 - identical-drafting cross-tenant attack (invar
     await prisma.contractReferenceEdge.create({ data: { companyId: TENANT_A, referenceType: "SUBJECT_TO", referenceText: "deliberately cross-tenant (targetDocumentNodeId)", targetType: "SECTION", targetDocumentNodeId: nodeB.id, resolved: true } });
 
     const result = await validateTenantIsolation(TENANT_A, TENANT_B);
-    // This is the honest, adversarial result: the validator's own cross-tenant
-    // check set (rules, DocumentRelationshipEdge, AmendmentEffect) does not
-    // include ContractReferenceEdge.targetTermId/targetDocumentNodeId, so it
-    // reports ok:true even though a real cross-tenant leak now exists in the
-    // graph. This is the actual, reproduced defect - not a hypothetical.
-    expect(result.ok).toBe(true);
-    expect(result.issues).toEqual([]);
+    // FIXED: the validator now reports this leak - ok:false with issues
+    // naming the offending ContractReferenceEdge rows.
+    expect(result.ok).toBe(false);
+    expect(result.issues.length).toBeGreaterThan(0);
+    expect(result.issues.some((i) => i.message.includes("ContractReferenceEdge"))).toBe(true);
 
     // Prove the leak is real and independently queryable: Tenant A's
     // reference graph now genuinely resolves into Tenant B's term/node rows.
     const leakedEdges = await prisma.contractReferenceEdge.findMany({ where: { companyId: TENANT_A, targetTermId: termB.id } });
     expect(leakedEdges.length).toBeGreaterThan(0);
+
+    // Clean up this test's own injected rows so later tests in this file (which query TENANT_A's full ContractReferenceEdge set) are not polluted by it.
+    await prisma.contractReferenceEdge.deleteMany({ where: { companyId: TENANT_A, referenceText: { startsWith: "deliberately cross-tenant" } } });
   });
 });
 
@@ -212,37 +225,69 @@ describe("Foundation Audit Job 1 - identical-drafting cross-instrument attack, O
     expect(new Set(rules.map((r) => r.sourceDocumentId))).toEqual(new Set([FACILITY_ALPHA_DOC, FACILITY_BETA_DOC]));
   });
 
-  it("P0 REAL FINDING: DefinedTermNode does NOT isolate across instruments in the same company - Facility Beta's 'Payment Conditions' definition silently OVERWRITES Facility Alpha's persisted row (stableKey = computeStableKey('defined-term', companyId, normalizedTerm) has NO documentId/instrument disambiguator - lib/contract-model/compiler/persistence.ts:156/171)", async () => {
-    const rows = await prisma.definedTermNode.findMany({ where: { companyId: INSTR_CO, normalizedName: "payment conditions" } });
-    // The defect, reproduced: ONE row exists for BOTH facilities' "Payment
-    // Conditions" definitions, not two. Contrast with the DocumentNode/
-    // ContractRule isolation tests immediately above, which correctly
-    // persist two independent rows for the exact same drafting.
-    expect(rows).toHaveLength(1);
+  // Phase 3F.1.4 (P0-2 remediation) updated this test's own assertions:
+  // computeStableKey('defined-term', companyId, documentId, normalizedTerm)
+  // now includes documentId (lib/contract-model/compiler/persistence.ts),
+  // so DefinedTermNode isolates across instruments exactly the way
+  // DocumentNode/ContractRule already correctly did immediately above.
+  // Asserting the collision's continued presence after it has been
+  // deliberately fixed would be asserting the wrong thing, not preserving a
+  // real safety gate - matching the precedent set by
+  // tests/contract-model/architecture-proposal-node-identity.test.ts's own
+  // header comment for the same situation.
+  it("FIXED (P0-2 remediation): DefinedTermNode now DOES isolate across instruments in the same company - Facility Alpha's and Beta's own 'Payment Conditions' definitions are two genuinely separate, internally-consistent rows (stableKey now includes documentId, matching DocumentNode/ContractRule's own disambiguators)", async () => {
+    const rows = await prisma.definedTermNode.findMany({ where: { companyId: INSTR_CO, normalizedName: "payment conditions" }, orderBy: { documentId: "asc" } });
+    // FIXED: two rows now exist, one per facility - matching the
+    // DocumentNode/ContractRule isolation tests immediately above.
+    expect(rows).toHaveLength(2);
+    expect(new Set(rows.map((r) => r.documentId))).toEqual(new Set([FACILITY_ALPHA_DOC, FACILITY_BETA_DOC]));
+    expect(new Set(rows.map((r) => r.id)).size).toBe(2); // two distinct row ids, never one row silently reused across facilities.
 
-    const row = rows[0]!;
-    const sourceNode = await prisma.documentNode.findUniqueOrThrow({ where: { id: row.sourceNodeId! } });
+    // Each row is now internally CONSISTENT: its own documentId and its own
+    // sourceNodeId's documentId always agree - the internal contradiction
+    // this test originally documented (documentId frozen at Alpha while
+    // sourceNodeId pointed into Beta) is structurally impossible now, since
+    // each row belongs to exactly one document by construction.
+    for (const row of rows) {
+      const sourceNode = await prisma.documentNode.findUniqueOrThrow({ where: { id: row.sourceNodeId! } });
+      expect(sourceNode.documentId).toBe(row.documentId);
+    }
 
-    // The corruption is not merely "one row instead of two" - it is an
-    // internally CONTRADICTORY row: `documentId` is frozen at whichever
-    // facility ingested FIRST (Alpha, via the upsert's `create` branch),
-    // while `sourceNodeId` (the actual citation anchor every real lookup
-    // uses - see structural-persistence.test.ts's own established pattern)
-    // was silently overwritten to point at whichever facility ingested
-    // SECOND (Beta, via the upsert's `update` branch, which touches
-    // sourceNodeId/definitionTextRef but never documentId).
-    expect(row.documentId).toBe(FACILITY_ALPHA_DOC);
-    expect(sourceNode.documentId).toBe(FACILITY_BETA_DOC);
-    expect(row.documentId).not.toBe(sourceNode.documentId); // the contradiction itself, made explicit.
-
-    // Concretely: any caller resolving Facility Alpha's own "Payment
+    // Concretely: a caller resolving Facility Alpha's own "Payment
     // Conditions" definition (e.g. by joining DefinedTermNode.sourceNodeId
-    // -> DocumentNode, the pattern this codebase's own tests already use)
-    // silently receives FACILITY BETA'S definition text/anchor instead,
-    // with no error, no REVIEW_REQUIRED flag, and no indication anything
-    // was lost - a direct violation of invariant #20 ("no debt instrument's
-    // ... state may be reachable through another instrument's query path")
-    // and, in effect, of invariant #13 (silent wrong-but-confident state).
+    // -> DocumentNode) now genuinely receives FACILITY ALPHA's own
+    // definition text/anchor, never Facility Beta's - invariant #20 ("no
+    // debt instrument's ... state may be reachable through another
+    // instrument's query path") now holds for this model too.
+    const alphaRow = rows.find((r) => r.documentId === FACILITY_ALPHA_DOC)!;
+    const betaRow = rows.find((r) => r.documentId === FACILITY_BETA_DOC)!;
+    expect(alphaRow.id).not.toBe(betaRow.id);
+  });
+
+  it("generalized adversarial variant: a THIRD facility ('Facility Gamma', not just Alpha/Beta) also defining 'Payment Conditions' persists as a third genuinely separate row, never colliding with either of the first two", async () => {
+    const FACILITY_GAMMA_DOC = "audit-a-facility-gamma-doc";
+    await prisma.document.create({ data: { id: FACILITY_GAMMA_DOC, companyId: INSTR_CO, name: "Facility Gamma Credit Agreement", type: "CREDIT_AGREEMENT" } });
+    const gammaInstrument = await prisma.debtInstrument.create({ data: { companyId: INSTR_CO, baseDocumentId: FACILITY_GAMMA_DOC, name: "Facility Gamma" } });
+    await prisma.document.update({ where: { id: FACILITY_GAMMA_DOC }, data: { instrumentId: gammaInstrument.id } });
+    try {
+      await ingestDocument(INSTR_CO, FACILITY_GAMMA_DOC, draftingText()); // identical drafting, a THIRD independent facility
+
+      const rows = await prisma.definedTermNode.findMany({ where: { companyId: INSTR_CO, normalizedName: "payment conditions" } });
+      expect(rows).toHaveLength(3); // Alpha, Beta, AND Gamma - three genuinely separate rows.
+      expect(new Set(rows.map((r) => r.documentId))).toEqual(new Set([FACILITY_ALPHA_DOC, FACILITY_BETA_DOC, FACILITY_GAMMA_DOC]));
+      expect(new Set(rows.map((r) => r.id)).size).toBe(3);
+      for (const row of rows) {
+        const sourceNode = await prisma.documentNode.findUniqueOrThrow({ where: { id: row.sourceNodeId! } });
+        expect(sourceNode.documentId).toBe(row.documentId); // every row still internally consistent, even at 3 instruments.
+      }
+    } finally {
+      await prisma.contractReferenceEdge.deleteMany({ where: { companyId: INSTR_CO, sourceNode: { documentId: FACILITY_GAMMA_DOC } } });
+      await prisma.definedTermNode.deleteMany({ where: { companyId: INSTR_CO, documentId: FACILITY_GAMMA_DOC } });
+      await prisma.documentNode.deleteMany({ where: { companyId: INSTR_CO, documentId: FACILITY_GAMMA_DOC } });
+      await prisma.contractRule.deleteMany({ where: { companyId: INSTR_CO, sourceDocumentId: FACILITY_GAMMA_DOC } });
+      await prisma.debtInstrument.deleteMany({ where: { id: gammaInstrument.id } });
+      await prisma.document.deleteMany({ where: { id: FACILITY_GAMMA_DOC } });
+    }
   });
 
   it("query-layer gap: getRulesByCovenantFamily has no instrument-scoping parameter at all - a caller asking for INSTR_CO's RESTRICTED_PAYMENTS rules gets BOTH facilities' $100,000,000 baskets merged into one undifferentiated list", async () => {
@@ -271,5 +316,113 @@ describe("Foundation Audit Job 1 - identical-drafting cross-instrument attack, O
     expect(alphaMembers.map((d) => d.id)).toEqual([FACILITY_ALPHA_DOC]);
     const amendments = await getAmendmentsForDocument(FACILITY_ALPHA_DOC);
     expect(amendments).toEqual([]); // no AMENDS edge exists in this fixture - confirms the function runs, not that it is safe.
+  });
+});
+
+describe("Phase 3F.1.4 (P1-2 remediation) - validateTenantIsolation's mechanical schema-sweep additions: AmendmentEffect.targetRuleId/targetTermId/targetDocumentNodeId, DebtInstrument.baseDocumentId, Document.instrumentId", () => {
+  const P2_TENANT_A = "audit-a-p12-tenant-a";
+  const P2_TENANT_B = "audit-a-p12-tenant-b";
+  const P2_A_DOC = "audit-a-p12-tenant-a-doc";
+  const P2_B_DOC = "audit-a-p12-tenant-b-doc";
+  const P2_AMEND_DOC_A = "audit-a-p12-tenant-a-amend-doc";
+
+  beforeAll(async () => {
+    await prisma.company.deleteMany({ where: { id: { in: [P2_TENANT_A, P2_TENANT_B] } } });
+    await prisma.company.create({ data: { id: P2_TENANT_A, name: "P1-2 Fixture Tenant A (test-only)", tenantKind: "EVALUATION" } });
+    await prisma.company.create({ data: { id: P2_TENANT_B, name: "P1-2 Fixture Tenant B (test-only)", tenantKind: "EVALUATION" } });
+    await prisma.document.create({ data: { id: P2_A_DOC, companyId: P2_TENANT_A, name: "Tenant A base doc", type: "CREDIT_AGREEMENT" } });
+    await prisma.document.create({ data: { id: P2_B_DOC, companyId: P2_TENANT_B, name: "Tenant B base doc", type: "CREDIT_AGREEMENT" } });
+    await prisma.document.create({ data: { id: P2_AMEND_DOC_A, companyId: P2_TENANT_A, name: "Tenant A amendment doc", type: "AMENDMENT" } });
+    const nodesA = parseDocumentStructure({ documentId: P2_A_DOC, label: "CA", text: draftingText() });
+    const nodeIndexA = await persistStructuralNodes(P2_TENANT_A, nodesA);
+    const nodesB = parseDocumentStructure({ documentId: P2_B_DOC, label: "CA", text: draftingText() });
+    const nodeIndexB = await persistStructuralNodes(P2_TENANT_B, nodesB);
+    await persistStructuralDefinitions(P2_TENANT_A, detectStructuralDefinitions(P2_A_DOC, draftingText(), nodesA), nodeIndexA);
+    await persistStructuralDefinitions(P2_TENANT_B, detectStructuralDefinitions(P2_B_DOC, draftingText(), nodesB), nodeIndexB);
+    await prisma.contractRule.create({
+      data: {
+        companyId: P2_TENANT_B,
+        sourceDocumentId: P2_B_DOC,
+        stableKey: computeStableKey("contract-rule", P2_TENANT_B, P2_B_DOC, "6.01(a)", "RESTRICTED_PAYMENT"),
+        covenantFamily: "RESTRICTED_PAYMENTS",
+        ruleType: "QUANTITATIVE_PERMISSION",
+        evaluationClass: "EXECUTABLE",
+        action: "RESTRICTED_PAYMENT",
+        sourceSectionRef: "6.01(a)",
+        thresholdValue: 100_000_000,
+        thresholdUnit: "USD",
+      },
+    });
+  });
+  afterAll(async () => {
+    await prisma.company.deleteMany({ where: { id: { in: [P2_TENANT_A, P2_TENANT_B] } } });
+  });
+
+  it("positive control: with no cross-tenant edges injected, validateTenantIsolation reports clean isolation for this fixture", async () => {
+    const result = await validateTenantIsolation(P2_TENANT_A, P2_TENANT_B);
+    expect(result.ok).toBe(true);
+    expect(result.issues).toEqual([]);
+  });
+
+  it("FIXED: AmendmentEffect.targetTermId pointing at Company B's own DefinedTermNode is now caught (previously unchecked - not one of the two fields the audit happened to name, found by this fix's own mechanical sweep)", async () => {
+    const termB = await prisma.definedTermNode.findFirstOrThrow({ where: { companyId: P2_TENANT_B, normalizedName: "payment conditions" } });
+    await prisma.amendmentEffect.create({ data: { companyId: P2_TENANT_A, amendmentDocumentId: P2_AMEND_DOC_A, effectType: "MODIFY_DEFINITION", description: "deliberately cross-tenant (targetTermId)", targetTermId: termB.id } });
+    const result = await validateTenantIsolation(P2_TENANT_A, P2_TENANT_B);
+    expect(result.ok).toBe(false);
+    expect(result.issues.some((i) => i.message.includes("AmendmentEffect"))).toBe(true);
+    await prisma.amendmentEffect.deleteMany({ where: { companyId: P2_TENANT_A, description: { startsWith: "deliberately cross-tenant" } } });
+  });
+
+  it("FIXED: AmendmentEffect.targetDocumentNodeId pointing at Company B's own DocumentNode is now caught", async () => {
+    const nodeB = await prisma.documentNode.findFirstOrThrow({ where: { companyId: P2_TENANT_B, sectionRef: "6.01" } });
+    await prisma.amendmentEffect.create({ data: { companyId: P2_TENANT_A, amendmentDocumentId: P2_AMEND_DOC_A, effectType: "REPLACE_TEXT", description: "deliberately cross-tenant (targetDocumentNodeId)", targetDocumentNodeId: nodeB.id } });
+    const result = await validateTenantIsolation(P2_TENANT_A, P2_TENANT_B);
+    expect(result.ok).toBe(false);
+    expect(result.issues.some((i) => i.message.includes("AmendmentEffect"))).toBe(true);
+    await prisma.amendmentEffect.deleteMany({ where: { companyId: P2_TENANT_A, description: { startsWith: "deliberately cross-tenant" } } });
+  });
+
+  it("FIXED: AmendmentEffect.targetRuleId pointing at Company B's own ContractRule is now caught", async () => {
+    const ruleB = await prisma.contractRule.findFirstOrThrow({ where: { companyId: P2_TENANT_B } });
+    await prisma.amendmentEffect.create({ data: { companyId: P2_TENANT_A, amendmentDocumentId: P2_AMEND_DOC_A, effectType: "MODIFY_THRESHOLD", description: "deliberately cross-tenant (targetRuleId)", targetRuleId: ruleB.id } });
+    const result = await validateTenantIsolation(P2_TENANT_A, P2_TENANT_B);
+    expect(result.ok).toBe(false);
+    expect(result.issues.some((i) => i.message.includes("AmendmentEffect"))).toBe(true);
+    await prisma.amendmentEffect.deleteMany({ where: { companyId: P2_TENANT_A, description: { startsWith: "deliberately cross-tenant" } } });
+  });
+
+  it("FIXED: ContractReferenceEdge.targetDocumentId pointing at Company B's own Document is now caught (the third target-direction field on this model, found by this fix's own mechanical sweep alongside the two the audit named)", async () => {
+    await prisma.contractReferenceEdge.create({ data: { companyId: P2_TENANT_A, referenceType: "SUBJECT_TO", referenceText: "deliberately cross-tenant (targetDocumentId)", targetType: "DOCUMENT", targetDocumentId: P2_B_DOC, resolved: true } });
+    const result = await validateTenantIsolation(P2_TENANT_A, P2_TENANT_B);
+    expect(result.ok).toBe(false);
+    expect(result.issues.some((i) => i.message.includes("ContractReferenceEdge"))).toBe(true);
+    await prisma.contractReferenceEdge.deleteMany({ where: { companyId: P2_TENANT_A, referenceText: { startsWith: "deliberately cross-tenant" } } });
+  });
+
+  it("FIXED: DebtInstrument.baseDocumentId pointing at Company B's own Document is now caught", async () => {
+    await prisma.debtInstrument.create({ data: { companyId: P2_TENANT_A, baseDocumentId: P2_B_DOC, name: "deliberately cross-tenant instrument" } });
+    const result = await validateTenantIsolation(P2_TENANT_A, P2_TENANT_B);
+    expect(result.ok).toBe(false);
+    expect(result.issues.some((i) => i.message.includes("DebtInstrument"))).toBe(true);
+    await prisma.debtInstrument.deleteMany({ where: { companyId: P2_TENANT_A, name: "deliberately cross-tenant instrument" } });
+  });
+
+  it("FIXED: Document.instrumentId pointing at Company B's own DebtInstrument is now caught", async () => {
+    const instrumentB = await prisma.debtInstrument.create({ data: { companyId: P2_TENANT_B, name: "Tenant B's own instrument" } });
+    await prisma.document.update({ where: { id: P2_AMEND_DOC_A }, data: { instrumentId: instrumentB.id } });
+    const result = await validateTenantIsolation(P2_TENANT_A, P2_TENANT_B);
+    expect(result.ok).toBe(false);
+    expect(result.issues.some((i) => i.message.includes("Document"))).toBe(true);
+    await prisma.document.update({ where: { id: P2_AMEND_DOC_A }, data: { instrumentId: null } });
+    await prisma.debtInstrument.deleteMany({ where: { id: instrumentB.id } });
+  });
+
+  it("negative control: a LEGITIMATE same-tenant AmendmentEffect (targeting Company A's OWN rule/term/node) is never flagged", async () => {
+    const termA = await prisma.definedTermNode.findFirstOrThrow({ where: { companyId: P2_TENANT_A, normalizedName: "payment conditions" } });
+    await prisma.amendmentEffect.create({ data: { companyId: P2_TENANT_A, amendmentDocumentId: P2_AMEND_DOC_A, effectType: "MODIFY_DEFINITION", description: "legitimate same-tenant effect", targetTermId: termA.id } });
+    const result = await validateTenantIsolation(P2_TENANT_A, P2_TENANT_B);
+    expect(result.ok).toBe(true);
+    expect(result.issues).toEqual([]);
+    await prisma.amendmentEffect.deleteMany({ where: { companyId: P2_TENANT_A, description: "legitimate same-tenant effect" } });
   });
 });

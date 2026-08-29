@@ -17,6 +17,7 @@
  */
 import { describe, expect, it } from "vitest";
 import { parseDocumentStructure } from "../../lib/contract-model/compiler/stage-structure";
+import { detectStructuralDefinitions } from "../../lib/contract-model/compiler/structural-definitions";
 import { buildStructuralIndex, type StructuralIndex } from "../../lib/contract-model/compiler/structural-index";
 import { computeOperativeContractState } from "../../lib/contract-model/compiler/amendment/operative-state";
 import { verifyAmendmentEffectsIndependently } from "../../lib/contract-model/compiler/amendment/independent-verification";
@@ -64,29 +65,40 @@ Section 6.05 Affiliate Transactions . Neither party shall enter into any transac
 Section 6.06 Liens . Neither party shall grant Liens except Permitted Liens.
 `.trim();
 
-describe("CENTRAL FINDING: an AMBIGUOUS or MISSING amendment target with captured newText silently produces OPERATIVE_STATE_RESOLVED", () => {
+describe("CENTRAL FINDING (FIXED): an AMBIGUOUS or MISSING amendment target with captured newText must never produce OPERATIVE_STATE_RESOLVED", () => {
   const DUPLICATE_TEXT = `${SIMPLE_TEXT}\n\nSchedule A - Cross-Reference Appendix\n\nSection 6.05 Affiliate Transactions . A second, physically distinct occurrence of the identical legal reference.`;
+  const TRIPLICATE_TEXT = `${DUPLICATE_TEXT}\n\nSchedule B - Second Cross-Reference Appendix\n\nSection 6.05 Affiliate Transactions . A THIRD, physically distinct occurrence of the identical legal reference.`;
 
-  it("AMBIGUOUS target (2 real physical occurrences share '6.05') + newText -> falsely OPERATIVE_STATE_RESOLVED, zero unresolvedIssues, zero provenance to the base node", () => {
+  it("AMBIGUOUS target (2 real physical occurrences share '6.05') + newText -> FIXED: never RESOLVED, unresolvedIssues populated, currentText withheld, amendment's own text still preserved for review", () => {
     const { index } = buildIndex(BASE_DOC, DUPLICATE_TEXT);
     expect(index.resolveUniqueNodeByRef(BASE_DOC, "6.05").status).toBe("AMBIGUOUS");
 
     const effect = baseEffect({ target: sectionTarget(BASE_DOC, INSTRUMENT, "6.05"), newText: "Section 6.05 Affiliate Transactions . Neither party shall enter into any transaction with an Affiliate involving $2,500,000 or more without approval, as amended." });
     const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2021-01-01", index, allEffects: [effect] });
 
-    // THE DEFECT: status is RESOLVED despite the target never having been
-    // uniquely identified in the base document at all.
-    expect(state.status).toBe("OPERATIVE_STATE_RESOLVED");
-    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_RESOLVED");
-    expect(state.provisions[0]!.unresolvedIssues).toHaveLength(0);
-    expect(state.provisions[0]!.currentText).toContain("$2,500,000");
-    // No trace anywhere in the view that the OLD target was ambiguous.
+    // FIXED: the target's own ambiguity is never masked by the presence
+    // of newText - status is fail-closed, not a confident RESOLVED.
+    expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(state.provisions[0]!.unresolvedIssues.length).toBeGreaterThan(0);
+    expect(state.provisions[0]!.unresolvedIssues.join(" ")).toMatch(/ambiguous/i);
+    expect(state.provisions[0]!.reviewRequired).toBe(true);
+    // currentText is withheld - never a confident "here's what governs" answer.
+    expect(state.provisions[0]!.currentText).toBeNull();
+    // But "here's what the amendment SAYS" is never discarded - a reviewer
+    // can still see the captured replacement text even though WHERE it
+    // attaches remains unresolved.
+    expect(state.provisions[0]!.attemptedText).toContain("$2,500,000");
+    // The real target-resolution status/candidates are now surfaced explicitly.
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+    expect(state.provisions[0]!.candidateSourceNodeIds.length).toBe(2);
     expect(state.provisions[0]!.currentSourceNodeId).toBeNull();
     expect(state.provisions[0]!.supersededSourceNodeIds).toHaveLength(0);
 
-    // independent-verification.ts ALSO does not catch this - it only
-    // checks EXISTENCE (findNodesByRef().length > 0), which is true for an
-    // ambiguous match too, never distinguishing UNIQUE from AMBIGUOUS.
+    // independent-verification.ts is now STRENGTHENED to also catch this -
+    // it previously only checked EXISTENCE (findNodesByRef().length > 0),
+    // which was true for an ambiguous match too. It now re-derives the
+    // real three-way status directly and fails closed on AMBIGUOUS.
     const verification = verifyAmendmentEffectsIndependently(
       [effect],
       [
@@ -95,53 +107,76 @@ describe("CENTRAL FINDING: an AMBIGUOUS or MISSING amendment target with capture
       ],
       index
     );
-    expect(verification[0]!.passed).toBe(true);
-    expect(verification[0]!.issues).toHaveLength(0);
+    expect(verification[0]!.passed).toBe(false);
+    expect(verification[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+    expect(verification[0]!.issues.join(" ")).toMatch(/AMBIGUOUS/);
   });
 
-  it("MISSING target (no node at all for '6.99') + newText -> ALSO falsely OPERATIVE_STATE_RESOLVED at the operative-state layer, though independent-verification DOES flag it (when actually invoked)", () => {
+  it("GENERALIZED: 3 colliding physical occurrences (not just 2) are surfaced identically - the fix is not hardcoded to exactly two candidates", () => {
+    const { index } = buildIndex(BASE_DOC, TRIPLICATE_TEXT);
+    const resolution = index.resolveUniqueNodeByRef(BASE_DOC, "6.05");
+    expect(resolution.status).toBe("AMBIGUOUS");
+    if (resolution.status !== "AMBIGUOUS") throw new Error("expected AMBIGUOUS");
+    expect(resolution.candidates.length).toBe(3);
+
+    const effect = baseEffect({ target: sectionTarget(BASE_DOC, INSTRUMENT, "6.05"), newText: "Section 6.05 Affiliate Transactions . Threshold increased to $2,500,000, as amended." });
+    const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2021-01-01", index, allEffects: [effect] });
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+    expect(state.provisions[0]!.candidateSourceNodeIds.length).toBe(3);
+    expect(state.provisions[0]!.currentText).toBeNull();
+    expect(state.provisions[0]!.attemptedText).toContain("$2,500,000");
+  });
+
+  it("MISSING target (no node at all for '6.99') + newText -> FIXED at BOTH layers: operative-state.ts never RESOLVED, and independent-verification.ts (now wired into the live pipeline) also flags it", () => {
     const { index } = buildIndex(BASE_DOC, SIMPLE_TEXT);
     expect(index.resolveUniqueNodeByRef(BASE_DOC, "6.99").status).toBe("NOT_FOUND");
 
     const effect = baseEffect({ target: sectionTarget(BASE_DOC, INSTRUMENT, "6.99"), newText: "Section 6.99 Fabricated Section . This text has no real corresponding base provision." });
     const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2021-01-01", index, allEffects: [effect] });
 
-    expect(state.status).toBe("OPERATIVE_STATE_RESOLVED");
-    expect(state.provisions[0]!.unresolvedIssues).toHaveLength(0);
+    expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(state.provisions[0]!.unresolvedIssues.length).toBeGreaterThan(0);
+    expect(state.provisions[0]!.unresolvedIssues.join(" ")).toMatch(/not found/i);
+    expect(state.provisions[0]!.currentText).toBeNull();
+    expect(state.provisions[0]!.attemptedText).toContain("Fabricated Section");
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("NOT_FOUND");
 
     const verification = verifyAmendmentEffectsIndependently([effect], [{ documentId: BASE_DOC, text: SIMPLE_TEXT, label: BASE_DOC }], index);
     expect(verification[0]!.passed).toBe(false);
+    expect(verification[0]!.targetResolutionStatus).toBe("NOT_FOUND");
     expect(verification[0]!.issues[0]).toMatch(/does not resolve/);
   });
 
-  it("control: the SAME ambiguous target WITHOUT newText correctly downgrades to OPERATIVE_STATE_PARTIAL - the bug is specific to the newText branch masking an unresolved base target", () => {
+  it("control: the SAME ambiguous target WITHOUT newText correctly downgrades to OPERATIVE_STATE_PARTIAL - confirms the fix applies uniformly regardless of whether newText happens to be present, not merely to the newText branch specifically", () => {
     const { index } = buildIndex(BASE_DOC, DUPLICATE_TEXT);
     const effect = baseEffect({ target: sectionTarget(BASE_DOC, INSTRUMENT, "6.05"), operation: "MODIFY_THRESHOLD", newText: null });
     const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2021-01-01", index, allEffects: [effect] });
     expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
     expect(state.provisions[0]!.currentText).toBeNull();
+    expect(state.provisions[0]!.attemptedText).toBeNull();
   });
 
-  it("independent-verification.ts is not wired into any live production caller - grep confirms its only real callers are one-off diagnostic scripts, never lib/amendment/pipeline.ts or lib/amendment/operative-state.ts itself", () => {
-    // This assertion documents a real repository fact checked via Bash
-    // during this audit (grep -rn "verifyAmendmentEffectsIndependently"
-    // lib/ app/ scripts/) rather than re-deriving it here: the function is
-    // exported but never imported by pipeline.ts/operative-state.ts or any
-    // app/ route. Encoded as a lightweight structural check on the
-    // pipeline module's own source text so a future wiring-up is detected
-    // (test starts failing, in the safe direction) rather than silently
-    // stale.
+  it("independent-verification.ts is now WIRED into the live pipeline (pipeline.ts) as a real gate, while remaining a genuinely separate pass from operative-state.ts's own buildProvisionView (Architecture Invariant #17)", () => {
+    // Phase 3F.1.4 §6C: previously this function had zero real callers
+    // outside one-off diagnostic scripts (grep-confirmed by the audit).
+    // It is now imported and invoked by runAmendmentPipeline. It remains
+    // intentionally NOT imported by operative-state.ts itself, so
+    // "propose" (buildProvisionView, consuming resolveUniqueNodeByRef
+    // directly) and "check" (this module, re-deriving resolution
+    // independently) stay two distinct passes, never fused into one.
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const fs = require("fs") as typeof import("fs");
     const pipelineSrc = fs.readFileSync(require.resolve("../../lib/contract-model/compiler/amendment/pipeline.ts"), "utf8");
     const operativeStateSrc = fs.readFileSync(require.resolve("../../lib/contract-model/compiler/amendment/operative-state.ts"), "utf8");
-    expect(pipelineSrc.includes("verifyAmendmentEffectsIndependently")).toBe(false);
+    expect(pipelineSrc.includes("verifyAmendmentEffectsIndependently")).toBe(true);
     expect(operativeStateSrc.includes("verifyAmendmentEffectsIndependently")).toBe(false);
   });
 });
 
-describe("Conflicting same-date amendments to the same provision: status is correctly CONFLICTED, but currentText is still populated from iteration order, not evidence", () => {
-  it("two genuinely conflicting effects (same date, different resulting text) targeting the same section produce OPERATIVE_STATE_CONFLICTED, and currentText silently follows ARRAY INSERTION ORDER, not any evidence-based precedence rule", () => {
+describe("Conflicting same-date amendments to the same provision (FIXED): status is CONFLICTED, and currentText is now withheld/order-INVARIANT instead of following iteration order", () => {
+  it("two genuinely conflicting effects (same date, different resulting text) targeting the same section produce OPERATIVE_STATE_CONFLICTED, currentText is null in BOTH orders, and candidateTexts is the SAME (effectId-sorted) value regardless of input order", () => {
     const { index } = buildIndex(BASE_DOC, SIMPLE_TEXT);
     const effectX = baseEffect({ effectId: "effect-x", target: sectionTarget(BASE_DOC, INSTRUMENT, "6.04"), newText: "Section 6.04 (per Amendment X) - the cap is $10,000,000.", sourceCitation: "amendment-x::Section 1" });
     const effectY = baseEffect({ effectId: "effect-y", target: sectionTarget(BASE_DOC, INSTRUMENT, "6.04"), newText: "Section 6.04 (per Amendment Y) - the cap is $20,000,000.", sourceCitation: "amendment-y::Section 1" });
@@ -153,34 +188,54 @@ describe("Conflicting same-date amendments to the same provision: status is corr
     expect(stateYX.status).toBe("OPERATIVE_STATE_CONFLICTED");
     expect(stateXY.provisions[0]!.conflicts.some((c) => c.conflictType === "AMENDMENT_CONFLICT")).toBe(true);
 
-    // THE DEFECT (narrower, but real): currentText differs solely because
-    // the two effects were passed in a different array order - a
-    // downstream consumer that reads `currentText` without also checking
-    // `status` (a real risk the type's own field ordering invites) would
-    // see a DIFFERENT confident-looking dollar figure depending on
-    // accidental input ordering, never on which amendment actually has
-    // better legal precedence (there is none here by design - this is a
-    // genuine drafting conflict with no resolving evidence).
-    expect(stateXY.provisions[0]!.currentText).toContain("$20,000,000"); // Y processed last
-    expect(stateYX.provisions[0]!.currentText).toContain("$10,000,000"); // X processed last
-    expect(stateXY.provisions[0]!.currentText).not.toBe(stateYX.provisions[0]!.currentText);
+    // FIXED: no evidence-based precedence rule exists between these two
+    // effects, so currentText is withheld entirely - never populated from
+    // whichever effect happens to be last in the input array.
+    expect(stateXY.provisions[0]!.currentText).toBeNull();
+    expect(stateYX.provisions[0]!.currentText).toBeNull();
+    // Both real candidate texts are still disclosed, in an INPUT-ORDER-
+    // INVARIANT (effectId-sorted) sequence - proving order invariance
+    // directly, not merely that currentText itself is null in both cases.
+    expect(stateXY.provisions[0]!.candidateTexts).toEqual(["Section 6.04 (per Amendment X) - the cap is $10,000,000.", "Section 6.04 (per Amendment Y) - the cap is $20,000,000."]);
+    expect(stateYX.provisions[0]!.candidateTexts).toEqual(stateXY.provisions[0]!.candidateTexts);
+    expect(stateXY.provisions[0]!.reviewRequired).toBe(true);
   });
 });
 
-describe("Deletion (no replacement): currentText is correctly null, but the STATUS/reason text is misleading for a genuine, well-evidenced deletion", () => {
-  it("a clean DELETE_TEXT effect with a fully resolved, unique target is downgraded to OPERATIVE_STATE_PARTIAL with a 'text could not be safely derived' message, even though the null text is the CORRECT, intended outcome of a deletion, not a derivation failure", () => {
+describe("Deletion (no replacement) - FIXED (P3): currentText is null AND status is now the correct RESOLVED, no longer mislabeled as a derivation failure", () => {
+  it("a clean DELETE_TEXT effect with a fully resolved, unique target correctly resolves to null currentText WITH status RESOLVED - a well-evidenced, intended deletion is a correct null-governance outcome, never conflated with 'an effect governs but its resulting text could not be captured'", () => {
     const { index } = buildIndex(BASE_DOC, SIMPLE_TEXT);
     const effect = baseEffect({ operation: "DELETE_TEXT", target: sectionTarget(BASE_DOC, INSTRUMENT, "6.05"), newText: null });
     const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2021-01-01", index, allEffects: [effect] });
 
     expect(state.provisions[0]!.currentText).toBeNull();
-    // This is the over-conservative/mislabeled part: PARTIAL + a message
-    // implying uncertainty about DERIVING text, when in fact the system
-    // has full, unambiguous evidence that section 6.05 was deleted and
-    // nothing governs there any more - a materially different situation
-    // from "an amendment applies but we could not safely render its text."
+    // FIXED: the system has full, unambiguous evidence that section 6.05
+    // was deleted (a UNIQUE target, a real dated effect) and nothing
+    // governs there any more - that is a correct, known outcome, not a
+    // failure to derive text, so it no longer reads as OPERATIVE_STATE_PARTIAL.
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_RESOLVED");
+    expect(state.provisions[0]!.unresolvedIssues).toHaveLength(0);
+    expect(state.provisions[0]!.reviewRequired).toBe(false);
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("UNIQUE");
+  });
+
+  it("CONTROL: a governing effect with NO capturable text (a threshold change with no quoted replacement) is STILL correctly OPERATIVE_STATE_PARTIAL with the original 'could not be safely derived' message - the P3 fix is specific to deletions, never a blanket relaxation", () => {
+    const { index } = buildIndex(BASE_DOC, SIMPLE_TEXT);
+    const effect = baseEffect({ operation: "MODIFY_THRESHOLD", target: sectionTarget(BASE_DOC, INSTRUMENT, "6.05"), newText: null });
+    const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2021-01-01", index, allEffects: [effect] });
+    expect(state.provisions[0]!.currentText).toBeNull();
     expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
     expect(state.provisions[0]!.unresolvedIssues[0]).toMatch(/could not be safely derived/);
+  });
+
+  it("an AMBIGUOUS-target deletion is NOT treated as a clean deletion - we cannot say WHAT was deleted when the target itself never resolved uniquely", () => {
+    const DUPLICATE_TEXT = `${SIMPLE_TEXT}\n\nSchedule A - Cross-Reference Appendix\n\nSection 6.05 Affiliate Transactions . A second, physically distinct occurrence of the identical legal reference.`;
+    const { index } = buildIndex(BASE_DOC, DUPLICATE_TEXT);
+    const effect = baseEffect({ operation: "DELETE_TEXT", target: sectionTarget(BASE_DOC, INSTRUMENT, "6.05"), newText: null });
+    const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2021-01-01", index, allEffects: [effect] });
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+    expect(state.provisions[0]!.currentText).toBeNull();
   });
 });
 
@@ -323,20 +378,114 @@ Section 6.04 Limitation on Distributions . Neither party shall make any Restrict
   });
 });
 
-describe("Duplicated legal reference as amendment target where NO newText is supplied (bare 'is hereby amended', no quoted replacement)", () => {
-  it("an ambiguous target with no newText correctly downgrades to PARTIAL and explicitly names the ambiguity risk is NOT surfaced in unresolvedIssues (a real, if smaller, disclosure gap)", () => {
+describe("Duplicated legal reference as amendment target where NO newText is supplied (bare 'is hereby amended', no quoted replacement) - FIXED disclosure quality", () => {
+  it("an ambiguous target with no newText correctly downgrades to PARTIAL and NOW explicitly names the ambiguity (2+ real candidates) as the reason, not a generic 'text could not be captured' message", () => {
     const DUPLICATE_TEXT = `${SIMPLE_TEXT}\n\nSchedule A - Cross-Reference Appendix\n\nSection 6.05 Affiliate Transactions . A second, physically distinct occurrence of the identical legal reference.`;
     const { index } = buildIndex(BASE_DOC, DUPLICATE_TEXT);
     const effect = baseEffect({ operation: "MODIFY_THRESHOLD", target: sectionTarget(BASE_DOC, INSTRUMENT, "6.05"), newText: null });
     const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2021-01-01", index, allEffects: [effect] });
     expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
-    // The unresolvedIssues message is generic ("text could not be safely
-    // derived") - it never says WHY (ambiguous vs. simply not captured),
-    // so a reviewer cannot tell from this view alone that the real reason
-    // is "two real, distinct sections share this exact legal reference in
-    // the base document" as opposed to "the amendment just didn't quote
-    // replacement text." Documented as a disclosure-quality gap, not a
-    // false-RESOLVED defect (that is the earlier, more severe finding).
-    expect(state.provisions[0]!.unresolvedIssues.join(" ")).not.toMatch(/ambiguous/i);
+    // FIXED: the audit's own disclosure-quality gap - a reviewer can now
+    // tell from unresolvedIssues alone that the real reason is "two real,
+    // distinct sections share this exact legal reference in the base
+    // document," not merely "the amendment didn't quote replacement text."
+    expect(state.provisions[0]!.unresolvedIssues.join(" ")).toMatch(/ambiguous/i);
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+    expect(state.provisions[0]!.candidateSourceNodeIds.length).toBe(2);
+  });
+});
+
+describe("DEFINITION-kind versions of the CENTRAL FINDING (P0-1) - the same buildProvisionView code path, same fix, exercised for a defined term instead of a section", () => {
+  function definedTermTarget(documentId: string, instrumentKey: string, term: string) {
+    return { kind: "DEFINITION" as const, targetDocumentId: documentId, targetInstrumentKey: instrumentKey, targetStructuralNodeKey: null, targetSectionRef: null, targetDefinedTermRef: term, targetHint: null };
+  }
+
+  it("AMBIGUOUS definition target (2 real, distinct definitions of the SAME term in the base document) + newText -> never RESOLVED, currentText withheld, attemptedText preserved", () => {
+    const documentId = "def-base-doc";
+    const text = `
+CREDIT AGREEMENT dated as of January 15, 2021, among Acme LLC, as Borrower.
+
+"Consolidated EBITDA" means net income plus interest, taxes, depreciation and amortization.
+
+SCHEDULE 1 - Cross-Reference Appendix
+
+"Consolidated EBITDA" means, for purposes of the leverage covenant only, net income plus interest and taxes (a second, genuinely distinct definition of the identical term).
+`.trim();
+    const nodes = parseDocumentStructure({ documentId, label: documentId, text });
+    const defs = detectStructuralDefinitions(documentId, text, nodes);
+    expect(defs.filter((d) => d.normalizedTerm === "consolidated ebitda")).toHaveLength(2);
+    const index = buildStructuralIndex(new Map([[documentId, { text, nodes }]]), defs, []);
+
+    const instrumentKey = `instrument:${documentId}`;
+    const effect = baseEffect({ target: definedTermTarget(documentId, instrumentKey, "Consolidated EBITDA"), newText: `"Consolidated EBITDA" means net income plus interest, taxes, depreciation, amortization, and non-recurring restructuring charges.` });
+    const state = computeOperativeContractState({ instrumentKey, baseDocumentId: documentId, asOfDate: "2021-01-01", index, allEffects: [effect] });
+
+    expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+    expect(state.provisions[0]!.currentText).toBeNull();
+    expect(state.provisions[0]!.attemptedText).toContain("non-recurring restructuring charges");
+    expect(state.provisions[0]!.candidateSourceNodeIds.length).toBeGreaterThanOrEqual(0); // definitions may or may not carry a source node id; never fabricated either way.
+    expect(state.provisions[0]!.unresolvedIssues.join(" ")).toMatch(/ambiguous/i);
+  });
+
+  it("NOT_FOUND definition target (the base document never defines this term at all) + newText -> never RESOLVED for a REPLACE_DEFINITION of a term that should already exist", () => {
+    const documentId = "def-base-doc-2";
+    const text = `CREDIT AGREEMENT dated as of January 15, 2021, among Beta LLC, as Borrower.\n\nSection 6.01 Indebtedness. The Borrower will not incur Indebtedness in excess of $50,000,000.`;
+    const nodes = parseDocumentStructure({ documentId, label: documentId, text });
+    const index = buildStructuralIndex(new Map([[documentId, { text, nodes }]]), [], []);
+    const instrumentKey = `instrument:${documentId}`;
+
+    const effect = baseEffect({ operation: "REPLACE_DEFINITION", target: definedTermTarget(documentId, instrumentKey, "Excluded Subsidiary"), newText: `"Excluded Subsidiary" means any Subsidiary designated as such by the Borrower.` });
+    const state = computeOperativeContractState({ instrumentKey, baseDocumentId: documentId, asOfDate: "2021-01-01", index, allEffects: [effect] });
+
+    expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("NOT_FOUND");
+    expect(state.provisions[0]!.currentText).toBeNull();
+    expect(state.provisions[0]!.attemptedText).toContain("Excluded Subsidiary");
+  });
+
+  it("POSITIVE CONTROL: ADD_DEFINITION introducing a genuinely NEW term (absent from the base document by design, not by error) is correctly treated as UNIQUE/resolvable, never flagged as a false ambiguous/missing target", () => {
+    const documentId = "def-base-doc-3";
+    const text = `CREDIT AGREEMENT dated as of January 15, 2021, among Gamma LLC, as Borrower.\n\nSection 6.01 Indebtedness. The Borrower will not incur Indebtedness in excess of $50,000,000.`;
+    const nodes = parseDocumentStructure({ documentId, label: documentId, text });
+    const index = buildStructuralIndex(new Map([[documentId, { text, nodes }]]), [], []);
+    const instrumentKey = `instrument:${documentId}`;
+
+    const effect = baseEffect({ operation: "ADD_DEFINITION", target: definedTermTarget(documentId, instrumentKey, "Permitted Refinancing Indebtedness"), newText: null });
+    const state = computeOperativeContractState({ instrumentKey, baseDocumentId: documentId, asOfDate: "2021-01-01", index, allEffects: [effect] });
+    expect(state.provisions[0]!.targetResolutionStatus).toBe("UNIQUE");
+    // ADD_DEFINITION's own deterministic parser never captures newText (task
+    // §7's own scope), so this still reads as PARTIAL ("governs, exact
+    // wording not captured") rather than RESOLVED - but crucially for a
+    // DIFFERENT, correct reason than a false ambiguous/missing-target flag.
+    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(state.provisions[0]!.unresolvedIssues.join(" ")).not.toMatch(/ambiguous|not found/i);
+  });
+});
+
+describe("GENERALIZED: deeply nested amendment chain with an ambiguous target - the ambiguity governs at every query date along the chain, not merely the latest one", () => {
+  it("a 3-amendment chain against an AMBIGUOUS base section never reaches RESOLVED at any query date (before/between/after all three), even though every individual effect is itself well-dated and well-evidenced", () => {
+    const DUPLICATE_TEXT = `${SIMPLE_TEXT}\n\nSchedule A - Cross-Reference Appendix\n\nSection 6.04 Limitation on Distributions . A second, physically distinct occurrence of the identical legal reference.`;
+    const { index } = buildIndex(BASE_DOC, DUPLICATE_TEXT);
+    expect(index.resolveUniqueNodeByRef(BASE_DOC, "6.04").status).toBe("AMBIGUOUS");
+
+    const e1 = baseEffect({ effectId: "e1", amendmentDocumentId: "amend-2019", effectiveDate: DATED("2019-01-01"), target: sectionTarget(BASE_DOC, INSTRUMENT, "6.04"), newText: "6.04 per 2019 amendment - $5,000,000 cap." });
+    const e2 = baseEffect({ effectId: "e2", amendmentDocumentId: "amend-2021", effectiveDate: DATED("2021-01-01"), target: sectionTarget(BASE_DOC, INSTRUMENT, "6.04"), newText: "6.04 per 2021 amendment - $8,000,000 cap." });
+    const e3 = baseEffect({ effectId: "e3", amendmentDocumentId: "amend-2023", effectiveDate: DATED("2023-01-01"), target: sectionTarget(BASE_DOC, INSTRUMENT, "6.04"), newText: "6.04 per 2023 amendment - $12,000,000 cap." });
+
+    for (const asOfDate of ["2018-06-01", "2020-06-01", "2022-06-01", "2024-06-01"]) {
+      const state = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate, index, allEffects: [e1, e2, e3] });
+      expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
+      expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
+      expect(state.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
+      expect(state.provisions[0]!.currentText).toBeNull();
+    }
+
+    // The LATEST applied effect's own text is still preserved for review at the final date.
+    const stateAfterAll = computeOperativeContractState({ instrumentKey: INSTRUMENT, baseDocumentId: BASE_DOC, asOfDate: "2024-06-01", index, allEffects: [e1, e2, e3] });
+    expect(stateAfterAll.provisions[0]!.attemptedText).toContain("$12,000,000");
+    expect(stateAfterAll.provisions[0]!.fullChain).toHaveLength(3);
   });
 });

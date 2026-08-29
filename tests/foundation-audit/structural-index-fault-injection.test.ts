@@ -8,6 +8,19 @@
  * of the layer broken. Nothing here modifies production code; findings are
  * recorded in this file's own describe/it names plus the narrative report
  * handed back to the caller.
+ *
+ * Phase 3F.1.4 (Workstream A) update: production code was frozen when the
+ * "wrong parent (CLAUSE claims ARTICLE directly...)" and "overlapping
+ * impossible spans between SIBLINGS" tests below were originally written to
+ * DOCUMENT that buildStructuralIndex's healthDiagnostics() had no check for
+ * either condition (docs/foundation-assurance/12-fault-injection-results.json
+ * fault-injection rows for both). Both are now detected
+ * (IMPLAUSIBLE_HIERARCHY_RANK, SIBLING_SPAN_OVERLAP respectively) - their own
+ * assertions were UPDATED below to assert the new, fixed, fail-closed ERROR
+ * findings instead of continuing to assert "UNDETECTED," the same precedent
+ * already set by
+ * tests/contract-model/architecture-proposal-node-identity.test.ts's own
+ * header comment. Every other test in this file is unchanged.
  */
 import { describe, expect, it } from "vitest";
 import { buildStructuralIndex, type StructuralHealthFinding } from "../../lib/contract-model/compiler/structural-index";
@@ -66,15 +79,20 @@ describe("Baseline (known-safe post-3F.1.2): duplicate legal label", () => {
 });
 
 describe("Fault: wrong parent (structurally real but semantically implausible - CLAUSE claiming ARTICLE directly, skipping SECTION/SUBSECTION)", () => {
-  it("index has NO semantic-plausibility check on parent/child nodeType nesting distance - accepted silently, zero health findings", () => {
+  it("Phase 3F.1.4 FIX VERIFIED: IMPLAUSIBLE_HIERARCHY_RANK now detects a parent/child nodeType nesting distance greater than one rank", () => {
     const article = n({ documentId: "d1", nodeType: "ARTICLE", sectionRef: "6", charStart: 0, charEnd: 1000, nodeId: "art-6" });
-    // A CLAUSE whose parentNodeId points directly at the ARTICLE, skipping SECTION and SUBSECTION entirely - legally nonsensical (a clause is never a direct child of an article) but structurally "valid" under every current I-check (span nesting holds, parent exists, no cycle).
+    // A CLAUSE whose parentNodeId points directly at the ARTICLE, skipping SECTION and SUBSECTION entirely - legally nonsensical (a clause is never a direct child of an article) but structurally "valid" under every I1-I16 check (span nesting holds, parent exists, no cycle).
     const clause = n({ documentId: "d1", nodeType: "CLAUSE", sectionRef: "6.01(a)", charStart: 10, charEnd: 20, parentNodeId: "art-6", nodeId: "clause-1" });
     const index = buildStructuralIndex(new Map([["d1", { text: TEXT, nodes: [article, clause] }]]), [], []);
     const health = index.healthDiagnostics();
     const errors = health.filter((f) => f.severity === "ERROR");
-    expect(errors).toHaveLength(0); // UNDETECTED: no NodeType-rank-distance / implausible-nesting health code exists.
-    expect(index.getParent(clause.nodeId)!.nodeType).toBe("ARTICLE"); // silently accepted, looks structurally "normal" to every caller.
+    expect(errors).toHaveLength(1);
+    expect(errors[0]!.code).toBe("IMPLAUSIBLE_HIERARCHY_RANK");
+    expect(errors[0]!.nodeId).toBe("clause-1");
+    // The parent/child edge itself is still real and unaltered - this fix is
+    // a detection-only health signal, never a parenting/identity change (out
+    // of this workstream's scope).
+    expect(index.getParent(clause.nodeId)!.nodeType).toBe("ARTICLE");
   });
 });
 
@@ -144,16 +162,22 @@ describe("Fault: corrupted source span (charStart > charEnd, or negative)", () =
 });
 
 describe("Fault: overlapping impossible spans between SIBLINGS (not parent/child nesting)", () => {
-  it("two sibling SUBSECTIONs under the same parent with overlapping charStart..charEnd ranges - NOT detected by any health code", () => {
+  it("Phase 3F.1.4 FIX VERIFIED: SIBLING_SPAN_OVERLAP now detects two sibling SUBSECTIONs under the same parent with overlapping charStart..charEnd ranges", () => {
     const parent = n({ documentId: "d1", nodeType: "SECTION", sectionRef: "6.01", charStart: 0, charEnd: 1000, nodeId: "sec-601" });
     const siblingA = n({ documentId: "d1", nodeType: "SUBSECTION", sectionRef: "6.01(a)", charStart: 100, charEnd: 400, parentNodeId: "sec-601", nodeId: "sub-a" });
     const siblingB = n({ documentId: "d1", nodeType: "SUBSECTION", sectionRef: "6.01(b)", charStart: 300, charEnd: 600, parentNodeId: "sec-601", nodeId: "sub-b" }); // overlaps siblingA's [100,400) at [300,400)
     const index = buildStructuralIndex(new Map([["d1", { text: TEXT, nodes: [parent, siblingA, siblingB] }]]), [], []);
     const errors = index.healthDiagnostics().filter((f) => f.severity === "ERROR");
-    // OVERLAPPING_INCOMPATIBLE_SPAN only fires for parent/child span-containment violations (I12), never sibling-vs-sibling overlap.
+    // OVERLAPPING_INCOMPATIBLE_SPAN (I12) still only fires for parent/child span-containment violations, never sibling-vs-sibling overlap - that remains a materially different check.
     expect(errors.filter((f) => f.code === "OVERLAPPING_INCOMPATIBLE_SPAN")).toHaveLength(0);
-    expect(errors).toHaveLength(0); // UNDETECTED entirely.
-    // SOURCE_ORDER_VIOLATION also does not fire here: it only checks that a sibling's charStart never precedes the PRECEDING sibling's charStart - siblingB.charStart(300) > siblingA.charStart(100), so ascending order holds even though the spans overlap.
+    const overlapErrors = errors.filter((f) => f.code === "SIBLING_SPAN_OVERLAP");
+    expect(overlapErrors).toHaveLength(1);
+    expect(overlapErrors[0]!.nodeId).toBe("sub-b");
+    // SOURCE_ORDER_VIOLATION still does not fire here (unchanged, correct
+    // behavior): it only checks that a sibling's charStart never precedes the
+    // PRECEDING sibling's charStart - siblingB.charStart(300) > siblingA.charStart(100),
+    // so ascending order holds even though the spans overlap; SIBLING_SPAN_OVERLAP
+    // is the correct, distinct code for THIS condition.
     expect(index.healthDiagnostics().filter((f) => f.code === "SOURCE_ORDER_VIOLATION")).toHaveLength(0);
   });
 });

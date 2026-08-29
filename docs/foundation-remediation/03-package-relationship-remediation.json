@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "PACKAGE_RELATIONSHIP_REMEDIATION",
+  "generatedAt": "2026-08-28T23:14:00Z",
+  "workstream": "C",
+  "findingsAddressed": ["P0-5", "P1-7"],
+  "filesChanged": [
+    "lib/contract-model/compiler/package-graph/relationship-resolution.ts",
+    "lib/contract-model/compiler/package-graph/instrument-grouping.ts",
+    "lib/contract-model/compiler/package-graph/types.ts"
+  ],
+  "evidenceTaxonomy": {
+    "description": "Added TargetEvidenceClass to types.ts as the required conceptual taxonomy, with RelationshipCandidate gaining an optional, backward-compatible evidenceClass field.",
+    "classes": {
+      "STRONG_TARGET_EVIDENCE": "Caption/operative target-naming, or an actual 'Section X ... is hereby amended' tie.",
+      "SUPPORTING_TARGET_EVIDENCE": "Title/date/party/type coincidence alone, or a WHEREAS recital with an explicit amend-tie.",
+      "CONTEXTUAL_MENTION_ONLY": "WHEREAS recital, cross-default, background, 'as defined in' - never alone sufficient for a RESOLVED modification edge.",
+      "NEGATIVE_EVIDENCE": "Explicit disclaimer ('without amending...', 'is not amended')."
+    }
+  },
+  "p05Remediation": {
+    "rootCause": "resolvePackageRelationships called findAllAgreementReferences over the WHOLE preamble window of an amendment-shaped document and generated one independent RelationshipCandidate per matched dated-agreement-reference, resolving each purely by (type, execution date) coincidence - no mechanism distinguished 'the document this amendment actually targets' from 'an agreement merely mentioned in a WHEREAS recital.'",
+    "fix": "classifyReferenceEvidence(docText, ref, recitalBounds) is now the single choke point every matched reference passes through before it may reach RESOLVED for a modification-type relationship (AMENDS/RESTATES/SUPPLEMENTS/JOINS - instrument-grouping's own grouping set). Checks NEGATIVE_EVIDENCE_PATTERNS first (clause-bounded window), determines whether the reference sits inside a WHEREAS-recital span (findRecitalBounds), classifies recital references as CONTEXTUAL_MENTION_ONLY unless tied to explicit amend-language, non-recital references default to STRONG unless a contextual-mention keyword is present with no operative tie.",
+    "bugFoundAndFixedMidImplementation": "A naive +/-300-char window let an EARLIER true-target reference in the caption accidentally absorb a LATER, unrelated recital's cross-default language. Fixed with clauseBoundsAround, a real clause-boundary detector requiring a capital-letter lookahead after a sentence-ending period (so corporate abbreviations like 'Corp.'/'Inc.' aren't mistaken for sentence breaks).",
+    "mainLoopChange": "A CONTEXTUAL_MENTION_ONLY/NEGATIVE_EVIDENCE reference for a modification-type edge is now forced UNRESOLVED (confidence 0) BEFORE resolveAgreementReference ever runs - the type+date coincidence is never even consulted. A SUPPORTING_TARGET_EVIDENCE reference that would have resolved is downgraded from RESOLVED to REVIEW_REQUIRED.",
+    "sameFilterAppliedToModificationCandidate": "The same evidence filter was applied to the per-section ModificationCandidate resolution - previously ANY multiple reference count (including a purely contextual one) forced REVIEW_REQUIRED or could stand in as the sole 'resolved' reference. Contextual/negative references are now excluded before counting how many agreements a document references.",
+    "beforeAfterProof": {
+      "before": "False edge: unrelated-indenture, status=RESOLVED, confidence=0.95, merged into the base's instrument cluster.",
+      "after": "True edge: base, RESOLVED, confidence=0.95, evidenceClass=STRONG_TARGET_EVIDENCE. False edge: unrelated-indenture is UNRESOLVED, confidence=0, evidenceClass=NEGATIVE_EVIDENCE, resolutionMethod=DETERMINISTIC_NEGATIVE_EVIDENCE_EXCLUDED. Instrument cluster containing base: ['amend','base'] only, unrelated-indenture forms its own separate singleton instrument."
+    },
+    "singleQuoteVariantProof": "Test 10b (removing the amendment's caption self-reference, so the Indenture reference would have been the ONLY resolvable reference, never triggering PKG-02's coincidental multi-target flag) confirms the false edge still never resolves - proving the fix is not merely relying on the multi-target coincidence.",
+    "regressionTest": "tests/foundation-audit/package-graph-adversarial.test.ts test 10/10b",
+    "status": "FIXED"
+  },
+  "positiveScenariosPreserved": {
+    "count": 10,
+    "list": ["base+amendment", "amendment-to-guarantee targeting", "multi-document joinder", "restatement-vs-new-facility distinction", "supplemental indenture", "intercreditor-agreement typing/exclusion-from-instrument", "same-borrower/identical-section-numbering isolation", "obsolete-vs-current non-conflation", "bare-mention-never-becomes-RESOLVED", "genuine multi-target amendment (NEW test 17 - an Omnibus Amendment legitimately amending both a base Credit Agreement and a Guarantee-and-Collateral Agreement in its operative body: both edges resolve RESOLVED/STRONG_TARGET_EVIDENCE, proving the fix discriminates by evidence, not blanket multi-target caution)"],
+    "allPassUnchangedOrNewlyProven": true
+  },
+  "p07Determination": {
+    "verdict": "MOOTED_BY_UPSTREAM_FIX_FOR_THE_COVERED_CLASS_BUT_KEPT_AS_DEFENSE_IN_DEPTH",
+    "reasoning": "The coincidental REVIEW_REQUIRED flag in instrument-grouping.ts is now redundant for the false-edge class P0-5 covered - the root-cause fix prevents the false edge from ever reaching RESOLVED regardless of whether a second target creates ambiguity (proven by test 10b, which removes the multi-target trigger entirely and the false edge still never resolves). The flag was NOT removed (still serves a distinct, legitimate purpose - surfacing genuine base-ambiguity in a cluster for other reasons) - instead a new, explicit defense-in-depth layer, isTrustedGroupingEdge, was added to instrument-grouping.ts: even a RESOLVED grouping-type edge is only trusted to union two documents into one instrument when evidenceClass is undefined (pre-taxonomy backward compat) or STRONG_TARGET_EVIDENCE.",
+    "currentlyAlwaysTrueGivenP05Fix": "In today's pipeline this defense-in-depth check is currently always satisfied given the P0-5 fix (SUPPORTING never reaches RESOLVED for modification-type edges) - it is a pure safety net against future regressions or a differently-computed RESOLVED row."
+  },
+  "breakingShapeChangeNote": "None. RelationshipCandidate gained one new OPTIONAL field (evidenceClass?); all pre-existing fields unchanged in name/type/semantics. ResolutionStatus remains the same 3-value union (RESOLVED/REVIEW_REQUIRED/UNRESOLVED) - no new status values. PackageGraphResult/InstrumentGroupingResult shapes unchanged. Confirmed non-breaking for Workstream E's consumption of this data.",
+  "testRunOutput": {
+    "filesRun": "package-graph-pipeline.test.ts (22), package-graph-real-evidence.test.ts (4), phase-2f3-package-graph-robustness.test.ts (32), package-graph-adversarial.test.ts (20)",
+    "resultAtWorkstreamCompletion": "78 passed, 0 failed (broader tests/contract-model/ suite: 922 passed, 14 pre-existing DATABASE_URL failures unrelated to this workstream)",
+    "resultAfterFullIntegration": "See 09-real-postgres-certification.json"
+  },
+  "residualLimitations": [
+    "Evidence-taxonomy gating applied only to modification-type relationships (AMENDS/RESTATES/SUPPLEMENTS/JOINS), matching instrument-grouping's own grouping set - GUARANTEES/SECURES/INTERCREDITOR_WITH/CERTIFIES_COMPLIANCE_WITH edges still use pre-existing type+date resolution unchanged (no counterexample found there by the original audit); evidenceClass is computed and attached for transparency but doesn't gate them.",
+    "clauseBoundsAround is regex-based, tuned to standard WHEREAS/NOW-THEREFORE drafting and common abbreviation patterns - an unusual clause-punctuation style could misjudge a boundary.",
+    "CONTEXTUAL_MENTION_PATTERNS/OPERATIVE_TIE_PATTERNS/NEGATIVE_EVIDENCE_PATTERNS are a curated, non-exhaustive keyword/phrase set."
+  ]
+}

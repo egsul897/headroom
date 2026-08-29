@@ -21,7 +21,6 @@
  */
 import { hashParts } from "../hashing";
 import { detectIndependentSignals, detectAmendmentAndDefinitionalSignals, type SignalHit } from "./signals";
-import type { UncoveredSpan } from "../structural-coverage";
 import { COVERAGE_AUDIT_ALGORITHM_VERSION } from "./types";
 import type { AuditFinding, Materiality } from "./types";
 import { computeFindingId } from "./identity";
@@ -83,14 +82,32 @@ function splitOversizedParagraph(text: string, offset: number): { start: number;
 }
 
 /**
- * Partitions one uncovered span of a document's raw text into bounded,
- * deterministic regions (task §10). Adjacent small paragraphs are merged
- * up to MAX_REGION_CHARS; an oversized single paragraph is split at
+ * Phase 3F.1.4 - loosened from the previous `span: UncoveredSpan` parameter
+ * type to this minimal shape: only charStart/charEnd are ever actually read
+ * below. This lets coverage-audit/pipeline.ts (and semantic-coverage/
+ * router.ts, an existing caller elsewhere in the tree) route BOTH a real
+ * genuinely-uncovered UncoveredSpan AND a structural-coverage.ts
+ * BoundaryAnomalyFinding's own `span` (a SIGNIFICANT anomaly's suspect
+ * region - text that IS technically "covered" by some node, but that real
+ * evidence suggests should not be) through this exact same partitioning
+ * and raw-text scan, without inventing a second parallel partitioner. Any
+ * value shaped like `UncoveredSpan` (or a BoundaryAnomalyFinding's `span`)
+ * remains directly assignable here.
+ */
+export interface RawScanSpanRef {
+  charStart: number;
+  charEnd: number;
+}
+
+/**
+ * Partitions one uncovered/suspect span of a document's raw text into
+ * bounded, deterministic regions (task §10). Adjacent small paragraphs are
+ * merged up to MAX_REGION_CHARS; an oversized single paragraph is split at
  * heading-like/newline boundaries. Every region keeps its real absolute
  * document offsets, its own text, boundary evidence, and the reason the
  * structural fallback was required for this span.
  */
-export function partitionUncoveredSpan(documentId: string, fullText: string, span: UncoveredSpan, reasonFallbackRequired: string): RawSourceRegion[] {
+export function partitionUncoveredSpan(documentId: string, fullText: string, span: RawScanSpanRef, reasonFallbackRequired: string): RawSourceRegion[] {
   const spanText = fullText.slice(span.charStart, span.charEnd);
   const paragraphs = splitIntoParagraphs(spanText).map((p) => ({ start: span.charStart + p.start, end: span.charStart + p.end }));
 

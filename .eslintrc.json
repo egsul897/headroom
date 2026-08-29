@@ -1,4 +1,31 @@
 {
   "root": true,
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "overrides": [
+    {
+      "files": ["app/**/*.ts", "app/**/*.tsx"],
+      "rules": {
+        "no-restricted-imports": [
+          "error",
+          {
+            "patterns": [
+              {
+                "group": ["**/contract-model/service", "**/contract-model/service.ts"],
+                "message": "Quarantined (Phase 3F.1.4): lib/contract-model/service.ts is the legacy Phase C query layer, populated only by the legacy 11-stage compiler (lib/contract-model/compiler/orchestrator.ts's runContractCompiler), which carries a never-closed dangerous-unflagged error rate (25.0% -> 15.625%) above its own required <=5% safety gate. See docs/HEADROOM-ROADMAP.md §1 'The pre-Phase-2 \"Phase C\" compiler'."
+              },
+              {
+                "group": ["**/contract-model/validators", "**/contract-model/validators.ts"],
+                "message": "Quarantined (Phase 3F.1.4): lib/contract-model/validators.ts is the legacy Phase C validation layer, populated only by the same quarantined legacy compiler as service.ts. See docs/HEADROOM-ROADMAP.md §1."
+              },
+              {
+                "group": ["**/contract-model/compiler/orchestrator", "**/contract-model/compiler/orchestrator.ts"],
+                "importNames": ["runContractCompiler"],
+                "message": "Quarantined (Phase 3F.1.4): runContractCompiler is the legacy Phase C 11-stage rule-extraction pipeline. Its RULE_EXTRACTION/VERIFICATION/PROMOTION stages carry a never-closed dangerous-unflagged error rate (25.0% -> 15.625%), both above the required <=5% safety gate, and must never be wired into app/. See docs/HEADROOM-ROADMAP.md §1."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
 }

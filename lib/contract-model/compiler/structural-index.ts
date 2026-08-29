@@ -61,7 +61,64 @@ export type StructuralHealthFindingCode =
   | "DUPLICATE_LABEL_EXPECTED"
   | "DUPLICATE_NORMALIZED_PATH"
   | "SOURCE_ORDER_VIOLATION"
-  | "CROSS_DOCUMENT_PARENT";
+  | "CROSS_DOCUMENT_PARENT"
+  /**
+   * Phase 3F.1.4 (Workstream A) - fault-injection finding (docs/foundation-
+   * assurance/12-fault-injection-results.json: "overlapping impossible spans
+   * between SIBLINGS (not parent/child)", severityIfUndetected P2) and
+   * tests/foundation-audit/structural-index-fault-injection.test.ts's own
+   * "Fault: overlapping impossible spans between SIBLINGS" case, previously
+   * asserted UNDETECTED. OVERLAPPING_INCOMPATIBLE_SPAN (I12) only ever
+   * checks parent/child containment; it was structurally blind to two
+   * SIBLINGS under the very same parent (or two top-level root nodes)
+   * whose own [charStart,charEnd) ranges overlap each other - real data
+   * corruption (no two distinct physical occurrences can legitimately
+   * share source characters) that no other health code names.
+   */
+  | "SIBLING_SPAN_OVERLAP"
+  /**
+   * Phase 3F.1.4 (Workstream A) - fault-injection finding (docs/foundation-
+   * assurance/12-fault-injection-results.json: "wrong parent (CLAUSE claims
+   * ARTICLE directly, skipping SECTION/SUBSECTION)", affectedInvariant
+   * "implicit hierarchy plausibility (no named invariant)") and the
+   * consumer-assurance audit's own Q5 (docs/foundation-assurance/
+   * 06-structural-consumer-assurance.json: "does 'healthy' check only span
+   * coverage, or also rank/level sanity?"). A node's declared parent
+   * skipping more than one nesting rank (e.g. a CLAUSE's real parent
+   * occurrence being an ARTICLE directly, with no intervening SECTION or
+   * SUBSECTION occurrence at all) is legally/drafting-wise implausible in
+   * essentially every real contract-numbering convention, yet every other
+   * I1-I16 check (span containment, existence, cycle-freedom) passes it
+   * silently. Never a normal, expected drafting reality the way
+   * DUPLICATE_LABEL_EXPECTED is - real reachable-hierarchy plausibility -
+   * so this is an ERROR, not an INFO.
+   */
+  | "IMPLAUSIBLE_HIERARCHY_RANK"
+  /**
+   * Phase 3F.1.4 (Workstream A) - Q3/P1-10 investigation (docs/foundation-
+   * assurance/06-structural-consumer-assurance.json: an in-text citation
+   * that happens to satisfy SECTION_PATTERNS - e.g. "...except as permitted
+   * under Section 6.05 Reserved ."- creates a spurious real top-level
+   * SECTION occurrence that corrupts stage-structure.ts's own GLOBAL
+   * rank-based stack pass, popping the real enclosing section early and
+   * misattaching its later real lettered clauses to the spurious node
+   * instead). Correcting that misattachment requires changing
+   * stage-structure.ts's rank-stack construction itself (parenting logic
+   * out of this workstream's authorized scope - see the final report's Q3
+   * determination for the full write-up and candidate designs) - this
+   * INFO-severity, detection-only signal is the bounded mitigation that IS
+   * safely implementable from health-diagnostics alone, with no change to
+   * parenting: two same-parent (or same-document top-level) SECTION
+   * siblings, in document order, whose decimal section numbers SHARE the
+   * same major component but DECREASE (e.g. real "6.01" then spurious
+   * "6.05" then real "6.02") - a real, if imperfect (a legitimate
+   * non-decimal renumbering convention could false-positive here; deliberately
+   * INFO, not ERROR, for exactly that reason), signal that a spurious
+   * heading-shaped match may have been accepted as a real top-level node.
+   * Never gates on its own - a lead for a human/further-automated review,
+   * per this codebase's own INFO-severity discipline.
+   */
+  | "SECTION_NUMBER_SEQUENCE_ANOMALY";
 
 /**
  * `severity: "INFO"` findings (AMBIGUOUS_LEGAL_REFERENCE, DUPLICATE_LABEL_EXPECTED,
@@ -168,6 +225,21 @@ function normalizeRef(ref: string): string {
   return ref.replace(/\s+/g, "");
 }
 
+/**
+ * Phase 3F.1.4 - expected nesting depth per DocumentNodeType, used ONLY for
+ * the IMPLAUSIBLE_HIERARCHY_RANK health-diagnostics check below (never for
+ * parenting/identity itself - that remains entirely stage-structure.ts's
+ * responsibility, out of this workstream's scope). Deliberately NOT
+ * imported from stage-structure.ts's own (private, unexported) RANK table:
+ * this module must stay able to validate ANY StructuralNode[] handed to
+ * it - including a hand-constructed/synthetic array, or one reloaded from
+ * persistence - never assuming its own most common producer's internal
+ * constants. Mirrors the same ARTICLE < SECTION < SUBSECTION < CLAUSE <
+ * SUBCLAUSE ordering documented on StructuralNode.nodeType itself
+ * (types.ts).
+ */
+const NODE_TYPE_RANK: Record<StructuralNode["nodeType"], number> = { ARTICLE: 0, SECTION: 1, SUBSECTION: 2, CLAUSE: 3, SUBCLAUSE: 4 };
+
 export function buildStructuralIndex(nodesByDocument: Map<string, { text: string; nodes: StructuralNode[] }>, definitions: DetectedDefinition[], references: DetectedReference[]): StructuralIndex {
   const allNodesSorted: StructuralNode[] = [];
   // ---- Authoritative, occurrence-safe maps (I1/I4/I6/I7) ----
@@ -230,6 +302,19 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
         // I12 - a node's own full span must be nested inside its declared physical parent's own full span.
         health.push({ code: "OVERLAPPING_INCOMPATIBLE_SPAN", severity: "ERROR", documentId: n.documentId, nodeId: n.nodeId, message: `Node's own span [${n.charStart},${n.charEnd}) is not nested within parent occurrence ${n.parentNodeId}'s span [${parent.charStart},${parent.charEnd}).` });
       }
+      // Phase 3F.1.4 - IMPLAUSIBLE_HIERARCHY_RANK: independent of span
+      // containment (which this can pass cleanly - a CLAUSE physically
+      // nested inside an ARTICLE's own span is not itself a span error),
+      // does this parent/child edge skip more than one real nesting rank?
+      if (parent && NODE_TYPE_RANK[n.nodeType] - NODE_TYPE_RANK[parent.nodeType] > 1) {
+        health.push({
+          code: "IMPLAUSIBLE_HIERARCHY_RANK",
+          severity: "ERROR",
+          documentId: n.documentId,
+          nodeId: n.nodeId,
+          message: `Node type ${n.nodeType} (rank ${NODE_TYPE_RANK[n.nodeType]}) is a direct child of ${parent.nodeType} occurrence ${parent.nodeId} (rank ${NODE_TYPE_RANK[parent.nodeType]}) - a malformed/implausible hierarchy edge that skips at least one intermediate rank (e.g. a CLAUSE attached directly under an ARTICLE with no intervening SECTION/SUBSECTION occurrence at all).`,
+        });
+      }
     }
     if (!(n.charStart >= 0 && n.charStart < n.charEnd)) {
       health.push({ code: "INVALID_SOURCE_SPAN", severity: "ERROR", documentId: n.documentId, nodeId: n.nodeId, message: `Invalid span charStart=${n.charStart} charEnd=${n.charEnd} (must satisfy 0 <= charStart < charEnd).` });
@@ -264,6 +349,88 @@ export function buildStructuralIndex(nodesByDocument: Map<string, { text: string
         health.push({ code: "SOURCE_ORDER_VIOLATION", severity: "ERROR", documentId: kids[i]!.documentId, nodeId: kids[i]!.nodeId, message: `Child of ${parentId} is out of charStart order relative to its preceding sibling.` });
       }
     }
+  }
+  // Phase 3F.1.4 - SIBLING_SPAN_OVERLAP (docs/foundation-assurance/
+  // 12-fault-injection-results.json: "overlapping impossible spans between
+  // SIBLINGS (not parent/child)", previously entirely undetected - see
+  // tests/foundation-audit/structural-index-fault-injection.test.ts).
+  // Checked over every real sibling group: (a) each parent's own children
+  // (childrenByParentId, already charStart-sorted per I11 above), and (b)
+  // each document's own top-level roots (which are one another's siblings
+  // too, and were equally unchecked before this fix). Two DISTINCT physical
+  // occurrences can never legitimately share source characters, regardless
+  // of nesting depth - this is a plain ERROR, never a normal drafting
+  // reality.
+  function checkSiblingSpanOverlaps(siblingGroups: Iterable<StructuralNode[]>): void {
+    for (const kids of siblingGroups) {
+      const sorted = [...kids].sort((a, b) => a.charStart - b.charStart);
+      for (let i = 1; i < sorted.length; i++) {
+        const prev = sorted[i - 1]!;
+        const cur = sorted[i]!;
+        if (cur.charStart < prev.charEnd) {
+          health.push({
+            code: "SIBLING_SPAN_OVERLAP",
+            severity: "ERROR",
+            documentId: cur.documentId,
+            nodeId: cur.nodeId,
+            message: `Sibling occurrence ${cur.nodeId} [${cur.charStart},${cur.charEnd}) overlaps the immediately preceding sibling ${prev.nodeId} [${prev.charStart},${prev.charEnd}) - two distinct physical occurrences can never legitimately share source characters.`,
+          });
+        }
+      }
+    }
+  }
+  checkSiblingSpanOverlaps(childrenByParentId.values());
+  {
+    const rootsByDocumentForOverlapCheck = new Map<string, StructuralNode[]>();
+    for (const n of allNodesSorted) {
+      if (n.parentNodeId !== null) continue;
+      const arr = rootsByDocumentForOverlapCheck.get(n.documentId) ?? [];
+      arr.push(n);
+      rootsByDocumentForOverlapCheck.set(n.documentId, arr);
+    }
+    checkSiblingSpanOverlaps(rootsByDocumentForOverlapCheck.values());
+  }
+  // Phase 3F.1.4 - SECTION_NUMBER_SEQUENCE_ANOMALY (Q3/P1-10 bounded
+  // mitigation - see the health-code's own doc-comment above for the full
+  // rationale and the final report for the complete Q3 determination).
+  // Detection-only: reuses the exact same sibling groupings as the overlap
+  // check above (each parent's own children, plus each document's own
+  // top-level roots) - never touches parentNodeId/childrenByParentId
+  // themselves.
+  function parseDecimalSectionNumber(sectionRef: string): { major: number; minor: number } | null {
+    const m = /^(\d+)\.(\d+)/.exec(sectionRef.trim());
+    if (!m) return null;
+    return { major: Number(m[1]!), minor: Number(m[2]!) };
+  }
+  function checkSectionNumberSequenceAnomalies(siblingGroups: Iterable<StructuralNode[]>): void {
+    for (const kids of siblingGroups) {
+      const sections = kids.filter((k) => k.nodeType === "SECTION").sort((a, b) => a.charStart - b.charStart);
+      for (let i = 1; i < sections.length; i++) {
+        const prev = parseDecimalSectionNumber(sections[i - 1]!.sectionRef);
+        const cur = parseDecimalSectionNumber(sections[i]!.sectionRef);
+        if (!prev || !cur || prev.major !== cur.major) continue;
+        if (cur.minor < prev.minor) {
+          health.push({
+            code: "SECTION_NUMBER_SEQUENCE_ANOMALY",
+            severity: "INFO",
+            documentId: sections[i]!.documentId,
+            nodeId: sections[i]!.nodeId,
+            message: `Section "${sections[i]!.sectionRef}" (occurrence ${sections[i]!.nodeId}) appears immediately after "${sections[i - 1]!.sectionRef}" (occurrence ${sections[i - 1]!.nodeId}) in document order, but its decimal number is LOWER within the same major component (${cur.major}.${cur.minor} < ${prev.major}.${prev.minor}) - a real, if imperfect, signal that one of these two occurrences (most often the earlier one) may be a spurious in-text citation heading-shaped match rather than a genuine top-level section, corrupting the real section-numbering sequence. Informational only - not proof of corruption (a legitimate non-decimal renumbering convention could also produce this).`,
+          });
+        }
+      }
+    }
+  }
+  checkSectionNumberSequenceAnomalies(childrenByParentId.values());
+  {
+    const rootsByDocumentForSequenceCheck = new Map<string, StructuralNode[]>();
+    for (const n of allNodesSorted) {
+      if (n.parentNodeId !== null) continue;
+      const arr = rootsByDocumentForSequenceCheck.get(n.documentId) ?? [];
+      arr.push(n);
+      rootsByDocumentForSequenceCheck.set(n.documentId, arr);
+    }
+    checkSectionNumberSequenceAnomalies(rootsByDocumentForSequenceCheck.values());
   }
   // §8/§18 - a distinct diagnostic from DUPLICATE_LABEL_EXPECTED (which fires
   // on a single shared leaf-level sectionRef): this one detects two ENTIRE

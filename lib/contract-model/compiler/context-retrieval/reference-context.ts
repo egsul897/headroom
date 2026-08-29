@@ -7,9 +7,11 @@
  * gating").
  */
 import type { StructuralIndex } from "../structural-index";
+import type { PackageGraphResult } from "../package-graph/types";
 import { detectAbsoluteReferenceMentions } from "../structural-references";
 import { addEdge, addItem, makeItemInput, withinBudget, type RetrievalState } from "./state";
 import { expandReferencedRegion } from "./region-expansion";
+import { retrieveAmendmentLeadsForSection } from "./cross-document-context";
 
 // Phase 2E.1 §8 audit: a covenant can depend on calculation mechanics
 // through language that never uses the word "calculat" itself - "giving
@@ -29,12 +31,45 @@ function targetKindToUnresolvedType(targetKind: string): "AMBIGUOUS_RELATIVE_REF
   return targetKind === "SCHEDULE" || targetKind === "EXHIBIT" ? "MISSING_SCHEDULE" : "AMBIGUOUS_RELATIVE_REFERENCE";
 }
 
-/** Cross-references FROM an already-known StructuralNode (reuses Phase 2A's own pre-resolved reference index - task §13's "use exact structural ancestry," already done by Phase 2A, never redone here). */
-export function retrieveCrossReferencesFromNode(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, parentItemId: string, depth: number, includeDescendants: boolean): void {
+/**
+ * Cross-references FROM an already-known StructuralNode (reuses Phase 2A's
+ * own pre-resolved reference index - task §13's "use exact structural
+ * ancestry," already done by Phase 2A, never redone here).
+ *
+ * Phase 3F.1.4 (CTX-01 remediation, root cause: retrieveAmendmentLeadsForSection
+ * was previously called exactly once, from pipeline.ts, only for the
+ * PRIMARY candidate's own sectionRef - never for a section reached only as
+ * a CROSS_REFERENCE/CALCULATION_PROVISION target here). Generalized so the
+ * amendment-lead check runs for EVERY materially-retrieved cross-reference
+ * target, at every depth level this traversal already visits, up to the
+ * SAME existing depth bound (maxCrossReferenceDepth) - no new unbounded
+ * traversal is introduced; the check is purely additive at a node the
+ * function already reached.
+ *
+ * BOUNDED RECURSION / CYCLE PROTECTION: `visitedNodeIds` tracks every node
+ * this traversal chain has already expanded outgoing references FROM. A
+ * reference cycle (A -> B -> ... -> A) re-reaches an already-expanded node;
+ * rather than re-expanding it again (and again, forever), that second reach
+ * still gets its own item/amendment-lead check (already happened on first
+ * expansion, so nothing new is skipped) but is not traversed a second time.
+ * This is independent of, and strictly tighter than, the pre-existing
+ * `depth > maxCrossReferenceDepth` bound above, which remains as-is as the
+ * absolute backstop.
+ */
+export function retrieveCrossReferencesFromNode(state: RetrievalState, index: StructuralIndex, documentId: string, nodeId: string, parentItemId: string, depth: number, includeDescendants: boolean, packageGraph: PackageGraphResult | null = null, visitedNodeIds: Set<string> = new Set()): void {
   if (depth > state.budget.maxCrossReferenceDepth) {
     state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (${state.budget.maxCrossReferenceDepth}) reached`);
     return;
   }
+  if (visitedNodeIds.has(nodeId)) {
+    // Reference cycle detected - this node's own outgoing references were
+    // already expanded earlier in this same traversal chain. Stop here
+    // rather than re-expanding forever; the item/amendment-lead check for
+    // this node already ran on first expansion.
+    return;
+  }
+  const expandedFromHere = new Set(visitedNodeIds);
+  expandedFromHere.add(nodeId);
   state.maxCrossReferenceDepthReached = Math.max(state.maxCrossReferenceDepthReached, depth);
   state.crossReferenceTraversals++;
 
@@ -92,6 +127,18 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     const item = addItem(state, makeItemInput(itemType, documentId, ref.targetNodeKey, ref.targetNodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Explicitly cross-referenced by "${ref.referenceText}".${expansion.includedNodeIds.length > 0 ? ` Expanded to include ${expansion.includedNodeIds.length} descendant clause(s) whose own text carried real operative content.` : ""}`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1));
     addEdge(state, parentItemId, item.itemId, "REFERENCES", `"${ref.referenceText}"`);
 
+    // CTX-01 fix: this cross-referenced target's own retrieved text is
+    // honestly pre-amendment (never silently presented as falsely current -
+    // Architecture Invariant #13), but a downstream reader must be able to
+    // see that a real, resolved (or review-required) package-graph
+    // modification candidate targets THIS section elsewhere in the package -
+    // exactly the same disclosure the primary candidate's own section
+    // already gets in pipeline.ts, now generalized to every cross-reference
+    // target reached at every depth level.
+    if (packageGraph) {
+      retrieveAmendmentLeadsForSection(state, packageGraph, targetNode.documentId, targetNode.sectionRef, item.itemId);
+    }
+
     // Descendants excluded from expansion (no operative signal in their own
     // text) are disclosed, never silently dropped without a trace (task
     // §7/§10 - a downstream reader must be able to see that a bounded
@@ -123,13 +170,20 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     // caused real budget exhaustion and reintroduced material findings
     // elsewhere in the same bundle - reverted before this fix was accepted).
     if (itemType === "CALCULATION_PROVISION") {
-      retrieveCrossReferencesFromNode(state, index, documentId, ref.targetNodeId, item.itemId, depth + 1, false);
+      retrieveCrossReferencesFromNode(state, index, documentId, ref.targetNodeId, item.itemId, depth + 1, false, packageGraph, expandedFromHere);
     }
   }
 }
 
-/** Cross-references found INSIDE a definition's own full text (definitions are prose, not part of Phase 2A's pre-indexed reference graph - task §8's own header explains why). Absolute Section/Article/Schedule/Exhibit mentions only. */
-export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState, index: StructuralIndex, documentId: string, definitionText: string, parentItemId: string, depth: number): void {
+/**
+ * Cross-references found INSIDE a definition's own full text (definitions
+ * are prose, not part of Phase 2A's pre-indexed reference graph - task
+ * §8's own header explains why). Absolute Section/Article/Schedule/Exhibit
+ * mentions only. Phase 3F.1.4 (CTX-01): also a "materially-retrieved
+ * cross-reference target" - gets the same amendment-lead disclosure as
+ * every other cross-reference target, not just the primary candidate.
+ */
+export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState, index: StructuralIndex, documentId: string, definitionText: string, parentItemId: string, depth: number, packageGraph: PackageGraphResult | null = null): void {
   if (depth > state.budget.maxCrossReferenceDepth) {
     state.stopReasons.add(`CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (${state.budget.maxCrossReferenceDepth}) reached`);
     return;
@@ -161,5 +215,8 @@ export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState,
     const itemType = classifyReferencedProvision(targetText);
     const item = addItem(state, makeItemInput(itemType, documentId, targetNode.nodeKey, targetNode.nodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Referenced within a definition's own text ("${mention.referenceText}").`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1));
     addEdge(state, parentItemId, item.itemId, "REFERENCES", `"${mention.referenceText}" inside a definition.`);
+    if (packageGraph) {
+      retrieveAmendmentLeadsForSection(state, packageGraph, targetNode.documentId, targetNode.sectionRef, item.itemId);
+    }
   }
 }

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1.0",
+  "remediationVersion": "phase-3f1-4-foundation-trust-boundary-remediation.v1",
+  "artifactId": "REMAINING_FOUNDATION_RISKS",
+  "generatedAt": "2026-08-28T23:35:00Z",
+  "purpose": "Catalog everything this remediation phase did NOT close, so a reader does not mistake a PASSED verdict for a clean bill of health. Per the phase charter's Section 21 prohibited claims, this phase remediates known trust-boundary defects; it does not prove absence of unknown defects.",
+  "deferredByDesign": [
+    {
+      "id": "P0-6",
+      "description": "Evaluation-methodology circularity (the Phase 3F/3F.1/3F.1.1 scorer and the Phase C.1 evaluator both grant false credit via structural/numeric proximity)",
+      "status": "DEFERRED_TO_PHASE_3F_1_5_BY_DESIGN",
+      "risk": "Every historical coverage percentage this codebase has published remains potentially overstated by an unquantified margin until this is fixed. Now disclosed (P1-12) but not corrected."
+    }
+  ],
+  "notAssignedToAnyWorkstreamThisPhase": [
+    {
+      "id": "P1-3",
+      "description": "FA-DOCID-01: the real, wired onboarding upload action bypasses all content-hash dedup",
+      "risk": "Two byte-identical documents uploaded under different filenames still create two independent Document rows today. A tested fix (route through lib/connectors/upload-connector.ts's uploadDocumentThroughIngestion) already exists in the codebase, unused."
+    },
+    {
+      "id": "P1-11",
+      "description": "Q8/supersession awareness: no marker on structural nodes distinguishing current from historically-superseded text for consumers that read nodes directly (source-inventory.ts, pass-a-signals.ts) rather than going through amendment/operative-state.ts",
+      "risk": "A stale dollar threshold and a current one can still appear equally 'live' to any consumer bypassing the amendment pipeline."
+    }
+  ],
+  "architectureChangeRequired": [
+    {
+      "id": "P1-10 (Q3)",
+      "description": "An intervening false-positive heading-shaped citation can corrupt stage-structure.ts's global rank-stack, misattaching real later clauses to a spurious node",
+      "boundedMitigationInThisPhase": "SECTION_NUMBER_SEQUENCE_ANOMALY (INFO-level detection signal only) - does not correct the misattachment",
+      "risk": "The misattachment itself remains possible in production data; DSGR alone shows 27 SECTION_NUMBER_SEQUENCE_ANOMALY signals in this remediation's own re-run, meaning this failure class is plausible, not merely theoretical, on real documents.",
+      "recommendedNextStep": "See 01-source-accounting-remediation.json's p110Q3Determination for 3 candidate designs - requires a reviewed Architecture Change Proposal before implementation, per the phase charter's own explicit prohibition on an unreviewed parser rewrite inside this remediation phase."
+    }
+  ],
+  "outOfScopeForThisPhaseEntirely": {
+    "description": "The Phase 3F.1.3 audit found 15 P2 and 6 P3 defects. This remediation phase's charter (Sections 3-11) scoped only the 6 P0s and 12 P1s. None of the P2/P3 items were addressed, and none were claimed to be.",
+    "notableP2Examples": [
+      "resolveBaseText's DEFINITION-branch cross-document fallback - actually FIXED incidentally by Workstream B as a narrow, directly-related change even though it was formally classified P2 in the original audit (see 02-identity-isolation-remediation.json)",
+      "persistStructuralReferences having no per-item fault isolation - actually FIXED incidentally by Workstream B as part of its broader persistence-lifecycle work",
+      "6 service.ts query functions with no companyId parameter (latent IDOR-shaped gap, zero current callers) - NOT addressed",
+      "coverage-audit/pipeline.ts's array[0] pick on a multi-valued originatingStructuralNodeIds field - NOT addressed",
+      "sibling span overlap (structural-index.ts) - actually FIXED incidentally by Workstream A as part of its structural-index health-check work even though formally P2"
+    ],
+    "fullList": "See docs/foundation-assurance/17-remediation-priority-map.json Tier 3/Tier 4 for the complete original P2/P3 list from the 3F.1.3 audit - that document remains the authoritative source for what was NOT in this phase's scope."
+  },
+  "newRisksIdentifiedDuringThisPhaseNotFixed": [
+    {
+      "description": "3 additional call sites with the same cross-document no-documentId getDefinition fallback pattern P0-2/the operative-state.ts fix addressed: semantic/tools.ts, amendment/pipeline.ts, amendment/independent-verification.ts",
+      "identifiedBy": "Workstream B",
+      "risk": "Same class of cross-document definition leakage as P0-2's family, in 3 call sites outside Workstream B's assigned files."
+    },
+    {
+      "description": "getRuleSourceTrace's definedTermRefs lookup (service.ts) appears to assume a stored stableKey format but is populated with raw term names by persistContractRules - a possible latent mismatch",
+      "identifiedBy": "Workstream B",
+      "risk": "Unverified - service.ts was not in Workstream B's assigned files, so this was noticed but not investigated further."
+    },
+    {
+      "description": "UNVERIFIED_SIBLING_SIGNAL is a new ContextItemType with no exhaustive-type-handling consumer anywhere in the codebase today (confirmed safe currently, since all consumers use plain string equality), but a future consumer building an exhaustive switch/Record<ContextItemType,...> should be aware it exists",
+      "identifiedBy": "Workstream E",
+      "risk": "Low - purely a forward-compatibility note, not a current defect."
+    }
+  ],
+  "operativeStateHealthDiagnosticsGap": {
+    "description": "operative-state.ts still never calls index.healthDiagnostics() - a section already flagged INVALID_SOURCE_SPAN/ERROR by the structural index can still be confidently reported OPERATIVE_STATE_RESOLVED when a real amendment targets it (the two subsystems never compose). This was documented in the original 3F.1.3 audit's combined-failure findings and confirmed still present in tests/foundation-audit/combined-failures.test.ts's first describe block (untouched by any workstream, since it was P2, not P0/P1, and not explicitly assigned).",
+    "status": "NOT_ADDRESSED_THIS_PHASE"
+  },
+  "closingStatement": "This phase closed 6 P0s (5 fully fixed, 1 explicitly deferred by design) and 8 of 12 P1s (with 1 mooted, 1 architecture-change-required with bounded mitigation, and 2 honestly disclosed as not assigned to any workstream). It did not touch the 15 P2 or 6 P3 defects from the original audit except where a workstream's own root-cause fix incidentally closed one. A reader should treat the PASSED verdict below as certifying that the specific, named, most-severe trust-boundary defects were closed under real adversarial regression - not as a claim that the foundation is now defect-free."
+}

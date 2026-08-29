@@ -210,7 +210,7 @@ Section 6.01 of the Credit Agreement is hereby amended and restated in its entir
     expect(leads.every((l) => l.status !== "RESOLVED")).toBe(true);
   });
 
-  it("10. ADVERSARIAL: an amendment that QUOTES/references an unrelated agreement's dated self-reference (context only, not its own amendment target) can produce a FALSE CONFIDENT (RESOLVED) relationship edge to that unrelated document", () => {
+  it("10. ADVERSARIAL (PKG-01 FIX VERIFICATION): an amendment that QUOTES/references an unrelated agreement's dated self-reference (context only, not its own amendment target) must NOT produce a false RESOLVED relationship edge to that unrelated document, and must still resolve the true target", () => {
     // Document A: the true base Credit Agreement this amendment amends.
     const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of January 1, 2021, among Solvent Chemical Corp., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
     // Document B: a completely separate, unrelated Indenture the amendment
@@ -233,40 +233,83 @@ Section 6.01 of the Credit Agreement is hereby amended and restated in its entir
     console.log("[10] all AMENDS edges from 'amend':", JSON.stringify(edges, null, 2));
     const trueEdge = edges.find((e) => e.targetDocumentId === "base");
     const falseEdge = edges.find((e) => e.targetDocumentId === "unrelated-indenture");
+    // The true target must still resolve cleanly and confidently.
     expect(trueEdge?.status).toBe("RESOLVED");
-    // THE ADVERSARIAL CHECK: does merely quoting an unrelated agreement's
-    // OWN dated self-reference for context (same execution date, real
-    // document type match) produce a second, false, RESOLVED AMENDS edge
-    // to a document this amendment never actually touches?
-    if (falseEdge) {
-      // eslint-disable-next-line no-console
-      console.log("[10] FALSE EDGE STATUS:", falseEdge.status, falseEdge.resolutionMethod);
-    }
-    // FINDING PKG-01 (confirmed, real behavior): the pipeline treats EVERY
-    // dated agreement-reference match inside the amending document's own
-    // preamble window as an independent, equally-confident AMENDS
-    // candidate — with no mechanism distinguishing "the document I am
-    // amending" from "an agreement mentioned in a WHEREAS recital for
-    // context, explicitly disclaimed as NOT being amended." A merely
-    // coincidental type+date match (realistic: sibling debt instruments
-    // issued on the same closing date routinely share an execution date)
-    // produces a FALSE RESOLVED edge, confidence 0.95, identical shape to
-    // a true edge. Documented here as the actual, adversarially-confirmed
-    // behavior (not the desired one):
-    expect(falseEdge?.status).toBe("RESOLVED");
-    expect(falseEdge?.confidence).toBe(0.95);
+    expect(trueEdge?.confidence).toBe(0.95);
+    expect(trueEdge?.evidenceClass).toBe("STRONG_TARGET_EVIDENCE");
 
-    // Downstream consequence, independently confirmed: this false edge
-    // (relationshipType AMENDS, one of instrument-grouping.ts's own
-    // GROUPING_RELATIONSHIP_TYPES) causes the union-find in
-    // instrument-grouping.ts to merge the wholly unrelated Indenture into
-    // the SAME debt instrument cluster as the real Credit Agreement and
-    // its amendment — a real cross-instrument contamination directly
-    // implicating invariant #20 ("Instrument isolation is mandatory").
+    // THE ADVERSARIAL CHECK (PKG-01 fix verification): merely quoting an
+    // unrelated agreement's OWN dated self-reference for context (same
+    // execution date, real document type match) must NEVER produce a
+    // second, false, RESOLVED AMENDS edge to a document this amendment
+    // never actually touches - regardless of the type+date coincidence
+    // (realistic: sibling debt instruments issued on the same closing date
+    // routinely share an execution date). The unrelated-Indenture reference
+    // sits inside a WHEREAS recital AND carries an explicit "without
+    // amending such Indenture in any way" disclaimer - both independently
+    // sufficient, per the evidence taxonomy, to keep it out of RESOLVED.
+    const indentureEdges = result.relationshipCandidates.filter((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "unrelated-indenture");
+    expect(indentureEdges.every((e) => e.status !== "RESOLVED")).toBe(true);
+    expect(falseEdge).toBeUndefined();
+    // The excluded reference is still surfaced (for audit-trail honesty),
+    // just never confidently resolved, and is classified NEGATIVE_EVIDENCE
+    // (the explicit disclaimer is the strongest, most specific signal here).
+    const excludedIndentureCandidate = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetHint?.includes("Indenture"));
+    expect(excludedIndentureCandidate?.status).toBe("UNRESOLVED");
+    expect(excludedIndentureCandidate?.evidenceClass).toBe("NEGATIVE_EVIDENCE");
+    expect(excludedIndentureCandidate?.confidence).toBe(0);
+
+    // Downstream consequence, independently verified: with the false edge
+    // gone, instrument-grouping.ts's union-find (relationshipType AMENDS,
+    // one of its own GROUPING_RELATIONSHIP_TYPES) never unions the
+    // unrelated Indenture into the real Credit Agreement's instrument
+    // cluster - no cross-instrument contamination, directly satisfying
+    // invariant #20 ("Instrument isolation is mandatory").
     const cluster = result.instruments.find((i) => i.documentIds.includes("base"));
-    // eslint-disable-next-line no-console
-    console.log("[10] instrument cluster:", JSON.stringify(cluster));
-    expect(cluster?.documentIds).toContain("unrelated-indenture");
+    expect(cluster?.documentIds.sort()).toEqual(["amend", "base"]);
+    expect(cluster?.documentIds).not.toContain("unrelated-indenture");
+    expect(cluster?.reviewStatus).toBe("RESOLVED");
+    // The unrelated Indenture stands as its own, separate, single-document
+    // instrument - never silently dropped, never merged.
+    const indentureCluster = result.instruments.find((i) => i.documentIds.includes("unrelated-indenture"));
+    expect(indentureCluster?.documentIds).toEqual(["unrelated-indenture"]);
+  });
+
+  it("10b. ADVERSARIAL (PKG-02 verification, 'single-quote' variant): the SAME false-edge shape with NO independently-resolved true target (the coincidental multi-target REVIEW_REQUIRED flag would NOT have fired) must still never produce a confident false edge", () => {
+    // Unlike test 10, this amendment's own caption does NOT name its real
+    // target with a dated self-reference at all (a malformed/incomplete
+    // caption - the amendment's true target is only identifiable from the
+    // operative section clause, never from a "to the X dated as of Y"
+    // phrase) - so if the WHEREAS-recital's contextual mention of the
+    // unrelated Indenture were still allowed to resolve, it would be the
+    // ONLY resolved AMENDS edge from this document, and PKG-02's own
+    // "ambiguous - which is the base" heuristic (which only fires when ONE
+    // document points at TWO different targets) would never trigger. This
+    // is exactly the coincidental-flag gap PKG-02 describes: a real fix
+    // cannot depend on a second, unrelated ambiguity to catch the false edge.
+    const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of January 1, 2021, among Solvent Chemical Corp., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
+    const unrelatedIndenture = doc("unrelated-indenture", "Existing Notes Indenture", `INDENTURE dated as of January 1, 2021, among Solvent Chemical Corp., as Issuer, and Fiduciary Trust Co., as Trustee, governing the Existing Notes.\nSection 4.09 Limitation on Indebtedness.`);
+    const amendment = doc(
+      "amend",
+      "Second Amendment to Credit Agreement",
+      `SECOND AMENDMENT TO CREDIT AGREEMENT, dated as of January 1, 2021 (this "Amendment"), among Solvent Chemical Corp.
+
+      WHEREAS, the Borrower has advised the Administrative Agent that a cross-default may arise under the Indenture dated as of January 1, 2021, among Solvent Chemical Corp. and Fiduciary Trust Co., and the parties wish to provide context for that circumstance without amending such Indenture in any way;
+
+      NOW, THEREFORE, Section 6.01 of the Credit Agreement is hereby amended and restated in its entirety to increase the permitted Indebtedness basket to $15,000,000.`
+    );
+    const result = buildPackageGraph("co-10b", "pkg-10b", [base, unrelatedIndenture, amendment]);
+    const edges = result.relationshipCandidates.filter((r) => r.sourceDocumentId === "amend" && r.relationshipType === "AMENDS");
+    // With no dated self-reference in the caption, the Indenture reference
+    // is the ONLY dated reference this document contains - the exact shape
+    // that would have been a silent, unflagged false edge under the
+    // original defect (no second target to trigger the coincidental
+    // "ambiguous base" flag). It must still never resolve.
+    expect(edges.every((e) => e.targetDocumentId !== "unrelated-indenture" || e.status !== "RESOLVED")).toBe(true);
+    expect(edges.some((e) => e.status === "RESOLVED")).toBe(false);
+    // No instrument cluster may contain both documents.
+    const clusterWithBase = result.instruments.find((i) => i.documentIds.includes("base"));
+    expect(clusterWithBase?.documentIds).not.toContain("unrelated-indenture");
   });
 
   it("11. an amendment that quotes another agreement's language for context (no dated self-reference, just prose) does not create any relationship edge to it", () => {
@@ -286,6 +329,194 @@ Section 6.01 of the Credit Agreement is hereby amended and restated in its entir
     expect(edgesToOther).toEqual([]);
     const edgeToBase = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "base");
     expect(edgeToBase?.status).toBe("RESOLVED");
+  });
+
+  it("12. GENERALIZED VARIANT: same execution date + DIFFERENT party names in a disclaimed recital mention still never produces a false RESOLVED edge", () => {
+    const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of March 1, 2022, among Kestrel Packaging Inc., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
+    // A sibling debt instrument for a DIFFERENT, unrelated corporate family
+    // (not the Borrower's own affiliate) that merely closed on the same
+    // date - the coincidence this module must never treat as evidence on
+    // its own, regardless of how different the two parties are.
+    const unrelatedIndenture = doc("unrelated-indenture", "Unrelated Notes Indenture", `INDENTURE dated as of March 1, 2022, among Falcon Holdings LLC, as Issuer, and Continental Trust Co., as Trustee.\nSection 4.09 Limitation on Indebtedness.`);
+    const amendment = doc(
+      "amend",
+      "First Amendment to Credit Agreement",
+      `FIRST AMENDMENT TO CREDIT AGREEMENT, dated as of March 1, 2022 (this "Amendment"), to the Credit Agreement dated as of March 1, 2022, among Kestrel Packaging Inc.
+
+      WHEREAS, counsel has advised that a cross-default may arise under the Indenture dated as of March 1, 2022, among Falcon Holdings LLC and Continental Trust Co., an unaffiliated third party, and the parties wish to provide context for that circumstance without amending such Indenture in any way;
+
+      NOW, THEREFORE, Section 6.01 of the Credit Agreement is hereby amended and restated in its entirety to increase the permitted Indebtedness basket to $15,000,000.`
+    );
+    const result = buildPackageGraph("co-12", "pkg-12", [base, unrelatedIndenture, amendment]);
+    const trueEdge = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "base");
+    expect(trueEdge?.status).toBe("RESOLVED");
+    const falseResolved = result.relationshipCandidates.some((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "unrelated-indenture" && r.status === "RESOLVED");
+    expect(falseResolved).toBe(false);
+    const cluster = result.instruments.find((i) => i.documentIds.includes("base"));
+    expect(cluster?.documentIds).not.toContain("unrelated-indenture");
+  });
+
+  it("13. GENERALIZED VARIANT: SAME instrument type (another Credit Agreement, not the base) with its OWN valid execution date, in a disclaimed recital mention, still never produces a false RESOLVED edge", () => {
+    const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of April 1, 2021, among Orinoco Plastics Inc., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
+    // A wholly separate credit facility for an affiliate, sharing the SAME
+    // TYPE (Credit Agreement) as the base - the strongest possible type
+    // coincidence this module could face (unlike test 10/12's Indenture,
+    // which at least differs by type) - but its OWN distinct execution
+    // date, so the true target's own caption reference (which uniquely
+    // names the base's date) is never itself made ambiguous by this
+    // fixture; only the recital's separate reference to the affiliate's
+    // own date is the adversarial signal under test.
+    const affiliateFacility = doc("affiliate-facility", "Affiliate Credit Agreement", `CREDIT AGREEMENT dated as of April 15, 2021, among Orinoco Affiliate Holdings LLC, as Borrower.\nSection 6.01 Indebtedness.`);
+    const amendment = doc(
+      "amend",
+      "Second Amendment to Credit Agreement",
+      `SECOND AMENDMENT TO CREDIT AGREEMENT, dated as of April 1, 2021 (this "Amendment"), to the Credit Agreement dated as of April 1, 2021, among Orinoco Plastics Inc.
+
+      WHEREAS, the Borrower has advised the Administrative Agent that a cross-default may arise under the Credit Agreement dated as of April 15, 2021, among Orinoco Affiliate Holdings LLC, an affiliate of the Borrower, and the parties wish to provide context for that circumstance without amending such Credit Agreement in any way;
+
+      NOW, THEREFORE, Section 6.01 of the Credit Agreement is hereby amended and restated in its entirety to increase the permitted Indebtedness basket to $15,000,000.`
+    );
+    const result = buildPackageGraph("co-13", "pkg-13", [base, affiliateFacility, amendment]);
+    const trueEdge = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "base");
+    expect(trueEdge?.status).toBe("RESOLVED");
+    const falseResolved = result.relationshipCandidates.some((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "affiliate-facility" && r.status === "RESOLVED");
+    expect(falseResolved).toBe(false);
+    const cluster = result.instruments.find((i) => i.documentIds.includes("base"));
+    expect(cluster?.documentIds).not.toContain("affiliate-facility");
+  });
+
+  it("14. GENERALIZED VARIANT: a recital mentioning MULTIPLE unrelated agreements (Indenture AND Security Agreement), both disclaimed, never resolves either one", () => {
+    const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of May 1, 2020, among Halberd Textiles Inc., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
+    const unrelatedIndenture = doc("unrelated-indenture", "Existing Notes Indenture", `INDENTURE dated as of May 1, 2020, among Halberd Textiles Inc., as Issuer, and Fiduciary Trust Co., as Trustee.\nSection 4.09 Limitation on Indebtedness.`);
+    const unrelatedSecurity = doc("unrelated-security", "Existing Security Agreement", `SECURITY AGREEMENT dated as of May 1, 2020, among Halberd Textiles Inc. and Fiduciary Trust Co., as Collateral Agent.\nSection 3.01 Grant of Security Interest.`);
+    const amendment = doc(
+      "amend",
+      "Third Amendment to Credit Agreement",
+      `THIRD AMENDMENT TO CREDIT AGREEMENT, dated as of May 1, 2020 (this "Amendment"), to the Credit Agreement dated as of May 1, 2020, among Halberd Textiles Inc.
+
+      WHEREAS, for background only, the Borrower notes that it is also party to the Indenture dated as of May 1, 2020, among Halberd Textiles Inc. and Fiduciary Trust Co., and the Security Agreement dated as of May 1, 2020, among Halberd Textiles Inc. and Fiduciary Trust Co., neither of which is amended hereby;
+
+      NOW, THEREFORE, Section 6.01 of the Credit Agreement is hereby amended and restated in its entirety to increase the permitted Indebtedness basket to $15,000,000.`
+    );
+    const result = buildPackageGraph("co-14", "pkg-14", [base, unrelatedIndenture, unrelatedSecurity, amendment]);
+    const trueEdge = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "base");
+    expect(trueEdge?.status).toBe("RESOLVED");
+    const falseResolvedAny = result.relationshipCandidates.some((r) => r.sourceDocumentId === "amend" && (r.targetDocumentId === "unrelated-indenture" || r.targetDocumentId === "unrelated-security") && r.status === "RESOLVED");
+    expect(falseResolvedAny).toBe(false);
+    const cluster = result.instruments.find((i) => i.documentIds.includes("base"));
+    expect(cluster?.documentIds).not.toContain("unrelated-indenture");
+    expect(cluster?.documentIds).not.toContain("unrelated-security");
+  });
+
+  it("15. GENERALIZED VARIANT: cross-default recital language with NO explicit 'without amending' disclaimer (CONTEXTUAL_MENTION_ONLY, not NEGATIVE_EVIDENCE) still never resolves", () => {
+    const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of June 1, 2019, among Ironwood Farms Inc., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
+    const unrelatedIndenture = doc("unrelated-indenture", "Existing Notes Indenture", `INDENTURE dated as of June 1, 2019, among Ironwood Farms Inc., as Issuer, and Guardian Trust Co., as Trustee.\nSection 4.09 Limitation on Indebtedness.`);
+    // Deliberately NO "without amending"/"is not amended" disclaimer at all
+    // here - only a cross-default recital, to isolate the
+    // CONTEXTUAL_MENTION_ONLY branch (recital + no operative tie) from the
+    // separate NEGATIVE_EVIDENCE branch (explicit disclaimer) tests 10/12-14
+    // exercise.
+    const amendment = doc(
+      "amend",
+      "Fourth Amendment to Credit Agreement",
+      `FOURTH AMENDMENT TO CREDIT AGREEMENT, dated as of June 1, 2019 (this "Amendment"), to the Credit Agreement dated as of June 1, 2019, among Ironwood Farms Inc.
+
+      WHEREAS, a cross-default may arise under the Indenture dated as of June 1, 2019, among Ironwood Farms Inc. and Guardian Trust Co. as a result of the transactions contemplated by this Amendment;
+
+      NOW, THEREFORE, Section 6.01 of the Credit Agreement is hereby amended and restated in its entirety to increase the permitted Indebtedness basket to $15,000,000.`
+    );
+    const result = buildPackageGraph("co-15", "pkg-15", [base, unrelatedIndenture, amendment]);
+    const trueEdge = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "base");
+    expect(trueEdge?.status).toBe("RESOLVED");
+    const indentureCandidate = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetHint?.includes("Indenture"));
+    expect(indentureCandidate?.status).not.toBe("RESOLVED");
+    expect(indentureCandidate?.evidenceClass).toBe("CONTEXTUAL_MENTION_ONLY");
+    const cluster = result.instruments.find((i) => i.documentIds.includes("base"));
+    expect(cluster?.documentIds).not.toContain("unrelated-indenture");
+  });
+
+  it("16. GENERALIZED VARIANT: an express negative-disclaimer OUTSIDE any WHEREAS/recital structure (plain operative-adjacent aside) is still classified NEGATIVE_EVIDENCE and never resolves", () => {
+    const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of July 1, 2018, among Bellwether Freight Inc., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
+    const unrelatedIndenture = doc("unrelated-indenture", "Existing Notes Indenture", `INDENTURE dated as of July 1, 2018, among Bellwether Freight Inc., as Issuer, and Anchor Trust Co., as Trustee.\nSection 4.09 Limitation on Indebtedness.`);
+    // No "WHEREAS"/"NOW, THEREFORE" recital structure anywhere in this
+    // document at all (mirrors test 11's plain-prose caption+aside+operative
+    // shape) - the disclaimer sits in an ordinary paragraph, not a recital,
+    // proving NEGATIVE_EVIDENCE is detected independent of clause position.
+    const amendment = doc(
+      "amend",
+      "Fifth Amendment to Credit Agreement",
+      `FIFTH AMENDMENT TO CREDIT AGREEMENT, dated as of July 1, 2018 (this "Amendment"), to the Credit Agreement dated as of July 1, 2018, among Bellwether Freight Inc.
+
+      For the avoidance of doubt, the Indenture dated as of July 1, 2018, among Bellwether Freight Inc. and Anchor Trust Co. is not amended hereby.
+
+      Section 6.01 of the Credit Agreement is hereby amended and restated in its entirety to increase the permitted Indebtedness basket to $15,000,000.`
+    );
+    const result = buildPackageGraph("co-16", "pkg-16", [base, unrelatedIndenture, amendment]);
+    const trueEdge = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetDocumentId === "base");
+    expect(trueEdge?.status).toBe("RESOLVED");
+    const indentureCandidate = result.relationshipCandidates.find((r) => r.sourceDocumentId === "amend" && r.targetHint?.includes("Indenture"));
+    expect(indentureCandidate?.status).toBe("UNRESOLVED");
+    expect(indentureCandidate?.evidenceClass).toBe("NEGATIVE_EVIDENCE");
+    const cluster = result.instruments.find((i) => i.documentIds.includes("base"));
+    expect(cluster?.documentIds).not.toContain("unrelated-indenture");
+  });
+
+  it("17. GENUINE MULTI-TARGET AMENDMENT (must NOT be falsely blocked): one Omnibus Amendment that legitimately amends BOTH the base Credit Agreement AND a Guarantee and Collateral Agreement resolves BOTH targets confidently", () => {
+    const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of January 1, 2020, among Sturgeon Manufacturing Inc., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
+    const guarantee = doc("guarantee", "Guarantee and Collateral Agreement", `GUARANTEE AND COLLATERAL AGREEMENT dated as of January 1, 2020, among Sturgeon Manufacturing Inc. and the Collateral Agent.\nSection 2.01 Guarantee.`);
+    const omnibusAmendment = doc(
+      "amend",
+      "Third Amendment to Credit Agreement and Guarantee and Collateral Agreement",
+      `THIRD AMENDMENT TO CREDIT AGREEMENT AND GUARANTEE AND COLLATERAL AGREEMENT, dated as of September 1, 2024 (this "Amendment"), to the Credit Agreement dated as of January 1, 2020, and the Guarantee and Collateral Agreement dated as of January 1, 2020, each among Sturgeon Manufacturing Inc.
+
+      Section 6.01 of the Credit Agreement is hereby amended and restated in its entirety to increase the permitted Indebtedness basket to $15,000,000.
+
+      Section 2.01 of the Guarantee and Collateral Agreement is hereby amended and restated in its entirety to add additional guarantors.`
+    );
+    const result = buildPackageGraph("co-17", "pkg-17", [base, guarantee, omnibusAmendment]);
+    const edges = result.relationshipCandidates.filter((r) => r.sourceDocumentId === "amend" && r.relationshipType === "AMENDS");
+    const edgeToBase = edges.find((e) => e.targetDocumentId === "base");
+    const edgeToGuarantee = edges.find((e) => e.targetDocumentId === "guarantee");
+    // Both real targets must resolve confidently - a genuine multi-target
+    // amendment must never be "fixed" into blanket REVIEW_REQUIRED caution.
+    expect(edgeToBase?.status).toBe("RESOLVED");
+    expect(edgeToBase?.evidenceClass).toBe("STRONG_TARGET_EVIDENCE");
+    expect(edgeToGuarantee?.status).toBe("RESOLVED");
+    expect(edgeToGuarantee?.evidenceClass).toBe("STRONG_TARGET_EVIDENCE");
+    // The base Credit Agreement + amendment form one instrument; the
+    // Guarantee and Collateral Agreement is a cross-cutting document type
+    // deliberately excluded from instrument grouping itself (unchanged,
+    // pre-existing behavior - see instrument-grouping.ts's own header).
+    const cluster = result.instruments.find((i) => i.documentIds.includes("base"));
+    expect(cluster?.documentIds.sort()).toEqual(["amend", "base"]);
+    expect(result.instruments.some((i) => i.documentIds.includes("guarantee"))).toBe(false);
+  });
+
+  it("18. ROOT-CAUSE VERIFICATION: the same fix also cleans up modification-candidate (§9) target resolution, which previously counted a contextual mention toward 'more than one reference' ambiguity", () => {
+    // Reuses test 10's exact adversarial shape - the point here is the
+    // SECTION-LEVEL modification candidate (targetSectionRef '6.01'), not
+    // the document-level relationship edge: before this fix, this
+    // document's modification candidate for Section 6.01 would have been
+    // forced into REVIEW_REQUIRED merely because findAllAgreementReferences
+    // found two references (the real Credit Agreement target AND the
+    // contextually-mentioned Indenture) - now that the contextual mention
+    // is filtered out before counting, the real single target resolves
+    // cleanly.
+    const base = doc("base", "Credit Agreement", `CREDIT AGREEMENT dated as of January 1, 2021, among Solvent Chemical Corp., as Borrower.\nSection 6.01 Indebtedness. The Borrower shall not incur Indebtedness in excess of $10,000,000.`);
+    const unrelatedIndenture = doc("unrelated-indenture", "Existing Notes Indenture", `INDENTURE dated as of January 1, 2021, among Solvent Chemical Corp., as Issuer, and Fiduciary Trust Co., as Trustee, governing the Existing Notes.\nSection 4.09 Limitation on Indebtedness.`);
+    const amendment = doc(
+      "amend",
+      "Second Amendment to Credit Agreement",
+      `SECOND AMENDMENT TO CREDIT AGREEMENT, dated as of January 1, 2021 (this "Amendment"), to the Credit Agreement dated as of January 1, 2021, among Solvent Chemical Corp.
+
+      WHEREAS, the Borrower has advised the Administrative Agent that a cross-default may arise under the Indenture dated as of January 1, 2021, among Solvent Chemical Corp. and Fiduciary Trust Co., and the parties wish to provide context for that circumstance without amending such Indenture in any way;
+
+      NOW, THEREFORE, Section 6.01 of the Credit Agreement is hereby amended and restated in its entirety to increase the permitted Indebtedness basket to $15,000,000.`
+    );
+    const result = buildPackageGraph("co-18", "pkg-18", [base, unrelatedIndenture, amendment]);
+    const modCandidate = result.modificationCandidates.find((m) => m.sourceDocumentId === "amend" && m.targetSectionRef === "6.01");
+    expect(modCandidate?.status).toBe("RESOLVED");
+    expect(modCandidate?.targetDocumentId).toBe("base");
   });
 
   it("EVIDENCE CHECK: every RESOLVED edge produced across all scenarios above carries a real sourceCitation that is an actual substring of its source document's text", () => {
