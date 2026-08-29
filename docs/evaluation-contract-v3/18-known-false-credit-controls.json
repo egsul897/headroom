@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "KNOWN_FALSE_CREDIT_CONTROLS",
+  "generatedAt": "2026-08-29T23:20:00Z",
+  "purpose": "Section 16: all 14 historical false-credit controls remain permanent. All 3 adjudicators AND the evaluator itself must independently classify all 14 as creditEligibility=NO_CREDIT. Any regression is a hard failure.",
+  "controlCount": 14,
+  "results": [
+    {
+      "caseId": "doc-a::VI::6.01-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-a::VI::6.04-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-a::VI::6.05-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-a::VI::6.05-ip-flush-prohibition",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-a::VI::6.08b-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-a::VI::6.10-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-b::VI::6-01-lead-in",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-b::VI::6-04-lead-in",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-b::VI::6-05-lead-in",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-d::VI::6-01-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-d::VI::6-04-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-d::VI::6-05-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    },
+    {
+      "caseId": "doc-d::VI::6-08-b-chapeau",
+      "adjudicatorA": "NO_CREDIT",
+      "adjudicatorB": "NO_CREDIT",
+      "adjudicatorC": "NO_CREDIT",
+      "evaluatorSealed": "NO_CREDIT",
+      "allNoCredit": true
+    }
+  ],
+  "allFourteenPassNoCreditUnanimously": true,
+  "regressionDetected": false,
+  "crossReferenceToSurfacingCaveat": "IMPORTANT: passing this creditEligibility gate does NOT mean these 14 controls are handled identically well on every atomic dimension. See 14-safe-surfacing-results.json: 2 of these 14 controls (doc-a::VI::6.05-ip-flush-prohibition, doc-a::VI::6.08b-chapeau) show the evaluator's surfacingStatus disagreeing with the independent consensus in the safety-relevant (evaluator-more-permissive) direction. Section 16 only requires creditEligibility=NO_CREDIT for these controls, which holds; it does not by itself certify their surfacingStatus disposition.",
+  "conclusion": "Section 16's gate PASSES with zero regression: all 14 historical false-credit controls remain correctly classified as NO_CREDIT by all 3 independent adjudicators and by the evaluator's own sealed atomic disposition."
+}

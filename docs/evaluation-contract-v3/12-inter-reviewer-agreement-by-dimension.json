@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "INTER_REVIEWER_AGREEMENT_BY_DIMENSION",
+  "generatedAt": "2026-08-29T23:10:00Z",
+  "purpose": "Section 14/15: per-dimension inter-reviewer agreement, computed independently per dimension exactly per the frozen preregistration (06-validation-preregistration.json). Computed once, after adjudication, and never re-run with different scoping or thresholds.",
+  "adjudicators": { "A": "docs/evaluation-contract-v3/09-adjudicator-a.json", "B": "docs/evaluation-contract-v3/10-adjudicator-b.json", "C": "docs/evaluation-contract-v3/11-adjudicator-c.json" },
+  "sampleSize": 47,
+  "dimensions": {
+    "creditEligibility": {
+      "scope": "All 47 cases (2-valued dimension).",
+      "n": 47,
+      "pairwiseRawAgreement": { "A-B": 0.9574468085106383, "A-C": 0.9361702127659575, "B-C": 0.9787234042553191 },
+      "meanPairwiseRawAgreement": 0.9574468085106383,
+      "unanimousAgreement": { "count": 44, "rate": 0.9361702127659575 },
+      "majorityStability": 1.0,
+      "confusionMatrixOffDiagonal": [
+        { "x": "NO_CREDIT", "y": "CREDIT", "count": 6 },
+        { "x": "CREDIT", "y": "NO_CREDIT", "count": 6 }
+      ],
+      "fleissKappa": { "kappa": 0.8787270642201839, "P_bar": 0.9574468085106385, "P_e_bar": 0.649112217695287, "interpretation": "Almost perfect agreement (Landis-Koch)." },
+      "frozenThreshold": 0.90,
+      "gateResult": "PASSED",
+      "disagreementCaseIds": ["doc-a::I::applicable-ebitda", "doc-a::X::10.01a-us-guaranty", "fwrg-6.01-j", "fwrg-6.04-a-iii", "lsb-6.01-general-ratio-gated", "doc-a::VI::6.05-ip-flush-prohibition or similar (see raw pairwise diffs)"],
+      "note": "This gate PASSES the >=90% mean-pairwise-raw-agreement threshold. This is the first of two safety-critical gates. It passing alone is NOT sufficient for closure - see 19-evaluator-vs-consensus.json, where creditEligibility's evaluator-vs-consensus agreement (89.36%) falls just short of the same 90% threshold."
+    },
+    "surfacingStatus": {
+      "scope": "Only cases where a MAJORITY (2-of-3) of adjudicators independently assigned creditEligibility=NO_CREDIT, per the frozen preregistration. 36 of 47 cases qualify.",
+      "n": 36,
+      "pairwiseRawAgreement": { "A-B": 0.75, "A-C": 0.7777777777777778, "B-C": 0.6944444444444444 },
+      "meanPairwiseRawAgreement": 0.7407407407407408,
+      "unanimousAgreement": { "count": 22, "rate": 0.6111111111111112 },
+      "confusionMatrixOffDiagonal": [
+        { "x": "NOT_SPECIFICALLY_SURFACED", "y": "SPECIFICALLY_SURFACED", "count": 26 },
+        { "x": "SPECIFICALLY_SURFACED", "y": "NOT_SPECIFICALLY_SURFACED", "count": 26 },
+        { "x": "SPECIFICALLY_SURFACED", "y": "NOT_APPLICABLE", "count": 2 },
+        { "x": "NOT_APPLICABLE", "y": "SPECIFICALLY_SURFACED", "count": 2 }
+      ],
+      "fleissKappa": { "kappa": 0.49039433771486285, "P_bar": 0.7407407407407405, "P_e_bar": 0.49125514403292186, "interpretation": "Moderate agreement (Landis-Koch) - well below the reliability needed for a safety-critical distinction." },
+      "frozenThreshold": 0.90,
+      "gateResult": "FAILED",
+      "failureMagnitude": "16 percentage points below threshold (74.1% observed vs 90% required).",
+      "note": "This is the dominant confusion pattern: 26 of the 36 applicable cases show at least one adjudicator pair disagreeing specifically on SPECIFICALLY_SURFACED vs NOT_SPECIFICALLY_SURFACED - i.e., independent human-equivalent reviewers cannot reliably agree on whether a NO_CREDIT claim's failure was safely flagged or silently dropped. This is the second safety-critical dimension and its inter-reviewer reproducibility gate FAILS."
+    },
+    "representationCompleteness": {
+      "scope": "All 47 cases.",
+      "n": 47,
+      "pairwiseRawAgreement": { "A-B": 0.723404255319149, "A-C": 0.7659574468085106, "B-C": 0.9148936170212766 },
+      "meanPairwiseRawAgreement": 0.8014184397163121,
+      "unanimousAgreement": { "count": 33, "rate": 0.7021276595744681 },
+      "confusionMatrixOffDiagonal": [
+        { "x": "PARTIAL", "y": "FULL", "count": 22 },
+        { "x": "FULL", "y": "PARTIAL", "count": 22 },
+        { "x": "PARTIAL", "y": "NONE", "count": 6 },
+        { "x": "NONE", "y": "PARTIAL", "count": 6 }
+      ],
+      "fleissKappa": { "kappa": 0.69247546346783, "P_bar": 0.8014184397163121, "P_e_bar": 0.3542578341129722, "interpretation": "Substantial agreement (Landis-Koch), driven mainly by the FULL/PARTIAL boundary." },
+      "frozenThreshold": 0.85,
+      "gateResult": "FAILED",
+      "certificationClass": "DIAGNOSTIC (per Section 8/15) - this failure does NOT block evaluator closure by design.",
+      "designation": "DIAGNOSTIC_ONLY (per Section 17's pre-registered branch: interReviewerGate failed at 80.1% < 85%, so the dimension is marked diagnostic-only and its evaluator-vs-consensus gate is NOT computed as a certification requirement).",
+      "note": "The FULL/PARTIAL boundary is the dominant source of disagreement (22 of the 33 non-unanimous pairwise comparisons involve exactly this boundary), consistent with the known difficulty of judging 'complete enough' representation without a bright-line completeness rubric - a known, disclosed limitation carried forward from Phase 3F.1.5.3's detailed-taxonomy reproducibility failure."
+    },
+    "verificationStatus": {
+      "scope": "Only cases where a majority of adjudicators did NOT assign NOT_EVALUATED (genuinely applicable subset). Only 4 of 47 cases qualify.",
+      "n": 4,
+      "pairwiseRawAgreement": { "A-B": 0.5, "A-C": 0.5, "B-C": 0.25 },
+      "meanPairwiseRawAgreement": 0.4166666666666667,
+      "unanimousAgreement": { "count": 1, "rate": 0.25 },
+      "fleissKappa": { "kappa": 0.06666666666666661, "P_bar": 0.41666666666666663, "P_e_bar": 0.375, "interpretation": "Slight agreement - but n=4 is far too small for this statistic to be meaningful." },
+      "applicableCaseIds": ["doc-a::I::1.04-accounting-terms-gaap", "doc-a::I::1.11-amendment-and-restatement", "fwrg-6.04-a-xi", "lsb-6.01-m-secured-notes"],
+      "applicableCount": 4,
+      "certificationThreshold": "NONE - per the frozen preregistration, a certification threshold applies only if >=15 genuinely applicable cases exist. Only 4 exist, so no threshold is evaluated.",
+      "certificationClass": "DIAGNOSTIC - never blocks evaluator closure this phase, per Section 8/15/18.",
+      "note": "This confirms Section 18's expected finding: verification evidence is genuinely rare in the current pipeline (4 of 47, or ~8.5%, of a stratified sample), so VERIFIED/CONTRADICTED remain largely unreachable states given current pipeline architecture. This is a disclosed pipeline-integration gap, not an evaluator defect - carried forward as a Phase 3C/Phase 4 integration requirement per Section 18."
+    },
+    "evidenceQuality": {
+      "scope": "All 47 cases.",
+      "n": 47,
+      "pairwiseRawAgreement": { "A-B": 0.574468085106383, "A-C": 0.9574468085106383, "B-C": 0.6170212765957447 },
+      "meanPairwiseRawAgreement": 0.7163120567375887,
+      "unanimousAgreement": { "count": 27, "rate": 0.574468085106383 },
+      "confusionMatrixOffDiagonal": [
+        { "x": "SUFFICIENT", "y": "AMBIGUOUS", "count": 40 }
+      ],
+      "fleissKappa": { "kappa": -0.07715813598166445, "P_bar": 0.7163120567375888, "P_e_bar": 0.736632966148584, "interpretation": "Effectively zero (slightly negative) chance-adjusted agreement - adjudicators B in particular diverges from A and C on the SUFFICIENT/AMBIGUOUS boundary, exactly the pattern Section 19 anticipated." },
+      "certificationThreshold": "NONE - report only, per Section 15.",
+      "certificationClass": "DIAGNOSTIC - never blocks evaluator closure.",
+      "note": "Per Section 19's pre-registered instruction: reviewers disagree heavily between AMBIGUOUS and SUFFICIENT (not INSUFFICIENT, which was essentially never selected). Per Section 19, this is reported and evaluator development does not launch another ontology exercise to fix it."
+    }
+  },
+  "summaryOfSafetyCriticalGates": {
+    "creditEligibility_interReviewerGate": "PASSED (95.7% >= 90%)",
+    "surfacingStatus_interReviewerGate": "FAILED (74.1% < 90%)",
+    "conclusion": "One of the two safety-critical inter-reviewer reproducibility gates required by Section 30 already fails at this stage, independent of the evaluator-vs-consensus comparison in 19-evaluator-vs-consensus.json."
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "VERIFICATION_STATUS_RESULTS",
+  "generatedAt": "2026-08-29T23:18:00Z",
+  "purpose": "Section 18: measure applicable-case count, state distribution, reviewer agreement, and pipeline evidence gaps for verificationStatus.",
+  "certificationClass": "DIAGNOSTIC - never blocks evaluator closure this phase (Section 8/15).",
+  "applicableCaseCount": 4,
+  "applicableCaseIds": ["doc-a::I::1.04-accounting-terms-gaap", "doc-a::I::1.11-amendment-and-restatement", "fwrg-6.04-a-xi", "lsb-6.01-m-secured-notes"],
+  "thresholdRule": "Per the frozen preregistration: no certification threshold applies unless >=15 genuinely applicable cases exist in the frozen sample. Only 4 exist (8.5% of the 47-case sample) - well short of 15 - so no certification threshold is evaluated this phase, exactly per Section 15's pre-registered rule.",
+  "stateDistribution": {
+    "acrossAllThreeAdjudicatorsOnApplicableCases": {
+      "NOT_EVALUATED": 1,
+      "NOT_VERIFIED": 1,
+      "VERIFICATION_INCOMPLETE": 6,
+      "CONTRADICTED": 4,
+      "VERIFIED": 0
+    },
+    "note": "VERIFIED was never assigned by any adjudicator on any of the 47 cases."
+  },
+  "interReviewerAgreement": { "meanPairwiseRawAgreement": 0.4166666666666667, "fleissKappa": 0.06666666666666661, "caveat": "n=4 is far too small for either statistic to be statistically meaningful - reported for completeness only, per Section 18's instruction to report the number honestly rather than suppress it." },
+  "pipelineEvidenceGapDisclosure": "Consistent with Section 18's anticipated finding: genuine verification evidence (independent corroborating or contradicting source material beyond the semantic match itself) is rare in the current pipeline - only ~8.5% of a stratified 47-case sample carries any verification-relevant evidence at all, and VERIFIED is effectively unreachable (0 of 47 cases, by any adjudicator). This confirms the current pipeline architecture does not yet produce the volume of independent verification evidence needed to make this dimension reproducibly assessable, let alone certification-grade.",
+  "disposition": "This is NOT scored as an evaluator failure. Per Section 18, it is carried forward as a Phase 3C/Phase 4 integration requirement: verificationStatus's usefulness is gated on richer verification-evidence production upstream (e.g., 3C's independent verification layer being wired into more claim types), not on any change to the atomic-contract derivation logic itself.",
+  "conclusion": "verificationStatus remains DIAGNOSTIC this phase, as pre-registered. It does not block Section 30 closure regardless of its own reproducibility outcome."
+}

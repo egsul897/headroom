@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "ATOMIC_CONTRACT_CROSS_DATASET_REGRESSION",
+  "generatedAt": "2026-08-29T22:11:26.567Z",
+  "purpose": "Section 20: rerun the frozen matcher across FWRG/LSB/CONMED/DSGR with atomic-contract derivation applied, confirming zero package-specific tuning and disclosing any disposition-distribution shifts across drafting styles.",
+  "packageStatusDisclosure": "FWRG, LSB, CONMED and DSGR are permanent regression evidence, never unseen packages. Nothing here re-labels them or claims a new validation event.",
+  "zeroTuningConfirmation": "atomic-contract.ts contains no dataset/package/documentId/section-specific branching of any kind (verified structurally: the module takes only UnitEvaluationResult and a CandidateSemanticRepresentation map, both already produced by the unmodified frozen matcher). This run is the empirical confirmation that applying the SAME derivation function across 4 structurally different drafting styles produces non-degenerate, dataset-appropriate distributions rather than a single hardcoded pattern.",
+  "perDataset": [
+    {
+      "datasetKey": "fwrg-2021-credit-agreement",
+      "unitCount": 18,
+      "creditEligibility": {
+        "CREDIT": 8,
+        "NO_CREDIT": 10
+      },
+      "surfacingStatus": {
+        "NOT_APPLICABLE": 8,
+        "SPECIFICALLY_SURFACED": 2,
+        "NOT_SPECIFICALLY_SURFACED": 8
+      },
+      "representationCompleteness": {
+        "FULL": 8,
+        "NONE": 9,
+        "PARTIAL": 1
+      },
+      "verificationStatus": {
+        "NOT_EVALUATED": 17,
+        "CONTRADICTED": 1
+      },
+      "evidenceQuality": {
+        "SUFFICIENT": 18
+      },
+      "dangerousSilentOmissionCount": 8,
+      "derivedDiagnosticLabel": {
+        "SEMANTICALLY_REPRESENTED_UNVERIFIED": 8,
+        "HONESTLY_UNRESOLVED": 2,
+        "DISCOVERED_REVIEW_REQUIRED": 6,
+        "CONTRADICTORY_REPRESENTATION": 1,
+        "PARTIAL_SEMANTIC_REPRESENTATION": 1
+      }
+    },
+    {
+      "datasetKey": "lsb-2023-abl-credit-agreement",
+      "unitCount": 14,
+      "creditEligibility": {
+        "NO_CREDIT": 12,
+        "CREDIT": 2
+      },
+      "surfacingStatus": {
+        "NOT_SPECIFICALLY_SURFACED": 8,
+        "NOT_APPLICABLE": 2,
+        "SPECIFICALLY_SURFACED": 4
+      },
+      "representationCompleteness": {
+        "NONE": 11,
+        "FULL": 2,
+        "PARTIAL": 1
+      },
+      "verificationStatus": {
+        "CONTRADICTED": 4,
+        "NOT_EVALUATED": 10
+      },
+      "evidenceQuality": {
+        "SUFFICIENT": 14
+      },
+      "dangerousSilentOmissionCount": 8,
+      "derivedDiagnosticLabel": {
+        "CONTRADICTORY_REPRESENTATION": 4,
+        "SEMANTICALLY_REPRESENTED_UNVERIFIED": 2,
+        "HONESTLY_UNRESOLVED": 2,
+        "DISCOVERED_REVIEW_REQUIRED": 4,
+        "PARTIAL_SEMANTIC_REPRESENTATION": 1,
+        "NOT_DISCOVERED": 1
+      }
+    },
+    {
+      "datasetKey": "conmed-2025-credit-facility",
+      "unitCount": 67,
+      "creditEligibility": {
+        "NO_CREDIT": 67
+      },
+      "surfacingStatus": {
+        "NOT_SPECIFICALLY_SURFACED": 61,
+        "SPECIFICALLY_SURFACED": 6
+      },
+      "representationCompleteness": {
+        "NONE": 67
+      },
+      "verificationStatus": {
+        "NOT_EVALUATED": 67
+      },
+      "evidenceQuality": {
+        "SUFFICIENT": 67
+      },
+      "dangerousSilentOmissionCount": 44,
+      "derivedDiagnosticLabel": {
+        "DISCOVERED_REVIEW_REQUIRED": 67
+      }
+    },
+    {
+      "datasetKey": "dsgr-2022-2025-credit-facility",
+      "unitCount": 1016,
+      "creditEligibility": {
+        "NO_CREDIT": 1010,
+        "CREDIT": 6
+      },
+      "surfacingStatus": {
+        "SPECIFICALLY_SURFACED": 681,
+        "NOT_SPECIFICALLY_SURFACED": 329,
+        "NOT_APPLICABLE": 6
+      },
+      "representationCompleteness": {
+        "NONE": 989,
+        "PARTIAL": 21,
+        "FULL": 6
+      },
+      "verificationStatus": {
+        "NOT_EVALUATED": 1001,
+        "CONTRADICTED": 15
+      },
+      "evidenceQuality": {
+        "SUFFICIENT": 1016
+      },
+      "dangerousSilentOmissionCount": 262,
+      "derivedDiagnosticLabel": {
+        "HONESTLY_UNRESOLVED": 247,
+        "DISCOVERED_REVIEW_REQUIRED": 727,
+        "CONTRADICTORY_REPRESENTATION": 15,
+        "PARTIAL_SEMANTIC_REPRESENTATION": 21,
+        "SEMANTICALLY_REPRESENTED_UNVERIFIED": 6
+      }
+    }
+  ],
+  "falseCreditControlsRegressionCheck": {
+    "allFourteenIds": [
+      "doc-a::VI::6.01-chapeau",
+      "doc-a::VI::6.04-chapeau",
+      "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "doc-a::VI::6.05-chapeau",
+      "doc-a::VI::6.05-ip-flush-prohibition",
+      "doc-a::VI::6.08b-chapeau",
+      "doc-a::VI::6.10-chapeau",
+      "doc-b::VI::6-01-lead-in",
+      "doc-b::VI::6-04-lead-in",
+      "doc-b::VI::6-05-lead-in",
+      "doc-d::VI::6-01-chapeau",
+      "doc-d::VI::6-04-chapeau",
+      "doc-d::VI::6-05-chapeau",
+      "doc-d::VI::6-08-b-chapeau"
+    ],
+    "detail": [
+      {
+        "gtUnitId": "doc-a::VI::6.01-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-a::VI::6.04-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-a::VI::6.04-unrestricted-sub-valuation",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-a::VI::6.05-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-a::VI::6.05-ip-flush-prohibition",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-a::VI::6.08b-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-a::VI::6.10-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-b::VI::6-01-lead-in",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-b::VI::6-04-lead-in",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-b::VI::6-05-lead-in",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-d::VI::6-01-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-d::VI::6-04-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-d::VI::6-05-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      },
+      {
+        "gtUnitId": "doc-d::VI::6-08-b-chapeau",
+        "creditEligibility": "NO_CREDIT",
+        "ok": true
+      }
+    ],
+    "regressionDetected": false
+  }
+}
