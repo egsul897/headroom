@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "VALIDATION_PREREGISTRATION",
+  "generatedAt": "2026-08-29T22:35:00Z",
+  "purpose": "Sections 11/14/15: freeze the exact per-dimension agreement computation and thresholds BEFORE any adjudication. Not adjusted after seeing results (Section 25).",
+  "studyDesign": {
+    "adjudicatorCount": 3,
+    "adjudicatorIdentity": "Three separately-dispatched, mutually-isolated general-purpose subagents (A, B, C), each receiving an identical frozen instruction packet (05-operational-rubric.json + a blinded evidence packet), with no access to V2's own atomic disposition for any case, the other two adjudicators, or any historical evaluator record (V2's 12-state disposition, prior phases' agreement results, or known false-credit identification).",
+    "perCaseAdjudicatorOutput": ["creditEligibility", "surfacingStatus", "representationCompleteness", "verificationStatus", "evidenceQuality", "rationale", "confidence"]
+  },
+  "agreementComputation_perDimension": {
+    "principle": "Section 14: agreement is computed INDEPENDENTLY per dimension - never one giant exact-match score requiring simultaneous agreement across all 5.",
+    "creditEligibility": {
+      "pairwiseRawAgreement": "For each pair of adjudicators, fraction of cases where both assigned the same value.",
+      "unanimousAgreement": "Fraction of cases where all 3 adjudicators assigned the same value.",
+      "majorityStability": "Always 100% by construction (2-valued space, pigeonhole) - reported for completeness only, not informative.",
+      "confusionMatrix": "2x2 across all pairwise comparisons.",
+      "chanceAdjustedStatistic": "Fleiss' kappa across all 3 raters."
+    },
+    "surfacingStatus": {
+      "scope": "Computed ONLY over cases where a MAJORITY (2-of-3) of adjudicators independently assigned creditEligibility=NO_CREDIT for that case (the 'applicable' NO_CREDIT cases) - a case all 3 rated CREDIT contributes no information about surfacing and is excluded from this denominator, not silently forced to NOT_APPLICABLE agreement.",
+      "pairwiseRawAgreement": "Among applicable cases: fraction where both adjudicators in a pair assigned the same value (SPECIFICALLY_SURFACED vs NOT_SPECIFICALLY_SURFACED vs NOT_APPLICABLE).",
+      "unanimousAgreement": "Fraction of applicable cases where all 3 agree.",
+      "confusionMatrix": "3x3 across all pairwise comparisons on applicable cases.",
+      "chanceAdjustedStatistic": "Fleiss' kappa over applicable cases."
+    },
+    "representationCompleteness": {
+      "scope": "All cases.",
+      "pairwiseRawAgreement": "Fraction where both adjudicators in a pair assigned the same value (NONE/PARTIAL/FULL).",
+      "unanimousAgreement": "Fraction where all 3 agree.",
+      "confusionMatrix": "3x3.",
+      "chanceAdjustedStatistic": "Fleiss' kappa."
+    },
+    "verificationStatus": {
+      "scope": "Only cases where a majority of adjudicators did NOT assign NOT_EVALUATED (i.e. at least one adjudicator believed genuine verification evidence existed to assess) - the 'genuinely applicable' subset per Section 15.",
+      "pairwiseRawAgreement": "Among genuinely applicable cases.",
+      "confusionMatrix": "5x5 across genuinely applicable cases.",
+      "chanceAdjustedStatistic": "Fleiss' kappa if the applicable count is large enough to be non-degenerate."
+    },
+    "evidenceQuality": {
+      "scope": "All cases.",
+      "pairwiseRawAgreement": "Fraction where both adjudicators in a pair assigned the same value (SUFFICIENT/AMBIGUOUS/INSUFFICIENT).",
+      "confusionMatrix": "3x3.",
+      "chanceAdjustedStatistic": "Fleiss' kappa."
+    }
+  },
+  "consensusRule": {
+    "definition": "Majority (2-of-3) per dimension per case. For a 2-valued dimension (creditEligibility) a majority always exists. For 3+ valued dimensions, if all 3 adjudicators disagree with each other (a genuine 3-way split), mark that case's consensus for that dimension as UNRESOLVED_CONSENSUS - excluded from that dimension's evaluator-vs-consensus denominator, but reported separately, never silently dropped."
+  },
+  "frozenThresholds": {
+    "creditEligibility": {
+      "interReviewerGate": { "metric": "mean pairwise raw agreement", "threshold": 0.90 },
+      "evaluatorVsConsensusGate": { "metric": "raw agreement between evaluator's atomic creditEligibility and the majority consensus", "threshold": 0.90 },
+      "certificationClass": "SAFETY_CRITICAL - blocks evaluator closure if either gate fails."
+    },
+    "surfacingStatus": {
+      "interReviewerGate": { "metric": "mean pairwise raw agreement on applicable NO_CREDIT cases", "threshold": 0.90 },
+      "evaluatorVsConsensusGate": { "metric": "raw agreement on applicable NO_CREDIT cases", "threshold": 0.90 },
+      "certificationClass": "SAFETY_CRITICAL - blocks evaluator closure if either gate fails."
+    },
+    "representationCompleteness": {
+      "interReviewerGate": { "metric": "mean pairwise raw agreement", "threshold": 0.85 },
+      "evaluatorVsConsensusGate": { "metric": "raw agreement", "threshold": 0.85, "onlyAppliesIf": "interReviewerGate passes and the dimension is designated CERTIFICATION_GRADE" },
+      "certificationClass": "DIAGNOSTIC - does NOT block evaluator closure. If interReviewerGate fails, mark DIAGNOSTIC_ONLY and do not compute or require the evaluator-vs-consensus gate at all."
+    },
+    "verificationStatus": {
+      "interReviewerGate": { "metric": "mean pairwise raw agreement on genuinely applicable cases", "threshold": "NO certification threshold unless >= 15 genuinely applicable cases exist in the frozen sample - report reproducibility as a number regardless, but treat as diagnostic this phase even if >=15 cases exist and reproducibility is high, absent an explicit pre-results justification (none given here) to certify it" },
+      "certificationClass": "DIAGNOSTIC - never blocks evaluator closure this phase."
+    },
+    "evidenceQuality": {
+      "interReviewerGate": { "metric": "mean pairwise raw agreement", "threshold": "report only, no threshold" },
+      "certificationClass": "DIAGNOSTIC - never blocks evaluator closure."
+    }
+  },
+  "falseCreditCrossCheck": "Pre-registered: for each of the 14 historical false-credit controls present in the sample, report whether all 3 adjudicators independently assigned creditEligibility=NO_CREDIT. Any adjudicator assigning CREDIT to a known control is investigated before the gate result is accepted at face value (Section 16)."
+}
