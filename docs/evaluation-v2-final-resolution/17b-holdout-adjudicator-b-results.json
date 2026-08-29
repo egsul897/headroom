@@ -1,0 +1,184 @@
+{
+  "adjudicatorId": "B",
+  "rubricVersion": "REPLACEMENT_V2",
+  "generatedAt": "2026-08-29T21:00:00Z",
+  "caseCount": 22,
+  "results": [
+    {
+      "caseId": "a-7.2-a",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "GT excerpt field is blank (UNRESOLVED_DESCRIPTION_ONLY) but the exact-sectionRef candidate's excerpt quotes the operative clause verbatim and matches the GT description precisely, so override evidence resolves the ground truth's own meaning and INCOMPARABLE's necessary condition (own anchor cannot be resolved at all) is not met -- the exclusion 'source anchor is resolvable to a specific excerpt' controls. The sole candidate at 7.2(a) is DISCOVERY_CANDIDATE/INVENTORY_ONLY, never compiled, no safety-flag marker (reviewStatus=AUTO_ACCEPTED), satisfying DISCOVERED_ONLY's necessary conditions.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2-b",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "Same pattern as 7.2(a): GT excerpt blank but override evidence (an exact-matching inventory candidate quoting the clause) resolves the claim, so INCOMPARABLE does not apply. The sole exact-location candidate is DISCOVERY_CANDIDATE/INVENTORY_ONLY, uncompiled, AUTO_ACCEPTED with no safety flag, matching DISCOVERED_ONLY.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2-c",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "GT excerpt blank but override evidence (exact-matching inventory candidate quoting the Section 7.3(g)/7.1 pro forma condition) resolves the claim's meaning, excluding INCOMPARABLE. The sole exact-location candidate is DISCOVERY_CANDIDATE/INVENTORY_ONLY, never compiled, no safety-flag marker, matching DISCOVERED_ONLY.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2-e",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "GT excerpt blank but override evidence (two exact-matching inventory candidates quoting the Schedule 7.2(e) grandfather/refinancing clause) resolves the claim, excluding INCOMPARABLE. Both exact-location candidates are DISCOVERY_CANDIDATE/INVENTORY_ONLY, never compiled, no safety-flag marker, matching DISCOVERED_ONLY.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::I::1.06-pro-forma-adjustments",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "MEDIUM",
+      "rationale": "This GT unit is a composite claim spanning all of Section 1.06 as one combined claim (trigger, Reg S-X pro forma ratio methodology, Section 6.12 TNLR-Adjustment carve-out, Unrestricted Cash exclusion, floating-rate annualization); per LOCATION_SCOPING_RULE_FOR_COMPOSITE_CLAIMS, candidates directly quoting/anchored at 1.06's own opening span count toward this claim. Several COMPILED_IR_RULE candidates capture the core trigger/action/object (Borrower or Restricted Subsidiary; recalc TNLR & ICR pro forma as of first day of period) but self-report sufficiency=PARTIAL, explicitly marking the Reg S-X adjustment standard, the Section 6.12 TNLR-Adjustment carve-out, and the floating-rate annualization piece as unmodeled/UNSUPPORTED -- a genuine but materially incomplete representation of the same composite claim, not silence and not an affirmative wrong answer.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::I::1.07-status-of-obligations",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "CONTRADICTORY_REPRESENTATION",
+      "confidence": "HIGH",
+      "rationale": "A COMPILED_IR_RULE anchored at the same claim (the 'hereby designated as senior indebtedness' sentence) exists, but an explicit VERIFICATION_FINDING (reviewStatus=MATERIAL_DISCREPANCY, verifierFindings=['WRONG_POSTURE']) states the compiled representation affirmatively mis-tags this self-executing, automatic designation as posture=OBLIGATION/entityScope=[LOAN_PARTY], i.e. an act-dependent duty -- a materially wrong basis on a core dimension (legal posture/direction) that changes the claim's operative effect, per CONTRADICTORY_REPRESENTATION's necessary/sufficient conditions.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::I::ebitda",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "HIGH",
+      "rationale": "A COMPILED_IR_DEFINITION for EBITDA exists at 1.01 whose excerpt matches the GT definition verbatim; its own unresolvedReasons confirm the top-level structure (Net Income + add-backs - deductions) is captured (core dimensions met) but the twenty add-back/six deduction sub-clauses with their individual conditions, the shared 20% Combined Cap, and the fixed historical quarterly EBITDA overrides are all left unmodeled -- a textbook genuine-but-incomplete representation of the same claim, matching PARTIAL_SEMANTIC_REPRESENTATION exactly.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::I::interest-coverage-ratio",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "No compiled representation of the 'Interest Coverage Ratio' definition or its 'Annualized Quarter' proviso exists anywhere in the pool (the only compiled IR items are for unrelated terms Acquisition/Applicable EBITDA, or for the separate Section 1.06 pro forma rule). One SEMANTIC_COVERAGE_UNIT candidate verbatim-quotes the claim's own Annualized-Quarter text and carries an explicit structural safety flag (flaggedDangerousUnaccounted=true, dangerousUnaccounted:CANDIDATE_DISCOVERED_NEVER_COMPILED) asserting no substantive answer, matching DISCOVERED_REVIEW_REQUIRED. Its own sectionRef metadata (2.09...) is mismatched/garbled relative to the claim's 1.01, but this is not a same-parent sibling sub-item under SIBLING_ADJACENCY_RULE, and the excerpt text is an unambiguous verbatim match to the claim's own content, so it is treated as overlapping despite the label anomaly -- a judgment call flagged for review.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::II::2.11a-optional-prepayment",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "HIGH",
+      "rationale": "No candidate in the pool has any sectionRef of 2.11(a) or textually quotes the claim's own 'right to prepay any Borrowing... without premium or penalty... paragraph (e)... break funding' language. All nearby candidates are anchored at sibling sub-items under the same parent 2.11 (2.11(b) revolver cure, 2.11(c) mandatory prepayment, notice-mechanics sub-clauses) which per SIBLING_ADJACENCY_RULE_FOR_TEXTUAL_OVERLAP do not count as overlapping this claim's own location however adjacent. The surrounding 2.11 family was clearly processed by the pipeline (siblings have candidates), so this is a specific gap within a processed area, not a total blind spot -- matching HONESTLY_UNSUPPORTED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::II::2.11b-revolver-overadvance-cure",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "Multiple SEMANTIC_COVERAGE_UNIT candidates are anchored exactly at 2.11(b), verbatim-quoting the claim's own operative text (Dollar Equivalent of Aggregate Revolving Exposure exceeding Commitments, the 102% currency-fluctuation carve-out), each carrying an explicit structural flag (accountingRole=SAFETY_FLAG, flaggedDangerousUnaccounted=true, unresolvedReasons=['dangerousUnaccounted: CANDIDATE_DISCOVERED_NEVER_COMPILED']) that surfaces the gap without asserting any substantive answer; no compiled representation (IR_RULE/IR_DEFINITION) exists anywhere in the pool for this claim. This matches DISCOVERED_REVIEW_REQUIRED's necessary conditions precisely.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::II::2.11c-mandatory-prepayment-events",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "HIGH",
+      "rationale": "No candidate carries sectionRef 2.11(c). Candidates whose excerpt text does substantively match the claim's own 'Asset Sale Prepayment Trigger' / $10,000,000 threshold content are tagged with sibling sectionRefs 2.11(a)/2.11(a)(a) (one even states a conflicting $20,000,000 figure), a different enumerated sub-item under the same parent 2.11. Per SIBLING_ADJACENCY_RULE_FOR_TEXTUAL_OVERLAP these sibling-tagged candidates do not count as overlapping this claim's own location no matter how closely their excerpts track its content. With the surrounding 2.11 family otherwise processed, this is HONESTLY_UNSUPPORTED rather than NOT_DISCOVERED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::II::2.11d-prepayment-notices",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "HIGH",
+      "rationale": "No candidate carries sectionRef 2.11(d). The only candidates whose excerpts substantively match prepayment-notice mechanics (irrevocability, Swingline notice deadline) are tagged with sibling sectionRefs under the same parent 2.11 (e.g. 2.11(a)(a)(II)(i)(1)), a different enumerated sub-item. Per SIBLING_ADJACENCY_RULE_FOR_TEXTUAL_OVERLAP these do not count as overlap for this claim. The surrounding 2.11 family was otherwise processed, so this is HONESTLY_UNSUPPORTED, a specific gap rather than total non-discovery.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::IV::4.01-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "This is a chapeau/composite claim (the introductory 'all conditions of Section 4.01 must be satisfied or waived' sentence plus its Loan-Party-scope proviso). Per LOCATION_SCOPING_RULE_FOR_COMPOSITE_CLAIMS, a discovery candidate at bare sectionRef 4.01 whose normalizedSemantics explicitly addresses the chapeau as a whole ('General introductory requirement that all enumerated conditions in Section 4.01 be satisfied... including that a newly acquired Person become a Loan Party immediately following...') satisfies the location-scoping test. It is DISCOVERY_CANDIDATE (never compiled into IR) carrying a pipeline-generated uncertainty flag (reviewStatus=NEEDS_REVIEW, confidence=0.65) that does not itself compile a formal answer, matching DISCOVERED_REVIEW_REQUIRED; no compiled representation of the chapeau exists anywhere in the pool.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::IV::4.01-outside-date",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "This claim (the automatic-termination/outside-date closing flush language) shares the same bare 4.01 sectionRef and the same 5-candidate discovery cluster as the chapeau. One discovery candidate's normalizedSemantics is an exact substantive match ('if the enumerated conditions are not satisfied or waived...by 2:00 p.m. Chicago time on June 30, 2022, the Commitments automatically terminate'), anchored at the claim's own exact sectionRef, but it is DISCOVERY_CANDIDATE (never compiled) with a pipeline uncertainty flag (reviewStatus=NEEDS_REVIEW, confidence=0.7) and does not address the 'Effective Date notice is conclusive and binding' half of the claim. No compiled representation exists. This matches DISCOVERED_REVIEW_REQUIRED, though reliance on normalizedSemantics rather than the (boilerplate/garbled) excerpt field itself is a judgment call.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::VI::6.02-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "Multiple candidates verbatim-quote the chapeau's own opening sentence ('SECTION 6.02. Liens. No Loan Party will... except:'), satisfying LOCATION_SCOPING_RULE_FOR_COMPOSITE_CLAIMS clause (a). Among them, three SEMANTIC_COVERAGE_UNIT candidates anchored at that exact span carry an explicit structural flag (accountingRole=SAFETY_FLAG, flaggedDangerousUnaccounted=true, dangerousUnaccounted:CANDIDATE_DISCOVERED_NEVER_COMPILED) with no compiled representation anywhere in the pool. Per precedence and DISCOVERED_ONLY's own exclusion condition ('a safety-flag marker is present falls to DISCOVERED_REVIEW_REQUIRED'), the presence of these flagged candidates controls over the co-located unflagged AUTO_ACCEPTED inventory candidates.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VI::6.09-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "A SEMANTIC_COVERAGE_UNIT candidate verbatim-quotes the chapeau's own opening sentence ('SECTION 6.09. Transactions with Affiliates. No Loan Party will...'), satisfying the Location Scoping Rule, and carries an explicit structural flag (flaggedDangerousUnaccounted=true, dangerousUnaccounted:CANDIDATE_DISCOVERED_NEVER_COMPILED); no compiled representation of the chapeau exists anywhere in the pool. As with 6.02, the flagged candidate controls over the co-located unflagged AUTO_ACCEPTED inventory candidates per precedence.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VII::7.01-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "MEDIUM",
+      "rationale": "The GT excerpt field itself is a mismatched/garbled span (Section 1.01 definitions text, not the 7.01 chapeau sentence) -- a data artifact. The only two candidates tagged with the chapeau's own bare sectionRef 7.01 have empty excerpts and normalizedSemantics describing unrelated downstream content (post-enumeration acceleration remedies and a notice-waiver clause), not the chapeau's own 'any of the following events constitutes an Event of Default' sentence or its scope as a whole, so they fail LOCATION_SCOPING_RULE_FOR_COMPOSITE_CLAIMS. All other 7.01-adjacent candidates are anchored at specific enumerated sub-items (e.g. 7.01(i)(i)(i)), which per the same rule cannot establish the chapeau's own discovery status. With no qualifying candidate but the surrounding Article VII area otherwise processed, this falls to HONESTLY_UNSUPPORTED rather than NOT_DISCOVERED.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::X::10.01a-us-guaranty",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "Multiple candidates verbatim-quote the claim's own opening clause ('(a) Each U.S. Loan Guarantor (other than those that have delivered a separate Guaranty) hereby agrees that it is jointly and severally liable...') at the exact sectionRef 10.01(a). Three SEMANTIC_COVERAGE_UNIT candidates there carry an explicit structural flag (flaggedDangerousUnaccounted=true, dangerousUnaccounted:CANDIDATE_DISCOVERED_NEVER_COMPILED); no compiled IR representation exists anywhere in the pool for the guaranty obligation. Per DISCOVERED_ONLY's own exclusion ('a safety-flag marker is present falls to DISCOVERED_REVIEW_REQUIRED'), the flagged candidates control over the co-located unflagged AUTO_ACCEPTED inventory candidates.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::X::10.06-reinstatement",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "All three candidates anchored exactly at 10.06 verbatim-quote the claim's own text ('SECTION 10.06. Reinstatement; Stay of Acceleration. If at any time any payment...') and are SEMANTIC_COVERAGE_UNIT/SAFETY_FLAG entries with flaggedDangerousUnaccounted=true (two report CANDIDATE_DISCOVERED_NEVER_COMPILED, one NO_CANDIDATE_EVER_DISCOVERED). No compiled representation or unflagged discovery candidate exists anywhere in the pool for this claim, matching DISCOVERED_REVIEW_REQUIRED's necessary conditions directly.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::XII::12-schedules-exhibits",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "MEDIUM",
+      "rationale": "This claim is about the back-matter Commitment Schedule (per-lender dollar allocations) and Exhibit forms A/B-1/B-2/C-1... The two candidates tagged with the claim's own sectionRef 'XII' are both about the unrelated Collateral Allocation Mechanism (CAM Exchange) provisions and never mention the Commitment Schedule figures or Exhibit forms, so they fail genuine textual overlap despite the shared coarse label. Other candidates that do mention 'the Commitment Schedule' are a defined-term cross-reference (Initial Term Loan Commitment) tagged with unrelated/garbled sectionRefs, not the schedule's own content. No candidate anywhere addresses this claim's actual subject, but the broader XII/back-matter region was pipeline-processed (CAM candidates exist), so this is HONESTLY_UNSUPPORTED rather than NOT_DISCOVERED -- a genuinely close call given the ambiguous document-structure boundary.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-b::AMENDMENT::sec2a-consent-increase-2-09e-cap",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "A single DISCOVERY_CANDIDATE at the exact sectionRef 2(a) closely quotes and paraphrases the claim's own content (the $200,000,000-to-$255,000,000 Section 2.09(e) cap increase for the Third Amendment Incremental Commitments) but carries a pipeline uncertainty flag (accountingRole=SAFETY_FLAG, reviewStatus=NEEDS_REVIEW, confidence=0.55) and was never compiled into a structured representation. No compiled IR rule exists anywhere in the pool for this amendment consent, matching DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-b::AMENDMENT::sec2b-amendment-mechanic-exhibit-a",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "MEDIUM",
+      "rationale": "No candidate in this claim's 60-item pool carries sectionRef 2(b), and none mentions Exhibit A, the blackline (stricken/double-underlined) amendment mechanic, or the Commitment Schedule restatement described in the GT. The pool does contain other Amendment-document-numbered items (e.g. sectionRef 4(c), a Section 4 condition-precedent clause), confirming the short Amendment document was generally within pipeline scope, so nothing correcponds specifically to this claim while the broader document was processed -- HONESTLY_UNSUPPORTED rather than NOT_DISCOVERED. The claim's own displayed groundTruthExcerpt is itself a mismatched/unrelated span (LC-collateral text), a recurring data-quality artifact in this dataset noted for review.",
+      "ambiguityFlag": true
+    }
+  ]
+}
