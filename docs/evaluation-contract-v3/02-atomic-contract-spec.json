@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "ATOMIC_CONTRACT_SPEC",
+  "generatedAt": "2026-08-29T22:10:00Z",
+  "purpose": "Section 4/5/11: freeze the AtomicEvaluationContract schema and exact derivation rules before any adjudication.",
+  "implementationFile": "lib/contract-model/evaluation-v2/atomic-contract.ts",
+  "schemaVersionConstant": "EVALUATION_CONTRACT_V3_SCHEMA_VERSION = evaluation-contract-v3.v1 (lib/contract-model/evaluation-v2/identity.ts, independent of and never changing EVALUATION_V2_ALGORITHM_VERSION)",
+  "designPrinciple": "This is a pure DERIVATION layer. It introduces zero new matching decisions - every atomic dimension is computed from fields the frozen matcher (matching.ts/semantic-correspondence.ts, unchanged since Workstream A's freeze) already produces. No production code, no matcher code, and no threshold in the matcher was touched to build this module.",
+  "dimensions": {
+    "creditEligibility": {
+      "values": ["CREDIT", "NO_CREDIT"],
+      "derivation": "CREDIT iff matchStatus in {EXACT_SINGLE, EXACT_COMPOSITE}; else NO_CREDIT.",
+      "rationale": "matchStatus EXACT_SINGLE/EXACT_COMPOSITE is exactly the frozen matcher's own 'a substantive representation corresponds on every core dimension, established via claim-specific identity (I_CLAIM_IDENTITY not INDETERMINATE)' outcome - this dimension is a direct relabeling, not a new judgment, and inherits SAME_COVENANT_FAMILY_IS_NOT_SAME_SEMANTIC_CLAIM and 'CORRESPONDS_PARTIALLY cannot establish claim identity' automatically, because those are already enforced by the frozen matcher before matchStatus is ever assigned."
+    },
+    "surfacingStatus": {
+      "values": ["SPECIFICALLY_SURFACED", "NOT_SPECIFICALLY_SURFACED", "NOT_APPLICABLE"],
+      "derivation": "NOT_APPLICABLE when creditEligibility=CREDIT. Otherwise SPECIFICALLY_SURFACED iff the unit's explicitlySurfacedAsUnsafe field is true; else NOT_SPECIFICALLY_SURFACED.",
+      "criticalDesignFinding": "explicitlySurfacedAsUnsafe (matching.ts) is computed ONLY from pairs whose correspondence resolved to CORRESPONDS_FULLY or CORRESPONDS_PARTIALLY (the `corresponding` array) - and Workstream A's frozen I_CLAIM_IDENTITY dimension already forces a sibling-anchored candidate's pair correspondence to INDETERMINATE, which excludes it from `corresponding` entirely. A sibling's safety flag can therefore NEVER enter explicitlySurfacedAsUnsafe today. Re-deriving this dimension independently in the new atomic-contract module would risk a second, possibly-inconsistent implementation of the same claim-specificity rule; reusing the frozen field verbatim is the correct, safer design and satisfies Invariants 3/5/6 by construction rather than by a second, parallel check."
+    },
+    "representationCompleteness": {
+      "values": ["NONE", "PARTIAL", "FULL"],
+      "derivation": "FULL iff matchStatus in {EXACT_SINGLE, EXACT_COMPOSITE}; PARTIAL iff matchStatus=PARTIAL; NONE for every other matchStatus (UNREPRESENTED, HONESTLY_UNRESOLVED, HONESTLY_UNSUPPORTED, CONTRADICTORY, AMBIGUOUS).",
+      "disclosedDesignChoice": "CONTRADICTORY and AMBIGUOUS both map to NONE. This mirrors the frozen matcher's own representationStatus field (both already resolve to UNREPRESENTED/AMBIGUOUS there, never REPRESENTED/PARTIALLY_REPRESENTED) and avoids inventing a completeness judgment the matcher itself never computed for a wrong-or-contested answer. 'How much of the wrong answer's structure was covered' is a real but different question this phase does not attempt to answer - see 22-remaining-evaluator-risks.json."
+    },
+    "verificationStatus": {
+      "values": ["NOT_EVALUATED", "NOT_VERIFIED", "VERIFICATION_INCOMPLETE", "VERIFIED", "CONTRADICTED"],
+      "derivation": "CONTRADICTED when matchStatus=CONTRADICTORY (the ground-truth comparison itself found a material conflict - treated as verification-adjacent evidence, not a re-derivation of matching). For matchStatus in {EXACT_SINGLE, EXACT_COMPOSITE, PARTIAL} ('applicable' cases - Section 15): inspect the matched candidate(s)' own selfReportedState.verifierFindings; empty -> NOT_EVALUATED; non-empty and containing a contradiction-indicating string -> CONTRADICTED; containing an incomplete/inconclusive-indicating string -> VERIFICATION_INCOMPLETE; containing a confirmation-indicating string -> VERIFIED; otherwise (non-empty but unclassifiable) -> VERIFICATION_INCOMPLETE. All other matchStatus values (UNREPRESENTED, HONESTLY_*, AMBIGUOUS) -> NOT_EVALUATED (nothing exists yet to verify).",
+      "disclosedStructuralFinding": "Per Phase 3F.1.5.3's own confirmed finding (R4): verification-type candidates are always accountingRole=SAFETY_FLAG and never enter matchedCandidateIds (only SUBSTANTIVE_REPRESENTATION-role candidates do). This means a matched candidate's own verifierFindings will be empty in the overwhelming majority of real cases - not because verification never occurred anywhere in the pipeline, but because the pipeline does not currently route verification evidence onto the specific representation it credits. VERIFIED is therefore expected to be rare-to-unreachable with today's pipeline architecture, exactly as Section 18 anticipates ('If VERIFIED remains effectively unreachable... say so. Do not treat that as evaluator failure.')."
+    },
+    "evidenceQuality": {
+      "values": ["SUFFICIENT", "AMBIGUOUS", "INSUFFICIENT"],
+      "derivation": "Derived directly from the frozen groundTruthQuality field (already computed by the existing, tested ground-truth-quality audit, adjudication.ts/overlayVerdictFor): GT_CONFIRMED -> SUFFICIENT; GT_AMBIGUOUS or GT_CONFLICT_WITH_SOURCE -> AMBIGUOUS; GT_INCOMPLETE or GT_REQUIRES_DOMAIN_REVIEW -> INSUFFICIENT.",
+      "rationale": "Reuses an existing, already-tested signal rather than inventing a new one - consistent with the phase's zero-new-matching-logic discipline."
+    }
+  },
+  "dangerousSilentOmission": {
+    "formula": "materiality in {CRITICAL, MATERIAL} AND creditEligibility = NO_CREDIT AND surfacingStatus = NOT_SPECIFICALLY_SURFACED",
+    "materialityGate": "Reuses the same CRITICAL/MATERIAL tiering the frozen dangerousUnaccountedV2 computation (aggregate.ts) already uses - not a new threshold."
+  },
+  "derivedDiagnosticLabel": {
+    "purpose": "Section 6/7: a best-effort, explicitly non-authoritative mapping back to the historical 12-state vocabulary, for continuity and interpretability only.",
+    "note": "Full mapping table and disclosed conflations in 03-historical-taxonomy-mapping.json."
+  },
+  "confirmedRealDataValidation": {
+    "method": "Ran the derivation live against the frozen, deterministic-only FWRG dataset (zero cost, zero network) as a design sanity check before committing to the schema.",
+    "result": "18 ground-truth units resolved into exactly the expected atomic combinations. Critically, 6 UNREPRESENTED units (including fwrg-6.06-b-ii, the exact confirmed sibling-defect case Workstream A fixed) show derivedDiagnosticLabel=DISCOVERED_REVIEW_REQUIRED (because a SAFETY_FLAG-role candidate exists SOMEWHERE among all evaluated pairs, including non-corresponding/sibling-anchored ones) while the SAFETY-CRITICAL surfacingStatus correctly resolves to NOT_SPECIFICALLY_SURFACED and dangerousSilentOmission=true (because that flag is not claim-specific per the frozen I_CLAIM_IDENTITY dimension). This is real-data confirmation that the new architecture correctly separates 'looks reviewed under a loose historical label' from 'actually safely surfaced for THIS claim' - precisely the failure mode Invariants 4/5 exist to prevent, and precisely why the old 12-state label was an unsafe instrument to certify on."
+  }
+}

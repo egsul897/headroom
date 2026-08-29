@@ -40,6 +40,7 @@ export * from "./matching";
 export * from "./aggregate";
 export * from "./evidence";
 export * from "./adjudication";
+export * from "./atomic-contract";
 
 export interface EvaluationOptions {
   datasetKey: string;

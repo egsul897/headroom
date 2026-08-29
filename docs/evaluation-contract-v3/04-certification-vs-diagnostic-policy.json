@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "CERTIFICATION_VS_DIAGNOSTIC_POLICY",
+  "generatedAt": "2026-08-29T22:18:00Z",
+  "purpose": "Section 8: freeze the safety-critical vs diagnostic distinction BEFORE validation. This is not re-derived or adjusted after seeing results.",
+  "safetyCriticalCertificationDimensions": [
+    { "dimension": "creditEligibility", "reason": "The primary certification dimension - did Headroom earn substantive semantic credit for this specific claim." },
+    { "dimension": "surfacingStatus", "scope": "evaluated on NO_CREDIT claims only", "reason": "The second safety-critical dimension - distinguishes a safe, specifically-surfaced failure from a dangerous silent omission." }
+  ],
+  "diagnosticSecondaryDimensions": [
+    { "dimension": "representationCompleteness", "reason": "Important product signal but not required for evaluator closure; may be promoted to certification-grade if Section 17's validation shows >=85% independent reproducibility." },
+    { "dimension": "verificationStatus", "reason": "Diagnostic until the pipeline produces enough genuinely applicable, reproducible verification evidence (>=15 applicable cases, per Section 15) to justify a certification threshold - not expected to be reachable this phase per 02's disclosed structural finding." },
+    { "dimension": "evidenceQuality", "reason": "Metadata explaining confidence/limits of the determination - never independently grants or denies credit or counts as surfacing, per Section 4E." }
+  ],
+  "closureRule": "Section 30: evaluator development closure depends ONLY on the safety-critical dimensions (creditEligibility, surfacingStatus) passing both their inter-reviewer reproducibility gate AND their evaluator-vs-consensus agreement gate, plus the permanent invariants, false-credit controls, and no-prohibited-tuning checks. A diagnostic dimension failing its own (lower, non-blocking) reproducibility bar does NOT block closure - it is marked DIAGNOSTIC_ONLY and carried forward as a known limitation, not a phase failure.",
+  "frozenBeforeValidation": true
+}

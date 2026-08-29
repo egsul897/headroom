@@ -29,6 +29,17 @@ export const EVALUATION_V2_SCHEMA_VERSION = "evaluation-v2-schema.v1";
  */
 export const EVALUATION_V2_ALGORITHM_VERSION = "evaluation-v2-algorithm.v3";
 
+/**
+ * Evaluation Contract V3 (docs/evaluation-contract-v3/): the atomic-trust-
+ * dimension DERIVATION schema (atomic-contract.ts). Independent of, and
+ * unrelated to, EVALUATION_V2_ALGORITHM_VERSION — this schema derives from
+ * the matcher's frozen output and never changes what the matcher decides.
+ * Bump this when the derivation rules (creditEligibility/surfacingStatus/
+ * representationCompleteness/verificationStatus/evidenceQuality/
+ * derivedDiagnosticLabel) change.
+ */
+export const EVALUATION_CONTRACT_V3_SCHEMA_VERSION = "evaluation-contract-v3.v1";
+
 /** The Layer-2 semantic-correspondence prompt (adjudication.ts). Bumped independently of the algorithm. */
 export const EVALUATION_V2_PROMPT_VERSION = "evaluation-v2-correspondence-prompt.v1";
 
