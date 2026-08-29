@@ -1,0 +1,527 @@
+{
+  "adjudicatorId": "B",
+  "generatedAt": "2026-08-29T18:24:52Z",
+  "caseCount": 65,
+  "results": [
+    {
+      "caseId": "a-7.1",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "All candidates at 7.1/7.1(a)-(d) are INVENTORY_ONLY discovery text, never compiled into a rule; but explicit pipeline safety-flag markers (STRUCTURAL_COVERAGE_GAP at 7.1(b), MISSING_CONDITION and PARTIAL_DISCOVERY at 7.1(d)) sit at the claim location without asserting any substantive answer, which excludes DISCOVERED_ONLY and satisfies DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "The chapeau and all 19 baskets are represented only as INVENTORY_ONLY discovery candidates (no compiled representation anywhere). Multiple VERIFICATION_FINDING safety-flag markers (STRUCTURAL_COVERAGE_GAP/PARTIAL_DISCOVERY) sit at basket locations within 7.2 without asserting a substantive answer, so DISCOVERED_REVIEW_REQUIRED applies rather than DISCOVERED_ONLY.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2-d",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "Candidate at 7.2(d) is INVENTORY_ONLY (never compiled). Two VERIFICATION_FINDING safety-flag markers (STRUCTURAL_COVERAGE_GAP, PARTIAL_DISCOVERY) sit exactly at 7.2(d), satisfying DISCOVERED_REVIEW_REQUIRED necessary conditions and excluding DISCOVERED_ONLY.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2-k",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "7.2(k)/(k)(i)/(k)(ii) candidates are INVENTORY_ONLY only. A VERIFICATION_FINDING safety flag (PARTIAL_DISCOVERY) sits at 7.2(k)(ii)(B), within the claim family, with no substantive answer asserted, so DISCOVERED_REVIEW_REQUIRED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.3",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "Chapeau and 16 Lien baskets are all INVENTORY_ONLY discovery text; several VERIFICATION_FINDING safety-flag markers (MISSING_PROVISO, MISSING_CONDITION, STRUCTURAL_COVERAGE_GAP, PARTIAL_DISCOVERY) sit within the 7.3 family without asserting a substantive answer, so DISCOVERED_REVIEW_REQUIRED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.3-h",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "Only one candidate overlaps 7.3(h) and it is INVENTORY_ONLY (never compiled into a representation); no safety-flag marker of any kind exists at this exact location, so DISCOVERED_REVIEW_REQUIRED is excluded and DISCOVERED_ONLY is the correct disposition.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.6",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "Chapeau and 7 Restricted Payment baskets are all INVENTORY_ONLY. VERIFICATION_FINDING safety flags (MISSING_CONDITION at 7.6(e)/(e)(ii), MISSING_SHARED_CAP at 7.6(c), PARTIAL_DISCOVERY at 7.6(b)(ii)(ii)) sit within the family without asserting a substantive answer, so DISCOVERED_REVIEW_REQUIRED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.6-e",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "Both candidates overlapping 7.6(e)(i)/(ii) are INVENTORY_ONLY with no safety-flag marker anywhere at this exact location in this case packet, so DISCOVERED_ONLY applies rather than DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.8",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "Chapeau and 13 Investment baskets are all INVENTORY_ONLY (one bare-7.8 candidate itself even carries reviewStatus=NEEDS_REVIEW). VERIFICATION_FINDING safety flags (STRUCTURAL_COVERAGE_GAP at 7.8(j)/(l)/(m)(i), MISSING_SHARED_CAP at 7.8(l)) sit within the family, so DISCOVERED_REVIEW_REQUIRED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.8-j",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "Only one candidate overlaps 7.8(j) in this packet and it is INVENTORY_ONLY; no safety-flag marker appears at this exact location, so DISCOVERED_ONLY applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "b-2.1",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "No compiled representation of the Guarantee-and-savings-clause exists anywhere; instead VERIFICATION_FINDING safety-flag markers (MATERIAL_DISCOVERY_MISS) sit at 2.1(b),2.1(c),2.1(d),2.1(e) within the claim location without asserting a substantive answer, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "c-2a-i",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "NOT_DISCOVERED",
+      "confidence": "HIGH",
+      "rationale": "This claim concerns the Second Amendments own Section 2(a)(i) text amending a defined-term dollar figure. None of the 39 candidates in the packet reference the amendment document at all - every candidate is an unrelated base-agreement Article 7 provision - so the claims location is a total blind spot for the pipeline, not merely unrepresented within an area otherwise covered, meeting NOT_DISCOVERED rather than HONESTLY_UNSUPPORTED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "c-2b",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "NOT_DISCOVERED",
+      "confidence": "HIGH",
+      "rationale": "The claim is the amendments own restated stepped covenant schedule; the only nearby candidates (7.1, 7.1(b)) quote the original flat pre-amendment covenant text from the base agreement, confirming the amendment documents own Section 2(b) content never entered the candidate pool at all - a total pipeline blind spot for this location, i.e. NOT_DISCOVERED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "d-2",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "NOT_DISCOVERED",
+      "confidence": "HIGH",
+      "rationale": "The claim concerns the Omnibus Amendments own Increased Facility Activation Notice (Section 2.28, $450M, Fee Letter); none of the 60 candidates (all unrelated base-agreement Article 6-8 provisions/flags) touch this content or document at all, so the location is a total blind spot for the pipeline (NOT_DISCOVERED), not merely an unrepresented pocket within covered territory.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "d-4",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "NOT_DISCOVERED",
+      "confidence": "HIGH",
+      "rationale": "The claim concerns the Omnibus Amendments reaffirmation of guarantees/pledges/liens; none of the 55 candidates (all unrelated base-agreement provisions/flags) reference reaffirmation or this amendment document at all, so this is a total pipeline blind spot (NOT_DISCOVERED).",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::I::1.04-accounting-terms-gaap",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "MEDIUM",
+      "rationale": "The ASC 825-10-25 and ASC 470-20 accounting conventions are compiled as SUBSTANTIVE_REPRESENTATION rules matching the claim, but the GAAP-freeze mechanism (the provision letting either party lock pre-change GAAP) is compiled only as HONEST_UNRESOLVED because the compiler itself states it has no way to express which accounting basis governs - a material component of this composite claim is genuinely missing rather than merely unverified, and an independent verifier finding also flags a missing Subsidiary entity-scope on the 825-10-25 rule. This is a genuine but incomplete representation of the same composite claim, meeting PARTIAL rather than CONTRADICTORY (no affirmative wrong assertion) or full UNVERIFIED representation.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::I::1.11-amendment-and-restatement",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "MEDIUM",
+      "rationale": "Compiled SUBSTANTIVE_REPRESENTATION rules capture the no-novation/re-evidencing restatement (1.11(a)) and the reallocation-without-assignment-fee mechanic plus accrued interest/fees payable (1.11(b)(iv), confident on those points despite a narrow truncated trailing clause). However no compiled representation covers two other material components of this composite claim - Existing Commitments continuing as Revolving Commitments, and each Loan Partys reaffirmation of guarantees and Lien grants - so the claim is genuinely, materially incomplete rather than fully represented.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::I::applicable-ebitda",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE",
+      "confidence": "MEDIUM",
+      "rationale": "The compiled COMPLETE definition of Applicable EBITDA correctly matches the ground truths core/action/object (EBITDA of Company and Restricted Subsidiaries for the trailing four fiscal quarters for which financials were delivered). Two independent VERIFICATION_FINDING records specifically discuss this defined term and raise a hedged, inconclusive concern (COMPLETE may be overconfident given the separate EBITDA definitions own unresolved add-backs) without affirmatively contradicting Applicable EBITDAs own stated text, so this is verification-attempted-but-inconclusive rather than clean-unverified or contradictory.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::I::change-in-control",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "HIGH",
+      "rationale": "A full-text search of all 60 candidates for Change in Control or Permitted Owner finds nothing genuine - the one SUBSTANTIVE_REPRESENTATION candidate tagged sectionRef=1.01 is actually the unrelated Acquisition definition, and the three verification findings at 1.01 also concern Acquisition entity-scope, not this claim. No safety-flag marker exists at this claims location either, but Article 1.01 is otherwise heavily processed for dozens of sibling definitions, so this is a specific gap within covered territory (HONESTLY_UNSUPPORTED) rather than a total blind spot.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VI::6.01-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "No COMPILED_IR_RULE exists anywhere for the general Indebtedness prohibition; the only candidates nested under 6.01 are automated SEMANTIC_COVERAGE_UNIT audit records, several explicitly DANGEROUS-flagged with coverageState=UNREPRESENTED and text stating no adequate compiled/verified IR representation was found for this CRITICAL unit. These are structural pipeline safety flags asserting no substantive answer, satisfying DISCOVERED_REVIEW_REQUIRED rather than DISCOVERED_ONLY.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::VI::6.04-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "No compiled IR rule represents the general Investments/Loans/Guarantees prohibition; only SEMANTIC_COVERAGE_UNIT audit records at 6.04 exist, two explicitly DANGEROUS-flagged stating no adequate compiled/verified IR representation was found, with no substantive answer asserted, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "No compiled IR rule exists for the Section 5.15/6.04 Unrestricted-Subsidiary flush valuation mechanic. Numerous SEMANTIC_COVERAGE_UNIT and DISCOVERY_CANDIDATE entries at 5.15/5.15(a)(i)/5.15(a)(ii)/6.04(2) are explicitly SAFETY_FLAG/DANGEROUS or NEEDS_REVIEW/UNCERTAIN with no compiled or asserted substantive answer, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VI::6.05-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "No compiled IR rule represents the general Disposition/Equity-issuance prohibition; only SEMANTIC_COVERAGE_UNIT audit records and NEEDS_REVIEW discovery candidates exist at 6.05, several explicitly DANGEROUS-flagged, with no substantive answer asserted, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VI::6.05-ip-flush-prohibition",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "No compiled IR rule represents the IP-flush prohibition; only SEMANTIC_COVERAGE_UNIT audit records and NEEDS_REVIEW discovery candidates exist within 6.05, several DANGEROUS-flagged with coverageState=UNREPRESENTED, so DISCOVERED_REVIEW_REQUIRED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VI::6.08b-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "6.08 candidates are INVENTORY_ONLY discovery text plus multiple DANGEROUS-flagged SEMANTIC_COVERAGE_UNIT records at 6.08(a)/(a)(i)/(a)(i)(B) and NEEDS_REVIEW discovery candidates; no compiled representation and no substantive answer asserted, so DISCOVERED_REVIEW_REQUIRED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VI::6.10-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "6.10 candidates are INVENTORY_ONLY discovery text plus multiple DANGEROUS-flagged SEMANTIC_COVERAGE_UNIT records at 6.10(a)/(b)/(b)(i); no compiled representation and no substantive answer asserted anywhere, so DISCOVERED_REVIEW_REQUIRED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-b::VI::6-01-lead-in",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "No compiled IR rule represents the Indebtedness covenant lead-in; only DANGEROUS-flagged SEMANTIC_COVERAGE_UNIT records and an UNCERTAIN discovery candidate exist within 6.01(c)(i)/(g)(i), with no substantive answer asserted, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-b::VI::6-04-lead-in",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "No compiled IR rule represents the Investments covenant lead-in; only INVENTORY_ONLY discovery text, NEEDS_REVIEW discovery candidates, and numerous DANGEROUS-flagged SEMANTIC_COVERAGE_UNIT records exist across 6.04 and its sub-clauses, with no substantive answer asserted, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-b::VI::6-05-lead-in",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "No compiled IR rule represents the asset-sale covenant lead-in; dozens of SEMANTIC_COVERAGE_UNIT audit records span 6.05 and its sub-clauses, many explicitly DANGEROUS-flagged, with no substantive answer asserted, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-d::VI::6-01-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "HIGH",
+      "rationale": "A full scan of all 60 candidates in this packet finds zero candidates of any kind (inventory, flagged, or compiled) anywhere near Section 6.01, even though the same packet shows the pipeline did generally process Article VI (neighboring 6.05 and 6.08 sub-clauses appear extensively as SEMANTIC_COVERAGE_UNIT/safety-flag noise). This is a specific gap within otherwise-covered territory, matching HONESTLY_UNSUPPORTED rather than NOT_DISCOVERED or DISCOVERED_REVIEW_REQUIRED (no flag marker exists at 6.01 itself).",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-d::VI::6-04-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "6.04 candidates are INVENTORY_ONLY discovery text plus NEEDS_REVIEW discovery candidates and multiple DANGEROUS-flagged SEMANTIC_COVERAGE_UNIT records at 6.04/(1)/(2)/(b); no compiled representation and no substantive answer asserted, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-d::VI::6-05-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "No compiled IR rule exists for the asset-sale/equity-issuance lead-in; dozens of SEMANTIC_COVERAGE_UNIT audit records span 6.05 and its sub-clauses, many explicitly DANGEROUS-flagged, with no substantive answer asserted, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-d::VI::6-08-b-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "6.08 candidates are INVENTORY_ONLY discovery text plus NEEDS_REVIEW/UNCERTAIN discovery candidates and multiple DANGEROUS-flagged SEMANTIC_COVERAGE_UNIT records at 6.08(a)/(a)(i)/(B)/(b); no compiled representation and no substantive answer asserted, satisfying DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.01-g-i",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled ANALYZER_RULE at Section 6.01(g)(i) matches the ground truth exactly on action, threshold ($2,500,000), and formula (greater-of-flat-or-percent-EBITDA), with sufficiency=EXECUTABLE and no verification record of any kind in the packet, so this is a complete, correct, never-verified representation.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.01-j",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled ANALYZER_RULE at Section 6.01(j) matches the ground truth exactly (threshold $30,000,000, 50% EBITDA formula, non-Loan-Party Restricted Subsidiary debt), sufficiency=EXECUTABLE, and no verification record exists in the packet, so this is a complete, correct, never-verified representation.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.01-m",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled ANALYZER_RULE at Section 6.01(m) matches the ground truth exactly (Capital Leases/purchase money debt, $30,000,000 or 50% EBITDA formula), sufficiency=EXECUTABLE, and no verification record exists in the packet, so this is a complete, correct, never-verified representation.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.02-a",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "Only an INVENTORY_ONLY discovery candidate exists at 6.02(a) itself (Permits Liens securing the Secured Obligations). The only compiled ANALYZER_RULE near this location represents the Section 6.02 chapeau/base prohibition generically, not baskets (a) specific uncapped Secured-Obligations permission, so it is a different claim, not a representation of this one. No safety-flag marker exists at 6.02(a), so DISCOVERED_ONLY applies rather than DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.04-a-iii",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at 6.04(a)(iii)(A) correctly represents Restricted Payments funded from the Available Amount builder basket via a formula reference plus the CNI Growth Amount ratio-gate and no-default sub-conditions, matching the ground truths own statement that this permission rule itself is clean and the complexity lives in the separately-adjudicated Available Amount definition. No verification record exists, so SEMANTICALLY_REPRESENTED_UNVERIFIED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.04-a-x",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.04(a)(x) matches the ground truth exactly ($21,000,000 or 35% EBITDA formula, no-default condition), sufficiency=EXECUTABLE, no verification record exists in the packet.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.04-a-xi",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "This is the packets adversarial probe (correctly reporting an uncapped ratio-gated basket rather than a fabricated dollar threshold). The compiled rule correctly uses ruleType=RATIO_TEST with the 3.50x Total Rent Adjusted Net Leverage Ratio pro forma condition and no spurious dollar cap, so the extractor passed the probe; no verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.04-b",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "MEDIUM",
+      "rationale": "The compiled rule at Section 6.04(b)(iv) matches the core threshold/formula and explicitly narrates the cross-basket offset against 6.04(a)(x) in its description. The ground truth flags a risk that this offset must be emitted as a structured SHARES_CAPACITY_WITH relationship rather than left implicit; the visible record only shows prose capturing it, so I credit it as represented but with reduced confidence about the underlying structured edge.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "fwrg-6.06-b-ii",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "MEDIUM",
+      "rationale": "No compiled rule exists for 6.06(b)(ii) itself; the nearest candidate is an INVENTORY_ONLY discovery item labeled 6.06(b)(i) whose full excerpt actually runs on into clause (ii)s operative cap language (Investments by a Loan Party in a Restricted Subsidiary...provided that the aggregate...), so it textually overlaps this claims location despite the sectionRef label, and no safety-flag marker exists at this location, so DISCOVERED_ONLY applies.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "fwrg-6.07-threshold",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.07 matches the ground truth exactly ($6,000,000 or 10% EBITDA threshold for mergers/dissolutions/voluntary dispositions outside the ordinary course, per transaction or series), no verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.10-a",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.10(a) captures the full three-tier step-down schedule (5.50x/5.25x/5.00x) plus the Material Acquisition 0.50x step-up and anti-stacking spacing condition, matching the ground truth in full; no verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.10-b",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.10(b) matches the ground truth exactly (minimum 1.25x Fixed Charge Coverage Ratio on the same Test Period basis); no verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-6.10-c",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.10(c) captures the equity cure mechanic in full: shortfall-capped Cure Amount, 5-exercise lifetime limit, and the 2-of-4-consecutive-quarter rolling restriction, matching the ground truth; no verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-def-available-amount",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "HIGH",
+      "rationale": "No ANALYZER_DEFINED_TERM or any other compiled representation of Available Amount itself exists anywhere in the packet - only a downstream rule (6.04(a)(iii)(A)) that USES the term without defining its builder-basket components. No safety-flag marker targets this defined term specifically, but Article 1 is otherwise well covered (seven sibling definitions are compiled), so this is a specific gap within covered territory (HONESTLY_UNSUPPORTED), not a total blind spot.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-def-cadj-ebitda",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled ANALYZER_DEFINED_TERM captures Consolidated Adjusted EBITDA as Consolidated Net Income plus the addback stack (interest, taxes, D&A, non-cash charges, Transaction Costs, other addbacks), which matches the ground truths own explicitly stated adequacy bar (a definition-node-level representation, not full line-item executability). No verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-def-cadj-ebitdar",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled ANALYZER_DEFINED_TERM for Consolidated Adjusted EBITDAR (EBITDA plus Consolidated Cash Rental Expense) matches the ground truth exactly; no verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-def-restricted-debt",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled ANALYZER_DEFINED_TERM for Restricted Debt (Indebtedness that is subordinated, Junior Lien Debt, or unsecured, exceeding the Threshold Amount) matches the ground truth exactly; no verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "fwrg-def-restricted-subsidiary-loan-party",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "MEDIUM",
+      "rationale": "Only Restricted Subsidiary is compiled (means a subsidiary that is not an Unrestricted Subsidiary), and even that definition is circular since Unrestricted Subsidiary is never itself defined; Loan Party and non-Loan-Party Restricted Subsidiary are absent entirely. This composite entity-classification claim is genuinely but materially incompletely represented.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "lsb-6.01-general-ratio-gated",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.01 correctly represents the uncapped ratio-gated general Indebtedness basket: RATIO_TEST posture with the 2.0x Fixed Charge Coverage Ratio condition and a Payment-Conditions-satisfied condition, with no fabricated dollar cap, matching the ground truth exactly. No verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-6.02-liens",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "The general Lien prohibition/Permitted-Liens-exception text at 6.02 exists only as INVENTORY_ONLY discovery candidates; the single compiled COMPILED_IR_RULE at this location represents only the narrower replacement-liens-for-6.01(d)-refinancing detail, not the core general prohibition, so it does not satisfy PARTIALs core-dimension correspondence. A genuine NEEDS_REVIEW safety-flag candidate sits directly on the general-prohibition text asserting no substantive answer, satisfying DISCOVERED_REVIEW_REQUIRED instead.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "lsb-6.01-i-flat-or-pct-assets",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.01(i) correctly captures the $70,000,000 or 5.5% of total consolidated assets cap and explicitly notes asset-based, not EBITDA-based, correctly avoiding the EBITDA-formula-name trap the ground truth specifically warns about. No verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-6.01-m-secured-notes",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "MEDIUM",
+      "rationale": "The compiled rule at Section 6.01(m) confidently and correctly asserts the substantive carve-out (permits Indebtedness under the Secured Notes and guarantees thereof), matching the ground truth exactly; its self-reported hedge (role=HONEST_UNRESOLVED, a VERIFICATION_FAILED citation note) concerns only whether the section citation matches source text verbatim, not the substance of the legal content, so per the rubrics own instruction the confident substantive assertion governs rather than the citation hedge.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "lsb-6.04-a-abl-collateral-disposal",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.04(a) captures all three gating conditions (Fair Market Value sale, new Borrowing Base Certificate demonstrating compliance, and the $10,000,000/1.0%-of-total-consolidated-assets annual cap), correctly using an asset-based rather than EBITDA-based formula. No verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-6.04-b-notes-collateral-disposal",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNRESOLVED",
+      "confidence": "HIGH",
+      "rationale": "This is the packets designed adversarial probe for an unresolvable cross-document dependency. The candidate correctly declines to fabricate a dollar figure and instead asserts, via evaluationClass JUDGMENT_REQUIRED and an explicit condition naming the Secured Notes Documents/holder-consent gate, that the substantive permission depends on evidence outside this filing - a genuine, on-topic hedge rather than a confident position. Per the taxonomys binary rule this is still NO_CREDIT despite being the safety-correct behavior, since no confident semantic representation of the actual gating condition was achieved.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-6.03-fundamental-changes",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "MEDIUM",
+      "rationale": "The single compiled rule (Section 6.03(a)) captures only the merger/consolidation prohibition and its intercompany/ordinary-course/good-faith carve-outs in detail; the liquidation/dissolution prohibition (b) and the sale-of-substantially-all-assets prohibition (c) - both explicit, separately-numbered components of this composite ground-truth claim - are never compiled into any rule (only scattered uncompiled inventory candidates exist at 6.03(b)/(c)). This is a genuine but materially incomplete representation of the composite claim.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "lsb-6.08-subordinated-debt-payments",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.08(a) captures only the generic shell prohibition (payments other than the Secured Notes) with a bare see-permitted-payments-(i)-(vi) reference; it never decomposes the scheduled-payment carve-out, the Payment-Conditions-gated basket, or the $500,000 fixed annual basket the ground truth specifically identifies as material, sub-clauses. This is exactly the dangerous flattening the ground truth itself warns a naive extractor would produce.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-6.11-restricted-payments",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.11 captures only the generic shell prohibition with a bare see-exceptions-(a)-(d) reference; it never decomposes the $500,000 fixed annual basket or the uncapped Payment-Conditions-gated clause (c) the ground truth identifies as the materially significant sub-baskets. This is the same dangerous flattening pattern as 6.08.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-6.13-investments",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.13 captures only the generic shell prohibition with a bare see-exceptions-(a)-(l) reference; none of the three independently-capped baskets the ground truth calls out ($35,000,000 joint-venture cap, uncapped Payment-Conditions-gated basket, $5,000,000 general basket) are decomposed or captured.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-6.14-affiliate-transactions",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.14 captures only the generic shell prohibition with a bare see-exceptions-(a)-(d) reference; the $5,000,000 aggregate threshold the ground truth identifies as the key material figure is never captured.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-6.15-springing-financial-covenant",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "The compiled rule at Section 6.15 correctly captures the 1.00x Fixed Charge Coverage Ratio threshold, the Availability-Block-Removal-Period springing trigger condition, and the monthly trailing-twelve-month testing basis, matching the ground truth in full. No verification record exists.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-def-abl-notes-priority-collateral",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "HIGH",
+      "rationale": "This packet contains zero candidates of any kind - no inventory item, no safety flag, no compiled representation - for either ABL Priority Collateral or Notes Priority Collateral. This matches the pre-registered stratum-6 worked example of the systems single unsupported/silent case: a dangerous UNREPRESENTED unit with zero flag and zero inventory candidate anywhere, i.e. HONESTLY_UNSUPPORTED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "lsb-def-payment-conditions",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "MEDIUM",
+      "rationale": "No candidate anywhere defines Payment Conditions own compound structure (no-Default, the 20%-of-Revolving-Commitment-or-$13,000,000 Specified Availability test measured over 30 days, and the officers certificate); the only compiled candidate at this location is actually the unrelated Section 6.11 shell-prohibition rule which merely name-checks the term without defining it, and citing rules only reference it informally rather than via a shared definition node.",
+      "ambiguityFlag": true
+    }
+  ]
+}

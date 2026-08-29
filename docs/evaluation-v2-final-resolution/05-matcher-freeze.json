@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "MATCHER_FREEZE",
+  "generatedAt": "2026-08-29T17:20:00Z",
+  "purpose": "Section 10: Workstream A is complete. Freeze the matcher implementation NOW, before Workstream B's taxonomy reproducibility study begins, so taxonomy findings can never become another opportunity to tune the matcher.",
+  "commitment": "No file under lib/contract-model/evaluation-v2/ (matching logic, fingerprint policy, deterministic correspondence policy, semantic-judge routing policy, prompt version, algorithm version) will be modified for the remainder of this phase, regardless of what Workstream B's inter-reviewer study or V2-vs-consensus comparison finds.",
+  "hashesAtFreeze": {
+    "libEvaluationV2TopLevelImplementation_15Files": "606a3014daab8746885c75ad7d6c026e6ab6c5c172849d8ea05d767e6df0e8aa",
+    "note15Files": "14 files at Phase 3F.1.5.2's close + claim-identity.ts (new this phase) = 15.",
+    "testsEvaluationV2AllFiles": "1470048e24d248b2d174a7111e77d1140479a346a21c66fd129d2435a80ed3ff",
+    "siblingClaimCasesFile": "64213742a6e3b065bd5def248aefb96863ab18486ac160213bcabe23e1da0800",
+    "siblingClaimTestFile": "b8b1dc257186f7465d1a7881f0c41c9774b1a667bfe10afa6ff2a78c6e88cf5c"
+  },
+  "algorithmVersion": "evaluation-v2-algorithm.v3",
+  "matchPolicyVersion": "evaluation-v2-match-policy.v1 (unchanged - matching.ts's accounting-gate logic was not modified this phase)",
+  "promptVersion": "evaluation-v2-correspondence-prompt.v1 (unchanged - the live-judge prompt was not modified this phase)",
+  "testSuiteStateAtFreeze": {
+    "totalTests": 117,
+    "allPassing": true,
+    "breakdown": {
+      "import-boundary.test.ts": 5,
+      "false-credit-prohibitions.test.ts": 10,
+      "determinism-and-signals.test.ts": 14,
+      "adversarial-suite.test.ts": 34,
+      "safe-surfacing-calibration.test.ts": 28,
+      "sibling-claim.test.ts": 22,
+      "dsgr-false-credit-gate.test.ts": 4
+    }
+  },
+  "typeCheckAtFreeze": "npx tsc --noEmit -p . - zero new errors (pre-existing, unrelated tests/foundation-audit/* errors confirmed present since before Phase 3F.1.5.2 began).",
+  "crossDatasetRegressionAtFreeze": "docs/evaluation-v2-final-resolution/21-cross-dataset-regression.json (written before this freeze artifact, as part of the same Workstream A closure step)."
+}

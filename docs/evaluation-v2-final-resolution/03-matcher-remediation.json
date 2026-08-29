@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "MATCHER_REMEDIATION",
+  "generatedAt": "2026-08-29T17:15:00Z",
+  "purpose": "Record precisely what code changed to implement SAME_COVENANT_FAMILY_IS_NOT_SAME_SEMANTIC_CLAIM, mirroring the audit discipline of prior phases' generalized-remediation-record artifacts.",
+  "filesChanged": [
+    {
+      "file": "lib/contract-model/evaluation-v2/claim-identity.ts",
+      "change": "NEW FILE. Exports compareClaimIdentity(gt, candidate): compares GT and candidate section references using the already-existing splitSectionRef() parser. Returns SAME_SUBPROVISION, DIFFERENT_SUBPROVISION_SAME_PARENT, or NOT_COMPARABLE. NOT_COMPARABLE whenever: candidate has no sectionRef; documents differ; base/parent sections differ; or either side lacks an enumerated sub-item (ancestor/descendant relationships are H_PROVISION_ROLE_BREADTH's job, deliberately not duplicated here).",
+      "reason": "Confirmed root cause (01-sibling-claim-root-cause.json): no dimension previously checked sub-provision identity among structural siblings."
+    },
+    {
+      "file": "lib/contract-model/evaluation-v2/types.ts",
+      "change": "Added 'I_CLAIM_IDENTITY' to CorrespondenceDimension, ALL_DIMENSIONS, and BLOCKING_DIMENSIONS. Added 'SIBLING_CLAIM_MISMATCH' to ConflictCode. CORE_CREDIT_DIMENSIONS unchanged.",
+      "reason": "Wires the new dimension into the existing, already-tested type system without touching the core-credit gate's composition."
+    },
+    {
+      "file": "lib/contract-model/evaluation-v2/conflicts.ts",
+      "change": "New conflict-detection block: when compareClaimIdentity() returns DIFFERENT_SUBPROVISION_SAME_PARENT, pushes a SIBLING_CLAIM_MISMATCH finding with severity NON_MATERIAL_VARIANCE (dimension I_CLAIM_IDENTITY).",
+      "reason": "Records the evidence as a first-class, auditable finding, consistent with every other dimension's conflict-recording discipline."
+    },
+    {
+      "file": "lib/contract-model/evaluation-v2/semantic-correspondence.ts",
+      "change": "assessDimensions() now computes and pushes the I_CLAIM_IDENTITY dimension (NOT_APPLICABLE when not comparable; CORRESPONDS when same sub-provision; INDETERMINATE when siblings under the same parent). evaluatePair()'s decision tree now checks byDim.get('I_CLAIM_IDENTITY')?.outcome === 'INDETERMINATE' IMMEDIATELY AFTER the material-conflict check and BEFORE the core-dimension full/partial gate - forcing the pair's overall correspondence to INDETERMINATE (the only outcome the live semantic judge is ever consulted for) rather than letting shared family/lexical vocabulary resolve it deterministically to CORRESPONDS_FULLY or CORRESPONDS_PARTIALLY.",
+      "reason": "Implements Section 8's exact routing requirement: 'do not use deterministic partial as an escape hatch from semantic judgment.'"
+    }
+  ],
+  "verifiedEffectOnRealData": {
+    "method": "Direct debug inspection against the frozen DSGR dataset (zero-cost, deterministic-only, no live-judge calls).",
+    "confirmedCorrection1": "doc-a::VI::6.02h (GT sectionRef 6.02(h)) vs coverage-unit:0b33f42d... (sectionRef 6.02(j)(i), the confirmed repeat-offender candidate from Phase 3F.1.5.2's forensics): pair correspondence changed from CORRESPONDS_PARTIALLY to INDETERMINATE.",
+    "confirmedCorrection2_atScale": "fwrg-6.06-b-ii (GT sectionRef 6.06(b)(ii)): dozens of sibling candidates anchored at other 6.06(x) sub-items (6.06(u), 6.06(hh), 6.06(j), 6.06(bb), 6.06(q)(i), etc., several carrying SAFETY_FLAG/review-required roles) were ALL previously eligible to satisfy the 'corresponding' pool and grant this claim explicitlySurfacedAsUnsafe=true (safe, not dangerous). After the fix, every one of these siblings is correctly excluded (INDETERMINATE or CONTRADICTS), and the claim correctly falls to dangerousUnaccountedV2=true. This is disclosed as the INTENDED, CORRECT consequence of the fix, not a regression - a review-required flag on an unrelated sibling basket must not count as safely surfacing a different, specific claim (Section 28's required property: 'unresolved unrelated sibling cannot count as safe surfacing')."
+  },
+  "positiveControlsVerified": "SC17-SC19 (04-matcher-adversarial-results.json) confirm the new dimension does not break genuine partial representation, paraphrase, or composite representation of the SAME sub-provision.",
+  "notPackageOrTermSpecific": "Zero references to any package, document ID, section number, defined term, or covenant family name anywhere in the new code - grep-verified in 23-diff-classification.json."
+}

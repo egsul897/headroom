@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "TAXONOMY_STUDY_SAMPLE",
+  "generatedAt": "2026-08-29T18:10:00Z",
+  "purpose": "Section 15: pre-register a stratified sample of ground-truth units for the independent taxonomy-reproducibility study, drawn from all 4 frozen datasets (not limited to the historical 51-case DSGR sample, to avoid over-weighting historical disagreements), covering the required ~19 strata, before any adjudicator sees anything.",
+  "frozenBeforeAdjudication": true,
+  "sampleSize": 65,
+  "methodology": {
+    "step1_dataExtraction": "A read-only, zero-cost, deterministic-only (no live judge, no network) sweep of all 4 frozen datasets was run via the existing runEvaluationV2() engine (fwrg/lsb/conmed via the legacy-package adapter, DSGR via the dsgr adapter), producing a manifest of all 1,115 ground-truth units with mechanical stratum-membership tags derived from each unit's own deterministic evaluation signals (matchStatus, compiled-vs-inventory-only candidate presence, safety-flag presence, sibling/chapeau shape via the same splitSectionRef() the production I_CLAIM_IDENTITY dimension uses, figure/condition/exception/cross-reference counts). Per-dataset totals: fwrg=18, lsb=14, conmed=67, dsgr=1016.",
+    "step2_forcedInclusions": [
+      "All 14 historical confirmed false-credit negative controls (Section 25) are force-included, so the adjudication study directly re-tests whether independent blinded reviewers also reject them - a cross-check pre-registered in 08-taxonomy-study-preregistration.json's falseCreditAndSafetyCrossChecks.",
+      "All 18 FWRG and all 14 LSB ground-truth units are force-included in full (32 units) - both datasets are small enough that full coverage is more informative than a partial draw, and their drafting styles (sponsor greater-of-basket vs. ABL Payment-Conditions-gated) are architecturally distinct."
+    ],
+    "step3_conmedSupplement": "CONMED (67 units, entirely UNREPRESENTED/discovery-only under the current deterministic engine, zero compiled representation layer) was under-selected by the generic per-stratum fill because its strata mostly duplicate what FWRG/LSB already cover densely. 14 CONMED units were explicitly force-added to preserve its architecturally distinct evidence: its 19-basket/16-basket enumerated chapeau structures (7.2, 7.3, 7.6, 7.8 and 4 of their sibling sub-baskets), its amendment-heavy documents c/d (4 units), and one guaranty-creation unit from document b.",
+    "step4_genericStratumFill": "For each of the remaining 17 non-empty strata (1-6, 8, 10-19), up to 4 additional NOT-yet-selected units were added from the combined CONMED+DSGR pool, preferring CONMED first (to keep boosting its thin representation), then higher materiality (CRITICAL > MATERIAL > REVIEW_UNCERTAIN > INFORMATIONAL), in a fixed deterministic tie-break order (dataset key, then gtUnitId) so the selection is exactly reproducible from the frozen manifest.",
+    "step5_contradictoryCoverage": "matchStatus=CONTRADICTORY is a real, important disposition category (a confident wrong assertion, arguably more dangerous than silence) that does not correspond to any of the 19 requested strata. Up to 2 additional CONTRADICTORY-disposition units per dataset were added where not already selected, so adjudicators are also tested on distinguishing CONTRADICTORY_REPRESENTATION from the silent/discovery states.",
+    "reproducibilityOfSelection": "The selection script (deterministic, seeded only by fixed sort keys, no randomness) is preserved at docs/evaluation-v2-final-resolution/_taxonomy-sample-build-script.py for audit; re-running it against the frozen manifest hash below reproduces the identical 65-case list."
+  },
+  "structuralFindingsDuringSampling": [
+    {
+      "stratum": 7,
+      "name": "ambiguous",
+      "availableCasesAcrossAllFourDatasets": 0,
+      "finding": "V2's deterministic AMBIGUOUS matchStatus requires >=2 mutually-irreconcilable SUBSTANTIVE (compiled) full matches (matching.ts). This literally never occurs across all 1,115 ground-truth units in the 4 frozen datasets, even though DSGR's raw production coverage data separately records 139 AMBIGUOUS_MATCH candidate-level coverage states - those candidates get accountingRole=HONEST_UNRESOLVED at the unit level (folded into strata 5/8), not a unit-level AMBIGUOUS disposition. This is disclosed as evidence for the ontology-reproducibility analysis (13/14), not treated as a sampling gap: no case exists to sample.",
+      "sampleAction": "Zero cases selected for this stratum; adjudicators may still independently assign AMBIGUOUS to any sampled case if the evidence in front of them genuinely supports it under the rubric's own evidence-triggered override - this only means the mechanical PRE-selection could not target this label using V2's own deterministic signal."
+    },
+    {
+      "stratum": 9,
+      "name": "exact_verified",
+      "availableCasesAcrossAllFourDatasets": 0,
+      "finding": "matchedCandidateIds (the set V2 treats as 'the' representation) can only ever contain accountingRole=SUBSTANTIVE_REPRESENTATION candidates; verification-type candidates are always accountingRole=SAFETY_FLAG and never enter matchedCandidateIds, and DSGR's own frozen coverage run recorded zero FULLY_REPRESENTED_VERIFIED entries system-wide. No ground-truth unit in any of the 4 frozen deterministic runs can currently satisfy 'fully represented AND independently verified' as V2's own engine defines it. This is a significant, evidence-backed finding carried forward into 14-product-actionability-analysis.json: it suggests the VERIFIED_SEMANTIC_REPRESENTATION / SEMANTICALLY_REPRESENTED_UNVERIFIED distinction may be currently unreachable by the pipeline's own architecture, independent of any taxonomy-reproducibility question.",
+      "sampleAction": "Zero cases selected for this stratum for the same reason as stratum 7."
+    }
+  ],
+  "sampleComposition": {
+    "totalUniqueCases": 65,
+    "byDataset": {
+      "fwrg-2021-credit-agreement": 18,
+      "lsb-2023-abl-credit-agreement": 14,
+      "conmed-2025-credit-facility": 15,
+      "dsgr-2022-2025-credit-facility": 18
+    },
+    "byStratum_membershipCounts_overlapAllowed": {
+      "1_clear_credit": 7,
+      "2_clear_no_credit": 33,
+      "3_discovery_only": 18,
+      "4_partial": 4,
+      "5_unresolved": 9,
+      "6_unsupported_silent": 1,
+      "7_ambiguous": 0,
+      "8_verification_incomplete": 5,
+      "9_exact_verified": 0,
+      "10_qualitative": 32,
+      "11_quantitative": 32,
+      "12_definitions": 6,
+      "13_conditions": 18,
+      "14_exceptions": 35,
+      "15_sibling_subprovisions": 30,
+      "16_chapeaus": 19,
+      "17_cross_reference_heavy": 8,
+      "18_amendment_sensitive": 11,
+      "19_composite": 5
+    },
+    "stratum6Disclosure": "Stratum 6 (unsupported/silent - a dangerous UNREPRESENTED unit with zero flag AND zero inventory-level candidate anywhere) has exactly 1 available case system-wide (lsb-def-abl-notes-priority-collateral) - the same case used as the worked example in this stratum's own extraction rule. This reflects genuine sparsity of the most-dangerous state in these 4 frozen datasets (most UNREPRESENTED units still carry SOME inventory-only or safety-flag candidate nearby), not a sampling defect.",
+    "matchStatusDistributionInSample": {
+      "UNREPRESENTED": 34,
+      "HONESTLY_UNRESOLVED": 9,
+      "CONTRADICTORY": 8,
+      "EXACT_COMPOSITE": 5,
+      "EXACT_SINGLE": 5,
+      "PARTIAL": 4
+    },
+    "falseCreditNegativeControlsIncluded": 14
+  },
+  "frozenCaseIds": [
+    "a-7.1", "a-7.2", "a-7.2-d", "a-7.2-k", "a-7.3", "a-7.3-h", "a-7.6", "a-7.6-e", "a-7.8", "a-7.8-j",
+    "b-2.1", "c-2a-i", "c-2b", "d-2", "d-4",
+    "doc-a::I::1.04-accounting-terms-gaap", "doc-a::I::1.11-amendment-and-restatement", "doc-a::I::applicable-ebitda", "doc-a::I::change-in-control",
+    "doc-a::VI::6.01-chapeau", "doc-a::VI::6.04-chapeau", "doc-a::VI::6.04-unrestricted-sub-valuation", "doc-a::VI::6.05-chapeau", "doc-a::VI::6.05-ip-flush-prohibition", "doc-a::VI::6.08b-chapeau", "doc-a::VI::6.10-chapeau",
+    "doc-b::VI::6-01-lead-in", "doc-b::VI::6-04-lead-in", "doc-b::VI::6-05-lead-in",
+    "doc-d::VI::6-01-chapeau", "doc-d::VI::6-04-chapeau", "doc-d::VI::6-05-chapeau", "doc-d::VI::6-08-b-chapeau",
+    "fwrg-6.01-g-i", "fwrg-6.01-j", "fwrg-6.01-m", "fwrg-6.02-a", "fwrg-6.04-a-iii", "fwrg-6.04-a-x", "fwrg-6.04-a-xi", "fwrg-6.04-b", "fwrg-6.06-b-ii", "fwrg-6.07-threshold", "fwrg-6.10-a", "fwrg-6.10-b", "fwrg-6.10-c", "fwrg-def-available-amount", "fwrg-def-cadj-ebitda", "fwrg-def-cadj-ebitdar", "fwrg-def-restricted-debt", "fwrg-def-restricted-subsidiary-loan-party",
+    "lsb-6.01-general-ratio-gated", "lsb-6.01-i-flat-or-pct-assets", "lsb-6.01-m-secured-notes", "lsb-6.02-liens", "lsb-6.03-fundamental-changes", "lsb-6.04-a-abl-collateral-disposal", "lsb-6.04-b-notes-collateral-disposal", "lsb-6.08-subordinated-debt-payments", "lsb-6.11-restricted-payments", "lsb-6.13-investments", "lsb-6.14-affiliate-transactions", "lsb-6.15-springing-financial-covenant", "lsb-def-abl-notes-priority-collateral", "lsb-def-payment-conditions"
+  ],
+  "note_dsgrSampleIsNotExhaustive": "DSGR contributes 18 of its 1,016 units (14 false-credit controls + 4 generic-fill additions) - a small fraction of the full package, but a deliberately targeted one (every historical false-credit control, plus the stratum gaps FWRG/LSB/CONMED could not fill). This is NOT the same 51-case sample used in Phase 3F.1.5/3F.1.5.1/3F.1.5.2 - it overlaps only on the 14 false-credit controls (which were already part of that historical sample) and is otherwise a fresh draw, satisfying Section 15's 'not limited to the existing 51 cases' requirement.",
+  "nextStep": "docs/evaluation-v2-final-resolution/09/10/11-adjudicator-{a,b,c}-results.json will be produced by three independently-dispatched, mutually-isolated adjudicators working from a BLINDED evidence packet for exactly these 65 frozen case IDs (ground-truth text/description + full candidate-pool excerpts + structural metadata, with V2's own disposition/matchedCandidateIds/matchStatus fields stripped) plus 06-taxonomy-operational-rubric.json. The blinded packet and a separately-sealed (adjudicator-inaccessible) file carrying V2's actual dispositions for later comparison (19-v2-vs-independent-consensus.json) will be built next and are not part of this frozen sample definition.",
+  "hash": "sha256:ab3063062e233a939c31ae1dd8a3bc12b306f9ae5dfaee3b5bf375f55b62113f (computed over this document's JSON content with the hash field itself removed before hashing)"
+}

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "PHASE_3F1_5_3_FREEZE_MANIFEST",
+  "generatedAt": "2026-08-29T17:00:00Z",
+  "startingSha": "fe5f5c688dfcd1dae18e8d2f8958421219a0ff9b",
+  "startingShaSubject": "Phase 3F.1.5.2: final gate results — NEEDS_ITERATION",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "workingTreeCleanAtStart": true,
+  "mission": "Resolve Evaluation Methodology V2 conclusively via two independent scientific questions: (1) can V2 distinguish the specific semantic claim from a sibling/sub-provision sharing vocabulary/family? (2) is the detailed 12-state taxonomy itself reproducible between independent blinded human-equivalent adjudicators at >=85%? This is the FINAL planned evaluator methodology phase - no automatic Phase 3F.1.5.4.",
+  "historicalGateResultsPreservedVerbatim": {
+    "phase3F15": { "binaryApprox": "78.4-84.3%", "detailed": "37.3%" },
+    "phase3F151FinalRerun": { "binary": "87.5% (42/48)", "detailed": "18.75% (9/48)" },
+    "phase3F152": { "binary": "90.5% - PASS against >=90%", "detailed": "11.9% - FAIL against >=85%" },
+    "note": "These numbers are recorded here for reference only and are never rewritten, recomputed, or reinterpreted by this phase. Phase 3F.1.5.3 results are separately labeled throughout as 'Phase 3F.1.5.3 methodology results'."
+  },
+  "phase3F152FindingsPreserved": {
+    "implementedSuccessfully": [
+      "SAFE_SURFACING_REQUIRES_SEMANTIC_CORRESPONDENCE invariant",
+      "GT-side DEFINITION excerpt-contamination fix (the 'Acquisition' over-match's first pathway)",
+      "All 14 historical false credits retained",
+      "95/95 Evaluation V2 tests passing",
+      "27 new permanent adversarial tests",
+      "Zero FWRG/LSB/CONMED regression beyond disclosed, mechanism-traced, non-package-specific shifts",
+      "Zero package/term-specific code",
+      "Binary agreement >=90% (90.48%)"
+    ],
+    "demonstratedRemainingDefect": "A candidate representing a DIFFERENT sibling/sub-provision inside the same covenant section can pass deterministic correspondence (CORRESPONDS_PARTIALLY) because of shared covenant-family vocabulary, and therefore never reaches the live semantic judge (which only ever reconsiders INDETERMINATE pairs). This is Risk R3 in docs/evaluation-v2-iteration-2/16-remaining-evaluator-risks.json, carried forward as the primary Workstream A target for this phase.",
+    "reference": "docs/evaluation-v2-iteration-2/16-remaining-evaluator-risks.json, docs/evaluation-v2-iteration-2/17-final-verdict.json, docs/phase-3f1-5-2-targeted-semantic-match-calibration.md"
+  },
+  "hashesAtFreezeTime": {
+    "combinedManifestHash_docsEvaluationV2": "c81c52c1b3c8115af6f6a8da05c704af577eb0e58f155cb81e37d8762a87504b",
+    "combinedManifestHash_docsEvaluationV2Iteration": "dd50fb82c462d400e0475e50db0f36241b73c2ae5753771dd0d047b39b968ff8",
+    "combinedManifestHash_docsEvaluationV2Iteration2": "f5d92da9d2f0fdb758a03571420b721e6bf74b03d8c786a8db5663f86736f8ea",
+    "combinedManifestHash_libEvaluationV2Implementation_14TopLevelFiles": "1bc302414f2fa9a96456440cf9a0a449a68475985c396759a461734e63efc09d",
+    "note": "The 14-file top-level lib/contract-model/evaluation-v2/*.ts count plus runner/ (17 files) and adapters/ (3 files) subdirectories match the state left by Phase 3F.1.5.2's final commit. All three docs directories (evaluation-v2, evaluation-v2-iteration, evaluation-v2-iteration-2) must remain byte-identical to these hashes for the remainder of this phase - they are permanently frozen historical evidence from Phase 3F.1.5, 3F.1.5.1, and 3F.1.5.2 respectively."
+  },
+  "reVerificationRequired": "All hashes above must be re-checked before this phase's final verdict; the three prior docs/evaluation-v2* directories must remain byte-identical throughout.",
+  "productionCodeFreezeScope": {
+    "allowed": ["Evaluation V2 candidate matching", "semantic-correspondence logic", "deterministic-vs-live-judge routing", "evaluator state ontology/taxonomy analysis", "evaluator-only schemas", "evaluator tests", "independent adjudication infrastructure", "evidence artifacts", "documentation"],
+    "forbidden": ["production Headroom semantic changes", "structural parser changes", "discovery changes", "semantic compiler changes", "verifier changes", "production semantic coverage changes", "package graph changes", "amendment/operative-state changes", "IR changes", "precedent changes", "financial/product/UI work", "package-specific matching", "section-specific matching", "term-specific matching", "DSGR-specific code", "GT mutation", "historical artifact mutation", "new unseen package", "Phase 3F.1.6", "Phase 3F.2", "Phase 4"]
+  },
+  "noAutomaticNextPhase": "There is no automatic Phase 3F.1.5.4. This is the final planned evaluator methodology phase per the phase charter's own Section 23/36."
+}

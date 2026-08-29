@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "TAXONOMY_STUDY_PREREGISTRATION",
+  "generatedAt": "2026-08-29T18:00:00Z",
+  "purpose": "Section 16: pre-register the exact agreement computation and the reproducibility gate BEFORE any adjudicator sees the sample or the rubric, so the analysis cannot be shaped after the fact by which numbers came out favorably. This artifact is frozen the moment it is hashed in 00-freeze-manifest-addendum below; nothing in Sections 12-19 (agreement math, consensus rule, gate thresholds) may change after that point regardless of what the adjudication produces.",
+  "studyDesign": {
+    "adjudicatorCount": 3,
+    "adjudicatorIdentity": "Three separately-dispatched, mutually-isolated general-purpose subagents (labeled A, B, C). Each receives an IDENTICAL frozen instruction packet (06-taxonomy-operational-rubric.json + the blinded evidence packet from 07-taxonomy-study-sample.json) and has NO access to: V2's own disposition for any case, the other two adjudicators, any historical Phase 3F.1.5/3F.1.5.1/3F.1.5.2 disagreement record, any residual-risk document from this phase's Workstream A, or each other's output.",
+    "perCaseAdjudicatorOutput": [
+      "binaryDisposition: CREDIT or NO_CREDIT",
+      "detailedState: exactly one of the 12 states in 06-taxonomy-operational-rubric.json",
+      "confidence: HIGH | MEDIUM | LOW",
+      "rationale: free text, 1-4 sentences, must name the specific rubric necessary/exclusion conditions applied",
+      "ambiguityFlag: boolean - true if the adjudicator personally found the case hard to place even after applying the rubric (distinct from assigning the AMBIGUOUS taxonomy state itself)"
+    ]
+  },
+  "agreementComputation": {
+    "pairwiseBinaryAgreement": {
+      "definition": "For each unordered pair of adjudicators (A-B, A-C, B-C), the fraction of cases where both assigned the same binaryDisposition (CREDIT/NO_CREDIT). Reported per pair AND as the mean of the three pairwise rates.",
+      "formula": "agreement(X,Y) = |{cases where X.binary == Y.binary}| / |all adjudicated cases|"
+    },
+    "pairwiseDetailedAgreement": {
+      "definition": "Same as pairwiseBinaryAgreement but requires exact detailedState match (all 12 states are distinct outcomes; no partial credit for 'close' states).",
+      "formula": "agreement(X,Y) = |{cases where X.detailedState == Y.detailedState}| / |all adjudicated cases|"
+    },
+    "threeRaterUnanimousBinary": {
+      "definition": "Fraction of cases where all three adjudicators independently assigned the identical binaryDisposition.",
+      "formula": "|{cases where A.binary == B.binary == C.binary}| / |all adjudicated cases|"
+    },
+    "threeRaterUnanimousDetailed": {
+      "definition": "Fraction of cases where all three adjudicators independently assigned the identical detailedState.",
+      "formula": "|{cases where A.detailedState == B.detailedState == C.detailedState}| / |all adjudicated cases|"
+    },
+    "majorityVoteStability": {
+      "definition": "For each case, compute the majority-vote label (2-of-3 agreement) for both binary and detailed. Report what fraction of cases achieve a clean majority (as opposed to a 3-way detailed split with no pairwise match) - this is the 'stability' metric distinct from raw agreement rates.",
+      "binaryNote": "Binary is a 2-outcome space, so a 2-of-3 majority always exists by pigeonhole; majorityVoteStability for binary is therefore always 100% by construction and is reported only for completeness, not as an informative statistic.",
+      "detailedNote": "Detailed is a 12-outcome space, so a 3-way split with zero pairwise match is possible and must be counted explicitly as UNRESOLVED_CONSENSUS, not silently forced into an arbitrary tie-break."
+    },
+    "confusionMatrix": {
+      "definition": "A 12x12 matrix (plus an UNRESOLVED_CONSENSUS row/column where relevant) counting, across all three pairwise adjudicator comparisons, how often state X from one adjudicator co-occurred with state Y from another adjudicator on the same case. Symmetric by construction (each disagreeing case contributes to both [X,Y] and [Y,X]). This is the primary evidence source for 13-taxonomy-confusion-analysis.json and for any ontology-simplification decision in Section 20 - no state may be merged without this matrix showing genuine, repeated bidirectional confusion between it and another state."
+    },
+    "chanceAdjustedStatistic": {
+      "metric": "Fleiss' kappa, computed separately for the binary disposition and for the detailed state, across all 3 adjudicators and all adjudicated cases.",
+      "formula": "Standard Fleiss' kappa: kappa = (P_bar - P_e_bar) / (1 - P_e_bar), where P_bar is the mean per-case observed agreement across category pairs and P_e_bar is the expected agreement under the null of random rating according to the observed marginal category distribution.",
+      "role": "Reported ALONGSIDE the raw pre-registered thresholds below, never as a substitute for them. A high raw agreement rate achieved only because the category distribution is heavily skewed toward one dominant state (which would inflate raw agreement while kappa stays low) MUST be disclosed explicitly if it occurs - the raw threshold is the pass/fail gate; kappa is a mandatory disclosure, not an alternate gate.",
+      "feasibilityNote": "If the sample size or category sparsity makes kappa's expected-agreement term degenerate (e.g. a category with zero observed use by any adjudicator), report the degenerate condition explicitly rather than suppressing the statistic."
+    }
+  },
+  "consensusRule": {
+    "binaryConsensus": "Majority vote (2-of-3). Since binary is 2-valued, a majority always exists.",
+    "detailedConsensus": {
+      "rule": "If exactly two of the three adjudicators independently chose the identical detailedState, that state is the consensus detailedState for the case.",
+      "unresolvedCase": "If all three adjudicators chose three mutually different detailedStates (a genuine 3-way split with no pairwise match), the case is marked UNRESOLVED_CONSENSUS. UNRESOLVED_CONSENSUS cases are EXCLUDED from the detailed-agreement denominator used for the reproducibility gate below, but are counted and reported separately (count, rate, and the specific 3-way state combinations involved) in every downstream artifact - never silently dropped."
+    }
+  },
+  "reproducibilityGates": {
+    "purpose": "Section 17: these are 'concept-identifiability gates' - they test whether the 12-state taxonomy itself, as operationalized by 06-taxonomy-operational-rubric.json, can be applied reproducibly by independent humans-equivalent (blinded Claude agents) BEFORE any comparison to V2's own output is made. They are frozen now, before adjudication, and are not adjusted after seeing results.",
+    "binaryInterReviewerAgreementGate": {
+      "metric": "mean pairwise binary agreement across the three adjudicator pairs (see pairwiseBinaryAgreement above)",
+      "threshold": ">= 0.90",
+      "consequence_if_pass": "Binary credit/no-credit is a reproducible concept under this rubric.",
+      "consequence_if_fail": "Even binary credit/no-credit is not reproducibly identifiable under the current rubric/evidence - this is a more severe finding than a detailed-only failure and independently triggers the Path B branch (ontology/rubric analysis) regardless of the detailed gate's outcome."
+    },
+    "detailedInterReviewerAgreementGate": {
+      "metric": "mean pairwise detailed-state agreement across the three adjudicator pairs, computed over the denominator of cases EXCLUDING UNRESOLVED_CONSENSUS cases (see detailedConsensus.unresolvedCase above) but with the UNRESOLVED_CONSENSUS rate itself reported alongside as a required disclosure",
+      "threshold": ">= 0.85",
+      "consequence_if_pass": "Combined with the binary gate passing, the 12-state taxonomy is REPRODUCIBLE. Proceed to Path A (Section 18): freeze the majority/consensus adjudication as ground truth and evaluate V2 against it.",
+      "consequence_if_fail": "The 12-state taxonomy is NOT reproducible as currently operationalized. Per Section 19/20, do NOT lower this threshold. Proceed to ontology analysis using the confusion-matrix evidence (13-taxonomy-confusion-analysis.json) to determine the MINIMUM evidence-backed simplification, if any is justified; if none is justified by genuine confusion evidence, or if the ONE permitted redesign also fails reproducibility on a fresh holdout, the phase concludes with NEEDS_ARCHITECTURE_DECISION rather than forcing a pass."
+    },
+    "bothGatesRequired": "Both the binary AND detailed gates must independently pass for the taxonomy to be declared reproducible. A high detailed agreement rate does not excuse a failing binary rate (which would be a stranger and more alarming finding, since detailed necessarily implies binary agreement on any case where both raters chose the same detailed state) and is checked as an internal consistency cross-check: detailed agreement can never exceed binary agreement in a correctly-computed run, since two adjudicators sharing a detailedState must, by the taxonomy's own construction, share the same binaryDisposition (every detailed state maps to exactly one binary disposition per docs/evaluation-v2-iteration/02-state-taxonomy.json's creditCollapseRules)."
+  },
+  "falseCreditAndSafetyCrossChecks": {
+    "note": "Not part of the reproducibility gate itself, but pre-registered here so it cannot be added post-hoc: for any sample case that is also one of the 14 historical confirmed false-credit negative controls (Section 25), report whether all three adjudicators independently assigned NO_CREDIT. Any adjudicator assigning CREDIT to a known false-credit control is itself evidence the rubric or evidence packet has a defect, and must be investigated before the gate result is accepted at face value."
+  },
+  "immutabilityCommitment": "Once this artifact is hashed and frozen (see freezeHash below, computed identically to 05-matcher-freeze.json's convention), the agreement formulas, consensus rule, and gate thresholds in this document will not be edited for the remainder of Phase 3F.1.5.3, regardless of what the adjudication produces. Any post-hoc analysis beyond what is pre-registered here (e.g. the ontology ontology-simplification work in Section 20) is clearly new analysis performed AFTER seeing the confusion evidence, and is documented as such in 13/14/15 - it is not a retroactive edit to this pre-registration.",
+  "hash": "sha256:4265c629aad45644737d95c9ffec36702f7c9be701f0bfb3f1e767ccec9fa5ce (computed over this document's JSON content with the hash field itself removed before hashing)"
+}

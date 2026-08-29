@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "HOLDOUT_SAMPLE",
+  "generatedAt": "2026-08-29T19:45:00Z",
+  "purpose": "Section 20: a FRESH, pre-frozen holdout sample - zero overlap with the original 65-case sample (07) - to re-test REPLACEMENT_RUBRIC_V2 (the two precisionClarifications in _taxonomy-operational-rubric-v2-REPLACEMENT.json) with the same independent-adjudication methodology, per the phase's requirement that a replacement ontology/rubric never be validated on the same data that produced the confusion evidence motivating it.",
+  "frozenBeforeReAdjudication": true,
+  "sampleSize": 22,
+  "zeroOverlapWithOriginalSample": true,
+  "methodology": {
+    "eligiblePool": "All 1,050 ground-truth units NOT in the original 65-case frozenCaseIds list, drawn from the same zero-cost deterministic manifest used to build the original sample.",
+    "targetedComponent_chapeau": "Up to 6 per dataset of the remaining chapeau-shaped units (isChapeauShape=true) not already used - the exact structural shape the dominant confusion cluster concentrated in. Only 2 datasets (dsgr, conmed) have any chapeau-shaped units remaining after the original sample's selection exhausted 19 of the corpus's 33 total chapeau-shaped units; 5 of the 6 selected here are from doc-a/doc-b (dsgr).",
+    "targetedComponent_siblingAdjacency": "Up to 4 per dataset of remaining non-chapeau UNREPRESENTED units with siblingCount >= 2 - the fwrg-6.06-b-ii-style mechanism (a candidate anchored at a different sibling sub-item, not the claim's own).",
+    "generalDiversityFill": "Up to 2 additional NOT-yet-selected cases per remaining non-empty stratum (1-5, 8, 10-19), to confirm the rubric clarification does not regress reproducibility elsewhere in the taxonomy, using the same materiality-then-id tie-break as the original sample.",
+    "scarcityDisclosure": "Chapeau-shaped claims are architecturally rare (33 total across all 1,115 ground-truth units in the 4 frozen datasets - roughly one per major covenant section). The original 65-case sample already used 19 of them (including all 14 false-credit controls, which are themselves chapeau-shaped). This holdout captures the large majority of what remains (6 of ~14-16 remaining), which is the maximum honest test of the exact confirmed mechanism the population supports without exhausting the corpus entirely.",
+    "reproducibilityOfSelection": "Selection script preserved at docs/evaluation-v2-final-resolution/_holdout-sample-build-script.py; deterministic (fixed sort keys, no randomness), reproducible against the frozen manifest and the original 65-case exclusion set."
+  },
+  "sampleComposition": {
+    "byDataset": {"dsgr-2022-2025-credit-facility": 18, "conmed-2025-credit-facility": 4},
+    "chapeauShapedCount": 6,
+    "siblingAdjacentCount_siblingCountGte2": 14,
+    "byStratum_membershipCounts_overlapAllowed": {
+      "1_clear_credit": 3, "2_clear_no_credit": 13, "3_discovery_only": 11, "4_partial": 2, "5_unresolved": 4,
+      "8_verification_incomplete": 2, "10_qualitative": 15, "11_quantitative": 7, "12_definitions": 2,
+      "13_conditions": 12, "14_exceptions": 9, "15_sibling_subprovisions": 11, "16_chapeaus": 6,
+      "17_cross_reference_heavy": 8, "18_amendment_sensitive": 2, "19_composite": 2
+    },
+    "strataNotRepresented": [6, 7, 9],
+    "strataNotRepresentedDisclosure": "Stratum 6 (unsupported/silent) had only 1 case system-wide and it was already used in the original sample. Strata 7 (ambiguous) and 9 (exact verified) remain structurally empty across the entire corpus (see 07/13/14's disclosures) - no case exists to sample for either, in the holdout or anywhere else."
+  },
+  "frozenCaseIds": [
+    "a-7.2-a", "a-7.2-b", "a-7.2-c", "a-7.2-e",
+    "doc-a::I::1.06-pro-forma-adjustments", "doc-a::I::1.07-status-of-obligations", "doc-a::I::ebitda", "doc-a::I::interest-coverage-ratio",
+    "doc-a::II::2.11a-optional-prepayment", "doc-a::II::2.11b-revolver-overadvance-cure", "doc-a::II::2.11c-mandatory-prepayment-events", "doc-a::II::2.11d-prepayment-notices",
+    "doc-a::IV::4.01-chapeau", "doc-a::IV::4.01-outside-date",
+    "doc-a::VI::6.02-chapeau", "doc-a::VI::6.09-chapeau",
+    "doc-a::VII::7.01-chapeau",
+    "doc-a::X::10.01a-us-guaranty", "doc-a::X::10.06-reinstatement",
+    "doc-a::XII::12-schedules-exhibits",
+    "doc-b::AMENDMENT::sec2a-consent-increase-2-09e-cap", "doc-b::AMENDMENT::sec2b-amendment-mechanic-exhibit-a"
+  ],
+  "nextStep": "Build a BLINDED evidence packet (same schema/discipline as _frozen-sample-packets-BLINDED-v3.json, V2 disposition fields stripped) for these 22 cases, and a corresponding SEALED labels file. Dispatch the same three independent, mutually-isolated adjudicators against REPLACEMENT_RUBRIC_V2 (_taxonomy-operational-rubric-v2-REPLACEMENT.json) and this holdout. Both reproducibility gates (binary >=90%, detailed >=85%) must pass on this holdout before any V2-vs-consensus comparison may proceed."
+}

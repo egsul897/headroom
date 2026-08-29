@@ -1,0 +1,288 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "TAXONOMY_OPERATIONAL_RUBRIC",
+  "generatedAt": "2026-08-29T17:35:00Z",
+  "purpose": "Section 14: before any adjudication, write rigorous operational definitions for every one of the 12 detailed taxonomy states frozen in docs/evaluation-v2-iteration/02-state-taxonomy.json (Phase 3F.1.5.1). This artifact does not redefine the taxonomy - it OPERATIONALIZES the existing frozen definitions into necessary conditions, sufficient conditions (where a clean sufficient condition exists), exclusion conditions, nearest-confusable-state discriminators, and abstract (non-package-specific) positive/negative examples, so that three independent adjudicators applying it to the same evidence packet can converge without needing to interpret prose.",
+  "frozenBeforeAdjudication": true,
+  "sourceTaxonomy": "docs/evaluation-v2-iteration/02-state-taxonomy.json (byte-identical, untouched)",
+  "howToUseThisRubric": "For each ground-truth unit x candidate-pool evidence packet, evaluate states in the fixed PRECEDENCE ORDER listed below (top to bottom). Assign the FIRST state whose necessary conditions are all met and whose exclusion conditions are all absent. Never assign a later-listed state merely because it also technically fits - the taxonomy is anti-chain by design and precedence resolves all remaining ambiguity. If, after applying full precedence, a genuine tie between two mutually irreconcilable candidate interpretations remains (not a tie between rubric entries, but a tie in the EVIDENCE itself), assign AMBIGUOUS regardless of where it falls in the precedence list - AMBIGUOUS is evidence-triggered, not precedence-triggered.",
+  "precedenceOrder": [
+    "INCOMPARABLE",
+    "VERIFIED_SEMANTIC_REPRESENTATION",
+    "CONTRADICTORY_REPRESENTATION",
+    "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+    "SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE",
+    "PARTIAL_SEMANTIC_REPRESENTATION",
+    "AMBIGUOUS",
+    "HONESTLY_UNRESOLVED",
+    "DISCOVERED_REVIEW_REQUIRED",
+    "DISCOVERED_ONLY",
+    "HONESTLY_UNSUPPORTED",
+    "NOT_DISCOVERED"
+  ],
+  "precedenceRationale": "INCOMPARABLE is checked first because it is a ground-truth-side property, not a candidate-side judgment - nothing else can be assessed reliably if the ground-truth unit itself cannot be resolved. VERIFIED and CONTRADICTORY are checked before the unverified/partial states because they represent CONFIDENT dispositions (correct-and-checked, or confidently-wrong) that should not be downgraded to a weaker bucket merely because a reviewer is uncertain how to describe them. The three 'no confident correspondence exists' states (AMBIGUOUS, HONESTLY_UNRESOLVED, DISCOVERED_REVIEW_REQUIRED) are ordered by whose uncertainty it is: AMBIGUOUS = the EVIDENCE is genuinely tied; HONESTLY_UNRESOLVED = the CANDIDATE itself declares uncertainty; DISCOVERED_REVIEW_REQUIRED = the PIPELINE (not the candidate's content) flagged the location for review without asserting an answer. DISCOVERED_ONLY and HONESTLY_UNSUPPORTED are checked last among live states because they require confirming the ABSENCE of every stronger disposition. NOT_DISCOVERED is the final fallback: nothing at all exists near the claim.",
+  "states": [
+    {
+      "state": "INCOMPARABLE",
+      "layer": "GROUND_TRUTH",
+      "necessaryConditions": [
+        "The ground-truth unit's own source anchor cannot be resolved to a specific, confident excerpt (it is described only in general terms, or is explicitly flagged as requiring independent domain review before its own meaning is settled)."
+      ],
+      "sufficientConditions": [
+        "Necessary condition holds AND no override evidence exists that would let a reviewer confidently resolve the ground-truth unit's own meaning from the frozen evidence packet alone."
+      ],
+      "exclusionConditions": [
+        "The ground-truth unit's source anchor is resolvable to a specific excerpt, even if that excerpt is itself complex or heavily cross-referenced.",
+        "The ground-truth unit is clear but the CANDIDATE's location or meaning is what is uncertain (that is a candidate-side state, not INCOMPARABLE)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "AMBIGUOUS", "discriminator": "AMBIGUOUS presumes the ground-truth claim itself is well-defined and the uncertainty is about which CANDIDATE best matches it. INCOMPARABLE means the ground-truth claim's own content/location cannot be pinned down in the first place." },
+        { "state": "HONESTLY_UNRESOLVED", "discriminator": "HONESTLY_UNRESOLVED is a property of a CANDIDATE's assertion. INCOMPARABLE is a property of the GROUND-TRUTH unit and never depends on any candidate." }
+      ],
+      "abstractPositiveExample": "The ground-truth annotation for a claim reads 'the agreement appears to impose some restriction in this general area, but the precise source provision could not be isolated from context' - the annotator himself could not anchor it to one excerpt.",
+      "abstractNegativeExample": "The ground-truth annotation cites one specific numbered provision and quotes its operative language in full. Even if three different candidates dispute what that provision means, the ground-truth unit itself is NOT incomparable - proceed to evaluate the candidates normally."
+    },
+    {
+      "state": "VERIFIED_SEMANTIC_REPRESENTATION",
+      "layer": "VERIFICATION",
+      "necessaryConditions": [
+        "At least one candidate has been compiled into a structured representation (not merely inventoried).",
+        "That representation corresponds to the ground-truth claim on every CORE dimension the claim depends on (the acting party/action, the legal posture/direction, and the object or resource).",
+        "That representation has been independently checked (by the system's own verification layer, or by explicit second-pass confirmation in the evidence packet) and no unresolved finding contradicts it."
+      ],
+      "sufficientConditions": [
+        "All necessary conditions hold, AND no non-core dimension the claim materially depends on (e.g. a specific numeric threshold, a named condition, or a defined entity scope) is missing or conflicting."
+      ],
+      "exclusionConditions": [
+        "The representation was never independently checked (falls to SEMANTICALLY_REPRESENTED_UNVERIFIED instead).",
+        "The independent check was attempted but returned no conclusion (falls to SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE).",
+        "A material non-core dimension is missing or silent (falls to PARTIAL_SEMANTIC_REPRESENTATION)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "SEMANTICALLY_REPRESENTED_UNVERIFIED", "discriminator": "Ask: was there an independent verification pass recorded in the evidence, and did it clear this specific representation? If verification never ran (not merely 'inconclusive'), it is UNVERIFIED, not VERIFIED." },
+        { "state": "PARTIAL_SEMANTIC_REPRESENTATION", "discriminator": "Ask: is every dimension the CLAIM actually depends on present and non-conflicting, or only the core three? A verified-but-incomplete representation is PARTIAL, never VERIFIED, regardless of how confident the verification pass was about the part it did check." }
+      ],
+      "abstractPositiveExample": "A compiled rule states the acting party, the restricted action, the object, the applicable numeric threshold, and the named exception the claim depends on, all matching the ground truth, and an independent verification record confirms no contradicting finding was raised against it.",
+      "abstractNegativeExample": "A compiled rule matches on action/posture/object but the evidence packet contains no verification record at all for that representation - this is SEMANTICALLY_REPRESENTED_UNVERIFIED, not VERIFIED, even though the representation happens to be correct."
+    },
+    {
+      "state": "CONTRADICTORY_REPRESENTATION",
+      "layer": "REPRESENTATION",
+      "necessaryConditions": [
+        "At least one candidate has been compiled into a structured representation anchored at the same claim (same subject/location).",
+        "That representation asserts a materially different, conflicting answer than the ground truth on a dimension that changes the claim's operative effect (opposite direction, wrong basis, or a scope the ground truth explicitly excludes or vice versa)."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold AND the conflict is not explainable as the representation simply omitting a dimension (omission is PARTIAL or UNSUPPORTED, not CONTRADICTORY - contradiction requires an affirmative wrong assertion, not silence)."
+      ],
+      "exclusionConditions": [
+        "The candidate is merely silent on a dimension rather than asserting the opposite of it.",
+        "The candidate is anchored at a different sub-provision that happens to share vocabulary (that is a claim-identity mismatch, evaluated separately, not a semantic contradiction of THIS claim)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "PARTIAL_SEMANTIC_REPRESENTATION", "discriminator": "PARTIAL is missing/silent on a dimension. CONTRADICTORY affirmatively asserts the wrong thing on a dimension. A rule that says nothing about a cap is PARTIAL; a rule that states the wrong cap is CONTRADICTORY." },
+        { "state": "HONESTLY_UNSUPPORTED", "discriminator": "UNSUPPORTED means no candidate corresponds at all. CONTRADICTORY requires a candidate that DOES correspond in location/subject but gets the substance wrong." }
+      ],
+      "abstractPositiveExample": "The ground truth states a restriction applies only above a stated threshold; the compiled representation for the same provision asserts the restriction applies below that threshold (an inverted, materially different condition).",
+      "abstractNegativeExample": "The compiled representation matches the ground truth's direction and threshold exactly but omits a named carve-out the ground truth also includes - this is a missing dimension (PARTIAL), not an affirmative contradiction."
+    },
+    {
+      "state": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "layer": "REPRESENTATION",
+      "necessaryConditions": [
+        "At least one candidate has been compiled into a structured representation that corresponds to the ground-truth claim on every core dimension (action, posture, object) with no conflicting non-core dimension.",
+        "No independent verification record exists for that representation in the evidence packet (verification was never attempted, not merely inconclusive)."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold and no contradicting finding of any kind is present."
+      ],
+      "exclusionConditions": [
+        "A verification record exists and cleared the representation (falls to VERIFIED).",
+        "A verification record exists but returned no conclusion (falls to VERIFICATION_INCOMPLETE, a distinct state - 'never attempted' and 'attempted but inconclusive' are not the same fact and must not be merged)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE", "discriminator": "Look for an explicit verification attempt record in the packet. Its total absence = UNVERIFIED. Its presence with an inconclusive/indeterminate result = VERIFICATION_INCOMPLETE. Do not infer an attempt happened just because the pipeline generally runs verification - require the record." },
+        { "state": "VERIFIED_SEMANTIC_REPRESENTATION", "discriminator": "See VERIFIED's own discriminator above." }
+      ],
+      "abstractPositiveExample": "A compiled rule fully matches the ground truth's action, posture, object, and all material conditions, and the evidence packet contains no verification-stage record for it at all.",
+      "abstractNegativeExample": "A compiled rule fully matches, and the evidence packet shows a verification-stage record whose outcome field is explicitly 'INDETERMINATE' rather than absent - that is VERIFICATION_INCOMPLETE, not UNVERIFIED."
+    },
+    {
+      "state": "SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE",
+      "layer": "REPRESENTATION",
+      "necessaryConditions": [
+        "At least one candidate has been compiled into a structured representation that corresponds on every core dimension with no conflicting non-core dimension.",
+        "An independent verification attempt is recorded in the evidence packet for that representation, but its outcome is inconclusive/indeterminate rather than a clear pass or a contradicting finding."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold."
+      ],
+      "exclusionConditions": [
+        "No verification attempt record exists at all (falls to UNVERIFIED).",
+        "The verification attempt concluded with a clear pass (falls to VERIFIED) or a clear contradicting finding (falls to CONTRADICTORY)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "SEMANTICALLY_REPRESENTED_UNVERIFIED", "discriminator": "Same discriminator as above, applied from this state's side: require a recorded inconclusive attempt, not just absence of a pass record." },
+        { "state": "HONESTLY_UNRESOLVED", "discriminator": "VERIFICATION_INCOMPLETE means the SYSTEM's verification layer could not conclude about an otherwise-corresponding representation. HONESTLY_UNRESOLVED means the CANDIDATE's own asserted content declares uncertainty about the underlying legal question - a property of the candidate's substance, not of a downstream verification pass." }
+      ],
+      "abstractPositiveExample": "A compiled rule matches on all core dimensions; the packet's verification record for it explicitly states the verifier could not confirm or contradict the representation given available evidence.",
+      "abstractNegativeExample": "A compiled rule matches on all core dimensions with no verification record present anywhere in the packet - this is UNVERIFIED (no attempt), not VERIFICATION_INCOMPLETE (an attempt that stalled)."
+    },
+    {
+      "state": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "layer": "REPRESENTATION",
+      "necessaryConditions": [
+        "At least one candidate has been compiled into a structured representation that corresponds to the ground-truth claim on the CORE dimensions (action, posture, object).",
+        "At least one non-core dimension the claim materially depends on (a condition, an exception, a specific threshold/metric, an entity-scope qualifier, a dependency) is either missing (silent) or conflicting, such that the representation is a genuine but incomplete version of the SAME claim."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold AND the represented core is not itself contradicted (a contradicted core is CONTRADICTORY, not PARTIAL) AND the missing/conflicting piece belongs to the SAME claim rather than describing a different sibling claim."
+      ],
+      "exclusionConditions": [
+        "The candidate corresponds to a DIFFERENT sibling or sub-provision under the same family/section rather than an incomplete version of THIS claim - an unrelated sibling can never count as a partial representation, however much covenant-family or lexical vocabulary it shares.",
+        "The core dimensions themselves are not met (falls to HONESTLY_UNSUPPORTED or DISCOVERED_ONLY depending on whether anything corresponds at all).",
+        "The missing piece is not material to the claim's operative effect (in that case treat as VERIFIED/UNVERIFIED as appropriate - immaterial omissions do not create a PARTIAL state)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "VERIFIED_SEMANTIC_REPRESENTATION / SEMANTICALLY_REPRESENTED_UNVERIFIED", "discriminator": "Ask whether the omitted/conflicting dimension is MATERIAL to what the claim actually permits, restricts, or conditions. An omission of an immaterial drafting detail does not create PARTIAL; an omission of the specific condition or threshold that defines the claim's boundary does." },
+        { "state": "AMBIGUOUS", "discriminator": "PARTIAL is a single candidate's incomplete-but-genuine representation of one claim. AMBIGUOUS is two or more candidates offering mutually irreconcilable FULL interpretations with no principled way to prefer one - not one candidate that is simply incomplete." },
+        { "state": "SIBLING_MISMATCH / DISCOVERED_ONLY", "discriminator": "A candidate anchored at a DIFFERENT enumerated sub-item of the same parent section, sharing family vocabulary, is NEVER a partial representation of this claim - it is a different claim. Verify the candidate's own anchor is the SAME sub-provision as the ground truth before considering PARTIAL." }
+      ],
+      "abstractPositiveExample": "The ground truth describes a permission subject to a stated dollar cap and a specific use-of-proceeds condition. The compiled representation captures the permission and the cap correctly but is silent on the use-of-proceeds condition - a genuine subset of the same claim, missing one material piece.",
+      "abstractNegativeExample": "The ground truth describes one specific basket in an enumerated list; the candidate is a full, confident representation of a DIFFERENT basket in the same enumerated list that happens to share the same defined term and dollar-metric vocabulary. This is not a partial representation of the ground-truth basket - it corresponds to nothing on the ground-truth claim's own identity and should be evaluated as HONESTLY_UNSUPPORTED or DISCOVERED_ONLY for the ground-truth claim, with the sibling candidate irrelevant to its credit."
+    },
+    {
+      "state": "AMBIGUOUS",
+      "layer": "REPRESENTATION",
+      "necessaryConditions": [
+        "Two or more candidates correspond to the ground-truth claim about equally well on the dimensions that matter, but they assert mutually irreconcilable answers (not merely different levels of completeness).",
+        "The evidence available does not give a principled basis for preferring one candidate's interpretation over the other(s)."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold and forcing a single winner would assert a confidence the evidence does not support."
+      ],
+      "exclusionConditions": [
+        "One candidate is clearly better-supported than the others (pick it; do not default to AMBIGUOUS merely because more than one candidate exists near the claim).",
+        "The competing candidates disagree because one of them is anchored at a different sibling sub-provision rather than genuinely interpreting the same claim differently (that is a claim-identity problem, not a genuine interpretive tie)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "PARTIAL_SEMANTIC_REPRESENTATION", "discriminator": "See PARTIAL's own discriminator." },
+        { "state": "HONESTLY_UNRESOLVED", "discriminator": "AMBIGUOUS is a tie BETWEEN candidates from the reviewer's/system's vantage point. HONESTLY_UNRESOLVED is a single candidate's own text declaring that ITS answer is uncertain. Do not use AMBIGUOUS when there is really only one substantive candidate whose content itself hedges." }
+      ],
+      "abstractPositiveExample": "Two independently compiled representations of the same provision reach opposite conclusions about which of two named calculation bases applies, each equally well-supported by the available excerpt, with no cross-reference in evidence that would resolve the conflict.",
+      "abstractNegativeExample": "Two candidates exist near the claim, but one is a stray inventory mention with no structured assertion and the other is a fully compiled, verified representation - there is no genuine tie here; evaluate the compiled representation on its own merits."
+    },
+    {
+      "state": "HONESTLY_UNRESOLVED",
+      "layer": "REPRESENTATION",
+      "necessaryConditions": [
+        "A candidate corresponds to the claim's location/topic closely enough to be considered relevant to it.",
+        "The candidate's OWN asserted content explicitly declares its answer unresolved, uncertain, or dependent on unavailable/ambiguous evidence, rather than confidently asserting a specific position."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold and the candidate does not also assert a confident answer alongside the hedge (a hedge attached to an otherwise confident, corresponding assertion should be evaluated on the confident assertion instead)."
+      ],
+      "exclusionConditions": [
+        "No candidate at the claim's location says anything at all, confident or not (falls to HONESTLY_UNSUPPORTED or NOT_DISCOVERED).",
+        "The uncertainty belongs to the ground-truth unit's own anchor rather than to a candidate's assertion (that is INCOMPARABLE).",
+        "The uncertainty is the system's downstream verification layer failing to conclude about an otherwise-confident representation (that is VERIFICATION_INCOMPLETE)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "HONESTLY_UNSUPPORTED", "discriminator": "This is the single most important discriminator in the entire taxonomy. UNSUPPORTED = nothing corresponds and nothing was said. HONESTLY_UNRESOLVED = something corresponds and it explicitly said 'I could not determine this.' A reviewer must never collapse the two just because both end up uncredited - one is a safe, surfaced non-answer; the other is a silent, dangerous gap." },
+        { "state": "DISCOVERED_REVIEW_REQUIRED", "discriminator": "DISCOVERED_REVIEW_REQUIRED is the PIPELINE flagging a location via a structural safety mechanism, without any candidate asserting or declining to assert an answer. HONESTLY_UNRESOLVED is the CANDIDATE's own declared content stating uncertainty. If both are present for the same claim, prefer HONESTLY_UNRESOLVED (the more specific, content-level fact)." }
+      ],
+      "abstractPositiveExample": "A compiled note for the relevant provision states that the underlying condition depends on a cross-referenced defined term whose own definition could not be located or resolved with confidence, and therefore declines to assert a specific outcome.",
+      "abstractNegativeExample": "No candidate of any kind appears near the claim's location - there is nothing declaring uncertainty because there is nothing at all. This is HONESTLY_UNSUPPORTED (or NOT_DISCOVERED if even inventory-level candidates are absent), not HONESTLY_UNRESOLVED."
+    },
+    {
+      "state": "DISCOVERED_REVIEW_REQUIRED",
+      "layer": "DISCOVERY",
+      "necessaryConditions": [
+        "A candidate at the claim's location carries an explicit, structural safety-flag marker (a coverage-gap flag, a verifier finding, or a self-declared-ambiguity flag raised by the pipeline itself) that surfaces the location for human review.",
+        "The flag does not assert any specific substantive answer to the claim."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold."
+      ],
+      "exclusionConditions": [
+        "The candidate asserts a substantive answer (confident or hedged) rather than merely carrying a structural flag (evaluate the assertion under one of the REPRESENTATION states instead).",
+        "No safety-flag marker exists in the evidence packet at all (falls to DISCOVERED_ONLY)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "DISCOVERED_ONLY", "discriminator": "Require an explicit, evidence-visible flag marker (not a reviewer's own inference that 'this looks like it should have been flagged'). Absence of a marker in the packet means DISCOVERED_ONLY, even if a reviewer personally believes the location deserved review." },
+        { "state": "HONESTLY_UNRESOLVED", "discriminator": "See HONESTLY_UNRESOLVED's own discriminator." }
+      ],
+      "abstractPositiveExample": "An inventory-level candidate sits at the claim's location and carries a machine-generated coverage-gap marker indicating the pipeline could not compile a representation there and is surfacing it for review, without asserting what the answer should be.",
+      "abstractNegativeExample": "An inventory-level candidate sits at the claim's location with no flag or marker of any kind attached to it - this is DISCOVERED_ONLY, not DISCOVERED_REVIEW_REQUIRED, however 'important-looking' the underlying text is."
+    },
+    {
+      "state": "DISCOVERED_ONLY",
+      "layer": "DISCOVERY",
+      "necessaryConditions": [
+        "A candidate exists that textually overlaps the claim's source location.",
+        "That candidate was never compiled into a structured representation (it remains inventory-only).",
+        "No candidate at this location carries a safety-flag marker."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold."
+      ],
+      "exclusionConditions": [
+        "The candidate was compiled into a structured representation, however incomplete (falls to one of the REPRESENTATION states).",
+        "A safety-flag marker is present (falls to DISCOVERED_REVIEW_REQUIRED)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "SEMANTICALLY_REPRESENTED_UNVERIFIED / PARTIAL_SEMANTIC_REPRESENTATION", "discriminator": "The single question that resolves nearly all reviewer confusion in this taxonomy: has anything actually been COMPILED into a structured rule/definition/coverage-unit, or does the candidate exist only as a raw inventory mention? Textual proximity or topical relevance is never sufficient for a REPRESENTATION-layer state - only a compiled, asserting representation qualifies." },
+        { "state": "HONESTLY_UNSUPPORTED", "discriminator": "DISCOVERED_ONLY means something is textually there, even if uncompiled. HONESTLY_UNSUPPORTED means nothing corresponds at all - not even an inventory mention. If in doubt whether a mention 'counts' as overlapping the location, resolve toward DISCOVERED_ONLY only when the evidence packet explicitly shows a candidate whose source span covers the claim's location." }
+      ],
+      "abstractPositiveExample": "A raw inventory candidate's source excerpt textually contains the operative language relevant to the claim, but no rule, definition, or coverage unit was ever compiled from it, and no flag is attached.",
+      "abstractNegativeExample": "No candidate's source excerpt overlaps the claim's location at all, even loosely - this is HONESTLY_UNSUPPORTED (if inventory in general exists elsewhere in the package) or NOT_DISCOVERED (if nothing exists anywhere near it)."
+    },
+    {
+      "state": "HONESTLY_UNSUPPORTED",
+      "layer": "REPRESENTATION",
+      "necessaryConditions": [
+        "No candidate corresponds to the claim on any core dimension.",
+        "No candidate at the claim's location carries a safety-flag marker surfacing the gap.",
+        "The claim's general location or topic is nonetheless within the scope of what the pipeline processed (distinguishing this from a claim that is invisible to the pipeline entirely)."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold."
+      ],
+      "exclusionConditions": [
+        "A candidate does textually overlap the claim's location even without compiling a representation (falls to DISCOVERED_ONLY, which is a strictly weaker but still distinct disposition).",
+        "A safety-flag marker exists at the location (falls to DISCOVERED_REVIEW_REQUIRED).",
+        "A candidate corresponds and declares its own uncertainty (falls to HONESTLY_UNRESOLVED - the presence of an on-topic, hedged assertion is a meaningfully safer outcome than true silence and must not be merged into this state).",
+        "Nothing in the package touches this area of the document at all, at any layer, discovery included (falls to NOT_DISCOVERED)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "HONESTLY_UNRESOLVED", "discriminator": "See HONESTLY_UNRESOLVED's own discriminator - this is the single highest-value discrimination in the whole rubric because it separates a silent, dangerous gap from a safely surfaced non-answer." },
+        { "state": "DISCOVERED_ONLY", "discriminator": "See DISCOVERED_ONLY's own discriminator - the presence of ANY textually overlapping candidate, however uncompiled, moves this to DISCOVERED_ONLY rather than UNSUPPORTED." },
+        { "state": "NOT_DISCOVERED", "discriminator": "UNSUPPORTED presumes the pipeline processed the relevant area of the document generally (other nearby claims have candidates) but produced nothing for THIS specific claim. NOT_DISCOVERED is a total blind spot - nothing anywhere near this location, for any claim, at any layer." }
+      ],
+      "abstractPositiveExample": "The claim's location falls within a document section the pipeline otherwise processed and produced candidates for (neighboring provisions have inventory or compiled candidates), but this specific claim has zero corresponding candidates of any kind and zero safety-flag markers.",
+      "abstractNegativeExample": "A stray inventory candidate's source span does overlap the claim's location, even though it was never compiled - reclassify as DISCOVERED_ONLY, not UNSUPPORTED."
+    },
+    {
+      "state": "NOT_DISCOVERED",
+      "layer": "DISCOVERY",
+      "necessaryConditions": [
+        "No candidate of any kind - inventory-only, flagged, or compiled - exists anywhere near the claim's source location.",
+        "The claim is invisible to the entire downstream pipeline, not merely unrepresented within an area the pipeline otherwise touched."
+      ],
+      "sufficientConditions": [
+        "Necessary conditions hold."
+      ],
+      "exclusionConditions": [
+        "Any candidate at all - even an uncompiled inventory mention - exists near the claim's location (falls to DISCOVERED_ONLY at minimum)."
+      ],
+      "nearestConfusableStates": [
+        { "state": "HONESTLY_UNSUPPORTED", "discriminator": "See HONESTLY_UNSUPPORTED's own discriminator." }
+      ],
+      "abstractPositiveExample": "The claim's source location falls in a part of the document the pipeline's discovery layer never touched at all - no inventory candidate, no compiled representation, no flag, nothing in the evidence packet references that location in any way.",
+      "abstractNegativeExample": "The claim's location is within a section the pipeline generally covered (other provisions in the same section have candidates), but this specific claim has none - that is HONESTLY_UNSUPPORTED, a narrower and more specific gap than total non-discovery."
+    }
+  ],
+  "productActionabilityNote": "This rubric intentionally does not yet argue for or against merging any of these 12 states - that argument is reserved for 14-product-actionability-analysis.json and is evidence-gated on the confusion matrix this rubric's own adjudication produces (12-inter-reviewer-agreement.json / 13-taxonomy-confusion-analysis.json), per Section 20's explicit prohibition on merging states without inter-reviewer confusion evidence.",
+  "hash": "sha256:fddc2f8ab58339f5021233c8eb41ffddfa9a1be8f429e6efe03191cb4584fe06 (computed over this document's JSON content with the hash field itself removed before hashing, canonicalized via JSON.stringify with insertion-order keys)"
+}

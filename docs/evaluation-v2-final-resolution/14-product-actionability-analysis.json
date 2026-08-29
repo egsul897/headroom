@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "PRODUCT_ACTIONABILITY_ANALYSIS",
+  "generatedAt": "2026-08-29T19:25:00Z",
+  "purpose": "Section 20's product-actionability test, applied ONLY to the confusable clusters actually observed in 13-taxonomy-confusion-analysis.json (never merge a state pair just because it is confusable - only if collapsing it would ALSO cost nothing in product behavior). Test: 'would Headroom behave differently because of this distinction? If two states always produce identical review routing/user warning/computation eligibility/trust status/audit behavior, the distinction may not provide product value.'",
+  "dominantCluster_DISCOVERED_ONLY_vs_DISCOVERED_REVIEW_REQUIRED_vs_HONESTLY_UNSUPPORTED": {
+    "test": "Do these three states drive different downstream behavior?",
+    "finding": "YES - each drives a materially different product posture:",
+    "behaviorDifferences": [
+      { "state": "HONESTLY_UNSUPPORTED", "productBehavior": "The most dangerous state in the taxonomy (per 06's own frozen definition). Must be classified as dangerousUnaccounted and surfaced as a silent gap requiring investigation - there is no signal of any kind for Headroom to show the user, so the product's only honest move is to say 'we found nothing here and nothing flagged it.'" },
+      { "state": "DISCOVERED_ONLY", "productBehavior": "A weaker, but real, transparency signal exists: raw text was found near this location but never compiled. A correct product could distinguish this from total silence - e.g. 'unprocessed source text exists near this provision' - which is a materially different (less alarming, more specific) user-facing statement than HONESTLY_UNSUPPORTED's 'nothing at all.'" },
+      { "state": "DISCOVERED_REVIEW_REQUIRED", "productBehavior": "The pipeline itself actively flagged this location for human review. This is the strongest of the three signals and should route to a review queue/badge, not merely a transparency footnote - a materially different (more urgent) UI/workflow path than either of the other two." }
+    ],
+    "conclusion": "These three states are NOT redundant in principle - collapsing them would destroy exactly the 'silently missed vs safely surfaced' distinction Section 20 itself names as 'absolutely actionable.' No merge is justified by the product-actionability test, DESPITE the high observed inter-reviewer confusion.",
+    "reconciliation": "The confusion is not evidence the CONCEPTS overlap - it is evidence the RUBRIC's shared precondition ('textual overlap with the claim's own location,' for a composite/chapeau claim, and for a sibling-adjacent candidate) was underspecified, causing reviewers who agree on the underlying facts to file them under different labels. The correct fix (15-ontology-redesign.json) is a rubric-precision clarification, not a taxonomy merge - this is consistent with Section 20's own instruction that a genuine confusable pair must still be product-tested before any merge, and here the product test fails to justify a merge."
+  },
+  "secondaryCluster_representationLayerStates": {
+    "test": "Do SEMANTICALLY_REPRESENTED_UNVERIFIED, PARTIAL_SEMANTIC_REPRESENTATION, SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE, and HONESTLY_UNRESOLVED drive different downstream behavior?",
+    "finding": "YES in principle (unverified vs. partial vs. verification-stalled vs. self-declared-uncertain are each a different computation-eligibility/trust-status signal a CFO-facing product needs), but the observed confusion here is low-volume (single-digit pairwise counts, no dominant pair, 4 of 65 cases affected) and does not show the same concentrated structural driver as the dominant cluster.",
+    "conclusion": "Not actioned this phase. Carried forward as an open residual risk (24-remaining-evaluator-risks.json) rather than used to justify any merge - there is not enough concentrated evidence to identify a MINIMUM evidence-backed fix the way there is for the dominant cluster, and Section 20 requires acting only on what the evidence actually supports."
+  },
+  "dormantDistinction_VERIFIED_SEMANTIC_REPRESENTATION": {
+    "test": "Is VERIFIED_SEMANTIC_REPRESENTATION vs SEMANTICALLY_REPRESENTED_UNVERIFIED product-actionable?",
+    "finding": "YES in principle - Section 20's own illustrative list names 'represented vs verified' as an 'absolutely actionable' example, and 06-taxonomy-operational-rubric.json's own necessary conditions correctly separate them.",
+    "observation": "Across all 195 ratings (3 adjudicators x 65 cases), VERIFIED_SEMANTIC_REPRESENTATION was assigned ZERO times. This is not evidence the distinction is unimportant - it corroborates the structural finding already disclosed in 07-taxonomy-study-sample.json (stratum 9): no case in the 4 frozen datasets currently carries a recorded, passed, independent-verification confirmation reachable from the evidence given to either V2 or a human reviewer. The distinction remains conceptually sound and actionable; it is simply DORMANT given the evidence the current pipeline produces. This is a pipeline/data-architecture gap, not a taxonomy defect, and is NOT to be fixed by collapsing VERIFIED into UNVERIFIED (that would permanently destroy an actionable distinction to paper over an unrelated, currently-orthogonal gap in what evidence the verification stage records).",
+    "conclusion": "No taxonomy change. Disclosed as a residual risk (24-remaining-evaluator-risks.json): Headroom's verification stage does not currently produce evidence that would let ANY reviewer (human or V2) ever confidently assign VERIFIED_SEMANTIC_REPRESENTATION under this rubric's honest necessary conditions."
+  },
+  "dormantDistinction_AMBIGUOUS_and_INCOMPARABLE": {
+    "finding": "Also zero occurrences across all 195 ratings. AMBIGUOUS requires a genuine multi-candidate tie with no principled resolution; INCOMPARABLE requires the ground-truth unit's own anchor to be unresolvable. Neither condition arose in this 65-case sample. This is a sampling/dataset property (the frozen datasets' ground truth happens to be resolvable, and no case presented a genuine interpretive tie), not evidence against the states' validity - no action taken.",
+    "conclusion": "No taxonomy change."
+  },
+  "overallConclusion": "No state should be merged, split, or removed. All 12 states remain conceptually sound and product-actionable. The single evidence-backed intervention the confusion data supports is a precision clarification to the rubric's shared 'textual overlap with location' precondition for composite/chapeau claims and sibling-adjacent candidates - see 15-ontology-redesign.json."
+}

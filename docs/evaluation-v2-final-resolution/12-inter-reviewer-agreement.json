@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "INTER_REVIEWER_AGREEMENT",
+  "generatedAt": "2026-08-29T19:10:00Z",
+  "purpose": "Section 17: compute the pre-registered agreement statistics (08-taxonomy-study-preregistration.json) over the three independent blinded adjudicators' results (09/10/11) on the frozen 65-case sample (07), and evaluate the two frozen reproducibility gates. Computed exactly as pre-registered - no formula or threshold changed after seeing these numbers.",
+  "inputs": {
+    "adjudicatorA": "docs/evaluation-v2-final-resolution/09-adjudicator-a-results.json",
+    "adjudicatorB": "docs/evaluation-v2-final-resolution/10-adjudicator-b-results.json",
+    "adjudicatorC": "docs/evaluation-v2-final-resolution/11-adjudicator-c-results.json",
+    "sample": "docs/evaluation-v2-final-resolution/07-taxonomy-study-sample.json",
+    "sampleSize": 65
+  },
+  "binaryDispositionDistribution": {
+    "A": {"CREDIT": 19, "NO_CREDIT": 46},
+    "B": {"CREDIT": 20, "NO_CREDIT": 45},
+    "C": {"CREDIT": 17, "NO_CREDIT": 48}
+  },
+  "pairwiseBinaryAgreement": {
+    "A-B": 0.9538461538461539,
+    "A-C": 0.9384615384615385,
+    "B-C": 0.9538461538461539,
+    "mean": 0.9487179487179488
+  },
+  "threeRaterUnanimousBinary": {"count": 60, "rate": 0.9230769230769231, "denominator": 65},
+  "pairwiseDetailedAgreement_allCases": {
+    "A-B": 0.7846153846153846,
+    "A-C": 0.7692307692307693,
+    "B-C": 0.6923076923076923,
+    "mean": 0.7487179487179487
+  },
+  "pairwiseDetailedAgreement_excludingUnresolvedConsensusCases": {
+    "note": "This is the metric the frozen detailedInterReviewerAgreementGate (08) is computed against.",
+    "denominator": 60,
+    "A-B": 0.7833333333333333,
+    "A-C": 0.7833333333333333,
+    "B-C": 0.7333333333333333,
+    "mean": 0.7666666666666666
+  },
+  "threeRaterUnanimousDetailed": {"count": 39, "rate": 0.6, "denominator": 65},
+  "consensusRule": {
+    "binaryConsensus": "majority (2-of-3), always resolvable",
+    "detailedConsensus": "majority (2-of-3) when exactly two agree, else UNRESOLVED_CONSENSUS",
+    "unresolvedConsensusCount": 5,
+    "unresolvedConsensusRate": 0.07692307692307693,
+    "unresolvedConsensusCases": [
+      {"caseId": "doc-b::VI::6-04-lead-in", "statesOffered": ["HONESTLY_UNSUPPORTED", "DISCOVERED_REVIEW_REQUIRED", "DISCOVERED_ONLY"]},
+      {"caseId": "doc-b::VI::6-05-lead-in", "statesOffered": ["HONESTLY_UNSUPPORTED", "DISCOVERED_REVIEW_REQUIRED", "DISCOVERED_ONLY"]},
+      {"caseId": "doc-d::VI::6-04-chapeau", "statesOffered": ["HONESTLY_UNSUPPORTED", "DISCOVERED_REVIEW_REQUIRED", "DISCOVERED_ONLY"]},
+      {"caseId": "doc-d::VI::6-05-chapeau", "statesOffered": ["HONESTLY_UNSUPPORTED", "DISCOVERED_REVIEW_REQUIRED", "DISCOVERED_ONLY"]},
+      {"caseId": "lsb-6.03-fundamental-changes", "statesOffered": ["SEMANTICALLY_REPRESENTED_UNVERIFIED", "PARTIAL_SEMANTIC_REPRESENTATION", "HONESTLY_UNRESOLVED"]}
+    ],
+    "note": "4 of the 5 fully-3-way-split cases are exactly the DISCOVERED_ONLY / DISCOVERED_REVIEW_REQUIRED / HONESTLY_UNSUPPORTED triangle diagnosed in 13-taxonomy-confusion-analysis.json as the dominant confusion source."
+  },
+  "majorityVoteStability": {
+    "binary": {"rate": 1.0, "note": "Always 100% by construction - binary is a 2-outcome space, a 2-of-3 majority always exists (pre-registered as an uninformative statistic, reported for completeness only)."},
+    "detailed": {"rate": 0.9230769230769231, "note": "60 of 65 cases (92.3%) reached a clean 2-of-3 detailed majority; the remaining 7.7% are the UNRESOLVED_CONSENSUS cases above."}
+  },
+  "fleissKappa": {
+    "binary": {"kappa": 0.8747430626927032, "P_bar": 0.9487179487179488, "P_e_bar": 0.5905325443786982, "interpretation": "Almost-perfect agreement (Landis-Koch scale); not an artifact of category skew - the marginal binary split across all 3 raters combined is roughly 59%/41%, not extreme."},
+    "detailed": {"kappa": 0.6403843665070531, "P_bar": 0.7487179487179487, "P_e_bar": 0.30130177514792897, "interpretation": "Substantial but not almost-perfect agreement (Landis-Koch scale). Meaningfully lower than the binary kappa, consistent with the raw detailed agreement rate itself sitting below the frozen 85% gate - the chance-adjustment does not rescue the detailed result."}
+  },
+  "gateEvaluation": {
+    "binaryInterReviewerAgreementGate": {"threshold": 0.90, "observed": 0.9487179487179488, "passed": true},
+    "detailedInterReviewerAgreementGate": {"threshold": 0.85, "observed": 0.7666666666666666, "passed": false},
+    "bothGatesRequired": true,
+    "taxonomyReproducible": false,
+    "verdict": "PATH_B: The 12-state taxonomy, as operationalized by 06-taxonomy-operational-rubric.json, is NOT reproducible at the required detailed-agreement threshold (76.7% observed vs. 85% required), despite binary credit/no-credit being highly reproducible (94.9% observed, kappa=0.87). Per Section 19/20, the threshold is NOT lowered. Proceed to ontology/rubric analysis using the confusion-matrix evidence (13-taxonomy-confusion-analysis.json)."
+  },
+  "falseCreditCrossCheck": {
+    "purpose": "Section 25/08's pre-registered cross-check: do the independent adjudicators also reject all 14 historical confirmed false credits?",
+    "controlsPresentInSample": 14,
+    "allFourteenUnanimouslyNoCredit": true,
+    "note": "Every one of the 14 false-credit controls received NO_CREDIT from all three independent adjudicators, unanimously. This is strong independent corroboration that the false-credit determinations from Phase 3F.1.5.2 are correct and that the rubric's binary credit definition is sound - the taxonomy's reproducibility problem is confined to the DETAILED label, not the underlying credit/no-credit judgment."
+  }
+}

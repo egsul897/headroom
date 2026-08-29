@@ -14,6 +14,7 @@
  *                                PARTIAL.
  *   NON_MATERIAL_VARIANCE      — a real but non-controlling difference.
  */
+import { compareClaimIdentity } from "./claim-identity";
 import { figuresEquivalent, jaccard, overlapDetail, postureClass } from "./signals";
 import type { ProvisionBreadth } from "./signals";
 import type {
@@ -192,6 +193,28 @@ export function detectConflicts(input: ConflictInput): ConflictResult {
         (breadthSeverity === "MATERIAL_CONFLICT"
           ? " A narrow enumerated carve-out does not represent the universal restriction it sits under, and vice versa — the claims differ in breadth and legal effect even when they share a section, a family, a governed action and most of their vocabulary."
           : ""),
+    });
+  }
+
+  // --- I. Claim identity (sibling sub-provision) ----------------------------
+  // Phase 3F.1.5.3, Workstream A: SAME_COVENANT_FAMILY_IS_NOT_SAME_SEMANTIC_CLAIM.
+  // Two candidates anchored under the identical parent section but at
+  // DIFFERENT enumerated sub-items (e.g. 6.02(h) vs 6.02(d)) are siblings, not
+  // the same claim, no matter how much genuine covenant-family vocabulary they
+  // share. This is purely structural (parsed section-reference shape via
+  // splitSectionRef, already used and tested for DSGR excerpt resolution) —
+  // it carries no package, document, or term-specific knowledge. Recorded as
+  // NON_MATERIAL_VARIANCE (not MATERIAL_CONFLICT): semantic-correspondence.ts
+  // routes this pair to INDETERMINATE for semantic-judge review rather than
+  // outright rejecting it, since section-reference data can occasionally be
+  // imprecise for discovery-stage candidates — see 02-semantic-claim-fingerprint-spec.json.
+  const claimIdentity = compareClaimIdentity(gt, candidate);
+  if (claimIdentity.outcome === "DIFFERENT_SUBPROVISION_SAME_PARENT") {
+    push({
+      code: "SIBLING_CLAIM_MISMATCH",
+      severity: "NON_MATERIAL_VARIANCE",
+      dimension: "I_CLAIM_IDENTITY",
+      explanation: `Ground truth is anchored at ${claimIdentity.gtSubReference}; candidate is anchored at ${claimIdentity.candidateSubReference} — both enumerated sub-items of the same parent section (${claimIdentity.parentSection}), but different sub-items. Shared covenant-family vocabulary between siblings is not evidence they are the same specific claim.`,
     });
   }
 
