@@ -157,7 +157,6 @@ export const DETERMINISTIC_ONLY_JUDGE: SemanticJudge = {
   provider: "NONE_DETERMINISTIC_ONLY",
   model: "none",
   estimatedCostPerCallUsd: 0,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async judge(_request: JudgeRequest): Promise<SemanticJudgeOutput | null> {
     return null;
   },

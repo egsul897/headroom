@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-evaluation-methodology-v2.v1",
+  "artifactId": "REMAINING_EVALUATION_RISKS",
+  "generatedAt": "2026-08-29T02:20:00Z",
+  "purpose": "Catalog everything this phase did NOT fully close, so the verdict is not mistaken for a clean bill of health on either the evaluator or the underlying product.",
+  "primaryUnresolvedGateFailure": {
+    "criterion": "H (second-pass adjudication shows acceptable agreement)",
+    "result": "MISSED both pre-registered thresholds",
+    "binaryAgreement": "78.4% (inclusive-of-PARTIAL mapping) / 84.3% (strict exact-match-only sensitivity check) vs. required >=90%",
+    "detailedDispositionAgreement": "37.3% vs. required >=85%",
+    "rootCauseDiagnosis": [
+      {
+        "cluster": "V2 withholds credit; second pass grants it (the majority disagreement direction, ~5-7 of 11 cases)",
+        "cause": "V2's design requires a candidate to carry accountingRole=SUBSTANTIVE_REPRESENTATION (a compiled/verified IR representation) before granting credit, even when a discovery-stage candidate's own excerpt correctly paraphrases the ground-truth claim in natural language. This is a deliberate, disclosed design choice (see 01-methodology-spec.json's 'Gate 2 - accounting role', and Agent 1's own framing: 'a discovery candidate that correctly describes a covenant but was never compiled is an inventory finding, not a representation'). The second-pass reviewer was instructed only to judge whether a candidate 'substantively represents' the claim in natural-language terms - it was never told about V2's specific accountingRole distinction, so it naturally credited correct-sounding discovery-stage text the same way a human skimming the raw pipeline output would.",
+        "isThisTheFalseCreditDefectReturning": "NO. In every one of these cases, V2's refusal is because the only correspondence-passing candidate was never compiled - not because V2 fell back to structural proximity or ignored a genuinely compiled candidate. This is a stricter, more conservative definition of 'representation' than the second pass applied, not a regression to the old scorer's defect class."
+      },
+      {
+        "cluster": "V2 grants PARTIAL credit on definitional units; second pass rejects entirely (3 of 11 cases)",
+        "cause": "V2 found a compiled IR-definition matching the defined term's name but flagged it 'silent on E_ECONOMICS' (a missing-dimension partial). The second-pass reviewer's own report separately discloses that 15-19 of the 51 packets had a misaligned or entirely absent resolved ground-truth excerpt (a limitation of the second-pass agent's own raw-source resolver, not of V2's data) - this independently degrades comparability for an unknown subset of these specific disagreements, since the second-pass reviewer may have been judging against a less complete or misaligned excerpt than V2 itself used."
+      },
+      {
+        "cluster": "2 cases (doc-a::X::10.01a-us-guaranty EXACT_SINGLE, doc-a::X::10.06-reinstatement EXACT_COMPOSITE): V2 credits, second pass rejects, with no identified systematic explanation",
+        "status": "LEAST_EXPLAINED_RESIDUAL_DISAGREEMENT",
+        "recommendedFollowUp": "Direct, individual re-examination of these two specific cases in a future iteration - not resolved in this phase per the no-rewrite-after-seeing-results rule."
+      }
+    ],
+    "complianceWithNoRewriteRule": "No disagreement was resolved by altering V2's matching logic, the second-pass judgments, or the ground truth after these results were seen and analyzed, per the phase charter's explicit instruction.",
+    "implicationForVerdict": "This is the single reason this phase does not receive an unqualified PASS. See 14-phase-3f1-5-final-verdict.json."
+  },
+  "otherKnownLimitations": [
+    {
+      "limitation": "No live semantic AI judge (Layer 2) was ever executed",
+      "detail": "No AI/model credential was available in the agent's execution environment. All DSGR, cross-dataset, and adversarial-suite results are DETERMINISTIC-ONLY (Layers 1, 3, 4). The Layer-2 interface, prompt, structured schema, bounded budget, and evidence-identity cache are fully implemented and unit-tested against a scripted responder, but never exercised against a real model.",
+      "impact": "Every reported recall/correctness number is a LOWER BOUND. INDETERMINATE pairs (where a deterministic signal genuinely cannot resolve correspondence, e.g. a qualitative provision with ambiguous scope language) are precisely where a live AI judge would move numbers - potentially in either direction, and potentially closing some of the second-pass disagreement identified above (a live judge, given the same excerpts, might reproduce the second-pass reviewer's more permissive natural-language reading, or might side with V2's stricter one - this is unresolved).",
+      "recommendedFollowUp": "Before this evaluator is treated as fully validated, run Layer 2 with a real, authorized model credential against at least the DSGR dataset and the second-pass stratified sample, and re-run the second-pass agreement calculation."
+    },
+    {
+      "limitation": "Cross-dataset generalization run was not fully blind",
+      "detail": "Three general (non-package-specific) refinements to the matching logic were made after inspecting a first cross-dataset execution's output, then the engine was frozen and everything re-run. Disclosed explicitly in 09-cross-dataset-generalization.json. No refinement references a package identity, section number, or specific gtUnitId - all three are stated as general methodology corrections (object/resource overlap threshold, removing FINANCIAL_TEST/RATIO_TEST from the posture-inference map, and the breadth-missing-dimension rule) - but this is a real deviation from a strictly blind protocol, disclosed rather than hidden."
+    },
+    {
+      "limitation": "Ground-truth adjudication provenance",
+      "detail": "All DSGR/FWRG/LSB/CONMED ground truth is AI-adjudicated from source text only (`authoredFromSourceOnly: true`), never reviewed by an external human lawyer. Every V2 metric measures agreement with an AI-authored answer key, not a lawyer's. This is now explicitly labeled in the schema (never called 'human' ground truth) per the phase charter's requirement, but it remains a real epistemic limitation of the entire evaluation exercise, inherited from all prior phases."
+    },
+    {
+      "limitation": "39 GT units in the second-pass agent's own raw-source resolution could not be located",
+      "detail": "Classified GT_REQUIRES_DOMAIN_REVIEW in 10-ground-truth-quality-audit.json - attributed to a limitation of the evaluator's own excerpt-resolution logic, not necessarily a defect in the ground truth itself. No GT edits were made; zero units were excluded from aggregate metrics on this basis."
+    },
+    {
+      "limitation": "Production defects observed but not fixed (by design, per this phase's charter)",
+      "detail": "Recorded in 10-ground-truth-quality-audit.json's productionDefectObservationsNotGroundTruthDefects: (1) the production coverage auditor's FULLY_REPRESENTED_REVIEW_REQUIRED status can be granted on bare numeric coincidence - the same circularity class this whole phase exists to fix, but inside a different production module (coverage-audit, not the historical scorer) than this phase was chartered to touch; (2) 631 coverage units carry >=3 nested parenthetical levels in their sectionRef, plausibly related to the already-known-and-deferred P1-10 rank-stack defect from Phase 3F.1.4; (3) 378 of 2,847 discovery candidates have an empty sourceCitation, including every candidate at the exact addresses of several known false-credit cases - a citation-integrity gap (Architecture Invariants #1/#3); (4) 485 duplicate coverage-unit rows. None of these were fixed in this phase, per its explicit no-production-tuning charter."
+    },
+    {
+      "limitation": "Candidate-side data is necessarily downstream of the structural index",
+      "detail": "The candidate representations being evaluated ARE the pipeline's own output - the evaluator cannot independently re-derive what the compiler 'should' have produced from raw source the way it can for ground truth (which does resolve its own excerpts from raw source text). This is an inherent, disclosed, unavoidable characteristic of evaluating a system's own output, not a design flaw - Architecture Invariant #18's own disclosed boundary applies here as it does everywhere else in this codebase."
+    }
+  ],
+  "notInScopeForThisPhase": "Per the phase's own charter, no production semantic code was touched, no unseen package was selected, and no attempt was made to close P1-10/P1-11/P1-3 or other residual foundation risks carried forward from Phase 3F.1.4's own 13-remaining-foundation-risks.json - those remain exactly as documented there."
+}
