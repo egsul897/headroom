@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "REMAINING_EVALUATOR_RISKS",
+  "generatedAt": "2026-08-29T21:45:00Z",
+  "purpose": "Section 30/38: honest disclosure of every open risk this phase surfaced or carried forward, so the next architectural decision (25) is made with full information.",
+  "risksNewThisPhase": [
+    {
+      "id": "R1_DETAILED_TAXONOMY_NOT_REPRODUCIBLE",
+      "severity": "HIGH",
+      "description": "The 12-state detailed taxonomy is not reproducibly applicable by independent reviewers at the required 85% threshold, on either the original 65-case sample (76.7%) or a fresh 22-case holdout under a rubric clarification specifically targeted at the confirmed defect (69.7%, WORSE). Binary credit/no-credit IS reproducible (94.9%/97.0%) - the problem is confined to the detailed label.",
+      "evidence": "12-inter-reviewer-agreement.json, 17-holdout-inter-reviewer-results.json"
+    },
+    {
+      "id": "R2_THIRD_CONFUSABLE_PAIR_DISCOVERED_ON_HOLDOUT",
+      "severity": "MEDIUM",
+      "description": "INCOMPARABLE vs DISCOVERED_ONLY emerged as the dominant confusion on the holdout, driven by CONMED's blank-literal-excerpt/description-only ground-truth authoring convention interacting with INCOMPARABLE's own underspecified 'override evidence' language. This was not visible in the original 65-case sample and was not addressed by the one permitted redesign (which targeted two DIFFERENT, already-confirmed mechanisms). A genuinely reproducible taxonomy for this corpus may need to resolve THIS ambiguity too - which this phase's single-redesign budget did not have room for.",
+      "evidence": "17-holdout-inter-reviewer-results.json's newConfusionPatternDiscoveredOnHoldout"
+    },
+    {
+      "id": "R3_SECONDARY_REPRESENTATION_LAYER_CONFUSION_UNRESOLVED",
+      "severity": "LOW",
+      "description": "A smaller, low-volume confusion cluster among SEMANTICALLY_REPRESENTED_UNVERIFIED / PARTIAL_SEMANTIC_REPRESENTATION / SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE / HONESTLY_UNRESOLVED was observed in the original study but was not large or structurally concentrated enough to identify a minimum evidence-backed fix. Left unaddressed.",
+      "evidence": "13-taxonomy-confusion-analysis.json's secondaryDisagreementPattern"
+    },
+    {
+      "id": "R4_VERIFIED_STATE_STRUCTURALLY_UNREACHABLE",
+      "severity": "MEDIUM",
+      "description": "VERIFIED_SEMANTIC_REPRESENTATION was assigned ZERO times across 195 independent ratings (3 raters x 65 cases) plus 66 more on the holdout - not because the distinction is unimportant, but because Headroom's verification stage currently produces no evidence, reachable by either V2 or a human reviewer, that would ever satisfy this state's honest necessary conditions in any of the 4 frozen datasets. This is a pipeline/data-architecture gap, not a taxonomy defect - flagged for the eventual 'genuine production weaknesses the trustworthy evaluator exposes' work-stream (Section 38), once a trustworthy evaluator exists.",
+      "evidence": "14-product-actionability-analysis.json's dormantDistinction_VERIFIED_SEMANTIC_REPRESENTATION, 07's stratum-9 disclosure"
+    },
+    {
+      "id": "R5_ADJUDICATOR_SCRATCHPAD_ISOLATION_GAP",
+      "severity": "LOW_PROCESS",
+      "description": "The Agent tool's per-session scratchpad directory is shared across all subagents dispatched in one orchestrating session and is not adjudicator-isolated by default, causing one holdout adjudicator's temp file to be transiently overwritten by another's. Verified post-hoc that no contamination reached final results (zero verbatim matches, independently-diverging reasoning), but this is a real infrastructure gap that should be fixed (unique scratch subdirectories per adjudicator) before this methodology is reused.",
+      "evidence": "17-holdout-inter-reviewer-results.json's processIntegrityNote"
+    },
+    {
+      "id": "R6_V2_BINARY_DISAGREEMENTS_WITH_CONSENSUS_UNRESOLVED",
+      "severity": "MEDIUM",
+      "description": "V2's deterministic binary disposition disagrees with the (non-certified, but binary-reproducible) adjudicator consensus on 9 of 65 original-sample cases (all V2 under-crediting) and 3 of 22 holdout cases (all V2 over-crediting). Neither direction is confirmed as 'V2 is wrong' given the demonstrated detailed-taxonomy unreliability, but these 12 specific cases (listed in 19) warrant manual legal review before being dismissed, especially the 3 holdout over-credit cases which are the closer analogue to a false-credit risk.",
+      "evidence": "19-v2-vs-independent-consensus.json",
+      "specificCasesForReview": ["fwrg-6.01-j", "fwrg-6.04-a-iii", "fwrg-6.04-a-xi", "fwrg-6.10-a", "fwrg-6.10-b", "fwrg-def-restricted-debt", "lsb-6.01-general-ratio-gated", "lsb-6.01-m-secured-notes", "lsb-6.15-springing-financial-covenant", "doc-a::I::1.07-status-of-obligations", "doc-a::X::10.01a-us-guaranty", "doc-a::X::10.06-reinstatement"]
+    }
+  ],
+  "risksCarriedForwardFromWorkstreamA": [
+    {
+      "id": "R7_DIFFERENT_BASE_SECTION_FALSE_MATCH",
+      "severity": "MEDIUM",
+      "description": "The I_CLAIM_IDENTITY fix (Workstream A) only addresses candidates anchored at a SIBLING sub-item under the SAME parent section. It does not address a candidate anchored at a completely different, non-sibling base section (e.g. '1.06' vs '6.05(b)') that happens to share family/lexical vocabulary. Confirmed via debugging to be a distinct, still-open mechanism. Not fixed this phase (frozen matcher, Section 10).",
+      "evidence": "01-sibling-claim-root-cause.json"
+    },
+    {
+      "id": "R8_BARE_UNDIFFERENTIATED_SECTION_DEFINITIONAL_OVERMATCH",
+      "severity": "LOW",
+      "description": "Definitional candidates within an undifferentiated bare section (e.g. both anchored at bare '1.01' with no enumerated sub-item) are not addressed by I_CLAIM_IDENTITY, which returns NOT_COMPARABLE whenever either side lacks an enumerated sub-item. Still open.",
+      "evidence": "01-sibling-claim-root-cause.json, 03-matcher-remediation.json"
+    },
+    {
+      "id": "R9_EXERCISE_REMEDIES_REGEX_OVERBREADTH",
+      "severity": "LOW",
+      "description": "Confirmed (Phase 3F.1.5.2 forensics) root cause of the Article X cluster disagreement: EXERCISE_REMEDIES regex overbreadth. Deliberately NOT fixed in 3F.1.5.2 due to blast-radius/effort-budget reasoning, and untouched by the frozen Workstream A matcher this phase. Still open.",
+      "evidence": "docs/evaluation-v2-iteration-2 (historical, byte-identical, untouched)"
+    }
+  ],
+  "risksResolvedThisPhase": [
+    {
+      "id": "SIBLING_SUBPROVISION_SAFE_SURFACING_FALSE_CREDIT",
+      "description": "Phase 3F.1.5.2's Risk R3 (dominant remaining defect: sibling/sub-provision identity discrimination gap) - RESOLVED by Workstream A's I_CLAIM_IDENTITY dimension, verified at both single-case and at-scale (fwrg-6.06-b-ii) granularity, with 22 new adversarial tests, zero regression."
+    }
+  ]
+}

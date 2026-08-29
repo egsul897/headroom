@@ -1,0 +1,184 @@
+{
+  "adjudicatorId": "C",
+  "rubricVersion": "REPLACEMENT_V2",
+  "generatedAt": "2026-08-29T00:00:00Z",
+  "caseCount": 22,
+  "results": [
+    {
+      "caseId": "a-7.2-a",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "The single candidate anchored exactly at 7.2(a) is a DISCOVERY_CANDIDATE/INVENTORY_ONLY item whose text and normalized semantics closely track the ground truth, but it was never compiled into a structured representation and carries no safety-flag marker. Per DISCOVERED_ONLY's necessary conditions, textual overlap without compilation is DISCOVERED_ONLY regardless of how accurate the inventory description reads.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2-b",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "Same pattern as 7.2(a): the sole exact-location candidate is DISCOVERY_CANDIDATE/INVENTORY_ONLY (AUTO_ACCEPTED) with no compilation and no safety flag at 7.2(b). No COMPILED_IR or VERIFICATION_FINDING candidates exist anywhere in this pool, so DISCOVERED_ONLY is the correct, uncontested disposition.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2-c",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "The exact-location candidate at 7.2(c) is again DISCOVERY_CANDIDATE/INVENTORY_ONLY only, matching the ground truth text verbatim but never compiled and unflagged. DISCOVERED_ONLY applies per its necessary/exclusion conditions; no representation-layer or safety-flag evidence exists to move this up the precedence order.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "a-7.2-e",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_ONLY",
+      "confidence": "HIGH",
+      "rationale": "Both candidates at exact sectionRef 7.2(e) are DISCOVERY_CANDIDATE/INVENTORY_ONLY (duplicate near-identical excerpts), neither compiled nor flagged. This is the canonical DISCOVERED_ONLY fact pattern from the rubric's own abstractPositiveExample.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::I::1.06-pro-forma-adjustments",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "confidence": "MEDIUM",
+      "rationale": "Four confident COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION candidates exist anchored exactly at 1.06, but all four capture only the narrow 'proceeds not counted as Unrestricted Cash' carve-out, a genuine but minor piece of this composite section-level claim. The core trigger/methodology (Acquisition/Disposition pro forma recalculation, Reg S-X basis, Section 6.12-level exclusion of the Total Net Leverage Ratio Adjustment) is captured only by several COMPILED_IR_RULE/HONEST_UNRESOLVED candidates at 1.06(i)/(iii), i.e. hedged rather than confidently represented. Per PARTIAL's necessary conditions this is a genuine-but-incomplete representation of the same claim (correct location, correct family) missing material non-core content, which precedence ranks above HONESTLY_UNRESOLVED.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::I::1.07-status-of-obligations",
+      "binaryDisposition": "CREDIT",
+      "detailedState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "confidence": "HIGH",
+      "rationale": "Two COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION candidates anchored exactly at 1.07 together capture both halves of the ground truth (the self-executing 'senior/designated senior indebtedness' designation and the affirmative obligation to take all necessary actions), matching action/posture/object with no conflicting non-core dimension. No VERIFICATION_FINDING exists for this location in the packet, so per SEMANTICALLY_REPRESENTED_UNVERIFIED's necessary conditions (verification never attempted, not merely inconclusive) this is UNVERIFIED rather than VERIFIED or VERIFICATION_INCOMPLETE.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::I::ebitda",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNRESOLVED",
+      "confidence": "HIGH",
+      "rationale": "The only compiled candidate that actually targets the 'EBITDA' defined term (the other 1.01-tagged compiled candidates are for 'Applicable EBITDA' and 'Available Amount', different terms) is a COMPILED_IR_DEFINITION with accountingRole HONEST_UNRESOLVED, whose own selfReportedState lists extensive, explicit reasons the twenty add-back/six-deduction structure and the Combined Cap could not be faithfully modeled. No confident SUBSTANTIVE_REPRESENTATION of EBITDA itself exists anywhere in the pool, so per HONESTLY_UNRESOLVED's necessary conditions (a corresponding candidate whose own content declares its answer unresolved) this state applies rather than PARTIAL.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::I::interest-coverage-ratio",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "MEDIUM",
+      "rationale": "No candidate anywhere in the pool defines the base Interest Coverage Ratio formula itself; the only candidates textually overlapping the ground truth's specific 'Annualized Quarters' exception (verbatim 'Consolidated Interest Expense... solely for purposes of determining the Interest Coverage Ratio for any period... ending as of March 31, 2022...') are SEMANTIC_COVERAGE_UNIT/SAFETY_FLAG items carrying corrupted/garbled sectionRef labels ('2.09(ii)(ii)(b)(a)(b)', '88', '7.01(b)(a)(b)') rather than a clean citation, but their excerpt content is an unambiguous verbatim match. Treating that content match as genuine overlap despite the label noise, a safety-flag marker (never compiled) is the strongest evidence present, giving DISCOVERED_REVIEW_REQUIRED; confidence is capped at MEDIUM given the metadata corruption.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::II::2.11a-optional-prepayment",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "MEDIUM",
+      "rationale": "No candidate in the 60-item pool discusses the actual content of 2.11(a) (the right to prepay any Borrowing in whole or part without premium or penalty); the candidates whose sectionRef nominally begins with '2.11(a)' are, by content, about Swingline/ABR notice-timing mechanics and Foreign Subsidiary reinvestment provisions that substantively belong to sibling paragraphs (2.11(c)/(d)). Applying the SIBLING_ADJACENCY_RULE_FOR_TEXTUAL_OVERLAP's underlying principle (label proximity does not establish overlap with a different provision's own content), none of these count as covering 2.11(a) itself, while Article II generally was heavily processed elsewhere, yielding HONESTLY_UNSUPPORTED rather than NOT_DISCOVERED.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::II::2.11b-revolver-overadvance-cure",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "All seven candidates anchored exactly at 2.11(b) carry accountingRole SAFETY_FLAG (SEMANTIC_COVERAGE_UNIT and DISCOVERY_CANDIDATE), each noting 'no adequate compiled/verified IR representation found' or an unfilled discovery sub-clause reference; none is compiled or plain inventory-only. This directly matches DISCOVERED_REVIEW_REQUIRED's necessary conditions (structural safety-flag marker, no substantive answer asserted).",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::II::2.11c-mandatory-prepayment-events",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNRESOLVED",
+      "confidence": "MEDIUM",
+      "rationale": "Multiple SEMANTIC_COVERAGE_UNIT candidates verbatim-quote the claim's own operative language ('...exceeds $10,000,000... the Asset Sale Prepayment Trigger', 'Reinvestment Period') despite being mistagged with a '2.11(a)' sectionRef; most carry accountingRole SAFETY_FLAG but at least one (af962bb4...) carries HONEST_UNRESOLVED over the same Asset Sale Prepayment Trigger/reinvestment content. Per the rubric's explicit tie-break ('if both are present for the same claim, prefer HONESTLY_UNRESOLVED'), and with no compiled SUBSTANTIVE_REPRESENTATION anywhere in the pool, HONESTLY_UNRESOLVED applies; confidence is capped at MEDIUM given the sectionRef corruption required a content-based judgment call.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::II::2.11d-prepayment-notices",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNRESOLVED",
+      "confidence": "MEDIUM",
+      "rationale": "Candidates textually matching the claim's actual content (ABR/Canadian Prime and Swingline prepayment-notice timing and irrevocability mechanics) again carry a mistagged '2.11(a)...' sectionRef; among them is a SEMANTIC_COVERAGE_UNIT/HONEST_UNRESOLVED item on the ABR/Canadian-Prime notice-timing text alongside several SAFETY_FLAG items on the Swingline/rejection-notice text. Applying the same HONESTLY_UNRESOLVED-over-DISCOVERED_REVIEW_REQUIRED tie-break with no compiled representation present, HONESTLY_UNRESOLVED is the best-supported disposition; confidence is MEDIUM due to the sectionRef metadata noise.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-a::IV::4.01-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "Among the five DISCOVERY_CANDIDATE/SAFETY_FLAG items anchored exactly at 4.01, one directly paraphrases the chapeau's own general introductory requirement ('all enumerated conditions in Section 4.01 be satisfied... including that a newly acquired Person become a Loan Party immediately following the Closing Date Acquisitions'), satisfying the LOCATION_SCOPING_RULE_FOR_COMPOSITE_CLAIMS by addressing the composite condition-precedent chapeau as a whole. No compiled representation exists at this location, so the safety flag controls: DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::IV::4.01-outside-date",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "The same five-candidate set at sectionRef 4.01 includes a DISCOVERY_CANDIDATE/SAFETY_FLAG item that is a verbatim match to this claim's own outside-date/closing-flush content ('if the enumerated conditions are not satisfied or waived... by 2:00 p.m. Chicago time on June 30, 2022, the Commitments automatically terminate'). No compiled representation exists for it, so DISCOVERED_REVIEW_REQUIRED applies with high confidence; this is a distinct sub-claim from the 4.01-chapeau case's own condition-precedent chapeau language, correctly located under either reading of Section 4.01's scope.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VI::6.02-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "An exact-location DISCOVERY_CANDIDATE/INVENTORY_ONLY candidate directly restates the chapeau's own general prohibition ('Prohibits Loan Parties and Restricted Subsidiaries from creating, incurring, assuming or permitting to exist any Lien... except as permitted below'), satisfying the LOCATION_SCOPING_RULE_FOR_COMPOSITE_CLAIMS by addressing the negative covenant as a whole rather than one lettered exception. Three SEMANTIC_COVERAGE_UNIT/SAFETY_FLAG candidates on the same heading confirm no compiled representation exists, so DISCOVERED_REVIEW_REQUIRED (not DISCOVERED_ONLY) controls.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VI::6.09-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "An exact-location DISCOVERY_CANDIDATE/INVENTORY_ONLY candidate restates the 6.09 chapeau's own general prohibition on Affiliate transactions 'except as permitted by the enumerated exceptions', satisfying the LOCATION_SCOPING_RULE_FOR_COMPOSITE_CLAIMS. A co-located SEMANTIC_COVERAGE_UNIT/SAFETY_FLAG candidate confirms no compiled representation exists, yielding DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::VII::7.01-chapeau",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "HIGH",
+      "rationale": "The two candidates nominally anchored at exact sectionRef 7.01 address the post-default remedies/acceleration-waiver flush language, not the chapeau's own composite 'any of the events in (a)-(q) constitutes an Event of Default' statement; per the LOCATION_SCOPING_RULE_FOR_COMPOSITE_CLAIMS, candidates anchored at other parts of Section 7.01 (here, the remedies paragraph, not even a lettered sub-item) do not establish discovery for the chapeau claim itself. An extensive keyword search across the full 60-candidate pool found no candidate quoting or paraphrasing the chapeau sentence itself, while Article VII generally was clearly processed (many candidates reference specific 7.01 sub-clauses), yielding HONESTLY_UNSUPPORTED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::X::10.01a-us-guaranty",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "An exact-location DISCOVERY_CANDIDATE/INVENTORY_ONLY item closely restates the ground truth's core guaranty language, but three co-located SEMANTIC_COVERAGE_UNIT/SAFETY_FLAG candidates on the same heading confirm no compiled/verified representation exists for this MATERIAL unit. No COMPILED_IR candidate exists anywhere in this pool, so the safety flag controls over the plain inventory match: DISCOVERED_REVIEW_REQUIRED.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::X::10.06-reinstatement",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "All three exact-location candidates at 10.06 are SEMANTIC_COVERAGE_UNIT/SAFETY_FLAG items flagging that no adequate compiled/verified representation exists for this MATERIAL reinstatement provision; no inventory-only or compiled candidate exists at this location at all. This is a clean DISCOVERED_REVIEW_REQUIRED fact pattern.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-a::XII::12-schedules-exhibits",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "MEDIUM",
+      "rationale": "The ground truth's own resolved excerpt for sectionRef 'XII' is the Collateral Allocation Mechanism (CAM) text, while its semantic description instead covers the Commitment Schedule dollar breakdown and Exhibits A-F appendix that follows the signature pages; the two exact-location candidates found are both about CAM, and an exhaustive keyword search of the full 60-candidate pool (Exhibit A/B, Commitment Schedule, Compliance Certificate, etc.) found no candidate of any kind addressing the actual claimed content. Because the 'XII' citation bucket itself was clearly processed (just for a different topic) rather than being a total blind spot, HONESTLY_UNSUPPORTED is the better fit than NOT_DISCOVERED, though the ground-truth excerpt/description mismatch itself is a genuine data-quality wrinkle.",
+      "ambiguityFlag": true
+    },
+    {
+      "caseId": "doc-b::AMENDMENT::sec2a-consent-increase-2-09e-cap",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "DISCOVERED_REVIEW_REQUIRED",
+      "confidence": "HIGH",
+      "rationale": "The single exact-location candidate at 2(a) is a DISCOVERY_CANDIDATE/SAFETY_FLAG whose content is a verbatim match to the ground truth ($200,000,000 to $255,000,000 increase to the Section 2.09(e) cap for the Third Amendment Incremental Commitments/Loans). It was never compiled, so DISCOVERED_REVIEW_REQUIRED applies.",
+      "ambiguityFlag": false
+    },
+    {
+      "caseId": "doc-b::AMENDMENT::sec2b-amendment-mechanic-exhibit-a",
+      "binaryDisposition": "NO_CREDIT",
+      "detailedState": "HONESTLY_UNSUPPORTED",
+      "confidence": "MEDIUM",
+      "rationale": "No candidate in the 60-item pool is anchored at sectionRef 2(b), and a keyword search (Exhibit A, Commitment Schedule, stricken/double-underlined, restated in its entirety) across the whole pool found no candidate of any kind addressing the Section 2(b) amendment-mechanic/blackline content; the pool is otherwise dominated by unrelated doc-a base-agreement sectionRefs. Because the doc-b amendment-mechanics area generally was reachable by the pipeline (the sibling 2(a) claim did yield a hit), this is HONESTLY_UNSUPPORTED rather than NOT_DISCOVERED.",
+      "ambiguityFlag": false
+    }
+  ]
+}

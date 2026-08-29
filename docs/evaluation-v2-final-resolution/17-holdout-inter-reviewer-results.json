@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "HOLDOUT_INTER_REVIEWER_RESULTS",
+  "generatedAt": "2026-08-29T21:10:00Z",
+  "purpose": "Section 20: compute the SAME pre-registered agreement statistics (08) over the SAME three independent adjudicators' fresh, isolated re-adjudication (17a/17b/17c) of the 22-case holdout (16) under REPLACEMENT_RUBRIC_V2 (15/_taxonomy-operational-rubric-v2-REPLACEMENT.json), to determine whether the one permitted rubric redesign restored reproducibility.",
+  "processIntegrityNote": {
+    "issue": "Adjudicator B self-reported that its private scratch temp file (outside the git repo, in this session's shared scratchpad directory) was overwritten mid-task by a complete result set belonging to Adjudicator A.",
+    "investigation": "Verified post-hoc, before trusting any result: (1) zero verbatim rationale-text matches between A and B across all 22 cases; (2) B's detailed-state disagreement rate with A (6 of 22, 27%) is NOT anomalously low relative to the other pairs - B in fact agrees MORE with C (18/22) than with A (16/22), the opposite of what copying from A would produce; (3) spot-checked case-by-case reasoning shows B applying a genuinely different, independently-derived interpretation of the rubric's INCOMPARABLE 'override evidence' language than A on 4 of the 4 conmed cases, disagreeing with A's conclusion in each - this is affirmative evidence of independent reasoning, not contamination.",
+    "conclusion": "No evidence any adjudicator's final output was influenced by another's work. The results below are used as reported.",
+    "infrastructureRiskDisclosed": "The Agent tool's per-session scratchpad directory is shared across all subagents dispatched in one session and is not adjudicator-isolated by default. This phase's dispatch instructions told each adjudicator to write ONLY to its own designated final output path in the repo (which worked correctly - no cross-writes occurred there), but did not enforce isolated TEMP/scratch paths, which is what collided here. Carried forward to 24-remaining-evaluator-risks.json as a required infrastructure fix for any future reuse of this methodology: give each blinded adjudicator a unique scratch subdirectory explicitly, not just a unique final-output path."
+  },
+  "sampleSize": 22,
+  "binaryDispositionDistribution": {"A": {"NO_CREDIT": 22}, "B": {"NO_CREDIT": 22}, "C": {"NO_CREDIT": 21, "CREDIT": 1}},
+  "pairwiseBinaryAgreement": {"A-B": 1.0, "A-C": 0.9545454545454546, "B-C": 0.9545454545454546, "mean": 0.9696969696969697},
+  "threeRaterUnanimousBinary": {"count": 21, "rate": 0.9545454545454546},
+  "pairwiseDetailedAgreement_allCases": {"A-B": 0.7272727272727273, "A-C": 0.5454545454545454, "B-C": 0.8181818181818182, "mean": 0.6969696969696969},
+  "pairwiseDetailedAgreement_excludingUnresolvedConsensus": {
+    "note": "No UNRESOLVED_CONSENSUS cases occurred in this holdout (unlike the original 65-case study's 5) - a clean 2-of-3 detailed majority was reached on every case. This metric is therefore identical to the all-cases metric above.",
+    "denominator": 22,
+    "A-B": 0.7272727272727273, "A-C": 0.5454545454545454, "B-C": 0.8181818181818182, "mean": 0.6969696969696969
+  },
+  "threeRaterUnanimousDetailed": {"count": 12, "rate": 0.5454545454545454},
+  "unresolvedConsensusCount": 0,
+  "fleissKappa": {
+    "binary": {
+      "kappa": -0.015384615384616128, "P_bar": 0.9696969696969696, "P_e_bar": 0.9701561065197428,
+      "interpretation": "MANDATORY DISCLOSURE per 08's pre-registration: this near-zero (slightly negative) kappa does NOT mean binary agreement is poor - it is the well-known artifact of extreme category skew (all three raters chose NO_CREDIT on 21-22 of 22 cases; the marginal distribution is ~98% one category). When one category dominates this heavily, the chance-agreement baseline (P_e_bar) is itself close to 1, so even near-perfect observed agreement (P_bar=0.97) yields a chance-adjusted statistic near zero. Per the pre-registration, the RAW pairwise agreement (96.97%) is the actual pass/fail gate, not kappa - kappa is disclosed here exactly as required, not substituted as an alternate gate, and does not change the binary gate's PASS result below."
+    },
+    "detailed": {
+      "kappa": 0.5849056603773586, "P_bar": 0.6969696969696969, "P_e_bar": 0.27,
+      "interpretation": "Moderate-to-substantial agreement (Landis-Koch scale), meaningfully lower than the original study's detailed kappa (0.64) despite the rubric clarification - the chance-adjustment does not rescue this result either; it corroborates the raw rate's failure."
+    }
+  },
+  "gateEvaluation": {
+    "binaryInterReviewerAgreementGate": {"threshold": 0.90, "observed": 0.9696969696969697, "passed": true},
+    "detailedInterReviewerAgreementGate": {"threshold": 0.85, "observed": 0.6969696969696969, "passed": false},
+    "bothGatesRequired": true,
+    "holdoutTaxonomyReproducible": false,
+    "comparisonToOriginalStudy": {
+      "originalDetailedAgreement": 0.7666666666666666,
+      "holdoutDetailedAgreement": 0.6969696969696969,
+      "direction": "WORSE on the holdout, not better - the replacement rubric's two precision clarifications did not close the gap; if anything the holdout's heavier concentration of exactly the targeted mechanisms (chapeau/composite claims, sibling-adjacency) combined with a NEW confusable pair the original sample never surfaced (INCOMPARABLE vs DISCOVERED_ONLY, driven by CONMED's blank-literal-excerpt ground-truth authoring style) made detailed agreement harder, not easier."
+    }
+  },
+  "newConfusionPatternDiscoveredOnHoldout": {
+    "dominantPair": "INCOMPARABLE vs DISCOVERED_ONLY",
+    "count": 8,
+    "diagnosis": "All 4 CONMED cases in the holdout (a-7.2-a/b/c/e) have a ground-truth unit whose groundTruthExcerpt field is literally empty with groundTruthExcerptResolution='UNRESOLVED_DESCRIPTION_ONLY' (CONMED's ground-truth was authored by paraphrased description only, not verbatim excerpt, for its enumerated basket sub-items). Adjudicator A treated this as satisfying INCOMPARABLE's necessary condition outright on all 4. Adjudicators B and C instead applied INCOMPARABLE's own sufficient-condition caveat ('AND no override evidence exists that would let a reviewer confidently resolve the ground-truth unit's own meaning') and found that an exact-quoting inventory candidate constituted such 'override evidence,' resolving the claim's meaning and excluding INCOMPARABLE - then evaluated the resolved claim as DISCOVERED_ONLY.",
+    "implication": "This is a THIRD distinct rubric-precision gap (in addition to the two the redesign already fixed), located in the INCOMPARABLE state's own 'override evidence' language, which 06/the REPLACEMENT rubric never precisely defined. It was not visible in the original 65-case sample because none of those ground-truth units used CONMED's blank-excerpt/description-only authoring convention as heavily. This is disclosed as evidence that a genuinely reproducible taxonomy for this corpus may require MORE than the one redesign this phase permits - see 24-remaining-evaluator-risks.json and 25-final-verdict.json."
+  },
+  "secondaryConfusionPairs": [
+    {"pair": "HONESTLY_UNSUPPORTED vs HONESTLY_UNRESOLVED", "count": 4},
+    {"pair": "DISCOVERED_REVIEW_REQUIRED vs PARTIAL_SEMANTIC_REPRESENTATION", "count": 2},
+    {"pair": "DISCOVERED_REVIEW_REQUIRED vs HONESTLY_UNSUPPORTED", "count": 2},
+    {"pair": "CONTRADICTORY_REPRESENTATION vs SEMANTICALLY_REPRESENTED_UNVERIFIED", "count": 2}
+  ],
+  "conclusionPerSection20": "The replacement rubric FAILED to restore detailed reproducibility on a fresh, never-before-seen holdout, and did so more severely than the original study, with a newly-surfaced confusable pair the redesign did not anticipate or address. Per Section 20's explicit instruction ('if the replacement ALSO fails reproducibility, STOP - do not design ontology V3 - return NEEDS_ARCHITECTURE_DECISION'), no second (V3) redesign is attempted in this phase. See 18-replacement-ontology-freeze.json and 25-final-verdict.json."
+}

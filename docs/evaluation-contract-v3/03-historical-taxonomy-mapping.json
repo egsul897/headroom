@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "HISTORICAL_TAXONOMY_MAPPING",
+  "generatedAt": "2026-08-29T22:15:00Z",
+  "purpose": "Section 7: for each of the 12 historical states, document which atomic dimensions can be inferred losslessly, which cannot, which distinctions were conflated, and whether multiple old states collapse into the same atomic facts. This is an interpretation/migration layer only - no historical artifact is modified.",
+  "mappings": [
+    {
+      "historicalState": "VERIFIED_SEMANTIC_REPRESENTATION",
+      "atomicFacts": { "creditEligibility": "CREDIT", "representationCompleteness": "FULL", "verificationStatus": "VERIFIED" },
+      "losslessness": "Lossless in principle - the historical state's own definition (full correspondence AND independent verification) is exactly creditEligibility=CREDIT + verificationStatus=VERIFIED.",
+      "empiricalNote": "Per 02's confirmed real-data finding, verificationStatus=VERIFIED is expected to be rare-to-unreachable with the current pipeline (verification evidence never routes onto matched candidates) - this historical state will, in practice, almost never be the correct derivedDiagnosticLabel today, not because the concept is wrong but because the pipeline does not yet produce the evidence for it (carried to 22-remaining-evaluator-risks.json)."
+    },
+    {
+      "historicalState": "SEMANTICALLY_REPRESENTED_UNVERIFIED",
+      "atomicFacts": { "creditEligibility": "CREDIT", "representationCompleteness": "FULL", "verificationStatus": "NOT_EVALUATED" },
+      "losslessness": "Lossless."
+    },
+    {
+      "historicalState": "SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE",
+      "atomicFacts": { "creditEligibility": "CREDIT", "representationCompleteness": "FULL", "verificationStatus": "VERIFICATION_INCOMPLETE" },
+      "losslessness": "Lossless."
+    },
+    {
+      "historicalState": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "atomicFacts": { "creditEligibility": "NO_CREDIT", "representationCompleteness": "PARTIAL", "surfacingStatus": "NOT_APPLICABLE_HISTORICALLY_BUT_COMPUTED_AS_NOT_SPECIFICALLY_SURFACED_OR_SPECIFICALLY_SURFACED" },
+      "losslessness": "Mostly lossless for credit/completeness. One genuine gap: the historical taxonomy's PARTIAL never separately tracked whether the missing dimension was ALSO flagged (surfaced) by the system - the new atomic model does track this via surfacingStatus, which is NEW, more granular information the old label discarded. This is a case where the new architecture is STRICTLY MORE INFORMATIVE than the old label, not merely different."
+    },
+    {
+      "historicalState": "HONESTLY_UNSUPPORTED (as defined in docs/evaluation-v2-iteration/02-state-taxonomy.json / 06-taxonomy-operational-rubric.json: 'No candidate corresponds to the claim on any core dimension, and no candidate at the claim's location surfaces the gap for review... a silent, uncaught coverage gap')",
+      "atomicFacts": { "creditEligibility": "NO_CREDIT", "surfacingStatus": "NOT_SPECIFICALLY_SURFACED", "representationCompleteness": "NONE" },
+      "losslessness": "Lossless for this DEFINITION of the term - this is exactly a dangerous silent omission (assuming material). BUT SEE THE TERMINOLOGY COLLISION BELOW."
+    },
+    {
+      "TERMINOLOGY_COLLISION_DISCLOSURE": true,
+      "historicalState": "HONESTLY_UNSUPPORTED (engine matchStatus literal value, matching.ts)",
+      "conflictingDefinition": "The CURRENT engine's matchStatus enum ALSO has a literal value 'HONESTLY_UNSUPPORTED', but it means something DIFFERENT from the historical rubric's definition above: 'a semantically-corresponding candidate explicitly declares that the system cannot represent this claim' - i.e. a SAFE, claim-specific self-declaration (explicitlySurfacedAsUnsafe is always TRUE for this engine matchStatus value), not a silent gap.",
+      "atomicFactsForEngineValue": { "creditEligibility": "NO_CREDIT", "surfacingStatus": "SPECIFICALLY_SURFACED", "representationCompleteness": "NONE" },
+      "resolutionInImplementation": "atomic-contract.ts's deriveDiagnosticLabel() does NOT map the engine's matchStatus='HONESTLY_UNSUPPORTED' to the historical label 'HONESTLY_UNSUPPORTED', precisely because doing so would silently conflate two opposite-in-safety-implication concepts that happen to share a name. It instead reports derivedDiagnosticLabel='UNRESOLVED_FROM_ATOMIC_FACTS' for this case, per Section 6's explicit instruction not to invent information when multiple historical concepts could plausibly apply and the atomic facts do not cleanly pick one. This is the single most important disclosure in this migration table: the historical taxonomy's own vocabulary was already internally inconsistent with the engine's own field values before this phase began, and the atomic architecture surfaces that inconsistency rather than papering over it.",
+      "whichHistoricalStateThisEngineValueIsClosestTo": "HONESTLY_UNRESOLVED (a corresponding candidate self-declares inability/uncertainty) - but not identical, since HONESTLY_UNRESOLVED's own historical definition is about declared UNCERTAINTY, while the engine's HONESTLY_UNSUPPORTED is about a declared, definite INABILITY to represent at all. Genuinely orthogonal-ish shades of the same broad 'candidate honestly declines to assert an answer' idea that the historical 12-state taxonomy never cleanly separated either."
+    },
+    {
+      "historicalState": "HONESTLY_UNRESOLVED",
+      "atomicFacts": { "creditEligibility": "NO_CREDIT", "surfacingStatus": "SPECIFICALLY_SURFACED", "representationCompleteness": "NONE" },
+      "losslessness": "Lossless - this maps 1:1 from the engine's own matchStatus='HONESTLY_UNRESOLVED' with no ambiguity, unlike the case above."
+    },
+    {
+      "historicalState": "CONTRADICTORY_REPRESENTATION",
+      "atomicFacts": { "creditEligibility": "NO_CREDIT", "verificationStatus": "CONTRADICTED", "representationCompleteness": "NONE (disclosed design choice - see 02)" },
+      "losslessness": "Credit and verification facts are lossless. Representation-completeness for the WRONG answer's own scope (did it cover all dimensions but get them wrong, or only some) is NOT preserved by this mapping - disclosed as a genuine, if minor, information loss in 22-remaining-evaluator-risks.json."
+    },
+    {
+      "historicalState": "AMBIGUOUS",
+      "atomicFacts": { "creditEligibility": "NO_CREDIT", "representationCompleteness": "NONE (disclosed design choice)" },
+      "losslessness": "The historical state's core meaning (competing, irreconcilable candidates) is NOT separately represented in the 5 atomic dimensions at all - this phase does not introduce a 6th dimension for it (Section 5's evidence bar for an additional dimension was not met: AMBIGUOUS never occurred even once across Phase 3F.1.5.3's combined 87 adjudicated ratings on two samples, so there was no reproducibility evidence available to justify one). The ambiguousClusters field itself remains available on the underlying UnitEvaluationResult (untouched, not deleted) for anyone who needs the raw multi-candidate detail; it simply is not promoted into the atomic contract."
+    },
+    {
+      "historicalState": "DISCOVERED_REVIEW_REQUIRED",
+      "atomicFacts": { "creditEligibility": "NO_CREDIT", "surfacingStatus": "SPECIFICALLY_SURFACED (when the flag is claim-specific)", "representationCompleteness": "NONE" },
+      "losslessness": "PARTIALLY lossy in the diagnostic-label direction only: the diagnostic label uses a BROADER (non-claim-identity-filtered) role scan across all evaluated pairs to decide DISCOVERED_REVIEW_REQUIRED vs DISCOVERED_ONLY vs HONESTLY_UNSUPPORTED(historical sense), for historical-continuity purposes only. The SAFETY-CRITICAL surfacingStatus dimension is always the strict, claim-identity-filtered answer and can legitimately diverge from the diagnostic label (a case can show derivedDiagnosticLabel=DISCOVERED_REVIEW_REQUIRED while surfacingStatus=NOT_SPECIFICALLY_SURFACED - see 02's confirmed real-data finding on fwrg-6.06-b-ii and 5 other FWRG units). This divergence is DELIBERATE and is the entire point of separating the two: the diagnostic label answers 'would the old, looser taxonomy have called this reviewed', the atomic dimension answers 'was THIS SPECIFIC claim actually safely surfaced'. Never treat the diagnostic label as a substitute for the atomic dimension."
+    },
+    {
+      "historicalState": "DISCOVERED_ONLY",
+      "atomicFacts": { "creditEligibility": "NO_CREDIT", "surfacingStatus": "NOT_SPECIFICALLY_SURFACED", "representationCompleteness": "NONE" },
+      "losslessness": "Same broader-scan caveat as DISCOVERED_REVIEW_REQUIRED above applies to the diagnostic label only; the atomic surfacingStatus is always the strict answer."
+    },
+    {
+      "historicalState": "NOT_DISCOVERED",
+      "atomicFacts": { "creditEligibility": "NO_CREDIT", "surfacingStatus": "NOT_SPECIFICALLY_SURFACED", "representationCompleteness": "NONE" },
+      "losslessness": "Lossless for the atomic facts (identical to DISCOVERED_ONLY's atomic facts - the distinction between 'nothing at all' and 'something uncompiled nearby' is NOT preserved by the 5 core atomic dimensions; it survives only in the diagnostic label, derived from pairAssessments.length===0)."
+    },
+    {
+      "historicalState": "AMBIGUOUS vs DISCOVERED_ONLY vs NOT_DISCOVERED collapse note",
+      "note": "These three historical states, plus CONTRADICTORY_REPRESENTATION for its completeness dimension, are the four places where the 5 atomic dimensions alone under-determine the full historical distinction; the diagnostic label (when computable) recovers most of this for continuity, and the underlying raw UnitEvaluationResult (pairAssessments, ambiguousClusters) is never deleted for anyone who needs the full detail."
+    },
+    {
+      "historicalState": "INCOMPARABLE",
+      "atomicFacts": { "special": "GROUND-TRUTH-SIDE property, not a claim-evaluation outcome. Overrides derivedDiagnosticLabel directly whenever groundTruthQuality is GT_REQUIRES_DOMAIN_REVIEW or GT_INCOMPLETE, regardless of matchStatus (mirrors the historical rubric's own precedence order, which checks INCOMPARABLE first)." },
+      "losslessness": "Lossless - groundTruthQuality already exists as a first-class field on UnitEvaluationResult and is untouched by this phase."
+    }
+  ],
+  "summaryOfConflationsFound": [
+    "The single biggest historical defect this migration surfaces: the engine's own matchStatus='HONESTLY_UNSUPPORTED' literal value and the historical rubric's prose definition of 'HONESTLY_UNSUPPORTED' are OPPOSITE in safety meaning (safe self-declaration vs. dangerous silence) despite sharing a name. This was already latent in the codebase before Phase 3F.1.5.3 and was never caught by the 12-state taxonomy itself, because the taxonomy's own rubric (06-taxonomy-operational-rubric.json) was written from first principles rather than cross-checked against the engine's literal enum values. The atomic architecture surfaces rather than hides this.",
+    "AMBIGUOUS's core meaning (competing irreconcilable candidates) has no dedicated atomic dimension - deliberately not promoted to a 6th dimension for lack of reproducibility evidence (it never occurred in either Phase 3F.1.5.3 sample).",
+    "NOT_DISCOVERED and DISCOVERED_ONLY are atomically identical (both NO_CREDIT + NOT_SPECIFICALLY_SURFACED + NONE) - the 'was there even a stray textual mention' distinction is diagnostic-only, not safety-critical, since neither one changes what Headroom should DO about the gap (both are silent, dangerous omissions requiring the same remediation)."
+  ]
+}

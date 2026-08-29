@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "V2_VS_INDEPENDENT_CONSENSUS",
+  "generatedAt": "2026-08-29T21:25:00Z",
+  "purpose": "Section 30 requires this artifact regardless of branch. Because NEITHER the original 65-case study NOR the replacement-rubric holdout achieved the required detailed reproducibility (12, 17), Section 20's own gate ('before V2 may be evaluated against it') is NOT satisfied. This artifact therefore does NOT certify a V2-vs-ground-truth score. What follows is explicitly informational/diagnostic disclosure only, computed at zero cost from data already produced (no live-judge calls were made for this artifact - see 22).",
+  "formalStatus": "NOT_A_CERTIFIED_EVALUATION - no reproducible independent consensus exists on the detailed dimension in either sample, so V2's detailed-state performance cannot be meaningfully scored against a validated human ground truth. Per Section 37, this is precisely what NEEDS_ARCHITECTURE_DECISION means: Headroom does not yet have a trustworthy INSTRUMENT for this measurement.",
+  "informationalBinaryComparison": {
+    "caveat": "Binary credit/no-credit WAS independently reproducible in both samples (94.9% original, 97.0% holdout, both >=90%). This binary-only comparison is disclosed for its diagnostic value, but is explicitly NOT a certifying pass/fail evaluation, since Section 20's conjunctive requirement (binary AND detailed) for 'V2 may be evaluated against it' was never met.",
+    "method": "V2's own deterministic binaryDisposition (derived from the sealed matchStatus label: CREDIT iff matchStatus in {EXACT_SINGLE, EXACT_COMPOSITE}, else NO_CREDIT - the same convention used throughout this session) compared against the 2-of-3 majority binary consensus of the three independent adjudicators, computed entirely from already-produced sealed labels and adjudicator results (zero additional cost).",
+    "originalSample": {
+      "n": 65,
+      "agreement": 56,
+      "rate": 0.8615384615384616,
+      "disagreements": [
+        {"caseId": "fwrg-6.01-j", "v2": "NO_CREDIT", "consensus": "CREDIT"},
+        {"caseId": "fwrg-6.04-a-iii", "v2": "NO_CREDIT", "consensus": "CREDIT"},
+        {"caseId": "fwrg-6.04-a-xi", "v2": "NO_CREDIT", "consensus": "CREDIT"},
+        {"caseId": "fwrg-6.10-a", "v2": "NO_CREDIT", "consensus": "CREDIT"},
+        {"caseId": "fwrg-6.10-b", "v2": "NO_CREDIT", "consensus": "CREDIT"},
+        {"caseId": "fwrg-def-restricted-debt", "v2": "NO_CREDIT", "consensus": "CREDIT"},
+        {"caseId": "lsb-6.01-general-ratio-gated", "v2": "NO_CREDIT", "consensus": "CREDIT"},
+        {"caseId": "lsb-6.01-m-secured-notes", "v2": "NO_CREDIT", "consensus": "CREDIT"},
+        {"caseId": "lsb-6.15-springing-financial-covenant", "v2": "NO_CREDIT", "consensus": "CREDIT"}
+      ],
+      "disagreementDirection": "All 9 disagreements are V2 under-crediting relative to the consensus (V2 says NO_CREDIT, humans say CREDIT) - zero cases of V2 over-crediting on this sample. Consistent with the deterministic-only engine being conservative, not with a false-credit risk."
+    },
+    "holdoutSample": {
+      "n": 22,
+      "agreement": 19,
+      "rate": 0.8636363636363636,
+      "disagreements": [
+        {"caseId": "doc-a::I::1.07-status-of-obligations", "v2": "CREDIT", "consensus": "NO_CREDIT"},
+        {"caseId": "doc-a::X::10.01a-us-guaranty", "v2": "CREDIT", "consensus": "NO_CREDIT"},
+        {"caseId": "doc-a::X::10.06-reinstatement", "v2": "CREDIT", "consensus": "NO_CREDIT"}
+      ],
+      "disagreementDirection": "All 3 disagreements here are the OPPOSITE direction - V2 says CREDIT, consensus says NO_CREDIT. Given the detailed-taxonomy unreliability demonstrated by this same holdout (17), this is NOT presented as proof V2 over-credited - it is equally possible the 3 adjudicators (working from a rubric already shown to be imprecise) under-credited a genuinely correct representation. Flagged as an open item for manual review in 24-remaining-evaluator-risks.json, not as a confirmed false credit."
+    }
+  },
+  "detailedComparisonNotAttempted": "No V2-vs-consensus DETAILED state comparison is reported, since no detailed consensus achieved the required reproducibility on either sample - producing such a number would imply a precision the underlying instrument does not have, which Section 37 explicitly warns against.",
+  "falseCreditControlCrossCheck": "See 20-known-false-credit-regression.json - this is the one comparison that IS certified, because the false-credit determination is binary, unanimous across all 3 independent adjudicators on all 14 controls, AND corroborated by V2's own frozen deterministic engine (03-matcher-remediation.json / dsgr-false-credit-gate.test.ts)."
+}

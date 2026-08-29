@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "KNOWN_FALSE_CREDIT_REGRESSION",
+  "generatedAt": "2026-08-29T21:30:00Z",
+  "purpose": "Section 25: confirm, under the FINAL evaluator configuration of this phase (Workstream A's frozen matcher, evaluation-v2-algorithm.v3), that all 14 historically-confirmed false credits remain caught - none silently re-upheld. This check is entirely INDEPENDENT of the taxonomy-reproducibility outcome (12/17/18) - it concerns only the binary credit/no-credit determination, which the reproducibility study itself separately corroborated as unanimous.",
+  "allFourteenConfirmedSuspects": [
+    "doc-a::VI::6.01-chapeau", "doc-a::VI::6.04-chapeau", "doc-a::VI::6.04-unrestricted-sub-valuation",
+    "doc-a::VI::6.05-chapeau", "doc-a::VI::6.05-ip-flush-prohibition", "doc-a::VI::6.08b-chapeau", "doc-a::VI::6.10-chapeau",
+    "doc-b::VI::6-01-lead-in", "doc-b::VI::6-04-lead-in", "doc-b::VI::6-05-lead-in",
+    "doc-d::VI::6-01-chapeau", "doc-d::VI::6-04-chapeau", "doc-d::VI::6-05-chapeau", "doc-d::VI::6-08-b-chapeau"
+  ],
+  "evidenceLayer1_engineTest": {
+    "testFile": "tests/evaluation-v2/dsgr-false-credit-gate.test.ts",
+    "result": "PASS (4/4 tests, part of the 117/117 evaluation-v2 suite confirmed at Workstream A's freeze - 05-matcher-freeze.json)",
+    "note": "Re-verified as part of this phase's final full regression run (see 31-required-gates in the narrative report) - unchanged since Workstream A froze the matcher; this test suite was not touched during Workstream B (the taxonomy study made zero changes to lib/contract-model/evaluation-v2/)."
+  },
+  "evidenceLayer2_independentAdjudicatorCrossCheck": {
+    "source": "12-inter-reviewer-agreement.json's falseCreditCrossCheck section",
+    "result": "All 14 controls received unanimous NO_CREDIT from all three independently-dispatched, mutually-blind adjudicators, who had no access to V2's disposition, the matcher's code, or any historical false-credit record.",
+    "significance": "This is a STRONGER form of confirmation than the engine's own test: it demonstrates the false-credit determination is not an artifact of the evaluator's own design choices, but is independently reproducible by reviewers reasoning from raw evidence alone under a general-purpose rubric. This binary-level finding is reliable specifically BECAUSE binary reproducibility passed both gates (94.9% original, 97.0% holdout) even though detailed-label reproducibility did not - the taxonomy's reliability problem is confined to the DETAILED state, not the underlying credit/no-credit judgment (see 12's gateEvaluation.verdict)."
+  },
+  "sacredNegativeControl": {
+    "caseId": "doc-a::VI::6.10-chapeau",
+    "requirement": "The case the ORIGINAL Phase 3F.1.5 second-pass reviewer incorrectly re-credited. No remediation in any subsequent phase may allow that false credit to return.",
+    "engineVerdict": "Confirmed NO_CREDIT under the frozen v3 matcher (unchanged since 3F.1.5.2's confirmation).",
+    "adjudicatorVerdicts": "All 3 independent adjudicators in this phase's 65-case study also assigned NO_CREDIT (detailed states varied - HONESTLY_UNSUPPORTED/DISCOVERED_REVIEW_REQUIRED/DISCOVERED_ONLY - but binary was unanimous). The false credit has not returned, corroborated by a fourth and fifth independent method beyond the engine's own test."
+  },
+  "conclusion": "PASS. Zero regression. All 14 false credits remain caught, now corroborated by three additional independent human-equivalent reviewers with no access to the evaluator's code or historical record - the strongest confirmation this control has received across all phases to date."
+}

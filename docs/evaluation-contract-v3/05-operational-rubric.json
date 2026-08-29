@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "OPERATIONAL_RUBRIC",
+  "generatedAt": "2026-08-29T22:22:00Z",
+  "purpose": "Section 11: frozen operational rubric for the 3 independent blinded adjudicators, covering all 5 atomic dimensions and the 10 permanent invariants. Frozen before any adjudication.",
+  "howToUseThisRubric": "For each ground-truth claim x candidate-pool evidence packet, assign each of the 5 dimensions independently. A dimension's value must be justified against ITS OWN necessary/exclusion conditions below - do not let your answer on one dimension pressure your answer on another (e.g. do not downgrade evidenceQuality merely because creditEligibility is NO_CREDIT). Apply the 10 invariants as hard constraints: if your assignment would violate one, reconsider.",
+  "dimensionA_creditEligibility": {
+    "values": ["CREDIT", "NO_CREDIT"],
+    "necessaryConditionsForCredit": [
+      "At least one candidate has been compiled into a structured representation (not merely an inventory mention).",
+      "That candidate corresponds to THIS SPECIFIC ground-truth claim's own identity - same action, same posture, same object/resource - not merely the same covenant family, section, defined term, or economic topic.",
+      "No material dimension the claim depends on (a specific threshold, condition, exception, entity scope) is missing or conflicting."
+    ],
+    "exclusionConditions": [
+      "The candidate is anchored at a DIFFERENT enumerated sub-item under the same parent section (a sibling) - this can never establish CREDIT, however much vocabulary it shares. Same-claim identity is a HARD PRECONDITION, checked before completeness.",
+      "The candidate is merely a partial/incomplete representation of this same claim (that is still NO_CREDIT for this dimension, even though it is a real, non-trivial partial achievement - see representationCompleteness for that)."
+    ],
+    "invariantsThatApply": ["INVARIANT_1", "INVARIANT_2", "INVARIANT_6"]
+  },
+  "dimensionB_surfacingStatus": {
+    "values": ["SPECIFICALLY_SURFACED", "NOT_SPECIFICALLY_SURFACED", "NOT_APPLICABLE"],
+    "applicability": "Assign NOT_APPLICABLE whenever your own creditEligibility answer for this same case is CREDIT. Only assign SPECIFICALLY_SURFACED or NOT_SPECIFICALLY_SURFACED when creditEligibility=NO_CREDIT.",
+    "necessaryConditionsForSpecificallySurfaced": [
+      "A candidate that corresponds to THIS SPECIFIC claim (same identity test as dimension A - not a sibling, not a same-family neighbor) explicitly shows: review is required, OR semantics are unresolved, OR support is insufficient, OR the claim cannot safely be represented, OR an equivalent claim-specific uncertainty."
+    ],
+    "exclusionConditions": [
+      "A generic warning that does not name or anchor to this specific claim does not count.",
+      "A warning on a same-section, same-family, or sibling-claim candidate does not count, however prominent or numerous.",
+      "Structural proximity (nearby text, same document area) does not count without an actual claim-specific declaration."
+    ],
+    "invariantsThatApply": ["INVARIANT_3", "INVARIANT_4", "INVARIANT_5"]
+  },
+  "dimensionC_representationCompleteness": {
+    "values": ["NONE", "PARTIAL", "FULL"],
+    "applicabilityNote": "Assign this dimension for every case, regardless of creditEligibility - it is a separate, additive fact about how much of the claim's structure the BEST available same-claim candidate covers, not a re-statement of the credit decision.",
+    "necessaryConditionsForFull": ["A same-claim candidate covers every material semantic dimension the claim depends on, with no conflicts."],
+    "necessaryConditionsForPartial": [
+      "Same-claim identity is affirmatively established (the candidate is genuinely about THIS claim, not a sibling or a different claim in the same family).",
+      "At least one material semantic dimension is missing or incomplete."
+    ],
+    "exclusionConditions": [
+      "PARTIAL never means 'a related, nearby, or sibling claim was represented instead' - that is NONE for this claim, with the sibling's own completeness (if it has its own ground-truth unit) evaluated separately.",
+      "If the best available candidate materially CONTRADICTS the claim (asserts a wrong answer) rather than merely omitting a piece of it, assign NONE here (the contradiction lives in verificationStatus=CONTRADICTED, not in a completeness score for the wrong content)."
+    ],
+    "invariantsThatApply": ["INVARIANT_1", "INVARIANT_2", "INVARIANT_6"]
+  },
+  "dimensionD_verificationStatus": {
+    "values": ["NOT_EVALUATED", "NOT_VERIFIED", "VERIFICATION_INCOMPLETE", "VERIFIED", "CONTRADICTED"],
+    "coreRule": "Only use a verification state OTHER THAN NOT_EVALUATED when the evidence packet contains an ACTUAL, explicit verification-layer finding (a verifierFindings-style entry) about the candidate that represents this claim, OR the ground-truth comparison itself reveals a material contradiction. Do not infer verification happened just because a representation looks confident or complete.",
+    "necessaryConditionsForVerified": ["An explicit verification finding exists on the same-claim representing candidate AND it is a clean confirmation with no contradicting or incomplete finding."],
+    "necessaryConditionsForContradicted": ["An explicit verification finding contradicts the representation, OR the representation itself materially contradicts the ground-truth claim (a wrong assertion, not a mere omission)."],
+    "necessaryConditionsForVerificationIncomplete": ["A verification attempt exists but its own finding is inconclusive/ambiguous."],
+    "defaultWhenNoEvidenceExists": "NOT_EVALUATED - never invent a distinction the evidence packet does not support. Do not use NOT_VERIFIED unless you have affirmative evidence that verification was attempted and produced nothing, as distinct from verification simply never being attempted at all (which is NOT_EVALUATED).",
+    "invariantsThatApply": ["INVARIANT_9"]
+  },
+  "dimensionE_evidenceQuality": {
+    "values": ["SUFFICIENT", "AMBIGUOUS", "INSUFFICIENT"],
+    "meaning": "How clear and complete is the AVAILABLE evidence (both the ground-truth claim's own anchoring and the candidate pool) for making the other 4 determinations confidently - not a restatement of any of them.",
+    "necessaryConditionsForSufficient": ["The ground-truth claim itself is clearly anchored to specific source text, and the candidate evidence (whatever its content) is clear enough to confidently assess correspondence."],
+    "necessaryConditionsForAmbiguous": ["The ground-truth claim's own anchoring is unclear/contested, OR the candidate evidence itself is genuinely open to more than one reasonable reading."],
+    "necessaryConditionsForInsufficient": ["The ground-truth claim's own anchoring is effectively unresolvable from the evidence given, OR there is materially too little evidence (of any kind) to make a confident determination at all."],
+    "exclusionConditions": ["evidenceQuality does not by itself grant or deny credit, and does not by itself count as safe surfacing - it is metadata about confidence, evaluated independently of the other 4 dimensions' own values."],
+    "invariantsThatApply": ["INVARIANT_10"]
+  },
+  "permanentInvariants": [
+    { "id": "INVARIANT_1", "statement": "CREDIT requires same-claim correspondence." },
+    { "id": "INVARIANT_2", "statement": "PARTIAL (representationCompleteness) requires same-claim correspondence." },
+    { "id": "INVARIANT_3", "statement": "SPECIFICALLY_SURFACED requires claim-specific correspondence." },
+    { "id": "INVARIANT_4", "statement": "Generic uncertainty does not prevent dangerous silence." },
+    { "id": "INVARIANT_5", "statement": "A sibling warning does not prevent dangerous silence." },
+    { "id": "INVARIANT_6", "statement": "A same-family candidate does not establish claim identity." },
+    { "id": "INVARIANT_7", "statement": "NO_CREDIT + NOT_SPECIFICALLY_SURFACED = dangerous silent omission for a material ground-truth claim." },
+    { "id": "INVARIANT_8", "statement": "NO_CREDIT + SPECIFICALLY_SURFACED is a safe failure, not substantive credit." },
+    { "id": "INVARIANT_9", "statement": "Verification cannot be inferred from semantic representation alone." },
+    { "id": "INVARIANT_10", "statement": "Evidence ambiguity cannot independently grant credit." }
+  ],
+  "requiredOutputPerCase": {
+    "claimId": "string",
+    "creditEligibility": "CREDIT | NO_CREDIT",
+    "surfacingStatus": "SPECIFICALLY_SURFACED | NOT_SPECIFICALLY_SURFACED | NOT_APPLICABLE",
+    "representationCompleteness": "NONE | PARTIAL | FULL",
+    "verificationStatus": "NOT_EVALUATED | NOT_VERIFIED | VERIFICATION_INCOMPLETE | VERIFIED | CONTRADICTED",
+    "evidenceQuality": "SUFFICIENT | AMBIGUOUS | INSUFFICIENT",
+    "rationale": "1-4 sentences per dimension where non-obvious, naming the specific rubric condition applied",
+    "confidence": "HIGH | MEDIUM | LOW"
+  }
+}

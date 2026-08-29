@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "FREEZE_MANIFEST",
+  "generatedAt": "2026-08-29T22:00:00Z",
+  "purpose": "Section 1: record the exact starting state before any Evaluation Contract V3 work begins, and preserve the Phase 3F.1.5.3 empirical findings that motivate this architecture transition.",
+  "startingState": {
+    "sha": "9f48ce482572202c0ca3e2b060b4224925caf57f",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "treeStatus": "clean",
+    "evaluationV2AlgorithmVersion": "evaluation-v2-algorithm.v3",
+    "workstreamAMatcherHashes": {
+      "libEvaluationV2TopLevelImplementation_15Files": "606a3014daab8746885c75ad7d6c026e6ab6c5c172849d8ea05d767e6df0e8aa",
+      "testsEvaluationV2AllFiles": "1470048e24d248b2d174a7111e77d1140479a346a21c66fd129d2435a80ed3ff",
+      "siblingClaimCasesFile": "64213742a6e3b065bd5def248aefb96863ab18486ac160213bcabe23e1da0800",
+      "siblingClaimTestFile": "b8b1dc257186f7465d1a7881f0c41c9774b1a667bfe10afa6ff2a78c6e88cf5c",
+      "source": "docs/evaluation-v2-final-resolution/05-matcher-freeze.json - THIS ARTIFACT REMAINS AUTHORITATIVE and is not re-hashed differently here; these hashes must remain unchanged throughout Evaluation Contract V3, per Section 2's production/matcher freeze."
+    }
+  },
+  "confirmedPriorVerdict": "PHASE_3F_1_5_3_EVALUATION_V2_FINAL_RESOLUTION_NEEDS_ARCHITECTURE_DECISION",
+  "preservedEmpiricalFindings": {
+    "originalTaxonomyStudy": {
+      "binaryReproducibility": 0.9487179487179488,
+      "detailed12StateReproducibility": 0.7666666666666666,
+      "source": "docs/evaluation-v2-final-resolution/12-inter-reviewer-agreement.json"
+    },
+    "holdoutAfterOnePermittedRedesign": {
+      "binaryReproducibility": 0.9696969696969697,
+      "detailed12StateReproducibility": 0.6969696969696969,
+      "source": "docs/evaluation-v2-final-resolution/17-holdout-inter-reviewer-results.json"
+    },
+    "falseCreditControls": {
+      "count": 14,
+      "result": "unanimously rejected (NO_CREDIT) by all three independent blinded adjudicators on the original sample, corroborating the frozen engine's own test suite",
+      "source": "docs/evaluation-v2-final-resolution/12-inter-reviewer-agreement.json falseCreditCrossCheck, 20-known-false-credit-regression.json"
+    },
+    "workstreamA": {
+      "siblingSubProvisionMatchingDefect": "CONFIRMED FIXED via new I_CLAIM_IDENTITY blocking dimension",
+      "newAdversarialTests": 22,
+      "evaluationV2TestsAtPhaseCompletion": "117/117 passing"
+    },
+    "disclosedRemainingMatcherRisks_notToBeFixedThisPhase": [
+      "different-base-section false matches (a candidate anchored at a completely different, non-sibling base section that shares family/lexical vocabulary)",
+      "bare/undifferentiated-section definitional overmatch (candidates within an undifferentiated bare section such as '1.01' with no enumerated sub-item)"
+    ]
+  },
+  "productionFreezeConfirmation": "Section 2: this phase is evaluator architecture only. The Workstream A matcher (frozen at the hashes above) is NOT modified, tuned, or re-thresholded anywhere in this phase. No production semantic/verifier/discovery/structural/amendment/package-graph/IR/precedent/covenant/financial/computation/UI code is touched. All new code is confined to new evaluator-only modules that CONSUME the matcher's existing, frozen, per-pair outputs to compute a new derived structured result - it does not change what the matcher itself decides.",
+  "historicalImmutabilityConfirmation": "Zero files under docs/evaluation-v2/, docs/evaluation-v2-iteration/, docs/evaluation-v2-iteration-2/, or docs/evaluation-v2-final-resolution/ (Phase 3F.1.5.3's own just-completed artifacts) will be modified. The 12-state taxonomy and all its code/artifacts are preserved as historical/diagnostic record, per Section 3 - retired as a certification gate, not deleted."
+}

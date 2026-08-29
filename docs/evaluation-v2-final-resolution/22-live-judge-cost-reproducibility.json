@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "LIVE_JUDGE_COST_REPRODUCIBILITY",
+  "generatedAt": "2026-08-29T21:35:00Z",
+  "purpose": "Section 26/30: record model/provider/calls/failures/retries/tokens/cost for any live semantic judge usage this phase, and disclose the budget approved but not spent.",
+  "budgetApproved": {
+    "amount": "up to ~$5 USD against AI_GATEWAY_API_KEY",
+    "grantedVia": "AskUserQuestion, prior to Workstream B dispatch, contingent on the taxonomy proving reproducible enough to make a live-judge V2-vs-consensus comparison meaningful (Section 19)."
+  },
+  "actualLiveJudgeUsageThisPhase": {
+    "aiGatewayCalls": 0,
+    "costUsd": 0,
+    "provider": "N/A - not invoked",
+    "model": "N/A - not invoked",
+    "failures": 0,
+    "retries": 0,
+    "tokens": 0
+  },
+  "whyZero": "Every deterministic run this phase (Workstream A's real-data verification, the cross-dataset regression in 21, the taxonomy-study manifest extraction, both evidence-packet builds) used only runEvaluationV2()'s default DETERMINISTIC_ONLY_JUDGE, by design and by explicit instruction to every dispatched data-extraction agent (zero network calls, zero cost, fully reproducible). The one step that WOULD have required the live judge - Section 19's V2-vs-independent-consensus comparison - never became applicable, because neither the original 65-case study nor the replacement-rubric holdout achieved the required detailed-reproducibility gate (12, 17). Per Section 20's own explicit instruction, no comparison against an unreproducible consensus may be certified, so the live judge was never dispatched. The approved budget was preserved, unspent, in service of Section 26's 'do not use AI unnecessarily' principle - spending it would have produced a number without a valid ground truth to compare against.",
+  "reproducibilityOfThisPhaseWork": {
+    "allDeterministicRunsReproducible": true,
+    "note": "Every artifact in this phase that depended on the evaluation-v2 engine (Workstream A's verification, 21's cross-dataset regression, both blinded-packet builds) is byte-reproducible from the frozen source fixtures and the frozen matcher code (05-matcher-freeze.json's hashes) - re-running any of them against an unchanged repository state produces identical output, since the deterministic-only judge has no model-call variance."
+  },
+  "recommendationForFutureUse": "If a future phase (following an architectural decision on the taxonomy - see 25/24) re-attempts a V2-vs-consensus comparison, budget the live-judge sample size against a fresh cost estimate at that time - the $2-5 estimate given in this phase's authorization was based on the prior phase's (3F.1.5.2) 51-case/735-call/$2.25 real run and remains a reasonable order-of-magnitude reference, but should be re-confirmed with the user before any future spend, per the standing policy."
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "ARCHITECTURE_DECISION",
+  "generatedAt": "2026-08-29T22:05:00Z",
+  "purpose": "Section 0/1: record the human architecture decision this phase executes, verbatim in substance, before any implementation.",
+  "priorVerdict": "PHASE_3F_1_5_3_EVALUATION_V2_FINAL_RESOLUTION_NEEDS_ARCHITECTURE_DECISION",
+  "decision": "The existing 12-state mutually exclusive Evaluation V2 taxonomy will no longer serve as Headroom's certification gate. Preserve the V2 taxonomy and all historical artifacts (no deletion, no rewriting, no claim the concepts were useless). Replace the certification contract with a small set of orthogonal, atomic trust dimensions. Validate those dimensions independently. Distinguish safety-critical certification dimensions from diagnostic dimensions. Close evaluator development after this bounded transition if the safety-critical gates pass.",
+  "coreArchitecturalInsight": "A single mutually exclusive label should not simultaneously encode discovery, semantic correspondence, representation completeness, verification, uncertainty, safe surfacing, and source/evidence quality. Those are different facts. Headroom's evaluator should record them separately.",
+  "notPhase3F154": true,
+  "noAutomaticV4": true,
+  "productQuestionRestated": "Can we trust Headroom's analysis enough to build computation, continuous state, simulation, and ultimately CFO-facing answers on top of it? For each material claim: (1) did Headroom earn substantive semantic credit; (2) if not, did it specifically recognize/surface the problem; (3) if represented, was it complete; (4) if verification evidence exists, was it verified; (5) is the available evidence sufficient to adjudicate."
+}
