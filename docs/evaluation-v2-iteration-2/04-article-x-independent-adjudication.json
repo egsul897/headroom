@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "ARTICLE_X_INDEPENDENT_ADJUDICATION",
+  "generatedAt": "2026-08-29T14:35:00Z",
+  "purpose": "Per Section 11, directly inspect the complete evidence for the two candidate IDs implicated in the Article X guaranty/reinstatement disagreement cluster (doc-a::X::10.01a-us-guaranty, doc-a::X::10.04-defenses-waived, doc-a::X::10.06-reinstatement) and independently adjudicate source-first, BEFORE any related code change. No V2 desired gate outcome was consulted while forming this adjudication - it was formed directly from the raw excerpt text in the frozen evidence packets.",
+  "implicatedCandidates": {
+    "ir-rule:8543f9e7e76785c96a99e512": {
+      "actualExcerptText": "the Secured Obligations are hereby designated as 'senior indebtedness' and as 'designated senior indebtedness'... under and in respect of any indenture or other agreement or instrument under which such Subordinated Indebtedness is outstanding... in order that the Lenders may have and exercise any payment blockage or other remedies available or potentially available to holders of senior indebtedness...",
+      "actualSubjectMatter": "A subordination-designation obligation: causing the Secured Obligations to be treated as senior indebtedness for purposes of exercising payment-blockage remedies against Subordinated Indebtedness. This is almost certainly a Section 1.07-family provision, not Article X guaranty material.",
+      "matchedAgainst": ["doc-a::X::10.01a-us-guaranty (U.S. Loan Guarantor primary-obligor guaranty of Secured Obligations)", "doc-a::X::10.06-reinstatement (revival of guarantor obligations upon rescinded/disgorged payments)"]
+    },
+    "ir-rule:fb5206d45cb1d00d6e414d2b": {
+      "actualExcerptText": "such Borrower shall take or cause such other Loan Party to take all such actions as shall be necessary to cause the Secured Obligations to constitute senior indebtedness (however denominated) in respect of such Subordinated Indebtedness and to enable the Administrative Agent and the Lenders to have and exercise any payment blockage or other remedies...",
+      "actualSubjectMatter": "An affirmative obligation to take actions establishing senior-indebtedness status for subordination-remedy purposes - the same subordination-mechanics family as the candidate above, not guaranty-defense-waiver or reinstatement material.",
+      "matchedAgainst": ["doc-a::X::10.04-defenses-waived (comprehensive suretyship-defense waiver)", "doc-a::X::10.06-reinstatement (jointly with the candidate above, as an EXACT_COMPOSITE)"]
+    }
+  },
+  "directExcerptComparisonConclusion": "Upon direct reading of the actual excerpt text (not the candidates' own generation metadata or V2's characterization), BOTH candidates are unambiguously about subordination/senior-indebtedness-designation mechanics. Neither shares any subject-matter content with (a) a guarantor's primary-obligor payment guaranty, (b) a comprehensive waiver of suretyship defenses (unenforceability, presentment/demand/protest, anti-deficiency, election of remedies), or (c) the reinstatement-upon-rescinded-payment / stay-of-acceleration mechanic. The second-pass reviewer's characterization ('Section 1.07 subordination-designation obligations') is precisely correct on direct inspection.",
+  "perCaseIndependentAdjudication": [
+    {
+      "gtUnitId": "doc-a::X::10.01a-us-guaranty",
+      "v2Disposition": "REPRESENTED / EXACT_SINGLE (matched to ir-rule:8543f9e7...)",
+      "secondPassDisposition_originalPhase3F15Protocol": "UNREPRESENTED",
+      "secondPassDisposition_improvedPhase3F151Protocol": "REVIEW_REQUIRED_FLAG_ONLY (no correspondence found on ANY candidate)",
+      "independentAdjudication": "B_REVIEWER_CORRECT",
+      "rationale": "The matched candidate's excerpt is exclusively about subordination-designation obligations. It asserts nothing about a guaranty, joint-and-several liability, primary-obligor status, or payment of Secured Obligations by a guarantor. There is no reasonable reading under which this candidate represents the U.S. Guaranty claim."
+    },
+    {
+      "gtUnitId": "doc-a::X::10.04-defenses-waived",
+      "v2Disposition": "REPRESENTED / EXACT_SINGLE (matched to ir-rule:fb5206d4...)",
+      "secondPassDisposition_originalPhase3F15Protocol": "PARTIALLY_REPRESENTED (credited a DIFFERENT, discovery-stage candidate for genuine election-of-remedies content)",
+      "secondPassDisposition_improvedPhase3F151Protocol": "REVIEW_REQUIRED_FLAG_ONLY (no compiled candidate found to correspond)",
+      "independentAdjudication": "B_REVIEWER_CORRECT",
+      "rationale": "The matched candidate's excerpt is about causing Secured Obligations to constitute senior indebtedness for subordination-remedy purposes - it asserts nothing about waiving suretyship defenses, unenforceability, presentment/demand/protest, or anti-deficiency/election-of-remedies protections. It does not represent this claim. (Separately: the frozen evidence packet DOES contain a genuinely on-point DISCOVERY_CANDIDATE - discovery:discovery-candidate:0ce32685... - whose own excerpt/normalizedSemantics accurately describes the election-of-remedies content; this is a real, correctly-surfaced-but-uncompiled discovery finding, consistent with the discovery-vs-representation distinction the taxonomy already protects, and is not itself part of this adjudication's finding of error.)"
+    },
+    {
+      "gtUnitId": "doc-a::X::10.06-reinstatement",
+      "v2Disposition": "REPRESENTED / EXACT_COMPOSITE (both ir-rule:8543f9e7... and ir-rule:fb5206d4... jointly)",
+      "secondPassDisposition_originalPhase3F15Protocol": "UNREPRESENTED",
+      "secondPassDisposition_improvedPhase3F151Protocol": "REVIEW_REQUIRED_FLAG_ONLY (no correspondence found on either candidate)",
+      "independentAdjudication": "B_REVIEWER_CORRECT",
+      "rationale": "Neither candidate's excerpt asserts anything about rescinded/disgorged payments, revival of guarantor obligations, or the stay-of-acceleration mechanic. Crediting an EXACT_COMPOSITE match from two candidates that are each individually unrelated to the claim (and to each other's supposed joint coverage of it) compounds the single-candidate error rather than curing it."
+    }
+  ],
+  "generalizedDefectIdentifiedFromThisAdjudication": {
+    "statement": "ActionTag (types.ts) is a fixed, ~29-member vocabulary oriented entirely around negative/affirmative COVENANT actions (INCUR_DEBT, CREATE_LIEN, MAKE_INVESTMENT, DISPOSE_ASSET, RESTRICTED_PAYMENT, etc.). Guaranty-mechanics provisions (a guaranty of payment, a waiver of suretyship defenses, a reinstatement-upon-rescission clause, a subordination-designation obligation) have NO corresponding ActionTag value. For this entire PROVISION-TYPE CLASS - not any specific document, section, or defined term - both the ground-truth claim's and the candidate's action-dimension extraction come back empty on EITHER side of a comparison, so A_SUBJECT_ACTION resolves to NOT_APPLICABLE for the true claim AND for the false candidate alike. B_LEGAL_POSTURE, being a coarse few-way bucket (e.g. both broadly classed as an 'OBLIGATION'), then correspondswithout establishing genuine subject-matter alignment - many semantically unrelated obligations share the same coarse posture class. This leaves C_OBJECT_RESOURCE's lexical-overlap test, again, as the dimension that actually decides correspondence - and, as in 02-safe-surfacing-correspondence-spec.json and 03-definition-overmatch-root-cause.json, that test is too permissive when it is the only source of genuine discriminating evidence.",
+    "isThisTheSameRootCauseAsSections7And9": "YES, with a refinement: the Section 7/9 forensics showed the defect when BOTH A and B are NOT_APPLICABLE. This adjudication shows the SAME underlying weakness also manifests when only A is NOT_APPLICABLE and B merely achieves a coarse, non-specific CORRESPONDS (both broadly 'obligations', 'restrictions', etc.) - because a shared coarse posture class does not, on its own, establish that two provisions concern the same subject matter. The generalized fix (05-generalized-remediation-record.json) is therefore keyed on A_SUBJECT_ACTION alone being NOT_APPLICABLE, not on both A and B together, since B's coarse correspondence does not supply the missing discriminating power.",
+    "statableWithoutNamingDsgrOrArticleXOrCandidateIds": true,
+    "syntheticAdversarialExamplesRequired": 3,
+    "syntheticAdversarialExamplesProvided": "See 06-new-adversarial-tests.json - 16 new tests, including a dedicated subset targeting exactly this pattern (a genuine claim and an unrelated candidate that share only a coarse posture class and weak lexical overlap, with no fitting ActionTag on either side)."
+  },
+  "section12ChangeRuleCompliance": {
+    "criterion1_generalizedDefectIdentified": true,
+    "criterion2_statableWithoutNamingSpecifics": true,
+    "criterion3_threeOrMoreAdversarialExamples": true,
+    "criterion4_notMerelyForcingReviewerAgreement": "The fix changes a threshold calibration in a generic dimension-assessment function based on a directly-observed, principled mechanism (a dimension's fallback state should not silently satisfy the correspondence bar when it is the sole remaining discriminator) - it does not special-case these three GT units, these two candidate IDs, or 'Article X' in any way. The rerun (10-second-pass-rerun-results.json) either does or does not change these specific cases' dispositions as a SIDE EFFECT of a change made for independent, generalized reasons - the fix was not reverse-engineered to force a particular outcome on them.",
+    "actionAuthorized": "Code change IS authorized under Section 12's rule, because all four criteria are met."
+  }
+}

@@ -1,0 +1,507 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "CREDIT_NEUTRAL_DISAGREEMENT_FORENSICS",
+  "generatedAt": "2026-08-29T14:15:00Z",
+  "purpose": "Per Section 7, forensically reconcile all 31 credit-neutral disagreements from Phase 3F.1.5.1 BEFORE any matching-logic remediation. Classification taxonomy: A=FALSE_SAFE_SURFACING, B=VALID_SAFE_SURFACING_WRONG_LABEL, C=REVIEWER_ERROR, D=GT_AMBIGUITY, E=EVALUATOR_AMBIGUITY, F=OTHER.",
+  "methodology": "For each case, identified the specific candidate(s) V2 relied on to justify its safe/no-credit disposition (matchedCandidateIds, or the SAFETY_FLAG/INVENTORY_ONLY/HONEST_UNRESOLVED-tagged candidates the reason text names), then cross-referenced the SAME candidate ID against the second-pass reviewer independent per-candidate correspondence judgment (YES/PARTIAL/NO) for that exact candidate. If V2 relied exclusively on candidate(s) the reviewer judged NO correspondence for, classified FALSE_SAFE_SURFACING (A). If ANY relied-upon candidate the reviewer judged YES/PARTIAL, classified VALID_SAFE_SURFACING_WRONG_LABEL (B) - genuine correspondence exists per an independent reader; the disagreement is a labeling nuance, not a false flag.",
+  "totalCases": 31,
+  "classificationCounts": {
+    "A_FALSE_SAFE_SURFACING": 27,
+    "B_VALID_SAFE_SURFACING_WRONG_LABEL": 4,
+    "C_REVIEWER_ERROR": 0,
+    "D_GT_AMBIGUITY": 0,
+    "E_EVALUATOR_AMBIGUITY": 0,
+    "F_OTHER": 0
+  },
+  "notAllAssumedErrors": "Per Section 7 explicit instruction (do not assume all 31 are V2 errors simply because the reviewer disagreed), 4 of 31 cases (13%) were independently verified as cases where genuine correspondence DOES exist (the reviewer itself judged YES/PARTIAL on the relied-upon candidate) - these are legitimate labeling disagreements (e.g. AMBIGUOUS vs REVIEW_REQUIRED_FLAG_ONLY; UNREPRESENTED vs DISCOVERY_ONLY_NOT_REPRESENTED for the discovery-vs-representation distinction, which is working AS INTENDED per Phase 3F.1.5.1s own false-credit-protection finding), not evaluator defects.",
+  "rootCauseHypothesisFormedFromThisData": "See 02-safe-surfacing-correspondence-spec.json and 03-definition-overmatch-root-cause.json - both derived FROM this forensic data, not the reverse.",
+  "perCaseClassification": [
+    {
+      "gtUnitId": "doc-a::II::2.21-returned-payments",
+      "documentId": "doc-a",
+      "sectionRef": "2.21",
+      "materiality": "INFORMATIONAL",
+      "groundTruthSemanticDescription": "Clawback/revival provision: if a payment is later surrendered as a preference or otherwise, the Obligations are revived and continued; survives termination.",
+      "v2MatchStatus": "AMBIGUOUS",
+      "v2Reason": "2 mutually irreconcilable candidate clusters correspond about equally well (0.736 vs 0.735). Forcing a winner would manufacture a match that the evidence does not support.",
+      "secondPassDisposition": "REVIEW_REQUIRED_FLAG_ONLY",
+      "secondPassRationale": "Nothing here is a compiled representation. The Section 2.21 coverage unit asserts only 'coverageState UNREPRESENTED / CANDIDATE_DISCOVERED_NEVER_COMPILED', and both discovery entries at 2.21 carry their own review flags (NEEDS_REVIEW at 0.75 and UNCERTAIN at 0.6). Because the on-point candidates themselves carry review-required flags, this is a flagged gap rather than the unflagged 'highlighted paragraph' state.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:3b04a9902639de8b7713a7bd616edb60e18326f57f13d77267bb279320812f3b": "NO",
+        "discovery:discovery-candidate:21ee2aa807884340a4cb2ae3": "PARTIAL",
+        "discovery:discovery-candidate:94d8ff5c3925a579533fb500": "YES",
+        "coverage-unit:0290696a218d91f630aaae6b5b39cf4471e04ac87aaa04d0efab6ccfdd66fe2a": "NO",
+        "coverage-unit:9776a2730920b0e9f4a3d1246906dfef0353c7c9fc52cc33968c254a776c0d43": "NO"
+      },
+      "classification": "B_VALID_SAFE_SURFACING_WRONG_LABEL"
+    },
+    {
+      "gtUnitId": "doc-a::III::3.03-no-conflicts",
+      "documentId": "doc-a",
+      "sectionRef": "3.03",
+      "materiality": "MATERIAL",
+      "groundTruthSemanticDescription": "The Transactions require no Governmental Authority consents other than those obtained and perfection filings; will not violate any Requirement of Law; will not violate or create a default or payment right under any binding indenture or agreement (each subject to a Material Adverse Effect qualifier); and will not create any Lien on material assets other than Liens created under the Loan Documents.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "REVIEW_REQUIRED_FLAG_ONLY",
+      "secondPassRationale": "No candidate represents Section 3.03's four-part representation (no Governmental Authority consents beyond those obtained, no violation of law, no default under binding agreements, no Lien on material assets). The only candidate carrying the claim's own text is a coverage unit anchored at 3.03(a) whose entire assertion is a coverage gap - 'no adequate compiled/verified IR representation found ... discovery succeeded, compilation never ran'.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:0b33f42dd50fa68e22d367efdfb1168e24ca7fd5a7986803db979019e75c122f": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-a::IX::9.11-headings",
+      "documentId": "doc-a",
+      "sectionRef": "9.11",
+      "materiality": "INFORMATIONAL",
+      "groundTruthSemanticDescription": "Headings and the Table of Contents are for convenience only and do not affect construction.",
+      "v2MatchStatus": "AMBIGUOUS",
+      "v2Reason": "2 mutually irreconcilable candidate clusters correspond about equally well (0.755 vs 0.752). Forcing a winner would manufacture a match that the evidence does not support.",
+      "secondPassDisposition": "REVIEW_REQUIRED_FLAG_ONLY",
+      "secondPassRationale": "The claim (headings and the Table of Contents are for convenience only and do not affect construction) is nowhere asserted as a compiled rule. The one candidate at the claim's location reproduces the source text but states only 'no adequate compiled/verified IR representation found for this MATERIAL unit ... discovery succeeded, compilation never ran'. The other four are unrelated provisions, as the semantic-judge rationales in the packet also observe.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:9460e2a2c466fe05ef69c5dbc56af0951357ebb1fce217277ad8652e241c3a57": "YES",
+        "coverage-unit:1353da92e3c8f13d55074cd40965b26467db37baacf48594e00865e60e36625e": "NO",
+        "coverage-unit:14985c2d70993e585ce9ccae8f1c173f6f4efe585fbc3403f0903dc26ddc683e": "NO",
+        "coverage-unit:1e9bf0d5fcd4199d675378ccdbf8354a35b9c3a4c321f659aeb21218b9c0cb3d": "NO",
+        "coverage-unit:210726516ddef059683ac7833160fc68d04b3d082e1ea701b18427f2f1857e35": "NO"
+      },
+      "classification": "B_VALID_SAFE_SURFACING_WRONG_LABEL"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.02h",
+      "documentId": "doc-a",
+      "sectionRef": "6.02(h)",
+      "materiality": "MATERIAL",
+      "groundTruthSemanticDescription": "Liens in favor of customs and revenue authorities arising by law to secure customs duties on imported goods, and Liens on specific inventory or goods securing bankers' acceptances or documentary letters of credit facilitating their purchase, shipment or storage.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is exception (h) - customs and revenue authority Liens for import duties, and Liens on inventory securing bankers' acceptances or documentary letters of credit. No candidate carries customs duties, bankers' acceptances or documentary LC content; the candidates are the chapeau and sibling exceptions (d), (d)(i) and (j)(i). Sharing Section 6.02 is not evidence of correspondence, and none of the flags is anchored to clause (h)'s own text, so the gap is neither represented nor surfaced.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:0b33f42dd50fa68e22d367efdfb1168e24ca7fd5a7986803db979019e75c122f": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.05-chapeau",
+      "documentId": "doc-a",
+      "sectionRef": "6.05",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "No Loan Party will, nor permit any Restricted Subsidiary to, Dispose of any asset (including Equity Interests it owns), nor permit any Restricted Subsidiary to issue additional Equity Interests other than to a Loan Party or another Restricted Subsidiary in compliance with Section 6.04, except as permitted by clauses (a) through (k).",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is Section 6.05's asset-sale prohibition (no Disposition of any asset, no issuance of Restricted Subsidiary Equity Interests other than to a Loan Party or Restricted Subsidiary in compliance with 6.04, except clauses (a)-(k)). Every candidate's own text is an EBITDA add-back or compliance-certificate line; two carry a '6.05(...)' label but their text shows they are definitional add-backs, and a shared section label is not evidence of correspondence. No candidate flags a coverage gap at the 6.05 lead-in.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:c8339c83db7ef78a4e8a5d3b327fe99ceee0f892e4820c4a9abc9e2f5b30c125": "NO",
+        "coverage-unit:1c9300693ee2fa4872fa3cedc08428dc1db6c133e8f1a0b84faa3e66e132cc7b": "NO",
+        "coverage-unit:4382fc101d60cef750f1bb8dbb7ea6c2d90626b85699b63d04e5bc8d657c4453": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.05b",
+      "documentId": "doc-a",
+      "sectionRef": "6.05(b)",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "Dispositions of assets to any Loan Party or any Restricted Subsidiary, provided that transfers (i) involving a non-Loan-Party Restricted Subsidiary or (ii) from a U.S. Loan Party to a Canadian Loan Party or vice versa must comply with Section 6.09 (affiliate transactions).",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "2 candidate(s) semantically correspond to this claim, but every one of them is inventory-only: the system noticed the provision and produced no representation of it, and did not flag the omission. Correspondence without representation is not credit.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is 6.05(b): Dispositions to a Loan Party or Restricted Subsidiary, with transfers involving a non-Loan-Party Restricted Subsidiary or crossing the US/Canadian line required to comply with Section 6.09. No candidate addresses who may receive a Disposition or the 6.09 condition; all five are EBITDA/pro forma calculation material, and none flags a gap at 6.05(b).",
+      "v2ReliedCandidateJudgments": {
+        "discovery:discovery-candidate:26e0c04bdd54060cb64643ad": "NO",
+        "discovery:discovery-candidate:4401d20121b23b8e19d7e38c": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.08b-chapeau",
+      "documentId": "doc-a",
+      "sectionRef": "6.08(b)",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "No Loan Party will, nor permit any Restricted Subsidiary to, make or agree to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, except as permitted by clauses (i) through (iv).",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is the 6.08(b) chapeau - no payment or distribution of principal or interest on Indebtedness, and no purchase, redemption, retirement, acquisition, cancellation or termination of Indebtedness, except clauses (i)-(iv). Every candidate sits in 6.08(a) (Restricted Payments) or Section 1.06 (pro forma mechanics); the closest is an enumerated permission, which per the deterministic layer is an INVERTED_LEGAL_POSTURE against a prohibition. No candidate is anchored at 6.08(b) and none flags a gap there.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:398d2562a10209b4c9b85b9131704b874fc670fd903182640017e2f5812cdccb": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.10-chapeau",
+      "documentId": "doc-a",
+      "sectionRef": "6.10",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "No Loan Party will, nor permit any Restricted Subsidiary to, enter into, incur or permit to exist any agreement prohibiting, restricting or conditioning (a) the ability of a Loan Party or Restricted Subsidiary to create, incur or permit Liens on its property, or (b) the ability of any Restricted Subsidiary to pay dividends or distributions on Equity Interests, make or repay loans or advances to any Borrower or Restricted Subsidiary, or Guarantee Indebtedness of any Borrower or Restricted Subsidiary.",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "No substantive representation of this claim exists, but 4 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "secondPassDisposition": "DISCOVERY_ONLY_NOT_REPRESENTED",
+      "secondPassRationale": "The best candidate states the claim correctly - it 'Prohibits any Loan Party or Restricted Subsidiary from entering into, incurring, or permitting to exist any agreement or arrangement that prohibits, restricts, or conditions the ability to incur liens, pay dividends/distributions, make or repay intercompany loans, or guarantee indebtedness' - but it is a DISCOVERY_CANDIDATE with accountingRole INVENTORY_ONLY and reviewStatus AUTO_ACCEPTED: a surfaced paragraph, never compiled into a rule, and carrying no review-required flag of its own. That is the highlighted paragraph, not the memo.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:c08f07c17673a0fe6111470ff2d58d1e7e7bd94d6e6d202774386497b0997188": "PARTIAL",
+        "coverage-unit:61ae2fc4dc7b155251dcb1d895b8704854a462b2c54a38a18f60e41072b92730": "NO",
+        "coverage-unit:061997e0bde697724fde2e789106910a500c8517e5713fcb8460e1963c24d4a9": "NO"
+      },
+      "classification": "B_VALID_SAFE_SURFACING_WRONG_LABEL"
+    },
+    {
+      "gtUnitId": "doc-a::VI::6.11-amendment-material-documents",
+      "documentId": "doc-a",
+      "sectionRef": "6.11",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "No Loan Party will, nor permit any Restricted Subsidiary to, amend, modify or waive its rights under (a) any agreement relating to Subordinated Indebtedness, (b) any Closing Date Acquisition Document, or (c) its organizational or governing documents, in each case to the extent the amendment, modification or waiver would be materially adverse to the Lenders.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "DISCOVERY_ONLY_NOT_REPRESENTED",
+      "secondPassRationale": "The two on-point candidates are uncompiled DISCOVERY_CANDIDATEs with accountingRole INVENTORY_ONLY and reviewStatus AUTO_ACCEPTED; their excerpts do quote all three limbs of Section 6.11, and one of them states the materiality standard, but nothing was compiled into a rule and no review-required flag accompanies them. Judged as surfaced raw text rather than a representation, and in any event each entry's own asserted semantics reaches only limb (a).",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:dd1bf00405e0f33e63c65df61fe197dab2a93bf14a440c8cf57fd87326d1c60f": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::I::def-first-amendment-cluster",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "materiality": "MATERIAL",
+      "groundTruthSemanticDescription": "'First Amendment' means the First Amendment to Amended and Restated Credit Agreement dated as of the First Amendment Effective Date; 'First Amendment Effective Date' means June 8, 2023; 'HISCO', 'HISCO Acquisition', 'HISCO Acquisition Agreement' (Stock Purchase Agreement dated March 30, 2023 with GreatBanc Trust Company as ESOP trustee), 'HISCO Business' and 'HISCO Transactions' (the 'First Amendment Transactions') are defined and carried forward.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is a cluster of amendment definitions - 'First Amendment', 'First Amendment Effective Date' (June 8, 2023), 'HISCO', 'HISCO Acquisition', 'HISCO Acquisition Agreement', 'HISCO Business', 'HISCO Transactions'. No candidate's text contains any of them; the two Section 1.01 units cover only the opening ABR/Account definitions and the rest are CORRA rate windows. Being inside Article I is not correspondence, and no candidate flags a gap over the claimed definitions.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:023753691e1c7e7efc2b9395337d6ce31036dd48a31fa3da113c45c184f82ba4": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::I::def-permitted-investments",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "materiality": "MATERIAL",
+      "groundTruthSemanticDescription": "'Permitted Investments' means (a) direct or guaranteed U.S. or Canadian federal government obligations maturing within one year; (b) commercial paper maturing within 270 days with the highest S&P or Moody's rating; (c) CDs, bankers' acceptances and time deposits maturing within 180 days with U.S./Canadian commercial banks having combined capital, surplus and undivided profits of at least $500,000,000; (d) fully collateralized repurchase agreements of not more than 30 days with such institutions; and (e) money market funds complying with SEC Rule 2a-7, rated AAA by S&P and Aaa by Moody's, with portfolio assets of at least $5,000,000,000.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "REVIEW_REQUIRED_FLAG_ONLY",
+      "secondPassRationale": "Nothing compiles the five-limb 'Permitted Investments' definition or its $500,000,000 and $5,000,000,000 thresholds. Two candidates do carry clause (c) of the definition verbatim, but each asserts only 'no adequate compiled/verified IR representation found for this CRITICAL unit ... discovery succeeded, compilation never ran' - a flagged gap over part of the claim, not a representation of it.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:a2ce999f300833c46428c9153b6d2a175574d14755ae5303000bb1eeac34b61b": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::I::def-sanctions-cluster",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "materiality": "INFORMATIONAL",
+      "groundTruthSemanticDescription": "'Sanctions', 'Sanctioned Country' (listing the so-called Donetsk and Luhansk People's Republics, Crimea, Cuba, Iran, North Korea and Syria), 'Sanctioned Person', 'Anti-Corruption Laws', 'Canadian Economic Sanctions and Export Control Laws', 'OFAC', 'USA PATRIOT Act', 'CAML' and 'Beneficial Ownership Regulation/Certification' are defined for the compliance representations and covenants.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is the sanctions/anti-corruption definitional cluster ('Sanctions', 'Sanctioned Country' with its enumerated territories, 'Sanctioned Person', 'Anti-Corruption Laws', 'OFAC', 'USA PATRIOT Act', 'CAML', Beneficial Ownership Regulation). None of the five candidates contains any of those terms, and no candidate flags a gap over them; shared residence in Section 1.01 is not correspondence.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:023753691e1c7e7efc2b9395337d6ce31036dd48a31fa3da113c45c184f82ba4": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::I::def-third-amendment",
+      "documentId": "doc-b",
+      "sectionRef": "1.01",
+      "materiality": "MATERIAL",
+      "groundTruthSemanticDescription": "'Third Amendment' means the Third Amendment to Amended and Restated Credit Agreement dated as of the Third Amendment Effective Date among the Company, the other Loan Parties, the Lenders party thereto and the Administrative Agent. NEW definition added by this amendment.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is a newly added definition - 'Third Amendment' means the Third Amendment to Amended and Restated Credit Agreement dated as of the Third Amendment Effective Date among the Company, the other Loan Parties, the Lenders and the Administrative Agent. No candidate contains that definition or any reference to it, and none flags a gap covering it.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:fa807a2246fda54f807a85d07749f58c2b8593d8f23e1e4ab3643b7edddfce7a": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::III::3-16",
+      "documentId": "doc-b",
+      "sectionRef": "3.16",
+      "materiality": "INFORMATIONAL",
+      "groundTruthSemanticDescription": "Employment Matters - as of the Effective Date no strikes, lockouts or slowdowns; wage-and-hour compliance subject to a Material Adverse Effect qualifier; wages and benefit amounts paid or accrued. (Article III representations are brought down as a condition to the effectiveness of this Amendment under Section 4(b) and to each Credit Event under Section 4.02.)",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is Section 3.16: no strikes, lockouts or slowdowns as of the Effective Date, wage-and-hour compliance subject to a Material Adverse Effect qualifier, and wages/benefits paid or accrued. No candidate asserts any of those facts - the nearest, a permitted-Indebtedness basket for benefit providers, is a different provision type - and nothing is anchored at 3.16 to flag the gap.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:28692d901a64f9336fc52c62d718a9ba3412a607a987c1332c7530a585cc3ff6": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::III::3-21",
+      "documentId": "doc-b",
+      "sectionRef": "3.21",
+      "materiality": "INFORMATIONAL",
+      "groundTruthSemanticDescription": "Affected Financial Institutions - no Loan Party is an Affected Financial Institution. (Article III representations are brought down as a condition to the effectiveness of this Amendment under Section 4(b) and to each Credit Event under Section 4.02.)",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "No substantive representation of this claim exists, but 5 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is a one-sentence representation that no Loan Party is an Affected Financial Institution. No candidate mentions Affected Financial Institutions or any cognate concept, none is anchored at Section 3.21, and none flags a coverage gap there.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:028b962e338356f0a9c9333d7460a549758c421e260b16ee7f1b88873817fd8c": "NO",
+        "coverage-unit:03bdeaa703e28b301f92977ec979ae443c71f24ffec25e47ba75ec11673f1833": "NO",
+        "coverage-unit:05fef8ec9735762fe4c8146f39e161c8356dfe0e139fec701ac059d2a9935718": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-01-lead-in",
+      "documentId": "doc-b",
+      "sectionRef": "6.01",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "Debt covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness except as permitted by clauses (a) through (q).",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is the Section 6.01 debt-covenant lead-in (no creation, incurrence, assumption or suffering to exist of Indebtedness except clauses (a)-(q)). All five candidates are definitional windows from Article I or a Liens carve-out; the deterministic layer records INVERTED_LEGAL_POSTURE and SCOPE_BREADTH_MISMATCH against them. No candidate is anchored at Section 6.01 and none flags a gap there.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:9e3f535fc05550bce3d74eb8da44cd0cf3820d53fb1762f3bceec99664740fbb": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-04-lead-in",
+      "documentId": "doc-b",
+      "sectionRef": "6.04",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "Investment covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, form any subsidiary after the Effective Date, or purchase, hold or acquire Equity Interests, evidences of indebtedness or other securities of, make or permit loans or advances to, Guarantee obligations of, or make or permit any investment or other interest in, any other Person, or acquire assets of another Person constituting a business unit, except as permitted by clauses (a) through (r).",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is Section 6.04's lead-in prohibition on forming subsidiaries, acquiring Equity Interests or securities, making loans or advances, Guaranteeing obligations, making investments and acquiring business units. Three candidates carry a '6.04(2)' label, but their own texts are Available Amount and redesignation-valuation fragments, so the shared section label is the only link - and the protocol treats structural adjacency as no evidence. No candidate asserts the prohibition and no flag is anchored to the lead-in's own text.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:a3b87ebf450594546ecdcd8c76a6ba6e4b37f5a702b4964d8c7ca5988616407d": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-k",
+      "documentId": "doc-b",
+      "sectionRef": "6.05(k)",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "Section 6.05(k) permits dispositions of assets, including Sale and Leaseback Transactions not otherwise permitted by clause (e)(ii), not permitted by any other clause (excluding Equity Interests in a Borrower, and excluding Equity Interests in a Restricted Subsidiary unless all of them are sold), provided the aggregate fair market value of assets Disposed of in reliance on this clause may not exceed, during any fiscal year of the Company, the greater of $25,000,000 and 25% of Applicable EBITDA, and provided further that (other than as set forth on Schedule 6.05) all such Dispositions must be made for fair value and for at least 75% cash consideration.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "DISCOVERY_ONLY_NOT_REPRESENTED",
+      "secondPassRationale": "The clause-(k) basket and its greater-of $25,000,000 / 25% of Applicable EBITDA cap are described accurately, but only by a DISCOVERY_CANDIDATE with accountingRole INVENTORY_ONLY and reviewStatus AUTO_ACCEPTED - surfaced raw text, never compiled, and carrying no review flag of its own. The cap's second proviso (fair value and at least 75% cash consideration) appears only inside a separate coverage-gap unit, so even the surfaced material is incomplete.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:db5fbcd9f89f2fb5cb7338e8c13680f945dd94a4e050c0b77651ffe5565d8251": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-b::VI::6-05-lead-in",
+      "documentId": "doc-b",
+      "sectionRef": "6.05",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "Asset sale covenant lead-in: no Loan Party will, nor permit any Restricted Subsidiary to, Dispose of any asset (including Equity Interests it owns), nor permit any Restricted Subsidiary to issue additional Equity Interests (other than to another Loan Party or Restricted Subsidiary in compliance with Section 6.04), except as permitted by clauses (a) through (k).",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is the Section 6.05 lead-in: no Disposition of any asset (including Equity Interests owned) and no issuance of additional Equity Interests by a Restricted Subsidiary other than to a Loan Party or Restricted Subsidiary in compliance with 6.04, except clauses (a)-(k). No candidate asserts that prohibition; three are EBITDA add-backs carrying a 6.05 label, and the other two are enumerated exceptions, which per the protocol do not represent the restriction they sit under. Nothing flags a gap at the lead-in itself.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:00cdf19b0eba46cf653158eed62f96d59c07c8a62982e8d0e9f3ca03ce7c5726": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::I::def-interest-coverage-ratio",
+      "documentId": "doc-d",
+      "sectionRef": "1.01 (Interest Coverage Ratio)",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "Interest Coverage Ratio = EBITDA for a period of four consecutive fiscal quarters divided by Consolidated Interest Expense for that period.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is that Interest Coverage Ratio = EBITDA for four consecutive fiscal quarters divided by Consolidated Interest Expense for that period. No candidate names Consolidated Interest Expense or a coverage ratio; the two closest carry the four-quarter EBITDA phrase but on the leverage-ratio basis, which is precisely a matching phrase on a different metric basis. No flag is anchored to the Interest Coverage Ratio definition.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:0c962e2916b28c2c72fac8391d5080fec25b1f8168c15fb07931d1d78c584a0f": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::III::rep-3-19",
+      "documentId": "doc-d",
+      "sectionRef": "3.19",
+      "materiality": "INFORMATIONAL",
+      "groundTruthSemanticDescription": "No Burdensome Restrictions: no Loan Party is subject to Burdensome Restrictions except those permitted under Section 6.10.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "REVIEW_REQUIRED_FLAG_ONLY",
+      "secondPassRationale": "Both on-point candidates sit at Section 3.19 and state the claim correctly, but neither is a compiled representation: one is a coverage unit reporting 'no adequate compiled/verified IR representation found ... discovery succeeded, compilation never ran', and the other is a discovery candidate carrying reviewStatus NEEDS_REVIEW. The correct text was surfaced and flagged for review rather than represented.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:95df8a4ccce45784b233e4a80ce5145f11d7a7c72f4e8608f23d1d2375d52a55": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-01-chapeau",
+      "documentId": "doc-d",
+      "sectionRef": "6.01",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "General prohibition on creating, incurring, assuming or suffering to exist any Indebtedness, subject to the exceptions in clauses (a) through (r).",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "No substantive representation of this claim exists, but 1 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is Section 6.01's general prohibition on Indebtedness subject to clauses (a)-(r). Every candidate is a benchmark or defined-term window; one merely cross-references 'Refinance Indebtedness ... in Section 6.01', which is a pointer rather than an assertion of the prohibition. Nothing is anchored at Section 6.01 and nothing flags a gap there.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:e0d5992d4d718a21581ea355edc9f776544f1b49beab71956a7e9b44ba65f41d": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-01-f",
+      "documentId": "doc-d",
+      "sectionRef": "6.01(f)",
+      "materiality": "MATERIAL",
+      "groundTruthSemanticDescription": "Indebtedness existing on the date hereof and listed on Schedule 6.01, plus any Refinance Indebtedness in respect of it. Schedule 6.01 lists approximately $1,144,000 of Capital Lease Obligations and three acquisition indemnity escrow amounts ($1,275,000, CAD $5,000,000 and SGD 1,265,000).",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "1 candidate(s) semantically correspond to this claim, but every one of them is inventory-only: the system noticed the provision and produced no representation of it, and did not flag the omission. Correspondence without representation is not credit.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is 6.01(f) - Indebtedness existing on the date hereof and listed on Schedule 6.01 plus Refinance Indebtedness, with roughly $1,144,000 of Capital Lease Obligations and three escrow amounts ($1,275,000, CAD $5,000,000 and SGD 1,265,000). No candidate carries Schedule 6.01, any of those amounts, or the Refinance Indebtedness permission; the only monetary figure present is an unrelated $50,000,000 Material Indebtedness threshold. Nothing flags a gap at 6.01(f).",
+      "v2ReliedCandidateJudgments": {
+        "discovery:discovery-candidate:8895fae34c1d68c9e09ef9be": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-02-e",
+      "documentId": "doc-d",
+      "sectionRef": "6.02(e)",
+      "materiality": "INFORMATIONAL",
+      "groundTruthSemanticDescription": "Collecting bank Liens under UCC Section 4-210 (or PPSA equivalent) covering only items being collected, and bankers' Liens and customary contractual setoff rights on deposit and securities accounts not given in connection with Indebtedness.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is 6.02(e): collecting-bank Liens under UCC Section 4-210 (or PPSA equivalent) covering only items being collected, plus bankers' Liens and customary contractual setoff rights on accounts not given in connection with Indebtedness. No candidate mentions UCC 4-210, collecting banks or setoff rights; all are sibling enumerated Lien exceptions, and none flags a coverage gap at clause (e).",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:a067ac5dc7b63468c9ec80c2aa3dd560b222b76e4f295ead11c1a739b2e9ae26": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-04-chapeau",
+      "documentId": "doc-d",
+      "sectionRef": "6.04",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "General prohibition on forming subsidiaries after the Effective Date, purchasing or holding Equity Interests, evidences of indebtedness or securities, making or permitting loans or advances, Guaranteeing obligations, making or permitting investments, or acquiring assets constituting a business unit, except as permitted by clauses (a) through (s).",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is Section 6.04's general prohibition subject to clauses (a)-(s). No candidate asserts it: the closest are a redesignation-valuation coverage unit and a discovery entry that captures only the pledge proviso to exception (b) - and a narrow enumerated condition does not represent the general restriction it sits under. No flag is anchored to the chapeau's own text.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:9a877438a5259adfdae889f63b8499909c00fe1267311f48074787054a85bcaa": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-08-b-chapeau",
+      "documentId": "doc-d",
+      "sectionRef": "6.08(b)",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "General prohibition on making or agreeing to make any payment or distribution of or in respect of principal or interest on any Indebtedness, or on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, subject to clauses (i) through (iv).",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is the 6.08(b) chapeau prohibiting payments of principal or interest on Indebtedness and purchases, redemptions, retirements, acquisitions, cancellations or terminations of Indebtedness except clauses (i)-(iv). Every candidate is either 6.08(a) Restricted Payments material (a permission, and per the deterministic layer an inverted posture) or Section 1.06 pro forma methodology. Nothing is anchored at 6.08(b) and nothing flags the gap.",
+      "v2ReliedCandidateJudgments": {
+        "discovery:discovery-candidate:c81cce3987e79b7e44fc588e": "NO",
+        "discovery:discovery-candidate:1b2357ad851cb12986ab5c7a": "NO",
+        "discovery:discovery-candidate:2ea9aa4e25f0ad88eb45564d": "NO",
+        "discovery:discovery-candidate:45bbcba74c8c4ad21c0eed76": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-09-chapeau",
+      "documentId": "doc-d",
+      "sectionRef": "6.09",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "General prohibition on selling, leasing, transferring, purchasing or acquiring property or assets to or from, or otherwise transacting with, any Affiliate, subject to clauses (a) through (g).",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is Section 6.09's general prohibition on selling, leasing, transferring, purchasing, acquiring or otherwise transacting with Affiliates, subject to clauses (a)-(g). No candidate asserts an affiliate-transaction restriction - the only candidate that even uses 'Affiliates' is a Section 9.18 lender-activities acknowledgment - and no candidate is anchored at 6.09 to flag the gap.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:4e3c8fad3ea655f3ea636f2e65067ceb1b7c25eb119ee6a0e3ca86fe31b7501e": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-09-f",
+      "documentId": "doc-d",
+      "sectionRef": "6.09(f)",
+      "materiality": "MATERIAL",
+      "groundTruthSemanticDescription": "Payment of reasonable fees to non-employee directors of any Loan Party or Restricted Subsidiary, and compensation, employee benefit arrangements and indemnities for directors, officers or employees in the ordinary course.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is exception (f): reasonable fees to non-employee directors, and ordinary-course compensation, employee benefit arrangements and indemnities for directors, officers and employees. No candidate asserts that permission - the nearest shares only the phrase 'directors' fees' inside an EBITDA add-back, a match of vocabulary on a different basis - and the one 6.09 flag covers the chapeau, not clause (f).",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:25212c6ae36beaa28cb18e93a84397be7ba905afc9001f3ea80818da2ad6c370": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::VI::6-10-chapeau",
+      "documentId": "doc-d",
+      "sectionRef": "6.10",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "No Loan Party or Restricted Subsidiary may enter into, incur or permit to exist any agreement or arrangement prohibiting, restricting or conditioning (a) its ability to create, incur or permit Liens on its property in favor of the Administrative Agent to secure the Secured Obligations, or (b) any Restricted Subsidiary's ability to pay dividends or distributions on its Equity Interests, to make or repay loans or advances to a Borrower or other Restricted Subsidiary, or to Guarantee Indebtedness of a Borrower or other Restricted Subsidiary.",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "No substantive representation of this claim exists, but 6 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "secondPassDisposition": "DISCOVERY_ONLY_NOT_REPRESENTED",
+      "secondPassRationale": "The claim is stated correctly by one candidate - 'Prohibits any Loan Party or Restricted Subsidiary from entering into or permitting agreements that restrict liens, dividends, intercompany loans, or guarantees as described in clauses (a) and (b)' - but that candidate is a DISCOVERY_CANDIDATE with accountingRole INVENTORY_ONLY and reviewStatus AUTO_ACCEPTED: surfaced text, never compiled into a rule, and carrying no review flag. The remaining candidates cover single prongs, two of them as coverage-gap flags.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:85ac5d16c7dcddfd734a9ba131e08f10375786699e7cfb3c84acc9b35c797372": "PARTIAL",
+        "coverage-unit:1eaf35bf5a3113a6751223d27241b22b5bb58c490b209f25b3f36308fb4dff2e": "PARTIAL"
+      },
+      "classification": "B_VALID_SAFE_SURFACING_WRONG_LABEL"
+    },
+    {
+      "gtUnitId": "doc-d::VII::7-01-chapeau",
+      "documentId": "doc-d",
+      "sectionRef": "7.01",
+      "materiality": "CRITICAL",
+      "groundTruthSemanticDescription": "Chapeau: any of the events described in clauses (a) through (q) constitutes an 'Event of Default'.",
+      "v2MatchStatus": "UNREPRESENTED",
+      "v2Reason": "No substantive representation of this claim exists, but 1 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding). The flag counts here only because it sits on a candidate that actually represents this claim - a flag on an unrelated neighbouring provision would not.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is the Section 7.01 chapeau: any of the events in clauses (a)-(q) constitutes an 'Event of Default'. No candidate asserts that; two are definitional windows, two are post-default remedies text, and one is a swap-obligation carve-out. Nothing is anchored to the chapeau and nothing flags a coverage gap there.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:49d288fdbaf9e086a03e18a7b95d95f4ee5385d9f1f95787aa405a476677f6eb": "NO",
+        "coverage-unit:5b3c50781566b86be884d67274ffaf7a649a6ad2cfb44579156c5f9f37a71706": "NO",
+        "coverage-unit:a5138de6242ce1d9f6d07d330080961cb2a599f97b1a1aff41fa21079e0433d3": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    },
+    {
+      "gtUnitId": "doc-d::XI::11-04",
+      "documentId": "doc-d",
+      "sectionRef": "11.04",
+      "materiality": "MATERIAL",
+      "groundTruthSemanticDescription": "Notices: each Borrower must immediately notify the Borrower Representative of any Default or Event of Default in a communication describing it and labeled a 'notice of default'; the Borrower Representative must promptly notify the Administrative Agent and Lenders. Any notice provided to the Borrower Representative constitutes notice to each Borrower on receipt.",
+      "v2MatchStatus": "HONESTLY_UNRESOLVED",
+      "v2Reason": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer.",
+      "secondPassDisposition": "UNSUPPORTED_SILENT",
+      "secondPassRationale": "The claim is Section 11.04: each Borrower must immediately notify the Borrower Representative of a Default or Event of Default in a communication labelled a 'notice of default', the Borrower Representative must promptly notify the Administrative Agent and Lenders, and notice to the Borrower Representative is notice to each Borrower. No candidate asserts any limb of that cascade; the nearest shares only the phrase 'notice of Default' inside the Agent's non-knowledge provision. Nothing is anchored at 11.04 to flag the gap.",
+      "v2ReliedCandidateJudgments": {
+        "coverage-unit:23a84b7c1a66caf5719f2ebf8aeb9dd6045f6b09e439ecb1c427f7d7d306acb0": "NO"
+      },
+      "classification": "A_FALSE_SAFE_SURFACING"
+    }
+  ]
+}

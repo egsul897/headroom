@@ -147,7 +147,18 @@ export function resolveSourceExcerpt(sourceText: string, sectionRef: string, opt
   }
 
   // Definition units: locate the quoted term inside the definitions section.
+  // A definitions section (e.g. "SECTION 1.01. Defined Terms") is typically
+  // the longest section in the document and spans dozens of UNRELATED defined
+  // terms. Falling through to "the start of the whole section" when none of
+  // the hints can be located is exactly the "plausible-looking wrong span"
+  // this resolver's own header comment says to avoid — it silently attributes
+  // a DIFFERENT definition's text (whichever happens to sit first in the
+  // section) to this unit, which then contaminates every downstream signal
+  // (actions, posture, content terms) with unrelated content. Confirmed root
+  // cause of the definitional-candidate over-match defect — see
+  // docs/evaluation-v2-iteration-2/03-definition-overmatch-root-cause.json.
   if ((options.definedTermHints ?? []).length > 0 && parts.length === 0) {
+    let matched = false;
     for (const term of options.definedTermHints ?? []) {
       const re = new RegExp(`["“]\\s*${escapeRegExp(term)}\\s*["”]`, "i");
       const m = re.exec(body);
@@ -156,9 +167,11 @@ export function resolveSourceExcerpt(sourceText: string, sectionRef: string, opt
         absStart += s;
         body = body.slice(s);
         method = `${method}+defined-term`;
+        matched = true;
         break;
       }
     }
+    if (!matched) return UNRESOLVED;
   }
 
   const text = body.slice(0, options.maxChars).trim();

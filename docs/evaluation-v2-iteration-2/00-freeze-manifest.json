@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "PHASE_3F1_5_2_FREEZE_MANIFEST",
+  "generatedAt": "2026-08-29T14:00:00Z",
+  "startingSha": "703a2dead3c9a6d4a1e3000719510ed8e8b02c4f",
+  "startingShaSubject": "Phase 3F.1.5.1: full second-pass rerun executed — NEEDS_ITERATION",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "workingTreeCleanAtStart": true,
+  "mission": "One bounded remediation of the specific Evaluation Methodology V2 defects empirically demonstrated by the frozen Phase 3F.1.5.1 rerun. Not a redesign. Not a production Headroom remediation phase.",
+  "preRegisteredThresholdsUnchanged": { "binaryAgreementRequired": 0.90, "detailedAgreementRequired": 0.85 },
+  "historicalVerdictsPreservedPermanently": {
+    "phase3F15": "PHASE_3F_1_5_EVALUATION_METHODOLOGY_V2_NEEDS_ITERATION",
+    "phase3F151EnvironmentBlockedRun": "PHASE_3F_1_5_1_EVALUATION_CALIBRATION_ENVIRONMENT_BLOCKED",
+    "phase3F151CompletedRerun": "PHASE_3F_1_5_1_EVALUATION_METHODOLOGY_V2_NEEDS_ITERATION",
+    "phase3F151FinalNumbers": { "binaryAgreementInclusive": 0.875, "binaryAgreeCount": "42/48", "detailedAgreement": 0.1875, "detailedAgreeCount": "9/48", "excludedGtNotResolvable": 3, "knownFalseCreditsCaught": "14/14", "liveJudgeCalls": 592, "liveJudgeFailures": 0, "liveJudgeCostUsd": 3.76 }
+  },
+  "hashesAtFreezeTime": {
+    "combinedManifestHash_docsEvaluationV2": "c81c52c1b3c8115af6f6a8da05c704af577eb0e58f155cb81e37d8762a87504b",
+    "combinedManifestHash_docsEvaluationV2Iteration": "dd50fb82c462d400e0475e50db0f36241b73c2ae5753771dd0d047b39b968ff8",
+    "combinedManifestHash_libEvaluationV2Implementation_31Files": "260660cbc2cc429c42d03babe6cf241c777a5f669cad38e947a4c0ac06d4060e",
+    "frozen51CaseSample_06-frozen-sample-packets-BLINDED.json": "0c68887572afeb997bad3a3b4b3bcac25b8a42f0c41159338e4206118e13678f",
+    "improvedSecondPassProtocol_05-second-pass-protocol.json": "064b641960faf0d0dd1c9cc095bf9f51201c209b11b8557f65213d7df2aa9c65",
+    "preRegisteredAgreementComputation_07-preregistered-agreement-computation.json": "2c53287a53baad3416956fb459b0b3a64c877c1331db709bc8a3ecfb94d024aa"
+  },
+  "note31Files": "31 .ts files under lib/contract-model/evaluation-v2/ (excluding docs) hashed as the implementation baseline this phase is authorized to modify.",
+  "reVerificationRequired": "All hashes above must be re-checked at phase end; docs/evaluation-v2/ and docs/evaluation-v2-iteration/ (everything up through this phase's own start) must remain byte-identical. Only the 31-file evaluation-v2 implementation hash and the second-pass-protocol/sample/agreement-computation hashes are EXPECTED to be referenced (not mutated) - protocol/sample/agreement-formula are explicitly forbidden from changing this phase (Section 1); only evaluator matching/candidate-qualification/safe-surfacing implementation files and tests may change.",
+  "productionCodeFreezeScope": {
+    "allowed": ["Evaluation V2 semantic matching logic", "Evaluation V2 candidate qualification logic", "Evaluation V2 safe-surfacing classification", "evaluator-only definitional candidate matching", "evaluator tests", "evaluator evidence artifacts", "evaluator documentation"],
+    "forbidden": ["production structural parser", "production discovery", "semantic compiler", "verifier", "semantic coverage production", "package graph", "amendment/operative-state", "IR", "precedent", "financial/product/UI", "ground-truth mutation", "package-specific rules", "DSGR-specific rules", "term-specific rules (e.g. 'Acquisition')", "Article-X-specific special cases", "threshold changes", "sample changes", "reviewer-protocol changes after this freeze", "agreement-formula changes", "historical artifact mutation", "Phase 3F.1.6", "Phase 3F.2", "Phase 4"]
+  }
+}

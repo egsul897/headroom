@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "PRE_RERUN_FREEZE",
+  "generatedAt": "2026-08-29T15:30:00Z",
+  "purpose": "Section 18: freeze and hash the revised evaluator implementation, tests, and every input to the 51-case gate BEFORE the rerun and before seeing its results. Nothing below may change after this artifact is written and before 10-second-pass-rerun-results.json is produced.",
+  "versionsIncremented": {
+    "algorithmVersion": { "from": "evaluation-v2-algorithm.v1", "to": "evaluation-v2-algorithm.v2", "reason": "conflicts.ts (new sole-discriminator thresholds) + semantic-correspondence.ts (C_OBJECT_RESOURCE sole-discriminator branch) + source-excerpt.ts (DEFINITION excerpt-resolution UNRESOLVED fallback) all changed what evidence the deterministic algorithm considers sufficient." },
+    "matchPolicyVersion": { "value": "evaluation-v2-match-policy.v1", "changed": false, "reason": "matching.ts (which dimension outcomes gate EXACT/PARTIAL/HONEST/rejection) was not modified this phase." },
+    "promptVersion": { "value": "evaluation-v2-correspondence-prompt.v1", "changed": false, "reason": "The Layer-2 semantic-correspondence live-judge prompt (adjudication.ts) was not modified this phase." },
+    "schemaVersion": { "value": "evaluation-v2-schema.v1", "changed": false, "reason": "No persisted-record field was added, removed or retyped." }
+  },
+  "implementationHashesPostFix": {
+    "conflicts.ts": "a75f9682b01365051ca248ce7f747672d3b423b813593008aef150320d3f7c8e",
+    "semantic-correspondence.ts": "60a2e721a2dfeee9360406f4073157af1dd7582d193aea276a27d4c74868f477",
+    "source-excerpt.ts": "a2452caf7e98dd2770c76b330659e05cb53e11dc90b325628c460d0b38b84d51",
+    "identity.ts": "8573f501d79605172edc21c4d46f90a33352a259d21847a16d1d4bb54cc3d564",
+    "combinedManifestHash_libEvaluationV2Implementation_31Files": "1bc302414f2fa9a96456440cf9a0a449a68475985c396759a461734e63efc09d",
+    "combinedManifestHash_libEvaluationV2Implementation_31Files_atFreeze": "260660cbc2cc429c42d03babe6cf241c777a5f669cad38e947a4c0ac06d4060e",
+    "note": "The combined 31-file hash changed from the 00-freeze-manifest.json baseline exactly because of the 4 files listed above (3 implementation changes + the identity.ts version bump). No other file under lib/contract-model/evaluation-v2/ was touched."
+  },
+  "newTestFilesFrozen": {
+    "safe-surfacing-calibration-cases.ts": "0e4071db92c4cca21c42d1d819422eb236765e203f43b462f75be456faf5cfb3",
+    "safe-surfacing-calibration.test.ts": "7505d3de9d393de04ba5aeb621abd48a083639541a718864895674703662853f",
+    "combinedManifestHash_testsEvaluationV2": "8a62d47bd55ef8238f1a8164ec9d48ee19d958d9cd195298ac418bd66d9e7445"
+  },
+  "unchangedFrozenInputsReVerified": {
+    "docsEvaluationV2_combined": { "hash": "c81c52c1b3c8115af6f6a8da05c704af577eb0e58f155cb81e37d8762a87504b", "matchesFreezeManifest": true },
+    "docsEvaluationV2Iteration_combined": { "hash": "dd50fb82c462d400e0475e50db0f36241b73c2ae5753771dd0d047b39b968ff8", "matchesFreezeManifest": true },
+    "frozen51CaseSample_06-frozen-sample-packets-BLINDED.json": { "hash": "0c68887572afeb997bad3a3b4b3bcac25b8a42f0c41159338e4206118e13678f", "matchesFreezeManifest": true },
+    "improvedSecondPassProtocol_05-second-pass-protocol.json": { "hash": "064b641960faf0d0dd1c9cc095bf9f51201c209b11b8557f65213d7df2aa9c65", "matchesFreezeManifest": true },
+    "preRegisteredAgreementComputation_07-preregistered-agreement-computation.json": { "hash": "2c53287a53baad3416956fb459b0b3a64c877c1331db709bc8a3ecfb94d024aa", "matchesFreezeManifest": true },
+    "conclusion": "Every input the rerun must hold constant (sample, protocol, agreement formula, thresholds, all pre-Phase-3F.1.5.2 historical artifacts) is byte-identical to the 00-freeze-manifest.json baseline. Only the evaluator implementation and its tests changed, exactly as Section 1 authorizes."
+  },
+  "thresholdsUnchangedConfirmed": { "binaryAgreementRequired": 0.90, "detailedAgreementRequired": 0.85 },
+  "testSuiteStateAtFreeze": {
+    "totalTests": 95,
+    "allPassing": true,
+    "breakdown": {
+      "import-boundary.test.ts": 5,
+      "false-credit-prohibitions.test.ts": 10,
+      "determinism-and-signals.test.ts": 14,
+      "adversarial-suite.test.ts": 34,
+      "safe-surfacing-calibration.test.ts": 28,
+      "dsgr-false-credit-gate.test.ts": 4
+    }
+  },
+  "commitment": "Nothing in this artifact, the sample, the protocol, the agreement formula, or the thresholds will be modified after this point regardless of what the rerun (09/10) produces, per Sections 18 and 21-22's no-post-hoc-tuning discipline."
+}
