@@ -111,6 +111,7 @@
  */
 import type { IRDefinition, IRRule, IRSharedCapacity } from "../../ir/types";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../semantic/types";
+import type { NodeSupersessionStatus } from "../amendment/types";
 
 export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v1";
 export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v1";
@@ -280,6 +281,21 @@ export interface SourceInventory {
   apparentIndependentUnitCount: number;
   apparentIndependentUnitEvidence: string[];
   inventoryAlgorithmVersion: string;
+  /**
+   * Phase 3F.1.5 Workstream B - P1-11 fix. Whether the physical structural
+   * node this inventory's `operativeSourceText` was taken from is still
+   * current-operative as of the caller's analysis date, per
+   * amendment/operative-state.ts's own getNodeSupersessionStatus - an
+   * "allowed input" this module's own independence contract above already
+   * names (operative contract state / lineage). Defaults to
+   * UNKNOWN_SUPERSESSION_STATUS (never CURRENT_OPERATIVE) whenever the
+   * caller does not supply a real supersession index/node identity, so a
+   * reconciliation finding built from this inventory can never be silently
+   * read as "the source text this compares against is confirmed current."
+   */
+  supersessionStatus: NodeSupersessionStatus;
+  /** Always populated - explains supersessionStatus, same disclosure discipline as targetResolutionReason elsewhere in this codebase. */
+  supersessionReason: string;
 }
 
 // ---------------------------------------------------------------------------

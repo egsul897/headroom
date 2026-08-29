@@ -15,6 +15,8 @@
 import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
 import type { DeterministicCandidate } from "./types";
+import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../amendment/operative-state";
+import type { NodeSupersessionIndex } from "../amendment/types";
 
 interface SignalPattern {
   name: string;
@@ -52,8 +54,23 @@ function detectSignals(text: string): string[] {
  * dropped merely because its own chapeau text before the first sub-item is
  * signal-free - the real economics live in its children, which are
  * evaluated independently in the same pass).
+ *
+ * Phase 3F.1.5 Workstream B (P1-11/Q8 fix) - `supersessionIndex` is
+ * OPTIONAL and additive: this function's own job (over-inclusive candidate
+ * generation from raw structural text) is unchanged, and a node whose text
+ * is historically superseded is still generated as a candidate (history
+ * must remain queryable - task's own §8 recall-first discipline is
+ * unaffected). What changes is that every candidate now carries an
+ * explicit, honest `supersessionStatus` rather than implying "current" by
+ * silent omission - see amendment/operative-state.ts's own
+ * getNodeSupersessionStatus for the full three-way, fail-closed contract.
+ * Omitting the argument (every call site until a caller is wired to real
+ * amendment/operative-state output) resolves EMPTY_SUPERSESSION_INDEX,
+ * which marks every candidate UNKNOWN_SUPERSESSION_STATUS - an honest
+ * downgrade from the prior implicit "current," never a silent regression
+ * to it.
  */
-export function runPassADeterministicSignals(documentId: string, index: StructuralIndex): DeterministicCandidate[] {
+export function runPassADeterministicSignals(documentId: string, index: StructuralIndex, supersessionIndex: NodeSupersessionIndex = EMPTY_SUPERSESSION_INDEX): DeterministicCandidate[] {
   const nodes = index.allNodes().filter((n) => n.documentId === documentId);
   const candidates: DeterministicCandidate[] = [];
 
@@ -64,7 +81,8 @@ export function runPassADeterministicSignals(documentId: string, index: Structur
     if (isHeadlineSection && !signals.includes("headline_heading")) signals.push("headline_heading");
 
     if (signals.length === 0) continue;
-    candidates.push({ documentId, nodeKey: node.nodeKey, nodeId: node.nodeId, sectionRef: node.sectionRef, signals, signalScore: signals.length });
+    const supersession = getNodeSupersessionStatus(supersessionIndex, documentId, node.nodeId);
+    candidates.push({ documentId, nodeKey: node.nodeKey, nodeId: node.nodeId, sectionRef: node.sectionRef, signals, signalScore: signals.length, supersessionStatus: supersession.status, supersessionReason: supersession.reason });
   }
 
   return candidates;

@@ -21,6 +21,8 @@ import { hashParts } from "../hashing";
 import type { StageCaller } from "../llm-caller";
 import type { StructuralIndex } from "../structural-index";
 import { runPassADeterministicSignals } from "./pass-a-signals";
+import { EMPTY_SUPERSESSION_INDEX } from "../amendment/operative-state";
+import type { NodeSupersessionIndex } from "../amendment/types";
 import { runPassBSemanticClassification, DISCOVERY_PROMPT_VERSION, type SectionBatchInput } from "./pass-b-semantic";
 import { runPassCNeighborhoodExpansion } from "./pass-c-neighborhood";
 import { runPassDReconciliation } from "./pass-d-reconcile";
@@ -57,11 +59,19 @@ export interface DiscoveryPipelineResult {
   summary: DiscoveryRunSummary;
 }
 
-export async function runDiscoveryPipeline(caller: StageCaller, documentId: string, index: StructuralIndex): Promise<DiscoveryPipelineResult> {
+/**
+ * Phase 3F.1.5 Workstream B (P1-11/Q8 fix) - `supersessionIndex` is
+ * optional and threads straight through to runPassADeterministicSignals;
+ * see that function's own comment for the fail-closed default when a
+ * caller omits it (no wiring changes to Pass B/C/D below - they consume
+ * `deterministic`/`deterministicByNodeId` for candidate merging/hinting
+ * only, never for a currentness claim of their own).
+ */
+export async function runDiscoveryPipeline(caller: StageCaller, documentId: string, index: StructuralIndex, supersessionIndex: NodeSupersessionIndex = EMPTY_SUPERSESSION_INDEX): Promise<DiscoveryPipelineResult> {
   const start = performance.now();
   const allNodes = index.allNodes().filter((n) => n.documentId === documentId);
 
-  const deterministic = runPassADeterministicSignals(documentId, index);
+  const deterministic = runPassADeterministicSignals(documentId, index, supersessionIndex);
   // Phase 3F.1.2: keyed by nodeId (real physical occurrence identity),
   // never the label-shaped nodeKey - see pass-d-reconcile.ts for the
   // highest-consequence consumer of this map (candidate merging).

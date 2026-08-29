@@ -38,7 +38,7 @@
 import type { StructuralIndex } from "../structural-index";
 import type { DetectedDefinition } from "../structural-definitions";
 import { groupEffectsByProvision, buildProvisionChain, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
-import type { AmendmentEffectCandidate, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
+import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
 
 /**
  * Phase 3F.1.5.R (sub-task 3) - the fail-closed composition point named by
@@ -485,4 +485,130 @@ export { normalizeDefinedTermRef };
 export function getOperativeDefinition(state: OperativeContractState, term: string): OperativeProvisionView | null {
   const normalized = normalizeDefinedTermRef(term);
   return state.provisions.find((p) => p.kind === "DEFINITION" && p.definedTermRef === normalized) ?? null;
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.5 Workstream B - P1-11 (Q8 supersession-awareness) fix.
+// EVERYTHING BELOW THIS LINE IS NEW - added surgically as pure additions
+// (no existing line above was changed) so this can merge cleanly alongside
+// Workstream D's own work in this same file. See amendment/types.ts's own
+// comment block (same phase/workstream tag) for the full design rationale.
+//
+// `buildNodeSupersessionIndex` generalizes the same nodeId-keyed lookup
+// semantic-coverage/cross-reference-audit.ts's own `auditOperativeStateForUnits`
+// already does ad hoc for ITS one subsystem (operativeState.provisions.find
+// ((p) => p.supersededSourceNodeIds.includes(nodeId))) into a reusable,
+// O(1)-lookup, multi-instrument, fail-closed-by-default utility any
+// StructuralNode consumer can call - rather than every consumer
+// reimplementing (or, as the audit found, simply never implementing) its
+// own copy of this check.
+// ---------------------------------------------------------------------------
+
+/** A single OperativeContractState paired with the base documentId it was computed for (OperativeContractState itself does not carry this - see OperativeStateInput.baseDocumentId - so a caller supplies it here rather than this function guessing it from provisions[0], which would be wrong/undefined whenever provisions is empty). */
+export interface OperativeStateForDocument {
+  baseDocumentId: string;
+  state: OperativeContractState;
+}
+
+/**
+ * Builds a queryable supersession index from every OperativeContractState
+ * the caller has actually computed for this analysis run. Deliberately
+ * accepts a LIST (never a single state) - a real package can involve
+ * several instruments/base documents, and a node-level consumer scanning
+ * one document at a time still needs the whole package's knowledge to
+ * correctly mark `coveredDocumentIds` (a document that was never analyzed
+ * for amendments AT ALL must resolve UNKNOWN for every one of its nodes -
+ * the fail-closed default `getNodeSupersessionStatus` falls back to
+ * whenever the empty-array/no-index case applies).
+ *
+ * No document-specific assumption: this only ever reads generic
+ * OperativeProvisionView fields (documentId, supersededSourceNodeIds,
+ * candidateSourceNodeIds, appliedChain) already produced by
+ * computeOperativeContractState above for ANY instrument's ANY provision -
+ * it generalizes identically across FWRG/LSB/CONMED/DSGR or any future
+ * document family.
+ */
+export function buildNodeSupersessionIndex(entries: OperativeStateForDocument[]): NodeSupersessionIndex {
+  const coveredDocumentIds = new Set<string>();
+  const supersededByNodeId = new Map<string, NodeSupersessionRecord>();
+  const ambiguousNodeIds = new Set<string>();
+
+  for (const { baseDocumentId, state } of entries) {
+    coveredDocumentIds.add(baseDocumentId);
+    for (const provision of state.provisions) {
+      coveredDocumentIds.add(provision.documentId);
+
+      // AMBIGUOUS target resolution (Phase 3F.1.4 §6A/§6B, unchanged by this
+      // fix): the real physical occurrences that share a colliding legal
+      // reference/definition term. Each one's OWN supersession status is
+      // genuinely unknowable - the amendment could target any one of them,
+      // never guessed here.
+      for (const nodeId of provision.candidateSourceNodeIds) ambiguousNodeIds.add(nodeId);
+
+      // KNOWN_SUPERSEDED: buildProvisionView's own loop (above in this file)
+      // pushes the provision's ORIGINAL base nodeId into
+      // supersededSourceNodeIds exactly once, on the first applied-chain
+      // iteration - i.e. the earliest (appliedChain is date-sorted, oldest
+      // first, per chain.ts's buildProvisionChain) effect that actually
+      // applied as of this state's own asOfDate. That effect is the real,
+      // disclosable provenance for "why is this superseded."
+      if (provision.supersededSourceNodeIds.length === 0) continue;
+      const supersedingEffect = provision.appliedChain[0] ?? null;
+      for (const nodeId of provision.supersededSourceNodeIds) {
+        // A node already recorded as superseded by an earlier-processed
+        // state is left alone (first writer wins) rather than overwritten -
+        // in practice one nodeId belongs to exactly one provision/instrument
+        // by construction, so this is a defensive no-op, never a real
+        // precedence decision.
+        if (supersededByNodeId.has(nodeId)) continue;
+        supersededByNodeId.set(nodeId, {
+          nodeId,
+          instrumentKey: provision.instrumentKey,
+          provisionKey: provision.provisionKey,
+          supersededByEffectId: supersedingEffect?.effectId ?? "(unknown-superseding-effect)",
+          supersededByAmendmentDocumentId: supersedingEffect?.amendmentDocumentId ?? provision.currentSourceDocumentId,
+          supersededEffectiveDate: supersedingEffect?.effectiveDate.date ?? null,
+        });
+      }
+    }
+  }
+
+  return { coveredDocumentIds, supersededByNodeId, ambiguousNodeIds };
+}
+
+/** The honest default for a consumer that has not (yet, or ever) been wired to any real amendment/operative-state computation - every lookup against this resolves UNKNOWN_SUPERSESSION_STATUS, never CURRENT_OPERATIVE, since `coveredDocumentIds` is empty. This is what makes "no supersession index was supplied" fail closed rather than silently behaving exactly as the pre-fix code did (implicitly certifying every node current). */
+export const EMPTY_SUPERSESSION_INDEX: NodeSupersessionIndex = { coveredDocumentIds: new Set(), supersededByNodeId: new Map(), ambiguousNodeIds: new Set() };
+
+/**
+ * The single query primitive every bypass-prone StructuralNode consumer
+ * should call before treating a physical node's own text as safely
+ * current. Three-way, deterministic, fail-closed:
+ *   - no nodeId supplied at all -> UNKNOWN (a supersession verdict is
+ *     meaningless without a specific physical-occurrence identity - never
+ *     answered at the bare document/label level).
+ *   - nodeId is a real, disclosed superseded occurrence -> KNOWN_SUPERSEDED
+ *     with full provenance.
+ *   - nodeId is one of several colliding candidates for an amendment target
+ *     the resolver could not uniquely attach -> UNKNOWN (never guessed).
+ *   - nodeId's own documentId was never covered by any state this index was
+ *     built from -> UNKNOWN (never assumed safe merely because nothing
+ *     contradicts it - the whole point of this fix).
+ *   - otherwise -> CURRENT_OPERATIVE (a document this index DOES cover, and
+ *     this specific node was never recorded as superseded or ambiguous).
+ */
+export function getNodeSupersessionStatus(index: NodeSupersessionIndex, documentId: string, nodeId: string | null): NodeSupersessionResult {
+  if (!nodeId) {
+    return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label." };
+  }
+  const record = index.supersededByNodeId.get(nodeId);
+  if (record) {
+    return { status: "KNOWN_SUPERSEDED", record, reason: `Superseded by amendment effect "${record.supersededByEffectId}" from document "${record.supersededByAmendmentDocumentId}"${record.supersededEffectiveDate ? `, effective ${record.supersededEffectiveDate}` : ""} - the operative-state resolver has already determined this physical occurrence's own text no longer governs.` };
+  }
+  if (index.ambiguousNodeIds.has(nodeId)) {
+    return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: "This physical occurrence is one of multiple real candidates sharing a legal reference/definition term that an amendment target could not be uniquely attached to - whether THIS specific occurrence is the one superseded cannot be determined without guessing." };
+  }
+  if (!index.coveredDocumentIds.has(documentId)) {
+    return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: `No operative-state computation covers document "${documentId}" - amendment/supersession status for this node was never checked, so it must not be assumed current.` };
+  }
+  return { status: "CURRENT_OPERATIVE", record: null, reason: "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for." };
 }
