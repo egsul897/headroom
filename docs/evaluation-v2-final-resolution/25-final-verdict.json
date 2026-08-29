@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-3-final-evaluation-v2-resolution.v1",
+  "artifactId": "FINAL_VERDICT",
+  "generatedAt": "2026-08-29T21:50:00Z",
+  "startingSha": "fe5f5c688dfcd1dae18e8d2f8958421219a0ff9b",
+  "twoScientificQuestions": {
+    "question1_matchingCorrectness": {
+      "question": "Can V2 distinguish the specific semantic claim from a sibling/sub-provision sharing family/vocabulary?",
+      "answer": "YES, for the confirmed mechanism. Workstream A's I_CLAIM_IDENTITY dimension resolves the confirmed sibling/sub-provision defect (Phase 3F.1.5.2's Risk R3), verified at single-case and at-scale granularity, with 22 new adversarial tests and zero regression on the pre-existing 95. Two narrower, still-open variants remain (different-base-section false matches; bare-undifferentiated-section definitional overmatch) - see 24's R7/R8, deliberately out of scope for this phase's frozen matcher."
+    },
+    "question2_taxonomyReproducibility": {
+      "question": "Can independent blinded adjudicators themselves reliably distinguish the detailed V2 states at >=85%?",
+      "answer": "NO. Binary credit/no-credit is reproducible (94.9% original, 97.0% holdout, both well above 90%, unanimous on all 14 false-credit controls). The 12-state DETAILED taxonomy is NOT reproducible at the required 85% threshold - 76.7% on the original 65-case sample, 69.7% (WORSE) on a fresh 22-case holdout under a rubric clarification specifically targeted at the confirmed dominant confusion mechanism. The one permitted evidence-backed redesign did not restore reproducibility, and a third confusable pair emerged on the holdout that the redesign did not anticipate."
+    }
+  },
+  "outcomeClassification": "C - the taxonomy itself is not reproducible, requiring an architecture decision rather than tuning V2's outputs to fit an unreproducible target.",
+  "pathTaken": "PATH_B_ATTEMPTED_AND_FAILED: taxonomy not reproducible on the original sample -> designed and froze the ONE permitted evidence-backed rubric redesign (15/18) -> re-tested on a fresh, never-before-seen holdout (16/17) -> holdout ALSO failed detailed reproducibility (worse than the original) -> per Section 20's explicit instruction, STOPPED without attempting a second (V3) redesign.",
+  "requiredChecklist": [
+    { "item": "Sibling defect fixed generally", "status": "PASS", "evidence": "01-05, 22 adversarial tests, at-scale real-data verification" },
+    { "item": "All 14 false credits caught, zero regression", "status": "PASS", "evidence": "20-known-false-credit-regression.json - corroborated by both the frozen engine test AND unanimous independent adjudicator rejection" },
+    { "item": "Adversarial tests pass", "status": "PASS", "evidence": "117/117 evaluation-v2 tests passing (95 pre-existing + 22 new)" },
+    { "item": "No prohibited changes (package/term-specific tuning, GT mutation, historical artifact mutation, production semantic changes)", "status": "PASS", "evidence": "23-diff-classification.json - zero forbidden categories, grep-verified" },
+    { "item": "Generalization regression clean (FWRG/LSB/CONMED)", "status": "PASS", "evidence": "21-cross-dataset-regression.json - zero package-specific branches, dangerous-count shifts disclosed and confirmed as the intended, correct consequence of the fix" },
+    { "item": "Taxonomy reproducibility (binary >=90% AND detailed >=85%)", "status": "FAIL", "evidence": "12 (76.7% detailed), 17 (69.7% detailed on holdout after the one permitted redesign)" },
+    { "item": "V2 vs. reproducible consensus (binary >=90%, detailed >=85%)", "status": "NOT_APPLICABLE", "evidence": "19-v2-vs-independent-consensus.json - no reproducible consensus exists to compare V2 against; a binary-only informational disclosure is provided but is explicitly not a certified evaluation" },
+    { "item": "Required test/type/lint/build gates", "status": "SEE_NARRATIVE_REPORT_FOR_FULL_RESULTS", "evidence": "run immediately after this artifact, before final commit" }
+  ],
+  "whyNotFAILED": "The generic FAILED verdict is reserved for violations within this phase's own control - package-specific tuning, GT mutation, false-credit regression, prohibited production changes, or (per Section 35) 'taxonomy proves reproducible but V2 stays below thresholds.' None of those occurred. The specific, narrower failure here - a well-designed, evidence-backed, minimally-scoped rubric redesign that STILL could not make a 12-state taxonomy reproducible on fresh data - is exactly the evidence pattern Section 36 reserves NEEDS_ARCHITECTURE_DECISION for.",
+  "finalVerdict": "PHASE_3F_1_5_3_EVALUATION_V2_FINAL_RESOLUTION_NEEDS_ARCHITECTURE_DECISION",
+  "architectureDecisionRequired": {
+    "question": "Is a 12-state detailed taxonomy the right instrument for measuring Headroom's discovery/representation/verification/safe-surfacing/dangerous-silence behavior, or does product value only require the reproducible BINARY layer (credit/no-credit) plus a narrower set of distinctions than 12?",
+    "evidenceForConsideration": [
+      "Binary credit/no-credit is robustly reproducible (two independent samples, kappa=0.87 on the original) and is where all the phase's safety-critical findings (false-credit controls, sibling-defect fix) actually live. Every historical false-credit incident this project has ever confirmed was a BINARY miscredit, not a detailed-label dispute.",
+      "The DETAILED layer's reproducibility problem is concentrated in structurally identifiable clusters (composite/chapeau location-scoping, sibling-adjacency, and now INCOMPARABLE's override-evidence ambiguity) rather than being diffusely spread across all 12 states - suggesting the underlying CONCEPTS (14's product-actionability analysis) are sound but the STATE COUNT or the rubric's operational precision may be mismatched to what blind reviewers (human or AI) can reliably discriminate from the evidence Headroom's pipeline currently records.",
+      "This phase already consumed its one permitted redesign attempt without resolving the problem - continuing to iterate on rubric wording without a different SHAPE of change (e.g. genuinely reducing the state count, or restructuring the evidence Headroom's own pipeline records so states like VERIFIED become reachable) is unlikely to converge, per Section 20's own single-attempt discipline.",
+      "The dormant VERIFIED_SEMANTIC_REPRESENTATION distinction (R4) suggests part of the taxonomy is aspirational relative to what the CURRENT pipeline architecture can produce evidence for - an architecture decision about the verification stage itself may be a prerequisite to a reproducible taxonomy, not merely a rubric-wording problem."
+    ],
+    "notRecommendingASpecificReplacement": "Per this phase's own scope discipline (Section 2/20), no specific replacement taxonomy is proposed here - that decision requires human judgment about product priorities (which distinctions Headroom actually needs to act differently) that this phase's evidence can inform but not make."
+  },
+  "explicitStatement_notPass": "This is NOT a PASS. Per Section 37/38, PASS would mean Headroom has a trustworthy INSTRUMENT for measuring itself - that instrument does not yet exist at the detailed-label granularity. EVALUATION METHODOLOGY V2 development is NOT closed; it is paused pending the architecture decision above."
+}
