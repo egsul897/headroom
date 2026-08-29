@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "PREREGISTERED_AGREEMENT_COMPUTATION",
+  "generatedAt": "2026-08-29T04:10:00Z",
+  "status": "FORMULA_PREREGISTERED_NOT_APPLIED_TO_NEW_DATA",
+  "whyNotApplied": "No rerun occurred (04-live-semantic-judge-run.json). This artifact fixes the exact computation rule for a future iteration, exactly as Phase 3F.1.5.1's own Section 11 requires it be fixed before any second-pass results exist.",
+  "thresholds": {
+    "binaryAgreementRequired": 0.90,
+    "detailedAgreementRequired": 0.85,
+    "note": "Unchanged from Phase 3F.1.5 (docs/evaluation-v2/08-second-pass-adjudication.json's preRegisteredThresholds). Never adjusted by this or any future phase without a new, separately-chartered decision - this phase has no authority to change them and does not attempt to."
+  },
+  "binaryCollapseRule": {
+    "creditSideStates": ["VERIFIED_SEMANTIC_REPRESENTATION", "PARTIAL_SEMANTIC_REPRESENTATION"],
+    "noCreditSideStates": ["HONESTLY_UNSUPPORTED", "HONESTLY_UNRESOLVED", "DISCOVERED_ONLY", "DISCOVERED_REVIEW_REQUIRED", "AMBIGUOUS", "CONTRADICTORY_REPRESENTATION", "NOT_DISCOVERED"],
+    "excludedFromBinaryComputation": ["INCOMPARABLE / GT_NOT_RESOLVABLE"],
+    "sensitivityVariant": "As in Phase 3F.1.5, a second, stricter binary variant is also computed and reported alongside the primary one: creditSideStates restricted to VERIFIED_SEMANTIC_REPRESENTATION only (PARTIAL moved to the no-credit side). Both binary numbers are reported; the PRIMARY inclusive variant is the one measured against the 90% threshold, exactly as Phase 3F.1.5 did.",
+    "howAgreementIsCounted": "For each case, both V2's disposition and the second-pass reviewer's disposition are mapped independently through this same table to CREDIT/NO_CREDIT/EXCLUDED. A case counts as 'agree' iff both non-excluded sides map to the same bucket. Excluded cases (either side GT_NOT_RESOLVABLE/INCOMPARABLE) are removed from BOTH the numerator and denominator, never counted as either agree or disagree."
+  },
+  "detailedCollapseRule": {
+    "principle": "The detailed comparison uses the FULL state-taxonomy label (02-state-taxonomy.json), not a coarser bucket. Unlike Phase 3F.1.5, where the second-pass reviewer's rubric had no equivalent for HONESTLY_UNRESOLVED/AMBIGUOUS/DISCOVERED_REVIEW_REQUIRED and so those states were mechanically forced to collapse into the reviewer's own UNREPRESENTED bucket at comparison time (silently inflating apparent disagreement, per 01-original-disagreement-forensics.json's Pareto finding), the NEW second-pass protocol (05-second-pass-protocol.json) gives the reviewer the SAME state vocabulary V2 uses. Detailed agreement is therefore a direct, unmapped equality check between V2's state and the second-pass reviewer's state for each case - no post-hoc bucket translation is applied by the orchestrator in either direction.",
+    "explicitNonEquivalences": "PARTIAL_SEMANTIC_REPRESENTATION and VERIFIED_SEMANTIC_REPRESENTATION are never treated as equal for detailed agreement, even though both are credit-side for binary purposes. HONESTLY_UNRESOLVED and AMBIGUOUS are never treated as equal to each other or to UNSUPPORTED_SILENT for detailed agreement, even though all three are no-credit-side for binary purposes.",
+    "rationaleForThisChange": "This directly targets the finding in 01-original-disagreement-forensics.json that 21 of 32 (65.6%) of Phase 3F.1.5's detailed disagreements were pure vocabulary mismatches with zero credit-direction disagreement. Giving the reviewer the same vocabulary removes that artifact from the measurement without changing what counts as agreement in substance - it is a protocol fix, not a threshold or scoring-rule change, and the 85% bar itself is untouched."
+  },
+  "freezeSequencing": "This computation rule is committed to git BEFORE any future execution's second-pass results exist, exactly as this document's own generation (before any rerun happened in Phase 3F.1.5.1) already demonstrates procedurally."
+}

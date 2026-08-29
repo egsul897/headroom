@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "DIFF_CLASSIFICATION",
+  "generatedAt": "2026-08-29T04:40:00Z",
+  "methodology": "git diff --stat 7304cd2 -- . (the phase's starting SHA) plus git status --short, evaluated immediately before this artifact was written.",
+  "verifiedResult": "Zero tracked files were modified. The only changes in the working tree are NEW, untracked files under docs/evaluation-v2-iteration/ (this phase's own artifacts) and the accompanying narrative report docs/phase-3f1-5-1-evaluation-calibration.md.",
+  "allowedCategories": ["EVALUATOR_IMPLEMENTATION", "EVALUATOR_TEST", "EVALUATOR_PROTOCOL", "EVALUATOR_ARTIFACT", "DOCUMENTATION", "NECESSARY_NON_SEMANTIC_INTERFACE"],
+  "forbiddenCategories": ["PRODUCTION_SEMANTIC_TUNING", "PACKAGE_SPECIFIC_TUNING", "GROUND_TRUTH_MUTATION", "HISTORICAL_ARTIFACT_MUTATION"],
+  "fileClassification": [
+    { "path": "docs/evaluation-v2-iteration/00-freeze-manifest.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/01-original-disagreement-forensics.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/02-state-taxonomy.json", "category": "EVALUATOR_PROTOCOL" },
+    { "path": "docs/evaluation-v2-iteration/03-dangerous-omission-semantics.json", "category": "EVALUATOR_PROTOCOL" },
+    { "path": "docs/evaluation-v2-iteration/04-live-semantic-judge-run.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/05-second-pass-protocol.json", "category": "EVALUATOR_PROTOCOL" },
+    { "path": "docs/evaluation-v2-iteration/06-frozen-sample.json", "category": "EVALUATOR_PROTOCOL" },
+    { "path": "docs/evaluation-v2-iteration/07-preregistered-agreement-computation.json", "category": "EVALUATOR_PROTOCOL" },
+    { "path": "docs/evaluation-v2-iteration/08-second-pass-results.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/09-known-false-credit-regression.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/10-adversarial-regression.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/11-separated-product-metrics.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/12-old-vs-calibrated-v2.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/13-diff-classification.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/14-remaining-evaluator-risks.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/evaluation-v2-iteration/15-final-verdict.json", "category": "EVALUATOR_ARTIFACT" },
+    { "path": "docs/phase-3f1-5-1-evaluation-calibration.md", "category": "DOCUMENTATION" }
+  ],
+  "forbiddenCategoryInstanceCount": 0,
+  "productionCodeTouchedCount": 0,
+  "evaluationV2ProductionMatchingLogicTouchedCount": 0,
+  "packageSpecificRuleAddedCount": 0,
+  "groundTruthFileTouchedCount": 0,
+  "historicalIntegrityCheck": {
+    "method": "Re-hashed all 19 files listed in 00-freeze-manifest.json's phase3f15ArtifactsPreservedByteForByte.perFileHashes immediately before writing this classification.",
+    "combinedManifestHashAtPhaseEnd": "226116503ffbe1b13aec1a552bc36e4895450f1ab9d75877b03acbe5f9293dd7",
+    "comparisonToFreezeTimeHash": "IDENTICAL to 00-freeze-manifest.json's combinedManifestHashAtFreezeTime (226116503ffbe1b13aec1a552bc36e4895450f1ab9d75877b03acbe5f9293dd7) - zero drift across all 19 historical files, confirmed via direct diff of the two per-file hash listings, not merely by comparing the combined hash alone."
+  },
+  "gateResult": "PASS - zero forbidden-category instances, zero production or evaluation-v2-matching-logic files touched."
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "SECOND_PASS_PROTOCOL_V2",
+  "generatedAt": "2026-08-29T04:00:00Z",
+  "status": "DESIGNED_NOT_EXECUTED",
+  "whyNotExecuted": "Section 12 of the phase charter mandates the rerun order live semantic judgment -> deterministic V2 aggregation -> independent second-pass adjudication -> compute agreement. Section 7 requires the phase to STOP without running any part of this ordered rerun when no authorized model credential is available (see 04-live-semantic-judge-run.json). Running this protocol against a fresh sample now, without ever having exercised the live judge, would not test the actual open question this phase exists to answer (whether the live judge - not just clearer instructions - closes the gap), and Section 19's gate cannot PASS without live judgment regardless. This protocol is therefore frozen here, ready to execute unchanged in a future iteration once a credential is available, per the phase's own 'freeze protocol before selecting/running the sample' discipline.",
+  "protocolHash": null,
+  "protocolHashNote": "A contentHash of this document (per lib/contract-model/evaluation-v2/identity.ts's contentHash convention) will be computed and recorded here at the moment a future iteration actually freezes this protocol for execution, so the hash genuinely proves the protocol was fixed before that run's results were seen - a hash computed now, before any execution context exists, would prove nothing beyond what git's own commit hash of this file already proves.",
+  "instructionsForReviewer": {
+    "coreTask": "For each packet, decide the STATE (not just a binary credit/no-credit) that best describes how Headroom's candidate representations relate to the ground-truth claim, using ONLY the state taxonomy below. Do not use any label outside this list.",
+    "stateOptionsGivenToReviewer": [
+      "VERIFIED_OR_UNVERIFIED_REPRESENTATION - a candidate has been compiled into a structured rule/definition/coverage-unit whose OWN asserted content matches the claim's subject, posture, object, and (if applicable) economics/conditions on every dimension the claim depends on.",
+      "PARTIAL_REPRESENTATION - a compiled candidate matches the claim's core subject/posture/object, but is silent on or conflicts with at least one dimension (economics, a specific condition, scope limit, or cap) the claim depends on. Name the missing dimension(s).",
+      "HONESTLY_UNRESOLVED - a candidate is clearly anchored at/relevant to the claim's location, but the candidate's OWN text explicitly declares the answer uncertain, ambiguous, or unavailable, rather than asserting a confident position.",
+      "REVIEW_REQUIRED_FLAG_ONLY - a candidate exists at the claim's location that flags 'this needs review' or 'coverage gap' without asserting any specific content.",
+      "DISCOVERY_ONLY_NOT_REPRESENTED - a candidate's raw excerpt textually overlaps the claim's topic, but the candidate is an unstructured discovery/inventory entry, not a compiled representation, and does not itself carry a review-required flag. IMPORTANT: judge this candidate the same way you would judge a random highlighted sentence found by a keyword search - the fact that its words happen to describe the claim correctly does NOT make it a representation, any more than finding the right sentence with Ctrl-F means a document has been read and understood. Compare: a paralegal who highlights the correct paragraph in a 200-page agreement has surfaced it for the lawyer to read; they have not yet written the memo saying what the paragraph means. DISCOVERY_ONLY_NOT_REPRESENTED is the highlighted paragraph, not the memo.",
+      "CONTRADICTORY - a compiled candidate is anchored at the claim's location/subject but asserts a materially different, conflicting answer.",
+      "AMBIGUOUS - two or more candidate readings correspond about equally well and no single winner is defensible.",
+      "UNSUPPORTED_SILENT - nothing in the packet corresponds to the claim on any dimension, and nothing flags the gap for review.",
+      "GT_NOT_RESOLVABLE - the ground-truth excerpt provided is missing, garbled, or otherwise not usable to make this judgment. Use this rather than guessing."
+    ],
+    "abstractWorkedExamples": [
+      { "scenario": "A GT claim states 'the Company shall maintain a minimum current ratio of 1.25:1.00, tested quarterly.' Candidate A is a compiled financial-covenant IR rule stating the same ratio and test frequency. Candidate B is a discovery-stage raw-text snippet from a totally different section that happens to also mention '1.25' in an unrelated basket cap.", "correctDisposition": "VERIFIED_OR_UNVERIFIED_REPRESENTATION on Candidate A. Candidate B is NOT correspondence merely because it shares the number 1.25 - a matching number on a different basis is not a match." },
+      { "scenario": "A GT claim describes a general prohibition on incurring additional debt, subject to ten enumerated exceptions. A discovery-stage candidate's raw excerpt is exception (7) - a narrow basket for purchase-money debt up to $5,000,000.", "correctDisposition": "DISCOVERY_ONLY_NOT_REPRESENTED (or at best PARTIAL if compiled) for the general prohibition claim - a narrow enumerated exception does not represent the general restriction it sits under, even when both are discovered/compiled correctly for what they individually are." },
+      { "scenario": "A GT claim asserts a specific defined term's meaning. The only candidate is a compiled IR definition for a DIFFERENT, merely nearby defined term in the same numbered section, whose own content has nothing to do with the claim's subject.", "correctDisposition": "UNSUPPORTED_SILENT (if nothing else in the packet is relevant) - proximity within the same numbered section is never itself evidence of correspondence, no matter how confidently a candidate has been compiled." },
+      { "scenario": "A GT claim asks whether a specific carve-out applies. The only candidate is a compiled coverage-unit that explicitly states: 'the applicable exception could not be conclusively determined from the available text; flagged for counsel review.'", "correctDisposition": "HONESTLY_UNRESOLVED - this is a genuinely different, safer outcome than UNSUPPORTED_SILENT, even though neither earns representation credit. The system told the user it did not know, rather than saying nothing." }
+    ],
+    "explicitProhibitions": [
+      "Never told which answer is 'correct', never shown any prior disposition (V2's, an earlier reviewer's, or any historical scorer's) for this or any other case in the sample.",
+      "Never told whether a case is one of the 14 known historical false credits, nor shown the false-credit list, nor told the sample intentionally includes or excludes them.",
+      "Never given package-specific hints (e.g. 'this document tends to bury exceptions in the chapeau') - only the abstract, cross-package examples above."
+    ]
+  },
+  "carriedForwardFromPriorProtocol": "Everything about blinding (never see V2's own label, never see the sealed labels file) and about materiality-stratified sampling is unchanged from Phase 3F.1.5's protocol - only the disposition vocabulary and the worked examples are new."
+}

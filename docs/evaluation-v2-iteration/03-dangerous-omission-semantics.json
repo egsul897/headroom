@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "DANGEROUS_OMISSION_SEMANTICS_AND_PRODUCT_QUESTIONS",
+  "generatedAt": "2026-08-29T03:40:00Z",
+  "section4_dangerousOmissionSemantics": {
+    "definition": "A ground-truth semantic unit is DANGEROUS_UNACCOUNTED (silent, dangerous) if and only if ALL of the following hold: (1) materiality is CRITICAL or MATERIAL; (2) Headroom did NOT produce an adequate semantic representation of it (state is not in {SEMANTICALLY_REPRESENTED_UNVERIFIED, SEMANTICALLY_REPRESENTED_VERIFICATION_INCOMPLETE, VERIFIED_SEMANTIC_REPRESENTATION, or a PARTIAL_SEMANTIC_REPRESENTATION whose missing dimension is itself non-critical}; AND (3) Headroom did NOT adequately surface the missing/uncertain semantics for human review (state is not in the safeSurfacingStates set: DISCOVERED_REVIEW_REQUIRED, HONESTLY_UNRESOLVED, AMBIGUOUS).",
+    "restatementOfCoreRule": "Discovery alone is never sufficient to avoid a dangerous-omission classification UNLESS the discovery is accompanied by an explicit review-required/ambiguity/unresolved flag. A candidate that merely EXISTS in inventory (DISCOVERED_ONLY) without surfacing uncertainty provides no safety value - a user reading Headroom's output would see nothing indicating that location needed attention, which is exactly as dangerous as if the location had never been discovered at all.",
+    "specialCaseCarveOutWithoutTheRuleItCarvesOutOf": "A PARTIAL_SEMANTIC_REPRESENTATION where the represented portion is a carve-out, proviso, or exception to a covenant, but the covenant's own operative core is not represented (illustrated by doc-d::V::cov-5-03-existence in 01-original-disagreement-forensics.json - only the merger-permission proviso was represented, not the underlying existence-preservation duty) is treated as DANGEROUS_UNACCOUNTED if the covenant's core is CRITICAL/MATERIAL, even though a PARTIAL state technically exists. A carve-out without the rule it carves out of misrepresents the covenant's overall shape (implying a broader permission exists than actually does) and is not adequate, safe coverage.",
+    "contradictoryRepresentationTreatment": "CONTRADICTORY_REPRESENTATION is tracked as its own distinct, separately-reported count - never merged into DANGEROUS_UNACCOUNTED counts, because an active misstatement and a silent gap are different failure modes with different remediation paths, even though both are dangerous.",
+    "exclusionForIncomparable": "INCOMPARABLE units (GT_REQUIRES_DOMAIN_REVIEW or UNRESOLVED_DESCRIPTION_ONLY) are excluded from the dangerous-omission denominator entirely and reported as a separate excluded count, never silently folded into either the safe or the dangerous bucket."
+  },
+  "section6_productSemanticsQuestions": [
+    {
+      "question": "A. Should compilation (not just discovery) be required before a candidate can receive semantic-representation credit?",
+      "answer": "YES, on product-semantics grounds. A discovery-stage candidate is, by this pipeline's own design, an un-vetted inventory entry - it has not passed through the compiler's structured extraction, type validation, or provenance checks. Crediting it as a 'representation' would mean the product's own coverage percentage no longer reflects what was actually compiled into the structured model that downstream product surfaces (dashboards, precedent matching, simulation) actually consume. This is not a metric-optimization choice - it would remain true even if it made the reported recall number look worse (and, per 01-original-disagreement-forensics.json, it does: several discovery-only candidates read as correct in isolated natural-language review)."
+    },
+    {
+      "question": "B. Should independent verification be required before a candidate can receive VERIFIED representation credit (as opposed to mere semantic-representation credit)?",
+      "answer": "YES, but as a SEPARATE, higher bar reported as its own metric (verifiedSemanticRepresentationRecall), not folded into semanticRepresentationRecall. An unverified compiled representation is a real product artifact (users can see it), so it deserves representation credit; but 'verified' is a materially stronger claim (an independent check found no contradiction) and conflating the two would overstate confidence in exactly the way this whole evaluation line of work exists to prevent."
+    },
+    {
+      "question": "C. Can discovery-only surfacing (DISCOVERED_REVIEW_REQUIRED) prevent a silent-omission classification without itself counting as representation?",
+      "answer": "YES. These are genuinely different questions: 'did the system tell the user something needs attention here' (a safety property) versus 'did the system correctly state what the covenant means' (a representation property). A system that flags 'I could not confidently determine what Section X requires - please review' has provided real safety value even though it has represented nothing. Rewarding this distinctly (as safe-surfacing, not as representation) is the correct incentive: it should never become cheaper to game an honest 'unresolved' flag into looking like a real match, nor should the product be penalized identically for an honest flag as for total silence."
+    },
+    {
+      "question": "D. Should HONESTLY_UNRESOLVED (a corresponding candidate that self-declares uncertainty) be treated as safe surfacing even though it earns no representation credit?",
+      "answer": "YES, subject to the same reasoning as C. The forensic pass in 01-original-disagreement-forensics.json shows this exact state is the dominant driver of the (mislabeled as low) detailed-agreement score - 21 of 32 disagreements are HONESTLY_UNRESOLVED/AMBIGUOUS (V2) vs UNREPRESENTED (second pass), all of which are actually binary-credit AGREEMENTS. This confirms the taxonomy is doing real, correct work distinguishing an honest flag from silence, and that the prior second-pass protocol simply lacked the vocabulary to record the distinction - not that V2's own judgment was wrong."
+    },
+    {
+      "question": "E. Is it acceptable for these stricter definitions to produce a LOWER headline representation/verified-representation number and a HIGHER dangerous-omission count than a more permissive scoring approach would?",
+      "answer": "YES, explicitly and by design (per the phase charter's Section 16). The objective of this entire evaluation lineage is measurement validity - telling the truth about what the product actually does - not producing an optimistic number. A stricter, more honest accounting that surfaces more dangerous gaps is a SUCCESS of the evaluator, exactly as Phase 3F.1.5's own final verdict already established for the DSGR 0.6% combined recall finding. This phase does not revisit or soften that conclusion."
+    }
+  ],
+  "answeredOnProductSemanticsGroundsNotMetricOptimization": true
+}

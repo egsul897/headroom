@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "PHASE_3F1_5_1_FREEZE_MANIFEST",
+  "generatedAt": "2026-08-29T03:00:00Z",
+  "startingSha": "7304cd24e385bb59528f652a73a7dba0358c751c",
+  "startingShaSubject": "Phase 3F.1.5 final push (Evaluation Methodology V2, verdict NEEDS_ITERATION)",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "workingTreeCleanAtStart": true,
+  "workingTreeVerification": "git status --short returned empty at phase start; git diff --stat 7304cd2 -- . returned empty immediately before this manifest was written.",
+  "purpose": "Phase 3F.1.5.1 resolves the single failed gate from Phase 3F.1.5 (independent second-pass adjudication agreement) without assuming either previously-identified confounder is correct, without weakening the pre-registered thresholds, and without post-hoc rewriting the already-observed disagreements.",
+  "preRegisteredPhase3F15Thresholds": {
+    "binaryAgreementRequired": 0.90,
+    "detailedAgreementRequired": 0.85,
+    "source": "docs/evaluation-v2/08-second-pass-adjudication.json summary.preRegisteredThresholds - adopted verbatim from the Phase 3F.1.5 charter's own suggested values before Agent 2's second-pass review was dispatched. These thresholds are NOT altered, loosened, or reinterpreted anywhere in Phase 3F.1.5.1.",
+    "originalResultPermanentlyPreserved": {
+      "binaryAgreement_inclusivePartialAsCredit": 0.7843,
+      "binaryAgreement_strictExactMatchOnlyAsCredit": 0.8431,
+      "detailedDispositionAgreement": 0.3725,
+      "note": "These three numbers, and the full 51-case record they come from, remain exactly as committed at SHA 7304cd2 in docs/evaluation-v2/08-second-pass-adjudication.json. They are never edited, deleted, or superseded in place - only ever cited by reference."
+    }
+  },
+  "phase3f15ArtifactsPreservedByteForByte": {
+    "verificationMethod": "sha256sum over every file in docs/evaluation-v2/ plus docs/phase-3f1-5-evaluation-methodology-v2.md, computed at Phase 3F.1.5.1 freeze time. Re-verified identical at phase end (see 13-diff-classification.json historicalIntegrityCheck).",
+    "combinedManifestSha256AtFreezeTime": "226116503ffbe1b13aec1a552bc36e4895450f1ab9d75877b03acbe5f9293dd7",
+    "perFileHashes": {
+      "docs/evaluation-v2/00-freeze-manifest.json": "c57388a57fc2e1444755b5bd1a89ca9f001f2415f3442149e9ad5324e01153d5",
+      "docs/evaluation-v2/01-methodology-spec.json": "3df9091f8572533d236abc62d5be7079dcd3a479646083ded80fbeb172ddfb16",
+      "docs/evaluation-v2/02-independence-matrix.json": "78653baa4df7ffb15ec3878297c616689e2763e4345a9f86ea44f1234af8b5bb",
+      "docs/evaluation-v2/03-adversarial-suite-results.json": "3ab37829dc1319b9d08cf715aa83f8ec7423408dda1af1f69fbd2e81c71da75c",
+      "docs/evaluation-v2/04-dsgr-unit-level-reconciliation.json": "8d437b71c0e622cd77f83e0d1af69086422beb07c52de6b0824a564a03ae9a33",
+      "docs/evaluation-v2/05-dsgr-old-vs-v2.json": "83d5db02b6b71e7947ca062bbf03e5968fd6a2976e4fbb89825ff66758034fd6",
+      "docs/evaluation-v2/06-known-false-credit-reconciliation.json": "ab61adb20fe623d522db6a90503beeb1213912ef5170e3d39a9183edf0204855",
+      "docs/evaluation-v2/07-dsgr-v2-aggregate-metrics.json": "4fb28298f4020faccb3a74c8d679c6d0e00e141e7d3582d06b99197138e1e69d",
+      "docs/evaluation-v2/08-second-pass-adjudication.json": "4175c3b0167ee6d7c6154393e290167f96e518ba08948a1ce3a3e9b9efe07370",
+      "docs/evaluation-v2/09-cross-dataset-generalization.json": "a042f5f893d9bafba903e43a4cf81da5ef59a1d6aa4a65678de1f7b61709e932",
+      "docs/evaluation-v2/10-ground-truth-quality-audit.json": "c0091ce0a656d339a867daa92e8de5bd5c868432ef9b8a32d3d4f7e6243997ff",
+      "docs/evaluation-v2/11-reproducibility-and-cost.json": "44485b66cb387629036a5e9675ecf282ce6ab0487706b6d8352c09db26bdbd20",
+      "docs/evaluation-v2/12-diff-classification.json": "a85cbc32f219ff68e7471a7b7918084f6d250b1b7a12bb22974166b8b7c62b81",
+      "docs/evaluation-v2/13-remaining-evaluation-risks.json": "be4df9088c55a847f64059e6df4a6c3810e991950f98f5e716c76b5a3aa9cc8b",
+      "docs/evaluation-v2/14-phase-3f1-5-final-verdict.json": "153261f2a86d6a1660d51d3459f9bb058f5950683c6e43fa5b572505ff0d8901",
+      "docs/evaluation-v2/README.md": "15d7485183212b3c7051b725e26d01a3929d86a9e1a0f4030c54a71fda81055e",
+      "docs/evaluation-v2/_stratified-sample-for-second-pass.json": "768bafd4d0d2de805926f4b2e6b4b966b96313ca7b093d19e5ec3fe951957ba4",
+      "docs/evaluation-v2/_stratified-sample-v2-labels-SEALED.json": "09eb3fd833a0571eea100414192c8c6cd714586ece7f7028af02b6960c89a269",
+      "docs/phase-3f1-5-evaluation-methodology-v2.md": "6baf733038ef0a20835c0feb1ecc1586ee3b01eab748142a99dc4bdbc5d20a61"
+    },
+    "prohibitionOnMutation": "None of these 19 files, nor tests/fixtures/unseen-packages/phase-3f1-1-forensics/phase-3f1-1-scorer-bridge.json, nor any tests/fixtures/unseen-packages/phase-3f-ground-truth/*.json, nor the historical scorer scripts, are edited at any point in Phase 3F.1.5.1."
+  },
+  "governingSpecRead": "Phase 3F.1.5.1 (this phase's own charter, as given verbatim in the dispatching prompt) plus docs/evaluation-v2/13-remaining-evaluation-risks.json and docs/evaluation-v2/14-phase-3f1-5-final-verdict.json from Phase 3F.1.5.",
+  "productionCodeFreezeScope": {
+    "frozen": "Identical scope to Phase 3F.1.5's freeze: all discovery, structural parsing, package-graph, context retrieval, amendment/operative-state, semantic compiler, Covenant IR, precedent, production semantic-coverage matching, financial/product/UI code, and additionally the evaluation-v2 PRODUCTION matching/signal/conflict logic itself (lib/contract-model/evaluation-v2/{signals,semantic-correspondence,conflicts,matching,aggregate}.ts) - this phase may add new evaluator-validation infrastructure and tests, but may not tune V2's own matching logic in response to the disagreements it is investigating.",
+    "authorizedForModification": "New evaluator-validation namespace under docs/evaluation-v2-iteration/ and this narrative report; new test files that exercise the frozen state taxonomy; documentation.",
+    "explicitProhibitions": "Verbatim from the phase charter: do not change production semantic behavior; do not tune compiler/discovery/verifier/router/parser/package graph; do not alter historical ground truth; do not alter the 90% binary or 85% detailed thresholds; do not redefine agreement after seeing rerun results; do not manually exclude inconvenient disagreements; do not introduce package-specific matching rules; do not select a new unseen package; do not begin residual foundation remediation, Phase 3F.1.6, Phase 3F.2, or Phase 4."
+  }
+}

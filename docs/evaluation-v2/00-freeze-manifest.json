@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-evaluation-methodology-v2.v1",
+  "artifactId": "PHASE_3F1_5_FREEZE_MANIFEST",
+  "generatedAt": "2026-08-29T00:00:00Z",
+  "startingSha": "18e55bc2c05531867ec6082186278d7b19689d7c",
+  "startingShaSubject": "Merge pull request #31 from egsul897/claude/headroom-scaffold-covenant-engine-jrijk8 (Phase 3F.1.4)",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "branchRestartNote": "PR #31 was already merged into main. Per repository convention for follow-up work on an already-merged branch, the branch was restarted from origin/main (git checkout -B ... origin/main). Confirmed zero content divergence.",
+  "workingTreeCleanAtStart": true,
+  "governingDocumentsRead": [
+    "docs/HEADROOM-NORTH-STAR.md",
+    "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md",
+    "docs/HEADROOM-ROADMAP.md",
+    "docs/foundation-assurance/11-test-evidence-classification.json",
+    "docs/foundation-assurance/17-remediation-priority-map.json",
+    "docs/foundation-remediation/07-p0-reconciliation.json",
+    "docs/foundation-remediation/08-p1-reconciliation.json",
+    "docs/foundation-remediation/13-remaining-foundation-risks.json",
+    "docs/foundation-remediation/14-phase-3f1-4-final-verdict.json"
+  ],
+  "historicalScorerImplementationsRead": [
+    "scripts/phase-3f-score-first-run.ts",
+    "scripts/phase-3f1-score-dsgr-regression.ts",
+    "scripts/phase-3f1-1-forensics.ts",
+    "lib/contract-model/analyzer/evaluator.ts"
+  ],
+  "productionCodeFreezeScope": {
+    "frozen": "All discovery, structural parsing, package-graph relationship logic, context retrieval, amendment/operative-state semantics, semantic compiler prompts/tool policy, Covenant IR semantics, precedent behavior, semantic coverage production matching, financial/product/UI code.",
+    "authorizedForModification": "Evaluation/scoring code, evaluation-only utilities/schemas/types, test/evidence infrastructure, documentation, machine-readable scoring artifacts - specifically a new, clean namespace under lib/contract-model/evaluation-v2/ and docs/evaluation-v2/.",
+    "verificationMethod": "A full git-diff classification (docs/evaluation-v2/12-diff-classification.json) will be produced at phase end, and every changed file classified EVALUATOR_IMPLEMENTATION / EVALUATOR_TEST / EVALUATOR_ARTIFACT / DOCUMENTATION / NECESSARY_NON_SEMANTIC_INTERFACE_CHANGE, with zero PRODUCTION_SEMANTIC_TUNING / PACKAGE_SPECIFIC_FIX / GROUND_TRUTH_MUTATION / HISTORICAL_ARTIFACT_MUTATION entries required to pass."
+  },
+  "historicalEvidenceHashBaseline": {
+    "note": "Combined manifest of 118 hashed paths across docs/phase-3f*.md, docs/phase-3f1*.md, tests/fixtures/unseen-packages/phase-3f*/ (recursive), tests/fixtures/architecture-audits/ (recursive), and docs/foundation-assurance/ + docs/foundation-remediation/ (recursive) - computed at freeze time and re-verified at phase end.",
+    "combinedManifestHashAtFreezeTime": "538b62d37bed9caf6063ee8a7aaa3b47d5e313c4501d632dbe2f6f27864c8455",
+    "reVerificationRequired": "docs/evaluation-v2/12-diff-classification.json (or a dedicated integrity check within it) must show zero mismatches against this baseline at phase end."
+  },
+  "keyFactsGatheredForDownstreamWork": {
+    "dsgrFrozenGroundTruth": "tests/fixtures/unseen-packages/phase-3f-ground-truth/ground-truth-doc-{a,b,c,d}.json - each has shape {documentId, sourceFile, authoredAt, authoredFromSourceOnly, methodologyNotes, articles, documentLevelNotes}",
+    "dsgrFrozenFirstBlindOutputs": "tests/fixtures/unseen-packages/phase-3f-first-blind-run/ - stage1 through stage8 outputs (structural nodes/definitions/references, discovery candidates, package graph, amendment effects/operative state, compiled results, verification results, coverage result)",
+    "phase3f1_1ForensicsDirectory": "tests/fixtures/unseen-packages/phase-3f1-1-forensics/ - contains the canonical false-credit adjudication",
+    "confirmedFalseCreditSuspectIds_14": [
+      "doc-a::VI::6.01-chapeau", "doc-a::VI::6.04-chapeau", "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "doc-a::VI::6.05-chapeau", "doc-a::VI::6.05-ip-flush-prohibition", "doc-a::VI::6.08b-chapeau",
+      "doc-a::VI::6.10-chapeau", "doc-b::VI::6-01-lead-in", "doc-b::VI::6-04-lead-in", "doc-b::VI::6-05-lead-in",
+      "doc-d::VI::6-01-chapeau", "doc-d::VI::6-04-chapeau", "doc-d::VI::6-05-chapeau", "doc-d::VI::6-08-b-chapeau"
+    ],
+    "falseCreditSourceArtifact": "tests/fixtures/unseen-packages/phase-3f1-1-forensics/phase-3f1-1-scorer-bridge.json (adversarialAudit.falseCreditSuspectIds) - the '14-16' range in prior prose refers to these 14 CONFIRMED suspects plus 2 additional borderline cases identified only narratively in docs/phase-3f1-1-residual-safety-forensics.md; Evaluation V2 must independently re-derive its own judgment on all 26 scorerArtifactCorrected cases (perCaseBridge array in the same file), not merely rubber-stamp this list.",
+    "resolvedByCodeChangeIds_4": ["doc-b::VI::6-02-b", "doc-b::VI::6-05-e", "doc-b::VI::6-08b-lead-in", "doc-d::VI::6-05-b"],
+    "otherKnownPackageFixtures": {
+      "FWRG": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/",
+      "LSB": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/",
+      "CONMED": "tests/fixtures/unseen-packages/conmed-2025-credit-facility/"
+    }
+  }
+}
