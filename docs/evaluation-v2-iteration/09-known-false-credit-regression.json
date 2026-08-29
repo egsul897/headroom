@@ -22,5 +22,11 @@
     "notableCrossReference": "doc-a::VI::6.10-chapeau is independently confirmed rejected here AND is the subject of this phase's most important forensic finding (01-original-disagreement-forensics.json): the Phase 3F.1.5 second-pass reviewer, unaware of its false-credit history, credited it anyway. This regression check confirms V2's own disposition on this unit has not drifted or been weakened."
   },
   "regressionStatus": "NO_REGRESSION - identical outcome to Phase 3F.1.5's committed docs/evaluation-v2/06-known-false-credit-reconciliation.json (silentlyUpheld: [], passed: true, 4 FALSE_CREDIT_CONFIRMED_AND_REJECTED + 22 AMBIGUOUS_NEEDS_REVIEW across the 26-case bridge population).",
-  "gatePassed": true
+  "gatePassed": true,
+  "liveJudgeSampleReRun": {
+    "note": "After the live-judge rerun and full second-pass re-adjudication (08-second-pass-results.json), all 14 known false credits present in the 51-case sample were re-checked on BOTH sides.",
+    "v2SideAllRejected": true,
+    "secondPassSideAllRejected": true,
+    "notableFinding": "doc-a::VI::6.10-chapeau, which Phase 3F.1.5's ORIGINAL second-pass reviewer incorrectly re-credited (reproducing the historical false credit), was correctly rejected (DISCOVERY_ONLY_NOT_REPRESENTED) by the new, independently-dispatched reviewer under the new protocol - direct evidence the taxonomy/protocol fix is working as intended on this specific, previously-demonstrated failure mode."
+  }
 }

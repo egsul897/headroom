@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "KNOWN_FALSE_CREDIT_REGRESSION",
+  "generatedAt": "2026-08-29T15:20:00Z",
+  "purpose": "Confirm, after all three code changes in this phase (conflicts.ts, semantic-correspondence.ts, source-excerpt.ts) and the new adversarial suite, that all 14 historically-confirmed false credits from the DSGR dataset remain caught - none silently re-upheld.",
+  "testExecuted": "tests/evaluation-v2/dsgr-false-credit-gate.test.ts",
+  "result": {
+    "casesReJudged": 26,
+    "confirmedSuspectCount": 14,
+    "silentlyUpheld": [],
+    "gatePassed": true,
+    "verdictBreakdownAcrossAll26": { "AMBIGUOUS_NEEDS_REVIEW": 22, "FALSE_CREDIT_CONFIRMED_AND_REJECTED": 4 },
+    "verdictBreakdownAcrossThe14ConfirmedSuspects": {
+      "FALSE_CREDIT_CONFIRMED_AND_REJECTED": 4,
+      "AMBIGUOUS_NEEDS_REVIEW": 10,
+      "note": "Both verdicts satisfy the gate: the gate requires each suspect be REJECTED or referred for review, never silently upheld as a confident match. Neither verdict category ever re-credits a false positive."
+    }
+  },
+  "sacredNegativeControl": {
+    "caseId": "doc-a::VI::6.10-chapeau",
+    "requirement": "Section 13 of this phase's charter: this is the case the ORIGINAL 3F.1.5 second-pass reviewer incorrectly re-credited, which the improved protocol correctly fixed. No remediation in this phase may allow that false credit to return.",
+    "verdictAfterThisPhaseChanges": "AMBIGUOUS_NEEDS_REVIEW",
+    "confirmed": true,
+    "confirmationMethod": "Directly re-ran reconcileKnownFalseCredits() against the post-fix evaluator and printed this case's full record: verdict remains AMBIGUOUS_NEEDS_REVIEW, never re-upheld as a confident credited match. The false credit has not returned."
+  },
+  "allFourteenConfirmedSuspects": [
+    { "gtUnitId": "doc-a::VI::6.01-chapeau", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-a::VI::6.04-chapeau", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-a::VI::6.04-unrestricted-sub-valuation", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-a::VI::6.05-chapeau", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-a::VI::6.05-ip-flush-prohibition", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-a::VI::6.08b-chapeau", "verdict": "FALSE_CREDIT_CONFIRMED_AND_REJECTED" },
+    { "gtUnitId": "doc-a::VI::6.10-chapeau", "verdict": "AMBIGUOUS_NEEDS_REVIEW", "note": "sacred negative control - see above" },
+    { "gtUnitId": "doc-b::VI::6-01-lead-in", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-b::VI::6-04-lead-in", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-b::VI::6-05-lead-in", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-d::VI::6-01-chapeau", "verdict": "FALSE_CREDIT_CONFIRMED_AND_REJECTED" },
+    { "gtUnitId": "doc-d::VI::6-04-chapeau", "verdict": "AMBIGUOUS_NEEDS_REVIEW" },
+    { "gtUnitId": "doc-d::VI::6-05-chapeau", "verdict": "FALSE_CREDIT_CONFIRMED_AND_REJECTED" },
+    { "gtUnitId": "doc-d::VI::6-08-b-chapeau", "verdict": "FALSE_CREDIT_CONFIRMED_AND_REJECTED" }
+  ],
+  "otherRegressionEvidence": {
+    "existingFalseCreditProhibitionSuite": "tests/evaluation-v2/false-credit-prohibitions.test.ts - 10/10 passing, unchanged.",
+    "existingAdversarialSuite": "tests/evaluation-v2/adversarial-suite.test.ts - 34/34 passing, unchanged.",
+    "determinismAndSignalsSuite": "tests/evaluation-v2/determinism-and-signals.test.ts - 14/14 passing, unchanged.",
+    "newSafeSurfacingCalibrationSuite": "tests/evaluation-v2/safe-surfacing-calibration.test.ts - 28/28 passing (new, this phase).",
+    "importBoundarySuite": "tests/evaluation-v2/import-boundary.test.ts - 5/5 passing, unchanged.",
+    "combinedTotal": "95/95 tests passing across all six Evaluation V2 test files."
+  },
+  "conclusion": "No historical false credit was reintroduced by this phase's remediation. The gate's own design (REJECTED-or-flagged, never silently upheld) continues to hold across all three code changes."
+}

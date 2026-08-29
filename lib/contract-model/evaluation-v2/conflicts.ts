@@ -38,6 +38,20 @@ export const OBJECT_CORRESPONDENCE_THRESHOLD = 0.3;
 /** Absolute floors that stop a very short candidate from scoring a high coefficient on two incidental words. */
 export const MIN_SHARED_TERMS_FOR_CORRESPONDENCE = 4;
 export const MIN_SHARED_TERMS_WITH_FAMILY_SUPPORT = 3;
+/**
+ * SAFE_SURFACING_REQUIRES_SEMANTIC_CORRESPONDENCE (Phase 3F.1.5.2): when the
+ * ground truth's action signal is empty, A_SUBJECT_ACTION is NOT_APPLICABLE
+ * for every candidate and supplies no discriminating evidence — object/
+ * resource lexical overlap becomes the SOLE dimension deciding whether a
+ * candidate is even about the claim. A materially higher bar applies in that
+ * scenario, and the family-assisted lower threshold is not available (a
+ * shared covenant family is not independent corroboration when nothing else
+ * is corroborating either). Calibrated from the forensically-confirmed
+ * false-safe-surfacing cluster and definitional-candidate over-match defect —
+ * see docs/evaluation-v2-iteration-2/02-safe-surfacing-correspondence-spec.json.
+ */
+export const SOLE_DIMENSION_OBJECT_THRESHOLD = 0.5;
+export const SOLE_DIMENSION_MIN_SHARED_TERMS = 6;
 
 /** Conditions whose absence changes what is actually permitted, not merely how it is described. */
 const MATERIAL_CONDITIONS = new Set([

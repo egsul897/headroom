@@ -2,41 +2,56 @@
   "schemaVersion": "1.0",
   "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
   "artifactId": "REMAINING_EVALUATOR_RISKS",
-  "generatedAt": "2026-08-29T04:45:00Z",
-  "purpose": "Catalog everything Phase 3F.1.5.1 did NOT close, so its ENVIRONMENT_BLOCKED verdict is not mistaken for progress toward a pass on the underlying gate.",
+  "generatedAt": "2026-08-29T13:30:00Z",
+  "supersedes": "This artifact's own earlier ENVIRONMENT_BLOCKED-era content, written before a credential became available. The live-judge rerun and full second-pass re-adjudication have since executed (04, 06, 08, 16). This is the current, final version.",
+  "purpose": "Catalog everything Phase 3F.1.5.1 did NOT close, so its NEEDS_ITERATION verdict is not mistaken for a passing or nearly-passing result.",
   "primaryUnresolvedItem": {
     "criterion": "Independent second-pass adjudication agreement (Phase 3F.1.5's criterion H)",
-    "status": "STILL MISSED, and NOT re-tested in this phase",
-    "detail": "The original 78.4%/84.3% binary and 37.3% detailed agreement numbers stand completely unchanged. This phase produced a rigorous forensic explanation for WHY they came in low (01-original-disagreement-forensics.json) and a designed-but-unexecuted fix (02-state-taxonomy.json, 05-second-pass-protocol.json, 06-frozen-sample.json, 07-preregistered-agreement-computation.json), but explicitly did not - and, per the phase's own charter, could not responsibly - execute a rerun to test whether that fix actually works, because the mandated rerun order requires live semantic judgment first and no authorized model credential exists in this environment (04-live-semantic-judge-run.json)."
+    "status": "TESTED and STILL MISSED, on both metrics",
+    "detail": "Binary agreement (inclusive, primary): 87.5% (42/48), below the 90% threshold. Detailed agreement: 18.75% (9/48), far below the 85% threshold. Both are computed from a real, executed live-judge rerun and a real, independently-dispatched second-pass reviewer using the improved taxonomy - not estimated, designed, or blocked. See 08-second-pass-results.json and 16-second-pass-rerun-disagreement-forensics.json for full detail."
   },
-  "newFindingsFromThisPhase": [
+  "keyFindingsFromThisPhase": [
     {
-      "finding": "65.6% of the original 32 detailed disagreements (21 of 32) are pure state-taxonomy vocabulary mismatches with zero credit-direction disagreement, not genuine evaluator/reviewer disagreement.",
-      "confidence": "HIGH - directly computed from frozen data, not inferred.",
-      "implication": "The true severity of Phase 3F.1.5's methodology gap is smaller than the raw 37.3% detailed-agreement number suggested, but this does not change the gate outcome: the pre-registered thresholds were defined against the ORIGINAL vocabulary, and this phase does not retroactively reinterpret that result as a pass."
+      "finding": "The live semantic judge, once actually run (592 real calls, ~$1.88), changed only 2 of 51 units' dispositions, neither overlapping the original disagreement set, neither changing credit outcome.",
+      "confidence": "HIGH - directly measured.",
+      "implication": "The 'no live judge was ever run' confounder does NOT explain the original disagreement. This closes an open question from Phase 3F.1.5 rather than leaving it speculative."
     },
     {
-      "finding": "doc-a::VI::6.10-chapeau, one of the 14 confirmed Phase 3F.1.1 false credits, was independently re-credited by the blinded Phase 3F.1.5 second-pass reviewer, who was not told about its false-credit history.",
+      "finding": "Giving the second-pass reviewer V2's own state vocabulary eliminated the specific artifact identified in 01-original-disagreement-forensics.json (65.6% of the ORIGINAL disagreements were pure vocabulary mismatches) and measurably improved binary agreement (78.4% -> 87.5%, +9 points) - but it did NOT close the binary gate, and it dropped raw detailed agreement further (37.3% -> 18.75%) by surfacing a new, previously-invisible disagreement about V2's own threshold for crediting a safety-flag or self-declared-uncertainty state to a weakly-corresponding candidate (31 of 39 new disagreements, all binary-credit AGREEMENTS - see SAFE_SURFACING_TAXONOMY_THRESHOLD_DISAGREEMENT in 16-second-pass-rerun-disagreement-forensics.json).",
+      "confidence": "HIGH - directly computed.",
+      "implication": "This is the single most important actionable lead for a future V2 code iteration: V2's matching.ts logic appears to credit REVIEW_REQUIRED_FLAG_ONLY/HONESTLY_UNRESOLVED too liberally on candidates that a careful reviewer judges plainly unrelated. Tightening this threshold is a genuine, well-evidenced next step - NOT attempted in this phase, per the explicit no-rewrite-after-seeing-results rule."
+    },
+    {
+      "finding": "doc-a::VI::6.10-chapeau (the confirmed historical false credit the ORIGINAL second-pass reviewer incorrectly re-credited) was correctly rejected by the NEW, independently-dispatched reviewer under the new protocol, and all 14 known false credits in the sample remain correctly rejected on both V2's and the second pass's side.",
+      "confidence": "HIGH - directly observed, both runs.",
+      "implication": "Concrete evidence the new protocol's abstract worked example on the discovery-vs-representation distinction works as intended, even though the overall gate is still missed for unrelated reasons."
+    },
+    {
+      "finding": "The V2_LOGIC_DEFECT identified in the original forensics (the 'Acquisition' IR-definition credited against 3 unrelated Section-1.01 claims) persists unchanged, as expected since no V2 code was touched.",
+      "confidence": "HIGH.",
+      "implication": "Confirmed stable, not a fluke of the first run. First priority for a future V2 code fix."
+    },
+    {
+      "finding": "The 'least-explained residual disagreement' cluster (Article X guaranty/reinstatement/defenses-waived, candidate IDs ir-rule:8543f9e7... and ir-rule:fb5206d4...) got WORSE, not better: doc-a::X::10.04-defenses-waived flipped from a binary agreement (both credited) in the original run to a binary disagreement in this rerun.",
       "confidence": "HIGH - directly observed.",
-      "implication": "This is concrete evidence that V2's stricter discovery-vs-compiled-representation design choice is protecting against a real, previously-demonstrated failure mode, and that a future, more lenient second-pass protocol (or a future live semantic judge) risks reproducing this specific defect if not carefully instructed. Any future protocol revision must be validated against this specific case before being trusted."
+      "implication": "This strengthens the case that something about these two specific compiled IR-rule candidates is being read inconsistently across cases and across reviewer passes. This is the single highest-value, LOWEST-COST next investigative step (a direct excerpt read of two specific candidate IDs, zero model calls required) for a future iteration - not undertaken here per the no-iteration-after-results rule."
     },
     {
-      "finding": "A previously-undetected, repeatable V2_LOGIC_DEFECT: the compiled 'Acquisition' IR-definition candidate (ir-definition:007a5206...) was granted PARTIAL credit against three unrelated Section-1.01 definitional GT claims (facility sizes, net income, supply-chain financing) with near-identical boilerplate reasoning.",
-      "confidence": "HIGH - three independent instances of the identical pattern in the same frozen sample.",
-      "implication": "This is a genuine residual defect in V2's own correspondence layer for definitional/economic-metric claims - the second-pass gate did exactly what it was designed to do by catching it. NOT fixed in this phase, per the explicit no-rewrite-after-seeing-results rule. Should be the first item addressed in a future V2 code iteration, tracked as an open defect."
-    },
-    {
-      "finding": "Two cases (doc-a::X::10.01a-us-guaranty, doc-a::X::10.06-reinstatement) show internally inconsistent characterization of the SAME candidate ID (ir-rule:8543f9e7... and ir-rule:fb5206d4...) across different second-pass case narratives - described as 'Section 1.07 subordination' in two cases and as 'election of remedies / no prior action' in a third.",
-      "confidence": "MEDIUM - the inconsistency is directly observed, but its root cause (a V2 correspondence-layer defect, a second-pass reading error, or genuinely multi-topic candidate content) is not determined.",
-      "implication": "Carried forward, unresolved, exactly as flagged in Phase 3F.1.5's own remaining-risks artifact. This is the single most concrete lead for a future direct excerpt-level investigation - it should not wait for a full rerun; a targeted read of these two candidate IDs' actual excerpt content could resolve it cheaply, at zero model cost, in a future session with tool access to re-examine (not alter) the frozen fixture data."
+      "finding": "A new, distinct disagreement type: V2's conflicts.ts layer flags 2 candidates as CONTRADICTORY (actively conflicting) where the second-pass reviewer judges them merely irrelevant (UNSUPPORTED_SILENT).",
+      "confidence": "MEDIUM - only 2 instances observed.",
+      "implication": "Possible over-eager conflict detection on weakly-related candidates - worth watching in a larger future sample, not conclusively established from 2 cases."
     }
   ],
+  "unresolvedGapInThisPhasesOwnMethodology": {
+    "gap": "The pre-registered agreement computation (07-preregistered-agreement-computation.json) assumed V2 would emit dispositions natively in the 02-state-taxonomy.json vocabulary; in practice V2's own code emits its native matchStatus/representationStatus enum, requiring a translation rule established post-hoc (documented transparently in 08-second-pass-results.json's v2ToTaxonomyMappingUsedForComparison) using V2's own already-frozen reasonForNoCredit text patterns.",
+    "whyThisIsDisclosedNotHidden": "The translation rule was derived from data (V2's reason strings) that predates the second-pass reviewer's dispatch, applied uniformly with zero manual overrides, and an attempted independent cross-check via cache replay is disclosed as only partially successful (52 of 592 judge outputs recoverable). This is the most methodologically exposed part of this phase's own results and is flagged prominently rather than glossed over.",
+    "recommendedFutureFix": "A future V2 code iteration should have runEvaluationV2 emit its disposition directly in the 02-state-taxonomy.json vocabulary as a first-class field, removing the need for any translation layer in future agreement computations."
+  },
   "stillOpenFromPhase3F15": [
-    "No live semantic AI judge has EVER been executed in this codebase's history, across two consecutive phases now (3F.1.5 and 3F.1.5.1). Both independently confirmed no authorized model credential is available in their respective execution environments. This is now a two-phase-confirmed blocker, not a one-off environment fluke - a future iteration should not assume the environment will differ without a fresh, direct check exactly like the one performed here.",
     "Cross-dataset generalization run was not fully blind (three general refinements made mid-run, disclosed) - unchanged, not revisited in this phase.",
     "All ground truth remains AI-adjudicated from source only, never reviewed by an external human lawyer - unchanged, not revisited in this phase.",
     "39 GT units remain GT_REQUIRES_DOMAIN_REVIEW - unchanged, not revisited.",
-    "Production defects observed but not fixed (coverage-auditor numeric-coincidence circularity, nested-parenthetical sectionRefs, empty sourceCitation on 378 candidates, 485 duplicate coverage-unit rows) - unchanged, not revisited; this phase adds no new production-defect observations of its own beyond the V2_LOGIC_DEFECT noted above, which lives entirely inside evaluation-v2's own code, not production."
-  ],
-  "newGapIntroducedByThisPhase": "A precise discoveryRecall and safeSurfacingRate metric (distinct from the conflated honestUnresolvedOrUnsupportedRate) was designed in the state taxonomy but not computed, since computing it would require re-deriving from frozen evidence under a metric definition invented after the original numbers were already seen - itself a form of post-hoc metric engineering this phase's charter prohibits. This is deliberately left as a designed-but-uncalculated gap for the SAME future iteration that executes the live-judge rerun, not calculated retroactively here."
+    "Production defects observed but not fixed (coverage-auditor numeric-coincidence circularity, nested-parenthetical sectionRefs, empty sourceCitation on 378 candidates, 485 duplicate coverage-unit rows) - unchanged, not revisited.",
+    "This phase's live-judge and second-pass rerun covered only the 51-case sample, not the full 1,016-unit DSGR dataset (a full-dataset live-judge run would trigger ~14,238 calls at meaningfully higher cost, not authorized in this phase) - DSGR-wide aggregate metrics (recall, dangerous-unaccounted count) remain exactly as Phase 3F.1.5 reported them, not re-derived with live judgment."
+  ]
 }

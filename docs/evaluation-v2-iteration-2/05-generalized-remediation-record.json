@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "GENERALIZED_REMEDIATION_RECORD",
+  "generatedAt": "2026-08-29T14:50:00Z",
+  "purpose": "Record, precisely and completely, every code change made in this phase, why it was made, and its verified effect - written so an auditor never needs to guess at what changed or why.",
+  "changesImplemented": [
+    {
+      "file": "lib/contract-model/evaluation-v2/conflicts.ts",
+      "change": "Added two new exported constants: SOLE_DIMENSION_OBJECT_THRESHOLD (0.5) and SOLE_DIMENSION_MIN_SHARED_TERMS (6).",
+      "reason": "Support the SAFE_SURFACING_REQUIRES_SEMANTIC_CORRESPONDENCE invariant's stricter object/resource bar when the action dimension supplies no discriminating evidence (see semantic-correspondence.ts change below)."
+    },
+    {
+      "file": "lib/contract-model/evaluation-v2/semantic-correspondence.ts",
+      "change": "In assessDimensions()'s C_OBJECT_RESOURCE computation, when gtActions.length === 0 (A_SUBJECT_ACTION will resolve to NOT_APPLICABLE, supplying zero discriminating evidence for this pair), apply SOLE_DIMENSION_OBJECT_THRESHOLD/SOLE_DIMENSION_MIN_SHARED_TERMS instead of the normal OBJECT_CORRESPONDENCE_THRESHOLD/MIN_SHARED_TERMS_FOR_CORRESPONDENCE, and disable the family-match-assisted lower threshold path entirely in this scenario (a shared covenant family is not independent corroboration when nothing else is corroborating either).",
+      "reason": "Confirmed root cause of the false-safe-surfacing cluster (01-credit-neutral-disagreement-forensics.json, 27 of 31 cases): when a GT claim's action signal is empty, lexical object/resource overlap alone was sufficient to satisfy the correspondence bar, letting weakly-related candidates earn safe-surfacing credit.",
+      "verifiedEffect": "Zero regression on the existing 67-test suite (10/10 false-credit-prohibitions, 34/34 adversarial, 4/4 known-false-credit gate). Does NOT by itself change the three 'Acquisition' definitional-overmatch cases or the Article X cluster (see below) - those required the source-excerpt.ts fix and remain partially unaddressed, respectively. Full effect on the 51-case sample is reported in 10-second-pass-rerun-results.json."
+    },
+    {
+      "file": "lib/contract-model/evaluation-v2/source-excerpt.ts",
+      "change": "In resolveSourceExcerpt()'s DEFINITION-unit defined-term-hint narrowing, when NONE of the supplied definedTermHints can be located inside the (up to 20,000-character) definitions-section body, return UNRESOLVED_DESCRIPTION_ONLY instead of silently falling through to the section's own start (which attributes an ENTIRELY DIFFERENT, unrelated definition's text to this unit).",
+      "reason": "Confirmed root cause of the definitional over-match defect (03-definition-overmatch-root-cause.json): the 'commitments-and-facility-sizes' GT unit's resolved sourceExcerpt was verified to be the first 2,399 characters of Section 1.01 starting with the UNRELATED 'ABR' definition - not the facility-sizing content at all - because none of its keyDefinedTerms matched the quote-pattern regex in the raw source text. This silently contaminated downstream action/posture/content-term extraction with an unrelated definition's vocabulary (including the word 'acquisition', explaining the 'Acquisition' IR-definition's spurious match). This directly contradicts source-excerpt.ts's own stated design principle ('when it cannot locate a span with confidence it says so ... rather than returning a plausible-looking wrong span').",
+      "verifiedEffect": "Directly confirmed via debug inspection: doc-a::I::commitments-and-facility-sizes now resolves to sourceExcerptResolution=UNRESOLVED_DESCRIPTION_ONLY (previously a wrong 2,399-char excerpt), gtSignals.actions is now correctly empty (previously spuriously [\"ACQUIRE_BUSINESS\",\"MERGE_CONSOLIDATE\"]), and its pair correspondence against the 'Acquisition' IR-definition candidate is now CONTRADICTS rather than CORRESPONDS_PARTIALLY - the false credit is gone. Zero regression on the existing 67-test suite. Broader effect on GT_REQUIRES_DOMAIN_REVIEW/excluded-unit counts across the full DSGR dataset and cross-dataset regression is reported in 07-known-false-credit-regression.json / 13-cross-dataset-regression.json - this is expected to INCREASE the count of units correctly classified UNRESOLVED_DESCRIPTION_ONLY (a more honest state) rather than silently mismatched, consistent with Section 21/22's instruction to accept a stricter, more honest result even if headline numbers move in an unfavorable direction."
+    }
+  ],
+  "changesConsideredAndDeliberatelyNotMade": [
+    {
+      "candidateChange": "Tighten the EXERCISE_REMEDIES ACTION_PATTERNS regex (signals.ts: /\\b(event of default|remedies|acceleration)\\b/i), which fires on any bare mention of 'remedies' or 'acceleration' regardless of whether the text is actually asserting an action of exercising remedies (confirmed root cause of the Article X guaranty/reinstatement cluster's remaining credit disagreement - see 04-article-x-independent-adjudication.json).",
+      "whyNotMade": "This regex is one of ~29 shared ACTION_PATTERNS entries used across the entire deterministic correspondence pipeline for every dataset. A change here has broad, hard-to-fully-bound blast radius across the whole corpus (any provision anywhere that legitimately or incidentally mentions 'acceleration' or 'remedies'), and this phase's effort/time budget did not allow the extensive cross-dataset validation such a change would responsibly require before shipping it. Per Section 12's explicit change rule, a code change for the Article X cluster is authorized in principle (all four criteria in 04-article-x-independent-adjudication.json are met), but 'authorized' is not the same as 'prudent to attempt within this phase's remaining time' - this is disclosed as an open, well-diagnosed, NOT remediated defect for a future iteration, rather than rushed.",
+      "disclosedIn": "16-remaining-evaluator-risks.json"
+    }
+  ],
+  "explicitlyNoTermOrPackageSpecificLogicIntroduced": {
+    "grepVerification": "grep -riE \"acquisition|article.?x|dsgr|10\\.0[1461]|doc-a|doc-b|doc-c|doc-d\" against the three changed files returns zero matches outside of comment text explaining WHY the fix was made (which references the confirmed defect by name for auditability, never as a runtime condition).",
+    "confirmed": true
+  },
+  "versionsIncremented": {
+    "note": "See 08-pre-rerun-freeze.json for the exact algorithmVersion/matchPolicyVersion bump applied before the rerun, per Section 18's requirement."
+  }
+}

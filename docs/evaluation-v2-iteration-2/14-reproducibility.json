@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "PHASE_3F1_5_2_REPRODUCIBILITY",
+  "generatedAt": "2026-08-29T15:20:41.406Z",
+  "description": "Fresh-run vs replay comparison over byte-identical frozen DSGR inputs, against the Phase 3F.1.5.2-remediated (algorithm v2) evaluator.",
+  "reproducibility": {
+    "datasetKey": "dsgr-2022-2025-credit-facility",
+    "inputHashes": {
+      "source:doc-a": "2bc4ee96a9b960d7ac92154650613edfef6afde31330bbc71cd585c9855f97a9",
+      "source:doc-b": "467267c933d833938402aa56ba87df9eba1fe824d1834768272d99d606de7fce",
+      "source:doc-c": "a8cacce72b6df9f88e15ab8fd23a6be7f09902a1d01d850fcf85c0086a5ab826",
+      "source:doc-d": "29fe29a537668e1e8a921d27e3a16e4923151f24a9a53ca4434ce2a3e527735f",
+      "groundTruth:doc-a": "8092af8afac9f47d3a2a367c18474e432e976ebd08afabd2454c317f9189c765",
+      "groundTruth:doc-b": "3b57ca873204030a79d6391c08c8dc81d75df22004bd70f16dccdc9e1527d52f",
+      "groundTruth:doc-c": "a5d24da9b7d8b7b3ac15abeb8ef9ba12a514e749713be86c79b930296006dc46",
+      "groundTruth:doc-d": "959c5cf2d988695d25e30f5e43586c6c1c00c0d5e78e16fb24fe5e711de6374a",
+      "stage2": "72ae77094c3224a90c74409bfc2f498dca9f7daefab8b5684b863f66748e160c",
+      "stage8": "2587699b3dcc992ccd928fd756e02aa13cdcd6e6591750e9ff3e3bbbb8b19dda",
+      "stage6": "d4fb0f7790e50ea0f8ec58cb5a565ac2b4efa4ecef2586e224e4b4b2275523d5",
+      "stage7": "5e7238417ed1dedd2542467b4cd9ce07f0a7c8b3721faa7829478e16a1ee19e2",
+      "stage5": "cd7353aa87f31b9976da0fc7cf44403430aaf2a430764fe316a3aba648fc4802"
+    },
+    "runIdentityFresh": "416414c8d5da5de1ac99849af34d8a4c4105516bbdad95ae6496aed13f76dae2",
+    "runIdentityReplay": "416414c8d5da5de1ac99849af34d8a4c4105516bbdad95ae6496aed13f76dae2",
+    "runIdentityMatches": true,
+    "unitDispositionHashFresh": "bf29ec93e2eb6017e1e794774c2a903a12223c0cec4d362a2d6aeac378ebd7bb",
+    "unitDispositionHashReplay": "bf29ec93e2eb6017e1e794774c2a903a12223c0cec4d362a2d6aeac378ebd7bb",
+    "unitDispositionHashMatches": true,
+    "aggregateMetricsHashFresh": "47f2443e411becc0b65855fa4efff9af57782961796af8a51868c28a90484ca8",
+    "aggregateMetricsHashReplay": "47f2443e411becc0b65855fa4efff9af57782961796af8a51868c28a90484ca8",
+    "aggregateMetricsHashMatches": true,
+    "differenceReport": {
+      "differingUnitCount": 0,
+      "differences": []
+    },
+    "verdict": "BYTE_IDENTICAL_DISPOSITIONS_AND_METRICS",
+    "nonDeterminismDisclosure": "The deterministic-only comparison ran with zero model calls in both passes: no model non-determinism to disclose here. The full-cost live-judge run is reported separately in 09-live-semantic-judge-run.json and is a live model call, not reproduced byte-for-byte by design (a live model is not deterministic across calls) - this artifact isolates and proves the DETERMINISTIC LAYER's reproducibility independent of that."
+  },
+  "judgeCacheReplay": {
+    "mechanism": "Every semantic-judge judgment is keyed by evidenceIdentity(), which hashes ground-truth evidence, candidate evidence, provider, model and all four version constants (including the algorithmVersion bumped to v2 this phase). A stale pre-fix judgment cannot silently survive into this phase's cache by construction.",
+    "versions": {
+      "schemaVersion": "evaluation-v2-schema.v1",
+      "algorithmVersion": "evaluation-v2-algorithm.v2",
+      "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+      "matchPolicyVersion": "evaluation-v2-match-policy.v1"
+    },
+    "cacheEntriesAtStart": 0,
+    "judgeUsedInThisRun": "NONE_DETERMINISTIC_ONLY"
+  },
+  "performance": {
+    "freshRunMs": 64243,
+    "replayRunMs": 69830,
+    "totalWallMs": 156642,
+    "groundTruthUnits": 1016,
+    "candidatePool": 8949,
+    "generatedPairs": 60960,
+    "evaluatedPairs": 60960
+  }
+}

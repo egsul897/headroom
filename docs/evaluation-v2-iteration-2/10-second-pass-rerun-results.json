@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "SECOND_PASS_RERUN_RESULTS",
+  "generatedAt": "2026-08-29T16:20:00Z",
+  "purpose": "Section 19-23: rerun the exact same frozen 51-case gate against the Phase 3F.1.5.2-remediated evaluator, with a genuinely independent second-pass adjudicator (a fresh subagent, given ONLY the frozen protocol and blinded evidence packets - no access to V2's own dispositions, historical labels, or which cases were previously disputed).",
+  "sampleAndProtocol": {
+    "sample": "docs/evaluation-v2/_stratified-sample-for-second-pass.json (SAME 51 gtUnitIds as Phase 3F.1.5 and 3F.1.5.1 - no new draw)",
+    "protocol": "docs/evaluation-v2-iteration/05-second-pass-protocol.json (SAME frozen protocol and 10-state vocabulary as 3F.1.5.1 - no edits)",
+    "agreementFormula": "docs/evaluation-v2-iteration/07-preregistered-agreement-computation.json (SAME binary collapse rule, detailed-agreement rule, and 90%/85% thresholds - no edits)",
+    "adjudicatorIndependenceMechanism": "A fresh general-purpose subagent with no memory of this session's prior work was given: (1) the frozen protocol file, (2) the blinded evidence packets file (docs/evaluation-v2-iteration-2/_frozen-sample-packets-BLINDED-v2.json, which omits V2's disposition for every case and instructs the agent to ignore each packet's own legacy reviewerQuestion field in favor of the frozen protocol). It was explicitly instructed never to read any file containing 'SEALED', any historical disposition/verdict/false-credit file, or git history. Its complete raw output is preserved at docs/evaluation-v2-iteration-2/_second-pass-adjudication-v2-RAW.json."
+  },
+  "rawCounts": {
+    "totalSampledCases": 51,
+    "excludedBothSidesIncomparable": 9,
+    "excludedCaseIds": [
+      "doc-a::I::commitments-and-facility-sizes",
+      "doc-a::I::net-income",
+      "doc-b::AMENDMENT::signatory-loan-parties",
+      "doc-b::I::def-first-amendment-cluster",
+      "doc-b::I::def-permitted-investments",
+      "doc-b::I::def-sanctions-cluster",
+      "doc-b::I::def-third-amendment",
+      "doc-c::recital-agreement-to-amend",
+      "doc-d::XII::cam-b"
+    ],
+    "exclusionNote": "All 9 exclusions are cases where BOTH V2 (via groundTruthExcerptResolution=UNRESOLVED_DESCRIPTION_ONLY or groundTruthQuality=GT_REQUIRES_DOMAIN_REVIEW) and the independent reviewer (via GT_NOT_RESOLVABLE, reached with zero visibility into V2's own state) independently agreed the ground-truth excerpt itself was unusable - genuine agreement on exclusion, not an exclusion invented after seeing results, and not a departure from the frozen exclusion rule (02-state-taxonomy.json's INCOMPARABLE definition, unchanged from 3F.1.5.1). Three of these nine are DEFINITION units where this phase's source-excerpt.ts fix is the direct, disclosed, and expected cause of the excerpt now correctly resolving to UNRESOLVED rather than a contaminated wrong span; the other six were already GT_REQUIRES_DOMAIN_REVIEW-flagged independent of this phase's changes.",
+    "comparableCaseCount": 42
+  },
+  "v2StateDistributionAllSample": {
+    "HONESTLY_UNRESOLVED": 16,
+    "DISCOVERED_REVIEW_REQUIRED": 14,
+    "INCOMPARABLE": 9,
+    "HONESTLY_UNSUPPORTED": 5,
+    "VERIFIED_SEMANTIC_REPRESENTATION": 3,
+    "CONTRADICTORY_REPRESENTATION": 2,
+    "PARTIAL_SEMANTIC_REPRESENTATION": 1,
+    "DISCOVERED_ONLY": 1
+  },
+  "reviewerStateDistributionAllSample": {
+    "HONESTLY_UNSUPPORTED": 26,
+    "DISCOVERED_ONLY": 16,
+    "INCOMPARABLE": 9,
+    "note": "The reviewer used ZERO of the following labels across all 51 cases: VERIFIED_OR_UNVERIFIED_REPRESENTATION, PARTIAL_REPRESENTATION, HONESTLY_UNRESOLVED, REVIEW_REQUIRED_FLAG_ONLY, CONTRADICTORY, AMBIGUOUS. See 16-remaining-evaluator-risks.json for the interpretive question this raises."
+  },
+  "reviewerToTaxonomyMapping": {
+    "VERIFIED_OR_UNVERIFIED_REPRESENTATION": "VERIFIED_SEMANTIC_REPRESENTATION",
+    "PARTIAL_REPRESENTATION": "PARTIAL_SEMANTIC_REPRESENTATION",
+    "HONESTLY_UNRESOLVED": "HONESTLY_UNRESOLVED",
+    "REVIEW_REQUIRED_FLAG_ONLY": "DISCOVERED_REVIEW_REQUIRED",
+    "DISCOVERY_ONLY_NOT_REPRESENTED": "DISCOVERED_ONLY",
+    "CONTRADICTORY": "CONTRADICTORY_REPRESENTATION",
+    "AMBIGUOUS": "AMBIGUOUS",
+    "UNSUPPORTED_SILENT": "HONESTLY_UNSUPPORTED",
+    "GT_NOT_RESOLVABLE": "INCOMPARABLE",
+    "v2MatchStatusToTaxonomyMapping": {
+      "EXACT_SINGLE": "VERIFIED_SEMANTIC_REPRESENTATION",
+      "EXACT_COMPOSITE": "VERIFIED_SEMANTIC_REPRESENTATION",
+      "PARTIAL": "PARTIAL_SEMANTIC_REPRESENTATION",
+      "HONESTLY_UNRESOLVED": "HONESTLY_UNRESOLVED",
+      "HONESTLY_UNSUPPORTED (matchStatus)": "DISCOVERED_REVIEW_REQUIRED (a safety flag exists and surfaces the gap, no specific answer asserted)",
+      "AMBIGUOUS": "AMBIGUOUS",
+      "CONTRADICTORY": "CONTRADICTORY_REPRESENTATION",
+      "UNREPRESENTED + explicitlySurfacedAsUnsafe": "DISCOVERED_REVIEW_REQUIRED",
+      "UNREPRESENTED + surfacedByInventoryOnly": "DISCOVERED_ONLY",
+      "UNREPRESENTED + no candidates generated at all": "NOT_DISCOVERED",
+      "UNREPRESENTED + candidates existed, none corresponds, no flag": "HONESTLY_UNSUPPORTED",
+      "any + groundTruthExcerptResolution=UNRESOLVED_DESCRIPTION_ONLY or groundTruthQuality=GT_REQUIRES_DOMAIN_REVIEW": "INCOMPARABLE (overrides all of the above)"
+    },
+    "mappingRationale": "Both V2's native vocabulary and the reviewer's native vocabulary are independently translated into the SAME shared 12-state taxonomy already frozen in docs/evaluation-v2-iteration/02-state-taxonomy.json before this phase began, per 07-preregistered-agreement-computation.json's own stated detailed-agreement rule ('a direct, unmapped equality check between V2's state and the second-pass reviewer's state'). No new taxonomy state or mapping rule was invented for this rerun; this is the same table 3F.1.5.1 was designed to use once a live-judge credential became available."
+  },
+  "binaryAgreement": {
+    "collapseRule": "creditSideStates=[VERIFIED_SEMANTIC_REPRESENTATION, PARTIAL_SEMANTIC_REPRESENTATION]; everything else except INCOMPARABLE is noCreditSide; INCOMPARABLE excluded from both numerator and denominator.",
+    "primaryInclusiveVariant": { "agreeCount": 38, "totalComparable": 42, "rate": 0.9048, "meetsThreshold": true, "thresholdRequired": 0.90 },
+    "strictVariant": { "note": "creditSideStates restricted to VERIFIED_SEMANTIC_REPRESENTATION only (PARTIAL moved to no-credit side), reported alongside the primary variant per the frozen formula.", "agreeCount": 39, "totalComparable": 42, "rate": 0.9286, "meetsThreshold": true }
+  },
+  "detailedAgreement": {
+    "rule": "Direct equality of the shared-taxonomy state on both sides, same 42-case comparable population as binary agreement.",
+    "agreeCount": 5,
+    "totalComparable": 42,
+    "rate": 0.119,
+    "meetsThreshold": false,
+    "thresholdRequired": 0.85,
+    "agreeingCaseIds": [
+      "doc-a::VI::6.01-chapeau",
+      "doc-a::VI::6.02b",
+      "doc-b::VI::6-05-h",
+      "doc-d::VI::6-01-chapeau",
+      "doc-d::VI::6-05-chapeau"
+    ],
+    "agreeingCaseIdsNote": "All 5 agreements are on HONESTLY_UNSUPPORTED (both sides independently concluded nothing corresponds and nothing flags the gap). See 11-detailed-confusion-matrix.json for the full 37-case disagreement table."
+  },
+  "priorPhaseComparisonForContext": {
+    "phase3F151BinaryAgreement": 0.875,
+    "phase3F152BinaryAgreement": 0.9048,
+    "binaryDelta": "+0.0298 (improved, now clears the 90% threshold)",
+    "phase3F151DetailedAgreement": 0.1875,
+    "phase3F152DetailedAgreement": 0.119,
+    "detailedDelta": "-0.0685 (WORSENED, despite the targeted fix - see diagnosis in 16-remaining-evaluator-risks.json and 17-final-verdict.json)",
+    "interpretationDiscipline": "Per Sections 21-22, this comparison is reported for transparency only. No threshold was adjusted, no case was targeted, and this result is accepted as-is per Section 21's explicit instruction to accept whatever the generalized correction produces, including a lower number, rather than optimizing toward a specific case count."
+  }
+}

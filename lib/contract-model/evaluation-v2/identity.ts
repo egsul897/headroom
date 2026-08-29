@@ -16,8 +16,15 @@ import { createHash } from "node:crypto";
 /** Shape of the persisted evaluation records (types.ts). Bump when a field is added/removed/retyped. */
 export const EVALUATION_V2_SCHEMA_VERSION = "evaluation-v2-schema.v1";
 
-/** The deterministic signal-extraction + dimension-correspondence + cardinality-resolution algorithm. */
-export const EVALUATION_V2_ALGORITHM_VERSION = "evaluation-v2-algorithm.v1";
+/**
+ * The deterministic signal-extraction + dimension-correspondence + cardinality-resolution algorithm.
+ * Bumped to v2 in Phase 3F.1.5.2: the C_OBJECT_RESOURCE sole-discriminator
+ * threshold (conflicts.ts/semantic-correspondence.ts) and the DEFINITION
+ * excerpt-resolution fallback (source-excerpt.ts) both changed what evidence
+ * the algorithm considers sufficient - see
+ * docs/evaluation-v2-iteration-2/05-generalized-remediation-record.json.
+ */
+export const EVALUATION_V2_ALGORITHM_VERSION = "evaluation-v2-algorithm.v2";
 
 /** The Layer-2 semantic-correspondence prompt (adjudication.ts). Bumped independently of the algorithm. */
 export const EVALUATION_V2_PROMPT_VERSION = "evaluation-v2-correspondence-prompt.v1";

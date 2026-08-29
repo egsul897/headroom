@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
+  "artifactId": "SECOND_PASS_RERUN_DISAGREEMENT_FORENSICS",
+  "generatedAt": "2026-08-29T13:25:00Z",
+  "purpose": "Per the user's explicit instruction ('if it fails, stop and report the exact disagreement taxonomy and evidence; do not patch or iterate after seeing the results'), this artifact classifies every one of the 39 detailed disagreements from the executed second-pass rerun (08-second-pass-results.json). No code, protocol, sample, or threshold was changed after computing this.",
+  "totalCasesInSample": 51,
+  "excludedGtNotResolvable": 3,
+  "computedOverCaseCount": 48,
+  "totalDetailedDisagreements": 39,
+  "paretoBreakdown": [
+    {
+      "cause": "SAFE_SURFACING_TAXONOMY_THRESHOLD_DISAGREEMENT",
+      "count": 31,
+      "percentOfDisagreements": 79.5,
+      "creditImpact": "NONE - every one of these 31 cases is a binary-credit AGREEMENT (both sides say NO_CREDIT).",
+      "explanation": "Both V2 and the second-pass reviewer now share the identical 9-state vocabulary (this phase's core fix), yet still disagree on which of {REVIEW_REQUIRED_FLAG_ONLY, HONESTLY_UNRESOLVED, DISCOVERY_ONLY_NOT_REPRESENTED, UNSUPPORTED_SILENT} best describes a given case. In the dominant pattern (V2 says REVIEW_REQUIRED_FLAG_ONLY or HONESTLY_UNRESOLVED; the reviewer says UNSUPPORTED_SILENT), V2's own matching.ts logic credits a 'flag' or 'unresolved' status to a candidate that only weakly or tangentially relates to the claim - the second-pass reviewer, applying the protocol's own instruction to treat weak/tangential text with real skepticism, judges that nothing in the packet plausibly relates to the claim at all, so no flag or unresolved-signal 'counts.' This is a genuine, newly-visible calibration gap in V2's own threshold for what counts as a corresponding-enough candidate to earn a safety-flag credit - previously invisible because the old second-pass protocol's coarse vocabulary collapsed all of these into one 'UNREPRESENTED' bucket, masking the disagreement entirely (see 01-original-disagreement-forensics.json's STATE_TAXONOMY_MISMATCH finding). Fixing the vocabulary mismatch surfaced this different, previously-hidden problem rather than eliminating disagreement.",
+      "representativeCase": {
+        "gtUnitId": "doc-a::VI::6.05-chapeau",
+        "v2Reason": "No substantive representation of this claim exists, but 3 semantically-corresponding candidate(s) explicitly flag the gap (review-required / dangerous-unaccounted / verifier finding).",
+        "secondPassRationale": "The claim is Section 6.05's asset-sale prohibition... Every candidate's own text is an EBITDA add-back or compliance-certificate line... a shared section label is not evidence of correspondence. No candidate flags a coverage gap at the 6.05 lead-in.",
+        "interpretation": "V2 judged 3 candidates 'semantically-corresponding enough' to make their gap-flag count; the second-pass reviewer, reading the same candidates' actual excerpt text, found none of them plausibly relates to the claim at all. This is evidence V2's correspondence threshold for crediting a safety flag may be too permissive."
+      }
+    },
+    {
+      "cause": "CREDIT_DISAGREEMENT_V2_LOGIC_DEFECT_ACQUISITION_OVERMATCH",
+      "count": 3,
+      "percentOfDisagreements": 7.7,
+      "creditImpact": "ALL 3 are binary-credit disagreements (V2 credits, second pass does not).",
+      "explanation": "Identical to the V2_LOGIC_DEFECT already identified in 01-original-disagreement-forensics.json (the compiled 'Acquisition' IR-definition candidate credited as PARTIAL against three unrelated Section-1.01 definitional claims: commitments-and-facility-sizes, net-income, permitted-supply-chain-financing). This defect persists unchanged across both the original and this recalibrated run, since it lives in V2's correspondence layer, which this phase never modified.",
+      "gtUnitIds": ["doc-a::I::commitments-and-facility-sizes", "doc-a::I::net-income", "doc-a::I::permitted-supply-chain-financing"],
+      "notFixedThisPhase": true
+    },
+    {
+      "cause": "CREDIT_DISAGREEMENT_UNRESOLVED_ARTICLE_X_CANDIDATE_IDENTITY",
+      "count": 3,
+      "percentOfDisagreements": 7.7,
+      "creditImpact": "ALL 3 are binary-credit disagreements (V2 credits, second pass does not).",
+      "explanation": "The same 'least-explained residual disagreement' cluster identified in 01-original-disagreement-forensics.json (ir-rule:8543f9e7... and ir-rule:fb5206d4..., inconsistently characterized as 'Section 1.07 subordination' vs 'election of remedies' across cases). NOTABLE WORSENING: in the original run, doc-a::X::10.04-defenses-waived was a binary AGREEMENT (both sides credited it); in this rerun, the SAME independent-reviewer-style process now rejects it too, meaning all three Article X cases in this cluster (10.01a-us-guaranty, 10.04-defenses-waived, 10.06-reinstatement) are now credit disagreements. This strengthens rather than resolves the case that something about these two candidate IDs' identity or content is being read inconsistently, and should be the first target of a direct, non-model-cost excerpt-level investigation in a future iteration.",
+      "gtUnitIds": ["doc-a::X::10.01a-us-guaranty", "doc-a::X::10.04-defenses-waived", "doc-a::X::10.06-reinstatement"],
+      "notFixedThisPhase": true
+    },
+    {
+      "cause": "MATERIAL_CONFLICT_PERCEPTION_DISAGREEMENT",
+      "count": 2,
+      "percentOfDisagreements": 5.1,
+      "creditImpact": "NONE - both binary-credit agreements (both NO_CREDIT).",
+      "explanation": "A newly-observed, distinct disagreement type not present in the original forensics: V2 detected an active material conflict (CONTRADICTORY matchStatus - a candidate actively asserts something incompatible with the claim), while the second-pass reviewer, reading the same candidates, judged them simply irrelevant (UNSUPPORTED_SILENT) rather than contradictory. This suggests V2's conflict-detection layer (conflicts.ts) may be flagging a conflict on candidates a careful human reader would not consider related enough to conflict with the claim in the first place - a distinct question from the safe-surfacing threshold issue above, since CONTRADICTORY is arguably a MORE severe disposition than a plain non-match, not merely a different flavor of no-credit.",
+      "gtUnitIds": ["doc-a::VI::6.04-chapeau", "doc-a::XI::11.06-execution-of-documents"],
+      "notFixedThisPhase": true
+    }
+  ],
+  "headlineConclusion": "None of the 6 genuine credit disagreements are new; both are carried-forward, already-documented V2 defects/unresolved questions from the original forensics, unchanged by this phase (as expected, since no V2 logic was touched). The dominant story in this rerun is the 31-case SAFE_SURFACING_TAXONOMY_THRESHOLD_DISAGREEMENT cluster: giving the second-pass reviewer V2's own vocabulary successfully eliminated the PREVIOUS masking artifact (65.6% of the original disagreements) but revealed a real, substantive, and previously invisible disagreement about V2's own threshold for crediting a 'flag' or 'unresolved' signal to a weakly-related candidate. This is a genuine, actionable finding for a future V2 iteration: tighten the correspondence bar required before a candidate's own gap-flag or self-declared-uncertainty is allowed to count toward REVIEW_REQUIRED_FLAG_ONLY / HONESTLY_UNRESOLVED, rather than the current apparent behavior of crediting these states too liberally on tangentially-related candidates.",
+  "rewriteProhibitionCompliance": "This forensic classification was produced entirely after the pre-registered agreement computation in 08-second-pass-results.json was finalized and the gate outcome (THRESHOLDS_MISSED) determined. No V2 code, protocol, sample, or threshold was changed in response to seeing it, and none will be changed within this phase, per the user's explicit instruction."
+}

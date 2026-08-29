@@ -2,13 +2,18 @@
   "schemaVersion": "1.0",
   "evaluationVersion": "phase-3f1-5-1-evaluation-calibration.v1",
   "artifactId": "OLD_VS_CALIBRATED_V2_COMPARISON",
-  "generatedAt": "2026-08-29T04:35:00Z",
-  "status": "NOT_APPLICABLE_NO_CALIBRATION_RERUN_EXECUTED",
-  "reason": "This artifact is only meaningful once a calibrated rerun (with live semantic judgment, the new state taxonomy, and the new second-pass protocol) has actually produced a second set of numbers to compare against Phase 3F.1.5's original run. Since 04-live-semantic-judge-run.json establishes that no rerun occurred in Phase 3F.1.5.1, 'Evaluation V2' as measured is byte-identical to Phase 3F.1.5's version - there is no calibrated variant yet to compare it against.",
-  "whatWouldBeComparedInAFutureIteration": [
-    "Binary and detailed agreement rates, old (78.4%/84.3% binary, 37.3% detailed) vs. new, computed under the new preregistered formula in 07-preregistered-agreement-computation.json.",
-    "Whether giving the second-pass reviewer the full state vocabulary (05-second-pass-protocol.json) closes most of the 65.6%-of-disagreements taxonomy-mismatch gap identified in 01-original-disagreement-forensics.json, as predicted, or whether some other confound emerges once actually tested.",
-    "Whether a live semantic judge changes any INDETERMINATE dimension's disposition on the DSGR dataset or the fresh sample, and in which direction.",
-    "Whether the doc-a::VI::6.10-chapeau known-false-credit-reproduction pattern recurs under the new protocol, or whether the abstract worked examples in the new protocol are sufficient to prevent a reviewer from reproducing it while still blind to the specific false-credit list."
-  ]
+  "generatedAt": "2026-08-29T13:20:00Z",
+  "status": "EXECUTED",
+  "comparison": {
+    "binaryAgreementInclusive": { "phase3F15Original": 0.7843, "phase3F151Calibrated": 0.875, "delta": "+9.07 points, still below 90% threshold" },
+    "binaryAgreementStrict": { "phase3F15Original": 0.8431, "phase3F151Calibrated": 0.9375, "delta": "+9.44 points, now above 90% (sensitivity check only, not the gate metric)" },
+    "detailedAgreement": { "phase3F15Original": 0.3725, "phase3F151Calibrated": 0.1875, "delta": "-18.5 points, see 08-second-pass-results.json's explanation - a finer shared vocabulary surfaced a new, previously-masked calibration disagreement rather than resolving one" },
+    "sampleSizeUsedForComparison": { "original": 51, "calibrated": "51 sampled, 48 computed (3 excluded as GT_NOT_RESOLVABLE, a state the original protocol had no vocabulary to express)" },
+    "liveJudgeContribution": "Confirmed near-zero on this sample (04-live-semantic-judge-run.json: only 2 of 51 units' dispositions changed, neither overlapping the original disagreement set, neither changing credit outcome). The binary-agreement improvement (+9.07 points) is therefore attributable to the improved second-pass protocol/taxonomy, not to the live judge.",
+    "falseCreditGateComparison": {
+      "original": "doc-a::VI::6.10-chapeau incorrectly re-credited by the second-pass reviewer, reproducing a confirmed historical false credit.",
+      "calibrated": "doc-a::VI::6.10-chapeau correctly rejected by the new second-pass reviewer under the new protocol - a genuine, demonstrated fix to the specific failure mode Phase 3F.1.5's forensics identified as most concerning."
+    }
+  },
+  "netAssessment": "The calibration effort had mixed but real results: it fixed the specific false-credit-reproduction risk it targeted (concrete, demonstrated), and it modestly improved binary agreement (concrete, demonstrated, +9 points) - but it did not close either pre-registered gate, and it surfaced a new, more granular category of disagreement (the safe-surfacing threshold gap, 31 of 39 detailed disagreements) that Phase 3F.1.5's original, coarser protocol was structurally unable to reveal. This is consistent with the phase charter's own Section 16 expectation that a more honest, more granular measurement can surface MORE disagreement, not less, and that this is a sign of validity, not failure, of the measurement approach - even though it means the phase's own PASS gate is not met."
 }

@@ -19,7 +19,7 @@
  *    deterministic layer found materially conflicting, and it never decides an
  *    aggregate number (adjudication.ts).
  */
-import { detectConflicts, MIN_SHARED_TERMS_FOR_CORRESPONDENCE, MIN_SHARED_TERMS_WITH_FAMILY_SUPPORT, OBJECT_CORRESPONDENCE_THRESHOLD, OBJECT_MATERIAL_CONFLICT_THRESHOLD } from "./conflicts";
+import { detectConflicts, MIN_SHARED_TERMS_FOR_CORRESPONDENCE, MIN_SHARED_TERMS_WITH_FAMILY_SUPPORT, OBJECT_CORRESPONDENCE_THRESHOLD, OBJECT_MATERIAL_CONFLICT_THRESHOLD, SOLE_DIMENSION_MIN_SHARED_TERMS, SOLE_DIMENSION_OBJECT_THRESHOLD } from "./conflicts";
 import { extractSignals, jaccard, overlapDetail, postureClass } from "./signals";
 import type {
   CandidateGenerationReason,
@@ -117,6 +117,24 @@ function assessDimensions(ctx: DimensionContext): DimensionAssessment[] {
 
   const objectOverlap = overlapDetail(gtSignals.contentTerms, candidateSignals.contentTerms);
   const familyMatch = gt.semanticFamily !== "" && gt.semanticFamily === candidate.semanticFamily;
+  // SAFE_SURFACING_REQUIRES_SEMANTIC_CORRESPONDENCE (Phase 3F.1.5.2): when the
+  // ground truth's own action signal is empty, A_SUBJECT_ACTION resolves to
+  // NOT_APPLICABLE for every candidate regardless of subject matter — this
+  // dimension then supplies NO discriminating evidence at all. The claim's
+  // own asserted action is the most specific of the three core dimensions
+  // (posture is a coarse few-way bucket many unrelated provisions share; the
+  // object/resource dimension is a purely lexical/statistical signal). When
+  // action support is absent, object/resource lexical overlap becomes the
+  // ONLY evidence left, and a handful of shared boilerplate contract terms
+  // (normalized against the SMALLER of the two term sets) is not sufficient
+  // on its own to establish that two provisions concern the same claim — this
+  // is the confirmed root cause of both the false-safe-surfacing cluster and
+  // the definitional-candidate over-match defect (see
+  // docs/evaluation-v2-iteration-2/02-safe-surfacing-correspondence-spec.json
+  // and 03-definition-overmatch-root-cause.json). This checks only the
+  // already-computed, fully generic gtActions signal — no term, document, or
+  // covenant family is referenced.
+  const actionIsSoleDiscriminator = gtActions.length === 0;
   out.push(
     build(
       "C_OBJECT_RESOURCE",
@@ -127,10 +145,21 @@ function assessDimensions(ctx: DimensionContext): DimensionAssessment[] {
         `object=[${candidate.objectResource.join(", ")}]`,
         `overlapCoefficient=${objectOverlap.coefficient.toFixed(3)}`,
         `sharedSubstantiveTerms=${objectOverlap.sharedCount}`,
+        `actionIsSoleDiscriminator=${actionIsSoleDiscriminator}`,
       ],
       conflicts,
       () => {
         if (gtSignals.contentTerms.length === 0 || candidateSignals.contentTerms.length === 0) return "INDETERMINATE";
+        if (actionIsSoleDiscriminator) {
+          // No family-assisted shortcut here: a covenant-family match provides
+          // independent corroboration only when SOME other dimension is also
+          // vouching for correspondence. With action silent, family agreement
+          // alone is exactly the kind of proximity signal this evaluator
+          // exists to refuse.
+          if (objectOverlap.coefficient >= SOLE_DIMENSION_OBJECT_THRESHOLD && objectOverlap.sharedCount >= SOLE_DIMENSION_MIN_SHARED_TERMS) return "CORRESPONDS";
+          if (objectOverlap.coefficient >= OBJECT_MATERIAL_CONFLICT_THRESHOLD) return "INDETERMINATE";
+          return "MATERIAL_CONFLICT";
+        }
         if (objectOverlap.coefficient >= OBJECT_CORRESPONDENCE_THRESHOLD && objectOverlap.sharedCount >= MIN_SHARED_TERMS_FOR_CORRESPONDENCE) return "CORRESPONDS";
         if (familyMatch && objectOverlap.coefficient >= OBJECT_MATERIAL_CONFLICT_THRESHOLD && objectOverlap.sharedCount >= MIN_SHARED_TERMS_WITH_FAMILY_SUPPORT) return "CORRESPONDS";
         if (objectOverlap.coefficient >= OBJECT_MATERIAL_CONFLICT_THRESHOLD && objectOverlap.sharedCount >= MIN_SHARED_TERMS_WITH_FAMILY_SUPPORT) return "INDETERMINATE";
