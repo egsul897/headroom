@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "BASELINE",
+  "generatedAt": "2026-08-29T23:55:00Z",
+  "startingCommit": {
+    "sha": "a77f76c1a32475e129c97460aa643b23585659e4",
+    "committedAt": "2026-08-29T22:20:07+00:00",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "workingTreeStatus": "CLEAN - zero staged/unstaged/untracked files at phase start"
+  },
+  "immutableHistoricalVerdicts": {
+    "evaluationContractV3": {
+      "verdict": "EVALUATION_CONTRACT_V3_SAFETY_GATE_FAILED_REQUIRES_HUMAN_DECISION",
+      "creditEligibility_interReviewer": 0.9574468085106383,
+      "creditEligibility_evaluatorVsConsensus": 0.8936170212765957,
+      "surfacingStatus_interReviewer": 0.7407407407407408,
+      "surfacingStatus_evaluatorVsConsensus": 0.6666666666666666,
+      "falseCreditControls": "All 14 remain NO_CREDIT, unanimous across 3 adjudicators + evaluator, zero regression",
+      "statement": "This verdict and these numbers are NOT reinterpreted, NOT rewritten, and NOT reopened as an evaluator-methodology question in this phase. The human architecture decision (documented in this phase's own mission statement) responds to this failure by moving the burden from evaluator-rubric tuning to explicit production-side safe-failure architecture. Evaluation Contract V3's artifacts under docs/evaluation-contract-v3/ remain untouched."
+    }
+  },
+  "testBaseline": {
+    "targetedSuite": "npx vitest run tests/evaluation-v2/ (from the immediately prior phase, same commit, same working tree): 8 files, 135/135 tests pass.",
+    "fullRepositorySuite": "npx vitest run (from the immediately prior phase, same commit): 130/185 test files pass, 1544/1874 tests pass, 213 skipped, 117 failed across 55 files - every failure attributable to pre-existing local-Postgres unavailability (localhost:5432 unreachable) or live-network dependencies (SEC EDGAR), none related to evaluation-v2/atomic-contract or any file this phase's predecessor touched.",
+    "note": "Re-run in this phase's own 00/29 gates rather than assumed stale, since this phase touches production pipeline code, not just evaluator code."
+  },
+  "tscBaseline": "npx tsc --noEmit -p . : 0 new errors; only pre-existing tests/foundation-audit/* errors (cascade-and-concurrency.test.ts, discovery-fault-injection.test.ts, real-db-duplicate-physical-occurrence.test.ts) already disclosed in prior phases.",
+  "eslintBaseline": "npx eslint on all files changed in the immediately prior phase: 0 errors/warnings.",
+  "buildBaseline": "npm run build: succeeds, 21 routes, no new warnings.",
+  "governingDocsConfirmedRead": [
+    "docs/HEADROOM-NORTH-STAR.md",
+    "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md",
+    "docs/foundation-assurance/17-remediation-priority-map.json (original P0-6/P1-1..12/P2/P3 catalog)",
+    "docs/foundation-remediation/08-p1-reconciliation.json (Phase 3F.1.4's exact P1 disposition, including P1-3 and P1-11 disclosed STILL_OPEN)",
+    "docs/foundation-remediation/01-source-accounting-remediation.json (p110Q3Determination: P1-10's precise mechanism and 3 candidate designs)",
+    "docs/foundation-remediation/13-remaining-foundation-risks.json (definition-fallback 3 call sites, getRuleSourceTrace suspicion, operative-state x structural-health gap)",
+    "docs/evaluation-contract-v3/23-final-verdict.json and docs/evaluation-contract-v3.md (immediately preceding phase's exact failure)"
+  ],
+  "residualDefectSourceOfTruth": {
+    "P1-3": {
+      "description": "Real, wired onboarding upload action (app/[companyId]/onboarding/documents/actions.ts) bypasses all content-hash dedup by calling uploadAndChunkDocument directly instead of the existing, tested lib/connectors/upload-connector.ts's uploadDocumentThroughIngestion wrapper.",
+      "citedFrom": "docs/foundation-remediation/08-p1-reconciliation.json, 13-remaining-foundation-risks.json"
+    },
+    "P1-10": {
+      "description": "An in-text citation shaped like a real heading is accepted by stage-structure.ts as a genuine top-level SECTION raw node, corrupting the global rank-stack and misattaching later real clauses to the spurious node.",
+      "citedFrom": "docs/foundation-remediation/01-source-accounting-remediation.json p110Q3Determination",
+      "candidateDesigns": [
+        "Plausibility gate before a same/shallower-rank pop (smallest blast radius)",
+        "Two-pass parse: validate ARTICLE/SECTION raws against numbering-sequence/position sanity before clause-tree region slicing",
+        "Confidence-tagged raws with deferred acceptance (most surgical, needs a StructuralNode shape change)"
+      ],
+      "boundedDetectionAlreadyLive": "SECTION_NUMBER_SEQUENCE_ANOMALY (INFO, non-gating) health check already exists and fires 4x on CONMED, 27x on DSGR - detection only, does not correct the misattachment."
+    },
+    "P1-11": {
+      "description": "No supersession marker on structural nodes; consumers that read nodes directly (lib/contract-model/compiler/semantic-verification/source-inventory.ts, lib/contract-model/compiler/discovery/pass-a-signals.ts) rather than going through amendment/operative-state.ts can treat historically-superseded text as current.",
+      "citedFrom": "docs/foundation-remediation/08-p1-reconciliation.json, 13-remaining-foundation-risks.json"
+    },
+    "definitionFallbacks": {
+      "description": "3 additional call sites with the same cross-document no-documentId getDefinition fallback pattern that P0-2's fix (Phase 3F.1.4 Workstream B) addressed elsewhere: lib/contract-model/compiler/semantic/tools.ts, lib/contract-model/compiler/amendment/pipeline.ts, lib/contract-model/compiler/amendment/independent-verification.ts.",
+      "citedFrom": "docs/foundation-remediation/13-remaining-foundation-risks.json newRisksIdentifiedDuringThisPhaseNotFixed"
+    },
+    "sourceTraceSuspicion": {
+      "description": "getRuleSourceTrace's definedTermRefs lookup (service.ts) appears to assume a stored stableKey format but is populated with raw term names by persistContractRules - a possible latent mismatch, noticed but never investigated.",
+      "citedFrom": "docs/foundation-remediation/13-remaining-foundation-risks.json"
+    },
+    "operativeStateStructuralHealthGap": {
+      "description": "operative-state.ts never calls index.healthDiagnostics() anywhere - a section already flagged INVALID_SOURCE_SPAN/ERROR by the structural index can still be confidently reported OPERATIVE_STATE_RESOLVED. Documented and reproduced in tests/foundation-audit/combined-failures.test.ts's first describe block.",
+      "citedFrom": "docs/foundation-remediation/13-remaining-foundation-risks.json operativeStateHealthDiagnosticsGap"
+    },
+    "claimIdentityResidualRisks": {
+      "description": "Carried forward from Phase 3F.1.5.3: (A) different-base-section false matches, (B) bare/undifferentiated-section definitional overmatch. Frozen evaluator matcher not to be reopened casually - this phase determines whether these are production-relevant or evaluator-correspondence-only.",
+      "citedFrom": "docs/evaluation-contract-v3/22-remaining-evaluator-risks.json"
+    }
+  }
+}

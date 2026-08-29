@@ -133,6 +133,10 @@ model Company {
   contractCompilerRuns ContractCompilerRun[]
   DebtInstrument       DebtInstrument[]
 
+  // --- Phase 3F.1.5.R explicit claim-level safe-failure architecture ---
+  // Additive only. Zero rows for any company as of this migration.
+  claimReviewItems ClaimReviewItem[]
+
   @@map("companies")
 }
 
@@ -282,6 +286,9 @@ model Document {
   // A SourceArtifact.documentId is set once a DOCUMENT artifact has been
   // materialized into this row - see SourceArtifact's own comment.
   sourceArtifacts SourceArtifact[]
+
+  // Phase 3F.1.5.R explicit claim-level safe-failure architecture.
+  claimReviewItems ClaimReviewItem[]
 
   // --- Phase B contract model foundation (docs/contract-model-foundation-phase-b.md) ---
   documentNodes                 DocumentNode[]
@@ -2961,4 +2968,237 @@ model ContractCompilerStage {
 
   @@unique([runId, stage])
   @@map("contract_compiler_stages")
+}
+
+// =============================================================================
+// Phase 3F.1.5.R - explicit claim-level safe-failure architecture
+// (docs/phase-3f1-5-r-residual-foundation/03-safe-failure-architecture.json).
+//
+// Responds to Evaluation Contract V3's verdict
+// (EVALUATION_CONTRACT_V3_SAFETY_GATE_FAILED_REQUIRES_HUMAN_DECISION): rather
+// than asking an evaluator to reconstruct "did Headroom safely surface this
+// failure" indirectly from nearby pipeline artifacts, Headroom must now
+// explicitly RECORD, as first-class persisted production state, every
+// material contractual claim it encountered but could not safely promote
+// into trusted semantic state (NO_SILENT_MATERIAL_FAILURE).
+//
+// Deliberately NOT a new invention from scratch (per this phase's own
+// charter, "do not duplicate existing review models if one can be safely
+// generalized"): the lifecycle/audit-trail shape below is the SAME proven
+// pattern already shipped for ExtractionCandidate/CandidateReviewEvent
+// (proposed value never overwritten, append-only decision log, reviewedBy
+// never fabricated, REVIEW_REQUIRED baked into the status vocabulary) -
+// generalized to the live contract-model compiler pipeline's own claim
+// identity (semantic-coverage's MaterialSemanticUnit.semanticUnitId, the
+// existing content-derived, sibling-safe identity already computed by
+// lib/contract-model/compiler/semantic-coverage/**) rather than
+// ExtractionCandidateKind's onboarding-specific candidate types, and FK'd to
+// Company/Document directly rather than to the legacy, quarantined
+// ContractCompilerRun/ContractCompilerStage pair above (orchestrator.ts's own
+// header comment: "NOT repaired here - quarantine only").
+//
+// Distinct from LegalReviewRecord (an attorney's review of a golden-test/
+// permission/legal conclusion) and from CandidateReviewEvent (the onboarding
+// extraction pipeline's own review trail) - this is the compiler pipeline's
+// OWN claim-level safe-failure signal, never a re-skin of either.
+// =============================================================================
+
+// Lifecycle status (task's "small compositional production status model" -
+// deliberately NOT one state per reason, per the task's own instruction not
+// to encode every failure reason into status).
+enum ClaimReviewStatus {
+  OPEN_REVIEW
+  RESOLVED_ACCEPTED
+  RESOLVED_REJECTED
+  SUPERSEDED
+
+  @@map("claim_review_status")
+}
+
+// Bounded, extensible reason CLASSES (task's own "prefer stable broad reason
+// classes + structured metadata + rationale over hundreds of bespoke reason
+// enums"). OTHER_REVIEW_REQUIRED is the deliberate escape hatch - a reason
+// that doesn't fit the other 10 classes is never forced into a false fit.
+enum ClaimReviewReasonCode {
+  SEMANTIC_AMBIGUITY
+  INSUFFICIENT_CONTEXT
+  UNSUPPORTED_EXPRESSION
+  CONFLICTING_SOURCE_EVIDENCE
+  UNRESOLVED_CROSS_REFERENCE
+  OPERATIVE_STATE_UNCERTAIN
+  STRUCTURAL_INTEGRITY_RISK
+  VERIFICATION_CONTRADICTION
+  MISSING_REQUIRED_SEMANTIC_DIMENSION
+  COMPILATION_FAILURE
+  OTHER_REVIEW_REQUIRED
+
+  @@map("claim_review_reason_code")
+}
+
+// Which live pipeline stage detected (or, for HUMAN_REVIEWER, resolved) the
+// issue. Deliberately its own fresh enum, NOT a reuse of the legacy/
+// quarantined ContractCompilerStageKind (RULE_EXTRACTION/DEPENDENCY_RESOLUTION/
+// etc.) which belongs to orchestrator.ts's quarantined pipeline and does not
+// name the live 2A-3E module boundaries this phase's failure-boundary
+// forensics actually found (discovery, context-retrieval, amendment/
+// operative-state, semantic compiler, semantic verifier, coverage auditor).
+enum ClaimReviewPipelineStage {
+  DISCOVERY
+  CONTEXT_RETRIEVAL
+  AMENDMENT_OPERATIVE_STATE
+  SEMANTIC_COMPILER
+  SEMANTIC_VERIFIER
+  COVERAGE_AUDITOR
+  UNSUPPORTED_EXPRESSION_HANDLING
+  HUMAN_REVIEWER
+  OTHER
+
+  @@map("claim_review_pipeline_stage")
+}
+
+/// One row per distinct, deduplicated claim currently (or historically) known
+/// to require review - task §11's "discovery -> compiler failure ->
+/// verification failure may remain ONE open claim-level review item with
+/// multiple observations, rather than three unrelated alerts." `claimKey` is
+/// the stable, content-derived, sibling-safe pre-compilation claim identity
+/// (see lib/contract-model/compiler/safe-failure/identity.ts) - reused
+/// verbatim from semantic-coverage's own MaterialSemanticUnit.semanticUnitId
+/// where a coverage audit has run, or the compiler's own candidateRef
+/// fallback otherwise - never a freshly invented identity scheme (task §4's
+/// own "do not use human-readable sectionRef alone as unique identity").
+model ClaimReviewItem {
+  id            String  @id @default(cuid())
+  companyId     String
+  packageKey    String?
+  instrumentKey String?
+  documentId    String
+
+  claimKey         String
+  structuralNodeId String?
+  sectionRef       String?
+  charStart        Int?
+  charEnd          Int?
+  covenantFamily   String?
+
+  // SemanticUnitMateriality's own vocabulary (CRITICAL/MATERIAL/
+  // REVIEW_UNCERTAIN/INFORMATIONAL) - a free string, not a duplicate Prisma
+  // enum, so the two never drift out of sync with a second source of truth.
+  materiality String
+
+  status               ClaimReviewStatus     @default(OPEN_REVIEW)
+  reasonCode           ClaimReviewReasonCode
+  // Task §7's own "OTHER/unknown structured explanation where genuinely
+  // necessary" - a bounded set of dimension-name strings (action/posture/
+  // object/scope/threshold/metric/condition/exception/dependency/
+  // cross-reference/temporal state/operative version/shared cap/builder-
+  // grower mechanics/reclassification/OTHER), never required to be exhaustive.
+  unresolvedDimensions String[]
+
+  // The FIRST pipeline stage that ever detected this claim needed review -
+  // convenience/query field; the full multi-stage history lives in
+  // `observations` below and is never lost when a later stage also detects
+  // the same underlying claim.
+  originStage ClaimReviewPipelineStage
+
+  // Real source text - never fabricated, never a paraphrase presented as a
+  // quote (matches SemanticVerificationFinding.sourceEvidence's own
+  // discipline).
+  sourceEvidence String
+  sourceCitation String?
+
+  // The compiled/represented semantic object this claim's PARTIAL
+  // representation (if any) produced - an IRRule/IRDefinition id, or a
+  // semantic-coverage matchedIrId - null when nothing was ever compiled for
+  // this claim at all.
+  relatedSemanticObjectId String?
+  operativeVersionRef     String?
+
+  // Human/AI-readable why-review-required narrative - never a bare label
+  // with no evidence trail (matches MaterialSemanticUnit.materialityReasoning's
+  // own discipline).
+  rationale String
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  resolvedAt     DateTime?
+  // Never fabricated - same "no invented reviewer identity" discipline as
+  // ExtractionCandidate.reviewedBy/LegalReviewRecord.reviewerName.
+  resolvedBy     String?
+  resolutionNote String?
+
+  algorithmVersion String
+
+  company  Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  observations ClaimReviewObservation[]
+  decisions    ClaimReviewDecision[]
+
+  // The dedup key (task §11/§6): at most one ClaimReviewItem row per
+  // (companyId, claimKey) ever exists - a later pipeline run's detection for
+  // the SAME claim identity updates/extends this row's observations rather
+  // than creating a duplicate, and a claim's full history (including any
+  // prior SUPERSEDED/RESOLVED_* lifecycle) survives under this same row
+  // rather than forking into parallel records.
+  @@unique([companyId, claimKey])
+  @@index([companyId, status])
+  @@index([documentId])
+  @@index([companyId, materiality, status])
+  @@map("claim_review_items")
+}
+
+/// Append-only log of every individual pipeline-stage DETECTION that
+/// contributed evidence toward this claim needing review (task §11's
+/// "preserve stage history internally"). Never mutated or deleted - a claim
+/// re-detected at a later stage, or on a later pipeline run, always adds a
+/// NEW observation row rather than overwriting a prior one.
+model ClaimReviewObservation {
+  id               String                   @id @default(cuid())
+  reviewItemId     String
+  stage            ClaimReviewPipelineStage
+  reasonCode       ClaimReviewReasonCode
+  detail           String
+  // The exact compilerAlgorithmVersion/verifierAlgorithmVersion/
+  // inventoryAlgorithmVersion (whichever stage-specific version applies) -
+  // never omitted, so a later reproducibility check can tell which algorithm
+  // version actually produced this observation.
+  algorithmVersion String
+  createdAt        DateTime                 @default(now())
+
+  reviewItem ClaimReviewItem @relation(fields: [reviewItemId], references: [id], onDelete: Cascade)
+
+  @@index([reviewItemId])
+  @@map("claim_review_observations")
+}
+
+enum ClaimReviewDecisionAction {
+  ACCEPT
+  REJECT
+  SUPERSEDE
+  REOPEN
+
+  @@map("claim_review_decision_action")
+}
+
+/// Append-only resolution-lifecycle audit trail (task §12's "never a
+/// permanent dead record... never delete history"), the same proven shape as
+/// CandidateReviewEvent (previousStatus/newStatus bracket exactly what
+/// changed, a later decision is always a NEW row).
+model ClaimReviewDecision {
+  id             String                    @id @default(cuid())
+  reviewItemId   String
+  action         ClaimReviewDecisionAction
+  previousStatus ClaimReviewStatus
+  newStatus      ClaimReviewStatus
+  note           String?
+  // Never fabricated - see ClaimReviewItem.resolvedBy's own comment. Null
+  // for an automated (non-human) transition (e.g. a coverage re-run finding
+  // the claim now fully represented).
+  decidedBy      String?
+  createdAt      DateTime                  @default(now())
+
+  reviewItem ClaimReviewItem @relation(fields: [reviewItemId], references: [id], onDelete: Cascade)
+
+  @@index([reviewItemId])
+  @@map("claim_review_decisions")
 }

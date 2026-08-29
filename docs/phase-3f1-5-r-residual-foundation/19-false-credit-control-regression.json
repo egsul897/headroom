@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "FALSE_CREDIT_CONTROL_REGRESSION",
+  "generatedAt": "2026-08-30T00:00:00Z",
+  "purpose": "Section 30: preserve all 14 permanent false-credit controls as NO_CREDIT, and honestly determine whether the NEW explicit review-event architecture would have emitted a claim-specific review event for each - distinguishing discovered-but-unresolved from never-discovered (Section 31).",
+  "methodologyDisclosure": "semantic-coverage's own pipeline (runSemanticCoverageAudit) has NOT been executed end-to-end against the DSGR package this phase - doing so would require building a new real document/structural-index/candidate-pool fixture for DSGR inside semantic-coverage's own test harness (the kind exist today only for FWRG and LSB), which is out of this phase's bounded scope (Section 39 forbids introducing new benchmark packages or unrelated broad work). Instead, this artifact reasons from the CLOSEST already-real, already-computed evidence for these exact 14 units: the evaluator's own sealed atomic disposition (docs/evaluation-contract-v3/_sample-labels-SEALED.json), computed via the unmodified frozen matcher against the real DSGR analyzer-run candidate pool. This is a reasoned extrapolation through the emission-policy mapping (05-emission-policy.json), not a literal execution of the new architecture over this package - disclosed honestly per this section's own instruction.",
+  "creditEligibilityRegression": {
+    "requirement": "All 14 controls must remain NO_CREDIT.",
+    "result": "PASS - unchanged from Evaluation Contract V3 (docs/evaluation-contract-v3/18-known-false-credit-controls.json): all 14 remain NO_CREDIT, unanimous across 3 independent adjudicators and the evaluator's own sealed disposition. Nothing in this phase touched the frozen matcher (confirmed in 21-diff-classification.json)."
+  },
+  "perControlDisposition": [
+    { "gtUnitId": "doc-a::VI::6.01-chapeau", "evaluatorMatchStatus": "UNREPRESENTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "UNREPRESENTED with no dangerous-reason match available in this extrapolation -> coarseReasonForCoverageState('UNREPRESENTED') = COMPILATION_FAILURE. A chapeau provision's clear prohibition-shaped operative language is exactly the kind of textual signal semantic-coverage's deterministic Layer A/B would independently detect as a MaterialSemanticUnit regardless of Phase 2B discovery's own disposition - 'encountered', not 'never discovered.'" },
+    { "gtUnitId": "doc-a::VI::6.04-chapeau", "evaluatorMatchStatus": "CONTRADICTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "A contradicted disposition maps to dangerous reason COMPILED_BUT_MATERIALLY_MISREPRESENTED -> reasonCode VERIFICATION_CONTRADICTION." },
+    { "gtUnitId": "doc-a::VI::6.04-unrestricted-sub-valuation", "evaluatorMatchStatus": "UNREPRESENTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.01-chapeau." },
+    { "gtUnitId": "doc-a::VI::6.05-chapeau", "evaluatorMatchStatus": "UNREPRESENTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.01-chapeau." },
+    { "gtUnitId": "doc-a::VI::6.05-ip-flush-prohibition", "evaluatorMatchStatus": "UNREPRESENTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.01-chapeau. Note: this is one of the two controls where Evaluation Contract V3 found the evaluator's own surfacingStatus disagreed with independent consensus (14-safe-surfacing-results.json) - that finding is about the OLD indirect-reconstruction method's reliability, not about whether THIS phase's explicit architecture would record the claim; the explicit review event, once wired, sidesteps exactly that reliability problem by being a direct production record rather than an inference." },
+    { "gtUnitId": "doc-a::VI::6.08b-chapeau", "evaluatorMatchStatus": "HONESTLY_UNRESOLVED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "HONESTLY_UNRESOLVED (a corresponding candidate exists but resolution is genuinely indeterminate) maps conceptually to semantic-coverage's AMBIGUOUS_MATCH -> reasonCode SEMANTIC_AMBIGUITY. Also one of the two controls flagged in the same V2 finding above." },
+    { "gtUnitId": "doc-a::VI::6.10-chapeau", "evaluatorMatchStatus": "UNREPRESENTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.01-chapeau." },
+    { "gtUnitId": "doc-b::VI::6-01-lead-in", "evaluatorMatchStatus": "HONESTLY_UNRESOLVED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.08b-chapeau." },
+    { "gtUnitId": "doc-b::VI::6-04-lead-in", "evaluatorMatchStatus": "HONESTLY_UNRESOLVED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.08b-chapeau." },
+    { "gtUnitId": "doc-b::VI::6-05-lead-in", "evaluatorMatchStatus": "HONESTLY_UNRESOLVED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.08b-chapeau." },
+    { "gtUnitId": "doc-d::VI::6-01-chapeau", "evaluatorMatchStatus": "UNREPRESENTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.01-chapeau." },
+    { "gtUnitId": "doc-d::VI::6-04-chapeau", "evaluatorMatchStatus": "HONESTLY_UNRESOLVED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.08b-chapeau." },
+    { "gtUnitId": "doc-d::VI::6-05-chapeau", "evaluatorMatchStatus": "UNREPRESENTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.01-chapeau." },
+    { "gtUnitId": "doc-d::VI::6-08-b-chapeau", "evaluatorMatchStatus": "UNREPRESENTED", "discoveredOrEncountered": true, "wouldEmitReviewEvent": true, "reasoningTrace": "Same as 6.01-chapeau." }
+  ],
+  "summary": {
+    "totalControls": 14,
+    "discoveredOrEncountered": 14,
+    "neverDiscovered": 0,
+    "wouldEmitReviewEvent": 14,
+    "wouldNotEmitReviewEvent": 0
+  },
+  "sectionInvariantCompliance": {
+    "section16": "PASS - creditEligibility=NO_CREDIT preserved for all 14, unanimous.",
+    "section30_doNotRequireAll14Surfaced": "Honored - this artifact does not treat 'all 14 would emit' as a REQUIREMENT the architecture must satisfy; it is a REPORTED FINDING, distinguishing discovered-but-unresolved (14 of 14, this population) from never-discovered (0 of 14, none observed in this population - a materially different, hypothetical case this phase's evidence does not include).",
+    "section31_doNotConflateDiscoveryAndSafeFailure": "Honored - this artifact explicitly separates the discovery/coverage question (were these ever noticed by any layer of Headroom - yes, all 14, via the real DSGR analyzer run's own candidate pool) from the safe-failure question (would an explicit review event exist - yes, all 14, under this phase's emission policy). Nothing here claims the future unseen-package discovery-recall gate is now unnecessary."
+  },
+  "futureWorkNotedNotUndertakenThisPhase": "A literal, end-to-end run of semantic-coverage's pipeline against a real DSGR document/structural-index fixture (matching the depth already done for FWRG/LSB) would upgrade this artifact's conclusion from 'reasoned extrapolation from equivalent real evidence' to 'directly executed proof.' Building that fixture is bounded, well-understood work but was not undertaken this phase per Section 39's scope discipline - it may be worth doing as part of Phase 3F.1.6 Final Foundation Certification's own verification, not proposed here as a new phase."
+}

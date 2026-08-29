@@ -187,6 +187,8 @@ describe("P1-11 fix - buildNodeSupersessionIndex/getNodeSupersessionStatus core 
           attemptedText: null,
           reviewRequired: true,
           candidateTexts: [],
+          structuralHealthStatus: "STRUCTURAL_HEALTH_SUFFICIENT" as const,
+          structuralHealthIssues: [],
         },
       ],
     };

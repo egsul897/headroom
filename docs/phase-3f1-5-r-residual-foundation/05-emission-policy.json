@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "EMISSION_POLICY",
+  "generatedAt": "2026-08-29T23:44:00Z",
+  "purpose": "Section 9/10: when a review event is emitted, and why this is the smallest sufficient set of emission points.",
+  "wiredEmissionPoint": {
+    "function": "recordClaimReviewsFromDocumentCoverage / recordClaimReviewsFromPackageCoverage (lib/contract-model/compiler/safe-failure/integrate.ts)",
+    "calledAfter": "runSemanticCoverageAudit() (lib/contract-model/compiler/semantic-coverage/pipeline.ts) - explicitly, by whichever caller (a script today; a future live route in a later phase) opts into persistence. Not folded into runSemanticCoverageAudit() itself, which stays a pure, DB-free computation to preserve its existing test contract (many tests exercise it without a live database)."
+  },
+  "materialityGate": { "emitsFor": ["CRITICAL", "MATERIAL"], "neverEmitsFor": ["REVIEW_UNCERTAIN", "INFORMATIONAL"], "rationale": "Matches Evaluation Contract V3's own MATERIAL_TIERS convention exactly - both to avoid alert spam (Section 24) and because these are, by construction, not the CFO-facing claims this architecture exists to protect." },
+  "coverageStateGate": {
+    "emitsFor": ["UNREPRESENTED", "UNSUPPORTED", "SOURCE_CONTEXT_INCOMPLETE", "OPERATIVE_STATE_UNRESOLVED", "AMBIGUOUS_MATCH", "PARTIALLY_REPRESENTED", "FULLY_REPRESENTED_REVIEW_REQUIRED"],
+    "neverEmitsFor": ["FULLY_REPRESENTED_VERIFIED"],
+    "rationale": "FULLY_REPRESENTED_VERIFIED is semantic-coverage's own success state - a claim already safely represented and independently verified needs no review item. Every other state represents a genuine, unresolved safety gap this phase's NO_SILENT_MATERIAL_FAILURE invariant requires to be recorded explicitly."
+  },
+  "reasonCodeMapping": {
+    "note": "Best-effort coarse classification only, never authoritative (same discipline as SemanticCompilerErrorDetail.failureCategory elsewhere in this codebase) - the item's own `rationale` field (copied verbatim from the coverage entry's required `reasoning` string, or the dangerous-unaccounted item's `auditorReasoning`) is the authoritative explanation.",
+    "fromDangerousUnaccountedReason": {
+      "NO_CANDIDATE_EVER_DISCOVERED": "MISSING_REQUIRED_SEMANTIC_DIMENSION",
+      "CANDIDATE_DISCOVERED_NEVER_COMPILED": "COMPILATION_FAILURE",
+      "COMPILED_BUT_UNIT_OMITTED_FROM_IR": "MISSING_REQUIRED_SEMANTIC_DIMENSION",
+      "COMPILED_BUT_MATERIALLY_MISREPRESENTED": "VERIFICATION_CONTRADICTION"
+    },
+    "fromCoverageStateWhenNoDangerousMatch": {
+      "UNSUPPORTED": "UNSUPPORTED_EXPRESSION",
+      "SOURCE_CONTEXT_INCOMPLETE": "INSUFFICIENT_CONTEXT",
+      "OPERATIVE_STATE_UNRESOLVED": "OPERATIVE_STATE_UNCERTAIN",
+      "AMBIGUOUS_MATCH": "SEMANTIC_AMBIGUITY",
+      "PARTIALLY_REPRESENTED": "MISSING_REQUIRED_SEMANTIC_DIMENSION",
+      "FULLY_REPRESENTED_REVIEW_REQUIRED": "SEMANTIC_AMBIGUITY",
+      "UNREPRESENTED": "COMPILATION_FAILURE"
+    }
+  },
+  "whyNotEmitAtEveryStageIndependently": "The coverage auditor's own reconciliation output already independently combines discovery+compiler+verifier+operative-state evidence per claim (Phase 3E's entire purpose). Emitting separately at each of the 4-5 upstream stages would require rebuilding that same cross-stage aggregation logic a second time inside the safe-failure module, duplicating Phase 3E's own hard-won reconciliation work and risking the two aggregations silently drifting apart. Wiring the ONE emission point downstream of the existing aggregation is both the smaller diff and the more architecturally correct choice.",
+  "sectionsExplicitlyDeclinedThisPhase": {
+    "compilerStageDirectEmission": "Not wired - SemanticCompilationResult.failureReasons already flows into semantic-coverage's own reconciliation (a FAILED/PARTIAL compilation naturally produces a non-FULLY_REPRESENTED_VERIFIED coverage entry), so a second, redundant emission point at compile.ts would only risk double-counting or drifting from the coverage auditor's own verdict.",
+    "verifierStageDirectEmission": "Not wired - same reasoning; SemanticVerificationFinding severity/resolutionStatus already feeds reconciliation's own coverage-state computation."
+  }
+}
