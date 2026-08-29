@@ -1,0 +1,477 @@
+{
+  "adjudicatorId": "B",
+  "generatedAt": "2026-08-29T21:59:33Z",
+  "caseCount": 47,
+  "results": [
+    {
+      "caseId": "a-7.1",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: No candidate anywhere in this document has accountingRole=SUBSTANTIVE_REPRESENTATION; all are DISCOVERY_CANDIDATE/INVENTORY_ONLY or SAFETY_FLAG mentions -- fails the 'compiled structured representation' necessary condition, so NO_CREDIT regardless of content accuracy. Dim B: cand 7.1(d) and 7.1 are DISCOVERY_CANDIDATE/SAFETY_FLAG with NEEDS_REVIEW, and audit-findings on 7.1(b)/7.1(b)(ii)/7.1(d)/7.1(d)(i) are claim-specific (INVARIANT_3) -> SPECIFICALLY_SURFACED. Dim C: same-claim identity affirmatively established; (a)3.75x,(c)2.75x,(d)liquidity($75M/$200M/91-day) and the step-up mechanic for (a) are captured, but no candidate anywhere states the 6.00x cap on (b)'s step-up (verified absent by full-text search) -> a missing material dimension -> PARTIAL. Dim D: audit-findings present are discovery-completeness/structural-parsing gap scans (STRUCTURAL_COVERAGE_GAP, PARTIAL_DISCOVERY, MISSING_CONDITION), not a correctness verification of an existing representation (INVARIANT_9) -> NOT_EVALUATED. Dim E: groundTruthExcerptResolution=UNRESOLVED_DESCRIPTION_ONLY (GT's own anchoring unresolved) plus a candidate whose excerpt text does not match its own normalizedSemantics -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.10",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: only INVENTORY_ONLY/SAFETY_FLAG discovery candidates exist for 7.10; no compiled representation -> NO_CREDIT. Dim B: cand on 7.10 itself is SAFETY_FLAG/NEEDS_REVIEW (claim-specific carve-out uncertainty), plus a claim-specific STRUCTURAL_COVERAGE_GAP finding on 7.10(b)(i) noting 6 unseparated enumerated items -> SPECIFICALLY_SURFACED. Dim C: core prohibition, $2.5M threshold, fair-and-reasonable-terms condition, and receivables-program carve-out are captured, but the STRUCTURAL_COVERAGE_GAP finding shows the detailed carve-out list (ordinary-course/allocation/tax) in 7.10(b)(i) was never separately discovered -> PARTIAL. Dim D: findings are discovery/structural gap scans, not correctness verification -> NOT_EVALUATED. Dim E: GT excerpt unresolved -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.11",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: only two INVENTORY_ONLY discovery candidates touch section 7.11, no compiled representation -> NO_CREDIT. Dim B: neither 7.11 candidate carries a SAFETY_FLAG/uncertain marker; all SAFETY_FLAG/VERIFICATION_FINDING entries in this packet are on unrelated sibling sections (7.10, 7.13, 7.4, 6.6, etc.) which per INVARIANT_5/INVARIANT_4 cannot establish surfacing for THIS claim -> NOT_SPECIFICALLY_SURFACED (silent). Dim C: the prohibition and the FMV-exception structure are captured, but both candidates use generic language ('a fixed dollar amount', 'a percentage') and never state the specific $75,000,000 / 3.5% figures -> a missing material dimension -> PARTIAL. Dim D: no verifier finding attaches to the 7.11 candidates themselves -> NOT_EVALUATED. Dim E: GT excerpt unresolved -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.13",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: only DISCOVERY_CANDIDATE(SAFETY_FLAG/INVENTORY_ONLY) exist for 7.13; no compiled representation -> NO_CREDIT. Dim B: cand[0] and cand[3] are claim-specific (sectionRef=7.13) SAFETY_FLAG/NEEDS_REVIEW entries describing the purchase-money/Finance-Lease/7.3(f)(g)(l) carve-out and the clause-(b) scope limitation; plus a claim-specific STRUCTURAL_COVERAGE_GAP/PARTIAL_DISCOVERY pair on 7.13(a) -> SPECIFICALLY_SURFACED. Dim C: the purchase-money carve-out is captured, but the GT's 'Loan Document' and 'Receivables-Program' carve-outs are not visible in any same-claim candidate -> missing material dimensions -> PARTIAL. Dim D: findings are discovery-completeness scans, not correctness verification -> NOT_EVALUATED. Dim E: GT excerpt unresolved -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.14",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: only DISCOVERY_CANDIDATE entries exist for 7.14; no compiled representation -> NO_CREDIT. Dim B: cand[17]/[18] are claim-specific (7.14(a), 7.14) SAFETY_FLAG entries with reviewStatus=UNCERTAIN describing the dividend-restriction and loan/investment-restriction prongs -> claim-specific unresolved semantics -> SPECIFICALLY_SURFACED. Dim C: two of the three prohibited-restriction types (dividends; loans/investments) are captured, but the third (asset-transfer restriction, clause (c) per the sibling excerpt) and the Loan-Document/Disposition-agreement/Receivables-Program carve-outs are not visible among same-claim candidates -> PARTIAL. Dim D: NOT_EVALUATED (no correctness-verification finding on a representing candidate). Dim E: GT excerpt unresolved -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.16",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: the only two same-claim candidates (7.16, 7.16(a)) are INVENTORY_ONLY discovery mentions -- no compiled representation exists -> NO_CREDIT. Dim B: neither 7.16 candidate carries any review/uncertainty flag; the packet's numerous SAFETY_FLAG/VERIFICATION_FINDING entries all belong to unrelated sibling sections (7.1-7.14) which cannot establish surfacing for this claim per INVARIANT_5 -> NOT_SPECIFICALLY_SURFACED (a genuinely silent case, consistent with the sample's disclosed 'silent failure' stratum). Dim C: despite AUTO_ACCEPTED/INVENTORY_ONLY status, the two candidates' normalizedSemantics jointly and accurately cover both GT elements (Anti-Corruption-Law violation prohibition; Sanctioned-Person/Country/Sanctions-violation prohibition) with no conflict -> FULL (completeness is content-based and independent of the credit decision). Dim D: NOT_EVALUATED (no verifier finding touches 7.16 at all). Dim E: GT excerpt unresolved -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.17",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: only DISCOVERY_CANDIDATE(SAFETY_FLAG) entries exist for 7.17; no compiled representation -> NO_CREDIT. Dim B: cand[0]/[1]/[2] are claim-specific (7.17(a), 7.17, 7.17(b)(i)) SAFETY_FLAG/NEEDS_REVIEW entries directly describing the covered-foreign-person and covered-activity/transaction prohibitions -> SPECIFICALLY_SURFACED. Dim C: the 'covered foreign person' and 'covered activity/transaction' prongs are both captured, giving reasonable coverage of this novel covenant, but completeness of any remaining sub-clauses of 7.17 cannot be confirmed from the packet -> PARTIAL. Dim D: NOT_EVALUATED. Dim E: GT excerpt unresolved; description itself is high-level/introductory rather than fully itemized -> AMBIGUOUS.",
+      "confidence": "LOW"
+    },
+    {
+      "caseId": "a-7.2",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: the chapeau-level candidates for section 7.2 itself are all INVENTORY_ONLY; no compiled representation -> NO_CREDIT. Dim B: no SAFETY_FLAG/HONEST_UNRESOLVED candidate is anchored to '7.2' itself -- every flagged/audit entry in this packet concerns individual sub-baskets (7.2(o),(h),(d),(i),(s)(i),(n)(ii),(k)(ii)(A),(l)(i)) or unrelated sections, which per INVARIANT_5/6 cannot surface the chapeau claim -> NOT_SPECIFICALLY_SURFACED (silent). Dim C: two same-claim INVENTORY_ONLY candidates jointly state the general Indebtedness prohibition subject to the enumerated (a)-(s) exceptions and the cross-basket reclassification/combination right -- both GT elements present with no conflict -> FULL. Dim D: NOT_EVALUATED. Dim E: GT excerpt unresolved -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.2-c",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: the sole same-claim candidate (sectionRef=7.2(c)) is INVENTORY_ONLY -- no compiled representation -> NO_CREDIT. Dim B: that candidate carries no review/uncertainty flag; the packet's SAFETY_FLAG entries are all on sibling sections (7.13, 7.1, 7.2(k)(ii)(B)) which cannot surface this specific sub-basket per INVARIANT_5 -> NOT_SPECIFICALLY_SURFACED (silent). Dim C: the candidate's normalizedSemantics and excerpt match the GT description almost verbatim (Liens permitted by 7.3(g); pro forma compliance with 7.1) with no missing element -> FULL. Dim D: NOT_EVALUATED. Dim E: GT excerpt unresolved despite the strong textual match -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::I::1.04-accounting-terms-gaap",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "CONTRADICTED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: cand[9]/[11]/[12] are COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION for 1.04(i)/(ii), satisfying the compiled-representation bar, but the claim also includes the core GAAP-freeze mechanism (cand[8], the general 1.04 rule), which is only HONEST_UNRESOLVED/sufficiency=PARTIAL -- a material dimension of THIS claim remains uncompiled, and verifier findings (WRONG_ENTITY_SCOPE on (i); an internal COMPLETE-vs-UNSUPPORTED conflict on (ii)) undermine the substantive candidates that do exist -> NO_CREDIT (INVARIANT_1/necessary-condition-3 not met). Dim B: cand[1] (SEMANTIC_COVERAGE_UNIT/SAFETY_FLAG, sectionRef=1.04, flaggedDangerousUnaccounted=True, reason COMPILED_BUT_UNIT_OMITTED_FROM_IR) and cand[8] (REVIEW_REQUIRED on the freeze mechanism itself) are directly claim-specific -> SPECIFICALLY_SURFACED. Dim C: (i) fair-value-disregard and (ii) convertible-debt-valuation are both substantively addressed, but the freeze mechanism is only informally described (not modeled as a first-class rule) and cand[37]'s WRONG_ENTITY_SCOPE finding shows the (i) rule's entityScope omits Subsidiary though the source text covers 'any Borrower or any Subsidiary' -> PARTIAL. Dim D: cand[34] is an explicit verifier finding that the (ii) rule's self-reported sufficiency=COMPLETE directly contradicts its own condition being typed UNSUPPORTED, and cand[37] is an explicit WRONG_ENTITY_SCOPE finding against the (i) rule's entity scope -- both are genuine correctness-verification findings contradicting same-claim SUBSTANTIVE_REPRESENTATION candidates (not mere discovery-gap scans) -> CONTRADICTED. Dim E: GT excerpt is RESOLVED_FROM_RAW_SOURCE (clearly anchored) and the candidate pool, though internally conflicting, is detailed and specific enough to confidently resolve every other dimension -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::I::1.11-amendment-and-restatement",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "CONTRADICTED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: cand[1] (COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION, 1.11(a), sufficiency=COMPLETE) covers the novation/continuity core, but cand[3] (VERIFICATION_FINDING, MATERIAL_DISCREPANCY) explicitly states this same rule 'captures zero substantive content... yet marks itself COMPLETE' against the source's operative four-part (i)-(iv) enumeration; separately, the reallocation/assignment mechanic (1.11(b)(iv)) has only HONEST_UNRESOLVED/PARTIAL candidates and the ratification/reaffirmation of prior guarantees and liens is UNREPRESENTED/CANDIDATE_DISCOVERED_NEVER_COMPILED (flaggedDangerousUnaccounted=True) -- multiple material GT dimensions lack any reliable substantive representation -> NO_CREDIT. Dim B: cand[3]/[22] (claim-specific MATERIAL_DISCREPANCY/VERIFICATION_INCOMPLETE findings on 1.11(a)'s own no-novation clause) and cand[31]-[36] (HONEST_UNRESOLVED, REVIEW_REQUIRED on 1.11(b)(iv)) are directly claim-specific -> SPECIFICALLY_SURFACED. Dim C: the novation/continuity statement and the reference-update mechanic (1.11(b)(i)) are captured; the reallocation-without-fees mechanic is only partially/qualitatively captured (HONEST_UNRESOLVED); the ratification of prior guarantees/liens is missing entirely -> PARTIAL. Dim D: cand[3] is an explicit, on-point verifier finding contradicting the SUBSTANTIVE_REPRESENTATION candidate's own COMPLETE self-report for this exact claim -> CONTRADICTED. Dim E: GT excerpt RESOLVED_FROM_RAW_SOURCE; the extensive, specific candidate/verifier evidence permits a confident determination despite its internal disagreements -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::I::applicable-ebitda",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: a COMPILED_IR_DEFINITION/SUBSTANTIVE_REPRESENTATION (sufficiency=COMPLETE) anchored to '1.01' states 'Applicable EBITDA' = EBITDA for four consecutive fiscal quarters most recently ended for which financials have been delivered, matching the GT definition, with no verifier finding challenging this specific candidate (the 9 findings in this packet all concern other terms/rules -- Acquisition entity scope, Section 1.03(a), Applicable Rate conditions, Unrestricted Cash, TNLR provisos) -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL. Dim D: NOT_EVALUATED (no verifier finding is anchored to the Applicable EBITDA candidate itself; the generic reviewStatus=REVIEW_REQUIRED is a dataset-wide boilerplate marker on every compiled rule, not a claim-specific verification finding). Dim E: clear, specific textual match -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::I::ebitda",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: the only candidate that is actually the 'EBITDA' definition itself is a COMPILED_IR_DEFINITION with accountingRole=HONEST_UNRESOLVED (sufficiency=PARTIAL) -- not SUBSTANTIVE_REPRESENTATION; the six SUBSTANTIVE_REPRESENTATION candidates in this packet are all for different terms/rules (Applicable EBITDA, several 1.06 pro forma rules, 1.10(a) Dollar Equivalent), none of which is the EBITDA definition itself -> no compiled representation of THIS claim -> NO_CREDIT. Dim B: that HONEST_UNRESOLVED candidate is directly and precisely claim-specific, reviewStatus=REVIEW_REQUIRED, and its own unresolvedReasons explicitly disclose the gap -> SPECIFICALLY_SURFACED. Dim C: the candidate's own honest disclosure states 'top-level structure (Net Income + add-backs - deductions) is captured' but 'the twenty add-back and six deduction sub-clauses...are represented as UNSUPPORTED aggregates rather than individually modeled' -- the overall shape is right but most of the GT's twenty-six itemized components are not individually represented -> PARTIAL. Dim D: NOT_EVALUATED (none of the 9 verifier findings in this packet critique the EBITDA definition candidate itself). Dim E: the GT description is highly detailed and the candidate's own self-assessment aligns exactly with an independent read of the gap -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::I::interest-coverage-ratio",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: no candidate in this packet is the 'Interest Coverage Ratio' definition/annualization-multiplier claim -- the two SUBSTANTIVE_REPRESENTATION candidates present are unrelated ('Acquisition' and 'Applicable EBITDA' definitions), and a full-text search for 'Interest Coverage'/'Annualized' across all 60 candidates finds only a DIFFERENT, adjacent claim (a minimum-3.00x-ratio covenant TEST at sectionRef='88', and Section 1.06 pro forma-calculation triggers that reference 'Interest Coverage Ratio' only in passing) -- none of which is the same claim as this definition's specific four-multiplier (4, 2, 4/3, 1) annualization mechanic -> NO_CREDIT. Dim B: per INVARIANT_6, the adjacent covenant-test and pro forma-trigger candidates are a different claim and cannot surface this one; no candidate anywhere names or anchors to the annualization mechanic itself -> NOT_SPECIFICALLY_SURFACED (silent). Dim C: NONE -- confirmed by full-text search that no candidate states the four-quarter EBITDA/Interest-Expense ratio with the specific 2022 annualization multipliers. Dim D: NOT_EVALUATED (the 8 verifier findings all concern unrelated Section 1.01/1.06 content). Dim E: GT excerpt is RESOLVED_FROM_RAW_SOURCE and the total absence of any same-claim candidate (confirmed by direct full-text search) makes the determination unambiguous -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::VI::6.01-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: no candidate of any kind is anchored to the '6.01' chapeau text itself; the HONEST_UNRESOLVED/SAFETY_FLAG entries all concern a deeply nested sub-basket (6.01(i)(i)(ii)(ii)) -> NO_CREDIT. Dim B: those flags are on a different, specific sub-basket, not the general prohibition lead-in -> per INVARIANT_5/6 they cannot surface this claim -> NOT_SPECIFICALLY_SURFACED. Dim C: NONE. Dim D: NOT_EVALUATED (the sole VERIFICATION_FINDING concerns unrelated Section 1.01 defined terms). Dim E: as with the sibling 6.01 chapeau cases in this document family, the GT excerpt (a 'Prime Rate' definition) does not match the GT semantic description (the Indebtedness-prohibition chapeau) -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::VI::6.04-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: the sole SUBSTANTIVE_REPRESENTATION candidate is a definition of 'Acquisition' (sectionRef=1.01), a supporting term, not a compiled rule for the 6.04 chapeau prohibition itself; the only same-family candidates otherwise are HONEST_UNRESOLVED/SAFETY_FLAG entries anchored to a different sub-item (6.04(2), an Unrestricted-Subsidiary fair-value redesignation carve-out) -> no compiled representation of THIS claim -> NO_CREDIT. Dim B: the 6.04(2) flags are for a different enumerated sub-item, not the general prohibition lead-in, so per INVARIANT_5/6 they cannot surface this claim; no candidate names or anchors to the chapeau itself -> NOT_SPECIFICALLY_SURFACED. Dim C: NONE -- no same-claim candidate addresses the general prohibition. Dim D: NOT_EVALUATED. Dim E: GT excerpt is RESOLVED_FROM_RAW_SOURCE and matches the semantic description cleanly, making the absence of any same-claim candidate unambiguous -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: the two SUBSTANTIVE_REPRESENTATION candidates in this packet (1.01 'Acquisition' definition; 1.11(a) amendment/restatement) are both unrelated to the Unrestricted-Subsidiary valuation flush rules -> no compiled representation of this claim -> NO_CREDIT. Dim B: SAFETY_FLAG entries (sectionRef=6.04(2), flaggedDangerousUnaccounted=True, CANDIDATE_DISCOVERED_NEVER_COMPILED) directly quote the fair-market-value-of-net-assets mechanism for Unrestricted Subsidiary designation/transfer -> SPECIFICALLY_SURFACED. Dim C: the flagged fragments cover the FMV-of-net-assets concept and an 'up to the amount of the original investment' cap consistent with the redesignation formula, but the excerpts are fragmentary and the precise 'Company's proportionate share' formulation cannot be fully confirmed -> PARTIAL. Dim D: NOT_EVALUATED (the 5 verifier findings present all concern unrelated topics -- pro forma entity-scope, 1.11(a), Available Amount truncation). Dim E: fragmentary, truncated excerpts leave some genuine interpretive uncertainty about full coverage -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::VI::6.05-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: no SUBSTANTIVE_REPRESENTATION exists for the 6.05 chapeau; the HONEST_UNRESOLVED/SAFETY_FLAG entries mostly concern unrelated Acquired-EBITDA pro forma adjustment content, not the Disposition prohibition itself -> NO_CREDIT. Dim B: a DISCOVERY_CANDIDATE anchored exactly to '6.05' (NEEDS_REVIEW, low confidence) explicitly flags that a sub-clause needs review even though its own content description is imprecise -- still a claim-specific uncertainty declaration -> SPECIFICALLY_SURFACED. Dim C: no same-claim candidate actually states the claim's real content (Disposition prohibition; restriction on Equity-Interest issuance outside Section 6.04 compliance) -> NONE. Dim D: NOT_EVALUATED (the one verifier finding concerns an unrelated Applicable-Rate/TNLR-tier issue). Dim E: the packet's groundTruthExcerpt (a non-cash-loss/EBITDA-addback passage) does not match the groundTruthSemanticDescription (the Disposition-prohibition chapeau) -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::VI::6.05-ip-flush-prohibition",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: no SUBSTANTIVE_REPRESENTATION exists; the relevant content lives only in SAFETY_FLAG/HONEST_UNRESOLVED discovery units -> NO_CREDIT. Dim B: a SAFETY_FLAG SEMANTIC_COVERAGE_UNIT (sectionRef=6.05(k)(ii), flaggedDangerousUnaccounted=True, CANDIDATE_DISCOVERED_NEVER_COMPILED) directly quotes the operative flush-prohibition text ('Notwithstanding the foregoing, no Loan Party...shall consummate any transaction that results in the Disposition...') -> SPECIFICALLY_SURFACED. Dim C: the flagged excerpt confirms the core notwithstanding/disposition-by-any-means structure, but is truncated before the intellectual-property-specific object and the non-exclusive-license/beneficial-ownership carve-out that the GT describes, so full coverage of those elements cannot be confirmed from the visible evidence -> PARTIAL. Dim D: NOT_EVALUATED (no verifier findings in this packet). Dim E: the same GT excerpt/description mismatch as the sibling 6.05 chapeau case is present -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::VI::6.08b-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: every same-family candidate in this packet (the SAFETY_FLAG discovery items and INVENTORY_ONLY mentions generically labeled '6.08') actually describes clause (a)'s Restricted-Payments/Total-Net-Leverage-Ratio carve-out content, not clause (b)'s distinct 'payment of principal/interest on Indebtedness or purchase/redemption/retirement of Indebtedness' claim -> no candidate actually addresses THIS specific claim -> NO_CREDIT. Dim B: the flagged items concern a different specific provision (6.08(a)) despite the shared '6.08' sectionRef label -- per INVARIANT_6 this same-family/sibling content cannot surface this claim -> NOT_SPECIFICALLY_SURFACED. Dim C: NONE -- no candidate addresses the (b) content itself. Dim D: NOT_EVALUATED -- the 4 verifier findings all concern an unrelated pro forma Acquisition/Disposition entity-scope issue and Section 1.01 defined terms. Dim E: the packet's own groundTruthExcerpt quotes clause (a)'s chapeau text ('(a) No Loan Party will...') for a claim whose semantic description is specifically about clause (b) -- a genuine GT-anchoring/labeling inconsistency -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::VI::6.10-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: no SUBSTANTIVE_REPRESENTATION exists for 6.10; the claim's content lives only in SAFETY_FLAG (flaggedDangerousUnaccounted=True) and INVENTORY_ONLY candidates -> NO_CREDIT. Dim B: multiple SAFETY_FLAG entries directly anchored to 6.10(a) and 6.10(b) (CANDIDATE_DISCOVERED_NEVER_COMPILED) quote the Lien-restriction and dividend/loan/guarantee-restriction prongs precisely -> SPECIFICALLY_SURFACED. Dim C: across the INVENTORY_ONLY pool, the general prohibition and both the (a) Lien and (b) dividend/loan/guarantee prongs are fully and accurately stated with no conflict -> FULL. Dim D: NOT_EVALUATED (the 5 verifier findings present are all unrelated -- 1.11(a), pro forma entity scope, Section 1.03(c) Quebec civil-law equivalences). Dim E: GT excerpt matches the semantic description precisely with no anchoring inconsistency -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::X::10.01a-us-guaranty",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: the packet's one SUBSTANTIVE_REPRESENTATION candidate is anchored to an unrelated section (1.07, senior-indebtedness designation for Subordinated Indebtedness) -- no compiled representation exists for the 10.01(a) Guaranty claim itself -> NO_CREDIT. Dim B: multiple claim-specific candidates flag this exact provision -- three SAFETY_FLAG entries on 10.01(a) itself (flaggedDangerousUnaccounted=True, CANDIDATE_DISCOVERED_NEVER_COMPILED) and a NEEDS_REVIEW discovery candidate specifically on the branch/Affiliate-enforceability element -> SPECIFICALLY_SURFACED. Dim C: across the INVENTORY_ONLY and flagged-discovery pool, every material GT element is present -- joint-and-several primary-obligor guarantee of the Secured Obligations plus Section 9.03 costs, the Excluded-Swap-Obligations carve-out, the extension/renewal non-release provision, and the branch/Affiliate enforceability clause -- with no conflict -> FULL. Dim D: NOT_EVALUATED -- the two verifier findings present concern an unrelated Section 1.07 designation issue, not this claim. Dim E: GT excerpt RESOLVED_FROM_RAW_SOURCE, and the candidate content matches its every element precisely -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-b::VI::6-01-lead-in",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: no candidate anywhere carries sectionRef exactly '6.01' (verified); the only same-family items are for distinct enumerated sub-clauses 6.01(c)(i) and 6.01(g)(i), which are specific baskets/provisos rather than the general lead-in prohibition itself -> NO_CREDIT. Dim B: the two flaggedDangerousUnaccounted=True SAFETY_FLAG entries are anchored to those different sub-clauses, not the lead-in statement, so per INVARIANT_5/6 they cannot surface this specific claim -> NOT_SPECIFICALLY_SURFACED. Dim C: NONE -- the lead-in text itself has no same-claim candidate. Dim D: NOT_EVALUATED. Dim E: as with the sibling doc-d 6.01 case, the GT excerpt (a 'Prime Rate' definition) does not match the GT semantic description (the debt-covenant lead-in) -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-b::VI::6-04-lead-in",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: no SUBSTANTIVE_REPRESENTATION exists for the 6.04 lead-in; the only same-claim candidate stating the general prohibition is an INVENTORY_ONLY mention -> NO_CREDIT. Dim B: the HONEST_UNRESOLVED/SAFETY_FLAG entries anchored exactly to '6.04' either carry no real content signal or describe a different, specific combined-cap sub-basket, not the general prohibition itself; the clearly-dangerous flags concern distinct sub-items (6.04(b), 6.04(1)/(2), 6.04(ii)) -> NOT_SPECIFICALLY_SURFACED (content captured but silently). Dim C: the INVENTORY_ONLY candidate states the general prohibition (forming subsidiaries; acquiring equity/securities; loans/advances; guarantees; investments; acquiring a business unit) matching the GT enumeration -> FULL. Dim D: NOT_EVALUATED. Dim E: GT excerpt matches the semantic description cleanly -> SUFFICIENT.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-b::VI::6-05-lead-in",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: no candidate (compiled, flagged, or inventoried) states the actual chapeau content (Disposition-of-assets prohibition plus the Equity-Interest-issuance restriction) -- the 58 same-family entries are all sub-item content (EBITDA add-back definitions, specific disposition baskets) or a contentless placeholder anchored to '6.05' -> NO_CREDIT. Dim B: the sole entry anchored exactly to '6.05' carries no independently detected legal/economic signal (a noise placeholder, not a genuine claim-specific uncertainty declaration); all real flags concern distinct sub-items -> NOT_SPECIFICALLY_SURFACED. Dim C: NONE. Dim D: NOT_EVALUATED. Dim E: the groundTruthExcerpt (a non-cash-loss/EBITDA-addback passage) does not match the groundTruthSemanticDescription (the Disposition-prohibition lead-in) -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-d::VI::6-01-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: none of the 60 candidates in this packet carry sectionRef anchored to '6.01' at all (verified by full enumeration) -- the general Indebtedness-prohibition chapeau itself is untouched -> NO_CREDIT. Dim B: the sole VERIFICATION_FINDING concerns unrelated Section 1.01 defined terms, not this claim; no candidate anywhere names or anchors to 6.01 -> NOT_SPECIFICALLY_SURFACED (a clean silent-failure example for a CRITICAL chapeau). Dim C: NONE -- zero same-claim candidates. Dim D: NOT_EVALUATED. Dim E: the packet's own groundTruthExcerpt text (quoting a 'Prime Rate' definition) does not match the groundTruthSemanticDescription (the Indebtedness-prohibition chapeau) -- a genuine GT-anchoring inconsistency -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-d::VI::6-04-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: no SUBSTANTIVE_REPRESENTATION exists for the 6.04 chapeau; the only same-claim candidate stating the actual general prohibition is INVENTORY_ONLY -> no compiled representation -> NO_CREDIT. Dim B: every SAFETY_FLAG/HONEST_UNRESOLVED entry in this packet concerns different enumerated sub-items (6.04(1), 6.04(2), 6.04(b)), not the chapeau lead-in itself -> per INVARIANT_5/6 -> NOT_SPECIFICALLY_SURFACED (content captured but silently, a dangerous-omission pattern). Dim C: an INVENTORY_ONLY candidate states the general prohibition (forming subsidiaries; acquiring equity/securities; loans/advances; guarantees; investments; acquiring a business unit) matching the GT enumeration closely, plus a second item on the equity-pledge condition -> FULL. Dim D: NOT_EVALUATED. Dim E: GT excerpt (RESOLVED_FROM_RAW_SOURCE) matches the semantic description cleanly and the candidate content is a precise match -> SUFFICIENT.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-d::VI::6-05-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: as with the sibling doc-b 6.05 lead-in packet, no candidate of any kind states the chapeau's actual content -- all 59 same-family entries are unrelated sub-item text or a contentless placeholder -> NO_CREDIT. Dim B: the sole '6.05'-anchored entry carries no independently detected signal; the genuine flags all concern distinct sub-items -> NOT_SPECIFICALLY_SURFACED. Dim C: NONE. Dim D: NOT_EVALUATED. Dim E: the groundTruthExcerpt (again a non-cash-loss/EBITDA-addback passage) does not match the semantic description -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-d::VI::6-08-b-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: no SUBSTANTIVE_REPRESENTATION exists for 6.08(b); the exact-match content lives only in a SAFETY_FLAG (flaggedDangerousUnaccounted=True) and a DISCOVERY_CANDIDATE (reviewStatus=UNCERTAIN) -> NO_CREDIT. Dim B: both of those candidates are anchored precisely to 6.08(b)/6.08(B) and quote/paraphrase this exact prohibition ('make or agree to pay...any payment or other distribution...of or in respect of principal of or interest...') -> SPECIFICALLY_SURFACED. Dim C: the general prohibition (payment/distribution of principal or interest, or retirement/redemption/purchase/cancellation of Indebtedness) is captured accurately and completely for this chapeau-level claim -> FULL. Dim D: NOT_EVALUATED (the 2 verifier findings present concern an unrelated pro forma entity-scope issue). Dim E: as with the sibling doc-a 6.08(b) case, the groundTruthExcerpt quotes clause (a)'s chapeau text rather than clause (b)'s -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "fwrg-6.01-g-i",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION anchored exactly to Section 6.01(g)(i) (sufficiency=EXECUTABLE) states the basket permits guaranties of supplier/customer/franchisee/licensee obligations up to the greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA -- an exact match with no conflict and no verifier finding challenging it -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL. Dim D: NOT_EVALUATED (no verifier findings in this packet). Dim E: precise, unambiguous numeric match -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.01-j",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION anchored exactly to Section 6.01(j) (sufficiency=EXECUTABLE) states the basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA 'for Indebtedness of non-Loan-Party Restricted Subsidiaries', correctly capturing both the cap and the entity-scope gate the GT flags as the key risk to get right -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL. Dim D: NOT_EVALUATED (no verifier finding challenges the entity-scope fields). Dim E: exact figures and entity-scope language match -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.01-m",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION anchored exactly to Section 6.01(m) (sufficiency=EXECUTABLE) states the Capital Leases/purchase-money-Indebtedness basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA -- an exact match -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL. Dim D: NOT_EVALUATED. Dim E: exact numeric match -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.02-a",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: no ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION is anchored to Section 6.02(a) itself (the compiled rules present cover the 6.02 general prohibition, 6.02(s), 6.02(u), and 6.09(a), none of them clause (a)); the claim's own content exists only as an INVENTORY_ONLY mention -- exactly the 'uncapped permission silently dropped by a naive extractor' risk the GT description warns about -> NO_CREDIT. Dim B: the one same-family SAFETY_FLAG discovery candidate concerns a different sub-clause (k)'s refinancing-Lien conditions, not clause (a) -> NOT_SPECIFICALLY_SURFACED (a silent, unflagged gap for this specific uncapped-permission claim). Dim C: the INVENTORY_ONLY candidate ('Permits Liens securing the Secured Obligations') states the claim's full, simple content with no missing element (there is no dollar figure to omit, since the claim is genuinely uncapped) -> FULL. Dim D: NOT_EVALUATED. Dim E: the claim and evidence are simple and unambiguous -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.04-a-iii",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION anchored to Section 6.04(a)(iii)(A) (sufficiency=MONITORABLE, formula=BUILDER_BASKET) correctly models the Restricted-Payments-funded-from-Available-Amount builder basket as a dependency on the separately-defined Available Amount term, exactly matching how the GT itself describes this rule as 'clean' and properly using the ontology's dependency-graph pattern -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL for this claim (the GT explicitly scopes any representational difficulty to the separately-defined Available Amount term, not this permission rule). Dim D: NOT_EVALUATED (no verifier findings in this packet). Dim E: GT's own note precisely describes what 'clean' representation looks like here, and the candidate matches it -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.04-a-x",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION anchored exactly to Section 6.04(a)(x) (sufficiency=EXECUTABLE) states the $21,000,000/35%-of-Consolidated-Adjusted-EBITDA cap with the no-continuing-Event-of-Default condition, an exact match with no conflict -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL. Dim D: NOT_EVALUATED. Dim E: precise numeric and conditional match -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.04-a-xi",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "CONTRADICTED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: the ANALYZER_RULE anchored to Section 6.04(a)(xi) correctly states the unlimited/uncapped Restricted Payment permission and the 3.50:1.00 Total Rent Adjusted Net Leverage Ratio gate, but it also attaches a 'condition NO_DEFAULT: No Event of Default may exist' -- the GT semantic description explicitly and deliberately states this basket is 'a ratio-gated unlimited basket with no default condition attached', flagging this exact clause as 'the single most dangerous plausible extraction error in this whole package.' The compiled rule therefore asserts an extra, incorrect gating condition not actually part of this claim -> a material conflict, not merely an omission -> NO_CREDIT. Dim B: no SAFETY_FLAG, HONEST_UNRESOLVED, or verifier finding anywhere in this packet catches the erroneous NO_DEFAULT condition; the only same-family flag is a generic, unrelated section-container placeholder -> NOT_SPECIFICALLY_SURFACED (precisely the 'unless conditions[] is checked, unflagged' danger the GT calls out). Dim C: because the best available same-claim candidate materially contradicts the claim (adding a gating condition the source does not impose) rather than merely omitting content, representationCompleteness is NONE per the rubric's contradiction exclusion (the contradiction itself is captured in verificationStatus). Dim D: comparing the compiled rule against the ground-truth description reveals a material contradiction (an invented NO_DEFAULT gate) -> CONTRADICTED. Dim E: the GT description is unusually precise and explicit about exactly this risk, making the discrepancy confidently identifiable -> SUFFICIENT.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "fwrg-6.04-b",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION anchored exactly to Section 6.04(b)(iv) (sufficiency=EXECUTABLE) states the $21,000,000/35%-of-Consolidated-Adjusted-EBITDA cap AND explicitly describes the cross-basket offset relationship to Section 6.04(a)(x) ('plus...amount available under Section 6.04(a)(x), with a corresponding reduction to that basket') -- exactly the SHARES_CAPACITY_WITH relationship the GT flags as the key representability test -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL. Dim D: NOT_EVALUATED. Dim E: precise match including the cross-basket relationship -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-def-cadj-ebitda",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: an ANALYZER_DEFINED_TERM/SUBSTANTIVE_REPRESENTATION states 'Consolidated Adjusted EBITDA' = Consolidated Net Income plus interest, taxes, D&A, non-cash charges, Transaction Costs and other addbacks, matching the GT's own explicitly-lowered bar for this claim ('Clean for REPRESENTATION... not a claim of full line-item EXECUTABILITY, which Phase B never promised') -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL, measured against the GT's own stated representation standard (a definition node capturing the additive structure, not a fully itemized addback enumeration). Dim D: NOT_EVALUATED (no verifier findings in this packet). Dim E: the GT note is explicit about what counts as adequate here, and the candidate meets it -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.01-general-ratio-gated",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: a COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION anchored to Section 6.01 (sufficiency=EXECUTABLE, RATIO_TEST) states the Fixed Charge Coverage Ratio > 2.0:1.0 gate and the Payment-Conditions-satisfied gate with no dollar threshold -- exactly matching the GT's uncapped, dual-gated basket with no conflict -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL -- both gating conditions captured, correctly with no fabricated dollar cap. Dim D: NOT_EVALUATED. Dim E: precise numeric/structural match -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.01-i-flat-or-pct-assets",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: a COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION anchored exactly to Section 6.01(i) (sufficiency=EXECUTABLE) states the cap as 'greater of $70,000,000 and 5.5% of total consolidated assets (asset-based, not EBITDA-based)', matching the GT's own figures and its own flagged asset-vs-EBITDA ontology nuance exactly, with no conflict -> CREDIT. Dim B: NOT_APPLICABLE. Dim C: FULL. Dim D: NOT_EVALUATED (no verifier finding in this packet). Dim E: exact numeric/qualitative match leaves no reasonable alternative reading -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.01-m-secured-notes",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: none of the four SUBSTANTIVE_REPRESENTATION candidates in this packet is anchored to Section 6.01(m) (they cover 6.08(a), 6.02, 6.01's ratio-gate, and 6.01(i)) -- the sole same-claim candidate is an INVENTORY_ONLY mention -> no compiled representation of this specific carve-out -> NO_CREDIT. Dim B: the only same-family SAFETY_FLAG is for the general 6.01 ratio-gate chapeau, a different (though related) claim, and does not name the Secured-Notes carve-out specifically -> NOT_SPECIFICALLY_SURFACED. Dim C: the INVENTORY_ONLY candidate ('Excepts Indebtedness under the Secured Notes and guarantees thereof') matches the simple GT claim exactly with no missing element -> FULL. Dim D: NOT_EVALUATED. Dim E: simple, unambiguous, exact-match content -> SUFFICIENT.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.02-liens",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: the one SUBSTANTIVE_REPRESENTATION anchored to Section 6.02 only models the secondary replacement-lien/refinancing mechanic (EVENT_DRIVEN reclassification rule); the claim's primary content -- the general Lien prohibition subject to Permitted Liens -- is captured only via a SAFETY_FLAG discovery candidate and INVENTORY_ONLY mentions, never compiled as a substantive rule -> a material dimension of this claim (the core prohibition itself) lacks compiled representation -> NO_CREDIT. Dim B: the same-claim DISCOVERY_CANDIDATE/SAFETY_FLAG (NEEDS_REVIEW, confidence 0.9) directly states 'Excepts Permitted Liens from the general prohibition on Liens' -> SPECIFICALLY_SURFACED. Dim C: across the pool, the general prohibition, the Permitted-Liens exception, and the 6.01(d)-refinancing replacement-lien scope limitation are all textually present with no conflict -> FULL. Dim D: NOT_EVALUATED. Dim E: content is precise and internally consistent -> SUFFICIENT.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-6.03-fundamental-changes",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: the packet's only SUBSTANTIVE_REPRESENTATION candidates are for unrelated siblings (6.01(i) debt basket; 6.04(a) asset-disposal cap), not 6.03; the sole same-claim candidate is a DISCOVERY_CANDIDATE/SAFETY_FLAG -> no compiled representation of this claim -> NO_CREDIT. Dim B: that same-claim SAFETY_FLAG candidate (NEEDS_REVIEW, confidence 0.8) is directly anchored to 6.03 and describes the good-faith non-Loan-Party-Subsidiary-liquidation carve-out -> SPECIFICALLY_SURFACED. Dim C: same-claim INVENTORY_ONLY candidates jointly state all three prohibitions (merger/reclassification, liquidation/dissolution, all-or-substantially-all-asset sales) plus the intercompany-merger, intercompany-disposal, and good-faith-liquidation carve-outs the GT describes, with no conflicting content -> FULL. Dim D: NOT_EVALUATED. Dim E: the specific carve-out language matches the GT description closely and unambiguously -> SUFFICIENT.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-6.04-a-abl-collateral-disposal",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: a COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION anchored exactly to Section 6.04(a) (sufficiency=EXECUTABLE) states the $10,000,000/1.0%-of-total-consolidated-assets annual cap, the Fair-Market-Value condition, and the Borrowing-Base-Certificate condition for ABL Priority Collateral -- matching all three material GT dimensions with no conflict, and no verifier finding challenges it (this case's VERIFICATION_FINDING list is empty) -> CREDIT. Dim B: NOT_APPLICABLE (CREDIT). Dim C: FULL -- all three conditions (i)/(ii)/(iii) and the cap formula are represented. Dim D: NOT_EVALUATED -- no explicit verifier finding exists on this candidate. Dim E: the semantic description's exact dollar/percentage figures are matched precisely and unambiguously by the compiled rule, despite the GT excerpt itself being UNRESOLVED_DESCRIPTION_ONLY -> SUFFICIENT (the correspondence is not open to more than one reasonable reading).",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.04-b-notes-collateral-disposal",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "AMBIGUOUS",
+      "rationale": "Dim A: the only SUBSTANTIVE_REPRESENTATION in this packet is anchored to sibling clause 6.04(a) (ABL Priority Collateral, $10M/1.0% cap) -- a different claim under INVARIANT_1/6 -- and the sole same-claim (6.04(b)) candidate is an INVENTORY_ONLY discovery mention, not a compiled representation -> NO_CREDIT. Dim B: the 6.04(a) SUBSTANTIVE_REPRESENTATION is a sibling and cannot surface this claim (INVARIANT_5); no SAFETY_FLAG/HONEST_UNRESOLVED/UNRESOLVED_CROSS_REFERENCE marker is anchored to 6.04(b) itself, even though the GT explicitly frames the honest answer as requiring exactly such a flag -> NOT_SPECIFICALLY_SURFACED (the dangerous-silence pattern the GT description warns about). Dim C: the INVENTORY_ONLY candidate correctly states the Secured-Notes-Documents/holder-consent gating mechanism in prose, but does not capture the critical fact that this gate is unresolvable from this document (no cross-document-dependency flag) -> PARTIAL. Dim D: NOT_EVALUATED. Dim E: GT anchoring is deliberately UNRESOLVED_DESCRIPTION_ONLY and the correspondence assessment requires judgment about what 'the correct honest extraction' would look like -> AMBIGUOUS.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-6.08-subordinated-debt-payments",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: the SUBSTANTIVE_REPRESENTATION for Section 6.08(a) states only the general prohibition plus a generic pointer ('See permitted payments (i)-(vi)') rather than individually gating each of the six carve-outs -- exactly the flattening risk the GT description itself warns produces over/under-permitting; separately, the claim's distinct no-adverse-amendment-of-Subordinated-Indebtedness provision (clause (b)) is never compiled at all (INVENTORY_ONLY only) -> a material dimension lacks reliable substantive representation -> NO_CREDIT. Dim B: same-claim DISCOVERY_CANDIDATE entries on 6.08(a)(v) and the 6.08 chapeau itself (both NEEDS_REVIEW) are claim-specific -> SPECIFICALLY_SURFACED. Dim C: across the INVENTORY_ONLY pool, the general prohibition, all six (i)-(vi) carve-outs (secured obligations, scheduled payments, refinancing, subordinated-per-its-terms, payment-conditions-gated, $500k basket), and the separate clause-(b) amendment restriction are all textually present -> FULL. Dim D: NOT_EVALUATED. Dim E: detailed, precise content closely matching the GT description -> SUFFICIENT.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-def-abl-notes-priority-collateral",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Dim A: zero candidates exist anywhere in the packet for this definitional claim -> no compiled representation -> NO_CREDIT. Dim B: with zero candidates there is no claim-specific review/uncertainty declaration of any kind -> NOT_SPECIFICALLY_SURFACED (a completely silent case for a CRITICAL, deliberately-designed 'does the extractor invent content' test). Dim C: NONE -- no candidate of any kind touches this claim. Dim D: NOT_EVALUATED. Dim E: the total absence of candidates makes every other determination unambiguous and confident (there is nothing to misread) -> SUFFICIENT.",
+      "confidence": "HIGH"
+    }
+  ]
+}
