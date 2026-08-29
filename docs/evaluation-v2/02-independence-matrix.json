@@ -1,0 +1,120 @@
+{
+  "artifactId": "PHASE_3F_1_5_INDEPENDENCE_MATRIX",
+  "phase": "PHASE_3F_1_5_EVALUATION_METHODOLOGY_V2",
+  "purpose": "The evaluator's dependency graph, and what it is and is not permitted to consume.",
+  "versions": {
+    "schemaVersion": "evaluation-v2-schema.v1",
+    "algorithmVersion": "evaluation-v2-algorithm.v1",
+    "promptVersion": "evaluation-v2-correspondence-prompt.v1",
+    "matchPolicyVersion": "evaluation-v2-match-policy.v1"
+  },
+  "generatedBy": "lib/contract-model/evaluation-v2/runner",
+  "principle": "The evaluator MAY consume production outputs as EVIDENCE. It must NEVER consume production CONCLUSIONS as ground truth. Architecture invariants #17 and #18.",
+  "invariant18Response": {
+    "risk": "Mechanical independence at the algorithm level is necessary but NOT sufficient: a shared upstream substrate can defeat two 'independent' systems simultaneously (the real Phase 2A → 2B/2E precedent recorded in the invariants).",
+    "mitigation": "The evaluator's GROUND-TRUTH side resolves its own source excerpts directly from the raw extracted text (lib/contract-model/evaluation-v2/source-excerpt.ts), never from the production structural index. A structural-parser gap therefore cannot blind the evaluator and the system it evaluates at the same time.",
+    "residualExposure": "The CANDIDATE side is necessarily downstream of the structural index, because the candidates ARE the pipeline's output. That is unavoidable and is the correct exposure: the evaluator is measuring what the pipeline produced. What must not be shared is the ANSWER KEY, and it is not."
+  },
+  "consumes": [
+    {
+      "source": "tests/fixtures/unseen-packages/phase-3f-ground-truth/ground-truth-doc-{a,b,c,d}.json",
+      "as": "GROUND TRUTH (answer key)",
+      "note": "Frozen, independently authored, never produced by the compiler. Read only."
+    },
+    {
+      "source": "tests/fixtures/unseen-packages/{fwrg,lsb,conmed}*/human-ground-truth.ts",
+      "as": "GROUND TRUTH (answer key)",
+      "note": "Frozen, authored from source before/independently of extraction. Read only."
+    },
+    {
+      "source": "tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/extracted-text/*.txt",
+      "as": "RAW SOURCE",
+      "note": "Used by the evaluator's own excerpt resolver, independent of the production structural index."
+    },
+    {
+      "source": "phase-3f-first-blind-run/stage2-all-discovery-candidates.json",
+      "as": "CANDIDATE EVIDENCE",
+      "note": "The system's inventory findings, consumed as evidence about what it produced."
+    },
+    {
+      "source": "phase-3f-first-blind-run/stage6-compiled-results.json",
+      "as": "CANDIDATE EVIDENCE",
+      "note": "Compiled IR rules and definitions."
+    },
+    {
+      "source": "phase-3f-first-blind-run/stage7-verification-results.json",
+      "as": "CANDIDATE EVIDENCE",
+      "note": "Verifier findings, treated as safety flags."
+    },
+    {
+      "source": "phase-3f-first-blind-run/stage5-amendment-effects.json",
+      "as": "CANDIDATE EVIDENCE",
+      "note": "Amendment effects and their own unresolved reasons."
+    },
+    {
+      "source": "phase-3f-first-blind-run/stage8-coverage-result.json",
+      "as": "CANDIDATE EVIDENCE + SELF-REPORTED STATE",
+      "note": "Coverage units, coverage states and dangerous-unaccounted flags are read as the system's own self-report, never as a verdict about whether a ground-truth claim is covered."
+    },
+    {
+      "source": "phase-3f-ground-truth/phase-3f-scoring-report.json",
+      "as": "HISTORICAL CONCLUSION, FOR COMPARISON ONLY",
+      "note": "Read to build the old-vs-V2 table. Never used to decide any V2 disposition."
+    },
+    {
+      "source": "phase-3f1-1-forensics/raw-scorer-combination-C-corrected-x-firstblind.json",
+      "as": "HISTORICAL CONCLUSION, FOR COMPARISON ONLY",
+      "note": "Read to recover WHICH candidates carried the old credit, so V2 can re-judge exactly those. Never used to decide any V2 disposition."
+    },
+    {
+      "source": "phase-3f1-1-forensics/phase-3f1-1-scorer-bridge.json",
+      "as": "HISTORICAL FORENSIC RECORD",
+      "note": "The 26-case list and the 14 confirmed false-credit ids. Used to define the reconciliation population and the gate, never to decide a disposition."
+    }
+  ],
+  "mustNeverImport": [
+    {
+      "module": "scripts/phase-3f-score-first-run.ts",
+      "why": "structural sectionRef matching (exact → parent → descendant) with coverage state taken from the best-materiality unit at that address"
+    },
+    {
+      "module": "scripts/phase-3f1-score-dsgr-regression.ts",
+      "why": "the descendant-union variant whose credit mechanism produced the 26-case artifact"
+    },
+    {
+      "module": "scripts/phase-3f1-1-forensics.ts",
+      "why": "re-parameterized re-implementation of the same structural matcher"
+    },
+    {
+      "module": "lib/contract-model/analyzer/evaluator.ts",
+      "why": "findMatch / findHierarchyChildren / findUnambiguousIntermediateAncestor — numbersMatch-gated positional fallbacks"
+    },
+    {
+      "module": "lib/covenant-engine.ts",
+      "why": "production answer path"
+    },
+    {
+      "module": "lib/contract-model/compiler/**",
+      "why": "the compiler under evaluation"
+    },
+    {
+      "module": "lib/contract-model/service.ts",
+      "why": "the production service under evaluation"
+    }
+  ],
+  "enforcement": {
+    "test": "tests/evaluation-v2/import-boundary.test.ts",
+    "checks": [
+      "no file under lib/contract-model/evaluation-v2/** imports any forbidden module (import / require / dynamic import)",
+      "no file references the historical matching FUNCTION names, even reimplemented under a different name",
+      "the ground-truth loader reads only frozen answer-key artifacts",
+      "no engine module writes to disk; only the runner subtree writes, and never into a frozen artifact path"
+    ]
+  },
+  "whatTheEvaluatorNeverDoes": [
+    "It never reads a coverage state, a dangerous-unaccounted flag or a discovery reviewStatus as evidence that a GROUND-TRUTH CLAIM is covered. Those are only ever read as the self-report of a specific candidate, and they count for a claim only when that candidate independently passes semantic correspondence with it.",
+    "It never uses a section number, a parent/child relation, an ancestor relation, a nearby figure, or a neighbouring unit's materiality to grant credit.",
+    "It never lets the semantic judge decide an aggregate number.",
+    "It never edits ground truth, a historical scorer artifact, a phase report, or any production module."
+  ]
+}
