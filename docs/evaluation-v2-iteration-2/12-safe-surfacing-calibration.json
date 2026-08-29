@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "SAFE_SURFACING_CALIBRATION",
+  "generatedAt": "2026-08-29T16:30:00Z",
+  "purpose": "Measure, against the independent second-pass reviewer, how well V2's safe-surfacing declarations (HONESTLY_UNRESOLVED, DISCOVERED_REVIEW_REQUIRED) actually correspond to the specific claim they are attached to - directly testing whether SAFE_SURFACING_REQUIRES_SEMANTIC_CORRESPONDENCE holds in practice on this rerun.",
+  "safeSurfacingFalsePositiveRate": {
+    "definition": "Of all cases where V2 asserted a safe-surfacing state (HONESTLY_UNRESOLVED or DISCOVERED_REVIEW_REQUIRED), what fraction did the independent reviewer judge as NOT actually corresponding to the claim (DISCOVERED_ONLY or HONESTLY_UNSUPPORTED)?",
+    "numerator": 30,
+    "denominator": 30,
+    "rate": 1.0,
+    "breakdown": {
+      "v2_HONESTLY_UNRESOLVED_total": 16,
+      "v2_HONESTLY_UNRESOLVED_reviewerDisagreed": 16,
+      "v2_DISCOVERED_REVIEW_REQUIRED_total": 14,
+      "v2_DISCOVERED_REVIEW_REQUIRED_reviewerDisagreed": 14
+    },
+    "honestStatement": "In this specific 51-case sample, EVERY SINGLE safe-surfacing declaration V2 issued (30 of 30) was judged by the independent reviewer as not actually corresponding to its claim. This is a 100% observed false-positive rate on safe-surfacing in this sample. This number is reported exactly as computed, per Section 21's instruction to accept the result rather than reason toward a target - it is not softened, rounded, or contextualized away here. Its correct INTERPRETATION (evaluator defect vs. reviewer calibration vs. sample composition) is addressed in 16-remaining-evaluator-risks.json and 17-final-verdict.json, not resolved by this artifact."
+  },
+  "safeSurfacingFalseNegativeRate": {
+    "definition": "Of all cases where the independent reviewer judged a safe-surfacing state should apply (REVIEW_REQUIRED_FLAG_ONLY or HONESTLY_UNRESOLVED, mapping to DISCOVERED_REVIEW_REQUIRED/HONESTLY_UNRESOLVED), what fraction did V2 fail to also flag as safe-surfacing?",
+    "numerator": 0,
+    "denominator": 0,
+    "rate": null,
+    "honestStatement": "The independent reviewer used NEITHER of the two safe-surfacing labels (REVIEW_REQUIRED_FLAG_ONLY, HONESTLY_UNRESOLVED) for ANY of the 51 sampled cases - so this rate has no denominator and cannot be computed from this rerun. See 16-remaining-evaluator-risks.json for why this itself is worth flagging: it means this specific rerun provides zero evidence either way about whether V2 has any UNDER-flagging problem (failing to surface a genuinely uncertain case) - only evidence about OVER-flagging (the false-positive rate above)."
+  },
+  "priorPhaseComparisonForContext": {
+    "phase3F151Finding": "31 of 39 detailed disagreements (79.5%) were 'credit-neutral': both V2 and the original reviewer agreed NO_CREDIT, but V2 assigned an inappropriate safe/no-credit state (unresolved/flagged) to a candidate the reviewer judged unrelated to the claim.",
+    "phase3F152Finding": "The SAME pattern persists at a HIGHER absolute rate in this rerun (30/30 = 100% of V2's safe-surfacing declarations disputed, vs. an implied ~79.5% share of disagreements in 3F.1.5.1 - the two percentages are not directly comparable since they are computed over different populations, but both point the same direction: this class of defect is the dominant, not-yet-resolved failure mode).",
+    "fixEffectSummary": "The fix implemented this phase (stricter C_OBJECT_RESOURCE bar when the GT action signal is empty) is a real, generalized, zero-regression improvement - confirmed to correct at least 3 concretely identified false matches (the definitional 'Acquisition' contamination case, plus improving binary agreement from 87.5% to 90.5%). It was NOT sufficient to close the safe-surfacing correspondence gap at the level Section 22's 85% detailed-agreement bar requires. The repeat-offender candidates identified in 11-detailed-confusion-matrix.json (the same handful of candidate IDs causing multiple, unrelated false safe-surfacing declarations) suggest the remaining defect is systemic rather than confined to a long tail of one-off cases - see 16-remaining-evaluator-risks.json for the specific generalized mechanism hypothesized (chapeau-vs-specific-exception discrimination living in a NON-core dimension, H_PROVISION_ROLE_BREADTH, that the safe-surfacing accounting gate does not require to correspond)."
+  }
+}

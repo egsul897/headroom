@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "phase-3f1-5-2-targeted-semantic-match-calibration.v1",
+  "artifactId": "DETAILED_CONFUSION_MATRIX",
+  "generatedAt": "2026-08-29T16:25:00Z",
+  "binaryConfusionMatrix": {
+    "population": "42 comparable cases (9 mutually-agreed INCOMPARABLE exclusions removed)",
+    "CREDIT_CREDIT": 0,
+    "NO_CREDIT_NO_CREDIT": 38,
+    "CREDIT_NO_CREDIT": 4,
+    "NO_CREDIT_CREDIT": 0,
+    "interpretation": "Every single case V2 credited (4 of 4) was rejected by the independent reviewer. Zero cases exist where the reviewer credited something V2 missed. This is a precision problem, not a recall problem: V2 credits nothing the reviewer disagrees should have been withheld, but the reviewer disagrees with every V2 credit issued in this sample."
+  },
+  "allFourV2CreditedCasesAndReviewerDisposition": [
+    {
+      "gtUnitId": "doc-a::I::permitted-supply-chain-financing",
+      "v2MatchStatus": "PARTIAL",
+      "v2MatchedCandidateId": "ir-definition:ir-definition:007a5206dfd349a2dec8b9c0",
+      "reviewerDisposition": "UNSUPPORTED_SILENT",
+      "reviewerFinding": "The matched candidate is the 'Acquisition' IR definition - it does not define or reference 'Permitted Supply Chain Financing' at all. This is the SAME candidate already implicated in 03-definition-overmatch-root-cause.json for a DIFFERENT GT unit (doc-a::I::commitments-and-facility-sizes), which this phase's source-excerpt.ts fix DID correct. This occurrence is a THIRD, DISTINCT false match by the same serial-matching 'Acquisition' definition candidate, via a mechanism this phase's fix did not reach (the GT excerpt here is not contaminated - the false correspondence comes from the candidate side's own weak, generic definitional lexical overlap clearing the correspondence bar against an entirely unrelated claim)."
+    },
+    {
+      "gtUnitId": "doc-a::X::10.01a-us-guaranty",
+      "v2MatchStatus": "EXACT_SINGLE",
+      "v2MatchedCandidateId": "ir-rule:ir-rule:8543f9e7e76785c96a99e512",
+      "reviewerDisposition": "DISCOVERY_ONLY_NOT_REPRESENTED",
+      "reviewerFinding": "Independently confirms this phase's own Section 11 adjudication (04-article-x-independent-adjudication.json, verdict B_REVIEWER_CORRECT): the matched candidate is about subordination/senior-indebtedness designation, not guaranty/defenses-waived/reinstatement. This defect (the EXERCISE_REMEDIES ACTION_PATTERNS regex overbreadth) was identified and deliberately NOT fixed this phase per Section 12's blast-radius discipline - see 16-remaining-evaluator-risks.json. This rerun result is the disclosed, expected cost of that deferral."
+    },
+    {
+      "gtUnitId": "doc-a::X::10.04-defenses-waived",
+      "v2MatchStatus": "EXACT_SINGLE",
+      "v2MatchedCandidateId": "ir-rule:ir-rule:fb5206d45cb1d00d6e414d2b",
+      "reviewerDisposition": "DISCOVERY_ONLY_NOT_REPRESENTED",
+      "reviewerFinding": "Same Article X cluster, same disclosed and deliberately-deferred defect."
+    },
+    {
+      "gtUnitId": "doc-a::X::10.06-reinstatement",
+      "v2MatchStatus": "EXACT_COMPOSITE",
+      "v2MatchedCandidateIds": ["ir-rule:ir-rule:fb5206d45cb1d00d6e414d2b", "ir-rule:ir-rule:8543f9e7e76785c96a99e512"],
+      "reviewerDisposition": "DISCOVERY_ONLY_NOT_REPRESENTED",
+      "reviewerFinding": "Same Article X cluster, same disclosed and deliberately-deferred defect."
+    }
+  ],
+  "detailedAgreementTable": {
+    "agreeingCases": [
+      { "gtUnitId": "doc-a::VI::6.01-chapeau", "sharedState": "HONESTLY_UNSUPPORTED" },
+      { "gtUnitId": "doc-a::VI::6.02b", "sharedState": "HONESTLY_UNSUPPORTED" },
+      { "gtUnitId": "doc-b::VI::6-05-h", "sharedState": "HONESTLY_UNSUPPORTED" },
+      { "gtUnitId": "doc-d::VI::6-01-chapeau", "sharedState": "HONESTLY_UNSUPPORTED" },
+      { "gtUnitId": "doc-d::VI::6-05-chapeau", "sharedState": "HONESTLY_UNSUPPORTED" }
+    ],
+    "disagreementStatePairCounts": {
+      "(HONESTLY_UNRESOLVED, HONESTLY_UNSUPPORTED)": 12,
+      "(DISCOVERED_REVIEW_REQUIRED, DISCOVERED_ONLY)": 9,
+      "(DISCOVERED_REVIEW_REQUIRED, HONESTLY_UNSUPPORTED)": 5,
+      "(HONESTLY_UNRESOLVED, DISCOVERED_ONLY)": 4,
+      "(VERIFIED_SEMANTIC_REPRESENTATION, DISCOVERED_ONLY)": 3,
+      "(CONTRADICTORY_REPRESENTATION, HONESTLY_UNSUPPORTED)": 2,
+      "(PARTIAL_SEMANTIC_REPRESENTATION, HONESTLY_UNSUPPORTED)": 1,
+      "(DISCOVERED_ONLY, HONESTLY_UNSUPPORTED)": 1,
+      "readAs": "(V2 state, reviewer state)"
+    },
+    "dominantPattern": "26 of 37 disagreements (70%) are V2 asserting a safe-surfacing state (HONESTLY_UNRESOLVED or DISCOVERED_REVIEW_REQUIRED) that the independent reviewer, reading the same raw candidate excerpts, judged does NOT actually correspond to the specific claim (DISCOVERED_ONLY or HONESTLY_UNSUPPORTED). This is precisely the SAFE_SURFACING_REQUIRES_SEMANTIC_CORRESPONDENCE defect this phase exists to fix. The fix implemented (stricter C_OBJECT_RESOURCE bar when action support is absent) measurably improved binary agreement (87.5%->90.5%) but did not close this gap at the detailed level - see 16-remaining-evaluator-risks.json's root-cause diagnosis.",
+    "repeatOffenderCandidates": [
+      { "candidateId": "coverage-unit:0b33f42dd50fa68e22d367efdfb1168e24ca7fd5a7986803db979019e75c122f", "disagreementCount": 2, "affectedGtUnitIds": ["doc-a::III::3.03-no-conflicts", "doc-a::VI::6.02h"], "note": "Already flagged in 01-credit-neutral-disagreement-forensics.json as a candidate ID reused across unrelated claims in the ORIGINAL 3F.1.5.1 forensics; confirmed here, post-fix, to still be causing false safe-surfacing across a DIFFERENT pair of unrelated claims." },
+      { "candidateId": "ir-rule:ir-rule:263e0f016860e15ea79398da", "disagreementCount": 2, "affectedGtUnitIds": ["doc-a::VI::6.05b", "doc-a::VI::6.08b-chapeau"] },
+      { "candidateId": "ir-rule:ir-rule:8543f9e7e76785c96a99e512", "disagreementCount": 2, "affectedGtUnitIds": ["doc-a::X::10.01a-us-guaranty", "doc-a::X::10.06-reinstatement"], "note": "Article X cluster, disclosed and deliberately deferred." },
+      { "candidateId": "ir-rule:ir-rule:fb5206d45cb1d00d6e414d2b", "disagreementCount": 2, "affectedGtUnitIds": ["doc-a::X::10.04-defenses-waived", "doc-a::X::10.06-reinstatement"], "note": "Article X cluster, disclosed and deliberately deferred." }
+    ]
+  }
+}
