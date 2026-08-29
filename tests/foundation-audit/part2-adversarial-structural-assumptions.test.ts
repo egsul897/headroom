@@ -26,10 +26,25 @@
  * header comment. `coverage.significantUncoveredSpans` legitimately stays
  * empty for both (this is not a coverage-GAP defect - every character is
  * still nominally claimed by some node; it is the separate,
- * boundary-anomaly defect class this fix adds). Q2/Q3/Q3b/Q4/Q6/Q7/Q8 are
- * unchanged (Q2/Q3's own parent-attachment defect and Q4's orphan-signal gap
- * remain out of this workstream's fixed scope - see the final report's Q3
- * determination).
+ * boundary-anomaly defect class this fix adds). Q2/Q3b/Q6/Q7/Q8 are
+ * unchanged.
+ *
+ * Phase 3F.1.5.R (Workstream A) update: Q3's own in-text-citation-shaped-as-
+ * a-heading defect (and, as a direct consequence, Q4's own orphan-shaped
+ * misattachment example, which reused Q3's exact citation shape) is now
+ * CORRECTED at the root - stage-structure.ts's new plausibility gate (P1-10
+ * fix, see docs/foundation-remediation/01-source-accounting-remediation.json's
+ * `p110Q3Determination`) rejects the spurious in-text "Section 6.05 Reserved
+ * ." match before it is ever accepted as a raw node, so it never corrupts
+ * either the clause-tree region-slicing or the rank-based stack in the first
+ * place. Q3's own test below was updated, per the same precedent set by
+ * architecture-proposal-node-identity.test.ts, to assert the corrected
+ * attachment instead of the historical defect; Q4's first sub-test
+ * (production-consumer grep) is unaffected, and its second sub-test (the
+ * orphan-shaped example) was updated to use a citation shape the gate does
+ * NOT catch (a benign, non-citation-preceded duplicate reference) so it
+ * keeps exercising Q4's own, still-true finding (orphan status is silent
+ * unless explicitly queried) on a scenario the P1-10 fix does not resolve.
  */
 import { describe, expect, it } from "vitest";
 import { parseDocumentStructure, runStructureStage } from "../../lib/contract-model/compiler/stage-structure";
@@ -137,19 +152,25 @@ describe("Q2 - text/clauses meant for one section get cross-attributed to a DIFF
 });
 
 describe("Q3 - an intervening false-positive heading-shaped match corrupts the RANK-based stack, truncating a real section and misattaching its later real clauses", () => {
-  it("REPRODUCED: an ordinary in-text cross-reference sentence that satisfies SECTION_PATTERNS (the ADR's own §2.3 Case A shape) closes the enclosing real section early and adopts its later real lettered clauses as its own children", () => {
+  it("Phase 3F.1.5.R FIX VERIFIED: the ordinary in-text cross-reference sentence that satisfies SECTION_PATTERNS (the ADR's own §2.3 Case A shape) no longer closes the enclosing real section early or adopts its later real lettered clauses as its own children - the P1-10 plausibility gate rejects it before it is ever accepted as a raw node", () => {
     // "Section 6.05 Reserved ." inside 6.01's own prose matches SECTION_PATTERNS
     // pattern 1 just as well as a real heading (proven in the ADR itself as a
-    // pure duplicate-nodeKey case). What the ADR's own repro did NOT check:
-    // because stage-structure.ts's parent/charEnd assignment is a single
-    // GLOBAL rank-based stack pass over ALL raws sorted by charStart (not
-    // scoped by which section's own clause-tree call produced a given
-    // clause), this spurious SECTION-rank match pops the real enclosing
-    // section off the stack at its own charStart position - truncating the
-    // real section's OWN span right there, and any real lettered clause
-    // physically located AFTER the spurious match (but still textually and
-    // drafting-wise part of the real section) attaches to the SPURIOUS node
-    // instead of the real one.
+    // pure duplicate-nodeKey case). What the ADR's own original repro did NOT
+    // check: because stage-structure.ts's parent/charEnd assignment is a
+    // single GLOBAL rank-based stack pass over ALL raws sorted by charStart
+    // (not scoped by which section's own clause-tree call produced a given
+    // clause), this spurious SECTION-rank match used to pop the real
+    // enclosing section off the stack at its own charStart position -
+    // truncating the real section's OWN span right there, and any real
+    // lettered clause physically located AFTER the spurious match (but still
+    // textually and drafting-wise part of the real section) attached to the
+    // SPURIOUS node instead of the real one. Phase 3F.1.5.R's plausibility
+    // gate (stage-structure.ts's `isPlausibleTopLevelHeading` - see the
+    // P1-10 root-cause fix's own doc-comment there) now recognizes this
+    // exact shape - a heading-shaped match directly preceded by the
+    // citation-signal phrase "under", with no intervening sentence break -
+    // as an in-text citation, and rejects it before it is ever pushed into
+    // the raw node list at all.
     const text =
       "ARTICLE VI COVENANTS Section 6.01 Indebtedness . Neither party shall incur Indebtedness, except as permitted under Section 6.05 Reserved . and subject to the following exceptions: " +
       "(a) Indebtedness existing on the Closing Date; " +
@@ -157,41 +178,28 @@ describe("Q3 - an intervening false-positive heading-shaped match corrupts the R
       "Section 6.02 Liens . Neither party shall grant Liens except Permitted Liens.";
     const { index, nodes } = build("q3-intervening-false-positive", text);
 
-    // OBSERVED: a spurious extra top-level node for "6.05" really was created.
+    // FIX VERIFIED: no spurious top-level node for "6.05" is created at all.
     const spurious = nodes.find((n) => n.sectionRef === "6.05");
-    expect(spurious, "this test requires the spurious in-text 'Section 6.05 Reserved .' match to actually occur, or it is not exercising Q3's scenario").toBeDefined();
+    expect(spurious, "the P1-10 fix must prevent the spurious in-text 'Section 6.05 Reserved .' match from ever being accepted as a raw node").toBeUndefined();
 
     const section601 = index.resolveUniqueNodeByRef("q3-intervening-false-positive", "6.01");
     expect(section601.status).toBe("UNIQUE");
     if (section601.status !== "UNIQUE") return;
 
-    // OBSERVED (the defect): 6.01's real children list is EMPTY - its two
-    // real lettered clauses (a)/(b), which appear later in the SAME
-    // sentence's continuation, are not its children at all.
+    // FIX VERIFIED: 6.01's real children list now correctly contains its own
+    // two real lettered clauses (a)/(b), which appear later in the SAME
+    // sentence's continuation - no misattachment.
     const realChildren = index.getChildren(section601.node.nodeId);
+    expect(realChildren.map((c) => c.sectionRef)).toEqual(["6.01(a)", "6.01(b)"]);
 
-    const spuriousNode = index.resolveUniqueNodeByRef("q3-intervening-false-positive", "6.05");
-    expect(spuriousNode.status).toBe("UNIQUE");
-    if (spuriousNode.status !== "UNIQUE") return;
-    const spuriousChildren = index.getChildren(spuriousNode.node.nodeId);
+    const section602 = index.resolveUniqueNodeByRef("q3-intervening-false-positive", "6.02");
+    expect(section602.status).toBe("UNIQUE");
 
-    // Document exactly which side the (a)/(b) clauses actually land on.
+    // Every real lettered clause in the document is now accounted for under its own real, correct parent.
     const allLetteredClauses = index.allNodes().filter((n) => n.nodeType === "SUBSECTION" || n.nodeType === "CLAUSE");
-    expect(allLetteredClauses.length).toBeGreaterThan(0);
-    const attachedToReal601 = realChildren.filter((c) => c.nodeType === "SUBSECTION" || c.nodeType === "CLAUSE");
-    const attachedToSpurious605 = spuriousChildren.filter((c) => c.nodeType === "SUBSECTION" || c.nodeType === "CLAUSE");
+    expect(allLetteredClauses.length).toBe(2);
+    expect(realChildren.length).toBe(allLetteredClauses.length);
 
-    // The defect: the real section's own drafted clauses end up attached to
-    // the spurious cross-reference node instead of (or possibly split from)
-    // the real section - exactly the "plausible but semantically wrong
-    // hierarchy, invisible to I1-I16" scenario Q3 asks about.
-    expect(attachedToSpurious605.length + attachedToReal601.length).toBe(allLetteredClauses.length);
-    expect(attachedToSpurious605.length, "the real (a)/(b) clauses, which belong under 6.01 by any human reading, are structurally attached to the spurious 6.05 node instead").toBeGreaterThan(0);
-
-    // No I1-I16 invariant flags any of this - both nodes are legitimately
-    // distinct, both children lists are internally self-consistent (I6
-    // holds - no cross-parent MERGE occurred, only cross-parent MISattachment,
-    // which is a different, uncovered failure mode).
     expect(index.healthDiagnostics().filter((f) => f.severity === "ERROR")).toHaveLength(0);
   });
 });
@@ -238,27 +246,37 @@ describe("Q4 - orphan status is computed but not acted on by any production cons
     void readFileSync; // referenced for potential future extension; unused here.
   });
 
-  it("a real orphan-shaped structural anomaly produces NO distinguishable signal from ordinary absence when queried the way a normal consumer would (resolveUniqueNodeByRef/getChildren) - it just looks like nothing is there", () => {
-    // Even though the real parser (Part 1 angle 5) essentially never produces
-    // a TRUE orphan (parentNodeId pointing to a non-existent id), a lettered
-    // clause that gets misattached to the WRONG real parent (Q3) is
-    // discoverable ONLY by explicitly calling healthDiagnostics()/orphans()
-    // and cross-checking - a normal consumer walking getChildren() from the
-    // section it EXPECTS to own that clause will simply see it as absent,
-    // indistinguishable from "this section legitimately has no such clause."
+  it("a real misattachment-shaped structural anomaly produces NO distinguishable signal from ordinary absence when queried the way a normal consumer would (resolveUniqueNodeByRef/getChildren) - it just looks like nothing is there", () => {
+    // Phase 3F.1.5.R update: this test originally reused Q3's own in-text-
+    // citation-shaped false heading to produce its example - now CORRECTED
+    // by the P1-10 plausibility gate (see the Q3 describe block above), so
+    // that exact reproduction no longer applies. Q4's own underlying finding
+    // (a real, valid misattachment is invisible to a normal consumer unless
+    // they explicitly call healthDiagnostics()/orphans() and cross-check) is
+    // independently still true, demonstrated here via Q2's own, still-live,
+    // DIFFERENT mechanism instead (a malformed colon-defeated heading -
+    // "Section 6.02: Liens ." - which is not a spurious extra match at all,
+    // so the P1-10 gate has nothing to reject; 6.02 simply never becomes a
+    // node, and its own real lettered clause is silently attached to the
+    // real, valid, but WRONG preceding section instead).
     const text =
-      "ARTICLE VI COVENANTS Section 6.01 Indebtedness . Neither party shall incur Indebtedness, except as permitted under Section 6.05 Reserved . and subject to the following: " +
-      "(a) Indebtedness existing on the Closing Date. " +
-      "Section 6.02 Liens . Neither party shall grant Liens except Permitted Liens.";
-    const { index } = build("q4-silent-absence", text);
-    const s601 = index.resolveUniqueNodeByRef("q4-silent-absence", "6.01");
+      "ARTICLE VI COVENANTS Section 6.01 Indebtedness . Neither party shall incur Indebtedness except Permitted Indebtedness. " +
+      "Section 6.02: Liens . Neither party shall grant Liens except as follows: " +
+      "(a) Liens securing purchase money Indebtedness. " +
+      "Section 6.03 Restricted Payments . Neither party shall make Restricted Payments except as permitted.";
+    const { index } = build("q4-silent-absence-q2-mechanism", text);
+    const s601 = index.resolveUniqueNodeByRef("q4-silent-absence-q2-mechanism", "6.01");
     expect(s601.status).toBe("UNIQUE");
     if (s601.status !== "UNIQUE") return;
-    // A consumer looking for "6.01's own exception clauses" via the normal API sees zero - no error, no warning, no ambiguity signal.
+    // A consumer looking for "6.02's own Liens exceptions" via the normal API doesn't even find the section itself.
+    const s602 = index.resolveUniqueNodeByRef("q4-silent-absence-q2-mechanism", "6.02");
+    expect(s602.status).toBe("NOT_FOUND");
+    // A consumer looking at 6.01 (the section that DOES exist) sees an ordinary, unremarkable child - no error, no warning, no ambiguity signal reveals that this child actually belongs, by any human reading, to the never-recognized 6.02.
     const children = index.getChildren(s601.node.nodeId);
-    expect(children.filter((c) => c.nodeType === "SUBSECTION")).toHaveLength(0);
-    // The clause DOES exist somewhere reachable in the index (it is not a true orphan/dropped node) - just not where a normal consumer looked.
+    expect(children.map((c) => c.sectionRef)).toEqual(["6.01(a)"]);
+    // The clause DOES exist somewhere reachable in the index (it is not a true orphan/dropped node) - just under a different, real, valid parent than a human reader would expect.
     expect(index.allNodes().some((n) => n.sectionRef.endsWith("(a)"))).toBe(true);
+    expect(index.healthDiagnostics().filter((f) => f.severity === "ERROR")).toHaveLength(0);
   });
 });
 
