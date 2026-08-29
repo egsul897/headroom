@@ -192,6 +192,29 @@ export type OperativeStateStatus = "OPERATIVE_STATE_RESOLVED" | "OPERATIVE_STATE
 
 export type ProvisionTargetResolutionStatus = "UNIQUE" | "AMBIGUOUS" | "NOT_FOUND";
 
+// ---------------------------------------------------------------------------
+// Phase 3F.1.5.R (sub-task 3) - fail-closed composition with the structural
+// index's OWN health diagnostics (structural-index.ts's healthDiagnostics(),
+// I1-I16). Orthogonal to ProvisionTargetResolutionStatus above: a base
+// reference can be a genuinely UNIQUE legal-reference match (exactly one
+// physical occurrence carries this section/definition) while that SAME
+// physical occurrence is independently flagged by the structural index as
+// corrupted (e.g. INVALID_SOURCE_SPAN, OVERLAPPING_INCOMPATIBLE_SPAN,
+// CYCLE - any ERROR-severity finding, never an INFO one, which the index's
+// own header comment already treats as a normal, expected drafting
+// reality never worth gating on). Before this fix, operative-state.ts never
+// called healthDiagnostics() at all, so a section already known-corrupted
+// at the structural layer could still be confidently reported
+// OPERATIVE_STATE_RESOLVED once a real amendment targeted it - the two
+// subsystems never composed (docs/foundation-remediation/
+// 13-remaining-foundation-risks.json's "operativeStateHealthDiagnosticsGap",
+// reproduced by tests/foundation-audit/combined-failures.test.ts's first
+// describe block). OPERATIVE_CONFIDENCE now requires
+// STRUCTURAL_HEALTH_SUFFICIENT, not merely a unique target match.
+// ---------------------------------------------------------------------------
+
+export type ProvisionStructuralHealthStatus = "STRUCTURAL_HEALTH_SUFFICIENT" | "STRUCTURAL_HEALTH_UNSAFE";
+
 export interface AmendmentChainEntry {
   effectId: string;
   amendmentDocumentId: string;
@@ -234,6 +257,10 @@ export interface OperativeProvisionView {
   targetResolutionReason: string | null;
   /** Phase 3F.1.4 §6B - the real physical occurrence (SECTION) or definition (DEFINITION) identities the base reference matched when AMBIGUOUS (2+ genuinely distinct candidates) - never a guessed pick among them. Always empty when targetResolutionStatus is UNIQUE or NOT_FOUND. */
   candidateSourceNodeIds: string[];
+  /** Phase 3F.1.5.R (sub-task 3) - whether the structural index's OWN health diagnostics consider this provision's resolved physical occurrence (or a structural descendant of it) safe to trust. Independent of targetResolutionStatus: a target can be UNIQUE and still STRUCTURAL_HEALTH_UNSAFE. Always STRUCTURAL_HEALTH_SUFFICIENT (vacuously - no physical occurrence was resolved to check) when targetResolutionStatus is not UNIQUE. Only a UNIQUE target AND a SUFFICIENT structural health verdict may ever produce a confidently-attached currentText/OPERATIVE_STATE_RESOLVED status. */
+  structuralHealthStatus: ProvisionStructuralHealthStatus;
+  /** Populated only when structuralHealthStatus is STRUCTURAL_HEALTH_UNSAFE - names the real ERROR-severity structural-index finding(s) (code + message) that blocked confidence, matching targetResolutionReason's own "tell the reviewer WHY" discipline. Empty when SUFFICIENT. */
+  structuralHealthIssues: string[];
   /** Phase 3F.1.4 §6B - the most recent applied effect's own captured newText, preserved for reviewer visibility EVEN WHEN targetResolutionStatus is not UNIQUE. "We know what the amendment says" (this field, once any effect supplies newText) is never conflated with "we know exactly what operative provision it changes" (currentText, gated on targetResolutionStatus === "UNIQUE"). Null when no applied effect ever supplied newText, or the most recent applied effect was a deletion. */
   attemptedText: string | null;
   /** Explicit review-required signal (the audit's own required "review flag" disclosure) - true whenever status is not OPERATIVE_STATE_RESOLVED, so a consumer never needs to enumerate every non-RESOLVED status value itself. */

@@ -165,7 +165,17 @@ function getTargetCurrentText(index: StructuralIndex, target: AmendmentTarget): 
     return resolution.status === "UNIQUE" ? index.getNodeText(resolution.node.nodeId, "DESCENDANTS") : null;
   }
   if (target.targetDefinedTermRef) {
-    return index.getDefinitionFullText(target.targetDefinedTermRef, target.targetDocumentId) ?? index.getDefinitionFullText(target.targetDefinedTermRef) ?? null;
+    // Phase 3F.1.5.R (sub-task 1, P0-2 family): this used to fall back to
+    // `getDefinitionFullText(term)` with no documentId whenever the
+    // already-resolved target document had no matching definition,
+    // searching the whole index (every instrument/company) and feeding
+    // whatever it found to the model as this amendment's own
+    // "targetCurrentText" context - the same cross-document contamination
+    // class as P0-2. `target.targetDocumentId` here is already a real,
+    // specifically-resolved target (see runDeterministicPass's own
+    // resolvedTargetDocumentIds/disambiguateMultiTargetSection above), so a
+    // miss within it is a genuine NOT_FOUND, never a reason to widen scope.
+    return index.getDefinitionFullText(target.targetDefinedTermRef, target.targetDocumentId) ?? null;
   }
   return null;
 }

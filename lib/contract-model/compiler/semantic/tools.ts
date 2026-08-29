@@ -56,6 +56,42 @@ function allowedDocumentIds(access: SemanticToolAccess, homeDocumentId: string):
   return new Set(instrument ? instrument.documentIds : [homeDocumentId]);
 }
 
+/**
+ * Phase 3F.1.5.R (sub-task 1, P0-2 family) - `getDefinitionFullText`'s own
+ * `documentId` fallback used to be a documentId-LESS call
+ * (`getDefinitionFullText(term)`, searching the ENTIRE structural index -
+ * every instrument, every company's documents this process has ever
+ * indexed) whenever the home document had no match. That is the same
+ * cross-document contamination class as P0-2 (docs/foundation-remediation/
+ * 02-identity-isolation-remediation.json): a same-named term defined in a
+ * wholly unrelated instrument could silently be served as this
+ * compilation's own answer.
+ *
+ * The safe replacement mirrors operative-state.ts's own P0-2 fix (no
+ * unscoped fallback) but is not IDENTICAL to it, because this file already
+ * has its own real, narrower, and already-enforced scope concept for
+ * exactly this purpose: `allowedDocs`, the SAME instrument's sibling
+ * documents (see `allowedDocumentIds` above / this file's own header
+ * comment on cross-instrument isolation, task §61). A sibling document of
+ * the SAME instrument (e.g. the base credit agreement's own definitions,
+ * consulted while compiling a covenant from an amendment to it) is a
+ * legitimate, evidence-based, already-modeled place to look; a document
+ * from a different instrument or company never is. So the fallback here is
+ * an EXPLICIT loop over `allowedDocs` only - never the unscoped
+ * documentId-less call the index itself still exposes for other, already-
+ * single-document callers.
+ */
+function getScopedDefinitionFullText(index: SemanticToolAccess["structuralIndex"], term: string, homeDocumentId: string, allowedDocs: Set<string>): string | undefined {
+  const home = index.getDefinitionFullText(term, homeDocumentId);
+  if (home) return home;
+  for (const docId of allowedDocs) {
+    if (docId === homeDocumentId) continue;
+    const text = index.getDefinitionFullText(term, docId);
+    if (text) return text;
+  }
+  return undefined;
+}
+
 function summarizeItem(item: ContextItem): unknown {
   return { itemId: item.itemId, type: item.type, documentId: item.documentId, sourceCitation: item.sourceCitation, excerptText: item.excerptText, reason: item.reason };
 }
@@ -125,7 +161,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           charsUsedRef.current += text.length;
           return ok({ term, source: "amended", text, truncated }, text, `definition "${term}" (amended, status ${operative.status})`);
         }
-        const fullText = access.structuralIndex.getDefinitionFullText(term, homeDocumentId) ?? access.structuralIndex.getDefinitionFullText(term);
+        const fullText = getScopedDefinitionFullText(access.structuralIndex, term, homeDocumentId, allowedDocs);
         if (!fullText) return refuse(`no defined term matching "${term}" found in this instrument's documents`);
         const { text, truncated } = truncate(fullText);
         charsUsedRef.current += text.length;
@@ -138,7 +174,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       inputSchema: { type: "object", properties: { term: { type: "string" } }, required: ["term"] },
       execute: (input) => {
         const term = String(input.term ?? "");
-        const fullText = access.structuralIndex.getDefinitionFullText(term, homeDocumentId) ?? access.structuralIndex.getDefinitionFullText(term);
+        const fullText = getScopedDefinitionFullText(access.structuralIndex, term, homeDocumentId, allowedDocs);
         if (!fullText) return refuse(`no defined term matching "${term}" found - cannot inspect its dependencies`);
         const allTerms = access.structuralIndex.allDefinitions().map((d) => d.exactTerm);
         const dependencies = Array.from(new Set(allTerms.filter((t) => t !== term && fullText.includes(t))));

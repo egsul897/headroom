@@ -54,8 +54,8 @@ function effect(overrides: Partial<AmendmentEffectCandidate> & { effectId: strin
   };
 }
 
-describe("Combined failure: extraction corruption + amendment", () => {
-  it("a badly-extracted base document (INVALID_SOURCE_SPAN health finding on the exact node) + a real resolved amendment effect targeting it -> operative-state confidently reports OPERATIVE_STATE_RESOLVED, NEVER consulting the index's own health diagnostics", () => {
+describe("Combined failure: extraction corruption + amendment - FIXED (Phase 3F.1.5.R sub-task 3)", () => {
+  it("a badly-extracted base document (INVALID_SOURCE_SPAN health finding on the exact node) + a real resolved amendment effect targeting it -> FIXED: operative-state now consults the index's own health diagnostics and withholds confidence", () => {
     const shortText = "x".repeat(30); // deliberately short so the section's own charEnd below is invalid
     const corruptedSection = n({ documentId: "base-doc", nodeType: "SECTION", sectionRef: "6.01", charStart: 0, charEnd: 500, nodeId: "sec-601" }); // charEnd(500) >> shortText.length(30) - truncated/corrupted extraction
     const index = buildStructuralIndex(new Map([["base-doc", { text: shortText, nodes: [corruptedSection] }]]), [], []);
@@ -69,12 +69,81 @@ describe("Combined failure: extraction corruption + amendment", () => {
     const amendEffect = effect({ effectId: "eff-1", targetSectionRef: "6.01", newText: "The threshold is hereby increased to $10,000,000." });
     const state = computeOperativeContractState({ instrumentKey: "instrument-1", baseDocumentId: "base-doc", asOfDate: "2024-06-01", index, allEffects: [amendEffect] });
 
-    expect(state.status).toBe("OPERATIVE_STATE_RESOLVED"); // CONFIRMED: confident RESOLVED status, computed from a node the index's OWN health pass had already flagged as structurally corrupted.
-    expect(state.provisions[0]!.status).toBe("OPERATIVE_STATE_RESOLVED");
-    // operative-state.ts never calls index.healthDiagnostics() anywhere (confirmed by inspection) - the two subsystems never compose.
-    // This is exactly the emergent risk the audit brief describes: extraction corruption alone is flagged (ERROR); amendment resolution alone
-    // is flagged RESOLVED correctly for a healthy node; TOGETHER, the corruption signal is silently lost and the amendment layer reports full
-    // confidence in a section whose own physical extraction is already known-bad.
+    // FIXED: operative-state.ts now calls index.healthDiagnostics() (via
+    // resolveBaseText/buildProvisionView's own structuralHealthForNode) for
+    // the exact physical occurrence a provision's base reference resolved
+    // to - OPERATIVE_CONFIDENCE requires STRUCTURAL_HEALTH_SUFFICIENT, so a
+    // node the index's own health pass already flagged ERROR can no longer
+    // support a confident OPERATIVE_STATE_RESOLVED, even though its legal
+    // reference ("6.01") is a genuinely UNIQUE match and a real, dated
+    // amendment effect resolved against it.
+    expect(state.status).not.toBe("OPERATIVE_STATE_RESOLVED");
+    expect(state.status).toBe("OPERATIVE_STATE_PARTIAL");
+    const provision = state.provisions[0]!;
+    expect(provision.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(provision.reviewRequired).toBe(true);
+    // The corrupted node's own identity is still surfaced for a reviewer to
+    // find (never hidden) - only CONFIDENCE in its content is withheld.
+    expect(provision.targetResolutionStatus).toBe("UNIQUE"); // the legal-reference match itself is genuinely unambiguous - this is a SEPARATE axis from structural health.
+    expect(provision.structuralHealthStatus).toBe("STRUCTURAL_HEALTH_UNSAFE");
+    expect(provision.structuralHealthIssues.length).toBeGreaterThan(0);
+    expect(provision.structuralHealthIssues.join(" ")).toMatch(/INVALID_SOURCE_SPAN/);
+    // currentText is withheld - never derived from (nor overwritten with an
+    // amendment's own text attached to) a physical occurrence the index
+    // itself already flags as corrupted.
+    expect(provision.currentText).toBeNull();
+    // "What the amendment SAYS" remains visible for a reviewer even though
+    // "where it safely applies" does not - the same attemptedText
+    // discipline Phase 3F.1.4 §6B already established elsewhere in this
+    // module.
+    expect(provision.attemptedText).toBe("The threshold is hereby increased to $10,000,000.");
+    expect(provision.unresolvedIssues.join(" ")).toMatch(/STRUCTURAL_HEALTH_SUFFICIENT/);
+  });
+
+  it("the SAME corrupted section with NO amendment activity at all never enters this module's own scope (unchanged, pre-existing behavior) - structural health composition only ever applies to provisions this module actually builds a view for", () => {
+    // Documents this module's own "Scope decision" header comment: a
+    // section never amended has no OperativeProvisionView at all (Phase 2A's
+    // structural index already answers "the base document's own text
+    // governs" directly) - this fix does not change that scope, only what
+    // happens once a real amendment DOES target a provision.
+    const shortText = "x".repeat(30);
+    const corruptedSection = n({ documentId: "base-doc", nodeType: "SECTION", sectionRef: "6.01", charStart: 0, charEnd: 500, nodeId: "sec-601" });
+    const index = buildStructuralIndex(new Map([["base-doc", { text: shortText, nodes: [corruptedSection] }]]), [], []);
+    const state = computeOperativeContractState({ instrumentKey: "instrument-1", baseDocumentId: "base-doc", asOfDate: "2024-06-01", index, allEffects: [] });
+    expect(state.provisions).toHaveLength(0);
+    expect(state.status).toBe("OPERATIVE_STATE_RESOLVED"); // no amendment activity for this instrument at all - genuinely nothing to report, unchanged.
+  });
+
+  it("a HEALTHY node targeted by a real resolved amendment effect is completely unaffected by this fix - no regression for genuinely healthy structure", () => {
+    const healthySection = n({ documentId: "base-doc", nodeType: "SECTION", sectionRef: "7.01", charStart: 0, charEnd: 100, nodeId: "sec-701" });
+    const index = buildStructuralIndex(new Map([["base-doc", { text: "x".repeat(200), nodes: [healthySection] }]]), [], []);
+    expect(index.healthDiagnostics().some((f) => f.severity === "ERROR")).toBe(false);
+
+    const amendEffect = effect({ effectId: "eff-healthy", targetSectionRef: "7.01", newText: "The threshold is hereby increased to $5,000,000." });
+    const state = computeOperativeContractState({ instrumentKey: "instrument-1", baseDocumentId: "base-doc", asOfDate: "2024-06-01", index, allEffects: [amendEffect] });
+
+    expect(state.status).toBe("OPERATIVE_STATE_RESOLVED");
+    const provision = state.provisions[0]!;
+    expect(provision.status).toBe("OPERATIVE_STATE_RESOLVED");
+    expect(provision.structuralHealthStatus).toBe("STRUCTURAL_HEALTH_SUFFICIENT");
+    expect(provision.structuralHealthIssues).toEqual([]);
+    expect(provision.currentText).toBe("The threshold is hereby increased to $5,000,000.");
+    expect(provision.reviewRequired).toBe(false);
+  });
+
+  it("a healthy PARENT section whose own DESCENDANT is corrupted (INVALID_SOURCE_SPAN) is ALSO withheld - the health check is not blind to corruption one level down, since getNodeText(nodeId, \"DESCENDANTS\") pulls the descendant's own text into the parent's reported text", () => {
+    const parent = n({ documentId: "base-doc", nodeType: "SECTION", sectionRef: "6.10", charStart: 0, charEnd: 100, nodeId: "sec-610" });
+    const corruptedChild = n({ documentId: "base-doc", nodeType: "CLAUSE", sectionRef: "6.10(a)", charStart: 10, charEnd: 9999, nodeId: "sec-610-a", parentNodeId: "sec-610", parentSectionRef: "6.10" }); // charEnd far exceeds document text length - corrupted
+    const index = buildStructuralIndex(new Map([["base-doc", { text: "x".repeat(150), nodes: [parent, corruptedChild] }]]), [], []);
+    expect(index.healthDiagnostics().find((f) => f.code === "INVALID_SOURCE_SPAN" && f.nodeId === "sec-610-a")).toBeDefined();
+
+    const amendEffect = effect({ effectId: "eff-parent", targetSectionRef: "6.10", newText: "New parent text." });
+    const state = computeOperativeContractState({ instrumentKey: "instrument-1", baseDocumentId: "base-doc", asOfDate: "2024-06-01", index, allEffects: [amendEffect] });
+
+    const provision = state.provisions[0]!;
+    expect(provision.structuralHealthStatus).toBe("STRUCTURAL_HEALTH_UNSAFE");
+    expect(provision.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(provision.currentText).toBeNull();
   });
 });
 

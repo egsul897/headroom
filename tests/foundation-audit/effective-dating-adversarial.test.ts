@@ -253,6 +253,13 @@ describe("2e. Retroactive and future-dated amendments", () => {
       resolveUniqueNodeByRef: (_documentId: string, ref: string) => ({ status: "UNIQUE", node: { nodeId: `base-doc::${ref}`, nodeKey: `base-doc::${ref}` } }),
       getNodeText: () => "Base text for 6.04.",
       getDefinition: () => undefined,
+      // Phase 3F.1.5.R (sub-task 3): operative-state.ts now also consults
+      // getDescendants/healthDiagnostics for a UNIQUE-resolved node (fail-
+      // closed structural-health composition) - a healthy fake index (no
+      // descendants, no findings) so this test keeps exercising only its
+      // own retroactive-dating concern.
+      getDescendants: () => [],
+      healthDiagnostics: () => [],
     } as unknown as StructuralIndex;
     const stateNow = computeOperativeContractState({ instrumentKey: "instr-1", baseDocumentId: "base-doc", asOfDate: "2026-08-28", index: fakeIndex, allEffects: group.effects });
     expect(stateNow.provisions[0]!.currentText).toBe("Retroactively amended 6.04.");
@@ -272,6 +279,9 @@ describe("2e. Retroactive and future-dated amendments", () => {
       resolveUniqueNodeByRef: (_documentId: string, ref: string) => ({ status: "UNIQUE", node: { nodeId: `base-doc::${ref}`, nodeKey: `base-doc::${ref}` } }),
       getNodeText: () => "Base text for 6.05.",
       getDefinition: () => undefined,
+      // Phase 3F.1.5.R (sub-task 3): see the identical comment above.
+      getDescendants: () => [],
+      healthDiagnostics: () => [],
     } as unknown as StructuralIndex;
     const stateNow = computeOperativeContractState({ instrumentKey: "instr-1", baseDocumentId: "base-doc", asOfDate: "2026-08-28", index: fakeIndex, allEffects: group.effects });
     // No provision view is even produced with an APPLIED effect - fullChain exists but appliedChain is empty, so the base document's own (unamended) text remains the correct answer for "as of today."

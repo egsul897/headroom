@@ -377,6 +377,46 @@ function toEntityClassTags(raw: string[], validTags: Set<string>): EntityClassTa
  * dependents of a tombstoned rule - this fix does not change any of that,
  * it only makes the tombstone itself actually happen.
  */
+/**
+ * Phase 3F.1.5.R (sub-task 2) - `ContractRule.definedTermRefs` must be
+ * stored in the SAME identity space `getRuleSourceTrace`/
+ * `validateDefinedTermTargetsExist` (lib/contract-model/service.ts,
+ * lib/contract-model/validators.ts) already query it in: DefinedTermNode's
+ * own `stableKey`, not the raw defined-term name string. This function used
+ * to persist `rule.definedTermRefs` verbatim (the raw candidate term names,
+ * e.g. "Consolidated EBITDA") - real, verified defect, not a false alarm:
+ * those raw strings can never equal a `defined-term:<sha256>` stableKey, so
+ * every real rule's source trace silently reported an EMPTY `definedTerms`
+ * array (and `validateDefinedTermTargetsExist` flagged every non-empty
+ * `definedTermRefs` rule as referencing an "unknown" term, a permanent
+ * false-positive baked into the VALIDATION stage's own status - masked from
+ * ever blocking promotion only by an unrelated, separate pre-existing bug in
+ * stage-promotion.ts's own issue-message filter, which matches on
+ * `rule.sourceSectionRef` while this validator's own message names the
+ * rule's opaque db id instead, so the false-positive issue never actually
+ * attaches to any rule's promotion decision - that filter bug is a distinct,
+ * narrower defect, out of this sub-task's scope, and left untouched here).
+ *
+ * The fix computes each ref's document-scoped stableKey with the EXACT same
+ * formula `persistDefinedTerms` below already uses to create the row in the
+ * first place (`computeStableKey("defined-term", companyId, documentId,
+ * name.toLowerCase())`) - never a new/second identity scheme. `documentId`
+ * is this rule's own `sourceDocumentId` (the only document a bare defined-
+ * term NAME reference can safely mean without cross-document guessing - the
+ * same P0-2-family discipline sub-task 1 applies elsewhere in this phase).
+ * `persistDefinedTerms` is production-orchestrator's only currently-wired
+ * term-persistence path (orchestrator.ts calls it per-document; the
+ * alternative persistStructuralDefinitions has no production caller today -
+ * grep-confirmed), so this is the one real target identity to match; if a
+ * referenced term's own row does not exist yet/at all, the computed
+ * stableKey simply will not resolve in getRuleSourceTrace/validators, which
+ * is the correct, honest NOT_FOUND-shaped behavior (never fabricated), not
+ * a new failure mode.
+ */
+function toDefinedTermStableKeys(companyId: string, documentId: string, definedTermRefs: string[]): string[] {
+  return definedTermRefs.map((name) => computeStableKey("defined-term", companyId, documentId, name.toLowerCase()));
+}
+
 export async function persistContractRules(companyId: string, documentId: string, rules: CandidateContractRule[], nodeIndex: PersistedNodeIndex, entityClassTags: Set<string>): Promise<Map<string, string>> {
   return prisma.$transaction(async (tx) => {
     const idBySectionRef = new Map<string, string>();
@@ -384,6 +424,7 @@ export async function persistContractRules(companyId: string, documentId: string
     for (const rule of rules) {
       const stableKey = computeStableKey("contract-rule", companyId, documentId, rule.sourceSectionRef, rule.action);
       const sourceNodeId = resolveUniquePersistedNodeByRef(nodeIndex, documentId, rule.sourceSectionRef) ?? null;
+      const definedTermRefs = toDefinedTermStableKeys(companyId, documentId, rule.definedTermRefs);
       const row = await tx.contractRule.upsert({
         where: { companyId_stableKey: { companyId, stableKey } },
         create: {
@@ -404,7 +445,7 @@ export async function persistContractRules(companyId: string, documentId: string
           conditions: rule.conditions as object[],
           exceptions: rule.exceptions as object[],
           sourceSectionRef: rule.sourceSectionRef,
-          definedTermRefs: rule.definedTermRefs,
+          definedTermRefs,
           notes: rule.notes,
           extractionOrigin: { provider: "phase-c-compiler-v1", model: "see ContractCompilerStage.model", promptVersion: "phase-c.1", schemaVersion: "phase-c.1" },
         },
@@ -417,6 +458,14 @@ export async function persistContractRules(companyId: string, documentId: string
           formulaRef: rule.formulaRef,
           conditions: rule.conditions as object[],
           exceptions: rule.exceptions as object[],
+          // Phase 3F.1.5.R (sub-task 2): previously omitted from the update
+          // branch entirely, so a re-run that corrected/added defined-term
+          // references left the ORIGINAL (pre-fix, or simply stale) value
+          // permanently in place on any already-persisted rule row - the
+          // same "upsert's update branch must touch every field a re-run can
+          // legitimately change" discipline P0-2's own remediation already
+          // established for this table (see this file's header comment).
+          definedTermRefs,
           notes: rule.notes,
         },
       });
