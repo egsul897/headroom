@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "SAFE_FAILURE_MODEL_CERTIFICATION",
+  "generatedAt": "2026-08-30T00:00:00Z",
+  "auditorRole": "INDEPENDENT_CERTIFICATION_AUDITOR",
+  "purpose": "Section 18: certify that the Phase 3F.1.5.R persisted safe-failure models (ClaimReviewItem/ClaimReviewObservation/ClaimReviewDecision) actually work as designed against real Postgres. This artifact does NOT merely re-trust the prior phase's own claims - it re-runs the prior phase's own adversarial test file, then independently constructs and executes a SEPARATE verification script written fresh by this auditor.",
+  "environment": {
+    "database": "real Postgres, localhost:5432, database 'headroom', migration 20260829232147_phase_3f1_5_r_claim_review_safe_failure applied and verified via `npx prisma migrate status` (schema up to date)",
+    "note": "This auditor's worktree was initially checked out on a stale, divergent branch (worktree-agent-a792d754f1cba6b0b @ 81fd6c4) that never received the Phase 3F.1.5.R commits at all (schema.prisma had zero ClaimReviewItem references). Corrected by creating a fresh local branch 'cert-3f1-6-audit-a792d754' from the assigned starting commit ea82ee80f4528117e7dc6669be8e1ebf28b24108 before any audit work began. Disclosed here because it is directly relevant to trusting the rest of this artifact's findings."
+  },
+  "priorPhaseTestReRun": {
+    "file": "tests/contract-model/safe-failure-adversarial.test.ts",
+    "result": "15/15 PASSED against real Postgres (not mocked)",
+    "command": "npx vitest run tests/contract-model/safe-failure-adversarial.test.ts"
+  },
+  "independentVerificationScript": {
+    "file": "scripts/cert-3f1-6-section18-independent-verification.ts",
+    "description": "Auditor-authored, not derived from or reusing the prior phase's own test assertions. 26 independent checks (labeled A-G) covering: raw-SQL persistence bypassing the Prisma client entirely; tenant scope in BOTH directions (two companies CAN each hold a row for the identical claimKey as two separate rows; the DB's own @@unique constraint, not just application logic, rejects a duplicate (companyId, claimKey) row); source provenance non-emptiness on a freshly created item; dedup with a genuinely different reason (OBSERVATION_APPENDED, exactly 2 observation rows); a TWO-cycle resolve/reopen lifecycle (ACCEPT -> REOPEN -> REJECT -> REOPEN) confirming every original observation/decision row survives verbatim and the item fails open (OPEN_REVIEW) after the second reopen, not just the first; and no-sibling-substitution across two distinct claims where only one is resolved.",
+    "result": "26/26 PASSED",
+    "cleanup": "Verified via a direct psql COUNT query after the run: 0 rows remained under the scratch company ids."
+  },
+  "findings": [
+    {
+      "id": "18-A",
+      "requirement": "Persistence",
+      "result": "PASS",
+      "evidence": "recordClaimReview() creates a row confirmed present via a raw prisma.$queryRaw SQL SELECT against claim_review_items, bypassing the ORM's own return value entirely."
+    },
+    {
+      "id": "18-B",
+      "requirement": "Stable claim identity / dedup",
+      "result": "PASS",
+      "evidence": "Same claimKey + same company recorded twice -> ALREADY_RECORDED, one row, one observation. Confirmed both via the prior phase's own test and this auditor's independent script."
+    },
+    {
+      "id": "18-C",
+      "requirement": "Tenant scope",
+      "result": "PASS",
+      "evidence": "Two different companyIds sharing the identical claimKey produce TWO separate rows (findMany on claimKey alone returns 2 rows, with 2 distinct ids) - not merged, not silently collapsed. A raw duplicate-row INSERT attempt for the SAME company + claimKey pair that already has a row is rejected by the database's own @@unique([companyId, claimKey]) constraint (Prisma error code P2002), not merely prevented by service.ts's own application-level check - i.e. this is a constraint-level guarantee, not just a convention."
+    },
+    {
+      "id": "18-D",
+      "requirement": "Source provenance",
+      "result": "PASS, with one disclosed schema-vs-practice nuance",
+      "evidence": "sourceEvidence, sourceCitation, rationale, and algorithmVersion are all non-empty on every created item in both test suites. sourceEvidence, rationale, and algorithmVersion are NOT NULL at the schema level (prisma/schema.prisma: String, not String?). sourceCitation is schema-nullable (String?) and service.ts/types.ts's own ClaimReviewItemInput type allows null - HOWEVER derive.ts's only real derivation path (deriveFromCoverageEntry) sources sourceCitation from SourceAnchor.sourceCitation, which is itself a REQUIRED (non-optional) string on SourceAnchor - so in practice, via the one wired derivation path, sourceCitation can never actually be null for a review item created from real coverage-audit output. The null-permitting type is defensive/future-proofing, not a currently reachable gap.",
+      "severity": "INFORMATIONAL"
+    },
+    {
+      "id": "18-E",
+      "requirement": "Deduplication with a different reason",
+      "result": "PASS",
+      "evidence": "recordClaimReview called twice with the same claimKey but a genuinely different (reasonCode, rationale) pair -> OBSERVATION_APPENDED, one item, exactly two observation rows confirmed via a fresh findUniqueOrThrow read-back."
+    },
+    {
+      "id": "18-F",
+      "requirement": "Append-only observations",
+      "result": "PASS",
+      "evidence": "Static grep of lib/contract-model/compiler/safe-failure/service.ts and integrate.ts for `.delete`, `deleteMany`, `.update(`, `updateMany` finds exactly two `.update()` calls, BOTH against `claimReviewItem` only (never `claimReviewObservation` or `claimReviewDecision`), and zero delete calls of any kind anywhere in the module. Independently confirmed at runtime: after a 2-resolve/2-reopen cycle (3 observations, 4 decisions total), the FIRST observation's `detail` and the FIRST decision's `note` were read back byte-for-byte unchanged."
+    },
+    {
+      "id": "18-G",
+      "requirement": "Resolution lifecycle (ACCEPT/REJECT/SUPERSEDE)",
+      "result": "PASS",
+      "evidence": "All three actions transition ClaimReviewItem.status correctly (RESOLVED_ACCEPTED/RESOLVED_REJECTED/SUPERSEDED) and each writes exactly one new ClaimReviewDecision row recording previousStatus/newStatus/note/decidedBy. Verified for all three actions across the two test suites."
+    },
+    {
+      "id": "18-H",
+      "requirement": "Supersession lifecycle interplay with P1-11 amendment supersession",
+      "result": "DISCLOSED GAP - manual-only, no automatic trigger",
+      "evidence": "Grepped the entire lib/contract-model/compiler/amendment/** tree and every other reference to AmendmentEffect/amendment_effects in the repository for any call into recordClaimReview/resolveClaimReview/checkExplicitSafeFailure or any import of the safe-failure module: ZERO matches. resolveClaimReview(action='SUPERSEDE') exists and works correctly when called directly (tested), but nothing in the amendment pipeline (lib/contract-model/compiler/amendment/pipeline.ts, chain.ts, deterministic-parser.ts, semantic-interpreter.ts, schedule-modification.ts, validation.ts) ever calls it. If a provision underlying an OPEN_REVIEW claim is later amended/superseded, the ClaimReviewItem row does NOT automatically transition to SUPERSEDED - it remains OPEN_REVIEW indefinitely unless a human (or some future, currently nonexistent, caller) explicitly calls resolveClaimReview with action=SUPERSEDE. This is an honest, disclosed limitation, not a hidden defect - the prior phase's own service.ts comments frame SUPERSEDE as a decision a caller invokes, not an automatic reaction to amendment events.",
+      "severity": "MINOR",
+      "recommendation": "Not implemented by this auditor (production code frozen for this audit). A future phase wiring the amendment pipeline to call resolveClaimReview(SUPERSEDE) when a superseded provision's claimKey has an OPEN_REVIEW item would close this gap."
+    },
+    {
+      "id": "18-I",
+      "requirement": "Reopen behavior",
+      "result": "PASS",
+      "evidence": "Re-ran the prior phase's own reopen scenario (test 12/16) - passed. Additionally constructed a NEW, more demanding scenario in this auditor's own script: ACCEPT -> re-detect (REOPENED_FROM_RESOLVED) -> REJECT -> re-detect a SECOND time (REOPENED_FROM_RESOLVED again). Confirmed the item correctly reopens on BOTH cycles (not just once as a special case), ends at status OPEN_REVIEW, and accumulates 4 distinct decision rows (ACCEPT, REOPEN, REJECT, REOPEN) in the correct order, all preserved."
+    },
+    {
+      "id": "18-J",
+      "requirement": "No sibling substitution",
+      "result": "PASS",
+      "evidence": "Constructed two fresh, independent claimKeys (not reused from the prior phase's own fixtures) under the same company/document/section-family. Resolved ONE via ACCEPT and left the other OPEN. checkExplicitSafeFailure() lookups for each returned their OWN row id and OWN (different) status - the resolved sibling's ACCEPT never leaked into or satisfied the other's lookup."
+    }
+  ],
+  "overallVerdict": "PASS",
+  "overallStatement": "The persisted claim-level safe-failure model (ClaimReviewItem/ClaimReviewObservation/ClaimReviewDecision) functions correctly against real Postgres across every dimension in this section's charter: persistence, dedup, tenant isolation (including at the database constraint level, not merely application logic), source provenance, append-only history, full resolution lifecycle, and reopen-on-re-detection (including under repeated cycles). The one disclosed gap - amendment supersession does not automatically drive ClaimReviewItem.SUPERSEDED - is a manual-only capability today, not a defect in what exists; it is rated MINOR because resolveClaimReview(SUPERSEDE) itself works correctly when invoked, the gap is only in automatic triggering, which was never claimed to exist by the prior phase's own documentation."
+}

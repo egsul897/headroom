@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "SAFE_FAILURE_WIRING_CERTIFICATION",
+  "generatedAt": "2026-08-30T00:00:00Z",
+  "auditorRole": "INDEPENDENT_CERTIFICATION_AUDITOR",
+  "purpose": "Section 19: the single most consequential question of this certification phase. Determine, from ACTUAL CALL GRAPH AND EXECUTION - not prose, not the prior phase's own claims - whether explicit safe failure has a real path into the contract-analysis pipeline Headroom actually uses today, or exists only as an offline/script capability.",
+  "methodology": "Exhaustive repository-wide grep (excluding node_modules) for every identifier in the safe-failure module's public surface, cross-checked by reading each matching file's imports; separately traced runSemanticCoverageAudit()'s own callers; separately traced the actual live application code path (app/ server actions) for document analysis/onboarding to determine what it invokes; separately searched for any queue/worker/cron/scheduled-job infrastructure that might invoke either. All commands and their literal output are reproduced below so this determination can be re-verified by a third party without re-running anything.",
+  "callGraphTrace": {
+    "step1_safeFailureIntegrationCallers": {
+      "command": "grep -rn \"recordClaimReviewsFromDocumentCoverage|recordClaimReviewsFromPackageCoverage\" --include=*.ts --include=*.tsx . (excluding node_modules)",
+      "result": "Exactly two call sites, both in scripts/phase-3f1-5-r-safe-failure-volume-analysis.ts. Zero call sites anywhere in app/, zero in any lib/ file other than integrate.ts's own definitions, zero in any API route, zero in any server action, zero in tests/ (the adversarial test file calls the lower-level recordClaimReview/resolveClaimReview/checkExplicitSafeFailure directly, not the integration-layer functions)."
+    },
+    "step2_serviceLayerCallers": {
+      "command": "grep -rn \"recordClaimReview\\(|resolveClaimReview\\(|checkExplicitSafeFailure\\(\" --include=*.ts --include=*.tsx . (excluding node_modules)",
+      "result": "Callers found only in: scripts/phase-3f1-5-r-safe-failure-volume-analysis.ts (indirectly, via the integration layer), tests/contract-model/safe-failure-adversarial.test.ts (15 direct calls), and this auditor's own newly-added certification scripts (scripts/cert-3f1-6-section18/20/22-*.ts). No production file (app/, lib/ outside safe-failure/**) calls any of these three functions."
+    },
+    "step3_wholeModuleImportSweep": {
+      "command": "grep -rln \"safe-failure\" --include=*.ts --include=*.tsx . (excluding node_modules)",
+      "result": "Every file importing anything from lib/contract-model/compiler/safe-failure/** is either inside that directory itself, a script, a test, or this auditor's own certification scripts. Zero files under app/ or any other lib/ subtree import this module."
+    },
+    "step4_runSemanticCoverageAuditCallers": {
+      "command": "grep -rln \"runSemanticCoverageAudit\" --include=*.ts --include=*.tsx . (excluding node_modules)",
+      "result": "10 files: 4 scripts (phase-3f-first-blind-run.ts, phase-3f1-5-r-safe-failure-volume-analysis.ts, phase-3e-real-package-regression.ts, phase-3f1-dsgr-remediation-regression.ts), 4 test files (semantic-coverage-pipeline.test.ts, semantic-coverage-fault-injection.test.ts, semantic-coverage-real-fwrg-regression.test.ts, semantic-coverage-real-lsb-regression.test.ts), plus the function's own definition file and safe-failure/integrate.ts's own comment referencing it. Zero application/route/action files.",
+      "corroboratesPriorDisclosure": "This matches docs/phase-3f1-5-r-residual-foundation/03-safe-failure-architecture.json's own disclosure that runSemanticCoverageAudit is deliberately kept DB-free and is exercised only by scripts/tests - independently confirmed here, not merely re-accepted."
+    },
+    "step5_liveApplicationPipelineTrace": {
+      "method": "Enumerated every app/ server action file (app/**/actions.ts) and every app/**/route.ts (Next.js API route). Found zero route.ts files in the entire app/ tree. Found 10 actions.ts files. Grepped all 10 for 'compiler', 'coverage', 'contract-model'.",
+      "result": "Only app/[companyId]/onboarding/documents/actions.ts references extraction-adjacent code at all, and it imports exclusively from lib/onboarding/documents.ts (runExtractionForDocument), which itself imports only from lib/extraction/** (chunk.ts, parse.ts, persist-chunks.ts, pipeline.ts, provider.ts) and lib/document-storage - an entirely separate, older extraction pipeline that has no import path, direct or transitive, into lib/contract-model/compiler/** at all.",
+      "additionalTrace": "Also traced lib/contract-model/compiler/orchestrator.ts's own exported runContractCompiler - the whole-package compiler entry point ONE LEVEL ABOVE semantic-coverage. Its only callers in the entire repository are scripts/phase-3f1-2-write-remaining-artifacts.ts and scripts/run-phase-c-compiler.ts - both scripts, zero application callers. This means not only is semantic-coverage unwired from any live path, the entire contract-model compiler apparatus it depends on has never been wired into app/'s live document-onboarding flow at all."
+    },
+    "step6_backgroundJobSweep": {
+      "command": "find . -iname '*queue*' -o -iname '*worker*' -o -iname '*job*' -o -iname '*cron*' -o -iname 'vercel.json' (excluding node_modules/.git)",
+      "result": "One hit: prisma/migrations/20260824035042_add_feed_queue (an unrelated document-source-feed ingestion queue, not a contract-analysis job queue). No cron/worker/scheduler infrastructure of any kind exists in this repository that could independently trigger runSemanticCoverageAudit or the safe-failure integration."
+    }
+  },
+  "definitiveAnswer": {
+    "question": "Does the actual contract-analysis pipeline Headroom currently uses ever reach a point where runSemanticCoverageAudit + the safe-failure integration are both invoked together, such that a real material claim reaching the coverage/semantic decision boundary produces a persisted review item?",
+    "answer": "NO. The live application (app/'s server actions, the only user-triggered or scheduled code path this repository has) uses an entirely separate, older extraction pipeline (lib/onboarding/documents.ts -> lib/extraction/**) that has zero import relationship - direct or transitive - with lib/contract-model/compiler/** at all. Even the broader contract-model compiler orchestrator (runContractCompiler), one level above semantic-coverage, has zero application callers; only scripts do. runSemanticCoverageAudit() and the safe-failure integration functions are exercised exclusively by one-off scripts and test suites. There is no queue, worker, or scheduled job that would invoke either outside of a script being run by a person."
+  },
+  "charterRuleApplication": {
+    "failCondition": "\"If the only way to create review items is by manually invoking an offline audit script that normal application/service execution never invokes: FAIL.\"",
+    "passExceptionCondition": "\"If semantic coverage is intentionally the canonical production boundary and the service path demonstrably invokes it: PASS.\"",
+    "whichIsTrue": "The FAIL condition is what the evidence shows. There is no service path that invokes semantic-coverage at all (demonstrated in step5 above), so the PASS exception's own precondition - \"the service path demonstrably invokes it\" - is not met. This is not a close call: the entire lib/contract-model/compiler/** tree, not merely the safe-failure sub-module, is unreachable from any application entry point in this repository as of this audit."
+  },
+  "verdict": "FAIL",
+  "severity": "BLOCKER",
+  "verdictStatement": "Explicit safe failure is real, correct, well-tested production-grade STATE (Section 18 certifies this) but has NO wiring into any code path that a real user-triggered or scheduled analysis run actually executes. The review-event architecture is not actually wired into the analysis path this repository's application layer uses - this is the exact BLOCKER example named in this auditor's own charter. This is not a narrow gap in the safe-failure module specifically; it is a consequence of a broader, pre-existing fact this audit independently confirmed: the entire lib/contract-model/compiler/** apparatus (of which semantic-coverage and safe-failure are both part) has never been wired into app/'s live document pipeline at all. The prior phase (docs/phase-3f1-5-r-residual-foundation/03-safe-failure-architecture.json) already disclosed the safe-failure-specific half of this honestly and did not claim otherwise; this audit's contribution is (a) independently re-confirming that disclosure via direct call-graph tracing rather than trusting the prose, and (b) additionally establishing the wider fact that the underlying compiler pipeline itself, not just its safe-failure add-on, has no live caller - which materially changes how this gap should be prioritized: wiring safe-failure alone into a pipeline that is itself dormant would not actually close the risk the human architecture decision was responding to.",
+  "notCountedAsMitigation": "The existence of 15 passing adversarial tests and a real 477-item volume analysis (Section 21) demonstrates the architecture WOULD work correctly if wired - it does not demonstrate that it IS wired. A capability that works correctly in isolation but is never invoked by any live path provides zero actual protection to a real user's analysis run today."
+}
