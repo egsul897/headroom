@@ -98,6 +98,14 @@ describe("BLOCKER-5 permanent enforcement: every registered LLM-facing evidence 
     expect(byName.get("getSourceSpan")!.operativeStateDiscipline).toBe("HISTORICAL_EVIDENCE_WITH_STATUS");
   });
 
+  it("Phase 3F.1.6.RX fix: getContextBundleComponent/getSharedCapContext are HISTORICAL_EVIDENCE_WITH_STATUS, not NOT_CONTRACT_TEXT_EVIDENCE - an independent trace found the prior 'already-vetted' classification false (context-retrieval/pipeline.ts has zero operative-state awareness of its own)", () => {
+    const { index } = buildRealIndex();
+    const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, { current: 0 }, DEFAULT_TOOL_BUDGET);
+    const byName = new Map(tools.map((t) => [t.name, t]));
+    expect(byName.get("getContextBundleComponent")!.operativeStateDiscipline).toBe("HISTORICAL_EVIDENCE_WITH_STATUS");
+    expect(byName.get("getSharedCapContext")!.operativeStateDiscipline).toBe("HISTORICAL_EVIDENCE_WITH_STATUS");
+  });
+
   it("every tool declared CURRENT_OPERATIVE_EVIDENCE that returns provision text actually includes a real supersessionStatus in its response (spot-check against real behavior, not just the static label)", () => {
     const { index, section601 } = buildRealIndex();
     const operativeState: OperativeContractState = { instrumentKey: "instrument-1", asOfDate: "2026-01-01", provisions: [supersededProvision(section601)], status: "OPERATIVE_STATE_RESOLVED", summary: "test", unattachedEffects: [] };

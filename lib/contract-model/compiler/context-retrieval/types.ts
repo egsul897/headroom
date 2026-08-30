@@ -19,6 +19,7 @@
  */
 import type { CovenantFamily } from "@prisma/client";
 import type { DiscoveredCandidate } from "../discovery/types";
+import type { NodeSupersessionStatus } from "../amendment/types";
 
 export type ContextItemType =
   | "OPERATIVE_SOURCE"
@@ -104,6 +105,26 @@ export type UnresolvedDependencyType =
   | "DEFINITION_CYCLE"
   | "REFERENCE_CYCLE"
   | "BUDGET_EXCEEDED_DEPENDENCY"
+  /**
+   * Phase 3F.1.6.RX Workstream B (BLOCKER-2 real-consumer remediation) -
+   * this bundle's own originating DiscoveredCandidate (input.candidate) is
+   * itself KNOWN_SUPERSEDED per discovery/pass-d-reconcile.ts's own
+   * worst-case-across-structuralNodeIds computation. Root cause this
+   * closes: `DiscoveredCandidate.supersessionStatus` (added by BLOCKER-2's
+   * own fix) was computed correctly at the discovery layer but never read
+   * by ANY of this field's own 3 named real consumers (context-retrieval,
+   * coverage-audit's discovery-comparison.ts, semantic-coverage's
+   * reconciliation.ts) - an independent runtime trace found the type
+   * existed but nothing downstream ever branched on it, the exact
+   * "architecturally inert" failure shape BLOCKER-2 itself was created to
+   * close for DeterministicCandidate. This is a DIFFERENT, more severe
+   * dependency type than the others above (all of which describe an
+   * inability to RESOLVE a reference/term) - here resolution succeeded,
+   * but the resolved text's own governing status is affirmatively known to
+   * be stale, which is why it is always HIGH severity (see
+   * buildCovenantContextBundle's own use of this).
+   */
+  | "SUPERSEDED_OPERATIVE_SOURCE"
   | "OTHER";
 
 export type UnresolvedSeverity = "LOW" | "MEDIUM" | "HIGH" | "UNKNOWN";
@@ -176,6 +197,19 @@ export interface CovenantContextBundle {
   originatingStructuralNodeIds: string[];
   normalizedSourceRef: string;
   originatingFamilies: CovenantFamily[];
+  /**
+   * Phase 3F.1.6.RX Workstream B (BLOCKER-2 real-consumer remediation) -
+   * copied directly off the SAME `DiscoveredCandidate.supersessionStatus`/
+   * `supersessionReason` Pass D already computed (never re-derived here -
+   * this module has no amendment/* import and none is added by this fix).
+   * Always populated, defaulting to whatever the input candidate itself
+   * carries (UNKNOWN_SUPERSESSION_STATUS whenever discovery itself had no
+   * real supersessionIndex - never CURRENT_OPERATIVE by omission). See
+   * buildCovenantContextBundle's own header for what this bundle's
+   * sufficiencyState does with a KNOWN_SUPERSEDED value.
+   */
+  originatingSupersessionStatus: NodeSupersessionStatus;
+  originatingSupersessionReason: string;
 
   items: ContextItem[];
   edges: DependencyEdge[];

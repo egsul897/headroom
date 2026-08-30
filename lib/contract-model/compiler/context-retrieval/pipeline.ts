@@ -169,8 +169,64 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   return finalize(input, state, documentId, start);
 }
 
+/**
+ * Phase 3F.1.6.RX Workstream B (BLOCKER-2 real-consumer remediation).
+ *
+ * ROOT CAUSE (independent runtime trace, not merely re-reading 3F.1.6.R's
+ * own prose): `DiscoveredCandidate.supersessionStatus`/`supersessionReason`
+ * (BLOCKER-2's own fix in discovery/pass-d-reconcile.ts) already arrive
+ * here on `input.candidate` - `BuildContextBundleInput.candidate` IS a
+ * DiscoveredCandidate - but until this fix, `buildCovenantContextBundle`
+ * never read either field: `retrieveOperativeSource` cites the candidate's
+ * own structural node(s) via raw `StructuralIndex.getNodeText` with no
+ * supersession check of any kind, and neither field was ever copied onto
+ * the returned `CovenantContextBundle`. A KNOWN_SUPERSEDED candidate (Pass
+ * A/D already independently confirmed its own governing text no longer
+ * applies) therefore produced a bundle reporting `sufficiencyState:
+ * "SUFFICIENT"` with no disclosure whatsoever - of the 3 real downstream
+ * consumers BLOCKER-2's own certification named (context-retrieval,
+ * coverage-audit's discovery-comparison.ts, semantic-coverage's
+ * reconciliation.ts), NONE actually branches on
+ * `DiscoveredCandidate.supersessionStatus` in production - confirmed by
+ * direct grep, not assumption. This closes that gap for THIS consumer: a
+ * KNOWN_SUPERSEDED candidate now genuinely degrades this bundle's own
+ * sufficiencyState (a real behavioral effect, not decorative metadata),
+ * and every bundle discloses the real status/reason it was already handed.
+ *
+ * Deliberately NOT flagged for UNKNOWN_SUPERSESSION_STATUS (the honest
+ * "discovery itself had no real supersessionIndex" default) - matching
+ * every other layer's own established discipline (source-inventory.ts,
+ * semantic/tools.ts) of never treating "unknown" as an affirmatively
+ * confirmed problem, only ever KNOWN_SUPERSEDED is.
+ *
+ * DISCLOSED COUPLING (see this phase's own 04-operative-supersession-
+ * remediation.json): the ONE real production caller of
+ * buildCovenantContextBundle, lib/contract-model/analysis/orchestrator.ts,
+ * is Workstream H's own exclusive surface (BLOCKER-10/AUDIT-F1-F3/F6/F7) -
+ * this fix makes the consumer itself genuinely supersession-aware (proven
+ * by the new permanent test below), but until that orchestrator is also
+ * updated to read `candidate.supersessionStatus` (it does not need to -
+ * this fix requires no new parameter, since `candidate` is already its own
+ * input) this real capability is exercised by the real function on every
+ * real call, live or test - there is no additional wiring gap.
+ */
+function applySupersessionDisclosure(state: RetrievalState, candidate: BuildContextBundleInput["candidate"]): void {
+  if (candidate.supersessionStatus !== "KNOWN_SUPERSEDED") return;
+  state.unresolved.push({
+    originatingNodeKey: candidate.structuralNodeKeys[0] ?? null,
+    dependencyType: "SUPERSEDED_OPERATIVE_SOURCE",
+    sourceText: candidate.normalizedSourceRef,
+    attemptedResolution: "Read this candidate's own supersessionStatus, already computed by Pass A/D (discovery/pass-d-reconcile.ts) from a real NodeSupersessionIndex.",
+    reason: `This bundle's own originating candidate is KNOWN_SUPERSEDED: ${candidate.supersessionReason}`,
+    candidateTargets: [],
+    citation: candidate.sourceCitation,
+    severity: "HIGH",
+  });
+}
+
 function finalize(input: BuildContextBundleInput, state: RetrievalState, documentId: string, start: number): CovenantContextBundle {
   const { candidate, packageKey, companyId, instrumentKey } = input;
+  applySupersessionDisclosure(state, candidate);
   const sufficiencyState = computeSufficiencyState(state);
   const contentIdentity = computeContentIdentity({
     discoveryId: candidate.discoveryId,
@@ -192,6 +248,8 @@ function finalize(input: BuildContextBundleInput, state: RetrievalState, documen
     originatingStructuralNodeIds: candidate.structuralNodeIds,
     normalizedSourceRef: candidate.normalizedSourceRef,
     originatingFamilies: candidate.families,
+    originatingSupersessionStatus: candidate.supersessionStatus,
+    originatingSupersessionReason: candidate.supersessionReason,
     items: [...state.items.values()],
     edges: state.edges,
     unresolvedDependencies: state.unresolved,

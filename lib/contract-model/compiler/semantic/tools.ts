@@ -128,6 +128,43 @@ function summarizeItem(item: ContextItem): unknown {
   return { itemId: item.itemId, type: item.type, documentId: item.documentId, sourceCitation: item.sourceCitation, excerptText: item.excerptText, reason: item.reason };
 }
 
+/**
+ * Phase 3F.1.6.RX Workstream B (BLOCKER-5 real-behavior remediation).
+ *
+ * ROOT CAUSE (independent runtime trace): getContextBundleComponent and
+ * getSharedCapContext were classified NOT_CONTRACT_TEXT_EVIDENCE on the
+ * stated rationale that they "echo an already-vetted CovenantContextBundle
+ * item." Reading context-retrieval/pipeline.ts end to end (zero references
+ * to operativeState/supersession anywhere in that module, confirmed by
+ * direct grep) shows this is false: Phase 2D's own retrieval
+ * (retrieveOperativeSource/retrieveParentScope/retrieveChildRules/
+ * retrieveSiblingContext, structural-context.ts) reads every item's own
+ * excerptText via raw `StructuralIndex.getNodeText`, with NO operative-
+ * state or supersession check of any kind - "already-vetted" was never
+ * actually true for the per-item text these two tools hand back, only for
+ * the item's own relevance/provenance metadata (why it was retrieved),
+ * which is a different question. Both tools DO return independently-
+ * interpretable provision/economic excerptText - exactly what
+ * ToolOperativeStateDiscipline exists to police - so NOT_CONTRACT_TEXT_
+ * EVIDENCE was the wrong classification.
+ *
+ * Fix mirrors getSourceSpan's own established pattern (disclosure, not
+ * substitution - a context-bundle echo must return exactly what the
+ * bundle actually holds, never a different, silently-substituted text):
+ * every returned item now carries a real per-item supersessionStatus/
+ * supersessionReason, computed via the SAME supersessionIndex
+ * buildToolSet already builds once per compilation attempt - no new
+ * import, no second computation. An item with no structuralNodeId (a
+ * DEFINITION/DEFINITION_DEPENDENCY item, which is anchored by defined-term
+ * name rather than a StructuralNode) resolves UNKNOWN_SUPERSESSION_STATUS
+ * via getNodeSupersessionStatus's own fail-closed "no nodeId supplied"
+ * branch - never guessed as CURRENT_OPERATIVE.
+ */
+function summarizeItemWithSupersession(supersessionIndex: NodeSupersessionIndex, item: ContextItem): unknown {
+  const result = getNodeSupersessionStatus(supersessionIndex, item.documentId, item.structuralNodeId);
+  return { ...(summarizeItem(item) as Record<string, unknown>), supersessionStatus: result.status, supersessionReason: result.reason };
+}
+
 function findProvisionView(operativeState: OperativeProvisionView[] | undefined, ref: string): OperativeProvisionView | undefined {
   const normalized = ref.replace(/\s+/g, "");
   return operativeState?.find((p) => (p.sectionRef ?? "").replace(/\s+/g, "") === normalized || (p.definedTermRef ?? "").toLowerCase() === ref.trim().toLowerCase());
@@ -443,29 +480,33 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
     },
     {
       name: "getContextBundleComponent",
-      description: "Look up one specific item from your own initial context bundle by its itemId (as given to you at the start) - use this to re-read a citation's full excerpt if you need to double check it rather than requesting new evidence.",
+      description: "Look up one specific item from your own initial context bundle by its itemId (as given to you at the start) - use this to re-read a citation's full excerpt if you need to double check it rather than requesting new evidence. This is Phase 2D's own bounded retrieval, NOT independently re-verified against current amendment status here (see the response's supersessionStatus field) - prefer getOperativeProvision/getReferencedProvision for a section's confirmed-current economics.",
       inputSchema: { type: "object", properties: { itemId: { type: "string" } }, required: ["itemId"] },
-      // Echoes an item from the SAME already-vetted CovenantContextBundle
-      // Phase 2D built (and this compilation attempt was already given at
-      // the start) - never independently reads raw StructuralIndex text, so
-      // it carries no disposition this fix would need to add or check.
-      operativeStateDiscipline: "NOT_CONTRACT_TEXT_EVIDENCE",
+      // Phase 3F.1.6.RX Workstream B fix (see summarizeItemWithSupersession's
+      // own header): this DOES echo independently-interpretable provision/
+      // economic excerptText, and context-retrieval/pipeline.ts (the module
+      // that built it) has zero operative-state awareness of its own -
+      // "already-vetted" was false. Correctly HISTORICAL_EVIDENCE_WITH_STATUS
+      // now: never substitutes a different text (a bundle echo must return
+      // exactly what the bundle holds), but every response honestly
+      // discloses a real, independently-computed supersessionStatus.
+      operativeStateDiscipline: "HISTORICAL_EVIDENCE_WITH_STATUS",
       execute: (input) => {
         const itemId = String(input.itemId ?? "");
         const item = access.contextBundle.items.find((i) => i.itemId === itemId);
         if (!item) return refuse(`itemId "${itemId}" is not in your context bundle`);
         const summary = `context item ${itemId} (${item.type})`;
-        return ok(summarizeItem(item), item.excerptText, summary);
+        return ok(summarizeItemWithSupersession(supersessionIndex, item), item.excerptText, summary);
       },
     },
     {
       name: "getSharedCapContext",
-      description: "Get every context-bundle item Phase 2D already flagged as a shared-capacity signal for this covenant (e.g. a trailing aggregate cap shared by multiple baskets in the same section). Use this before assuming a basket has its own independent, uncapped economics.",
+      description: "Get every context-bundle item Phase 2D already flagged as a shared-capacity signal for this covenant (e.g. a trailing aggregate cap shared by multiple baskets in the same section). Use this before assuming a basket has its own independent, uncapped economics. This is Phase 2D's own bounded retrieval, NOT independently re-verified against current amendment status here (see each item's own supersessionStatus field).",
       inputSchema: { type: "object", properties: {}, required: [] },
-      // Same reasoning as getContextBundleComponent - echoes already-vetted context-bundle items only.
-      operativeStateDiscipline: "NOT_CONTRACT_TEXT_EVIDENCE",
+      // Same reasoning and fix as getContextBundleComponent above.
+      operativeStateDiscipline: "HISTORICAL_EVIDENCE_WITH_STATUS",
       execute: () => {
-        const items = access.contextBundle.items.filter((i) => i.type === "SHARED_CAP").map(summarizeItem);
+        const items = access.contextBundle.items.filter((i) => i.type === "SHARED_CAP").map((i) => summarizeItemWithSupersession(supersessionIndex, i));
         const summary = `${items.length} shared-cap context item(s)`;
         return ok({ items }, summary, summary);
       },

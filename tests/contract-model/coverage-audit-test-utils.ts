@@ -63,6 +63,8 @@ export function makeBundle(overrides: Partial<CovenantContextBundle> & { origina
     instrumentKey: null,
     originatingDiscoveryId: `discovery-candidate:${overrides.normalizedSourceRef}`,
     originatingFamilies: ["INDEBTEDNESS"] as CovenantFamily[],
+    originatingSupersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    originatingSupersessionReason: "test fixture - no real supersession index applied",
     items: [],
     edges: [],
     unresolvedDependencies: [],

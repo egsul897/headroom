@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "WORKSTREAM_B_OPERATIVE_SUPERSESSION_REMEDIATION",
+  "workstream": "B",
+  "scope": "BLOCKER-2 through BLOCKER-6 (operative-state/supersession trust) - independent runtime trace against 3F.1.6.R's own self-reported fixes, root-causing and fixing any REAL bypass found.",
+  "methodology": "For each item, real production code was traced end-to-end with constructed data (never trusting the prior phase's own prose), and every trace was captured as a PERMANENT, non-throwaway test extending or added alongside the existing suites. All 6 test files below were run individually and together; the full repo suite (tests/, 2167 tests) was also run to confirm no regressions beyond 2 already-disclosed pre-existing failures (BLOCKER-7 scope) and 1 confirmed environment-load-dependent concurrency-probe flake unrelated to any file this workstream touched.",
+  "items": [
+    {
+      "itemNumber": 1,
+      "title": "Supersession reaches DiscoveredCandidate and a real downstream consumer",
+      "blockerId": "BLOCKER-2",
+      "trace": {
+        "step1_typeAndComputation": "Re-read lib/contract-model/compiler/discovery/types.ts and pass-d-reconcile.ts in full. Confirmed DiscoveredCandidate.supersessionStatus/supersessionReason ARE correctly computed by combineSupersessionForNodes - worst-case across every structuralNodeIds entry, defaulting UNKNOWN when no Pass A record exists for a node, never CURRENT_OPERATIVE by omission. This part of the prior fix is genuinely correct.",
+        "step2_realConsumerGrep": "grep -rn '\\.supersessionStatus' lib/ (production code only, excluding tests) found the field is WRITTEN in pass-d-reconcile.ts and semantic/tools.ts (a different, resolved-provision-view field of the same name, unrelated to DiscoveredCandidate), but is NEVER READ off a DiscoveredCandidate object anywhere in production code before this workstream's own fix. Specifically checked all 3 real consumers 3F.1.6.R's own certification named: context-retrieval/pipeline.ts (buildCovenantContextBundle) - zero references to candidate.supersessionStatus; coverage-audit/discovery-comparison.ts (auditDiscoveryCoverage/compareRegionToDiscovery/candidatesTouchingNode) - matches candidates purely by structuralNodeIds membership, copies region.supersessionStatus (a DIFFERENT, BLOCKER-3 field) onto its output but never reads or branches on candidate.supersessionStatus; semantic-coverage/reconciliation.ts (candidatesCoveringUnit/reconcileOneUnit) - same story, zero references.",
+        "step3_priorTestWasTypeOnlyProof": "Read tests/certification/discovery-supersession-signal-lost-in-pipeline.test.ts's own 'END-TO-END' test line by line. Its final assertions read candidate.supersessionStatus directly off the SAME array object handed to auditDiscoveryCoverage, and its own comment admits: 'The consumer function accepted the real candidates array under its own real TypeScript signature... this is only possible because supersessionStatus is now a real, typed field.' This is a type-compatibility proof, not a behavioral one - it never asserts that auditDiscoveryCoverage's own OUTPUT differs because of supersessionStatus. Confirmed by reading auditDiscoveryCoverage/compareRegionToDiscovery directly: it does not.",
+        "step4_severeAdjacentFinding_liveOrchestrator": "Traced the ONE real production caller of buildCovenantContextBundle: lib/contract-model/analysis/orchestrator.ts's analyzeInstrument (the live, wired contract-analysis path per BLOCKER-10's own remediation). Found: (a) `operativeSourceText` (the PRIMARY grounding text handed to the semantic compiler, shown first in caller.ts's own prompt) is built via `candidate.structuralNodeIds.map(id => index.getNodeText(id, 'DESCENDANTS')).join(...)` - raw structural text, with ZERO reference to candidate.supersessionStatus, operativeState, or any supersession-aware resolution path (unlike getOperativeProvision's own findProvisionView-first pattern in tools.ts); (b) `operativeLineage: null` is HARDCODED unconditionally at the orchestrator's own call site, even though `OperativeLineageRef` is a real, load-bearing mechanism 3 other modules already consult for exactly this purpose (semantic/caller.ts's own prompt discloses `operativeLineage.operativeStatus` when present; semantic/normalize.ts's enforceSufficiencyConsistency downgrades sufficiency to CONFLICTED/PARTIAL when operativeLineage.operativeStatus is CONFLICTED/REVIEW_REQUIRED; semantic-verification/verify.ts reads it directly - see verify.ts:126 `sourceInventory.supersessionStatus === 'KNOWN_SUPERSEDED' -> REVIEW_REQUIRED` and the analogous operativeLineage check). Hardcoding it null defeats ALL THREE of these safety mechanisms simultaneously for every real, live compilation - a KNOWN_SUPERSEDED or AMBIGUOUS provision's own real operative status never reaches the compiler, normalizer, or independent verifier through this field at all, in production, today.",
+        "step5_scopeBoundaryDecision": "lib/contract-model/analysis/orchestrator.ts is explicitly Workstream H's own exclusive surface per this phase's own 02-independent-code-audit-findings.json workstreamAssignment ('H: BLOCKER-10 + AUDIT-F1, F2, F3, F6, F7 ... bundled into one workstream since all 5 items touch the same tightly-coupled orchestrator/persistence surface'). This workstream's own task charter also explicitly excludes files owned by other workstreams. Modifying this file risks colliding with Workstream H's own concurrent, in-progress work on the identical surface. DECISION: do not modify analysis/orchestrator.ts; fix everything within this workstream's own real scope (discovery/coverage-audit/semantic-coverage/semantic compiler-tools layer); document this finding in full so Workstream H / Part B can act on it."
+      },
+      "fixApplied": {
+        "files": ["lib/contract-model/compiler/context-retrieval/types.ts", "lib/contract-model/compiler/context-retrieval/pipeline.ts"],
+        "description": "buildCovenantContextBundle (context-retrieval - one of the 3 real named consumers, and squarely within this workstream's scope) now reads candidate.supersessionStatus/supersessionReason directly off its own existing input (BuildContextBundleInput.candidate IS a DiscoveredCandidate - no new parameter needed, no wiring gap introduced). Added CovenantContextBundle.originatingSupersessionStatus/originatingSupersessionReason (copied, never re-derived - this module still has zero amendment/* import) and a new UnresolvedDependencyType member SUPERSEDED_OPERATIVE_SOURCE. When candidate.supersessionStatus === KNOWN_SUPERSEDED, a real HIGH-severity unresolved dependency is now pushed, which computeSufficiencyState's own EXISTING, unmodified logic genuinely degrades to INCOMPLETE - a real behavioral effect, not decorative metadata. UNKNOWN_SUPERSESSION_STATUS never triggers this (matches every other layer's own fail-closed-but-not-over-triggering discipline).",
+        "sideEffectDiscoveredNotEngineered": "semantic/caller.ts's summarizeContextBundle (UNMODIFIED by this fix) already unconditionally includes input.contextBundle.unresolvedDependencies in the model's own compilation prompt (the 'Already-known unresolved dependencies' section). This means the new SUPERSEDED_OPERATIVE_SOURCE entry this fix adds ALREADY reaches the real LLM prompt in the live orchestrator's own compilation call, with zero changes to caller.ts or orchestrator.ts - only the separate operativeSourceText/operativeLineage pathway (traced in step 4 above) remains genuinely unprotected.",
+        "permanentTests": ["tests/foundation-audit/context-retrieval-adversarial.test.ts (new describe block, 4 tests: KNOWN_SUPERSEDED degrades sufficiency + discloses status; CURRENT_OPERATIVE and UNKNOWN_SUPERSESSION_STATUS never false-positive; a full Pass A -> pass-d-reconcile -> DiscoveredCandidate -> buildCovenantContextBundle end-to-end run with a REAL discovery pipeline, not a hand-set fixture)"]
+      },
+      "disposition": "NEW_COUPLED_BLOCKER_DISCOVERED",
+      "dispositionRationale": "The narrow, in-scope defect (zero real module-level consumer acted on DiscoveredCandidate.supersessionStatus) is now genuinely fixed and independently tested for context-retrieval, and that fix's effect is confirmed to reach the real compilation prompt via caller.ts's own unmodified logic. However, the trace surfaced a NEW, more severe, and still fully open bypass in the live orchestrator's own construction of operativeSourceText/operativeLineage (step 4 above) that defeats the SAME underlying safety property (supersession/conflict status reaching the compiler) through a different, parallel pathway this workstream cannot fix without touching Workstream H's exclusive file. BLOCKER-2 cannot be honestly reported as fully remediated while this coupled gap remains live in production."
+    },
+    {
+      "itemNumber": 2,
+      "title": "Current-state tools cannot silently use superseded text (all 14 LLM-facing evidence tools)",
+      "blockerId": "BLOCKER-5",
+      "trace": {
+        "methodology": "Read every one of the 14 tools' own execute() bodies directly in lib/contract-model/compiler/semantic/tools.ts (not the prior phase's own classification table) and independently re-derived each one's real behavior against a constructed superseded-node scenario.",
+        "perToolFindings": [
+          { "tool": "getOperativeProvision", "verified": "findProvisionView-first, correct as claimed." },
+          { "tool": "getDefinition", "verified": "findProvisionView-first, correct as claimed." },
+          { "tool": "getDefinitionDependencies", "verified": "returns only OTHER term names, never text - correctly NOT_CONTRACT_TEXT_EVIDENCE." },
+          { "tool": "getParentClause", "verified": "resolveNodeWithSupersessionAwareness, correct as claimed." },
+          { "tool": "getChildren", "verified": "never returns child text (nodeId/sectionRef/heading only) plus a real parentSupersessionStatus, correct as claimed." },
+          { "tool": "getSiblingClauses", "verified": "resolveNodeWithSupersessionAwareness per sibling, correct as claimed." },
+          { "tool": "getReferencedProvision", "verified": "resolveNodeWithSupersessionAwareness on both the fromNodeId and absolute-reference resolution paths, correct as claimed." },
+          { "tool": "getRelatedAmendments", "verified": "findProvisionView by ref/term (correctly finds AMBIGUOUS DEFINITION-kind provisions too, since definedTermRef - unlike sectionRef - IS populated for DEFINITION-kind provisions even when ambiguous); BLOCKER-6's candidateSourceNodeIds gap does not apply here since this tool never looks up by structuralNodeId." },
+          { "tool": "getPriorVersion", "verified": "deliberately historical, discloses supersededBy, correct as claimed." },
+          { "tool": "getInstrumentDocuments", "verified": "topology only (documentId list), correctly NOT_CONTRACT_TEXT_EVIDENCE." },
+          { "tool": "getContextBundleComponent", "verified": "FALSE PREMISE FOUND - see fixApplied below." },
+          { "tool": "getSharedCapContext", "verified": "FALSE PREMISE FOUND - see fixApplied below." },
+          { "tool": "getSourceSpan", "verified": "deliberately raw/historical by design, discloses real supersessionStatus via getNodeSupersessionStatus, correct as claimed." },
+          { "tool": "getRuleDependency", "verified": "graph edges only, never text - correctly NOT_CONTRACT_TEXT_EVIDENCE." }
+        ],
+        "rootCauseOfTheTwoDefects": "getContextBundleComponent and getSharedCapContext were classified NOT_CONTRACT_TEXT_EVIDENCE on the stated rationale 'echoes an already-vetted CovenantContextBundle item.' Independently reading context-retrieval/pipeline.ts end to end (grep for operativeState/supersession across the whole module: zero hits) proves this premise false - every ContextItem's own excerptText is built from raw StructuralIndex text (retrieveOperativeSource/retrieveParentScope/retrieveChildRules/retrieveSiblingContext in structural-context.ts) with no operative-state check of any kind. These 2 tools DO return independently-interpretable provision/economic excerptText - the exact thing ToolOperativeStateDiscipline exists to police - so the false 'already vetted' premise let a genuine SUPER-5-shaped gap through the prior phase's own audit."
+      },
+      "fixApplied": {
+        "files": ["lib/contract-model/compiler/semantic/tools.ts"],
+        "description": "Added summarizeItemWithSupersession(supersessionIndex, item) - computes a real per-item supersessionStatus/supersessionReason via getNodeSupersessionStatus (the SAME supersessionIndex buildToolSet already builds once per compilation attempt - no new import, no second computation), keyed by item.structuralNodeId (fails closed to UNKNOWN for an item with no structuralNodeId, e.g. a DEFINITION anchored by term name). getContextBundleComponent and getSharedCapContext now use this helper and are reclassified HISTORICAL_EVIDENCE_WITH_STATUS (never CURRENT_OPERATIVE_EVIDENCE - a bundle echo must return exactly what the bundle holds, never a silently-substituted different text - matching getSourceSpan's own established disclosure-not-substitution pattern). Both tools' own descriptions now explicitly disclose that Phase 2D's bounded retrieval is not independently re-verified here.",
+        "permanentTests": [
+          "tests/certification/semantic-tools-supersession-blind-navigation.test.ts (new describe block, 3 tests: real per-item KNOWN_SUPERSEDED/UNKNOWN disclosure without text substitution; getSharedCapContext per-item disclosure; a structuralNodeId-less item fails closed to UNKNOWN)",
+          "tests/contract-model/semantic-tools-operative-state-discipline.test.ts (extended: asserts the corrected classification for both tools, guarding against classification drift)"
+        ]
+      },
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+    },
+    {
+      "itemNumber": 3,
+      "title": "Null operativeState fails closed",
+      "blockerId": "BLOCKER-4",
+      "trace": {
+        "isolatedFunctionRecheck": "Re-read cross-reference-audit.ts's auditOperativeStateForUnits in full. The null-check genuinely lives INSIDE the function (not the caller), and constructs OPERATIVE_STATE_UNRESOLVED_FOR_UNIT with provisionKey: null for every unit with a real structural anchor - confirmed correct, matching the prior phase's own claim.",
+        "gapFoundAndClosed": "Every existing test that exercises this (both the isolated-function tests in semantic-coverage-cross-reference-audit.test.ts AND every fixture in semantic-coverage-pipeline.test.ts) passes a real, RESOLVED, empty-provisions OperativeContractState - confirmed by grep, there was NO existing test exercising the genuinely-null case through the REAL end-to-end runSemanticCoverageAudit orchestration (routeDocument -> hypothesizeUnitsForDocument -> freezeSourceInventory -> reconcileFrozenInventory -> auditOperativeStateForUnits -> applyOperativeStateFindingsToCoverage -> computeDocumentCoverage -> computePackageCoverage). Constructed one: 2 real discovered/compiled/VERIFIED carve-outs, operativeState: null.",
+        "result": "Every unit with a real structural anchor (both carve-outs) resolved OPERATIVE_STATE_UNRESOLVED - not FULLY_REPRESENTED_VERIFIED despite being in verifiedCandidateRefs, not any other differentiated/trusted state. This propagated correctly to documentDetails[0].operativeStateFindings (one OPERATIVE_STATE_UNRESOLVED_FOR_UNIT finding per anchored unit, provisionKey null) and to the real package-level status PACKAGE_OPERATIVE_STATE_UNRESOLVED. A contrast test with the identical fixture and a real, RESOLVED, empty-provisions state (never null) confirmed the same units correctly reach FULLY_REPRESENTED_REVIEW_REQUIRED instead - proving the null-only branch is doing real, input-dependent work, not something this fixture would trigger regardless."
+      },
+      "fixApplied": { "files": [], "description": "No bypass found. No production code change made." },
+      "permanentTests": ["tests/contract-model/semantic-coverage-pipeline.test.ts (new describe block, 2 tests: end-to-end null-operativeState fail-closed trace through the real pipeline; contrast regression guard with a real, non-null, empty-provisions state)"],
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+    },
+    {
+      "itemNumber": 4,
+      "title": "Ambiguous DEFINITION amendment cannot become verified",
+      "blockerId": "BLOCKER-6",
+      "trace": {
+        "existingChain2Recheck": "Re-ran and read tests/foundation-audit/cross-module-propagation-chains.test.ts's Chain 2 in full - confirmed it genuinely exercises the real, unmodified auditOperativeStateForUnits/reconcileFrozenInventory/applyOperativeStateFindingsToCoverage/recordClaimReview chain end-to-end (including a real Postgres-persisted ClaimReviewItem), and correctly proves the unit cannot reach FULLY_REPRESENTED_VERIFIED. This existing test is sound.",
+        "newAdversarialConstruction": "Built a NEW, independent construction distinct from Chain 2's exactly-2-occurrence, single-term scenario: a 3-WAY ambiguous DEFINITION provision (3 real candidateSourceNodeIds, not 2) coexisting in the SAME operative state with a SECOND, entirely unrelated, genuinely RESOLVED (non-ambiguous) DEFINITION provision for a DIFFERENT term.",
+        "result": "All 3 real ambiguous occurrences are correctly flagged (parameterized it.each - none of the 3 slips through), a unit anchored to the coexisting RESOLVED term's own node is correctly NOT flagged (no cross-term contamination via the ambiguous provision's own candidateSourceNodeIds), a genuinely unrelated node is correctly not flagged either (no over-triggering), and a single batch call across all 4 units produces exactly 3 findings - never fewer (a missed occurrence) and never more (contamination)."
+      },
+      "fixApplied": { "files": [], "description": "No bypass found. No production code change made." },
+      "permanentTests": ["tests/contract-model/semantic-coverage-cross-reference-audit.test.ts (new describe block, 6 tests: 3-way ambiguity via it.each, cross-term isolation, true-negative on an unrelated node, and one real-batch-call composition proof)"],
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+    },
+    {
+      "itemNumber": 5,
+      "title": "Source-inventory's raw-vs-operative distinction is real, not just typed",
+      "blockerId": "BLOCKER-3",
+      "trace": {
+        "independenceContractRecheck": "Re-confirmed (independent grep, not trusting the prior phase's own test) that source-inventory.ts/signals.ts/materiality.ts/context-inventory.ts still import nothing from amendment/*, and that pipeline.ts is the one file that does.",
+        "meaningfulDifferenceConstruction": "Built a real 2-section document where the two sections are GENUINELY DIFFERENT (one superseded, one not), rather than checking one node's tag in isolation as every pre-existing test does. RAW mode (no supersessionIndex, and buildSourceCoverageInventory called directly bypassing pipeline.ts entirely) tags BOTH sections IDENTICALLY (UNKNOWN) - genuinely blind to the real difference, confirmed even though the test itself knows the real answer. OPERATIVE mode (a real supersessionIndex reflecting that only section 6.01 was superseded) correctly DIFFERENTIATES the two real sections (6.01 -> KNOWN_SUPERSEDED, 6.02 -> CURRENT_OPERATIVE), and findings inherit the same real per-node differentiation.",
+        "liveWiringCaveat": "Separately confirmed (grep across app/, scripts/, lib/) that runIndependentCoverageAudit (this entire module) is NEVER called from the live, wired analysis/orchestrator.ts - only from historical one-off certification scripts. This is a PRE-EXISTING, disclosed architectural fact (the module's own header has stated 'Standalone, in-memory pipeline ... neither is wired into ContractCompilerRun's persisted stage machine either' since Phase 2E, unchanged by any workstream), not a new regression, and squarely AUDIT-F6's own charter ('proof that a real user cannot reach the product's analyzed state without the authoritative contract-analysis path') - not re-litigated here as a BLOCKER-3 defect."
+      },
+      "fixApplied": { "files": [], "description": "No bypass found in the module's own internal raw-vs-operative correctness. No production code change made." },
+      "permanentTests": ["tests/contract-model/coverage-audit-supersession-gate.test.ts (new describe block, 3 tests: raw-mode blindness to a real difference, operative-mode genuine differentiation, and a direct buildSourceCoverageInventory call confirming the architectural boundary is real, not merely unexercised)"],
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+    }
+  ],
+  "regressionEvidence": {
+    "tscBaseline": "6 errors, byte-identical to the phase's own 00-baseline.json (tests/foundation-audit/{cascade-and-concurrency,discovery-fault-injection,real-db-duplicate-physical-occurrence}.test.ts) - confirmed via `npx tsc --noEmit -p .` before and after every change; no new errors.",
+    "eslintBaseline": "1 error, identical to baseline (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires).",
+    "targetedSuiteResult": "npx vitest run tests/contract-model/ tests/foundation-audit/ tests/certification/ - 143/144 files passed, 1532/1534 tests passed. The 1 failing file/2 failing tests (tests/certification/section11-source-trace-independent.test.ts) reproduced identically at this phase's own unmodified starting commit via git stash/pop - confirmed pre-existing, BLOCKER-7/AUDIT-F5 scope (Workstream C), not this workstream's.",
+    "fullSuiteResult": "npx vitest run (whole repo) - 207/210 files passed, 2163/2167 tests passed. Same 2 pre-existing BLOCKER-7 failures, plus 1 additional failure in tests/foundation-audit/repro-connection-race.test.ts (a real-Postgres concurrency-race probe, 20 trials x 6 concurrent calls, unrelated to any file this workstream touched) - confirmed a load-dependent flake, not a regression: passed both at the unmodified baseline commit and in isolation with this workstream's own changes applied (npx vitest run tests/foundation-audit/repro-connection-race.test.ts alone, both before and after).",
+    "buildResult": "Not re-run separately in this workstream (no route/schema/build-affecting change was made) - all changes are confined to lib/contract-model/compiler/{context-retrieval,semantic}/* and their own test suites."
+  },
+  "filesChanged": [
+    "lib/contract-model/compiler/context-retrieval/types.ts",
+    "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+    "lib/contract-model/compiler/semantic/tools.ts",
+    "tests/contract-model/coverage-audit-test-utils.ts",
+    "tests/contract-model/semantic-compiler/test-helpers.ts",
+    "tests/foundation-audit/context-retrieval-adversarial.test.ts",
+    "tests/certification/semantic-tools-supersession-blind-navigation.test.ts",
+    "tests/contract-model/semantic-tools-operative-state-discipline.test.ts",
+    "tests/contract-model/semantic-coverage-pipeline.test.ts",
+    "tests/contract-model/semantic-coverage-cross-reference-audit.test.ts",
+    "tests/contract-model/coverage-audit-supersession-gate.test.ts"
+  ],
+  "filesDeliberatelyNotModified": {
+    "file": "lib/contract-model/analysis/orchestrator.ts",
+    "reason": "Explicitly Workstream H's own exclusive surface per this phase's 02-independent-code-audit-findings.json (BLOCKER-10 + AUDIT-F1/F2/F3/F6/F7, 'bundled into one workstream since all 5 items touch the same tightly-coupled orchestrator/persistence surface'). Contains the severe, live, coupled bypass documented in item 1's trace (operativeSourceText built from raw text with no supersession check; operativeLineage hardcoded null, defeating 3 other modules' own real safety mechanisms). Reported in full for Workstream H / Part B's own action rather than modified here, to avoid colliding with that workstream's own concurrent work on the identical file."
+  },
+  "summaryOfNewProductionCodeFixes": [
+    "context-retrieval's buildCovenantContextBundle now genuinely reads and acts on DiscoveredCandidate.supersessionStatus (real behavioral effect on sufficiencyState, not decoration) - closing the specific 'zero real consumer' gap BLOCKER-2's own trace requirement asked for.",
+    "semantic/tools.ts's getContextBundleComponent and getSharedCapContext - falsely classified NOT_CONTRACT_TEXT_EVIDENCE on a premise ('already-vetted') independently proven false - now honestly disclose real per-item supersessionStatus (HISTORICAL_EVIDENCE_WITH_STATUS), matching getSourceSpan's own established disclosure-not-substitution pattern."
+  ],
+  "openFindingsForOtherWorkstreams": [
+    {
+      "id": "COUPLED-1",
+      "owner": "Workstream H (BLOCKER-10 surface)",
+      "file": "lib/contract-model/analysis/orchestrator.ts",
+      "finding": "analyzeInstrument's own compilerInput construction: (1) `operativeSourceText` is built via raw `index.getNodeText(id, 'DESCENDANTS')` over the candidate's own structuralNodeIds with zero reference to candidate.supersessionStatus or operativeState - the primary text the compiler is told is its 'operative source' can be confirmed-stale text with no disclosure of any kind; (2) `operativeLineage: null` is hardcoded, unconditionally, for every real compilation - defeating semantic/caller.ts's own prompt disclosure, semantic/normalize.ts's enforceSufficiencyConsistency downgrade, and semantic-verification/verify.ts's own operativeLineage check, all three of which already exist specifically to consume this field correctly.",
+      "recommendedFix": "Compute operativeSourceText via the SAME findProvisionView-first pattern getOperativeProvision (semantic/tools.ts) already uses for this candidate's own primary section/definition, falling back to raw text only when no covering provision exists (tagged via getNodeSupersessionStatus, mirroring resolveNodeWithSupersessionAwareness). Compute a real OperativeLineageRef from the covering OperativeProvisionView (instrumentKey/provisionKey/asOfDate/operativeStatus/currentSourceDocumentId) instead of hardcoding null."
+    }
+  ]
+}

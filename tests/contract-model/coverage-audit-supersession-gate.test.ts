@@ -118,3 +118,87 @@ describe("BLOCKER-3 fix: a real supersessionIndex correctly re-tags the independ
     expect(result.regions.every((r) => r.supersessionStatus === "CURRENT_OPERATIVE")).toBe(true);
   });
 });
+
+/**
+ * Phase 3F.1.6.RX Workstream B - BLOCKER-3 independent runtime trace (item
+ * 5's own explicit ask: confirm actual behavior differs MEANINGFULLY with
+ * vs. without a supersessionIndex, not that the parameter is merely
+ * plumbed through unused). Every existing test above checks ONE node's own
+ * tag in isolation. This trace instead builds a REAL 2-section document
+ * where the two sections are GENUINELY DIFFERENT (one superseded, one
+ * not) and confirms:
+ *   - the RAW mode (buildSourceCoverageInventory called directly, and
+ *     runIndependentCoverageAudit with no supersessionIndex) is BLIND to
+ *     this real difference - both sections tag identically (UNKNOWN),
+ *     never accidentally differentiating them by chance;
+ *   - the OPERATIVE mode (a real supersessionIndex supplied) correctly
+ *     DIFFERENTIATES the two real, different sections - proving the
+ *     parameter's presence causes a genuine, input-dependent behavioral
+ *     difference, not a decorative pass-through that always resolves the
+ *     same way regardless of what the index actually says.
+ */
+describe("BLOCKER-3 independent trace: raw mode is genuinely blind to a REAL difference the operative mode correctly detects", () => {
+  const documentId = "doc-two-sections";
+  const text = `SECTION 6.01. Indebtedness . The Borrower shall not incur Indebtedness in excess of $5,000,000.\n\nSECTION 6.02. Liens . The Borrower shall not create any Lien in excess of $2,000,000.`;
+
+  function buildRegionsFor(supersessionIndex?: NodeSupersessionIndex) {
+    const index = buildTestIndex([{ documentId, label: "CA", text }]);
+    const node601 = index.getNodeByRef(documentId, "6.01")!;
+    const node602 = index.getNodeByRef(documentId, "6.02")!;
+    const result = runIndependentCoverageAudit({ companyId: "c", packageKey: "p", instrumentKey: null, documentIds: [documentId], index, candidates: [], packageGraph: null, bundles: [], supersessionIndex });
+    return { result, node601, node602 };
+  }
+
+  it("RAW mode: two genuinely different real sections (one superseded in reality, one not) tag IDENTICALLY when no supersessionIndex is supplied - the raw scan has no way to tell them apart, and honestly does not pretend to", () => {
+    // No index at all - the honest "never checked" case. Note: the REAL
+    // superseded/not-superseded fact about 6.01 vs 6.02 is established
+    // below (in the OPERATIVE mode test) using the SAME document/nodeIds -
+    // this test proves the raw path is blind to that same real fact.
+    const { result, node601, node602 } = buildRegionsFor(undefined);
+    const region601 = result.regions.find((r) => r.structuralNodeId === node601.nodeId)!;
+    const region602 = result.regions.find((r) => r.structuralNodeId === node602.nodeId)!;
+    expect(region601).toBeDefined();
+    expect(region602).toBeDefined();
+    expect(region601.supersessionStatus).toBe(region602.supersessionStatus);
+    expect(region601.supersessionStatus).toBe("UNKNOWN_SUPERSESSION_STATUS");
+  });
+
+  it("OPERATIVE mode: the SAME two real sections, with a real supersessionIndex reflecting that 6.01 (not 6.02) was actually superseded, now correctly DIFFERENTIATE - proving the parameter's effect is genuinely input-dependent, not a constant re-tag", () => {
+    const index = buildTestIndex([{ documentId, label: "CA", text }]);
+    const node601 = index.getNodeByRef(documentId, "6.01")!;
+    const node602 = index.getNodeByRef(documentId, "6.02")!;
+    const supersessionIndex: NodeSupersessionIndex = {
+      coveredDocumentIds: new Set([documentId]),
+      supersededByNodeId: new Map([[node601.nodeId, { nodeId: node601.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01" }]]),
+      ambiguousNodeIds: new Set(),
+    };
+    const result = runIndependentCoverageAudit({ companyId: "c", packageKey: "p", instrumentKey: null, documentIds: [documentId], index, candidates: [], packageGraph: null, bundles: [], supersessionIndex });
+    const region601 = result.regions.find((r) => r.structuralNodeId === node601.nodeId)!;
+    const region602 = result.regions.find((r) => r.structuralNodeId === node602.nodeId)!;
+    // The two real, different sections now correctly resolve DIFFERENTLY -
+    // not both UNKNOWN (the raw-mode result above), and not both the same
+    // value by coincidence.
+    expect(region601.supersessionStatus).toBe("KNOWN_SUPERSEDED");
+    expect(region602.supersessionStatus).toBe("CURRENT_OPERATIVE");
+    expect(region601.supersessionStatus).not.toBe(region602.supersessionStatus);
+
+    // Findings inherit the SAME real per-node differentiation (never
+    // uniformly re-tagged regardless of which node a finding traces to).
+    const findings601 = result.findings.filter((f) => f.structuralNodeId === node601.nodeId);
+    const findings602 = result.findings.filter((f) => f.structuralNodeId === node602.nodeId);
+    if (findings601.length > 0) expect(findings601.every((f) => f.supersessionStatus === "KNOWN_SUPERSEDED")).toBe(true);
+    if (findings602.length > 0) expect(findings602.every((f) => f.supersessionStatus === "CURRENT_OPERATIVE")).toBe(true);
+  });
+
+  it("buildSourceCoverageInventory itself (called directly, bypassing pipeline.ts entirely) is identically raw regardless of what a real amendment resolution WOULD say - confirms the raw/operative split is a real architectural boundary (source-inventory.ts truly cannot see amendment/* data), not merely an unexercised code path", () => {
+    const index = buildTestIndex([{ documentId, label: "CA", text }]);
+    const node601 = index.getNodeByRef(documentId, "6.01")!;
+    const regionsDirect = buildSourceCoverageInventory(documentId, index, { companyId: "c", packageKey: "p", instrumentKey: null });
+    const region601Direct = regionsDirect.find((r) => r.structuralNodeId === node601.nodeId)!;
+    // Even though we (the test) KNOW 6.01 is "superseded" in this same
+    // scenario (established above), the direct call - which has no
+    // supersessionIndex parameter at all, by construction - cannot possibly
+    // know that: source-inventory.ts has zero import from amendment/*.
+    expect(region601Direct.supersessionStatus).toBe("UNKNOWN_SUPERSESSION_STATUS");
+  });
+});
