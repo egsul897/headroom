@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "SECTION_30_STATIC_DANGER_PATTERN_AUDIT",
+  "generatedAt": "2026-08-30T03:45:00Z",
+  "purpose": "Grep of production code (lib/, app/ only) for 10 specific dangerous patterns, with every match classified even when benign.",
+  "scopeNote": "Every grep below was run against lib/ and app/ only. Where a pattern's ONLY matches are in comments/doc-strings explaining a fix (not live code), that is noted explicitly and not counted as a live instance.",
+  "findings": [
+    {
+      "id": "SP-1",
+      "category": "1. structural lookup by sectionRef without occurrence identity",
+      "severity": "BLOCKER",
+      "matches": ["lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts:112"],
+      "detail": "`operativeState.provisions.find((p) => p.currentSourceNodeId === nodeId || (p.sectionRef && unit.anchors[0]?.sectionRef && p.sectionRef === unit.anchors[0].sectionRef))`. This is the ONLY bare sectionRef-string-comparison lookup found anywhere in production code. It is used only as a fallback alongside the occurrence-safe nodeId check, but that fallback is exactly the root cause of Section 27's Chain 2 break: DEFINITION-kind provisions never populate sectionRef (only SECTION-kind does), so an AMBIGUOUS definition's real candidateSourceNodeIds are never consulted and the ambiguity silently fails to reach semantic-coverage. Classified BLOCKER because it is the confirmed, reproduced root cause of a certification-blocking chain break (see 25-cross-module-failure-propagation.json, Chain 2)."
+    },
+    {
+      "id": "SP-2",
+      "category": "2. definition lookup without document/instrument scope",
+      "severity": "MAJOR_NON_BLOCKING",
+      "matches": ["lib/contract-model/compiler/structural-index.ts:196 (interface), :563-566 (implementation)"],
+      "detail": "Every current production call site of index.getDefinition/getDefinitionFullText passes a documentId (confirmed by grepping every call site in lib/ and app/ this session -- zero omissions found). However, the StructuralIndex interface itself still types documentId as OPTIONAL (`documentId?: string`), and the implementation's fallback behavior when omitted is to search a GLOBAL `definitionsByNormalizedTerm` map across every document -- i.e. the exact cross-document leak vector that was fixed at specific call sites in Phase 3F.1.4/3F.1.5.R remains fully present and reachable in the API surface itself. This is a live landmine, not a live violation: no current caller triggers it, but nothing in the type system or a lint rule prevents a future caller from omitting the second argument and silently reintroducing the leak. Not a BLOCKER (zero current exploitation, confirmed by exhaustive grep), but a real, actionable MAJOR_NON_BLOCKING finding: the dangerous capability should ideally be removed from the API (make documentId required) rather than relying on caller discipline alone."
+    },
+    {
+      "id": "SP-3",
+      "category": "3. tenant-blind cache/index lookup",
+      "severity": "INFORMATIONAL",
+      "matches": [],
+      "detail": "No new tenant-blind cache found. The one historical instance (lib/contract-model/compiler/semantic/compile.ts's module-level defaultCache) was already fixed in a prior phase and is now directly tested by tests/foundation-audit/semantic-cache-cross-tenant.test.ts (read in full this session, confirms computeCacheKey folds in companyId/instrumentKey/sourceDocumentId). No module-level `const x = new Map()` singleton holding tenant data was found anywhere else in lib/ (the one module-level Map found, discovery/normalization.ts's ROLE_TOKEN_LOOKUP, is a static enum-token table, not tenant data). This session's own adversarial-foundation-matrix.test.ts Case 6 additionally confirmed, against real Postgres, that the upload-dedup path's @@unique([companyId, contentHash]) constraint holds under a genuine concurrent cross-tenant race."
+    },
+    {
+      "id": "SP-4",
+      "category": "4. direct StructuralNode scanning for current-state truth without supersession awareness (NEW locations only)",
+      "severity": "INFORMATIONAL",
+      "matches": [],
+      "detail": "grep found 6 call sites of allNodes()-shaped scanning in lib/contract-model/compiler/. Of these: pass-a-signals.ts and discovery pipeline.ts already correctly thread a NodeSupersessionIndex parameter (confirmed by reading discovery/pipeline.ts:70-74 this session -- it accepts and forwards supersessionIndex, defaulting to the fail-closed EMPTY_SUPERSESSION_INDEX). source-inventory.ts (coverage-audit), router.ts (semantic-coverage), and cross-reference-audit.ts's own null-operativeState fail-open case are ALL already disclosed in docs/phase-3f1-5-r-residual-foundation/22-remaining-foundation-risks.json ('P1-11 broader consumer population') -- re-confirmed present, not newly discovered. coverage-audit/pipeline.ts's own allNodes() scan (line 74) was newly checked this session and found to be for STRUCTURAL HEALTH/boundary-anomaly detection only (computeStructuralCoverage), never a claim about which text currently governs for covenant/compliance purposes -- not an instance of this category. No NEW location beyond what Phase 3F.1.5.R already disclosed was found."
+    },
+    {
+      "id": "SP-5",
+      "category": "5. unresolved implies unlimited/permitted default-permissive interpretation",
+      "severity": "INFORMATIONAL",
+      "matches": ["lib/covenant-engine.ts:446, :1105 (?? Infinity / ?? -Infinity)"],
+      "detail": "Both matches are inside a MIN/MAX reduce that only executes once `status` (computed from every part's own status) is already confirmed 'modeled' for every part -- i.e. by the time `?? Infinity` could matter, no part is actually unresolved (an unresolved part would have produced a non-'modeled' status and short-circuited before this line). Purely defensive, never reachable with a genuinely unresolved value. lib/solver/coverage.ts:157's `?? false` default and lib/solver/election.ts's own comments (lines 652-656, read this session) both confirm the codebase's real convention is 'unresolved -> insufficiency,' the opposite of the dangerous pattern. No violation found."
+    },
+    {
+      "id": "SP-6",
+      "category": "6. silent catch/continue around material semantic failures",
+      "severity": "MINOR",
+      "matches": ["lib/covenant-overview-service.ts:53-58 (loadCovenantDataOrEmpty)"],
+      "detail": "~22 catch blocks were reviewed across lib/contract-model, lib/connectors, lib/onboarding. The overwhelming majority correctly follow Architecture Invariant #36's tolerant-boundary pattern (an honest FAILED/failed:true status plus the real error message, never a crash, never a fabricated success) -- stage-inventory.ts, stage-rule-extraction.ts, stage-verification.ts, stage-relationships.ts, stage-definitions.ts, semantic/caller.ts, semantic/compile.ts, semantic-verification/reviewer.ts, semantic-coverage/ai-inventory.ts, connectors/ingestion.ts, connectors/edgar-connector.ts, connectors/csv-financial-connector.ts, extraction/run-stage.ts all confirmed this pattern by direct reading. lib/document-storage/{local-fs,vercel-blob}-provider.ts's bare `catch {}` blocks are explicitly documented best-effort cleanup (delete-on-error paths), matching their own interface doc comment -- benign by design. ONE genuine finding: lib/covenant-overview-service.ts's loadCovenantDataOrEmpty wraps loadCompanyCovenantData in an undiscriminated `catch { return emptyCovenantData(companyId); }` -- the comment discloses this is meant to catch the EXPECTED case (a company with no legacy FinancialSnapshot row, real for any solver-native-only company), but the catch does not verify the caught error IS that specific expected condition before converting it to an empty (not error) state. A genuine unexpected failure (a DB connection error, a schema mismatch) would be silently misreported as 'this company simply has no covenant data' to whatever UI consumes it, rather than surfacing as a real error. Classified MINOR (not MAJOR) because covenant-overview is a read/display aggregation, not itself a material contractual-conclusion path, and the common case this catches genuinely is expected/benign."
+    },
+    {
+      "id": "SP-7",
+      "category": "7. swallowed compiler/verifier errors not propagated into failure-reason types",
+      "severity": "MAJOR_NON_BLOCKING",
+      "matches": ["lib/contract-model/compiler/semantic-coverage/pipeline.ts:87-94, 116 (aiInventoryFailed)"],
+      "detail": "runSemanticCoverageAudit correctly detects when Layer C's bounded AI inventory call fails (aiResult.failed) and threads it into a per-document `aiInventoryFailed: boolean` on DocumentAuditOutput -- the DETECTION itself is honest. However, confirmed by grepping every consumer of `documentDetails` in lib/, scripts/, and tests/ this session: `aiInventoryFailed` is NEVER read anywhere. It does not affect computeDocumentCoverage/computePackageCoverage's own rollup status (no PACKAGE_AUDIT_INCOMPLETE-style escalation for it, unlike the auditIncomplete flag which IS correctly rolled up), it is never turned into a ClaimReviewItem via the safe-failure integration (derive.ts never reads it), and it is not asserted by a single existing test. A region whose ONLY chance of surfacing a real covenant claim was the AI-assisted layer, where that layer's call genuinely failed, produces silence beyond an unread boolean -- a real, confirmed instance of a compiler-adjacent failure that does not propagate into any status a caller or the safe-failure architecture actually consults. Classified MAJOR_NON_BLOCKING rather than BLOCKER because it is currently dormant: no live app/ route supplies an aiCaller to runSemanticCoverageAudit at all (the whole pipeline is script/test-invoked only, per Section 27's own disclosed gap), so this has not yet caused an observable silent failure in any real run this session executed."
+    },
+    {
+      "id": "SP-8",
+      "category": "8. review-state deletion outside Company/Document cascade",
+      "severity": "NONE_FOUND",
+      "matches": [],
+      "detail": "grep for prisma.claimReviewItem/claimReviewObservation/claimReviewDecision .delete(/.deleteMany( found ZERO matches anywhere in lib/ or app/. The only deleteMany calls against these tables anywhere in the repository are in this session's own new test files' afterAll/cleanup blocks (tests/foundation-audit/cross-module-propagation-chains.test.ts, adversarial-foundation-matrix.test.ts) and the pre-existing scripts/phase-3f1-5-r-safe-failure-volume-analysis.ts's own scratch-data cleanup -- all scoped to a specific scratch companyId, never a bare unscoped delete. No violation."
+    },
+    {
+      "id": "SP-9",
+      "category": "9. package-specific IDs/names in production logic",
+      "severity": "INFORMATIONAL",
+      "matches": ["lib/dashboard-service.ts:96-97 (SOLVER_CONTEXT_ENTITY_DEFAULTS)", "lib/coherent.ts:27 (PROTECTED_COMPANY_IDS)"],
+      "detail": "Grepped lib/ and app/ (excluding comments) for FWRG/LSB/CONMED/DSGR/Coherent/Matthews. FWRG/LSB/CONMED/DSGR: zero hits in lib/ or app/ production logic outside comments and the evaluation-v2 harness (lib/contract-model/evaluation-v2/runner/*.ts, which reads named fixture datasets by design -- this is the evaluation HARNESS reading benchmark fixtures by filename, not the compiler's matching/decision logic branching on package identity; the anti-benchmark-gaming contract's own text distinguishes 'disclosure of why a generalized pattern exists' from 'matching/decision logic itself' depending on fixture-specific facts -- the harness reading `tests/fixtures/unseen-packages/dsgr-.../` by path is the former). Coherent/Matthews: 2 real hits in actual logic (not comments), both personally read in full this session: (a) SOLVER_CONTEXT_ENTITY_DEFAULTS is a lookup table keyed by companyId providing entityClasses/incurringEntity/guarantorStatus defaults for exactly 2 named companies, WITH a generic, correctness-preserving fallback for any other companyId (confirmed: `SOLVER_CONTEXT_ENTITY_DEFAULTS[companyId] ?? { entityClasses: [\"BORROWER\"], incurringEntity: { id: `${companyId}-borrower`, name: companyId }, guarantorStatus: \"GUARANTOR\" }`) -- same control flow, same correctness guarantee for every company, only display-name/id values differ; (b) PROTECTED_COMPANY_IDS is an explicit delete-protection allowlist for 2 named demo/reference companies, consumed only by the company-delete flow, never by any covenant-answer-producing logic. Neither hit branches matching/decision logic on package identity to fake or tune an answer -- both are honestly disclosed in their own header comments as data/convenience, not benchmark gaming. Classified INFORMATIONAL: technically named-company references exist in production code, but neither meets the anti-gaming contract's actual test ('does the matching/decision logic itself depend on anything fixture/company-specific')."
+    },
+    {
+      "id": "SP-10",
+      "category": "10. generic warnings substituted for claim-specific state",
+      "severity": "MAJOR_NON_BLOCKING",
+      "matches": ["lib/contract-model/compiler/semantic-coverage/pipeline.ts (aiInventoryFailed, aiInventoryRejectedQuotes -- same underlying finding as SP-7)"],
+      "detail": "Same root finding as SP-7, viewed through invariant #37's lens: a document whose Layer C AI-inventory call failed downgrades to a bare, unread document-level boolean rather than a per-claim ClaimReviewItem for whatever material claims that failed call might have contained. This is exactly the pattern invariant #37 forbids in its own text ('a sibling's flag, a generic section-level warning, or structural proximity never substitutes for a claim-specific record') -- except here it is not even a warning anyone SEES, since nothing reads the field at all. Same severity/dormancy rationale as SP-7 (MAJOR_NON_BLOCKING, currently dormant since no live route supplies an aiCaller)."
+    }
+  ],
+  "summaryBySeverity": {
+    "BLOCKER": 1,
+    "MAJOR_NON_BLOCKING": 3,
+    "MINOR": 1,
+    "INFORMATIONAL": 3,
+    "NONE_FOUND": 1,
+    "note": "SP-7 and SP-10 describe the SAME underlying code defect (aiInventoryFailed's dead-end) viewed through two different lenses the task asked for separately; counted once each per category as instructed, but they are not two independent defects."
+  }
+}
