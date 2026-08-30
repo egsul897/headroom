@@ -73,10 +73,11 @@ import { buildPackageGraph } from "../compiler/package-graph/pipeline";
 import { persistPackageGraph } from "../compiler/package-graph/persistence";
 import type { InstrumentGroupingResult, PackageDocumentInput, PackageGraphResult } from "../compiler/package-graph/types";
 import { runAmendmentPipeline } from "../compiler/amendment/pipeline";
-import { computeOperativeContractState } from "../compiler/amendment/operative-state";
-import type { OperativeContractState } from "../compiler/amendment/types";
+import { computeOperativeContractState, buildNodeSupersessionIndex, getNodeSupersessionStatus, EMPTY_SUPERSESSION_INDEX } from "../compiler/amendment/operative-state";
+import type { OperativeContractState, NodeSupersessionIndex, NodeSupersessionResult, NodeSupersessionStatus, OperativeStateStatus } from "../compiler/amendment/types";
 import { runDiscoveryPipeline } from "../compiler/discovery/pipeline";
 import type { DiscoveredCandidate } from "../compiler/discovery/types";
+import type { OperativeLineageRef } from "../ir/types";
 import { buildCovenantContextBundle, type PackageAccess } from "../compiler/context-retrieval/pipeline";
 import { isEligibleForSemanticCompilation, compilePackageToIR, type PackageCompilationCandidate } from "../compiler/semantic/package-compile";
 import { SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION, SEMANTIC_COMPILER_TOOL_POLICY_VERSION, type SemanticCompilerInput } from "../compiler/semantic/types";
@@ -133,6 +134,36 @@ function resolveInstrumentUnits(packageGraph: PackageGraphResult, allDocumentIds
   return units;
 }
 
+/** Worst-first severity, mirroring discovery/pass-d-reconcile.ts's own combineSupersessionForNodes convention (KNOWN_SUPERSEDED > UNKNOWN > CURRENT_OPERATIVE) - reused here, never re-derived independently, so a candidate spanning several structural nodes can never be reported safer than its worst node. */
+const SUPERSESSION_SEVERITY: Record<NodeSupersessionStatus, number> = { KNOWN_SUPERSEDED: 2, UNKNOWN_SUPERSESSION_STATUS: 1, CURRENT_OPERATIVE: 0 };
+
+/**
+ * Derives a genuine OperativeLineageRef for one compiled candidate from the
+ * real NodeSupersessionIndex this orchestrator now builds (see
+ * analyzeInstrument's own header comment on the AUDIT-F1/BLOCKER-2 coupled
+ * fix this pairs with). This is the one place operativeLineage is ever
+ * constructed for the live orchestrator - previously hardcoded null,
+ * silently defeating semantic/normalize.ts's own enforceSufficiencyConsistency
+ * downgrade for every real candidate regardless of actual amendment state.
+ */
+function deriveOperativeLineage(candidate: DiscoveredCandidate, supersessionIndex: NodeSupersessionIndex, instrumentKey: string, asOfDate: string): OperativeLineageRef {
+  let worst: NodeSupersessionResult | null = null;
+  for (const nodeId of candidate.structuralNodeIds) {
+    const result = getNodeSupersessionStatus(supersessionIndex, candidate.documentId, nodeId);
+    if (!worst || SUPERSESSION_SEVERITY[result.status] > SUPERSESSION_SEVERITY[worst.status]) worst = result;
+  }
+  const resolved: NodeSupersessionResult = worst ?? { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: "This candidate carries no structural node identity at all - supersession status cannot be determined." };
+  const operativeStatus: OperativeStateStatus =
+    resolved.status === "KNOWN_SUPERSEDED" ? "OPERATIVE_STATE_CONFLICTED" : resolved.status === "UNKNOWN_SUPERSESSION_STATUS" ? "OPERATIVE_STATE_REVIEW_REQUIRED" : "OPERATIVE_STATE_RESOLVED";
+  return {
+    instrumentKey: resolved.record?.instrumentKey ?? instrumentKey,
+    provisionKey: resolved.record?.provisionKey ?? `${candidate.documentId}::${candidate.normalizedSourceRef}`,
+    asOfDate,
+    operativeStatus,
+    currentSourceDocumentId: resolved.record?.supersededByAmendmentDocumentId ?? candidate.documentId,
+  };
+}
+
 /**
  * Runs the full composed pipeline for ONE instrument unit's own document
  * subset, returning its own coverage/claim-review outcome. Never throws for
@@ -156,15 +187,31 @@ async function analyzeInstrument(params: {
   const instrumentDocs = unit.documentIds.map((id) => packageDocsById.get(id)!).filter(Boolean);
 
   // --- amendment/operative state ---
+  const asOfDate = new Date().toISOString().slice(0, 10);
   const amendmentResult = await runAmendmentPipeline(callers.amendmentCaller, { documents: instrumentDocs, packageGraph, index });
   const operativeState: OperativeContractState | null = unit.baseDocumentId
-    ? computeOperativeContractState({ instrumentKey: unit.instrumentKey, baseDocumentId: unit.baseDocumentId, asOfDate: new Date().toISOString().slice(0, 10), index, allEffects: amendmentResult.effects })
+    ? computeOperativeContractState({ instrumentKey: unit.instrumentKey, baseDocumentId: unit.baseDocumentId, asOfDate, index, allEffects: amendmentResult.effects })
     : null;
+
+  // Phase 3F.1.6.RX Workstream B / orchestrator-integration fix (the
+  // NEW_COUPLED_BLOCKER_DISCOVERED this workstream found while revalidating
+  // BLOCKER-2 - see docs/phase-3f1-6-rx-final-blocker-closure/
+  // 04-operative-supersession-remediation.json): this orchestrator computed
+  // operativeState above but NEVER used it to build a NodeSupersessionIndex
+  // or pass one to runDiscoveryPipeline - every real DiscoveredCandidate's
+  // own supersessionStatus therefore silently resolved UNKNOWN_SUPERSESSION_
+  // STATUS in live production regardless of real amendment data (discovery/
+  // pipeline.ts's own EMPTY_SUPERSESSION_INDEX default), which in turn made
+  // Workstream B's own context-retrieval fix (buildCovenantContextBundle
+  // reading candidate.supersessionStatus) inert end-to-end in the one place
+  // that actually runs live. Building and threading the real index here
+  // closes the whole chain in one root-cause fix.
+  const supersessionIndex: NodeSupersessionIndex = unit.baseDocumentId && operativeState ? buildNodeSupersessionIndex([{ baseDocumentId: unit.baseDocumentId, state: operativeState }]) : EMPTY_SUPERSESSION_INDEX;
 
   // --- material covenant discovery (per document) ---
   const allCandidates: DiscoveredCandidate[] = [];
   for (const doc of instrumentDocs) {
-    const result = await runDiscoveryPipeline(callers.discoveryCaller, doc.documentId, index);
+    const result = await runDiscoveryPipeline(callers.discoveryCaller, doc.documentId, index, supersessionIndex);
     allCandidates.push(...result.candidates);
   }
 
@@ -194,6 +241,15 @@ async function analyzeInstrument(params: {
     // names as the field to use for identity/lookup - which is what
     // getNodeText actually requires.
     const operativeSourceText = candidate.structuralNodeIds.map((id) => index.getNodeText(id, "DESCENDANTS")).join("\n\n");
+    // Phase 3F.1.6.RX orchestrator-integration fix (paired with the
+    // supersessionIndex wiring above): operativeLineage was previously
+    // hardcoded null, silently disabling normalize.ts's own
+    // enforceSufficiencyConsistency downgrade (OPERATIVE_STATE_CONFLICTED/
+    // REVIEW_REQUIRED forcing a non-COMPLETE sufficiency) for every real
+    // candidate - this candidate's own supersessionStatus is now genuinely
+    // computed (via the real supersessionIndex threaded into discovery
+    // above), so it is honestly reflected here rather than discarded.
+    const operativeLineage = deriveOperativeLineage(candidate, supersessionIndex, unit.instrumentKey, asOfDate);
     const compilerInput: SemanticCompilerInput = {
       companyId,
       instrumentKey: unit.instrumentKey,
@@ -202,7 +258,7 @@ async function analyzeInstrument(params: {
       sourceSectionRef: candidate.normalizedSourceRef,
       operativeSourceText,
       contextBundle: bundle,
-      operativeLineage: null,
+      operativeLineage,
       toolAccess: { structuralIndex: index, operativeState, packageGraph, amendmentEffects: amendmentResult.effects, contextBundle: bundle },
       irSchemaVersion: IR_SCHEMA_VERSION,
       compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION,
