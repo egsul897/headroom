@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "PART_B_RECERTIFICATION_BLOCKER7",
+  "part": "B",
+  "role": "Independent PRODUCTION-FROZEN recertification auditor (adversarial, not a rerun of the original workstream's own tests)",
+  "blockerId": "BLOCKER-7",
+  "auditFindingId": "AUDIT-F5",
+  "generatedAt": "2026-08-30T17:05:00Z",
+  "frozenBaseCommit": "d098cb4",
+  "branchHeadAtSessionStart": "26632718705e4cc1e574f9807ce625580e95b748",
+  "worktreeVerification": "git log -1 confirmed the worktree was already at origin/claude/headroom-scaffold-covenant-engine-jrijk8 (commit 2663271) at session start - no stale worktree, no reset needed. git status was clean before any work began.",
+  "productionFreezeCompliance": "No production code, schema, or migration file was modified. scripts/backfill-defined-term-node-stable-key.ts, lib/contract-model/stable-keys.ts, lib/contract-model/compiler/persistence.ts, and lib/contract-model/service.ts were read-only inspected, never edited. The backfill script was run in dry-run (no --write) mode only in this session; every --write invocation was confined to synthetic, uniquely-prefixed fixture companies inside new/existing automated tests, never against fixture-fwrg-2021-credit-agreement-co or fixture-lsb-2023-abl-credit-agreement-co. One new test file was added (tests/contract-model/part-b-recert-blocker7-adversarial.test.ts); two throwaway exploratory scripts (scripts/tmp-part-b-recert-query.ts, scripts/tmp-part-b-recert-sql.ts) were created for task 2's independent query, run, and deleted before this report was written - confirmed via `git status --short` showing only the one new test file as untracked.",
+
+  "documentsReviewed": [
+    "docs/phase-3f1-6-rx-final-blocker-closure/01-frozen-work-items.json",
+    "docs/phase-3f1-6-rx-final-blocker-closure/02-independent-code-audit-findings.json (AUDIT-F5 charter)",
+    "docs/phase-3f1-6-rx-final-blocker-closure/05-source-trace-referential-integrity.json (Workstream C's full report - claims independently re-tested below)",
+    "scripts/backfill-defined-term-node-stable-key.ts (current, unmodified)",
+    "lib/contract-model/stable-keys.ts (computeStableKey, unmodified)",
+    "lib/contract-model/compiler/persistence.ts (persistDefinedTerms, persistStructuralDefinitions, toDefinedTermStableKeys, unmodified)",
+    "lib/contract-model/service.ts (getRuleSourceTrace, unmodified)",
+    "tests/contract-model/backfill-defined-term-node-stable-key.test.ts (Workstream C's own test - re-run, not just read)",
+    "tests/certification/section11-source-trace-independent.test.ts (re-read + re-run; honesty of its updated assertions independently evaluated in task 6 below)"
+  ],
+
+  "task1_independentDryRunAgainstRealAlreadyBackfilledDb": {
+    "command": "npx tsx scripts/backfill-defined-term-node-stable-key.ts",
+    "environment": "This worktree's real Postgres (pg_isready confirmed accepting connections; DATABASE_URL already set in the repo's .env at session start, pointed at postgresql://postgres:headroom@localhost:5432/headroom; `npx prisma migrate status` confirmed schema up to date, 29 migrations applied).",
+    "result": {
+      "fixture-fwrg-2021-credit-agreement-co": { "rows": 41, "affected": 0, "wouldBeCorrected": 0, "unrecoverable": 0 },
+      "fixture-lsb-2023-abl-credit-agreement-co": { "rows": 30, "affected": 0, "wouldBeCorrected": 0, "unrecoverable": 0 },
+      "totals": { "scanned": 71, "affected": 0, "wouldBeCorrected": 0, "unrecoverable": 0 }
+    },
+    "conclusion": "Idempotency at rest CONFIRMED independently: the real, already-backfilled database reports 0 affected rows on a fresh dry-run invocation in this Part B session, not merely on the strength of Workstream C's own test assertion. This was re-run again at the end of this session (see task1b) to confirm the database was not perturbed by the new adversarial test file's writes (which are all scoped to synthetic fixture-partb-recert-* companies)."
+  },
+  "task1b_postAdversarialTestingReVerification": {
+    "command": "npx tsx scripts/backfill-defined-term-node-stable-key.ts (re-run after all new adversarial tests below had executed and written to their own synthetic companies)",
+    "result": "Identical: 71 scanned, 0 affected, 0 unrecoverable across both real companies. Confirms the new adversarial test file's real-Postgres writes (to fixture-partb-recert-b7-co-a/-b only) did not touch or perturb fixture-fwrg-2021-credit-agreement-co or fixture-lsb-2023-abl-credit-agreement-co."
+  },
+
+  "task2_independentFreshQuery": {
+    "method": "Two independently-written queries, NEITHER copied from Workstream C's own SQL in 05-source-trace-referential-integrity.json: (a) a Prisma-application-level join (fetch all ContractRule rows with non-empty definedTermRefs plus all DefinedTermNode.stableKey values per company, intersect in JS via a Set) as the primary independent mechanism, and (b) a from-scratch raw SQL unnest+INNER JOIN as a second, structurally different cross-check (same shape as the prior workstream's own approach, but written without reference to their query text).",
+    "queryAResultPerCompany": {
+      "fixture-fwrg-2021-credit-agreement-co": { "refs": 117, "resolved": 52, "rulesWithNonEmptyDefinedTerms": 41, "rulesChecked": 52 },
+      "fixture-lsb-2023-abl-credit-agreement-co": { "refs": 74, "resolved": 54, "rulesWithNonEmptyDefinedTerms": 32, "rulesChecked": 43 }
+    },
+    "queryATotals": { "totalRefs": 191, "totalResolved": 106, "rulesWithNonEmptyDefinedTerms": 73 },
+    "queryBResult": {
+      "byCompany": [
+        { "companyId": "fixture-lsb-2023-abl-credit-agreement-co", "resolvedCount": 54 },
+        { "companyId": "fixture-fwrg-2021-credit-agreement-co", "resolvedCount": 52 }
+      ],
+      "totalResolved": 106
+    },
+    "comparisonToClaim": "Workstream C's own report claimed 106/191 total refs resolved, 73 rules with non-empty definedTerms, across 95 rules checked. Both of this session's independently-written queries return EXACTLY 106/191 resolved, and query A independently confirms 73 rules with non-empty resolution out of 95 total rules checked (41+52 = ... note: 52 rules checked for fwrg + 43 for lsb = 95, matching exactly; 41+32 = 73 rules with non-empty resolution, matching exactly).",
+    "discrepancy": "NONE. Zero drift since Workstream C's own report was generated - all three numbers (191 total refs, 106 resolved, 73/95 rules with non-empty resolution) match exactly across two independently-written query mechanisms and the original claim."
+  },
+
+  "task3_newAdversarialCasesNotPreviouslyTested": {
+    "testFile": "tests/contract-model/part-b-recert-blocker7-adversarial.test.ts",
+    "runResult": "6/6 passing (npx vitest run tests/contract-model/part-b-recert-blocker7-adversarial.test.ts), against the real live Postgres, using uniquely-prefixed synthetic fixture companies (fixture-partb-recert-b7-co-a / -co-b) never overlapping Workstream C's own fixture-blocker7-f5-backfill-* companies or the real fixture-fwrg/-lsb companies.",
+    "case_nullOrEmptyDocumentId": {
+      "question": "What happens if a DefinedTermNode row's documentId is null or empty?",
+      "finding": "UNREACHABLE by schema design, verified against the real DB rather than assumed: `documentId` is a NOT NULL column with a required foreign-key relation to Document.id (prisma/schema.prisma, model DefinedTermNode). Attempting `prisma.definedTermNode.create` with `documentId: null` throws at the Prisma/DB layer before any row is persisted. Attempting `documentId: \"\"` (a schema-legal but semantically-empty string, distinct from null) also throws, because no Document row with id=\"\" exists in this database (independently confirmed via a real `prisma.document.findUnique({ where: { id: \"\" } })` returning null immediately before the attempted create) - the FK constraint itself rejects it. The backfill script (`correctStableKeyFor`) has no null/empty-guard for documentId, but this is correct, not a gap: the schema forecloses the condition before the script could ever observe it. No defect found.",
+      "disposition": "Not a defect. Confirmed unreachable via direct, real-Postgres attempts, not by reading the schema alone."
+    },
+    "case_sameTermTwoDifferentDocumentsSameCompany": {
+      "question": "If two DIFFERENT documents in the SAME company define the identical term name, does the backfill correctly keep them as two distinct rows (never merging them), given computeStableKey includes documentId?",
+      "finding": "CONFIRMED CORRECT. Seeded two real rows in the same synthetic company under two different real documentId values, both with the SAME termName/normalizedName, each given its own distinct pre-P0-2-shaped stale stableKey (so they started as two genuinely separate rows, never colliding at the DB's own unique index before the backfill ran). analyzeCompany computed two DIFFERENT correct target keys (`computeStableKey(\"defined-term\", companyId, DOC_1, name)` vs `computeStableKey(\"defined-term\", companyId, DOC_2, name)`), neither flagged as a collision against the other. After `runBackfill({ write: true })`, both rows still exist independently (row count for that companyId+normalizedName pair is exactly 2, both ids present, both stableKeys corrected to their own document-scoped value and still different from each other).",
+      "disposition": "Not a defect. The documentId-inclusive formula behaves exactly as designed for this case."
+    }
+  },
+
+  "task4_genuineCollisionSeededDirectlyAgainstRealPostgres": {
+    "method": "Seeded a stale row (old pre-P0-2 stableKey) and a second, genuinely different row already holding that stale row's correct target key - both directly via real prisma.definedTermNode.create calls against real Postgres inside the new adversarial test, not reusing Workstream C's own test's fixture data or company ids.",
+    "result": {
+      "backfillReport": "runBackfill({ write: true }) reported affectedRows=1, correctedRows=0, unrecoverableRows=1 for the synthetic company; the finding's collisionRowId matched the real owner row's real id, and unrecoverableReason named that id.",
+      "postRunRealDbReread": "Re-read BOTH rows fresh from the real database after the run (not trusting the in-memory report): the stale row's stableKey was still the OLD value and its definitionTextRef ('stale-row-definition-ref') was untouched; the owner row's stableKey and definitionTextRef ('owner-row-definition-ref') were also untouched. Both rows still exist (count=2) - neither silently deleted or merged.",
+      "stillAffectedUnexplained": 0
+    },
+    "conclusion": "The collision-handling logic is REAL, not merely tested in isolation by the prior workstream. Independently re-seeded and re-verified with fresh real-database reads after the write, confirming the collision row is left completely untouched and correctly reported unrecoverable."
+  },
+
+  "task5_tenantIsolationIndependentVerification": {
+    "method": "Two synthetic companies (fixture-partb-recert-b7-co-a / -co-b) each given a document whose id shares an identical literal string PREFIX (Document.id is a real globally-unique primary key in this schema, so two companies cannot literally share one Document row - the adversarial property actually being probed, per the charter's own intent, is whether companyId rather than documentId uniqueness is what keeps two tenants' derived keys apart) and an identical term name, both seeded with old-format stale keys.",
+    "result": {
+      "correctedRowsAfterScopedRun": 2,
+      "unrecoverableRows": 0,
+      "provablyDifferentStableKeys": "Company A's corrected key and Company B's corrected key are different, and each independently matches computeStableKey computed with its own companyId - confirming companyId is a genuine, effective hash input, not a decoration.",
+      "crossTenantLookupScoping": "A lookup scoped to companyId=A for stableKey=B's-corrected-key returned null - B's key never resolves under A's tenant scope.",
+      "scopedRunNeverTouchesOtherTenant": "After resetting company B's row back to its stale key, running the backfill scoped ONLY to company A left company B's row still stale - confirming a company-A-scoped run never reads or writes company B's rows."
+    },
+    "conclusion": "Tenant isolation independently reconfirmed: two tenants with identical term-name/document-string shape produce provably different stableKeys, and a scoped run never touches the other tenant's data."
+  },
+
+  "task6_honestyReviewOfUpdatedCertificationTest": {
+    "file": "tests/certification/section11-source-trace-independent.test.ts",
+    "reRunResult": "15/15 passing against the real database in this Part B session.",
+    "assessment": "The updated assertions are genuine, not merely 'did not throw':",
+    "specificChecks": [
+      "'REAL FINDING #1 CLOSED' test: asserts `trace!.definedTerms.length` is GREATER THAN ZERO (not just defined/non-null), then iterates every resolved term asserting `term.companyId === REAL_FWRG_CO` (real tenant-scoping check, would fail on a cross-tenant leak) AND `term.stableKey` matches the real `/^defined-term:[0-9a-f]+$/` shape (well-formed-key check, would fail on a fabricated or malformed value). It also positively confirms the OLD raw-name encoding is gone (`anyRawNameMatch` must be null) rather than only checking the new behavior in isolation - a regression in either direction would fail this test.",
+      "'REAL FINDING #1 also reproduces... for the real LSB company' test: same non-empty + per-term companyId-scoping pattern, applied to the second real company independently - not copy-pasted-and-ignored, genuinely re-checks tenant scoping for a second real dataset.",
+      "The 8-sample per-section-ref parameterized tests each assert `trace!.definedTerms.length` > 0, that the resolved set contains the SPECIFIC expected real term name (not just 'something'), that the resolved term's own `documentId` matches the expected document (never a wrong-document fabrication), AND cross-check the returned sourceNode's real character span against the actual fixture source text with a content-specific regex - a materially stronger check than 'did not throw' or even 'returned non-null'.",
+      "The test file's own PRECONDITION tests independently re-derive (via the real parser/detector, not an assumption) that every term name and section ref the sample table cites is genuinely producible from the real fixture text - so a false-positive from a coincidentally-matching hardcoded string is independently ruled out."
+    ],
+    "conclusion": "The prior assertion-inversion (from asserting empty resolution to asserting non-empty resolution) is honest: it is accompanied by content-specific, tenant-scoped, format-validated checks that would fail if the underlying fix were fake, partial, or a leak - not a bare non-throw or a loosened assertion that would pass regardless of correctness."
+  },
+
+  "verificationChecklist": {
+    "tscNoNewErrors": "npx tsc --noEmit -p . reports exactly the same 6 pre-existing baseline errors (tests/foundation-audit/cascade-and-concurrency.test.ts x2, tests/foundation-audit/discovery-fault-injection.test.ts x1, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts x3) - 0 new errors from this Part B session's new test file.",
+    "eslintNoNewErrors": "npx eslint . reports exactly the same 1 pre-existing baseline error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires rule-not-found) - 0 new errors.",
+    "newTestSuite": "tests/contract-model/part-b-recert-blocker7-adversarial.test.ts: 6/6 passing.",
+    "priorWorkstreamTestsStillPass": "tests/contract-model/backfill-defined-term-node-stable-key.test.ts: 8/8 passing (re-run, not merely trusted). tests/certification/section11-source-trace-independent.test.ts: 15/15 passing (re-run).",
+    "gitScopeConfirmation": "git status --short shows exactly one new, untracked path: tests/contract-model/part-b-recert-blocker7-adversarial.test.ts. No production file, schema, or migration was modified. Two throwaway exploratory query scripts used for task 2 were deleted before this report was finalized."
+  },
+
+  "overallAssessment": "Every claim in Workstream C's report (05-source-trace-referential-integrity.json) was independently re-derived rather than merely re-read: the dry-run-reports-zero claim was reproduced fresh; the 106/191 resolution figure was reproduced via two independently-written query mechanisms with zero discrepancy; four new adversarial cases the prior workstream's own test file did not cover (null/empty documentId, same-term-different-document same-company, a freshly-seeded real collision, and tenant isolation with identical document-id-string/term-name shape) were constructed from scratch against real Postgres and all held; and the updated certification test's inverted assertions were confirmed to be substantively strengthened (tenant-scoped, format-validated, content-cross-checked), not merely loosened to stop failing. No defect, gap, or dishonest test was found in this workstream's scope during this Part B pass.",
+
+  "disposition": {
+    "BLOCKER-7": "CERTIFIED_CLOSED",
+    "AUDIT-F5": "CERTIFIED_CLOSED"
+  },
+  "dispositionRationale": "BLOCKER-7 (ContractRule.definedTermRefs referential integrity) and AUDIT-F5 (upgrade correctness criterion from FORMAT_CONFORMING to REFERENTIALLY_VALID, including the coupled DefinedTermNode staleness) both hold under independent, adversarial, production-frozen re-verification. The real database's already-applied backfill is confirmed idempotent at rest via a fresh dry-run in this session (0/71 affected); the claimed 106/191 real referential resolution rate was independently reproduced exactly via two separately-written query mechanisms with zero drift; the collision-refusal and tenant-isolation guarantees were independently re-seeded and re-verified against real Postgres rather than trusted from the prior workstream's own test; two genuinely new adversarial cases (documentId null/empty reachability, and same-term/different-document/same-company key disambiguation) were constructed and both resolved correctly (the former proven schema-unreachable via a real rejected write, the latter proven to produce two provably-distinct, correctly-scoped, un-merged rows); and the previously-inverted certification test assertions were confirmed to be honest, substantive checks (non-empty AND tenant-scoped AND well-formed-key AND content-cross-checked), not a weakened pass-through. The disclosed 85/191 out-of-scope dangling-reference gap (terms never extracted into their own DefinedTermNode row at all) remains correctly outside BLOCKER-7/AUDIT-F5's named scope, as this workstream and the charter both state, and is not a referential-integrity defect - it is fixable, if at all, only by an extraction-completeness effort in a distinct future phase, never by a stableKey backfill."
+}
