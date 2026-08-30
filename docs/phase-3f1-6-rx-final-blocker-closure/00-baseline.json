@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "BASELINE",
+  "generatedAt": "2026-08-30T07:00:00Z",
+  "startingCommit": {
+    "sha": "bb465fe58ba14fc51b8f2bbb7d0d23b6355dc8bf",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "workingTreeStatus": "CLEAN at phase start"
+  },
+  "immutableHistoricalArtifactConfirmation": {
+    "verdicts": [
+      "PHASE_3F_1_6_FINAL_FOUNDATION_CERTIFICATION_FAILED",
+      "PHASE_3F_1_6_R_CERTIFICATION_BLOCKER_REMEDIATION_PASSED"
+    ],
+    "statement": "Neither historical artifact tree (docs/phase-3f1-6-final-foundation-certification/, docs/phase-3f1-6-r-blocker-remediation/) is modified by this phase. Both verdicts are treated as fixed historical fact."
+  },
+  "postgresAvailability": {
+    "initialState": "DOWN at session start (pg_isready: no response).",
+    "action": "Started local Postgres cluster (pg_ctlcluster 16 main start) - local test infrastructure only, consistent with every prior phase's own precedent.",
+    "resultAfterStart": "UP - pg_isready accepting connections; prisma migrate status confirms 28 migrations, schema up to date."
+  },
+  "tscBaseline": {
+    "command": "npx tsc --noEmit -p .",
+    "result": "6 errors, byte-identical to every prior phase's baseline: tests/foundation-audit/cascade-and-concurrency.test.ts (2), tests/foundation-audit/discovery-fault-injection.test.ts (1), tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3)."
+  },
+  "eslintBaseline": {
+    "command": "npx eslint .",
+    "result": "1 error, identical to every prior phase's baseline: tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires."
+  },
+  "vitestBaseline": {
+    "command": "npx vitest run",
+    "result": "Reusing 3F.1.6.R's own close-of-phase result as this phase's reference point (identical commit, no intervening changes): 210 test files, 2148 tests, ALL PASSING (25-test-quality-gates.json in docs/phase-3f1-6-r-blocker-remediation/)."
+  },
+  "buildBaseline": {
+    "command": "npm run build",
+    "result": "Confirmed succeeding fresh at this phase's own start (21 routes, unchanged) before any production change was made."
+  },
+  "frozenWorkItemsReference": "docs/phase-3f1-6-rx-final-blocker-closure/01-frozen-work-items.json (the 11 original blockers, revalidation scope) and 02-independent-code-audit-findings.json (AUDIT-F1 through AUDIT-F7, verbatim from this phase's own spec)."
+}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "FROZEN_WORK_ITEMS",
+  "generatedAt": "2026-08-30T07:01:00Z",
+  "purpose": "The 11 original certified blocker boundaries, carried forward for revalidation (not re-litigation) in this phase.",
+  "blockers": [
+    { "id": "BLOCKER-1", "title": "Structural heading/rank-stack corruption", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Independently re-inspect precision AND recall with novel adversarial cases; redesign if too rigid." },
+    { "id": "BLOCKER-2", "title": "Supersession signal lost before DiscoveredCandidate", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Trace actual runtime values; fix any real bypass found." },
+    { "id": "BLOCKER-3", "title": "Source-inventory supersession/current-state architecture", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Same as above." },
+    { "id": "BLOCKER-4", "title": "Null operativeState failing open", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Same as above." },
+    { "id": "BLOCKER-5", "title": "LLM-facing tools bypassing operative state", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Same as above." },
+    { "id": "BLOCKER-6", "title": "Ambiguous DEFINITION amendment reaching false verified state", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Same as above." },
+    { "id": "BLOCKER-7", "title": "Persisted ContractRule source-trace defect / unbackfilled rows", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Upgrade correctness criterion from FORMAT_CONFORMING to REFERENTIALLY_VALID; fix coupled DefinedTermNode staleness if it blocks referential correctness." },
+    { "id": "BLOCKER-8", "title": "Sibling claim identity collision", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "AUDIT-F4: only partially remediated - build claim identity V2, source-grounded, distinguishing same-family/same-role/same-node distinct propositions." },
+    { "id": "BLOCKER-9", "title": "Independent verifier missing omitted qualifying condition", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Attack with novel condition language not covered in 3F.1.6.R; verify no precision collapse." },
+    { "id": "BLOCKER-10", "title": "Contract-model pipeline not functioning as a complete, durable live application trust path", "priorDisposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Umbrella blocker closed only once AUDIT-F1, F2, F3, F6, F7 are all closed - see 02-independent-code-audit-findings.json." },
+    { "id": "BLOCKER-11", "title": "Architecture Invariant #35 / sourceLedgerEntryId scope mismatch", "priorDisposition": "ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION", "thisPhaseAction": "Independently re-validate the prior architecture-scope decision against current code; implement now only if a real Phase-3-live dependency is found." }
+  ],
+  "neverAllowedDisposition": "CERTIFIED_CLOSED / CERTIFIED_SCOPE_RESOLVED - reserved exclusively for Part B of this same phase (independent, production-frozen recertification). Part A may only report CERTIFIED_CLOSED at Part B, not at Part A close."
+}
