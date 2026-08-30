@@ -25,6 +25,7 @@ import { interpretAmendmentClause, AMENDMENT_INTERPRETATION_PROMPT_VERSION } fro
 import { validateSemanticAmendmentCandidate } from "./validation";
 import { groupEffectsByProvision, buildProvisionChain } from "./chain";
 import { verifyAmendmentEffectsIndependently } from "./independent-verification";
+import { resolveUniqueDefinitionByRef } from "./operative-state";
 import type { AmendmentEffectCandidate, AmendmentPipelineSummary, AmendmentTarget } from "./types";
 
 /**
@@ -175,7 +176,29 @@ function getTargetCurrentText(index: StructuralIndex, target: AmendmentTarget): 
     // specifically-resolved target (see runDeterministicPass's own
     // resolvedTargetDocumentIds/disambiguateMultiTargetSection above), so a
     // miss within it is a genuine NOT_FOUND, never a reason to widen scope.
-    return index.getDefinitionFullText(target.targetDefinedTermRef, target.targetDocumentId) ?? null;
+    //
+    // Phase 3F.1.6.RX-FINAL Workstream B (FINDING-2/3 audit of OTHER
+    // definition-access paths with the same gap) - this call used to be
+    // `index.getDefinitionFullText(target.targetDefinedTermRef,
+    // target.targetDocumentId)` directly, which silently returns the FIRST
+    // match (`.find()`) whenever `target.targetDocumentId` genuinely has
+    // 2+ colliding physical definitions of the same term - the exact same
+    // silent-guess-among-ambiguous-candidates gap fixed in
+    // semantic/tools.ts's getDefinition, here feeding
+    // interpretAmendmentClause's own real LLM call with a possibly-WRONG
+    // definition's text as this amendment's authoritative "current text,"
+    // never disclosed as a guess. Fixed the same way, with the SAME
+    // primitive (never a second, parallel check): resolveUniqueDefinitionByRef
+    // resolves the collision explicitly; an AMBIGUOUS result returns null
+    // here (this function's own existing, established "no confident current
+    // text" contract - the SECTION branch above already does the identical
+    // thing for a colliding section reference via resolveUniqueNodeByRef),
+    // never guessed. `target.targetDefinedTermRef` is unaffected when the
+    // term is genuinely unique or genuinely absent (NOT_FOUND) in this
+    // already-resolved target document.
+    const resolution = resolveUniqueDefinitionByRef(index, target.targetDocumentId, target.targetDefinedTermRef);
+    if (resolution.status !== "UNIQUE") return null;
+    return index.getDefinitionFullText(resolution.definition.exactTerm, target.targetDocumentId) ?? null;
   }
   return null;
 }
