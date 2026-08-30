@@ -135,6 +135,25 @@ export interface DiscoveredCandidate {
   sourceCitation: string;
   /** The exact algorithm/prompt/schema version this candidate was produced under - the cache-invalidation identity (task §9). */
   discoveryRunVersion: string;
+  /**
+   * Phase 3F.1.6.R BLOCKER-2 fix. Pass A's own supersessionStatus (see
+   * DeterministicCandidate above) previously never survived reconciliation
+   * (runPassDReconciliation, pass-d-reconcile.ts) into THIS type - the type
+   * every real downstream consumer (context-retrieval, coverage-audit's
+   * discovery-comparison.ts, semantic-coverage's reconciliation.ts) actually
+   * receives. Computed here as the WORST (most severe) status across every
+   * one of this candidate's own `structuralNodeIds` (KNOWN_SUPERSEDED beats
+   * UNKNOWN_SUPERSESSION_STATUS beats CURRENT_OPERATIVE) - a discovery
+   * spanning multiple structural nodes (Pass C neighborhood expansion, or a
+   * Pass D merge of two candidates) must never report itself safely current
+   * merely because ONE of its nodes happens to be. Defaults to
+   * UNKNOWN_SUPERSESSION_STATUS whenever no deterministic Pass A record
+   * exists for a given node (never inferred as CURRENT_OPERATIVE by
+   * omission), mirroring DeterministicCandidate's own fail-closed default.
+   */
+  supersessionStatus: NodeSupersessionStatus;
+  /** Always populated - explains supersessionStatus, mirroring DeterministicCandidate's own disclosure discipline. When multiple structural nodes are involved, names which one(s) drove the combined verdict. */
+  supersessionReason: string;
 }
 
 /**

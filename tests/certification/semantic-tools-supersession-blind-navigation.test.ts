@@ -1,25 +1,32 @@
 /**
- * Phase 3F.1.6 Final Foundation Certification - Section 7.
+ * Phase 3F.1.6 Final Foundation Certification - Section 7 (ORIGINAL
+ * REPRODUCTION, certified BLOCKER-5 / SUPER-5) - REMEDIATED in Phase
+ * 3F.1.6.R.
  *
- * INDEPENDENTLY DISCOVERED finding, not named by any prior phase: several
- * of the controlled evidence tools the semantic compiler exposes to the
- * LLM (lib/contract-model/compiler/semantic/tools.ts) navigate the raw
- * `StructuralIndex` directly and NEVER consult `access.operativeState` -
- * unlike `getOperativeProvision`/`getDefinition`/`getRelatedAmendments`/
- * `getPriorVersion`, which all do. `getReferencedProvision` is the sharpest
- * case: its own tool description explicitly tells the model "Use this when
- * the operative text you are compiling expressly requires reading another
- * section to know the covenant's actual economics" - yet its
- * implementation is a bare `resolveUniqueNodeByRef` + `getNodeText` call
- * with zero supersession check. A cross-referenced section that has since
- * been amended/restated is returned as plain, undisclosed, "actual
- * economics" text.
+ * ORIGINAL FINDING (independently discovered, not named by any prior
+ * phase): several of the controlled evidence tools the semantic compiler
+ * exposes to the LLM (lib/contract-model/compiler/semantic/tools.ts)
+ * navigated the raw `StructuralIndex` directly and NEVER consulted
+ * `access.operativeState` - unlike `getOperativeProvision`/`getDefinition`/
+ * `getRelatedAmendments`/`getPriorVersion`, which all did.
+ * `getReferencedProvision` was the sharpest case: its own tool description
+ * explicitly tells the model "Use this when the operative text you are
+ * compiling expressly requires reading another section to know the
+ * covenant's actual economics" - yet its implementation was a bare
+ * `resolveUniqueNodeByRef` + `getNodeText` call with zero supersession
+ * check. A cross-referenced section that had since been amended/restated
+ * was returned as plain, undisclosed, "actual economics" text.
  *
- * This test drives the REAL, unmodified `buildToolSet`/`getReferencedProvision`
- * against a real StructuralIndex and a real, non-null OperativeContractState
- * that marks the target section's node as superseded - and shows the tool
- * returns the stale text anyway, with no warning, no refusal, and no field
- * in its own response that a caller could use to detect the problem.
+ * Phase 3F.1.6.R BLOCKER-5 FIX: `getReferencedProvision` (along with
+ * `getParentClause`, `getChildren`, `getSiblingClauses`) is now routed
+ * through the SAME `findProvisionView(access.operativeState?.provisions,
+ * ...)` supersession-aware path `getOperativeProvision` already used (see
+ * `resolveNodeWithSupersessionAwareness` in tools.ts), and every response
+ * carries a real `supersessionStatus`/`supersessionReason`. This test now
+ * proves END-TO-END, with the REAL, unmodified `buildToolSet`/
+ * `getReferencedProvision`, that the SAME scenario which used to leak
+ * stale $10,000,000 text now correctly returns the CURRENT $25,000,000
+ * text, with an explicit CURRENT_OPERATIVE disclosure.
  */
 import { describe, expect, it } from "vitest";
 import { buildStructuralIndex } from "../../lib/contract-model/compiler/structural-index";
@@ -43,8 +50,8 @@ function buildRealIndex() {
   return { index, section601, section602 };
 }
 
-describe("semantic/tools.ts: getReferencedProvision is a supersession-blind raw navigation tool (real, independently found defect)", () => {
-  it("returns Section 6.01's STALE base-agreement text as plain 'resolved' fact, with no disclosure, even though a real, non-null OperativeContractState marks that exact node as superseded by a later amendment", () => {
+describe("semantic/tools.ts: getReferencedProvision is now supersession-aware (BLOCKER-5 REMEDIATED - was supersession-blind)", () => {
+  it("returns Section 6.01's CURRENT amended text (never the stale base-agreement text), with an explicit disclosure, when a real, non-null OperativeContractState marks that exact node as superseded by a later amendment", () => {
     const { index, section601 } = buildRealIndex();
 
     // A real, fully-populated OperativeContractState (same shape used by the
@@ -94,28 +101,44 @@ describe("semantic/tools.ts: getReferencedProvision is a supersession-blind raw 
 
     const outcome = getReferencedProvision.execute({ ref: "6.01" });
     expect(outcome.ok).toBe(true);
-    const result = outcome.result as { ref: string; resolvedSectionRef: string; nodeId: string; text: string; truncated: boolean };
+    const result = outcome.result as { ref: string; resolvedSectionRef: string; nodeId: string; text: string; truncated: boolean; supersessionStatus: string; supersessionReason: string };
 
-    // THE DEFECT: the tool confidently "resolves" the reference to the
-    // STALE base-document node and returns its (superseded) $10,000,000
-    // text as plain fact - no supersession field, no warning, no refusal,
-    // despite operativeState (passed into buildToolSet) knowing this exact
-    // nodeId is superseded and knowing the real current text ($25,000,000).
-    expect(result.nodeId).toBe(section601.nodeId);
-    expect(result.text).toContain("$10,000,000");
-    expect(result.text).not.toContain("superseded");
-    expect(Object.keys(result)).not.toContain("supersessionStatus");
-    expect(Object.keys(result)).not.toContain("supersededBy");
-    expect(Object.keys(result)).not.toContain("currentText");
+    // THE FIX: the tool now resolves the reference against
+    // access.operativeState FIRST (the same findProvisionView path
+    // getOperativeProvision already used) and returns the CURRENT
+    // $25,000,000 text, with an explicit CURRENT_OPERATIVE disclosure -
+    // never the stale $10,000,000 base-document text.
+    expect(result.text).toContain("$25,000,000");
+    expect(result.text).not.toContain("$10,000,000");
+    expect(result.supersessionStatus).toBe("CURRENT_OPERATIVE");
+    expect(result.supersessionReason).toMatch(/amendment history/);
 
-    // Contrast: the SAME operativeState IS correctly consulted by the
-    // sibling tool getOperativeProvision for the identical section -
-    // proving the fix pattern already exists in this file and was simply
-    // never applied to getReferencedProvision's cross-reference path.
+    // Contrast (unchanged): the sibling tool getOperativeProvision, which
+    // was already fixed before this phase, agrees with the SAME answer -
+    // both tools are now consistent.
     const getOperativeProvision = tools.find((t) => t.name === "getOperativeProvision")!;
     const operativeOutcome = getOperativeProvision.execute({ sectionRef: "6.01" });
     expect(operativeOutcome.ok).toBe(true);
     const operativeResult = JSON.stringify(operativeOutcome.result);
     expect(operativeResult).toContain("25,000,000");
+  });
+
+  it("REGRESSION GUARD for the ORIGINAL defect: a node with NO covering OperativeProvisionView (never amended) still returns its own raw text, tagged CURRENT_OPERATIVE via the supersession index fallback - proving the fix does not merely mask the old bug by always preferring amended text", () => {
+    const { index, section602 } = buildRealIndex();
+    // No provisions at all - this instrument has never been amended.
+    const operativeState: OperativeContractState = { instrumentKey: "instrument-1", asOfDate: "2026-01-01", provisions: [], status: "OPERATIVE_STATE_RESOLVED", summary: "test", unattachedEffects: [] };
+    const charsUsed = { current: 0 };
+    const tools = buildToolSet({ structuralIndex: index, operativeState, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle({ originatingDocumentId: DOCUMENT_ID }) }, DOCUMENT_ID, charsUsed, DEFAULT_TOOL_BUDGET);
+    const getReferencedProvision = tools.find((t) => t.name === "getReferencedProvision")!;
+    const outcome = getReferencedProvision.execute({ ref: "6.02" });
+    expect(outcome.ok).toBe(true);
+    const result = outcome.result as { nodeId: string; text: string; supersessionStatus: string };
+    expect(result.nodeId).toBe(section602.nodeId);
+    expect(result.text).toContain("Compliance with this covenant");
+    // CURRENT_OPERATIVE here because this document IS covered by the
+    // (empty-but-real) operativeState and this node was never recorded as
+    // superseded or ambiguous - never UNKNOWN merely for lack of a tracked
+    // provision.
+    expect(result.supersessionStatus).toBe("CURRENT_OPERATIVE");
   });
 });

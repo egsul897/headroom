@@ -105,7 +105,12 @@ export async function runSemanticCoverageAudit(input: SemanticCoverageAuditInput
     const { entries: reconciledEntries, dangerousUnaccounted: reconciledDangerous } = reconcileFrozenInventory({ frozenInventory: frozen, index: input.index, discoveredCandidates: input.discoveredCandidates, compiledResults: input.compiledResults, verifiedCandidateRefs: input.verifiedCandidateRefs });
     const documentRules = input.compiledResults.flatMap((c) => c.rules);
     const crossSectionFindings = auditCrossSectionRelationships(units, documentRules);
-    const operativeStateFindings = input.operativeState ? auditOperativeStateForUnits(units, input.operativeState) : [];
+    // Phase 3F.1.6.R BLOCKER-4 fix: the null-operativeState fail-open
+    // ternary that used to live here has been removed - auditOperativeStateForUnits
+    // now fails CLOSED on a null operativeState itself (see its own header
+    // comment), so no caller (this one included) can silently bypass the
+    // check merely by omitting operativeState.
+    const operativeStateFindings = auditOperativeStateForUnits(units, input.operativeState);
     // Phase 3F.1 §29-32/F3 - fold operative-state findings back into coverage
     // BEFORE rollup, so OPERATIVE_STATE_UNRESOLVED (already checked by both
     // document-coverage.ts's gate and package-coverage.ts's package status)

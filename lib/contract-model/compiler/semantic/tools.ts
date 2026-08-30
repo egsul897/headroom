@@ -15,7 +15,9 @@
  * a request naming a foreign document is refused with an honest reason,
  * never silently served.
  */
-import type { OperativeProvisionView } from "../amendment/types";
+import type { NodeSupersessionIndex, NodeSupersessionStatus, OperativeProvisionView } from "../amendment/types";
+import type { StructuralNode } from "../types";
+import { buildNodeSupersessionIndex, getNodeSupersessionStatus } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
 import type { SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
 
@@ -27,12 +29,42 @@ export interface ToolExecutionOutcome {
   outputSummary: string;
 }
 
+/**
+ * Phase 3F.1.6.R BLOCKER-5 fix - a MANDATORY, statically-enforced (TypeScript
+ * will not compile a ToolDefinition object literal missing this field)
+ * self-classification for every LLM-facing evidence tool, so a future new
+ * tool can never silently reintroduce SUPER-5's bypass (a tool that reads
+ * `access.structuralIndex` directly and never consults operative state, nor
+ * discloses that it is deliberately historical). Exactly one of:
+ *   - CURRENT_OPERATIVE_EVIDENCE: this tool's own returned text is resolved
+ *     against `access.operativeState` (directly, or via the shared
+ *     `resolveNodeWithSupersessionAwareness`/`getNodeSupersessionStatus`
+ *     helpers below) before being served as fact.
+ *   - HISTORICAL_EVIDENCE_WITH_STATUS: this tool is INTENTIONALLY a raw/
+ *     historical-text tool (its whole purpose is the literal as-drafted or
+ *     pre-amendment text of one specific occurrence) - its own description
+ *     and every returned payload explicitly label the content as such
+ *     (e.g. a `supersededBy`/`supersessionStatus` field), so it can never be
+ *     reasonably mistaken for a claim of current operative status.
+ *   - NOT_CONTRACT_TEXT_EVIDENCE: this tool never returns independently
+ *     interpretable provision/economic TEXT at all - only topology
+ *     (document lists), graph metadata (edges/dependency term NAMES), or an
+ *     already-vetted echo of a context-bundle item Phase 2D already
+ *     classified (and already disclosed, per SUPER-4) - so operative-state
+ *     re-verification does not apply to it.
+ * See tests/contract-model/semantic-tools-operative-state-discipline.test.ts
+ * for the permanent enforcement test that iterates every registered tool
+ * and rejects any missing/unrecognized value.
+ */
+export type ToolOperativeStateDiscipline = "CURRENT_OPERATIVE_EVIDENCE" | "HISTORICAL_EVIDENCE_WITH_STATUS" | "NOT_CONTRACT_TEXT_EVIDENCE";
+
 export interface ToolDefinition {
   name: string;
   description: string;
   /** Anthropic Tool.input_schema-compatible JSON Schema (hand-written, deliberately simple - every tool takes at most a couple of string params, task §6's own "exact tool names are an engineering choice" gives latitude here, not a reason to over-engineer). */
   inputSchema: { type: "object"; properties: Record<string, { type: string; description?: string }>; required: string[] };
   execute: (input: Record<string, unknown>) => ToolExecutionOutcome;
+  operativeStateDiscipline: ToolOperativeStateDiscipline;
 }
 
 const MAX_TEXT_RESULT_CHARS = 4000;
@@ -102,6 +134,40 @@ function findProvisionView(operativeState: OperativeProvisionView[] | undefined,
 }
 
 /**
+ * Phase 3F.1.6.R BLOCKER-5 fix. Certification finding SUPER-5: 5 of 14
+ * tools (getReferencedProvision, getParentClause, getChildren,
+ * getSiblingClauses, getSourceSpan) navigated `access.structuralIndex`
+ * directly and never consulted `access.operativeState` at all - unlike
+ * their 9 siblings (getOperativeProvision chief among them), which already
+ * call `findProvisionView(access.operativeState?.provisions, ...)` first.
+ * This helper generalizes that EXACT already-working pattern (never
+ * duplicates a second, parallel implementation) for every tool that
+ * resolves a node BY ITS OWN sectionRef: prefer the real, amendment-aware
+ * `OperativeProvisionView.currentText` when one covers this section;
+ * otherwise fall back to the raw structural text, but ALWAYS attach a real
+ * `supersessionStatus`/`supersessionReason` (via the same
+ * `getNodeSupersessionStatus` primitive `discovery/pass-a-signals.ts` and
+ * `semantic-coverage/cross-reference-audit.ts` already rely on) so a
+ * fallback raw read can never be silently mistaken for confirmed-current
+ * text merely because no tracked amendment happened to target it by
+ * section reference.
+ */
+function resolveNodeWithSupersessionAwareness(access: SemanticToolAccess, supersessionIndex: NodeSupersessionIndex, node: StructuralNode): { text: string; supersessionStatus: NodeSupersessionStatus; supersessionReason: string; source: "amended" | "base-document" } {
+  const view = findProvisionView(access.operativeState?.provisions, node.sectionRef);
+  if (view?.currentText !== null && view?.currentText !== undefined) {
+    return {
+      text: view.currentText,
+      supersessionStatus: view.status === "OPERATIVE_STATE_RESOLVED" ? "CURRENT_OPERATIVE" : "UNKNOWN_SUPERSESSION_STATUS",
+      supersessionReason: `resolved against this section's own real amendment history (operative status ${view.status})`,
+      source: "amended",
+    };
+  }
+  const raw = access.structuralIndex.getNodeText(node.nodeId, "OWN");
+  const result = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
+  return { text: raw, supersessionStatus: result.status, supersessionReason: result.reason, source: "base-document" };
+}
+
+/**
  * Builds the bounded tool set for ONE compilation attempt. `homeDocumentId`/
  * `homeInstrumentKey` scope every tool's cross-instrument check; `charsUsed`
  * is a mutable counter the caller (caller.ts) uses to enforce
@@ -110,6 +176,15 @@ function findProvisionView(operativeState: OperativeProvisionView[] | undefined,
 export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string, charsUsedRef: { current: number }, budget: ToolBudget): ToolDefinition[] {
   const allowedDocs = allowedDocumentIds(access, homeDocumentId);
   const remainingBudget = () => budget.maxAdditionalSourceChars - charsUsedRef.current;
+  // Phase 3F.1.6.R BLOCKER-5 fix - built once per compilation attempt
+  // (never per tool call) from the SAME access.operativeState every
+  // already-safe tool in this file reads; homeDocumentId is used as the
+  // supersession index's own baseDocumentId (mirroring how every other
+  // cross-instrument check in this file already treats homeDocumentId as
+  // this attempt's own anchor). Empty operativeState correctly produces an
+  // index that marks every node UNKNOWN_SUPERSESSION_STATUS (fail-closed
+  // default), never CURRENT_OPERATIVE by omission.
+  const supersessionIndex: NodeSupersessionIndex = buildNodeSupersessionIndex(access.operativeState ? [{ baseDocumentId: homeDocumentId, state: access.operativeState }] : []);
 
   const guardBudget = (): string | null => (remainingBudget() <= 0 ? `additional-source character budget (${budget.maxAdditionalSourceChars}) already exhausted for this compilation attempt - no further tool evidence can be returned` : null);
 
@@ -118,6 +193,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       name: "getOperativeProvision",
       description: "Get the CURRENT operative text of a section (post-amendment where applicable) by its section reference (e.g. '6.10(a)'). Use this when you need a provision's real, up-to-date text that was not already included in your initial context.",
       inputSchema: { type: "object", properties: { sectionRef: { type: "string", description: "e.g. '6.10(a)'" } }, required: ["sectionRef"] },
+      operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
@@ -151,6 +227,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       name: "getDefinition",
       description: "Get the full definition text of a defined term by exact name (e.g. 'Consolidated EBITDA'). Use this only when the term is material to the covenant you are compiling and its meaning was not already included in your initial context.",
       inputSchema: { type: "object", properties: { term: { type: "string" } }, required: ["term"] },
+      operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
@@ -172,6 +249,11 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       name: "getDefinitionDependencies",
       description: "Given a defined term, list OTHER defined terms whose exact names appear inside its own definition text (a bounded, real dependency signal - not a claim of full recursive resolution). Use this before requesting each dependency's own definition individually, to know which ones actually matter.",
       inputSchema: { type: "object", properties: { term: { type: "string" } }, required: ["term"] },
+      // Never returns provision/economic TEXT - only a list of OTHER
+      // defined-term NAMES that appear inside the queried term's own text.
+      // Not "current contract truth" evidence in the sense this fix
+      // targets; operative-state re-verification does not apply.
+      operativeStateDiscipline: "NOT_CONTRACT_TEXT_EVIDENCE",
       execute: (input) => {
         const term = String(input.term ?? "");
         const fullText = getScopedDefinitionFullText(access.structuralIndex, term, homeDocumentId, allowedDocs);
@@ -184,8 +266,9 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
     },
     {
       name: "getParentClause",
-      description: "Get the parent structural clause of a given node (by its nodeId, obtained from a prior tool's response) - use when a sub-clause's meaning depends on the chapeau/lead-in language of the section or clause it sits inside.",
+      description: "Get the parent structural clause of a given node (by its nodeId, obtained from a prior tool's response) - use when a sub-clause's meaning depends on the chapeau/lead-in language of the section or clause it sits inside. The returned text prefers the section's CURRENT amended text where a recorded amendment covers it; check the returned supersessionStatus before treating it as current otherwise.",
       inputSchema: { type: "object", properties: { nodeId: { type: "string" } }, required: ["nodeId"] },
+      operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
@@ -194,28 +277,36 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
         const parent = access.structuralIndex.getParent(nodeId);
         if (!parent) return refuse(`node "${nodeId}" has no parent clause (it is a top-level node)`);
-        const { text, truncated } = truncate(access.structuralIndex.getNodeText(parent.nodeId, "OWN"));
+        const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, parent);
+        const { text, truncated } = truncate(resolved.text);
         charsUsedRef.current += text.length;
-        return ok({ nodeId: parent.nodeId, sectionRef: parent.sectionRef, heading: parent.heading, text, truncated }, text, `parent clause ${parent.sectionRef}`);
+        return ok(
+          { nodeId: parent.nodeId, sectionRef: parent.sectionRef, heading: parent.heading, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
+          text,
+          `parent clause ${parent.sectionRef} (${resolved.supersessionStatus})`
+        );
       },
     },
     {
       name: "getChildren",
-      description: "Get the direct child clauses of a given structural node (by nodeId) - use to see every lettered/numbered sub-clause of a section you are compiling.",
+      description: "Get the direct child clauses of a given structural node (by nodeId) - use to see every lettered/numbered sub-clause of a section you are compiling. This lists the PARENT node's own structural children as originally drafted - check the returned parentSupersessionStatus; if the parent section itself has been superseded/amended, this child listing may not reflect the section's current sub-structure.",
       inputSchema: { type: "object", properties: { nodeId: { type: "string" } }, required: ["nodeId"] },
+      operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
       execute: (input) => {
         const nodeId = String(input.nodeId ?? "");
         const node = access.structuralIndex.getNode(nodeId);
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
+        const parentSupersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
         const children = access.structuralIndex.getChildren(nodeId).map((c) => ({ nodeId: c.nodeId, sectionRef: c.sectionRef, heading: c.heading }));
-        const summary = `${children.length} child clause(s) of ${node.sectionRef}`;
-        return ok({ children }, summary, summary);
+        const summary = `${children.length} child clause(s) of ${node.sectionRef} (parent ${parentSupersession.status})`;
+        return ok({ children, parentSupersessionStatus: parentSupersession.status, parentSupersessionReason: parentSupersession.reason }, summary, summary);
       },
     },
     {
       name: "getSiblingClauses",
-      description: "Get the sibling clauses of a given structural node (by nodeId) - use when a basket's economics depend on a shared proviso or trailing cap stated in a sibling clause of the SAME section (task §16's own multi-basket-per-section case).",
+      description: "Get the sibling clauses of a given structural node (by nodeId) - use when a basket's economics depend on a shared proviso or trailing cap stated in a sibling clause of the SAME section (task §16's own multi-basket-per-section case). Each sibling's text prefers its own CURRENT amended text where a recorded amendment covers it; check each sibling's own supersessionStatus before treating its text as current otherwise.",
       inputSchema: { type: "object", properties: { nodeId: { type: "string" } }, required: ["nodeId"] },
+      operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
@@ -223,7 +314,11 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const node = access.structuralIndex.getNode(nodeId);
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
         const siblings = access.structuralIndex.getSiblings(nodeId);
-        const rendered = siblings.map((s) => ({ nodeId: s.nodeId, sectionRef: s.sectionRef, heading: s.heading, text: truncate(access.structuralIndex.getNodeText(s.nodeId, "OWN")).text }));
+        const rendered = siblings.map((s) => {
+          const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, s);
+          const { text } = truncate(resolved.text);
+          return { nodeId: s.nodeId, sectionRef: s.sectionRef, heading: s.heading, text, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason };
+        });
         charsUsedRef.current += rendered.reduce((sum, r) => sum + r.text.length, 0);
         const summary = `${siblings.length} sibling clause(s) of ${node.sectionRef}`;
         return ok({ siblings: rendered }, summary, summary);
@@ -231,8 +326,9 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
     },
     {
       name: "getReferencedProvision",
-      description: "Resolve an explicit cross-reference (e.g. 'Section 1.07', 'clause (b) of this Section') to its real target section and text. Use this when the operative text you are compiling expressly requires reading another section to know the covenant's actual economics.",
+      description: "Resolve an explicit cross-reference (e.g. 'Section 1.07', 'clause (b) of this Section') to its real target section and text. Use this when the operative text you are compiling expressly requires reading another section to know the covenant's actual economics. The returned text prefers the section's CURRENT amended text where a recorded amendment covers it; the response's supersessionStatus field is CURRENT_OPERATIVE only when that is confirmed - treat any other value as NOT confirmed-current before relying on it for economics.",
       inputSchema: { type: "object", properties: { ref: { type: "string" }, fromNodeId: { type: "string", description: "nodeId of the clause containing the reference, for relative references like 'clause (b) of this Section' - omit for an absolute reference like 'Section 1.07'" } }, required: ["ref"] },
+      operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
@@ -248,9 +344,21 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
             if (found?.resolved && found.targetNodeId) {
               const targetNode = access.structuralIndex.getNode(found.targetNodeId);
               if (targetNode) {
-                const { text, truncated } = truncate(access.structuralIndex.getNodeText(targetNode.nodeId, "OWN"));
+                // Phase 3F.1.6.R BLOCKER-5 fix (SUPER-5): previously read
+                // raw structural text unconditionally, with no
+                // operative-state check at all, despite this tool's own
+                // description telling the model to trust it for "the
+                // covenant's actual economics." Now routed through the
+                // same supersession-aware access path getOperativeProvision
+                // already uses.
+                const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, targetNode);
+                const { text, truncated } = truncate(resolved.text);
                 charsUsedRef.current += text.length;
-                return ok({ ref, resolvedSectionRef: targetNode.sectionRef, nodeId: targetNode.nodeId, text, truncated }, text, `resolved reference "${ref}" -> ${targetNode.sectionRef}`);
+                return ok(
+                  { ref, resolvedSectionRef: targetNode.sectionRef, nodeId: targetNode.nodeId, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
+                  text,
+                  `resolved reference "${ref}" -> ${targetNode.sectionRef} (${resolved.supersessionStatus})`
+                );
               }
             }
           }
@@ -268,9 +376,14 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           }
           if (resolution.status === "UNIQUE") {
             const node = resolution.node;
-            const { text, truncated } = truncate(access.structuralIndex.getNodeText(node.nodeId, "OWN"));
+            const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, node);
+            const { text, truncated } = truncate(resolved.text);
             charsUsedRef.current += text.length;
-            return ok({ ref, resolvedSectionRef: node.sectionRef, nodeId: node.nodeId, documentId, text, truncated }, text, `resolved reference "${ref}" -> ${node.sectionRef}`);
+            return ok(
+              { ref, resolvedSectionRef: node.sectionRef, nodeId: node.nodeId, documentId, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
+              text,
+              `resolved reference "${ref}" -> ${node.sectionRef} (${resolved.supersessionStatus})`
+            );
           }
         }
         if (anyAmbiguous) return refuse(`reference "${ref}" matches more than one physical location within this instrument's documents - ambiguous, not resolved. Provide a fromNodeId for context-scoped resolution, or narrow the reference.`);
@@ -281,6 +394,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       name: "getRelatedAmendments",
       description: "Get the recorded amendment history (operations, effective dates, source citations) for a section or defined term, when it has any. Use this to understand whether the provision you are compiling has been modified since the base agreement.",
       inputSchema: { type: "object", properties: { ref: { type: "string" } }, required: ["ref"] },
+      operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
       execute: (input) => {
         const ref = String(input.ref ?? "");
         const view = findProvisionView(access.operativeState?.provisions, ref);
@@ -297,6 +411,10 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       name: "getPriorVersion",
       description: "Get the text of a provision or definition BEFORE its most recent recorded amendment, when available. Use this only if the meaning of the CURRENT amendment itself depends on knowing what changed (e.g. an amendment that says 'increased from the prior $X to $Y').",
       inputSchema: { type: "object", properties: { ref: { type: "string" } }, required: ["ref"] },
+      // Deliberately historical-by-design (its whole purpose is the PRIOR,
+      // now-superseded text) and already labels itself as such via its own
+      // description plus the returned `supersededBy` field.
+      operativeStateDiscipline: "HISTORICAL_EVIDENCE_WITH_STATUS",
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
@@ -315,6 +433,8 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       name: "getInstrumentDocuments",
       description: "List every document that is part of the SAME financing instrument as the provision you are compiling (e.g. a base credit agreement plus its amendments). Use this to understand what else exists before assuming a cross-reference is unresolvable.",
       inputSchema: { type: "object", properties: {}, required: [] },
+      // Topology only (a list of documentIds) - never provision/economic text.
+      operativeStateDiscipline: "NOT_CONTRACT_TEXT_EVIDENCE",
       execute: () => {
         const docs = Array.from(allowedDocs);
         const summary = `${docs.length} document(s) in this instrument`;
@@ -325,6 +445,11 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       name: "getContextBundleComponent",
       description: "Look up one specific item from your own initial context bundle by its itemId (as given to you at the start) - use this to re-read a citation's full excerpt if you need to double check it rather than requesting new evidence.",
       inputSchema: { type: "object", properties: { itemId: { type: "string" } }, required: ["itemId"] },
+      // Echoes an item from the SAME already-vetted CovenantContextBundle
+      // Phase 2D built (and this compilation attempt was already given at
+      // the start) - never independently reads raw StructuralIndex text, so
+      // it carries no disposition this fix would need to add or check.
+      operativeStateDiscipline: "NOT_CONTRACT_TEXT_EVIDENCE",
       execute: (input) => {
         const itemId = String(input.itemId ?? "");
         const item = access.contextBundle.items.find((i) => i.itemId === itemId);
@@ -337,6 +462,8 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
       name: "getSharedCapContext",
       description: "Get every context-bundle item Phase 2D already flagged as a shared-capacity signal for this covenant (e.g. a trailing aggregate cap shared by multiple baskets in the same section). Use this before assuming a basket has its own independent, uncapped economics.",
       inputSchema: { type: "object", properties: {}, required: [] },
+      // Same reasoning as getContextBundleComponent - echoes already-vetted context-bundle items only.
+      operativeStateDiscipline: "NOT_CONTRACT_TEXT_EVIDENCE",
       execute: () => {
         const items = access.contextBundle.items.filter((i) => i.type === "SHARED_CAP").map(summarizeItem);
         const summary = `${items.length} shared-cap context item(s)`;
@@ -345,8 +472,11 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
     },
     {
       name: "getSourceSpan",
-      description: "Get the raw source text of a structural node by its nodeId, without interpretation - use for the exact quoted text of a specific clause.",
+      description: "Get this node's OWN raw drafted text exactly as it appears at this physical location in the source document, without interpretation and WITHOUT amendment substitution - use this to quote a specific clause's literal wording (including deliberately reading a historical/superseded occurrence, e.g. one named by getPriorVersion or getRelatedAmendments). This is historical/as-drafted evidence, not a claim about current operative status: this tool NEVER substitutes amended text. The response's supersessionStatus field tells you whether this exact physical text is independently known to still be current-operative (CURRENT_OPERATIVE), known superseded (KNOWN_SUPERSEDED), or not established either way (UNKNOWN_SUPERSESSION_STATUS) - for a section's CURRENT economics, use getOperativeProvision or getReferencedProvision instead.",
       inputSchema: { type: "object", properties: { nodeId: { type: "string" }, includeDescendants: { type: "boolean" } }, required: ["nodeId"] },
+      // Deliberately historical/raw-by-design (see the description above)
+      // and every response now explicitly discloses supersessionStatus.
+      operativeStateDiscipline: "HISTORICAL_EVIDENCE_WITH_STATUS",
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
@@ -355,13 +485,29 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
         const { text, truncated } = truncate(access.structuralIndex.getNodeText(nodeId, input.includeDescendants ? "DESCENDANTS" : "OWN"));
         charsUsedRef.current += text.length;
-        return ok({ nodeId, sectionRef: node.sectionRef, text, truncated }, text, `source span for ${node.sectionRef}`);
+        // Phase 3F.1.6.R BLOCKER-5 fix (SUPER-5): this tool's own purpose
+        // (the exact, literal, as-drafted text of one specific physical
+        // occurrence) is legitimately historical/raw-by-design - unlike
+        // getReferencedProvision/getParentClause/getSiblingClauses, it must
+        // NEVER silently substitute a different (amended) text for the
+        // exact node the model asked for. The fix here is disclosure, not
+        // substitution: every response now carries a real
+        // supersessionStatus/supersessionReason so the model can never
+        // mistake "the raw text I asked for" for "confirmed current text."
+        const supersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
+        return ok(
+          { nodeId, sectionRef: node.sectionRef, text, truncated, supersessionStatus: supersession.status, supersessionReason: supersession.reason },
+          text,
+          `source span for ${node.sectionRef} (${supersession.status})`
+        );
       },
     },
     {
       name: "getRuleDependency",
       description: "Get every dependency-graph edge (parent/child/definition/reference/amendment-lead) already recorded in your context bundle that touches a given itemId - use to see how one piece of evidence connects to another without re-deriving the graph yourself.",
       inputSchema: { type: "object", properties: { itemId: { type: "string" } }, required: ["itemId"] },
+      // Returns only context-bundle graph edges (relationship metadata), never provision/economic text.
+      operativeStateDiscipline: "NOT_CONTRACT_TEXT_EVIDENCE",
       execute: (input) => {
         const itemId = String(input.itemId ?? "");
         const edges = access.contextBundle.edges.filter((e) => e.fromItemId === itemId || e.toItemId === itemId);

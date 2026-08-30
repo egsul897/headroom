@@ -91,6 +91,8 @@ describe("3b. Backward gap: an individual ContextItem cannot, on its own, name t
       confidence: 0.9,
       sourceCitation: "Section 6.01",
       discoveryRunVersion: "phase-2b-discovery.v-fixture",
+      supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+      supersessionReason: "test fixture - no real supersession index applied",
     };
 
     const access: PackageAccess = { index, packageGraph: null, exactTermsByDocument: new Map() };

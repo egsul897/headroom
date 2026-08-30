@@ -7,6 +7,7 @@
 import { describe, expect, it } from "vitest";
 import type { StructuralIndex } from "../../lib/contract-model/compiler/structural-index";
 import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
+import type { OperativeContractState } from "../../lib/contract-model/compiler/amendment/types";
 import { loadFwrgLsbStructuralIndex } from "../../scripts/phase-3b-real-regression";
 import { loadRealDiscoveredCandidates as loadRealDiscoveredCandidatesLegacy, loadRealCompiledResults, DOCUMENT_ID } from "../../scripts/phase-3e-real-lsb-regression";
 import { runSemanticCoverageAudit } from "../../lib/contract-model/compiler/semantic-coverage/pipeline";
@@ -25,6 +26,13 @@ function loadRealDiscoveredCandidates(index: StructuralIndex): DiscoveredCandida
   }));
 }
 
+// Phase 3F.1.6.R BLOCKER-4 fix: auditOperativeStateForUnits now fails
+// CLOSED (flags every unit) when operativeState is null. This real-package
+// regression is not exercising the operative-state check (no amendment
+// pipeline evidence was loaded for this fixture); a real, RESOLVED,
+// empty-provisions OperativeContractState (not null) is the honest input.
+const REAL_REGRESSION_OPERATIVE_STATE: OperativeContractState = { instrumentKey: "lsb-instrument", asOfDate: "2026-01-01", provisions: [], status: "OPERATIVE_STATE_RESOLVED", summary: "no amendment-pipeline evidence loaded for this regression fixture", unattachedEffects: [] };
+
 async function runAudit() {
   const { index } = loadFwrgLsbStructuralIndex();
   const discoveredCandidates = loadRealDiscoveredCandidates(index);
@@ -38,7 +46,7 @@ async function runAudit() {
     discoveredCandidates,
     compiledResults,
     verifiedCandidateRefs: new Set(),
-    operativeState: null,
+    operativeState: REAL_REGRESSION_OPERATIVE_STATE,
     operativeVersionRef: null,
     structuralParserVersion: "phase-2a-structural-index",
     providerIdentity: null,

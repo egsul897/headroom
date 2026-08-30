@@ -38,6 +38,8 @@ function candidate(overrides: Partial<DiscoveredCandidate>): DiscoveredCandidate
     confidence: 1,
     sourceCitation: "6.01(a)",
     discoveryRunVersion: "test-v1",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
     ...overrides,
   };
 }

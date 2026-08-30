@@ -8,6 +8,7 @@
  * every input that contributed to a merged result.
  */
 import type { DeterministicCandidate, DiscoveredCandidate, DiscoveryMethod } from "./types";
+import type { NodeSupersessionStatus } from "../amendment/types";
 import type { ExpandedCandidate } from "./pass-c-neighborhood";
 import { computeCandidateContentFingerprint } from "./pass-c-neighborhood";
 
@@ -17,6 +18,41 @@ export interface ReconciliationInput {
   expanded: ExpandedCandidate[];
   discoveryId: (c: ExpandedCandidate) => string;
   deterministicByNodeId: Map<string, DeterministicCandidate>;
+}
+
+/** Worst-first ordering for combining supersessionStatus across every structural node one discovery spans - KNOWN_SUPERSEDED is more severe than UNKNOWN, which is more severe than CURRENT_OPERATIVE. Never averaged, never picked arbitrarily. */
+const SEVERITY_RANK: Record<NodeSupersessionStatus, number> = { KNOWN_SUPERSEDED: 2, UNKNOWN_SUPERSESSION_STATUS: 1, CURRENT_OPERATIVE: 0 };
+
+/**
+ * Phase 3F.1.6.R BLOCKER-2 fix - the sole place `DiscoveredCandidate.
+ * supersessionStatus`/`supersessionReason` are ever computed. Reads
+ * `deterministicByNodeId` (previously read ONLY for discoveryMethods/
+ * evidenceSignals - see the module header) for EVERY one of a discovery's
+ * `structuralNodeIds`, never merely its primary node, and combines them
+ * worst-first so a merged/expanded candidate can never report a safe
+ * status merely because one of several spanned nodes happens to be
+ * current. A node with no deterministic record at all (e.g. a Pass C
+ * neighborhood node that never itself fired a Pass A signal) is treated as
+ * UNKNOWN_SUPERSESSION_STATUS, never silently skipped - the same
+ * fail-closed default `getNodeSupersessionStatus` itself uses.
+ */
+function combineSupersessionForNodes(nodeIds: string[], deterministicByNodeId: Map<string, DeterministicCandidate>): { status: NodeSupersessionStatus; reason: string } {
+  if (nodeIds.length === 0) {
+    return { status: "UNKNOWN_SUPERSESSION_STATUS", reason: "This discovery carries no structural node identity at all - supersession status cannot be determined." };
+  }
+  let worst: { status: NodeSupersessionStatus; reason: string } | null = null;
+  for (const nodeId of nodeIds) {
+    const det = deterministicByNodeId.get(nodeId);
+    const current: { status: NodeSupersessionStatus; reason: string } = det
+      ? { status: det.supersessionStatus, reason: det.supersessionReason }
+      : { status: "UNKNOWN_SUPERSESSION_STATUS", reason: `No Pass A deterministic-signal record exists for structural node "${nodeId}" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.` };
+    if (!worst || SEVERITY_RANK[current.status] > SEVERITY_RANK[worst.status]) worst = current;
+  }
+  const base = worst!;
+  if (nodeIds.length > 1) {
+    return { status: base.status, reason: `${nodeIds.length} structural nodes span this discovery; worst-case supersession status reported. ${base.reason}` };
+  }
+  return base;
 }
 
 /**
@@ -68,6 +104,7 @@ export function runPassDReconciliation(input: ReconciliationInput): { candidates
       const mergedNodeIds = Array.from(new Set([...existing.structuralNodeIds, ...item.structuralNodeIds]));
       const mergedMethods = Array.from(new Set([...existing.discoveryMethods, ...methods]));
       const mergedSignals = Array.from(new Set([...existing.evidenceSignals, ...(deterministic?.signals ?? [])]));
+      const mergedSupersession = combineSupersessionForNodes(mergedNodeIds, deterministicByNodeId);
       byKey.set(mergeKey, {
         ...existing,
         structuralNodeKeys: mergedNodeKeys,
@@ -76,10 +113,13 @@ export function runPassDReconciliation(input: ReconciliationInput): { candidates
         evidenceSignals: mergedSignals,
         confidence: Math.max(existing.confidence ?? 0, item.confidence),
         multipleRulesLikely: existing.multipleRulesLikely || item.multipleRulesLikely,
+        supersessionStatus: mergedSupersession.status,
+        supersessionReason: mergedSupersession.reason,
       });
       continue;
     }
 
+    const supersession = combineSupersessionForNodes(item.structuralNodeIds, deterministicByNodeId);
     const candidate: DiscoveredCandidate = {
       discoveryId: discoveryId(item),
       documentId,
@@ -102,6 +142,8 @@ export function runPassDReconciliation(input: ReconciliationInput): { candidates
       confidence: item.confidence,
       sourceCitation: item.sourceCitation,
       discoveryRunVersion,
+      supersessionStatus: supersession.status,
+      supersessionReason: supersession.reason,
     };
     byKey.set(mergeKey, candidate);
   }

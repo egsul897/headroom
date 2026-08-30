@@ -33,6 +33,8 @@ export function makeCandidate(overrides: Partial<DiscoveredCandidate> & { docume
     confidence: 0.9,
     sourceCitation: `${overrides.documentId}::${overrides.normalizedSourceRef}`,
     discoveryRunVersion: "test",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
     ...overrides,
   };
 }

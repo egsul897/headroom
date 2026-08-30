@@ -230,8 +230,8 @@ describe("Chain 1: structural corruption -> operative uncertainty -> semantic tr
   });
 });
 
-describe("Chain 2: definition uncertainty -> semantic uncertainty -> review item (BREAKS — real, reproducible gap)", () => {
-  it("an AMBIGUOUS defined term (2 real physical definitions, both amendment-relevant) resolves operative-state to PARTIAL, but auditOperativeStateForUnits NEVER flags the corresponding semantic unit — the coverage layer can still confidently report FULLY_REPRESENTED_VERIFIED", async () => {
+describe("Chain 2: definition uncertainty -> semantic uncertainty -> review item (Phase 3F.1.6.R BLOCKER-6 FIX: now COMPOSES — was BREAKS)", () => {
+  it("an AMBIGUOUS defined term (2 real physical definitions, both amendment-relevant) resolves operative-state to PARTIAL, and auditOperativeStateForUnits NOW flags the corresponding semantic unit — the coverage layer can no longer confidently report FULLY_REPRESENTED_VERIFIED", async () => {
     const documentId = "chain2-base-doc";
     await ensureCompanyAndDocument(documentId);
 
@@ -260,28 +260,34 @@ describe("Chain 2: definition uncertainty -> semantic uncertainty -> review item
     expect(provision.sectionRef).toBeNull(); // DEFINITION-kind provisions never carry a sectionRef — this is the root of the break below.
     expect(provision.currentSourceNodeId).toBeNull(); // AMBIGUOUS -> no single nodeId resolved.
 
-    // Link 3 (THE BREAK): a MaterialSemanticUnit anchored to ONE of the two
-    // real ambiguous definition nodes is run through the REAL, unmodified
-    // auditOperativeStateForUnits. Its own matching logic
-    // (lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts)
-    // only ever matches a covering provision via
-    // `p.currentSourceNodeId === nodeId` (null here — no single node
-    // resolved) OR `p.sectionRef === anchor.sectionRef` (also null for every
-    // DEFINITION-kind provision, unconditionally). Neither branch can ever
-    // fire for a DEFINITION-kind provision's own AMBIGUOUS case — it never
-    // consults `candidateSourceNodeIds` at all. Result: the finding this
-    // module exists to produce (OPERATIVE_STATE_UNRESOLVED_FOR_UNIT) is
-    // NEVER emitted for this genuinely, independently-confirmed-ambiguous
-    // unit.
+    // Link 3 (Phase 3F.1.6.R BLOCKER-6 FIX - was THE BREAK): a
+    // MaterialSemanticUnit anchored to ONE of the two real ambiguous
+    // definition nodes is run through the REAL, now-fixed
+    // auditOperativeStateForUnits
+    // (lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts).
+    // Its matching logic now ALSO consults `candidateSourceNodeIds` - the
+    // real set of ambiguous-occurrence node identities `buildProvisionView`
+    // records whenever targetResolutionStatus is AMBIGUOUS - not only
+    // `currentSourceNodeId` (null here — no single node resolved) or
+    // `sectionRef` (also null for every DEFINITION-kind provision,
+    // unconditionally). The finding this module exists to produce
+    // (OPERATIVE_STATE_UNRESOLVED_FOR_UNIT) is now correctly emitted for
+    // this genuinely, independently-confirmed-ambiguous unit.
     const materialUnit = unit({ anchors: [anchor({ documentId, structuralNodeId: "chain2-def-a", sectionRef: null, charStart: 0, charEnd: 60 })], family: "OTHER_UNCLASSIFIED", postureSignal: "DEFINITIONAL_SIGNAL", materiality: "CRITICAL" });
     const findings = auditOperativeStateForUnits([materialUnit], state);
-    expect(findings).toHaveLength(0); // <-- THE GAP: real ambiguity, zero findings.
+    expect(findings).toHaveLength(1); // FIXED: real ambiguity is now flagged, never silently dropped.
+    expect(findings[0]!.findingType).toBe("OPERATIVE_STATE_UNRESOLVED_FOR_UNIT");
+    expect(findings[0]!.reasoning).toMatch(/candidateSourceNodeIds/);
 
-    // Demonstrate the WORST case this gap enables: reconciliation, acting
-    // without any operative-state override, can independently reach
-    // FULLY_REPRESENTED_VERIFIED for this same unit — a confident answer
-    // Architecture Invariant #13 exists specifically to forbid whenever
-    // precedence/operative state "cannot be established with confidence."
+    // Demonstrate the WORST case this fix now closes: even though
+    // reconciliation, acting alone, would still independently reach
+    // FULLY_REPRESENTED_VERIFIED for this same unit (reconciliation.ts
+    // itself is a different module, out of this blocker's own scope - see
+    // BLOCKER-6's remediation artifact), the operative-state audit's real
+    // finding now OVERRIDES that confident-but-wrong answer before it ever
+    // becomes this unit's final coverage state - exactly the override
+    // wiring applyOperativeStateFindingsToCoverage already provides for
+    // Chain 1 and Chain 4 above.
     const discoveryId = "chain2-discovery";
     const candidate: DiscoveredCandidate = {
       discoveryId,
@@ -304,34 +310,50 @@ describe("Chain 2: definition uncertainty -> semantic uncertainty -> review item
       confidence: 0.9,
       sourceCitation: `${documentId}::1.01(pi-a)`,
       discoveryRunVersion: "test",
+      supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+      supersessionReason: "test fixture - no real supersession index applied",
     };
     const rule = makeRule("1.01(pi-a)", 8_000_000, { provenance: { documentId, sourceNodeKey: null, sourceCitation: materialUnit.anchors[0]!.sourceCitation, excerpt: null } });
     const frozen = freezeSourceInventory({ companyId: COMPANY_ID, packageKey: "pkg-1", instrumentKey: "instrument-1", documentIds: [documentId], units: [materialUnit] });
     const { entries, dangerousUnaccounted } = reconcileFrozenInventory({ frozenInventory: frozen, index, discoveredCandidates: [candidate], compiledResults: [{ candidateRef: discoveryId, rules: [rule], definitions: [] }], verifiedCandidateRefs: new Set([discoveryId]) });
-    const { entries: finalEntries } = applyOperativeStateFindingsToCoverage(entries, dangerousUnaccounted, findings, [materialUnit]);
+    // Sanity check: reconciliation.ts ALONE (a different module, out of
+    // this blocker's scope) still reaches FULLY_REPRESENTED_VERIFIED here -
+    // proving the override below is doing real work, not vacuously passing.
+    expect(entries[0]!.coverageState).toBe("FULLY_REPRESENTED_VERIFIED");
 
-    // THE DANGEROUS OUTCOME: reconciliation alone (never told about the real,
-    // independently-known definitional ambiguity) reports this unit as
-    // fully represented AND verified — the "confident but wrong" state
-    // Architecture Invariant #13 forbids, produced here via a real,
-    // reproducible cross-module composition gap rather than a hypothetical.
-    expect(finalEntries[0]!.coverageState).toBe("FULLY_REPRESENTED_VERIFIED");
+    const { entries: finalEntries, dangerousUnaccounted: finalDangerous } = applyOperativeStateFindingsToCoverage(entries, dangerousUnaccounted, findings, [materialUnit]);
 
-    // Because FULLY_REPRESENTED_VERIFIED is the one non-reviewable state,
-    // deriveFromCoverageEntry correctly returns null for it — NOT because
-    // the safe-failure architecture is broken, but because the upstream
-    // coverage state it was handed is itself the wrong answer. No
-    // ClaimReviewItem is ever created for this claim.
-    const derived = deriveFromCoverageEntry({ unit: materialUnit, entry: finalEntries[0]!, dangerous: null, companyId: COMPANY_ID, packageKey: "pkg-1", instrumentKey: "instrument-1", coverageAlgorithmVersion: SEMANTIC_COVERAGE_ALGORITHM_VERSION });
-    expect(derived).toBeNull();
-    // CHAIN 2 VERDICT: BREAKS. Root cause is precisely isolated: cross-
-    // reference-audit.ts's auditOperativeStateForUnits matches a covering
-    // provision via currentSourceNodeId or sectionRef only — both of which
-    // are structurally null/unpopulated for every DEFINITION-kind
+    // THE FIX: the operative-state audit's real finding (now correctly
+    // emitted - Link 3 above) OVERRIDES reconciliation's confident-but-wrong
+    // answer. This unit can no longer silently reach FULLY_REPRESENTED_VERIFIED -
+    // exactly what Architecture Invariant #13 requires.
+    expect(finalEntries[0]!.coverageState).toBe("OPERATIVE_STATE_UNRESOLVED");
+    expect(finalEntries[0]!.coverageState).not.toBe("FULLY_REPRESENTED_VERIFIED");
+
+    // Link 4: the coverage-layer uncertainty now becomes an explicit,
+    // persisted review item - exactly like Chain 1 and Chain 4 above,
+    // where before this fix NO ClaimReviewItem was ever created for this
+    // exact claim (the fix closes a true silent-failure gap, not merely a
+    // triage-quality one).
+    const dangerous = finalDangerous.find((d) => d.semanticUnitId === materialUnit.semanticUnitId) ?? null;
+    expect(dangerous).not.toBeNull();
+    const input = deriveFromCoverageEntry({ unit: materialUnit, entry: finalEntries[0]!, dangerous, companyId: COMPANY_ID, packageKey: "pkg-1", instrumentKey: "instrument-1", coverageAlgorithmVersion: SEMANTIC_COVERAGE_ALGORITHM_VERSION });
+    expect(input).not.toBeNull();
+    const result = await recordClaimReview(input!);
+    expect(result.outcome).toBe("CREATED");
+    const persisted = await prisma.claimReviewItem.findUnique({ where: { id: result.reviewItemId } });
+    expect(persisted).not.toBeNull();
+    expect(persisted!.status).toBe("OPEN_REVIEW");
+    expect(persisted!.structuralNodeId).toBe("chain2-def-a");
+    // CHAIN 2 VERDICT (Phase 3F.1.6.R): NOW FULLY COMPOSES. Root cause was
+    // precisely isolated and fixed: cross-reference-audit.ts's
+    // auditOperativeStateForUnits now also matches a covering provision via
+    // `candidateSourceNodeIds` for AMBIGUOUS provisions - previously
+    // structurally null/unpopulated for every DEFINITION-kind
     // OperativeProvisionView, regardless of targetResolutionStatus. The
-    // SECTION-kind case (see Chain 4 below) has no equivalent gap because
-    // sectionRef IS populated there even when AMBIGUOUS. This is a
-    // genuinely silent drop of real uncertainty, not merely a missing test.
+    // SECTION-kind case (see Chain 4 below) never had this gap because
+    // sectionRef IS populated there even when AMBIGUOUS - both cases now
+    // fail closed identically.
   });
 });
 
@@ -365,6 +387,8 @@ describe("Chain 3: verification contradiction -> trusted state withheld -> revie
       confidence: 0.9,
       sourceCitation: `${documentId}::6.05`,
       discoveryRunVersion: "test",
+      supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+      supersessionReason: "test fixture - no real supersession index applied",
     };
     const rule = makeRule("6.05", 9_000_000, { provenance: { documentId, sourceNodeKey: null, sourceCitation: `${documentId}::6.05`, excerpt: null } });
     const frozen = freezeSourceInventory({ companyId: COMPANY_ID, packageKey: "pkg-1", instrumentKey: "instrument-1", documentIds: [documentId], units: [materialUnit] });

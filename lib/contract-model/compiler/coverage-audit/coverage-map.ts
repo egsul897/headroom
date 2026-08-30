@@ -38,6 +38,11 @@ export function buildCoverageMap(regions: CoverageRegion[], findings: AuditFindi
       auditorCandidate: true,
       materialFindingCount,
       unresolvedFindingCount,
+      // Phase 3F.1.6.R BLOCKER-3 fix - carried from the region (itself
+      // already re-tagged by runIndependentCoverageAudit before this is
+      // called, when a real supersessionIndex was supplied).
+      supersessionStatus: region.supersessionStatus,
+      supersessionReason: region.supersessionReason,
     };
   });
 }

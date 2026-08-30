@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 import { withExpressionId, computeRuleId } from "../../lib/contract-model/ir/identity";
 import type { IRRule } from "../../lib/contract-model/ir/types";
 import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
+import type { OperativeContractState } from "../../lib/contract-model/compiler/amendment/types";
 import { runSemanticCoverageAudit } from "../../lib/contract-model/compiler/semantic-coverage/pipeline";
 import { buildTestIndex } from "./context-retrieval-test-utils";
 
@@ -63,6 +64,8 @@ function makeCandidate(discoveryId: string, nodeKeys: string[]): DiscoveredCandi
     confidence: 0.9,
     sourceCitation: `doc-1::${nodeKeys[0]}`,
     discoveryRunVersion: "test",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
   };
 }
 
@@ -94,11 +97,21 @@ function makeRule(sourceSectionRef: string, amount: number): IRRule {
   };
 }
 
+// Phase 3F.1.6.R BLOCKER-4 fix: auditOperativeStateForUnits now fails
+// CLOSED (flags every unit) when operativeState is null - the correct,
+// intentional behavior for a caller that genuinely could not resolve
+// operative state at all. These tests are not exercising that check; this
+// document was never amended, so a real, RESOLVED, empty-provisions
+// OperativeContractState (not null) is the honest input - "we checked,
+// nothing governs differently" is a real fact, not the same as "never
+// checked."
+const emptyOperativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [], status: "OPERATIVE_STATE_RESOLVED", summary: "no amendments recorded for this test fixture", unattachedEffects: [] };
+
 const baseInput = {
   companyId,
   packageKey,
   instrumentKey,
-  operativeState: null,
+  operativeState: emptyOperativeState,
   operativeVersionRef: null,
   structuralParserVersion: "test",
   providerIdentity: null,
