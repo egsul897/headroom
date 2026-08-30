@@ -106,6 +106,17 @@ export interface SemanticReviewResult {
   telemetry: AnalyzerCallTelemetry | null;
   failed: boolean;
   failureDetail: string | null;
+  /**
+   * Phase 3F.1.6.RX Workstream E precision fix. True when this result came
+   * from the no-credential SyntheticStageCaller fallback (llm-caller.ts) -
+   * a Zod-defaults stub with no genuine reading of the source text at all -
+   * rather than a real (or a test's scripted stand-in for a real) reviewer.
+   * verify.ts uses this to make sure a stub's inevitable empty findings
+   * array is never mistaken for an independent adversarial confirmation
+   * that nothing is wrong; only a genuine review's silence carries that
+   * weight.
+   */
+  isSynthetic: boolean;
 }
 
 function normalizeWireFinding(wire: WireVerificationFinding, input: VerificationInput, provider: string, model: string): SemanticVerificationFinding {
@@ -146,8 +157,8 @@ export async function runAdversarialSemanticReview(input: VerificationInput, rec
   try {
     const wireResult = await caller.call(SubmitVerificationFindingsSchema, "semantic_verification", systemPrompt, userContent);
     const findings = wireResult.findings.map((f) => normalizeWireFinding(f, input, caller.providerName, caller.model));
-    return { findings, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: false, failureDetail: null };
+    return { findings, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: false, failureDetail: null, isSynthetic: caller.isSynthetic };
   } catch (err) {
-    return { findings: [], overallNotes: [], provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: true, failureDetail: err instanceof Error ? err.message : String(err) };
+    return { findings: [], overallNotes: [], provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: true, failureDetail: err instanceof Error ? err.message : String(err), isSynthetic: caller.isSynthetic };
   }
 }

@@ -57,7 +57,22 @@ const PATTERNS: PatternDef[] = [
   // "so long as"/"provided that"/"subject to" connective at all, so it must
   // be its own generic pattern rather than relying on catching a connective
   // next to it).
-  { kind: "CONDITIONAL_PHRASE", re: /\b(?:so long as|provided(?:,?\s+that)?|unless|except(?:\s+that)?|if and only if|only if|subject to|notwithstanding|until\s+such\s+time\s+as|no\s+(?:Event\s+of\s+)?Default)\b/gi },
+  //
+  // Phase 3F.1.6.RX Workstream E (independent re-attack of BLOCKER-9's own
+  // fix, docs/phase-3f1-6-rx-final-blocker-closure/07-verifier-
+  // remediation.json) - three further generic additions, each a genuine
+  // recall gap found by adversarial condition-form testing with forms
+  // outside BLOCKER-9's own 9-form matrix, none package/company-specific:
+  // "conditioned upon" (a common qualifying-condition connective,
+  // functionally identical to "subject to"/"so long as" but a distinct
+  // surface form neither original pattern matches), "following satisfaction
+  // of"/"upon satisfaction of" (a common precondition-incorporation
+  // connective, e.g. "following satisfaction of the conditions precedent"),
+  // and "immediately before and after" (the standard temporal dual-
+  // condition phrasing for a pro forma test straddling a transaction, which
+  // can appear as a covenant's sole gating language with no accompanying
+  // "so long as"/"provided that"/"no Default" connective at all).
+  { kind: "CONDITIONAL_PHRASE", re: /\b(?:so long as|provided(?:,?\s+that)?|unless|except(?:\s+that)?|if and only if|only if|subject to|notwithstanding|until\s+such\s+time\s+as|no\s+(?:Event\s+of\s+)?Default|conditioned\s+(?:upon|on)|(?:following|upon)\s+satisfaction\s+of|immediately\s+before\s+and\s+after)\b/gi },
   { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding)\b/gi },
   { kind: "PROVISO_MARKER", re: /\bprovided,?\s+further\b/gi },
   { kind: "SHARED_CAP_MARKER", re: /\b(?:combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under))\b/gi },

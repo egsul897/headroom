@@ -17,6 +17,7 @@ import { buildIrInventory } from "./ir-inventory";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { runAdversarialSemanticReview } from "./reviewer";
+import type { SemanticReviewResult } from "./reviewer";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
 import type { IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
 import type { StageCaller } from "../llm-caller";
@@ -91,6 +92,72 @@ function mergeFindings(deterministic: SemanticVerificationFinding[], semantic: S
     if (!usedDeterministicIdx.has(i)) merged.push(deterministic[i]!);
   }
   return merged;
+}
+
+/**
+ * Phase 3F.1.6.RX Workstream E precision fix (independent adversarial
+ * attack on BLOCKER-9's fix - see docs/phase-3f1-6-rx-final-blocker-
+ * closure/07-verifier-remediation.json). reconciliation.ts's buildAggregateSignals
+ * raises a coarse AMBIGUOUS structural signal from as little as ONE
+ * source-side conditional/exception/proviso marker (BLOCKER-9's own fix,
+ * intentionally lowered from >=2), and findings.ts's determineDeterministicSeverity
+ * intentionally, correctly classifies every AMBIGUOUS signal UNCERTAIN
+ * "pending Layer 2 confirmation" rather than auto-declaring MATERIAL - but
+ * before this fix, that "pending" state never actually resolved: mergeFindings/
+ * maxSeverity above can only ever RAISE a deterministic finding's severity
+ * when a semantic finding of the same ruleOrDefinitionId+findingType merges
+ * into it, never LOWER it - so a single, wholly benign, unrelated
+ * conditional-looking word anywhere in a candidate's operative text (e.g. a
+ * stray "unless"/"except that" in unrelated boilerplate, on a rule that in
+ * fact has zero real conditions) permanently pinned this candidate's status
+ * at REVIEW_REQUIRED, even once a REAL, independent adversarial reviewer -
+ * given the exact same deterministic signal in its own prompt (reviewer.ts's
+ * buildUserContent's "investigate each, do not merely rubber-stamp"
+ * instruction) - read the real source text and reported nothing wrong at
+ * all. That is a genuine, demonstrable precision regression made much more
+ * likely by BLOCKER-9's own threshold fix (a single stray marker is far
+ * more common than two), not merely a hypothetical: see this phase's own
+ * new adversarial benign-condition-form matrix.
+ *
+ * This downgrades an AMBIGUOUS-origin UNCERTAIN finding to NON_MATERIAL
+ * (never deletes it - full audit trail is preserved) ONLY when ALL of:
+ *  (1) it is still purely DETERMINISTIC_ONLY (never touches a finding Layer
+ *      2 actually merged into, confirming it - that finding's severity
+ *      already correctly reflects the confirmation via maxSeverity);
+ *  (2) the semantic review that ran was a REAL review, not the no-credential
+ *      SyntheticStageCaller fallback (isSynthetic) - a stub's inevitable
+ *      empty response must never be mistaken for an independent judgment
+ *      that nothing is wrong (this is exactly why isSynthetic threads
+ *      through from reviewer.ts as part of this same fix);
+ *  (3) the review did not itself independently report ANY finding of the
+ *      same findingType for this candidate (which would mean it DID confirm
+ *      the concern, just not merged onto this exact deterministic entry
+ *      because aggregate signals carry no single ruleOrDefinitionId - the
+ *      confirming finding's own severity still drives status untouched).
+ *
+ * A hard NOT_ACCOUNTED_FOR/IR_ONLY numeric-evidence finding is NEVER
+ * touched by this (verificationMethod alone does not gate it - reason-string
+ * membership in `ambiguousReasons` does, and only reconciliation.ts's
+ * buildAggregateSignals ever produces those exact reason strings) - real
+ * numeric evidence keeps its severity regardless of whether a model call
+ * happens to notice it, preserving BLOCKER-9's own recall guarantee
+ * unconditionally.
+ */
+function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFinding[], reconciliation: ReconciliationResult, review: SemanticReviewResult): SemanticVerificationFinding[] {
+  if (review.failed || review.isSynthetic) return findings;
+  const ambiguousReasons = new Set(reconciliation.items.filter((i) => i.classification === "AMBIGUOUS").map((i) => i.reason));
+  if (ambiguousReasons.size === 0) return findings;
+  const semanticFindingTypes = new Set(review.findings.map((f) => f.findingType));
+
+  return findings.map((f) => {
+    const isUnconfirmedAmbiguousOrigin = f.verificationMethod === "DETERMINISTIC_ONLY" && f.severity === "UNCERTAIN" && ambiguousReasons.has(f.verifierReasoning) && !semanticFindingTypes.has(f.findingType);
+    if (!isUnconfirmedAmbiguousOrigin) return f;
+    return {
+      ...f,
+      severity: "NON_MATERIAL",
+      verifierReasoning: `${f.verifierReasoning} [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]`,
+    };
+  });
 }
 
 /**
@@ -169,6 +236,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller);
     semanticReviewFailed = review.failed;
     allFindings = mergeFindings(deterministicFindings, review.findings);
+    allFindings = downgradeUnconfirmedAmbiguousFindings(allFindings, reconciliation, review);
   }
 
   return {
