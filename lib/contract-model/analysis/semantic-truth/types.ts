@@ -46,10 +46,35 @@ export interface PersistSemanticTruthInput {
   instrumentKey: string;
   analysisRunId: string | null;
   objects: SemanticTruthObjectInput[];
+  /**
+   * Phase 3F.1.6.RX-FINAL Workstream E (FINDING-6 - zombie-writer fencing).
+   * Optional ONLY for backward compatibility with call sites (tests) that
+   * persist with `analysisRunId: null` (no real run to fence against at
+   * all - see this field's own null-handling below). Every real orchestrator
+   * call site passes the generation it was handed at claim time
+   * (`StartAnalysisRunOutcome.run.executionGeneration`, threaded through
+   * unchanged from `runContractAnalysis` -> `analyzeInstrument`). See
+   * service.ts's own `persistSemanticTruthForInstrument` doc comment for the
+   * gating this enables.
+   */
+  expectedGeneration?: number | null;
 }
 
 export interface PersistSemanticTruthSummary {
   upserted: number;
   unchanged: number;
   byTrustStatus: Record<SemanticTruthTrustStatus, number>;
+  /**
+   * FINDING-6: true only when this call was skipped in its ENTIRETY (no
+   * object was persisted or updated - `upserted`/`unchanged` above are both
+   * 0) because `analysisRunId` was non-null, `expectedGeneration` was
+   * provided, and a fresh read of that run's OWN `executionGeneration`
+   * (immediately before any object was persisted) no longer matched -
+   * meaning a newer execution has since taken ownership of this run and
+   * this call's own semantic-truth output must not be republished as
+   * "current" on its behalf. `false` in every other case (including when no
+   * generation check applies at all - see `expectedGeneration`'s own doc
+   * comment).
+   */
+  skippedSupersededGeneration: boolean;
 }

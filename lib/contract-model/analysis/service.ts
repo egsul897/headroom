@@ -64,6 +64,41 @@
  * Document query, or `startOrResumeAnalysisRun` itself, throwing) - the one
  * class of failure that previously had no durable trace anywhere except a
  * console.error in app/'s own runExtractionAction.
+ *
+ * Phase 3F.1.6.RX-FINAL Workstream E (FINDING-6 - "zombie writer" fencing).
+ * The Part B AUDIT-F2 recertification (docs/phase-3f1-6-rx-final-blocker-closure/
+ * 28-part-b-auditf1-f2-recertification.json) reconfirmed the claim-time CAS
+ * above is genuinely atomic, but found a SEPARATE, later gap: reclaiming a
+ * "stale" RUNNING row (the `updateMany` branch above) never invalidates the
+ * PRIOR owner's own ability to keep writing to the identical `runId` if that
+ * prior owner was never actually dead - only slow (a realistic outcome,
+ * since PER_INSTRUMENT_ANALYSIS is one unsubdivided stage spanning the
+ * entire per-instrument loop). `setAnalysisRunStage`/`completeAnalysisRun`/
+ * `failAnalysisRun` used to write via a bare `update({ where: { id: runId
+ * } })` - unconditional on anything that changes across a reclaim - so a
+ * stale-but-alive prior owner's later write would silently clobber the new
+ * owner's live state (tests/contract-model/part-b-recert-auditf2-concurrency
+ * .test.ts's own "ZOMBIE WRITER" test reproduced this against real
+ * Postgres).
+ *
+ * The fix: `AnalysisRun.executionGeneration` (prisma/schema.prisma's own
+ * doc comment has the full column rationale) is minted/incremented by EVERY
+ * successful ownership acquisition above (the `create()` path gets the
+ * column default, 1; the stale-reclaim `updateMany` path increments it
+ * atomically as part of that SAME CAS statement) and returned to the caller
+ * that just won ownership via `StartAnalysisRunOutcome.run.executionGeneration`.
+ * Every one of the three mutating functions below now REQUIRES the caller's
+ * own held generation and applies its write ONLY via a single atomic
+ * `updateMany({ where: { id: runId, executionGeneration: expectedGeneration
+ * }, ... })`, returning `null` (a no-op, never a thrown error - a stale
+ * generation is an ordinary, expected outcome of losing a race, not a bug at
+ * the call site) whenever `count === 0`, i.e. a newer owner has since taken
+ * over. lib/contract-model/analysis/orchestrator.ts threads the generation
+ * value it received at claim time through every one of its own calls to
+ * these three functions (and gates `recordAnalysisRunIssue`/
+ * `persistSemanticTruthForInstrument` the same way - see those functions'
+ * own doc comments) so a superseded execution's later writes fail closed
+ * end to end, not just for the three functions this file owns directly.
  */
 import { prisma } from "../../prisma";
 import { Prisma } from "@prisma/client";
@@ -148,6 +183,13 @@ export async function startOrResumeAnalysisRun(input: { companyId: string; packa
       // keep showing a PRIOR attempt's fatalError once it starts running
       // again.
       fatalError: Prisma.JsonNull,
+      // FINDING-6 (zombie-writer fencing): minted atomically as PART OF the
+      // same CAS UPDATE that wins the reclaim - never a separate statement,
+      // so there is no window in which a caller could observe "I reclaimed
+      // the row" without the generation bump also having applied. Any prior
+      // owner's own held generation (whatever it read at ITS OWN claim time)
+      // is now guaranteed stale the instant this statement commits.
+      executionGeneration: { increment: 1 },
     },
   });
 
@@ -173,11 +215,30 @@ export async function startOrResumeAnalysisRun(input: { companyId: string; packa
   return { kind: "ALREADY_RUNNING", run: current };
 }
 
-export async function setAnalysisRunStage(runId: string, currentStage: string): Promise<void> {
-  await prisma.analysisRun.update({ where: { id: runId }, data: { currentStage } });
+/**
+ * FINDING-6 (zombie-writer fencing): `expectedGeneration` MUST be the value
+ * the caller itself received from `startOrResumeAnalysisRun`'s own
+ * `StartAnalysisRunOutcome.run.executionGeneration` at claim time - never a
+ * value re-read later, which would defeat the whole point (a stale caller
+ * re-reading the CURRENT generation right before writing would just adopt
+ * whatever a newer owner already bumped it to, silently laundering its own
+ * staleness). The write is a single atomic `updateMany` conditioned on BOTH
+ * `id` and `executionGeneration` together - Postgres either applies it
+ * (`count === 1`, this caller still genuinely owns the row) or matches
+ * nothing (`count === 0`, a newer claim has since superseded this caller,
+ * and this write correctly, silently does not apply). Returns `null` on
+ * `count === 0` rather than throwing - losing a race to a newer owner is an
+ * ordinary, expected runtime outcome for a stale caller, never a bug at the
+ * call site (see lib/contract-model/analysis/orchestrator.ts's own handling
+ * of a `null` return for how a superseded execution stops making further
+ * writes once it observes one).
+ */
+export async function setAnalysisRunStage(runId: string, currentStage: string, expectedGeneration: number): Promise<boolean> {
+  const result = await prisma.analysisRun.updateMany({ where: { id: runId, executionGeneration: expectedGeneration }, data: { currentStage } });
+  return result.count === 1;
 }
 
-export async function completeAnalysisRun(runId: string, input: { openReviewItemCount: number; hadInstrumentFailures: boolean }): Promise<AnalysisRun> {
+export async function completeAnalysisRun(runId: string, input: { openReviewItemCount: number; hadInstrumentFailures: boolean }, expectedGeneration: number): Promise<AnalysisRun | null> {
   // AUDIT-F3: PARTIAL takes priority over COMPLETED_WITH_REVIEW whenever at
   // least one instrument's own analysis threw an unexpected exception this
   // attempt, regardless of whether OTHER, successfully-analyzed instruments
@@ -187,8 +248,14 @@ export async function completeAnalysisRun(runId: string, input: { openReviewItem
   // unambiguously without reconstructing it from AnalysisRunIssue rows or
   // logs (see AnalysisRunStatus's own schema comment).
   const status = input.hadInstrumentFailures ? "PARTIAL" : input.openReviewItemCount > 0 ? "COMPLETED_WITH_REVIEW" : "COMPLETED";
-  return prisma.analysisRun.update({
-    where: { id: runId },
+  // FINDING-6: see setAnalysisRunStage's own doc comment for the full
+  // fencing contract this shares. A stale (superseded) caller's completion
+  // never applies - the exact "old worker finishes and clobbers the new
+  // owner's live run with COMPLETED" defect
+  // tests/contract-model/part-b-recert-auditf2-concurrency.test.ts's own
+  // "ZOMBIE WRITER" test reproduced.
+  const result = await prisma.analysisRun.updateMany({
+    where: { id: runId, executionGeneration: expectedGeneration },
     data: {
       status,
       completedAt: new Date(),
@@ -196,13 +263,22 @@ export async function completeAnalysisRun(runId: string, input: { openReviewItem
       reviewItemCount: input.openReviewItemCount,
     },
   });
+  if (result.count === 0) return null;
+  return prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
 }
 
-export async function failAnalysisRun(runId: string, fatalError: { stage: string; message: string; errorClass: string }): Promise<AnalysisRun> {
-  return prisma.analysisRun.update({
-    where: { id: runId },
+export async function failAnalysisRun(runId: string, fatalError: { stage: string; message: string; errorClass: string }, expectedGeneration: number): Promise<AnalysisRun | null> {
+  // FINDING-6: see setAnalysisRunStage's own doc comment for the full
+  // fencing contract this shares. A stale (superseded) caller's failure
+  // report never applies - the exact "new worker's real state gets
+  // clobbered back to FAILED by an old worker's late error" defect the
+  // "ZOMBIE WRITER" test reproduced.
+  const result = await prisma.analysisRun.updateMany({
+    where: { id: runId, executionGeneration: expectedGeneration },
     data: { status: "FAILED", completedAt: new Date(), fatalError: fatalError as object },
   });
+  if (result.count === 0) return null;
+  return prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
 }
 
 export async function getLatestAnalysisRunForCompany(companyId: string): Promise<AnalysisRun | null> {
@@ -228,25 +304,54 @@ export interface RecordAnalysisRunIssueInput {
   message: string;
 }
 
-/** Durably persists one instrument's own unexpected failure for this run - upserted (never duplicated) on (runId, instrumentKey), since the orchestrator's own per-instrument loop runs each unit at most once per attempt. */
-export async function recordAnalysisRunIssue(input: RecordAnalysisRunIssueInput): Promise<void> {
-  await prisma.analysisRunIssue.upsert({
-    where: { runId_instrumentKey: { runId: input.runId, instrumentKey: input.instrumentKey } },
-    create: {
-      runId: input.runId,
-      companyId: input.companyId,
-      instrumentKey: input.instrumentKey,
-      documentIds: input.documentIds,
-      failedStage: input.failedStage,
-      errorClass: input.errorClass,
-      message: input.message,
-    },
-    update: {
-      documentIds: input.documentIds,
-      failedStage: input.failedStage,
-      errorClass: input.errorClass,
-      message: input.message,
-    },
+/**
+ * Durably persists one instrument's own unexpected failure for this run -
+ * upserted (never duplicated) on (runId, instrumentKey), since the
+ * orchestrator's own per-instrument loop runs each unit at most once per
+ * attempt.
+ *
+ * FINDING-6 (zombie-writer fencing): AnalysisRunIssue is a CHILD table keyed
+ * on `runId` alone - it carries no `executionGeneration` column of its own,
+ * so the single-statement `updateMany({ where: { executionGeneration } })`
+ * pattern the three AnalysisRun-row mutators above use does not apply
+ * directly here. Instead this runs inside one transaction that takes a real
+ * Postgres row lock on the parent AnalysisRun row first (`SELECT ...
+ * FOR UPDATE`) and only proceeds to the upsert if that row's freshly-read,
+ * lock-protected `executionGeneration` still matches `expectedGeneration`.
+ * The `FOR UPDATE` lock is the SAME row-lock primitive
+ * `startOrResumeAnalysisRun`'s own reclaim `updateMany` acquires against
+ * this identical row (both are ordinary Postgres row-level locks on
+ * `analysis_runs`), so a reclaim already in flight and this call genuinely
+ * serialize against each other - this call either observes the fresh,
+ * bumped generation and correctly declines, or the reclaim itself blocks
+ * until this transaction commits and then proceeds. `applied: false` is an
+ * ordinary, expected outcome for a superseded caller, never a thrown error.
+ */
+export async function recordAnalysisRunIssue(input: RecordAnalysisRunIssueInput & { expectedGeneration: number }): Promise<{ applied: boolean }> {
+  return prisma.$transaction(async (tx) => {
+    const rows = await tx.$queryRaw<{ executionGeneration: number }[]>`SELECT "executionGeneration" FROM "analysis_runs" WHERE id = ${input.runId} FOR UPDATE`;
+    const current = rows[0]?.executionGeneration;
+    if (current === undefined || current !== input.expectedGeneration) return { applied: false };
+
+    await tx.analysisRunIssue.upsert({
+      where: { runId_instrumentKey: { runId: input.runId, instrumentKey: input.instrumentKey } },
+      create: {
+        runId: input.runId,
+        companyId: input.companyId,
+        instrumentKey: input.instrumentKey,
+        documentIds: input.documentIds,
+        failedStage: input.failedStage,
+        errorClass: input.errorClass,
+        message: input.message,
+      },
+      update: {
+        documentIds: input.documentIds,
+        failedStage: input.failedStage,
+        errorClass: input.errorClass,
+        message: input.message,
+      },
+    });
+    return { applied: true };
   });
 }
 

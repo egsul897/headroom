@@ -555,12 +555,12 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     const instrumentUnits = resolveInstrumentUnits(packageGraph, documentIds);
 
     // --- amendment/operative state -> discovery -> context retrieval -> semantic compilation -> verification -> coverage -> review persistence, per instrument ---
-    await setAnalysisRunStage(runId, "PER_INSTRUMENT_ANALYSIS");
+    await setStageOrBail("PER_INSTRUMENT_ANALYSIS");
     const instrumentOutcomes: InstrumentAnalysisOutcome[] = [];
     const instrumentErrors: { instrumentKey: string; documentIds: string[]; message: string; errorClass: string }[] = [];
     for (const unit of instrumentUnits) {
       try {
-        instrumentOutcomes.push(await analyzeInstrument({ companyId, analysisPackageKey: packageKey, runId, unit, index, packageGraph, packageDocsById, exactTermsByDocument, callers }));
+        instrumentOutcomes.push(await analyzeInstrument({ companyId, analysisPackageKey: packageKey, runId, expectedGeneration: generation, unit, index, packageGraph, packageDocsById, exactTermsByDocument, callers }));
       } catch (err) {
         // Fault isolation at instrument granularity (this file's own header
         // comment): one instrument's unexpected failure never discards
@@ -577,7 +577,12 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     // every real failure either way, not just the one folded into
     // fatalError's own summary text for the total-failure case.
     for (const failure of instrumentErrors) {
-      await recordAnalysisRunIssue({ runId, companyId, instrumentKey: failure.instrumentKey, documentIds: failure.documentIds, failedStage: "PER_INSTRUMENT_ANALYSIS", errorClass: failure.errorClass, message: failure.message });
+      // FINDING-6: gated on `generation` too (see recordAnalysisRunIssue's
+      // own doc comment) - not individually bailed-out-of here, since a
+      // superseded generation at this point is already conclusively
+      // detected and handled by the failAnalysisRun/completeAnalysisRun
+      // calls immediately below, whichever branch this attempt reaches.
+      await recordAnalysisRunIssue({ runId, companyId, instrumentKey: failure.instrumentKey, documentIds: failure.documentIds, failedStage: "PER_INSTRUMENT_ANALYSIS", errorClass: failure.errorClass, message: failure.message, expectedGeneration: generation });
     }
 
     if (instrumentOutcomes.length === 0 && instrumentErrors.length > 0) {
@@ -589,7 +594,11 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
       // of the FIRST failure only, never the sole durable trace of the
       // others (contrast with the pre-AUDIT-F3 behavior this replaces).
       const firstError = instrumentErrors[0]!;
-      await failAnalysisRun(runId, { stage: "PER_INSTRUMENT_ANALYSIS", message: `every instrument failed (${instrumentErrors.length} total; see AnalysisRunIssue for each); first error (${firstError.instrumentKey}): ${firstError.message}`, errorClass: firstError.errorClass });
+      const failResult = await failAnalysisRun(runId, { stage: "PER_INSTRUMENT_ANALYSIS", message: `every instrument failed (${instrumentErrors.length} total; see AnalysisRunIssue for each); first error (${firstError.instrumentKey}): ${firstError.message}`, errorClass: firstError.errorClass }, generation);
+      // FINDING-6: a `null` result means a newer owner reclaimed this run
+      // before this (superseded) execution could record its own failure -
+      // that newer owner's own state is authoritative, never this one's.
+      if (!failResult) return supersededResult("PER_INSTRUMENT_ANALYSIS");
       return {
         outcome: "FAILED",
         runId,
@@ -607,7 +616,7 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     }
 
     // --- explicit review persistence already happened per instrument above (safe-failure/integrate.ts) - completed analysis state below ---
-    await setAnalysisRunStage(runId, "REVIEW_PERSISTENCE");
+    await setStageOrBail("REVIEW_PERSISTENCE");
     const openReviewItemCount = await prisma.claimReviewItem.count({ where: { companyId, packageKey, status: "OPEN_REVIEW" } });
 
     // AUDIT-F3: PARTIAL (not COMPLETED/COMPLETED_WITH_REVIEW) whenever ANY
@@ -617,13 +626,20 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     // on instrument-level fault isolation). See AnalysisRunStatus's own
     // schema comment for why this is a deliberately separate status from
     // COMPLETED_WITH_REVIEW.
-    await completeAnalysisRun(runId, { openReviewItemCount, hadInstrumentFailures: instrumentErrors.length > 0 });
-    const finalRun = await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
+    const completeResult = await completeAnalysisRun(runId, { openReviewItemCount, hadInstrumentFailures: instrumentErrors.length > 0 }, generation);
+    // FINDING-6: a `null` result means a newer owner reclaimed this run
+    // before this (superseded) execution reached completion - this
+    // execution's own (by-then-meaningless) view of success must never be
+    // written over the newer owner's real, live state (the exact "old
+    // worker finishes and clobbers the new owner's COMPLETED state" defect
+    // tests/contract-model/part-b-recert-auditf2-concurrency.test.ts's own
+    // "ZOMBIE WRITER" test reproduced).
+    if (!completeResult) return supersededResult("REVIEW_PERSISTENCE");
 
     return {
       outcome: "STARTED_TO_COMPLETION",
       runId,
-      status: finalRun.status,
+      status: completeResult.status,
       companyId,
       packageKey,
       documentIds,
@@ -635,8 +651,10 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
       failureRecordPersisted: null,
     };
   } catch (err) {
+    if (err instanceof RunSupersededError) return supersededResult(err.stage);
     const { message, errorClass } = classifyError(err);
-    await failAnalysisRun(runId, { stage: "INGESTION_OR_STRUCTURAL", message, errorClass });
+    const failResult = await failAnalysisRun(runId, { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, generation);
+    if (!failResult) return supersededResult("INGESTION_OR_STRUCTURAL");
     return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, instrumentFailures: [], failureRecordPersisted: null };
   }
 }

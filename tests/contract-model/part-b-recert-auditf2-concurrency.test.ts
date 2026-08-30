@@ -173,14 +173,16 @@ describe("Part B independent recertification - AUDIT-F2 atomic AnalysisRun concu
     expect(await prisma.analysisRun.count({ where: { companyId: identity.companyId, packageKey: identity.packageKey, analysisAlgorithmVersion: identity.analysisAlgorithmVersion } })).toBe(1);
   });
 
-  it("PRODUCTION RISK - ZOMBIE WRITER: after a stale row is reclaimed by a NEW caller, the OLD (presumed-dead) owner can still successfully write to the SAME runId and silently overwrite the new owner's live state - there is no fencing/lease-generation token distinguishing 'this write comes from the owner that currently holds the claim' from 'this write comes from whoever last held any reference to this row id'", async () => {
+  it("FINDING-6 FIX VERIFIED - ZOMBIE WRITER: after a stale row is reclaimed by a NEW caller, the OLD (presumed-dead) owner's later writes to the SAME runId are now rejected/no-op (executionGeneration fencing) - the new owner alone controls the final run state", async () => {
     const identity = { companyId: COMPANY_ID, packageKey: "pkg-part-b-recert-zombie-writer", documentIds: ["doc-x"], analysisAlgorithmVersion: CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION };
 
-    // Step 1: the "old worker" starts a real run.
+    // Step 1: the "old worker" starts a real run and holds generation 1.
     const oldWorkerOutcome = await startOrResumeAnalysisRun(identity);
     expect(oldWorkerOutcome.kind).toBe("STARTED");
     const runId = oldWorkerOutcome.run.id;
-    await setAnalysisRunStage(runId, "PER_INSTRUMENT_ANALYSIS");
+    const oldWorkerGeneration = oldWorkerOutcome.run.executionGeneration;
+    expect(oldWorkerGeneration).toBe(1);
+    expect(await setAnalysisRunStage(runId, "PER_INSTRUMENT_ANALYSIS", oldWorkerGeneration)).toBe(true);
 
     // Step 2: the old worker goes silent for >30 minutes WITHOUT crashing -
     // a fully realistic scenario for a single stage covering many
@@ -194,62 +196,103 @@ describe("Part B independent recertification - AUDIT-F2 atomic AnalysisRun concu
 
     // Step 3: a legitimate new trigger (a user re-clicking "run analysis",
     // or a scheduled retry) correctly reclaims the SAME row per the
-    // documented stale-reclaim contract.
+    // documented stale-reclaim contract, and is minted a NEW, strictly
+    // greater generation as part of that SAME atomic reclaim statement.
     const newWorkerOutcome = await startOrResumeAnalysisRun(identity);
     expect(newWorkerOutcome.kind).toBe("STARTED");
     expect(newWorkerOutcome.run.id).toBe(runId); // same row - this IS the documented, intended behavior
+    const newWorkerGeneration = newWorkerOutcome.run.executionGeneration;
+    expect(newWorkerGeneration).toBeGreaterThan(oldWorkerGeneration);
     const afterReclaim = await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
     expect(afterReclaim.status).toBe("RUNNING");
     expect(afterReclaim.currentStage).toBe("INGESTION"); // reset by the new worker's own claim
+    expect(afterReclaim.executionGeneration).toBe(newWorkerGeneration);
 
-    // Step 4: the new worker makes real progress.
-    await setAnalysisRunStage(runId, "STRUCTURAL_ANALYSIS");
+    // Step 4: the new worker makes real progress, presenting its OWN
+    // (current) generation - this applies normally.
+    expect(await setAnalysisRunStage(runId, "STRUCTURAL_ANALYSIS", newWorkerGeneration)).toBe(true);
 
-    // Step 5: THE DEFECT - the old worker was never actually dead. It was
-    // merely slow. Unaware that ownership was reassigned (startOrResumeAnalysisRun
-    // never told it, and it never re-checks), it now finishes its own
-    // (stale) view of the PER_INSTRUMENT_ANALYSIS stage and calls
-    // completeAnalysisRun with ITS OWN runId reference - the identical id
-    // the new worker is also using, since reclaiming a row never mints a
-    // new id or any other fencing token the old worker's calls would fail
-    // against.
-    const oldWorkerFinalState = await completeAnalysisRun(runId, { openReviewItemCount: 0, hadInstrumentFailures: false });
+    // Step 5: the old worker was never actually dead. It was merely slow.
+    // Unaware that ownership was reassigned (startOrResumeAnalysisRun never
+    // told it, and it never re-checks), it now finishes its own (stale)
+    // view of the PER_INSTRUMENT_ANALYSIS stage and calls completeAnalysisRun
+    // with ITS OWN runId reference AND its own (now-superseded) generation -
+    // THE FIX: this is no longer unconditional. The atomic
+    // `updateMany({ where: { id, executionGeneration: oldWorkerGeneration } })`
+    // matches zero rows (the row's real executionGeneration is now
+    // newWorkerGeneration), so the write does not apply and `null` is
+    // returned instead of a clobbered row.
+    const oldWorkerCompleteResult = await completeAnalysisRun(runId, { openReviewItemCount: 0, hadInstrumentFailures: false }, oldWorkerGeneration);
+    expect(oldWorkerCompleteResult).toBeNull();
 
-    // The old worker's completion call SUCCEEDED and silently clobbered the
-    // new worker's live, in-progress run: the row now reads COMPLETED even
-    // though the new worker is still only at STRUCTURAL_ANALYSIS and has
-    // not itself finished (or even reached the review-persistence stage).
-    expect(oldWorkerFinalState.status).toBe("COMPLETED");
-    expect(oldWorkerFinalState.currentStage).toBe("COMPLETE");
-    const rowAfterOldWorkerWrite = await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
-    expect(rowAfterOldWorkerWrite.status).toBe("COMPLETED"); // wrong: the new worker's real execution is still in flight
+    // The new owner's live, in-progress state is COMPLETELY UNTOUCHED by the
+    // old worker's rejected write - still RUNNING, still at the new worker's
+    // own real stage, never silently flipped to COMPLETED.
+    const rowAfterOldWorkerAttempt = await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
+    expect(rowAfterOldWorkerAttempt.status).toBe("RUNNING");
+    expect(rowAfterOldWorkerAttempt.currentStage).toBe("STRUCTURAL_ANALYSIS");
+    expect(rowAfterOldWorkerAttempt.executionGeneration).toBe(newWorkerGeneration);
 
-    // Worse: the new worker, still running and unaware its run was just
-    // marked COMPLETED behind its back, continues and eventually calls
-    // failAnalysisRun itself (e.g. it hits a real error later in its own
-    // execution) - this ALSO succeeds unconditionally, silently overwriting
-    // the old worker's premature COMPLETED status with FAILED, even though
-    // by then a THIRD, even-later trigger may have already reclaimed and
-    // relied on the (incorrect) COMPLETED status in between. Whichever
-    // caller writes last wins, with zero coordination - the exact class of
-    // uncoordinated concurrent write AUDIT-F2's own claimed fix ("downstream
-    // state is not double-written") was supposed to close, reappearing here
-    // via the reclaim path rather than the initial-claim path.
-    const newWorkerLateFailure = await failAnalysisRun(runId, { stage: "PER_INSTRUMENT_ANALYSIS", message: "a real error the new worker hit", errorClass: "Error" });
-    expect(newWorkerLateFailure.status).toBe("FAILED");
+    // The old worker's OWN stage-update attempts are likewise rejected/no-op
+    // once superseded - not just its completion call.
+    expect(await setAnalysisRunStage(runId, "PACKAGE_RELATIONSHIPS", oldWorkerGeneration)).toBe(false);
+    const oldWorkerFailResult = await failAnalysisRun(runId, { stage: "PER_INSTRUMENT_ANALYSIS", message: "a real error the OLD worker hit, long after losing ownership", errorClass: "Error" }, oldWorkerGeneration);
+    expect(oldWorkerFailResult).toBeNull();
+    const rowAfterOldWorkerFailAttempt = await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
+    expect(rowAfterOldWorkerFailAttempt.status).toBe("RUNNING"); // still untouched by the old worker
+
+    // Meanwhile the NEW worker's own writes, presenting its own real,
+    // current generation, continue to apply normally end to end - fencing
+    // rejects only the SUPERSEDED caller, never the legitimate current owner.
+    const newWorkerCompleteResult = await completeAnalysisRun(runId, { openReviewItemCount: 0, hadInstrumentFailures: false }, newWorkerGeneration);
+    expect(newWorkerCompleteResult).not.toBeNull();
+    expect(newWorkerCompleteResult!.status).toBe("COMPLETED");
     const finalRow = await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
-    expect(finalRow.status).toBe("FAILED"); // final state is whichever writer happened to run last - not a function of who actually still legitimately owns the run
+    expect(finalRow.status).toBe("COMPLETED"); // the NEW owner alone controls the final state, unconditionally
+    expect(finalRow.executionGeneration).toBe(newWorkerGeneration); // unchanged by completion - generation only ever moves on a fresh claim/reclaim
 
-    // CONCLUSION: startOrResumeAnalysisRun's own atomic CAS genuinely
-    // prevents two callers from BOTH observing {kind: "STARTED"} at claim
-    // time (the literal defect AUDIT-F2 targeted, and this file's own
-    // earlier tests independently reconfirm it is closed). It does NOT
-    // prevent a stale-but-not-actually-dead prior owner from continuing to
-    // mutate the SAME run row after a new owner has reclaimed it, because
-    // setAnalysisRunStage/completeAnalysisRun/failAnalysisRun all write by
-    // bare `runId` alone with no compare-and-swap against a claim
-    // generation/lease token minted at claim time. This is a genuine,
-    // reproducible residual defect in the concurrency design, distinct from
-    // (and not covered by) the literal claim-time race the fix addresses.
+    // A final zombie write attempt, even AFTER the new worker's own genuine
+    // completion, still correctly fails closed.
+    const lateZombieAttempt = await completeAnalysisRun(runId, { openReviewItemCount: 999, hadInstrumentFailures: true }, oldWorkerGeneration);
+    expect(lateZombieAttempt).toBeNull();
+    expect((await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } })).status).toBe("COMPLETED");
+
+    // CONCLUSION: FINDING-6 is closed. startOrResumeAnalysisRun's own atomic
+    // CAS was always correct at claim time (AUDIT-F2's own literal charter,
+    // reconfirmed by this file's earlier tests); the NEW executionGeneration
+    // fencing on setAnalysisRunStage/completeAnalysisRun/failAnalysisRun now
+    // ALSO closes the later reclaim-then-original-owner-still-writes window
+    // this test originally reproduced as a genuine defect - every one of the
+    // old (superseded) worker's writes above was rejected/no-op, and the new
+    // owner alone ever controlled the run's real, final, persisted state.
+  });
+
+  it("FINDING-6 regression check - ORDINARY single-owner run: a normal (non-zombie) claim, stage progression, and completion all apply exactly as before generation fencing was added", async () => {
+    const identity = { companyId: COMPANY_ID, packageKey: "pkg-part-b-recert-ordinary-single-owner", documentIds: ["doc-x"], analysisAlgorithmVersion: CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION };
+
+    const outcome = await startOrResumeAnalysisRun(identity);
+    expect(outcome.kind).toBe("STARTED");
+    const runId = outcome.run.id;
+    const generation = outcome.run.executionGeneration;
+    expect(generation).toBe(1); // a brand-new row's own schema default - never bumped by create()
+
+    for (const stage of ["INGESTION", "STRUCTURAL_ANALYSIS", "STRUCTURAL_PERSISTENCE", "PACKAGE_RELATIONSHIPS", "PER_INSTRUMENT_ANALYSIS", "REVIEW_PERSISTENCE"]) {
+      expect(await setAnalysisRunStage(runId, stage, generation)).toBe(true);
+      expect((await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } })).currentStage).toBe(stage);
+    }
+
+    const completeResult = await completeAnalysisRun(runId, { openReviewItemCount: 2, hadInstrumentFailures: false }, generation);
+    expect(completeResult).not.toBeNull();
+    expect(completeResult!.status).toBe("COMPLETED_WITH_REVIEW");
+    expect(completeResult!.reviewItemCount).toBe(2);
+    expect(completeResult!.executionGeneration).toBe(generation); // never bumped by an ordinary completion, only by a fresh claim/reclaim
+
+    // A second, independent identity's own ordinary FAILED path also applies normally.
+    const identity2 = { companyId: COMPANY_ID, packageKey: "pkg-part-b-recert-ordinary-single-owner-fail", documentIds: ["doc-y"], analysisAlgorithmVersion: CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION };
+    const outcome2 = await startOrResumeAnalysisRun(identity2);
+    expect(outcome2.kind).toBe("STARTED");
+    const failResult = await failAnalysisRun(outcome2.run.id, { stage: "STRUCTURAL_ANALYSIS", message: "an ordinary real failure", errorClass: "Error" }, outcome2.run.executionGeneration);
+    expect(failResult).not.toBeNull();
+    expect(failResult!.status).toBe("FAILED");
   });
 });

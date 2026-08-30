@@ -195,8 +195,10 @@ describe("Part B cross-cutting recertification: tenant isolation under colliding
       // Same instrumentKey string on both runs - runId itself cannot collide (globally unique cuid),
       // but this proves recordAnalysisRunIssue/getAnalysisRunIssues do not accidentally widen their
       // filter to instrumentKey alone anywhere in the call chain.
-      await recordAnalysisRunIssue({ runId: runX.id, companyId: COMPANY_X, instrumentKey: COLLIDING_INSTRUMENT_KEY, documentIds: [DOC_X], failedStage: "SEMANTIC_COMPILE", errorClass: "TestError", message: "tenant X failure" });
-      await recordAnalysisRunIssue({ runId: runY.id, companyId: COMPANY_Y, instrumentKey: COLLIDING_INSTRUMENT_KEY, documentIds: [DOC_Y], failedStage: "SEMANTIC_COMPILE", errorClass: "TestError", message: "tenant Y failure" });
+      // Both rows created via a fresh prisma.analysisRun.create() above, so each starts at the
+      // schema default executionGeneration (1) - see FINDING-6's fencing contract on recordAnalysisRunIssue.
+      await recordAnalysisRunIssue({ runId: runX.id, companyId: COMPANY_X, instrumentKey: COLLIDING_INSTRUMENT_KEY, documentIds: [DOC_X], failedStage: "SEMANTIC_COMPILE", errorClass: "TestError", message: "tenant X failure", expectedGeneration: 1 });
+      await recordAnalysisRunIssue({ runId: runY.id, companyId: COMPANY_Y, instrumentKey: COLLIDING_INSTRUMENT_KEY, documentIds: [DOC_Y], failedStage: "SEMANTIC_COMPILE", errorClass: "TestError", message: "tenant Y failure", expectedGeneration: 1 });
 
       const issuesX = await getAnalysisRunIssues(runX.id);
       const issuesY = await getAnalysisRunIssues(runY.id);

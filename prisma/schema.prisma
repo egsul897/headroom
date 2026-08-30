@@ -3284,8 +3284,37 @@ model AnalysisRun {
   analysisAlgorithmVersion String
 
   status       AnalysisRunStatus @default(PENDING)
-  // Free-text stage name (e.g. "STRUCTURAL_ANALYSIS", "SEMANTIC_COVERAGE") - a plain string, not a closed enum, so a later stage can be added/renamed without a migration; this field is progress/observability state only, never consulted for correctness by any resume logic (see this model's own header comment on why full stage-level resume is out of this model's scope). 
+  // Free-text stage name (e.g. "STRUCTURAL_ANALYSIS", "SEMANTIC_COVERAGE") - a plain string, not a closed enum, so a later stage can be added/renamed without a migration; this field is progress/observability state only, never consulted for correctness by any resume logic (see this model's own header comment on why full stage-level resume is out of this model's scope).
   currentStage String?
+
+  // Phase 3F.1.6.RX-FINAL Workstream E (FINDING-6 - "zombie writer" fencing).
+  // A lease/execution-generation token, authoritative only in Postgres
+  // (never process-local memory). Every successful ownership acquisition -
+  // BOTH the brand-new-row `create()` path (which gets the column default,
+  // 1) AND the stale-reclaim `updateMany` path in
+  // lib/contract-model/analysis/service.ts's own startOrResumeAnalysisRun
+  // (which atomically increments it as PART OF the same CAS statement that
+  // wins the reclaim) - mints/returns a NEW generation value to whichever
+  // caller actually won that claim. Every subsequent mutating call on this
+  // row (setAnalysisRunStage/completeAnalysisRun/failAnalysisRun) must
+  // present the generation it was handed at claim time and is applied ONLY
+  // via `updateMany({ where: { id, executionGeneration: held }, ... })`,
+  // checking `count === 1` - a caller presenting a superseded (stale)
+  // generation always sees `count === 0` and its write silently does not
+  // apply, because a newer claim (create() or reclaim) has since bumped this
+  // column to a value the stale caller never learned.
+  //
+  // This closes the gap the Part B AUDIT-F2 recertification found and
+  // reproduced (docs/phase-3f1-6-rx-final-blocker-closure/
+  // 28-part-b-auditf1-f2-recertification.json's own NEW_GENUINE_DEFECT_FOUND,
+  // and tests/contract-model/part-b-recert-auditf2-concurrency.test.ts's own
+  // "ZOMBIE WRITER" test): the ORIGINAL claim-time compare-and-swap (task's
+  // own AUDIT-F2 charter) was always genuinely atomic and remains completely
+  // unchanged by this column - this generation counter protects a
+  // DIFFERENT, later window (a reclaimed row's former, merely-slow-not-dead
+  // owner writing to it after losing ownership), which the claim-time CAS
+  // alone cannot see because it only runs once, at claim time.
+  executionGeneration Int @default(1)
 
   startedAt       DateTime?
   completedAt     DateTime?

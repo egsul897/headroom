@@ -70,9 +70,44 @@ function contentHashOf(payload: unknown): string {
  * fields that legitimately CAN change between attempts without the
  * underlying rule content changing (a later re-run's own verification
  * result, in particular).
+ *
+ * Phase 3F.1.6.RX-FINAL Workstream E (FINDING-6 - zombie-writer fencing).
+ * `SemanticTruthRecord` itself carries no `executionGeneration` column (this
+ * finding does not redesign that model's own already-certified
+ * AUDIT-F1 persistence architecture - see this function's own scoping
+ * note). Instead, whenever the caller supplies BOTH a real `analysisRunId`
+ * and an `expectedGeneration`, this function takes a single fresh read of
+ * that run's OWN CURRENT `executionGeneration` immediately before persisting
+ * anything; if it no longer matches, EVERY object in this call is skipped
+ * (nothing is written) and `skippedSupersededGeneration: true` is returned -
+ * a stale (superseded) execution must never republish its own semantic
+ * output as this instrument's "current" state on behalf of a run it no
+ * longer owns. This is a pre-write GATE, not a per-row atomic
+ * compare-and-swap (there is no window-free way to condition N independent
+ * upserts to a DIFFERENT table on one shared external counter without
+ * either adding that counter to SemanticTruthRecord itself - out of this
+ * finding's bounded scope - or holding one long-lived transaction/lock
+ * across the whole loop, which would serialize unrelated concurrent
+ * analysis work far beyond what this finding requires); it closes the
+ * realistic, disclosed risk (a long-abandoned-then-reclaimed run's prior
+ * owner republishing stale truth well after losing ownership) without
+ * claiming to close a sub-millisecond race between this check and this
+ * call's own writes, which the orchestrator's own `runId`+generation
+ * fencing on `setAnalysisRunStage`/`completeAnalysisRun`/`failAnalysisRun`
+ * makes irrelevant in practice (a genuinely still-racing writer has nothing
+ * left to gain: its next AnalysisRun-row write fails closed regardless of
+ * whether this particular semantic-truth persist slipped through the gate).
  */
 export async function persistSemanticTruthForInstrument(input: PersistSemanticTruthInput): Promise<PersistSemanticTruthSummary> {
-  const summary: PersistSemanticTruthSummary = { upserted: 0, unchanged: 0, byTrustStatus: { COMPILED: 0, VERIFIED: 0, REVIEW_REQUIRED: 0, CONTRADICTED: 0, UNSUPPORTED: 0 } };
+  const summary: PersistSemanticTruthSummary = { upserted: 0, unchanged: 0, byTrustStatus: { COMPILED: 0, VERIFIED: 0, REVIEW_REQUIRED: 0, CONTRADICTED: 0, UNSUPPORTED: 0 }, skippedSupersededGeneration: false };
+
+  if (input.analysisRunId && input.expectedGeneration != null) {
+    const run = await prisma.analysisRun.findUnique({ where: { id: input.analysisRunId }, select: { executionGeneration: true } });
+    if (!run || run.executionGeneration !== input.expectedGeneration) {
+      summary.skippedSupersededGeneration = true;
+      return summary;
+    }
+  }
 
   for (const entry of input.objects) {
     const { kind, object, candidateRef, compilerVersions, verification, verifierPromptVersion } = entry;
