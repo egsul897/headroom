@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "SUPERSESSION_CERTIFICATION",
+  "section": 7,
+  "generatedAt": "2026-08-30T04:15:00Z",
+  "purpose": "Independently audit EVERY production consumer of structural nodes / semantic source nodes for supersession behavior, verifying (never merely trusting) every classification against the actual call graph, actual import statements, and actual independence-contract test file - going beyond the 5 locations named by the prior phase's own P1-11 disclosure.",
+  "crossCuttingFindingAffectingAllClassificationsBelow": {
+    "id": "SUPER-0",
+    "severity": "INFORMATIONAL",
+    "title": "None of discovery/*, context-retrieval/*, coverage-audit/*, semantic-coverage/*, semantic-verification/*, amendment/*, or semantic/* is currently reachable from any live application route or from the actual production orchestrator (lib/contract-model/compiler/orchestrator.ts)",
+    "evidence": "grep across app/ for any reference to 'contract-model' returns zero results. orchestrator.ts's own import list (the only entry point actually wired: stage-structure, stage-definitions, stage-inventory, stage-rule-extraction, stage-dependency-resolution, stage-relationships, stage-amendments, stage-verification, stage-validation, stage-coverage [an unrelated, older module of the same name], stage-promotion, persistence) contains none of the subsystems audited in this section. runContractCompiler (orchestrator.ts's own entry point) is called only from scripts/run-phase-c-compiler.ts. Every one of discovery/pipeline.ts, context-retrieval/pipeline.ts, coverage-audit/pipeline.ts (runIndependentCoverageAudit), semantic/package-compile.ts, and amendment/pipeline.ts is invoked only by scripts/ and tests/, never by another lib/ or app/ module outside its own subsystem directory (verified independently via targeted grep for each pipeline's own entry-point function name). lib/contract-model/evaluation-v2/* (a separate, apparently newer evaluation engine) also imports nothing from lib/contract-model/compiler/* at all.",
+    "implication": "Every UNSAFE_CURRENT_STATE_CONSUMER finding below describes a real, present, reproducible defect in the code AS WRITTEN - each is proven by a runnable test against the real, unmodified production function. None of them is, as of this commit, corrupting a live user-facing result, because there is no live user-facing result these subsystems currently feed. This certification does NOT downgrade any finding's severity on that basis (the charter's own instruction not to downgrade a blocker because the fix looks easy applies equally to not downgrading because integration hasn't happened yet - a defect that would silently corrupt current-contract truth the moment this code IS wired to a real caller is exactly the kind of finding a foundation certification exists to catch before that wiring happens). This fact is disclosed prominently here so the certification's actual real-world urgency is correctly calibrated by whoever integrates this code next."
+  },
+  "methodology": "Broad grep across lib/contract-model/compiler/** for StructuralNode/StructuralIndex/allNodes()/getNodeText(/structuralNodeId/structuralNodeKey usage; every real call site (not merely every file importing a type) individually read; for coverage-audit specifically, the actual tests/contract-model/coverage-audit-independence.test.ts file was read in full and its real forbidden-import list checked line-by-line against what it actually restricts (never trusting the prior phase's own paraphrase of what it enforces); for context-retrieval, the actual CTX-01 prior remediation doc (docs/foundation-remediation/05-context-integrity-remediation.json) was read to determine what design decision was actually made and why, rather than accepting 'not touched, someone else's remit' as a safety argument on its own; for semantic/tools.ts, every tool's own execute() function was read to determine whether it consults access.operativeState.",
+  "consumerClassificationTable": [
+    {
+      "consumer": "lib/contract-model/compiler/discovery/pass-a-signals.ts",
+      "namedByPriorPhase": true,
+      "classification": "SUPERSESSION_AWARE",
+      "verifiedIndependently": "Confirmed via tests/contract-model/node-supersession-awareness.test.ts (14/14 pass, independently re-run) - runPassADeterministicSignals correctly computes and attaches supersessionStatus/supersessionReason to every DeterministicCandidate when a real supersessionIndex is supplied.",
+      "howVerifiedNotJustTrusted": "Independently re-ran the existing test file; additionally traced the field forward (see SUPER-1 below) rather than stopping at 'the function itself works.'"
+    },
+    {
+      "consumer": "lib/contract-model/compiler/discovery/pass-b-semantic.ts, pass-c-neighborhood.ts, pass-d-reconcile.ts, discovery/types.ts (DiscoveredCandidate)",
+      "namedByPriorPhase": false,
+      "classification": "UNSAFE_CURRENT_STATE_CONSUMER",
+      "findingId": "SUPER-1",
+      "severity": "BLOCKER",
+      "title": "supersessionStatus computed at Pass A never reaches DiscoveredCandidate - the type every real downstream consumer of the discovery pipeline actually receives",
+      "evidence": "DeterministicCandidate (discovery/types.ts) carries supersessionStatus/supersessionReason (added by the P1-11 fix). DiscoveredCandidate (the SAME file's own terminal output type, produced by runPassDReconciliation in pass-d-reconcile.ts) has NO such field - confirmed by reading its full field list. runPassDReconciliation reads deterministicByNodeId (the Map keyed by nodeId to DeterministicCandidate) ONLY to merge discoveryMethods/evidenceSignals when building the final DiscoveredCandidate object literal - supersessionStatus/supersessionReason are never read, never mapped, never merged. Independently proven end-to-end with the real, unmodified runPassDReconciliation function in tests/certification/discovery-supersession-signal-lost-in-pipeline.test.ts: a candidate whose primary node is fabricated KNOWN_SUPERSEDED at the Pass-A layer produces a final DiscoveredCandidate with literally zero trace of that fact (no field, not folded into evidenceSignals, not mentioned in description, not encoded in discoveryMethods).",
+      "reproduction": "npx vitest run tests/certification/discovery-supersession-signal-lost-in-pipeline.test.ts",
+      "whyBlocker": "Every real consumer of the discovery pipeline's output (context-retrieval's buildCovenantContextBundle, coverage-audit's discovery-comparison.ts, semantic-coverage's pipeline) receives DiscoveredCandidate, never DeterministicCandidate. The P1-11 fix for pass-a-signals.ts is functionally correct in isolation but architecturally inert for its own stated purpose - it protects nothing downstream because the disclosure it computes has no field to travel in."
+    },
+    {
+      "consumer": "lib/contract-model/compiler/semantic-verification/source-inventory.ts + verify.ts",
+      "namedByPriorPhase": true,
+      "classification": "SUPERSESSION_AWARE",
+      "verifiedIndependently": "Read verify.ts's determineStatus directly: `if (sourceInventory.supersessionStatus === \"KNOWN_SUPERSEDED\") return \"REVIEW_REQUIRED\";` is a real, unconditional, deterministic override - not merely advisory. Confirmed this status field is verify.ts's OWN terminal return value (SemanticVerificationStatus), not further rebuilt/dropped by a caller-side type the way discovery's DiscoveredCandidate drops pass-a's signal (grepped semantic-verification/reviewer.ts and findings.ts for any re-derivation of `.status` - none found, meaning nothing downstream silently discards it).",
+      "howVerifiedNotJustTrusted": "Traced the field all the way to its terminal use, specifically because SUPER-1 (immediately above) proved that a correct fix at one layer can still be defeated by type-erasure one layer downstream - this consumer was checked for the identical failure mode and found NOT to have it."
+    },
+    {
+      "consumer": "lib/contract-model/compiler/coverage-audit/source-inventory.ts, signals.ts, materiality.ts, context-inventory.ts, pipeline.ts, discovery-comparison.ts, raw-source-fallback.ts",
+      "namedByPriorPhase": true,
+      "priorPhaseLabel": "PROTECTED_BY_INDEPENDENCE_INVARIANT",
+      "reclassifiedTo": "UNSAFE_CURRENT_STATE_CONSUMER",
+      "findingId": "SUPER-2",
+      "severity": "BLOCKER",
+      "title": "The prior phase's PROTECTED_BY_INDEPENDENCE_INVARIANT label is not supported by the actual independence-contract test - a supersession fix is architecturally possible without relaxing any real invariant, and none exists",
+      "evidence": "Read tests/contract-model/coverage-audit-independence.test.ts in full. Its FORBIDDEN_ANYWHERE and FORBIDDEN_FOR_INVENTORY_GENERATION lists forbid importing discovery/pipeline, discovery/pass-*, context-retrieval/pipeline, context-retrieval/structural-context, context-retrieval/definition-graph, context-retrieval/reference-context, context-retrieval/cross-document-context, context-retrieval/state, context-retrieval/identity, discovery/types, context-retrieval/types - amendment/* is NEVER named anywhere in this file. The ONLY mechanical restriction that touches amendment/* at all is an incidental one: the 4 files in INVENTORY_GENERATION_FILES (source-inventory.ts, signals.ts, materiality.ts, context-inventory.ts) must import ONLY from an allowlist of low-level structural infrastructure (structural-index, structural-references, structural-definitions, hashing, own types, package-graph/types, @prisma/client, node:) that happens not to include amendment/* - but coverage-audit/pipeline.ts is NOT one of the 4 restricted files and is free to import amendment/operative-state.ts directly. runIndependentCoverageAudit (pipeline.ts) already receives regions/findings as its own local arrays before returning them (see the real source at lib/contract-model/compiler/coverage-audit/pipeline.ts) - it could accept an optional trailing supersessionIndex parameter and post-hoc tag/filter regions whose structuralNodeId resolves to KNOWN_SUPERSEDED, EXACTLY the same 'optional trailing param at the orchestration layer, never inside the protected generation file' pattern the prior phase already used successfully for discovery/pipeline.ts (which also never lets pass-a-signals.ts itself import amendment/* - pipeline.ts builds the index and passes it in). This was not done. As shipped, buildSourceCoverageInventory scans EVERY structural node's own text (including a node whose text has been fully superseded by a later amendment) and produces CoverageRegion/AuditFinding records with no supersession disposition of any kind.",
+      "reproduction": "Read lib/contract-model/compiler/coverage-audit/source-inventory.ts (function buildSourceCoverageInventory, lines 69-110) and lib/contract-model/compiler/coverage-audit/pipeline.ts (function runIndependentCoverageAudit) directly - grep for 'operativeState' or 'supersession' in either file returns zero hits.",
+      "whyBlocker": "Per the charter's explicit instruction: a PROTECTED_BY_INDEPENDENCE_INVARIANT label must be proven, not accepted, from the actual test file - it was not provable here. Regardless of current reachability (see SUPER-0), the logic itself would silently credit superseded source text as current coverage evidence the moment this pipeline is wired to a live caller."
+    },
+    {
+      "consumer": "lib/contract-model/compiler/semantic-coverage/router.ts, unit-hypothesis.ts, ai-inventory.ts",
+      "namedByPriorPhase": "router.ts only",
+      "classification": "HISTORICAL_BY_DESIGN_PENDING_DOWNSTREAM_GATE",
+      "reasoning": "These modules perform candidate ROUTING and semantic-unit HYPOTHESIS generation from raw structural text - they do not themselves assert 'this is current operative fact,' and the pipeline's own design defers the supersession check to a later stage (cross-reference-audit.ts, see SUPER-3) that can retroactively override any unit's coverage state. This is a legitimate two-phase design IF AND ONLY IF the later gate is reliable - see SUPER-3, which shows it is not, in the one condition (null operativeState) that matters most.",
+      "verifiedIndependently": "Read semantic-coverage/pipeline.ts's own import list and call order directly: routeDocument -> hypothesizeUnitsForDocument -> runBoundedAiInventoryForRegion -> freezeSourceInventory -> reconcileFrozenInventory -> auditOperativeStateForUnits -> applyOperativeStateFindingsToCoverage - confirms the gate genuinely runs after these, over their own output, rather than the label being aspirational."
+    },
+    {
+      "consumer": "lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts + pipeline.ts",
+      "namedByPriorPhase": true,
+      "priorPhaseLabel": "disclosed narrower ad hoc fix, fails open on null operativeState",
+      "classification": "UNSAFE_CURRENT_STATE_CONSUMER",
+      "findingId": "SUPER-3",
+      "severity": "BLOCKER",
+      "title": "Confirmed exactly as disclosed by the prior phase, independently re-verified from source: `input.operativeState ? auditOperativeStateForUnits(units, input.operativeState) : []` silently produces zero findings whenever operativeState is null, meaning a package with no successfully-resolved operative state gets ZERO protection against stale/superseded-text over-crediting, with no diagnostic surfaced explaining why",
+      "evidence": "lib/contract-model/compiler/semantic-coverage/pipeline.ts line 108 (exact text quoted above, read directly from the real file). applyOperativeStateFindingsToCoverage's own early return (`if (findings.length === 0) return { entries, dangerousUnaccounted };`) means this is a true no-op in the null case, not merely a smaller set of findings.",
+      "whyBlocker": "This is the exact 'false current-state use of superseded text' failure mode the charter names verbatim, confirmed to fail OPEN (not closed) precisely when the caller could not resolve operative state - which happens whenever amendment-chain resolution itself is uncertain, i.e. exactly the cases where the risk of stale-text over-crediting is highest."
+    },
+    {
+      "consumer": "lib/contract-model/compiler/context-retrieval/pipeline.ts, structural-context.ts, reference-context.ts, region-expansion.ts, cross-document-context.ts, definition-graph.ts, state.ts",
+      "namedByPriorPhase": true,
+      "priorPhaseLabel": "HISTORICAL_BY_DESIGN (Workstream E's territory, 'not touched')",
+      "classification": "SUPERSESSION_AWARE_VIA_DISCLOSURE_NOT_FILTERING",
+      "verifiedIndependently": "Read docs/foundation-remediation/05-context-integrity-remediation.json's own CTX-01 beforeAfterProof directly (not merely its label): 'Bundle now contains an AMENDMENT_LEAD item for 6.09 ... while 6.09's retrieved text is still honestly pre-amendment (\"4.00 to 1.00\" - Invariant #13 preserved).' This is a real, deliberate, disclosure-based design - not silence. Independently traced whether the disclosure actually reaches a downstream reader: AMENDMENT_LEAD items ARE present in CovenantContextBundle.items, which IS passed into SemanticCompilerInput.contextBundle and IS exposed to the LLM tool surface (semantic/tools.ts's getContextBundleComponent serializes item.type generically, so an AMENDMENT_LEAD item's type is visible if the model queries it). Also confirmed a SEPARATE, independent audit layer (coverage-audit/context-comparison.ts's MISSING_AMENDMENT_LEAD check) independently verifies bundle completeness for this exact disclosure.",
+      "findingId": "SUPER-4",
+      "severity": "MAJOR_NON_BLOCKING",
+      "title": "The disclosure mechanism is real but not deterministically enforced the way the two hard-gated consumers (SUPER-verified-aware entries above) are - grepped semantic/package-compile.ts and semantic/compile.ts directly for any reference to 'AMENDMENT_LEAD' and found ZERO hits, meaning the module that actually turns context into a compiled semantic claim never itself checks for or requires the presence of an amendment-lead disclosure before proceeding - it relies entirely on either the LLM noticing the item in its available context/tools, or on the SEPARATE coverage-audit layer catching a missing disclosure after the fact",
+      "whyNotBlocker": "No proof was found that the disclosure is actually ignored in practice (no failing real-data case, unlike SUPER-1/SUPER-2/SUPER-3 which each have a runnable proof). This is a real architectural gap between a 'best-effort, hope-the-model-reads-it' design and a deterministic override - worth closing, but not proven to be currently producing wrong current-state claims the way the other 3 BLOCKERs are directly proven to."
+    },
+    {
+      "consumer": "lib/contract-model/compiler/semantic/tools.ts: getReferencedProvision, getParentClause, getChildren, getSiblingClauses, getSourceSpan",
+      "namedByPriorPhase": false,
+      "classification": "UNSAFE_CURRENT_STATE_CONSUMER",
+      "findingId": "SUPER-5",
+      "severity": "BLOCKER",
+      "title": "Five of the fourteen LLM-facing evidence tools navigate the raw StructuralIndex directly and never consult access.operativeState, despite getReferencedProvision's own tool description explicitly telling the model to trust its output for 'the covenant's actual economics'",
+      "evidence": "Read every tool's execute() function in semantic/tools.ts directly. getOperativeProvision, getDefinition, getRelatedAmendments, and getPriorVersion all call findProvisionView(access.operativeState?.provisions, ...) - genuinely supersession-aware. getReferencedProvision, getParentClause, getChildren, getSiblingClauses, and getSourceSpan call access.structuralIndex.getNode(...)/getNodeText(...) directly with no operativeState reference anywhere in their bodies. Independently proven end-to-end for getReferencedProvision (the sharpest case, given its own description) with the real, unmodified buildToolSet function in tests/certification/semantic-tools-supersession-blind-navigation.test.ts: given a real, non-null OperativeContractState that marks a section's base-document node as KNOWN_SUPERSEDED (superseded by a real later amendment that changed a $10,000,000 cap to $25,000,000), getReferencedProvision('6.01') returns the STALE $10,000,000 text as a plain 'resolved' fact with no supersessionStatus field, no warning, and no refusal - while the SAME operativeState is correctly consulted by the sibling tool getOperativeProvision for the identical section in the same test, proving the fix pattern already exists in this exact file and was simply never applied to the cross-reference-navigation tools.",
+      "reproduction": "npx vitest run tests/certification/semantic-tools-supersession-blind-navigation.test.ts",
+      "whyBlocker": "This is the most directly named 'false current-state use of superseded text' failure mode possible: a tool literally documented to answer 'what are the covenant's actual economics' silently returns superseded numbers as fact, with an already-proven-working fix pattern sitting unused four tool definitions away in the same file."
+    },
+    {
+      "consumer": "lib/contract-model/compiler/amendment/operative-state.ts, pipeline.ts, independent-verification.ts, deterministic-parser.ts, semantic-interpreter.ts, effective-date.ts, chain.ts, schedule-modification.ts, markup-exhibit.ts",
+      "namedByPriorPhase": false,
+      "classification": "N_A_SOURCE_OF_TRUTH_NOT_A_CONSUMER",
+      "reasoning": "This module IS the amendment-detection/operative-state-resolution engine that produces the NodeSupersessionIndex/OperativeContractState every other consumer above is being judged against. It necessarily reads raw StructuralNode text to detect amendments in the first place - 'is this module aware of its own not-yet-computed output' is not a meaningful question. Excluded from the consumer table on that basis, not because it was not examined."
+    },
+    {
+      "consumer": "lib/contract-model/compiler/structural-coverage.ts, structural-definitions.ts, structural-references.ts",
+      "namedByPriorPhase": false,
+      "classification": "N_A_LOW_LEVEL_INFRASTRUCTURE",
+      "reasoning": "Pure deterministic geometric/textual utilities (span-coverage percentages, definition detection, cross-reference detection) reused by every consumer above - they compute properties of text, never a 'this is what the contract currently says' claim on their own. This is the exact same treatment tests/contract-model/coverage-audit-independence.test.ts's own FORBIDDEN list gives them ('low-level structural infrastructure... allowed everywhere'), independently re-derived here from what these files actually do rather than from that test's own framing."
+    }
+  ],
+  "summaryClassificationCounts": {
+    "SUPERSESSION_AWARE": 2,
+    "SUPERSESSION_AWARE_VIA_DISCLOSURE_NOT_FILTERING": 1,
+    "HISTORICAL_BY_DESIGN_PENDING_DOWNSTREAM_GATE": 1,
+    "UNSAFE_CURRENT_STATE_CONSUMER": 4,
+    "N_A_SOURCE_OF_TRUTH_NOT_A_CONSUMER": 1,
+    "N_A_LOW_LEVEL_INFRASTRUCTURE": 1
+  },
+  "blockerCount": 4,
+  "blockerIds": ["SUPER-1", "SUPER-2", "SUPER-3", "SUPER-5"],
+  "verdict": "FAIL",
+  "verdictReasoning": "4 BLOCKERs. SUPER-3 (semantic-coverage/cross-reference-audit.ts's null-operativeState fail-open) is the one already flagged by the prior phase and independently re-confirmed exactly as disclosed - it was correctly left un-downgraded regardless of that prior disclosure, per the charter's explicit instruction. SUPER-1, SUPER-2, and SUPER-5 are newly, independently discovered this phase and were not named by any prior phase: (1) the P1-11 fix's own supersession signal never survives into the discovery pipeline's real output type; (2) the prior phase's PROTECTED_BY_INDEPENDENCE_INVARIANT label for coverage-audit/source-inventory.ts does not survive a direct read of the actual independence-contract test file, which never mentions amendment/* at all; (3) five of fourteen LLM-facing evidence tools in semantic/tools.ts bypass operative-state entirely, including one whose own description tells the model to trust it for 'actual economics.' One additional MAJOR_NON_BLOCKING finding (SUPER-4) documents a real but unproven-in-practice enforcement gap in context-retrieval's otherwise-legitimate disclosure-based design."
+}

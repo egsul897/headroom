@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "STRUCTURAL_INTEGRITY_CERTIFICATION",
+  "section": 5,
+  "generatedAt": "2026-08-30T04:00:00Z",
+  "auditorRole": "INDEPENDENT_CERTIFICATION_AUDITOR",
+  "startingCommit": "ea82ee80f4528117e7dc6669be8e1ebf28b24108",
+  "purpose": "Independently certify lib/contract-model/compiler/stage-structure.ts and structural-index.ts against real, already-extracted FWRG/LSB/CONMED/DSGR fixtures - reproducing, not trusting, the prior phase's own regression numbers, and independently classifying every residual SECTION_NUMBER_SEQUENCE_ANOMALY.",
+  "methodology": {
+    "realDataOnly": "Reused scripts/foundation-audit-known-package-replay.ts (unmodified, prior-phase-authored script) plus a new read-only script (scripts/cert-3f1-6-residual-anomaly-inspect.ts, added this phase) that reproduces the exact same fixture-loading glue and calls the real, unmodified parseDocumentStructure/runStructureStage/buildStructuralIndex production functions, then prints the real source text at every residual anomaly location for direct, independent human inspection.",
+    "noSyntheticDocumentsForThisCheck": true,
+    "toolsRun": ["npx tsx scripts/foundation-audit-known-package-replay.ts", "npx tsx scripts/cert-3f1-6-residual-anomaly-inspect.ts", "npx vitest run tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts"]
+  },
+  "independentRegressionReproduction": {
+    "note": "Numbers reproduced independently by re-running the prior phase's own replay script against the real fixtures in this worktree; match the prior phase's own disclosed numbers exactly.",
+    "fwrg": { "totalNodes": 12, "nodeIdCollisions": 0, "structureOutputHashReproducible": true },
+    "lsb": { "totalNodes": 76, "nodeIdCollisions": 0, "structureOutputHashReproducible": true },
+    "conmed": { "totalNodes": 2695, "duplicateLegalLabels": 366, "sectionNumberSequenceAnomalyCount": 1, "nodeIdCollisions": 0 },
+    "dsgr": { "totalNodes": 4155, "duplicateLegalLabels": 517, "sectionNumberSequenceAnomalyCount": 6, "nodeIdCollisions": 0 },
+    "priorPhaseReplayScriptOwnStaleAssertion": "foundation-audit-known-package-replay.ts's own DSGR reconciliation check still asserts against the PRE-P1-10-fix baseline (totalNodes===4149, duplicateLegalLabels===546) and therefore now legitimately prints matchesHistoricalRecord=false on every run - the script itself was never updated after the P1-10 fix landed. This is a stale assertion in an existing script, not a data integrity problem (the underlying totalNodes=4155/duplicateLegalLabels=517 numbers are exactly what the prior phase's own remediation doc claims post-fix) - flagged as MINOR since it will confuse a future reader who assumes 'matchesHistoricalRecord=false' means something regressed."
+  },
+  "coreInvariantChecks": [
+    { "invariant": "source spans correspond to actual text", "method": "Spot-checked real char offsets against real document text for every residual-anomaly node (CONMED 1, DSGR 6) via cert-3f1-6-residual-anomaly-inspect.ts - every charStart/charEnd pair sliced from the real document text at that offset matches the printed heading/body content exactly.", "result": "PASS" },
+    { "invariant": "node occurrence IDs are unique", "method": "nodeIdCollisions === 0 across all 4 packages, independently recomputed via new Set(nodes.map(n=>n.nodeId)).size === nodes.length.", "result": "PASS" },
+    { "invariant": "duplicate human-readable labels do not collapse identity", "method": "DUPLICATE_LABEL_EXPECTED health findings present (366 CONMED, 517 DSGR) but nodeIdCollisions stays 0 in the same runs - confirms sectionRef/nodeKey collisions never merge physically distinct nodeIds.", "result": "PASS" },
+    { "invariant": "parentNodeId relationships are acyclic", "method": "structural-index.ts's own buildStructuralIndex health diagnostics (errorFindings) stayed 0 across all 4 packages; a cycle in parentNodeId would manifest as an infinite loop or ERROR finding in getChildren/ancestor traversal, neither observed.", "result": "PASS" },
+    { "invariant": "child spans remain inside appropriate parent regions where required", "method": "checkSiblingSpanOverlaps (structural-index.ts) fired zero ERROR findings across all 4 packages.", "result": "PASS_WITH_CAVEAT", "caveat": "See BLOCKER finding STRUCT-1 below - a SPURIOUS sibling node's OWN span is internally consistent (it does not overlap anything), but its span steals real content that the correct PARENT/PRECEDING SECTION should own. checkSiblingSpanOverlaps cannot detect this class of error by construction (it only detects overlap, not mis-ownership of contiguous space) - this is a real limitation of the existing health-diagnostic surface, not a false pass." },
+    { "invariant": "no impossible sibling/ancestor relationships", "method": "Verified via resolveUniqueNodeByRef/getChildren real calls in the p1-10 gate test suite (24/24 pass) plus the residual-anomaly inspection.", "result": "PASS" },
+    { "invariant": "rank-stack behavior remains sane", "method": "See BLOCKER STRUCT-1 - the rank-stack itself behaves exactly as designed (pop-on-same-or-shallower-rank); the defect is upstream, in which candidates ever reach the stack as raw nodes at all.", "result": "SANE_BUT_FED_BAD_INPUT" },
+    { "invariant": "citation-shaped text does not become false headings under the newly remediated pattern", "method": "Independently constructed a fresh adversarial sample (tests/certification/p1-10-legitimate-heading-false-negative-audit.test.ts) covering all 14 documented signal phrases plus a real-data diff script (scripts/cert-3f1-6-false-negative-real-data-diff.ts) that isolates exactly which real regex candidates the gate itself rejects (rejectByPrecedingContext===true) across all 4 packages: FWRG 0, LSB 0, CONMED 15, DSGR 80 - every one of the 95 manually inspected and confirmed to be a genuine in-text citation, never a real heading. HOWEVER: see BLOCKER STRUCT-1 - the gate's phrase list is narrower than its own stated citation-signal vocabulary would suggest, and 7 real citation-shaped false headings (CONMED 1 + DSGR 6, exactly the residual SECTION_NUMBER_SEQUENCE_ANOMALY findings) still slip through uncaught because their real preceding phrasing does not exactly match one of the 14 regex alternatives.", "result": "PARTIAL_FAIL_SEE_STRUCT_1" },
+    { "invariant": "genuine headings are not excessively suppressed by the plausibility gate", "method": "See Section 6 report (04-rank-stack-false-negative-audit.json) for the full false-negative audit - 0 real headings wrongly suppressed across all 4 real packages; 1 of 6 independently constructed synthetic adversarial categories does wrongly suppress a genuine heading (a pure whitespace-only page-break directly after a signal phrase, no page number) - not observed in any real document.", "result": "PASS_FOR_REAL_DATA_MINOR_SYNTHETIC_RISK" },
+    { "invariant": "structural health diagnostics (healthDiagnostics()) reflect actual anomalies", "method": "Confirmed SECTION_NUMBER_SEQUENCE_ANOMALY fires exactly at the 7 real misattachment sites found (see STRUCT-1) - the diagnostic signal itself is accurate; the problem is severity mislabeling (see STRUCT-1), not false silence.", "result": "PASS_SIGNAL_ACCURATE_SEVERITY_WRONG" },
+    { "invariant": "raw-source-fallback cannot silently bypass structural-health uncertainty", "method": "Read lib/contract-model/compiler/coverage-audit/raw-source-fallback.ts and its caller coverage-audit/pipeline.ts: the skip condition explicitly checks coverage.significantUncoveredSpans.length===0 && significantAnomalies.length===0 && coverage.health==='STRUCTURE_HEALTHY' before ever skipping the raw scan - a document with any SIGNIFICANT boundary anomaly or STRUCTURE_FAILED/STRUCTURE_DEGRADED health always triggers the independent raw-text scan. Confirmed this coverage-audit module is not currently reachable from the production orchestrator (see 05-supersession-certification.json's cross-cutting finding) so this specific safety property, while real, is not currently protecting a live user path.", "result": "PASS" }
+  ],
+  "residualAnomalyClassification": {
+    "instruction": "Every one of the 7 residual SECTION_NUMBER_SEQUENCE_ANOMALY findings (CONMED 1, DSGR 6) was independently re-inspected against the real underlying document text via scripts/cert-3f1-6-residual-anomaly-inspect.ts - not assumed benign from the finding's own message string.",
+    "findingBySite": [
+      {
+        "package": "CONMED", "documentId": "conmed-doc-a", "flaggedSectionRef": "1.1", "realPrecedingText": "\"...accounting terms relating to the Parent Borrower and its Subsidiaries not defined in Section 1.1 and accounting terms partly defined in\\n\\n\" (immediately followed by the spurious match)",
+        "mechanism": "A genuine in-text citation - 'accounting terms partly defined in Section 1.1, to the extent not defined, shall have the respective meanings given to them under GAAP...' - was accepted as a raw top-level SECTION because the signal phrase actually present ('partly defined in') does not exactly match the gate's regex alternative ('as\\\\s+defined\\\\s+in', which requires the literal word 'as' immediately before 'defined'). The gate's own doc-comment lists 'as defined in' as a signal phrase but the regex is stricter than the general concept it names.",
+        "verifiedRealMaterialImpact": "Confirmed by direct text inspection: the REAL Section 1.2 'Other Definitional Provisions' node's OWN span is truncated at char 158254 (the spurious match's start) instead of extending to char 160021 (where the REAL next section, 1.3 'Exchange Rates', actually begins per the document's own text). Approximately 1,767 characters of genuine Section 1.2 body text (GAAP-related definitional/computational provisions) are misattributed to a spurious sibling node erroneously labeled 'Section 1.1' - which collides in sectionRef identity with the REAL Section 1.1 defined earlier in the same document.",
+        "classification": "MATERIAL_STRUCTURAL_ERROR"
+      },
+      {
+        "package": "DSGR", "documentId": "doc-a", "flaggedSectionRef": "2.06 (the REAL heading; the spurious sibling is mislabeled 2.07 and precedes it)",
+        "realPrecedingText": "\"...in the same manner as provided in Section 2.07 with respect to Loans made by such Lender (and Section 2.07 shall apply, mutatis mutandis, to the payment obligations of the Revolving Lenders)...\"",
+        "mechanism": "A genuine in-text citation ('Section 2.07 shall apply, mutatis mutandis, to the payment obligations...') sits inside a parenthetical with NO citation-signal preposition of the gate's own 14-phrase list directly preceding it (the actual preceding text is just the conjunction '(and') - the gate cannot catch a citation that opens a clause as its own grammatical subject rather than following one of the tracked prepositions.",
+        "verifiedRealMaterialImpact": "The REAL Section 2.05 (Swingline Loans) node's own span is truncated at the spurious 'Section 2.07' match instead of extending to the REAL Section 2.06 (Letters of Credit) heading that genuinely follows it in the document - real Swingline-Lender payment-mechanics prose is misattributed to a spurious duplicate 'Section 2.07' sibling, colliding with the REAL Section 2.07 defined elsewhere in the same document.",
+        "classification": "MATERIAL_STRUCTURAL_ERROR"
+      },
+      {
+        "package": "DSGR", "documentId": "doc-a", "flaggedSectionRef": "6.01 (spurious; real heading it corrupts is 6.04's tail / 6.05's head)",
+        "realPrecedingText": "\"...loans and advances by U.S. Loan Parties to Restricted Subsidiaries that are not Loan Parties shall be subject to the terms of\\n\" (then the spurious 'Section 6.01(b)(iii), determined without regard to...' match)",
+        "mechanism": "The real phrasing is 'shall be subject to the terms of Section 6.01(b)(iii)' - the gate's 'subject\\\\s+to' alternative requires the citation-signal words to be the LITERAL last text before the match; the extra words 'the terms of' between 'subject to' and 'Section' defeat the end-anchored regex even though the phrase is unambiguously a citation to the human reader.",
+        "verifiedRealMaterialImpact": "The REAL Section 6.04 (Investments, Loans, Advances, Guarantees and Acquisitions) node's own span is truncated ~5,729 characters early (from char 457347 instead of extending to the real Section 6.05 at char 463076) - a large block of the actual negative-covenant investment-basket exceptions is misattributed to a spurious duplicate 'Section 6.01' sibling, colliding with the REAL Section 6.01 defined earlier in the document. This same exact mechanism recurs verbatim in DSGR doc-d (a separate real document in the same package) at the equivalent Section 6.01/6.04 boundary.",
+        "classification": "MATERIAL_STRUCTURAL_ERROR"
+      },
+      {
+        "package": "DSGR", "documentId": "doc-a", "flaggedSectionRef": "6.04 (spurious; corrupts real Section 6.05's tail)",
+        "realPrecedingText": "\"...another Loan Party or another Restricted Subsidiary in compliance with\\n\" (then spurious 'Section 6.04), except:' match)",
+        "mechanism": "Citation-signal phrase actually present is 'in compliance with', which is not one of the gate's 14 tracked phrases at all.",
+        "verifiedRealMaterialImpact": "Real Section 6.05 (Asset Sales) content is truncated early and misattributed to a spurious duplicate 'Section 6.04' sibling, colliding with the REAL Section 6.04 defined earlier in the document.",
+        "classification": "MATERIAL_STRUCTURAL_ERROR"
+      },
+      {
+        "package": "DSGR", "documentId": "doc-b", "flaggedSectionRef": "2.06 (real heading; spurious sibling mislabeled 2.18 precedes it)",
+        "realPrecedingText": "\"...in the case of repayment of another Loan or fees or expenses as provided by\\n\" (then spurious 'Section 2.18(c), by remittance to the Administrative Agent...' match)",
+        "mechanism": "Real phrasing is 'as provided by Section 2.18(c)' - the gate's tracked phrase is 'provided\\\\s+(?:for\\\\s+)?in' (requires the preposition 'in', never 'by'), so 'provided by' is not caught even though it is semantically identical to the already-tracked 'provided...in'.",
+        "verifiedRealMaterialImpact": "Same mechanism as the doc-a 2.06/2.07 case above (this is DSGR's Third Amendment restating the identical base-agreement passage) - real Section 2.05 swingline-payment content misattributed to a spurious duplicate 'Section 2.18' sibling, colliding with the REAL Section 2.18 defined elsewhere in the document.",
+        "classification": "MATERIAL_STRUCTURAL_ERROR"
+      },
+      {
+        "package": "DSGR", "documentId": "doc-d", "flaggedSectionRef": "2.03 (spurious; corrupts real Section 2.09's tail)",
+        "realPrecedingText": "\"...may be in the form of a notice delivered by the Borrower Representative in accordance with the requirements of\\n\" (then spurious 'Section 2.03). The deemed payments made...' match)",
+        "mechanism": "Real phrasing is 'in accordance with the requirements of Section 2.03' - the gate's tracked phrase is 'in\\\\s+accordance\\\\s+with' with no allowance for intervening words like 'the requirements of' before the section reference.",
+        "verifiedRealMaterialImpact": "Real Section 2.09 (Termination and Reduction of Commitments) content is misattributed to a spurious duplicate 'Section 2.03' sibling, colliding with the REAL Section 2.03 defined earlier in the document.",
+        "classification": "MATERIAL_STRUCTURAL_ERROR"
+      },
+      {
+        "package": "DSGR", "documentId": "doc-d", "flaggedSectionRef": "6.01 (spurious; same mechanism as doc-a's identical case)",
+        "realPrecedingText": "\"...ity Agreement, and (ii) loans and advances by U.S. Loan Parties to Restricted Subsidiaries that are not Loan Parties shall be subject to the terms of\\n\"",
+        "mechanism": "Identical to the doc-a 6.01/6.04 case above (this is DSGR's Second A&R Credit Agreement restating the identical base-agreement passage) - 'subject to the terms of' defeats the 'subject\\\\s+to' end-anchored regex.",
+        "verifiedRealMaterialImpact": "Same real investment-covenant-exception misattribution as the doc-a case.",
+        "classification": "MATERIAL_STRUCTURAL_ERROR"
+      }
+    ],
+    "summaryCounts": { "TRUE_DOCUMENT_IRREGULARITY": 0, "BENIGN_PARSER_LIMITATION": 0, "MATERIAL_STRUCTURAL_ERROR": 7 }
+  },
+  "findings": [
+    {
+      "id": "STRUCT-1",
+      "severity": "BLOCKER",
+      "title": "P1-10 plausibility gate's citation-signal phrase list is materially narrower than the citation-shaped-in-text-reference concept it is meant to catch, and the exact P1-10 misattachment mechanism (real content truncated from its true parent section and reattributed to a spurious sibling node whose sectionRef collides with a real, distinct node elsewhere in the document) still reproduces in production-relevant real data",
+      "evidence": "All 7 residual SECTION_NUMBER_SEQUENCE_ANOMALY findings across CONMED (1) and DSGR (6) were independently traced to real source text via scripts/cert-3f1-6-residual-anomaly-inspect.ts. Every single one is a genuine in-text citation ('partly defined in', 'in compliance with', 'as provided by', 'in accordance with the requirements of', 'subject to the terms of', and a bare parenthetical subject with no preceding preposition at all) that the gate's own regex ('under|pursuant to|referred to in|as defined in|set forth in|described in|specified in|contemplated by|required by|permitted by|governed by|in accordance with|subject to|provided (for) in', each end-anchored with no tolerance for intervening words) fails to match because the real phrasing differs from the tracked alternative by one word, an added phrase, or a missing preposition. In every case this reproduces the ORIGINAL P1-10 defect mechanism exactly: the spurious in-text citation is accepted as a raw top-level SECTION, truncating the real enclosing section's OWN span early and re-parenting/misattributing its later real content to a spurious sibling that duplicates a REAL section's sectionRef elsewhere in the same document. This is a citation-identity collision (a real Section 6.01 and a spurious 'Section 6.01' both exist as distinct physical nodeIds sharing the same human-readable label, with the spurious one presenting genuinely different content than the real one under the same label) - directly matching the phase charter's own BLOCKER category 'claim identity conflating siblings' / 'material structural corruption affecting semantics'.",
+      "whyThisIsNotDowngradedToInformational": "The prior phase's own remediation doc (docs/phase-3f1-5-r-residual-foundation/08-rank-stack-remediation.json, 'residualAnomalies') asserts these are 'non-citation-shaped irregularities (e.g. amendment-restated sections) - consistent with the detection signal's own disclosed heuristic limitation, not evidence the fix is incomplete for the defect it targets.' This certification independently re-inspected the actual document text at every site and found that claim to be FALSE: every one of the 7 sites IS citation-shaped, and the fix IS incomplete for exactly the defect it targets - it was simply never re-tested against phrasing variants beyond the 12-14 phrases enumerated in the original fix's own regression suite. Per the certification charter's own instruction, a BLOCKER is not downgraded because the underlying fix (broadening the phrase list, or replacing exact-phrase matching with a more general 'is this immediately preceded by any non-sentence-terminated prose, regardless of specific wording' signal) looks straightforward.",
+      "affectedFiles": ["lib/contract-model/compiler/stage-structure.ts"],
+      "reproduction": "npx tsx scripts/cert-3f1-6-residual-anomaly-inspect.ts"
+    },
+    {
+      "id": "STRUCT-2",
+      "severity": "MINOR",
+      "title": "scripts/foundation-audit-known-package-replay.ts's own hardcoded DSGR reconciliation assertion (totalNodes===4149, duplicateLegalLabels===546) was never updated after the P1-10 fix landed and now always prints matchesHistoricalRecord=false",
+      "evidence": "Independently re-run in this certification; produces totalNodes=4155/duplicateLegalLabels=517 (the correct, current, post-fix numbers matching the prior phase's own remediation doc) but the script's own baked-in comparison still targets the PRE-fix numbers.",
+      "affectedFiles": ["scripts/foundation-audit-known-package-replay.ts"]
+    }
+  ],
+  "verdict": "FAIL",
+  "verdictReasoning": "One BLOCKER (STRUCT-1): the P1-10 fix's own charter requirement - that the exact misattachment mechanism it targets never reproduce in production-relevant real data - is not met. All 7 residual anomalies independently re-classified as MATERIAL_STRUCTURAL_ERROR (0 TRUE_DOCUMENT_IRREGULARITY, 0 BENIGN_PARSER_LIMITATION), directly contradicting the prior phase's own disposition of these findings. Every other structural-integrity invariant tested (identity uniqueness, acyclicity, span containment, hash reproducibility, health-diagnostic accuracy, raw-source-fallback safety) independently passed."
+}
