@@ -126,10 +126,10 @@ describe("Part B independent recertification - FINDING-8 (recordAnalysisFailureL
     // recordAnalysisFailureLog performs a genuine INSERT against a
     // now-nonexistent companyId - a real Postgres FK violation
     // (PrismaClientKnownRequestError, code P2003), not a mocked rejection.
-    const findManySpy = vi.spyOn(prisma.document, "findMany").mockImplementationOnce(async () => {
+    const findManySpy = vi.spyOn(prisma.document, "findMany").mockImplementationOnce((async () => {
       await prisma.company.delete({ where: { id: COMPANY_ID } });
       throw new Error("INJECTED (Part B independent): original document-query failure, company row now genuinely gone");
-    });
+    }) as unknown as typeof prisma.document.findMany);
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     let thrown: unknown = null;
@@ -206,10 +206,10 @@ describe("Part B independent recertification - FINDING-8 (recordAnalysisFailureL
       data: { companyId: COMPANY_ID, name: "construction-2.txt", type: "CREDIT_AGREEMENT", source: "test", storageRef: "test-ref", typeConfirmedByUser: true, amendmentRelationshipConfirmedByUser: true },
     });
 
-    const createSpy = vi.spyOn(prisma.analysisRun, "create").mockImplementationOnce(async () => {
+    const createSpy = vi.spyOn(prisma.analysisRun, "create").mockImplementationOnce((async () => {
       await prisma.company.delete({ where: { id: COMPANY_ID } });
       throw new Error("INJECTED (Part B independent): original AnalysisRun-claim failure at a call site Part A never exercised for this fallback");
-    });
+    }) as unknown as typeof prisma.analysisRun.create);
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     let thrown: unknown = null;
