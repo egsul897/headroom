@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "SEMANTIC_TRUTH_PERSISTENCE_DESIGN",
+  "workstream": "H",
+  "auditFinding": "AUDIT-F1",
+  "generatedAt": "2026-08-30T16:20:00Z",
+  "baseCommit": "4005687",
+  "purpose": "Design, before/alongside implementation, a durable, versioned, reloadable persistence layer for the compiled/verified semantic IR (IRRule/IRDefinition) that 19-contract-truth-ownership-map.json (the prior BLOCKER-10 phase) disclosed as existing ONLY in-memory for the duration of one runContractAnalysis call - the single most important disclosed gap that phase left open.",
+  "priorStateVerifiedDirectly": {
+    "claim": "IRRule/IRDefinition objects were never written to any Prisma table anywhere in this codebase before this workstream.",
+    "verification": "grep-confirmed zero writers of any table with an IRRule/IRDefinition-shaped payload prior to this change; lib/contract-model/compiler/semantic/compile.ts's own header comment self-discloses this ('PERSISTENCE (task §34) - none in V1, by deliberate design... a future Postgres-backed implementation... is a drop-in swap, not a redesign') and lib/contract-model/compiler/semantic/types.ts's own header comment repeats the same disclosure."
+  },
+  "legacyModelShapeComparison": {
+    "requirement": "Do NOT repurpose ContractRule/CandidateContractRule unless proven field-by-field shape-equivalent.",
+    "method": "Read prisma/schema.prisma's ContractRule model (2595-2683) and lib/contract-model/ir/types.ts's IRRule (523-561) field-by-field.",
+    "findings": [
+      "ContractRule.thresholdValue is a single Decimal scalar; IRRule.capacityExpression is a recursive IRCapacityExpression tree (MAX/MIN/ADD/MULTIPLY/SCHEDULE/UNLIMITED_CAPACITY of arbitrary depth) - a single Decimal column cannot represent 'greater of $75m and 12.5% of Consolidated EBITDA' at all, only its resolved numeric result if one exists.",
+      "ContractRule.action is a single free-text string; IRRule.action is a typed ContractAction union AND IRRule additionally carries transactionScope (ContractAction[] | null) as a second, narrower dimension ContractRule has no field for at all.",
+      "ContractRule.conditions/exceptions are typed Json validated against a DIFFERENT schema (lib/contract-model/types.ts's ContractConditionSchema/ExceptionSchema, Phase B's own vocabulary) than IRCondition/IRException (Phase 3A's IR vocabulary, which additionally carries expression: IRExpression | null and referencesDefinitionId for the reused-named-condition mechanism ContractRule's own shape has no equivalent for).",
+      "ContractRule has no field at all for: sufficiency/sufficiencyReasons (IR's own representation-completeness axis), operativeLineage (OperativeLineageRef), dependsOn (IRRuleDependency[], the rule-to-rule graph edge), or exprId-level stable identity on any subexpression.",
+      "IRRule has no field at all for: ContractRule's own coverageStatus/reviewStatus (Phase B's separate coverage-testing and human-review lifecycle, owned by a completely different workflow - lib/onboarding/review.ts)."
+    ],
+    "conclusion": "NOT shape-equivalent, confirmed field-by-field rather than assumed. A new, dedicated model was required, exactly as this phase's charter anticipated as the likely outcome. No compatibility adapter was attempted because the two shapes could not be losslessly mapped in either direction without inventing new interpretation rules ContractRule's own real callers never asked for."
+  },
+  "persistenceShapeDecision": {
+    "decision": "A new SemanticTruthRecord model (prisma/schema.prisma) - one row per compiled IRRule or IRDefinition, keyed by (companyId, instrumentKey, kind, semanticObjectId). Every field a caller needs to QUERY (tenant/instrument scope, trust status, provenance, algorithm/prompt versions, run lineage) is a real relational column; the full IRRule/IRDefinition object itself (including its arbitrarily-deep IRExpression tree) is stored as a single JSONB `payload` column, versioned by an explicit `payloadSchemaVersion` (IR_SCHEMA_VERSION verbatim).",
+    "rationaleForNotNormalizingTheExpressionTree": "IRExpression is itself a tree (never a graph) by Phase 3A's own deliberate, documented design choice (ir/types.ts's own module header: 'the arithmetic INSIDE one rule's own capacity expression is acyclic and single-owner... a tree is the natural, simpler shape there') - no current caller anywhere in this codebase (semantic-coverage, semantic-verification, this orchestrator) ever needs to query INTO the middle of one rule's own expression tree via SQL; every real consumption pattern deserializes the whole IRRule/IRDefinition object and operates on it in memory via the existing ir/type-check.ts, ir/validate.ts, ir/pretty-print.ts utilities. Normalizing an arbitrarily-nested, open-ended expression union (MONEY/PERCENT/RATIO/MAX/MIN/SCHEDULE/EVENT_ACTIVE/UNSUPPORTED/... - 20+ node kinds, task's own anti-enumeration principle meaning this list grows) into dozens of polymorphic tables would be a large, speculative undertaking building infrastructure no real caller asks for today, directly contrary to this phase's own 'compose, do not re-architect' discipline and 'do not build future workflow infrastructure prematurely' instruction.",
+    "whatIsRelationalNotJson": [
+      "companyId, packageKey, instrumentKey, analysisRunId - tenant/run scoping and lineage.",
+      "kind, semanticObjectId - identity/idempotency key.",
+      "candidateRef, sourceDocumentId, sourceSectionRef, sourceCitation, sourceExcerpt - provenance, independently queryable/auditable without deserializing payload.",
+      "irSchemaVersion, compilerAlgorithmVersion, compilerPromptVersion, toolPolicyVersion, verifierAlgorithmVersion, verifierPromptVersion - version provenance for cache-invalidation/audit queries.",
+      "verificationStatus, trustStatus - the trust-gating dimension, the single most important queryable column for downstream 'what can I trust' reads.",
+      "sufficiency, sufficiencyReasons - IR's own representation-completeness axis, preserved verbatim.",
+      "operativeLineage, findingsSummary - bounded JSON for structured-but-variable-shape data that is read wholesale, never filtered on by SQL predicate in any real caller today (matches this codebase's own established 'Json where relational querying isn't needed' convention, e.g. ContractRule.conditions/exceptions).",
+      "contentHash, version, createdAt, updatedAt - idempotency/lineage timestamps."
+    ]
+  },
+  "trustGatingTaxonomy": {
+    "decision": "A new SemanticTruthTrustStatus enum: COMPILED | VERIFIED | REVIEW_REQUIRED | CONTRADICTED | UNSUPPORTED - a deliberately SEPARATE dimension from IR's own RepresentationSufficiency (which is preserved verbatim in its own column) and from SemanticVerificationStatus (which is preserved verbatim in `verificationStatus` as a free string, matching ClaimReviewItem.covenantFamily's own established 'free string, never a duplicate enum' discipline so the two vocabularies can never drift out of sync).",
+    "mappingRules": [
+      "sufficiency === UNSUPPORTED -> UNSUPPORTED, unconditionally (an unsupported representation has no faithful structured meaning to verify in the first place, regardless of what verification found for its own sibling rules under the same candidate).",
+      "verification === null -> COMPILED (Phase 3B produced this; Phase 3C never ran for its candidate - a real, disclosed, never-silently-promoted state).",
+      "verification.status in {VERIFIED_NO_MATERIAL_GAP_FOUND, VERIFIED_WITH_NON_MATERIAL_FINDINGS} -> VERIFIED - the ONLY status downstream 'current truth' reads may treat as trusted.",
+      "verification.status === MATERIAL_DISCREPANCY -> CONTRADICTED - never silently downgraded to REVIEW_REQUIRED; a materially wrong claim is a stronger signal than an unresolved one.",
+      "verification.status in {REVIEW_REQUIRED, VERIFICATION_INCOMPLETE, VERIFICATION_FAILED, NOT_VERIFIED} -> REVIEW_REQUIRED."
+    ],
+    "implementation": "lib/contract-model/analysis/semantic-truth/mapping.ts's computeTrustStatus - a pure function, unit-tested against every real SemanticVerificationStatus value (tests/contract-model/semantic-truth-persistence.test.ts's own 'computeTrustStatus / summarizeFindings' describe block).",
+    "disclosedScopeSimplification": "Verification runs per COMPILED CANDIDATE, not per individual rule/definition a multi-rule candidate (a builder basket) produces - this mapping therefore assigns the SAME trust status to every object compiled from the same candidate (unless that object's OWN sufficiency is UNSUPPORTED). A finer per-rule trust status keyed off individual SemanticVerificationFinding.ruleOrDefinitionId is a legitimate future refinement, not required to close this finding, since semantic-coverage/verification themselves already organize their own output at the candidate granularity."
+  },
+  "idempotencyDesign": {
+    "identityKey": "(companyId, instrumentKey, kind, semanticObjectId) - @@unique constraint.",
+    "whySemanticObjectIdAloneIsSafe": "IRRule.ruleId/IRDefinition.definitionId are THEMSELVES already stable, content-derived, non-random identifiers (lib/contract-model/ir/identity.ts's computeRuleId/computeDefinitionId - pure functions of companyId+instrumentKey+sourceSectionRef/termName+a content discriminator, verified by reading that file directly - NEVER derived from sufficiency, verification status, or any other mutable field, per that module's own explicit header comment). Re-running analysis over unchanged source text therefore always re-derives the SAME id and this table upserts the SAME row.",
+    "versionBumpMechanism": "contentHash (a stable-key hash of the canonical, sorted-key JSON serialization of the payload, via lib/contract-model/ir/identity.ts's own canonicalStringify + lib/contract-model/stable-keys.ts's computeStableKey - reusing existing primitives, never a new hashing convention) is compared on every re-persist; version increments ONLY when contentHash genuinely changes, so a real no-op re-verification (identical compiled content, e.g. a re-run with an unchanged document) never spuriously bumps version, while a genuine content change (a different capacity amount, a newly-added condition) does.",
+    "mutableFieldsUpdatedRegardlessOfContentHash": "trustStatus/verificationStatus/analysisRunId/findingsSummary always refresh on every re-persist even when payload content is unchanged, since a LATER re-run's own verification result (trust status) can legitimately change without the underlying compiled rule's own content changing at all - conflating these two would either lose a real trust-status update or falsely bump version for a non-content reason."
+  },
+  "provenanceFieldsImplemented": [
+    "candidateRef/discoveryId", "sourceDocumentId", "sourceSectionRef", "sourceCitation", "sourceExcerpt (bounded, never full text)",
+    "instrumentKey, packageKey, companyId (tenant isolation)",
+    "irSchemaVersion, compilerAlgorithmVersion, compilerPromptVersion, toolPolicyVersion",
+    "verifierAlgorithmVersion, verifierPromptVersion",
+    "verificationStatus, findingsSummary (bounded)",
+    "operativeLineage (OperativeLineageRef, verbatim, null for a never-amended instrument)",
+    "analysisRunId (FK to AnalysisRun, onDelete: SetNull - deleting an old run must never cascade-delete the durable truth it produced)",
+    "trustStatus", "createdAt/updatedAt/version"
+  ],
+  "truthOwnershipDecision": {
+    "summary": "SemanticTruthRecord becomes the SOLE authoritative store for durable CURRENT semantic contract truth (a rule/definition's own compiled meaning) once populated - see 17-truth-ownership.json for the full ownership map. lib/extraction/**'s own ExtractionCandidate/ContractRule remain a separate, valid candidate-suggestion/compatibility workflow with no ability to override a row here (no shared identity/key space; the two pipelines' outputs were independently confirmed, by the prior BLOCKER-10 phase's own investigation, not to overlap in any of the six real truth kinds examined)."
+  },
+  "implementationFiles": [
+    "prisma/schema.prisma - SemanticTruthRecord, SemanticTruthKind, SemanticTruthTrustStatus + Company/AnalysisRun relation fields.",
+    "prisma/migrations/20260830154356_phase_3f1_6_rx_workstream_h_semantic_truth/migration.sql",
+    "lib/contract-model/analysis/semantic-truth/types.ts, mapping.ts, service.ts, index.ts",
+    "lib/contract-model/analysis/orchestrator.ts - analyzeInstrument now calls persistSemanticTruthForInstrument for every compiled rule/definition, after verification, before coverage."
+  ],
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "Design complete, implemented, and validated against real callee shapes (never assumed) before/during implementation. See 10-semantic-truth-persistence-results.json for implementation summary and test evidence, including the critical reload-without-rerunning-AI proof. Reserved CERTIFIED status for this phase's own separate, later, independent Part B."
+}

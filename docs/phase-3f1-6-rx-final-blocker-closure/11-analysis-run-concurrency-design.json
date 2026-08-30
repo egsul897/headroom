@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "ANALYSIS_RUN_CONCURRENCY_DESIGN",
+  "workstream": "H",
+  "auditFinding": "AUDIT-F2",
+  "generatedAt": "2026-08-30T16:30:00Z",
+  "baseCommit": "4005687",
+  "purpose": "Design an atomic, real-Postgres ownership-claim mechanism for startOrResumeAnalysisRun, replacing the prior findUnique -> check-if-RUNNING -> upsert sequence, which is NOT atomic despite the unique row constraint preventing duplicate ROWS.",
+  "priorDefectConfirmedDirectly": {
+    "priorImplementation": "const existing = await prisma.analysisRun.findUnique(...); if (existing && existing.status === 'RUNNING' && fresh) return ALREADY_RUNNING; const run = await prisma.analysisRun.upsert(...); return STARTED.",
+    "whyThisIsNotAtomic": "Prisma's `upsert` compiles to a single `INSERT ... ON CONFLICT (...) DO UPDATE SET ...` statement with NO conditional WHERE clause on the DO UPDATE branch - it ALWAYS applies the update on a conflict, it never fails or no-ops. Two concurrent callers that both execute `findUnique` before either has upserted will both see `existing` as either absent or non-RUNNING, both proceed past the check, and both then execute `upsert` - which BOTH succeed (the second one's DO UPDATE simply overwrites the first one's row with its own field values), so BOTH callers receive `{kind: 'STARTED', run}` for the IDENTICAL row.",
+    "empiricalReproduction": "Directly verified during this workstream's own test-development process (not merely reasoned about): the ORIGINAL, pre-fix service.ts was temporarily restored and exercised with Promise.all(12 concurrent identical-identity callers) against real Postgres. Result: `{started: 12, already: 0, rowCount: 1}` - all 12 callers reported STARTED for the SAME single row, exactly the predicted defect. This same reproduction, executed against this workstream's fixed implementation, yields `{started: 1, already: 11, rowCount: 1}` - see 12-analysis-run-concurrency-results.json."
+  },
+  "fixDesign": {
+    "mechanism": "A two-step, real-Postgres compare-and-swap (CAS) protocol - no application-level lock, no process-local mutex (which would do nothing across concurrent requests hitting different server instances/processes, the actual production case this fix targets).",
+    "step1": "prisma.analysisRun.create({data: {...identity, status: 'RUNNING', ...}}) - a plain INSERT. Postgres's own unique-index row lock guarantees exactly ONE concurrent caller's INSERT for a brand-new identity succeeds; every other concurrent caller's INSERT raises a real P2002 unique-constraint-violation error (caught and routed to step 2, never surfaced to the caller as an unhandled error).",
+    "step2": "On P2002 (the common case - a row already exists for this identity from a prior run), prisma.analysisRun.updateMany({where: {...identity, OR: [{status: {not: 'RUNNING'}}, {status: 'RUNNING', updatedAt: {lt: staleBefore}}]}, data: {status: 'RUNNING', ...}}) - a SINGLE atomic UPDATE ... WHERE ... SQL statement. Postgres locks the matching row for the statement's duration; of N concurrent callers racing this same UPDATE, the WHERE predicate is evaluated against the CURRENT committed row state one at a time (serialized by the row lock under standard READ COMMITTED semantics): the first to acquire the lock claims it (status flips to RUNNING, `count: 1`); every other caller's UPDATE then blocks on the row lock, and once unblocked re-evaluates its OWN WHERE clause against the NOW-RUNNING, NOW-FRESH row - which no longer matches (`count: 0`). Exactly one caller ever observes `count: 1` for a given identity at a given moment.",
+    "whyThisIsGenuinelyAtomicAndNotJustLikelyCorrect": "Both `create` and `updateMany` compile to a SINGLE SQL statement each - there is no multi-statement window between a read and a write for a concurrent caller to interleave into. This is the exact 'a transaction with a conditional update (e.g. UPDATE ... WHERE status != RUNNING RETURNING *, checking rows-affected)' pattern this phase's own charter names as an acceptable fix, implemented via Prisma's own query builder rather than raw SQL (equivalent correctness, no raw-SQL injection-surface tradeoff, and consistent with this codebase's own established Prisma-first convention)."
+  },
+  "staleReclaimThreshold": {
+    "value": "30 minutes (STALE_RUNNING_THRESHOLD_MS, unchanged from the prior implementation's own already-documented value).",
+    "rationale": "Chosen as comfortably longer than any single real analysis run this codebase's own scripted/E2E timing has observed (a company's full document set, including real LLM calls under normal provider latency, completes in low single-digit minutes per this codebase's own existing certification scripts), while short enough that a genuinely crashed run does not block a legitimate re-trigger for an unreasonable time. Disclosed explicitly as a documented judgment call, not a value with a formal proof behind it - a future phase with real production run-time telemetry should revisit it with real p99 duration data (this disclosure is carried forward verbatim from the prior BLOCKER-10 phase's own honest disclosure of the same threshold, since this fix changes HOW ownership is claimed, not the staleness policy itself)."
+  },
+  "interactionWithAUDIT_F3": {
+    "note": "Both the create-branch and the updateMany-STARTED-branch of startOrResumeAnalysisRun now call clearAnalysisRunIssues(runId) before returning STARTED - centralizing 'a freshly (re-)claimed run begins with a clean AnalysisRunIssue slate' in the ONE place ownership is actually granted, rather than duplicating that discipline at every call site."
+  },
+  "requiredProofsAddressed": [
+    "Promise.all with genuinely simultaneous callers hitting real Postgres (not a pre-created RUNNING row before a single call) - see 12-analysis-run-concurrency-results.json's service-level and orchestrator-level tests.",
+    "Exactly one caller becomes owner and executes the pipeline; others receive ALREADY_RUNNING; downstream semantic/review state is not double-written - see the orchestrator-level test's own review-item-count assertion.",
+    "A stale RUNNING run can be safely reclaimed and rerun - see the dedicated stale-reclaim test, using a real backdated `updatedAt` via `$executeRaw` (the one legitimate way to simulate a genuinely-old row in a test, since Prisma's own `@updatedAt` auto-management would otherwise overwrite any value passed through its normal client API)."
+  ],
+  "implementationFiles": ["lib/contract-model/analysis/service.ts - startOrResumeAnalysisRun rewritten."],
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "The atomic CAS protocol is implemented using only Prisma's own client API (no raw SQL, no process-local mutex), and independently empirically verified to both (a) reproduce the original defect against the pre-fix code and (b) close it against the fixed code, using the identical Promise.all harness for both. Reserved CERTIFIED status for this phase's own separate, later, independent Part B."
+}

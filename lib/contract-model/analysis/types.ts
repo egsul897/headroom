@@ -8,6 +8,7 @@ import type { AnalysisRunStatus } from "@prisma/client";
 import type { DocumentAuditOutput } from "../compiler/semantic-coverage/pipeline";
 import type { PackageCoverageResult } from "../compiler/semantic-coverage/types";
 import type { RecordClaimReviewsFromCoverageResult } from "../compiler/safe-failure/integrate";
+import type { PersistSemanticTruthSummary } from "./semantic-truth/types";
 
 export type { AnalysisRunStatus };
 
@@ -59,6 +60,8 @@ export interface InstrumentAnalysisOutcome {
   packageCoverage: PackageCoverageResult;
   documentDetails: DocumentAuditOutput[];
   claimReviewOutcomes: RecordClaimReviewsFromCoverageResult[];
+  /** AUDIT-F1 - durable semantic-truth persistence outcome for this instrument's own compiled rules/definitions (lib/contract-model/analysis/semantic-truth/service.ts). */
+  semanticTruthSummary: PersistSemanticTruthSummary;
 }
 
 export interface RunContractAnalysisResult {
@@ -72,4 +75,6 @@ export interface RunContractAnalysisResult {
   instruments: InstrumentAnalysisOutcome[];
   openReviewItemCount: number;
   fatalError: { stage: string; message: string; errorClass: string } | null;
+  /** AUDIT-F3 - every instrument-level failure this attempt recorded (durably persisted as AnalysisRunIssue rows - this is a convenience in-memory mirror of that, never the sole record of it). Empty when every instrument succeeded, or when the run never reached the per-instrument stage at all. */
+  instrumentFailures: { instrumentKey: string; errorClass: string; message: string }[];
 }

@@ -154,6 +154,12 @@ async function uploadTestDocument(filenameSuffix: string): Promise<string> {
 
 async function cleanupCompanyState() {
   await prisma.claimReviewItem.deleteMany({ where: { companyId: COMPANY_ID } });
+  // AnalysisRunIssue cascades on runId when analysisRuns below are deleted,
+  // but is deleted explicitly first for clarity and so a future re-order of
+  // these statements can never accidentally rely on cascade ordering.
+  await prisma.analysisRunIssue.deleteMany({ where: { companyId: COMPANY_ID } });
+  await prisma.semanticTruthRecord.deleteMany({ where: { companyId: COMPANY_ID } });
+  await prisma.analysisFailureLog.deleteMany({ where: { companyId: COMPANY_ID } });
   await prisma.analysisRun.deleteMany({ where: { companyId: COMPANY_ID } });
   await prisma.contractRule.deleteMany({ where: { companyId: COMPANY_ID } });
   await prisma.documentNode.deleteMany({ where: { companyId: COMPANY_ID } });

@@ -83,12 +83,15 @@ import { SEMANTIC_COMPILER_ALGORITHM_VERSION, SEMANTIC_COMPILER_PROMPT_VERSION, 
 import { getSemanticCaller, type SemanticCaller } from "../compiler/semantic/caller";
 import { getStageCaller, type StageCaller } from "../compiler/llm-caller";
 import { verifyCompiledCandidate } from "../compiler/semantic-verification/verify";
+import { SEMANTIC_VERIFIER_PROMPT_VERSION } from "../compiler/semantic-verification/types";
 import type { SemanticVerificationResult } from "../compiler/semantic-verification/types";
 import { runSemanticCoverageAudit } from "../compiler/semantic-coverage/pipeline";
 import { recordClaimReviewsFromPackageCoverage } from "../compiler/safe-failure/integrate";
 import { IR_SCHEMA_VERSION } from "../ir/types";
 import { canonicalDocumentIdOrder, computeAnalysisPackageKey, standaloneInstrumentKey, CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION } from "./identity";
-import { startOrResumeAnalysisRun, setAnalysisRunStage, completeAnalysisRun, failAnalysisRun } from "./service";
+import { startOrResumeAnalysisRun, setAnalysisRunStage, completeAnalysisRun, failAnalysisRun, recordAnalysisRunIssue, recordAnalysisFailureLog } from "./service";
+import { persistSemanticTruthForInstrument } from "./semantic-truth/service";
+import type { SemanticTruthObjectInput } from "./semantic-truth/types";
 import { CONTRACT_DOCUMENT_TYPE_SET } from "./types";
 import type { InstrumentAnalysisOutcome, RunContractAnalysisInput, RunContractAnalysisResult } from "./types";
 
@@ -141,6 +144,7 @@ function resolveInstrumentUnits(packageGraph: PackageGraphResult, allDocumentIds
 async function analyzeInstrument(params: {
   companyId: string;
   analysisPackageKey: string;
+  runId: string;
   unit: InstrumentUnit;
   index: StructuralIndex;
   packageGraph: PackageGraphResult;
@@ -148,7 +152,7 @@ async function analyzeInstrument(params: {
   exactTermsByDocument: Map<string, Map<string, string>>;
   callers: Required<Pick<ContractAnalysisCallers, "discoveryCaller" | "amendmentCaller" | "verificationCaller" | "semanticCaller">> & Pick<ContractAnalysisCallers, "aiInventoryCaller">;
 }): Promise<InstrumentAnalysisOutcome> {
-  const { companyId, analysisPackageKey, unit, index, packageGraph, packageDocsById, exactTermsByDocument, callers } = params;
+  const { companyId, analysisPackageKey, runId, unit, index, packageGraph, packageDocsById, exactTermsByDocument, callers } = params;
   const instrumentDocs = unit.documentIds.map((id) => packageDocsById.get(id)!).filter(Boolean);
 
   // --- amendment/operative state ---
@@ -233,6 +237,28 @@ async function analyzeInstrument(params: {
   }
   const verifiedCandidateRefs = new Set(verificationResults.filter((v) => v.status === "VERIFIED_NO_MATERIAL_GAP_FOUND" || v.status === "VERIFIED_WITH_NON_MATERIAL_FINDINGS").map((v) => v.candidateRef));
 
+  // --- AUDIT-F1: durable semantic-truth persistence (this workstream's own
+  // primary fix). Every real rule/definition the compiler produced for THIS
+  // instrument is durably persisted (upserted, idempotent - see
+  // semantic-truth/service.ts's own header comment), paired with the
+  // verification result for the candidate it came from (null when
+  // verification never ran/threw for that candidate - see this file's own
+  // note above on why an uncaught verification exception is never
+  // fabricated into a synthetic result: the object is still persisted here,
+  // honestly as trustStatus COMPILED, never silently dropped). ---
+  const verificationByCandidateRef = new Map(verificationResults.map((v) => [v.candidateRef, v] as const));
+  const semanticTruthObjects: SemanticTruthObjectInput[] = compilationSummary.results.flatMap((entry) => {
+    const compilerInput = compilationCandidates.find((c) => c.candidate.discoveryId === entry.discoveryId)?.compilerInput;
+    const compilerVersions = compilerInput
+      ? { irSchemaVersion: compilerInput.irSchemaVersion, compilerAlgorithmVersion: compilerInput.compilerAlgorithmVersion, compilerPromptVersion: compilerInput.compilerPromptVersion, toolPolicyVersion: compilerInput.toolPolicyVersion }
+      : { irSchemaVersion: IR_SCHEMA_VERSION, compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION, toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION };
+    const verification = verificationByCandidateRef.get(entry.discoveryId) ?? null;
+    const ruleObjects: SemanticTruthObjectInput[] = entry.result.rules.map((rule) => ({ kind: "RULE", object: rule, candidateRef: entry.discoveryId, compilerVersions, verification, verifierPromptVersion: verification ? SEMANTIC_VERIFIER_PROMPT_VERSION : null }));
+    const definitionObjects: SemanticTruthObjectInput[] = entry.result.definitions.map((def) => ({ kind: "DEFINITION", object: def, candidateRef: entry.discoveryId, compilerVersions, verification, verifierPromptVersion: verification ? SEMANTIC_VERIFIER_PROMPT_VERSION : null }));
+    return [...ruleObjects, ...definitionObjects];
+  });
+  const semanticTruthSummary = await persistSemanticTruthForInstrument({ companyId, packageKey: analysisPackageKey, instrumentKey: unit.instrumentKey, analysisRunId: runId, objects: semanticTruthObjects });
+
   // --- whole-document semantic coverage (the freeze-before-load independent audit) ---
   const coverageResult = await runSemanticCoverageAudit({
     companyId,
@@ -263,6 +289,7 @@ async function analyzeInstrument(params: {
     packageCoverage: coverageResult.packageCoverage,
     documentDetails: coverageResult.documentDetails,
     claimReviewOutcomes,
+    semanticTruthSummary,
   };
 }
 
@@ -283,19 +310,40 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
   const { companyId } = input;
   const analysisAlgorithmVersion = CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION;
 
-  const documents = await prisma.document.findMany({ where: { companyId, type: { in: [...CONTRACT_DOCUMENT_TYPE_SET] as never[] } }, orderBy: { createdAt: "asc" } });
-  if (documents.length === 0) {
-    return { outcome: "SKIPPED_NO_CONTRACT_DOCUMENTS", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: null };
-  }
+  // AUDIT-F7 (no log-only failure): everything from here through claiming a
+  // real AnalysisRun row (startOrResumeAnalysisRun) has NO runId yet to
+  // attach a durable fatalError to - this is the one genuine gap a prior
+  // audit found (a DB failure on the very first query, or inside
+  // startOrResumeAnalysisRun's own claim attempt, would previously escape
+  // uncaught to app/'s own runExtractionAction, which only console.errors
+  // it). This whole span is wrapped so a real failure here ALWAYS leaves a
+  // durable Postgres trace (AnalysisFailureLog) before this function
+  // returns/throws - the console.error at the app-action call site remains
+  // pure defense-in-depth, never the only record, exactly as its own
+  // comment already claims.
+  let documents: Awaited<ReturnType<typeof prisma.document.findMany>>;
+  let documentIds: string[];
+  let packageKey: string;
+  let runId: string;
+  try {
+    documents = await prisma.document.findMany({ where: { companyId, type: { in: [...CONTRACT_DOCUMENT_TYPE_SET] as never[] } }, orderBy: { createdAt: "asc" } });
+    if (documents.length === 0) {
+      return { outcome: "SKIPPED_NO_CONTRACT_DOCUMENTS", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: null, instrumentFailures: [] };
+    }
 
-  const documentIds = canonicalDocumentIdOrder(documents.map((d) => d.id));
-  const packageKey = computeAnalysisPackageKey(companyId, documentIds);
+    documentIds = canonicalDocumentIdOrder(documents.map((d) => d.id));
+    packageKey = computeAnalysisPackageKey(companyId, documentIds);
 
-  const startOutcome = await startOrResumeAnalysisRun({ companyId, packageKey, documentIds, analysisAlgorithmVersion });
-  if (startOutcome.kind === "ALREADY_RUNNING") {
-    return { outcome: "SKIPPED_ALREADY_RUNNING", runId: startOutcome.run.id, status: startOutcome.run.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: startOutcome.run.reviewItemCount, fatalError: null };
+    const startOutcome = await startOrResumeAnalysisRun({ companyId, packageKey, documentIds, analysisAlgorithmVersion });
+    if (startOutcome.kind === "ALREADY_RUNNING") {
+      return { outcome: "SKIPPED_ALREADY_RUNNING", runId: startOutcome.run.id, status: startOutcome.run.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: startOutcome.run.reviewItemCount, fatalError: null, instrumentFailures: [] };
+    }
+    runId = startOutcome.run.id;
+  } catch (err) {
+    const { message, errorClass } = classifyError(err);
+    await recordAnalysisFailureLog({ companyId, triggeringDocumentId: input.triggeringDocumentId ?? null, stage: "PRE_RUN_IDENTITY", errorClass, message });
+    return { outcome: "FAILED", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "PRE_RUN_IDENTITY", message, errorClass }, instrumentFailures: [] };
   }
-  const runId = startOutcome.run.id;
 
   const callers: Required<Pick<ContractAnalysisCallers, "discoveryCaller" | "amendmentCaller" | "verificationCaller" | "semanticCaller">> & Pick<ContractAnalysisCallers, "aiInventoryCaller"> = {
     discoveryCaller: options.callers?.discoveryCaller ?? getStageCaller(),
@@ -357,38 +405,84 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     // --- amendment/operative state -> discovery -> context retrieval -> semantic compilation -> verification -> coverage -> review persistence, per instrument ---
     await setAnalysisRunStage(runId, "PER_INSTRUMENT_ANALYSIS");
     const instrumentOutcomes: InstrumentAnalysisOutcome[] = [];
-    const instrumentErrors: { instrumentKey: string; message: string; errorClass: string }[] = [];
+    const instrumentErrors: { instrumentKey: string; documentIds: string[]; message: string; errorClass: string }[] = [];
     for (const unit of instrumentUnits) {
       try {
-        instrumentOutcomes.push(await analyzeInstrument({ companyId, analysisPackageKey: packageKey, unit, index, packageGraph, packageDocsById, exactTermsByDocument, callers }));
+        instrumentOutcomes.push(await analyzeInstrument({ companyId, analysisPackageKey: packageKey, runId, unit, index, packageGraph, packageDocsById, exactTermsByDocument, callers }));
       } catch (err) {
         // Fault isolation at instrument granularity (this file's own header
         // comment): one instrument's unexpected failure never discards
         // already-computed, unrelated valid claims from its siblings.
-        instrumentErrors.push({ instrumentKey: unit.instrumentKey, ...classifyError(err) });
+        instrumentErrors.push({ instrumentKey: unit.instrumentKey, documentIds: unit.documentIds, ...classifyError(err) });
       }
+    }
+
+    // AUDIT-F3 (no silent material failure): every instrument-level failure
+    // is durably persisted BEFORE this run's own completion status is
+    // decided - never left only in this in-memory array. Runs whether the
+    // overall attempt below ends up FAILED (every instrument failed) or
+    // PARTIAL (some succeeded) - an audit reading AnalysisRunIssue must see
+    // every real failure either way, not just the one folded into
+    // fatalError's own summary text for the total-failure case.
+    for (const failure of instrumentErrors) {
+      await recordAnalysisRunIssue({ runId, companyId, instrumentKey: failure.instrumentKey, documentIds: failure.documentIds, failedStage: "PER_INSTRUMENT_ANALYSIS", errorClass: failure.errorClass, message: failure.message });
     }
 
     if (instrumentOutcomes.length === 0 && instrumentErrors.length > 0) {
       // Every instrument failed - there is nothing meaningful to report as a
       // partial success; this is the genuinely fatal case task step 7
-      // reserves for a whole-run failure.
+      // reserves for a whole-run failure. Every individual failure was
+      // ALREADY durably recorded as its own AnalysisRunIssue row above -
+      // fatalError's own summary text here is a convenience denormalization
+      // of the FIRST failure only, never the sole durable trace of the
+      // others (contrast with the pre-AUDIT-F3 behavior this replaces).
       const firstError = instrumentErrors[0]!;
-      await failAnalysisRun(runId, { stage: "PER_INSTRUMENT_ANALYSIS", message: `every instrument failed; first error (${firstError.instrumentKey}): ${firstError.message}`, errorClass: firstError.errorClass });
-      return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "PER_INSTRUMENT_ANALYSIS", message: firstError.message, errorClass: firstError.errorClass } };
+      await failAnalysisRun(runId, { stage: "PER_INSTRUMENT_ANALYSIS", message: `every instrument failed (${instrumentErrors.length} total; see AnalysisRunIssue for each); first error (${firstError.instrumentKey}): ${firstError.message}`, errorClass: firstError.errorClass });
+      return {
+        outcome: "FAILED",
+        runId,
+        status: "FAILED",
+        companyId,
+        packageKey,
+        documentIds,
+        analysisAlgorithmVersion,
+        instruments: [],
+        openReviewItemCount: 0,
+        fatalError: { stage: "PER_INSTRUMENT_ANALYSIS", message: firstError.message, errorClass: firstError.errorClass },
+        instrumentFailures: instrumentErrors.map((e) => ({ instrumentKey: e.instrumentKey, errorClass: e.errorClass, message: e.message })),
+      };
     }
 
     // --- explicit review persistence already happened per instrument above (safe-failure/integrate.ts) - completed analysis state below ---
     await setAnalysisRunStage(runId, "REVIEW_PERSISTENCE");
     const openReviewItemCount = await prisma.claimReviewItem.count({ where: { companyId, packageKey, status: "OPEN_REVIEW" } });
 
-    await completeAnalysisRun(runId, { openReviewItemCount });
+    // AUDIT-F3: PARTIAL (not COMPLETED/COMPLETED_WITH_REVIEW) whenever ANY
+    // instrument in this attempt threw - even though other instruments in
+    // instrumentOutcomes genuinely succeeded and their own trusted state is
+    // real and persisted (never discarded - this file's own header comment
+    // on instrument-level fault isolation). See AnalysisRunStatus's own
+    // schema comment for why this is a deliberately separate status from
+    // COMPLETED_WITH_REVIEW.
+    await completeAnalysisRun(runId, { openReviewItemCount, hadInstrumentFailures: instrumentErrors.length > 0 });
     const finalRun = await prisma.analysisRun.findUniqueOrThrow({ where: { id: runId } });
 
-    return { outcome: "STARTED_TO_COMPLETION", runId, status: finalRun.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: instrumentOutcomes, openReviewItemCount, fatalError: null };
+    return {
+      outcome: "STARTED_TO_COMPLETION",
+      runId,
+      status: finalRun.status,
+      companyId,
+      packageKey,
+      documentIds,
+      analysisAlgorithmVersion,
+      instruments: instrumentOutcomes,
+      openReviewItemCount,
+      fatalError: null,
+      instrumentFailures: instrumentErrors.map((e) => ({ instrumentKey: e.instrumentKey, errorClass: e.errorClass, message: e.message })),
+    };
   } catch (err) {
     const { message, errorClass } = classifyError(err);
     await failAnalysisRun(runId, { stage: "INGESTION_OR_STRUCTURAL", message, errorClass });
-    return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass } };
+    return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, instrumentFailures: [] };
   }
 }
