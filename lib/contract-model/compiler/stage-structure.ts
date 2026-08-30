@@ -43,9 +43,93 @@ import { STRUCTURAL_INDEX_VERSION, type CompilerDocumentInput, type StageRunResu
  * original line-anchored patterns are kept as fallback candidates (via
  * bestMatches's "keep whichever finds the most real matches" design) for a
  * cleanly line-broken document where they remain the simplest correct match.
+ *
+ * Phase 3F.1.6.RX-FINAL finding (Part B recert BLOCKER-1, category
+ * "inconsistent capitalization"): the shape-based patterns below used the
+ * LITERAL keyword spelling ("ARTICLE"/"Section"/"SECTION") with no `i` flag,
+ * while only the line-anchored fallback patterns carried `i`. A lowercase
+ * keyword ("article vi covenants", "section 6.02 Liens.") mid-sentence - not
+ * at a literal line start - could never fall back to a line-anchored
+ * pattern, so it was silently invisible regardless of how much genuine
+ * positional evidence surrounded it, on any continuous-prose (newline-free)
+ * document - a direct structural recurrence of the ORIGINAL historical
+ * defect this same doc-comment describes above (line-anchored-only patterns
+ * going blind on a newline-free document), just triggered by keyword CASE
+ * instead of by newline ABSENCE. The fix is `ciKeyword` (below): it makes
+ * ONLY the keyword's own spelling case-insensitive (an explicit per-letter
+ * `[Xx]` alternation), never the whole regex via the `i` flag - the whole-
+ * regex `i` flag is deliberately NOT used here because it would also relax
+ * the TITLE-shape character classes (`[A-Z]` for a SECTION title's first
+ * letter, `[A-Z ,&';-]` for an ARTICLE's ALL-CAPS title run), destroying the
+ * very capitalization evidence that distinguishes a heading-shaped title
+ * span from an ordinary lowercase sentence continuation - the general
+ * principle this fix establishes: keyword spelling case carries no real
+ * evidentiary weight (an author's/OCR engine's case convention for a fixed
+ * word like "Section" is typographic noise), while a title's OWN
+ * capitalization remains genuine positive evidence of heading-shaped text
+ * and is left fully intact. Applied uniformly to every shape-based
+ * keyword-anchored pattern in this file (ARTICLE_PATTERNS[0],
+ * SECTION_PATTERNS[0], INTEGER_SECTION_PATTERNS[0]) - one general mechanism
+ * at every call site, not a one-off patch at whichever site an adversarial
+ * probe happened to hit.
  */
+function ciKeyword(word: string): string {
+  return word
+    .split("")
+    .map((ch) => `[${ch.toLowerCase()}${ch.toUpperCase()}]`)
+    .join("");
+}
+const ARTICLE_KEYWORD = ciKeyword("ARTICLE");
+const SECTION_KEYWORD = ciKeyword("Section");
+
+/**
+ * Phase 3F.1.6.RX-FINAL finding, surfaced (not introduced) while implementing
+ * `ciKeyword` above: ARTICLE_PATTERNS[0]'s number-to-title gap was a bare
+ * `\s+` - UNBOUNDED whitespace, able to span an entire real paragraph break
+ * (two or more newlines). A bare citation with no title of its own on the
+ * same line ("...text for ARTICLE I.\n\nARTICLE II COVENANTS\n\nSection
+ * 1...") let the regex's own non-greedy title capture + end-of-title
+ * lookahead skip straight past the blank-line paragraph break and swallow
+ * the ENTIRELY DIFFERENT, later, real "ARTICLE II COVENANTS" heading as if
+ * it were the citation's own title - a single spurious match spanning two
+ * unrelated headings, silently deleting the real ARTICLE II occurrence.
+ * Confirmed via direct regex probing that this reproduces identically
+ * against the ORIGINAL, unmodified, purely case-sensitive pattern with an
+ * ALL-CAPS citation ("ARTICLE I." in all caps) - this is a genuine
+ * PRE-EXISTING latent defect in the gap's own unboundedness, orthogonal to
+ * keyword case, merely never previously exercised by any committed test
+ * (every existing test's own citation-shaped ARTICLE reference happened to
+ * use Title Case "Article", which the pre-fix literal-"ARTICLE"-only
+ * pattern could not match at all, accidentally dodging the bug rather than
+ * avoiding it by design). Directly coupled to this remediation's own scope
+ * (same file, same pattern, same "does this candidate reach the plausibility
+ * gate as a well-formed match at all" question) and produces exactly this
+ * module's own named failure class if left alone (a real heading silently
+ * vanishing), so it is fixed here as part of this pass rather than filed
+ * separately.
+ *
+ * The general fix: a single heading's own number-to-title gap must never
+ * cross a genuine paragraph break - in every real fixture, a heading's
+ * number and its own title sit on the same line or on two IMMEDIATELY
+ * adjacent lines (at most one newline between them), never separated by a
+ * blank line. `BOUNDED_GAP` encodes exactly that: ordinary same-line
+ * whitespace, OR exactly one newline (optionally with same-line whitespace
+ * on either side of it) - never two or more. This closes the ballooning
+ * defect at its root (the match now simply fails to complete AT ALL for a
+ * title-less citation immediately followed by a paragraph break, rather
+ * than needing the downstream plausibility gate to catch it after the fact)
+ * and cannot affect any legitimate heading, since no real heading's own
+ * number-to-title span ever needs to cross a blank line to begin with.
+ * Applied uniformly to every keyword-anchored shape-based pattern that has a
+ * number-to-title gap (ARTICLE_PATTERNS[0], SECTION_PATTERNS[0],
+ * INTEGER_SECTION_PATTERNS[0]) - the same general principle at every call
+ * site with an analogous gap, not a one-off patch at the single site an
+ * adversarial probe happened to hit.
+ */
+const BOUNDED_GAP = "(?:[^\\S\\n]*\\n[^\\S\\n]*|[^\\S\\n]+)";
+
 const ARTICLE_PATTERNS = [
-  /ARTICLE\s+([IVXLC]+|\d+)\.?\s+([A-Z][A-Z ,&';-]{0,58}?)(?=\s+[A-Z][a-z]|\s*$)/g,
+  new RegExp(`${ARTICLE_KEYWORD}\\s+([IVXLC]+|\\d+)\\.?${BOUNDED_GAP}([A-Z][A-Z ,&';-]{0,58}?)(?=\\s+[A-Z][a-z]|\\s*$)`, "g"),
   /^ARTICLE\s+([IVXLC]+|\d+)\.?\s*([^\n]*)$/gim,
 ];
 
@@ -74,8 +158,10 @@ const SECTION_PATTERNS = [
   // Title characters allow "[" / "]" (a "[Reserved]" section) and ";" (a
   // real, common compound heading like "Payments of Indebtedness;
   // Modifications of Subordinated Indebtedness" - observed verbatim in both
-  // real fixtures).
-  /(?:Section|SECTION|§)\s+(\d+\.\d+)\.?\s+(\[?[A-Z][A-Za-z ,&';[\]-]{1,90}?\]?)\s*\.(?!\d)/g,
+  // real fixtures). Keyword spelling is case-insensitive via `ciKeyword`
+  // (see its own doc-comment above `ARTICLE_PATTERNS`) - the title-shape
+  // requirement (`[A-Z]` starting the title) stays genuinely case-sensitive.
+  new RegExp(`(?:${SECTION_KEYWORD}|§)\\s+(\\d+\\.\\d+)\\.?${BOUNDED_GAP}(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?)\\s*\\.(?!\\d)`, "g"),
   /^Section\s+(\d+\.\d+)\.?\s*([^\n]*)$/gim,
   /^§\s?(\d+\.\d+)\.?\s*([^\n]*)$/gim,
   /^(\d+\.\d+)\s+([A-Z][^\n]*)$/gm,
@@ -103,7 +189,7 @@ const SECTION_PATTERNS = [
  * regression) since integer patterns simply find zero matches there.
  */
 const INTEGER_SECTION_PATTERNS = [
-  /(?:Section|SECTION)\s+(\d{1,2})(?!\.\d)\.?\s+(\[?[A-Z][A-Za-z ,&';[\]-]{1,90}?\]?)\s*\.(?!\d)/g,
+  new RegExp(`${SECTION_KEYWORD}\\s+(\\d{1,2})(?!\\.\\d)\\.?${BOUNDED_GAP}(\\[?[A-Z][A-Za-z ,&';[\\]-]{1,90}?\\]?)\\s*\\.(?!\\d)`, "g"),
   /^(?:Section|SECTION)\s+(\d{1,2})(?!\.\d)\.?\s*([^\n]*)$/gim,
 ];
 
@@ -278,10 +364,75 @@ const BARE_INTEGER_SECTION_PATTERN = /^(\d{1,2})\.\s+([A-Z][a-z][^\n]*)$/gm;
  * identically to how a human reader would discount either one.
  */
 function stripTrailingPageNumberArtifact(before: string): string {
-  return before.replace(/(^|\s+)(?:[Pp]age\s+)?-?\d{1,4}-?(\s*)$/, "$1$2");
+  return before.replace(/(^|\s+)(?:page\s+)?-?\d{1,4}-?(\s*)$/i, "$1$2");
 }
 
-/** Signal (A): two or more newlines in the trailing whitespace run (after discounting one page-number artifact) - a real paragraph break isolating the candidate on its own line/block. */
+/**
+ * Phase 3F.1.6.RX-FINAL finding (Part B recert BLOCKER-1): the label
+ * recognizer above claimed to cover "an optional 'Page ' label" as a closed
+ * typographic CLASS, but its actual implementation (`[Pp]age`) enumerated
+ * exactly two case variants and silently missed the equally common ALL-CAPS
+ * "PAGE" running-footer/header convention - the same case-sensitivity root
+ * cause as `ciKeyword` above, recurring at a third call site. Fixed by
+ * adding the `i` flag: this regex has no OTHER letter class whose case
+ * carries evidentiary meaning (unlike ARTICLE_PATTERNS/SECTION_PATTERNS,
+ * where a whole-regex `i` flag would also relax a real title-shape signal),
+ * so `i` alone is the fully general fix here.
+ *
+ * Phase 3F.1.6.RX-FINAL finding (Part B recert BLOCKER-1, "footnote
+ * marker"): a short (1-3 digit) run glued DIRECTLY (no intervening
+ * whitespace) onto real sentence-terminal punctuation - the shape a
+ * superscript footnote/endnote reference marker collapses to under
+ * plain-text PDF extraction - defeats both positional signals whenever only
+ * a single newline separates it from the next heading, for a SECTION or an
+ * ARTICLE candidate alike. When the dropped candidate is an ARTICLE, its own
+ * real child SECTION is silently re-parented to `parentSectionRef: null`
+ * instead of the correct ARTICLE ref - a genuine instance of this module's
+ * own named "rank-stack corruption" failure class, in the opposite
+ * direction from the original certified defect (a real parent silently
+ * vanishing, rather than a spurious node being wrongly accepted). Recognized
+ * here as a distinct, GENERAL typographic-noise CLASS, never a special case.
+ * The `(?<!\d)` guard is load-bearing, not decorative: without it, an
+ * ORDINARY decimal number ending a real sentence - "...shall not exceed
+ * 4.00 to 1.00" - would itself be misread as "terminal punctuation ('.')
+ * plus a glued footnote digit ('00')", manufacturing a FALSE sentence-end
+ * signal exactly where none exists (caught empirically: this exact shape
+ * appears, deliberately, in this file's own Category-6 precision-boundary
+ * regression coverage - see tests/certification/structural-heading-rx-
+ * adversarial-expansion.test.ts's "documented boundary" describe block -
+ * and a first draft of this fix without the guard silently reopened it). A
+ * real inline citation number is likewise never glued directly to terminal
+ * punctuation with no space ("Section 6.05" always has a space before its
+ * own number), and a dollar figure's trailing digit group is comma-grouped,
+ * never a bare 1-3 digit stray - so with the digit-preceded case excluded,
+ * this cannot misfire on ordinary prose numerals of any kind. Fixing this at
+ * the ROOT - discounting the noise before either positional signal is ever
+ * evaluated - is what prevents the rank-stack corruption generally: an
+ * ARTICLE that would have been corruption-causing if dropped is instead
+ * never dropped, because the noise hiding its real positional evidence has
+ * been stripped away exactly as a human reader would discount it. This
+ * composes safely with the page-number artifact above - the two noise
+ * classes never overlap structurally (one is whitespace-BOUNDED, the other
+ * is glued with NO whitespace to the preceding punctuation).
+ */
+function stripTrailingFootnoteMarker(before: string): string {
+  return before.replace(/(?<!\d)([.:;!?]["'’”)\]]*)\d{1,3}(\s*)$/, "$1$2");
+}
+
+/**
+ * The full typographic-noise-stripping pipeline: every recognized decorative
+ * artifact class (page/running-footer numbers, footnote/endnote reference
+ * markers) discounted before either positional signal is evaluated. Adding a
+ * genuinely new noise CLASS in the future means adding one more general
+ * strip function here - never a per-document or per-phrase special case -
+ * and it automatically protects both signal (A) and signal (B), and both
+ * ARTICLE and SECTION candidates, uniformly.
+ */
+function stripTrailingTypographicNoise(before: string): string {
+  return stripTrailingPageNumberArtifact(stripTrailingFootnoteMarker(before));
+}
+
+/** Signal (A): two or more newlines in the trailing whitespace run (after discounting recognized typographic noise) - a real paragraph break isolating the candidate on its own line/block. */
 function precededByParagraphBreak(withoutPageNumber: string): boolean {
   const trailingWhitespace = withoutPageNumber.match(/\s*$/)![0];
   return (trailingWhitespace.match(/\n/g) ?? []).length >= 2;
@@ -303,8 +454,8 @@ function isPlausibleByPositionalSignals(text: string, matchIndex: number): boole
   const windowStart = Math.max(0, matchIndex - 200);
   const before = text.slice(windowStart, matchIndex);
   if (windowStart === 0 && before.trim().length === 0) return true; // true document start
-  const withoutPageNumber = stripTrailingPageNumberArtifact(before);
-  return precededByParagraphBreak(withoutPageNumber) || precededBySentenceTerminalPunctuation(withoutPageNumber);
+  const withoutNoise = stripTrailingTypographicNoise(before);
+  return precededByParagraphBreak(withoutNoise) || precededBySentenceTerminalPunctuation(withoutNoise);
 }
 
 /** The largest entry of the ascending-sorted `ends` that is `<= index`, or null if none - the nearest candidate heading-match boundary at or before `index`. */
