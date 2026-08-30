@@ -127,17 +127,42 @@ describe("BLOCKER-8 remediation: discoveryId/candidateRef identity (discovery la
     expect(ids.size).toBe(2);
   });
 
-  it("REPRODUCTION generalized: a fused sentence with the same family on both sides remains a disclosed residual gap (still merges) - documented, not silently claimed fixed", () => {
-    // Same family (INDEBTEDNESS) on both sides, no sub-ref: families alone cannot disambiguate this
-    // narrower residual case (see 12-claim-identity-compatibility.json / 11-claim-identity-remediation.json
-    // for the explicit disclosure and rationale for not using free-text description as an identity input).
+  it("AUDIT-F4 STILL-OPEN (undisclosed by Pass B): a fused same-family sentence with NO numeric value and NO distinguishingQuote from Pass B still merges - honestly disclosed, not silently different from before", () => {
+    // Same family (INDEBTEDNESS) on both sides, no sub-ref, no numbers anywhere, and Pass B did not
+    // (in this fixture) supply a distinguishingQuote: no source-grounded signal exists for CLAIM IDENTITY
+    // V2 to disambiguate on, so this exact shape remains open pending Pass B prompt cooperation - see
+    // docs/phase-3f1-6-rx-final-blocker-closure/06-claim-identity-v2.json's disposition.
     const text = "Section 6.10. Indebtedness. The Company shall not incur Indebtedness under the Revolving Facility or incur Indebtedness under the Term Facility.";
     const { reconciled } = discover("c10", text, "6.10", [
       rule({ relativeRef: "", role: "GENERAL_PROHIBITION", families: ["INDEBTEDNESS"], description: "CLAIM_A revolving facility indebtedness" }),
       rule({ relativeRef: "", role: "GENERAL_PROHIBITION", families: ["INDEBTEDNESS"], description: "CLAIM_B term facility indebtedness" }),
     ]);
     const ids = new Set(reconciled.map((c) => c.discoveryId));
-    expect(ids.size).toBe(1); // disclosed residual - see compatibility doc
+    expect(ids.size).toBe(1); // disclosed residual, unaided by Pass B - see 06-claim-identity-v2.json
+  });
+
+  it("AUDIT-F4 RESOLVED (verified distinguishingQuote): the identical Revolving/Term Facility fusion splits into 2 distinct discoveryIds once Pass B supplies a source-verified distinguishing quote per item", () => {
+    const text = "Section 6.10. Indebtedness. The Company shall not incur Indebtedness under the Revolving Facility or incur Indebtedness under the Term Facility.";
+    const { reconciled } = discover("c10b", text, "6.10", [
+      rule({ relativeRef: "", role: "GENERAL_PROHIBITION", families: ["INDEBTEDNESS"], description: "CLAIM_A revolving facility indebtedness", distinguishingQuote: "Indebtedness under the Revolving Facility" }),
+      rule({ relativeRef: "", role: "GENERAL_PROHIBITION", families: ["INDEBTEDNESS"], description: "CLAIM_B term facility indebtedness", distinguishingQuote: "Indebtedness under the Term Facility" }),
+    ]);
+    const ids = new Set(reconciled.map((c) => c.discoveryId));
+    expect(ids.size).toBe(2);
+    expect(reconciled.some((c) => c.description === "CLAIM_A revolving facility indebtedness")).toBe(true);
+    expect(reconciled.some((c) => c.description === "CLAIM_B term facility indebtedness")).toBe(true);
+  });
+
+  it("AUDIT-F4 RESOLVED (grounded value anchors, zero Pass B schema dependency): the exact motivating example - two INDEBTEDNESS baskets, same role, same node, different SOURCE-VERIFIED dollar amounts in their own descriptions - split into 2 distinct discoveryIds with no distinguishingQuote needed", () => {
+    const text = "Section 6.11. Indebtedness. Indebtedness in an aggregate principal amount not to exceed $50,000,000 to finance Permitted Acquisitions, or Indebtedness in an aggregate principal amount not to exceed $25,000,000 for working capital purposes, shall be permitted.";
+    const { reconciled } = discover("c11v2", text, "6.11", [
+      rule({ relativeRef: "", role: "BASKET", families: ["INDEBTEDNESS"], description: "$50,000,000 acquisition debt basket" }),
+      rule({ relativeRef: "", role: "BASKET", families: ["INDEBTEDNESS"], description: "$25,000,000 working-capital debt basket" }),
+    ]);
+    const ids = new Set(reconciled.map((c) => c.discoveryId));
+    expect(ids.size).toBe(2);
+    expect(reconciled.some((c) => c.description === "$50,000,000 acquisition debt basket")).toBe(true);
+    expect(reconciled.some((c) => c.description === "$25,000,000 working-capital debt basket")).toBe(true);
   });
 });
 

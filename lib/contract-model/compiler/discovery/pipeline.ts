@@ -41,7 +41,14 @@ import type { DiscoveredCandidate, DiscoveryHealthState, DiscoveryRunSummary, Di
 // previously-persisted discoveryId/candidateRef computed under v2 is
 // correctly treated as a different, stale identity space rather than
 // silently reused as if unchanged.
-export const DISCOVERY_PIPELINE_VERSION = "phase-2b-discovery-pipeline.v3";
+//
+// Phase 3F.1.6.RX Workstream D bump (v3 -> v4, BLOCKER-8 + AUDIT-F4): CLAIM
+// IDENTITY V2 - computeCandidateContentFingerprint now also folds in
+// source-grounded valueAnchors and verifiedQuoteFingerprint (see
+// pass-c-neighborhood.ts and value-anchors.ts). Another real identity
+// formula change, per this constant's own established bump discipline -
+// see docs/phase-3f1-6-rx-final-blocker-closure/06-claim-identity-v2.json.
+export const DISCOVERY_PIPELINE_VERSION = "phase-2b-discovery-pipeline.v4";
 export const DISCOVERY_RUN_VERSION = `${DISCOVERY_PIPELINE_VERSION}+${DISCOVERY_PROMPT_VERSION}`;
 
 /**

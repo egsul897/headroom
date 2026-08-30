@@ -154,6 +154,22 @@ export interface DiscoveredCandidate {
   supersessionStatus: NodeSupersessionStatus;
   /** Always populated - explains supersessionStatus, mirroring DeterministicCandidate's own disclosure discipline. When multiple structural nodes are involved, names which one(s) drove the combined verdict. */
   supersessionReason: string;
+  /**
+   * Phase 3F.1.6.RX Workstream D (BLOCKER-8 + AUDIT-F4) CLAIM IDENTITY V2 -
+   * canonicalized numeric/currency/percentage/ratio values this candidate's
+   * identity fingerprint was built from (see pass-c-neighborhood.ts's
+   * computeCandidateContentFingerprint), independently verified present in
+   * this candidate's own real source text - never a raw AI paraphrase.
+   * Exposed here (never silently folded only into the opaque discoveryId
+   * hash) so a downstream consumer or reviewer can see exactly why two
+   * same-family, same-role, same-node candidates were kept distinct.
+   * Optional - absent for any DiscoveredCandidate constructed before this
+   * field existed (test fixtures, historical records) - never required, so
+   * it can never retroactively break an existing literal.
+   */
+  valueAnchors?: string[];
+  /** Phase 3F.1.6.RX Workstream D (AUDIT-F4) - the normalized, source-verified distinguishing quote text this candidate's identity additionally incorporated, when Pass B supplied one and it verified against real source text (see pass-b-semantic.ts's distinguishingQuote and value-anchors.ts's verifyDistinguishingQuote). Undefined when none was supplied or none verified. */
+  verifiedQuoteFingerprint?: string;
 }
 
 /**

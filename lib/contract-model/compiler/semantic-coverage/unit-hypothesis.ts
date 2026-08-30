@@ -29,6 +29,7 @@
  */
 import type { StructuralIndex } from "../structural-index";
 import { detectIndependentSignals, detectAmendmentAndDefinitionalSignals, type SignalHit } from "../coverage-audit/signals";
+import { extractValueAnchors, valueAnchorSetsDisjointAndNonEmpty } from "../value-anchors";
 import { computeSemanticUnitId } from "./identity";
 import type { DocumentRoutingResult, DetectedPostureSignal, MaterialSemanticUnit, MaterialUnitFamily, RoutedRegion, SemanticUnitMateriality, SourceAnchor } from "./types";
 import { SEMANTIC_COVERAGE_ALGORITHM_VERSION } from "./types";
@@ -164,6 +165,23 @@ function matchFamilyKeyword(text: string): MaterialUnitFamily | null {
 // subject being restated, not a second independent one (regression guard:
 // "The Borrower shall not, and shall not permit any Restricted Subsidiary
 // to, create or suffer to exist any Lien..." must stay one unit).
+//
+// Phase 3F.1.6.RX Workstream D (BLOCKER-8 + AUDIT-F4) CLAIM IDENTITY V2 -
+// generalizes the SAME split to the residual gap this splitter's own
+// original design disclosed: TWO baskets of the SAME family fused into one
+// un-enumerated sentence (e.g. a "$50m acquisition debt basket" and a
+// "$25m working-capital debt basket" bundled together - both INDEBTEDNESS,
+// no lettered marker). When both sides match the SAME family (not
+// different families), this now ALSO splits, but ONLY when each side
+// independently states a numeric/currency/percentage/ratio VALUE (via the
+// generic, family-agnostic extractValueAnchors - see value-anchors.ts) and
+// the two sides' value sets are DISJOINT - a genuine, source-grounded
+// numeric difference, never a bare "and"/"or" with no distinguishing
+// number (regression guard: "shall not create or suffer to exist any
+// Lien" - same family, no numbers on either side - never splits; nor does
+// a clause that merely restates its own single cap in two places - same
+// family, IDENTICAL value on both sides - never splits, since the sets
+// are not disjoint).
 // ---------------------------------------------------------------------------
 
 const RIGHT_CLAUSE_RESTATES_MODAL = /^(?:shall|will|must|may)\b/i;
@@ -210,7 +228,17 @@ export function findCoordinateClauseSplit(text: string): CoordinateClauseSplit |
     if (RIGHT_CLAUSE_RESTATES_MODAL.test(rightText)) continue;
     const leftFamily = matchFamilyKeyword(leftText);
     const rightFamily = matchFamilyKeyword(rightText);
-    if (leftFamily && rightFamily && leftFamily !== rightFamily) {
+    if (!leftFamily || !rightFamily) continue;
+    // Cross-family fusion (BLOCKER-8's originally-confirmed shape) always
+    // splits - two different covenant topics are inherently distinct
+    // claims regardless of whether either states a number.
+    const isCrossFamilySplit = leftFamily !== rightFamily;
+    // Same-family fusion (AUDIT-F4's frozen residual gap) splits ONLY when
+    // each side independently states a source-grounded numeric value and
+    // the two values genuinely differ - see the module-level doc comment
+    // above for the full rationale and regression-guard examples.
+    const isSameFamilyValueSplit = leftFamily === rightFamily && valueAnchorSetsDisjointAndNonEmpty(extractValueAnchors(leftText), extractValueAnchors(rightText));
+    if (isCrossFamilySplit || isSameFamilyValueSplit) {
       return {
         left: { text: leftText, start: leftTrimmedStart, end: c.start },
         right: { text: rightText, start: c.end + rightLeadingWs, end: text.length },

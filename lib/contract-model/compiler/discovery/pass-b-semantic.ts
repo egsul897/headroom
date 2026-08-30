@@ -47,6 +47,23 @@ const WireSemanticRuleItemSchema = z.object({
   definedTermDependencyLikely: z.boolean().default(false),
   confidence: z.number().min(0).max(1),
   needsReview: z.boolean().default(false),
+  /**
+   * Phase 3F.1.6.RX Workstream D (AUDIT-F4) - OPTIONAL, tolerant claim-
+   * identity disambiguator. A short VERBATIM excerpt copied exactly from
+   * the section text above (never a paraphrase) that marks where in the
+   * source THIS specific rule's own language appears - only meaningful,
+   * and only requested by the prompt, when a sibling rule shares this same
+   * relativeRef+role and would otherwise be indistinguishable from this
+   * one (the residual same-family/same-role/same-node gap
+   * 11-claim-identity-remediation.json disclosed). Deliberately optional
+   * and best-effort: pass-c-neighborhood.ts independently VERIFIES this
+   * string is a genuine substring of the real source text before trusting
+   * it for anything (see value-anchors.ts's verifyDistinguishingQuote) -
+   * an absent, empty, or unverifiable value degrades gracefully to the
+   * pre-existing (disclosed) identity behavior, never to a crash or a
+   * silently-wrong identity.
+   */
+  distinguishingQuote: z.string().optional(),
 });
 
 export const SemanticSectionResultSchema = z.object({
@@ -70,14 +87,27 @@ export interface SemanticRuleItem {
   definedTermDependencyLikely: boolean;
   confidence: number;
   needsReview: boolean;
+  /** Phase 3F.1.6.RX Workstream D (AUDIT-F4) - see WireSemanticRuleItemSchema's own doc comment. Passed through verbatim (trimmed, length-capped) - normalization.ts's canonical-vocabulary discipline does not apply here, since this is free verbatim source text by design, never a classified/canonicalized value. */
+  distinguishingQuote?: string;
 }
 
 export interface SemanticSectionResult {
   rules: SemanticRuleItem[];
 }
 
-/** Phase 2F.2 bump: the wire schema and prompt vocabulary both changed (role/families widened to tolerant strings; prompt now lists the canonical role vocabulary including the 5 new guarantee/security roles), so any cache keyed on DISCOVERY_PROMPT_VERSION correctly treats this as a new contract (task §22). */
-export const DISCOVERY_PROMPT_VERSION = "phase-2b-discovery.v2";
+/**
+ * Phase 2F.2 bump: the wire schema and prompt vocabulary both changed
+ * (role/families widened to tolerant strings; prompt now lists the
+ * canonical role vocabulary including the 5 new guarantee/security roles),
+ * so any cache keyed on DISCOVERY_PROMPT_VERSION correctly treats this as a
+ * new contract (task §22).
+ *
+ * Phase 3F.1.6.RX Workstream D (AUDIT-F4) bump v2 -> v3: wire schema gained
+ * the optional distinguishingQuote field and the prompt gained the
+ * disambiguation instruction below - a real contract change, per this
+ * file's own established version-bump convention.
+ */
+export const DISCOVERY_PROMPT_VERSION = "phase-2b-discovery.v3";
 
 const ROLE_VOCABULARY_DESCRIPTION = [
   "Use one of these role labels whenever it fits (do not invent new labels): GENERAL_PROHIBITION, PERMISSION, BASKET, EXCEPTION, RATIO_BASED_PERMISSION, BUILDER, CONDITION, PROVISO, FINANCIAL_TEST, SHARED_CAP, REFINANCING_PERMISSION, DESIGNATION_RULE, TRIGGER, CURE, DEFINITIONAL_DEPENDENCY_CANDIDATE, GUARANTEE_OBLIGATION (a grant, duration, reinstatement, or non-impairment of a guarantee/suretyship obligation), SECURITY_GRANT (a grant or scope of a security interest/lien over collateral), WAIVER (an express waiver of a notice/defense/procedural right), LIABILITY_CAP (a cap/limit on a party's maximum liability), REPRESENTATION (a representation or warranty of fact).",
@@ -92,6 +122,7 @@ const SYSTEM_PROMPT = [
   ROLE_VOCABULARY_DESCRIPTION,
   "Definitions of terms are NOT covenants themselves - do not list a definition as its own rule merely because it contains a dollar figure or percentage, unless that definition itself imposes a restriction.",
   "Boilerplate (headings, general provisions, miscellaneous, governing law) is not a rule - do not list it.",
+  "DISTINGUISHING QUOTE: if this section bundles two or more independently operative rules into ONE un-enumerated sentence with no lettered/numbered sub-reference to tell them apart (e.g. two different baskets fused together, each with its own dollar cap or its own named facility/purpose), also give distinguishingQuote for EACH such rule: a short (under 200 characters) VERBATIM excerpt copied EXACTLY from the section text above (never paraphrased or summarized) that marks the specific clause language for THIS rule and not its sibling. Omit distinguishingQuote whenever this rule already has its own distinct relativeRef, or when no sibling rule shares this same reference.",
 ].join(" ");
 
 export interface SectionBatchInput {
@@ -130,6 +161,8 @@ function normalizeWireItem(item: WireSemanticRuleItem): SemanticRuleItem {
     confidence: item.confidence,
     // Task §9: a FALLBACK_REVIEW_REQUIRED or INVALID_UNUSABLE normalization always forces review, regardless of the model's own needsReview flag - the model cannot silently mark a fallback-classified rule as not needing review.
     needsReview: item.needsReview || roleResult.status === "FALLBACK_REVIEW_REQUIRED" || roleResult.status === "INVALID_UNUSABLE",
+    // Phase 3F.1.6.RX Workstream D (AUDIT-F4) - trimmed and length-capped only; never lowercased/reworded here, since pass-c-neighborhood.ts's verification step needs the model's own exact wording to check against real source text. Empty string after trimming is treated as absent.
+    distinguishingQuote: item.distinguishingQuote?.trim() ? item.distinguishingQuote.trim().slice(0, 240) : undefined,
   };
 }
 

@@ -82,6 +82,18 @@ function combineSupersessionForNodes(nodeIds: string[], deterministicByNodeId: M
  * pre-fix code ever actually needed to dedup, per
  * tests/contract-model/discovery-pipeline.test.ts scenario 18) still merge
  * exactly as before.
+ *
+ * Phase 3F.1.6.RX Workstream D (BLOCKER-8 + AUDIT-F4) CLAIM IDENTITY V2 -
+ * computeCandidateContentFingerprint now ALSO folds in `valueAnchors` and
+ * `verifiedQuoteFingerprint` (both source-grounded - see
+ * pass-c-neighborhood.ts's own doc comment and value-anchors.ts), so two
+ * same-family, same-role, same-node candidates that state DIFFERENT
+ * source-verified numeric values (or carry different verified
+ * distinguishing quotes) are no longer merged either - closing AUDIT-F4's
+ * frozen "SAME FAMILY + SAME ROLE + SAME SOURCE NODE DOES NOT IMPLY SAME
+ * CLAIM" defect class. No new code is needed HERE beyond propagating the
+ * two new fields through merge (below) - mergeKey already recomputes the
+ * fingerprint from whatever fields ExpandedCandidate carries.
  */
 export function runPassDReconciliation(input: ReconciliationInput): { candidates: DiscoveredCandidate[]; duplicatesBeforeReconciliation: number } {
   const { documentId, discoveryRunVersion, expanded, discoveryId, deterministicByNodeId } = input;
@@ -105,6 +117,14 @@ export function runPassDReconciliation(input: ReconciliationInput): { candidates
       const mergedMethods = Array.from(new Set([...existing.discoveryMethods, ...methods]));
       const mergedSignals = Array.from(new Set([...existing.evidenceSignals, ...(deterministic?.signals ?? [])]));
       const mergedSupersession = combineSupersessionForNodes(mergedNodeIds, deterministicByNodeId);
+      // Phase 3F.1.6.RX Workstream D (AUDIT-F4) - union valueAnchors the
+      // same way every other multi-valued field on a merge is unioned
+      // above (mergedNodeKeys/mergedMethods/mergedSignals); a genuine
+      // duplicate detection (the only shape that reaches this branch,
+      // since mergeKey already requires an identical fingerprint - see
+      // this module's own header) never loses a value anchor either side
+      // independently verified.
+      const mergedValueAnchors = Array.from(new Set([...(existing.valueAnchors ?? []), ...(item.valueAnchors ?? [])])).sort();
       byKey.set(mergeKey, {
         ...existing,
         structuralNodeKeys: mergedNodeKeys,
@@ -115,6 +135,8 @@ export function runPassDReconciliation(input: ReconciliationInput): { candidates
         multipleRulesLikely: existing.multipleRulesLikely || item.multipleRulesLikely,
         supersessionStatus: mergedSupersession.status,
         supersessionReason: mergedSupersession.reason,
+        valueAnchors: mergedValueAnchors,
+        verifiedQuoteFingerprint: existing.verifiedQuoteFingerprint ?? item.verifiedQuoteFingerprint,
       });
       continue;
     }
@@ -144,6 +166,8 @@ export function runPassDReconciliation(input: ReconciliationInput): { candidates
       discoveryRunVersion,
       supersessionStatus: supersession.status,
       supersessionReason: supersession.reason,
+      valueAnchors: item.valueAnchors,
+      verifiedQuoteFingerprint: item.verifiedQuoteFingerprint,
     };
     byKey.set(mergeKey, candidate);
   }

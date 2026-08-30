@@ -14,6 +14,7 @@ import type { StructuralIndex } from "../structural-index";
 import type { SemanticRuleItem } from "./pass-b-semantic";
 import type { DiscoveredCandidate, DiscoveryRole } from "./types";
 import { computeStableKey } from "../../stable-keys";
+import { extractGroundedValueAnchors, extractValueAnchors, verifyDistinguishingQuote } from "../value-anchors";
 
 /**
  * Phase 3F.1.2: resolves the composed section reference via
@@ -57,19 +58,65 @@ function resolveRelativeRef(index: StructuralIndex, documentId: string, sectionR
  * shape of this defect (a fused sentence bundling two different covenant
  * topics, e.g. Liens vs Indebtedness).
  *
- * Disclosed residual risk (documented in
- * docs/phase-3f1-6-r-blocker-remediation/11-claim-identity-remediation.json):
- * two DISTINCT claims fused in one un-enumerated sentence that ALSO share
- * the exact same family (e.g. two different Indebtedness baskets bundled
- * without lettering) remain merged - `families` alone cannot disambiguate
- * that narrower case, and no other field on SemanticRuleItem is both
- * source-grounded and free of paraphrase/ordinal instability. This is a
- * smaller, disclosed gap, not the confirmed BLOCKER-8 case (which always
- * had differing families - that is what made the two claims "economically
- * distinct" in the first place).
+ * Phase 3F.1.6.RX Workstream D (BLOCKER-8 + AUDIT-F4) - CLAIM IDENTITY V2.
+ * The prior fix's own disclosed residual gap
+ * (docs/phase-3f1-6-r-blocker-remediation/11-claim-identity-remediation.json,
+ * part4_disclosedResidualRisk RESIDUAL-1): two DISTINCT claims fused in one
+ * un-enumerated sentence that ALSO share the exact same family (e.g. a
+ * "$50m acquisition debt basket" and a "$25m working-capital debt basket"
+ * bundled together - same family INDEBTEDNESS, same role BASKET, same
+ * source node) still collapsed to one identity, because `families` alone
+ * has nothing left to disambiguate them. AUDIT-F4 froze this as a mandatory
+ * defect class: "SAME FAMILY + SAME ROLE + SAME SOURCE NODE DOES NOT IMPLY
+ * SAME CLAIM."
+ *
+ * V2 adds TWO further, source-GROUNDED dimensions on top of `families`
+ * (see lib/contract-model/compiler/value-anchors.ts for the full rationale
+ * and the grounding discipline both rely on):
+ *
+ *  1. `valueAnchors` - canonicalized numeric/currency/percentage/ratio
+ *     values extracted from this candidate's own `description`, but kept
+ *     ONLY when independently verified present in the REAL source text of
+ *     this candidate's resolved anchor node (extractGroundedValueAnchors).
+ *     This is what distinguishes the $50m/$25m example: both candidates
+ *     resolve to the identical anchor node/section, but their own
+ *     descriptions name different, source-verified dollar amounts.
+ *     Requires ZERO Pass B schema/prompt change - `description` already
+ *     always exists.
+ *
+ *  2. `verifiedQuoteFingerprint` - when Pass B additionally supplies the
+ *     OPTIONAL `distinguishingQuote` field (see pass-b-semantic.ts), and
+ *     that quote independently verifies as a genuine whitespace-normalized
+ *     VERBATIM substring of the real anchor-node source text
+ *     (verifyDistinguishingQuote - never trusted unverified), the
+ *     normalized quote text itself becomes part of the fingerprint, and any
+ *     value anchors found WITHIN that verified quote are folded into
+ *     `valueAnchors` too. This generalizes disambiguation beyond numbers to
+ *     any source-text difference (e.g. "Revolving Facility" vs "Term
+ *     Facility") - but is honestly a live-model-cooperation-dependent
+ *     dimension: when Pass B does not supply a quote (or supplies one that
+ *     does not verify), this dimension contributes nothing, and identity
+ *     gracefully degrades to exactly the pre-existing (disclosed) V1
+ *     behavior for that pair - never a crash, never a silently wrong
+ *     identity, never worse than before.
+ *
+ * Neither addition ever hashes raw, unverified AI paraphrase text (this
+ * task's own explicit prohibition) - both are GROUNDED: cross-checked
+ * against real source text before being trusted for anything. Two
+ * independently-worded re-detections of the SAME real clause (the
+ * "genuine duplicate" case tests/contract-model/discovery-pipeline.test.ts
+ * scenario 18 requires to still merge) normalize to the SAME grounded
+ * value-anchor set regardless of paraphrase wording, so this can never turn
+ * a real duplicate into two false-distinct siblings.
+ *
+ * See docs/phase-3f1-6-rx-final-blocker-closure/06-claim-identity-v2.json
+ * for the full design rationale and the required 9-case adversarial matrix.
  */
-export function computeCandidateContentFingerprint(c: Pick<ExpandedCandidate, "families">): string {
-  return [...new Set(c.families)].sort().join(",");
+export function computeCandidateContentFingerprint(c: Pick<ExpandedCandidate, "families" | "valueAnchors" | "verifiedQuoteFingerprint">): string {
+  const familyPart = [...new Set(c.families)].sort().join(",");
+  const valuePart = [...new Set(c.valueAnchors ?? [])].sort().join(",");
+  const quotePart = c.verifiedQuoteFingerprint ?? "";
+  return [familyPart, valuePart, quotePart].join("|");
 }
 
 export interface ExpandedCandidate {
@@ -89,6 +136,10 @@ export interface ExpandedCandidate {
   confidence: number;
   needsReview: boolean;
   sourceCitation: string;
+  /** Phase 3F.1.6.RX Workstream D (AUDIT-F4) - see computeCandidateContentFingerprint's own doc comment above. Always populated by runPassCNeighborhoodExpansion itself (possibly empty array); optional only so a pre-existing test fixture literal constructed before this field existed still type-checks (treated as empty when absent - see computeCandidateContentFingerprint's own `?? []`). */
+  valueAnchors?: string[];
+  /** Phase 3F.1.6.RX Workstream D (AUDIT-F4) - the normalized, SOURCE-VERIFIED distinguishing quote text (see verifyDistinguishingQuote), or undefined when Pass B supplied none or it failed verification. */
+  verifiedQuoteFingerprint?: string;
 }
 
 export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId: string, sectionNodeId: string, sectionRef: string, semanticItems: SemanticRuleItem[], discoveryRunVersion: string): { candidates: ExpandedCandidate[]; discoveryId: (c: ExpandedCandidate) => string } {
@@ -113,6 +164,19 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
       structuralNodeIds.push(sectionNodeId);
       structuralNodeKeys.push(index.getNodeById(sectionNodeId)?.nodeKey ?? "");
     }
+
+    // Phase 3F.1.6.RX Workstream D (AUDIT-F4) - CLAIM IDENTITY V2's two
+    // source-grounded disambiguators. Both are computed against the anchor
+    // node's REAL, FULL own text (never the 300-char sourceCitation slice
+    // below, which exists only for human-facing display) - see
+    // computeCandidateContentFingerprint's own doc comment for the full
+    // rationale and value-anchors.ts for the grounding discipline.
+    const anchorFullText = anchorNode ? index.getNodeText(anchorNode.nodeId, "OWN") : "";
+    const groundedDescriptionAnchors = anchorFullText ? extractGroundedValueAnchors(item.description, anchorFullText) : [];
+    const verifiedQuote = anchorFullText ? verifyDistinguishingQuote(item.distinguishingQuote, anchorFullText) : null;
+    const quoteAnchors = verifiedQuote ? extractValueAnchors(verifiedQuote) : [];
+    const valueAnchors = [...new Set([...groundedDescriptionAnchors, ...quoteAnchors])].sort();
+
     candidates.push({
       structuralNodeKeys,
       structuralNodeIds,
@@ -129,7 +193,9 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
       definedTermDependencyLikely: item.definedTermDependencyLikely,
       confidence: item.confidence,
       needsReview: item.needsReview,
-      sourceCitation: anchorNode ? index.getNodeText(anchorNode.nodeId, "OWN").slice(0, 300) : "",
+      sourceCitation: anchorNode ? anchorFullText.slice(0, 300) : "",
+      valueAnchors,
+      verifiedQuoteFingerprint: verifiedQuote ?? undefined,
     });
   }
 
@@ -157,6 +223,7 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
       confidence: 0.5,
       needsReview: true,
       sourceCitation: sectionNode ? index.getNodeText(sectionNode.nodeId, "OWN").slice(0, 300) : "",
+      valueAnchors: [],
     });
   }
 

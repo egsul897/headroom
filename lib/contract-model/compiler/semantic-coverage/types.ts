@@ -167,7 +167,14 @@ import type { StructuralHealthState } from "../structural-coverage";
 // 11-claim-identity-remediation.json), so any previously-computed
 // semanticUnitId/frozenContentHash is correctly treated as belonging to a
 // different, stale algorithm version rather than silently reused.
-export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v3";
+// Phase 3F.1.6.RX Workstream D bump (v3 -> v4, BLOCKER-8 + AUDIT-F4): CLAIM
+// IDENTITY V2 - findCoordinateClauseSplit now ALSO splits a same-family
+// fused sentence when each side states a disjoint, source-grounded numeric
+// value (e.g. two different-amount baskets of the SAME covenant family
+// bundled together) - another real detection-algorithm change, per this
+// constant's own established bump discipline. See
+// docs/phase-3f1-6-rx-final-blocker-closure/06-claim-identity-v2.json.
+export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v4";
 export const SEMANTIC_COVERAGE_PROMPT_VERSION = "phase-3e-semantic-coverage-prompt.v1";
 export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3f1-semantic-coverage-router.v2";
 
