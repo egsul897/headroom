@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "CONDITION_VERIFICATION_ARCHITECTURE",
+  "workstream": "D",
+  "findingId": "FINDING-5",
+  "correspondsTo": "BLOCKER-9 (third recurrence)",
+  "generatedAt": "2026-08-30T19:15:00Z",
+  "author": "Workstream D",
+
+  "mandate": "Replace source-inventory.ts's finite CONDITIONAL_PHRASE idiom enumeration - which has now been independently found to under-detect real-world qualifying-condition language THREE separate times (3F.1.6.R, 3F.1.6.RX Part A, 3F.1.6.RX Part B) - with a generalized condition-suspicion architecture that routes structurally-suspicious spans to the existing independent semantic reviewer for a materiality judgment, rather than hard-coding every English drafting variant. Explicitly forbidden: fixing this by adding the 8 newly-missed phrases (or any finite phrase set) as new literal enumerated entries.",
+
+  "priorEvidence": "docs/phase-3f1-6-rx-final-blocker-closure/27-part-b-blocker9-recertification.json (disposition STILL_OPEN; 8 of 12 novel condition forms reached VERIFIED_NO_MATERIAL_GAP_FOUND with zero scrutiny under real default production routing)",
+
+  "rootCauseDiagnosis": {
+    "priorFailureMode": "Every remediation of BLOCKER-9 to date (3F.1.6.R's own fix, then 3F.1.6.RX Part A's own re-attack) responded to a fresh set of adversarially-discovered condition phrasings by appending those exact phrasings (as regex alternatives) to source-inventory.ts's single CONDITIONAL_PHRASE pattern. This treats condition-drafting vocabulary as if it were a closed, enumerable set. It is not: English legal drafting has effectively unbounded surface variation for the same small number of underlying grammatical constructions (a subordinate/temporal dependency, a light-noun-headed compound conjunction, an event-trigger preposition, an occurrence predicate, a modal+participle satisfaction passive, a cross-reference incorporation, a pro forma temporal predicate, a condition-precedent term of art). Enumerating surface phrasings can never catch up with drafting variation across real-world documents; detecting the underlying constructions can, because the CONSTRUCTIONS are a small, structurally closed set even though their SURFACE REALIZATIONS are not.",
+    "whyThisIsArchitectural_notJustAnotherPatch": "The routing decision that determines whether Layer 2 (independent adversarial semantic review) ever examines a candidate at all (verify.ts's shouldInvokeSemanticReview, gated by reconciliation.ts's buildAggregateSignals counting CONDITIONAL_PHRASE/EXCEPTION_MARKER/PROVISO_MARKER source items) was, and remains, sound in its OWN logic - the defect was never in the routing threshold (BLOCKER-9's own >=1 fix already lowered that correctly) or in Layer 2 itself (Part B's own tasks 2-4 independently reconfirmed the isSynthetic gate, independence, and the original 7-case fault-injection reproduction all hold). The defect was entirely upstream, in WHAT COUNTS AS A SIGNAL in the first place - source-inventory.ts's own detection recall. This means the fix belongs entirely in source-side detection, and should change nothing about routing/independence/Layer-2 mechanics, which this remediation confirms by construction (see filesChanged below - reconciliation.ts, verify.ts, reviewer.ts, findings.ts, ir-inventory.ts are all untouched)."
+  },
+
+  "newArchitecture": {
+    "summary": "A new module, lib/contract-model/compiler/semantic-verification/condition-suspicion.ts, replaces source-inventory.ts's single flat CONDITIONAL_PHRASE regex with a compositional slot-grammar detector: one legacy alternation (the original enumerated idiom list, kept verbatim for non-regression) plus eight new structural/morphological detection frames. Every frame still emits the SAME SourceInventoryItemKind values (CONDITIONAL_PHRASE/EXCEPTION_MARKER/PROVISO_MARKER) the rest of the pipeline already understands, so reconciliation.ts's aggregate-signal counting, verify.ts's routing decision, findings.ts's finding construction, and reviewer.ts's Layer 2 review are ALL UNCHANGED and automatically benefit from broader, more honest upstream detection. The fix is entirely local to 'what counts as a source-side suspicion signal', not to how that signal gets routed or judged.",
+
+    "designPrinciple": "Deterministic code's job is routing/provenance/fail-closed handling (unchanged, already correct per BLOCKER-9's own prior fix and Part B's own re-confirmation). The independent semantic reviewer's job is judging materiality of a structurally-suspicious span (unchanged - reviewer.ts's runAdversarialSemanticReview, the codebase's own existing bounded-AI materiality-judgment primitive within this module, was reused as-is; no parallel AI mechanism was built). This remediation's only job was to make the deterministic layer's OWN suspicion detection track real grammatical/structural condition-marking constructions instead of an exact-phrase list, so that structurally-suspicious material reliably reaches the existing reviewer regardless of which exact idiom the drafter chose.",
+
+    "categories": [
+      {
+        "category": "LEGACY_ENUMERATED_CONNECTIVE",
+        "kept": true,
+        "description": "The original BLOCKER-9 / RX-Part-A idiom alternation (so long as, provided that, unless, subject to, notwithstanding, until such time as, no (Event of) Default, conditioned upon/on, following/upon satisfaction of, immediately before and after, if and only if, only if, except(that)). Retained verbatim - none of these are wrong, and removing them would be a real recall regression, not an architecture improvement. This category is NOT the source of this remediation's new recall."
+      },
+      {
+        "category": "NOMINAL_CONDITIONAL_CONNECTIVE",
+        "frame": "{PREP} + DET? + {light noun: event|case|circumstance|extent|degree} + {relativizer: of|that|where|to which}",
+        "closes": ["in the event of", "in the event that", "to the extent that"],
+        "generalizesTo": "in the case that / to the degree that / on condition that / in case of - none authored as a separate literal target; all produced by the same slot combination"
+      },
+      {
+        "category": "EVENT_TRIGGER_NOMINALIZATION",
+        "frame": "{upon|following|after|before|once} + DET? + [word ending in -tion/-sion/-ance/-ence/-ment/-ness] + \"of\"",
+        "closes": ["upon the occurrence of [a defined trigger]"],
+        "generalizesTo": "upon the consummation/effectiveness/expiration/execution/designation/repayment of X - a morphological suffix class, not a noun list; demonstrated on \"expiration\" in the test matrix, a word never typed elsewhere in this codebase's comments"
+      },
+      {
+        "category": "EVENT_TRIGGER_DEFINED_TERM",
+        "frame": "{Upon|Following|After|Before|Once} + DET? + Capitalized-Multi-Word-Phrase (tolerating one internal glue word: of/the/and/or)",
+        "caseSensitive": true,
+        "closes": ["a bare capitalized DEFINED TERM trigger (\"Upon the Trigger Event,\")", "\"as and when\" + \"following a Change of Control\" (via its own \"following a Change of Control\" span)"]
+      },
+      {
+        "category": "OCCURRENCE_PREDICATE",
+        "frame": "{has|have|having|shall have|will have} + not? + yet? + {occurred|arisen|taken place}",
+        "closes": ["passive \"shall be deemed satisfied when a Qualified IPO has occurred\" (via \"has occurred\")", "\"to the extent that no Qualified IPO has yet occurred\" (via \"has yet occurred\")"],
+        "note": "generalizes the old hand-enumerated \"no (Event of )?Default\" pattern to ANY subject, not only the literal word \"Default\""
+      },
+      {
+        "category": "MODAL_SATISFACTION_PASSIVE",
+        "frame": "{shall|will|is|are|has been|have been} + be? + (up to 2 filler words)? + {deemed|satisfied|fulfilled|met|achieved|complied with|eligible|entitled|qualified}",
+        "closes": ["passive voice \"shall be deemed satisfied when\" (directly, via \"shall be... deemed\")"]
+      },
+      {
+        "category": "CROSS_REFERENCE_INCORPORATION",
+        "frame": "{in accordance with|pursuant to|as set forth on/in/under|set forth on/in/under} ... (bounded 60-char window) ... {Section|Schedule|Exhibit|Annex|Article|Appendix} + identifier",
+        "closes": ["a condition incorporated purely by schedule cross-reference, with no conditional connective word anywhere in the sentence"]
+      },
+      {
+        "category": "PRO_FORMA_TEMPORAL",
+        "frame": "\"giving effect to/thereto\" | \"pro forma basis/compliance/effect\" | generalized (order/adverb-tolerant) before-and-after",
+        "purpose": "covers the required \"before/after giving effect\" and \"pro forma condition\" test classes with constructions distinct from the old fixed \"immediately before and after\" string"
+      },
+      {
+        "category": "CONDITION_PRECEDENT_FRAME",
+        "frame": "\"as a condition (precedent) to\" | \"condition(s) precedent\"",
+        "purpose": "covers the required \"condition precedent\" test class as a term of art, independent of the specific triggering event named"
+      }
+    ],
+
+    "filesChanged": [
+      "lib/contract-model/compiler/semantic-verification/condition-suspicion.ts (NEW - the detector module described above, ~9 named pattern categories with extensive inline linguistic rationale)",
+      "lib/contract-model/compiler/semantic-verification/source-inventory.ts (edit - imports condition-suspicion.ts's pattern array and spreads it into the existing PATTERNS list in place of the old single inline CONDITIONAL_PHRASE regex; EXCEPTION_MARKER pattern gained one additional generic connective, 'with the exception of'; PROVISO_MARKER unchanged)"
+    ],
+    "filesDeliberatelyUnchanged": [
+      "lib/contract-model/compiler/semantic-verification/reconciliation.ts (buildAggregateSignals' >=1 threshold and its source-kind counting logic are untouched - broader upstream detection alone is sufficient)",
+      "lib/contract-model/compiler/semantic-verification/verify.ts (shouldInvokeSemanticReview, downgradeUnconfirmedAmbiguousFindings, determineStatus all untouched - routing/precision mechanics were already sound per Part B's own tasks 2-4)",
+      "lib/contract-model/compiler/semantic-verification/reviewer.ts (the existing bounded-AI adversarial review call - this codebase's own established 'bounded AI source inventory'-equivalent materiality-judgment primitive within semantic-verification - was reused exactly as-is, per the mandate's explicit 'reuse it, do not build a parallel one'; no new AI call type was introduced)",
+      "lib/contract-model/compiler/semantic-verification/findings.ts, ir-inventory.ts, types.ts (no type surface change - every new item still uses the pre-existing SourceInventoryItemKind values)"
+    ],
+    "scopeDisciplineConfirmed": "No discovery/, claim-identity, or persistence-layer file touched. No import of semantic/compile.ts or semantic/caller.ts anywhere in condition-suspicion.ts (verified by re-running semantic-verification-independence.test.ts, still 3/3, and by the module's own independence-contract-compliant import list: only RegExp/type exports, no runtime dependency on any compiler-reasoning module). Verifier independence is unaffected - condition-suspicion.ts is a pure source-text pattern detector with no access to compiler output at all."
+  },
+
+  "honestSelfAssessment": {
+    "question": "Does this genuinely escape phrase-list dependence, per the phase's own success criterion, or does it still primarily bottom out in a finite exact-phrase match?",
+    "answer": "PARTIAL, HONESTLY DISCLOSED, AND STRUCTURALLY DIFFERENT FROM THE PRIOR FAILURE MODE - not a claim of total escape from enumeration.",
+    "whatGenuinelyGeneralizes": [
+      "EVENT_TRIGGER_NOMINALIZATION matches a MORPHOLOGICAL SUFFIX CLASS (-tion/-sion/-ance/-ence/-ment/-ness), not a noun list - it catches any nominalization built from any verb, including ones this codebase has never seen (demonstrated directly in the test matrix on 'expiration', a word that appears nowhere else in this remediation's own comments or prior test fixtures).",
+      "EVENT_TRIGGER_DEFINED_TERM matches ANY capitalized multi-word phrase after a trigger preposition - it does not know or care which specific defined term a contract uses (Change of Control, Trigger Event, Qualified IPO, or any future term never seen before all match identically).",
+      "NOMINAL_CONDITIONAL_CONNECTIVE is a genuine slot grammar over a small closed set of light nouns (event/case/circumstance/extent/degree) - it catches combinations ('to the degree that') that were never separately authored as their own pattern, only enabled by the same code path as 'to the extent that'.",
+      "CROSS_REFERENCE_INCORPORATION generalizes over the specific citation identifier (any Section/Schedule/Exhibit/Annex/Article number), which is the part that actually varies per document."
+    ],
+    "whatStillBottomsOutInAFiniteList": [
+      "The connective/preposition/participle/light-noun VOCABULARY in every frame is still a finite, hand-written set (a handful of trigger prepositions; a handful of satisfaction participles; a handful of light nouns; a handful of occurrence verbs; a handful of citation-connective phrases). A sufficiently exotic, never-anticipated connective (e.g. a drafting convention using an unusual synonym for none of the modeled categories) could still slip through, exactly as any deterministic pattern set can.",
+      "This is NOT the same failure mode as the prior three remediations for two structural reasons, but it is not a full escape from enumeration either: (1) each of these lexical sets is a genuinely CLOSED grammatical/functional/semantic category in English (there is no unbounded tail of new 'light nouns' or new 'perfect-aspect auxiliaries' the way there is an unbounded tail of new legal drafting idioms - closed word classes do not grow the way idiom choice does), and (2) the SLOT each frame combines with (the specific noun, the specific defined term, the specific citation) is genuinely open and does the real generalization work, which is what let this remediation close all 8 Part-B gaps and 12 additional required test classes without writing a single new literal multi-word phrase target.",
+      "Anything that still falls outside even this broadened net is, per the mandate's own design, not something this remediation tries to catch by further hand-tuning regexes - it is left to route (or not) through the EXISTING Layer 2 mechanism exactly as before. This remediation does not claim to have built a system that understands legal English; it claims to have moved the enumeration boundary from 'the whole idiomatic phrase' (demonstrably unable to keep up, 3 recurrences and counting) down to 'a small closed function/semantic-class word list' (structurally able to), and to leave genuine semantic judgment to the reviewer that already exists for exactly that purpose."
+    ],
+    "verdictOnSuccessCriterion": "Meets the phase's own success criterion as stated: material conditional semantics now route to independent review as a consequence of detecting the underlying GRAMMATICAL CONSTRUCTION, not the exact drafting phrase - proven directly by the two 'novel combination' tests (a light-noun branch and a nominalization-suffix word neither literally authored elsewhere) and by all 12 required semantic-class tests being satisfied with zero reuse of any literal phrase from condition-suspicion.ts's own doc comments, the Part A 43-test matrix, the original 9-form matrix, or Part B's own 12-form matrix. Does NOT meet a stronger, unstated bar of 'zero remaining finite word lists anywhere' - no realistic deterministic regex-based system could, and this document says so rather than overclaiming."
+  },
+
+  "testMatrixResults": {
+    "newTestFile": "tests/contract-model/condition-suspicion-architecture.test.ts",
+    "newTestFileSummary": "34 tests, all pass. Covers all 12 required semantic classes (event occurrence; temporal satisfaction; pro forma condition; no-default condition; before/after giving effect; condition precedent; incorporated-definition condition; cross-reference condition; passive construction; inverted syntax; nested proviso; exception conditioned on a later fact) with constructions disjoint from every prior matrix, plus 2 dedicated 'novel combination' tests proving compositional generalization, plus a BENIGN/PRECISION block (4 cases + 1 end-to-end case) proving the broadened detection does not over-trigger on ordinary if/when/temporal prose, plus 2 false-positive guards for the new frame shapes.",
+    "updatedTestFile": "tests/contract-model/part-b-recert-blocker9-independent-attack.test.ts - updated in place (per that file's own explicit instruction: 'If a future fix closes this gap, this assertion should start failing and must be updated (not deleted) to assert the corrected outcome') to assert the corrected behavior for all 8 previously-missed forms and the 1 previously-coincidental-only form. 27 tests, all pass. These pass as a CONSEQUENCE of the generalized architecture (verified directly: reverting condition-suspicion.ts's new categories while keeping only LEGACY_ENUMERATED_CONNECTIVE reproduces all 17 of the pre-fix failures, confirming the new frames - not the legacy list - are what closes them).",
+    "preExistingRegressionSuites": {
+      "semantic-verification-condition-remediation.test.ts": "30/30 pass, unchanged",
+      "semantic-verification-condition-remediation-rx.test.ts": "43/43 pass, unchanged (including its own BENIGN/PRECISION block - the bare-'if'-in-boilerplate and 'so long as'-in-unrelated-clause precision guards both still hold exactly as before)",
+      "semantic-verification-fault-injection.test.ts": "29/29 pass, unchanged",
+      "semantic-verification-verify.test.ts": "8/8 pass, unchanged",
+      "semantic-verification-independence.test.ts": "3/3 pass, unchanged (re-confirms no import of semantic/compile.ts or semantic/caller.ts anywhere under semantic-verification/, including the new condition-suspicion.ts file)"
+    },
+    "totalSemanticVerificationTests": "174/174 pass across all 7 directly-related test files (29+27+43+34+30+8+3)",
+    "foundationAuditSuite": {
+      "command": "npx vitest run tests/foundation-audit",
+      "result": "30 files, 320 tests, all pass - zero regressions"
+    },
+    "sevenCaseFaultInjectionReconfirmation": {
+      "script": "npx tsx tests/foundation-audit/section17-verifier-fault-injection.ts",
+      "result": "7/7 CAUGHT, 0/7 MISSED (unchanged from Part B's own re-run - this script's own single condition form, 'so long as', was already covered by the legacy pattern and is unaffected by this remediation; re-run here fresh against the post-fix code, not merely cited from a prior report)",
+      "cases": ["missing-amount: CAUGHT", "wrong-action: CAUGHT", "wrong-scope: CAUGHT", "omitted-condition: CAUGHT (status=REVIEW_REQUIRED, semanticReviewInvoked=true under real default production routing)", "sibling-basket-substitution: CAUGHT", "wrong-definition: CAUGHT", "wrong-operative-version: CAUGHT"]
+    },
+    "broaderContractModelSuiteNote": "A full `npx vitest run tests/contract-model` run in this shared, actively-multi-workstream-edited worktree shows additional failures (entity-scope.test.ts, compiler-orchestrator.test.ts, compatibility.test.ts, coverage-structural.test.ts, partial-instrument-failure.test.ts, part-b-recert-auditf3-f6-f7-*, part-b-recert-crosscutting-*) - all independently confirmed to be pre-existing/environment-caused (empty local DB for the two real-Coherent-data tests; the remainder concentrated in AnalysisRun/orchestrator/partial-instrument-failure territory, which sibling Workstreams B and F were actively committing to in this same worktree during this session per `git log` showing their commits land mid-session) and NONE touch semantic-verification/ or any file this remediation modified. Isolated re-runs of exactly the 7 semantic-verification-related files (above) are the reliable signal for this workstream's own change and show 174/174 passing with zero flakiness across repeated runs."
+  },
+
+  "verification": {
+    "tscBaselineNote": "This phase's own charter states a documented baseline of 6 tsc errors / 1 eslint error. This worktree is shared and actively edited by multiple concurrent sibling workstreams (git log shows commits 77acf71 'Workstream B: getDefinition operative-safety fix' and 41433dd 'Workstream F: gate live product flow' landing on this branch during this session, on top of the ccab207 baseline this workstream started from) - `npx tsc --noEmit -p .` was observed to fluctuate between 13 and 16 errors across repeated runs during this session purely from sibling in-flight edits (e.g. lib/contract-model/analysis/orchestrator.ts's error count changed between two runs seconds apart with no edit from this workstream). The reliable check performed here is NOT 'total repo error count vs. the stale 6' but 'zero errors attributable to any file this workstream touched', confirmed directly: `npx tsc --noEmit -p . 2>&1 | grep -E \"condition-suspicion|source-inventory.ts|condition-suspicion-architecture|part-b-recert-blocker9-independent\"` returns NO output on the final run.",
+    "eslintResult": "`npx eslint .` shows exactly the pre-existing, already-documented 1 baseline error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires rule-definition error, a file this workstream never touched) plus zero errors from any file this workstream added or modified, confirmed both by the full-repo run and by an eslint run scoped directly to this workstream's 4 files."
+  },
+
+  "filesAdded": [
+    "lib/contract-model/compiler/semantic-verification/condition-suspicion.ts",
+    "tests/contract-model/condition-suspicion-architecture.test.ts",
+    "docs/phase-3f1-6-rx-final-terminal-closure/06-condition-verification-architecture.json"
+  ],
+  "filesModified": [
+    "lib/contract-model/compiler/semantic-verification/source-inventory.ts",
+    "tests/contract-model/part-b-recert-blocker9-independent-attack.test.ts"
+  ],
+
+  "disposition": "FINDING_5_ARCHITECTURALLY_REMEDIATED",
+  "dispositionRationale": "The condition-omission defect class that recurred three times (3F.1.6.R, 3F.1.6.RX Part A, 3F.1.6.RX Part B) was, each time, fixed by adding newly-discovered exact idioms to a single finite CONDITIONAL_PHRASE list - the exact pattern this phase's charter identifies as the root architectural weakness and explicitly forbids repeating. This remediation instead replaced that detection mechanism with a compositional, structural/morphological slot-grammar detector (condition-suspicion.ts) that generalizes to drafting variants it does not individually enumerate, while leaving the existing, already-sound routing (reconciliation.ts, verify.ts) and existing, already-sound independent AI materiality judgment (reviewer.ts) completely untouched and unduplicated. All 8 of Part B's previously-missed forms, all 12 of this phase's own required semantic test classes (with fresh constructions), and 2 dedicated proof-of-generalization 'novel combination' tests all pass; the original 7-case fault-injection reproduction remains 7/7 CAUGHT; all pre-existing precision/benign-non-overtrigger guards continue to hold unchanged; verifier independence is unaffected (condition-suspicion.ts has zero access to compiler output). The honest self-assessment above discloses, rather than hides, that several of the new frames' own lexical slots are still finite closed word classes - this is disclosed as a genuine, bounded limitation rather than claimed as a full escape from enumeration, per this remediation's own instruction to report honestly rather than overclaim architectural success."
+}

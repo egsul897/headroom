@@ -2,6 +2,18 @@
  * Phase 3F.1.6.RX Part B - independent, production-frozen recertification of
  * BLOCKER-9 ("Independent verifier missing omitted qualifying condition").
  *
+ * UPDATED by Phase 3F.1.6.RX-FINAL Terminal Closure, Workstream D: this
+ * file originally found and disclosed (evidence-only, no production fix)
+ * the 8 recall gaps described below as STILL_OPEN. That terminal pass
+ * replaced source-inventory.ts's single flat CONDITIONAL_PHRASE idiom list
+ * with condition-suspicion.ts's generalized, compositional slot-grammar
+ * detection (see docs/phase-3f1-6-rx-final-terminal-closure/06-condition-
+ * verification-architecture.json) - the "GENUINE RECALL GAPS" and
+ * "coincidentally caught" describe blocks below were updated in place (per
+ * this file's own original instruction to do exactly that once a fix
+ * landed) to assert the now-corrected behavior; nothing else in this file
+ * (the isSynthetic and independence describe blocks) needed any change.
+ *
  * This file is a FRESH adversarial attack, written without reusing any
  * fixture text/numbers from tests/contract-model/semantic-verification-
  * condition-remediation.test.ts (the original 9-form matrix) or
@@ -194,42 +206,65 @@ const FALSE_CLEAN_CASES: FalseCleanCase[] = [
   },
 ];
 
-describe("Part B Blocker-9 recert - GENUINE RECALL GAPS: novel forms reaching a FALSE CLEAN PASS under real default production routing (STILL_OPEN evidence)", () => {
+// -----------------------------------------------------------------------
+// Phase 3F.1.6.RX-FINAL Terminal Closure, Workstream D UPDATE - these two
+// describe blocks originally documented CURRENT, DEFECTIVE behavior (see
+// this file's own header comment and the inline comments this update
+// replaces, which explicitly anticipated and required exactly this edit:
+// "If a future fix closes this gap, this assertion should start failing
+// and must be updated (not deleted) to assert the corrected outcome.").
+// docs/phase-3f1-6-rx-final-terminal-closure/06-condition-verification-
+// architecture.json replaced source-inventory.ts's single flat
+// CONDITIONAL_PHRASE idiom list with condition-suspicion.ts's compositional
+// slot-grammar frames (structural/morphological detection: subordinate
+// conditional connectives, event-trigger prepositions, occurrence
+// predicates, modal+participle satisfaction passives, cross-reference
+// incorporation, pro forma temporal predicates, condition-precedent terms
+// of art) - NOT by adding these 8 phrasings as 8 more literal enumerated
+// entries (see that file's own doc comment for why that would have been
+// exactly the same failure mode this finding names as a THIRD recurrence).
+// All 8 forms below are now caught as a natural CONSEQUENCE of the
+// generalized frames (each already independently covers many drafting
+// variants neither this file nor condition-suspicion.ts's own comments
+// ever typed as a literal target - see tests/contract-model/condition-
+// suspicion-architecture.test.ts's "novel combination" tests for direct
+// proof of that generalization).
+// -----------------------------------------------------------------------
+describe("Part B Blocker-9 recert - GENUINE RECALL GAPS, NOW CLOSED by the generalized condition-suspicion architecture (source-inventory.ts + condition-suspicion.ts)", () => {
   for (const c of FALSE_CLEAN_CASES) {
-    it(`buildSourceInventory raises NO conditional/exception/proviso signal at all for: ${c.name}`, () => {
+    it(`buildSourceInventory now raises a real structural condition-suspicion signal for: ${c.name}`, () => {
       const inv = buildSourceInventory("pb9-gap", c.text, "doc-1", "9.01", null);
       const hit = inv.items.some((i) => i.kind === "CONDITIONAL_PHRASE" || i.kind === "EXCEPTION_MARKER" || i.kind === "PROVISO_MARKER");
-      expect(hit).toBe(false);
+      expect(hit).toBe(true);
     });
 
-    it(`REAL DEFAULT PRODUCTION ROUTING (verifyCompiledCandidate, no test overrides) reaches a false VERIFIED_NO_MATERIAL_GAP_FOUND with ZERO scrutiny even though the condition is completely dropped: ${c.name}`, async () => {
+    it(`REAL DEFAULT PRODUCTION ROUTING (verifyCompiledCandidate, no test overrides) now routes to Layer 2 and never reaches a false clean pass when the condition is completely dropped: ${c.name}`, async () => {
       const mutated = rule({ capacityExpression: money(c.amount), conditions: [], exceptions: [] });
       const result = await verifyDefaultRouting(c.text, mutated);
-      // This assertion documents CURRENT, DEFECTIVE behavior - it is a
-      // regression-evidence test, not a spec of desired behavior. If a
-      // future fix closes this gap, this assertion should start failing and
-      // must be updated (not deleted) to assert the corrected outcome.
-      expect(result.semanticReviewInvoked).toBe(false);
-      expect(result.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
-      expect(result.reconciliation.materialUnresolvedCount).toBe(0);
-      expect(result.findings.length).toBe(0);
+      // FIXED behavior: the broadened structural signal makes reconciliation.ts's own
+      // existing >=1 aggregate-marker threshold fire, which makes verify.ts's existing
+      // shouldInvokeSemanticReview route this candidate to Layer 2 - no change to either
+      // of those two files was needed; only source-inventory.ts's own detection got
+      // more honest about what counts as a signal.
+      expect(result.semanticReviewInvoked).toBe(true);
+      expect(result.status).not.toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
     });
   }
 });
 
-describe("Part B Blocker-9 recert - the SAME phrases are only coincidentally caught when a ratio number happens to sit inside the condition clause, which is not a recall fix", () => {
-  it('"to the extent that" IS caught end-to-end when the condition clause happens to contain an unrelated ratio figure - but via numeric reconciliation (a NOT_ACCOUNTED_FOR RATIO), never via CONDITIONAL_PHRASE recall', async () => {
+describe("Part B Blocker-9 recert - the SAME phrase is now caught directly via CONDITIONAL_PHRASE recall, not merely coincidentally via numeric reconciliation", () => {
+  it('"to the extent that" is now caught directly via the new NOMINAL_CONDITIONAL_CONNECTIVE structural frame - the coincidental numeric-only save this test previously documented is no longer the only mechanism', async () => {
     const text = "The Company may make Restricted Payments to the extent that the Total Leverage Ratio does not exceed 4.00 to 1.00, in an amount not to exceed $6,150,000.";
     const inv = buildSourceInventory("pb9-coincidence", text, "doc-1", "9.01", null);
-    expect(inv.items.some((i) => i.kind === "CONDITIONAL_PHRASE")).toBe(false); // recall gap still present
-    expect(inv.items.some((i) => i.kind === "RATIO" && i.numericValue === 4)).toBe(true); // caught by a different mechanism entirely
+    expect(inv.items.some((i) => i.kind === "CONDITIONAL_PHRASE")).toBe(true); // recall gap closed - real structural signal now
+    expect(inv.items.some((i) => i.kind === "RATIO" && i.numericValue === 4)).toBe(true); // the numeric mechanism still independently fires too
 
     const mutated = rule({ capacityExpression: money(6_150_000), conditions: [], exceptions: [] });
     const result = await verifyDefaultRouting(text, mutated);
     expect(result.semanticReviewInvoked).toBe(true);
     expect(result.status).not.toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
-    // The reconciliation reason naming this is about the RATIO figure, not about a
-    // conditional/exception/proviso marker count - confirming the "catch" is coincidental.
+    // Both the RATIO numeric-evidence reason and (now) a CONDITIONAL_PHRASE-driven aggregate
+    // AMBIGUOUS reason are present - this candidate no longer depends solely on the number.
     const ratioReason = result.reconciliation.items.find((i) => i.classification === "NOT_ACCOUNTED_FOR" && i.sourceItem?.kind === "RATIO");
     expect(ratioReason).toBeTruthy();
   });

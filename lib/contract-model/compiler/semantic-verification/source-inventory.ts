@@ -25,6 +25,7 @@ import { hashParts } from "../hashing";
 import type { SourceInventory, SourceInventoryItem, SourceInventoryItemKind } from "./types";
 import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../amendment/operative-state";
 import type { NodeSupersessionIndex } from "../amendment/types";
+import { CONDITION_SUSPICION_PATTERNS } from "./condition-suspicion";
 
 export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v1";
 
@@ -46,34 +47,25 @@ const PATTERNS: PatternDef[] = [
   { kind: "PERCENT", re: /\d+(?:\.\d+)?\s?%/g, parseValue: (m) => Number(m[0].replace("%", "").trim()) / 100 },
   { kind: "RATIO", re: /\d+(?:\.\d+)?\s*(?:to\s*1\.0*\b|:\s*1\.0*\b|x\b)/gi, parseValue: (m) => Number((m[0].match(/^\d+(?:\.\d+)?/) ?? ["0"])[0]) },
   { kind: "COMPARISON_OPERATOR", re: /\b(?:greater of|lesser of|not to exceed|not less than|at least|no more than|not more than|shall not exceed|equal to or greater than|equal to or less than)\b/gi },
-  // Phase 3F.1.6.R Workstream D (BLOCKER-9 fix) - two generic additions to
-  // this alternation, neither package/company-specific (Architecture
-  // Invariants #29): "until such time as" (a common generic temporal
-  // qualifying-condition connective alongside the already-present "so long
-  // as"/"unless"), and "no (Event of )?Default" (the single most common
-  // credit-agreement negative-condition idiom - "no Event of Default shall
-  // have occurred and be continuing" - which, unlike every other entry
-  // here, is often stated as its OWN independent proviso sentence with no
-  // "so long as"/"provided that"/"subject to" connective at all, so it must
-  // be its own generic pattern rather than relying on catching a connective
-  // next to it).
-  //
-  // Phase 3F.1.6.RX Workstream E (independent re-attack of BLOCKER-9's own
-  // fix, docs/phase-3f1-6-rx-final-blocker-closure/07-verifier-
-  // remediation.json) - three further generic additions, each a genuine
-  // recall gap found by adversarial condition-form testing with forms
-  // outside BLOCKER-9's own 9-form matrix, none package/company-specific:
-  // "conditioned upon" (a common qualifying-condition connective,
-  // functionally identical to "subject to"/"so long as" but a distinct
-  // surface form neither original pattern matches), "following satisfaction
-  // of"/"upon satisfaction of" (a common precondition-incorporation
-  // connective, e.g. "following satisfaction of the conditions precedent"),
-  // and "immediately before and after" (the standard temporal dual-
-  // condition phrasing for a pro forma test straddling a transaction, which
-  // can appear as a covenant's sole gating language with no accompanying
-  // "so long as"/"provided that"/"no Default" connective at all).
-  { kind: "CONDITIONAL_PHRASE", re: /\b(?:so long as|provided(?:,?\s+that)?|unless|except(?:\s+that)?|if and only if|only if|subject to|notwithstanding|until\s+such\s+time\s+as|no\s+(?:Event\s+of\s+)?Default|conditioned\s+(?:upon|on)|(?:following|upon)\s+satisfaction\s+of|immediately\s+before\s+and\s+after)\b/gi },
-  { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding)\b/gi },
+  // Phase 3F.1.6.RX-FINAL Terminal Closure, Workstream D (FINDING-5 /
+  // BLOCKER-9's condition-omission defect class, THIRD recurrence - see
+  // docs/phase-3f1-6-rx-final-blocker-closure/27-part-b-blocker9-
+  // recertification.json). Every prior remediation (3F.1.6.R, then
+  // 3F.1.6.RX Part A) fixed this by adding newly-discovered idioms to a
+  // single flat CONDITIONAL_PHRASE alternation - which is exactly why the
+  // exact same defect class kept recurring with different vocabulary. This
+  // pass replaces "keep enumerating exact idioms" with condition-
+  // suspicion.ts's compositional slot-grammar frames (see that file's own
+  // extensive doc comment for the full rationale and honest limits): one
+  // legacy alternation (kept verbatim, below, for non-regression) plus
+  // eight new structural/morphological frames that generalize to drafting
+  // variants none of them individually enumerate. Spread across multiple
+  // PatternDef entries (all kind CONDITIONAL_PHRASE) rather than merged
+  // into one regex, because one of the new frames (EVENT_TRIGGER_DEFINED_TERM)
+  // is deliberately CASE-SENSITIVE (its entire signal is capitalization) and
+  // cannot share a `gi` flag with the other, case-insensitive frames.
+  ...CONDITION_SUSPICION_PATTERNS.map((p) => ({ kind: p.kind, re: p.re }) as PatternDef),
+  { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding|with\s+the\s+exception\s+of)\b/gi },
   { kind: "PROVISO_MARKER", re: /\bprovided,?\s+further\b/gi },
   { kind: "SHARED_CAP_MARKER", re: /\b(?:combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under))\b/gi },
   { kind: "BUILDER_SIGNAL", re: /\b(?:cumulative(?:ly)?|builder|Retained (?:Excess )?Cash Flow|Available Amount)\b/gi },
