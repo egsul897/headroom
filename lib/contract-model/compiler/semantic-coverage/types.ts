@@ -159,7 +159,15 @@ import type { StructuralHealthState } from "../structural-coverage";
 // permanently retain the v1 strings they were sealed with and are never
 // rewritten. The AI Layer C prompt itself (ai-inventory.ts) was not
 // changed by this phase, so SEMANTIC_COVERAGE_PROMPT_VERSION stays v1.
-export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v2";
+// Phase 3F.1.6.R BLOCKER-8 bump (v2 -> v3): unit-hypothesis.ts's
+// hypothesizeUnitsForRegion now also applies findCoordinateClauseSplit
+// (a real detection-algorithm change - two claims fused in one
+// un-enumerated "clauseA and/or clauseB" sentence that independently match
+// different covenant families now split into 2 units instead of 1 - see
+// 11-claim-identity-remediation.json), so any previously-computed
+// semanticUnitId/frozenContentHash is correctly treated as belonging to a
+// different, stale algorithm version rather than silently reused.
+export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v3";
 export const SEMANTIC_COVERAGE_PROMPT_VERSION = "phase-3e-semantic-coverage-prompt.v1";
 export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3f1-semantic-coverage-router.v2";
 

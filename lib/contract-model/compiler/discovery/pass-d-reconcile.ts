@@ -9,6 +9,7 @@
  */
 import type { DeterministicCandidate, DiscoveredCandidate, DiscoveryMethod } from "./types";
 import type { ExpandedCandidate } from "./pass-c-neighborhood";
+import { computeCandidateContentFingerprint } from "./pass-c-neighborhood";
 
 export interface ReconciliationInput {
   documentId: string;
@@ -30,6 +31,21 @@ export interface ReconciliationInput {
  * documented "two candidates are merged only when they resolve to the EXACT
  * same primary structural node" invariant (which was previously enforced
  * only up to label collision, not truly exact).
+ *
+ * Phase 3F.1.6.R BLOCKER-8 fix - `mergeKey` also folds in
+ * computeCandidateContentFingerprint (pass-c-neighborhood.ts's own
+ * families-derived disambiguator), kept as the SAME dimension discoveryId
+ * itself now hashes, so "these two items merge" and "these two items got
+ * the same discoveryId" never diverge. Two items sharing a node+role but
+ * carrying DIFFERENT families (the confirmed real-production collision -
+ * see 13-claim-identity-certification.json's F15-1 and
+ * docs/phase-3f1-6-r-blocker-remediation/11-claim-identity-remediation.json)
+ * are no longer merged into one candidate that silently discards one
+ * claim's own description; two items that are genuine re-detections of the
+ * SAME real clause (same node, role, AND families - the only shape the
+ * pre-fix code ever actually needed to dedup, per
+ * tests/contract-model/discovery-pipeline.test.ts scenario 18) still merge
+ * exactly as before.
  */
 export function runPassDReconciliation(input: ReconciliationInput): { candidates: DiscoveredCandidate[]; duplicatesBeforeReconciliation: number } {
   const { documentId, discoveryRunVersion, expanded, discoveryId, deterministicByNodeId } = input;
@@ -38,7 +54,7 @@ export function runPassDReconciliation(input: ReconciliationInput): { candidates
 
   for (const item of expanded) {
     const primaryNodeId = item.structuralNodeIds[0]!;
-    const mergeKey = `${primaryNodeId}::${item.role}`;
+    const mergeKey = `${primaryNodeId}::${item.role}::${computeCandidateContentFingerprint(item)}`;
     const deterministic = deterministicByNodeId.get(primaryNodeId);
     const methods: DiscoveryMethod[] = ["SEMANTIC_CLASSIFICATION"];
     if (deterministic) methods.push("DETERMINISTIC_SIGNAL");

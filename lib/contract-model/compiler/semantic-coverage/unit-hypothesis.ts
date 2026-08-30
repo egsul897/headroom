@@ -135,6 +135,91 @@ export function classifyFamily(text: string, headingHint: string | null): { fami
   return { family: "OTHER_UNCLASSIFIED", evidence: "no known family keyword matched heading or unit text - genuinely novel or non-covenant material" };
 }
 
+function matchFamilyKeyword(text: string): MaterialUnitFamily | null {
+  for (const { family, re } of FAMILY_KEYWORDS) {
+    if (re.test(text)) return family;
+  }
+  return null;
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.6.R BLOCKER-8 fix - coordinate-clause splitting (task §7/§13,
+// same discipline as splitEnumeratedItems above, extended to the un-
+// enumerated case 13-claim-identity-certification.json's F15-1 confirmed:
+// "the Company shall not create Liens on the Collateral or incur
+// Indebtedness in excess of $10,000,000" bundles TWO independently-
+// operative, economically distinct claims in one sentence with no
+// lettered/numbered marker for splitEnumeratedItems to split on - so both
+// previously hashed to the SAME anchor span and SAME semanticUnitId.
+//
+// GENERALIZED, not hardcoded to Liens/Indebtedness: fires only when a
+// top-level (non-parenthesized) "and"/"or" joins two clauses that EACH
+// independently match a DIFFERENT entry in FAMILY_KEYWORDS (the same open,
+// generic, non-package-specific taxonomy classifyFamily already uses,
+// Architecture Invariants #29) - the same pair of covenant topics fused
+// together is what makes two claims genuinely economically distinct in the
+// common real-drafting shape of this defect. A right-hand clause that
+// itself restates a modal verb ("...and shall not permit...") is never
+// treated as a second claim's own object - that is the SAME claim's
+// subject being restated, not a second independent one (regression guard:
+// "The Borrower shall not, and shall not permit any Restricted Subsidiary
+// to, create or suffer to exist any Lien..." must stay one unit).
+// ---------------------------------------------------------------------------
+
+const RIGHT_CLAUSE_RESTATES_MODAL = /^(?:shall|will|must|may)\b/i;
+const TOP_LEVEL_CONJUNCTION = /\b(?:and|or)\b/gi;
+
+export interface CoordinateClauseSplit {
+  left: { text: string; start: number; end: number };
+  right: { text: string; start: number; end: number };
+}
+
+/**
+ * Scans left-to-right through every top-level (paren-depth 0) "and"/"or"
+ * occurrence and returns the FIRST one whose two sides each independently
+ * match a different family keyword. Returns null when no such split point
+ * exists (task's own "never force 1:1" cuts both ways here too - a region
+ * with no genuine independent-claim conjunction is left as a single unit).
+ */
+export function findCoordinateClauseSplit(text: string): CoordinateClauseSplit | null {
+  const re = new RegExp(TOP_LEVEL_CONJUNCTION.source, TOP_LEVEL_CONJUNCTION.flags);
+  let m: RegExpExecArray | null;
+  const candidates: { start: number; end: number }[] = [];
+  // Single paren-aware pass: track nesting depth up to each conjunction
+  // match so only a TOP-LEVEL "and"/"or" (never one inside a parenthesized
+  // aside) is considered a candidate split point.
+  let depth = 0;
+  let idx = 0;
+  while ((m = re.exec(text)) !== null) {
+    for (; idx < m.index; idx++) {
+      if (text[idx] === "(") depth++;
+      else if (text[idx] === ")") depth = Math.max(0, depth - 1);
+    }
+    if (depth === 0) candidates.push({ start: m.index, end: m.index + m[0].length });
+    if (m.index === re.lastIndex) re.lastIndex++;
+  }
+
+  for (const c of candidates) {
+    const leftRaw = text.slice(0, c.start);
+    const rightRaw = text.slice(c.end);
+    const leftTrimmedStart = leftRaw.length - leftRaw.trimStart().length;
+    const leftText = leftRaw.trim();
+    const rightLeadingWs = rightRaw.length - rightRaw.trimStart().length;
+    const rightText = rightRaw.trim();
+    if (leftText.length === 0 || rightText.length === 0) continue;
+    if (RIGHT_CLAUSE_RESTATES_MODAL.test(rightText)) continue;
+    const leftFamily = matchFamilyKeyword(leftText);
+    const rightFamily = matchFamilyKeyword(rightText);
+    if (leftFamily && rightFamily && leftFamily !== rightFamily) {
+      return {
+        left: { text: leftText, start: leftTrimmedStart, end: c.start },
+        right: { text: rightText, start: c.end + rightLeadingWs, end: text.length },
+      };
+    }
+  }
+  return null;
+}
+
 // ---------------------------------------------------------------------------
 // Posture-signal + materiality classification (task §8/§10)
 // ---------------------------------------------------------------------------
@@ -203,8 +288,19 @@ function buildUnit(input: {
   headingHint: string | null;
   fromRawSourceFallback: boolean;
   detectionSignature: string;
+  /**
+   * Phase 3F.1.6.R BLOCKER-8 fix - a coordinate-clause split item (see
+   * findCoordinateClauseSplit above) typically has no local negation/
+   * obligation verb of its own (e.g. "incur Indebtedness in excess of
+   * $10,000,000" - the "shall not" lives only in the FIRST clause's own
+   * text). Used ONLY as a fallback when this item's own local signals
+   * classify to UNCLEAR_SIGNAL - a unit that DOES carry its own local
+   * posture signal always keeps it, never overridden by inheritance.
+   */
+  inheritedPosture?: DetectedPostureSignal;
 }): MaterialSemanticUnit {
-  const posture = classifyPostureSignal(input.signals, input.isExceptionItem);
+  const localPosture = classifyPostureSignal(input.signals, input.isExceptionItem);
+  const posture = localPosture === "UNCLEAR_SIGNAL" && input.inheritedPosture ? input.inheritedPosture : localPosture;
   const { materiality, reasoning } = classifyMateriality(input.signals, input.excerptText);
   const { family, evidence } = classifyFamily(input.excerptText, input.headingHint);
   const signalNames = input.signals.map((s) => s.name).sort();
@@ -254,6 +350,44 @@ export function hypothesizeUnitsForRegion(region: RoutedRegion, fullText: string
 
   const split = splitEnumeratedItems(fullText);
   if (!split) {
+    // Phase 3F.1.6.R BLOCKER-8 fix (F15-1) - before falling back to one
+    // whole-region unit, check for a bare "clauseA (and|or) clauseB" fused
+    // sentence with no lettered marker but two independently-operative,
+    // economically distinct claims (see findCoordinateClauseSplit above).
+    // Fires only for a genuine family-difference across the conjunction -
+    // never for an ordinary sentence that merely contains "and"/"or".
+    const coordinateSplit = findCoordinateClauseSplit(fullText);
+    if (coordinateSplit) {
+      const leftSignals = detectAllSignals(coordinateSplit.left.text);
+      const leftUnit = buildUnit({
+        ctx,
+        anchors: [{ ...baseAnchor, charEnd: baseAnchor.charStart + coordinateSplit.left.end, charStart: baseAnchor.charStart + coordinateSplit.left.start }],
+        excerptText: coordinateSplit.left.text,
+        signals: leftSignals,
+        isExceptionItem: parentIsExceptionChapeau,
+        headingHint,
+        fromRawSourceFallback: region.fromRawSourceFallback,
+        detectionSignature: `coordinate-left:${leftSignals.map((s) => s.name).sort().join(",")}`,
+      });
+      const rightSignals = detectAllSignals(coordinateSplit.right.text);
+      const rightUnit = buildUnit({
+        ctx,
+        anchors: [{ ...baseAnchor, charStart: baseAnchor.charStart + coordinateSplit.right.start, charEnd: baseAnchor.charStart + coordinateSplit.right.end }],
+        excerptText: coordinateSplit.right.text,
+        signals: rightSignals,
+        isExceptionItem: parentIsExceptionChapeau,
+        headingHint,
+        fromRawSourceFallback: region.fromRawSourceFallback,
+        detectionSignature: `coordinate-right:${rightSignals.map((s) => s.name).sort().join(",")}`,
+        // The right-hand clause routinely has no local negation/obligation
+        // verb of its own (it inherits "shall not"/"shall" from the left
+        // clause's own text) - only used when rightSignals alone classify
+        // to UNCLEAR_SIGNAL, never overriding a genuine local signal.
+        inheritedPosture: leftUnit.postureSignal,
+      });
+      return [leftUnit, rightUnit];
+    }
+
     // task's own worked example applies even when the structural parser has ALREADY split
     // an "except: (a)...(b)...(c)..." list into separate child nodes (the common real-parser
     // case - see router.ts's own possibleUnstructuredMultiItem handling of the opposite

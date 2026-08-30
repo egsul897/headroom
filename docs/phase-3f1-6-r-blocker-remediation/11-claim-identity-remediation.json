@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "CLAIM_IDENTITY_REMEDIATION",
+  "workstream": "B",
+  "blockerId": "BLOCKER-8",
+  "generatedAt": "2026-08-30T05:20:00Z",
+  "sourceOfTruth": "docs/phase-3f1-6-final-foundation-certification/13-claim-identity-certification.json (part3_confirmedNewFinding F15-1), cross-referenced against 30-certification-findings.json's BLOCKER-8 entry.",
+
+  "part1_reproduction": {
+    "method": "The certification's own adversarial fixture text and item shapes were reproduced exactly (never re-derived or paraphrased), run through the REAL, then-unmodified production functions (runPassCNeighborhoodExpansion, runPassDReconciliation, hypothesizeUnitsForDocument), and confirmed to fail BEFORE any production code was touched.",
+    "testFile": "tests/contract-model/claim-identity-blocker8-remediation.test.ts",
+    "fixtureText": "Section 6.03. Restrictions. The Company shall not create Liens on the Collateral or incur Indebtedness in excess of $10,000,000 in the aggregate.",
+    "fixtureItems": [
+      { "relativeRef": "", "role": "GENERAL_PROHIBITION", "families": ["LIENS"], "description": "CLAIM_A liens prohibition", "multipleRulesLikely": true },
+      { "relativeRef": "", "role": "GENERAL_PROHIBITION", "families": ["INDEBTEDNESS"], "description": "CLAIM_B indebtedness prohibition", "multipleRulesLikely": true }
+    ],
+    "preFixResultDiscoveryLayer": "Both authored claims collapsed to exactly 1 discoveryId/DiscoveredCandidate. Pass D's merge kept only CLAIM_A's own description; CLAIM_B's description was silently discarded. Verified by running the reproduction test against unmodified HEAD (bbb82fc) before any lib/ change: `expected 1 to be 2` (ids.size === 1).",
+    "preFixResultCoverageLayer": "hypothesizeUnitsForDocument produced exactly 1 MaterialSemanticUnit spanning the whole fused sentence (0 units classified LIENS, 0 classified INDEBTEDNESS as separate units) - confirmed via the same reproduction test before the fix: `expected [] to have a length of 1 but got +0`.",
+    "confirmsCertification": "Matches 13-claim-identity-certification.json's own part2_independentAdversarialConstruction case 'same-section-different-claim-NO-markers' and part3_confirmedNewFinding F15-1 exactly - same fixture, same real production code paths, same collision, independently re-confirmed by this workstream before any fix was applied."
+  },
+
+  "part2_rootCauseAnalysis": {
+    "sharedRootCause": "Both the discoveryId (Pass C/D) and semanticUnitId (semantic-coverage unit-hypothesis) mechanisms relied EXCLUSIVELY on lettered/numbered enumeration markers ('(a)', '(b)', ...) to split a section's text into distinguishable sub-claims. When two independently-operative, economically distinct claims are fused into ONE un-enumerated sentence (a real, common drafting pattern - 'shall not X or Y'), neither mechanism had any signal left to tell them apart.",
+    "discoveryLayerMechanism": {
+      "location": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts (discoveryId formula) and pass-d-reconcile.ts (mergeKey)",
+      "detail": "Pass B (the LLM discovery pass) DID correctly emit 2 distinct SemanticRuleItems for the 2 claims - the defect is purely in downstream IDENTITY DERIVATION, not detection. Pass C's relativeRef resolution fell back to the SAME section anchor for both items (no sub-ref to resolve), and the pre-fix discoveryId formula (documentId, normalizedSourceRef, role, discoveryRunVersion) had no remaining component to distinguish them - both hashed identical. Pass D's mergeKey (`${primaryNodeId}::${role}`) then merged them, discarding one description.",
+      "isPureIdentityBug": true,
+      "notADetectionBug": "Pass B's own detection was already correct (2 items, 2 distinct descriptions, 2 distinct families) - confirming the fix belongs at the identity-derivation layer, per this task's own root-cause-first instruction, not at the detection layer."
+    },
+    "coverageLayerMechanism": {
+      "location": "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts (hypothesizeUnitsForRegion / splitEnumeratedItems)",
+      "detail": "Unlike the discovery layer, there is no upstream LLM pass here producing a pre-split item list - this layer is fully deterministic and must itself decide how many units a raw text span represents. splitEnumeratedItems only recognizes lettered/numbered markers, so a fused un-enumerated sentence was never split at all, producing exactly ONE unit (and hence one semanticUnitId) representing what are really two claims. This is genuinely an under-splitting defect (unit granularity), not a collision between two already-existing identities - there was never a second anchor/unit for a distinct id to attach to."
+    }
+  },
+
+  "part3_generalizedIdentityDesign": {
+    "designPrinciples": [
+      "Stable and deterministic: identical inputs (already-materialized Pass B output, or unchanged source text) always produce the same identity within one algorithm version.",
+      "Source-grounded: prefers anchors derived from real structural occurrence (nodeId) and character span over any free-text or position-derived signal.",
+      "Sibling-safe: two genuinely distinct claims must never collapse to one identity merely because they share a structural anchor and role.",
+      "Insensitive to irrelevant formatting: identity does not depend on whitespace, line-wrapping, or reflow that does not change the underlying claim.",
+      "Not dependent on volatile AI paraphrasing: explicitly rejected hashing the model's own free-text `description` field as an identity component (see the deliberate design choice below) - and explicitly rejected sectionRef alone and a bare position/array-ordinal alone, per this task's own guidance.",
+      "Never hardcoded to the one colliding pair the certification found (Liens vs Indebtedness) - both fixes are pair-agnostic and apply to ANY two families/family-keyword pairs."
+    ],
+    "discoveryLayerFix": {
+      "component": "families (a closed CovenantFamily[] enum Pass B already assigns per item via normalization.ts) - NOT the free-text description field.",
+      "whyNotDescription": "A deliberate design decision, not an oversight. tests/contract-model/discovery-pipeline.test.ts scenario 18 (pre-existing, unmodified) requires two SemanticRuleItems with the SAME node+role but DIFFERENT description text ('test rule' vs 'second, overlapping signal for the same basket') to still MERGE as genuine duplicate detections of the same real clause. Hashing raw description would have turned that legitimate merge into two false-distinct siblings - violating this task's own 'never collapses two genuinely distinct claims' requirement's mirror image: never SPLITS one genuine claim into two. `families` is the one available field that is (a) closed-vocabulary/non-paraphrased, (b) already what differs between the two claims in the confirmed adversarial case, and (c) identical between the two duplicate-detection items in scenario 18.",
+      "formula": "computeCandidateContentFingerprint(c) = sorted(dedupe(c.families)).join(',') - folded into BOTH pass-c-neighborhood.ts's discoveryId (computeStableKey(\"discovery-candidate\", documentId, normalizedSourceRef, role, discoveryRunVersion, fingerprint)) and pass-d-reconcile.ts's mergeKey (`${primaryNodeId}::${role}::${fingerprint}`), so \"these merge\" and \"these get the same discoveryId\" can never diverge.",
+      "implementationFiles": ["lib/contract-model/compiler/discovery/pass-c-neighborhood.ts", "lib/contract-model/compiler/discovery/pass-d-reconcile.ts", "lib/contract-model/compiler/discovery/pipeline.ts (DISCOVERY_PIPELINE_VERSION v2 -> v3)"]
+    },
+    "coverageLayerFix": {
+      "component": "A new generalized coordinate-clause splitter (findCoordinateClauseSplit), applied only when splitEnumeratedItems finds no lettered markers.",
+      "rule": "Scans left-to-right through every TOP-LEVEL (paren-depth 0) 'and'/'or' occurrence and splits at the FIRST one whose two sides each independently match a DIFFERENT entry in the existing, generic, non-package-specific FAMILY_KEYWORDS taxonomy (Architecture Invariants #29 - same open taxonomy classifyFamily already uses). A right-hand clause that itself restates a modal verb ('...and shall not permit...') is treated as the SAME claim's subject being restated, never a second independent claim, and is skipped.",
+      "postureInheritance": "The right-hand clause typically has no local negation/obligation verb of its own (it inherits 'shall not'/'shall' from the left clause's text). buildUnit's new `inheritedPosture` parameter supplies the left unit's own classified posture as a fallback, used ONLY when the right clause's own local signal detection would otherwise classify to UNCLEAR_SIGNAL - a unit that DOES carry its own local posture signal always keeps it.",
+      "guardrails": [
+        "Only fires when splitEnumeratedItems returned null (mutually exclusive with the existing lettered-enumeration path - zero behavior change whenever markers exist).",
+        "Requires 2 DIFFERENT family matches (not just 2 matches) - 'shall not create or suffer to exist any Lien' (same family LIENS, or no match on one side) never splits.",
+        "Requires both sides non-empty after trimming.",
+        "Right side must not itself begin with a modal verb (shall/will/must/may) - prevents fragmenting a restated-subject construction."
+      ],
+      "implementationFiles": ["lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts", "lib/contract-model/compiler/semantic-coverage/types.ts (SEMANTIC_COVERAGE_ALGORITHM_VERSION v2 -> v3)"]
+    }
+  },
+
+  "part4_disclosedResidualRisk": {
+    "id": "RESIDUAL-1",
+    "severity": "MINOR (disclosed, not silently hidden - matches this phase's own disclosure discipline)",
+    "title": "Two genuinely distinct claims fused in one un-enumerated sentence that ALSO share the exact same covenant family still collapse to one identity at the discovery layer",
+    "example": "'The Company shall not incur Indebtedness under the Revolving Facility or incur Indebtedness under the Term Facility.' - both clauses are INDEBTEDNESS family, so the families-based fingerprint cannot disambiguate them.",
+    "whyNotClosed": "No field on SemanticRuleItem is simultaneously (a) source-grounded, (b) free of AI-paraphrase instability, (c) free of ordinal/position instability, and (d) capable of splitting two same-family claims. Closing this fully would require either a Pass B prompt change (require a distinguishing relativeRef/marker even for prose-fused same-family rules) or a text-level coordinate-clause split at the discovery layer analogous to the coverage-layer fix - both are materially larger changes than this blocker's own certified remediation boundary ('smallestRemediationBoundary': 'Strengthen the claimKey/discoveryId derivation to disambiguate the specific colliding case identified') and are flagged here as a recommended follow-up, not silently left undocumented.",
+    "coveredByTest": "tests/contract-model/claim-identity-blocker8-remediation.test.ts's 'REPRODUCTION generalized: a fused sentence with the same family on both sides remains a disclosed residual gap' - asserts and documents the current (still-merged) behavior explicitly, so this gap is guarded/visible in CI rather than silently regressing further.",
+    "mitigatingFactors": [
+      "This is strictly narrower than the confirmed BLOCKER-8 case, which always involved two DIFFERENT families (that difference is what makes the claims 'economically distinct' in the first place in the common real-drafting shape of this defect).",
+      "The same downstream mitigations the original certification already identified still apply: multipleRulesLikely is OR'd onto the merged candidate (disclosed, not hidden), the semantic compiler's own multi-rule prompt can still recover both claims from the FULL operativeSourceText at compile time, and semantic-coverage's reconciliation matches by compiled-rule citation, not candidateRef, so per-claim credit is separable downstream even when the discovery-layer candidate stays merged.",
+      "The safe-failure verification gate (verifiedCandidateRefs, per-candidateRef) remains conservative in this residual scenario exactly as before: an unresolved MATERIAL finding under either sub-claim still fails the whole merged candidateRef, so this residual gap cannot manufacture a false VERIFIED credit - at worst it can under-credit a genuinely-correct claim by coupling its status to an un-split sibling."
+    ]
+  },
+
+  "part5_consumerAudit": {
+    "dedupLogic": "pass-d-reconcile.ts's mergeKey is the only dedup logic keyed on this identity - fixed directly (part3 above). Verified via tests/contract-model/discovery-pipeline.test.ts scenario 18 (genuine-duplicate merge) which still passes unmodified.",
+    "claimReviewItemPersistence": {
+      "schemaConstraint": "prisma/schema.prisma ClaimReviewItem.claimKey, @@unique([companyId, claimKey]) - unaffected in shape; only the STRING VALUE of claimKey (via cr:<discoveryId>) changes for candidateRef-derived claims going forward.",
+      "consumers": "lib/contract-model/compiler/safe-failure/identity.ts (claimKeyFromSemanticUnit, claimKeyFromCandidateRef, isSemanticUnitClaimKey, isCandidateRefClaimKey) - thin wrappers that reuse semanticUnitId/discoveryId verbatim, no change needed there; they automatically pick up the corrected identity from their inputs.",
+      "liveCallerCheck": "grep -rln 'contract-model/compiler' app/ lib/onboarding lib/extraction returned zero files - independently reconfirms BLOCKER-10's own finding (zero live application callers) as of this commit. claimKeyFromCandidateRef and isCandidateRefClaimKey have zero call sites anywhere in lib/ outside their own definition file."
+    },
+    "coverageStateTracking": "lib/contract-model/compiler/semantic-coverage/{reconciliation,cross-reference-audit,freeze,ai-inventory,family-coverage,document-coverage}.ts all consume semanticUnitId as an already-in-memory field on units passed directly between pipeline stages within one run - none persist it as a separately-looked-up stable key across runs (confirmed: no `semanticUnitId` column exists in prisma/schema.prisma - only two doc comments referencing the concept). No cross-run identity-continuity assumption exists for these consumers to violate.",
+    "verifierReferences": "lib/contract-model/compiler/semantic-verification/** matches findings by compiled-rule citation (per the original certification's own part3 mitigatingFactorsFoundByCodeReading), never by discoveryId/semanticUnitId directly - unaffected by this identity formula change.",
+    "evaluationV2Boundary": "lib/contract-model/evaluation-v2/** (the frozen evaluator matcher) has zero import relationship with lib/contract-model/compiler/** (re-verified: `grep -rn \"evaluation-v2\" lib/contract-model/compiler/` returns no matches) - untouched by this fix, consistent with this phase's charter never reopening the frozen evaluator."
+  },
+
+  "part6_implementationSummary": {
+    "filesChanged": [
+      "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts - added computeCandidateContentFingerprint; discoveryId formula now folds it in",
+      "lib/contract-model/compiler/discovery/pass-d-reconcile.ts - mergeKey now folds in the same fingerprint",
+      "lib/contract-model/compiler/discovery/pipeline.ts - DISCOVERY_PIPELINE_VERSION v2 -> v3 (algorithm-change convention already established by this file's own prior comments)",
+      "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts - added findCoordinateClauseSplit + matchFamilyKeyword; hypothesizeUnitsForRegion now tries it before falling back to a single whole-region unit; buildUnit gained an inheritedPosture fallback parameter",
+      "lib/contract-model/compiler/semantic-coverage/types.ts - SEMANTIC_COVERAGE_ALGORITHM_VERSION v2 -> v3 (algorithm-change convention already established by this file's own prior comments)"
+    ],
+    "noHardcodedException": "Neither fix references 'Liens', 'Indebtedness', or any specific pair - both are generalized over the full existing FAMILY_KEYWORDS taxonomy and apply to any two distinct families."
+  },
+
+  "part7_testEvidence": {
+    "newTestFile": "tests/contract-model/claim-identity-blocker8-remediation.test.ts (11 tests, all passing post-fix)",
+    "reproductionTestsNowPassing": [
+      "discoveryId layer: 'REPRODUCTION: two textually-fused, economically distinct claims ... are kept as 2 distinct discoveryIds (was: collapsed to 1)'",
+      "semanticUnitId layer: 'REPRODUCTION: the identical fused sentence hypothesized via the real deterministic pipeline now produces 2 distinct units/semanticUnitIds (was: 1)'"
+    ],
+    "adversarialCategoriesCovered": [
+      "same section different claim, NO markers (the confirmed BLOCKER-8 case) - discoveryId layer, PASS",
+      "same section different claim, WITH markers - discoveryId layer, PASS (pre-existing, unmodified)",
+      "genuine duplicate detection (same node/role/families, different description) still merges - discoveryId layer regression guard, PASS",
+      "same action different object - discoveryId layer, PASS (pre-existing, unmodified)",
+      "same object different condition - discoveryId layer, PASS (pre-existing, unmodified)",
+      "same term different claim (shared defined term EBITDA) - discoveryId layer, PASS (pre-existing, unmodified)",
+      "same amount different permission (cross-document/cross-section) - semanticUnitId layer, PASS (pre-existing, unmodified)",
+      "chapeau vs child - semanticUnitId layer, PASS (pre-existing, unmodified)",
+      "regression guard: 'and'/'or' present but only one side matches a family - never force-split - semanticUnitId layer, PASS",
+      "regression guard: no enumeration and no independent-family conjunction - never force-split - semanticUnitId layer, PASS",
+      "disclosed residual: same-family fused claims still merge (documented, not silently regressed) - discoveryId layer, explicit PASS on current (residual) behavior"
+    ],
+    "regressionSuiteResults": {
+      "targetedSuites": "tests/contract-model/ (101 files, 1048 tests) - all pass. tests/foundation-audit/ + tests/certification/ (37 files, 375 tests) - 373 pass, 2 pre-existing failures unrelated to this change (confirmed by running the identical 2 test files against unmodified HEAD bbb82fc: both fail identically pre-fix - a real-DB legacy-data-dependent test in section11-source-trace-independent.test.ts, and a known-flaky Postgres concurrency race in repro-connection-race.test.ts).",
+      "fullSuiteResults": "npx vitest run (full repo): 2052/2054 tests pass across 201/203 files. The 2 failures are the same pre-existing section11-source-trace-independent.test.ts failure (real, already-committed legacy DB data) plus tests/extraction/vercel-ai-gateway-provider.test.ts (an unrelated, pre-existing environment/default-model-id test with zero relationship to contract-model/compiler code).",
+      "tscBaseline": "npx tsc --noEmit -p . - identical 6 pre-existing errors (tests/foundation-audit/{cascade-and-concurrency,discovery-fault-injection,real-db-duplicate-physical-occurrence}.test.ts), zero new errors.",
+      "eslintBaseline": "npx eslint . - identical 1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169), zero new errors."
+    }
+  },
+
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "The exact adversarial construction the certification confirmed (F15-1) is reproduced against real, unmodified-until-fix production code, then closed at its true root cause (identity derivation, not detection) at both the discoveryId/candidateRef layer and the semanticUnitId layer, using a generalized, non-hardcoded rule. A narrower residual risk (same-family fused claims) is explicitly disclosed rather than silently left undiscovered, matching this phase's own disclosure discipline. All existing test suites remain green (zero new failures, two confirmed pre-existing/unrelated failures), and tsc/eslint baselines are unchanged. Per this phase's charter, disposition is never CERTIFIED - only an independent recertification phase may assign that."
+}

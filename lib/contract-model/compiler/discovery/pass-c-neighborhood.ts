@@ -31,6 +31,47 @@ function resolveRelativeRef(index: StructuralIndex, documentId: string, sectionR
   return resolution.status === "UNIQUE" ? resolution.node.nodeId : null;
 }
 
+/**
+ * Phase 3F.1.6.R BLOCKER-8 fix - a sibling-safety disambiguator layered on
+ * top of (documentId, normalizedSourceRef, role, discoveryRunVersion).
+ *
+ * Root cause (13-claim-identity-certification.json's own F15-1): when two
+ * SemanticRuleItems from the SAME Pass B section call resolve to the SAME
+ * anchor node and role with no lettered/numbered sub-reference to split on
+ * (an un-enumerated multi-claim sentence, e.g. "shall not create Liens ...
+ * or incur Indebtedness ..."), the pre-fix discoveryId formula had nothing
+ * left to distinguish them - both hashed identical, and Pass D's merge then
+ * silently discarded one claim's own description.
+ *
+ * Deliberately uses `families` (a closed CovenantFamily enum Pass B already
+ * assigns per item via normalization.ts, NOT a paraphrase) rather than the
+ * free-text `description` field. Two items describing the SAME real clause
+ * routinely carry different re-paraphrased description text across
+ * independent detections (see the "genuine duplicate" test in
+ * tests/contract-model/discovery-pipeline.test.ts, scenario 18) - hashing
+ * raw description would have wrongly turned that legitimate merge into two
+ * false-distinct siblings. `families` carries no such risk: it is a
+ * normalized, bounded-vocabulary classification, stable across independent
+ * detections of the same real clause, and it is exactly what differs
+ * between two genuinely distinct economic claims in the common real-world
+ * shape of this defect (a fused sentence bundling two different covenant
+ * topics, e.g. Liens vs Indebtedness).
+ *
+ * Disclosed residual risk (documented in
+ * docs/phase-3f1-6-r-blocker-remediation/11-claim-identity-remediation.json):
+ * two DISTINCT claims fused in one un-enumerated sentence that ALSO share
+ * the exact same family (e.g. two different Indebtedness baskets bundled
+ * without lettering) remain merged - `families` alone cannot disambiguate
+ * that narrower case, and no other field on SemanticRuleItem is both
+ * source-grounded and free of paraphrase/ordinal instability. This is a
+ * smaller, disclosed gap, not the confirmed BLOCKER-8 case (which always
+ * had differing families - that is what made the two claims "economically
+ * distinct" in the first place).
+ */
+export function computeCandidateContentFingerprint(c: Pick<ExpandedCandidate, "families">): string {
+  return [...new Set(c.families)].sort().join(",");
+}
+
 export interface ExpandedCandidate {
   structuralNodeKeys: string[];
   structuralNodeIds: string[];
@@ -121,6 +162,6 @@ export function runPassCNeighborhoodExpansion(index: StructuralIndex, documentId
 
   return {
     candidates,
-    discoveryId: (c: ExpandedCandidate) => computeStableKey("discovery-candidate", documentId, c.normalizedSourceRef, c.role, discoveryRunVersion),
+    discoveryId: (c: ExpandedCandidate) => computeStableKey("discovery-candidate", documentId, c.normalizedSourceRef, c.role, discoveryRunVersion, computeCandidateContentFingerprint(c)),
   };
 }
