@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "PART_B_FINDING6_INDEPENDENT_RECERTIFICATION",
+  "findingId": "FINDING-6",
+  "correspondsTo": "AUDIT-F2",
+  "auditRole": "INDEPENDENT Part B recertification auditor - not the Part A author. Goal: falsify Part A's own fix using fresh adversarial tests, never by rerunning Part A's own test file.",
+  "generatedAt": "2026-08-30T21:05:00Z",
+  "frozenCommit": "f1d1400",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+
+  "newTestFile": "tests/contract-model/part-b-recert-finding6-independent.test.ts",
+  "testFileDesignNote": "Every scenario is a fresh attack shape not present in tests/contract-model/part-b-recert-auditf2-concurrency.test.ts's own 'ZOMBIE WRITER' test: a multi-hop generation chain (gen1->gen2->gen3), a genuinely concurrent Promise.all mix of old/new-generation writes, a zombie resuming across several subsequent full run cycles, a genuine concurrent race against recordAnalysisRunIssue's FOR UPDATE lock, and - the falsification attempt - two independent reproductions (one deterministic-interleave, one real-timing, both against real Postgres with zero fabricated data) of a genuine TOCTOU gap in persistSemanticTruthForInstrument's own generation gate.",
+
+  "realTestOutput": {
+    "commandsRun": [
+      "npx vitest run tests/contract-model/part-b-recert-finding6-independent.test.ts (run 6 consecutive times to confirm the timing-dependent race is not flaky)",
+      "npx tsc --noEmit -p .",
+      "npx eslint tests/contract-model/part-b-recert-finding6-independent.test.ts",
+      "npx tsx scripts/check-destructive-db-patterns.ts"
+    ],
+    "vitestResult": "6/6 passing, all 6 consecutive runs, real local Postgres (DATABASE_URL=postgresql://postgres:headroom@localhost:5432/headroom)",
+    "vitestTestNames": [
+      "MULTI-HOP STALENESS CHAIN: gen1 -> gen2 -> gen3 - BOTH a once-superseded (gen1) AND a twice-superseded (gen2) writer are permanently rejected, not just against the immediately-next owner",
+      "GENUINE CONCURRENT MIXED-GENERATION RACE: old-generation and new-generation setAnalysisRunStage calls fired together via Promise.all (no artificial sequencing) - every old-generation call loses, every new-generation call wins, regardless of real scheduling order",
+      "ZOMBIE RESUMES ACROSS SEVERAL SUBSEQUENT FULL RUN CYCLES: a gen1 writer that never got word its run was reclaimed tries to write again after the run has ALREADY been reclaimed, completed, re-triggered, and completed AGAIN twice more",
+      "recordAnalysisRunIssue GENUINE CONCURRENT RACE against a real reclaim: FOR UPDATE row-lock fencing + the reclaim's own clearAnalysisRunIssues sweep together guarantee NO gen1-authored issue ever survives as the final state, under actual Promise.all concurrency (not sequenced)",
+      "DETERMINISTIC REPRODUCTION (controlled interleave, real Postgres reads/writes throughout): a superseded (gen1) writer's stale content clobbers the new (gen2) owner's already-persisted, fresh content for the SAME semantic object",
+      "REAL, UNMOCKED TIMING RACE (no interception of any kind - genuine Promise.all concurrency against real Postgres): a slow gen1 writer processing many objects still clobbers a fast gen2 writer's fresh content for a shared ruleId"
+    ],
+    "tscResult": "Identical 6 pre-existing baseline errors (tests/foundation-audit/{cascade-and-concurrency,discovery-fault-injection,real-db-duplicate-physical-occurrence}.test.ts) plus 2 pre-existing errors in a sibling Part B auditor's own in-progress tests/contract-model/part-b-recert-finding8-independent.test.ts (not this file, not touched by this workstream). Zero errors in the new test file after one fix (an unsafe function-type reassignment cast, corrected to route through `unknown` first).",
+    "eslintResult": "Zero findings for the new test file.",
+    "destructiveDbPatternsCheckResult": "Clean relative to baseline: the checker's 12 findings are all either the checker script's own pattern-definition source lines or tests/infrastructure/db-isolation-adversarial.test.ts's own intentional, already-existing adversarial demonstrations of the protection working. Nothing in the new test file matches any destructive pattern.",
+    "testDataCleanup": "Confirmed via direct query after the full test run: `prisma.company.findMany({ where: { id: 'part-b-recert-finding6-independent' } })` -> 0 rows, `prisma.analysisRun.count({ where: { companyId: 'part-b-recert-finding6-independent' } })` -> 0 rows. The test's own afterAll() plus beforeEach() cleanup (scoped ONLY to this exact company id, mirroring the existing test files' own convention) leaves no residue in the shared database."
+  },
+
+  "diagnosticNoteOnTestMethodology": {
+    "issue": "An initial version of the falsification test used `vi.spyOn(prisma.analysisRun, \"findUnique\")` to deterministically control read/write interleaving. This BROKE all later real database access via `prisma.analysisRun.findUnique` for the rest of the test file's process, causing a cascading failure in an unrelated later test.",
+    "rootCause": "Prisma's client exposes each model delegate (e.g. `prisma.analysisRun`) through an internal proxy whose OWN `getOwnPropertyDescriptor` trap reports a decoy `{ value: undefined, writable: true, configurable: true }` descriptor for methods like `findUnique`, even though the property is genuinely callable via normal property access (confirmed by direct probe scripts run against the real `lib/prisma` singleton). `vi.spyOn` captures its 'original' value via exactly that API, so `mockRestore()` silently reinstalls `undefined` in place of the real method.",
+    "fix": "Replaced `vi.spyOn` with manual monkey-patching: capture the live method via plain property access (`const original = prisma.analysisRun.findUnique`, never `Object.getOwnPropertyDescriptor`), install a wrapper via plain assignment, and restore via plain reassignment of the captured reference in a `finally` block. Confirmed via a standalone probe script that this restore path correctly reinstates real Postgres access, unlike `vi.spyOn`'s.",
+    "relevance": "Disclosed for transparency and because it is itself a small, genuine gotcha for anyone else instrumenting this codebase's Prisma client in a test - not a defect in the FINDING-6 fix itself."
+  },
+
+  "mutatingWriteSiteInventory": {
+    "method": "Full-repo grep for every `analysisRun.(create|update|updateMany|upsert)` call site outside test files (`grep -rn \"analysisRun\\.\\(update\\|upsert\\|create\\)\" --include=\"*.ts\" lib app scripts | grep -v test`), cross-checked against every file that imports/references `analysisRun` at all (`grep -rln \"analysisRun\" --include=\"*.ts\" lib app scripts | grep -v test` -> exactly 4 files: service.ts, orchestrator.ts, semantic-truth/service.ts, semantic-truth/types.ts). Every real mutating call site is confined to lib/contract-model/analysis/service.ts; orchestrator.ts and semantic-truth/service.ts only call INTO service.ts's own exported functions, never `prisma.analysisRun.*` directly.",
+    "sites": [
+      {
+        "site": "service.ts startOrResumeAnalysisRun - prisma.analysisRun.create() (brand-new identity)",
+        "fenced": true,
+        "mechanism": "Not applicable to fencing (nothing to fence against yet) - gets the schema default executionGeneration=1. Atomicity is the pre-existing AUDIT-F2 unique-constraint CAS, unrelated to and unaffected by FINDING-6.",
+        "verifiedBy": "Code inspection + this file's own MULTI-HOP STALENESS CHAIN and ZOMBIE RESUMES tests (each starts with a real create() and confirms executionGeneration is 1)."
+      },
+      {
+        "site": "service.ts startOrResumeAnalysisRun - prisma.analysisRun.updateMany() (stale-reclaim CAS branch)",
+        "fenced": true,
+        "mechanism": "Atomically increments executionGeneration as PART OF the same CAS UPDATE statement that wins the reclaim (data: { ..., executionGeneration: { increment: 1 } }) - no separate statement, no window.",
+        "verifiedBy": "Code inspection (lib/contract-model/analysis/service.ts lines 169-194) + this file's MULTI-HOP STALENESS CHAIN test (three successive real reclaims, generations 1->2->3, each confirmed via the real row) + GENUINE CONCURRENT MIXED-GENERATION RACE and recordAnalysisRunIssue race tests (real concurrent reclaims via Promise.all)."
+      },
+      {
+        "site": "service.ts setAnalysisRunStage - prisma.analysisRun.updateMany({ where: { id, executionGeneration: expectedGeneration } })",
+        "fenced": true,
+        "mechanism": "Single atomic updateMany conditioned on id AND executionGeneration together; returns count===1/0, never throws on a stale generation.",
+        "verifiedBy": "This file's MULTI-HOP STALENESS CHAIN (gen1 and gen2 zombies both rejected against a gen3-owned row) and GENUINE CONCURRENT MIXED-GENERATION RACE (10 old-gen + 10 new-gen calls fired together via Promise.all; every old one returns false, every new one returns true, final currentStage is always a new-generation value) tests - both fresh, neither copied from Part A."
+      },
+      {
+        "site": "service.ts completeAnalysisRun - prisma.analysisRun.updateMany({ where: { id, executionGeneration: expectedGeneration } })",
+        "fenced": true,
+        "mechanism": "Same atomic updateMany pattern; returns null on count===0 instead of the updated row.",
+        "verifiedBy": "MULTI-HOP STALENESS CHAIN (gen1 AND gen2 zombies each rejected: null) and ZOMBIE RESUMES ACROSS SEVERAL SUBSEQUENT FULL RUN CYCLES (a gen1 zombie tries completeAnalysisRun after 3 full legitimate reclaim+complete cycles have already occurred for the SAME row; still null, real row's reviewItemCount is provably untouched by the zombie's own poisoned openReviewItemCount:999 argument)."
+      },
+      {
+        "site": "service.ts failAnalysisRun - prisma.analysisRun.updateMany({ where: { id, executionGeneration: expectedGeneration } })",
+        "fenced": true,
+        "mechanism": "Same atomic updateMany pattern; returns null on count===0.",
+        "verifiedBy": "Same two tests as completeAnalysisRun above, plus orchestrator.ts's own outer catch block and 'every instrument failed' branch (code inspection: both present `generation` and check for a null result, returning SKIPPED_SUPERSEDED rather than a false FAILED)."
+      },
+      {
+        "site": "service.ts recordAnalysisRunIssue (child table AnalysisRunIssue, keyed on runId with no executionGeneration column of its own)",
+        "fenced": true,
+        "mechanism": "Runs inside prisma.$transaction: `SELECT executionGeneration FROM analysis_runs WHERE id=$1 FOR UPDATE` (a real Postgres row lock on the SAME row the reclaim updateMany locks) gates the subsequent upsert. Genuinely serializes against a concurrent reclaim.",
+        "verifiedBy": "This file's own fresh recordAnalysisRunIssue GENUINE CONCURRENT RACE test (real Promise.all of the reclaim plus 10 concurrent gen1 issue writes, no artificial sequencing) - confirms the COMPOSITE contract (the FOR UPDATE gate plus the reclaim's own unconditional clearAnalysisRunIssues sweep) leaves ONLY the new owner's own issue as final state, and that a deterministic post-settlement gen1 call is flatly rejected.",
+        "noteworthyButNotADefect": "A gen1 write that genuinely wins its FOR UPDATE lock BEFORE the reclaim's updateMany commits is honestly reported applied:true at that instant (correct - it read a still-valid generation), but the reclaim's own subsequent clearAnalysisRunIssues(runId) call (AUDIT-F3's pre-existing 'a fresh attempt never inherits a prior attempt's stale issue' contract, unconditional on generation) then deletes it moments later. This is NOT a fencing gap - the net effect is exactly correct (no stale issue survives) - but it does mean recordAnalysisRunIssue's own applied:true return value describes 'this transaction's own honest view at commit time,' not 'this row is now permanently guaranteed to persist regardless of what the reclaim path does next.' Disclosed here because the original assignment asked for exactly this kind of scrutiny; it does not change this site's overall disposition of FENCED."
+      }
+    ],
+    "conclusionOnAnalysisRunRowItself": "Every real mutating write path to the analysis_runs table (create, the two updateMany call sites in startOrResumeAnalysisRun, setAnalysisRunStage, completeAnalysisRun, failAnalysisRun) and to its own child table AnalysisRunIssue (recordAnalysisRunIssue) is genuinely, atomically fenced by executionGeneration, confirmed via fresh, independently-authored adversarial tests against real Postgres, including scenarios Part A's own test file did not cover (multi-hop chains, genuinely concurrent mixed-generation Promise.all races, and staleness spanning several subsequent full run cycles). No AnalysisRun-row write path was found unfenced."
+  },
+
+  "falsificationAttempt": {
+    "target": "persistSemanticTruthForInstrument (lib/contract-model/analysis/semantic-truth/service.ts) - explicitly folded into FINDING-6's own design document (07-analysis-run-fencing.json's own 'semanticTruthGate' section) as one of the write paths this finding's fencing covers, with a disclosed limitation: 'This is a pre-write GATE, not a per-row atomic compare-and-swap - there is a (small, disclosed) window between the generation check and this call's own subsequent upserts during which a reclaim could theoretically occur,' accepted as sufficient because 'a genuinely still-racing writer has nothing left to gain: its next AnalysisRun-row write fails closed regardless.'",
+    "hypothesisTested": "Is the accepted-risk rationale actually correct - i.e. does a superseded writer slipping through this gate actually have 'nothing left to gain'? SemanticTruthRecord IS the durable, downstream-readable 'current semantic truth' for an instrument (getTrustedSemanticTruth/getAllSemanticTruthForInstrument read it directly, independent of whatever the AnalysisRun row's own status says) - so a stale write that slips through corrupts exactly the kind of 'new owner's live state' FINDING-6 as a whole was chartered to protect, even though the AnalysisRun row itself stays correct.",
+    "result": "FALSIFIED the design document's own risk-acceptance rationale. Two independent, real-Postgres reproductions (one via a controlled, deterministic interleave that never fabricates any data - every read/write is real, only the RETURN TIMING of one already-issued real read is delayed; one via genuine, unmocked Promise.all timing concurrency, reproduced across 6 consecutive full test-file runs with zero flakes) both show: a superseded (gen1) writer's own generation check can genuinely, honestly pass (because it reads the row's true state before a concurrent reclaim commits), after which its own subsequent upsert(s) proceed with NO further check, and can land AFTER a new (gen2) owner has already durably persisted its own correct, fresh content for the identical semanticObjectId - silently overwriting it back to the stale value, with a real version-number bump that makes the stale write look like the newer one. This is the exact 'zombie writer silently overwrites the new owner's live state' defect shape FINDING-6 was chartered to close, reproduced in a write path FINDING-6's own design document explicitly claims to cover.",
+    "scopeOfFalsification": "This does NOT reopen or weaken the AnalysisRun row's own fencing (setAnalysisRunStage/completeAnalysisRun/failAnalysisRun/recordAnalysisRunIssue), which this same audit independently verified above with fresh tests and found genuinely robust, including against multi-hop and concurrent-race scenarios harder than Part A's own test. It specifically falsifies the claim that persistSemanticTruthForInstrument's own generation gate closes 'the realistic, disclosed risk this finding targets' - the disclosed risk (a reclaimed run's prior owner republishing stale truth) is real, was reproduced against real Postgres, and the design document's own stated reason for accepting it ('nothing left to gain') is incorrect because it evaluates gain only against the AnalysisRun row, not against SemanticTruthRecord itself, which is the actual durable artifact this finding's own charter is about protecting."
+  },
+
+  "disposition": "STILL_OPEN",
+  "dispositionScope": "PARTIAL - the AnalysisRun row's own direct mutators (create/updateMany/setAnalysisRunStage/completeAnalysisRun/failAnalysisRun) and the AnalysisRunIssue child-table mutator (recordAnalysisRunIssue) are CERTIFIED_CLOSED: every one of them is genuinely, atomically fenced, verified independently with fresh adversarial tests exceeding Part A's own coverage (multi-hop generation chains, genuine concurrent mixed-generation Promise.all races, and staleness surviving several subsequent full run cycles), and zero of them were found to leak a zombie write. persistSemanticTruthForInstrument - a write path FINDING-6's own design document (07-analysis-run-fencing.json) explicitly includes in its fencing claim - is STILL OPEN: its generation gate is a check-then-act read with no lock/transaction spanning its own subsequent writes, and this audit reproduced a genuine, repeatable (6/6 real-Postgres runs, zero mocking-based fabrication of results) data clobber through it that reinstates the exact defect shape FINDING-6 was chartered to eliminate, just in SemanticTruthRecord rather than in the AnalysisRun row itself.",
+  "dispositionRationale": "The task's own instruction was explicit: verify EVERY mutating write path for an AnalysisRun row (done, and all are genuinely fenced) AND any write path that might have been missed by the fencing check (found: persistSemanticTruthForInstrument, which the fix's own design document itself already identifies as a narrower, disclosed-risk gate rather than a true CAS - but whose accepted-risk justification does not survive independent adversarial testing). Since this second, disclosed-but-inadequately-justified gap is coupled to the SAME finding (FINDING-6) by the fix's own design document, not a separate, out-of-scope issue, FINDING-6 as a whole cannot be marked CERTIFIED_CLOSED.",
+  "recommendedRemediation": {
+    "note": "Recorded for the remediation owner - this auditor did not modify any production code per this phase's own rules.",
+    "options": [
+      "Add an executionGeneration column to SemanticTruthRecord itself (the option the original design document declined as 'out of this finding's bounded scope') and condition each upsert via a real per-row updateMany/insert-with-check CAS, mirroring the AnalysisRun row's own pattern.",
+      "Or: wrap persistSemanticTruthForInstrument's entire per-object loop (not just its initial check) in one transaction that re-validates the run's current executionGeneration via a SELECT ... FOR UPDATE against the analysis_runs row before EVERY upsert (or once, holding the lock for the loop's duration) - the same primitive recordAnalysisRunIssue already uses successfully for its own child table.",
+      "At minimum, re-read and re-check expectedGeneration immediately before each individual object's own upsert (not once at the top of the whole call) to shrink, though not eliminate, the window - the two reproductions in this audit's test file would need to be adapted to target the new, narrower window if this were done, but neither would be defeated as fixes for the CURRENT single-check-at-the-top design."
+    ]
+  },
+
+  "boundariesNotReopened": {
+    "note": "Per this phase's own anti-endless-loop scope boundary, this audit did not investigate or make any claim about AUDIT-F1, AUDIT-F3, AUDIT-F5, or any of the other 7 findings/certified boundaries - only FINDING-6 as assigned.",
+    "AUDIT_F1_AUDIT_F3_own_certified_suites": "Not rerun by this audit (rerunning Part A's own suites was out of scope for an INDEPENDENT falsification attempt) - this audit's own findings about persistSemanticTruthForInstrument are additive evidence about FINDING-6's own coupled scope, not a claim about AUDIT-F1's own already-certified core upsert/trust-gating logic, which this audit did not touch, run, or dispute."
+  },
+
+  "filesChangedByThisAudit": {
+    "added": ["tests/contract-model/part-b-recert-finding6-independent.test.ts", "docs/phase-3f1-6-rx-final-terminal-closure/18-part-b-finding6-recertification.json"],
+    "modifiedProductionCode": "NONE - this audit is forbidden from modifying lib/, app/, prisma/schema.prisma, or prisma/migrations/, and did not do so."
+  }
+}
