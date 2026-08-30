@@ -18,6 +18,7 @@ import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { runAdversarialSemanticReview } from "./reviewer";
 import type { SemanticReviewResult } from "./reviewer";
+import { classifyConditionSuspicion, type ConditionSuspicionCache, type ConditionSuspicionResult } from "./condition-suspicion-classifier";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
 import type { IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
 import type { StageCaller } from "../llm-caller";
@@ -26,15 +27,21 @@ import type { SemanticCompilationResult, SemanticCompilerInput } from "../semant
 export interface VerifyOptions {
   /** Injectable for testing - defaults to the real getStageCaller() env-var-driven selection inside reviewer.ts when omitted. */
   reviewCaller?: StageCaller;
-  /** Testing/override hooks - production code should never need either; the real routing decision is shouldInvokeSemanticReview below. */
+  /** Injectable for testing - defaults to the real getStageCaller() env-var-driven selection inside condition-suspicion-classifier.ts when omitted. Deliberately a SEPARATE injection point from reviewCaller (they are two independent calls with two independent schemas/prompts), even though both typically resolve to the same provider/model in production. */
+  conditionSuspicionCaller?: StageCaller;
+  /** Injectable for testing/isolation - defaults to condition-suspicion-classifier.ts's own module-level singleton when omitted. */
+  conditionSuspicionCache?: ConditionSuspicionCache;
+  /** Testing/override hooks - production code should never need either; the real routing decision is shouldInvokeSemanticReviewDeterministic + the condition-suspicion classifier below. */
   forceSemanticReview?: boolean;
   skipSemanticReview?: boolean;
 }
 
 /**
- * Task §32's own conservative-during-V1 call-routing discipline. Skips the
- * adversarial semantic review call ONLY for the narrowest, safest case task
- * §32 itself names as deterministic-only-worthy: a single compiled unit,
+ * Task §32's own conservative-during-V1 call-routing discipline, Layer 1 of
+ * a now-TWO-layer routing decision (Phase 3F.1-terminal Architecture
+ * Decision, Part A - see this function's caller, verifyCompiledCandidate,
+ * for the second, semantic layer). This function alone decides whether the
+ * DETERMINISTIC evidence already forces review: a single compiled unit,
  * with every one of its numeric/structural signals already fully
  * reconciled, and no alternative-selection complexity (no MAX/MIN/IF/
  * SCHEDULE/UNLIMITED_CAPACITY branching) - "a straightforward fully
@@ -42,9 +49,12 @@ export interface VerifyOptions {
  * (any unresolved discrepancy, multiple compiled units, or any alternation
  * complexity) is routed to Layer 2, erring toward MORE review rather than
  * less, exactly as §32 requires ("we are validating safety before
- * optimizing cost").
+ * optimizing cost"). Returning `false` here does NOT by itself mean review
+ * is skipped any more - it only means the deterministic layer has nothing
+ * to say against skipping; the condition-suspicion classifier still gets
+ * the final word (see verifyCompiledCandidate) before a skip is allowed.
  */
-function shouldInvokeSemanticReview(reconciliation: ReconciliationResult, irInventory: IrInventory): boolean {
+function shouldInvokeSemanticReviewDeterministic(reconciliation: ReconciliationResult, irInventory: IrInventory): boolean {
   if (reconciliation.materialUnresolvedCount > 0) return true;
   const totalUnits = irInventory.ruleCount + irInventory.definitionCount;
   if (totalUnits > 1) return true;
@@ -255,18 +265,49 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
   const reconciliation = reconcileInventories(sourceInventory, irInventory);
   const deterministicFindings = buildFindingsFromReconciliation(input, reconciliation);
 
-  const needsSemanticReview = options.skipSemanticReview ? false : options.forceSemanticReview || shouldInvokeSemanticReview(reconciliation, irInventory);
+  // Phase 3F.1-terminal Architecture Decision, Part A - TWO-GATE routing
+  // (see docs/phase-3f1-terminal-architecture-decision/02-architecture-
+  // decision.json). Gate 1 (deterministic) can only ever FORCE review, never
+  // skip it on its own authority. A skip is allowed ONLY when Gate 1 finds
+  // nothing AND Gate 2 - a real, source-only semantic classifier reading the
+  // raw operative text with no compiled-IR bias - explicitly reports
+  // NO_MATERIAL_CONDITION_SUSPECTED. Gate 2 is called ONLY when Gate 1 alone
+  // would otherwise allow a skip (cost discipline - never call it when
+  // deterministic evidence, an explicit forceSemanticReview, or an explicit
+  // skipSemanticReview already decided the outcome without needing it).
+  // Gate 2's MATERIAL_CONDITION_POSSIBLE, its UNCERTAIN, and any call
+  // failure/throw/timeout (classifyConditionSuspicion never throws - a
+  // failure is itself represented as status:"UNCERTAIN", failed:true) are
+  // ALL treated identically here: every one of them forces review. Only an
+  // EXPLICIT, successful NO_MATERIAL_CONDITION_SUSPECTED can ever contribute
+  // to a skip.
+  const deterministicForcesReview = shouldInvokeSemanticReviewDeterministic(reconciliation, irInventory);
+  let conditionSuspicion: ConditionSuspicionResult | null = null;
+  let needsSemanticReview: boolean;
+  if (options.skipSemanticReview) {
+    needsSemanticReview = false;
+  } else if (options.forceSemanticReview) {
+    needsSemanticReview = true;
+  } else if (deterministicForcesReview) {
+    needsSemanticReview = true;
+  } else {
+    conditionSuspicion = await classifyConditionSuspicion(compilerInput.operativeSourceText, { companyId: compilerInput.companyId, instrumentKey: compilerInput.instrumentKey, sourceDocumentId: compilerInput.sourceDocumentId }, options.conditionSuspicionCaller, options.conditionSuspicionCache);
+    needsSemanticReview = conditionSuspicion.status !== "NO_MATERIAL_CONDITION_SUSPECTED";
+  }
 
   let allFindings = deterministicFindings;
   let semanticReviewInvoked = false;
   let semanticReviewFailed = false;
-  let semanticReviewSkippedReason: string | null = needsSemanticReview
-    ? null
-    : "deterministic reconciliation found a single, fully-reconciled, non-alternating compiled unit with no unresolved numeric/structural signal - conservative V1 routing (task §32) skipped adversarial semantic review";
+  let semanticReviewSkippedReason: string | null = null;
+  if (!needsSemanticReview) {
+    semanticReviewSkippedReason = options.skipSemanticReview
+      ? "caller explicitly requested skipSemanticReview (test/synthetic-scenario/zero-cost-preview override) - production code should not rely on this"
+      : `deterministic reconciliation found a single, fully-reconciled, non-alternating compiled unit with no unresolved numeric/structural signal, AND the source-only condition-suspicion classifier (${conditionSuspicion?.provider ?? "(unknown)"}/${conditionSuspicion?.model ?? "(unknown)"}) explicitly reported NO_MATERIAL_CONDITION_SUSPECTED with zero evidence spans - conservative two-gate V1 routing (task §32 + this phase's Architecture Decision) skipped adversarial semantic review`;
+  }
 
   if (needsSemanticReview) {
     semanticReviewInvoked = true;
-    const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller);
+    const review = await runAdversarialSemanticReview(input, reconciliation, options.reviewCaller, conditionSuspicion);
     semanticReviewFailed = review.failed;
     allFindings = mergeFindings(deterministicFindings, review.findings);
     allFindings = downgradeUnconfirmedAmbiguousFindings(allFindings, reconciliation, review);
@@ -281,6 +322,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
     reconciliation,
     semanticReviewInvoked,
     semanticReviewSkippedReason,
+    conditionSuspicion,
     verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION,
     verifiedAt: new Date().toISOString(),
   };
