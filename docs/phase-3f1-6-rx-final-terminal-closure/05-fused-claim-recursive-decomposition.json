@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "FUSED_CLAIM_RECURSIVE_DECOMPOSITION",
+  "workstream": "C",
+  "findingId": "FINDING-4",
+  "correspondsTo": "BLOCKER-8 / AUDIT-F4",
+  "generatedAt": "2026-08-30T18:20:00Z",
+  "priorEvidence": "docs/phase-3f1-6-rx-final-blocker-closure/26-part-b-blocker8-recertification.json (PART-B-BLOCKER8-FINDING-1)",
+
+  "defectRecap": {
+    "statement": "findCoordinateClauseSplit (lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts) evaluated 'everything before the delimiter' vs 'everything after it' as two monolithic blocks and returned on the FIRST top-level and/or delimiter whose two sides qualified. It never recursed into either resulting side to look for a SECOND qualifying delimiter, so a sentence fusing THREE OR MORE independently-operative claims (same-family or cross-family, no lettered/numbered marker) was only partially separated: the 2nd and every later claim collapsed into one semanticUnitId despite each carrying its own distinguishing, source-grounded number.",
+    "reproduction": "tests/contract-model/part-b-recert-blocker8-adversarial.test.ts's two 'NEW FINDING' describe blocks (now renamed 'FIXED (FINDING-4)' by this workstream) - a 3-basket same-family INDEBTEDNESS sentence produced 2 units, not 3; a 3-topic cross-family (Liens/Indebtedness/Investments) sentence produced 2 units, not 3, with INVESTMENTS silently absorbed into the INDEBTEDNESS unit's excerpt."
+  },
+
+  "requiredFixConstraint": "Do not patch this to 'support three.' The function must support an arbitrary finite N, designed as a recursive or iterative segmentation over the source text with explicit, provable termination.",
+
+  "design": {
+    "summary": "Replaced the exactly-once findCoordinateClauseSplit call in hypothesizeUnitsForRegion with a new function, segmentCoordinateClauses, that is an ITERATIVE (not recursive), single-forward-pass, arbitrary-N-ary generalization of the SAME qualification rule the legacy primitive used. findCoordinateClauseSplit itself is retained UNCHANGED (byte-for-byte identical external behavior, verified by refactoring its own qualification logic into a shared helper both functions now call) - it is simply no longer the function hypothesizeUnitsForRegion calls.",
+    "sharedQualificationRule": "isGenuineClauseBoundary(leftText, rightText, leftFamilyFallback?, rightFamilyFallback?) is the single place the 'are these two adjacent clauses two genuinely independent claims, or an ordinary conjunction inside one claim's own text?' decision lives. Both findCoordinateClauseSplit (no fallback - behavior-preserving) and segmentCoordinateClauses (with inherited-family fallback, see below) call this ONE function, so the two can never silently drift out of sync by re-implementing the rule twice. It reuses lib/contract-model/compiler/value-anchors.ts's extractValueAnchors and valueAnchorSetsDisjointAndNonEmpty exactly as the prior BLOCKER-8/AUDIT-F4 fix did - no parallel identity/grounding logic was invented for this fix.",
+    "algorithm": [
+      "1. Find EVERY top-level (paren-depth 0) delimiter in the ENTIRE input text in a single linear scan - 'and', 'or', the literal token 'and/or' (matched as one unit, not two adjacent and+or matches, to avoid leaving stray punctuation glued onto a neighboring segment), and ';' (a purely generic, package-agnostic delimiter grammar - Architecture Invariants #29, no covenant-specific term). This produces a FIXED, FINITE fragment list (delimiters.length + 1 fragments), computed exactly once, before any segmentation decision is made.",
+      "2. Walk that fixed fragment list LEFT TO RIGHT exactly once (a single `for` loop, NO recursion), maintaining one growing 'current segment' and one 'established family' variable - the most recently seen EXPLICIT family keyword. This lets a family stated ONCE in a shared chapeau ('may incur Indebtedness up to $10,000,000, or up to $20,000,000, or up to $30,000,000' - the word 'Indebtedness' never repeated in the 2nd/3rd basket) still correctly attribute family INDEBTEDNESS to every later basket via fallback, a real and common drafting pattern the old exactly-once primitive could not reach even at N=2.",
+      "3. At each fragment boundary, isGenuineClauseBoundary decides genuine-new-claim (cross-family, or same-family with disjoint source-grounded numeric values) vs ordinary-continuation (an ordinary noun-phrase conjunction like 'cash and cash equivalents' never qualifies, because neither side independently matches any FAMILY_KEYWORDS entry even with the fallback; a bare same-family 'or' with no distinguishing number on both sides never qualifies either, preserving AUDIT-F4-RESIDUAL-1's own disclosed boundary exactly). A genuine boundary closes the current segment and starts a new one; otherwise the next fragment folds into the still-growing current segment.",
+      "4. Every emitted segment's start/end are exact absolute offsets into the ORIGINAL input text, computed by direct offset arithmetic against the one-time fragment scan - never fabricated, never inherited from a sibling. Segments partition the input by construction, so no two segments ever overlap or duplicate a span."
+    ],
+    "callerChange": "hypothesizeUnitsForRegion's coordinate-split branch now calls segmentCoordinateClauses instead of findCoordinateClauseSplit. Segment 0 (leftmost) is built as the 'root' unit and carries whatever local negation/obligation/permission verb governs the whole fused sentence; every unit i>=1 uses inheritedPosture = the root unit's own posture signal (used only when segment i's own local signals classify to UNCLEAR_SIGNAL) - the same inheritance discipline the original 2-way BLOCKER-8 fix established, generalized so segment 0 is the inheritance root for every sibling, not just for a single segment 1.",
+    "detectionSignatureFormat": "Changed from 'coordinate-left:'/'coordinate-right:' to 'coordinate:<index>:' (index 0..N-1) to accommodate arbitrary N. This changes the semanticUnitId hash even for previously-working N=2 cases (see versionBump below) - the anchors/spans for N=2 cases are otherwise unchanged (verified: segmentCoordinateClauses produces byte-identical spans to the old findCoordinateClauseSplit for every existing single-fusion-point fixture in this codebase's test suite)."
+  },
+
+  "terminationProof": {
+    "claim": "segmentCoordinateClauses cannot recurse infinitely, hang, or grow unboundedly under ANY input, including deliberately degenerate/malformed ones.",
+    "proof": "There is no recursion at all in this design - it is purely iterative. Step 1 (finding top-level delimiters) performs one linear regex scan bounded by text.length, producing a fragment array of a FIXED, already-known size before the segmentation loop ever starts. Step 2's single `for` loop iterates over that already-finite, already-computed array exactly `fragments.length - 1` times, performing O(1) work per iteration (a handful of regex tests via matchFamilyKeyword plus a Set-based comparison via valueAnchorSetsDisjointAndNonEmpty) - it can never grow, branch into a sub-loop, or depend on its own output. Total work is O(text.length). This holds unconditionally: there is no code path in either findTopLevelDelimiters, splitIntoRawFragments, or the segmentation loop that can execute more than a number of steps bounded by a single pass over the input length.",
+    "hardBaseCase": "The 'no further split possible' base case is structural, not a depth counter: when fragments.length < 2 (no top-level delimiter found at all), the function returns null in O(1) after the single scan - there is nothing further to iterate over.",
+    "degenerateInputTestsPerformed": [
+      "empty string -> null, no throw",
+      "whitespace-only string -> null, no throw",
+      "2000 bare 'or' tokens with no real words -> completes in well under 2000ms, returns null (no family ever matches, so no boundary is ever found qualifying)",
+      "10 unmatched/unbalanced opening parentheses followed by real covenant text with genuine 'or' delimiters -> no throw; paren-depth tracking never decrements below 0 and never finds a top-level delimiter after the unmatched parens, so it safely degrades to 'nothing is top-level' (fail-closed, never a fabricated split) rather than crashing or hanging",
+      "500 semicolon-joined IDENTICAL clauses (same $1,000,000 value repeated verbatim) -> completes in well under 5000ms, correctly returns null (identical-value-on-both-sides is the genuine-duplicate case, not a fused-distinct-claims case, and never splits - matching the pre-existing, unchanged 'identical value never splits' discipline)",
+      "adjacent delimiters producing an empty fragment ('... or or ...') -> no throw, and isGenuineClauseBoundary's own leftText.length===0/rightText.length===0 guard means an empty fragment is never itself treated as a genuine boundary or emitted as an empty-text unit"
+    ],
+    "location": "tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts, describe block 'degenerate/malformed input never hangs, never throws, and never fabricates a split' (5 tests, all passing)."
+  },
+
+  "requiredProperties": {
+    "arbitraryFiniteN": "Tested at N=2, 3, 4, 5 for both same-family-all-claims and mixed-families shapes - see adversarialMatrix below. No hardcoded cap exists anywhere in the implementation; N is simply however many genuine boundaries the one bounded pass finds.",
+    "deterministic": "hypothesizeUnitsForDocument was re-run twice over the identical N=4 fixture (same documentId, same text) and produced byte-identical semanticUnitId arrays in the same order both times (tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts, 'determinism' describe block). computeSemanticUnitId's own formula (anchors + detectionSignature + SEMANTIC_COVERAGE_ALGORITHM_VERSION, unchanged by this fix) is a pure hash function of these already-deterministic inputs.",
+    "sourceSpanGrounded": "Every segment's start/end are computed by direct offset arithmetic against the ORIGINAL input text during the one-time fragment scan - never fabricated, never copied from a candidate description or any AI-authored text. assertNonOverlappingAndGrounded (the shared test helper) directly verifies, for every unit in every N=2..5 fixture, that the unit's own excerptText is a real prefix of the literal source substring at its own claimed anchors.",
+    "noDuplicateOrOverlappingSpans": "Segments partition the input text by construction (each new segment starts exactly where the qualifying delimiter's following fragment starts); assertNonOverlappingAndGrounded sorts all units' anchors by start offset and asserts each successive span begins at or after the previous span's end, and that no two spans share an identical (start,end) pair, across every N=2..5 fixture in the adversarial matrix.",
+    "noInfiniteRecursion": "See terminationProof above - the design is iterative with zero recursion, so this property holds by construction, independently reconfirmed by 5 dedicated degenerate-input tests.",
+    "stableOrdering": "Segments are emitted in the same left-to-right order the single forward pass discovers them, which is also source order; every N=2..5 test asserts unit anchor start offsets are already sorted ascending.",
+    "independentSourceCoordinates": "Every non-root unit (i>=1) receives its own anchors computed from its own segment's start/end - it never inherits baseAnchor.charStart/charEnd from a sibling. Only the POSTURE SIGNAL (a semantic classification, not a source span) is ever inherited from the root unit, and only as a fallback when the segment's own local text carries no signal of its own - this mirrors the original 2-way BLOCKER-8 design's inheritedPosture mechanism exactly, generalized to N segments."
+  },
+
+  "sharedChapeauAndNestedConditionHandling": {
+    "sharedChapeauWithMultipleSiblingPermissions": "A shared preamble that states the family keyword ONCE (never repeated per sibling basket) is handled via the 'established family' fallback (see design.algorithm step 2) - all N siblings still resolve to their own semanticUnitId. The chapeau's own text is embedded (real, source-grounded) only in segment 0's own span, never duplicated or fabricated into any other segment - verified directly in tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts's 'shared chapeau' describe block (exactly 1 of the N resulting units contains the chapeau text).",
+    "nestedConditionApplyingToAllChildren": "A trailing condition clause ('...in each case so long as no Default has occurred and is continuing.') that textually follows the last basket is left attached to whichever segment it is textually part of (the last one) rather than being synthetically distributed across all N units - this is a deliberate, disclosed design choice consistent with the source-span-grounded requirement: fabricating the condition's text into every sibling's excerpt would misrepresent what that sibling's own source span actually says. Verified this does not cause an unwanted extra split even when the condition clause itself contains an unrelated top-level 'and' ('occurred and is continuing') - the trailing fragment has no numeric value of its own, so isGenuineClauseBoundary's same-family value-disjoint check (which requires BOTH sides non-empty) correctly declines to split it off as a 4th unit."
+  },
+
+  "adversarialMatrix": {
+    "location": "tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts (22 tests, all passing) plus tests/contract-model/part-b-recert-blocker8-adversarial.test.ts's 2 updated FIXED describe blocks (now passing, previously documented the open gap).",
+    "results": [
+      { "dimension": "N=2 same-family-all-claims", "outcome": "PASS - 2 distinct semanticUnitIds, non-overlapping grounded spans" },
+      { "dimension": "N=3 same-family-all-claims", "outcome": "PASS - 3 distinct semanticUnitIds (previously 2 - the exact defect); the recert file's own original fixture now fully separates" },
+      { "dimension": "N=4 same-family-all-claims", "outcome": "PASS - 4 distinct semanticUnitIds" },
+      { "dimension": "N=5 same-family-all-claims", "outcome": "PASS - 5 distinct semanticUnitIds (most-important requirement: same-family fused claims independently addressable well past N=2)" },
+      { "dimension": "N=3 mixed-families (Liens/Indebtedness/Investments)", "outcome": "PASS - 3 distinct units, 3 distinct families (previously 2 - the same defect's cross-family branch, confirmed pre-existing to Workstream D and now resolved by this fix)" },
+      { "dimension": "N=4 mixed-families (+ Restricted Payments)", "outcome": "PASS - 4 distinct units, 4 distinct families" },
+      { "dimension": "N=5 mixed-families (+ Acquisitions)", "outcome": "PASS - 5 distinct units, 5 distinct families" },
+      { "dimension": "'and' as the coordinate word", "outcome": "PASS - 3 baskets joined by 'and' fully separate (qualification rule treats 'and'/'or' identically)" },
+      { "dimension": "'or' as the coordinate word", "outcome": "PASS - reconfirmed as part of every fixture above and a dedicated baseline case" },
+      { "dimension": "'and/or' as the coordinate word", "outcome": "PASS - matched as ONE token; neither resulting segment carries a stray leading/trailing '/' or 'and/'/'or' punctuation artifact" },
+      { "dimension": "semicolon-separated coordinate clauses (no 'and'/'or' present at all)", "outcome": "PASS - 3 un-enumerated, semicolon-only baskets fully separate; a NEW delimiter-recognition generalization beyond the prior and/or-only design, purely generic (Architecture Invariants #29), gated by the same numeric/family qualification rule so it cannot over-fire" },
+      { "dimension": "shared chapeau with multiple sibling permissions", "outcome": "PASS - see sharedChapeauAndNestedConditionHandling above" },
+      { "dimension": "a nested condition applying to all children", "outcome": "PASS - see sharedChapeauAndNestedConditionHandling above; exactly 3 units, not 4, despite an unrelated top-level 'and' inside the trailing condition text" },
+      { "dimension": "coordinate word inside an ordinary noun phrase ('cash and cash equivalents')", "outcome": "PASS (critical negative case) - never split, even in a sentence that otherwise has a real family keyword (INVESTMENTS) and a real number elsewhere in the same sentence; the numeric-disjointness-on-BOTH-sides gate is what protects this, not merely the family-keyword check" },
+      { "dimension": "BLOCKER-8 regression guard: 'shall not, and shall not permit ... to, create or suffer to exist any Lien'", "outcome": "PASS - stays exactly 1 unit, unchanged" }
+    ]
+  },
+
+  "versionBump": {
+    "constant": "SEMANTIC_COVERAGE_ALGORITHM_VERSION",
+    "from": "phase-3f1-semantic-coverage.v4",
+    "to": "phase-3f1-semantic-coverage.v5",
+    "location": "lib/contract-model/compiler/semantic-coverage/types.ts",
+    "justification": "This is a genuine detection-algorithm change within the semantic-coverage layer itself (not the discovery layer - see scopeDiscipline below), matching this constant's own established bump discipline (bumped at v1->v2 for the routing/materiality-floor remediation, v2->v3 for the original BLOCKER-8 2-way fix, v3->v4 for Workstream D's same-family value-anchor generalization). Two concrete reasons a bump is required here: (1) any region that previously produced a conflated N=2-collapsed-from-3+ unit now produces MORE, differently-anchored units - a stale pre-fix semanticUnitId must never collide with the new, correctly-decomposed one; (2) even for previously-correct N=2 cases, the detectionSignature label format changed from 'coordinate-left:'/'coordinate-right:' to 'coordinate:<index>:', which changes the hash input even though the anchors/spans themselves are unchanged for those cases - the version bump is what makes this an intentional, disclosed non-collision rather than an unnoticed silent drift.",
+    "pinnedTestUpdated": "tests/contract-model/part-b-recert-blocker8-adversarial.test.ts's own hardcoded assertion (previously pinning 'phase-3f1-semantic-coverage.v4') was updated to 'phase-3f1-semantic-coverage.v5' with an explanatory comment; grep-confirmed this was the ONLY test in the repository pinning the literal version string (all other call sites import and use the symbolic constant, so they pick up the bump automatically with no update needed)."
+  },
+
+  "scopeDiscipline": {
+    "discoveryLayerTouched": false,
+    "statement": "No file under lib/contract-model/compiler/discovery/ was modified. The discovery layer (Pass C/D, runPassCNeighborhoodExpansion/runPassDReconciliation) never shared this defect - it operates per-SemanticRuleItem, so a well-behaved Pass B that itself emits N separate items is expanded/reconciled into N distinct discoveryIds regardless of N, independently reconfirmed (unchanged) by both the updated recert test file's own 'contrast' tests and this file's own new adversarial matrix. DISCOVERY_PROMPT_VERSION/DISCOVERY_PIPELINE_VERSION/DISCOVERY_RUN_VERSION were not touched.",
+    "passCPassDNeighborhoodReconcileTouched": false,
+    "valueAnchorsReuse": "lib/contract-model/compiler/value-anchors.ts was NOT modified. extractValueAnchors and valueAnchorSetsDisjointAndNonEmpty (Workstream D's prior grounded-anchor machinery) are reused UNMODIFIED and IDENTICALLY by both the legacy two-way findCoordinateClauseSplit and the new segmentCoordinateClauses, via the single shared isGenuineClauseBoundary helper - no parallel/duplicate identity or grounding logic was invented."
+  },
+
+  "productionFilesModified": [
+    "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts (segmentCoordinateClauses added; isGenuineClauseBoundary shared qualification helper factored out; findCoordinateClauseSplit retained unchanged in external behavior; hypothesizeUnitsForRegion's coordinate-split branch updated to call the new N-ary function and build N units instead of exactly 2)",
+    "lib/contract-model/compiler/semantic-coverage/types.ts (SEMANTIC_COVERAGE_ALGORITHM_VERSION bumped v4 -> v5, with documented rationale following this constant's own established bump-history comment convention)"
+  ],
+
+  "testFilesAdded": [
+    "tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts (NEW, 22 tests, all passing - the required N=2..5 adversarial matrix plus determinism, stable-ordering, non-overlap, and degenerate-input termination probes)"
+  ],
+
+  "testFilesModified": [
+    "tests/contract-model/part-b-recert-blocker8-adversarial.test.ts (the 2 describe blocks that documented PART-B-BLOCKER8-FINDING-1's open gap were updated to document the FIXED behavior - 3 units instead of 2 for both the same-family and cross-family N=3 fixtures; the SEMANTIC_COVERAGE_ALGORITHM_VERSION pinned-string assertion updated v4 -> v5. No other test in this file was touched - all remaining 21 of its original 23 tests, covering paraphrase-rejection, hallucination-rejection, date-non-anchoring, residual reconfirmation, and the original F15-1 regression, are byte-identical to the Part B recertification's own committed version.)"
+  ],
+
+  "verification": {
+    "tscNoEmit": {
+      "command": "npx tsc --noEmit -p .",
+      "resultForThisWorkstreamsOwnFiles": "0 errors attributable to lib/contract-model/compiler/semantic-coverage/{types,unit-hypothesis}.ts or either test file this workstream touched/added - independently confirmed by isolating: the 6 documented baseline errors (tests/foundation-audit/cascade-and-concurrency.test.ts x2, tests/foundation-audit/discovery-fault-injection.test.ts x1, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts x3) are present byte-identical both before and after this workstream's changes.",
+      "sharedWorktreeNote": "This worktree is being used concurrently by other Part A workstream sessions (uncommitted changes were observed live in lib/contract-model/analysis/{orchestrator,service,types}.ts, lib/contract-model/analysis/semantic-truth/*, prisma/schema.prisma, and lib/contract-model/compiler/semantic-verification/{source-inventory.ts,condition-suspicion.ts} during this workstream's own run - Workstreams D/E's own in-progress work). A tsc run against the full shared worktree at one point additionally showed ~19 errors in orchestrator.ts and related test files referencing an 'expectedGeneration' parameter (Workstream E's AnalysisRun-fencing work, mid-flight) - none of these reference any file this workstream touched (grep-confirmed), so they are disclosed here as pre-existing/concurrent, not attributable to FINDING-4's own fix."
+    },
+    "eslint": {
+      "command": "npx eslint .",
+      "result": "1 baseline error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires) - byte-identical to the documented baseline, both before and after this workstream's changes. 0 new errors or warnings."
+    },
+    "targetedSuiteRuns": [
+      {
+        "command": "npx vitest run tests/contract-model/claim-identity-v2.test.ts tests/contract-model/claim-identity-blocker8-remediation.test.ts",
+        "result": "42/42 passing - NO REGRESSION against either prior BLOCKER-8 fix (the original 2-way remediation, and Workstream D's CLAIM IDENTITY V2 same-family generalization). Both suites are byte-identical to their committed versions - this workstream did not modify either file."
+      },
+      {
+        "command": "npx vitest run tests/contract-model/part-b-recert-blocker8-adversarial.test.ts",
+        "result": "23/23 passing (the required deliverable per this phase's own verification section - previously 2 of these 23 tests documented the open GAP by construction; both now document, and pass against, the FIXED behavior)."
+      },
+      {
+        "command": "npx vitest run tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts",
+        "result": "22/22 passing (this workstream's own new required adversarial matrix)."
+      },
+      {
+        "command": "npx vitest run tests/contract-model/claim-identity-v2.test.ts tests/contract-model/claim-identity-blocker8-remediation.test.ts tests/contract-model/part-b-recert-blocker8-adversarial.test.ts tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts tests/contract-model/semantic-coverage-unit-hypothesis.test.ts tests/contract-model/phase-3f1-contextual-materiality.test.ts tests/contract-model/semantic-coverage-freeze.test.ts tests/contract-model/semantic-coverage-real-lsb-regression.test.ts tests/foundation-audit/section15-claim-identity-adversarial.ts",
+        "result": "118/118 passing across all files touching or exercising unit-hypothesis.ts, including a real, non-mocked 76-node LSB document regression run - no regression anywhere in this fix's blast radius."
+      }
+    ],
+    "unrelatedFailuresObservedInSharedWorktree": {
+      "statement": "A full `npx vitest run tests/contract-model/` at various points during this workstream's session showed additional failures in tests/contract-model/compatibility.test.ts, coverage-structural.test.ts, partial-instrument-failure.test.ts, part-b-recert-crosscutting-*.test.ts, and part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts. Independently confirmed via grep that NONE of these files reference unit-hypothesis.ts, segmentCoordinateClauses, findCoordinateClauseSplit, or SEMANTIC_COVERAGE_ALGORITHM_VERSION. These are database-state/foreign-key-constraint failures (prisma.permission.findMany returning 0 rows where >0 was expected; prisma.document.create violating a foreign-key constraint) and AnalysisRun-fencing-shaped assertion failures, consistent with concurrent sibling Part A workstream sessions (E in particular, per the observed uncommitted prisma/schema.prisma and orchestrator.ts edits) actively mutating shared database/schema state in this same worktree/container during this workstream's own test runs. Disclosed honestly rather than silently ignored, per this codebase's own established disclosure discipline (see the prior Part B recertification's own precedent for exactly this kind of concurrent-workstream disclosure)."
+    }
+  },
+
+  "disposition": {
+    "FINDING-4": {
+      "verdict": "FIXED",
+      "rationale": "segmentCoordinateClauses generalizes coordinate-clause decomposition to arbitrary finite N via a single, non-recursive, provably-terminating forward pass, reusing (not reimplementing) value-anchors.ts's grounded numeric-anchor machinery. All required properties (arbitrary N tested to 5, determinism, source-span grounding, no duplicate/overlapping spans, no infinite recursion under degenerate input, stable ordering, independent per-claim source coordinates) are verified by a dedicated 22-test adversarial matrix plus the updated, now-passing Part B recertification fixture. Both prior BLOCKER-8 fix suites (claim-identity-v2.test.ts, claim-identity-blocker8-remediation.test.ts) remain fully passing with zero modification, confirming this generalization does not regress either prior hardening pass."
+    }
+  }
+}

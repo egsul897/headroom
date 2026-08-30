@@ -87,53 +87,52 @@ function unitsFor(documentId: string, text: string) {
 const CTX = { companyId: "c", packageKey: "p", instrumentKey: null, operativeVersionRef: null };
 
 // ===========================================================================
-// NEW FINDING: N-ARY (3+) same-family/cross-family fusion in one un-
-// enumerated sentence is only PARTIALLY split by the deterministic
-// semantic-coverage layer - findCoordinateClauseSplit returns on the FIRST
-// qualifying top-level "and"/"or" split point and never recurses into
-// either resulting half to look for a SECOND split point. A sentence fusing
-// THREE (not two) independently-operative, numerically-distinct claims with
-// no lettered/numbered sub-reference therefore still conflates the 2nd and
-// 3rd claims into ONE semanticUnitId, even though each states its own real,
-// source-grounded, mutually-disjoint numeric value - i.e. this is NOT the
-// disclosed AUDIT-F4-RESIDUAL-1 (which requires ZERO number on both sides);
-// both remaining fused claims here DO carry distinguishing numbers, and the
-// deterministic layer still fails to separate them.
+// FIXED (Phase 3F.1.6.RX-FINAL Part A, Workstream C, FINDING-4): this
+// describe block originally documented PART-B-BLOCKER8-FINDING-1 - N-ARY
+// (3+) same-family/cross-family fusion in one un-enumerated sentence was
+// only PARTIALLY split by the deterministic semantic-coverage layer, since
+// the old findCoordinateClauseSplit returned on the FIRST qualifying
+// top-level "and"/"or" split point and never recursed into either
+// resulting half to look for a SECOND split point.
 //
-// This directly contradicts 06-claim-identity-v2.json's own framing of the
-// same-family value-disjoint trigger as "an unconditional, always-active
-// closure of the numeric-anchored same-family case" - it is conditional on
-// there being exactly ONE fusion point (a two-way split), which is not
-// disclosed anywhere in that artifact's adversarialMatrix or disclosedResidual
-// sections. The discovery layer (Pass C/D) does NOT share this limitation -
-// it operates per-SemanticRuleItem, so a well-behaved Pass B that itself
-// emits 3 separate items is expanded/reconciled into 3 distinct
-// discoveryIds without issue (confirmed below) - the gap is confined to the
-// semantic-coverage layer's single-split algorithm, which is precisely the
-// layer 06-claim-identity-v2.json calls "the PREFERRED identity source".
+// unit-hypothesis.ts's hypothesizeUnitsForRegion now calls
+// segmentCoordinateClauses - an iterative, single-forward-pass, arbitrary-
+// N-ary generalization over the SAME qualification rule
+// (isGenuineClauseBoundary, shared with the legacy two-way primitive) - so
+// a sentence fusing THREE (or more) independently-operative,
+// numerically-distinct claims with no lettered/numbered sub-reference is
+// now fully separated, each into its own semanticUnitId with its own
+// independent source anchors. See docs/phase-3f1-6-rx-final-terminal-
+// closure/05-fused-claim-recursive-decomposition.json for the full design,
+// termination proof, and N=2..5 adversarial matrix
+// (tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts).
 // ===========================================================================
 
-describe("NEW FINDING: three-way same-family basket fusion is only PARTIALLY split by the deterministic coverage layer", () => {
+describe("FIXED (FINDING-4): three-way same-family basket fusion is now FULLY split by the recursive/iterative coordinate-clause segmenter", () => {
   const text =
     "Section 6.22. Indebtedness. The Company may incur Indebtedness in an amount not to exceed $50,000,000, or incur Indebtedness in an amount not to exceed $30,000,000, or incur Indebtedness in an amount not to exceed $20,000,000, in each case for general corporate purposes.";
 
-  it("GAP: coverage layer produces only 2 units for 3 fused baskets - the 2nd and 3rd baskets ($30M and $20M) remain conflated into ONE semanticUnitId despite each stating its own distinct, source-grounded dollar figure", () => {
+  it("coverage layer now produces 3 distinct units for 3 fused baskets - the $30M and $20M baskets no longer conflate into ONE semanticUnitId", () => {
     const units = unitsFor("nfind1-cov", text);
     const indebtednessUnits = units.filter((u) => u.family === "INDEBTEDNESS");
-    // Documents the ACTUAL (defective) current behavior: 2 units, not 3.
-    expect(indebtednessUnits).toHaveLength(2);
+    // FIXED: 3 units, not 2 - segmentCoordinateClauses recurses (iteratively)
+    // past the first split point.
+    expect(indebtednessUnits).toHaveLength(3);
     const combinedUnit = indebtednessUnits.find((u) => u.excerptText.includes("30,000,000") && u.excerptText.includes("20,000,000"));
-    expect(combinedUnit).toBeDefined();
-    // The $30M and $20M baskets are DIFFERENT real economic claims (this
-    // recertification's own adversarial construction, not a duplicate) yet
-    // share exactly one semanticUnitId - the same defect class AUDIT-F4
-    // froze ("SAME FAMILY + SAME ROLE + SAME SOURCE NODE DOES NOT IMPLY
-    // SAME CLAIM"), reproduced here at N=3 despite numeric grounding on
-    // both remaining sides.
-    expect(new Set(indebtednessUnits.map((u) => u.semanticUnitId)).size).toBe(2);
+    // The $30M and $20M baskets are DIFFERENT real economic claims and now
+    // resolve to two SEPARATE units, not one combined unit.
+    expect(combinedUnit).toBeUndefined();
+    expect(indebtednessUnits.some((u) => u.excerptText.includes("50,000,000") && !u.excerptText.includes("30,000,000"))).toBe(true);
+    expect(indebtednessUnits.some((u) => u.excerptText.includes("30,000,000") && !u.excerptText.includes("50,000,000") && !u.excerptText.includes("20,000,000"))).toBe(true);
+    expect(indebtednessUnits.some((u) => u.excerptText.includes("20,000,000") && !u.excerptText.includes("30,000,000"))).toBe(true);
+    expect(new Set(indebtednessUnits.map((u) => u.semanticUnitId)).size).toBe(3);
+    // No two units ever share a span (each claim's own independent source
+    // coordinates, never inherited from a sibling).
+    const spans = indebtednessUnits.map((u) => `${u.anchors[0]!.charStart}-${u.anchors[0]!.charEnd}`);
+    expect(new Set(spans).size).toBe(3);
   });
 
-  it("contrast: the discovery layer (Pass C/D) does NOT share this limitation - 3 well-formed SemanticRuleItems (simulating correct Pass B behavior) still yield 3 distinct discoveryIds", () => {
+  it("contrast: the discovery layer (Pass C/D) never shared this limitation - 3 well-formed SemanticRuleItems (simulating correct Pass B behavior) still yield 3 distinct discoveryIds", () => {
     const { reconciled } = discover("nfind1-disc", text, "6.22", [
       rule({ relativeRef: "", role: "BASKET", families: ["INDEBTEDNESS"], description: "$50,000,000 basket A" }),
       rule({ relativeRef: "", role: "BASKET", families: ["INDEBTEDNESS"], description: "$30,000,000 basket B" }),
@@ -144,17 +143,17 @@ describe("NEW FINDING: three-way same-family basket fusion is only PARTIALLY spl
   });
 });
 
-describe("NEW FINDING: the same single-split limitation also affects a THREE-way CROSS-family fusion (pre-existing to this workstream, not introduced by it, but still present in the current, recertified code)", () => {
-  it("GAP: Liens / Indebtedness / Investments fused in one sentence -> only 2 units, INVESTMENTS silently absorbed into the INDEBTEDNESS unit's excerpt", () => {
+describe("FIXED (FINDING-4): the same fix also resolves a THREE-way CROSS-family fusion (pre-existing to Workstream D, not introduced by it, and now fully resolved by Workstream C's generalization)", () => {
+  it("Liens / Indebtedness / Investments fused in one sentence -> now 3 distinct units, INVESTMENTS no longer silently absorbed into the INDEBTEDNESS unit's excerpt", () => {
     const text = "Section 6.31. Restrictions. The Company shall not create Liens on the Collateral in excess of $5,000,000, or incur Indebtedness in excess of $10,000,000, or make Investments in excess of $15,000,000.";
     const units = unitsFor("nfind2-cov", text);
-    expect(units).toHaveLength(2);
-    expect(new Set(units.map((u) => u.family))).toEqual(new Set(["LIENS", "INDEBTEDNESS"]));
+    expect(units).toHaveLength(3);
+    expect(new Set(units.map((u) => u.family))).toEqual(new Set(["LIENS", "INDEBTEDNESS", "INVESTMENTS"]));
     const investmentsUnit = units.find((u) => u.family === "INVESTMENTS");
-    expect(investmentsUnit).toBeUndefined();
-    const secondUnit = units.find((u) => u.excerptText.includes("Investments"));
-    expect(secondUnit?.excerptText).toContain("Indebtedness");
-    expect(secondUnit?.excerptText).toContain("Investments");
+    expect(investmentsUnit).toBeDefined();
+    expect(investmentsUnit?.excerptText).toContain("Investments");
+    expect(investmentsUnit?.excerptText).not.toContain("Indebtedness");
+    expect(new Set(units.map((u) => u.semanticUnitId)).size).toBe(3);
   });
 });
 
@@ -301,8 +300,8 @@ describe("version-bump correctness: DISCOVERY_PROMPT_VERSION / DISCOVERY_PIPELIN
     expect(idFnOld(candOld[0]!)).not.toBe(idFnNew(candNew[0]!));
   });
 
-  it("SEMANTIC_COVERAGE_ALGORITHM_VERSION is the current v4 string and is a real, load-bearing input to computeSemanticUnitId - changing it changes semanticUnitId for IDENTICAL anchors/detectionSignature", () => {
-    expect(SEMANTIC_COVERAGE_ALGORITHM_VERSION).toBe("phase-3f1-semantic-coverage.v4");
+  it("SEMANTIC_COVERAGE_ALGORITHM_VERSION is the current v5 string (bumped by Phase 3F.1.6.RX-FINAL Part A Workstream C's FINDING-4 fix - segmentCoordinateClauses replaces the single-split findCoordinateClauseSplit as hypothesizeUnitsForRegion's coordinate-split path) and is a real, load-bearing input to computeSemanticUnitId - changing it changes semanticUnitId for IDENTICAL anchors/detectionSignature", () => {
+    expect(SEMANTIC_COVERAGE_ALGORITHM_VERSION).toBe("phase-3f1-semantic-coverage.v5");
     const anchors: SourceAnchor[] = [{ documentId: "d1", structuralNodeKey: "k1", structuralNodeId: "n1", sectionRef: "6.01", charStart: 0, charEnd: 10, sourceCitation: "d1::6.01" }];
     const idUnderCurrentVersion = computeSemanticUnitId(anchors, "whole-region:shall_not");
     // computeSemanticUnitId always hashes in the CURRENT module constant

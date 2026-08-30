@@ -174,7 +174,25 @@ import type { StructuralHealthState } from "../structural-coverage";
 // bundled together) - another real detection-algorithm change, per this
 // constant's own established bump discipline. See
 // docs/phase-3f1-6-rx-final-blocker-closure/06-claim-identity-v2.json.
-export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v4";
+// Phase 3F.1.6.RX-FINAL Part A Workstream C bump (v4 -> v5, FINDING-4): the
+// prior Part B recertification (docs/phase-3f1-6-rx-final-blocker-closure/
+// 26-part-b-blocker8-recertification.json) proved findCoordinateClauseSplit
+// performed AT MOST ONE split per region and never recursed, so a sentence
+// fusing THREE OR MORE independently-operative claims (same-family or
+// cross-family, no lettered markers) only partially separated - claims 2
+// and later collapsed into one semanticUnitId despite each carrying its own
+// distinguishing number. hypothesizeUnitsForRegion now calls the new
+// segmentCoordinateClauses (an iterative, N-ary, single-forward-pass
+// generalization over the same value-anchor/family-keyword qualification
+// rule, see unit-hypothesis.ts's own module doc comment) instead of the
+// single-split findCoordinateClauseSplit - a real detection-algorithm
+// change (both the resulting ANCHOR SPANS for any 3+-way fusion, and the
+// detectionSignature label format for every coordinate split, 2-way
+// included, change shape), so any previously-computed semanticUnitId is
+// correctly treated as belonging to a different, stale algorithm version
+// rather than silently reused. See docs/phase-3f1-6-rx-final-terminal-
+// closure/05-fused-claim-recursive-decomposition.json.
+export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v5";
 export const SEMANTIC_COVERAGE_PROMPT_VERSION = "phase-3e-semantic-coverage-prompt.v1";
 export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3f1-semantic-coverage-router.v2";
 

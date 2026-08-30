@@ -187,17 +187,72 @@ function matchFamilyKeyword(text: string): MaterialUnitFamily | null {
 const RIGHT_CLAUSE_RESTATES_MODAL = /^(?:shall|will|must|may)\b/i;
 const TOP_LEVEL_CONJUNCTION = /\b(?:and|or)\b/gi;
 
+/**
+ * The single shared qualification rule for "do these two adjacent clauses
+ * state two genuinely independent claims, or is this an ordinary
+ * conjunction inside one claim's own text?" - used identically by both the
+ * legacy two-way findCoordinateClauseSplit (below) and the generalized
+ * N-ary segmentCoordinateClauses (further below), so the two can never
+ * silently drift out of sync by re-implementing the rule twice.
+ *
+ * `leftFamilyFallback`/`rightFamilyFallback` exist ONLY for
+ * segmentCoordinateClauses' own inherited-family case (a shared chapeau
+ * that states the family once and is never repeated in every sibling
+ * clause - see that function's own doc comment); findCoordinateClauseSplit
+ * itself never supplies them, so its behavior is byte-for-byte unchanged
+ * from before this refactor.
+ */
+function isGenuineClauseBoundary(
+  leftText: string,
+  rightText: string,
+  leftFamilyFallback: MaterialUnitFamily | null = null,
+  rightFamilyFallback: MaterialUnitFamily | null = null
+): { qualifies: boolean; leftFamily: MaterialUnitFamily | null; rightFamily: MaterialUnitFamily | null } {
+  if (leftText.length === 0 || rightText.length === 0) return { qualifies: false, leftFamily: null, rightFamily: null };
+  // A right-hand clause that itself restates a modal verb ("...and shall not
+  // permit...") is never treated as a second claim's own object - that is
+  // the SAME claim's subject being restated, not a second independent one.
+  if (RIGHT_CLAUSE_RESTATES_MODAL.test(rightText)) return { qualifies: false, leftFamily: null, rightFamily: null };
+  const leftFamily = matchFamilyKeyword(leftText) ?? leftFamilyFallback;
+  const rightFamily = matchFamilyKeyword(rightText) ?? rightFamilyFallback;
+  if (!leftFamily || !rightFamily) return { qualifies: false, leftFamily, rightFamily };
+  // Cross-family fusion (BLOCKER-8's originally-confirmed shape) always
+  // splits - two different covenant topics are inherently distinct claims
+  // regardless of whether either states a number.
+  const crossFamily = leftFamily !== rightFamily;
+  // Same-family fusion (AUDIT-F4's frozen residual gap) splits ONLY when
+  // each side independently states a source-grounded numeric value and the
+  // two values genuinely differ - see the module-level doc comment above
+  // for the full rationale and regression-guard examples.
+  const sameFamilyValueSplit = !crossFamily && valueAnchorSetsDisjointAndNonEmpty(extractValueAnchors(leftText), extractValueAnchors(rightText));
+  return { qualifies: crossFamily || sameFamilyValueSplit, leftFamily, rightFamily };
+}
+
 export interface CoordinateClauseSplit {
   left: { text: string; start: number; end: number };
   right: { text: string; start: number; end: number };
 }
 
 /**
- * Scans left-to-right through every top-level (paren-depth 0) "and"/"or"
- * occurrence and returns the FIRST one whose two sides each independently
- * match a different family keyword. Returns null when no such split point
- * exists (task's own "never force 1:1" cuts both ways here too - a region
- * with no genuine independent-claim conjunction is left as a single unit).
+ * LEGACY two-way primitive (Phase 3F.1.6.R BLOCKER-8 / Phase 3F.1.6.RX
+ * Workstream D). Scans left-to-right through every top-level (paren-depth
+ * 0) "and"/"or" occurrence and returns the FIRST one whose two sides
+ * (everything before it vs everything after it, as two single blocks)
+ * qualify per isGenuineClauseBoundary. Returns null when no such split
+ * point exists (task's own "never force 1:1" cuts both ways here too - a
+ * region with no genuine independent-claim conjunction is left as a single
+ * unit).
+ *
+ * Retained standalone (unchanged behavior) rather than removed: it is a
+ * correct, still-exported primitive for the exactly-one-fusion-point case,
+ * and several regression suites exercise it indirectly through
+ * hypothesizeUnitsForRegion. Phase 3F.1.6.RX-FINAL FINDING-4: its own
+ * documented limitation (evaluating "everything before" vs "everything
+ * after" as two monolithic blocks means it can find AT MOST one split per
+ * region and never recurses into either side to find a second one) is why
+ * hypothesizeUnitsForRegion no longer calls this function directly - see
+ * segmentCoordinateClauses below, its generalized, arbitrary-N-ary
+ * successor, which every real caller now uses.
  */
 export function findCoordinateClauseSplit(text: string): CoordinateClauseSplit | null {
   const re = new RegExp(TOP_LEVEL_CONJUNCTION.source, TOP_LEVEL_CONJUNCTION.flags);
@@ -224,21 +279,8 @@ export function findCoordinateClauseSplit(text: string): CoordinateClauseSplit |
     const leftText = leftRaw.trim();
     const rightLeadingWs = rightRaw.length - rightRaw.trimStart().length;
     const rightText = rightRaw.trim();
-    if (leftText.length === 0 || rightText.length === 0) continue;
-    if (RIGHT_CLAUSE_RESTATES_MODAL.test(rightText)) continue;
-    const leftFamily = matchFamilyKeyword(leftText);
-    const rightFamily = matchFamilyKeyword(rightText);
-    if (!leftFamily || !rightFamily) continue;
-    // Cross-family fusion (BLOCKER-8's originally-confirmed shape) always
-    // splits - two different covenant topics are inherently distinct
-    // claims regardless of whether either states a number.
-    const isCrossFamilySplit = leftFamily !== rightFamily;
-    // Same-family fusion (AUDIT-F4's frozen residual gap) splits ONLY when
-    // each side independently states a source-grounded numeric value and
-    // the two values genuinely differ - see the module-level doc comment
-    // above for the full rationale and regression-guard examples.
-    const isSameFamilyValueSplit = leftFamily === rightFamily && valueAnchorSetsDisjointAndNonEmpty(extractValueAnchors(leftText), extractValueAnchors(rightText));
-    if (isCrossFamilySplit || isSameFamilyValueSplit) {
+    const { qualifies } = isGenuineClauseBoundary(leftText, rightText);
+    if (qualifies) {
       return {
         left: { text: leftText, start: leftTrimmedStart, end: c.start },
         right: { text: rightText, start: c.end + rightLeadingWs, end: text.length },
@@ -246,6 +288,183 @@ export function findCoordinateClauseSplit(text: string): CoordinateClauseSplit |
     }
   }
   return null;
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.6.RX-FINAL Part A Workstream C - FINDING-4: generalized,
+// arbitrary-N-ary fused-claim decomposition.
+//
+// The prior Part B recertification (docs/phase-3f1-6-rx-final-blocker-
+// closure/26-part-b-blocker8-recertification.json, PART-B-BLOCKER8-FINDING-1)
+// proved findCoordinateClauseSplit above performs AT MOST ONE split per
+// region: it evaluates "everything before the delimiter" vs "everything
+// after it" as two monolithic blocks and returns on the first delimiter
+// whose two sides qualify - it never recurses into either resulting side to
+// look for a SECOND qualifying delimiter. A sentence fusing THREE OR MORE
+// independently-operative claims (same-family or cross-family, no
+// lettered/numbered marker) is therefore only partially separated: the 2nd
+// and every later claim collapse into one semanticUnitId despite each
+// carrying its own distinguishing, source-grounded number.
+//
+// segmentCoordinateClauses below is the generalized, arbitrary-N
+// replacement. Design (ITERATIVE, not recursive - see the termination note
+// below):
+//
+//   1. Find EVERY top-level (paren-depth 0) delimiter in the ENTIRE input
+//      text in a single linear scan - "and", "or", "and/or", and ";" (a
+//      purely generic, package-agnostic delimiter grammar, Architecture
+//      Invariants #29 - no covenant-specific term). This produces a FIXED,
+//      FINITE list of raw fragments (delimiters.length + 1 of them),
+//      computed exactly once, before any segmentation decision is made.
+//   2. Walk that fixed fragment list LEFT TO RIGHT exactly once (a single
+//      `for` loop, no recursion), maintaining one "current, growing
+//      segment" and one "established family" (the most recently seen
+//      explicit family keyword, so a family stated ONCE in a shared
+//      chapeau - "may incur Indebtedness up to $10,000,000, or up to
+//      $20,000,000, or up to $30,000,000" - still correctly attributes
+//      family INDEBTEDNESS to every later basket that never repeats the
+//      word itself, a real, common drafting pattern the exactly-once
+//      two-way primitive above already could not reach even for N=2).
+//   3. At each fragment boundary, isGenuineClauseBoundary (the SAME shared
+//      rule findCoordinateClauseSplit uses - see above) decides whether
+//      this is a genuine new claim (cross-family, or same-family with
+//      disjoint source-grounded numeric values reused from value-
+//      anchors.ts) or an ordinary continuation (an ordinary noun-phrase
+//      conjunction like "cash and cash equivalents" never qualifies,
+//      because neither side independently matches any FAMILY_KEYWORDS
+//      entry; a bare same-family "or" with no distinguishing number on
+//      both sides never qualifies either, exactly preserving AUDIT-F4-
+//      RESIDUAL-1's own disclosed boundary). A genuine boundary closes the
+//      current segment and starts a new one; otherwise the next fragment is
+//      folded into the current (still-growing) segment.
+//   4. Every emitted segment's start/end are exact absolute offsets into
+//      the ORIGINAL input text (never fabricated, never inherited from a
+//      sibling) - segments partition the input by construction, so no two
+//      segments ever overlap or duplicate a span.
+//
+// TERMINATION PROOF: there is no recursion at all. Step 1 performs one
+// linear regex scan bounded by text.length, producing a fragment array of
+// bounded, FIXED size before the segmentation loop ever starts. Step 2's
+// `for` loop iterates over that already-finite, already-computed array
+// exactly `fragments.length - 1` times, performing O(1) work (a handful of
+// regex tests + a Set-based value-anchor comparison) per iteration - it can
+// never grow, branch into further sub-loops, or depend on its own output.
+// Total work is O(text.length). This holds for EVERY input, including
+// deliberately degenerate/malformed ones (a string of thousands of bare
+// delimiters, unbalanced/deeply-nested parentheses, delimiters with nothing
+// but whitespace between them) - see the dedicated hard-degenerate-input
+// test in tests/contract-model/finding-4-recursive-coordinate-decomposition
+// .test.ts. Arbitrary finite N is therefore supported directly: N is simply
+// however many genuine boundaries this one bounded pass finds, with no
+// hardcoded cap and no possibility of non-termination.
+// ---------------------------------------------------------------------------
+
+export interface CoordinateClauseSegment {
+  text: string;
+  start: number;
+  end: number;
+}
+
+/** "and/or" is matched as a single token FIRST (alternation order matters)
+ * so a literal "and/or" in source text produces one clean delimiter rather
+ * than two adjacent "and" + "or" matches that would otherwise leave a
+ * stray "/or"/"and/" fragment of punctuation glued onto a neighboring
+ * segment's text. ";" is included as a purely generic, non-covenant-
+ * specific coordinate delimiter (Architecture Invariants #29) - a common
+ * real drafting pattern for un-enumerated sibling baskets/exceptions. */
+const TOP_LEVEL_DELIMITER = /\band\/or\b|\b(?:and|or)\b|;/gi;
+
+interface RawSpan {
+  text: string;
+  start: number;
+  end: number;
+}
+
+function findTopLevelDelimiters(text: string): { start: number; end: number }[] {
+  const re = new RegExp(TOP_LEVEL_DELIMITER.source, TOP_LEVEL_DELIMITER.flags);
+  const occurrences: { start: number; end: number }[] = [];
+  let depth = 0;
+  let idx = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    for (; idx < m.index; idx++) {
+      if (text[idx] === "(") depth++;
+      else if (text[idx] === ")") depth = Math.max(0, depth - 1);
+    }
+    if (depth === 0) occurrences.push({ start: m.index, end: m.index + m[0].length });
+    if (m.index === re.lastIndex) re.lastIndex++;
+  }
+  return occurrences;
+}
+
+function trimmedSpan(raw: string, rawStart: number): RawSpan {
+  const leadingWs = raw.length - raw.trimStart().length;
+  const trimmed = raw.trim();
+  return { text: trimmed, start: rawStart + leadingWs, end: rawStart + leadingWs + trimmed.length };
+}
+
+/**
+ * Mechanically splits `text` into the raw top-level fragments delimited by
+ * every top-level "and"/"or"/"and-or"/";" occurrence - no family/value
+ * qualification applied yet (that happens once, in the caller's single
+ * forward pass). A single fragment (no top-level delimiter found at all)
+ * is returned as a 1-element array. Bounded, non-recursive, computed once.
+ */
+function splitIntoRawFragments(text: string): RawSpan[] {
+  const delimiters = findTopLevelDelimiters(text);
+  if (delimiters.length === 0) return [trimmedSpan(text, 0)];
+  const fragments: RawSpan[] = [];
+  let cursor = 0;
+  for (const d of delimiters) {
+    fragments.push(trimmedSpan(text.slice(cursor, d.start), cursor));
+    cursor = d.end;
+  }
+  fragments.push(trimmedSpan(text.slice(cursor), cursor));
+  return fragments;
+}
+
+/**
+ * Generalized, arbitrary-N-ary successor to findCoordinateClauseSplit - see
+ * the module section doc comment above for the full design and termination
+ * proof. Returns null when fewer than 2 genuine segments result (task's own
+ * "never force 1:1" - a region with no genuine independent-claim boundary
+ * is left as a single unit, exactly like the primitive above).
+ */
+export function segmentCoordinateClauses(text: string): CoordinateClauseSegment[] | null {
+  const fragments = splitIntoRawFragments(text);
+  if (fragments.length < 2) return null;
+
+  const segments: CoordinateClauseSegment[] = [];
+  let currentStart = fragments[0]!.start;
+  let currentEnd = fragments[0]!.end;
+  let currentText = fragments[0]!.text;
+  let establishedFamily: MaterialUnitFamily | null = matchFamilyKeyword(currentText);
+
+  for (let i = 1; i < fragments.length; i++) {
+    const next = fragments[i]!;
+    const { qualifies } = isGenuineClauseBoundary(currentText, next.text, establishedFamily, establishedFamily);
+    if (qualifies) {
+      segments.push({ text: currentText, start: currentStart, end: currentEnd });
+      currentStart = next.start;
+      currentEnd = next.end;
+      currentText = next.text;
+    } else {
+      // Not a genuine boundary (ordinary noun-phrase conjunction, a
+      // modal-restatement, or a same-family continuation with no
+      // distinguishing number) - fold `next` into the still-growing
+      // current segment rather than starting a new one.
+      currentEnd = next.end;
+      currentText = text.slice(currentStart, currentEnd);
+    }
+    // Track the most recently seen EXPLICIT family keyword so a later
+    // fragment that never repeats it (a shared-chapeau sibling basket) can
+    // still inherit it via isGenuineClauseBoundary's fallback parameters.
+    const explicitFamily = matchFamilyKeyword(currentText);
+    if (explicitFamily) establishedFamily = explicitFamily;
+  }
+  segments.push({ text: currentText, start: currentStart, end: currentEnd });
+
+  return segments.length >= 2 ? segments : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -378,42 +597,55 @@ export function hypothesizeUnitsForRegion(region: RoutedRegion, fullText: string
 
   const split = splitEnumeratedItems(fullText);
   if (!split) {
-    // Phase 3F.1.6.R BLOCKER-8 fix (F15-1) - before falling back to one
-    // whole-region unit, check for a bare "clauseA (and|or) clauseB" fused
-    // sentence with no lettered marker but two independently-operative,
-    // economically distinct claims (see findCoordinateClauseSplit above).
-    // Fires only for a genuine family-difference across the conjunction -
-    // never for an ordinary sentence that merely contains "and"/"or".
-    const coordinateSplit = findCoordinateClauseSplit(fullText);
-    if (coordinateSplit) {
-      const leftSignals = detectAllSignals(coordinateSplit.left.text);
-      const leftUnit = buildUnit({
+    // Phase 3F.1.6.R BLOCKER-8 fix (F15-1), generalized to arbitrary N by
+    // Phase 3F.1.6.RX-FINAL Part A Workstream C (FINDING-4) - before
+    // falling back to one whole-region unit, check for a bare
+    // "clauseA (and|or|and/or|;) clauseB (and|or|and/or|;) clauseC ..."
+    // fused sentence with no lettered marker but TWO OR MORE independently-
+    // operative, economically distinct claims (see segmentCoordinateClauses
+    // above). Fires only for a genuine family-difference (or, same-family,
+    // a genuine disjoint numeric value) across each delimiter - never for
+    // an ordinary sentence that merely contains "and"/"or" (e.g. "cash and
+    // cash equivalents").
+    const coordinateSegments = segmentCoordinateClauses(fullText);
+    if (coordinateSegments) {
+      // The FIRST (leftmost) segment is the one carrying whatever local
+      // negation/obligation/permission verb governs the whole fused
+      // sentence (e.g. "shall not" / "may") - every later segment routinely
+      // has no such verb of its own (it inherits the first segment's
+      // posture), exactly the same inheritance discipline the original
+      // 2-way BLOCKER-8 fix established, generalized here to segment 0
+      // being the inheritance ROOT for every sibling, not just segment 1.
+      const rootSignals = detectAllSignals(coordinateSegments[0]!.text);
+      const rootUnit = buildUnit({
         ctx,
-        anchors: [{ ...baseAnchor, charEnd: baseAnchor.charStart + coordinateSplit.left.end, charStart: baseAnchor.charStart + coordinateSplit.left.start }],
-        excerptText: coordinateSplit.left.text,
-        signals: leftSignals,
+        anchors: [{ ...baseAnchor, charStart: baseAnchor.charStart + coordinateSegments[0]!.start, charEnd: baseAnchor.charStart + coordinateSegments[0]!.end }],
+        excerptText: coordinateSegments[0]!.text,
+        signals: rootSignals,
         isExceptionItem: parentIsExceptionChapeau,
         headingHint,
         fromRawSourceFallback: region.fromRawSourceFallback,
-        detectionSignature: `coordinate-left:${leftSignals.map((s) => s.name).sort().join(",")}`,
+        detectionSignature: `coordinate:0:${rootSignals.map((s) => s.name).sort().join(",")}`,
       });
-      const rightSignals = detectAllSignals(coordinateSplit.right.text);
-      const rightUnit = buildUnit({
-        ctx,
-        anchors: [{ ...baseAnchor, charStart: baseAnchor.charStart + coordinateSplit.right.start, charEnd: baseAnchor.charStart + coordinateSplit.right.end }],
-        excerptText: coordinateSplit.right.text,
-        signals: rightSignals,
-        isExceptionItem: parentIsExceptionChapeau,
-        headingHint,
-        fromRawSourceFallback: region.fromRawSourceFallback,
-        detectionSignature: `coordinate-right:${rightSignals.map((s) => s.name).sort().join(",")}`,
-        // The right-hand clause routinely has no local negation/obligation
-        // verb of its own (it inherits "shall not"/"shall" from the left
-        // clause's own text) - only used when rightSignals alone classify
-        // to UNCLEAR_SIGNAL, never overriding a genuine local signal.
-        inheritedPosture: leftUnit.postureSignal,
-      });
-      return [leftUnit, rightUnit];
+      const units: MaterialSemanticUnit[] = [rootUnit];
+      for (let i = 1; i < coordinateSegments.length; i++) {
+        const segment = coordinateSegments[i]!;
+        const segmentSignals = detectAllSignals(segment.text);
+        units.push(
+          buildUnit({
+            ctx,
+            anchors: [{ ...baseAnchor, charStart: baseAnchor.charStart + segment.start, charEnd: baseAnchor.charStart + segment.end }],
+            excerptText: segment.text,
+            signals: segmentSignals,
+            isExceptionItem: parentIsExceptionChapeau,
+            headingHint,
+            fromRawSourceFallback: region.fromRawSourceFallback,
+            detectionSignature: `coordinate:${i}:${segmentSignals.map((s) => s.name).sort().join(",")}`,
+            inheritedPosture: rootUnit.postureSignal,
+          })
+        );
+      }
+      return units;
     }
 
     // task's own worked example applies even when the structural parser has ALREADY split
