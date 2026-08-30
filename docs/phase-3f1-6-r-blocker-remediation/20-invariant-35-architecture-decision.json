@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r.v1",
+  "artifactId": "WORKSTREAM_G_INVARIANT_35_ARCHITECTURE_DECISION",
+  "workstream": "G",
+  "blockerId": "BLOCKER-11",
+  "generatedAt": "2026-08-30T00:00:00Z",
+  "sourceFinding": {
+    "document": "docs/phase-3f1-6-final-foundation-certification/24-architecture-invariant-audit.json",
+    "invariantId": 35,
+    "classification": "VIOLATED",
+    "quotedEvidence": "prisma/schema.prisma's DebtEvent.sourceLedgerEntryId (the invariant's own named example field) is, confirmed by grep across the entire lib/ and app/ trees this session, NEVER WRITTEN anywhere in production code -- only read (lib/financial-core-db/adapter.ts:194, with a `?? undefined` fallback for the always-null case)."
+  },
+  "task": "Determine whether invariant 35's guarantee for the sourceLedgerEntryId example is REQUIRED_NOW_AND_IMPLEMENTED (some real app/ code path today creates a DebtEvent from a ledger-derived source and needs the link) or DEFERRED_TO_A_NAMED_FUTURE_PHASE_BY_ARCHITECTURE_DECISION (no current caller needs it; the field genuinely belongs to future reconciliation work). Explicitly forbidden: writing a fake/placeholder value into sourceLedgerEntryId merely to make the check pass.",
+  "investigation": {
+    "documentsRead": [
+      "docs/phase-3f1-6-final-foundation-certification/24-architecture-invariant-audit.json (invariant 35 entry, full)",
+      "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md (invariant 35's exact text, and the Phase 3-7 stable-sequence definition at the end of the document)",
+      "docs/HEADROOM-ROADMAP.md (in full; specifically the FinancialSnapshot/FinancialState fork discussion, the LedgerEntry/DebtEvent fork discussion at line 178 of the current document, and the Phase 5/Phase 6 goal statements)"
+    ],
+    "codeRead": [
+      "prisma/schema.prisma — DebtEvent model (id, companyId, facilityId, eventType, date, amount, refinancesFacilityId, relatedPermissionIds, sourceLedgerEntryId, provenance) and LedgerEntry model (id, companyId, documentId, date, description, basket, amount, direction, source) — two structurally separate models with no foreign-key relation between them; sourceLedgerEntryId is a bare nullable String, not a Prisma relation field",
+      "lib/financial-core-db/adapter.ts — loadDebtEvents() (the sole reader of sourceLedgerEntryId, line ~194, `sourceLedgerEntryId: r.sourceLedgerEntryId ?? undefined`); no writer of debtEvent rows anywhere in lib/ or app/",
+      "lib/financial-core/* (capital-structure.ts, liquidity.ts, position-service.ts, maturity.ts, interest.ts, scenario.ts, scenario-service.ts, solver-adapter.ts, types.ts) — all pure, in-memory functions that consume DebtEvent[] already loaded from the DB; none construct or persist a new DebtEvent",
+      "app/[companyId]/ledger/actions.ts — addLedgerEntry(), deleteLedgerEntry(), commitRestrictedPayment() — the live, real LedgerEntry write paths (manual entry and the Simulate tab's 'commit to ledger' action). None of these create or touch a DebtEvent row.",
+      "app/[companyId]/feeds/actions.ts — the FeedQueue LEDGER_ENTRY-kind approval path, another live LedgerEntry write path (from an approved connector/feed item). Also does not create or touch a DebtEvent row.",
+      "scripts/populate-coherent-financial-core.ts, scripts/populate-matthews-financial-provenance.ts, scripts/financial-core-acceptance-run.ts — the only three places in the entire repository that call `prisma.debtEvent.create`/`createMany`. All three are one-off, offline, engineer-run data-population/acceptance scripts that hand-type DebtEvent rows directly from primary sources (SEC filings, 8-Ks) with a ProvencancedFact provenance wrapper. None of them read from, or link to, any LedgerEntry row when constructing a DebtEvent — there is no LedgerEntry row in the current data model that a DebtEvent script-created row could accurately be said to originate from."
+    ],
+    "greps": [
+      "grep -rn \"DebtEvent\" lib app prisma scripts — enumerated every reference; confirmed all `debtEvent.create`/`createMany` call sites live in scripts/, none in app/ or lib/",
+      "grep -rn \"prisma\\.ledgerEntry\" lib app prisma scripts — confirmed LedgerEntry IS created by live app/ code (app/[companyId]/ledger/actions.ts, app/[companyId]/feeds/actions.ts, and prisma/seed.ts), unlike DebtEvent",
+      "grep -rn \"sourceLedgerEntryId\" . — exactly 4 hits total: the schema field declaration, the DebtEvent TypeScript type, the DB row interface, and the single read-with-fallback site in adapter.ts. Zero write sites anywhere."
+    ],
+    "keyFindings": [
+      "No live app/ route creates a DebtEvent at all, today, under any circumstance. Every DebtEvent row that exists in any environment was put there by an engineer running an offline script.",
+      "LedgerEntry, by contrast, IS created live today, but only for a narrow, unrelated purpose: restricted-payment-pool (dividend/investment/asset-sale/debt-incur/debt-repay/equity) basket usage tracking for the legacy covenant engine. This matches docs/HEADROOM-ROADMAP.md's own characterization: 'LedgerEntry is real and load-bearing... but narrow — a flat 6-value basket enum, not a rich transaction record.'",
+      "DebtEvent and LedgerEntry are not two views of the same underlying event stream today — they are populated by entirely disjoint mechanisms (offline scripts vs. live UI/feed actions) recording different things (facility-level issuance/repayment/refinancing history vs. RP-pool basket usage). There is currently no real-world case where creating one should, today, populate a reference to the other, because the offline DebtEvent-population scripts are not derived from LedgerEntry rows in the first place — they are derived from primary filings.",
+      "docs/HEADROOM-ROADMAP.md is explicit and unambiguous that this exact fork is future work, by name: 'DebtEvent is the richer, newer, event-sourced model, explicitly designed with a sourceLedgerEntryId link back to LedgerEntry that has never actually been populated. Migration path: Phase 6 is where these should be reconciled into the real transaction/capacity-truth ledger described in North Star §2C.' The Phase 6 section header itself repeats this: 'This is also where the current LedgerEntry/DebtEvent fork (§3.3) gets resolved into the real transaction/capacity-truth model.'",
+      "The roadmap's stable phase sequence (also restated verbatim in docs/HEADROOM-ARCHITECTURE-INVARIANTS.md's closing ARCHITECTURE_CHANGE_PROPOSAL section) names Phase 5 as 'Financial Data / Continuous Monitoring' (canonical ontology reconciliation of FinancialSnapshot/FinancialState, connector framework, ERP/treasury connections, AI-assisted mapping, reconciliation/approval, sync/freshness) and Phase 6 as 'Living Headroom State' (the real unified dependency graph, living basket ledger, incremental recomputation). The LedgerEntry/DebtEvent reconciliation is named specifically under Phase 6, not Phase 5 — Phase 5's scope is the FinancialSnapshot/FinancialState fork, a different, adjacent fork the roadmap is careful to distinguish from the LedgerEntry/DebtEvent one.",
+      "Writing any value into sourceLedgerEntryId today — even a 'best effort' heuristic match against an existing LedgerEntry row — would be fabricated provenance: there is no real, current causal relationship between a script-populated DebtEvent (sourced from an 8-K) and any LedgerEntry row (sourced from manual RP-pool entry or a feed approval) to honestly record. Doing so would trade a disclosed, honest gap (invariant 35, correctly flagged VIOLATED) for a dishonest one (fabricated provenance, violating invariants 1, 2, and 4), which is explicitly forbidden by this workstream's charter and by the invariants document's own provenance rules."
+    ]
+  },
+  "conclusion": {
+    "determination": "DEFERRED_TO_PHASE_6_BY_ARCHITECTURE_DECISION",
+    "actualRoadmapPhaseName": "Phase 6 — Living Headroom State",
+    "reasoning": "No current app/ code path creates a DebtEvent, ledger-derived or otherwise; the only DebtEvent writers in the entire codebase are offline, engineer-run, one-off data-population scripts that source their data directly from primary filings, with no LedgerEntry counterpart to link to. LedgerEntry is a live but narrow, purpose-unrelated model (legacy RP-pool basket tracking). The two logs are not currently reconcilable in any factually honest way because they do not currently record overlapping events for the same company transaction — the reconciliation invariant 35 demands presupposes a real transaction/capacity-truth model that unifies them, which docs/HEADROOM-ROADMAP.md explicitly, by name, assigns to Phase 6 ('Living Headroom State'), not to any phase already built or in progress. Implementing sourceLedgerEntryId population now, absent that unified model, would require fabricating a link that does not exist, which this workstream's charter explicitly forbids and which would itself violate invariants 1/2/4 (provenance may never be fabricated). Therefore this is a genuine, evidence-based architecture-scope finding, not an excuse to skip a fixable gap: the field is real, currently and correctly unpopulated, and the invariant's own text already discloses this must not be worked around with a placeholder.",
+    "whatThisDoesNotClaim": "This does NOT dispute or soften the original certification finding that sourceLedgerEntryId is never written in production code today — that finding is factually correct and remains true after this workstream's changes. What this resolves is the *scope and timing* of when invariant 35 requires that field to be written: not now, because no current code path has a real, honest link to write, but at Phase 6, when the LedgerEntry/DebtEvent fork is architecturally reconciled per the roadmap's own explicit plan. The general principle of invariant 35 (no schema field may exist for a reconciliation purpose while permanently and silently going unpopulated with no plan to ever populate it) is fully preserved and is exactly why a named target phase, not silence, is required here."
+  },
+  "codeChangesImplemented": "None. Per the (B) determination, no speculative or placeholder DebtEvent<->LedgerEntry linking code was implemented, consistent with this workstream's explicit charter (no fake/placeholder values, no speculative implementation for a reconciliation system that does not yet exist).",
+  "documentationChangesMade": [
+    {
+      "file": "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md",
+      "change": "Added a scope note directly under invariant 35's existing text (the invariant's own wording is unchanged and unweakened), explicitly marking the sourceLedgerEntryId example as FUTURE_ENFORCED, naming Phase 6 — Living Headroom State as the real target phase per docs/HEADROOM-ROADMAP.md, summarizing why no current code path can honestly populate it, and cross-referencing this artifact for full reasoning."
+    }
+  ],
+  "disposition": "ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "This disposition reflects that the architecture scope of BLOCKER-11 has been resolved by this workstream (invariant 35's sourceLedgerEntryId example is correctly re-scoped as FUTURE_ENFORCED at Phase 6, per the actual roadmap, with no fabricated implementation). It is explicitly NOT a claim of CERTIFIED status — that classification is reserved for a future, independent recertification phase, which this workstream does not perform."
+}
