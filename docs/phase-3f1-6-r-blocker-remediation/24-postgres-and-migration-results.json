@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "POSTGRES_AND_MIGRATION_RESULTS",
+  "generatedAt": "2026-08-30T06:40:00Z",
+  "purpose": "Section 25: real Postgres verification for the one new migration this phase introduced (BLOCKER-10's AnalysisRun model) plus the real backfill this phase ran (BLOCKER-7).",
+  "postgresAvailability": "UP throughout (started via pg_ctlcluster 16 main start at phase baseline; confirmed via pg_isready before every gate run in this phase).",
+  "migrationStatus": {
+    "command": "npx prisma migrate status",
+    "result": "28 migrations found (27 pre-existing + 20260830054801_phase_3f1_6_r_live_analysis_run), database schema up to date."
+  },
+  "schemaDriftCheck": {
+    "command": "npx prisma migrate diff --from-schema-datamodel prisma/schema.prisma --to-url <DATABASE_URL> --script",
+    "result": "Empty diff ('This is an empty migration.') - the live database schema matches prisma/schema.prisma exactly, confirming the new AnalysisRun migration applied cleanly with zero drift."
+  },
+  "newMigrationDetail": {
+    "migration": "20260830054801_phase_3f1_6_r_live_analysis_run",
+    "purpose": "Adds the minimal AnalysisRun model (BLOCKER-10, Section 17 of the phase charter) tracking PENDING/RUNNING/COMPLETED/COMPLETED_WITH_REVIEW/FAILED analysis-run state, tenant/company, document/package version, algorithm version, current stage, timestamps, fatal error metadata, and review-item count.",
+    "verifiedBy": "Workstream F's own real Postgres run (applied via the repository's standard prisma migration workflow) plus this session's own migrate status/diff checks above.",
+    "destructiveChangeCheck": "Purely additive (new model, no column drops/type changes on any existing table) - confirmed via `npx prisma migrate diff` producing zero unexpected statements beyond the new table/enum creation."
+  },
+  "backfillVerification": {
+    "script": "scripts/backfill-contract-rule-source-trace.ts (BLOCKER-7, Workstream E)",
+    "ranAgainstRealPostgres": true,
+    "result": "95/95 ContractRule rows and 191/191 definedTermRefs entries corrected on the first --write run; a second dry-run confirmed 0 affected (idempotent); 0 unrecoverable rows.",
+    "tenantIsolationVerified": "Backfill scoped every write via updateMany({where:{id, companyId}}) with a row-count assertion, confirmed in Workstream E's own artifact (10-contract-rule-backfill.json)."
+  },
+  "prismaClientRegenerationNote": "After the new migration/schema change landed, the generated Prisma client had gone stale (still reflecting the pre-migration schema), which caused 43 unrelated test files to fail with a spurious 'Environment variable not found: DATABASE_URL' error during this session's own integration testing. Running `npx prisma generate` fixed all 43 with zero code changes - documented here as an integration-step gotcha, not a defect in any of the 7 workstreams' actual code.",
+  "conclusion": "The one new migration this phase introduced applies cleanly with zero schema drift and zero destructive changes; the one real production backfill this phase ran completed successfully and idempotently against real data in this environment's Postgres instance."
+}
