@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "PART_A_VERDICT",
+  "generatedAt": "2026-08-30T16:41:00Z",
+  "purpose": "Applies Part A's own pass criteria and delivers exactly one of the two allowed Part A verdict strings.",
+
+  "blockerDispositionSummary": [
+    { "id": "BLOCKER-1", "title": "Structural heading/rank-stack corruption", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "A", "note": "2 new root-cause gaps found and fixed beyond 3F.1.6.R's own fix (page-number-artifact whitespace collapse; SECTION_PATTERNS winner-take-all). All 7 original anomalies still 0; 31 new adversarial tests." },
+    { "id": "BLOCKER-2", "title": "Supersession signal lost before DiscoveredCandidate", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "B + this session's own integration closure", "note": "Workstream B fixed context-retrieval's real consumer gap and found a deeper, more severe coupled bypass in analysis/orchestrator.ts (supersessionIndex never wired into discovery at all). This session closed that gap at its root (see 18-orchestrator-supersession-lineage-closure.json) during integration - the NEW_COUPLED_BLOCKER_DISCOVERED disposition is now CLOSED, not left open for Part B." },
+    { "id": "BLOCKER-3", "title": "Source-inventory supersession/current-state architecture", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "B", "note": "Held under fresh adversarial construction; no bypass found." },
+    { "id": "BLOCKER-4", "title": "Null operativeState failing open", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "B", "note": "Held under fresh adversarial construction; no bypass found." },
+    { "id": "BLOCKER-5", "title": "LLM-facing tools bypassing operative state", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "B", "note": "getContextBundleComponent/getSharedCapContext's false 'already-vetted' classification fixed; now genuinely disclose per-item supersessionStatus." },
+    { "id": "BLOCKER-6", "title": "Ambiguous DEFINITION amendment reaching false verified state", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "B", "note": "Held under fresh adversarial construction; no bypass found." },
+    { "id": "BLOCKER-7", "title": "Persisted ContractRule source-trace defect / unbackfilled rows", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "C", "note": "Upgraded from format-shape check to genuine referential-integrity verification; found and fixed the coupled DefinedTermNode.stableKey staleness this required to actually close (71/71 rows corrected); 106/191 refs now resolve, up from 0/191. Remaining 85/191 disclosed as a distinct, out-of-scope extraction-completeness gap." },
+    { "id": "BLOCKER-8", "title": "Sibling claim identity collision (AUDIT-F4)", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "D", "note": "Claim Identity V2 built: grounded value-anchor fingerprinting + verified-quote disambiguation, closing the same-family/same-role/same-node collision AUDIT-F4 froze. One narrower residual honestly disclosed and pinned by a dedicated test (AUDIT-F4-RESIDUAL-1: zero-number, no-verified-quote fusion)." },
+    { "id": "BLOCKER-9", "title": "Independent verifier missing omitted qualifying condition", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "E", "note": "2 new genuine defects found and fixed beyond 3F.1.6.R's own fix: a CONDITIONAL_PHRASE recall gap, and a precision regression where a deterministic UNCERTAIN finding could never be downgraded even after genuine (non-synthetic) Layer-2 confirmation - fixed via isSynthetic-gated downgradeUnconfirmedAmbiguousFindings." },
+    { "id": "BLOCKER-10", "title": "Contract-model pipeline not a complete, durable live application trust path", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "H", "note": "Umbrella blocker; closed via AUDIT-F1/F2/F3/F6/F7 below plus this session's own orchestrator supersession/lineage closure." },
+    { "id": "BLOCKER-11", "title": "Architecture Invariant #35 / sourceLedgerEntryId scope mismatch", "disposition": "ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "G", "note": "Independently re-validated: still zero live DebtEvent creation sites; the Phase 6 architecture-scope decision holds against current code. No code change." }
+  ],
+
+  "auditFindingDispositionSummary": [
+    { "id": "AUDIT-F1", "title": "Trusted semantic IR not durably persisted", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "H", "note": "New SemanticTruthRecord model, trust-status-gated, tenant-isolated, versioned; genuine reload proven via a brand-new PrismaClient re-reading a VERIFIED row after a real run." },
+    { "id": "AUDIT-F2", "title": "AnalysisRun concurrency claim racy", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "H", "note": "Atomic create()-then-conditional-updateMany compare-and-swap. Bug reproduced with the old code (12 concurrent callers all reported STARTED) and confirmed closed with the fix (1 STARTED, 11 ALREADY_RUNNING)." },
+    { "id": "AUDIT-F3", "title": "Partial instrument failure can disappear", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "H", "note": "New AnalysisRunIssue model + new PARTIAL status, distinct from COMPLETED_WITH_REVIEW; every instrument failure durably recorded before final status decided." },
+    { "id": "AUDIT-F4", "title": "BLOCKER-8 only partially remediated", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "D", "note": "Same as BLOCKER-8 above - Claim Identity V2." },
+    { "id": "AUDIT-F5", "title": "ContractRule backfill format check insufficient", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "C", "note": "Same as BLOCKER-7 above - genuine referential-integrity verification plus coupled DefinedTermNode fix." },
+    { "id": "AUDIT-F6", "title": "Live product-flow inevitability unverified", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "H", "note": "Confirmed a real bypass (upload -> review without extraction ever running); kept the legitimate two-step design and added a real-status visibility card rather than forcing a redesign." },
+    { "id": "AUDIT-F7", "title": "Pre-ownership failure can be log-only", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION", "workstream": "H", "note": "Pre-AnalysisRun-identity span now durably logs to AnalysisFailureLog and returns a structured result; one disclosed residual (a total Postgres outage would still defeat this - inherent, not hidden)." }
+  ],
+
+  "newCoupledFindingDisposition": {
+    "id": "ORCHESTRATOR-SUPERSESSION-LINEAGE-GAP",
+    "discoveredBy": "Workstream B, while revalidating BLOCKER-2",
+    "closedBy": "This session's own integration-time fix (18-orchestrator-supersession-lineage-closure.json) - fell in the gap between Workstream B's remit (forbidden from touching orchestrator.ts) and Workstream H's remit (did not name this file's supersession wiring)",
+    "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+    "note": "Root cause traced one level deeper than Workstream B's own report: the orchestrator never wired a real NodeSupersessionIndex into discovery at all, silently defeating both its own operativeLineage and Workstream B's own context-retrieval fix in live production. Closed at the source."
+  },
+
+  "passCriteriaChecklist": [
+    { "id": 1, "requirement": "All 11 frozen blockers carry a Part-A-legal disposition (REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION or ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION for Blocker-11 only) - never CERTIFIED_CLOSED", "result": "PASS" },
+    { "id": 2, "requirement": "All 7 AUDIT-F items closed with a real fix or an honestly narrower disclosed residual", "result": "PASS" },
+    { "id": 3, "requirement": "Any newly-discovered coupled blocker is resolved before Part A closes, not merely documented for Part B", "result": "PASS - the orchestrator supersession/lineage gap Workstream B found was closed during integration, not deferred." },
+    { "id": 4, "requirement": "Known-package regression (FWRG/LSB/CONMED/DSGR) shows no new regression, no package-specific tuning", "result": "PASS - 19-known-package-regression-and-false-credit.json." },
+    { "id": 5, "requirement": "All 14 permanent false-credit controls remain NO_CREDIT", "result": "PASS - 14/14 unanimous." },
+    { "id": 6, "requirement": "Full quality gates acceptable (tsc/eslint at baseline, vitest green modulo pre-existing/unrelated, build succeeds, zero schema drift)", "result": "PASS - 20-part-a-quality-gates.json." },
+    { "id": 7, "requirement": "No forbidden-category work performed (UI redesign, dashboard, simulation, financial connectors, Phase 4 computation, new unseen package, evaluator V4, package-specific tuning, broad unrelated refactor)", "result": "PASS - every production file change maps to a frozen blocker, an AUDIT-F item, or the newly-discovered coupled finding." }
+  ],
+  "checklistSummary": { "total": 7, "pass": 7, "fail": 0 },
+
+  "startingCommit": "4005687",
+  "partAEndCommit": "b232f71",
+  "verdict": "PHASE_3F_1_6_RX_REMEDIATION_READY_FOR_RECERTIFICATION",
+  "explicitStatement": "All 7 Part A pass criteria are met. All 11 originally-certified blockers and all 7 independently-identified audit findings (AUDIT-F1 through F7) have been remediated or architecture-scope-resolved with genuine root-cause fixes, real Postgres evidence, and honestly-disclosed residuals where a fix is narrower than the ideal. A newly-discovered coupled blocker (the live orchestrator's dead supersession/lineage wiring) was found during Part A's own revalidation work and closed before Part A's close, per this phase's own charter that production changes are permitted in Part A. This verdict does NOT self-certify any of these fixes - every disposition above reads REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION or ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION, never CERTIFIED. Part B (production-frozen, independently adversarial recertification) may now begin, starting from this exact commit as the freeze point.",
+  "nextStep": "Part B: record this exact commit (b232f71) as the production-freeze SHA. No further production fix is permitted during Part B - if Part B finds a real defect, the phase's Part B verdict must be FAILED, not silently patched."
+}
