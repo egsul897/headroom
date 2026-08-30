@@ -4,32 +4,24 @@
  * supersession/lineage integration closure (18-orchestrator-supersession-
  * lineage-closure.json). See docs/phase-3f1-6-rx-final-blocker-closure/
  * 24-part-b-blocker2-6-orchestrator-recertification.json for the full
- * write-up this file's own results feed into.
+ * write-up this file's own results originally fed into.
  *
- * NEW ADVERSARIAL FINDING (BLOCKER-5 scope): Workstream B's own per-tool
- * trace (04-operative-supersession-remediation.json) reviewed all 14
- * LLM-facing evidence tools in lib/contract-model/compiler/semantic/tools.ts
- * and found getDefinition "findProvisionView-first, correct as claimed."
- * That trace checked only the HAPPY branch (operative?.currentText truthy).
- * Independently re-reading getDefinition's own execute() body line by line
- * shows an asymmetry with its SECTION-kind sibling getOperativeProvision:
- * getOperativeProvision discloses `view.status` in BOTH its "found" and
- * "not found, raw fallback" branches; getDefinition discloses NOTHING about
- * `operative.status` in either branch - when `operative` exists (a real,
- * known amendment/ambiguity record for this exact term) but
- * `operative.currentText` is null (the honest value buildProvisionView sets
- * whenever targetResolutionStatus !== "UNIQUE", e.g. a real AMBIGUOUS
- * DEFINITION amendment - exactly BLOCKER-6's own scenario shape, see
- * operative-state.ts lines ~294/342), getDefinition silently falls through
- * to the RAW, stale base-document definition text via
- * getScopedDefinitionFullText, labeled only `source: "base-document"` -
- * with ZERO indication that a real, known amendment ambiguity exists for
- * this exact term. This is the SUPER-5-shaped false-confidence bypass
- * (raw text served as if uncontested) reintroduced through a narrower gap
- * than the 5 originally-named tools, on a fixture directly modeled on
- * cross-module-propagation-chains.test.ts's own "Chain 2" BLOCKER-6
- * construction (2 real physical definitions of the same term, one real
- * amendment targeting it, real AMBIGUOUS/PARTIAL resolution).
+ * Phase 3F.1.6.RX-FINAL Workstream B (FINDING-2/FINDING-3 remediation) -
+ * this file originally DOCUMENTED the live defect the recertification
+ * above found (24's own task5_blocker5RealDefect / task4.blocker6):
+ * getDefinition silently served the raw, stale base-document definition
+ * text with a plain `source: "base-document"` label - indistinguishable
+ * from a never-amended term - for a term with a real, on-file
+ * AMBIGUOUS/PARTIAL amendment record, unlike its SECTION-kind sibling
+ * getOperativeProvision (which always discloses `status` in every
+ * branch). The fix (lib/contract-model/compiler/semantic/tools.ts's
+ * getDefinition, reusing getOperativeProvision's own discipline exactly -
+ * see that file's own header comment on the fix) is now in production;
+ * this file's assertions below have been updated from "prove the bug
+ * exists" to "prove the bug is closed and stays closed" - same fixtures,
+ * same adversarial construction, opposite expected outcome. See
+ * docs/phase-3f1-6-rx-final-terminal-closure/
+ * 04-definition-operative-safety-remediation.json for the full write-up.
  */
 import { describe, expect, it } from "vitest";
 import { buildStructuralIndex } from "../../lib/contract-model/compiler/structural-index";
@@ -102,7 +94,7 @@ function ambiguousDefinitionProvision(): OperativeProvisionView {
   };
 }
 
-describe("Part B recert - NEW finding: getDefinition silently serves stale text for a real, known AMBIGUOUS DEFINITION amendment", () => {
+describe("Part B recert FINDING-2/3 - FIXED: getDefinition no longer silently serves stale text for a real, known AMBIGUOUS DEFINITION amendment", () => {
   it("getOperativeProvision's SECTION-kind analog discloses status even when currentText cannot be attached (the correct, established pattern)", () => {
     const sectionNode: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "SECTION", heading: "Indebtedness", sectionRef: "6.01", nodeKey: `${TEST_DOCUMENT_ID}::6.01`, nodeId: `n-${TEST_DOCUMENT_ID}-601`, charStart: 0, charEnd: 50, ordinal: 0, parentSectionRef: null, parentNodeId: null };
     const index = buildStructuralIndex(new Map([[TEST_DOCUMENT_ID, { text: "Section 6.01 Indebtedness. Stale $50,000,000 text.", nodes: [sectionNode] }]]), [], []);
@@ -125,7 +117,7 @@ describe("Part B recert - NEW finding: getDefinition silently serves stale text 
     expect(result.currentText).toBe("(no current text recorded)");
   });
 
-  it("BUG: getDefinition, given a real AMBIGUOUS DEFINITION amendment record for this exact term, silently returns the raw stale base-document text with NO status/ambiguity disclosure at all - a false-confidence answer for a MATERIAL term (e.g. a covenant basket definition)", () => {
+  it("FIXED: getDefinition, given a real AMBIGUOUS DEFINITION amendment record for this exact term, no longer returns the raw stale base-document text as though uncontested - it discloses the real operative status and withholds the confident-looking figure", () => {
     const { index } = buildIndexWithStaleDefinition();
     const operativeState: OperativeContractState = { instrumentKey: "instrument-1", asOfDate: "2026-01-01", provisions: [ambiguousDefinitionProvision()], status: "OPERATIVE_STATE_PARTIAL", summary: "test", unattachedEffects: [] };
     const tools = buildToolSet({ structuralIndex: index, operativeState, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, { current: 0 }, DEFAULT_TOOL_BUDGET);
@@ -134,26 +126,25 @@ describe("Part B recert - NEW finding: getDefinition silently serves stale text 
     const outcome = getDefinition.execute({ term: "Permitted Investments" });
     const result = outcome.result as Record<string, unknown>;
 
-    // OBSERVED (real, current production behavior): the raw, stale
-    // $8,000,000 base-document text is served, unconditionally labeled
-    // "source: base-document" - EXACTLY the label a genuinely-never-amended
-    // term would also receive. There is no way for the LLM (or a human
-    // reading the tool_result JSON) to tell this term is subject to a real,
-    // known amendment the operative-state layer could not resolve.
-    expect(result.source).toBe("base-document");
-    expect(result.text).toContain("$8,000,000");
-    // The bug: no field on this response discloses the real OperativeProvisionView
-    // this exact term already has on file (status, targetResolutionStatus,
-    // unresolvedIssues, reviewRequired) - contrast with getOperativeProvision
-    // above, which discloses `status` unconditionally whenever a view exists.
-    expect(result.status).toBeUndefined();
-    expect(result.unresolvedIssues).toBeUndefined();
-    expect(JSON.stringify(result)).not.toMatch(/AMBIGUOUS|PARTIAL|ambiguous|review/i);
+    // FIXED (mirrors getOperativeProvision's own established discipline
+    // exactly): the real operative status is disclosed unconditionally
+    // whenever an OperativeProvisionView exists for this term, and the
+    // stale/raw base-document figure is NEVER substituted for a confident
+    // "current" answer - the honest "(no current text recorded)" placeholder
+    // is served instead, exactly like getOperativeProvision's own SECTION
+    // case above. The $8,000,000 stale figure genuinely no longer appears
+    // anywhere in the response - the compiling model cannot read it as a
+    // settled, current fact any more.
+    expect(result.status).toBe("OPERATIVE_STATE_PARTIAL");
+    expect(result.currentText ?? result.text).toBe("(no current text recorded)");
+    expect(JSON.stringify(result)).not.toContain("$8,000,000");
+    expect(result.unresolvedIssues).toEqual(operativeState.provisions[0]!.unresolvedIssues);
+    expect(JSON.stringify(result)).toMatch(/AMBIGUOUS|PARTIAL/i);
 
     // Confirms this is not merely "no operativeState was supplied at all"
     // (an honest, already-covered case) - a real, on-file OperativeProvisionView
-    // for this EXACT term with a real non-RESOLVED status is being silently
-    // discarded by this one code path.
+    // for this EXACT term with a real non-RESOLVED status is what drove this
+    // disclosure.
     expect(operativeState.provisions[0]!.status).toBe("OPERATIVE_STATE_PARTIAL");
     expect(operativeState.provisions[0]!.targetResolutionStatus).toBe("AMBIGUOUS");
   });
@@ -166,5 +157,35 @@ describe("Part B recert - NEW finding: getDefinition silently serves stale text 
     const outcome = getRelatedAmendments.execute({ ref: "Permitted Investments" });
     const result = outcome.result as Record<string, unknown>;
     expect(result.status).toBe("OPERATIVE_STATE_PARTIAL");
+  });
+
+  it("positive control: a genuinely UNIQUE amendment target (targetResolutionStatus UNIQUE, currentText populated) is still served confidently, WITH status disclosed alongside it - the fix never over-triggers for the ordinary, common case", () => {
+    const { index } = buildIndexWithStaleDefinition();
+    const uniqueProvision: OperativeProvisionView = { ...ambiguousDefinitionProvision(), currentText: "\"Permitted Investments\" means investments not to exceed $12,000,000 in the aggregate.", status: "OPERATIVE_STATE_RESOLVED", targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [], unresolvedIssues: [], reviewRequired: false };
+    const operativeState: OperativeContractState = { instrumentKey: "instrument-1", asOfDate: "2026-01-01", provisions: [uniqueProvision], status: "OPERATIVE_STATE_RESOLVED", summary: "test", unattachedEffects: [] };
+    const tools = buildToolSet({ structuralIndex: index, operativeState, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, { current: 0 }, DEFAULT_TOOL_BUDGET);
+    const outcome = tools.find((t) => t.name === "getDefinition")!.execute({ term: "Permitted Investments" });
+    const result = outcome.result as Record<string, unknown>;
+    expect(result.status).toBe("OPERATIVE_STATE_RESOLVED");
+    expect(result.source).toBe("amended");
+    expect(result.text).toContain("$12,000,000");
+  });
+
+  it("Multiple candidate definition occurrences (never amended - no operativeState view at all): getDefinition never guesses among 2 colliding base-document definitions of the same term - it refuses with an honest ambiguity disclosure, exactly like getOperativeProvision's own resolveUniqueNodeByRef discipline for a colliding SECTION reference", () => {
+    const textA = `"Permitted Investments" means investments not to exceed $5,000,000 in the aggregate.\n`;
+    const textB = `"Permitted Investments" means investments not to exceed $9,000,000 in the aggregate.\n`;
+    const fullText = textA + textB;
+    const nodeA: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "CLAUSE", heading: "Permitted Investments", sectionRef: "1.01(pi)(a)", nodeKey: `${TEST_DOCUMENT_ID}::1.01(pi)(a)`, nodeId: `n-${TEST_DOCUMENT_ID}-pi-a`, charStart: 0, charEnd: textA.length, ordinal: 0, parentSectionRef: null, parentNodeId: null };
+    const nodeB: StructuralNode = { documentId: TEST_DOCUMENT_ID, nodeType: "CLAUSE", heading: "Permitted Investments", sectionRef: "1.01(pi)(b)", nodeKey: `${TEST_DOCUMENT_ID}::1.01(pi)(b)`, nodeId: `n-${TEST_DOCUMENT_ID}-pi-b`, charStart: textA.length, charEnd: fullText.length, ordinal: 1, parentSectionRef: null, parentNodeId: null };
+    const defA: DetectedDefinition = { documentId: TEST_DOCUMENT_ID, exactTerm: "Permitted Investments", normalizedTerm: "permitted investments", sourceNodeKey: nodeA.nodeKey, sourceNodeId: nodeA.nodeId, charStart: 0, charEnd: textA.length, definitionExcerpt: textA };
+    const defB: DetectedDefinition = { documentId: TEST_DOCUMENT_ID, exactTerm: "Permitted Investments", normalizedTerm: "permitted investments", sourceNodeKey: nodeB.nodeKey, sourceNodeId: nodeB.nodeId, charStart: textA.length, charEnd: fullText.length, definitionExcerpt: textB };
+    const index = buildStructuralIndex(new Map([[TEST_DOCUMENT_ID, { text: fullText, nodes: [nodeA, nodeB] }]]), [defA, defB], []);
+    // No operativeState at all - this is a real drafting collision, not an amendment.
+    const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, TEST_DOCUMENT_ID, { current: 0 }, DEFAULT_TOOL_BUDGET);
+    const outcome = tools.find((t) => t.name === "getDefinition")!.execute({ term: "Permitted Investments" });
+    expect(outcome.ok).toBe(false);
+    const result = outcome.result as { error: string };
+    expect(result.error).toMatch(/2 distinct physical definitions/);
+    expect(JSON.stringify(result)).not.toMatch(/\$5,000,000|\$9,000,000/);
   });
 });

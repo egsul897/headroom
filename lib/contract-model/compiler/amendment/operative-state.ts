@@ -116,10 +116,22 @@ export interface OperativeStateInput {
  * Scoped strictly to one documentId, exactly like resolveUniqueNodeByRef,
  * so a same-named definition living in a genuinely different document
  * never counts toward this document's own ambiguity/uniqueness verdict.
+ *
+ * Phase 3F.1.6.RX-FINAL Workstream B (FINDING-2/FINDING-3) - exported (was
+ * module-private) so semantic/tools.ts's getDefinition can reuse this SAME
+ * primitive for its own no-recorded-amendment fallback path, rather than
+ * inventing a second, parallel "is this term ambiguous" check. This is the
+ * definition-side counterpart to `StructuralIndex.resolveUniqueNodeByRef`,
+ * which getOperativeProvision (semantic/tools.ts) already calls directly
+ * for the SECTION case - getDefinition previously had no equivalent at all
+ * for a term with 2+ colliding, never-amended physical definitions in the
+ * same document (`index.getDefinition`'s own `.find()` silently returns
+ * the first match on such a collision - see this function's own header
+ * comment above).
  */
-type DefinitionResolution = { status: "UNIQUE"; definition: DetectedDefinition } | { status: "AMBIGUOUS"; candidates: DetectedDefinition[] } | { status: "NOT_FOUND" };
+export type DefinitionResolution = { status: "UNIQUE"; definition: DetectedDefinition } | { status: "AMBIGUOUS"; candidates: DetectedDefinition[] } | { status: "NOT_FOUND" };
 
-function resolveUniqueDefinitionByRef(index: StructuralIndex, documentId: string, term: string): DefinitionResolution {
+export function resolveUniqueDefinitionByRef(index: StructuralIndex, documentId: string, term: string): DefinitionResolution {
   const normalized = normalizeDefinedTermRef(term);
   const matches = index.allDefinitions().filter((d) => d.documentId === documentId && d.normalizedTerm === normalized);
   if (matches.length === 0) return { status: "NOT_FOUND" };

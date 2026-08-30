@@ -17,7 +17,7 @@
  */
 import type { NodeSupersessionIndex, NodeSupersessionStatus, OperativeProvisionView } from "../amendment/types";
 import type { StructuralNode } from "../types";
-import { buildNodeSupersessionIndex, getNodeSupersessionStatus } from "../amendment/operative-state";
+import { buildNodeSupersessionIndex, getNodeSupersessionStatus, resolveUniqueDefinitionByRef } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
 import type { SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
 
@@ -262,24 +262,95 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
     },
     {
       name: "getDefinition",
-      description: "Get the full definition text of a defined term by exact name (e.g. 'Consolidated EBITDA'). Use this only when the term is material to the covenant you are compiling and its meaning was not already included in your initial context.",
+      description: "Get the full definition text of a defined term by exact name (e.g. 'Consolidated EBITDA'). Use this only when the term is material to the covenant you are compiling and its meaning was not already included in your initial context. Check the returned `status` field before treating the text as confidently current: this tool never silently substitutes a confident answer for a term with a real, on-file amendment ambiguity, and refuses outright when the base document itself has more than one colliding definition of the term.",
       inputSchema: { type: "object", properties: { term: { type: "string" } }, required: ["term"] },
       operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
+      /**
+       * Phase 3F.1.6.RX-FINAL Workstream B (FINDING-2/FINDING-3 fix, root
+       * cause independently found by Part B recert doc 24's own task5/
+       * task4.blocker6). ROOT CAUSE (fixed here): this execute() body used
+       * to gate its ENTIRE amended-text branch on `operative?.currentText`
+       * being truthy, so a real, on-file OperativeProvisionView for this
+       * exact term whose `currentText` is honestly null (buildProvisionView
+       * sets this whenever targetResolutionStatus !== "UNIQUE" - e.g. a
+       * real AMBIGUOUS/PARTIAL DEFINITION amendment, operative-state.ts's
+       * own rule) fell straight through to the RAW base-document text via
+       * getScopedDefinitionFullText, labeled only `source: "base-document"`
+       * - textually indistinguishable from a term that was NEVER amended
+       * at all. Its own SECTION-kind sibling `getOperativeProvision` above
+       * never had this gap: it discloses `view.status` unconditionally
+       * whenever a view exists, in BOTH its "found" and "raw fallback"
+       * branches.
+       *
+       * FIX: reuses that SAME discipline verbatim rather than inventing a
+       * second, parallel mechanism - `operative.status` (and
+       * `unresolvedIssues`) are now disclosed unconditionally whenever a
+       * view exists, exactly mirroring getOperativeProvision's own "found"
+       * branch; `currentText ?? "(no current text recorded)"` is the
+       * IDENTICAL placeholder getOperativeProvision already uses for the
+       * same null case (never invents a different one). This also closes
+       * BLOCKER-6's own coupled bypass (24's own task4.blocker6_
+       * ambiguousDefinitionAmendment finding): an ambiguous DEFINITION
+       * amendment can no longer reach this tool's caller as though settled.
+       *
+       * SECOND, INDEPENDENTLY-FOUND GAP (same audit trace, "Multiple
+       * candidate definition occurrences" per this phase's own required
+       * invariant): the NO-recorded-amendment fallback below used to call
+       * `getScopedDefinitionFullText`, which resolves via
+       * `StructuralIndex.getDefinitionFullText`'s own `.find()` - silently
+       * the FIRST match whenever a document genuinely has 2+ colliding
+       * physical definitions of the same term (a real, never-amended
+       * drafting collision - no amendment involved at all, so
+       * `access.operativeState` has no view to consult). Fixed by routing
+       * this fallback through `resolveUniqueDefinitionByRef`
+       * (amendment/operative-state.ts) - the SAME primitive that module
+       * already builds and relies on internally for exactly this
+       * uniqueness question when resolving an amendment's own base
+       * reference - mirroring getOperativeProvision's own
+       * `resolveUniqueNodeByRef` call in ITS raw-fallback branch. An
+       * AMBIGUOUS result is refused with an honest reason and candidate
+       * count, never guessed.
+       */
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
         const term = String(input.term ?? "");
         const operative = access.operativeState ? findProvisionView(access.operativeState.provisions, term) : undefined;
-        if (operative?.currentText) {
-          const { text, truncated } = truncate(operative.currentText);
+        if (operative) {
+          const { text, truncated } = truncate(operative.currentText ?? "(no current text recorded)");
           charsUsedRef.current += text.length;
-          return ok({ term, source: "amended", text, truncated }, text, `definition "${term}" (amended, status ${operative.status})`);
+          return ok(
+            { term, status: operative.status, source: operative.currentText ? "amended" : "unresolved", text, truncated, unresolvedIssues: operative.unresolvedIssues },
+            text,
+            `definition "${term}" (status ${operative.status})`
+          );
         }
-        const fullText = getScopedDefinitionFullText(access.structuralIndex, term, homeDocumentId, allowedDocs);
-        if (!fullText) return refuse(`no defined term matching "${term}" found in this instrument's documents`);
-        const { text, truncated } = truncate(fullText);
-        charsUsedRef.current += text.length;
-        return ok({ term, source: "base-document", text, truncated }, text, `definition "${term}"`);
+        // No recorded amendment activity at all for this term - resolve
+        // directly against the base document(s), home document first then
+        // real siblings (mirroring getScopedDefinitionFullText's own
+        // ordering), but never guess among multiple colliding physical
+        // definitions of the same term within one document.
+        let ambiguity: { documentId: string; candidateCount: number } | null = null;
+        for (const docId of [homeDocumentId, ...Array.from(allowedDocs).filter((d) => d !== homeDocumentId)]) {
+          const resolution = resolveUniqueDefinitionByRef(access.structuralIndex, docId, term);
+          if (resolution.status === "AMBIGUOUS") {
+            ambiguity ??= { documentId: docId, candidateCount: resolution.candidates.length };
+            continue;
+          }
+          if (resolution.status === "UNIQUE") {
+            const fullText = access.structuralIndex.getDefinitionFullText(resolution.definition.exactTerm, docId);
+            if (!fullText) continue;
+            const { text, truncated } = truncate(fullText);
+            charsUsedRef.current += text.length;
+            return ok({ term, status: "OPERATIVE_STATE_RESOLVED", source: "base-document", text, truncated, unresolvedIssues: [] }, text, `definition "${term}" (never amended)`);
+          }
+        }
+        if (ambiguity) {
+          return refuse(
+            `term "${term}" matches ${ambiguity.candidateCount} distinct physical definitions in document "${ambiguity.documentId}", and it has no recorded amendment history to disambiguate it - cannot serve this as uniquely-resolved evidence; try getSourceSpan on a specific candidate node, or narrow which occurrence you mean`
+          );
+        }
+        return refuse(`no defined term matching "${term}" found in this instrument's documents`);
       },
     },
     {
