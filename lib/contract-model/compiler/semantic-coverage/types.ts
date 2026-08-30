@@ -192,7 +192,23 @@ import type { StructuralHealthState } from "../structural-coverage";
 // correctly treated as belonging to a different, stale algorithm version
 // rather than silently reused. See docs/phase-3f1-6-rx-final-terminal-
 // closure/05-fused-claim-recursive-decomposition.json.
-export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v5";
+// Phase 3F.1-terminal OPEN-3 bump (v5 -> v6, BLOCKER-8/AUDIT-F4's own
+// FINDING-4 recertification, docs/phase-3f1-6-rx-final-terminal-closure/
+// 16-part-b-finding4-recertification.json): segmentCoordinateClauses now (1)
+// recognizes a bare, non-numeric top-level comma as a candidate enumeration
+// delimiter (Oxford-comma lists like "A, B, C, or D" now decompose to their
+// true claim count instead of collapsing to 2), and (2) narrows the
+// modal-restatement guard to the specific delegated-second-actor
+// construction it was built for, rather than rejecting any right-hand
+// clause that merely starts with a bare modal verb (restated-modal
+// prohibition chains like "shall not X and shall not Y and shall not Z" now
+// decompose instead of collapsing entirely to 1). Both are real
+// detection-algorithm changes - resulting ANCHOR SPANS and unit counts for
+// these two realistic drafting patterns change - so any previously-computed
+// semanticUnitId is correctly treated as belonging to a different, stale
+// algorithm version rather than silently reused. See
+// docs/phase-3f1-terminal-architecture-decision/05-n-way-claim-decomposition.json.
+export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v6";
 export const SEMANTIC_COVERAGE_PROMPT_VERSION = "phase-3e-semantic-coverage-prompt.v1";
 export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3f1-semantic-coverage-router.v2";
 

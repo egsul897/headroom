@@ -159,12 +159,23 @@ function matchFamilyKeyword(text: string): MaterialUnitFamily | null {
 // generic, non-package-specific taxonomy classifyFamily already uses,
 // Architecture Invariants #29) - the same pair of covenant topics fused
 // together is what makes two claims genuinely economically distinct in the
-// common real-drafting shape of this defect. A right-hand clause that
-// itself restates a modal verb ("...and shall not permit...") is never
-// treated as a second claim's own object - that is the SAME claim's
-// subject being restated, not a second independent one (regression guard:
-// "The Borrower shall not, and shall not permit any Restricted Subsidiary
-// to, create or suffer to exist any Lien..." must stay one unit).
+// common real-drafting shape of this defect. A right-hand clause matching
+// the NARROW "same actor's claim restated for a second, delegated actor"
+// construction (a modal verb immediately followed by "permit <some noun
+// phrase> to" - e.g. "...and shall not permit any Restricted Subsidiary
+// to, create or suffer to exist any Lien...") is never treated as a second
+// claim's own object - that is the SAME claim's subject being restated via
+// delegation, not a second independent one (regression guard: "The
+// Borrower shall not, and shall not permit any Restricted Subsidiary to,
+// create or suffer to exist any Lien..." must stay one unit). Phase
+// 3F.1-terminal OPEN-3 fix: this guard used to reject ANY right-hand clause
+// that merely started with a bare modal verb at all, which incorrectly
+// also rejected a wholly separate, independently-numbered prohibition that
+// happens to restate the modal for stylistic parallelism (e.g. "...shall
+// not create Liens... and shall not incur Indebtedness... and shall not
+// make Investments..." - three genuinely distinct claims) - see
+// RIGHT_CLAUSE_RESTATES_SAME_CLAIM_FOR_SECOND_ACTOR below and
+// docs/phase-3f1-terminal-architecture-decision/05-n-way-claim-decomposition.json.
 //
 // Phase 3F.1.6.RX Workstream D (BLOCKER-8 + AUDIT-F4) CLAIM IDENTITY V2 -
 // generalizes the SAME split to the residual gap this splitter's own
@@ -184,23 +195,42 @@ function matchFamilyKeyword(text: string): MaterialUnitFamily | null {
 // are not disjoint).
 // ---------------------------------------------------------------------------
 
-const RIGHT_CLAUSE_RESTATES_MODAL = /^(?:shall|will|must|may)\b/i;
+// Phase 3F.1-terminal OPEN-3 fix (BLOCKER-8/AUDIT-F4, per the independent
+// Part B recertification's FINDING-4-RECERT-GAP-2): narrowly scoped to the
+// SPECIFIC "same actor's claim restated via a delegated second actor"
+// construction the guard was actually built to protect - a modal verb
+// immediately followed by "permit <noun phrase> to" (optionally with an
+// intervening "not"), e.g. "shall not permit any Restricted Subsidiary to,"
+// or "shall not permit any of its Subsidiaries to,". The noun-phrase
+// capture is bounded (at most 80 characters, and never crosses a comma or
+// semicolon) both to keep the regex's own worst-case cost bounded (no
+// unbounded backtracking - Architecture Invariants safety discipline) and
+// because a genuine delegated-actor phrase is always short in real
+// drafting; a WHOLLY SEPARATE prohibition that merely happens to restate a
+// modal verb for stylistic parallelism (e.g. "shall not incur
+// Indebtedness...", "shall not make Investments...") never matches this
+// pattern at all - it is never rejected by this guard, exactly the fix
+// FINDING-4-RECERT-GAP-2 required.
+const RIGHT_CLAUSE_RESTATES_SAME_CLAIM_FOR_SECOND_ACTOR =
+  /^(?:shall|will|must|may)\s+(?:not\s+)?permit\s+(?:any|the|each|every|all|both|a|an)\b[^,;]{0,80}?\bto\b\s*,?/i;
 const TOP_LEVEL_CONJUNCTION = /\b(?:and|or)\b/gi;
 
 /**
  * The single shared qualification rule for "do these two adjacent clauses
  * state two genuinely independent claims, or is this an ordinary
  * conjunction inside one claim's own text?" - used identically by both the
- * legacy two-way findCoordinateClauseSplit (below) and the generalized
- * N-ary segmentCoordinateClauses (further below), so the two can never
- * silently drift out of sync by re-implementing the rule twice.
+ * legacy two-way findCoordinateClauseSplit (below) and (in an inlined,
+ * incrementally-computed form for O(text.length) performance - see its own
+ * doc comment) the generalized N-ary segmentCoordinateClauses further
+ * below, so the two can never silently drift out of sync on the underlying
+ * RULE even though segmentCoordinateClauses no longer calls this exact
+ * function directly.
  *
- * `leftFamilyFallback`/`rightFamilyFallback` exist ONLY for
- * segmentCoordinateClauses' own inherited-family case (a shared chapeau
- * that states the family once and is never repeated in every sibling
- * clause - see that function's own doc comment); findCoordinateClauseSplit
- * itself never supplies them, so its behavior is byte-for-byte unchanged
- * from before this refactor.
+ * `leftFamilyFallback`/`rightFamilyFallback` exist for the inherited-family
+ * case (a shared chapeau that states the family once and is never repeated
+ * in every sibling clause); findCoordinateClauseSplit itself never supplies
+ * them, so its behavior is byte-for-byte unchanged from before this
+ * refactor.
  */
 function isGenuineClauseBoundary(
   leftText: string,
@@ -209,10 +239,10 @@ function isGenuineClauseBoundary(
   rightFamilyFallback: MaterialUnitFamily | null = null
 ): { qualifies: boolean; leftFamily: MaterialUnitFamily | null; rightFamily: MaterialUnitFamily | null } {
   if (leftText.length === 0 || rightText.length === 0) return { qualifies: false, leftFamily: null, rightFamily: null };
-  // A right-hand clause that itself restates a modal verb ("...and shall not
-  // permit...") is never treated as a second claim's own object - that is
-  // the SAME claim's subject being restated, not a second independent one.
-  if (RIGHT_CLAUSE_RESTATES_MODAL.test(rightText)) return { qualifies: false, leftFamily: null, rightFamily: null };
+  // A right-hand clause matching the narrow "restated for a delegated
+  // second actor" construction is never treated as a second claim's own
+  // object - see the regex's own doc comment above.
+  if (RIGHT_CLAUSE_RESTATES_SAME_CLAIM_FOR_SECOND_ACTOR.test(rightText)) return { qualifies: false, leftFamily: null, rightFamily: null };
   const leftFamily = matchFamilyKeyword(leftText) ?? leftFamilyFallback;
   const rightFamily = matchFamilyKeyword(rightText) ?? rightFamilyFallback;
   if (!leftFamily || !rightFamily) return { qualifies: false, leftFamily, rightFamily };
@@ -291,72 +321,154 @@ export function findCoordinateClauseSplit(text: string): CoordinateClauseSplit |
 }
 
 // ---------------------------------------------------------------------------
-// Phase 3F.1.6.RX-FINAL Part A Workstream C - FINDING-4: generalized,
-// arbitrary-N-ary fused-claim decomposition.
+// Phase 3F.1.6.RX-FINAL Part A Workstream C - FINDING-4 (generalized,
+// arbitrary-N-ary fused-claim decomposition), re-fixed by Phase 3F.1-terminal
+// OPEN-3 (BLOCKER-8/AUDIT-F4) after the independent Part B recertification
+// (docs/phase-3f1-6-rx-final-terminal-closure/16-part-b-finding4-
+// recertification.json) proved the FINDING-4 fix, while genuinely N-ary for
+// the shapes its own adversarial matrix tested, still silently collapsed
+// arbitrarily many claims down to 2 or 1 for two realistic, common drafting
+// patterns it never tried, and that its own written O(text.length)
+// termination proof was empirically false (quadratic, ~16x time for a 4x
+// size increase). See docs/phase-3f1-terminal-architecture-decision/
+// 05-n-way-claim-decomposition.json for the full reproduction and fix
+// writeup. Three independent defects, three independent fixes, same
+// function:
 //
-// The prior Part B recertification (docs/phase-3f1-6-rx-final-blocker-
-// closure/26-part-b-blocker8-recertification.json, PART-B-BLOCKER8-FINDING-1)
-// proved findCoordinateClauseSplit above performs AT MOST ONE split per
-// region: it evaluates "everything before the delimiter" vs "everything
-// after it" as two monolithic blocks and returns on the first delimiter
-// whose two sides qualify - it never recurses into either resulting side to
-// look for a SECOND qualifying delimiter. A sentence fusing THREE OR MORE
-// independently-operative claims (same-family or cross-family, no
-// lettered/numbered marker) is therefore only partially separated: the 2nd
-// and every later claim collapse into one semanticUnitId despite each
-// carrying its own distinguishing, source-grounded number.
+//   GAP-1 (Oxford-comma lists, "A, B, C, or D") - a bare top-level comma was
+//   never a candidate delimiter at all, so a list with the conjunction word
+//   stated only once before the final item always produced exactly 2
+//   fragments regardless of true claim count. FIX: a bare comma is now a
+//   candidate delimiter too (see TOP_LEVEL_DELIMITER below) - but, exactly
+//   like "and"/"or"/";", a candidate is not an automatic split: the SAME
+//   family/value qualification rule below still gates every comma boundary,
+//   so an ordinary appositive/internal comma ("Indebtedness, whether
+//   secured or unsecured, in excess of $X") is never mistaken for an
+//   enumeration boundary merely because a comma is present - it still folds,
+//   because neither side independently states a source-grounded value that
+//   distinguishes it, exactly the same "never force a split" discipline that
+//   already protected the "and"/"or" delimiters. Two additional protections
+//   specific to comma: (a) a comma immediately followed by a digit (a
+//   thousands-grouping separator, "$10,000,000") is NEVER a candidate at all
+//   - excluded at the regex level, not by the qualification rule, since a
+//   mid-number "claim" would never even parse sensibly, and a genuine
+//   enumeration comma is always followed by whitespace then a word, never a
+//   bare digit; (b) a comma inside a parenthetical is already excluded by
+//   the existing paren-depth tracking, unchanged.
 //
-// segmentCoordinateClauses below is the generalized, arbitrary-N
-// replacement. Design (ITERATIVE, not recursive - see the termination note
-// below):
+//   GAP-2 (restated-modal prohibition chains, "shall not X and shall not Y
+//   and shall not Z") - the modal-restatement guard used to reject ANY
+//   right-hand fragment that merely started with a bare modal verb
+//   (shall/will/must/may), with no way to distinguish the narrow case it was
+//   actually built for (the SAME actor's SAME obligation restated for a
+//   second, delegated actor - "shall not, and shall not permit any
+//   Restricted Subsidiary to, create...") from a wholly separate,
+//   independently-numbered prohibition that happens to also restate the
+//   modal for stylistic parallelism (a common, legitimate way to draft 3+
+//   separate negative covenants in one sentence). FIX: the guard is now
+//   RIGHT_CLAUSE_RESTATES_SAME_CLAIM_FOR_SECOND_ACTOR (see above
+//   findCoordinateClauseSplit) - narrowly scoped to the actual lexical
+//   signature of the delegation construction (modal + "permit <NP> to"),
+//   not merely "starts with a modal verb". A restated "shall not incur
+//   Indebtedness..."/"shall not make Investments..." never matches this
+//   narrower pattern, so it is never wrongly rejected, and the existing
+//   family/value qualification rule then correctly recognizes each as its
+//   own genuine claim.
 //
-//   1. Find EVERY top-level (paren-depth 0) delimiter in the ENTIRE input
-//      text in a single linear scan - "and", "or", "and/or", and ";" (a
-//      purely generic, package-agnostic delimiter grammar, Architecture
-//      Invariants #29 - no covenant-specific term). This produces a FIXED,
-//      FINITE list of raw fragments (delimiters.length + 1 of them),
-//      computed exactly once, before any segmentation decision is made.
-//   2. Walk that fixed fragment list LEFT TO RIGHT exactly once (a single
-//      `for` loop, no recursion), maintaining one "current, growing
-//      segment" and one "established family" (the most recently seen
-//      explicit family keyword, so a family stated ONCE in a shared
-//      chapeau - "may incur Indebtedness up to $10,000,000, or up to
-//      $20,000,000, or up to $30,000,000" - still correctly attributes
-//      family INDEBTEDNESS to every later basket that never repeats the
-//      word itself, a real, common drafting pattern the exactly-once
-//      two-way primitive above already could not reach even for N=2).
-//   3. At each fragment boundary, isGenuineClauseBoundary (the SAME shared
-//      rule findCoordinateClauseSplit uses - see above) decides whether
-//      this is a genuine new claim (cross-family, or same-family with
-//      disjoint source-grounded numeric values reused from value-
-//      anchors.ts) or an ordinary continuation (an ordinary noun-phrase
-//      conjunction like "cash and cash equivalents" never qualifies,
-//      because neither side independently matches any FAMILY_KEYWORDS
-//      entry; a bare same-family "or" with no distinguishing number on
-//      both sides never qualifies either, exactly preserving AUDIT-F4-
-//      RESIDUAL-1's own disclosed boundary). A genuine boundary closes the
-//      current segment and starts a new one; otherwise the next fragment is
-//      folded into the current (still-growing) segment.
-//   4. Every emitted segment's start/end are exact absolute offsets into
-//      the ORIGINAL input text (never fabricated, never inherited from a
-//      sibling) - segments partition the input by construction, so no two
-//      segments ever overlap or duplicate a span.
+//   GAP-3 (quadratic time) - the prior implementation called
+//   `text.slice(currentStart, currentEnd)` to rebuild the ever-growing
+//   current segment's text on EVERY non-qualifying fold, and then re-ran
+//   matchFamilyKeyword/extractValueAnchors over that whole (monotonically
+//   growing) string every iteration - true worst-case cost O(text.length^2)
+//   for a long run of non-qualifying delimiters (an extremely common real
+//   occurrence: "successors and assigns", "notes or other Indebtedness",
+//   etc.), despite the doc comment's claim of O(text.length). FIX: the loop
+//   below never slices or re-scans the growing accumulated segment at all.
+//   It tracks the current segment's own state INCREMENTALLY - a small Set
+//   of the (at most ~20, a fixed constant) covenant families directly seen
+//   in the segment so far, and a small Set of the value anchors directly
+//   seen in the segment so far - updating both with ONLY the newly-folded
+//   fragment's own (bounded) contribution each iteration, never
+//   re-deriving them from the whole segment. The `text.slice` that builds a
+//   segment's final `text` field happens EXACTLY ONCE per emitted segment
+//   (not once per fragment folded into it), and since segments partition
+//   the input without overlap, the sum of every slice's length across the
+//   whole function call is bounded by text.length - so total slicing work
+//   is O(text.length), not O(text.length) per fold.
 //
-// TERMINATION PROOF: there is no recursion at all. Step 1 performs one
-// linear regex scan bounded by text.length, producing a fragment array of
-// bounded, FIXED size before the segmentation loop ever starts. Step 2's
-// `for` loop iterates over that already-finite, already-computed array
-// exactly `fragments.length - 1` times, performing O(1) work (a handful of
-// regex tests + a Set-based value-anchor comparison) per iteration - it can
-// never grow, branch into further sub-loops, or depend on its own output.
-// Total work is O(text.length). This holds for EVERY input, including
-// deliberately degenerate/malformed ones (a string of thousands of bare
-// delimiters, unbalanced/deeply-nested parentheses, delimiters with nothing
-// but whitespace between them) - see the dedicated hard-degenerate-input
-// test in tests/contract-model/finding-4-recursive-coordinate-decomposition
-// .test.ts. Arbitrary finite N is therefore supported directly: N is simply
-// however many genuine boundaries this one bounded pass finds, with no
-// hardcoded cap and no possibility of non-termination.
+// Design (ITERATIVE, not recursive, still a genuine N-ary decomposition -
+// conceptually a two-phase queue/tree construction, see the termination
+// proof below for why this achieves true linear time where a naive
+// recursive re-scan-per-split would not):
+//
+//   PHASE 1 (tree/queue construction): find EVERY top-level (paren-depth 0)
+//   delimiter in the ENTIRE input text in a single linear scan - "and",
+//   "or", "and/or", ";", and now a bare "," not immediately followed by a
+//   digit (a purely generic, package-agnostic delimiter grammar,
+//   Architecture Invariants #29 - no covenant-specific term). This produces
+//   a FIXED, FINITE, ORDERED queue of raw fragments (delimiters.length + 1
+//   of them, itself bounded by text.length since every delimiter token
+//   consumes at least one source character), computed exactly once, before
+//   any segmentation decision is made - this queue IS the tree's full set
+//   of possible branch points, decided once and for all up front.
+//   PHASE 2 (walk the queue, deciding close-child-region vs extend-region):
+//   walk that fixed fragment queue LEFT TO RIGHT exactly once (a single
+//   `for` loop, no recursion), maintaining one "current, growing region"
+//   (the in-progress child of the decomposition tree) and one "established
+//   family" (the most recently seen explicit family keyword anywhere so
+//   far, so a family stated ONCE in a shared chapeau - "may incur
+//   Indebtedness up to $10,000,000, or up to $20,000,000, or up to
+//   $30,000,000" - still correctly attributes family INDEBTEDNESS to every
+//   later basket that never repeats the word itself). At each fragment, the
+//   SAME shared family/value qualification rule findCoordinateClauseSplit
+//   uses (isGenuineClauseBoundary) - evaluated here using the incrementally
+//   maintained Sets rather than a fresh scan - decides whether this is a
+//   genuine new claim (CLOSE the current region as a finished leaf segment
+//   and OPEN a new child region starting at this fragment) or an ordinary
+//   continuation (EXTEND the current region, folding this fragment into
+//   it - "repeat until no valid split remains" for this particular
+//   boundary). Every emitted segment's start/end are exact absolute offsets
+//   into the ORIGINAL input text (never fabricated, never inherited from a
+//   sibling) - segments partition the input by construction, so no two
+//   segments ever overlap or duplicate a span.
+//
+// TERMINATION PROOF (genuinely O(text.length), not merely asserted): there
+// is no recursion. PHASE 1 performs one linear regex scan plus one linear
+// paren-depth scan, both bounded by text.length, producing a fragment array
+// whose size is bounded by text.length (proved above) BEFORE PHASE 2 starts
+// - this is the hard, source-length-derived iteration bound (never a
+// business-semantic cap like "at most 5 claims"), asserted defensively in
+// code below rather than merely trusted. PHASE 2's `for` loop iterates over
+// that already-finite array exactly `fragments.length - 1` times. Per
+// iteration it performs: one bounded regex test against the CURRENT
+// fragment only (RIGHT_CLAUSE_RESTATES_SAME_CLAIM_FOR_SECOND_ACTOR, itself
+// bounded to at most ~90 characters of lookahead so it cannot itself
+// backtrack pathologically); one matchFamilyKeyword call and one
+// extractValueAnchors call, EACH over the current fragment's own text only
+// (never the accumulated segment); a constant number (bounded by
+// FAMILY_KEYWORDS.length, a small fixed constant) of Set membership checks
+// to find the current region's highest-priority family; and a small number
+// of Set.has lookups (O(1) average each) to test value-anchor disjointness
+// - never a Set rebuilt from an array that itself grows with the segment.
+// Since fragments partition the input, the sum of every fragment's own
+// text length across all iterations is exactly text.length, so the total
+// work done by matchFamilyKeyword/extractValueAnchors/the modal regex
+// across the WHOLE loop is O(text.length) (each bounded by a small constant
+// factor - ~20 family keywords, ~3 value-anchor regexes). The one
+// `text.slice` per emitted segment (used only to build that segment's
+// output `text` field, never to re-derive family/value state) also sums to
+// at most text.length across every segment emitted, since segments never
+// overlap. Total work is therefore genuinely O(text.length), for EVERY
+// input, including deliberately degenerate/malformed ones (a string of
+// thousands of bare delimiters that never individually qualify, unbalanced/
+// deeply-nested parentheses, delimiters with nothing but whitespace between
+// them, a long non-qualifying same-family run) - see the dedicated
+// hard-degenerate-input tests and the measured wall-clock scaling data in
+// tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts
+// and tests/contract-model/part-b-recert-finding4-independent.test.ts.
+// Arbitrary finite N is therefore supported directly: N is simply however
+// many genuine boundaries this one bounded pass finds, with no hardcoded
+// cap and no possibility of non-termination.
 // ---------------------------------------------------------------------------
 
 export interface CoordinateClauseSegment {
@@ -371,8 +483,21 @@ export interface CoordinateClauseSegment {
  * stray "/or"/"and/" fragment of punctuation glued onto a neighboring
  * segment's text. ";" is included as a purely generic, non-covenant-
  * specific coordinate delimiter (Architecture Invariants #29) - a common
- * real drafting pattern for un-enumerated sibling baskets/exceptions. */
-const TOP_LEVEL_DELIMITER = /\band\/or\b|\b(?:and|or)\b|;/gi;
+ * real drafting pattern for un-enumerated sibling baskets/exceptions.
+ *
+ * Phase 3F.1-terminal OPEN-3 fix (GAP-1): a bare "," is now ALSO a
+ * candidate delimiter, EXCEPT when it is immediately followed by a digit -
+ * i.e. a thousands-grouping separator inside a number like "$10,000,000"
+ * (every such separator comma is followed directly by a digit; a genuine
+ * enumeration comma is followed by whitespace then a word, never a bare
+ * digit) - never a genuine enumeration boundary, excluded here at the
+ * grammar level via the negative lookahead rather than left to the
+ * qualification rule to catch, since a split mid-number could never produce
+ * a sensible fragment at all. A comma that IS a candidate is still just
+ * that - a candidate - the SAME family/value qualification rule below
+ * decides whether it is a genuine enumeration boundary or an ordinary
+ * internal/appositive comma. */
+const TOP_LEVEL_DELIMITER = /\band\/or\b|\b(?:and|or)\b|;|,(?!\d)/gi;
 
 interface RawSpan {
   text: string;
@@ -405,10 +530,11 @@ function trimmedSpan(raw: string, rawStart: number): RawSpan {
 
 /**
  * Mechanically splits `text` into the raw top-level fragments delimited by
- * every top-level "and"/"or"/"and-or"/";" occurrence - no family/value
- * qualification applied yet (that happens once, in the caller's single
- * forward pass). A single fragment (no top-level delimiter found at all)
- * is returned as a 1-element array. Bounded, non-recursive, computed once.
+ * every top-level "and"/"or"/"and-or"/";"/non-numeric-"," occurrence - no
+ * family/value qualification applied yet (that happens once, in the
+ * caller's single forward pass). A single fragment (no top-level delimiter
+ * found at all) is returned as a 1-element array. Bounded, non-recursive,
+ * computed once.
  */
 function splitIntoRawFragments(text: string): RawSpan[] {
   const delimiters = findTopLevelDelimiters(text);
@@ -423,9 +549,21 @@ function splitIntoRawFragments(text: string): RawSpan[] {
   return fragments;
 }
 
+/** The highest-priority (per FAMILY_KEYWORDS' own array order, matching
+ * matchFamilyKeyword's own priority convention exactly) family among a
+ * small Set of directly-seen families - O(FAMILY_KEYWORDS.length), a fixed
+ * small constant, never proportional to how much text produced the Set. */
+function highestPriorityFamily(seen: ReadonlySet<MaterialUnitFamily>): MaterialUnitFamily | null {
+  for (const { family } of FAMILY_KEYWORDS) {
+    if (seen.has(family)) return family;
+  }
+  return null;
+}
+
 /**
  * Generalized, arbitrary-N-ary successor to findCoordinateClauseSplit - see
- * the module section doc comment above for the full design and termination
+ * the module section doc comment above for the full design, the three
+ * Phase 3F.1-terminal OPEN-3 gap fixes, and the termination/complexity
  * proof. Returns null when fewer than 2 genuine segments result (task's own
  * "never force 1:1" - a region with no genuine independent-claim boundary
  * is left as a single unit, exactly like the primitive above).
@@ -433,36 +571,84 @@ function splitIntoRawFragments(text: string): RawSpan[] {
 export function segmentCoordinateClauses(text: string): CoordinateClauseSegment[] | null {
   const fragments = splitIntoRawFragments(text);
   if (fragments.length < 2) return null;
+  // Hard, source-length-derived safety bound (never a business-semantic cap
+  // like "at most 5 claims" - Phase 3F.1-terminal OPEN-3's own required
+  // discipline): every delimiter token found by findTopLevelDelimiters
+  // consumes at least one character of `text`, so fragments.length can
+  // never actually exceed text.length + 1 - asserted defensively here
+  // rather than merely relied upon, so a future change to the delimiter
+  // grammar that broke this invariant would fail closed (no split) instead
+  // of silently degrading to unbounded work.
+  if (fragments.length > text.length + 1) return null;
 
   const segments: CoordinateClauseSegment[] = [];
-  let currentStart = fragments[0]!.start;
-  let currentEnd = fragments[0]!.end;
-  let currentText = fragments[0]!.text;
-  let establishedFamily: MaterialUnitFamily | null = matchFamilyKeyword(currentText);
+  let segStart = fragments[0]!.start;
+  let segEnd = fragments[0]!.end;
+  let segFamiliesSeen = new Set<MaterialUnitFamily>();
+  let segValueAnchors = new Set<string>();
+  let establishedFamily: MaterialUnitFamily | null = null;
+
+  const seedFamily = matchFamilyKeyword(fragments[0]!.text);
+  if (seedFamily) {
+    segFamiliesSeen.add(seedFamily);
+    establishedFamily = seedFamily;
+  }
+  for (const v of extractValueAnchors(fragments[0]!.text)) segValueAnchors.add(v);
 
   for (let i = 1; i < fragments.length; i++) {
     const next = fragments[i]!;
-    const { qualifies } = isGenuineClauseBoundary(currentText, next.text, establishedFamily, establishedFamily);
-    if (qualifies) {
-      segments.push({ text: currentText, start: currentStart, end: currentEnd });
-      currentStart = next.start;
-      currentEnd = next.end;
-      currentText = next.text;
-    } else {
-      // Not a genuine boundary (ordinary noun-phrase conjunction, a
-      // modal-restatement, or a same-family continuation with no
-      // distinguishing number) - fold `next` into the still-growing
-      // current segment rather than starting a new one.
-      currentEnd = next.end;
-      currentText = text.slice(currentStart, currentEnd);
+    const segIsEmpty = segEnd === segStart;
+    // Computed ONCE per iteration, over the bounded `next` fragment only
+    // (never the growing accumulated segment) - see the termination proof.
+    const rightOwnFamily = next.text.length > 0 ? matchFamilyKeyword(next.text) : null;
+    const rightValueAnchors = next.text.length > 0 ? extractValueAnchors(next.text) : [];
+
+    let qualifies = false;
+    if (!segIsEmpty && next.text.length > 0 && !RIGHT_CLAUSE_RESTATES_SAME_CLAIM_FOR_SECOND_ACTOR.test(next.text)) {
+      const leftFamily = highestPriorityFamily(segFamiliesSeen) ?? establishedFamily;
+      const rightFamily = rightOwnFamily ?? establishedFamily;
+      if (leftFamily && rightFamily) {
+        const crossFamily = leftFamily !== rightFamily;
+        // Inlined value-disjointness check (rather than calling
+        // valueAnchorSetsDisjointAndNonEmpty, which takes and rebuilds a
+        // Set from a plain array) so this stays O(rightValueAnchors.length)
+        // - a small, per-fragment-bounded cost - with O(1) average Set.has
+        // lookups against the already-maintained segValueAnchors Set,
+        // never re-materializing the (potentially larger, whole-segment)
+        // left-hand value-anchor collection on every single iteration.
+        const sameFamilyValueSplit = !crossFamily && segValueAnchors.size > 0 && rightValueAnchors.length > 0 && !rightValueAnchors.some((v) => segValueAnchors.has(v));
+        qualifies = crossFamily || sameFamilyValueSplit;
+      }
     }
-    // Track the most recently seen EXPLICIT family keyword so a later
-    // fragment that never repeats it (a shared-chapeau sibling basket) can
-    // still inherit it via isGenuineClauseBoundary's fallback parameters.
-    const explicitFamily = matchFamilyKeyword(currentText);
-    if (explicitFamily) establishedFamily = explicitFamily;
+
+    if (qualifies) {
+      segments.push({ text: text.slice(segStart, segEnd), start: segStart, end: segEnd });
+      segStart = next.start;
+      segEnd = next.end;
+      segFamiliesSeen = new Set<MaterialUnitFamily>();
+      segValueAnchors = new Set<string>();
+    } else {
+      // Not a genuine boundary (ordinary noun-phrase conjunction, an
+      // internal/appositive comma, a delegated-actor modal-restatement, or
+      // a same-family continuation with no distinguishing number) - fold
+      // `next` into the still-growing current region rather than closing
+      // it, WITHOUT re-slicing or re-scanning the region's own prior
+      // content (see the termination proof above).
+      segEnd = next.end;
+    }
+    // Unconditionally record whatever family/value content the just-folded
+    // fragment itself directly states, into whichever region it now
+    // belongs to (the freshly-opened one after a split, or the extended one
+    // after a fold) - mirrors the pre-fix behavior's "re-derive family from
+    // the whole current segment" exactly, but incrementally, in O(1)
+    // amortized work per fragment rather than O(segment length).
+    if (rightOwnFamily) {
+      segFamiliesSeen.add(rightOwnFamily);
+      establishedFamily = rightOwnFamily;
+    }
+    for (const v of rightValueAnchors) segValueAnchors.add(v);
   }
-  segments.push({ text: currentText, start: currentStart, end: currentEnd });
+  segments.push({ text: text.slice(segStart, segEnd), start: segStart, end: segEnd });
 
   return segments.length >= 2 ? segments : null;
 }

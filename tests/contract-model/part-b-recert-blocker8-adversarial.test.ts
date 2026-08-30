@@ -300,8 +300,8 @@ describe("version-bump correctness: DISCOVERY_PROMPT_VERSION / DISCOVERY_PIPELIN
     expect(idFnOld(candOld[0]!)).not.toBe(idFnNew(candNew[0]!));
   });
 
-  it("SEMANTIC_COVERAGE_ALGORITHM_VERSION is the current v5 string (bumped by Phase 3F.1.6.RX-FINAL Part A Workstream C's FINDING-4 fix - segmentCoordinateClauses replaces the single-split findCoordinateClauseSplit as hypothesizeUnitsForRegion's coordinate-split path) and is a real, load-bearing input to computeSemanticUnitId - changing it changes semanticUnitId for IDENTICAL anchors/detectionSignature", () => {
-    expect(SEMANTIC_COVERAGE_ALGORITHM_VERSION).toBe("phase-3f1-semantic-coverage.v5");
+  it("SEMANTIC_COVERAGE_ALGORITHM_VERSION is the current v6 string (bumped by Phase 3F.1-terminal OPEN-3's fix - segmentCoordinateClauses now recognizes Oxford-comma lists and narrows the modal-restatement guard, changing resulting anchor spans/unit counts for those two drafting patterns) and is a real, load-bearing input to computeSemanticUnitId - changing it changes semanticUnitId for IDENTICAL anchors/detectionSignature", () => {
+    expect(SEMANTIC_COVERAGE_ALGORITHM_VERSION).toBe("phase-3f1-semantic-coverage.v6");
     const anchors: SourceAnchor[] = [{ documentId: "d1", structuralNodeKey: "k1", structuralNodeId: "n1", sectionRef: "6.01", charStart: 0, charEnd: 10, sourceCitation: "d1::6.01" }];
     const idUnderCurrentVersion = computeSemanticUnitId(anchors, "whole-region:shall_not");
     // computeSemanticUnitId always hashes in the CURRENT module constant
