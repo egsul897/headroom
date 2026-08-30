@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PACKAGE_RECOVERY_PLAN",
+  "purpose": "§19-21: per-package decision, with §21 compatibility reasoning made explicit before executing.",
+  "decisions": {
+    "FWRG": {
+      "decision": "RERUN_AI_STAGE_REQUIRED",
+      "reasoning": "05-half-written-state.json's own finding: the persisted state mixes two incompatible generations (an invalid synthetic-fallback run's stale VERIFICATION/COVERAGE/PROMOTION rows, and a real run's INVENTORY/DEFINITIONS/RULE_EXTRACTION rows that never reached persistence of an actual ContractRule). 07's own finding: no replayable artifact substitutes for a real run. Smallest correct unit: delete ONLY this exact company's own ContractCompilerRun/Stage/DocumentNode/DefinedTermNode/ContractRule/ClaimReviewItem rows (scoped by companyId, matching this project's own established, guard-covered convention - not a global reset), then run scripts/run-phase-c-compiler.ts fwrg --force to completion in ONE uninterrupted FOREGROUND invocation (not backgrounded again, to avoid repeating the exact mistake that produced the mixed state)."
+    },
+    "LSB": {
+      "decision": "RERUN_AI_STAGE_REQUIRED",
+      "reasoning": "04's own finding: LSB was never attempted this session - a clean slate, no half-written risk, no cleanup needed first. Same execution discipline as FWRG (foreground, uninterrupted)."
+    },
+    "CONMED": { "decision": "NO_ACTION_NEEDED", "reasoning": "04's own finding: fixture-file + scratch-company architecture, unaffected by the incident, independently re-confirmed this window." },
+    "DSGR": { "decision": "NO_ACTION_NEEDED", "reasoning": "Same as CONMED." }
+  },
+  "whyDirectlyAgainstThePersistentDatabaseRatherThanAnEphemeralOneFirst": "This is a deliberate, explicit judgment call, recorded rather than made silently. The isolation infrastructure built in 11-13 exists to stop concurrent, UNGUARDED PRISMA MIGRATION TOOLING (`migrate dev`/`migrate reset`) from resetting a shared database - that is the actual, confirmed root cause (09). scripts/run-phase-c-compiler.ts is not migration tooling: it only ever upserts rows scoped to one exact, fixed companyId (`fixture-fwrg-2021-credit-agreement-co` / `fixture-lsb-2023-abl-credit-agreement-co`), the same safe, scoped pattern this project's own 308/310 test cleanup call sites already use (08), and the same pattern used to safely restore Coherent/Matthews earlier in this incident-response window while OTHER work continued unaffected. Routing this specific, already-safe, single-owner script through a throwaway ephemeral database and then hand-rolling an ad hoc cross-database data migration for ~6 related tables would introduce a NEW, less-tested correctness risk in service of a threat model (concurrent migration-tool drift-reset) this script was never exposed to in the first place. The isolation infrastructure remains mandatory for anything that runs Prisma migration tooling or a whole-database reset - this script does neither.",
+  "executionDiscipline": "No other test suite, migration command, or background task will run concurrently with the FWRG/LSB compiler invocations below - this session has sole control of the shared Postgres instance for the duration, and each invocation runs in the foreground (not backgrounded) so it cannot be silently left in a mixed state again."
+}

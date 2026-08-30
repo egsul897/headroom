@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RECOVERABLE_DERIVED_ARTIFACTS",
+  "purpose": "§6: inventory of existing derived state that could substitute for a fresh paid AI run, classified honestly.",
+  "artifacts": [
+    {
+      "path": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/compiler-runs/run-{1787764838883,1787765910232,1787767818530}.json",
+      "content": "3 historical (2026-08-26) full-run summary logs: per-stage status, evaluation scoring vs. independent ground truth, promotionDecisions, and per-matched-provision `matchedRule` objects (action/ruleType/thresholdValue/definedTermRefs/sourceSectionRef/conditions/exceptions/notes).",
+      "classification": "DIAGNOSTIC_ONLY - useful for confirming a full run once succeeded and roughly what it found (12/18 correct, 3 flagged-incorrect, 2 unflagged-incorrect, 1 missing in the best run), but the `matchedRule` objects only cover ground-truth-matched provisions (not the complete extracted rule set) and were produced by an earlier prompt/schema version (see §21 compatibility check in 14). NOT safe to replay directly into ContractRule rows - would silently mix an old generation into a fresh company row set."
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/compiler-runs/run-{1787764379320,1787766387813,1787767205274}.json",
+      "content": "Same shape, for LSB.",
+      "classification": "DIAGNOSTIC_ONLY - same reasoning as FWRG."
+    },
+    {
+      "path": "docs/phase-c-contract-compiler-v1.md and related Phase C/C.1 artifacts",
+      "content": "Narrative evaluation reports summarizing historical FWRG/LSB compiler performance at an aggregate level.",
+      "classification": "DIAGNOSTIC_ONLY - reporting, not row-level data."
+    },
+    {
+      "path": "tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/human-ground-truth.ts, definitions-excerpt.txt, article-6-negative-covenants.txt (and LSB equivalents)",
+      "content": "The actual source contract text and independently-authored ground truth used to grade any run.",
+      "classification": "AUTHORITATIVE_SOURCE - these are what any future compiler run (real or otherwise) must be run against; never regenerated, never at risk from this incident (git-tracked, untouched)."
+    },
+    {
+      "path": "scripts/phase-3f1-6-known-package-regression.ts's own DSGR fixture (tests/fixtures/unseen-packages/phase-3f1-dsgr-remediation-regression/stage8-coverage-result.json) and CONMED fixture (tests/fixtures/unseen-packages/phase-2f-freeze/phase-2g/conmed-amendment-regression.json)",
+      "content": "Full, real, previously-computed DocumentCoverageResult / amendment-regression outputs, explicitly designed to be replayed without re-running the pipeline (this is REPLAYABLE_DERIVED_FIXTURE by the script's own header comment, not this incident's invention).",
+      "classification": "REPLAYABLE_DERIVED_FIXTURE - already correctly treated this way by production tooling; independently re-confirmed working this incident-response window."
+    },
+    {
+      "path": "prisma/seed-data.ts, scripts/populate-*-solver-native.ts, scripts/populate-*-legal-review-*.ts, scripts/populate-*-financial-*.ts, scripts/backfill-golden-test-stable-keys.ts, scripts/populate-gate0-golden-reconciliation.ts (Coherent/Matthews restoration chain, 14 scripts)",
+      "content": "100% deterministic, hardcoded TypeScript data population - zero LLM calls (independently confirmed via grep for getStageCaller/anthropic/StageCaller/fetch/generateText/streamText/model: across every one of these scripts before this incident's own restoration work began).",
+      "classification": "REPLAYABLE_DERIVED_FIXTURE - already replayed successfully this incident-response window (236/236 targeted tests passing); this is the one category of 'recovery' that was genuinely free and is now durably complete again."
+    }
+  ],
+  "conclusion": "No safe substitute exists for a fresh, real compiler run against FWRG/LSB's own persistent fixture companies - the historical run logs are diagnostic only, not a replayable data source, and mixing them into a freshly-seeded company would violate §21. This confirms (does not merely assume) that RERUN_AI_STAGE_REQUIRED is the correct decision for FWRG/LSB in 14-package-recovery-plan.json, not a cheaper alternative overlooked."
+}

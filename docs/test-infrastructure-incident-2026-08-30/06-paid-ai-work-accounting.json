@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PAID_AI_WORK_ACCOUNTING",
+  "purpose": "§5: account for paid AI work already performed before STOP, to avoid paying twice.",
+  "provider": "Vercel AI Gateway (AI_GATEWAY_API_KEY, user-supplied this session)",
+  "modelUsed": "anthropic/claude-sonnet-5",
+  "callsCompleted": [
+    { "stage": "INVENTORY", "status": "COMPLETED", "outputPersisted": "unknown/likely not durably captured beyond whatever the stage's own `output` JSON column holds - not independently re-derivable from ContractRule/DefinedTermNode counts alone" },
+    { "stage": "DEFINITIONS", "status": "COMPLETED", "outputPersisted": "41 DefinedTermNode rows exist for the company, but cannot be attributed with certainty to this call vs. the earlier synthetic-fallback run without inspecting stage `output` JSON in detail - see caveat below" },
+    { "stage": "RULE_EXTRACTION", "status": "COMPLETED", "outputPersisted": "NOT persisted as ContractRule rows (0 rows) - the call's own output was never carried into a durable table before the process was interrupted at the next stage" }
+  ],
+  "tokensAndCost": "NOT independently obtainable without either (a) querying the Vercel AI Gateway's own usage/billing API (out of scope, no such credential/tool available this session), or (b) reading the ContractCompilerStage.telemetry JSON column - checked, populated on the historical Aug 26 runs (see tests/fixtures/.../compiler-runs/*.json, ~$1.18/FWRG historically) but this session's stage rows were inspected only for `stage/status/provider/model`, not their `telemetry` JSON. Approximate order-of-magnitude: 3 of 11 stages, and only the AI-driven ones, so meaningfully LESS than the historical $1.18 full-FWRG-run figure - low-single-dollar-cents-to-low-dollars range, not re-measured precisely.",
+  "stagesNotYetAttemptedThisSecondRun": ["RELATIONSHIPS (interrupted mid-flight)", "AMENDMENTS", "VERIFICATION", "VALIDATION", "COVERAGE", "PROMOTION"],
+  "outputsLost": "The RULE_EXTRACTION call's own extracted-rule content (whatever the model actually returned) is lost in the sense that it was never written to any table this repository queries - it exists, if at all, only in Vercel AI Gateway's own transient request/response, which this session has no API access to retrieve after the fact.",
+  "outputsRecoverableFromLogsArtifactsOrCache": {
+    "fromThisIncident": "NONE - unlike the historical Aug 26 runs, this session's interrupted run never reached the point of writing its own compiler-runs/run-<timestamp>.json log file (that write happens at the very end of run-phase-c-compiler.ts's main(), after evaluation - never reached).",
+    "fromHistoricalPriorRuns": "3 historical run logs exist for FWRG (Aug 26, pre-incident) and 3 for LSB, containing per-provision `matchedRule` objects (action/ruleType/conditions/thresholdValue/definedTermRefs/sourceSectionRef/etc.) for provisions that matched the independent ground truth - see 07-recoverable-artifacts.json for their classification. These are NOT reusable as a database restore path (they cover only ground-truth-matched provisions, not the full extracted rule set, and were produced by an earlier prompt/schema version) but ARE useful evidence that a full historical run once succeeded and roughly what it found."
+  },
+  "conclusion": "This incident did not result in double payment for identical work - the interrupted run's own useful output (if any) was never durably captured, so re-running it from a clean state (per 05's decision) pays once for the stages that must be redone, not twice for the same persisted result. No further paid calls were made after this accounting was produced; the next paid call (if any) requires passing the §22 gate in 20-infrastructure-verdict.json first."
+}

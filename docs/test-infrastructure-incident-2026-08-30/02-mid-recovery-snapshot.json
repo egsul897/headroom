@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "MID_RECOVERY_SNAPSHOT",
+  "purpose": "§1: preserve the partially-recovered database as evidence before any further mutation, inspection-only.",
+  "snapshot": {
+    "tool": "pg_dump -F c (custom format, full schema+data)",
+    "location": "/tmp/claude-0/.../scratchpad/incident-2026-08-30/mid-recovery-snapshot.dump (session scratchpad - NOT committed to git; a binary DB dump must never enter version control)",
+    "sizeBytes": 328196,
+    "takenAt": "2026-08-30T19:34:xx (immediately after quiesce, before any further inspection query)",
+    "restorationProcedure": "pg_restore -h <host> -U postgres -d <target-db> --clean --if-exists mid-recovery-snapshot.dump (target-db must be created empty first: `createdb <target-db>`)",
+    "secretsCheck": "Dump contains only application row data (companies/documents/etc.) - no credentials embedded in table content. Not committed to git, per this project's own standing discipline against binary/DB-dump artifacts in version control."
+  },
+  "migrationState": {
+    "command": "npx prisma migrate status",
+    "result": "ALARMING AT FIRST READ: reported all 30 migrations as 'not yet applied', including 20260824024618_init (the very first). Root-caused to the `_prisma_migrations` bookkeeping table itself being ABSENT from the database (confirmed via direct psql: `relation \"_prisma_migrations\" does not exist`) - NOT a sign that the schema itself is missing.",
+    "actualSchemaState": "All 45 application tables exist with correct current-generation columns (confirmed `\\dt` lists companies, analysis_runs with executionGeneration, etc.) - the schema is fully up to date with HEAD's prisma/schema.prisma. Only the migration-history BOOKKEEPING table is gone.",
+    "significance": "This is itself a primary forensic clue (see 09-root-cause-analysis.json): `_prisma_migrations` is dropped and recreated ONLY by `prisma migrate dev`/`migrate reset`, never by `migrate deploy` or by any application code. Its absence, combined with three separate `DROP TABLE _prisma_migrations` statements found in the Postgres server log on 2026-08-30 between 17:33-17:54, is direct evidence of migrate-tooling-driven resets, not an application-level bug."
+  },
+  "rowCountsAtSnapshotTime": {
+    "companies": 3,
+    "companyIds": ["fixture-fwrg-2021-credit-agreement-co", "coherent", "matthews"],
+    "golden_tests": 48,
+    "note": "48 golden_tests matches exactly the state left by this session's own already-completed, zero-cost Coherent+Matthews restoration (30 coherent + 18 matthews) performed earlier in this same incident-response window, before the user's STOP. The fixture-fwrg company holds only synthetic-fallback residue (418 DocumentNode / 41 DefinedTermNode / 0 ContractRule / 1 ContractCompilerRun) from the credential-less run that used SyntheticExtractionProvider - see 04 and 05."
+  },
+  "noMutationPerformedDuringThisInspection": "All commands in this artifact's own production were read-only (`\\dt`, `SELECT count(*)`, `pg_dump`, `prisma migrate status`). No `DELETE`/`UPDATE`/`DROP`/reset was issued."
+}

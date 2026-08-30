@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "MID_RECOVERY_BASELINE",
+  "recordedAt": "2026-08-30T19:33:59Z",
+  "purpose": "Immediate-quiesce baseline (§0) taken the moment incident-control work began, mid-way through an already-authorized, already-interrupted database recovery.",
+  "gitState": {
+    "headSha": "c2954d38c0c062741160956bbfdd7d72c701b8e1",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "workingTreeStatus": "CLEAN (git status --short: no output)"
+  },
+  "worktrees": {
+    "count": 27,
+    "note": "27 leftover git worktrees under .claude/worktrees/, one per historical dispatched sub-agent across THIS ENTIRE PROJECT's lineage (not just the current phase). Confirmed via `ps aux` that NONE have a live process attached - they are inert on-disk checkouts, not active agents. Not deleted by this artifact (out of scope / not evidence of the current incident by themselves), but their .env files were inspected for the DATABASE_URL isolation forensics below."
+  },
+  "postgresIdentity": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "headroom",
+    "schema": "public",
+    "note": "Identity only, no credentials recorded. Single physical Postgres 16 instance; confirmed via `psql -l` that only headroom/postgres/template0/template1 databases exist - no separate per-worktree database was ever provisioned."
+  },
+  "activeProcessesAtQuiesceStart": {
+    "foundRunning": [
+      {
+        "pid": 1696,
+        "command": "AI_GATEWAY_API_KEY=*** npx tsx scripts/run-phase-c-compiler.ts fwrg --force",
+        "startedAt": "19:16 (session-local)",
+        "status": "ACTIVELY MUTATING fixture-fwrg-2021-credit-agreement-co (real paid LLM calls in flight via AI Gateway) at the moment this incident-control phase began",
+        "actionTaken": "Stopped via TaskStop (task b3fytrp2c) before any further inspection - confirmed via `ps aux` immediately after that no tsx/node/npm-exec process remained."
+      }
+    ],
+    "notFound": [
+      "no vitest/jest process",
+      "no other ingestion/migration/reset script",
+      "no Claude subagent process (subagents in this harness are tool-invocations scoped to a single turn, not persistent host processes - none were live)"
+    ]
+  },
+  "postgresProcessState": {
+    "atQuiesceStart": "UP (had been manually restarted this session at 19:16 after being found down - see 09-root-cause-analysis.json for the crash/restart history)",
+    "note": "Restarting Postgres was NOT a destructive action - PostgreSQL's own WAL crash recovery ran automatically and is designed to be lossless for committed transactions. Confirmed no data was lost by this specific restart (see snapshot row counts in 02)."
+  },
+  "conclusion": "Quiesce complete: exactly one actively-mutating process was found and safely stopped before any DB inspection or forensics began. No other running work existed to quiesce."
+}

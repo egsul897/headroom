@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "DESTRUCTIVE_OPERATION_INVENTORY",
+  "purpose": "§7-9: search for anything capable of deleting Company/company-owned state, and specifically the Prisma empty-predicate hazard pattern.",
+  "searchesPerformed": [
+    "grep -rn 'deleteMany|TRUNCATE|DROP|reset|migrate reset|db push --force-reset|Company.delete|company.delete|raw DELETE|raw TRUNCATE' across tests/scripts/lib/prisma/package.json (scoped away from node_modules and stale .claude/worktrees copies to avoid false signal from historical/dead code)",
+    "grep -n 'company\\.deleteMany\\(\\s*\\)|deleteMany\\(\\{\\s*\\}\\)|deleteMany\\(\\{\\s*where:\\s*\\{\\s*\\}\\s*\\}\\)' (the specific catastrophic empty-predicate pattern) across tests/, scripts/, lib/, prisma/",
+    "grep -n 'const where.*\\?.*:.*\\{\\}' (the dynamic-filter-collapses-to-empty-object hazard pattern named in §9) across tests/scripts/lib"
+  ],
+  "results": {
+    "catastrophicEmptyPredicatePattern": "ZERO MATCHES anywhere in tests/, scripts/, lib/, or prisma/. No `company.deleteMany()`, `deleteMany({})`, or `deleteMany({ where: {} })` exists in this codebase.",
+    "dynamicFilterCollapseHazard": "ZERO MATCHES for the `const where = cond ? {...} : {}` anti-pattern.",
+    "generalDeleteManyUsage": "310 total `deleteMany(` occurrences across 76 test files, essentially all of the form `deleteMany({ where: { companyId: <exact-fixed-string> } })` or scoped to a specific test-owned id/prefix - the repository's own established, correct convention (per §16's own recommendation, already in wide use, not something this incident needs to introduce from scratch). A full line-by-line audit of all 310 was NOT performed (impractical given the evidence below made it unnecessary) - the static guard built in 12-destructive-guards.json/scripts covers this pattern class going forward automatically rather than relying on a one-time manual audit staying complete.",
+    "prismaCliCommands": "package.json's own `\"prisma:migrate\": \"prisma migrate dev\"` script is present and would be the natural command a developer/agent types when adding a new migration. THIS is a live, present-tense footgun (see 09) - not itself proof of what happened, but a standing hazard independent of any application code."
+  },
+  "conclusionForThisSection": "No application-level or test-level destructive-call defect was found. This inventory, combined with 09's direct Postgres server-log evidence, shifts the finding away from the pre-incident working hypothesis ('a test's overly-broad deleteMany() wiped the Company table') toward Prisma's own CLI migration tooling running concurrently and unguarded against a shared database - see 09 for the full root-cause synthesis."
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PACKAGE_RECOVERY_STATE",
+  "purpose": "§3: independent per-package state, checked by direct query (not inferred from row presence alone).",
+  "packages": {
+    "FWRG": {
+      "SOURCE_DOCUMENTS": "PRESENT - tests/fixtures/unseen-packages/fwrg-2021-credit-agreement/*.txt untouched (git-tracked, never lived in Postgres).",
+      "STRUCTURAL_STATE": "PRESENT - 418 DocumentNode rows for fixture-fwrg-2021-credit-agreement-co, produced by the deterministic parseDocumentStructure/persistStructuralNodes path (not LLM-dependent, safe regardless of which compiler attempt produced them).",
+      "PACKAGE_GRAPH": "MISSING - relationshipsPersisted=0 in every attempt so far; the RELATIONSHIPS stage never completed in either the synthetic-fallback run or the real (credentialed) run (real run was interrupted mid-RELATIONSHIPS).",
+      "OPERATIVE_STATE": "MISSING - no AmendmentEffect rows for this company; the AMENDMENTS stage row present is leftover from the invalid synthetic-fallback run.",
+      "DISCOVERY_STATE": "PARTIAL - 41 DefinedTermNode rows exist, but provenance is mixed/uncertain between the synthetic-fallback and real runs (identical count in both, not yet independently confirmed which run actually produced today's 41 rows) - see 05.",
+      "SEMANTIC_IR": "MISSING - 0 ContractRule rows despite the real run's RULE_EXTRACTION stage completing via a genuine paid VERCEL_AI_GATEWAY/anthropic-claude-sonnet-5 call. This is the single most important finding of this section: a real LLM call ran and (per its own ContractCompilerStage row) completed, but its output was never persisted as ContractRule rows before the pipeline was interrupted at the next stage. Whatever value that call returned exists only in the Gateway's own request/response, not durably in this repository.",
+      "VERIFICATION_STATE": "STALE/INVALID - the one VERIFICATION row present (status REVIEW_REQUIRED, provider=synthetic) is leftover from the FIRST, invalid, credential-less run and does not reflect the real run's output.",
+      "SEMANTIC_COVERAGE": "STALE/INVALID - same as above; COVERAGE row shows COMPLETED but with provider=null, a leftover from the synthetic run's deterministic-only completion, not a real assessment of real content.",
+      "CLAIM_REVIEW_STATE": "MISSING - 0 ClaimReviewItem rows for this company.",
+      "ANALYSIS_RUN_STATE": "NOT_APPLICABLE - fixture companies exercise the Phase C compiler (ContractCompilerRun), not the live AnalysisRun path; there is no AnalysisRun row for this company by design.",
+      "overallClassification": "INTERRUPTED_MID_PIPELINE - a mix of stale invalid state (from the synthetic-fallback run) and a genuinely-progressed-but-incomplete real run. See 05 for why this must NOT be resumed piecemeal."
+    },
+    "LSB": {
+      "SOURCE_DOCUMENTS": "PRESENT - tests/fixtures/unseen-packages/lsb-2023-abl-credit-agreement/*.txt untouched.",
+      "STRUCTURAL_STATE": "MISSING - no `fixture-lsb-2023-abl-credit-agreement-co` Company row exists at all; never attempted this session.",
+      "PACKAGE_GRAPH": "MISSING", "OPERATIVE_STATE": "MISSING", "DISCOVERY_STATE": "MISSING",
+      "SEMANTIC_IR": "MISSING", "VERIFICATION_STATE": "MISSING", "SEMANTIC_COVERAGE": "MISSING",
+      "CLAIM_REVIEW_STATE": "MISSING", "ANALYSIS_RUN_STATE": "NOT_APPLICABLE",
+      "overallClassification": "NOT_YET_ATTEMPTED - clean slate, no half-written risk."
+    },
+    "CONMED": {
+      "SOURCE_DOCUMENTS": "PRESENT - tests/fixtures/unseen-packages/phase-2f-freeze/** untouched.",
+      "STRUCTURAL_STATE": "NOT_APPLICABLE_BY_DESIGN",
+      "PACKAGE_GRAPH": "NOT_APPLICABLE_BY_DESIGN",
+      "OPERATIVE_STATE": "PRESENT (as a preserved fixture file) - tests/fixtures/unseen-packages/phase-2f-freeze/phase-2g/conmed-amendment-regression.json, read directly by scripts/phase-3f1-6-known-package-regression.ts, never persisted to a permanent Company row.",
+      "DISCOVERY_STATE": "NOT_APPLICABLE_BY_DESIGN", "SEMANTIC_IR": "NOT_APPLICABLE_BY_DESIGN",
+      "VERIFICATION_STATE": "NOT_APPLICABLE_BY_DESIGN",
+      "SEMANTIC_COVERAGE": "NOT_APPLICABLE_BY_DESIGN - CONMED has never had a semantic-coverage (Phase 3E) fixture in this repository (a pre-existing, disclosed gap, unchanged by this incident - see docs/phase-3f1-6-rx-final-blocker-closure/19-known-package-regression-and-false-credit.json).",
+      "CLAIM_REVIEW_STATE": "NOT_APPLICABLE_BY_DESIGN", "ANALYSIS_RUN_STATE": "NOT_APPLICABLE_BY_DESIGN",
+      "overallClassification": "NO_ACTION_NEEDED - CONMED's own regression architecture never persists a permanent Company row; it is entirely fixture-file-based and creates/tears down its own scratch company on every run. Independently confirmed unaffected by re-running scripts/phase-3f1-6-known-package-regression.ts this incident-response window (byte-identical output to every prior phase)."
+    },
+    "DSGR": {
+      "SOURCE_DOCUMENTS": "PRESENT - tests/fixtures/unseen-packages/phase-3f1-dsgr-remediation-regression/*.json untouched.",
+      "STRUCTURAL_STATE": "NOT_APPLICABLE_BY_DESIGN", "PACKAGE_GRAPH": "NOT_APPLICABLE_BY_DESIGN",
+      "OPERATIVE_STATE": "NOT_APPLICABLE_BY_DESIGN",
+      "DISCOVERY_STATE": "PRESENT (as a preserved fixture) - the 4149-node/2847-candidate DocumentCoverageResult fixture at stage8-coverage-result.json, reused verbatim every regression run per its own disclosed-gap comment.",
+      "SEMANTIC_IR": "NOT_APPLICABLE_BY_DESIGN", "VERIFICATION_STATE": "NOT_APPLICABLE_BY_DESIGN",
+      "SEMANTIC_COVERAGE": "PRESENT (as fixture) - reproduces the disclosed materialUnitsWithoutClaimReviewItem=215 count exactly, unchanged.",
+      "CLAIM_REVIEW_STATE": "NOT_APPLICABLE_BY_DESIGN (scratch company torn down every run)", "ANALYSIS_RUN_STATE": "NOT_APPLICABLE_BY_DESIGN",
+      "overallClassification": "NO_ACTION_NEEDED - same fixture-file + scratch-company architecture as CONMED. Independently re-confirmed unaffected this incident-response window."
+    }
+  },
+  "keyDistinctionEstablished": "There are TWO structurally different 'FWRG/LSB/CONMED/DSGR' concerns in this codebase, easy to conflate: (1) the §11-style KNOWN-PACKAGE REGRESSION check (scripts/phase-3f1-6-known-package-regression.ts) - fixture-file + scratch-company, NEVER wiped, NO action needed; and (2) the PERSISTENT FIXTURE COMPANIES used by tests/certification/section11-source-trace-independent.test.ts (fixture-fwrg-2021-credit-agreement-co / fixture-lsb-2023-abl-credit-agreement-co) - real, durable, LLM-derived Company rows that WERE wiped and are the only thing actually requiring recovery. CONMED and DSGR do not have an equivalent of (2) at all."
+}
