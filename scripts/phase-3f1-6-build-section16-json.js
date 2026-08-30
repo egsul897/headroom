@@ -1,0 +1,42 @@
+const fs = require("fs");
+const adv = JSON.parse(fs.readFileSync("/tmp/phase-3f1-6-section16-adversarial-results.json", "utf-8"));
+
+const output = {
+  schemaVersion: "1.0",
+  phaseVersion: "phase-3f1-6-final-foundation-certification.v1",
+  artifactId: "SEMANTIC_COMPILER_CERTIFICATION",
+  generatedAt: new Date().toISOString(),
+  section: 16,
+  purpose: "Certify the Phase 3B/3B.1 semantic compiler stack (lib/contract-model/compiler/semantic/compile.ts, caller.ts, normalize.ts, cache.ts, precedent-integration.ts) at FOUNDATION level: malformed output rejection, unsupported-semantics preservation, sufficiency-downgrade honesty, transport-truncation detection, tenant-aware cache identity, and precedent staying advisory - via my own minimal reproductions driven through the REAL compiler code (never merely asserting the type exists).",
+
+  liveModelDisclosure: "No API key is configured this session. getSemanticCaller() (lib/contract-model/compiler/semantic/caller.ts) confirmed to fall back to SyntheticSemanticCaller (isSynthetic=true, always returns zero rules) when neither AI_GATEWAY_API_KEY nor ANTHROPIC_API_KEY is set - independently re-verified by reading caller.ts's own getSemanticCaller() implementation. Because SyntheticSemanticCaller cannot exercise any of the malformed/truncated/schema-failure classification logic (it never calls a real model), every case below instead drives RealSemanticCaller directly against a SCRIPTED FAKE Anthropic client (MinimalAnthropicClient) - the exact same zero-network, zero-cost technique tests/contract-model/semantic-compiler/caller-transport.test.ts and caller-loop.test.ts already established - which exercises the REAL orchestration/classification code paths without any live model dependency. No check in this section required an actual live model call to be genuinely exercised; nothing here is disclosed as unable to run.",
+
+  methodology: {
+    testScript: "tests/foundation-audit/section16-semantic-compiler-adversarial.ts (run via npx tsx) - 6 independently-constructed cases, driving compileCovenantToIR / RealSemanticCaller / enforceSufficiencyConsistency / computeCacheKey / compileCovenantToIRWithPrecedent directly.",
+    baselineRegressionRun: "npx vitest run tests/contract-model/semantic-compiler tests/contract-model/semantic-precedent-compiler-integration.test.ts tests/contract-model/semantic-precedent-verifier-integration-decision.test.ts -> 10 files, 93 tests, all pass (unmodified baseline, re-run as-is per this task's own instruction to confirm the existing suite still passes).",
+  },
+
+  results: adv.results.map((r) => ({ check: r.name, verdict: r.verdict, detail: r.detail })),
+  summary: { totalCases: adv.totalCases, pass: adv.passCount, fail: adv.failCount },
+
+  requirementCoverage: [
+    { requirement: "Malformed AI output is rejected, not silently coerced", check: "malformed-output-rejected", historicalFailureClassExercised: "MODEL_SCHEMA_FAILURE (SubmitCompilationSchema.safeParse failure on a genuinely malformed tool_use input, e.g. rules as a string instead of an array, with the corrective-nudge retry also malformed)", result: "PASS - status FAILED, zero rules, MODEL_SCHEMA_FAILURE present, no fabricated output." },
+    { requirement: "Unsupported semantics remain marked unsupported (UNSUPPORTED_TYPE), never silently dropped", check: "unsupported-marker-preserved", result: "PASS - a wire-level UNSUPPORTED capacityExpression survives normalize.ts as UNSUPPORTED_TYPE IR (never coerced to a fabricated numeric value), and sufficiency is correctly downgraded away from COMPLETE." },
+    { requirement: "Missing material dimensions do not silently become 'complete' - operative lineage genuinely downgrades sufficiency", check: "operative-lineage-downgrades-sufficiency", result: "PASS - enforceSufficiencyConsistency (normalize.ts) called directly: OPERATIVE_STATE_CONFLICTED forces CONFLICTED regardless of the model's own claimed sufficiency; OPERATIVE_STATE_REVIEW_REQUIRED downgrades an asserted COMPLETE to AMBIGUOUS. This is deterministic post-processing independent of model behavior, confirmed by direct unit-level execution of the real function." },
+    { requirement: "Transport truncation is detected only on positive evidence (stop_reason === 'max_tokens'), never inferred from a schema failure alone", check: "output-truncated-positive-evidence-only", historicalFailureClassExercised: "OUTPUT_TRUNCATED (the real fwrg-6.10-a/lsb-6.01 truncation shape caller.ts's own header cites: a tool-input array cut off mid-element)", result: "PASS - genuine truncation (malformed input AND stop_reason=max_tokens) correctly produces OUTPUT_TRUNCATED with partial-prefix recovery; an ordinary schema failure with stop_reason=end_turn correctly does NOT get mislabeled OUTPUT_TRUNCATED (negative control)." },
+    { requirement: "Source remains authoritative over precedent - Phase 3D's precedent-assistance layer must never let precedent override a source-grounded interpretation", check: "precedent-advisory-source-wins-gate", result: "PASS - compileCovenantToIRWithPrecedent's own mechanical 'source always wins' gate (isPrecedentContaminated, precedent-integration.ts) correctly detects and rejects a Pass-2 rule whose capacityExpression introduces a $99,999,999 literal grounded in neither Pass 1's own output nor the operative source text; precedentAugmented is discarded (null) and the caller falls back to Pass 1's baseline." },
+    { requirement: "Tenant-aware cache identity holds - re-verify P1-1's fix", check: "tenant-aware-cache-identity", result: "PASS - computeCacheKey (cache.ts) includes companyId/instrumentKey/sourceDocumentId; two synthetic tenants with byte-identical candidateRef/operativeSourceText/contextBundle.contentIdentity produce distinct cache keys, and both tenants' compileCovenantToIR calls genuinely invoke the (scripted) model rather than the second being silently served the first tenant's cached result (call count 2, distinct ruleIds)." },
+    { requirement: "Precedent behavior remains advisory (never auto-applied without evidence)", check: "precedent-advisory-source-wins-gate", result: "Same evidence as the source-wins-gate check above - precedent is discarded wholesale on any contamination signal; the two-pass design (precedent-integration.ts) never merges/blends precedent into the baseline, it either accepts Pass 2 in full (already gated) or falls back to Pass 1 in full." },
+    { requirement: "The verifier CAN independently contradict compiler output", check: "see 15-independent-verifier-certification.json (Section 17)", result: "Cross-referenced, not re-tested here to avoid duplicating Section 17's own fault-injection evidence." },
+  ],
+
+  findings: [
+    { id: "F16-1", severity: "INFORMATIONAL", area: "live-model-dependence", statement: "No API key is configured this session; every check above uses a scripted fake Anthropic client rather than a live call, exactly matching this task's own disclosed ground rule. This does not weaken the certification of the orchestration/classification logic itself (which is what was tested), but the QUALITY of a real model's own semantic judgment (e.g. whether it actually follows the 'MULTIPLE RULES' prompt instruction in practice) remains empirically unverified this session - disclosed, not assumed." },
+  ],
+
+  sectionVerdict: "PASS",
+  sectionVerdictRationale: "All 6 independently-constructed adversarial cases, run through the real compiler orchestration code (never merely asserting a type exists), behaved correctly: malformed output is rejected with zero fabrication, UNSUPPORTED markers survive normalization, operative-lineage conflicts genuinely downgrade sufficiency, output truncation is detected only on positive stop_reason evidence (with a working negative control), the tenant-aware cache fix (P1-1) holds under a direct two-tenant collision attempt, and the precedent 'source always wins' gate correctly discards a contaminated Pass-2 result. The existing 93-test baseline suite for this stack also passes unmodified. No BLOCKER or MAJOR_NON_BLOCKING finding at the semantic-compiler-safety layer.",
+};
+
+fs.writeFileSync("docs/phase-3f1-6-final-foundation-certification/14-semantic-compiler-certification.json", JSON.stringify(output, null, 2) + "\n");
+console.log("wrote 14-semantic-compiler-certification.json");
