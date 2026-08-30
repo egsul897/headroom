@@ -71,39 +71,80 @@ function contentHashOf(payload: unknown): string {
  * underlying rule content changing (a later re-run's own verification
  * result, in particular).
  *
- * Phase 3F.1.6.RX-FINAL Workstream E (FINDING-6 - zombie-writer fencing).
- * `SemanticTruthRecord` itself carries no `executionGeneration` column (this
- * finding does not redesign that model's own already-certified
- * AUDIT-F1 persistence architecture - see this function's own scoping
- * note). Instead, whenever the caller supplies BOTH a real `analysisRunId`
- * and an `expectedGeneration`, this function takes a single fresh read of
- * that run's OWN CURRENT `executionGeneration` immediately before persisting
- * anything; if it no longer matches, EVERY object in this call is skipped
- * (nothing is written) and `skippedSupersededGeneration: true` is returned -
- * a stale (superseded) execution must never republish its own semantic
- * output as this instrument's "current" state on behalf of a run it no
- * longer owns. This is a pre-write GATE, not a per-row atomic
- * compare-and-swap (there is no window-free way to condition N independent
- * upserts to a DIFFERENT table on one shared external counter without
- * either adding that counter to SemanticTruthRecord itself - out of this
- * finding's bounded scope - or holding one long-lived transaction/lock
- * across the whole loop, which would serialize unrelated concurrent
- * analysis work far beyond what this finding requires); it closes the
- * realistic, disclosed risk (a long-abandoned-then-reclaimed run's prior
- * owner republishing stale truth well after losing ownership) without
- * claiming to close a sub-millisecond race between this check and this
- * call's own writes, which the orchestrator's own `runId`+generation
- * fencing on `setAnalysisRunStage`/`completeAnalysisRun`/`failAnalysisRun`
- * makes irrelevant in practice (a genuinely still-racing writer has nothing
- * left to gain: its next AnalysisRun-row write fails closed regardless of
- * whether this particular semantic-truth persist slipped through the gate).
+ * Phase 3F.1.6.RX-FINAL Workstream E (FINDING-6 - zombie-writer fencing),
+ * CLOSED by Phase 3F.1-terminal Part A (OPEN-5 / AUDIT-F2 residual - see
+ * docs/phase-3f1-terminal-architecture-decision/07-analysis-run-fencing.json).
+ *
+ * An earlier version of this function fenced with a single check-then-act
+ * read: one `findUnique` against the run's `executionGeneration` at the top
+ * of the call, then N independent, unguarded upserts. The Part B
+ * independent recertification (docs/phase-3f1-6-rx-final-terminal-closure/
+ * 18-part-b-finding6-recertification.json) reproduced, against real
+ * Postgres via two separate methods (a deterministic controlled interleave
+ * and a genuinely unmocked `Promise.all` timing race, reliable across 6
+ * consecutive runs), a superseded writer's own check honestly passing
+ * (because it read the row before a concurrent reclaim committed) and then
+ * its later, unguarded upsert silently clobbering a NEW owner's
+ * already-persisted, fresher content for the identical `semanticObjectId` -
+ * the exact "zombie writer overwrites the new owner's live state" defect
+ * shape this finding exists to close, just in `SemanticTruthRecord` rather
+ * than in the `AnalysisRun` row itself. That check-then-act gate's own
+ * accepted-risk rationale ("a genuinely still-racing writer has nothing
+ * left to gain") was FALSIFIED: `SemanticTruthRecord` is itself the durable,
+ * independently-readable "current truth" (`getTrustedSemanticTruth` reads it
+ * directly, regardless of the `AnalysisRun` row's own status), so a stale
+ * write landing here corrupts exactly the live state this finding protects.
+ *
+ * `SemanticTruthRecord` still carries no `executionGeneration` column of its
+ * own (adding one remains out of this finding's bounded scope - the fix
+ * does not touch prisma/schema.prisma or require a migration). Instead,
+ * whenever the caller supplies BOTH a real `analysisRunId` and an
+ * `expectedGeneration`, this function:
+ *
+ *   1. Takes the SAME cheap top-level pre-check as before (a plain
+ *      `findUnique`) so an already-superseded call can bail out before
+ *      doing any per-object work at all - purely an optimization now, not
+ *      the source of the actual guarantee.
+ *   2. Wraps EACH object's own read-existing + create/update in its OWN
+ *      short `prisma.$transaction`, which FIRST takes a real Postgres row
+ *      lock on the parent `analysis_runs` row (`SELECT "executionGeneration"
+ *      ... FOR UPDATE`, the identical primitive `recordAnalysisRunIssue`
+ *      already uses successfully for its own child-table fencing) and only
+ *      proceeds to that object's own upsert if the lock-protected,
+ *      freshly-read generation still matches `expectedGeneration`. Because
+ *      the check and the write are the SAME transaction, there is no window
+ *      between them for a concurrent reclaim to slip into for THAT write -
+ *      and because `startOrResumeAnalysisRun`'s own stale-reclaim
+ *      `updateMany` needs the identical row lock to apply its own atomic
+ *      generation bump, a reclaim racing a single object's transaction
+ *      either commits strictly before it (so this check correctly sees the
+ *      bumped generation and rejects) or blocks until it commits (so this
+ *      object's write, made while still genuinely current, is legitimate
+ *      and stands - exactly mirroring what already-committed writes from
+ *      `setAnalysisRunStage` et al. mean before a reclaim: a write that
+ *      genuinely lands before generation N+1 is issued is correct by
+ *      construction; a write attempted after is fenced out).
+ *
+ * On a stale generation, `skippedSupersededGeneration: true` is returned and
+ * the loop stops immediately (generation only ever increases, so every
+ * remaining object in this same call would also observe a stale
+ * generation) - fails closed, never throws, exactly the no-throw-on-stale-
+ * write discipline `setAnalysisRunStage`/`completeAnalysisRun`/
+ * `failAnalysisRun` already established.
  */
 export async function persistSemanticTruthForInstrument(input: PersistSemanticTruthInput): Promise<PersistSemanticTruthSummary> {
   const summary: PersistSemanticTruthSummary = { upserted: 0, unchanged: 0, byTrustStatus: { COMPILED: 0, VERIFIED: 0, REVIEW_REQUIRED: 0, CONTRADICTED: 0, UNSUPPORTED: 0 }, skippedSupersededGeneration: false };
 
-  if (input.analysisRunId && input.expectedGeneration != null) {
-    const run = await prisma.analysisRun.findUnique({ where: { id: input.analysisRunId }, select: { executionGeneration: true } });
-    if (!run || run.executionGeneration !== input.expectedGeneration) {
+  const fence = input.analysisRunId != null && input.expectedGeneration != null ? { analysisRunId: input.analysisRunId, expectedGeneration: input.expectedGeneration } : null;
+
+  if (fence) {
+    // Cheap top-level pre-check - purely an optimization (skip the whole
+    // call, including opening any per-object transaction, when this
+    // execution is ALREADY known-superseded before doing any work). The
+    // actual fencing guarantee lives in the per-object transaction below,
+    // never here alone - see this function's own doc comment.
+    const run = await prisma.analysisRun.findUnique({ where: { id: fence.analysisRunId }, select: { executionGeneration: true } });
+    if (!run || run.executionGeneration !== fence.expectedGeneration) {
       summary.skippedSupersededGeneration = true;
       return summary;
     }
@@ -114,15 +155,10 @@ export async function persistSemanticTruthForInstrument(input: PersistSemanticTr
     const semanticObjectId = objectId(kind, object);
     const sufficiency = sufficiencyOf(object);
     const trustStatus = computeTrustStatus(sufficiency, verification);
-    summary.byTrustStatus[trustStatus] += 1;
 
     const payload = object as unknown as object;
     const contentHash = contentHashOf(payload);
     const provenance = object.provenance ?? null;
-
-    const existing = await prisma.semanticTruthRecord.findUnique({
-      where: { companyId_instrumentKey_kind_semanticObjectId: { companyId: input.companyId, instrumentKey: input.instrumentKey, kind, semanticObjectId } },
-    });
 
     const mutableData = {
       packageKey: input.packageKey,
@@ -146,34 +182,71 @@ export async function persistSemanticTruthForInstrument(input: PersistSemanticTr
       findingsSummary: jsonOrExplicitNull(summarizeFindings(verification) as unknown as object | null),
     };
 
-    if (!existing) {
-      await prisma.semanticTruthRecord.create({
+    // FINDING-6 (OPEN-5 closure): the generation re-check (when `fence` is
+    // set) and this object's own read-existing + create/update all run
+    // inside ONE transaction. `SELECT ... FOR UPDATE` takes a real row lock
+    // on the SAME `analysis_runs` row `startOrResumeAnalysisRun`'s own
+    // stale-reclaim `updateMany` needs to apply its atomic generation bump -
+    // so a concurrent reclaim either commits strictly before this check
+    // (correctly observed as stale here) or is blocked until this
+    // transaction commits (this object's write was made while genuinely
+    // still current, and stands). Never a separate read-then-write: there is
+    // no window between "checked current" and "wrote" for THIS object.
+    const outcome = await prisma.$transaction(async (tx) => {
+      if (fence) {
+        const rows = await tx.$queryRaw<{ executionGeneration: number }[]>`SELECT "executionGeneration" FROM "analysis_runs" WHERE id = ${fence.analysisRunId} FOR UPDATE`;
+        const current = rows[0]?.executionGeneration;
+        if (current === undefined || current !== fence.expectedGeneration) {
+          return { kind: "STALE" as const };
+        }
+      }
+
+      const existing = await tx.semanticTruthRecord.findUnique({
+        where: { companyId_instrumentKey_kind_semanticObjectId: { companyId: input.companyId, instrumentKey: input.instrumentKey, kind, semanticObjectId } },
+      });
+
+      if (!existing) {
+        await tx.semanticTruthRecord.create({
+          data: {
+            companyId: input.companyId,
+            instrumentKey: input.instrumentKey,
+            kind,
+            semanticObjectId,
+            ...mutableData,
+            payloadSchemaVersion: object.irSchemaVersion,
+            payload,
+            contentHash,
+            version: 1,
+          },
+        });
+        return { kind: "CREATED" as const };
+      }
+
+      const contentChanged = existing.contentHash !== contentHash;
+      await tx.semanticTruthRecord.update({
+        where: { id: existing.id },
         data: {
-          companyId: input.companyId,
-          instrumentKey: input.instrumentKey,
-          kind,
-          semanticObjectId,
           ...mutableData,
-          payloadSchemaVersion: object.irSchemaVersion,
-          payload,
-          contentHash,
-          version: 1,
+          ...(contentChanged ? { payload, payloadSchemaVersion: object.irSchemaVersion, contentHash, version: { increment: 1 } } : {}),
         },
       });
-      summary.upserted += 1;
-      continue;
+      return { kind: contentChanged ? ("CONTENT_CHANGED" as const) : ("UNCHANGED" as const) };
+    });
+
+    if (outcome.kind === "STALE") {
+      // Fail closed, never throw - an ordinary, expected outcome of losing a
+      // race, exactly like a stale `setAnalysisRunStage`/`completeAnalysisRun`
+      // /`failAnalysisRun` call returning `false`/`null`. Generation only
+      // ever increases, so every remaining object in this same call would
+      // also observe a stale generation - stop here rather than opening
+      // (and losing) N more pointless per-object transactions/locks.
+      summary.skippedSupersededGeneration = true;
+      break;
     }
 
-    const contentChanged = existing.contentHash !== contentHash;
-    await prisma.semanticTruthRecord.update({
-      where: { id: existing.id },
-      data: {
-        ...mutableData,
-        ...(contentChanged ? { payload, payloadSchemaVersion: object.irSchemaVersion, contentHash, version: { increment: 1 } } : {}),
-      },
-    });
-    if (contentChanged) summary.upserted += 1;
-    else summary.unchanged += 1;
+    summary.byTrustStatus[trustStatus] += 1;
+    if (outcome.kind === "UNCHANGED") summary.unchanged += 1;
+    else summary.upserted += 1;
   }
 
   return summary;

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-terminal.v1",
+  "artifactId": "ANALYSIS_RUN_FENCING_CLOSURE",
+  "defectId": "OPEN-5",
+  "correspondsTo": "AUDIT-F2",
+  "role": "Phase 3F.1-terminal Part A - production fix for exactly this one defect.",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+
+  "reproductionInherited": {
+    "source": "docs/phase-3f1-6-rx-final-terminal-closure/18-part-b-finding6-recertification.json (independent Part B recertification of FINDING-6)",
+    "certifiedSafeAlready": "The core AnalysisRun-row mutators (setAnalysisRunStage/completeAnalysisRun/failAnalysisRun/recordAnalysisRunIssue) were independently re-verified as genuinely, atomically fenced via executionGeneration + conditional updateMany / FOR UPDATE row lock. Not touched by this fix, and re-confirmed still passing (see testOutput below).",
+    "theGap": "persistSemanticTruthForInstrument (lib/contract-model/analysis/semantic-truth/service.ts) used a CHECK-THEN-ACT generation gate: one prisma.analysisRun.findUnique read at the top of the call, then N independent, unguarded prisma.semanticTruthRecord upserts with no further check. Part B reproduced, against real Postgres via two independent methods (a deterministic controlled interleave and a genuinely unmocked Promise.all timing race, reliable across 6 consecutive runs), a superseded (stale-generation) writer's own gate check honestly passing (it read the row before a concurrent reclaim committed) and its later, unguarded write silently overwriting a NEW owner's already-persisted, fresher SemanticTruthRecord content for the identical semanticObjectId - a real version-bumped clobber, not a no-op.",
+    "whyThisMatters": "SemanticTruthRecord is itself the durable, independently-readable 'current truth' for an instrument (getTrustedSemanticTruth/getAllSemanticTruthForInstrument read it directly, regardless of the AnalysisRun row's own status), so a stale write slipping through corrupted exactly the kind of live state OPEN-5/AUDIT-F2 exists to protect, even though the AnalysisRun row itself stayed correct throughout."
+  },
+
+  "writeSiteInventory": {
+    "method": "Full-repo grep for every prisma.semanticTruthRecord.(create|update|updateMany|upsert|delete) call site outside test files.",
+    "result": "Exactly one production write path exists for SemanticTruthRecord: lib/contract-model/analysis/semantic-truth/service.ts's own persistSemanticTruthForInstrument (create at line ~150-ish and update at line ~168-ish, both now moved inside the new per-object transaction described below). No other file in lib/, app/, or scripts/ writes to this table. orchestrator.ts and service.ts (AnalysisRun) do not touch prisma.semanticTruthRecord directly."
+  },
+
+  "fix": {
+    "file": "lib/contract-model/analysis/semantic-truth/service.ts",
+    "function": "persistSemanticTruthForInstrument",
+    "shape": "Per-object atomic conditional write, replacing the single top-of-call check-then-act read.",
+    "mechanism": [
+      "The existing cheap top-level pre-check (a plain findUnique against the run's executionGeneration) is kept, but is now PURELY an optimization: it lets an already-superseded call bail out before doing any per-object work at all. It is no longer the source of the correctness guarantee.",
+      "Each object's own read-existing + create/update now runs inside ONE prisma.$transaction. Inside that transaction, when the caller supplied a real analysisRunId + expectedGeneration ('fence'), the FIRST statement is `SELECT \"executionGeneration\" FROM \"analysis_runs\" WHERE id = $1 FOR UPDATE` - the identical row-lock primitive recordAnalysisRunIssue already uses for its own AnalysisRunIssue child-table fencing. Only if the lock-protected, freshly-read generation still equals expectedGeneration does the transaction proceed to that object's own semanticTruthRecord create/update; otherwise it returns a STALE outcome and commits nothing.",
+      "Because the generation check and the semantic-truth write are the SAME transaction, there is no window between them for a concurrent reclaim to land in for THAT object's write. And because startOrResumeAnalysisRun's own stale-reclaim updateMany needs the identical analysis_runs row lock to apply its atomic generation bump, a reclaim racing one object's transaction either commits strictly before it (correctly observed as stale) or is blocked until it commits (the object's write, made while still genuinely current, stands - the same 'a write landing before generation N+1 is issued is legitimate; an attempt after is fenced out' semantics the core AnalysisRun mutators already use).",
+      "On STALE, the loop stops immediately (generation only ever increases, so every remaining object in the same call would also observe a stale generation) and skippedSupersededGeneration: true is returned. No throw - the same no-throw-on-stale-write, fail-closed discipline setAnalysisRunStage/completeAnalysisRun/failAnalysisRun already established.",
+      "No schema change, no new column, no migration. SemanticTruthRecord still carries no executionGeneration column of its own; the fence is enforced by locking the PARENT analysis_runs row for the brief duration of one object's own upsert, mirroring recordAnalysisRunIssue's existing child-table pattern exactly."
+    ],
+    "whyNotOtherOptions": "The design document Part B falsified had proposed three remediation options: (1) add executionGeneration to SemanticTruthRecord itself, (2) hold ONE long-lived transaction/lock across the WHOLE per-instrument loop, or (3) merely shrink the check-then-act window by re-checking immediately before each upsert (still non-atomic). This fix is a variant of (2)+(3) scoped down to ONE object per transaction rather than the whole loop: it gets the same atomicity guarantee as a single check+write in the SAME statement (no schema change required, unlike option 1) without serializing unrelated concurrent analysis work for the full loop's duration (the concern that ruled out option 2 in the original design), and unlike option 3 alone, checking and writing in the SAME transaction eliminates the window rather than merely narrowing it.",
+    "knownTradeoff": "Each object now costs one extra Postgres round trip (a short transaction acquiring and releasing a row lock) versus the prior unguarded upsert. For a typical per-instrument batch this is a small, bounded overhead; it was accepted as the correct price for closing a real data-corruption defect, consistent with this codebase's own stated preference (recordAnalysisRunIssue's doc comment) for this exact FOR UPDATE primitive over a broader lock."
+  },
+
+  "testsAdded": {
+    "file": "tests/contract-model/part-b-recert-finding6-independent.test.ts",
+    "note": "Not deleted, per instruction - it already documented both the certified-safe AnalysisRun-row subset (still passing, untouched) and this specific gap. Extended in place: the 'FALSIFICATION ATTEMPT' describe block, which previously asserted the BUG (stale content clobbers fresh), was rewritten to a 'FIX VERIFICATION' describe block asserting the FIX (stale writes are rejected as no-ops; fresh content survives).",
+    "scenarios": [
+      "DETERMINISTIC REPRODUCTION, FIXED - the same controlled-interleave method Part B used (delay the RETURN of an already-real prisma.analysisRun.findUnique read via manual monkey-patching, never vi.spyOn - see the file's own diagnostic note on why vi.spyOn corrupts Prisma's proxy), repeated 5x against 5 independent fresh AnalysisRun identities in one test run. Asserts: skippedSupersededGeneration true, final persisted amount is the FRESH value, version stays 1 (the stale writer's write never touched the row).",
+      "REAL, UNMOCKED TIMING RACE, FIXED - the same genuinely-unmocked Promise.all-shaped timing method Part B used (a slow ~60-object batch write racing a fast single-object write with zero mocking of any kind), repeated 5x against 5 independent fresh identities. Same assertions.",
+      "GENUINE Promise.all CONCURRENT RACE (new scenario, not in Part B's file) - the stale write and the reclaim fired together via one Promise.all with ZERO artificial sequencing (no sleep/delay of any kind), covering the interleaving the other two methods approximate via controlled timing. Asserts the final content is always the new owner's fresh value regardless of which of the two genuinely-legitimate orderings the real scheduler picked.",
+      "All 4 pre-existing AnalysisRun-row-mutator scenarios (multi-hop staleness chain, genuine concurrent mixed-generation race, zombie resuming across several subsequent full run cycles, recordAnalysisRunIssue genuine concurrent race) were re-run unmodified and continue to pass - confirms this fix did not regress the already-certified subset."
+    ]
+  },
+
+  "testOutput": {
+    "targetedFile": "tests/contract-model/part-b-recert-finding6-independent.test.ts run 5 consecutive times (npx vitest run ...), real local Postgres (same DATABASE_URL the Part B recertification used)",
+    "result": "5/5 consecutive full-file runs: 7/7 tests passing every time (4 pre-existing AnalysisRun-row scenarios + 3 fix-verification scenarios, 2 of which internally repeat their own race 5x each against fresh identities - so the semantic-truth race specifically was exercised without a single stale-content clobber across 5 outer file-runs x (5+5+1) = 55 total race attempts, plus one additional un-sequenced Promise.all variant per outer run).",
+    "beforeFixSanityCheck": "Before the fix was applied, this same test file's prior version (Part B's own, unmodified) reproduced the clobber 6/6 consecutive runs per docs/phase-3f1-6-rx-final-terminal-closure/18-part-b-finding6-recertification.json - i.e. the defect this fix closes was itself reliably reproducible, not a one-off flake, before this change.",
+    "dependentSuiteRegressionCheck": {
+      "filesRun": [
+        "tests/certification/part-b-recert-blocker2-6-orchestrator-e2e.test.ts",
+        "tests/onboarding/live-product-flow-visibility.test.ts",
+        "tests/contract-model/live-contract-analysis-orchestrator.test.ts",
+        "tests/contract-model/part-b-recert-crosscutting-tenant-isolation.test.ts",
+        "tests/contract-model/partial-instrument-failure.test.ts",
+        "tests/contract-model/analysis-run-concurrency.test.ts",
+        "tests/contract-model/part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts",
+        "tests/contract-model/semantic-truth-persistence.test.ts",
+        "tests/contract-model/part-b-recert-auditf1-truth-persistence.test.ts",
+        "tests/contract-model/part-b-recert-auditf2-concurrency.test.ts"
+      ],
+      "result": "10 files, 50/50 tests passing - every other suite that exercises persistSemanticTruthForInstrument, AnalysisRun fencing, or the full orchestrator continues to pass unmodified."
+    },
+    "tscResult": "npx tsc --noEmit -p . : zero errors attributable to this change (service.ts and the test file appear in zero error lines). NOTE: this worktree is shared with a concurrent, unrelated in-progress workstream (OPEN-4, condition-verification architecture replacement - visible as uncommitted changes to lib/contract-model/compiler/semantic-verification/** and lib/contract-model/analysis/{orchestrator,types}.ts at the time this fix ran) that currently contributes 2 additional, unrelated tsc errors (a missing '../analyzer/telemetry' module and an arg-count mismatch in verify.ts) beyond the 8 errors the Part B recertification's own documented baseline listed (6 in tests/foundation-audit/*, 2 in the sibling tests/contract-model/part-b-recert-finding8-independent.test.ts). Those 2 extra errors are in files this fix never touched and were already present in the working tree before this fix began; they are the concurrent OPEN-4/OPEN-6 workstreams' own in-progress state, not a regression from this fix.",
+    "eslintResult": "npx eslint lib/contract-model/analysis/semantic-truth/service.ts tests/contract-model/part-b-recert-finding6-independent.test.ts : zero findings. A full-repo `npx eslint .` surfaces exactly 1 unrelated error in tests/foundation-audit/amendment-operative-state-adversarial.test.ts (a missing rule definition, '@typescript-eslint/no-var-requires') - again part of the concurrent, uncommitted OPEN-4 workstream's own in-progress file, not touched or introduced by this fix.",
+    "destructiveDbPatternsCheckResult": "npx tsx scripts/check-destructive-db-patterns.ts : 12 findings, identical to the Part B recertification's own documented baseline (the checker's own pattern-definition source lines plus tests/infrastructure/db-isolation-adversarial.test.ts's own intentional adversarial demonstrations). Nothing in the changed files matches any destructive pattern; no new findings.",
+    "testDataCleanup": "Confirmed via direct query after the full test run: prisma.company.findMany({ where: { id: 'part-b-recert-finding6-independent' } }) -> 0 rows, prisma.analysisRun.count({ where: { companyId: 'part-b-recert-finding6-independent' } }) -> 0 rows, prisma.semanticTruthRecord.count({ where: { companyId: 'part-b-recert-finding6-independent' } }) -> 0 rows. The test's own beforeAll/afterAll/beforeEach cleanup (scoped ONLY to this exact company id) leaves no residue in the shared database."
+  },
+
+  "disposition": "CLOSED",
+  "dispositionScope": "OPEN-5 / AUDIT-F2's full remaining scope (the persistSemanticTruthForInstrument check-then-act gap Part B's independent recertification found STILL_OPEN) is now closed: every SemanticTruthRecord write path (there is exactly one) is atomically fenced against the owning AnalysisRun's executionGeneration, per-object, with no read-then-write window. Combined with the already-certified AnalysisRun-row mutators, every mutating write path this finding's charter covers (AnalysisRun row, AnalysisRunIssue child table, SemanticTruthRecord) is now genuinely fenced.",
+
+  "filesChanged": {
+    "modified": [
+      "lib/contract-model/analysis/semantic-truth/service.ts",
+      "tests/contract-model/part-b-recert-finding6-independent.test.ts"
+    ],
+    "added": [
+      "docs/phase-3f1-terminal-architecture-decision/07-analysis-run-fencing.json"
+    ],
+    "notModified": "lib/contract-model/analysis/service.ts was read and re-verified but NOT modified - the Part B recertification's own finding that its core mutators are genuinely fenced was confirmed correct and out of scope for this fix. prisma/schema.prisma and prisma/migrations/ were not touched; no migration was created or run."
+  }
+}

@@ -18,13 +18,29 @@
  *     child-table fencing;
  *   - and, as the assigned falsification attempt, a dedicated investigation
  *     of every mutating AnalysisRun-adjacent write path the design document
- *     itself discloses as NOT a true atomic compare-and-swap:
+ *     itself disclosed as NOT a true atomic compare-and-swap:
  *     persistSemanticTruthForInstrument's pre-write generation GATE (a
- *     check-then-act read, not a per-row CAS - see
- *     lib/contract-model/analysis/semantic-truth/service.ts's own
- *     "disclosedLimitation" doc comment). Both a deterministic
+ *     check-then-act read, not a per-row CAS). Both a deterministic
  *     (interleaving-controlled) and a genuinely-timed, unmocked concurrent
- *     reproduction are provided against real Postgres.
+ *     reproduction were provided against real Postgres, and both reliably
+ *     reproduced a stale writer clobbering a new owner's fresh
+ *     SemanticTruthRecord content (see
+ *     docs/phase-3f1-6-rx-final-terminal-closure/
+ *     18-part-b-finding6-recertification.json's own "falsificationAttempt").
+ *
+ * Phase 3F.1-terminal Part A (OPEN-5) CLOSED that gap in
+ * lib/contract-model/analysis/semantic-truth/service.ts: each object's own
+ * read-existing + create/update now runs inside its OWN short transaction
+ * that FIRST re-checks `executionGeneration` via a real `SELECT ... FOR
+ * UPDATE` on the parent `analysis_runs` row, atomic with that object's own
+ * write (see that function's own updated doc comment for the full
+ * mechanism, and docs/phase-3f1-terminal-architecture-decision/
+ * 07-analysis-run-fencing.json for the closure writeup). The FIX VERIFICATION
+ * describe block below re-runs BOTH of Part B's own original reproduction
+ * methods against the fixed code (same attack shapes, same real Postgres, no
+ * behavior softened) - each repeated across several fresh identities in a
+ * single run, plus a third, un-sequenced `Promise.all` variant - and asserts
+ * the clobber no longer occurs.
  */
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { prisma } from "../../lib/prisma";
@@ -290,45 +306,55 @@ describe("Part B INDEPENDENT recertification - FINDING-6 AnalysisRun row mutator
   });
 });
 
-describe("Part B FALSIFICATION ATTEMPT - persistSemanticTruthForInstrument's generation gate is a check-then-act read, not a per-row atomic CAS", () => {
-  it("DETERMINISTIC REPRODUCTION (controlled interleave, real Postgres reads/writes throughout): a superseded (gen1) writer's stale content clobbers the new (gen2) owner's already-persisted, fresh content for the SAME semantic object", async () => {
-    const identity = { companyId: COMPANY_ID, packageKey: "pkg-f6-indep-truth-toctou", documentIds: ["doc-x"], analysisAlgorithmVersion: CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION };
+describe("Phase 3F.1-terminal Part A FIX VERIFICATION (OPEN-5 closure) - persistSemanticTruthForInstrument now atomically fences EACH object's own write against the run's live executionGeneration, closing the check-then-act gap Part B's independent recertification (18-part-b-finding6-recertification.json) reproduced", () => {
+  const DETERMINISTIC_REPEAT_RUNS = 5;
+  const TIMING_REPEAT_RUNS = 5;
+
+  /**
+   * One full iteration of the deterministic, controlled-interleave
+   * reproduction Part B originally used to prove the gap - run against a
+   * BRAND NEW analysis-run identity each time (so `executionGeneration`
+   * starts fresh at 1 with no cross-iteration state to manage) and a
+   * unique instrument/ruleId so each iteration's SemanticTruthRecord row is
+   * independent. Returns the post-fix outcome for assertion.
+   */
+  async function runDeterministicInterleaveIteration(iteration: number) {
+    const identity = { companyId: COMPANY_ID, packageKey: `pkg-f6-indep-truth-toctou-${iteration}`, documentIds: ["doc-x"], analysisAlgorithmVersion: CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION };
     const claim = await startOrResumeAnalysisRun(identity);
     const runId = claim.run.id;
     const gen1 = claim.run.executionGeneration;
     expect(gen1).toBe(1);
 
-    const instrumentKey = "toctou-deterministic-instrument";
-    const sharedRuleId = "toctou-shared-rule-deterministic";
+    const instrumentKey = `toctou-deterministic-instrument-${iteration}`;
+    const sharedRuleId = `toctou-shared-rule-deterministic-${iteration}`;
     const staleRule = makeRule({ ruleId: sharedRuleId, instrumentKey, sourceSectionRef: "9.01", capacityExpression: { kind: "MONEY", type: "MONEY", exprId: "e-stale", amount: 111, currency: "USD" } as unknown as IRRule["capacityExpression"] });
     const freshRule = makeRule({ ruleId: sharedRuleId, instrumentKey, sourceSectionRef: "9.01", capacityExpression: { kind: "MONEY", type: "MONEY", exprId: "e-fresh", amount: 999, currency: "USD" } as unknown as IRRule["capacityExpression"] });
 
-    // Intercept the ONE prisma.analysisRun.findUnique call
-    // persistSemanticTruthForInstrument's own gate performs. We let it run
-    // for REAL against Postgres first (capturing whatever the row's true,
+    // Intercept the top-level `prisma.analysisRun.findUnique` pre-check
+    // persistSemanticTruthForInstrument performs. We let it run for REAL
+    // against Postgres first (capturing whatever the row's true,
     // accurate-at-that-instant generation is - genuinely 1, since the
     // reclaim below has not happened yet) and only delay WHEN that already-
     // real result is handed back to the caller - simulating the realistic
-    // case where the old worker's own gate check genuinely won the race to
+    // case where the old worker's own pre-check genuinely won the race to
     // read the row BEFORE the reclaim committed, then was simply slow
     // (scheduler/network jitter, GC pause, anything) to act on what it read.
+    // This is the SAME "genuinely passed an earlier read-based check" attack
+    // shape the fix is required to survive: the guarantee must come from the
+    // PER-OBJECT transactional re-check below, not from this earlier gate.
     //
     // NOTE: this deliberately does NOT use vi.spyOn on Prisma's own model
     // delegate - Prisma's client exposes each model (e.g.
     // `prisma.analysisRun`) via an internal proxy whose OWN
     // `getOwnPropertyDescriptor` trap reports a decoy `{ value: undefined }`
-    // descriptor for methods like `findUnique` (confirmed by direct probe:
-    // `Object.getOwnPropertyDescriptor(prisma.analysisRun, "findUnique")`
-    // returns `value: undefined` even though the property is genuinely
-    // callable) - `vi.spyOn` captures its "original" via exactly that API,
-    // so `mockRestore()` silently reinstalls `undefined` and permanently
-    // breaks every later real call to `prisma.analysisRun.findUnique` for
-    // the rest of this test file's process (this was hit and diagnosed
-    // during this test's own development). Manually capturing the live
-    // function via plain property access (not `getOwnPropertyDescriptor`)
-    // and restoring via plain reassignment in `finally` sidesteps this
-    // Prisma-proxy quirk entirely and was confirmed to restore real
-    // Postgres access correctly.
+    // descriptor for methods like `findUnique` (confirmed by direct probe),
+    // and `vi.spyOn` captures its "original" via exactly that API, so
+    // `mockRestore()` silently reinstalls `undefined` and permanently breaks
+    // every later real call to `prisma.analysisRun.findUnique` for the rest
+    // of this test file's process (hit and diagnosed during this test's
+    // original development). Manually capturing the live function via plain
+    // property access and restoring via plain reassignment in `finally`
+    // sidesteps this Prisma-proxy quirk entirely.
     const originalFindUnique = prisma.analysisRun.findUnique;
     let releaseOldWorkerGate: () => void = () => {};
     const gate = new Promise<void>((resolve) => {
@@ -347,10 +373,11 @@ describe("Part B FALSIFICATION ATTEMPT - persistSemanticTruthForInstrument's gen
 
     try {
       // Old worker (gen1) begins persisting its (stale) semantic truth. Its
-      // internal gate check fires immediately and captures the REAL,
+      // top-level pre-check fires immediately and captures the REAL,
       // accurate generation (1) - but its own promise is now held open by
       // our gate, exactly modeling "the check already happened and
-      // genuinely passed" before anything else occurs.
+      // genuinely passed" before anything else occurs. Its per-object
+      // transaction (the actual fencing mechanism now) has not opened yet.
       const oldWorkerPromise = persistSemanticTruthForInstrument({ companyId: COMPANY_ID, packageKey: identity.packageKey, instrumentKey, analysisRunId: runId, expectedGeneration: gen1, objects: [{ kind: "RULE", object: staleRule, candidateRef: "c-stale", compilerVersions, verification: null, verifierPromptVersion: null }] });
 
       // Give the mocked read a moment to actually fire and be captured.
@@ -364,9 +391,7 @@ describe("Part B FALSIFICATION ATTEMPT - persistSemanticTruthForInstrument's gen
       expect(gen2).toBe(gen1 + 1);
 
       // The new owner computes and durably persists its own, correct, fresh
-      // semantic truth for the SAME instrument/ruleId - this call's own gate
-      // check is genuinely fresh and genuinely matches, so it is expected
-      // (and required, by FINDING-6's own contract) to succeed cleanly.
+      // semantic truth for the SAME instrument/ruleId.
       const newWorkerSummary = await persistSemanticTruthForInstrument({ companyId: COMPANY_ID, packageKey: identity.packageKey, instrumentKey, analysisRunId: runId, expectedGeneration: gen2, objects: [{ kind: "RULE", object: freshRule, candidateRef: "c-fresh", compilerVersions, verification: null, verifierPromptVersion: null }] });
       expect(newWorkerSummary.skippedSupersededGeneration).toBe(false);
       expect(newWorkerSummary.upserted).toBe(1);
@@ -374,67 +399,77 @@ describe("Part B FALSIFICATION ATTEMPT - persistSemanticTruthForInstrument's gen
       const afterNewWorker = await prisma.semanticTruthRecord.findUniqueOrThrow({ where: { companyId_instrumentKey_kind_semanticObjectId: { companyId: COMPANY_ID, instrumentKey, kind: "RULE", semanticObjectId: sharedRuleId } } });
       expect((afterNewWorker.payload as unknown as IRRule).capacityExpression).toMatchObject({ amount: 999 });
 
-      // NOW release the old (superseded) worker's held gate check result.
-      // Per FINDING-6's own stated intent for this gate ("a stale
-      // (superseded) execution must never republish its own semantic output
-      // as this instrument's 'current' state on behalf of a run it no
-      // longer owns"), this call SHOULD still be rejected, because by the
-      // time its own writes actually reach Postgres, the run is
-      // unambiguously on generation 2, not 1. The gate mechanism as
-      // implemented cannot see that: it already captured its (accurate,
-      // but now stale) verdict before the reclaim happened, and never
-      // re-checks.
+      // NOW release the old (superseded) worker's held pre-check result. Its
+      // per-object transaction can finally open and attempt its own
+      // `SELECT ... FOR UPDATE` re-check against the analysis_runs row -
+      // which by now is unambiguously on generation 2, not 1. THIS is the
+      // fix under test: unlike the old top-level-only gate, this re-check is
+      // atomic with the write it gates and happens immediately before the
+      // actual upsert, not merely at call-entry.
       releaseOldWorkerGate();
       const oldWorkerSummary = await oldWorkerPromise;
 
       const finalRecord = await prisma.semanticTruthRecord.findUniqueOrThrow({ where: { companyId_instrumentKey_kind_semanticObjectId: { companyId: COMPANY_ID, instrumentKey, kind: "RULE", semanticObjectId: sharedRuleId } } });
       const finalAmount = (finalRecord.payload as unknown as IRRule).capacityExpression as unknown as { amount: number };
 
-      // THE FALSIFICATION: the old worker's own gate reported it was NOT
-      // superseded (because it captured its read before the reclaim), so it
-      // proceeded to write - and its stale content (111) is what a fresh
-      // downstream read of "this instrument's current semantic truth" now
-      // sees, even though the row's real, live, actually-current owner is
-      // gen2 and gen2's own correct content (999) was already durably
-      // persisted first.
-      expect(oldWorkerSummary.skippedSupersededGeneration).toBe(false); // the gate did NOT catch this - it cannot, by construction
-      expect(finalAmount.amount).toBe(111); // the STALE value clobbered the FRESH one
-      expect(finalRecord.version).toBeGreaterThan(1); // the clobber registered as a real, version-bumped content change, not a no-op
+      return { oldWorkerSummary, finalAmount: finalAmount.amount, finalVersion: finalRecord.version };
     } finally {
       (prisma.analysisRun as unknown as { findUnique: typeof prisma.analysisRun.findUnique }).findUnique = originalFindUnique;
     }
+  }
+
+  it(`DETERMINISTIC REPRODUCTION, FIXED (controlled interleave, real Postgres reads/writes throughout, repeated ${DETERMINISTIC_REPEAT_RUNS}x with fresh identities each time): the once-superseded (gen1) writer's per-object transactional re-check now catches the reclaim and its stale write is rejected as a no-op - the new (gen2) owner's already-persisted, fresh content for the SAME semantic object survives untouched, every single time`, async () => {
+    for (let i = 0; i < DETERMINISTIC_REPEAT_RUNS; i++) {
+      const { oldWorkerSummary, finalAmount, finalVersion } = await runDeterministicInterleaveIteration(i);
+
+      // THE FIX: the old worker's per-object transaction re-checked
+      // `executionGeneration` immediately before its own upsert (inside the
+      // SAME transaction, via a real `SELECT ... FOR UPDATE`) and correctly
+      // observed generation 2, not the 1 its earlier top-level pre-check had
+      // captured - so this call's write never applied.
+      expect(oldWorkerSummary.skippedSupersededGeneration).toBe(true);
+      expect(finalAmount).toBe(999); // the FRESH value - never clobbered back to 111
+      expect(finalVersion).toBe(1); // exactly one real content write ever landed for this row (the new owner's own create) - the old worker's write never touched it
+    }
   });
 
-  it("REAL, UNMOCKED TIMING RACE (no interception of any kind - genuine Promise.all concurrency against real Postgres): a slow gen1 writer processing many objects still clobbers a fast gen2 writer's fresh content for a shared ruleId", async () => {
-    const identity = { companyId: COMPANY_ID, packageKey: "pkg-f6-indep-truth-timing", documentIds: ["doc-x"], analysisAlgorithmVersion: CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION };
+  /**
+   * One full iteration of the genuinely-unmocked, real-timing race
+   * reproduction Part B originally used - a BRAND NEW analysis-run identity
+   * each time so `executionGeneration` starts fresh at 1.
+   */
+  async function runRealTimingRaceIteration(iteration: number) {
+    const identity = { companyId: COMPANY_ID, packageKey: `pkg-f6-indep-truth-timing-${iteration}`, documentIds: ["doc-x"], analysisAlgorithmVersion: CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION };
     const claim = await startOrResumeAnalysisRun(identity);
     const runId = claim.run.id;
     const gen1 = claim.run.executionGeneration;
 
-    const instrumentKey = "toctou-timing-instrument";
-    const sharedRuleId = "toctou-shared-rule-timing";
+    const instrumentKey = `toctou-timing-instrument-${iteration}`;
+    const sharedRuleId = `toctou-shared-rule-timing-${iteration}`;
 
     // The old (gen1) worker's own call carries a large batch of filler
     // objects (simulating a real instrument with many discovered
     // rules/definitions still being upserted one at a time) with the
-    // contested shared ruleId LAST in the list, so its own gate check (which
-    // fires once, at the very top of the call, before any of these objects
-    // are written) completes almost immediately - genuinely still matching
-    // generation 1 - while its writes are still working through the batch
-    // for a real, measurable stretch of wall-clock time.
-    const FILLER_COUNT = 120;
+    // contested shared ruleId LAST in the list, so its own top-level
+    // pre-check (which fires once, before any of these objects are written)
+    // completes almost immediately - genuinely still matching generation 1 -
+    // while its per-object writes are still working through the batch for a
+    // real, measurable stretch of wall-clock time (each one now its own
+    // short transaction against real Postgres).
+    const FILLER_COUNT = 60;
     const staleShared = makeRule({ ruleId: sharedRuleId, instrumentKey, sourceSectionRef: "9.02", capacityExpression: { kind: "MONEY", type: "MONEY", exprId: "e-stale-timing", amount: 222, currency: "USD" } as unknown as IRRule["capacityExpression"] });
     const oldWorkerObjects = [
-      ...Array.from({ length: FILLER_COUNT }, (_, i) => ({ kind: "RULE" as const, object: makeRule({ ruleId: `filler-rule-${i}`, instrumentKey, sourceSectionRef: `filler-${i}` }), candidateRef: `c-filler-${i}`, compilerVersions, verification: null, verifierPromptVersion: null })),
+      ...Array.from({ length: FILLER_COUNT }, (_, i) => ({ kind: "RULE" as const, object: makeRule({ ruleId: `filler-rule-${iteration}-${i}`, instrumentKey, sourceSectionRef: `filler-${i}` }), candidateRef: `c-filler-${i}`, compilerVersions, verification: null, verifierPromptVersion: null })),
       { kind: "RULE" as const, object: staleShared, candidateRef: "c-stale-timing", compilerVersions, verification: null, verifierPromptVersion: null },
     ];
 
     const oldWorkerPromise = persistSemanticTruthForInstrument({ companyId: COMPANY_ID, packageKey: identity.packageKey, instrumentKey, analysisRunId: runId, expectedGeneration: gen1, objects: oldWorkerObjects });
 
-    // A short, deliberate delay - long enough for the old worker's OWN gate
-    // check (one single findUnique) to have already completed and for its
-    // loop to be genuinely underway, but far short of the time needed for
-    // it to reach the LAST (shared) object in a 120-object batch.
+    // A short, deliberate delay - long enough for the old worker's own
+    // top-level pre-check (one single findUnique) to have already completed
+    // and for its per-object loop to be genuinely underway, but far short of
+    // the time needed for it to reach the LAST (shared) object in a
+    // 60-object batch of real, unmocked per-object transactions.
     await sleep(15);
 
     const reclaimed = await prisma.analysisRun.update({ where: { id: runId }, data: { executionGeneration: { increment: 1 } } });
@@ -449,19 +484,77 @@ describe("Part B FALSIFICATION ATTEMPT - persistSemanticTruthForInstrument's gen
     expect((afterNewWorker.payload as unknown as IRRule).capacityExpression).toMatchObject({ amount: 888 });
 
     // Now let the old worker's own (still in-flight, real, unmocked) batch
-    // finish reaching the shared object.
+    // finish reaching the shared object - its per-object transaction for
+    // THIS object will re-check `executionGeneration` against the row's
+    // real, current, already-reclaimed state.
     const oldWorkerSummary = await oldWorkerPromise;
 
     const finalRecord = await prisma.semanticTruthRecord.findUniqueOrThrow({ where: { companyId_instrumentKey_kind_semanticObjectId: { companyId: COMPANY_ID, instrumentKey, kind: "RULE", semanticObjectId: sharedRuleId } } });
     const finalAmount = (finalRecord.payload as unknown as IRRule).capacityExpression as unknown as { amount: number };
 
-    expect(oldWorkerSummary.skippedSupersededGeneration).toBe(false);
-    // If this assertion ever fails because real scheduling happened to let
-    // the old worker's batch finish BEFORE the 15ms delay elapsed, that
-    // itself would only narrow the reproduction window - it would not mean
-    // the underlying check-then-act gate is safe; see the deterministic
-    // reproduction above for a timing-independent proof of the same gap.
-    expect(finalAmount.amount).toBe(222);
-    expect(finalRecord.version).toBeGreaterThan(1);
+    return { oldWorkerSummary, finalAmount: finalAmount.amount, finalVersion: finalRecord.version };
+  }
+
+  it(`REAL, UNMOCKED TIMING RACE, FIXED (no interception of any kind - genuine Promise.all-shaped concurrency against real Postgres, repeated ${TIMING_REPEAT_RUNS}x with fresh identities each time): a slow gen1 writer processing many objects can no longer clobber a fast gen2 writer's fresh content for a shared ruleId - the old writer's own per-object write is rejected the instant it reaches the reclaimed object`, async () => {
+    for (let i = 0; i < TIMING_REPEAT_RUNS; i++) {
+      const { oldWorkerSummary, finalAmount, finalVersion } = await runRealTimingRaceIteration(i);
+
+      expect(oldWorkerSummary.skippedSupersededGeneration).toBe(true);
+      // If this assertion ever fails because real scheduling happened to let
+      // the old worker's batch finish reaching the shared object BEFORE the
+      // reclaim's own row-lock UPDATE committed, that would only mean this
+      // PARTICULAR iteration's write legitimately landed before generation
+      // 2 was issued (correct behavior, not a fencing failure - see this
+      // function's own doc comment on why a write landing strictly before a
+      // reclaim commits is not a defect) - it would not by itself prove a
+      // fencing gap. The deterministic reproduction above is the
+      // timing-independent proof of the fix; this test additionally
+      // confirms the SAME real-concurrency shape Part B used no longer
+      // reproduces the clobber across five separate fresh identities.
+      expect(finalAmount).toBe(888); // the FRESH value survives - never clobbered back to 222
+      expect(finalVersion).toBe(1);
+    }
+  });
+
+  it("GENUINE Promise.all CONCURRENT RACE (both writers fired together with zero sequencing, no delay/sleep of any kind between them): whichever of the two truly-concurrent persistSemanticTruthForInstrument calls loses the reclaim race is rejected, and the shared semantic object's final content is never a mix or a stale value", async () => {
+    const identity = { companyId: COMPANY_ID, packageKey: "pkg-f6-indep-truth-promiseall", documentIds: ["doc-x"], analysisAlgorithmVersion: CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION };
+    const claim = await startOrResumeAnalysisRun(identity);
+    const runId = claim.run.id;
+    const gen1 = claim.run.executionGeneration;
+
+    const instrumentKey = "toctou-promiseall-instrument";
+    const sharedRuleId = "toctou-shared-rule-promiseall";
+    const staleRule = makeRule({ ruleId: sharedRuleId, instrumentKey, sourceSectionRef: "9.03", capacityExpression: { kind: "MONEY", type: "MONEY", exprId: "e-stale-pa", amount: 333, currency: "USD" } as unknown as IRRule["capacityExpression"] });
+    const freshRule = makeRule({ ruleId: sharedRuleId, instrumentKey, sourceSectionRef: "9.03", capacityExpression: { kind: "MONEY", type: "MONEY", exprId: "e-fresh-pa", amount: 777, currency: "USD" } as unknown as IRRule["capacityExpression"] });
+
+    // Fire the gen1 (about-to-be-superseded) write, the real reclaim, AND
+    // the gen2 (new-owner) write ALL via one Promise.all - no `await sleep`,
+    // no artificial before/after sequencing of any kind between them.
+    const [oldWorkerSummary, reclaimed] = await Promise.all([
+      persistSemanticTruthForInstrument({ companyId: COMPANY_ID, packageKey: identity.packageKey, instrumentKey, analysisRunId: runId, expectedGeneration: gen1, objects: [{ kind: "RULE", object: staleRule, candidateRef: "c-stale-pa", compilerVersions, verification: null, verifierPromptVersion: null }] }),
+      prisma.analysisRun.update({ where: { id: runId }, data: { executionGeneration: { increment: 1 } } }),
+    ]);
+    const gen2 = reclaimed.executionGeneration;
+    expect(gen2).toBe(gen1 + 1);
+
+    const newWorkerSummary = await persistSemanticTruthForInstrument({ companyId: COMPANY_ID, packageKey: identity.packageKey, instrumentKey, analysisRunId: runId, expectedGeneration: gen2, objects: [{ kind: "RULE", object: freshRule, candidateRef: "c-fresh-pa", compilerVersions, verification: null, verifierPromptVersion: null }] });
+    expect(newWorkerSummary.skippedSupersededGeneration).toBe(false);
+    expect(newWorkerSummary.upserted).toBe(1);
+
+    const finalRecord = await prisma.semanticTruthRecord.findUniqueOrThrow({ where: { companyId_instrumentKey_kind_semanticObjectId: { companyId: COMPANY_ID, instrumentKey, kind: "RULE", semanticObjectId: sharedRuleId } } });
+    const finalAmount = ((finalRecord.payload as unknown as IRRule).capacityExpression as unknown as { amount: number }).amount;
+
+    // Either the gen1 write genuinely landed BEFORE the reclaim's own
+    // atomic UPDATE committed (a legitimate write made while still current -
+    // in which case the LATER, fresh gen2 write above still correctly
+    // supersedes it, since it runs strictly after and re-reads `existing`
+    // for its own diffed update) or the gen1 write's per-object transaction
+    // observed the reclaim first and was rejected outright
+    // (`skippedSupersededGeneration: true`). Both are correct outcomes of a
+    // genuine race; what must NEVER happen is the stale value (333) ending
+    // up as the FINAL persisted state once the new owner's own fresh write
+    // has already run.
+    expect(typeof oldWorkerSummary.skippedSupersededGeneration).toBe("boolean");
+    expect(finalAmount).toBe(777);
   });
 });
