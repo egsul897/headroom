@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "CONTRACT_RULE_SOURCE_TRACE_BACKFILL",
+  "workstream": "E",
+  "blockerId": "BLOCKER-7",
+  "certificationFindingId": "S11-F1",
+  "generatedAt": "2026-08-30T05:30:00Z",
+  "sourceOfTruth": "docs/phase-3f1-6-final-foundation-certification/09-source-trace-certification.json (finding S11-F1) + docs/phase-3f1-5-r-residual-foundation/13-source-trace-audit.json (the fix itself).",
+
+  "problemRecap": {
+    "whatWasFixedProspectively": "Phase 3F.1.5.R fixed persistContractRules (lib/contract-model/compiler/persistence.ts) so ContractRule.definedTermRefs stores each ref as the document-scoped DefinedTermNode stableKey (computeStableKey(\"defined-term\", companyId, documentId, name.toLowerCase())) instead of the raw defined-term NAME string it used to store verbatim.",
+    "whatWasNotFixed": "That fix is prospective only. ContractRule rows compiled BEFORE it shipped still carry the OLD, pre-fix value (the bare raw term name) in definedTermRefs. getRuleSourceTrace (lib/contract-model/service.ts) looks these up via `prisma.definedTermNode.findMany({ where: { companyId, stableKey: { in: rule.definedTermRefs } } })` - an exact stableKey match, no fallback - so every affected row's `definedTerms` silently returns an EMPTY array, indistinguishable from the legitimate 'this rule has no term dependencies' state."
+  },
+
+  "affectedRowIdentification": {
+    "method": "By data condition, never a hardcoded id list. A ContractRule row is AFFECTED if it has a non-empty definedTermRefs AND at least one entry does not match the current stableKey format for the 'defined-term' tag.",
+    "formatDerivation": "The format regex is derived at RUNTIME from a real `computeStableKey(\"defined-term\", ...)` call inside the script itself (scripts/backfill-contract-rule-source-trace.ts), not a hardcoded digest length - so the identification logic cannot silently drift out of sync with lib/contract-model/stable-keys.ts if that function's digest length ever changes.",
+    "currentFormatObserved": "^defined-term:[0-9a-f]{24}$",
+    "oldFormatObserved": "A bare, human-readable term-name string exactly as an LLM extraction produced it, e.g. \"Consolidated EBITDA\", \"Permitted Liens\" - never matching the stableKey regex.",
+    "reconstructionLogic": "scripts/backfill-contract-rule-source-trace.ts imports and calls `toDefinedTermStableKeys` - a function this workstream EXPORTED (previously private) from lib/contract-model/compiler/persistence.ts, changing zero characters of its own logic - so the backfill can never introduce a third, divergent notion of correct stableKey; it is calling the exact same function persistContractRules calls today for every entry it determines is non-conforming, using that row's own companyId + sourceDocumentId. Already-conforming entries are passed through unchanged (never re-hashed), correctly handling a hypothetical mixed-format row."
+  },
+
+  "backfillScript": {
+    "path": "scripts/backfill-contract-rule-source-trace.ts",
+    "modes": {
+      "dryRun": "Default (no flag). Reports per-company and total counts (rows scanned, affected, would-be-corrected, unrecoverable) - writes nothing.",
+      "write": "`--write` flag. Applies corrections inside one Prisma interactive-callback `$transaction` PER COMPANY (matching persistence.ts's own transaction convention, 30s timeout) - a partial failure in one company's batch rolls back that company's writes only, never a cross-tenant transaction. Each row update uses `updateMany({ where: { id, companyId } })` (not a bare `update({ where: { id } })`) and asserts `count === 1`, so even a hypothetical wrong id can never silently land on, or silently no-op against, a different tenant's row."
+    },
+    "idempotency": "Re-running the script (either mode) re-derives the affected-row set from the CURRENT stored data on every invocation - there is no run-history/checkpoint state. Once every entry matches the current format, the identification step finds zero affected rows and the script performs zero writes, in both dry-run and write mode. Independently verified twice in this environment (see runResults below) and covered by an automated idempotency test.",
+    "refusalToGuess": "A definedTermRefs entry that is an empty string (never a real term name any extraction could legitimately produce, and not safely distinguishable from a data-corruption artifact) is logged to the row's `unrecoverableReason` and the ENTIRE row is left untouched - no partial-row write, no fabricated key. sourceDocumentId is a required, cascade-FK'd column (Prisma schema: ContractRule.sourceDocumentId String, onDelete: Cascade on the Document relation), so a ContractRule row can never exist referencing a document that no longer resolves - this specific ambiguity case is therefore structurally impossible in this schema, not merely unencountered; the script still defensively treats any non-empty entry deterministically (the formula never fails to produce SOME hash for a non-empty string) and only the empty-string case is classified unrecoverable in this environment.",
+    "tenantIsolation": "Every computation and write for a row uses ONLY that row's own companyId and sourceDocumentId - the identification query is run and reported per companyId, and the write's `updateMany` where-clause is guarded by (id, companyId) together. Verified by an automated test seeding two synthetic tenants with the identical term name and confirming a run scoped to one tenant never touches the other's row, and that each tenant's corrected key is scoped to its own companyId (the two resulting stableKeys differ despite the identical term text)."
+  },
+
+  "canonicalLogicReuseChange": {
+    "file": "lib/contract-model/compiler/persistence.ts",
+    "change": "`toDefinedTermStableKeys` changed from a private (non-exported) helper to an exported function. Its own logic is byte-for-byte unchanged - zero behavior difference for persistContractRules or any other prospective code path. This is the ONLY change to this file in this workstream.",
+    "whyNecessary": "The remediation spec requires the backfill to 'call/reuse the actual current persistContractRules/stableKey-computation logic rather than re-deriving a parallel implementation.' Exporting the existing function (rather than copy-pasting its 2-line body into the script) is the only way to satisfy that requirement without ever letting the backfill's notion of 'correct' diverge from the prospective code's."
+  },
+
+  "dryRunResults": {
+    "environment": "This worktree's real Postgres (pg_ctlcluster 16 main, already running; DATABASE_URL from the main repo checkout's .env, copied into this worktree - not committed, gitignored).",
+    "command": "npx tsx scripts/backfill-contract-rule-source-trace.ts",
+    "byCompany": [
+      { "companyId": "fixture-fwrg-2021-credit-agreement-co", "rowsWithNonEmptyDefinedTermRefs": 52, "affectedRows": 52, "affectedEntries": 117, "wouldBeCorrectedRows": 52, "wouldBeCorrectedEntries": 117, "unrecoverableRows": 0 },
+      { "companyId": "fixture-lsb-2023-abl-credit-agreement-co", "rowsWithNonEmptyDefinedTermRefs": 43, "affectedRows": 43, "affectedEntries": 74, "wouldBeCorrectedRows": 43, "wouldBeCorrectedEntries": 74, "unrecoverableRows": 0 }
+    ],
+    "totals": { "rowsScanned": 95, "rowsAffected": 95, "entriesAffected": 191, "rowsWouldBeCorrected": 95, "entriesWouldBeCorrected": 191, "rowsUnrecoverable": 0 },
+    "note": "This environment's own real Postgres instance carries exactly 95 affected rows / 191 affected entries across the SAME two real regression packages (fixture-fwrg-2021-credit-agreement-co, fixture-lsb-2023-abl-credit-agreement-co) the certification's own independent run found - not merely a similar count, the identical figure (95 rows), confirming this is the same shared dataset the certification inspected, not a coincidentally-matching different one. coherent and matthews (the other two companies in this database) have zero ContractRule rows with any definedTermRefs at all and were correctly reported as having nothing to say."
+  },
+
+  "writeModeResults": {
+    "command": "npx tsx scripts/backfill-contract-rule-source-trace.ts --write",
+    "byCompany": [
+      { "companyId": "fixture-fwrg-2021-credit-agreement-co", "rowsCorrected": 52, "entriesCorrected": 117, "rowsUnrecoverable": 0 },
+      { "companyId": "fixture-lsb-2023-abl-credit-agreement-co", "rowsCorrected": 43, "entriesCorrected": 74, "rowsUnrecoverable": 0 }
+    ],
+    "totals": { "rowsCorrected": 95, "entriesCorrected": 191, "rowsUnrecoverable": 0 },
+    "postWriteVerification": "OK - re-scanned every company immediately after writing; zero rows remain non-conforming with no unrecoverableReason. The script itself performs and reports this check on every write run (`stillAffectedUnexplained`); this run reported 0.",
+    "correctnessSpotCheck": "Row cmtac79ag0030dm37eg7uqlny (fixture-lsb-2023-abl-credit-agreement-co) had definedTermRefs=[\"Permitted Purchase Money Indebtedness\"] before the run. After the run: definedTermRefs=[\"defined-term:410426179ae2ecaae13378d5\"]. Independently recomputing computeStableKey(\"defined-term\", \"fixture-lsb-2023-abl-credit-agreement-co\", \"fixture-lsb-2023-abl-ca\", \"permitted purchase money indebtedness\") outside the backfill script produces the IDENTICAL value - confirming the write is exactly what the canonical formula computes for that row's original raw name, not an arbitrary transformation."
+  },
+
+  "idempotencyProof": {
+    "manualRerun": "Both dry-run and --write were re-run immediately after the write above (same database, same 95 previously-affected rows). Both reported: rowsAffected=0, rowsCorrected=0, rowsUnrecoverable=0 for every company - a genuine no-op, not merely 'no error'.",
+    "automatedTest": "tests/contract-model/backfill-contract-rule-source-trace.test.ts, 'a second run is a no-op (idempotent)' - seeds one row with the deliberate old-format value, runs the backfill once (asserts it corrects the row), captures updatedAt, runs it a SECOND time, and asserts both that the reported affected/corrected counts are 0 and that the row's updatedAt timestamp is byte-identical to after the first run - proving the row was never even touched again, not just 'ended up the same value'."
+  },
+
+  "unrecoverableRows": {
+    "foundInThisEnvironment": 0,
+    "reasonCategoriesImplemented": ["definedTermRefs contains an empty-string entry - no real term name to recompute a stableKey from (refusing to guess)"],
+    "note": "None of the 95 real affected rows in this environment hit this case - every one of their 191 entries was a genuine non-empty raw term-name string, cleanly recomputable. The empty-string category exists and is covered by an automated test ('a row with an empty-string definedTermRefs entry is logged unrecoverable, never guessed at') so the refusal-to-guess discipline is proven even though this environment's real data never exercises it."
+  },
+
+  "testsAdded": {
+    "file": "tests/contract-model/backfill-contract-rule-source-trace.test.ts",
+    "count": 6,
+    "list": [
+      "dry run reports the affected row without writing anything",
+      "write mode corrects a deliberately old/incorrect stableKey to the current canonical format",
+      "a second run is a no-op (idempotent) - no rows reported affected, nothing rewritten",
+      "an already-correct-format entry already matching the current stableKey formula is left untouched and not reported as affected",
+      "a row with an empty-string definedTermRefs entry is logged unrecoverable, never guessed at",
+      "tenant isolation: backfilling COMPANY_ID never touches or reads OTHER_COMPANY_ID's rows"
+    ],
+    "convention": "Follows tests/foundation-audit/persistence-fault-injection.test.ts's real-DB convention: uniquely-prefixed synthetic fixture company ids (fixture-blocker7-backfill-co / -other-co), teardown in afterAll, beforeEach row cleanup - never touches the real fixture-fwrg/-lsb/coherent/matthews rows this backfill was actually run against above.",
+    "allPass": true,
+    "fullSuiteRegressionCheck": "npx vitest run tests/contract-model tests/foundation-audit - 131 files, 1359 tests, all passing (including this new file) - no regression introduced by exporting toDefinedTermStableKeys."
+  },
+
+  "adjacentDiscoveredFindingOutOfScope": {
+    "title": "DefinedTermNode.stableKey itself is ALSO stale (pre-P0-2 format, missing the documentId disambiguator) for these same two companies - a second, distinct, undocumented backfill gap that independently limits this fix's practical effect today",
+    "discoveryMethod": "While verifying this backfill's real-world effect (not merely its stored-format correctness), this workstream checked whether the newly-corrected definedTermRefs stableKeys actually resolve against a live DefinedTermNode row via getRuleSourceTrace. They do not - confirmed for both companies (0 of 191 corrected entries resolve). Root-caused by recomputing each DefinedTermNode row's OWN stableKey both ways: computeStableKey(\"defined-term\", companyId, documentId, normalizedName) [current, post-P0-2 formula, per persistDefinedTerms' documented header comment] vs computeStableKey(\"defined-term\", companyId, normalizedName) [pre-P0-2 formula, no documentId]. Result: 100% of the 71 real DefinedTermNode rows across both companies (30 for lsb, 41 for fwrg) match the OLD, pre-P0-2 formula, 0% match the current one.",
+    "whyThisIsADistinctGapFromBLOCKER7": "BLOCKER-7/S11-F1 names ONE specific defect: persistContractRules storing ContractRule.definedTermRefs in the wrong format (fixed in Phase 3F.1.5.R, this workstream backfills the historical data). This newly-found gap is in a DIFFERENT function (persistDefinedTerms, lib/contract-model/compiler/persistence.ts), fixed in a DIFFERENT, EARLIER phase (P0-2 / Phase 3F.1.4, docs/foundation-assurance/02-tenant-instrument-isolation-results.json), which ALSO never shipped with a historical backfill for its own already-persisted rows. Because persistDefinedTerms upserts by `where: { companyId_stableKey }`, an old-format row can never be upgraded in place by a normal re-run of that function (a fresh compile computes the NEW key, finds no matching row, and CREATES a second, duplicate-content row rather than updating the old one - the mirror image of the golden-tests bridge problem scripts/backfill-golden-test-stable-keys.ts's own header comment documents) - closing it requires its own dedicated, non-trivial migration analogous to that script, not a trivial recompute.",
+    "whyNotFixedByThisWorkstream": "Out of BLOCKER-7's named scope ('exactly ONE blocker'), touches a different function/table than persistContractRules/ContractRule, and the remediation spec explicitly says 'stay scoped to this one backfill ... no unrelated changes.' Fixing it properly (given the upsert-by-key chicken-and-egg problem) is itself a distinct, non-trivial migration deserving its own dedicated backfill script, review, and tests - bolting it onto this deliverable under time pressure risks exactly the kind of under-scrutinized change this whole certification trail exists to prevent.",
+    "practicalImpact": "Until DefinedTermNode.stableKey is separately backfilled for these two companies, getRuleSourceTrace(fixture-fwrg-2021-credit-agreement-co | fixture-lsb-2023-abl-credit-agreement-co, <any of these 95 rules>).definedTerms will continue to return an empty array in practice - NOT because this backfill's own reconstruction is wrong (independently verified correct against the live canonical formula, see correctnessSpotCheck above), but because the DOWNSTREAM lookup target (DefinedTermNode.stableKey) is itself still keyed under a different, older historical format. This is disclosed here in full, not hidden, precisely because an empty definedTerms array is silently indistinguishable from 'no dependencies' - the same failure shape S11-F1 itself warns about.",
+    "recommendation": "Open a new, explicitly-scoped follow-up item (e.g. BLOCKER-7-ADJACENT or a new numbered finding in the next certification pass) for a DefinedTermNode.stableKey backfill mirroring this script's own discipline (dry-run/write modes, canonical-formula reuse, tenant isolation, unrecoverable-row handling) - likely requiring a bridge similar to scripts/backfill-golden-test-stable-keys.ts's create-then-repoint-then-tombstone-old-row pattern, since the stableKey column is itself the upsert key."
+  },
+
+  "verificationChecklist": {
+    "tscNoNewErrors": "npx tsc --noEmit -p . reports exactly the same 6 pre-existing errors (tests/foundation-audit/cascade-and-concurrency.test.ts x2, tests/foundation-audit/discovery-fault-injection.test.ts x1, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts x3) as the stated baseline - zero new errors from this workstream's changes.",
+    "eslintNoNewErrors": "npx eslint . reports exactly the same 1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires rule-not-found) as the stated baseline - zero new errors.",
+    "scopeConfirmation": "git diff --stat shows exactly 3 changed/added paths: lib/contract-model/compiler/persistence.ts (+9/-1, export-only change to toDefinedTermStableKeys), scripts/backfill-contract-rule-source-trace.ts (new), tests/contract-model/backfill-contract-rule-source-trace.test.ts (new). No schema change, no change to persistContractRules' own logic, no other file touched."
+  },
+
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "BLOCKER-7's named scope - ContractRule.definedTermRefs historical rows silently carrying the pre-3F.1.5.R stableKey format - is fully closed: all 95 real, currently-persisted affected rows (191 entries) across both real regression packages in this environment's own live Postgres instance were identified by data condition (never a hardcoded id list), corrected using the exact same canonical formula persistContractRules uses today (via an exported, unmodified helper - never a parallel re-derivation), verified byte-for-byte correct against that formula, and confirmed idempotent both manually and via an automated test. Zero rows were unrecoverable in this environment; the refusal-to-guess path is implemented and covered by a dedicated test. This disposition is scoped precisely to that named gap, per the remediation spec's own 'stay scoped, no unrelated changes' instruction - it does NOT claim that getRuleSourceTrace now resolves definedTerms end-to-end for these two companies today, because a second, distinct, previously-undocumented staleness in DefinedTermNode.stableKey (a different function, a different and earlier phase, explicitly out of this blocker's scope) independently blocks that resolution and is disclosed in full above, not hidden, with a recommended follow-up."
+}
