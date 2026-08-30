@@ -49,6 +49,27 @@ const ARTICLE_PATTERNS = [
   /^ARTICLE\s+([IVXLC]+|\d+)\.?\s*([^\n]*)$/gim,
 ];
 
+/**
+ * Phase 3F.1.6.RX finding: these four shapes are matched via `unionMatches`
+ * (see its own doc-comment below), NOT `bestMatches` - a real, demonstrated
+ * gap in the prior single-winner design. "Section 6.01 Title ." (keyword),
+ * "§6.01 Title" (section-symbol), and a bare "6.01 Title" (no keyword at
+ * all) are genuinely different, independently-occurring real conventions -
+ * CONMED's own real Guarantee and Collateral Agreement mixes the keyword
+ * style throughout its main body with a bare-decimal style inside its own
+ * attached Assignment and Acceptance exhibit form ("1.1 Assignor .", "1.2
+ * Assignee ."), and any document whose numbering style differs between its
+ * majority sections and a minority (an inserted amendment section, a
+ * differently-drafted exhibit, ...) has the same shape. Under the old
+ * winner-take-all `bestMatches`, whichever single pattern found the most
+ * matches across the WHOLE document was kept and every OTHER pattern's own
+ * real, distinct headings were silently discarded entirely - never even
+ * reaching the plausibility gate below, regardless of how solid their own
+ * positional evidence was. This reproduces on real CONMED/DSGR fixture text
+ * (see docs/phase-3f1-6-rx-final-blocker-closure/03-blocker1-structural-
+ * remediation.json) and is fixed generally, with no per-pattern priority
+ * change to the shapes below and no package-specific logic.
+ */
 const SECTION_PATTERNS = [
   // Title characters allow "[" / "]" (a "[Reserved]" section) and ";" (a
   // real, common compound heading like "Payments of Indebtedness;
@@ -223,9 +244,41 @@ const BARE_INTEGER_SECTION_PATTERN = /^(\d{1,2})\.\s+([A-Z][a-z][^\n]*)$/gm;
  * defense-in-depth rather than removed, exactly as before.
  */
 
-/** A short, whitespace-bounded run of 1-4 digits standing alone at the very end of `before` - a real page break's own decorative page number, never a citation's section number (never whitespace-bounded on both sides here) and never a dollar figure's trailing digit group (comma-preceded, not whitespace-preceded). Collapses to a single preserved whitespace character so any real paragraph break spanning the page-number line is still visible to the checks below. */
+/**
+ * A whitespace-bounded page-number-shaped decorative artifact standing alone
+ * at the very end of `before` - a real page break's own running page number,
+ * optionally labeled ("Page 42", case-insensitive) and/or dash-wrapped
+ * ("-42-", a common running-footer style) - never a citation's own section
+ * number (always glued directly to "Section "/"Article "/a decimal point,
+ * never isolated as a bare whitespace-bounded token on its own) and never a
+ * dollar figure's trailing digit group (comma-preceded, not whitespace-
+ * preceded). "Page"/"-" are recognized here as a closed, universally
+ * standard typographic decoration for a page number - not an open-ended
+ * citation-preposition list - so this remains within the "purely positional/
+ * typographic evidence" contract, never keyed to drafting phrasing.
+ *
+ * Phase 3F.1.6.RX finding: the original implementation collapsed the entire
+ * matched artifact (including BOTH surrounding whitespace runs) down to a
+ * SINGLE preserved character, which only happened to keep a real paragraph
+ * break's 2+-newline count intact when the source text already had MORE
+ * than one newline on at least one side of the page number (as in every
+ * real CONMED/DSGR fixture, which use a full blank-line-bounded page break -
+ * ".\n\n69\n\nSECTION 2.09"). A real, equally common PDF-text-extraction
+ * convention instead places a page number between two SINGLE newlines with
+ * no blank line at all ("...permitted hereby.\n42\nSECTION 6.02..." or the
+ * same with a "Page "/dash decoration) - the old single-character collapse
+ * silently destroyed one of the two real newlines in that shape, leaving
+ * only 1 and wrongly failing signal (A) (and signal (B), since the real
+ * preceding sentence's own terminal period sits further back, before the
+ * page-number line, not immediately adjacent). The fix below preserves the
+ * FULL whitespace run on both sides of the artifact - it strips only the
+ * decorative token itself, never manufacturing newlines that were not
+ * really there and never losing ones that were, so a single-newline-bounded
+ * page number and a blank-line-bounded one are both handled correctly and
+ * identically to how a human reader would discount either one.
+ */
 function stripTrailingPageNumberArtifact(before: string): string {
-  return before.replace(/(^|\s)\d{1,4}\s*$/, "$1");
+  return before.replace(/(^|\s+)(?:[Pp]age\s+)?-?\d{1,4}-?(\s*)$/, "$1$2");
 }
 
 /** Signal (A): two or more newlines in the trailing whitespace run (after discounting one page-number artifact) - a real paragraph break isolating the candidate on its own line/block. */
@@ -301,6 +354,60 @@ function bestMatches(text: string, patterns: RegExp[]): RegExpExecArray[] {
   return best;
 }
 
+/**
+ * Phase 3F.1.6.RX finding: `bestMatches` (above) is winner-take-all across
+ * an ENTIRE pattern array - it returns only the single pattern's own match
+ * set that happens to find the most matches over the WHOLE document, never
+ * a union of several. This is safe when the patterns in an array are mostly
+ * redundant alternate captures of the SAME convention (as ARTICLE_PATTERNS'
+ * two entries mostly are - a shape-based match and a line-anchored fallback
+ * for the identical roman/numeric-ARTICLE convention), but SECTION_PATTERNS
+ * bundles together what are, in real drafting, GENUINELY DIFFERENT AND
+ * LEGITIMATELY CO-OCCURRING numbering conventions within one document -
+ * "Section 6.01 Title .", "§6.01 Title", and a bare "6.01 Title" with no
+ * keyword at all. A real document that uses the keyword style for most of
+ * its sections and a bare or "§"-prefixed style for a minority of them
+ * (observed, structurally, in exactly the same way CONMED's own real
+ * amendments mix decimal and flat-integer numbering within one document -
+ * see the INTEGER_SECTION_PATTERNS doc-comment) would have had the entire
+ * minority style SILENTLY DROPPED under `bestMatches`: whichever single
+ * pattern found the most matches document-wide "won", and the other
+ * patterns' own genuinely distinct real headings were never even
+ * considered, regardless of how plausible each one's own boundary evidence
+ * was. This is a different root cause from the isPlausibleByPositionalSignal
+ * citation-vs-heading gate above (it happens further upstream, at pattern
+ * selection, before any plausibility check ever runs) but produces the same
+ * class of symptom this whole gate exists to prevent - a real heading
+ * silently missing from the structural index.
+ *
+ * `unionMatches` replaces `bestMatches` for SECTION_PATTERNS with the same
+ * additive, overlap-deduplicated union already used (via `overlapsAny`) to
+ * combine decimalSectionMatches/integerSectionMatches/bareIntegerMatches
+ * into one `sectionMatches` array - just applied one level earlier, WITHIN
+ * the array of decimal-style pattern shapes itself. Patterns are still
+ * tried in the array's own declared priority order (the shape-based, most
+ * format-rich pattern first), and a later pattern's match is kept only when
+ * it does not overlap a real span an earlier, higher-priority pattern
+ * already claimed - so a document where one shape already wins every real
+ * occurrence is completely unaffected (every later pattern's own matches on
+ * that document are the SAME real headings, already claimed, and are
+ * discarded as overlaps - never double-counted), and a document mixing
+ * conventions gets every genuinely distinct real heading from every
+ * pattern, not just the numerically dominant style's own.
+ */
+function unionMatches(text: string, patterns: RegExp[]): RegExpExecArray[] {
+  const accepted: RegExpExecArray[] = [];
+  for (const pattern of patterns) {
+    const re = new RegExp(pattern.source, pattern.flags);
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(text)) !== null) {
+      if (!overlapsAny(m, accepted)) accepted.push(m);
+      if (m.index === re.lastIndex) re.lastIndex++;
+    }
+  }
+  return accepted.sort((a, b) => a.index - b.index);
+}
+
 /** Containment rank used to compute owned text spans - a node's span is closed by the next node of equal or shallower rank; a deeper rank always nests inside its opener without closing it. */
 const RANK: Record<StructuralNode["nodeType"], number> = { ARTICLE: 0, SECTION: 1, SUBSECTION: 2, CLAUSE: 3, SUBCLAUSE: 4 };
 
@@ -343,7 +450,7 @@ export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNo
   const plausibleArticleEnds = articleMatches.map((m) => m.index + m[0].length);
   const isPlausible = (m: RegExpExecArray) => isPlausibleByPositionalSignals(doc.text, m.index) || isImmediatelyAfterPlausibleArticle(doc.text, m.index, plausibleArticleEnds);
 
-  const decimalSectionMatches = bestMatches(doc.text, SECTION_PATTERNS).filter(isPlausible);
+  const decimalSectionMatches = unionMatches(doc.text, SECTION_PATTERNS).filter(isPlausible);
   const integerSectionMatches = bestMatches(doc.text, INTEGER_SECTION_PATTERNS)
     .filter(isPlausible)
     .filter((m) => !overlapsAny(m, decimalSectionMatches));
