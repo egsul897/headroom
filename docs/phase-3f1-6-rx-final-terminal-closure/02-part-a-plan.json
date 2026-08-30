@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "PART_A_PLAN",
+  "generatedAt": "2026-08-30T18:03:00Z",
+  "purpose": "Seven parallel isolated workstreams, each assigned exactly one or a directly-coupled pair of the 8 frozen findings, dispatched per this phase's own architecture requirements (§2-9 of the phase spec).",
+  "workstreams": [
+    { "id": "A", "findings": ["FINDING-1"], "focus": "Generalized structural heading repair (compositional evidence, never a phrase/case special-case list)", "productionSurface": "lib/contract-model/compiler/stage-structure.ts", "artifactOutput": "03-structural-heading-final-remediation.json" },
+    { "id": "B", "findings": ["FINDING-2", "FINDING-3"], "focus": "getDefinition operative-state safety, same temporal/operative discipline as getOperativeProvision", "productionSurface": "lib/contract-model/compiler/semantic/tools.ts", "artifactOutput": "04-definition-operative-safety-remediation.json" },
+    { "id": "C", "findings": ["FINDING-4"], "focus": "Recursive/iterative N-way fused-claim decomposition, never a fixed 2-or-3-split patch", "productionSurface": "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts", "artifactOutput": "05-fused-claim-recursive-decomposition.json" },
+    { "id": "D", "findings": ["FINDING-5"], "focus": "Generalized condition-suspicion + routing architecture replacing enumerated CONDITIONAL_PHRASE list - the hardest, most architecturally significant fix in this phase", "productionSurface": "lib/contract-model/compiler/semantic-verification/{source-inventory,reconciliation,reviewer,verify}.ts", "artifactOutput": "06-condition-verification-architecture.json" },
+    { "id": "E", "findings": ["FINDING-6"], "focus": "Real Postgres-backed execution generation/lease token fencing for AnalysisRun ownership", "productionSurface": "prisma/schema.prisma (additive), lib/contract-model/analysis/service.ts", "artifactOutput": "07-analysis-run-fencing.json" },
+    { "id": "F", "findings": ["FINDING-7"], "focus": "Explicit document/package analysis lifecycle gate + fixed view-findings destination - smallest correct workflow gate, not a UX redesign", "productionSurface": "app/[companyId]/onboarding/documents/{page,actions}.tsx, app/[companyId]/onboarding/review/**, lib/onboarding/review.ts", "artifactOutput": "08-product-flow-gating.json" },
+    { "id": "G", "findings": ["FINDING-8"], "focus": "Non-recursive fallback failure-observability hierarchy for the pre-ownership failure path", "productionSurface": "lib/contract-model/analysis/{service,orchestrator}.ts", "artifactOutput": "09-failure-observability-final.json" }
+  ],
+  "dispatchOrder": "All 7 dispatched in parallel as isolated worktree agents, each given the exact frozen finding text, the phase's own architecture requirements for that finding, and explicit instructions to reproduce the defect first, then fix the general case (never a special-case patch), then run the required adversarial matrix from the phase spec.",
+  "forbiddenWork": "No full foundation recertification. No rewrite of already-certified boundaries (semantic truth persistence architecture, source-trace repair, partial instrument failure architecture, supersession/lineage architecture, tenant isolation, false-credit evaluator, Invariant #35 scope decision) unless directly required by a fencing/product-flow change, with justification recorded."
+}

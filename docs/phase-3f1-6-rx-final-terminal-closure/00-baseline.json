@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "BASELINE",
+  "generatedAt": "2026-08-30T18:00:00Z",
+  "startingCommit": {
+    "sha": "bab7a39789962d31612fb8c4b704a7a333fb4175",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "workingTreeStatus": "CLEAN at phase start",
+    "matchesExpectedHead": true
+  },
+  "productionBaselineSha": {
+    "value": "d098cb4",
+    "note": "The Part A remediation-freeze SHA from Phase 3F.1.6.RX. All Part B commits after it (062fafe..57610a8) plus this phase's own prior synthesis commit (bab7a39) contain only test files and JSON/markdown artifacts - confirmed via git diff d098cb4 bab7a39 -- 'lib/**' 'app/**' 'prisma/schema.prisma' 'prisma/migrations/**' returning empty (verified below)."
+  },
+  "productionDriftCheckSincePriorFreeze": {
+    "command": "git diff d098cb4 bab7a39 --stat -- 'lib/**' 'app/**' 'prisma/schema.prisma' 'prisma/migrations/**'",
+    "result": "EMPTY - confirmed zero production drift between the Part A freeze SHA and this phase's own starting commit."
+  },
+  "postgresAvailability": {
+    "initialState": "UP at session start (pg_isready accepting connections).",
+    "migrationState": "29 migrations found; database schema up to date; no drift (npx prisma migrate diff: 'No difference detected')."
+  },
+  "tscBaseline": {
+    "command": "npx tsc --noEmit -p .",
+    "result": "6 errors, byte-identical to every prior phase's baseline: tests/foundation-audit/cascade-and-concurrency.test.ts (2), tests/foundation-audit/discovery-fault-injection.test.ts (1), tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3)."
+  },
+  "eslintBaseline": {
+    "command": "npx eslint .",
+    "result": "1 error, identical to every prior phase's baseline: tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires."
+  },
+  "vitestBaseline": {
+    "command": "npx vitest run",
+    "result": "Reusing the immediately-prior turn's own close-of-phase result (identical commit bab7a39, no intervening changes): 234 test files, 2416 tests, 2415 passing, 1 pre-existing environment-configuration-dependent failure (tests/extraction/vercel-ai-gateway-provider.test.ts) already confirmed unrelated to any phase in this lineage."
+  },
+  "buildBaseline": {
+    "command": "npm run build",
+    "result": "Confirmed succeeding fresh at this phase's own start (21 routes, unchanged) before any production change was made."
+  },
+  "immutableHistoricalDirectoriesConfirmed": {
+    "docs/phase-3f1-6-final-foundation-certification/": "32 files, untouched (last touched at Phase 3F.1.6's own close commit).",
+    "docs/phase-3f1-6-r-blocker-remediation/": "28 files, untouched (last touched at Phase 3F.1.6.R's own close commit bb465fe).",
+    "docs/phase-3f1-6-rx-final-blocker-closure/": "34 files, untouched by this phase - this directory is ITSELF now historical/frozen as of the prior phase's own FAILED verdict; this new phase writes exclusively to docs/phase-3f1-6-rx-final-terminal-closure/."
+  },
+  "priorPhaseVerdictInherited": "PHASE_3F_1_6_RX_FINAL_FOUNDATION_CLOSURE_FAILED - 8 independently reproduced, evidence-backed defects found during Part B's own production-frozen recertification. This phase exists solely to fix exactly those 8 findings (never a full re-litigation) and re-certify exactly them plus their directly-coupled surfaces."
+}

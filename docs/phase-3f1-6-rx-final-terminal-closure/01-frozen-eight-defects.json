@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "FROZEN_EIGHT_DEFECTS",
+  "generatedAt": "2026-08-30T18:02:00Z",
+  "purpose": "Verbatim copy of the phase's own required 8 findings, carried forward from docs/phase-3f1-6-rx-final-blocker-closure/32-final-disposition-table.json and 33-final-verdict.json. This is the ENTIRE scope of Part A - no other work is authorized.",
+  "sourceOfTruth": "docs/phase-3f1-6-rx-final-blocker-closure/{32-final-disposition-table,33-final-verdict}.json (frozen, historical, not modified by this phase)",
+  "findings": [
+    { "id": "FINDING-1", "correspondsTo": "BLOCKER-1", "title": "Structural heading false negatives", "cases": ["lowercase/off-line-start heading keyword", "footnote-adjacent heading with only one newline before next heading", "at least one reproduced rank-stack corruption (child re-parented to null)"], "priorEvidence": "docs/phase-3f1-6-rx-final-blocker-closure/23-part-b-blocker1-blocker11-recertification.json" },
+    { "id": "FINDING-2", "correspondsTo": "BLOCKER-5", "title": "getDefinition serves stale definition text with no operative-state disclosure after ambiguous/partial amendment", "priorEvidence": "docs/phase-3f1-6-rx-final-blocker-closure/24-part-b-blocker2-6-orchestrator-recertification.json" },
+    { "id": "FINDING-3", "correspondsTo": "BLOCKER-6 (NEW_COUPLED_BLOCKER_DISCOVERED)", "title": "The same getDefinition behavior bypasses otherwise-correct ambiguous-definition protection", "priorEvidence": "same as FINDING-2 - same root cause, treated as one fix with two trust-boundary consequences per this phase's own §4" },
+    { "id": "FINDING-4", "correspondsTo": "BLOCKER-8 / AUDIT-F4", "title": "Coordinate-clause splitting handles at most one split and fails on 3+ fused claims", "priorEvidence": "docs/phase-3f1-6-rx-final-blocker-closure/26-part-b-blocker8-recertification.json" },
+    { "id": "FINDING-5", "correspondsTo": "BLOCKER-9", "title": "8 of 12 fresh real-world condition formulations bypass independent semantic verification (third recurrence of this defect class)", "priorEvidence": "docs/phase-3f1-6-rx-final-blocker-closure/27-part-b-blocker9-recertification.json" },
+    { "id": "FINDING-6", "correspondsTo": "AUDIT-F2", "title": "AnalysisRun stale-owner reclaim has no fencing token / generation protection (zombie writer)", "priorEvidence": "docs/phase-3f1-6-rx-final-blocker-closure/28-part-b-auditf1-f2-recertification.json" },
+    { "id": "FINDING-7", "correspondsTo": "AUDIT-F6", "title": "Actual product flow can still bypass authoritative contract analysis; the new status-card 'view findings' link is also broken", "priorEvidence": "docs/phase-3f1-6-rx-final-blocker-closure/29-part-b-auditf3-f6-f7-recertification.json" },
+    { "id": "FINDING-8", "correspondsTo": "AUDIT-F7", "title": "recordAnalysisFailureLog can itself throw uncaught, recreating a non-durable/log-only failure path", "priorEvidence": "same as FINDING-7" }
+  ],
+  "certifiedClosedBoundariesMustNotBeReopened": [
+    "BLOCKER-2", "BLOCKER-3", "BLOCKER-4", "BLOCKER-7", "BLOCKER-11 (CERTIFIED_SCOPE_RESOLVED)",
+    "AUDIT-F1", "AUDIT-F3", "AUDIT-F5",
+    "known-package cross-cutting regression (safe)",
+    "all 14 permanent false-credit controls (safe)",
+    "tenant isolation (safe)",
+    "database/migration integrity (safe)",
+    "durable semantic-truth persistence (survived recertification)",
+    "orchestrator supersession/lineage propagation (survived end-to-end recertification)",
+    "the Part B production freeze itself (genuine)"
+  ],
+  "architectureRuleReiterated": "STRUCTURAL HEADING (FINDING-1) repair must operate on generalized compositional structural evidence, never a phrase/case special-case list. CONDITION VERIFICATION (FINDING-5) repair must operate on generalized semantic condition-suspicion + routing, never an enumerated phrase list - this is the THIRD recurrence of the same underlying architecture mistake (3F.1.6.R, then 3F.1.6.RX Part A, then 3F.1.6.RX Part B), so a fourth phrase-list patch is an explicit failure of this phase regardless of test pass rate.",
+  "antiEndlessLoopScopeBoundary": "Only these 8 findings (plus directly-coupled consequences discovered during their own fix, recorded as COUPLED-NEW and fixed only if necessary to close one of the 8) are in scope. No new workstream may be created for adjacent imperfections found along the way that are not themselves one of these 8 or a direct blocker to fixing one of them."
+}
