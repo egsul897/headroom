@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "WORKSTREAM_E_ANALYSIS_RUN_FENCING",
+  "workstream": "E",
+  "findingId": "FINDING-6",
+  "findingTitle": "AnalysisRun stale-owner reclaim fencing (the \"zombie writer\" gap)",
+  "generatedAt": "2026-08-30T17:56:00Z",
+  "commitSha": "812f40ae2f0490f42d39a17189cce9f9d9ba0655",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+
+  "sourceFinding": {
+    "reportedBy": "docs/phase-3f1-6-rx-final-blocker-closure/28-part-b-auditf1-f2-recertification.json (AUDIT_F2.task2_staleReclaimAttack.NEW_GENUINE_DEFECT_FOUND)",
+    "reproducedBy": "tests/contract-model/part-b-recert-auditf2-concurrency.test.ts's original \"PRODUCTION RISK - ZOMBIE WRITER\" test",
+    "coreClaim": "startOrResumeAnalysisRun's claim-time compare-and-swap (create() -> P2002 -> conditional updateMany) is genuinely atomic and was never in question. The gap is LATER: reclaiming a RUNNING row classified 'stale' (older than the 30-minute STALE_RUNNING_THRESHOLD_MS) provides no protection if the presumed-dead prior owner was actually just slow, not dead. Because PER_INSTRUMENT_ANALYSIS is one unsubdivided stage spanning the entire per-instrument loop (however many instruments/LLM round trips it contains), a real production run can plausibly exceed 30 minutes without crashing. Once a new caller correctly reclaims the row (resetting startedAt/currentStage/fatalError, clearing AnalysisRunIssue rows - exactly as designed), the OLD worker is never told and never re-checks: it can keep calling setAnalysisRunStage/completeAnalysisRun/failAnalysisRun with the same bare runId, and each of those calls previously wrote via an unconditional `prisma.analysisRun.update({ where: { id: runId } })` - nothing in the row distinguished 'a write from the CURRENT owner' from 'a write from whoever last held a reference to this id'. The final persisted run state was whichever writer happened to execute last, independent of who actually still owned the run."
+  },
+
+  "schemaChange": {
+    "migration": "prisma/migrations/20260830173258_phase_3f1_6_rx_final_workstream_e_analysis_run_fencing/migration.sql",
+    "migrationSql": "ALTER TABLE \"analysis_runs\" ADD COLUMN     \"executionGeneration\" INTEGER NOT NULL DEFAULT 1;",
+    "purelyAdditive": true,
+    "verification": {
+      "method": "npx prisma migrate dev --name phase_3f1_6_rx_final_workstream_e_analysis_run_fencing (against real local Postgres 16, DATABASE_URL from .env), then npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma --shadow-database-url \"$DATABASE_URL\"",
+      "result": "\"No difference detected.\" - the migrations directory matches prisma/schema.prisma exactly.",
+      "note": "This shared worktree/database is used concurrently by several sibling Part A workstream sessions this same phase. Mid-session the local Postgres `_prisma_migrations` bookkeeping table was found to have been dropped by a concurrent operation while every real table/column (including this workstream's own executionGeneration column) remained intact and correct. This was repaired via `npx prisma migrate resolve --applied <name>` for all 30 migrations in dependency order (a bookkeeping-only operation - no SQL was re-executed, since the schema was already correct), after which `npx prisma migrate status` reported the database up to date and migrate diff reported no difference, exactly as before the incident. This is disclosed for transparency about the shared environment, not claimed as part of this workstream's own design."
+    },
+    "schemaColumn": {
+      "model": "AnalysisRun",
+      "field": "executionGeneration",
+      "type": "Int",
+      "default": 1,
+      "nullable": false,
+      "rationale": "A lease/execution-generation token authoritative only in Postgres (never process-local memory). Every successful ownership acquisition - the create() path (gets the column default, 1) and the stale-reclaim updateMany path (increments it atomically as part of the SAME CAS statement that wins the reclaim) - mints a new generation and returns it to the winning caller via StartAnalysisRunOutcome.run.executionGeneration."
+    }
+  },
+
+  "fencingMechanism": {
+    "claimTimeMint": {
+      "location": "lib/contract-model/analysis/service.ts, startOrResumeAnalysisRun",
+      "createPath": "A brand-new row gets the schema default (1) - no separate write needed.",
+      "reclaimPath": "The stale-reclaim `updateMany` now includes `executionGeneration: { increment: 1 }` in its `data`, inside the SAME atomic UPDATE statement that already wins the CAS on `WHERE { ...identity, OR: [not-RUNNING, stale-RUNNING] }`. There is no window between 'this caller won the reclaim' and 'the generation bump applied' - they are the same SQL statement.",
+      "returnedTo": "The caller reads the new generation off `run.executionGeneration` in the returned StartAnalysisRunOutcome and must hold onto it for every subsequent mutating call it makes against this run."
+    },
+    "directRowMutators": {
+      "functions": ["setAnalysisRunStage", "completeAnalysisRun", "failAnalysisRun"],
+      "signatureChange": "Each now takes an additional `expectedGeneration: number` parameter (the value the caller received at claim time - never re-read at write time, which would silently launder staleness).",
+      "mechanism": "Each writes via a single atomic `prisma.analysisRun.updateMany({ where: { id: runId, executionGeneration: expectedGeneration }, data: {...} })` and checks the returned `count`.",
+      "onMatch": "count === 1: this caller still genuinely owns the row; the write applies. setAnalysisRunStage returns `true`; completeAnalysisRun/failAnalysisRun return the updated AnalysisRun row (via a follow-up findUniqueOrThrow, since updateMany itself does not return the row).",
+      "onMismatch": "count === 0: a newer claim/reclaim has since bumped the generation past what this caller holds. setAnalysisRunStage returns `false`; completeAnalysisRun/failAnalysisRun return `null`. This is a normal, expected outcome for a superseded caller - never a thrown error - so call sites can check it without exception-handling overhead."
+    },
+    "childTableMutator": {
+      "function": "recordAnalysisRunIssue",
+      "problem": "AnalysisRunIssue is a child table keyed on `runId` alone; it carries no `executionGeneration` column of its own, so the single-statement `updateMany({ where: { executionGeneration } })` pattern used for the AnalysisRun row itself does not apply directly.",
+      "mechanism": "Runs inside one `prisma.$transaction` that first issues `SELECT \"executionGeneration\" FROM \"analysis_runs\" WHERE id = $1 FOR UPDATE` (a real Postgres row lock on the SAME row `startOrResumeAnalysisRun`'s own reclaim `updateMany` locks), reads the freshly-locked, current generation, and only proceeds to the `analysisRunIssue.upsert` if it still matches `expectedGeneration`. Because the `FOR UPDATE` lock and a concurrent reclaim `updateMany` both take an ordinary row-level lock on the same `analysis_runs` row, they genuinely serialize against each other: either this call observes the fresh, bumped generation and correctly declines, or a concurrent reclaim blocks until this transaction commits and then proceeds against the post-transaction state.",
+      "signatureChange": "Now takes `expectedGeneration: number` alongside its existing fields; returns `{ applied: boolean }` instead of `void`."
+    },
+    "semanticTruthGate": {
+      "function": "persistSemanticTruthForInstrument",
+      "location": "lib/contract-model/analysis/semantic-truth/service.ts",
+      "scopingDecision": "SemanticTruthRecord itself was NOT given an executionGeneration column - this finding does not redesign that model's own already-certified AUDIT-F1 persistence architecture beyond what FINDING-6 strictly requires.",
+      "mechanism": "When the caller supplies BOTH a real `analysisRunId` and an `expectedGeneration`, the function takes one fresh read of that run's CURRENT executionGeneration immediately before persisting anything. If it no longer matches, the ENTIRE call is skipped (nothing is written) and the returned PersistSemanticTruthSummary carries `skippedSupersededGeneration: true`.",
+      "disclosedLimitation": "This is a pre-write GATE, not a per-row atomic compare-and-swap - there is a (small, disclosed) window between the generation check and this call's own subsequent upserts during which a reclaim could theoretically occur. This is accepted as sufficient because: (1) it closes the realistic, disclosed risk this finding targets (a long-abandoned-then-reclaimed run's prior owner republishing stale truth well after losing ownership, a window measured in tens of minutes, not the sub-millisecond window a per-row CAS would additionally close); and (2) the orchestrator's own runId+generation fencing on setAnalysisRunStage/completeAnalysisRun/failAnalysisRun makes a genuinely still-racing writer's outcome irrelevant in practice regardless - its next AnalysisRun-row write fails closed whether or not this particular semantic-truth persist slipped through the gate in the interim.",
+      "backwardCompatibility": "expectedGeneration is optional; a call with analysisRunId: null (no real run to fence against, used by several existing unit tests) skips the gate entirely, exactly as before this change."
+    },
+    "orchestratorThreading": {
+      "location": "lib/contract-model/analysis/orchestrator.ts, runContractAnalysis + analyzeInstrument",
+      "captured": "`generation` is captured once, immediately after startOrResumeAnalysisRun returns STARTED (`generation = startOutcome.run.executionGeneration`), and is never re-read from the database afterward within this execution.",
+      "stageTransitions": "Every `setAnalysisRunStage` call site was replaced with a `setStageOrBail(stage)` helper that presents `generation` and throws a new `RunSupersededError` the instant a stage transition reports it did not apply.",
+      "perInstrumentCalls": "`analyzeInstrument` now takes `expectedGeneration` as a parameter and threads it into its own `persistSemanticTruthForInstrument` call. The per-instrument `recordAnalysisRunIssue` calls in the main loop also present `generation`.",
+      "terminalCalls": "The 'every instrument failed' branch's `failAnalysisRun` call, the success-path `completeAnalysisRun` call, and the outer catch block's `failAnalysisRun` call all present `generation` and check for a `null` result.",
+      "newOutcome": "A new `SKIPPED_SUPERSEDED` value was added to `AnalysisRunOutcome` (lib/contract-model/analysis/types.ts). When `RunSupersededError` is caught, or when `completeAnalysisRun`/`failAnalysisRun` return `null`, `runContractAnalysis` returns `{ outcome: \"SKIPPED_SUPERSEDED\", ... }` instead of attempting a further (also-doomed) write - a superseded execution's own honest report that it lost ownership mid-flight, distinct from `SKIPPED_ALREADY_RUNNING` (reported at claim time, before any work began)."
+    }
+  },
+
+  "zombieWriterTestResult": {
+    "file": "tests/contract-model/part-b-recert-auditf2-concurrency.test.ts",
+    "originalTest": "\"PRODUCTION RISK - ZOMBIE WRITER\" - reproduced the defect against the pre-fix code (old worker's completeAnalysisRun/failAnalysisRun calls succeeded unconditionally and clobbered the new worker's live state).",
+    "rewrittenAs": "\"FINDING-6 FIX VERIFIED - ZOMBIE WRITER\" - the identical scenario (old worker claims generation 1 -> stalls 45 minutes -> new worker correctly reclaims and is minted a new, strictly greater generation -> new worker makes real progress -> old worker attempts setAnalysisRunStage/completeAnalysisRun/failAnalysisRun using its own stale generation 1), now asserting the FIXED behavior end to end:",
+    "assertions": [
+      "oldWorkerGeneration === 1; newWorkerGeneration > oldWorkerGeneration after reclaim",
+      "the reclaimed row's own executionGeneration column equals newWorkerGeneration",
+      "the new worker's own setAnalysisRunStage/completeAnalysisRun calls (presenting newWorkerGeneration) apply normally",
+      "the old worker's completeAnalysisRun call (presenting oldWorkerGeneration) returns null and does NOT change the row - status/currentStage/executionGeneration all remain exactly what the new worker last set",
+      "the old worker's setAnalysisRunStage call (presenting oldWorkerGeneration) returns false and does not change currentStage",
+      "the old worker's failAnalysisRun call (presenting oldWorkerGeneration) returns null and does not change status",
+      "the new worker's own eventual completeAnalysisRun (presenting newWorkerGeneration) succeeds and is the row's real final state (COMPLETED)",
+      "a final zombie completeAnalysisRun attempt even AFTER the new worker's genuine completion still returns null and leaves the row COMPLETED"
+    ],
+    "additionalRegressionTest": "\"FINDING-6 regression check - ORDINARY single-owner run\" - a brand-new claim (generation defaults to 1), all 6 real orchestrator stage names applied in sequence via setAnalysisRunStage, then completeAnalysisRun (COMPLETED_WITH_REVIEW with a real reviewItemCount) and a second, independent identity's failAnalysisRun path - every call presents its own correct, unchanged generation and every call applies normally, confirming zero behavioral regression for the non-zombie, single-owner path fencing was added on top of.",
+    "runResult": "8/8 tests passing (`npx vitest run tests/contract-model/part-b-recert-auditf2-concurrency.test.ts`) - the 6 pre-existing tests in this file (claim-time atomicity, stale-reclaim-under-concurrency, 24h/29min boundary checks, mixed create/updateMany race) plus the 2 above."
+  },
+
+  "regressionEvidence": {
+    "typecheckAndLint": {
+      "tscBaseline": "6 pre-existing errors (tests/foundation-audit/{cascade-and-concurrency,discovery-fault-injection,real-db-duplicate-physical-occurrence}.test.ts - all pre-existing `sectionRef`/`charStart`/`heading` duplicate-key/missing-property issues unrelated to this workstream).",
+      "tscAfter": "Identical 6 errors, byte-for-byte, confirmed via `npx tsc --noEmit -p .` immediately after this workstream's final commit. Zero new errors.",
+      "eslintBaseline": "1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts, `@typescript-eslint/no-var-requires` rule-definition issue, unrelated).",
+      "eslintAfter": "Identical 1 error, confirmed via `npx eslint .` after this workstream's final commit. Zero new errors."
+    },
+    "targetedTestRuns": [
+      { "command": "npx vitest run tests/contract-model/part-b-recert-auditf2-concurrency.test.ts", "result": "8/8 passing" },
+      { "command": "npx vitest run tests/contract-model/analysis-run-concurrency.test.ts", "result": "5/5 passing - unchanged, confirms AUDIT-F2's original claim-time CAS proof is unaffected" },
+      { "command": "npx vitest run tests/contract-model/partial-instrument-failure.test.ts", "result": "2/2 passing" },
+      { "command": "npx vitest run tests/contract-model/semantic-truth-persistence.test.ts", "result": "6/6 passing" },
+      { "command": "npx vitest run tests/contract-model/part-b-recert-auditf1-truth-persistence.test.ts", "result": "4/4 passing" },
+      { "command": "npx vitest run tests/contract-model/part-b-recert-crosscutting-tenant-isolation.test.ts", "result": "5/5 passing (updated to pass expectedGeneration: 1 to its two direct recordAnalysisRunIssue call sites, matching the new required signature - both rows in that test are freshly created via prisma.analysisRun.create(), so their real executionGeneration is genuinely 1, not a stubbed value)" },
+      { "command": "npx vitest run tests/contract-model/live-contract-analysis-orchestrator.test.ts", "result": "11/11 passing - the real, unmodified runContractAnalysis end-to-end orchestrator tests show zero regression under generation fencing" },
+      { "command": "npx vitest run tests/contract-model/no-log-only-failure.test.ts tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts tests/contract-model/part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts", "result": "7/7 passing - AUDIT-F7/FINDING-8's own pre-identity and per-instrument failure-observability paths are unaffected by fencing" }
+    ],
+    "notInScope": "A full `npx vitest run tests/contract-model` pass this session also showed 38 pre-existing failures in tests/contract-model/{condition-suspicion-architecture,coverage-structural,part-b-recert-blocker8-adversarial,part-b-recert-blocker9-independent-attack}.test.ts. These are sibling Part A workstreams' own in-progress files (condition-suspicion/source-inventory generalization, unrelated structural-coverage fixture data) mid-development in this same shared worktree at the time this workstream ran its own verification - confirmed by inspection that none of the failing assertions touch AnalysisRun, executionGeneration, or any function this workstream modified. Disclosed here for transparency; out of FINDING-6's own scope and not this workstream's responsibility to fix."
+  },
+
+  "auditBoundaryConfirmation": {
+    "AUDIT_F1_semanticTruthPersistence": {
+      "claim": "Certified boundary unmodified beyond the strictly-required generation gate.",
+      "evidence": "tests/contract-model/semantic-truth-persistence.test.ts (6/6) and tests/contract-model/part-b-recert-auditf1-truth-persistence.test.ts (4/4) both pass unmodified - full tree round-trip, tenant isolation, trust-gating, and content-hash versioning all hold exactly as before. persistSemanticTruthForInstrument's core upsert loop, contentHash/version logic, and trust-status computation were not touched; only a pre-loop generation check (skippable via the optional expectedGeneration parameter) was added, and every existing call site that passes analysisRunId: null (the vast majority of this module's own unit tests) is provably unaffected since the gate never activates without both a real analysisRunId AND a supplied expectedGeneration."
+    },
+    "AUDIT_F3_partialInstrumentFailure": {
+      "claim": "Certified boundary unmodified beyond the strictly-required generation gate.",
+      "evidence": "tests/contract-model/partial-instrument-failure.test.ts (2/2) and tests/contract-model/part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts (2/2) both pass unmodified - PARTIAL vs COMPLETED_WITH_REVIEW vs FAILED disposition logic in completeAnalysisRun is byte-identical (only the write mechanism around it changed, from a bare update() to a generation-conditioned updateMany()); AnalysisRunIssue's own clear-then-repopulate-per-attempt lifecycle (clearAnalysisRunIssues, called from both the create() and reclaim() paths in startOrResumeAnalysisRun) is untouched; recordAnalysisRunIssue's own upsert-by-(runId,instrumentKey) semantics are untouched, wrapped only in the new pre-write generation lock/check."
+    }
+  },
+
+  "verificationCommandsRun": [
+    "npx prisma migrate dev --name phase_3f1_6_rx_final_workstream_e_analysis_run_fencing",
+    "npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma --shadow-database-url \"$DATABASE_URL\"  ->  \"No difference detected.\"",
+    "npx prisma migrate status  ->  \"Database schema is up to date!\" (after repairing the shared-worktree _prisma_migrations bookkeeping incident described above)",
+    "npx tsc --noEmit -p .  ->  6 errors (baseline, unchanged)",
+    "npx eslint .  ->  1 error (baseline, unchanged)",
+    "npx vitest run tests/contract-model/part-b-recert-auditf2-concurrency.test.ts  ->  8/8 passing",
+    "npx vitest run tests/contract-model/analysis-run-concurrency.test.ts tests/contract-model/partial-instrument-failure.test.ts tests/contract-model/semantic-truth-persistence.test.ts tests/contract-model/part-b-recert-auditf1-truth-persistence.test.ts tests/contract-model/part-b-recert-crosscutting-tenant-isolation.test.ts  ->  30/30 passing",
+    "npx vitest run tests/contract-model/live-contract-analysis-orchestrator.test.ts tests/contract-model/no-log-only-failure.test.ts tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts tests/contract-model/part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts  ->  18/18 passing"
+  ],
+
+  "sharedWorktreeDisclosure": {
+    "note": "This worktree and its git history were shared concurrently with several other Part A workstream sessions this same phase, each committing their own fixes to overlapping files (notably lib/contract-model/analysis/orchestrator.ts and types.ts, shared with FINDING-7 and FINDING-8's own work). This session's own uncommitted changes were involuntarily discarded twice mid-session by concurrent `git reset` operations run by sibling sessions (once wiping this session's first full implementation pass together with a sibling's own uncommitted FINDING-8 work, and once more after a partial re-application) - both times, this session detected the loss via `git status`/`git reflog`, reconstructed its own changes from scratch on top of whatever the (by-then-different, further-advanced) HEAD and working tree contained, and re-verified before committing again. The final commit (812f40a) was made immediately after tsc/test verification to minimize further exposure to this risk. One incidental side effect: this commit's `git add` (by explicit path list, not `-A`) inadvertently swept in one small untracked doc file from a concurrent sibling workstream (docs/phase-3f1-6-rx-final-terminal-closure/04-definition-operative-safety-remediation.json) that had appeared in the shared working tree between this session's `git status` check and its `git commit` call - a byproduct of the shared git index, not this workstream's own content; that file's substance is unrelated to and unaffected by FINDING-6."
+  },
+
+  "disposition": "FINDING_6_CLOSED",
+  "dispositionRationale": "AnalysisRun.executionGeneration is a real, additive, Postgres-authoritative lease token minted/incremented atomically at every claim and reclaim. Every subsequent mutating call on a run (setAnalysisRunStage, completeAnalysisRun, failAnalysisRun, and the child-table recordAnalysisRunIssue) is now conditioned on the caller's held generation still matching the row's current generation, applied via a single atomic statement (or a real row lock for the child-table case), and fails closed (no-op, never a thrown error) the instant a newer owner has taken over. persistSemanticTruthForInstrument gates its own writes behind a fresh generation check for the same reason, without expanding SemanticTruthRecord's own schema. The orchestrator threads the held generation through its full call chain from claim to completion. The rewritten \"ZOMBIE WRITER\" test proves every one of a superseded owner's writes is now rejected and that the new owner alone controls final run state; a new companion test proves zero behavioral regression for the ordinary, non-zombie single-owner path. AUDIT-F1 and AUDIT-F3's own certified test suites both pass unmodified, confirming this fix did not touch either boundary beyond the strictly-required generation gate."
+}
