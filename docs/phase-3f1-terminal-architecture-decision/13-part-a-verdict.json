@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_VERDICT",
+  "verdict": "PHASE_3F_1_TERMINAL_ARCHITECTURE_REMEDIATION_READY_FOR_RECERTIFICATION",
+  "basis": [
+    "All 6 open defects fixed at the root cause, not patched around specific reported reproductions (03-08).",
+    "OPEN-4's condition-suspicion architecture genuinely replaced per the mandated design (02) - source-only semantic classifier, two-gate routing, tenant-scoped caching - with an honestly-disclosed limitation that real-model generalization is unvalidated in this environment and must be proven at Part B.",
+    "Known-package regression: NO_REGRESSION (10). 14/14 false-credit controls: NO_CREDIT (11). Full quality gates green: 250 files, 2639 tests, 0 failures; tsc/eslint at baseline; build succeeds; Prisma schema up to date (12)."
+  ],
+  "freezeShaForPartB": "93430eb627c7ec6657254adf7164d74a2a7de364"
+}

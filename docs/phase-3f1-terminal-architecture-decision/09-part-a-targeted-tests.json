@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_TARGETED_TESTS",
+  "perDefectDeliverables": {
+    "OPEN-1": "docs/phase-3f1-terminal-architecture-decision/03-structural-final-fix.json - 21/21 in target file, 204/204 across full structural-heading regression surface (incl. 1500-doc property fuzz).",
+    "OPEN-2": "docs/phase-3f1-terminal-architecture-decision/04-definition-operative-fix.json - 15/15 in target file, 1980+/1985 repo-wide (1 unrelated pre-existing flaky-in-suite test, passes in isolation).",
+    "OPEN-3": "docs/phase-3f1-terminal-architecture-decision/05-n-way-claim-decomposition.json - 147/147 targeted, full-repo sweep clean modulo then-still-in-flight sibling workstreams (confirmed via git stash).",
+    "OPEN-4": "docs/phase-3f1-terminal-architecture-decision/06-condition-suspicion-architecture.json - 29 new tests + 6 updated files, 135 files/1459 tests in tests/contract-model/ passing.",
+    "OPEN-5": "docs/phase-3f1-terminal-architecture-decision/07-analysis-run-fencing.json - 7/7 in target file x5 repeated runs, 50/50 across 10 dependent suites.",
+    "OPEN-6": "docs/phase-3f1-terminal-architecture-decision/08-failure-observability-bottom.json - 4/4 in target file, stable across repeated runs."
+  },
+  "integrationVerification": "After all 6 workstreams merged (commits fc68f41, 9271261, bed02d6, 223aa64, edac7cb+0c5701f, eba914a), fixed 2 newly-surfaced tsc errors from a Prisma mock-typing interaction in the OPEN-6 test file (commit 93430eb) - these were an integration artifact of combining two workstreams' edits to the same file's neighborhood, not a defect in either fix. Full untargeted `npx vitest run`: 250 files, 2639 tests, ALL PASSING.",
+  "knownLimitationDisclosed": "OPEN-4's own real-model semantic generalization is UNVALIDATED in this environment (no AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY was available during that workstream's own execution) - orchestration/routing/caching/independence are proven correct via scripted callers, but the actual model-judgment generalization claim can only be tested with a real credential, which is why Part B's own OPEN-4 recertification (§24 of the governing phase spec) is the deciding test, not this Part A test count."
+}
