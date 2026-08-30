@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "TENANT_ISOLATION_CERTIFICATION",
+  "generatedAt": "2026-08-30T03:50:00Z",
+  "auditorRole": "INDEPENDENT_CERTIFICATION_AUDITOR",
+  "purpose": "Section 13: real-Postgres, two-synthetic-tenant adversarial tenant-isolation certification across documents, structural nodes, definitions, semantic-compiler cache, the NEW ClaimReviewItem family, precedent access, ingestion dedup, and source traces.",
+  "environment": {
+    "database": "real Postgres, two real Company rows created and deleted (audit-s13-tenant-alpha, audit-s13-tenant-beta)",
+    "collisionStrategy": "Identical document name, identical section ref, identical stableKey, identical defined-term text, identical content hash, and an adversarially-identical claimKey were all deliberately used across both tenants."
+  },
+  "testFile": "tests/foundation-audit/tenant-isolation-certification.test.ts",
+  "testResult": "11/11 PASS",
+  "twoTenantCollisionTestExactResults": [
+    {
+      "area": "Document rows",
+      "test": "Two tenants each create a Document with the IDENTICAL name.",
+      "result": "PASS - 2 separate rows, never merged, never cross-visible under a companyId-scoped query."
+    },
+    {
+      "area": "DocumentNode (structural nodes)",
+      "test": "Two tenants each create a DocumentNode with the IDENTICAL (stableKey, sectionRef) pair.",
+      "result": "PASS - @@unique([companyId, stableKey]) is genuinely compound, not a bare unique on stableKey: both creates succeeded with zero P2002, a companyId-scoped query for the colliding stableKey returns exactly 1 row (the caller's own), and the global count across both tenants is exactly 2."
+    },
+    {
+      "area": "DefinedTermNode (definitions)",
+      "test": "Two tenants each define the identical term text 'Payment Conditions' with the identical normalizedName.",
+      "result": "PASS - 2 independent rows; an Alpha-scoped query for normalizedName never returns Beta's row."
+    },
+    {
+      "area": "ContractReferenceEdge - TARGET direction",
+      "test": "An Alpha-owned edge's targetTermId adversarially set to Beta's own DefinedTermNode id.",
+      "result": "DETECTED - validateTenantIsolation's report.ok is false and its issues array names the cross-tenant targeting. Confirms P1-2's target-direction fix (Phase 3F.1.4) is genuinely still effective."
+    },
+    {
+      "area": "ContractReferenceEdge - SOURCE direction (see findings)",
+      "test": "An Alpha-owned edge's sourceRuleId adversarially set to Beta's own ContractRule id (constructed via a raw Prisma write bypassing persistence.ts entirely, per the task's own instruction to test this adversarially).",
+      "result": "NOT DETECTED - validateTenantIsolation's report contains no issue naming this row. See finding AUD-S13-01 below - this reconfirms a gap already disclosed by Phase 3F.1.4/3F.1.5.R, not a newly discovered or newly regressed one."
+    },
+    {
+      "area": "Ingestion dedup (content hash)",
+      "test": "Two tenants both create a SourceArtifact with the IDENTICAL contentHash.",
+      "result": "PASS - findDuplicateArtifact(companyId, hash) never cross-matches; 2 rows exist globally for the same hash, one owned by each tenant."
+    },
+    {
+      "area": "Semantic compiler cache (P1-1)",
+      "test": "computeCacheKey and a real InMemorySemanticCompilationCache instance, given IDENTICAL instrumentKey/sourceDocumentId/contextBundle/provider inputs but different companyId.",
+      "result": "PASS - keys differ; cache.get(betaKey) never resolves Alpha's cached entry."
+    },
+    {
+      "area": "ClaimReviewItem (the NEW safe-failure model)",
+      "test": "Two tenants both call recordClaimReview with an adversarially-IDENTICAL claimKey string.",
+      "result": "PASS - both CREATE successfully as 2 separate rows (schema enforces @@unique([companyId, claimKey]), never a bare unique on claimKey alone); a raw duplicate-insert bypass attempt for Alpha's own existing (companyId, claimKey) pair is rejected P2002 at the DB layer."
+    },
+    {
+      "area": "checkExplicitSafeFailure cross-tenant matching",
+      "test": "checkExplicitSafeFailure called for both tenants with the identical claimKey, plus a third, never-created 'ghost' companyId.",
+      "result": "PASS - each tenant's check resolves to its OWN reviewItemId, never the other's; the ghost company correctly reports no match at all (no false positive)."
+    },
+    {
+      "area": "Precedent access (Phase 3D GeneralizedPrecedent, in-memory)",
+      "test": "Two TENANT_PRIVATE precedents with colliding lessonDescription/signature, one owned by each tenant.",
+      "result": "PASS - store.listGeneralizedPrecedents({viewerCompanyId: BETA}) returns only Beta's; omitting viewerCompanyId entirely (the safe default) returns NEITHER tenant's private precedent, never 'all'. See informational note on live-wiring status below."
+    }
+  ],
+  "findings": [
+    {
+      "id": "AUD-S13-01",
+      "severity": "MAJOR_NON_BLOCKING",
+      "title": "ContractReferenceEdge.sourceRuleId/sourceNodeId are NOT checked by validateTenantIsolation - reconfirmed, not a new regression, matches Phase 3F.1.4's own disclosure",
+      "status": "CARRIED FORWARD, DISCLOSED, RECONFIRMED STILL OPEN - not newly discovered by this audit, not silently regressed further, not silently claimed fixed by any intervening phase (verified: no doc between Phase 3F.1.4 and this audit claims this closed).",
+      "description": "lib/contract-model/validators.ts's own header comment (Phase 3F.1.4/P1-2 remediation) explicitly documents this scope decision: TARGET-direction fields on every cross-model relation (ContractReferenceEdge.targetRuleId/targetTermId/targetDocumentNodeId/targetDocumentId, AmendmentEffect's equivalents, DocumentRelationshipEdge, DebtInstrument.baseDocumentId, Document.instrumentId) are checked; SOURCE-direction fields (ContractReferenceEdge.sourceNodeId/sourceRuleId, DefinedTermDependencyEdge.fromTermId, ContractRule.sourceNodeId, DocumentNode.parentId) are deliberately NOT checked, on the documented theory that persistence.ts (the one caller of this model with a proven, correct write discipline) always populates a source-direction field alongside that SAME row's own companyId, from data the same document/company-scoped call already produced - so it 'cannot diverge... without either an existing persistence-layer bug... or direct, out-of-band DB tampering.'",
+      "independentVerification": "This audit constructed the adversarial row directly via prisma.contractReferenceEdge.create (bypassing persistence.ts and every other production write path entirely) to test the SCHEMA's/validator's own defense-in-depth, exactly as the task instructed. The row persisted successfully with companyId=Alpha and sourceRuleId pointing at a real ContractRule owned by Beta - Postgres's own FK constraint on sourceRuleId only requires the referenced ContractRule to exist SOMEWHERE, not that it share companyId with the referencing edge. validateTenantIsolation's report did not flag this row.",
+      "isThisALiveExploitablePathToday": "NOT DEMONSTRATED. No production code path was found (nor did any prior phase's audit find one) that can actually produce this shape through normal application logic - grep across lib/contract-model/compiler/persistence.ts (the only writer of ContractReferenceEdge.sourceRuleId in this codebase) confirms every write populates sourceRuleId from the same document/company-scoped call that also sets that row's own companyId. This finding is therefore a VALIDATOR COVERAGE gap / defense-in-depth gap, not a confirmed live cross-tenant leak in production.",
+      "whyMajorNonBlockingNotBlocker": "The ground rules treat 'cross-tenant contamination/visibility' as a BLOCKER archetype, and a strict reading of a schema-level gap could argue for that classification. This audit instead classifies it MAJOR_NON_BLOCKING because: (1) it is a previously disclosed, twice-reviewed, unchanged gap - not a new or newly-regressed defect this phase introduced; (2) no known application code path can currently produce the leaking shape (constructing it required bypassing all real persistence code); (3) every OTHER cross-tenant construction this audit tried (documents, nodes, terms, target-direction references, content-hash dedup, cache, ClaimReviewItem) showed correct isolation with zero leaks. A reader who weighs 'the schema itself would allow it if the invariant were ever violated elsewhere' more heavily than this audit does should treat this as BLOCKER-severity instead - the underlying facts are stated in full above precisely so that judgment call is not hidden inside a single severity label.",
+      "recommendedNextStep": "Unchanged from Phase 3F.1.4's own recommendation: extend validateTenantIsolation's mechanical sweep to also check source-direction fields, OR add a database-level CHECK/trigger asserting a ContractReferenceEdge's sourceRuleId's own companyId matches the edge's companyId (defense-in-depth independent of persistence.ts's own correctness)."
+    },
+    {
+      "id": "AUD-S13-02",
+      "severity": "INFORMATIONAL",
+      "title": "Phase 3D precedent store (GeneralizedPrecedent/ReviewedInstance) tenant-isolation logic is sound but the module remains unwired to any live app/ route",
+      "description": "grep across lib/contract-model/compiler/semantic-precedent/*.ts and lib/contract-model/compiler/semantic/*.ts found zero callers passing viewerCompanyId to listGeneralizedPrecedents/listReviewedInstances outside store.ts's own file. This matches the disclosed state in docs/phase-3f1-5-r-residual-foundation/22-remaining-foundation-risks.json ('not yet wired into any live app/route'). The isolation filter itself (matchesGeneralizedPrecedentFilter) is correct and was independently verified: a TENANT_PRIVATE precedent is invisible to any viewer other than its own ownerCompanyId, and omitting viewerCompanyId is a SAFE default (excludes every private precedent, never 'return all').",
+      "recommendedNextStep": "None required from this audit - noted so a future phase wiring this module into a live route inherits an already-verified isolation contract rather than re-deriving it."
+    }
+  ],
+  "certifiedClaims": {
+    "documentsIsolated": "CERTIFIED",
+    "structuralNodesIsolated": "CERTIFIED",
+    "definitionsIsolated": "CERTIFIED",
+    "semanticCompilerCacheIsolated": "CERTIFIED (P1-1 reconfirmed)",
+    "claimReviewItemFamilyIsolated": "CERTIFIED - compound @@unique([companyId, claimKey]) enforced at the DB level, checkExplicitSafeFailure never cross-matches",
+    "precedentAccessIsolated": "CERTIFIED at the application-filter-logic level; module not yet live-wired (informational, disclosed)",
+    "ingestionDedupIsolated": "CERTIFIED",
+    "sourceTracesIsolated": "CERTIFIED for SourceArtifact's own companyId scoping",
+    "contractReferenceEdgeTargetDirectionIsolated": "CERTIFIED (validator catches it)",
+    "contractReferenceEdgeSourceDirectionIsolated": "NOT CERTIFIED - disclosed, carried-forward gap, see AUD-S13-01"
+  },
+  "verdict": "SECTION_13_CERTIFIED_WITH_ONE_CARRIED_FORWARD_MAJOR_NON_BLOCKING_FINDING_AND_ONE_INFORMATIONAL_NOTE",
+  "verdictNarrative": "Every NEWLY built or NEWLY tested tenant-isolation surface (the ClaimReviewItem family, the tenant-aware semantic compiler cache, structural nodes/definitions/documents under deliberate name/key collisions, ingestion dedup, target-direction ContractReferenceEdge fields) showed ZERO cross-tenant visibility and ZERO cross-tenant deduplication under adversarial, colliding-identity construction. The one gap found (source-direction ContractReferenceEdge fields) is a previously disclosed, unchanged, twice-reviewed limitation of the validator's own coverage with no demonstrated live exploitation path - reconfirmed present, not silently regressed, not silently claimed fixed."
+}

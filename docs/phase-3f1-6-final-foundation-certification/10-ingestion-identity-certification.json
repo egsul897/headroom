@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "INGESTION_IDENTITY_CERTIFICATION",
+  "generatedAt": "2026-08-30T03:45:00Z",
+  "auditorRole": "INDEPENDENT_CERTIFICATION_AUDITOR",
+  "purpose": "Section 12: certify real-Postgres ingestion identity/dedup/concurrency semantics, independently reproducing and adversarially extending the P1-3 remediation reported in docs/phase-3f1-5-r-residual-foundation/10-onboarding-dedup-remediation.json.",
+  "environment": {
+    "database": "real Postgres (localhost:5432/headroom), not mocked",
+    "startingCommit": "ea82ee80f4528117e7dc6669be8e1ebf28b24108",
+    "migrationsApplied": 27,
+    "migrateStatus": "Database schema is up to date!"
+  },
+  "baselineRegression": {
+    "purpose": "Re-run the PRIOR phase's own test files fresh, as a baseline, before adding independent adversarial tests.",
+    "filesRun": ["tests/connectors/upload-connector.test.ts", "tests/onboarding/documents-actions-dedup.test.ts"],
+    "result": "11/11 tests PASS against real Postgres in this session.",
+    "verdict": "CONFIRMED - the prior phase's own reported P1-3 remediation is genuinely reproducible, not merely self-reported."
+  },
+  "independentAdversarialTests": {
+    "file": "tests/foundation-audit/ingestion-identity-certification.test.ts",
+    "result": "5/5 PASS",
+    "tests": [
+      {
+        "name": "AUDITOR TEST 1: 20-way genuinely concurrent upload race via Promise.all (not allSettled)",
+        "result": "PASS",
+        "detail": "20 simultaneous real uploadDocumentThroughIngestion calls for identical bytes/same tenant. Exactly 1 winner, 19 duplicates, 1 surviving Document/SourceArtifact row, zero unhandled rejections (Promise.all did not throw). Stricter than the prior phase's own N=10 allSettled test."
+      },
+      {
+        "name": "AUDITOR TEST 2: mixed-entry-point concurrency (direct wrapper calls interleaved with the real uploadDocumentAction server action)",
+        "result": "PASS",
+        "detail": "5 direct uploadDocumentThroughIngestion calls + 5 real uploadDocumentAction calls, all fired via a single Promise.all, racing on identical bytes. Converged on exactly 1 Document/SourceArtifact regardless of which entry point 'won'."
+      },
+      {
+        "name": "AUDITOR TEST 3: two real tenants uploading byte-identical content SIMULTANEOUSLY (concurrency + tenant isolation combined)",
+        "result": "PASS",
+        "detail": "5 concurrent uploads per tenant, both tenants racing at the same time. Each tenant converged to exactly 1 of its own rows; the two tenants' artifacts never merged despite an identical contentHash."
+      },
+      {
+        "name": "AUDITOR TEST 4: 3-version supersedesDocumentId chain survives 5 concurrent duplicate re-uploads of the base document",
+        "result": "PASS",
+        "detail": "A base->amendment1->amendment2 supersedesDocumentId chain was constructed, then the BASE document's exact bytes were re-uploaded 5 times concurrently. The chain (both supersedesDocumentId links) and the base row count (still exactly 1) were both completely undisturbed."
+      },
+      {
+        "name": "AUDITOR TEST 5: metadata-only differences (renamed file, different declaredType) still dedup to the same document",
+        "result": "PASS",
+        "detail": "Content, not filename/declaredType, is identity - confirmed independently."
+      }
+    ]
+  },
+  "concurrencyTestExactResults": {
+    "summaryForCaller": "20-way Promise.all (not allSettled) concurrent real-Postgres uploads of identical bytes for the same tenant: exactly 1 winner (duplicate=false), exactly 19 losers (duplicate=true, all agreeing on the SAME artifactId as the winner), exactly 1 surviving Document row, exactly 1 surviving SourceArtifact row, ZERO unhandled promise rejections. Re-run 5+ times during this audit with identical results each time."
+  },
+  "findings": [
+    {
+      "id": "AUD-S12-01",
+      "severity": "MAJOR_NON_BLOCKING",
+      "title": "lib/connectors/registry.ts's getOrCreateUploadConnection has its own, UNFIXED TOCTOU race - reliably reproducible, throws unhandled P2002 under concurrency",
+      "discoveredBy": "Independent auditor adversarial test (tests/foundation-audit/repro-connection-race.test.ts), not present in any prior phase's own test suite.",
+      "description": "uploadDocumentThroughIngestion's FIRST action on every call is `await getOrCreateUploadConnection(params.companyId)` (lib/connectors/upload-connector.ts:122), which does a Prisma `upsert` keyed on the (companyId, connectorType) unique constraint (lib/connectors/registry.ts:100-112). This upsert is NOT atomic against a concurrent identical-key upsert in this codebase's Prisma 5.22.0/Postgres setup: two or more concurrent FIRST calls for a brand-new company reliably race, and the losing caller(s) receive a raw, unhandled PrismaClientKnownRequestError (P2002) instead of the correct row - unlike uploadDocumentThroughIngestion's OWN artifact-creation step one line further down, which this same phase (P1-3 remediation) explicitly wrapped in a P2002 catch for exactly this race class. That fix was not applied here, one level up in the same call chain.",
+      "reproduction": {
+        "method": "20 trials x 6 genuinely concurrent (Promise.allSettled) getOrCreateUploadConnection calls, each trial against a FRESH company (so every trial exercises the true first-ever-call race window)",
+        "result": "96-100 of the 120 total concurrent calls (across repeated runs of this audit) threw an unhandled P2002 rejection. Reproduced on every run of this audit (5+ runs, ~80% rejection rate observed each time). Exactly 1 CompanySourceConnection row always survives per company - the unique constraint itself is never violated at the DB level - only the CALLER-facing behavior (a raw thrown error instead of a converged, successful result) is defective.",
+        "testFile": "tests/foundation-audit/repro-connection-race.test.ts (kept in the suite as `it.fails(...)` so the overall suite stays green while still serving as a live regression check - if a future fix resolves the race, this specific test will start failing, which is the correct signal to convert it to a normal assertion)."
+      },
+      "impact": "A company's very FIRST concurrent document upload attempt (e.g. a double-click submit, two browser tabs open to the onboarding Documents page, or two near-simultaneous onboarding actions before that company's DOCUMENT_UPLOAD connection row exists) can receive a raw 500-class error instead of succeeding. Once the connection row exists (after the first successful call for that company), this exact race window closes permanently for that company - ongoing/steady-state uploads are unaffected. No data corruption, no duplicate rows, and no cross-tenant leakage result from this - the defect is bounded to an unhandled-error path on a narrow, one-time-per-company timing window.",
+      "whyNotBlocker": "Does not corrupt data, does not create silent duplicates, does not leak cross-tenant, does not touch migrations or FK integrity - none of the ground rules' named BLOCKER archetypes apply. The blast radius is narrow (first-ever-upload timing window only) and the fix pattern (a P2002 catch + re-fetch, mirroring the SAME phase's own fix one line below in the same function) already exists as precedent elsewhere in this exact file.",
+      "recommendedNextStep": "Wrap getOrCreateUploadConnection's upsert in the same P2002-catch-and-refetch pattern uploadDocumentThroughIngestion's own artifact-creation step already uses, or make the upsert's own 'create' branch tolerant of a concurrent winner by re-querying on P2002."
+    },
+    {
+      "id": "AUD-S12-02",
+      "severity": "INFORMATIONAL",
+      "title": "The prior phase's own concurrency test (tests/connectors/upload-connector.test.ts) never exercised the connection-creation race - a real test-coverage blind spot, now closed by this audit's own test",
+      "description": "That file's own 'getOrCreateUploadConnection is idempotent' test runs FIRST (creating the DOCUMENT_UPLOAD connection for the fixture company) and only AFTER that does its 10-way concurrent-duplicate-ingestion test run - so the connection row already exists by the time that concurrency test fires, and AUD-S12-01's race was never exercised. This audit's own tests/foundation-audit/ingestion-identity-certification.test.ts deliberately pre-warms both audit companies' connections in beforeAll for the SAME reason (to isolate content-identity/dedup certification from this separately-reported defect) - and tests/foundation-audit/repro-connection-race.test.ts exists specifically to close this coverage gap.",
+      "recommendedNextStep": "None required from this audit; noted for completeness."
+    }
+  ],
+  "certifiedClaims": {
+    "identicalBytesSameTenantDeduplicate": "CERTIFIED - reproduced independently, including under 20-way real concurrency.",
+    "alternateUploadEntryPathsConverge": "CERTIFIED - direct wrapper call vs. real server action call, including when racing simultaneously, converge on one Document.",
+    "concurrencyDoesNotDuplicate": "CERTIFIED for the content-identity/dedup mechanism itself (SourceArtifact's @@unique([companyId, contentHash]) + its P2002 catch). NOT fully certified end-to-end for a brand-new company's very first concurrent upload, due to AUD-S12-01 (a separate, one-level-up dependency's own unfixed race) - see finding for scope and severity.",
+    "differentTenantsRemainIsolated": "CERTIFIED - byte-identical content across two tenants, including under simultaneous concurrent load, never merges.",
+    "legitimateAmendedVersionsRemainDistinct": "CERTIFIED.",
+    "metadataOnlyDifferencesStillDedup": "CERTIFIED.",
+    "intentionalHistoricalVersionsViaSupersedesDocumentId": "CERTIFIED - a 3-version chain survives concurrent duplicate pressure on its base document untouched."
+  },
+  "verdict": "SECTION_12_CERTIFIED_WITH_ONE_MAJOR_NON_BLOCKING_FINDING",
+  "verdictNarrative": "Every claim in the P1-3 remediation report was independently reproduced with fresh, adversarial constructions against real Postgres, including a stricter own concurrency test than the prior phase ran. No BLOCKER-class defect (no cross-tenant merge, no silent duplicate creation, no data corruption) was found anywhere in the content-identity/dedup mechanism itself. One MAJOR_NON_BLOCKING finding (AUD-S12-01) was independently discovered in a dependency this mechanism calls (the lazy CompanySourceConnection auto-creation), representing an unfixed instance of the exact same concurrency-race class this phase otherwise fixed one line further down in the same function."
+}
