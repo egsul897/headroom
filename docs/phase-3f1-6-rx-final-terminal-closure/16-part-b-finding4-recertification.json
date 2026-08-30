@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "PART_B_FINDING4_RECERTIFICATION",
+  "part": "B",
+  "role": "INDEPENDENT_ADVERSARIAL_RECERTIFICATION",
+  "findingId": "FINDING-4",
+  "correspondsTo": "BLOCKER-8 / AUDIT-F4",
+  "generatedAt": "2026-08-30T21:05:00Z",
+  "priorEvidence": "docs/phase-3f1-6-rx-final-terminal-closure/05-fused-claim-recursive-decomposition.json (Workstream C's own claim of FIXED)",
+
+  "scope": "Independently attempt to FALSIFY Workstream C's FINDING-4 fix (segmentCoordinateClauses / isGenuineClauseBoundary in lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts) using FRESH adversarial tests, never by rerunning Workstream C's own test file. No production file was read for the purpose of modifying it, and none was modified - this recertification is read-only against production.",
+
+  "methodology": {
+    "approach": "segmentCoordinateClauses is a pure, synchronous, in-memory text function with no database dependency, so this recertification tests it directly at the unit level (no Postgres, no Company rows, no prisma calls of any kind) - eliminating any shared-worktree/concurrent-session database risk entirely.",
+    "testFile": "tests/contract-model/part-b-recert-finding4-independent.test.ts (NEW, 12 tests)",
+    "productionFilesModified": [],
+    "note": "This worktree is shared with other concurrent Part B recertification sessions (untracked sibling files for FINDING-5/7/8 were observed alongside this one during the session) - disclosed per this phase's own established disclosure discipline. None of that concurrent activity touched unit-hypothesis.ts, types.ts, or this recertification's own test file."
+  },
+
+  "realTestOutput": {
+    "command": "npx vitest run tests/contract-model/part-b-recert-finding4-independent.test.ts",
+    "result": "12/12 passing (all tests, including the ones documenting genuine gaps, pass because they assert the CURRENT ACTUAL - defective - production behavior, per this phase's own Part B convention of proving-not-fixing)",
+    "rawOutput": "✓ tests/contract-model/part-b-recert-finding4-independent.test.ts (12 tests) 2583ms\n  ✓ FINDING-4 independent recertification - FALSIFIES the termination proof's own O(text.length) complexity claim > GAP: wall-clock time grows super-linearly (quadratic-shaped), not O(n), as the bare-or chain grows 2495ms\n\nTest Files  1 passed (1)\n     Tests  12 passed (12)\nDuration  3.16s",
+    "byDescribeBlock": [
+      { "block": "baseline (fix genuinely works here)", "tests": 2, "outcome": "PASS - N=4 same-family clean or-chain splits into 4; N=20 cross-family clean or-chain splits into 20. Confirms the fix genuinely is N-ary (not hardcoded to 3) for THIS shape of input." },
+      { "block": "FALSIFIES arbitrary-N claim (Oxford-comma list)", "tests": 2, "outcome": "BOTH GAP TESTS REPRODUCE A REAL DEFECT - see gapsFound below." },
+      { "block": "FALSIFIES arbitrary-N claim (restated-modal prohibition chain)", "tests": 3, "outcome": "2 of 3 GAP TESTS REPRODUCE A REAL DEFECT; 1 contrast test confirms the original BLOCKER-8 regression guard shape is still correctly handled." },
+      { "block": "FALSIFIES the termination proof's own O(text.length) complexity claim", "tests": 2, "outcome": "1 sanity test confirms no hang/crash; 1 GAP TEST empirically confirms super-linear (quadratic-shaped) growth, contradicting the documented O(text.length) proof." },
+      { "block": "probes that DID hold up", "tests": 3, "outcome": "ALL PASS - internal commas/nested parens inside a clause do not confuse boundary detection; thousands of unmatched opening parens fail closed without throwing; deeply-nested balanced parens do not cause pathological slowdown on their own." }
+    ]
+  },
+
+  "gapsFound": [
+    {
+      "id": "FINDING-4-RECERT-GAP-1",
+      "title": "Oxford-comma / single-trailing-conjunction lists are NOT N-ary decomposed - arbitrary-N claim is false for this extremely common drafting pattern",
+      "severity": "HIGH",
+      "reproduction": "segmentCoordinateClauses(\"the Company shall not incur Indebtedness in excess of $10,000,000, create Liens in excess of $5,000,000, make Investments in excess of $3,000,000, or make Restricted Payments in excess of $2,000,000\") returns 2 segments, not 4. The first 3 independently-operative, differently-valued, cross-family claims (Indebtedness/$10m, Liens/$5m, Investments/$3m) are silently absorbed into ONE segment; only the final comma-then-conjunction item (Restricted Payments/$2m) is separated out. A 5-claim version of the same pattern (\"A, B, C, D, and E\") likewise collapses to exactly 2 segments, not 5.",
+      "rootCause": "TOP_LEVEL_DELIMITER (unit-hypothesis.ts) only recognizes 'and'/'or'/'and-or'/';' as coordinate delimiters. A bare comma is never treated as a candidate delimiter at all, so a list drafted as 'shall not do A, do B, do C, or do D' - the single most common way real credit-agreement drafters string together 3+ un-enumerated claims, with the conjunction word appearing only once before the final item - produces exactly ONE top-level delimiter (the trailing and/or) no matter how many comma-separated claims precede it. Result is always exactly 2 segments regardless of true claim count N.",
+      "contradicts": "05-fused-claim-recursive-decomposition.json's own requiredProperties.arbitraryFiniteN claim ('No hardcoded cap exists anywhere in the implementation; N is simply however many genuine boundaries the one bounded pass finds') and requiredFixConstraint ('The function must support an arbitrary finite N'). This is not a hardcoded numeric cap, but it is a real, common, non-synthetic input shape for which N is effectively capped at 2 regardless of the drafter's actual claim count.",
+      "testNames": [
+        "GAP: 4 independently-operative claims joined 'A, B, C, or D' collapse to 2 segments, not 4",
+        "GAP: 5 independently-operative claims joined 'A, B, C, D, and E' collapse to 2 segments, not 5"
+      ]
+    },
+    {
+      "id": "FINDING-4-RECERT-GAP-2",
+      "title": "RIGHT_CLAUSE_RESTATES_MODAL heuristic is over-broad - a chain of independently-restated 'shall not' prohibitions collapses ENTIRELY to ONE unit, reproducing the original defect under a common drafting style",
+      "severity": "HIGH",
+      "reproduction": "segmentCoordinateClauses(\"the Company shall not create Liens in excess of $1,000,000 and shall not incur Indebtedness in excess of $2,000,000 and shall not make Investments in excess of $3,000,000\") returns null (no split at all - not even 2 segments). A 6-claim version of the same pattern also returns null.",
+      "rootCause": "isGenuineClauseBoundary unconditionally rejects any candidate boundary whose right-hand fragment begins with a bare modal verb (/^(?:shall|will|must|may)\\b/i), with no distinction between (a) the SAME actor's SAME single obligation being restated for a second actor - the guard's own documented intended case, e.g. 'shall not, and shall not permit any Restricted Subsidiary to, create...', which really is one claim - and (b) a WHOLLY SEPARATE, independently-numbered prohibition that merely happens to also restate the modal verb for stylistic parallelism - a common, legitimate way to string together 3+ separate negative covenants in one sentence. Because every fragment in the reproduction begins with 'shall not', EVERY candidate boundary in the whole sentence is rejected, and the fused sentence folds into ONE segment - the exact defect FINDING-4 was supposed to close (N distinct claims collapsed into 1), triggered by a different, equally common drafting style than the one the fix's own adversarial matrix tested.",
+      "contrastConfirmed": "The ORIGINAL regression-guard shape ('The Borrower shall not, and shall not permit any Restricted Subsidiary to, create or suffer to exist any Lien on the Collateral.') correctly still returns null (1 unit) - this recertification confirms that specific, narrower case is legitimately unaffected. The gap is that the SAME heuristic that correctly protects that one case also incorrectly blocks a materially different, much more common case.",
+      "contradicts": "05-fused-claim-recursive-decomposition.json's design.algorithm step 3 and requiredProperties.arbitraryFiniteN - the shared isGenuineClauseBoundary rule that segmentCoordinateClauses depends on for every one of its N-1 boundary decisions has a false-negative failure mode that is reachable at any N>=2 and becomes more consequential as N grows (a 6-claim chain in this drafting style loses ALL 6 splits, not just one).",
+      "testNames": [
+        "GAP: 3 independently-operative prohibitions, each restating 'shall not', collapse entirely to 1 segment",
+        "GAP: 6 independently-operative prohibitions, each restating a modal verb, collapse entirely to 1 segment"
+      ]
+    },
+    {
+      "id": "FINDING-4-RECERT-GAP-3",
+      "title": "The termination proof's explicit O(text.length) complexity claim is false - actual worst-case behavior is quadratic",
+      "severity": "MEDIUM",
+      "reproduction": "Direct timing of segmentCoordinateClauses on a realistic worst-case shape (a long run of top-level 'or' tokens that never independently qualify as a genuine boundary - a common real occurrence in ordinary contract prose full of non-qualifying 'and'/'or', e.g. 'successors and assigns', 'notes or other Indebtedness') shows clearly super-linear growth: n=4000 -> ~123ms, n=16000 (4x the delimiter count) -> ~2044ms (~16.6x the time, not ~4x), n=50000 (12.5x) -> ~24,375ms total for a single call. The committed test asserts a conservative >6x-time-for-4x-size ratio (well below the ~16x actually observed, comfortably above the ~4x a true O(n) algorithm would produce) and this assertion passes, empirically confirming super-linear scaling.",
+      "rootCause": "In segmentCoordinateClauses' single forward-pass loop, the non-qualifying-fold branch does `currentText = text.slice(currentStart, currentEnd)` on EVERY fragment that fails to qualify as a genuine boundary - an O(currentText.length) operation. Both isGenuineClauseBoundary (via matchFamilyKeyword) and the loop's own post-iteration matchFamilyKeyword(currentText) then re-scan that (monotonically growing) currentText from scratch on every subsequent iteration too. In the realistic case where a long run of top-level delimiters never qualifies (the current segment keeps growing across most/all of the pass), total work is O(text.length^2), not the documented O(text.length).",
+      "contradicts": "05-fused-claim-recursive-decomposition.json's terminationProof.proof, which explicitly states 'Step 2's single for loop iterates ... performing O(1) work per iteration ... Total work is O(text.length)'. This specific quantitative claim is false. The function does still TERMINATE (this is not an infinite loop / non-termination bug in the literal sense the phase's own antiEndlessLoopScopeBoundary and requiredProperties.noInfiniteRecursion cared about, and no test in this recertification found a hang or crash), but the stated Big-O bound backing that termination proof's confidence is incorrect, and the practical consequence is a real performance/availability risk: a single covenant SECTION (not a synthetic degenerate fixture) with a few thousand characters of ordinary prose containing many non-qualifying 'and'/'or' occurrences ahead of a genuine fused-claim tail could make one hypothesizeUnitsForRegion call take seconds rather than milliseconds, scaling worse as document/section length grows.",
+      "testNames": [
+        "does not hang, and correctly still finds the one real trailing boundary, for a long bare-or chain (sanity - no infinite loop)",
+        "GAP: wall-clock time grows super-linearly (quadratic-shaped), not O(n), as the bare-or chain grows"
+      ]
+    }
+  ],
+
+  "probesThatDidHoldUp": [
+    "A clause containing its own internal commas and nested parentheses (e.g. an Indebtedness carve-out enumerating 'Guarantee thereof, and any obligation (contingent or otherwise) arising under a Swap Agreement') does not confuse paren-depth tracking - the one genuine top-level 'or' after it is still found correctly, and neither side's internal punctuation leaks into the wrong segment.",
+    "Thousands of unmatched opening parentheses before real content never throw and never hang - the function fails closed (returns null, no fabricated split) exactly as documented, since paren-depth never returns to 0.",
+    "Deeply-nested but BALANCED parentheses (20,000 levels deep) on both sides of a genuine top-level 'or' complete in well under 2 seconds and correctly find no split (no family keyword present) - depth tracking itself is not the source of the quadratic behavior found in GAP-3; the O(n) fold-and-rescan of the growing currentText is.",
+    "Clean and/or chains with NO repeated modal verb and NO comma-separated-list shape (the exact shapes Workstream C's own 22-test adversarial matrix used) genuinely do generalize correctly at N=4 and N=20 - the core iterative, non-recursive architecture is sound for the shapes it was tested against."
+  ],
+
+  "honestAssessment": {
+    "doesTheFixGenuinelyGeneralizeToNaryFusedClaims": "PARTIALLY. The underlying architecture (a single linear delimiter scan producing a fixed fragment array, walked once left-to-right with no recursion) is a genuine, correctly-implemented iterative N-ary design for the specific shapes Workstream C's own adversarial matrix constructed (repeated explicit 'and'/'or'/';' with no restated modal verb, no comma-separated-list shape). It is NOT tuned to a literal hardcoded cap of 3, and N=20 was independently confirmed to work for that shape - so the specific accusation 'only tuned for exactly 3' is not what was found here. However, the claim that this is a GENUINE, general-purpose N-ary decomposition - as opposed to a fix that happens to work for the family of test shapes it was validated against - is false: two materially different, common, realistic drafting patterns (Oxford-comma lists; chains of independently-restated modal prohibitions) each independently defeat the N-ary decomposition entirely, collapsing arbitrarily many distinct claims down to 2 or even 1 unit - the SAME class of defect FINDING-4 was opened to close. A third, independent defect (quadratic time complexity) falsifies the fix's own written termination/complexity proof, though it does not cause non-termination.",
+    "isThisAPatchThatMerelySupportsThree": "No - the mechanism itself is a real, non-recursive, arbitrary-length forward pass, not a hardcoded 'first two, then a third' patch. The failure mode found here is different and arguably more concerning: the mechanism's own boundary-qualification rule (isGenuineClauseBoundary, and the upstream delimiter-recognition grammar) has coverage gaps that are input-shape-dependent rather than N-dependent, so the same 'genuinely N-ary' machinery silently degrades to N=2 or N=1 for realistic inputs the adversarial matrix never constructed.",
+    "wasTheOriginalDefectFullyClosed": "No. FINDING-4's original defect statement is 'coordinate-clause splitting handles at most one split and fails on 3+ fused claims'. GAP-1 and GAP-2 both independently reproduce exactly that failure mode (3+ fused claims collapsing to fewer units than the true claim count, in some cases all the way to 1) using realistic, non-synthetic drafting patterns that were not part of the fix's own validation matrix."
+  },
+
+  "disposition": {
+    "FINDING-4": {
+      "verdict": "STILL_OPEN",
+      "reproductionEvidence": {
+        "gap1_oxfordComma": "segmentCoordinateClauses over a 4-claim Oxford-comma sentence returns 2 segments (should be 4); over a 5-claim version returns 2 segments (should be 5). See tests/contract-model/part-b-recert-finding4-independent.test.ts, describe block 'FALSIFIES arbitrary-N claim (Oxford-comma list)'.",
+        "gap2_restatedModalChain": "segmentCoordinateClauses over a 3-claim 'shall not X and shall not Y and shall not Z' sentence returns null (1 unit, should be 3); over a 6-claim version also returns null (should be 6). See same file, describe block 'FALSIFIES arbitrary-N claim (restated-modal prohibition chain)'.",
+        "gap3_quadraticComplexity": "Empirically measured super-linear (~16x time for a 4x size increase) growth on a realistic worst-case input shape, contradicting the fix's own documented O(text.length) termination proof. See same file, describe block 'FALSIFIES the termination proof's own O(text.length) complexity claim'.",
+        "allEvidenceIsFromRealProductionCode": "Every reproduction above calls the actual, unmodified, currently-committed segmentCoordinateClauses export directly - no mock, no stand-in, no modification to production code by this recertification."
+      },
+      "rationale": "Two independent, realistic (not synthetic-degenerate) input shapes each defeat the N-ary decomposition entirely, silently reproducing FINDING-4's own original defect class (3+ fused claims collapsing to fewer units, in the worst case all 3-6 collapsing to exactly 1). A third independent defect falsifies the fix's own written complexity/termination proof. Per this phase's own architecture rule (frozen findings doc: 'a patch that merely supports three is a failure regardless of test pass rate'), a fix whose correctness depends on the drafting style matching the shapes in its own validation matrix - rather than genuinely generalizing across realistic drafting variation - does not meet the frozen requirement. FINDING-4 must remain OPEN pending a further fix that (a) recognizes comma-delimited coordinate lists with a single trailing conjunction, (b) narrows RIGHT_CLAUSE_RESTATES_MODAL to distinguish same-actor-restated-for-second-actor from a genuinely new, separately-numbered prohibition, and (c) avoids re-scanning/re-slicing the growing current segment on every non-qualifying fold."
+      }
+  },
+
+  "testFilesAdded": [
+    "tests/contract-model/part-b-recert-finding4-independent.test.ts (NEW, 12 tests, all passing - 5 tests document reproducible gaps against real production code, 4 tests confirm the fix's genuine strengths, 3 tests confirm unrelated adversarial probes that DID hold up)"
+  ],
+
+  "verification": {
+    "targetedTestRun": {
+      "command": "npx vitest run tests/contract-model/part-b-recert-finding4-independent.test.ts",
+      "result": "12/12 passing"
+    },
+    "destructiveDbPatternCheck": {
+      "command": "npx tsx scripts/check-destructive-db-patterns.ts",
+      "result": "12 pre-existing findings, all inside the checker script's own pattern-definition lines (which necessarily contain the literal strings/regexes they scan for) and one pre-existing, unrelated test file (tests/infrastructure/db-isolation-adversarial.test.ts) that deliberately exercises a guarded deleteMany({}) as its own test subject. Independently confirmed byte-identical output with and without this recertification's new test file present (diffed directly) - this recertification's own test file contributes zero findings, since it never touches a database at all.",
+      "noProductionCodeModified": true,
+      "noMigrateDevOrResetOrDbPushRun": true
+    }
+  }
+}
