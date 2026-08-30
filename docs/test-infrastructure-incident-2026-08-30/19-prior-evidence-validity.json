@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PRIOR_TERMINAL_EVIDENCE_VALIDITY",
+  "purpose": "§27: classify the 8-defect Part A production work performed before the DB incident/user STOP.",
+  "keyFact": "`git diff c2954d3 HEAD --stat -- lib app prisma/schema.prisma prisma/migrations` returns ONLY the two new lib/testing/*.ts files added by THIS incident-response's own isolation infrastructure (11-13) - every line of the 7 workstreams' own Part A production fixes for the 8 frozen findings is byte-identical to what it was before the DB incident occurred. The incident was purely a DATA-plane event (Postgres rows); it never touched the git-tracked source tree.",
+  "classification": {
+    "FINDING-1 (structural heading, Workstream A)": "VALID - lib/contract-model/compiler/stage-structure.ts untouched.",
+    "FINDING-2/3 (getDefinition operative safety, Workstream B)": "VALID - lib/contract-model/compiler/semantic/tools.ts + amendment/pipeline.ts untouched.",
+    "FINDING-4 (N-way fused claims, Workstream C)": "VALID - lib/contract-model/compiler/semantic-coverage/{types,unit-hypothesis}.ts untouched.",
+    "FINDING-5 (condition-suspicion architecture, Workstream D)": "VALID - lib/contract-model/compiler/semantic-verification/** untouched.",
+    "FINDING-6 (AnalysisRun fencing, Workstream E)": "VALID - prisma/schema.prisma's executionGeneration column and its migration, plus lib/contract-model/analysis/{service,orchestrator}.ts, untouched. Migration 20260830173258_phase_3f1_6_rx_final_workstream_e_analysis_run_fencing is confirmed applied (per 15's migration-resolve step) and its own tests pass in the full 2515-test green run.",
+    "FINDING-7 (product-flow gating, Workstream F)": "VALID - app/[companyId]/onboarding/review/page.tsx, getAnalysisReadinessForCompany, getClaimReviewItemsForCompany untouched.",
+    "FINDING-8 (failure observability, Workstream G)": "VALID - lib/contract-model/analysis/{service,orchestrator,types}.ts's failureRecordPersisted field untouched."
+  },
+  "whatWasNotYetValidBeforeThisIncidentResponse": "Part A's own §11 known-package regression, §11 false-credit controls, and §12 full quality gates had NOT yet been completed at the moment the DB wipe was discovered mid-verification - task #308 in this session's own tracker was still pending. This is not a validity question about the 8 fixes themselves; it is simply unfinished verification work that this incident-response's own recovery (docs/test-infrastructure-incident-2026-08-30/15-17) has now supplied, using real, recovered data rather than synthetic/mixed-generation data.",
+  "verdict": "All 8 findings' production fixes: VALID. No VALID_BUT_RERUN_FOR_CONFIRMATION or INVALID_REQUIRES_RERUN classification applies to any of them - there is nothing to re-run at the code level, only the regression verification that Part A always required, which is now complete (see 20-infrastructure-verdict.json and the subsequent Part A verdict artifact)."
+}

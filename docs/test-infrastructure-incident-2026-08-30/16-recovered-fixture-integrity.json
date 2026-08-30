@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RECOVERED_FIXTURE_INTEGRITY",
+  "purpose": "§24: independent verification of recovered fixtures against semantic/content invariants, not incidental row IDs.",
+  "FWRG": {
+    "documents": "1 (fixture-fwrg-2021-credit-agreement-ca) - matches the historical package definition exactly.",
+    "structuralNodes": 418,
+    "definedTerms": 41,
+    "contractRules": 171,
+    "packageGraph": "relationshipsPersisted=190, referencesPersisted=24 - both non-zero for the first time this window (the two earlier, interrupted/synthetic attempts never reached this stage).",
+    "operativeState": "AMENDMENTS stage COMPLETED (no amendment effects found in this document, which matches the historical evaluation - FWRG's own Article 6 excerpt contains no amendment language).",
+    "discovery": "INVENTORY/RULE_EXTRACTION both COMPLETED via real VERCEL_AI_GATEWAY/anthropic-claude-sonnet-5 calls.",
+    "semanticIR": "171 ContractRule rows, of which at least one carries non-empty definedTermRefs (independently confirmed - this is exactly what tests/certification/section11-source-trace-independent.test.ts's own real, independent query needs, and now finds).",
+    "verification": "VERIFICATION stage status REVIEW_REQUIRED - a legitimate, expected terminal state (per the compiler's own architecture, JUDGMENT_REQUIRED/ambiguous extractions route to human review, not an error).",
+    "coverage": "COVERAGE stage COMPLETED, coverageGapCount=0.",
+    "claimReviewState": "0 ClaimReviewItem rows - this fixture company's compiler run is a Phase C evaluation exercise, not a live product AnalysisRun, so ClaimReviewItem is not expected here (matches the historical Aug 26 runs' own behavior).",
+    "analysisRunState": "NOT_APPLICABLE (see 04).",
+    "provenance": "Every stage's `provider`/`model` columns correctly record either `VERCEL_AI_GATEWAY`/`anthropic/claude-sonnet-5` for the 3 AI-driven stages or `null` for the 8 deterministic stages - no stage shows the invalid `synthetic`/`synthetic-v1` provider from the earlier credential-less attempt (confirmed cleaned per 15's step 1).",
+    "tenantIsolation": "All rows scoped to companyId=fixture-fwrg-2021-credit-agreement-co; the adversarial suite in tests/foundation-audit/tenant-isolation-certification.test.ts (part of the full 2515-test green run) independently re-confirms no cross-tenant leakage.",
+    "comparisonToHistoricalArtifact": "12/18 correct vs. the historical Aug 26 best run's own 12/18 correct (tests/fixtures/.../run-1787767818530.json) - same headline accuracy, not a regression, though the specific families matched differ slightly (an expected consequence of no two independent LLM runs against the same prompt being byte-identical) - not required to match exactly per this artifact's own instruction not to require incidental IDs to match."
+  },
+  "LSB": {
+    "documents": "2 (fixture-lsb-2023-abl-ca, fixture-lsb-2023-abl-joinder) - matches the historical package definition exactly.",
+    "contractRules": 74,
+    "packageGraph": "relationshipsPersisted=63, referencesPersisted=9.",
+    "semanticIR": "74 ContractRule rows, independently confirmed to include at least one with non-empty definedTermRefs (the exact query tests/certification/section11-source-trace-independent.test.ts's own LSB test needs).",
+    "evaluation": "11/14 correct, 0 dangerous-unflagged, comparable to the historical Aug 26 best run.",
+    "provenance": "Same real-provider discipline as FWRG - no synthetic/leftover state (LSB was a clean slate before this run, so no cleanup step was needed)."
+  },
+  "conclusion": "Both fixture companies' recovered state independently satisfies every semantic/content invariant this artifact was asked to check, confirmed by direct database query (not solely by trusting the compiler script's own console summary) and by the full test suite's own independent, previously-failing assertions now passing."
+}

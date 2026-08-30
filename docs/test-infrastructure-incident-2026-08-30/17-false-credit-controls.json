@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FALSE_CREDIT_CONTROLS_POST_RECOVERY",
+  "purpose": "§25: re-run all 14 permanent false-credit controls after recovery.",
+  "test": "tests/evaluation-v2/atomic-contract.test.ts > GATE (item 17): all 14 historical false-credit controls resolve creditEligibility=NO_CREDIT under the atomic contract",
+  "executedAs": "Part of the full untargeted `npx vitest run` in 15-recovery-execution.json's own step 5 (240 files, 2515 tests, ALL PASSING) - not re-run separately, since re-running this exact ~58s test in isolation immediately afterward with no intervening change would be a redundant, purely cosmetic second execution of the identical assertion against identical database state.",
+  "result": "14/14 unanimous NO_CREDIT - PASSING.",
+  "noTuning": "No change was made to lib/contract-model/evaluator or lib/contract-model/evaluation-v2 during this entire incident-response window (confirmed: git diff c2954d3 HEAD -- 'lib/contract-model/evaluat*' is empty) - this result reflects the SAME evaluator code as before the incident, now exercised against recovered (not tuned) fixture data.",
+  "verdict": "GATE_PASSED"
+}
