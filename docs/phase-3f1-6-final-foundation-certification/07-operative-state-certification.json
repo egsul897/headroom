@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "OPERATIVE_STATE_CERTIFICATION",
+  "section": 9,
+  "generatedAt": "2026-08-30T04:00:00Z",
+  "independenceStatement": "This certification builds its own adversarial StructuralIndex/OperativeContractState constructions and its own resolveEffectiveDate drafting fixtures - it does not reuse tests/foundation-audit/combined-failures.test.ts's own exact scenarios (which use SECTION-kind INVALID_SOURCE_SPAN corruption only). Test file: tests/certification/section9-operative-state-independent.test.ts (9 tests, all passing, executed this session).",
+  "scopeCovered": [
+    "amendment target resolution (UNIQUE/AMBIGUOUS/NOT_FOUND, both SECTION and DEFINITION kinds)",
+    "effective dates including conditional ones (P1-4)",
+    "genuine conflicts (candidateTexts, no array-order-as-precedence)",
+    "the NEW structural-health composition (Phase 3F.1.5.R sub-task 3) - primary focus per the certification charter"
+  ],
+  "structuralHealthAdversarialConstruction": {
+    "requirement": "Build a case where a unique amendment target exists structurally (targetResolutionStatus === UNIQUE) BUT the target node is independently flagged unhealthy by healthDiagnostics() (an ERROR-severity finding), and verify with a real executed test that the result FAILS CLOSED.",
+    "construction1": "A DEFINITION-kind provision (not SECTION - an untested branch of resolveBaseText as of this session) whose declaring physical occurrence carries an INVALID_SOURCE_SPAN ERROR finding, targeted by a real, dated, resolved amendment effect with captured newText.",
+    "result1": "targetResolutionStatus=UNIQUE (the definition genuinely, uniquely resolves) AND structuralHealthStatus=STRUCTURAL_HEALTH_UNSAFE. currentText=null (never derived from the corrupted occurrence). attemptedText preserved (what the amendment says stays visible). status=OPERATIVE_STATE_PARTIAL. reviewRequired=true. FAILS CLOSED as required.",
+    "construction2": "A different ERROR-severity finding code entirely (OVERLAPPING_INCOMPATIBLE_SPAN via a genuinely mis-nested parent/child pair - every individual span independently 'valid' but the declared nesting relationship is structurally impossible), on a SECTION-kind target, to prove the composition is not narrowly wired to one specific health-finding code.",
+    "result2": "Same fail-closed outcome: targetResolutionStatus=UNIQUE, structuralHealthStatus=STRUCTURAL_HEALTH_UNSAFE, currentText=null, status=OPERATIVE_STATE_PARTIAL.",
+    "negativeControl": "The same DEFINITION-kind construction with a HEALTHY declaring node produces STRUCTURAL_HEALTH_SUFFICIENT, OPERATIVE_STATE_RESOLVED, and a populated currentText - no false positive on ordinary, uncorrupted definitions.",
+    "verdict": "FAIL-CLOSED CONFIRMED via real, executed tests (not a thought experiment) across two independent constructions and two distinct ERROR-severity finding codes, on both SECTION and DEFINITION provision kinds. No BLOCKER - the fix genuinely generalizes beyond the single scenario the prior phase's own regression test covers."
+  },
+  "p1_4ReverificationAndOverSuppressionCheck": {
+    "construction": "Independent drafting language, different from the original fix's own regression test: 'This Amendment shall become effective as of March 1, 2025, upon satisfaction of the conditions set forth in Section 9 hereof (the date such conditions are satisfied, the \"Amendment Effective Date\")' - and a reversed-order variant (conditional language BEFORE the explicit date in the same clause).",
+    "result": "Both resolve CONDITIONAL_UNRESOLVED, date=null - the explicit date is correctly never treated as a settled, unconditional effective date.",
+    "overSuppressionPositiveControl": "Architecture Invariant #34 ('too strict fails falsely safe, not safe') explicitly re-tested: a genuinely unconditional explicit date, with UNRELATED conditions-precedent language appearing in a separate, later sentence about a different subject (an Incremental Facility funding condition), still resolves EXPLICIT_EFFECTIVE_DATE - the fix does not over-suppress.",
+    "verdict": "P1-4 CONFIRMED, with an explicit over-suppression check the prior phase's own regression test did not include."
+  },
+  "baselineSpotChecks": {
+    "ambiguousTarget": "Two physical SECTION occurrences sharing a label -> targetResolutionStatus=AMBIGUOUS, currentText never populated. CONFIRMED.",
+    "missingTarget": "A section reference matching no real physical node -> targetResolutionStatus=NOT_FOUND, no fabricated text. CONFIRMED.",
+    "genuineConflict": "Two same-effective-date effects against one UNIQUE target with different resulting text -> status=OPERATIVE_STATE_CONFLICTED, currentText=null, both real candidateTexts exposed (sorted by effectId, never array-insertion order). CONFIRMED."
+  },
+  "blockers": [],
+  "verdict": "PASS",
+  "verdictRationale": "The NEW structural-health composition (this session's central new claim) was independently re-derived with two genuinely different adversarial constructions (a different provision kind, a different ERROR-severity finding code) and both fail closed as required, with no over-suppression regression on healthy provisions. P1-4's conditional-effective-date fix was re-verified with different drafting language plus an explicit Invariant #34 over-suppression check. Baseline amendment-chain/ambiguity/conflict behavior re-confirmed via real, executed production-function calls. No BLOCKER findings."
+}
