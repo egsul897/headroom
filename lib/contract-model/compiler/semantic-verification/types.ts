@@ -112,6 +112,7 @@
 import type { IRDefinition, IRRule, IRSharedCapacity } from "../../ir/types";
 import type { SemanticCompilationResult, SemanticCompilerInput } from "../semantic/types";
 import type { NodeSupersessionStatus } from "../amendment/types";
+import type { ConditionSuspicionResult } from "./condition-suspicion-classifier";
 
 export const SEMANTIC_VERIFIER_ALGORITHM_VERSION = "phase-3c-semantic-verifier.v1";
 export const SEMANTIC_VERIFIER_PROMPT_VERSION = "phase-3c-semantic-verifier-prompt.v1";
@@ -364,6 +365,19 @@ export interface SemanticVerificationResult {
   /** True when Layer 2 (adversarial semantic review) was actually invoked for this candidate - task §32's own call-routing discipline, auditable rather than implicit. */
   semanticReviewInvoked: boolean;
   semanticReviewSkippedReason: string | null;
+  /**
+   * Phase 3F.1-terminal Architecture Decision, Part A (OPEN-4/BLOCKER-9's
+   * condition-omission defect class, fifth-recurrence architectural fix).
+   * The source-only semantic condition-suspicion classifier's own result -
+   * see condition-suspicion-classifier.ts - populated ONLY when it was
+   * actually invoked as the second routing gate (never invoked when
+   * deterministic evidence, forceSemanticReview, or skipSemanticReview
+   * already decided the routing outcome without needing it - cost
+   * discipline, see verify.ts). null whenever the classifier was not
+   * invoked for this candidate; this is a routing-audit trail, never a
+   * finding or a correctness judgment on its own.
+   */
+  conditionSuspicion: ConditionSuspicionResult | null;
   verifierAlgorithmVersion: string;
   verifiedAt: string;
 }

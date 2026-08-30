@@ -95,6 +95,22 @@ async function verifyDefaultRouting(text: string, r: IRRule) {
   return verifyCompiledCandidate(input);
 }
 
+/**
+ * Phase 3F.1-terminal Architecture Decision, Part A - identical to
+ * verifyDefaultRouting above except it also scripts a REAL (non-synthetic),
+ * explicit "clean" answer for the second, semantic condition-suspicion gate
+ * (condition-suspicion-classifier.ts). Use this ONLY for a test that wants
+ * to isolate/prove the deterministic-skip path itself; a test asserting the
+ * REAL default (this sandbox's own no-credential synthetic-fallback)
+ * behavior should keep using verifyDefaultRouting with no override, exactly
+ * as this file's own "SyntheticStageCaller fallback must never be mistaken
+ * for a confirming clean review" test already does.
+ */
+async function verifyDefaultRoutingWithCleanClassifier(text: string, r: IRRule) {
+  const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [r] }) };
+  return verifyCompiledCandidate(input, { conditionSuspicionCaller: fakeCaller({ status: "NO_MATERIAL_CONDITION_SUSPECTED", evidence: [] }) });
+}
+
 async function verifyWithScriptedSemanticFinding(text: string, r: IRRule, wireFinding: Record<string, unknown>) {
   const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [r] }) };
   const caller = fakeCaller({ findings: [wireFinding], overallNotes: [] });
@@ -259,7 +275,7 @@ describe("Phase 3F.1.6.RX Workstream E - BENIGN / PRECISION (conditional-looking
   it('a bare "if" in unrelated boilerplate (notice-forwarding mechanics, not a covenant condition) never triggers escalation at all - bare "if" is deliberately not a detected marker (the charter\'s own "do not route every word if to review")', async () => {
     const text = "The Company may incur Indebtedness not to exceed $9,000,000. If the Administrative Agent receives a notice of default under any other Indebtedness, it shall promptly forward such notice to each Lender.";
     const clean = rule({ action: "INCUR_DEBT", capacityExpression: money(9_000_000) });
-    const result = await verifyDefaultRouting(text, clean);
+    const result = await verifyDefaultRoutingWithCleanClassifier(text, clean);
     expect(result.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
     expect(result.semanticReviewInvoked).toBe(false);
   });
@@ -304,7 +320,7 @@ describe("Phase 3F.1.6.RX Workstream E - BENIGN / PRECISION (conditional-looking
       capacityExpression: money(4_600_000),
       conditions: [{ conditionId: "c1", conditionType: "NO_DEFAULT", expression: null, referencesDefinitionId: null, description: "no Default or Event of Default has occurred and is continuing", provenance: null }],
     });
-    const result = await verifyDefaultRouting(text, clean);
+    const result = await verifyDefaultRoutingWithCleanClassifier(text, clean);
     expect(result.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
     expect(result.semanticReviewInvoked).toBe(false);
   });

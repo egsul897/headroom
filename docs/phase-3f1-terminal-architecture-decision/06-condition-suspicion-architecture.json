@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CONDITION_SUSPICION_ARCHITECTURE_PART_A",
+  "phase": "3F.1-terminal, Part A",
+  "correspondsTo": "OPEN-4 / BLOCKER-9 - condition verification/routing architecture, fifth-recurrence attempt",
+  "generatedAt": "2026-08-30T22:55:00Z",
+
+  "priorFindingAddressed": {
+    "path": "docs/phase-3f1-6-rx-final-terminal-closure/17-part-b-finding5-recertification.json",
+    "summary": "Every one of condition-suspicion.ts's 9 grammar categories was still gated by a small, closed, hand-typed word list at the connective/preposition/participle/modal level. 'circumstance' was claimed but absent from the shipped regex; 'subsequent to'/bare 'on'/'as referenced in'/subjunctive 'Should X occur' all silently passed with zero scrutiny."
+  },
+
+  "architectureAsImplemented": {
+    "summary": "Two independent evidence gates now feed verify.ts's routing decision, replacing the prior single-gate (deterministic-only) architecture. Gate 1 (unchanged): the existing 9 regex categories in condition-suspicion.ts plus source-inventory.ts's other deterministic patterns - kept exactly as-is, since they are real, precise, zero-cost signals for the syntactic markers they were always honestly disclosed to cover. Gate 2 (new): condition-suspicion-classifier.ts - a real, bounded LLM call (via the existing StageCaller/getStageCaller infrastructure in llm-caller.ts, the same credential resolution and calling convention reviewer.ts already uses) that reads ONLY the raw source text and answers a single narrow routing question: does this excerpt appear to contain a materially significant qualification/condition/exception/dependency, regardless of which English construction expresses it.",
+    "newFiles": ["lib/contract-model/compiler/semantic-verification/condition-suspicion-classifier.ts"],
+    "modifiedFiles": [
+      "lib/contract-model/compiler/semantic-verification/verify.ts",
+      "lib/contract-model/compiler/semantic-verification/reviewer.ts",
+      "lib/contract-model/compiler/semantic-verification/types.ts",
+      "lib/contract-model/compiler/semantic-verification/wire-schema.ts",
+      "lib/contract-model/compiler/semantic-verification/condition-suspicion.ts",
+      "lib/contract-model/compiler/semantic-verification/source-inventory.ts"
+    ],
+    "conditionSuspicionTsChange": "Doc-comment only, plus ONE genuine one-word regex fix: NOMINAL_CONDITIONAL_CONNECTIVE_RE now actually contains 'circumstances?' (it always claimed to, per its own prior doc comment and the prior design doc, but the shipped regex only had 'event|case' - a disclosed doc/code mismatch, not a new lexical-enumeration expansion). All 9 categories are otherwise byte-identical to before. No 10th category was added.",
+    "sourceInventoryTsChange": "Doc-comment only - no logic change. CONDITION_SUSPICION_PATTERNS is still spread in unchanged.",
+    "resultType": "ConditionSuspicionResult { status: NO_MATERIAL_CONDITION_SUSPECTED | MATERIAL_CONDITION_POSSIBLE | UNCERTAIN, evidence: [{sourceSpan, description, category}], provider, model, promptVersion, algorithmVersion, telemetry, failed, failureDetail, isSynthetic, fromCache }",
+    "categoryList": ["TEMPORAL_DEPENDENCY", "EVENT_DEPENDENCY", "ELIGIBILITY_REQUIREMENT", "NO_DEFAULT_REQUIREMENT", "PRO_FORMA_REQUIREMENT", "EXCEPTION_OR_PROVISO", "INCORPORATED_CONDITION", "CROSS_REFERENCE_CONDITION", "OTHER_CONDITIONAL_DEPENDENCY"]
+  },
+
+  "routingPolicyCode": {
+    "location": "lib/contract-model/compiler/semantic-verification/verify.ts, verifyCompiledCandidate + shouldInvokeSemanticReviewDeterministic",
+    "logic": [
+      "1. options.skipSemanticReview -> needsSemanticReview=false, classifier NEVER called (explicit zero-cost preview override).",
+      "2. else options.forceSemanticReview -> needsSemanticReview=true, classifier NEVER called (no wasted spend - outcome already decided).",
+      "3. else shouldInvokeSemanticReviewDeterministic(reconciliation, irInventory) [materialUnresolvedCount>0 OR >1 compiled unit OR alternation/unlimited-capacity/unsupported marker] -> needsSemanticReview=true, classifier NEVER called (Gate 1 already forces review - cost discipline).",
+      "4. else -> classifyConditionSuspicion(compilerInput.operativeSourceText, {companyId, instrumentKey, sourceDocumentId}, options.conditionSuspicionCaller, options.conditionSuspicionCache) is called. needsSemanticReview = (status !== NO_MATERIAL_CONDITION_SUSPECTED). A classifier throw/timeout/malformed-response is caught inside classifyConditionSuspicion itself and converted to {status: UNCERTAIN, failed: true} - never propagated, never treated as clean.",
+      "5. The classifier's own ConditionSuspicionResult is threaded onto SemanticVerificationResult.conditionSuspicion (null when not invoked) for audit, and also passed into runAdversarialSemanticReview so the real Layer 2 reviewer sees the classifier's evidence as an additional investigative lead (never as a conclusion it must defer to)."
+    ],
+    "onlySkipPath": "deterministic-clean (Gate 1) AND classifier explicitly NO_MATERIAL_CONDITION_SUSPECTED (Gate 2) AND no other existing escalation condition."
+  },
+
+  "costAndCachingDesign": {
+    "costDiscipline": "The classifier is called ONLY on the branch where Gate 1 alone would otherwise allow a skip (branch 4 above). Verified by dedicated tests asserting zero classifier calls when: deterministic evidence already forces review, forceSemanticReview is set, or skipSemanticReview is set.",
+    "cachingKey": "computeConditionSuspicionCacheKey({companyId, instrumentKey, sourceDocumentId}, sourceText, `${provider}::${model}`) -> hashParts([...]) via the SAME hashParts primitive and tenant-scoping discipline as semantic/cache.ts's own computeCacheKey (which itself documents the P1-1 cross-tenant collision lesson this key formula follows). Source text is itself hashed as a nested hashParts([sourceText]) span-hash component.",
+    "cacheImplementation": "InMemoryConditionSuspicionCache (Map-based get/set), a module-level defaultConditionSuspicionCache singleton mirrors semantic/compile.ts's own defaultCache pattern; VerifyOptions.conditionSuspicionCache allows injection/isolation for testing.",
+    "failureCachingDecision": "A FAILED classification (thrown error, malformed response) is deliberately NEVER cached, so a transient failure gets a fresh real attempt on the next call for the same span rather than a permanently-stuck failure entry - verified by a dedicated test."
+  },
+
+  "testOutput": {
+    "newTestFiles": ["tests/contract-model/condition-suspicion-classifier.test.ts (24 tests)", "tests/contract-model/condition-suspicion-classifier-independence.test.ts (5 tests)"],
+    "updatedTestFiles": [
+      "tests/contract-model/part-b-recert-finding5-independent.test.ts - updated in place (run history/construction set preserved) to assert the fixed contract: the classifier is genuinely invoked (never null, semanticReviewInvoked=true, semanticReviewSkippedReason=null) for all 6 remaining adversarial constructions, rather than the old bug-reproduction assertions",
+      "tests/contract-model/condition-suspicion-architecture.test.ts, semantic-verification-condition-remediation.test.ts, semantic-verification-condition-remediation-rx.test.ts, semantic-verification-verify.test.ts - 5 pre-existing 'genuinely benign -> skip Layer 2 entirely' tests updated to inject a scripted, non-synthetic conditionSuspicionCaller confirming NO_MATERIAL_CONDITION_SUSPECTED, since under real default (no-credential) routing in THIS sandbox the classifier now honestly reports UNCERTAIN (synthetic fallback) and correctly forces review - a new dedicated test in semantic-verification-verify.test.ts asserts that exact no-credential-forces-review behavior directly"
+    ],
+    "command": "npx vitest run tests/contract-model/",
+    "result": "135 test files passed, 1459 tests passed, 0 failed",
+    "scopedCommand": "npx vitest run tests/contract-model/condition-suspicion-classifier.test.ts tests/contract-model/condition-suspicion-classifier-independence.test.ts tests/contract-model/condition-suspicion-architecture.test.ts tests/contract-model/semantic-verification-condition-remediation-rx.test.ts tests/contract-model/semantic-verification-condition-remediation.test.ts tests/contract-model/semantic-verification-verify.test.ts tests/contract-model/part-b-recert-finding5-independent.test.ts tests/contract-model/semantic-verification-fault-injection.test.ts tests/contract-model/part-b-recert-blocker9-independent-attack.test.ts tests/contract-model/semantic-verification-independence.test.ts",
+    "scopedResult": "10 test files passed, 216 tests passed, 0 failed",
+    "requiredCoverageChecklist": {
+      "novelSemanticConstructionsOwnFreshSet": "Covered via scripted classifier responses in condition-suspicion-classifier.test.ts's routing-contract block (MATERIAL_CONDITION_POSSIBLE/UNCERTAIN forcing review) and via the 6 remaining part-b-recert-finding5 constructions now proven to reach the classifier gate rather than skip. Real semantic generalization on NOVEL wording cannot be proven by scripted tests alone - see honestSelfAssessment below.",
+      "benignProseShouldNotTrigger": "Covered - deterministic-clean + classifier NO_MATERIAL_CONDITION_SUSPECTED skip test, plus all 5 updated pre-existing benign tests",
+      "classifierFailureRoutesToReview": "Covered directly (network-error simulation, malformed-response simulation) in condition-suspicion-classifier.test.ts and end-to-end via verify.ts routing tests",
+      "classifierUncertainRoutesToReview": "Covered directly",
+      "cachingSameSpanNoRecall": "Covered (callCount assertion) plus a cross-invocation cache-reuse test through verifyCompiledCandidate itself",
+      "tenantIsolationOfCache": "Covered - two tenants with byte-identical text/instrument/document never share an entry; a differing instrumentKey alone also misses",
+      "sourceOnlyIndependenceAtTypeAndCallSite": "Covered - a compile-time type assertion (Parameters<typeof classifyConditionSuspicion>[0] must equal string, which fails tsc --noEmit if ever widened) plus static import/call-site regex checks mirroring semantic-verification-independence.test.ts's own established technique, plus a runtime test capturing the actual prompt content sent to a scripted caller and asserting it never contains any IR-shaped field name (ruleId, capacityExpression) or the specific ruleId used in that test's fixture"
+    }
+  },
+
+  "realModelValidation": {
+    "attempted": true,
+    "aiGatewayApiKeyPresent": false,
+    "anthropicApiKeyPresent": false,
+    "onVercel": false,
+    "outcome": "Neither AI_GATEWAY_API_KEY nor ANTHROPIC_API_KEY was set in this environment, so no real bounded LLM call was made at any point in this implementation or its own test suite. All classifier behavior above was validated with SCRIPTED fake StageCaller responses (this codebase's own established 'scripted-semantic tier' convention, matching how the existing Layer 2 reviewer's own scripted tests already work) - proving the ORCHESTRATION (routing, caching, tenant isolation, failure handling, prompt content/independence) is correct, never that a real model actually classifies any given sentence correctly.",
+    "costIncurred": "$0.00 - zero real model calls were made.",
+    "disclosedLimitation": "This is a real, material, explicitly disclosed limitation, not a technicality: this implementation's core empirical claim - that a real semantic model call generalizes to novel drafting where enumerated regex cannot - is UNTESTED against a real model in this environment. The prompt/few-shot design in condition-suspicion-classifier.ts is my best-effort semantic engineering, informed by the specific historical failure shapes the recertification evidence documented, but its actual generalization to the auditor's own fresh, never-seen constructions cannot be verified without a real model call. This MUST happen at Part B recertification time with real credentials, per this phase's own cost-authorization instruction - the orchestrating session is expected to authorize a small bounded validation run then."
+  },
+
+  "honestSelfAssessment": {
+    "couldThisStillBeDefeated": "Yes, in principle, and I disclose this plainly rather than overclaiming: (1) The routing ARCHITECTURE is now provably not phrase-enumeration-gated - any excerpt the classifier judges MATERIAL_CONDITION_POSSIBLE or UNCERTAIN reaches review regardless of its exact wording, and classifier failure/timeout/malformed output always routes to review by construction (verified by tests, not just by inspection). This part of the certification bar - 'no material case may silently skip review' - is met at the ARCHITECTURAL level: there is no code path in verify.ts that can reach a skip without the classifier's own explicit, successful NO_MATERIAL_CONDITION_SUSPECTED answer. (2) What is NOT and CANNOT be proven in this environment is that a real model, given the real prompt in condition-suspicion-classifier.ts, actually answers NO_MATERIAL_CONDITION_SUSPECTED only when it should. A model could, in principle, still be systematically overconfident on some fresh construction class - the auditor's own upcoming 20+ fresh cases are exactly the right test of this, and I cannot pre-validate against them without real credentials. (3) The DETERMINISTIC layer (condition-suspicion.ts's 9 regex categories) is unchanged and still has every limitation the prior recertification already found - this is fine and disclosed, because that layer is no longer the only thing standing between a novel condition and a miss; it is retained purely for its own genuine strengths (free, instant, precise on the markers it does cover), not as the generalization mechanism.",
+    "whatWouldMakeThisFailTheAuditorsBar": "If, at Part B recertification with a real model, the classifier itself answers NO_MATERIAL_CONDITION_SUSPECTED on a genuinely material fresh construction from the auditor's own 20+ set, AND deterministic evidence also finds nothing (so Gate 1 doesn't force review either) - that specific case would silently skip review, which is exactly the failure mode this whole redesign exists to close. The conservative-bias instruction in the system prompt ('when genuinely unsure, answer UNCERTAIN, never NO_MATERIAL_CONDITION_SUSPECTED') is my best mitigation for this, but it is a prompt-engineering mitigation, not a structural guarantee the way the routing code's own always-force-review-on-failure/uncertain guarantee is.",
+    "doesThisStillDependOnEnumeratingLexicalPhrases": "No, for the NEW gate specifically - condition-suspicion-classifier.ts contains zero regex, zero word lists, and zero enumerated phrases; its system prompt explicitly instructs the model to recognize a GRAMMATICAL/SEMANTIC ROLE regardless of which exact construction expresses it, and lists the auditor's own historical failure shapes only as illustrative few-shot posture-calibration (the same way reviewer.ts's own few-shot block teaches reasoning shape with synthetic examples), not as a checklist the classifier pattern-matches against. The OLD gate (condition-suspicion.ts) is still exactly what it always was - an honestly-disclosed, closed-vocabulary deterministic layer - but it is no longer the sole or primary detection mechanism, which is the actual architectural change the auditor's own recommendation called for.",
+    "callSiteAuditPerformed": "Grepped every call site of buildSourceInventory, verifyCompiledCandidate, and the exported condition-suspicion.ts surface across lib/, scripts/, and tests/ before making any change. No signature of any existing exported function was changed (VerifyOptions gained two new OPTIONAL fields; runAdversarialSemanticReview gained one new OPTIONAL trailing parameter defaulting to null; SemanticVerificationResult gained one new field, populated by the single call site that constructs it). Zero existing call sites required modification to keep compiling; tsc --noEmit and eslint were re-run after every substantive edit."
+  },
+
+  "verificationRun": {
+    "tscNoEmit": "npx tsc --noEmit -p . - 7 pre-existing errors, all in files this change never touched (tests/contract-model/part-b-recert-finding8-independent.test.ts, tests/foundation-audit/*) and all present identically before this change (confirmed via git stash comparison); 0 errors in any file this change added or modified",
+    "eslint": "npx eslint <every file this change added or modified> - 0 errors, 0 warnings",
+    "destructiveDbPatternCheck": "npx tsx scripts/check-destructive-db-patterns.ts - 12 pre-existing findings, all inside the checker's own pattern-definition source and an unrelated pre-existing adversarial test; 0 findings attributable to any file this change added or modified (this change performs no database access at all - the classifier and its cache are pure in-process/in-memory)"
+  },
+
+  "scopeCompliance": {
+    "productionCodeModified": "lib/contract-model/compiler/semantic-verification/{condition-suspicion.ts (doc + 1-word regex fix only), source-inventory.ts (doc only), reviewer.ts, types.ts, verify.ts, wire-schema.ts} plus the new condition-suspicion-classifier.ts - exactly the module named in this task's mandate, no changes anywhere else in the codebase.",
+    "noNewRegexCategory": true,
+    "noNewEnumeratedPhraseList": true
+  }
+}

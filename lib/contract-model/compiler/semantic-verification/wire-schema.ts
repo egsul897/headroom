@@ -30,3 +30,25 @@ export const SubmitVerificationFindingsSchema = z.object({
   overallNotes: z.array(z.string()).default([]),
 });
 export type SubmitVerificationFindingsInput = z.infer<typeof SubmitVerificationFindingsSchema>;
+
+/**
+ * Phase 3F.1-terminal Architecture Decision, Part A - the source-only
+ * condition-suspicion classifier's own wire schema
+ * (condition-suspicion-classifier.ts). `status` and `evidence[].category`
+ * are tolerant strings normalized in that module - same Phase 2F.2 lesson
+ * as above. `status` deliberately has NO zod default: the no-credential
+ * SyntheticStageCaller fallback (llm-caller.ts) calls `schema.parse({})`,
+ * which must FAIL validation here (missing required `status`) so a stub
+ * answer is always converted to a failed/UNCERTAIN result rather than ever
+ * being silently readable as a confident NO_MATERIAL_CONDITION_SUSPECTED.
+ */
+export const WireConditionSuspicionEvidenceSchema = z.object({
+  sourceSpan: z.string().default(""),
+  description: z.string().default(""),
+  category: z.string().default("OTHER_CONDITIONAL_DEPENDENCY"),
+});
+export const SubmitConditionSuspicionSchema = z.object({
+  status: z.string(),
+  evidence: z.array(WireConditionSuspicionEvidenceSchema).default([]),
+});
+export type SubmitConditionSuspicionInput = z.infer<typeof SubmitConditionSuspicionSchema>;

@@ -1,4 +1,38 @@
 /**
+ * =============================================================================
+ * PHASE 3F.1-TERMINAL ARCHITECTURE DECISION, PART A - READ THIS FIRST
+ * =============================================================================
+ * This module's own regex frames were independently recertified a FOURTH
+ * time (docs/phase-3f1-6-rx-final-terminal-closure/
+ * 17-part-b-finding5-recertification.json) and found, with real running
+ * code, to still be a closed enumerated-list architecture one level down
+ * (every one of the 9 categories below is gated by a small, closed,
+ * hand-typed connective/preposition/participle/modal vocabulary - the
+ * recertification's own worked examples: "Should X occur," "in
+ * circumstances where," "subsequent to," bare "on," "as referenced in" -
+ * all silently pass through with zero detection). Per this phase's own
+ * mandated architecture (docs/phase-3f1-terminal-architecture-decision/
+ * 02-architecture-decision.json), the fix is NOT a tenth category or a
+ * longer word list - it is condition-suspicion-classifier.ts, a REAL
+ * bounded LLM call reading only raw source text, acting as an independent
+ * SECOND gate in verify.ts's routing decision (see verify.ts's
+ * verifyCompiledCandidate - the classifier is called whenever, and only
+ * when, this module's own deterministic patterns plus the rest of Layer 1
+ * would otherwise allow a skip of independent review).
+ *
+ * The 9 regex categories below are KEPT, UNCHANGED, as the cheap
+ * deterministic evidence layer they were always honestly disclosed to be
+ * (see their own "HONEST LIMITS" comment further down, which already
+ * correctly predicted this exact outcome) - they are still real, still
+ * precise, still free, and still worth having for the drafting patterns
+ * they DO catch instantly with zero model-call cost/latency. What changed
+ * is that this module is no longer the ONLY thing standing between a novel
+ * condition and a silent miss - it no longer needs to be, and per the
+ * recertification evidence, provably cannot be, on its own. Do not "fix"
+ * this recertification finding by adding a 10th category or widening any
+ * regex below - see condition-suspicion-classifier.ts's own header for why.
+ * =============================================================================
+ *
  * Phase 3F.1.6.RX-FINAL Terminal Closure, Workstream D - FINDING-5 /
  * BLOCKER-9's condition-omission defect class, THIRD recurrence
  * (fixed once in 3F.1.6.R, fixed again in 3F.1.6.RX Part A, found open a
@@ -135,8 +169,21 @@ const LEGACY_ENUMERATED_CONNECTIVE_RE =
  * coincidental numeric match, never real recall - see reconciliation.ts's
  * own disclosed "coincidental capture" comment history).
  */
+// Phase 3F.1-terminal Architecture Decision, Part A - the recertification
+// evidence above (17-part-b-finding5-recertification.json) found this
+// regex's own light-noun slot did not actually contain "circumstance"
+// despite this category's own doc comment (and the prior remediation's own
+// design doc) explicitly claiming it did - a genuine doc/code mismatch, not
+// a disagreement about scope. Fixed here as a one-word correction to match
+// what this category always claimed to cover ("in circumstances where" is
+// unambiguously the same light-noun-headed compound-conjunction construction
+// as "in the event/case that"), NOT as an instance of the "enumerate more
+// words" anti-pattern this phase's mandate forbids as the PRIMARY fix
+// mechanism - the actual fix for genuinely novel light nouns/connectives
+// this file's author has never anticipated is condition-suspicion-
+// classifier.ts's real semantic call, not this regex.
 const NOMINAL_CONDITIONAL_CONNECTIVE_RE =
-  /\b(?:in\s+the\s+(?:event|case)\s+(?:of|that|where)|to\s+the\s+(?:extent|degree)\s+(?:that|to\s+which)|in\s+case\s+(?:of|that)|on\s+condition\s+that)\b/gi;
+  /\b(?:in\s+(?:the\s+)?(?:event|case|circumstances?)\s+(?:of|that|where)|to\s+the\s+(?:extent|degree)\s+(?:that|to\s+which)|in\s+case\s+(?:of|that)|on\s+condition\s+that)\b/gi;
 
 /**
  * Category 3 - EVENT_TRIGGER_NOMINALIZATION. A closed morphological class:
@@ -278,7 +325,7 @@ const CONDITION_PRECEDENT_FRAME_RE = /\b(?:as\s+a\s+condition(?:\s+precedent)?\s
  */
 export const CONDITION_SUSPICION_PATTERNS: ConditionSuspicionPattern[] = [
   { category: "LEGACY_ENUMERATED_CONNECTIVE", kind: "CONDITIONAL_PHRASE", description: "Original BLOCKER-9/RX-Part-A idiom alternation, retained verbatim for non-regression.", re: LEGACY_ENUMERATED_CONNECTIVE_RE },
-  { category: "NOMINAL_CONDITIONAL_CONNECTIVE", kind: "CONDITIONAL_PHRASE", description: "Light-noun-headed compound conjunction: in the event of/that, in case of/that, to the extent/degree that/to which, on condition that.", re: NOMINAL_CONDITIONAL_CONNECTIVE_RE },
+  { category: "NOMINAL_CONDITIONAL_CONNECTIVE", kind: "CONDITIONAL_PHRASE", description: "Light-noun-headed compound conjunction: in the event/case/circumstance(s) of/that/where, to the extent/degree that/to which, on condition that.", re: NOMINAL_CONDITIONAL_CONNECTIVE_RE },
   { category: "EVENT_TRIGGER_NOMINALIZATION", kind: "CONDITIONAL_PHRASE", description: "Temporal/event preposition + morphologically-nominalized event noun (suffix class) + \"of\".", re: EVENT_TRIGGER_NOMINALIZATION_RE },
   { category: "EVENT_TRIGGER_DEFINED_TERM", kind: "CONDITIONAL_PHRASE", description: "Temporal/event preposition + Capitalized Multi-Word (Defined Term) Phrase.", re: EVENT_TRIGGER_DEFINED_TERM_RE },
   { category: "OCCURRENCE_PREDICATE", kind: "CONDITIONAL_PHRASE", description: "Perfect-aspect auxiliary + occurrence-class verb (has/have/having/shall have (not)? (yet)? occurred/arisen/taken place).", re: OCCURRENCE_PREDICATE_RE },

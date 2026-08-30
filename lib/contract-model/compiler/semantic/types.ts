@@ -65,6 +65,18 @@ export interface ToolCallLogEntry {
   outputSummary: string;
   charsReturned: number;
   timestamp: string;
+  /**
+   * Phase 3F.1.6-terminal Part A (OPEN-2 / BLOCKER-5 / BLOCKER-6) - true
+   * only when this call's own returned evidence could not be confirmed
+   * current operative truth (see ToolExecutionOutcome.evidenceUnresolved
+   * in semantic/tools.ts for the full contract); undefined for a refusal
+   * or for a tool discipline this does not apply to. compileCovenantToIR
+   * (compile.ts) and verifyCompiledCandidate (semantic-verification/
+   * verify.ts) both scan this field so a candidate can never be marked
+   * COMPLETED/VERIFIED off an unresolved definition alone, regardless of
+   * whether the model's own self-reported sufficiency noticed it.
+   */
+  evidenceUnresolved?: boolean;
 }
 
 // ---------------------------------------------------------------------------

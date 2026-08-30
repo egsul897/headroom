@@ -21,7 +21,7 @@ import type { SemanticReviewResult } from "./reviewer";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
 import type { IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
 import type { StageCaller } from "../llm-caller";
-import type { SemanticCompilerInput } from "../semantic/types";
+import type { SemanticCompilationResult, SemanticCompilerInput } from "../semantic/types";
 
 export interface VerifyOptions {
   /** Injectable for testing - defaults to the real getStageCaller() env-var-driven selection inside reviewer.ts when omitted. */
@@ -161,6 +161,22 @@ function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFin
 }
 
 /**
+ * Phase 3F.1.6-terminal Part A (OPEN-2 / BLOCKER-5 / BLOCKER-6) -
+ * `toolCallLog` is the SAME real-evidence record `compilationResult`
+ * already carries (semantic/types.ts's ToolCallLogEntry.evidenceUnresolved,
+ * set by getDefinition et al. via resolveOperativeDefinitionEvidence). A
+ * candidate whose own compilation relied on a getDefinition-class call that
+ * itself could not confirm current operative truth (a real, on-file
+ * amendment conflict/partial/ambiguous-target state, or a known-superseded
+ * base-document occurrence) must never be blessed VERIFIED - see
+ * determineStatus's own header comment below for why this belongs in that
+ * same priority tier.
+ */
+function hasUnresolvedDefinitionEvidence(compilationResult: Pick<SemanticCompilationResult, "toolCallLog">): boolean {
+  return compilationResult.toolCallLog.some((entry) => entry.evidenceUnresolved === true);
+}
+
+/**
  * Task §17/§18 - verification status, a dimension separate from
  * RepresentationSufficiency. Order matters: a failed required review always
  * wins over everything else; a MATERIAL finding always wins over context/
@@ -168,14 +184,31 @@ function downgradeUnconfirmedAmbiguousFindings(findings: SemanticVerificationFin
  * incomplete evidence); operative-state/context insufficiency is checked
  * BEFORE declaring a clean "no material gap" result, so this verifier never
  * blesses an IR as fully trusted merely because it matches text retrieved
- * under known-incomplete conditions (task §18's explicit requirement).
+ * under known-incomplete conditions (task §18's explicit requirement) - a
+ * discipline Phase 3F.1.6-terminal Part A (OPEN-2) extends via
+ * hasUnresolvedDefinitionEvidence above to cover a DEPENDENCY definition the
+ * candidate's own provision text was never itself amended but nonetheless
+ * relied on for meaning (e.g. a getDefinition call this compilation attempt
+ * made that itself returned a real, on-file CONFLICTED/PARTIAL/AMBIGUOUS
+ * amendment state, or a known-superseded base-document occurrence) - never
+ * blessed VERIFIED_NO_MATERIAL_GAP_FOUND/VERIFIED_WITH_NON_MATERIAL_FINDINGS
+ * merely because the candidate's own numbers happen to reconcile against
+ * the IR.
  */
-function determineStatus(compilerInput: SemanticCompilerInput, findings: SemanticVerificationFinding[], semanticReviewInvoked: boolean, semanticReviewFailed: boolean, sourceInventory: SourceInventory): SemanticVerificationStatus {
+function determineStatus(
+  compilerInput: SemanticCompilerInput,
+  findings: SemanticVerificationFinding[],
+  semanticReviewInvoked: boolean,
+  semanticReviewFailed: boolean,
+  sourceInventory: SourceInventory,
+  compilationResult: Pick<SemanticCompilationResult, "toolCallLog">
+): SemanticVerificationStatus {
   if (semanticReviewInvoked && semanticReviewFailed) return "VERIFICATION_FAILED";
   if (findings.some((f) => f.severity === "MATERIAL")) return "MATERIAL_DISCREPANCY";
   if (compilerInput.contextBundle.sufficiencyState !== "SUFFICIENT") return "VERIFICATION_INCOMPLETE";
   const lineage = compilerInput.operativeLineage;
   if (lineage && (lineage.operativeStatus === "OPERATIVE_STATE_CONFLICTED" || lineage.operativeStatus === "OPERATIVE_STATE_REVIEW_REQUIRED")) return "REVIEW_REQUIRED";
+  if (hasUnresolvedDefinitionEvidence(compilationResult)) return "REVIEW_REQUIRED";
   // Phase 3F.1.5 Workstream B (P1-11/Q8 fix) - an AFFIRMATIVELY confirmed
   // KNOWN_SUPERSEDED verdict (never UNKNOWN_SUPERSESSION_STATUS - that case
   // is left to the same honest-but-not-blocking treatment
@@ -241,7 +274,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
 
   return {
     candidateRef: compilerInput.candidateRef,
-    status: determineStatus(compilerInput, allFindings, semanticReviewInvoked, semanticReviewFailed, sourceInventory),
+    status: determineStatus(compilerInput, allFindings, semanticReviewInvoked, semanticReviewFailed, sourceInventory, compilationResult),
     findings: allFindings,
     sourceInventory,
     irInventory,

@@ -166,6 +166,21 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     if (normalized.rules.some((r) => r.sufficiency === "MISSING_CONTEXT") || normalized.definitions.some((d) => d.sufficiency === "MISSING_CONTEXT")) failureReasons.push("MISSING_CONTEXT");
     if (normalized.rules.some((r) => r.sufficiency === "CONFLICTED")) failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
     if (normalized.rules.some((r) => r.sufficiency === "UNSUPPORTED") || normalized.definitions.some((d) => d.sufficiency === "UNSUPPORTED")) failureReasons.push("UNSUPPORTED_SEMANTICS");
+    // Phase 3F.1.6-terminal Part A (OPEN-2 / BLOCKER-5 / BLOCKER-6) -
+    // deterministic propagation, independent of the model's own
+    // self-reported `sufficiency` above (task's own "must NOT become
+    // trusted verified current truth solely from [an unresolved]
+    // definition" requirement): if ANY evidence tool call this attempt
+    // actually made (getDefinition chief among them - see
+    // ToolExecutionOutcome.evidenceUnresolved in semantic/tools.ts) itself
+    // returned evidence that could not be confirmed current operative
+    // truth, this attempt can never be COMPLETED merely because the model
+    // happened to mark every rule/definition it produced sufficiency
+    // COMPLETE - determineStatus below already treats any non-empty
+    // failureReasons as at least REVIEW_REQUIRED (never silently upgraded
+    // by ruleCount>0 alone). Never suppressed even when the model's own
+    // narrative text made no mention of the issue.
+    if (!failureReasons.includes("OPERATIVE_STATE_UNRESOLVED") && callResult.toolCallLog.some((entry) => entry.evidenceUnresolved)) failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
 
     const hasReviewRequiredSufficiency = normalized.rules.some((r) => r.sufficiency !== "COMPLETE") || normalized.definitions.some((d) => d.sufficiency !== "COMPLETE");
     const unresolvedIssues = [

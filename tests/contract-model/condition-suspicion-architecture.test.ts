@@ -29,8 +29,10 @@
  * every "if"/"when"/temporal sentence to review.
  */
 import { describe, expect, it } from "vitest";
+import type { ZodType } from "zod";
 import { verifyCompiledCandidate } from "../../lib/contract-model/compiler/semantic-verification/verify";
 import { buildSourceInventory } from "../../lib/contract-model/compiler/semantic-verification/source-inventory";
+import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
 import type { VerificationInput } from "../../lib/contract-model/compiler/semantic-verification/types";
 import type { SemanticCompilationResult } from "../../lib/contract-model/compiler/semantic/types";
 import type { IRExpression, IRRule } from "../../lib/contract-model/ir/types";
@@ -79,6 +81,24 @@ function money(amount: number): IRExpression {
 async function verifyDefaultRouting(text: string, r: IRRule) {
   const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [r] }) };
   return verifyCompiledCandidate(input);
+}
+
+function fakeCaller(response: unknown): StageCaller {
+  return {
+    providerName: "test-provider",
+    model: "test-model",
+    isSynthetic: false,
+    async call<T>(schema: ZodType<T>): Promise<T> {
+      return schema.parse(response);
+    },
+    lastTelemetry: () => null,
+  };
+}
+
+/** Phase 3F.1-terminal Architecture Decision, Part A - isolates the deterministic-skip path from the second, semantic condition-suspicion gate's own real-model-vs-synthetic-fallback behavior (this sandbox has no AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY, so unscripted default routing now conservatively forces review here too - see condition-suspicion-classifier.test.ts's own dedicated coverage of that). */
+async function verifyDefaultRoutingWithCleanClassifier(text: string, r: IRRule) {
+  const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [r] }) };
+  return verifyCompiledCandidate(input, { conditionSuspicionCaller: fakeCaller({ status: "NO_MATERIAL_CONDITION_SUSPECTED", evidence: [] }) });
 }
 
 function hasConditionSignal(text: string): boolean {
@@ -236,7 +256,7 @@ describe("Condition-suspicion architecture - BENIGN / PRECISION (genuinely benig
   it("end-to-end: a candidate whose only textual feature is the benign bare-when definitional sentence reaches a genuine clean pass under real default production routing (no spurious Layer 2 routing at all)", async () => {
     const text = "The Company may incur Indebtedness not to exceed $9,800,000. A joinder agreement becomes effective when it is executed and delivered to the Administrative Agent.";
     const clean = rule({ action: "INCUR_DEBT", capacityExpression: money(9_800_000) });
-    const result = await verifyDefaultRouting(text, clean);
+    const result = await verifyDefaultRoutingWithCleanClassifier(text, clean);
     expect(result.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
     expect(result.semanticReviewInvoked).toBe(false);
   });

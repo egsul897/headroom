@@ -25,7 +25,7 @@ import { interpretAmendmentClause, AMENDMENT_INTERPRETATION_PROMPT_VERSION } fro
 import { validateSemanticAmendmentCandidate } from "./validation";
 import { groupEffectsByProvision, buildProvisionChain } from "./chain";
 import { verifyAmendmentEffectsIndependently } from "./independent-verification";
-import { resolveUniqueDefinitionByRef } from "./operative-state";
+import { resolveOperativeDefinitionEvidence } from "./operative-state";
 import type { AmendmentEffectCandidate, AmendmentPipelineSummary, AmendmentTarget } from "./types";
 
 /**
@@ -196,9 +196,29 @@ function getTargetCurrentText(index: StructuralIndex, target: AmendmentTarget): 
     // never guessed. `target.targetDefinedTermRef` is unaffected when the
     // term is genuinely unique or genuinely absent (NOT_FOUND) in this
     // already-resolved target document.
-    const resolution = resolveUniqueDefinitionByRef(index, target.targetDocumentId, target.targetDefinedTermRef);
-    if (resolution.status !== "UNIQUE") return null;
-    return index.getDefinitionFullText(resolution.definition.exactTerm, target.targetDocumentId) ?? null;
+    //
+    // Phase 3F.1.6-terminal Part A (OPEN-2) - now routed through the same
+    // canonical resolveOperativeDefinitionEvidence primitive semantic/
+    // tools.ts's getDefinition uses, rather than a second, hand-rolled
+    // resolveUniqueDefinitionByRef+getDefinitionFullText pair maintained in
+    // parallel here - one temporal/definition-access discipline, not two.
+    // No OperativeContractState exists yet at this pipeline stage (this
+    // function runs WHILE amendment effects are still being discovered, in
+    // order to feed one specific effect's own semantic interpretation -
+    // operative state is computed only afterward, from the full effect
+    // list this function is itself helping produce), so `operativeState:
+    // null` is passed deliberately, never a chicken-and-egg workaround:
+    // resolveOperativeDefinitionEvidence's own Branch 2 (base-document
+    // fallback, AMBIGUOUS/UNIQUE/NOT_FOUND) is exactly, and only, what this
+    // call site needs and previously implemented by hand. Behavior for
+    // AMBIGUOUS/NOT_FOUND is unchanged (both yield null here, as before);
+    // a UNIQUE match now also earns definition-supersession awareness (see
+    // resolveOperativeDefinitionEvidence's own header) automatically,
+    // though no NodeSupersessionIndex exists at this stage either, so this
+    // call site is unaffected in practice today - it will benefit for free
+    // if a future caller here ever gains one.
+    const resolution = resolveOperativeDefinitionEvidence({ index, operativeState: null, term: target.targetDefinedTermRef, searchDocumentIds: [target.targetDocumentId] });
+    return resolution.outcome === "FOUND" ? resolution.text : null;
   }
   return null;
 }

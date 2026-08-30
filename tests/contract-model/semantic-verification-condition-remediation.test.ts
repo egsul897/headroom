@@ -138,6 +138,12 @@ async function verifyDefaultRouting(text: string, r: IRRule) {
   return verifyCompiledCandidate(input);
 }
 
+/** Phase 3F.1-terminal Architecture Decision, Part A - see the identically-named/documented helper in semantic-verification-condition-remediation-rx.test.ts: isolates the deterministic-skip path from the second, semantic condition-suspicion gate's own real-model-vs-synthetic-fallback behavior by scripting an explicit, non-synthetic clean classifier answer. */
+async function verifyDefaultRoutingWithCleanClassifier(text: string, r: IRRule) {
+  const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [r] }) };
+  return verifyCompiledCandidate(input, { conditionSuspicionCaller: fakeCaller({ status: "NO_MATERIAL_CONDITION_SUSPECTED", evidence: [] }) });
+}
+
 async function verifyWithScriptedSemanticFinding(text: string, r: IRRule, wireFinding: Record<string, unknown>) {
   const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [r] }) };
   const caller = fakeCaller({ findings: [wireFinding], overallNotes: [] });
@@ -288,7 +294,7 @@ describe("Phase 3F.1.6.R BLOCKER-9 remediation - FALSE-POSITIVE GUARDS (the fix 
   it("a clean fixed basket with no conditional language at all is unaffected (zero markers, threshold change is a no-op)", async () => {
     const text = "The Company may incur Indebtedness not to exceed $9,000,000.";
     const clean = rule({ action: "INCUR_DEBT", capacityExpression: money(9_000_000) });
-    const result = await verifyDefaultRouting(text, clean);
+    const result = await verifyDefaultRoutingWithCleanClassifier(text, clean);
     expect(result.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
     expect(result.semanticReviewInvoked).toBe(false);
   });

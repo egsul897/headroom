@@ -59,7 +59,17 @@ const PATTERNS: PatternDef[] = [
   // extensive doc comment for the full rationale and honest limits): one
   // legacy alternation (kept verbatim, below, for non-regression) plus
   // eight new structural/morphological frames that generalize to drafting
-  // variants none of them individually enumerate. Spread across multiple
+  // variants none of them individually enumerate.
+  //
+  // Phase 3F.1-terminal Architecture Decision, Part A: this deterministic
+  // pattern set was independently recertified a fourth time and found to
+  // still be a closed-vocabulary architecture one level down - see
+  // condition-suspicion.ts's own updated header. It is kept here UNCHANGED
+  // as the cheap, precise, zero-cost evidence layer it always was; the
+  // architectural fix for genuinely novel phrasing is
+  // condition-suspicion-classifier.ts's real semantic LLM call, invoked as
+  // an independent second routing gate in verify.ts - never by widening the
+  // patterns in this file. Spread across multiple
   // PatternDef entries (all kind CONDITIONAL_PHRASE) rather than merged
   // into one regex, because one of the new frames (EVENT_TRIGGER_DEFINED_TERM)
   // is deliberately CASE-SENSITIVE (its entire signal is capitalization) and

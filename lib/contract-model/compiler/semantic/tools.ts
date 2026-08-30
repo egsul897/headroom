@@ -17,7 +17,7 @@
  */
 import type { NodeSupersessionIndex, NodeSupersessionStatus, OperativeProvisionView } from "../amendment/types";
 import type { StructuralNode } from "../types";
-import { buildNodeSupersessionIndex, getNodeSupersessionStatus, resolveUniqueDefinitionByRef } from "../amendment/operative-state";
+import { buildNodeSupersessionIndex, getNodeSupersessionStatus, normalizeDefinedTermRef, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
 import type { SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
 
@@ -27,6 +27,22 @@ export interface ToolExecutionOutcome {
   result: unknown;
   charsReturned: number;
   outputSummary: string;
+  /**
+   * Phase 3F.1.6-terminal Part A (OPEN-2 / BLOCKER-5 / BLOCKER-6) - set true
+   * ONLY when this call's own returned evidence could not be confirmed as
+   * current operative truth (a real, on-file amendment conflict/partial/
+   * ambiguous-target state, or a base-document occurrence independently
+   * known-superseded) - never set for a refusal (there is no evidence to
+   * mistrust) and never set for a tool whose evidence WAS confirmed
+   * current. Copied verbatim onto this call's ToolCallLogEntry by
+   * ToolRunner.run below; a semantic compiler/verifier that produced
+   * candidate IR from a call carrying this flag must never let that alone
+   * justify a VERIFIED/current-truth downstream determination - see
+   * semantic/compile.ts's own failureReasons wiring and
+   * semantic-verification/verify.ts's own determineStatus for where this is
+   * enforced.
+   */
+  evidenceUnresolved?: boolean;
 }
 
 /**
@@ -165,9 +181,36 @@ function summarizeItemWithSupersession(supersessionIndex: NodeSupersessionIndex,
   return { ...(summarizeItem(item) as Record<string, unknown>), supersessionStatus: result.status, supersessionReason: result.reason };
 }
 
+/**
+ * Phase 3F.1.6-terminal Part A (OPEN-2 / BLOCKER-5 / BLOCKER-6) root-cause
+ * fix: the DEFINITION-side comparison here used to collapse only
+ * leading/trailing whitespace (`ref.trim().toLowerCase()`), unlike its
+ * SECTION-side sibling on the line below (full `.replace(/\s+/g, "")` on
+ * both sides) and unlike `normalizeDefinedTermRef` - the exact function
+ * already used to STORE `p.definedTermRef` in the first place
+ * (chain.ts's provisionKeyFor). A queried term with irregular INTERNAL
+ * whitespace (a doubled space, a tab, a line-wrap remnant - all realistic
+ * artifacts of an LLM echoing a term name read from real, often
+ * OCR'd/line-wrapped contract text) silently missed a real, on-file
+ * OperativeProvisionView here, independent of getDefinition's own now-fixed
+ * use of `getOperativeDefinition` (which already normalized correctly) -
+ * this helper is also called directly by getRelatedAmendments/
+ * getPriorVersion/resolveNodeWithSupersessionAwareness/getOperativeProvision
+ * with a caller-supplied `ref` that can be a defined-term name, so fixing it
+ * here closes the same gap for every one of those callers, not merely the
+ * one reproduction.
+ */
 function findProvisionView(operativeState: OperativeProvisionView[] | undefined, ref: string): OperativeProvisionView | undefined {
-  const normalized = ref.replace(/\s+/g, "");
-  return operativeState?.find((p) => (p.sectionRef ?? "").replace(/\s+/g, "") === normalized || (p.definedTermRef ?? "").toLowerCase() === ref.trim().toLowerCase());
+  const normalizedSection = ref.replace(/\s+/g, "");
+  const normalizedTerm = normalizeDefinedTermRef(ref);
+  // Both sides normalized at the comparison site (never trusting
+  // definedTermRef was already stored in exactly normalizeDefinedTermRef's
+  // own shape) - production's buildProvisionView always does store it
+  // pre-normalized, but several already-established test fixtures across
+  // this codebase hand-build an OperativeProvisionView with the term's
+  // original casing, exactly like the SECTION-side comparison here already
+  // treats stored sectionRef defensively rather than assuming a shape.
+  return operativeState?.find((p) => (p.sectionRef ?? "").replace(/\s+/g, "") === normalizedSection || normalizeDefinedTermRef(p.definedTermRef ?? "") === normalizedTerm);
 }
 
 /**
@@ -310,47 +353,75 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
        * `resolveUniqueNodeByRef` call in ITS raw-fallback branch. An
        * AMBIGUOUS result is refused with an honest reason and candidate
        * count, never guessed.
+       *
+       * Phase 3F.1.6-terminal Part A (OPEN-2 recertification, docs/
+       * phase-3f1-6-rx-final-terminal-closure/15-part-b-finding2-3-
+       * recertification.json) - STILL_OPEN THIRD GAP found in the fix
+       * above: the "operative view lookup" step used the SHARED
+       * `findProvisionView` helper, whose DEFINITION-branch comparison only
+       * collapsed leading/trailing whitespace (`ref.trim().toLowerCase()`),
+       * unlike its own SECTION-side sibling on the same line and unlike
+       * `normalizeDefinedTermRef` (the exact function already used to STORE
+       * `definedTermRef` in the first place). A query term with irregular
+       * INTERNAL whitespace (a doubled space, a tab, a line-wrap remnant)
+       * silently missed a real, on-file view and fell through to the
+       * base-document fallback, re-serving stale text as
+       * OPERATIVE_STATE_RESOLVED for exactly the two operative-state
+       * classes the fallback's own ambiguity check cannot independently
+       * re-catch (CONFLICTED; PARTIAL via a governing effect with no
+       * capturable text) - a verbatim recurrence of the defect this same
+       * fix block was meant to close.
+       *
+       * FIXED HERE by routing both branches through the single canonical
+       * `resolveOperativeDefinitionEvidence` (amendment/operative-state.ts)
+       * instead of maintaining a second, parallel definition-access
+       * discipline in this file: it looks up the operative view via
+       * `getOperativeDefinition`, which ALREADY normalizes both sides with
+       * `normalizeDefinedTermRef` (never findProvisionView's looser
+       * comparison), and it independently checks the base-document
+       * fallback's own resolved physical occurrence against this
+       * compilation's real NodeSupersessionIndex (a definition can be
+       * known-superseded - e.g. its enclosing section was independently
+       * replaced - even when never individually targeted by a
+       * DEFINITION-kind amendment effect; the pre-fix fallback never
+       * checked this at all, unlike every SECTION-reading tool in this file
+       * via resolveNodeWithSupersessionAwareness). `legacyStatus`
+       * preserves the exact pre-existing OPERATIVE_STATE_RESOLVED/PARTIAL/
+       * CONFLICTED/REVIEW_REQUIRED vocabulary this tool's own `status`
+       * field already committed callers to; `evidenceStatus`/
+       * `isCurrentTruth` are the new, richer disclosure this phase adds -
+       * see resolveOperativeDefinitionEvidence's own header comment for the
+       * full 6-value taxonomy.
        */
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
         const term = String(input.term ?? "");
-        const operative = access.operativeState ? findProvisionView(access.operativeState.provisions, term) : undefined;
-        if (operative) {
-          const { text, truncated } = truncate(operative.currentText ?? "(no current text recorded)");
-          charsUsedRef.current += text.length;
-          return ok(
-            { term, status: operative.status, source: operative.currentText ? "amended" : "unresolved", text, truncated, unresolvedIssues: operative.unresolvedIssues },
-            text,
-            `definition "${term}" (status ${operative.status})`
-          );
+        const searchDocumentIds = [homeDocumentId, ...Array.from(allowedDocs).filter((d) => d !== homeDocumentId)];
+        const resolution = resolveOperativeDefinitionEvidence({ index: access.structuralIndex, operativeState: access.operativeState, term, searchDocumentIds, supersessionIndex });
+
+        if (resolution.outcome === "AMBIGUOUS") {
+          return refuse(`${resolution.reason} - cannot serve this as uniquely-resolved evidence; try getSourceSpan on a specific candidate node, or narrow which occurrence you mean`);
         }
-        // No recorded amendment activity at all for this term - resolve
-        // directly against the base document(s), home document first then
-        // real siblings (mirroring getScopedDefinitionFullText's own
-        // ordering), but never guess among multiple colliding physical
-        // definitions of the same term within one document.
-        let ambiguity: { documentId: string; candidateCount: number } | null = null;
-        for (const docId of [homeDocumentId, ...Array.from(allowedDocs).filter((d) => d !== homeDocumentId)]) {
-          const resolution = resolveUniqueDefinitionByRef(access.structuralIndex, docId, term);
-          if (resolution.status === "AMBIGUOUS") {
-            ambiguity ??= { documentId: docId, candidateCount: resolution.candidates.length };
-            continue;
-          }
-          if (resolution.status === "UNIQUE") {
-            const fullText = access.structuralIndex.getDefinitionFullText(resolution.definition.exactTerm, docId);
-            if (!fullText) continue;
-            const { text, truncated } = truncate(fullText);
-            charsUsedRef.current += text.length;
-            return ok({ term, status: "OPERATIVE_STATE_RESOLVED", source: "base-document", text, truncated, unresolvedIssues: [] }, text, `definition "${term}" (never amended)`);
-          }
+        if (resolution.outcome === "NOT_FOUND") {
+          return refuse(resolution.reason);
         }
-        if (ambiguity) {
-          return refuse(
-            `term "${term}" matches ${ambiguity.candidateCount} distinct physical definitions in document "${ambiguity.documentId}", and it has no recorded amendment history to disambiguate it - cannot serve this as uniquely-resolved evidence; try getSourceSpan on a specific candidate node, or narrow which occurrence you mean`
-          );
-        }
-        return refuse(`no defined term matching "${term}" found in this instrument's documents`);
+
+        const { text, truncated } = truncate(resolution.text ?? "(no current text recorded)");
+        charsUsedRef.current += text.length;
+        const outcome = ok(
+          { term, status: resolution.legacyStatus, evidenceStatus: resolution.status, source: resolution.source, isCurrentTruth: resolution.isCurrentTruth, text, truncated, unresolvedIssues: resolution.unresolvedIssues },
+          text,
+          `definition "${term}" (status ${resolution.legacyStatus}, evidence ${resolution.status})`
+        );
+        // Never fabricated for a refusal (there is no evidence returned
+        // there to mistrust) - set here, unconditionally, whenever real
+        // evidence IS returned but is not confidently current, so a
+        // downstream compiler/verifier can never grant VERIFIED/current-
+        // truth status off this call alone (see ToolExecutionOutcome's own
+        // header comment).
+        outcome.evidenceUnresolved = !resolution.isCurrentTruth;
+        return outcome;
       },
     },
     {
@@ -670,7 +741,14 @@ export class ToolRunner {
     this.callCount += 1;
     this.seenRequests.add(signature);
     const outcome = definition.execute((rawInput ?? {}) as Record<string, unknown>);
-    this.log.push({ toolName, input: rawInput, outputSummary: outcome.outputSummary, charsReturned: outcome.charsReturned, timestamp });
+    // Phase 3F.1.6-terminal Part A (OPEN-2) - carried onto the logged entry
+    // verbatim (never re-derived from outputSummary text) so a downstream
+    // consumer of this attempt's toolCallLog (semantic/compile.ts's
+    // failureReasons wiring, semantic-verification/verify.ts's
+    // determineStatus) can deterministically detect "this attempt's own
+    // evidence included an unresolved definition" without depending on the
+    // model itself having faithfully self-reported it.
+    this.log.push({ toolName, input: rawInput, outputSummary: outcome.outputSummary, charsReturned: outcome.charsReturned, timestamp, evidenceUnresolved: outcome.evidenceUnresolved });
     return outcome.result;
   }
 }
