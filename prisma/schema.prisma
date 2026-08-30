@@ -137,6 +137,10 @@ model Company {
   // Additive only. Zero rows for any company as of this migration.
   claimReviewItems ClaimReviewItem[]
 
+  // --- Phase 3F.1.6.R Workstream F: live contract-analysis orchestration ---
+  // Additive only. Zero rows for any company as of this migration.
+  analysisRuns AnalysisRun[]
+
   @@map("companies")
 }
 
@@ -3201,4 +3205,85 @@ model ClaimReviewDecision {
 
   @@index([reviewItemId])
   @@map("claim_review_decisions")
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.6.R Workstream F - the live contract-analysis orchestration
+// boundary's own minimal run-tracking state (BLOCKER-10 remediation,
+// docs/phase-3f1-6-r-blocker-remediation/16-live-analysis-idempotency.json).
+//
+// This is deliberately NOT a second ContractCompilerRun/ContractCompilerStage
+// (that model belongs to the quarantined legacy Phase C pipeline -
+// lib/contract-model/compiler/orchestrator.ts's own header comment - and is
+// never reused for the new, live-wired pipeline this model tracks). It is
+// also deliberately NOT a per-stage cache/resume table the way
+// ContractCompilerStage is: every real pipeline stage this run composes
+// (structural persistence, package-graph persistence, ClaimReviewItem
+// recording) is already independently idempotent (upsert-by-stableKey or
+// upsert-by-claimKey - see lib/contract-model/compiler/persistence.ts,
+// package-graph/persistence.ts, safe-failure/service.ts's own header
+// comments), so re-running this run's own body to completion after an
+// interruption is always safe by construction; this row exists to make that
+// run's own identity/status/audit trail explicit and queryable, not to cache
+// intermediate stage output.
+//
+// Idempotency/identity (task's own "tenant + document/package version-or-
+// hash + analysis algorithm version"): `packageKey` is a content-derived
+// hash of this run's own sorted document-id set (lib/contract-model/analysis/identity.ts) -
+// Document rows are immutable once created in this codebase (a re-upload of
+// byte-identical content converges on the EXISTING row via
+// lib/connectors/upload-connector.ts's own dedup contract, and there is no
+// in-place "edit this document's text" mutation anywhere), so a document's
+// id is already a safe, sufficient proxy for its content identity. Adding a
+// genuinely new document to the analyzed set changes `packageKey`, which
+// changes this row's own identity - "a new document version runs
+// independently" - while re-running over the SAME document set resolves to
+// the SAME row every time (the `@@unique` below), and bumping
+// `analysisAlgorithmVersion` deliberately changes identity too, causing
+// fresh, intentional reprocessing.
+enum AnalysisRunStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  COMPLETED_WITH_REVIEW
+  FAILED
+
+  @@map("analysis_run_status")
+}
+
+model AnalysisRun {
+  id        String @id @default(cuid())
+  companyId String
+
+  // Content-derived hash of this run's own sorted document-id set - see this model's own header comment. Never a human-chosen label. 
+  packageKey               String
+  // The exact document ids this run analyzed together, in the same sorted order packageKey was derived from - kept alongside the hash for direct queryability/debugging without re-deriving it. 
+  documentIds              String[]
+  // Bumping this intentionally changes this row's own unique identity (see @@unique below), causing a fresh AnalysisRun row and full reprocessing - the mechanism task step 5's "bumping the analysis algorithm version can intentionally cause reprocessing" requires. 
+  analysisAlgorithmVersion String
+
+  status       AnalysisRunStatus @default(PENDING)
+  // Free-text stage name (e.g. "STRUCTURAL_ANALYSIS", "SEMANTIC_COVERAGE") - a plain string, not a closed enum, so a later stage can be added/renamed without a migration; this field is progress/observability state only, never consulted for correctness by any resume logic (see this model's own header comment on why full stage-level resume is out of this model's scope). 
+  currentStage String?
+
+  startedAt       DateTime?
+  completedAt     DateTime?
+  // Structured detail for a genuinely fatal (whole-run-aborting) failure only - never populated for an ordinary per-claim/per-candidate uncertainty, which routes to its own ClaimReviewItem instead of failing the run (task step 7's "no single generic fatal error"). Shape: { stage: string, message: string, errorClass: string }.
+  fatalError      Json?
+  // The count of OPEN_REVIEW ClaimReviewItem rows this run's own package/company scope had at completion - a convenience denormalization for run-listing UIs, always re-derivable from ClaimReviewItem itself.
+  reviewItemCount Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // The dedup/idempotency key (this model's own header comment): at most one
+  // AnalysisRun row ever exists per (companyId, packageKey,
+  // analysisAlgorithmVersion) - a duplicate trigger for the SAME document
+  // set under the SAME algorithm version always resolves to, and updates,
+  // this SAME row rather than creating a second one.
+  @@unique([companyId, packageKey, analysisAlgorithmVersion])
+  @@index([companyId, status])
+  @@map("analysis_runs")
 }

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "LIVE_SAFE_FAILURE_WIRING",
+  "workstream": "F",
+  "blockerId": "BLOCKER-10",
+  "generatedAt": "2026-08-30T06:35:00.000Z",
+  "baseCommit": "75ffb5592719dc7a995e47870fc562aff1c18667",
+  "purpose": "Step 6 - prove, end-to-end via an actual application/service-triggered document (not a manually-invoked audit script), that the ONE already-existing wired safe-failure emission point (recordClaimReviewsFromPackageCoverage / recordClaimReviewsFromDocumentCoverage, lib/contract-model/compiler/safe-failure/integrate.ts) is what actually executes when the live orchestrator runs - not a separate/parallel emission point - and that it fires correctly in both directions (a real gap produces a review item; a real, trusted claim does not).",
+  "whatWasCertifiedBroken": {
+    "document": "docs/phase-3f1-6-final-foundation-certification/17-safe-failure-wiring-certification.json",
+    "verdict": "FAIL / BLOCKER",
+    "quote": "Explicit safe failure is real, correct, well-tested production-grade STATE... but has NO wiring into any code path that a real user-triggered or scheduled analysis run actually executes... the entire lib/contract-model/compiler/** apparatus... has never been wired into app/'s live document pipeline at all."
+  },
+  "howThisIsNowClosed": {
+    "wiringPath": "app/[companyId]/onboarding/documents/actions.ts's runExtractionAction -> lib/contract-model/analysis/orchestrator.ts's runContractAnalysis -> (per instrument) lib/contract-model/compiler/semantic-coverage/pipeline.ts's runSemanticCoverageAudit -> lib/contract-model/compiler/safe-failure/integrate.ts's recordClaimReviewsFromPackageCoverage.",
+    "confirmationThisIsTheSameEmissionPointAndNotAParallelOne": "recordClaimReviewsFromPackageCoverage/recordClaimReviewsFromDocumentCoverage are imported and called EXACTLY as they are declared (no wrapper, no re-implementation, no second copy) - grep-confirmed the orchestrator's own import line (`import { recordClaimReviewsFromPackageCoverage } from \"../compiler/safe-failure/integrate\";`) is the literal, unmodified Phase 3F.1.5.R module every existing script/test already uses. This orchestrator adds zero new ClaimReviewItem-producing code paths of its own."
+  },
+  "endToEndProofs": [
+    {
+      "proofLevel": "REAL APPLICATION SERVICE BOUNDARY (the literal exported server action a real user click invokes)",
+      "testFile": "tests/onboarding/live-contract-analysis-app-action.test.ts",
+      "method": "Calls the real, unmodified uploadDocumentAction then runExtractionAction (mocking only next/cache's revalidatePath and next/navigation's redirect, which require a live Next.js request context - the exact same, pre-existing convention tests/onboarding/documents-actions-dedup.test.ts already established for this same action file). No LLM callers are injected - getStageCaller()/getSemanticCaller() fall back to their own real, zero-cost, zero-fabrication SYNTHETIC implementations in this credential-free sandbox.",
+      "result": "A real $3,000,000 Liens covenant, genuinely undiscovered by the (correctly empty, credential-free) synthetic discovery pass, is independently caught by semantic-coverage's own deterministic Layer A/B unit hypothesis, reaches dangerousUnaccounted, and produces a REAL, persisted, OPEN_REVIEW ClaimReviewItem row - via the real AnalysisRun this action's own call to runContractAnalysis created. AnalysisRun.status = COMPLETED_WITH_REVIEW, AnalysisRun.reviewItemCount > 0. A second call to the same action for the same document is idempotent (same AnalysisRun row, no duplicate ClaimReviewItem rows).",
+      "significance": "This is the single most direct possible refutation of the certification's own FAIL verdict: a REAL user-facing server action, called with zero test-only overrides beyond the unavoidable Next.js request-context mocks, now produces a real persisted review item through the real, unmodified safe-failure emission point."
+    },
+    {
+      "proofLevel": "ORCHESTRATOR-LEVEL, CALLER-INJECTABLE (broader coverage of both the positive and negative case, same code path)",
+      "testFile": "tests/contract-model/live-contract-analysis-orchestrator.test.ts",
+      "method": "Calls runContractAnalysis directly (the SAME function runExtractionAction calls) with deterministic ScriptedStageCaller/ScriptedSemanticCaller test doubles (this codebase's own pre-existing test convention), so both the discovered+compiled+verified case and the undiscovered case can be exercised deterministically in the same document.",
+      "positiveCaseResult": "A real, undiscovered $2,000,000 Liens covenant (Section 6.02) produces a real, persisted, OPEN_REVIEW ClaimReviewItem, materiality CRITICAL/MATERIAL, sourceEvidence containing the real source text - a specific, material-claim-shaped finding, not diagnostic noise.",
+      "negativeCaseResult": "A real, discovered+compiled+verified $10,000,000 Indebtedness covenant (Section 6.01) reaches coverageState FULLY_REPRESENTED_VERIFIED and produces NO ClaimReviewItem for that claim - proving the negative case the task explicitly requires: a trusted material claim is never turned into a bogus review item."
+    }
+  ],
+  "precisionOverNoise": {
+    "claim": "This wiring surfaces real material uncertainty, not diagnostic noise (task's own 'prefer high precision' instruction).",
+    "evidence": "Both proofs above assert on the SPECIFIC review item's own sourceEvidence containing the real, exact dollar figure from the undiscovered covenant's own source text, and its materiality field being CRITICAL or MATERIAL (semantic-coverage's own real materiality classification for a quantitative negative covenant) - never merely 'a review item count > 0' without checking WHAT it is anchored to. The negative-case proof additionally confirms the corresponding coverage entry's own real coverageState is FULLY_REPRESENTED_VERIFIED (not merely 'no review item found', which could also mean a silent drop) - i.e. the ABSENCE of a review item is independently confirmed to be for the CORRECT reason (genuine verified trust), not an accidental gap in the audit itself."
+  },
+  "whatRemainsNotProvenInThisPass": {
+    "realLlmDiscoveryPath": "Every proof above runs discovery/compilation/verification through either the real synthetic fallback (zero LLM calls) or deterministic scripted test doubles (zero LLM calls) - by design, since this sandbox has no ANTHROPIC_API_KEY/AI_GATEWAY_API_KEY and this workstream's charter does not authorize spending real money. This proves the WIRING is real and correct; it does not re-prove that a REAL Claude-driven discovery/compilation/verification call, once a real credential is configured in a real deployment, would itself behave identically - that is exactly what scripts/phase-3f-first-blind-run.ts and the existing tests/contract-model/semantic-coverage-real-*-regression.test.ts fixtures already establish for the underlying modules THEMSELVES (unchanged, still passing - see 18-live-e2e-results.json), and is out of this workstream's own scope (wire the existing, already-proven modules together; do not re-prove their own individual correctness).",
+    "multiInstrumentPerCompany": "See 14-live-contract-analysis-architecture.json's singleDocumentBoundaryDecision.disclosedScopeBoundary - a company with multiple, genuinely unrelated debt instruments is analyzed as one package-level AnalysisRun today, even though semantic-coverage/discovery/compilation are internally correctly partitioned per real InstrumentGroupingResult."
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "The safe-failure emission point is now real-application-triggered, proven via the literal exported server action with zero business-logic overrides, and proven correct in both directions (review item for real uncertainty; no review item for real, verified trust). Reserved CERTIFIED status for a future, independent recertification phase that can, if desired, re-run this same wiring against a real LLM credential."
+}

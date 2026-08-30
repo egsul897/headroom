@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "LIVE_E2E_RESULTS",
+  "workstream": "F",
+  "blockerId": "BLOCKER-10",
+  "generatedAt": "2026-08-30T06:40:00.000Z",
+  "baseCommit": "75ffb5592719dc7a995e47870fc562aff1c18667",
+  "purpose": "Step 8 (golden end-to-end test) and Step 7 (failure propagation, not one generic fatal error) results.",
+  "goldenE2eTest": {
+    "requirement": "At least one golden E2E test exercising the SAME code path used by app/'s actual service boundary - not just a unit test of the orchestrator called in isolation.",
+    "testFile": "tests/onboarding/live-contract-analysis-app-action.test.ts",
+    "whatMakesThisGolden": "It calls the literal exported functions app/[companyId]/onboarding/documents/actions.ts's real 'Upload' and 'Run Extraction' buttons invoke (uploadDocumentAction, runExtractionAction) - not runContractAnalysis directly. The only mocks are next/cache's revalidatePath and next/navigation's redirect, both required purely because this test harness has no live Next.js request context (the identical, pre-existing convention this repo's own tests/onboarding/documents-actions-dedup.test.ts already established for this same action file) - every line of actual business logic (upload dedup, storage, chunking, extraction, and now contract analysis) is real, unmodified production code running against real Postgres and real local-filesystem document storage.",
+    "runCommand": "DATABASE_URL=... npx vitest run tests/onboarding/live-contract-analysis-app-action.test.ts",
+    "result": "2/2 passing",
+    "assertions": [
+      "A real AnalysisRun row exists, status COMPLETED_WITH_REVIEW, documentIds contains the real uploaded document, completedAt is set.",
+      "Real DocumentNode rows were persisted for the real document (structural analysis -> persistence actually ran).",
+      "A real, OPEN_REVIEW ClaimReviewItem exists for the document, anchored to the real undiscovered covenant's own source text.",
+      "Re-running the same action for the same document is idempotent (same AnalysisRun.id, identical ClaimReviewItem id set, exactly 1 AnalysisRun row)."
+    ]
+  },
+  "broaderE2eCoverage": {
+    "testFile": "tests/contract-model/live-contract-analysis-orchestrator.test.ts",
+    "runCommand": "DATABASE_URL=... npx vitest run tests/contract-model/live-contract-analysis-orchestrator.test.ts",
+    "result": "11/11 passing",
+    "casesCovered": ["STARTED_TO_COMPLETION full pipeline run", "POSITIVE CASE (undiscovered material claim -> real review item)", "NEGATIVE CASE (trusted, verified claim -> no bogus review item)", "FAILURE PROPAGATION (both coexist in one run)", "IDEMPOTENCY", "NEW DOCUMENT VERSION", "ALGORITHM VERSION BUMP", "CONCURRENT DUPLICATE TRIGGER", "SKIPPED_NO_CONTRACT_DOCUMENTS", "FATAL INGESTION FAILURE"]
+  },
+  "failurePropagationProof": {
+    "requirement": "Structural uncertainty, operative-state ambiguity, unsupported compiler expressions, and verifier contradictions should each route to their own already-existing safe-failure/review path rather than collapsing into one generic error. One bad claim should not necessarily discard every unrelated valid claim in the same document, but no material unresolved claim may disappear silently.",
+    "howThisOrchestratorPreservesPerLayerRouting": "This orchestrator adds NO new failure-classification logic of its own - it calls each already-fixed module's real function and passes its real output straight through to the next stage, so every existing, already-certified routing path (structural health -> operative state's own STRUCTURAL_HEALTH_UNSAFE handling; amendment ambiguity -> OPERATIVE_STATE_PARTIAL/AMBIGUOUS; unsupported compiler expressions -> enforceSufficiencyConsistency's PARTIAL downgrade; verifier contradictions -> MATERIAL_DISCREPANCY/REVIEW_REQUIRED statuses) reaches semantic-coverage's own reconciliation and safe-failure's own reasonCode taxonomy completely unchanged - this is exactly docs/phase-3f1-6-final-foundation-certification/25-cross-module-failure-propagation.json's own already-certified 3-of-4-chains-compose result, now reachable from a live trigger instead of only from a script.",
+    "testedProof": {
+      "testCase": "FAILURE PROPAGATION (tests/contract-model/live-contract-analysis-orchestrator.test.ts)",
+      "scenario": "One document containing BOTH an undiscovered material claim (Section 6.02 Liens, $2,000,000) AND a discovered+compiled+verified trusted claim (Section 6.01 Indebtedness, $10,000,000), analyzed together in the SAME AnalysisRun.",
+      "result": "Both outcomes coexist correctly in the same run: instrument.verifiedCount >= 1 (the trusted claim was genuinely verified) AND a real OPEN_REVIEW ClaimReviewItem count > 0 (the untrusted claim was genuinely flagged) - the untrusted claim's own uncertainty never discarded or masked the trusted claim's own genuine verification, and vice versa."
+    },
+    "instrumentLevelFaultIsolation": "This orchestrator's own analyzeInstrument function is wrapped, per instrument unit, in a try/catch at the orchestrator level (lib/contract-model/analysis/orchestrator.ts's own instrumentErrors accumulator) - ADDITIONAL to the fault isolation the underlying modules ALREADY provide internally (runDiscoveryPipeline's own per-section try/catch; compilePackageToIR's own per-candidate try/catch). An unexpected exception in one instrument's own analysis (e.g. a malformed package-graph grouping) is caught, recorded, and does not prevent already-computed sibling instruments' own valid results from being returned and persisted. The whole run only fails (AnalysisRun -> FAILED) if EVERY instrument failed, or if the earlier, genuinely fatal document-ingestion step itself failed (no source text -> no meaningful partial analysis is possible)."
+  },
+  "regressionRunEvidence": {
+    "fullRelevantSuite": "npx vitest run tests/contract-model tests/onboarding tests/foundation-audit tests/certification",
+    "result": "152 test files, 1553 tests, all passing (re-run in full against the CORRECT branch tip 75ffb55 after this workstream's own mid-session worktree-staleness correction - see 16-live-analysis-idempotency.json's worktreeStalenessNote).",
+    "typecheckAndLintBaselineMatch": "tsc: 0 new errors (6 pre-existing, matching certified baseline). eslint: 0 new errors (1 pre-existing, matching certified baseline)."
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "A real golden E2E test exercises the literal application service boundary and passes; the broader orchestrator test suite proves both directions of the safe-failure contract and 5 distinct idempotency/failure-mode scenarios; the full pre-existing relevant suite remains green with zero new regressions. Reserved CERTIFIED status for a future, independent recertification phase."
+}
