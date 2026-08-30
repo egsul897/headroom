@@ -414,9 +414,54 @@ function stripTrailingPageNumberArtifact(before: string): string {
  * composes safely with the page-number artifact above - the two noise
  * classes never overlap structurally (one is whitespace-BOUNDED, the other
  * is glued with NO whitespace to the preceding punctuation).
+ *
+ * Phase 3F.1-terminal Part A (OPEN-1 remediation): Part B's own independent
+ * recertification (docs/phase-3f1-6-rx-final-terminal-closure/14-part-b-
+ * finding1-recertification.json) proved the regex above still only
+ * recognizes the noise CLASS when it *begins* with a literal terminal-
+ * punctuation character - a closing quote/bracket is recognized only when
+ * it TRAILS that punctuation mark, never when the closing quote/bracket/
+ * paren IS itself the last visible character (a sentence commonly ends at a
+ * quoted defined term or a parenthetical qualifier with no separate period)
+ * and the footnote digit is glued directly onto IT instead. Rather than
+ * special-casing "a digit glued to a closing paren/quote" as one more
+ * enumerated shape (which the auditor's own report warns would just be the
+ * next unseen shape's future gap), the class this function recognizes is
+ * generalized to its own real root definition: a short (1-3 digit) run,
+ * not itself preceded by another digit (so it can never split a real
+ * multi-digit number), glued with NO intervening whitespace onto whatever
+ * character actually precedes it - punctuation, a closing bracket/quote, or
+ * anything else - is footnote/endnote-marker-shaped noise, UNLESS stripping
+ * it would unmask what is really the fractional part of an ordinary decimal
+ * number (the character right before the digit run is '.', and the
+ * character before THAT is itself a digit - e.g. "4.00"; this is the exact
+ * Category-6 precision guard the original `(?<!\d)` lookbehind protects,
+ * now re-expressed for a class no longer anchored to a fixed leading
+ * punctuation character). A digit run preceded by real WHITESPACE is
+ * deliberately excluded here (left entirely to
+ * `stripTrailingPageNumberArtifact` above) - that is the OTHER, structurally
+ * distinct noise class this module already recognizes (a page number
+ * standing on its own, isolated by whitespace on both sides), and keeping
+ * the two classes disjoint (glued vs. whitespace-bounded) is what lets both
+ * compose safely in one pipeline without either one's own shape leaking
+ * into the other's.
+ *
+ * This generalization does not, by itself, decide whether a candidate is
+ * accepted - it only widens what counts as discountable noise before the
+ * boundary-evidence SCORE below is computed (see `boundaryPlausibilityScore`
+ * and its own doc-comment) from several independent signals, none of which
+ * is individually a mandatory gate.
  */
 function stripTrailingFootnoteMarker(before: string): string {
-  return before.replace(/(?<!\d)([.:;!?]["'’”)\]]*)\d{1,3}(\s*)$/, "$1$2");
+  const trailingWhitespace = before.match(/\s*$/)![0];
+  const core = before.slice(0, before.length - trailingWhitespace.length);
+  const digitRun = core.match(/(?<!\d)\d{1,3}$/);
+  if (!digitRun) return before;
+  const charBeforeDigitRun = core[core.length - digitRun[0].length - 1];
+  if (charBeforeDigitRun !== undefined && /\s/.test(charBeforeDigitRun)) return before; // whitespace-bounded - a page-number-shaped artifact, not a glued footnote/endnote marker; left to stripTrailingPageNumberArtifact
+  const withoutDigitRun = core.slice(0, core.length - digitRun[0].length);
+  if (/\d\.$/.test(withoutDigitRun)) return before; // the real fractional part of an ordinary decimal number (e.g. "4.00") - never noise
+  return withoutDigitRun + trailingWhitespace;
 }
 
 /**
@@ -449,13 +494,136 @@ function precededBySentenceTerminalPunctuation(withoutPageNumber: string): boole
   return /[.:;!?]["'’”)\]]*$/.test(withoutOpeningQuote);
 }
 
-/** The two positional signals alone (paragraph break OR sentence-terminal punctuation) - see the module-level doc-comment for the full rationale. Exported internally as its own step because Signal (C) below needs to know which ARTICLE candidates pass THIS narrower test before it can safely use their match ends as an adjacency anchor (never cascading through a rejected in-text citation to an ARTICLE reference). */
+/**
+ * Phase 3F.1-terminal Part A (OPEN-1 remediation): the boundary-plausibility
+ * check is a SCORED, compositional evaluation of several independent
+ * typographic/positional signals, not a single mandatory feature. Per this
+ * phase's own §9-10 requirement, no one signal (an exact punctuation
+ * character before a footnote digit, a specific bracket shape, ...) is a
+ * hard gate - each signal contributes weighted evidence, and a candidate is
+ * accepted once the combined weight of INDEPENDENT evidence clears a fixed
+ * threshold, exactly the way a human reader weighs several partial clues
+ * together rather than requiring one of them to be perfect.
+ *
+ * Signals (all purely typographic/positional - never keyed to WHAT WORD
+ * precedes the candidate, preserving the same "not a phrase list" property
+ * every prior mechanism in this file already established):
+ *
+ *  - PARAGRAPH_BREAK (weight 3, independently sufficient): 2+ real
+ *    newlines once typographic noise is discounted - unchanged from the
+ *    original signal (A).
+ *  - SENTENCE_TERMINAL_PUNCTUATION (weight 3, independently sufficient):
+ *    the preceding text's own last character is a real sentence/clause
+ *    terminator once noise is discounted - unchanged from the original
+ *    signal (B).
+ *  - NOISE_DISCOUNTED (weight 1, alone insufficient): a real typographic
+ *    noise artifact (a footnote/endnote marker or page-number decoration)
+ *    was actually present immediately at this boundary and had to be
+ *    discounted to see through to it - itself real, general evidence that
+ *    something is obscuring the true boundary character, without regard to
+ *    what that artifact specifically was glued onto.
+ *  - CLOSING_DELIMITER (weight 1, alone insufficient): once noise is
+ *    discounted, the real preceding text's own last character is a closing
+ *    quotation mark or bracket - a parenthetical or quoted span having just
+ *    closed. Deliberately weak and NEVER sufficient alone (see
+ *    `precededByClosingDelimiter`'s own doc-comment) - ordinary prose ends
+ *    in a closing parenthetical constantly, including mid-citation, so
+ *    this only ever corroborates other evidence, never substitutes for it.
+ *  - AT_LEAST_ONE_NEWLINE (weight 1, alone insufficient): the candidate is
+ *    at least on its own line, even without a full paragraph break -
+ *    weaker geometric evidence than PARAGRAPH_BREAK, only ever a
+ *    corroborating signal.
+ *
+ * The combination NOISE_DISCOUNTED + CLOSING_DELIMITER + AT_LEAST_ONE_NEWLINE
+ * (1+1+1 = 3, meeting the threshold) is what closes OPEN-1: a footnote/
+ * endnote digit glued directly onto a bare closing paren or quotation mark,
+ * with no separate terminal punctuation of its own, now supplies three
+ * independent pieces of real corroborating evidence together - is genuinely
+ * on its own line, has something glued onto it that had to be discounted to
+ * see through to the real boundary character, and that real character is
+ * itself a just-closed delimiter - rather than requiring the noise-stripping
+ * regex to guess the exact one punctuation-then-bracket shape a human
+ * reader would recognize as "the sentence basically ended right there."
+ * This is deliberately NOT the same as treating "ends in a closing
+ * bracket" as standalone sufficient evidence: that alone (see the dedicated
+ * negative-control tests) would launder an ordinary in-text citation ending
+ * in a parenthetical aside, sitting on its own line before a real
+ * heading-shaped candidate, into a false positive - requiring genuine noise
+ * to have been discounted first is what keeps this narrow and grounded in
+ * the same "footnote/page-marker context" signal this whole remediation is
+ * about, not a bare bracket shape by itself.
+ *
+ * Two signals this phase's own charter names as available in principle -
+ * numbering-rank-sequence continuity and citation-context - are
+ * deliberately NOT included as acceptance-granting weight here. Both were
+ * concretely shown, in this same file's own prior remediation record (see
+ * the doc-comment above `unionMatches`'s sibling defect-3/Category-6
+ * analysis and the identical proof re-run in
+ * tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts
+ * describe block 3), to be indistinguishable - by any positional or
+ * numbering evidence available to this design - from a real, certified
+ * false-positive shape (a table row/bullet-list/signature-block/multi-
+ * column-collapsed fragment immediately followed by the numerically NEXT
+ * section, separated by exactly one newline with no terminal punctuation).
+ * Adding rank continuity as sufficient (or even as one more point tipping a
+ * single newline over threshold) would silently reopen that exact,
+ * already-examined boundary. Left out on the same honest, evidence-based
+ * basis the phase's own prior work used - not by oversight.
+ */
+const PLAUSIBILITY_SIGNAL_WEIGHT = {
+  PARAGRAPH_BREAK: 3,
+  SENTENCE_TERMINAL_PUNCTUATION: 3,
+  NOISE_DISCOUNTED: 1,
+  CLOSING_DELIMITER: 1,
+  AT_LEAST_ONE_NEWLINE: 1,
+} as const;
+const PLAUSIBILITY_SCORE_THRESHOLD = 3;
+
+/** Weak, independently-insufficient signal: at least one real newline sits in the trailing whitespace, once typographic noise is discounted - the candidate is at least on its own line, short of a full paragraph break. */
+function precededByAtLeastOneNewline(withoutNoise: string): boolean {
+  return /\n/.test(withoutNoise.match(/\s*$/)![0]);
+}
+
+/**
+ * Weak, independently-insufficient signal: once trailing whitespace and any
+ * discounted noise are removed, the real preceding text's own last
+ * character is a closing quotation mark or bracket - a parenthetical or
+ * quoted span having just closed. Deliberately never treated as
+ * standalone-sufficient: ordinary prose (including an in-text citation)
+ * ends in a closing parenthetical constantly - "...as set forth in the
+ * Credit Agreement (as amended)" is exactly as real and exactly as common
+ * as a genuine heading boundary shaped this way, and nothing about the
+ * bracket ITSELF tells the two apart. It only ever contributes corroborating
+ * weight alongside another independent signal (see
+ * `PLAUSIBILITY_SIGNAL_WEIGHT`'s own doc-comment).
+ */
+function precededByClosingDelimiter(withoutNoise: string): boolean {
+  const trimmed = withoutNoise.replace(/\s+$/, "");
+  return /["'’”)\]]$/.test(trimmed);
+}
+
+/**
+ * The full SCORED boundary-plausibility evaluation - see
+ * `PLAUSIBILITY_SIGNAL_WEIGHT`'s own doc-comment for the complete signal
+ * catalogue and rationale. Exported internally as its own step because
+ * Signal (C) below needs to know which ARTICLE candidates pass THIS
+ * narrower test before it can safely use their match ends as an adjacency
+ * anchor (never cascading through a rejected in-text citation to an
+ * ARTICLE reference).
+ */
 function isPlausibleByPositionalSignals(text: string, matchIndex: number): boolean {
   const windowStart = Math.max(0, matchIndex - 200);
   const before = text.slice(windowStart, matchIndex);
   if (windowStart === 0 && before.trim().length === 0) return true; // true document start
   const withoutNoise = stripTrailingTypographicNoise(before);
-  return precededByParagraphBreak(withoutNoise) || precededBySentenceTerminalPunctuation(withoutNoise);
+  const noiseDiscounted = withoutNoise !== before;
+  let score = 0;
+  if (precededByParagraphBreak(withoutNoise)) score += PLAUSIBILITY_SIGNAL_WEIGHT.PARAGRAPH_BREAK;
+  if (precededBySentenceTerminalPunctuation(withoutNoise)) score += PLAUSIBILITY_SIGNAL_WEIGHT.SENTENCE_TERMINAL_PUNCTUATION;
+  if (noiseDiscounted) score += PLAUSIBILITY_SIGNAL_WEIGHT.NOISE_DISCOUNTED;
+  if (precededByClosingDelimiter(withoutNoise)) score += PLAUSIBILITY_SIGNAL_WEIGHT.CLOSING_DELIMITER;
+  if (precededByAtLeastOneNewline(withoutNoise)) score += PLAUSIBILITY_SIGNAL_WEIGHT.AT_LEAST_ONE_NEWLINE;
+  return score >= PLAUSIBILITY_SCORE_THRESHOLD;
 }
 
 /** The largest entry of the ascending-sorted `ends` that is `<= index`, or null if none - the nearest candidate heading-match boundary at or before `index`. */
@@ -488,6 +656,38 @@ function isImmediatelyAfterPlausibleArticle(text: string, matchIndex: number, pl
   const nearest = nearestPrecedingEnd(plausibleArticleEnds, matchIndex);
   if (nearest === null) return false;
   return text.slice(nearest, matchIndex).trim().length === 0;
+}
+
+/**
+ * Phase 3F.1-terminal Part A (OPEN-1 remediation, FALSIFICATION-2): when
+ * ARTICLE_PATTERNS[0]'s ALL-CAPS title-shape requirement fails to match (a
+ * genuinely lowercase-titled heading - reachable at all only because
+ * `ciKeyword` made the keyword itself case-insensitive), `bestMatches`
+ * falls back to ARTICLE_PATTERNS[1], the crude line-anchored pattern, which
+ * has NO title-shape validation of its own and captures the entire rest of
+ * the physical line verbatim - including a glued footnote digit or a
+ * trailing parenthetical aside - as the heading text.
+ *
+ * The general fix reuses, rather than duplicates, the title-shape principle
+ * ARTICLE_PATTERNS[0] already encodes in its own character class
+ * (`[A-Z ,&';-]`- letters, spaces, and a small closed set of standard
+ * heading punctuation; notably NOT parentheses or digits, so a trailing
+ * parenthetical or footnote marker is structurally excluded from ever being
+ * captured as part of a real title there): a captured heading's own title
+ * text is trimmed down to its own leading run of exactly those same
+ * characters, case-INSENSITIVE (for the identical reason `ciKeyword` is
+ * case-insensitive - an author's/OCR engine's capitalization convention is
+ * typographic noise, never evidentiary, while the character COMPOSITION of
+ * the title - is it letters/spaces/standard heading punctuation, or
+ * something else entirely - is genuine shape evidence). This is a complete
+ * no-op for ARTICLE_PATTERNS[0]'s own shape-based match (whose title
+ * already contains nothing outside this character class, by construction
+ * of its own regex), and is the general fix for ARTICLE_PATTERNS[1]'s
+ * crude fallback - applied uniformly to every ARTICLE heading regardless of
+ * which pattern produced it, never as a fallback-specific special case.
+ */
+function extractTitleLikeSpan(rawTitle: string): string {
+  return (rawTitle.match(/^[A-Za-z ,&';-]*/)?.[0] ?? "").trim();
 }
 
 function bestMatches(text: string, patterns: RegExp[]): RegExpExecArray[] {
@@ -644,7 +844,7 @@ export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNo
 
   const raws: RawNode[] = [];
   for (const m of articleMatches) {
-    raws.push({ nodeType: "ARTICLE", heading: (m[2] ?? "").trim(), sectionRef: (m[1] ?? "").trim(), charStart: m.index, parentSectionRef: null });
+    raws.push({ nodeType: "ARTICLE", heading: extractTitleLikeSpan(m[2] ?? ""), sectionRef: (m[1] ?? "").trim(), charStart: m.index, parentSectionRef: null });
   }
   for (const m of sectionMatches) {
     const sectionRef = (m[1] ?? "").trim();
