@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "DEDUP_RESOLUTION_POLICY",
+  "generatedAt": "2026-08-29T23:45:00Z",
+  "purpose": "Sections 11/12: how repeated detections for the same claim aggregate, and how resolution works without ever deleting history.",
+  "dedupKey": "(companyId, claimKey) - enforced by a real Postgres unique constraint (ClaimReviewItem @@unique), not merely application-level discipline.",
+  "dedupBehavior": {
+    "newClaim": "recordClaimReview() creates a new ClaimReviewItem row with status OPEN_REVIEW and one ClaimReviewObservation.",
+    "sameClaimSameOpenItem": "A second detection for the SAME claimKey while the item is still OPEN_REVIEW appends a new ClaimReviewObservation (outcome OBSERVATION_APPENDED) - the item's top-level reasonCode/sourceEvidence/rationale fields are refreshed to the latest detection's evidence, but the full history of every prior detection survives in `observations`, never overwritten.",
+    "identicalRepeatedDetection": "If the latest observation is byte-identical (same stage, reasonCode, detail) to the new one, no new observation row is written (outcome ALREADY_RECORDED) - an idempotent re-run of an unchanged pipeline over unchanged content does not grow the observation log without bound.",
+    "sameClaimResolvedItem": "A detection for a claimKey whose item was previously RESOLVED_ACCEPTED/RESOLVED_REJECTED/SUPERSEDED automatically REOPENS it (status back to OPEN_REVIEW, a ClaimReviewDecision row with action=REOPEN is written) - a resolved claim never silently stays resolved while the pipeline is actively re-flagging it as still unresolved. This is the concrete implementation of Section 12's 'review items must not be permanent dead records' combined with this phase's own NO_SILENT_MATERIAL_FAILURE invariant."
+  },
+  "crossStageAggregationExample": "Section 11's own example (discovery -> compiler failure -> verification failure remaining ONE open item) is satisfied structurally: because this phase's single wired emission point sits downstream of semantic-coverage's own reconciliation (which already independently combines discovery+compiler+verifier evidence per claim before ever producing a SemanticUnitCoverageEntry), a claim that failed at multiple upstream stages naturally reconciles to ONE coverage entry, and therefore ONE ClaimReviewItem - the cross-stage aggregation problem is solved by REUSING Phase 3E's existing reconciliation rather than rebuilding it. A claim re-detected across separate coverage-audit RUNS (e.g. reruns of the pipeline over time as amendments/context evolve) is where recordClaimReview's own dedup-by-claimKey logic does the aggregating.",
+  "resolutionLifecycle": {
+    "statuses": ["OPEN_REVIEW", "RESOLVED_ACCEPTED", "RESOLVED_REJECTED", "SUPERSEDED"],
+    "actions": ["ACCEPT", "REJECT", "SUPERSEDE", "REOPEN"],
+    "autoResolution": "When a LATER coverage audit finds a previously-flagged claim now FULLY_REPRESENTED_VERIFIED, integrate.ts automatically resolves the item (action=ACCEPT, decidedBy=null, a note naming the algorithm version that resolved it) - Section 12's 'when semantic state is later successfully compiled/verified, the review item should transition appropriately,' implemented without waiting for a human when the pipeline's own evidence already resolves the gap.",
+    "humanResolution": "resolveClaimReview() accepts an optional decidedBy (never fabricated - null unless a real reviewer identity is supplied, matching this codebase's established ExtractionCandidate.reviewedBy/LegalReviewRecord.reviewerName discipline) and a free-text note. Every transition writes a ClaimReviewDecision row; nothing is ever deleted or overwritten - the item's own top-level status/resolvedAt/resolvedBy/resolutionNote always reflect only the LATEST decision, matching CandidateReviewEvent's already-proven pattern.",
+    "neverDeleted": "No function in service.ts ever deletes a ClaimReviewItem, ClaimReviewObservation, or ClaimReviewDecision row. The only deletion path is Postgres's own ON DELETE CASCADE from Company/Document deletion (matching every other per-company/per-document table in this schema) - never an application-level purge."
+  }
+}

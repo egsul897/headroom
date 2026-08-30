@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "DEFINITION_ISOLATION_CERTIFICATION",
+  "section": 10,
+  "generatedAt": "2026-08-30T04:00:00Z",
+  "independenceStatement": "Own adversarial same-term/different-definition construction (Instrument Alpha vs Instrument Beta, same company, real Prisma models, real Postgres, cleaned up in afterAll) - not a re-run of tests/foundation-audit/tenant-instrument-drafting-collision.test.ts's own fixture, and specifically targets the 3 NEW-this-session fallback fixes rather than the persistence-layer stableKey fix that file already covers. Test file: tests/certification/section10-definition-isolation-independent.test.ts (6 tests, all passing, executed this session).",
+  "grepSweep": "grep for getDefinition, getDefinitionFullText, getScopedDefinitionFullText, DefinedTermNode, .stableKey across lib/contract-model/compiler/** confirmed exactly the 3 sites named in docs/phase-3f1-5-r-residual-foundation/11-definition-isolation-audit.json plus their downstream consumers (service.ts's getRuleSourceTrace, validators.ts's validateDefinedTermTargetsExist) - no additional unaudited lookup path with a documentId-less fallback was found.",
+  "adversarialConstruction": {
+    "setup": "Company audit-cert-s10-def-isolation-co, real Postgres. Document A (Instrument Alpha, base CA) defines 'Available Amount' = $10,000,000. Document A2 (a real amendment to A, correctly grouped by buildPackageGraph into the same instrument) does not redefine the term. Document B (Instrument Beta, a wholly separate instrument, same company/tenant) defines 'Available Amount' = $99,999,999 plus a 'Cumulative Credit' (itself a real, only-in-B defined term).",
+    "realPostgresConfirmation": "DefinedTermNode rows for A's and B's own 'Available Amount' are two genuinely separate rows (different id, different stableKey) despite byte-identical normalizedName - confirmed via a direct Postgres query."
+  },
+  "lookupPathResults": [
+    {
+      "path": "semantic/tools.ts getDefinition tool (buildToolSet)",
+      "test": "Compiling against Document A with NO packageGraph (conservative default)",
+      "result": "Returns ONLY A's own $10,000,000 definition. Never returns B's $99,999,999 text or its 'Cumulative Credit' vocabulary, even though both documents exist in the same in-memory StructuralIndex and the same real Postgres company.",
+      "verdict": "SAFE"
+    },
+    {
+      "path": "semantic/tools.ts getDefinitionDependencies tool",
+      "test": "Dependency scan for A's own term",
+      "result": "Never returns 'Cumulative Credit' (a real defined term that exists ONLY in B) as a dependency of A's own term.",
+      "verdict": "SAFE"
+    },
+    {
+      "path": "semantic/tools.ts getScopedDefinitionFullText legitimate-fallback positive control",
+      "test": "Compiling against A2 (A's real amendment sibling, correctly grouped into the same instrument by the real buildPackageGraph) - A2 has no own definition of the term",
+      "result": "Correctly falls back to A's own real sibling definition ($10,000,000) - the scoping is a real, evidence-based instrument boundary, not an over-restriction. Never falls back to B's text, even though B sits in the same real Postgres company.",
+      "verdict": "SAFE, AND CORRECTLY NOT OVER-RESTRICTIVE"
+    },
+    {
+      "path": "amendment/independent-verification.ts resolveDefinitionIndependently (via verifyAmendmentEffectsIndependently)",
+      "test": "A fabricated effect claims Alpha's own document (A) defines a term ('Cumulative Credit') that only Beta (B) actually defines",
+      "result": "Correctly flagged NOT_FOUND / passed=false, with an explicit issue message - never silently confirmed via Beta's real definition of the same term name.",
+      "verdict": "SAFE - confirms the prior phase's 'already safe' claim for this file independently, with an adversarial fabricated-effect construction the prior phase's own audit did not build."
+    },
+    {
+      "path": "amendment/pipeline.ts getTargetCurrentText (private function - certified via its sole underlying primitive)",
+      "test": "index.getDefinitionFullText(term, documentId) - the ONLY call form the current, fixed pipeline.ts code makes - called directly for both A and B, plus a genuine-miss third document",
+      "result": "Always document-scoped: A resolves only A's own text, B resolves only B's own text, a genuine miss returns undefined - never a cross-document substitution.",
+      "additionalEvidence": "The REMOVED fallback call form (index.getDefinitionFullText(term) with NO documentId - the exact call getTargetCurrentText's DEFINITION branch used to make) was independently reproduced for comparison ONLY (never invoked by the current, fixed pipeline.ts): calling it for 'Cumulative Credit' from a bare Alpha-scoped compilation context DOES return Beta's real definition, empirically confirming the fallback was genuinely dangerous and that removing it entirely (not narrowing it) was the correct fix.",
+      "verdict": "SAFE - the current code's sole reliance on the document-scoped call form is confirmed safe; the danger of the removed call form is independently, empirically reproduced for contrast."
+    }
+  ],
+  "blockers": [],
+  "verdict": "PASS",
+  "verdictRationale": "All 3 named 2026-08-30 fallback fixes independently re-verified against a real same-tenant, two-instrument, same-term-different-definition adversarial construction in real Postgres, exercised through every production lookup path the grep sweep found (buildToolSet's two definition tools, resolveDefinitionIndependently, and pipeline.ts's sole remaining call form). No cross-document/cross-instrument definition leak found on any path. The legitimate same-instrument scoped fallback (tools.ts) was also positively confirmed to still work correctly for a genuine sibling document, so the fix is not over-restrictive. No BLOCKER findings."
+}

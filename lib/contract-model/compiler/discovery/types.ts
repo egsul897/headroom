@@ -23,6 +23,7 @@
  * comments for the generalized rationale behind each).
  */
 import type { CovenantFamily } from "@prisma/client";
+import type { NodeSupersessionStatus } from "../amendment/types";
 
 export type DiscoveryRole =
   | "GENERAL_PROHIBITION"
@@ -87,6 +88,21 @@ export interface DeterministicCandidate {
   /** Which cheap signals fired on this node's own text - the evidence trail for why Pass A selected it, never the final semantic decision. */
   signals: string[];
   signalScore: number;
+  /**
+   * Phase 3F.1.5 Workstream B - P1-11 fix. Whether THIS candidate's own
+   * physical source node is still current-operative as of the caller's
+   * analysis date, per amendment/operative-state.ts's own
+   * getNodeSupersessionStatus - never inferred locally. Defaults to
+   * UNKNOWN_SUPERSESSION_STATUS (never CURRENT_OPERATIVE) whenever the
+   * caller does not supply a NodeSupersessionIndex, so a candidate's mere
+   * existence never implies "this text still governs." A KNOWN_SUPERSEDED
+   * candidate is still produced (never dropped - Pass A's own
+   * over-inclusive, historically-queryable discipline is unchanged), only
+   * honestly labeled.
+   */
+  supersessionStatus: NodeSupersessionStatus;
+  /** Always populated - explains supersessionStatus (why unknown / which amendment superseded it), mirroring targetResolutionReason's disclosure discipline elsewhere in this codebase. */
+  supersessionReason: string;
 }
 
 /** The final discovered item (task §10's required minimum field set). */

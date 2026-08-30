@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "SOURCE_TRACE_AUDIT",
+  "generatedAt": "2026-08-30T00:11:00Z",
+  "purpose": "Section 21: resolve the getRuleSourceTrace suspicion definitively.",
+  "suspicion": "getRuleSourceTrace's definedTermRefs lookup (service.ts) appears to assume a stored stableKey format but is populated with raw term names by persistContractRules - a possible latent mismatch, noticed but never investigated (docs/foundation-remediation/13-remaining-foundation-risks.json).",
+  "determination": "(a) REAL, CONFIRMED DEFECT.",
+  "rootCause": "persistContractRules (lib/contract-model/compiler/persistence.ts) stored raw defined-term name strings into ContractRule.definedTermRefs, while getRuleSourceTrace/validateDefinedTermTargetsExist (lib/contract-model/service.ts / validators.ts) query it as DefinedTermNode.stableKey (a sha256-derived string). A raw name can never equal a stableKey, so every real rule's source trace silently returned an empty definedTerms array.",
+  "additionalFindingDocumentedNotFixed": "A separate, narrower bug in stage-promotion.ts's validation-issue filter (a message-format mismatch) means this defect never actually blocked promotion in practice - disclosed here for completeness, out of this sub-task's own scope.",
+  "fix": "persistContractRules now computes each ref's document-scoped stableKey with the exact same formula persistDefinedTerms already uses, ensuring format consistency. The previously-incomplete `update` branch now also keeps definedTermRefs current on replay (it had not been doing so before).",
+  "generality": "The fix is a single, general formula-consistency correction, not package-specific - every material semantic rule now traces to the correct source occurrence, document, operative lineage, and span, matching the phase's own requirement.",
+  "verdict": "RESOLVED - no longer an undocumented suspicion."
+}

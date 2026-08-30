@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "CERTIFICATION_FINDINGS",
+  "generatedAt": "2026-08-30T04:40:00Z",
+  "purpose": "The complete, de-duplicated, severity-ranked findings ledger consolidating all 6 independent auditors' work across the 16 lettered trust boundaries (A-P), feeding directly into 31-final-verdict.json's pass-gate checklist.",
+  "deduplicationNote": "25-cross-module-failure-propagation.json's Chain 2 finding and 28-static-danger-pattern-audit.json's SP-1 finding are the SAME underlying defect (semantic-coverage/cross-reference-audit.ts's coveringProvision lookup never consulting candidateSourceNodeIds), independently surfaced via two different methodologies (executed end-to-end test vs. static grep). Counted ONCE below as BLOCKER-6.",
+  "blockers": [
+    {
+      "findingId": "BLOCKER-1",
+      "title": "P1-10 rank-stack fix incomplete: all 7 residual anomalies are MATERIAL_STRUCTURAL_ERROR, not benign",
+      "trustBoundary": "F (definition/structural isolation) and A (source fidelity)",
+      "sourceArtifact": "03-structural-integrity-certification.json, finding STRUCT-1",
+      "evidence": "CONMED (1) and DSGR (6) residual SECTION_NUMBER_SEQUENCE_ANOMALY findings independently re-inspected against real source text; every one is a genuine in-text citation the plausibility gate's narrower-than-intended regex fails to match, reproducing the original misattachment mechanism (real content truncated from its true section, reattributed to a spurious sibling sharing a real section's label).",
+      "reproducibleTest": "scripts/cert-3f1-6-residual-anomaly-inspect.ts",
+      "newlyDiscoveredVsResidual": "RESIDUAL - directly contradicts the prior phase's own disposition of these same 7 findings as benign.",
+      "blastRadius": "CONMED and DSGR packages; any future package whose source text uses citation phrasing not in the gate's fixed phrase list.",
+      "smallestRemediationBoundary": "Widen or generalize the plausibility gate's citation-signal detection (e.g. a broader linguistic pattern or a positive top-level-section-signature check) rather than growing an ever-longer phrase list."
+    },
+    {
+      "findingId": "BLOCKER-2",
+      "title": "P1-11 fix's supersession signal never reaches the discovery pipeline's real terminal output type",
+      "trustBoundary": "E (supersession awareness)",
+      "sourceArtifact": "05-supersession-certification.json, finding SUPER-1",
+      "evidence": "DeterministicCandidate carries supersessionStatus/supersessionReason; DiscoveredCandidate (the type every real downstream consumer receives) has no such field - runPassDReconciliation never reads or maps it.",
+      "reproducibleTest": "tests/certification/discovery-supersession-signal-lost-in-pipeline.test.ts",
+      "newlyDiscoveredVsResidual": "NEWLY_DISCOVERED",
+      "blastRadius": "Every consumer of DiscoveredCandidate (context-retrieval, coverage-audit discovery-comparison, semantic-coverage pipeline).",
+      "smallestRemediationBoundary": "Add supersessionStatus/supersessionReason to DiscoveredCandidate and map it through runPassDReconciliation."
+    },
+    {
+      "findingId": "BLOCKER-3",
+      "title": "Prior phase's PROTECTED_BY_INDEPENDENCE_INVARIANT label for coverage-audit/source-inventory.ts does not survive a direct read of the independence-contract test",
+      "trustBoundary": "E (supersession awareness)",
+      "sourceArtifact": "05-supersession-certification.json, finding SUPER-2",
+      "evidence": "tests/contract-model/coverage-audit-independence.test.ts's actual forbidden-import list, read line-by-line, never mentions amendment/* at all.",
+      "reproducibleTest": "05-supersession-certification.json's own consumerClassificationTable methodology (direct test-file read).",
+      "newlyDiscoveredVsResidual": "NEWLY_DISCOVERED",
+      "blastRadius": "coverage-audit/source-inventory.ts's own current-state consumers.",
+      "smallestRemediationBoundary": "Either wire genuine supersession awareness into this consumer, or draft the ARCHITECTURE_CHANGE_PROPOSAL the prior phase assumed already existed to formally justify leaving it unaware."
+    },
+    {
+      "findingId": "BLOCKER-4",
+      "title": "semantic-coverage/cross-reference-audit.ts fails open on null operativeState (previously disclosed, re-confirmed, correctly not downgraded)",
+      "trustBoundary": "E (supersession awareness)",
+      "sourceArtifact": "05-supersession-certification.json, finding SUPER-3",
+      "evidence": "Independently re-confirmed exactly as the prior phase disclosed it.",
+      "reproducibleTest": "05-supersession-certification.json's consumerClassificationTable.",
+      "newlyDiscoveredVsResidual": "RESIDUAL - already disclosed by the prior phase, not silently accepted as fixed.",
+      "blastRadius": "Any caller that omits operativeState.",
+      "smallestRemediationBoundary": "Fail closed (reject/flag) rather than silently proceeding when operativeState is null."
+    },
+    {
+      "findingId": "BLOCKER-5",
+      "title": "5 of 14 LLM-facing evidence tools in semantic/tools.ts bypass operative-state entirely",
+      "trustBoundary": "E (supersession awareness)",
+      "sourceArtifact": "05-supersession-certification.json, finding SUPER-5",
+      "evidence": "Direct read of every tool's execute() function; 5 tools never consult access.operativeState, including one whose own description tells the model to trust it for 'actual economics.'",
+      "reproducibleTest": "05-supersession-certification.json's consumerClassificationTable.",
+      "newlyDiscoveredVsResidual": "NEWLY_DISCOVERED",
+      "blastRadius": "Any AI-assisted extraction/generalization call that uses one of the 5 affected tools on a document with superseded provisions.",
+      "smallestRemediationBoundary": "Route the 5 tools through the same supersession-aware access path as the other 9."
+    },
+    {
+      "findingId": "BLOCKER-6",
+      "title": "DEFINITION-kind operative-state ambiguity silently fails to reach semantic-coverage, can resolve to a confident-but-wrong FULLY_REPRESENTED_VERIFIED",
+      "trustBoundary": "K (semantic compilation safety) and K2/independent verification",
+      "sourceArtifact": "25-cross-module-failure-propagation.json (Chain 2) and 28-static-danger-pattern-audit.json (SP-1) - same defect, counted once",
+      "evidence": "cross-reference-audit.ts's coveringProvision lookup only matches on currentSourceNodeId or sectionRef, both structurally null for AMBIGUOUS DEFINITION-kind provisions; candidateSourceNodeIds is never consulted. Demonstrated real and reproduced: an independently-confirmed ambiguous definition reaches FULLY_REPRESENTED_VERIFIED, violating Architecture Invariant #13.",
+      "reproducibleTest": "tests/foundation-audit/cross-module-propagation-chains.test.ts (Chain 2)",
+      "newlyDiscoveredVsResidual": "NEWLY_DISCOVERED",
+      "blastRadius": "Any document with an ambiguously-resolved DEFINITION-kind amendment target that also has a compiled rule anchored to that term.",
+      "smallestRemediationBoundary": "Extend the coveringProvision lookup to also match against candidateSourceNodeIds for AMBIGUOUS provisions."
+    },
+    {
+      "findingId": "BLOCKER-7",
+      "title": "95 real, already-compiled ContractRule rows still exhibit the pre-fix source-trace defect (unbackfilled)",
+      "trustBoundary": "L (provenance/source trace)",
+      "sourceArtifact": "09-source-trace-certification.json, finding S11-F1",
+      "evidence": "The stableKey fix itself is independently re-confirmed correct via 8/8 freshly-ingested real FWRG samples. However 95 rows compiled before the fix landed, across two real regression packages in the same shared Postgres instance, still silently carry the pre-fix defect.",
+      "reproducibleTest": "09-source-trace-certification.json's own preconditionChecks/realFindings sections.",
+      "newlyDiscoveredVsResidual": "NEWLY_DISCOVERED (the fix's incompleteness across persisted state, not the fix's own logic).",
+      "blastRadius": "Any pre-fix-compiled ContractRule row currently in the database.",
+      "smallestRemediationBoundary": "A one-time backfill migration recomputing stableKey for the 95 affected rows."
+    },
+    {
+      "findingId": "BLOCKER-8",
+      "title": "Real production sibling-claim identity collision at the discoveryId/semanticUnitId layer",
+      "trustBoundary": "H (semantic claim identity)",
+      "sourceArtifact": "13-claim-identity-certification.json",
+      "evidence": "The prior phase's determination that the two NAMED narrower risks are evaluator-only is re-confirmed, but this section's own required independent adversarial construction surfaced a separate, new, directly-confirmed real production collision.",
+      "reproducibleTest": "13-claim-identity-certification.json's own adversarial construction (Part 2).",
+      "newlyDiscoveredVsResidual": "NEWLY_DISCOVERED",
+      "blastRadius": "Any two sibling claims sharing the colliding identity components.",
+      "smallestRemediationBoundary": "Strengthen the claimKey/discoveryId derivation to disambiguate the specific colliding case identified in 13-claim-identity-certification.json."
+    },
+    {
+      "findingId": "BLOCKER-9",
+      "title": "Independent verifier reaches false VERIFIED_NO_MATERIAL_GAP_FOUND on an omitted qualifying condition",
+      "trustBoundary": "J (independent semantic verification)",
+      "sourceArtifact": "15-independent-verifier-certification.json",
+      "evidence": "6 of 7 independently-constructed fault-injection cases correctly caught; the 7th (omitted qualifying condition) is missed.",
+      "reproducibleTest": "15-independent-verifier-certification.json's own fault-injection case 7.",
+      "newlyDiscoveredVsResidual": "NEWLY_DISCOVERED",
+      "blastRadius": "Any compiled rule that omits a real qualifying condition present in the source.",
+      "smallestRemediationBoundary": "Extend the verifier's fault-injection coverage to include condition-omission and add a corresponding check."
+    },
+    {
+      "findingId": "BLOCKER-10",
+      "title": "Safe-failure architecture (and the entire contract-model compiler pipeline) has zero live application callers",
+      "trustBoundary": "K (safe-failure/explicit claim-level review)",
+      "sourceArtifact": "17-safe-failure-wiring-certification.json",
+      "evidence": "Direct call-graph trace confirms the live application (app/'s server actions via lib/onboarding/documents.ts -> lib/extraction/**) has zero import relationship, direct or transitive, with lib/contract-model/compiler/** at all. Only scripts and tests exercise it.",
+      "reproducibleTest": "17-safe-failure-wiring-certification.json's own callGraphTrace.",
+      "newlyDiscoveredVsResidual": "RESIDUAL for the safe-failure-specific half (already disclosed by 3F.1.5.R); NEWLY_DISCOVERED for the wider fact that the entire compiler pipeline is dormant.",
+      "blastRadius": "Every real document a customer uploads today - none reach any of the semantic-coverage/safe-failure/verification apparatus certified elsewhere in this phase.",
+      "smallestRemediationBoundary": "This is an architecture-level integration decision (wiring an entire dormant pipeline into the live product), not a small local fix - explicitly flagged as requiring its own scoped effort, not a same-phase patch."
+    },
+    {
+      "findingId": "BLOCKER-11",
+      "title": "Architecture Invariant #35 VIOLATED: DebtEvent.sourceLedgerEntryId is read but never written",
+      "trustBoundary": "Cross-cutting (invariant compliance)",
+      "sourceArtifact": "24-architecture-invariant-audit.json, invariant #35",
+      "evidence": "Grep-confirmed across the entire lib/ and app/ trees: the field is read once (lib/financial-core-db/adapter.ts:194) with a permanent `?? undefined` fallback, never written anywhere.",
+      "reproducibleTest": "24-architecture-invariant-audit.json's own evidence field (grep-based).",
+      "newlyDiscoveredVsResidual": "NEWLY_DISCOVERED",
+      "blastRadius": "Narrow - one specific reconciliation link field, not a systemic truth-log divergence.",
+      "smallestRemediationBoundary": "Either populate sourceLedgerEntryId at the point DebtEvent rows are created, or remove the field and the invariant's implicit promise about it."
+    }
+  ],
+  "majorNonBlocking": [
+    { "id": "MAJOR-1", "title": "P1-2's disclosed partial scope (source-direction ContractReferenceEdge fields) remains unfixed", "sourceArtifact": "11-tenant-isolation-certification.json" },
+    { "id": "MAJOR-2", "title": "Same TOCTOU upload-connection race class as the fixed P1-3 defect, unfixed one function earlier in registry.ts's getOrCreateUploadConnection", "sourceArtifact": "10-ingestion-identity-certification.json, tests/foundation-audit/repro-connection-race.test.ts (97/120 trials showed a real P2002 race)" },
+    { "id": "MAJOR-3", "title": "Two new concurrency edge cases in database persistence", "sourceArtifact": "22-database-integrity-certification.json" },
+    { "id": "MAJOR-4", "title": "Context-retrieval's disclosure-based supersession design has a real but unproven-in-practice enforcement gap (SUPER-4)", "sourceArtifact": "05-supersession-certification.json" },
+    { "id": "MAJOR-5", "title": "StructuralIndex.getDefinition/getDefinitionFullText's documentId remains optional in the type/API surface (zero current exploitation, but a live landmine for a future caller)", "sourceArtifact": "28-static-danger-pattern-audit.json, SP-2" },
+    { "id": "MAJOR-6", "title": "Some swallowed compiler/verifier errors not propagated into failure-reason types", "sourceArtifact": "28-static-danger-pattern-audit.json, SP-7" },
+    { "id": "MAJOR-7", "title": "Some generic warnings still substitute for claim-specific state", "sourceArtifact": "28-static-danger-pattern-audit.json, SP-10" },
+    { "id": "MAJOR-8", "title": "Discovery/coverage measurement framework's real recall at FWRG/LSB document scale is a genuine, disclosed, large gap (not a false claim, but a real limitation)", "sourceArtifact": "12-discovery-coverage-certification.json" }
+  ],
+  "minor": [
+    { "id": "MINOR-1", "title": "Cross-module Chain 3 (verification contradiction vs. never-ran) is indistinguishable given the current verifiedCandidateRefs contract", "sourceArtifact": "25-cross-module-failure-propagation.json, Chain 3" },
+    { "id": "MINOR-2", "title": "Silent catch/continue around some material semantic failures", "sourceArtifact": "28-static-danger-pattern-audit.json, SP-6" },
+    { "id": "MINOR-3", "title": "foundation-audit-known-package-replay.ts's own DSGR reconciliation assertion is stale (pre-P1-10-fix baseline), prints matchesHistoricalRecord=false confusingly though the underlying numbers are correct", "sourceArtifact": "03-structural-integrity-certification.json" }
+  ],
+  "informational": [
+    { "id": "INFO-1", "title": "No new tenant-blind cache found; the one historical instance remains fixed and tested", "sourceArtifact": "28-static-danger-pattern-audit.json, SP-3" },
+    { "id": "INFO-2", "title": "No new direct StructuralNode current-state scanning without supersession awareness at new locations", "sourceArtifact": "28-static-danger-pattern-audit.json, SP-4" },
+    { "id": "INFO-3", "title": "No default-permissive unresolved-implies-unlimited interpretation pattern found", "sourceArtifact": "28-static-danger-pattern-audit.json, SP-5" },
+    { "id": "INFO-4", "title": "No package-specific IDs/names found in production logic", "sourceArtifact": "28-static-danger-pattern-audit.json, SP-9" },
+    { "id": "INFO-5", "title": "Rerunning DSGR/CONMED's own preserved-evidence scripts rewrites their checked-in fixtures as a documented side effect; numbers differ from committed fixtures due to fixture staleness, not nondeterminism (confirmed via two identical-commit reruns); touched fixtures were reverted after capture", "sourceArtifact": "26-known-package-regression.json" },
+    { "id": "INFO-6", "title": "One out-of-certification-scope, environment-dependent test failure (extraction provider default model id) disclosed but not counted as a finding - see 29-quality-gates.json", "sourceArtifact": "29-quality-gates.json" }
+  ],
+  "passingBoundariesSummary": [
+    "A (source fidelity) - CLOSED_AND_CERTIFIED save for BLOCKER-1's rank-stack gap",
+    "B (document/occurrence identity) - PASS",
+    "C (package relationships) - PASS",
+    "D (amendment precedence/operative state) - PASS",
+    "E (supersession awareness) - FAIL (BLOCKER-2,3,4,5)",
+    "F (definition isolation) - PASS",
+    "G (semantic discovery coverage) - CERTIFIED_WITH_DISCLOSED_GAPS (MAJOR-8, not a blocker)",
+    "H (semantic claim identity) - FAIL (BLOCKER-8)",
+    "I (semantic compilation safety) - PASS (14-semantic-compiler-certification.json, 6/6 cases)",
+    "J (independent semantic verification) - FAIL (BLOCKER-9)",
+    "K (explicit claim-level safe failure) - model PASS (16, 18, 19, 20, 21) but wiring FAIL (BLOCKER-10) and cross-module composition FAIL (BLOCKER-6)",
+    "L (provenance/source trace) - FAIL (BLOCKER-7)",
+    "M (tenant isolation) - CERTIFIED_WITH_CARRIED_FORWARD_MAJOR_NON_BLOCKING (MAJOR-1)",
+    "N (deterministic ingestion identity) - CERTIFIED_WITH_ONE_MAJOR_NON_BLOCKING (MAJOR-2)",
+    "O (persistence/lifecycle integrity) - CERTIFIED_WITH_TWO_MAJOR_NON_BLOCKING (MAJOR-3) / migrations fully certified",
+    "P (absence of known unresolved P0/P1 defects) - FAIL - P1-10 and P1-11 both remain OPEN_BLOCKER per 01-historical-defect-ledger.json"
+  ],
+  "totalCounts": { "blocker": 11, "majorNonBlocking": 8, "minor": 3, "informational": 6 }
+}

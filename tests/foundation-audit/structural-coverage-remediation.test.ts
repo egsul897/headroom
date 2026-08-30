@@ -384,8 +384,8 @@ describe("F. SIBLING_SPAN_OVERLAP and IMPLAUSIBLE_HIERARCHY_RANK generalize beyo
 // ---------------------------------------------------------------------------
 // G. Q3/P1-10 bounded mitigation: SECTION_NUMBER_SEQUENCE_ANOMALY
 // ---------------------------------------------------------------------------
-describe("G. Q3/P1-10 SECTION_NUMBER_SEQUENCE_ANOMALY - detection-only bounded mitigation (see final report for the full ARCHITECTURE_CHANGE_REQUIRED determination on CORRECTING the underlying misattachment)", () => {
-  it("G1. the exact Q3 fixture (a spurious in-text 'Section 6.05 Reserved .' citation between real 6.01 and 6.02) IS flagged - INFO severity, never gating", () => {
+describe("G. Q3/P1-10 SECTION_NUMBER_SEQUENCE_ANOMALY - Phase 3F.1.4's detection-only bounded mitigation, kept as defense-in-depth after Phase 3F.1.5.R's own root-cause fix (see docs/foundation-remediation/01-source-accounting-remediation.json's p110Q3Determination and stage-structure.ts's own plausibility-gate doc-comment for the up-to-date division of labor between the two)", () => {
+  it("G1. Phase 3F.1.5.R FIX VERIFIED: the exact Q3 fixture (an in-text 'Section 6.05 Reserved .' citation between real 6.01 and 6.02) no longer even reaches this INFO signal - the root-cause plausibility gate in stage-structure.ts now rejects the spurious match before a node is ever created for it, so there is no second '6.05' sibling left for this sequence check to compare against at all", () => {
     const documentId = "g1-q3-exact-fixture";
     const text =
       "ARTICLE VI COVENANTS Section 6.01 Indebtedness . Neither party shall incur Indebtedness, except as permitted under Section 6.05 Reserved . and subject to the following exceptions: " +
@@ -394,11 +394,31 @@ describe("G. Q3/P1-10 SECTION_NUMBER_SEQUENCE_ANOMALY - detection-only bounded m
       "Section 6.02 Liens . Neither party shall grant Liens except Permitted Liens.";
     const index = buildIndexFromDocs([{ documentId, label: documentId, text }]);
     const anomalies = index.healthDiagnostics().filter((f) => f.code === "SECTION_NUMBER_SEQUENCE_ANOMALY");
+    // Phase 3F.1.5.R update (was G1's own original assertion, back when this
+    // signal was the only available mitigation): the underlying misattachment
+    // this signal used to be a LEAD for is now corrected at the root, so this
+    // exact scenario no longer produces the spurious sibling that would have
+    // triggered the sequence check in the first place. See G1b below for
+    // confirmation that the detection mechanism itself is unweakened -
+    // it still fires on a real, non-citation-shaped sequence anomaly the
+    // plausibility gate has no reason to (and should not) catch.
+    expect(anomalies).toHaveLength(0);
+    expect(errorsOf(index.healthDiagnostics())).toHaveLength(0);
+  });
+
+  it("G1b. defense-in-depth CONFIRMED: a genuinely mis-numbered pair of REAL headings (not a citation - both are ordinary, paragraph-separated, plausible headings) still fires SECTION_NUMBER_SEQUENCE_ANOMALY exactly as before - the detection mechanism itself was never weakened by the root-cause fix, only made redundant for the one specific citation-shaped case it used to be the sole mitigation for", () => {
+    const documentId = "g1b-genuine-non-citation-misnumbering";
+    const text = `
+ARTICLE VI COVENANTS
+
+Section 6.05 Out Of Order Heading . A genuinely mis-numbered real heading - a real drafting/transcription error, not an in-text citation, so the P1-10 plausibility gate correctly leaves it alone (it is not preceded by any citation-signal phrase and starts its own real paragraph).
+
+Section 6.02 Liens . Neither party shall grant Liens except Permitted Liens.
+`.trim();
+    const index = buildIndexFromDocs([{ documentId, label: documentId, text }]);
+    const anomalies = index.healthDiagnostics().filter((f) => f.code === "SECTION_NUMBER_SEQUENCE_ANOMALY");
     expect(anomalies.length).toBeGreaterThan(0);
     expect(anomalies.every((f) => f.severity === "INFO")).toBe(true);
-    // INFO-severity, non-gating: confirmed zero ERROR findings for this
-    // exact scenario, matching Q3's own original assertion (the underlying
-    // misattachment is NOT corrected by this signal - see the final report).
     expect(errorsOf(index.healthDiagnostics())).toHaveLength(0);
   });
 

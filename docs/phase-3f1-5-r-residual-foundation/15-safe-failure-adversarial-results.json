@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "SAFE_FAILURE_ADVERSARIAL_RESULTS",
+  "generatedAt": "2026-08-29T23:50:00Z",
+  "purpose": "Section 25: results of the 16 required adversarial scenarios for the explicit claim-level safe-failure architecture.",
+  "testFile": "tests/contract-model/safe-failure-adversarial.test.ts",
+  "result": "15/15 test cases pass (covering all 16 required scenarios - two scenario groups, 7/8/10 and 12/16, are combined into single test cases each because they exercise the same code path with the same real-database assertions).",
+  "scenarioDisposition": [
+    { "id": 1, "scenario": "material claim compiles successfully -> no failure event", "status": "PASS", "mechanism": "deriveFromCoverageEntry returns null for FULLY_REPRESENTED_VERIFIED." },
+    { "id": 2, "scenario": "material claim cannot compile -> explicit review event", "status": "PASS", "mechanism": "UNREPRESENTED + CANDIDATE_DISCOVERED_NEVER_COMPILED -> reasonCode COMPILATION_FAILURE." },
+    { "id": 3, "scenario": "unsupported expression -> review event", "status": "PASS", "mechanism": "coverageState UNSUPPORTED -> reasonCode UNSUPPORTED_EXPRESSION." },
+    { "id": 4, "scenario": "unresolved cross-reference -> review event", "status": "PASS", "mechanism": "SOURCE_CONTEXT_INCOMPLETE + missingEconomicElement='cross-reference' -> reasonCode INSUFFICIENT_CONTEXT, unresolvedDimensions=['cross-reference']." },
+    { "id": 5, "scenario": "ambiguous operative state -> review event", "status": "PASS", "mechanism": "OPERATIVE_STATE_UNRESOLVED -> reasonCode OPERATIVE_STATE_UNCERTAIN." },
+    { "id": 6, "scenario": "verification contradiction -> review event", "status": "PASS", "mechanism": "COMPILED_BUT_MATERIALLY_MISREPRESENTED -> reasonCode VERIFICATION_CONTRADICTION." },
+    { "id": 7, "scenario": "sibling claim warning does not cover target claim", "status": "PASS", "mechanism": "Two distinct semanticUnitIds (6.01(a) vs 6.01(b)) produce two distinct ClaimReviewItem rows; checkExplicitSafeFailure for claim A never matches claim B's item." },
+    { "id": 8, "scenario": "generic section-level warning does not cover target claim", "status": "PASS", "mechanism": "Same mechanism as #7 - claim identity is anchor-derived, never section-level-generic." },
+    { "id": 9, "scenario": "two pipeline failures for same claim aggregate correctly", "status": "PASS", "mechanism": "recordClaimReview called twice for the same claimKey with different (stage, reasonCode) produces ONE item with 2 observations, outcome OBSERVATION_APPENDED on the second call." },
+    { "id": 10, "scenario": "two genuinely distinct sibling claims remain distinct review items", "status": "PASS", "mechanism": "Same test as #7 - explicitly asserts reviewItemId(A) !== reviewItemId(B)." },
+    { "id": 11, "scenario": "amendment supersedes unresolved historical claim appropriately", "status": "PASS", "mechanism": "resolveClaimReview(action=SUPERSEDE) transitions status to SUPERSEDED with a ClaimReviewDecision row recording previousStatus=OPEN_REVIEW." },
+    { "id": 12, "scenario": "human resolution preserves history", "status": "PASS", "mechanism": "resolveClaimReview(action=ACCEPT, decidedBy=<real reviewer>) preserves all prior observations and the decision itself in ClaimReviewDecision; a later re-detection reopens (REOPEN decision row) without deleting the original ACCEPT decision row." },
+    { "id": 13, "scenario": "tenant A event cannot satisfy tenant B claim", "status": "PASS", "mechanism": "checkExplicitSafeFailure(companyB, sameClaimKey) returns claimSpecificReviewEventExists=false - the (companyId, claimKey) unique constraint means tenant B's own row, if any, is entirely independent." },
+    { "id": 14, "scenario": "document A definition problem cannot satisfy document B claim", "status": "PASS", "mechanism": "semanticUnitId's own upstream computation (computeSemanticUnitId) folds documentId into its content hash, so two real distinct-document units never produce the same semanticUnitId/claimKey in the first place - verified directly, and the adversarial same-raw-id construction is documented as an intentionally out-of-scope edge case (see test file comment) since it cannot arise from the real computation." },
+    { "id": 15, "scenario": "non-material harmless diagnostic does not create a user-facing review event", "status": "PASS", "mechanism": "materiality gate (CRITICAL/MATERIAL only) - INFORMATIONAL and REVIEW_UNCERTAIN both return null regardless of coverageState." },
+    { "id": 16, "scenario": "source provenance survives lifecycle transitions", "status": "PASS", "mechanism": "Same test as #12 - sourceEvidence/sourceCitation asserted unchanged after ACCEPT resolution." }
+  ],
+  "additionalTestsBeyondTheRequired16": [
+    "Idempotent re-recording of an identical observation (ALREADY_RECORDED, no duplicate row) - proves the architecture is safe to call on every pipeline re-run without unbounded growth.",
+    "No-anchor unit fails closed (returns null rather than fabricating a documentId) - a defensive test for a case that should not occur in practice but must never corrupt a foreign key if it does."
+  ],
+  "regressionProtection": "This new test file adds to, never replaces, the existing tests/contract-model/semantic-coverage-*.test.ts suite (18 files) which this architecture's derive.ts/integrate.ts consume as an unmodified upstream dependency - see 20-test-quality-gates.json for the full-suite confirmation that none of those pre-existing tests changed behavior."
+}

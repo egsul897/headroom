@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "NO_SILENT_MATERIAL_FAILURE_CERTIFICATION",
+  "generatedAt": "2026-08-30T00:00:00Z",
+  "auditorRole": "INDEPENDENT_CERTIFICATION_AUDITOR",
+  "purpose": "Section 20: certify Architecture Invariant #37 (NO_SILENT_MATERIAL_FAILURE) - for an encountered material claim, either a trusted representation or an explicit claim-specific failure state must exist, never neither - by injecting failures at each of the five named classes (compile, context, operative state, verification, unsupported semantics) through the REAL deriveFromCoverageEntry() + recordClaimReview() call path against real Postgres, and confirming a genuine, claim-keyed ClaimReviewItem row results for each.",
+  "scriptUsed": "scripts/cert-3f1-6-section20-no-silent-material-failure.ts (auditor-authored; fixtures are fresh variations distinct from every fixture already used in tests/contract-model/safe-failure-adversarial.test.ts and tests/contract-model/semantic-coverage-reconciliation.test.ts, not copies of them).",
+  "failureClassInjections": [
+    {
+      "class": "1. COMPILE failure",
+      "construction": "A CRITICAL-materiality INDEBTEDNESS unit (an Incremental-Cap consent provision) whose coverage entry is UNREPRESENTED with dangerous reason CANDIDATE_DISCOVERED_NEVER_COMPILED (discovery found a candidate; the compiler never emitted IR for it).",
+      "derivedReasonCode": "COMPILATION_FAILURE",
+      "persistedRowConfirmed": true,
+      "claimKeyMatchConfirmed": true
+    },
+    {
+      "class": "2. CONTEXT failure",
+      "construction": "A CRITICAL-materiality RESTRICTED_PAYMENTS unit whose Available Amount depends on an unresolved cross-reference to Section 1.01; coverage entry is SOURCE_CONTEXT_INCOMPLETE with missingEconomicElement='cross-reference'.",
+      "derivedReasonCode": "INSUFFICIENT_CONTEXT",
+      "persistedRowConfirmed": true,
+      "claimKeyMatchConfirmed": true
+    },
+    {
+      "class": "3. OPERATIVE STATE failure",
+      "construction": "A CRITICAL-materiality FINANCIAL_COVENANT unit (Total Net Leverage Ratio threshold) where two amendments both purport to govern and precedence could not be resolved; coverage entry is OPERATIVE_STATE_UNRESOLVED.",
+      "derivedReasonCode": "OPERATIVE_STATE_UNCERTAIN",
+      "persistedRowConfirmed": true,
+      "claimKeyMatchConfirmed": true
+    },
+    {
+      "class": "4. VERIFICATION failure",
+      "construction": "A CRITICAL-materiality LIENS unit (a $25,000,000 basket cap) whose coverage entry is UNREPRESENTED with dangerous reason COMPILED_BUT_MATERIALLY_MISREPRESENTED (compiled IR captured $2,500,000 - a 10x discrepancy flagged as a material verifier contradiction).",
+      "derivedReasonCode": "VERIFICATION_CONTRADICTION",
+      "persistedRowConfirmed": true,
+      "claimKeyMatchConfirmed": true
+    },
+    {
+      "class": "5. UNSUPPORTED SEMANTICS failure",
+      "construction": "A CRITICAL-materiality RESTRICTED_PAYMENTS unit describing a Cumulative Credit builder basket combined with a Retained Excess Cash Flow grower add-back mechanism the IR schema has no vocabulary to express; coverage entry is UNSUPPORTED.",
+      "derivedReasonCode": "UNSUPPORTED_EXPRESSION",
+      "persistedRowConfirmed": true,
+      "claimKeyMatchConfirmed": true
+    }
+  ],
+  "crossCheck": {
+    "distinctRowsCreated": 5,
+    "distinctReasonCodesObserved": 5,
+    "collapsingAcrossClasses": "NONE - each failure class produced its own row, keyed to its own claimKey, with a reasonCode matching its injected class. No generic/shared 'something is wrong with this document' row absorbed multiple classes."
+  },
+  "whatWouldNotHaveCounted": "Per this section's own charter, a generic log line, a document-level warning, a sibling/same-section warning, or an evaluator-only flag would NOT satisfy this invariant. Every check in this artifact's underlying script specifically performed a `prisma.claimReviewItem.findUnique({ where: { companyId_claimKey: ... } })` lookup keyed to THIS unit's own exact claimKey (derived independently via claimKeyFromSemanticUnit, not copied from the row that was created) - a lookup for a different unit's claimKey would have returned null and failed the check.",
+  "checksExecuted": 22,
+  "checksPassed": 22,
+  "verdict": "PASS",
+  "verdictStatement": "All five named failure classes - compile, context, operative state, verification, and unsupported semantics - each independently produce a real, claim-specific, persisted ClaimReviewItem row when run through the actual derive.ts + service.ts call path against real Postgres. Architecture Invariant #37's disjunction (trusted representation OR explicit claim-specific failure state) holds for every constructed case in this section. This verdict certifies the MODEL's behavior in isolation; it does NOT certify that this call path is reached during a real analysis run - that determination belongs to and is answered separately (and negatively) in 17-safe-failure-wiring-certification.json. A model that correctly satisfies Invariant #37 whenever it is invoked, but is never invoked by a live path, does not yet protect a real user."
+}

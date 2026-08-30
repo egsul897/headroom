@@ -9,8 +9,20 @@
  * ambiguity) - that assertion was updated in 3F.1.2 to assert the new,
  * fixed, safe-by-omission behavior instead of the old bug, since asserting
  * a bug's continued presence after it has been deliberately fixed would be
- * asserting the wrong thing, not preserving a real safety gate. Every other
- * test in this file (artifact/freeze/integrity checks) is unchanged.
+ * asserting the wrong thing, not preserving a real safety gate.
+ *
+ * Phase 3F.1.5.R (Workstream A) update: the synthetic "Case A" text below is
+ * ALSO exactly the P1-10/Q3 in-text-citation-shaped-as-a-heading defect's own
+ * shape ("...permitted under Section 6.04 Limitation on Distributions ."
+ * mid-sentence, satisfying SECTION_PATTERNS just like a real heading). Once
+ * stage-structure.ts's plausibility gate (the P1-10 root-cause fix) landed,
+ * this specific duplicate-nodeKey collision no longer occurs at all - the
+ * citation is correctly recognized as an in-text reference, never accepted
+ * as a raw node - so the first test below was updated, per this same file's
+ * own precedent above, to assert the corrected behavior instead of the
+ * historical bug. Every other test in this file (artifact/freeze/integrity
+ * checks, and the second test's own non-colliding control case) is
+ * unchanged.
  */
 import { describe, expect, it } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
@@ -25,7 +37,7 @@ function loadJson<T>(name: string): T {
 }
 
 describe("Structural node identity proposal - minimal collision reproduction is real and reproducible", () => {
-  it("re-running the exact synthetic Case A text against the real, unmodified production functions reproduces the documented collision", () => {
+  it("Phase 3F.1.5.R FIX VERIFIED: the exact synthetic Case A text no longer produces the historical duplicate-nodeKey collision - the P1-10 plausibility gate correctly recognizes the in-text citation and never accepts it as a raw node", () => {
     const text = `
 ARTICLE VI COVENANTS
 
@@ -40,22 +52,31 @@ Section 6.05 Limitation on Investments . Neither party shall make any investment
 (b) an investment consisting of cash and cash equivalents.
 `.trim();
     const nodes = parseDocumentStructure({ documentId: "synthetic-doc-a", label: "synthetic-doc-a", text });
+    // Phase 3F.1.5.R FIX VERIFIED (was the historical collision this test originally
+    // documented as a defect): "...permitted under Section 6.04 Limitation on
+    // Distributions . Such incurrence..." is an in-text citation directly following the
+    // citation-signal phrase "under" - stage-structure.ts's plausibility gate now rejects
+    // it before it is ever pushed into the raw node list, so exactly ONE real "6.04" node
+    // remains (the actual "Section 6.04 Limitation on Distributions" heading later in the
+    // text), never two colliding occurrences.
     const collided = nodes.filter((n) => n.nodeKey === "synthetic-doc-a::6.04");
-    expect(collided.length).toBe(2);
+    expect(collided.length).toBe(1);
 
     const index = buildStructuralIndex(new Map([["synthetic-doc-a", { text, nodes }]]), [], []);
     expect(index.allNodes().length).toBe(nodes.length);
 
-    // Phase 3F.1.2 FIX (was the defect this test originally documented): the deprecated
-    // getNodeByRef is now safe-by-omission - undefined on an ambiguous reference, never an
-    // arbitrary pick of one colliding occurrence over the other.
+    // No ambiguity at all now - resolveUniqueNodeByRef/getNodeByRef both cleanly resolve to
+    // the single real occurrence, and its own real lettered clauses are correctly attached
+    // to it (the Q3/P1-10 misattachment mechanism this same citation shape could otherwise
+    // trigger is also closed - see tests/foundation-audit/part2-adversarial-structural-
+    // assumptions.test.ts's own Q3 test for the dedicated regression).
     const resolved = index.getNodeByRef("synthetic-doc-a", "6.04");
-    expect(resolved).toBeUndefined();
+    expect(resolved).toBeDefined();
     const resolution = index.resolveUniqueNodeByRef("synthetic-doc-a", "6.04");
-    expect(resolution.status).toBe("AMBIGUOUS");
-    // Both physical occurrences remain independently reachable by their own real nodeId - neither is unreachable, unlike the pre-3F.1.2 defect.
-    for (const occ of collided) {
-      expect(index.getNodeById(occ.nodeId)?.charStart).toBe(occ.charStart);
+    expect(resolution.status).toBe("UNIQUE");
+    if (resolution.status === "UNIQUE") {
+      expect(resolution.node.nodeId).toBe(collided[0]!.nodeId);
+      expect(index.getChildren(resolution.node.nodeId).map((c) => c.sectionRef).sort()).toEqual(["6.04(a)", "6.04(b)"]);
     }
   });
 

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "VALIDATION_SAMPLE",
+  "generatedAt": "2026-08-29T22:40:00Z",
+  "purpose": "Section 12: a bounded, deterministic stratified sample (~40-60 cases per the frozen instruction) from existing known datasets only, frozen before adjudication.",
+  "frozenBeforeAdjudication": true,
+  "sampleSize": 47,
+  "sourceManifest": "Reuses the same zero-cost deterministic manifest built for Phase 3F.1.5.3 (all 1,115 ground-truth units across fwrg/lsb/conmed/dsgr, unchanged since - the frozen matcher was not modified by this phase's atomic-contract derivation layer). Selection script preserved at docs/evaluation-contract-v3/_sample-build-script.py.",
+  "methodology": {
+    "step1": "Force-include all 14 historical false-credit controls.",
+    "step2": "For each required category (clear credit, clear no-credit, specifically-surfaced failure, silent failure, partial representation, conditions, exceptions, definitions, chapeaus, sibling provisions, quantitative, qualitative, cross-reference-heavy, amendment-sensitive, composite), fill up to 4 NOT-yet-selected cases, preferring higher materiality, deterministic tie-break by case ID.",
+    "step3": "Top up FWRG/LSB/CONMED to at least 9 cases each for dataset diversity (DSGR already well-represented via the false-credit controls and category fills)."
+  },
+  "sampleComposition": {
+    "byDataset": { "dsgr-2022-2025-credit-facility": 20, "fwrg-2021-credit-agreement": 9, "lsb-2023-abl-credit-agreement": 9, "conmed-2025-credit-facility": 9 },
+    "byCategory_membershipCounts_overlapAllowed": {
+      "clear_credit": 8, "clear_no_credit": 22, "specifically_surfaced_failure": 29, "silent_failure": 2,
+      "partial_representation": 4, "conditions": 11, "exceptions": 26, "definitions": 5, "chapeaus": 16,
+      "sibling_provisions": 17, "quantitative": 18, "qualitative": 28, "cross_reference_heavy": 7,
+      "amendment_sensitive": 7, "composite": 4
+    },
+    "silentFailureScarcityDisclosure": "Only 2 cases exist system-wide across all 1,115 ground-truth units that are UNREPRESENTED, carry no safety-flag candidate anywhere, and are flagged dangerousUnaccountedV2=true (the strictest 'truly silent, truly dangerous' definition) - both are included. This mirrors the identical scarcity finding from Phase 3F.1.5.3's taxonomy study (its 'unsupported/silent' stratum also had exactly 1-2 such cases) - most real UNREPRESENTED units carry SOME nearby inventory or flag candidate, even when that candidate does not specifically correspond to the claim.",
+    "falseCreditControlsIncluded": 14
+  },
+  "frozenCaseIds": [
+    "a-7.1", "a-7.10", "a-7.11", "a-7.13", "a-7.14", "a-7.16", "a-7.17", "a-7.2", "a-7.2-c",
+    "doc-a::I::1.04-accounting-terms-gaap", "doc-a::I::1.11-amendment-and-restatement", "doc-a::I::applicable-ebitda", "doc-a::I::ebitda", "doc-a::I::interest-coverage-ratio",
+    "doc-a::VI::6.01-chapeau", "doc-a::VI::6.04-chapeau", "doc-a::VI::6.04-unrestricted-sub-valuation", "doc-a::VI::6.05-chapeau", "doc-a::VI::6.05-ip-flush-prohibition", "doc-a::VI::6.08b-chapeau", "doc-a::VI::6.10-chapeau",
+    "doc-a::X::10.01a-us-guaranty",
+    "doc-b::VI::6-01-lead-in", "doc-b::VI::6-04-lead-in", "doc-b::VI::6-05-lead-in",
+    "doc-d::VI::6-01-chapeau", "doc-d::VI::6-04-chapeau", "doc-d::VI::6-05-chapeau", "doc-d::VI::6-08-b-chapeau",
+    "fwrg-6.01-g-i", "fwrg-6.01-j", "fwrg-6.01-m", "fwrg-6.02-a", "fwrg-6.04-a-iii", "fwrg-6.04-a-x", "fwrg-6.04-a-xi", "fwrg-6.04-b", "fwrg-def-cadj-ebitda",
+    "lsb-6.01-general-ratio-gated", "lsb-6.01-i-flat-or-pct-assets", "lsb-6.01-m-secured-notes", "lsb-6.02-liens", "lsb-6.03-fundamental-changes", "lsb-6.04-a-abl-collateral-disposal", "lsb-6.04-b-notes-collateral-disposal", "lsb-6.08-subordinated-debt-payments", "lsb-def-abl-notes-priority-collateral"
+  ],
+  "noNewUnseenPackage": true,
+  "nextStep": "Build a BLINDED evidence packet (V2's own atomic disposition fields stripped) for these 47 cases and dispatch 3 independent adjudicators against 05-operational-rubric.json."
+}

@@ -1,0 +1,477 @@
+{
+  "adjudicatorId": "A",
+  "generatedAt": "2026-08-29T21:58:57Z",
+  "caseCount": 47,
+  "results": [
+    {
+      "caseId": "a-7.1",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: no candidate in the pool rises above accountingRole=INVENTORY_ONLY/DISCOVERY_CANDIDATE for any of the four sub-covenants; nothing was compiled into a structured representation (necessary condition 1 fails). Surfacing: only the minor springing-liquidity sub-covenant (7.1(d)) carries a claim-specific NEEDS_REVIEW flag; the two primary leverage-ratio covenants (a)/(b) and the interest-coverage covenant (c) - the claim's dominant material content - carry no claim-specific uncertainty anywhere, so per INVARIANT_5 a partial flag on one of four sub-parts does not prevent dangerous silence for the rest of this composite claim. Completeness: the best single same-claim candidate (the 7.1(d) liquidity extract) is genuinely about this claim's own sub-part but covers only 1 of 4 required dimensions -> PARTIAL, not NONE (INVARIANT_2). Verification: no explicit verification-layer finding addresses a same-claim representing candidate; the audit-finding entries present are discovery-completeness scans (PARTIAL_DISCOVERY/STRUCTURAL_COVERAGE_GAP), not content verification (INVARIANT_9).",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.10",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: all candidates for 7.10 are DISCOVERY_CANDIDATE/INVENTORY_ONLY, never compiled. Surfacing: the one claim-specific flag (7.10, NEEDS_REVIEW 0.75) concerns only a narrow carve-out sub-exception limitation, while the claim's core substance (the $2.5M threshold and fair-and-reasonable-terms test in 7.10(a)/(b)) is silently AUTO_ACCEPTED with no uncertainty declared anywhere; the other two flagged candidates (7.5(g), 7.17(b)(i)) are unrelated sections and do not correspond to this claim's identity (INVARIANT_6). Completeness: the threshold, fair-and-reasonable condition, and carve-outs are split across separate unflagged inventory candidates, none of which alone covers every material dimension -> PARTIAL. Verification: no explicit verification finding on a same-claim candidate -> NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.11",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the two sectionRef=7.11 candidates are DISCOVERY_CANDIDATE/INVENTORY_ONLY/AUTO_ACCEPTED, never compiled -> fails necessary condition 1. Surfacing: every decision-relevant flagged candidate in this pool (7.5(l), 7.4(a)(iv), 7.10, 7.4(d), 7.5(c), 7.13, 7.4(a)(iii)) is anchored to a completely different section, none touching 7.11 itself; per INVARIANT_6 these sibling/different-family candidates cannot establish surfacing for this claim, and the actual 7.11 candidates were silently AUTO_ACCEPTED -> dangerous silent omission (INVARIANT_7). Completeness: the 7.11 candidate correctly captures the general sale-leaseback exception mechanic (FMV threshold structure) but its normalizedSemantics is generic on the specific $75M/3.5% figures -> PARTIAL. Verification: NOT_EVALUATED, no explicit finding on a same-claim candidate.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.13",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: sectionRef=7.13 candidates are DISCOVERY_CANDIDATE/INVENTORY_ONLY only, never compiled. Surfacing: two candidates directly anchored to sectionRef=7.13 itself ([0] carve-outs, [3] limitation-to-financed-assets proviso) both carry claim-specific NEEDS_REVIEW flags (confidence 0.85/0.75) on the claim's own substantive carve-out mechanics, satisfying dimension B's necessary condition directly (not a sibling - these are 7.13's own text). Completeness: these candidates cover the carve-out/proviso mechanics but not the full negative-pledge prohibition and all named carve-outs (Loan Document/purchase-money/Receivables-Program) in one candidate -> PARTIAL. Verification: NOT_EVALUATED, no explicit finding on a same-claim candidate exists.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.14",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: sectionRef=7.14/7.14(a) candidates are DISCOVERY_CANDIDATE/INVENTORY_ONLY, never compiled -> NO_CREDIT. Surfacing: both core prohibited-restriction-type components of the claim itself (7.14(a): dividend/repayment restrictions; 7.14: loan/investment restrictions) carry claim-specific UNCERTAIN flags (confidence 0.7) directly on the claim's substantive content, not a peripheral carve-out or sibling -> SPECIFICALLY_SURFACED. Completeness: these two candidates cover the two prohibited-restriction types but not the Loan Document/Disposition-agreement/Receivables-Program carve-outs in a single candidate -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "a-7.16",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: 7.16/7.16(a) candidates are DISCOVERY_CANDIDATE/INVENTORY_ONLY/AUTO_ACCEPTED, never compiled. Surfacing: the one flagged candidate (sectionRef=7.17, NEEDS_REVIEW) is a completely different covenant family (Outbound Investment Rules, not sanctions/anti-corruption use-of-proceeds) and the four VERIFICATION_FINDING entries (7.3(a), 7.9(a)(ii), 7.3(g)(ii), 7.6(c)) are unrelated sibling-section discovery-completeness scans; none corresponds to this claim's identity (INVARIANT_6), and the actual 7.16/7.16(a) candidates are silently AUTO_ACCEPTED -> dangerous silence. Completeness: 7.16(a) covers the anti-corruption element and 7.16 covers the sanctioned-persons/countries element, but no single candidate combines all three required elements (anti-corruption + sanctioned persons/countries + general sanctions violations) -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "a-7.17",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: all 7.17 candidates are DISCOVERY_CANDIDATE/INVENTORY_ONLY, never compiled. Surfacing: three candidates directly anchored to this claim's own text (7.17(a) covered-foreign-person prohibition, 7.17 general header, 7.17(b)(i) covered-activity/transaction prohibition) all carry claim-specific NEEDS_REVIEW flags at high confidence (0.85), covering the covenant's actual substantive core -> SPECIFICALLY_SURFACED. Completeness: these individually cover sub-parts (a) and (b)(i) but no single candidate combines the full covenant -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "a-7.2",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: zero decision-relevant (SUBSTANTIVE_REPRESENTATION/HONEST_UNRESOLVED/SAFETY_FLAG) candidates exist anywhere in this 60-candidate pool for the general Indebtedness prohibition; every candidate, including the root sectionRef=7.2 general-prohibition and cross-basket-reclassification candidates, is DISCOVERY_CANDIDATE/INVENTORY_ONLY/AUTO_ACCEPTED. Surfacing: total silence - no claim-specific uncertainty flag of any kind exists for this claim, a clean case of dangerous silent omission (INVARIANT_7) for a MATERIAL claim. Completeness: the general prohibition and the cross-basket reclassification right are each captured by separate individual candidates, but no single candidate covers the general rule + all 19 baskets + reclassification together -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "a-7.2-c",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the sectionRef=7.2(c) candidate is DISCOVERY_CANDIDATE/INVENTORY_ONLY/AUTO_ACCEPTED - never compiled into a structured representation -> fails necessary condition 1 despite accurate content. Surfacing: the flagged candidates (7.13 x2, and 7.1 liquidity-formula) are all anchored to different sections/claims - 7.13 is an unrelated negative-pledge provision and the 7.1 flag concerns the cross-referenced liquidity covenant's own formula, not this claim's Lien/pro-forma-compliance rule itself (INVARIANT_6) - so no genuine same-claim flag exists; the actual 7.2(c) candidate was silently AUTO_ACCEPTED. Completeness: unusually, the raw inventory candidate's normalizedSemantics/excerpt verbatim captures both required elements (Liens permitted under 7.3(g) AND pro forma compliance with the 7.1 financial covenants) with no conflicts or omissions -> FULL, even though it never received CREDIT because it was never compiled (dimension C is assessed independently of dimension A per the rubric's applicabilityNote).",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::I::1.04-accounting-terms-gaap",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "CONTRADICTED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the core GAAP-construction/freeze-mechanism rule is only HONEST_UNRESOLVED/sufficiency=PARTIAL (the compiler itself states the IR has no primitive for an 'accounting basis' selection), and the two sub-rules that ARE SUBSTANTIVE_REPRESENTATION/COMPLETE (ASC 825-10-25 fair-value disregard; ASC 470-20 full-principal valuation) are each hit by explicit MATERIAL_DISCREPANCY verification findings (WRONG_ENTITY_SCOPE limiting the fair-value rule to Borrower when source covers 'any Borrower or any Subsidiary'; an internal COMPLETE-vs-UNSUPPORTED self-contradiction on the convertible-debt rule) -> necessary condition 'no material dimension missing or conflicting' fails. Surfacing: every compiled candidate anchored to 1.04 carries reviewStatus=REVIEW_REQUIRED and the freeze mechanism is explicitly HONEST_UNRESOLVED -> genuine, claim-specific, non-generic uncertainty -> SPECIFICALLY_SURFACED. Completeness: the freeze/GAAP-construction candidate and the two ASC sub-rules each cover only part of the claim, none combines all elements -> PARTIAL. Verification: explicit verifierFindings (WRONG_ENTITY_SCOPE, OTHER_MATERIAL_SEMANTIC_DISCREPANCY) directly contradict the same-claim SUBSTANTIVE_REPRESENTATION candidates' self-reported scope/completeness -> CONTRADICTED (INVARIANT_9 satisfied via actual findings, not inference).",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::I::1.11-amendment-and-restatement",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: while the amend/restate/no-novation/re-evidencing core has genuine SUBSTANTIVE_REPRESENTATION/COMPLETE candidates, the claim's other required elements - reallocation-without-fees and interest/fees/break-cost payment on the Effective Date (1.11(b)(iv)) - are only HONEST_UNRESOLVED/PARTIAL (source text truncated, cross-references to the superseded Existing Credit Agreement unresolved), and the ratification of prior guarantees/Lien grants was discovered but never compiled at all (dangerousUnaccounted: CANDIDATE_DISCOVERED_NEVER_COMPILED) -> multiple material dimensions missing, fails necessary condition 3. Surfacing: genuine claim-specific flags cover essentially the whole claim - REVIEW_REQUIRED on the compiled core, HONEST_UNRESOLVED/REVIEW_REQUIRED on the reallocation/fee mechanics, and a SAFETY_FLAG on the never-compiled lien-ratification sub-element -> SPECIFICALLY_SURFACED. Completeness: best single candidate covers only the amend/restate/no-novation portion, not reallocation fees or lien ratification -> PARTIAL. Verification: an explicit VERIFICATION_FINDING flags that one 1.11(a) rule variant claims sufficiency=COMPLETE while capturing essentially no substantive content, and a companion VERIFICATION_INCOMPLETE finding on the same no-novation clause shows an inconclusive verification attempt -> VERIFICATION_INCOMPLETE.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::I::applicable-ebitda",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "CONTRADICTED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the COMPILED_IR_DEFINITION for 'Applicable EBITDA' (sectionRef=1.01) is marked SUBSTANTIVE_REPRESENTATION/sufficiency=COMPLETE and matches the GT's trailing-four-quarter EBITDA formula, but two explicit verification findings (OTHER_MATERIAL_SEMANTIC_DISCREPANCY) state this COMPLETE label is misleading because the term is wholly derivative of the 'EBITDA' definition, which is itself only HONEST_UNRESOLVED/PARTIAL with an unresolved dependency reference -> a conflicting material dimension, failing necessary condition 3. Surfacing: the candidate itself carries reviewStatus=REVIEW_REQUIRED and is directly targeted by claim-specific verification findings -> SPECIFICALLY_SURFACED. Completeness: the compiled definition captures the core trailing-four-quarter mechanic but the excerpt does not clearly carry the pre-first-delivery Section 3.04(a) fallback named in the GT description -> PARTIAL. Verification: the explicit MATERIAL_DISCREPANCY findings directly contradict the representation's own self-reported COMPLETE sufficiency -> CONTRADICTED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::I::ebitda",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the six SUBSTANTIVE_REPRESENTATION candidates in the pool are all for different claims (Applicable EBITDA, 1.06 pro forma rules, 1.10(a) dollar equivalent) - decoys sharing the same family/document but not this claim's identity (INVARIANT_6); the actual EBITDA definition candidate is only HONEST_UNRESOLVED/sufficiency=PARTIAL, self-disclosing that the 20 add-back and 6 deduction sub-clauses are collapsed into UNSUPPORTED aggregates rather than individually modeled, and the fixed Q1-Q4 2021 historical overrides are omitted entirely -> fails 'no material dimension missing'. Surfacing: this same-claim candidate carries reviewStatus=REVIEW_REQUIRED with an explicit, detailed, claim-specific list of what is not modeled -> SPECIFICALLY_SURFACED. Completeness: only the top-level Net Income +/- structure is captured; the granular add-back/deduction mechanics and historical overrides are missing -> PARTIAL. Verification: the visible MATERIAL_DISCREPANCY/VERIFICATION_INCOMPLETE findings target the 1.06/1.01-generic/1.10(a) candidates, not this EBITDA definition candidate specifically -> NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::I::interest-coverage-ratio",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: no candidate anywhere in the 60-candidate pool captures the 'Interest Coverage Ratio' definition's own annualization mechanic for the 2022 stub quarters (3.31/6.30/9.30/12.31 multipliers); the two SUBSTANTIVE_REPRESENTATION candidates ('Acquisition', 'Applicable EBITDA') are different definitions entirely (INVARIANT_6), and the one on-topic discovery item (sectionRef 88, 'Minimum Interest Coverage Ratio... 3.00 to 1.00') is the 6.12 covenant application, a different claim from this definitional annualization mechanic -> NO_CREDIT. Surfacing: zero candidates correspond to this specific claim's own content (the stub-quarter annualization formula) - a clean dangerous silent omission for a CRITICAL unit (INVARIANT_7) -> NOT_SPECIFICALLY_SURFACED. Completeness: since same-claim identity is never affirmatively established by any candidate, this cannot be PARTIAL -> NONE (INVARIANT_2). Verification: NOT_EVALUATED, nothing to verify.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::VI::6.01-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: zero candidates in the entire 60-candidate pool carry sectionRef exactly '6.01' (verified directly against the raw packet) - the general chapeau prohibition ('No Loan Party will... create... any Indebtedness, except as permitted by (a) through (q)') was never discovered, compiled, or flagged at all; every candidate concerns either individual baskets within 6.01(a)-(q) (different, narrower claims) or unrelated sections (7.01, 6.02, 6.08, 10.02/10.03) -> NO_CREDIT. Surfacing: total, clean silence on this specific CRITICAL claim - per INVARIANT_6 the basket sub-item flags do not establish identity with the chapeau itself, so this is a dangerous silent omission (INVARIANT_7) -> NOT_SPECIFICALLY_SURFACED. Completeness: same-claim identity is never established by anything in the pool -> NONE (INVARIANT_2). Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::VI::6.04-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: zero candidates carry sectionRef exactly '6.04' (verified against the raw packet); the sole SUBSTANTIVE_REPRESENTATION candidate is the 'Acquisition' definition (sectionRef 1.01), a same-family decoy reused elsewhere in the document, not a representation of the 6.04 chapeau's own general Investments/Loans/Guarantees prohibition (INVARIANT_6) -> NO_CREDIT. Surfacing: the pool contains no candidate anchored to the chapeau's own text at all - the many flagged items are all sub-basket clauses (6.04(2) redesignation mechanics, etc.) or unrelated sections -> dangerous silent omission on a CRITICAL claim -> NOT_SPECIFICALLY_SURFACED. Completeness: identity never established -> NONE. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::VI::6.04-unrestricted-sub-valuation",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the two SUBSTANTIVE_REPRESENTATION candidates ('Acquisition' definition; 1.11(a) amendment-and-restatement rule) are unrelated same-document decoys (INVARIANT_6), not representations of the flush valuation rules; the actual valuation content exists only as discovery-level flags -> NO_CREDIT. Surfacing: genuine claim-specific flags exist for all three required sub-rules - SAFETY_FLAG SEMANTIC_COVERAGE_UNIT entries on 5.15(a)(ii)/5.15(B)(i) for the designation-as-investment mechanic, DISCOVERY_CANDIDATE NEEDS_REVIEW on 5.15/5.15(a)(i) for the redesignation permanent-investment mechanic, and DISCOVERY_CANDIDATE UNCERTAIN on 5.15(a)(ii) for the transfer-FMV rule -> SPECIFICALLY_SURFACED. Completeness: each element is captured by a separate, unmerged candidate; no single candidate states all three valuation rules together -> PARTIAL. Verification: the visible MATERIAL_DISCREPANCY findings concern 1.06/1.01-generic content, not this valuation rule -> NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::VI::6.05-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: zero SUBSTANTIVE_REPRESENTATION candidates exist for 6.05 anywhere in the pool -> NO_CREDIT. Surfacing: two DISCOVERY_CANDIDATE entries carry sectionRef exactly 6.05 with genuine claim-specific NEEDS_REVIEW flags - one naming a specific operative proviso ('dispositions... made for fair value and with at least 75% cash consideration', part of the chapeau's own conditions) and one generically flagging an unincluded sub-clause of this same section -> SPECIFICALLY_SURFACED. Completeness: the fair-value/cash-consideration proviso is captured but the chapeau's core prohibition and its full (a)-(k) exception list are not -> PARTIAL. Verification: the one MATERIAL_DISCREPANCY finding concerns Applicable-Rate/TNLR-tier content, unrelated to this claim -> NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::VI::6.05-ip-flush-prohibition",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: no candidate anywhere in the pool mentions intellectual property, IP disposition, or the Unrestricted-Subsidiary IP-flush prohibition at all (confirmed by full-text search of the packet) -> NO_CREDIT. Surfacing: the two candidates sharing sectionRef=6.05 (a generic 'sub-clause not included' flag and the fair-value/75%-cash-consideration proviso) are the SAME sibling candidates that belong to the separate general-chapeau claim (case doc-a::VI::6.05-chapeau) - they concern the disposition proviso, not the IP-flush prohibition, so per INVARIANT_6 same sectionRef does not establish same-claim identity here -> a clean, total dangerous silent omission on a CRITICAL claim -> NOT_SPECIFICALLY_SURFACED. Completeness: identity never established -> NONE. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::VI::6.08b-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: zero candidates anywhere in the 60-candidate pool carry sectionRef exactly '6.08(b)' (verified against the raw packet); the overwhelming candidate volume is about the sibling 6.08(a) Restricted Payments basket, a related but distinct chapeau/prohibition (different sub-section, different specific prohibition on Indebtedness payments vs. equity payments) -> INVARIANT_6, no same-claim correspondence -> NO_CREDIT. Surfacing: total silence on this exact claim's own citation -> dangerous silent omission on a CRITICAL unit (INVARIANT_7) -> NOT_SPECIFICALLY_SURFACED. Completeness: identity never established -> NONE. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-a::VI::6.10-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the three candidates with sectionRef exactly 6.10 are DISCOVERY_CANDIDATE/INVENTORY_ONLY/AUTO_ACCEPTED (raw, uncompiled) -> fails necessary condition 1, NO_CREDIT. Surfacing: unlike the other silent chapeaus in this set, genuine claim-specific SAFETY_FLAG/SEMANTIC_COVERAGE_UNIT entries (dangerousUnaccounted: no compiled/verified IR found for this CRITICAL unit) exist anchored directly to both operative sub-clauses of this claim - 6.10(a) (the Liens-restriction prong) and 6.10(b) (the dividends/loans/guarantee-restriction prong) - covering the claim's substantive core, not a sibling section -> SPECIFICALLY_SURFACED. Completeness: the raw 6.10 candidates restate the prohibition in generic terms ('restrict liens, dividends, intercompany loans, or guarantees') without clearly preserving the GT's distinct entity-scope nuances (Loan-Party-or-Restricted-Subsidiary for (a) vs. Restricted-Subsidiary-only for (b)) -> PARTIAL. Verification: the visible findings concern 1.11(a)/1.06 pro forma content, unrelated to 6.10 -> NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-a::X::10.01a-us-guaranty",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the sole SUBSTANTIVE_REPRESENTATION candidate (sectionRef 1.07) concerns senior-indebtedness/subordination designation, an unrelated provision, not the U.S. guaranty obligation itself (INVARIANT_6) -> NO_CREDIT. Surfacing: three SAFETY_FLAG/SEMANTIC_COVERAGE_UNIT entries carry sectionRef exactly 10.01(a) with dangerousUnaccounted reasoning, explicitly declaring no compiled/verified IR representation exists for this CRITICAL guaranty obligation -> a genuine, claim-specific uncertainty declaration -> SPECIFICALLY_SURFACED. Completeness: the only substantive same-claim content candidate covers just the branch/affiliate enforceability clause, not the core joint-and-several/primary-obligor/unconditional-guarantee language, the Excluded Swap Obligations carve-out, or the extensions/renewals non-release clause -> PARTIAL. Verification: the visible WRONG_POSTURE/VERIFICATION_INCOMPLETE findings concern section 1.07, not 10.01(a) -> NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-b::VI::6-01-lead-in",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: zero candidates of any type carry sectionRef exactly '6.01' anywhere in the 60-candidate pool (verified against the raw packet); all content concerns individual baskets (6.01(c)(i) etc.), Liens (6.02), Restricted Payments (6.08), or other sections -> NO_CREDIT. Surfacing: total silence on this exact CRITICAL claim's own citation -> dangerous silent omission (INVARIANT_7) -> NOT_SPECIFICALLY_SURFACED. Completeness: identity never established -> NONE. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-b::VI::6-04-lead-in",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the three candidates with sectionRef exactly 6.04 are HONEST_UNRESOLVED/discovery-level, never compiled to a substantive representation -> NO_CREDIT. Surfacing: a SEMANTIC_COVERAGE_UNIT/HONEST_UNRESOLVED entry anchored exactly to sectionRef 6.04 explicitly states a candidate was discovered for this exact region but never compiled to IR, and a DISCOVERY_CANDIDATE/NEEDS_REVIEW entry on the same sectionRef flags a specific shared-cap sub-mechanic -> genuine claim-specific uncertainty -> SPECIFICALLY_SURFACED. Completeness: the discovery candidate covers only a narrow shared investment cap, not the full lead-in prohibition (forming subsidiaries, Equity Interest purchases, loans, guarantees, business-unit acquisitions, except (a)-(r)) -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-b::VI::6-05-lead-in",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the single candidate with sectionRef exactly 6.05 is a SEMANTIC_COVERAGE_UNIT/HONEST_UNRESOLVED audit pointer stating no independently detected legal/economic signal and that a candidate was discovered for this region but never compiled -> no substantive content exists -> NO_CREDIT. Surfacing: this same candidate is a genuine, claim-specific (not generic, not sibling) declaration that this exact unit's content was never resolved -> SPECIFICALLY_SURFACED. Completeness: the sole same-claim candidate asserts no actual substantive content of its own (a structural placeholder, not a partial statement of the lead-in prohibition) -> NONE rather than PARTIAL, since no material dimension of the claim is actually captured.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-d::VI::6-01-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: zero candidates of any type carry sectionRef exactly '6.01' anywhere in the pool (verified against the raw packet) -> NO_CREDIT. Surfacing: total silence on this exact CRITICAL claim -> dangerous silent omission (INVARIANT_7) -> NOT_SPECIFICALLY_SURFACED. Completeness: identity never established -> NONE. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "doc-d::VI::6-04-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the candidate that closely restates the chapeau's own prohibition is DISCOVERY_CANDIDATE/INVENTORY_ONLY/AUTO_ACCEPTED, never compiled -> fails necessary condition 1, NO_CREDIT. Surfacing: that core-prohibition candidate carries no flag at all (silently AUTO_ACCEPTED); the only flagged same-section candidate concerns a narrow, peripheral shared-investment-cap sub-mechanic, not the chapeau's own general prohibition -> per the pattern applied elsewhere in this set, a peripheral flag does not prevent dangerous silence on the claim's core content -> NOT_SPECIFICALLY_SURFACED. Completeness: unusually, the raw (uncompiled) candidate's content closely and completely paraphrases the GT's full list of prohibited acts (forming subsidiaries, equity/securities acquisition, loans/advances, guarantees, investments, business-unit asset acquisition) with no material dimension missing -> FULL, independent of the NO_CREDIT determination (dimension C is assessed separately per the rubric's applicabilityNote). Verification: NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-d::VI::6-05-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the single candidate with sectionRef exactly 6.05 is a SEMANTIC_COVERAGE_UNIT/HONEST_UNRESOLVED audit placeholder with no substantive content of its own -> NO_CREDIT. Surfacing: this same candidate is a genuine, claim-specific declaration that no legal/economic signal was captured and the region was discovered but never compiled -> SPECIFICALLY_SURFACED. Completeness: no actual content is asserted -> NONE.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "doc-d::VI::6-08-b-chapeau",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the sole candidate with sectionRef exactly 6.08(b) is DISCOVERY_CANDIDATE/SAFETY_FLAG/UNCERTAIN, never compiled into a structured representation -> fails necessary condition 1, NO_CREDIT. Surfacing: this same-claim candidate itself (not a sibling) carries an explicit UNCERTAIN flag directly on the chapeau's own core prohibition -> SPECIFICALLY_SURFACED. Completeness: its content closely and completely restates the GT's prohibition (payment/distribution of principal or interest, and purchase/redemption/retirement/acquisition/cancellation/termination of Indebtedness) with no material dimension missing -> FULL, independent of the NO_CREDIT determination. Verification: NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "fwrg-6.01-g-i",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION candidate at sectionRef Section 6.01(g)(i), sufficiency=EXECUTABLE, states the exact same claim - guaranties of supplier/customer/franchisee/licensee obligations in the ordinary course up to the greater of $2,500,000 and 5% of Consolidated Adjusted EBITDA - matching the GT's own figures precisely, with no missing or conflicting dimension; a second, empty 'placeholder' duplicate at the same sectionRef does not undermine this since dimension A only requires at least one adequate candidate. Completeness: FULL, matches necessaryConditionsForFull. Surfacing: NOT_APPLICABLE per creditEligibility=CREDIT. Verification: no explicit verification finding exists for this candidate -> NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.01-j",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION candidate at sectionRef Section 6.01(j), sufficiency=EXECUTABLE, states 'greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA for Indebtedness of non-Loan-Party Restricted Subsidiaries' - matching the GT's threshold, formula, AND the entity-scope gate (non-Loan-Party Restricted Subsidiaries) explicitly and correctly, despite the GT's own cautionary note that this entity-scope field is an easy place to get wrong; no verification finding flags a scope error here. Completeness: FULL. Surfacing: NOT_APPLICABLE. Verification: NOT_EVALUATED (no explicit finding present, per INVARIANT_9 we do not infer a problem from the GT's general cautionary language alone).",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.01-m",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION candidate at sectionRef Section 6.01(m), sufficiency=EXECUTABLE, states 'Capital Leases and purchase money Indebtedness basket = greater of $30,000,000 and 50% of Consolidated Adjusted EBITDA' - an exact match to the GT with no missing dimension. Completeness: FULL. Surfacing: NOT_APPLICABLE. Verification: NOT_EVALUATED, no finding present.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.02-a",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: despite dozens of compiled ANALYZER_RULE candidates existing for neighboring 6.02 baskets (6.02(u), 6.02(k), 6.02(s), etc.), no ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION exists anywhere for sectionRef 6.02(a) itself - the only candidate is a DISCOVERY_CANDIDATE/INVENTORY_ONLY/AUTO_ACCEPTED entry, confirming exactly the 'uncapped, non-numeric permission gets silently skipped by a numeric-oriented extractor' risk the GT description itself warns about -> fails necessary condition 1, NO_CREDIT. Surfacing: zero flags of any kind are anchored to 6.02(a); all discovery-level NEEDS_REVIEW flags in this pool concern different sub-clauses (6.02(k), 6.02(o), 6.02(l)(i)) -> dangerous silent omission on a CRITICAL claim (INVARIANT_7) -> NOT_SPECIFICALLY_SURFACED. Completeness: the raw candidate's content ('Permits Liens securing the Secured Obligations') fully and accurately captures the GT's uncapped, non-quantitative permission with no material dimension missing -> FULL, independent of the NO_CREDIT determination. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.04-a-iii",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the compiled ANALYZER_RULE at sectionRef 6.04(a)(iii)(A) (sufficiency=MONITORABLE) captures only the Available Amount builder-basket component; the claim's other required component, clause (B) (Available Excluded Contribution Amount), exists only as a DISCOVERY_CANDIDATE/INVENTORY_ONLY/AUTO_ACCEPTED entry, never compiled and never flagged -> the compiled representation omits a real, material half of this specific claim, failing necessary condition 3. Surfacing: the (A) rule's own unresolvedReasons is only a technical 'evaluationClass=MONITORABLE' tag, not a genuine acknowledgment that clause (B) is missing, and clause (B) itself carries no flag at all -> dangerous silent omission for the (B) component of a CRITICAL claim -> NOT_SPECIFICALLY_SURFACED. Completeness: the best candidate captures component (A) fully but omits component (B) entirely -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.04-a-x",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: an ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION candidate at sectionRef Section 6.04(a)(x), sufficiency=EXECUTABLE, states 'General Restricted Payment basket = greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA' plus a NO_DEFAULT condition, matching the GT precisely with no missing dimension. Completeness: FULL. Surfacing: NOT_APPLICABLE. Verification: NOT_EVALUATED, no finding present.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.04-a-xi",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "CONTRADICTED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the GT is explicit that this basket is 'a ratio-gated unlimited basket with NO default condition attached'; the compiled ANALYZER_RULE at Section 6.04(a)(xi) (sufficiency=EXECUTABLE, no flag) confidently adds 'condition NO_DEFAULT: No Event of Default may exist' - a condition the claim does not actually have. This is exactly the adversarial extraction error the GT's own commentary predicts, and it is a wrong assertion (a conflicting dimension), not a mere omission -> fails necessary condition 3, NO_CREDIT. Surfacing: the candidate carries sufficiency=EXECUTABLE with zero unresolvedReasons or review flag - it is confidently wrong and entirely unflagged -> NOT_SPECIFICALLY_SURFACED (a dangerous silent misstatement, arguably worse than an omission). Completeness: per the rubric's own exclusion condition, a candidate that materially contradicts the claim is scored NONE for completeness (the contradiction lives in verificationStatus). Verification: the representation itself materially contradicts the ground-truth claim (asserting a default condition that does not exist) -> CONTRADICTED, established directly by comparison with the GT per dimension D's necessaryConditionsForContradicted, without needing a separate external verifierFinding.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-6.04-b",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the ANALYZER_RULE/SUBSTANTIVE_REPRESENTATION candidate at sectionRef Section 6.04(b)(iv), sufficiency=EXECUTABLE, states 'greater of $21,000,000 and 35% of Consolidated Adjusted EBITDA, plus (at Borrower's election) amount available under Section 6.04(a)(x), with a corresponding reduction to that basket' - correctly capturing both the threshold AND the cross-basket SHARES_CAPACITY_WITH offset against 6.04(a)(x) that the GT's own commentary flags as the key risk area, rather than treating the two baskets as independent. Completeness: FULL, no material dimension missing. Surfacing: NOT_APPLICABLE. Verification: NOT_EVALUATED, no finding present and no contradiction detected.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "fwrg-def-cadj-ebitda",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: an ANALYZER_DEFINED_TERM/SUBSTANTIVE_REPRESENTATION candidate captures 'Consolidated Adjusted EBITDA: means, with respect to any Person, the sum of Consolidated Net Income plus interest, taxes, D&A, non-cash charges, Transaction Costs and other addbacks' - the GT's own commentary explicitly frames a definitional node capturing this top-level structure (not full line-item itemization of every addback) as the correct, 'clean,' non-misleading representation for this claim, since Phase B never promised full line-item executability for a covenant-defined EBITDA metric. Completeness: FULL under the GT's own stated bar for this claim. Surfacing: NOT_APPLICABLE. Verification: NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-6.01-general-ratio-gated",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION candidate at Section 6.01, sufficiency=EXECUTABLE, correctly models this as a RATIO_TEST (threshold=2 ratio:1.0, condition RATIO_SATISFIED on the Fixed Charge Coverage Ratio) plus a separate condition requiring Payment Conditions be satisfied, and does NOT wrongly impose any dollar cap - matching the GT's explicit description of an uncapped, ratio-and-Payment-Conditions-gated basket with no missing or conflicting dimension. Completeness: FULL. Surfacing: NOT_APPLICABLE. Verification: NOT_EVALUATED, no finding present.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.01-i-flat-or-pct-assets",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION candidate at Section 6.01(i), sufficiency=EXECUTABLE, states 'Cap is greater of $70,000,000 and 5.5% of total consolidated assets' using formula=OTHER rather than the superficially-similar but substantively wrong GREATER_OF_FLAT_OR_PCT_EBITDA label - correctly avoiding the exact percent-of-assets-vs-percent-of-EBITDA ontology-naming trap the GT's own commentary warns about, and matching the GT's figures precisely. Completeness: FULL. Surfacing: NOT_APPLICABLE. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.01-m-secured-notes",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "VERIFICATION_INCOMPLETE",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the only candidate matching this exact claim (Section 6.01(m), 'Permits Indebtedness under the Secured Notes and guarantees thereof') is accountingRole=HONEST_UNRESOLVED, sufficiency=JUDGMENT_REQUIRED, and carries its own embedded note 'VERIFICATION_FAILED: cited section Section 6.01(m) not found' - the system itself could not confirm this citation resolves in the source, so it never reached SUBSTANTIVE_REPRESENTATION status -> fails necessary condition 1, NO_CREDIT. Surfacing: this same candidate is directly anchored to this exact claim and explicitly, genuinely declares its own unresolved/unverified status -> SPECIFICALLY_SURFACED. Completeness: taken at face value the asserted content precisely matches the GT's unconditional Secured-Notes-and-guarantees carve-out with no missing substantive dimension -> FULL (a separate fact from the citation-verification concern). Verification: the embedded 'VERIFICATION_FAILED: cited section not found' is a verification attempt whose own finding is inconclusive -> VERIFICATION_INCOMPLETE.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-6.02-liens",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the only SUBSTANTIVE_REPRESENTATION candidate at sectionRef Section 6.02 covers solely the narrow replacement-lien-for-refinanced-6.01(d)-debt mechanic, not the general Lien prohibition itself that this claim actually is -> INVARIANT_1/6, no same-claim correspondence for the base rule, NO_CREDIT. Surfacing: a DISCOVERY_CANDIDATE/NEEDS_REVIEW entry at the same sectionRef genuinely states 'Excepts Permitted Liens from the general prohibition on Liens' - directly addressing the claim's own core structure -> SPECIFICALLY_SURFACED. Completeness: this same discovery candidate captures the general-prohibition/Permitted-Liens-exception structure but not the specific replacement-lien-for-refinanced-debt detail named in the GT -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-6.03-fundamental-changes",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the two SUBSTANTIVE_REPRESENTATION candidates present (Section 6.01(i), Section 6.04(a)) are unrelated baskets/dispositions, not this fundamental-changes prohibition (INVARIANT_6) - no compiled candidate exists for 6.03 at all, NO_CREDIT. Surfacing: two genuine claim-specific candidates exist - a HONEST_UNRESOLVED entry at Section 6.03(a) describing the merger/consolidation survivor carve-out, and a DISCOVERY_CANDIDATE/NEEDS_REVIEW at Section 6.03 describing the good-faith liquidation/dissolution carve-out for non-Loan-Party Subsidiaries - both anchored to this claim's own substance -> SPECIFICALLY_SURFACED. Completeness: these two candidates cover carve-outs to only 2 of the 3 base prohibitions (merger/consolidation and liquidation/dissolution), not the sale-of-substantially-all-assets prohibition (c) or the base prohibitions' full text -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-6.04-a-abl-collateral-disposal",
+      "creditEligibility": "CREDIT",
+      "surfacingStatus": "NOT_APPLICABLE",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the COMPILED_IR_RULE/SUBSTANTIVE_REPRESENTATION candidate at Section 6.04(a), sufficiency=EXECUTABLE, captures all three required elements precisely - Fair Market Value condition, Borrowing Base Certificate delivery condition for ABL Priority Collateral dispositions, and the $10,000,000/1.0%-of-total-consolidated-assets annual cap using formula=OTHER (correctly avoiding the EBITDA-percentage naming trap, with the candidate's own excerpt explicitly noting 'asset-based, not EBITDA-based; formulaRef corrected to OTHER') - no missing or conflicting dimension. Completeness: FULL. Surfacing: NOT_APPLICABLE. Verification: NOT_EVALUATED, no finding present.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.04-b-notes-collateral-disposal",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "SPECIFICALLY_SURFACED",
+      "representationCompleteness": "FULL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the same-claim candidate at Section 6.04(b) is accountingRole=HONEST_UNRESOLVED, sufficiency=JUDGMENT_REQUIRED, stating the disposition is gated on being 'permitted under Secured Notes Documents or consented to by requisite holders' - correctly recognizing per the GT's own commentary that the actual gating condition lives in a cross-referenced document this package does not contain, rather than inventing a dollar figure or ratio (the DANGEROUS_UNFLAGGED failure mode the GT warns against). Since this candidate is HONEST_UNRESOLVED rather than SUBSTANTIVE_REPRESENTATION, dimension A's necessary condition 1 is not met -> NO_CREDIT (a model 'safe failure' per INVARIANT_8, not substantive credit). Surfacing: this exact-claim candidate explicitly and correctly declares JUDGMENT_REQUIRED with the unresolved cross-document dependency named -> SPECIFICALLY_SURFACED. Completeness: the candidate correctly and completely states the claim's actual conditional structure without inventing content -> FULL. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    },
+    {
+      "caseId": "lsb-6.08-subordinated-debt-payments",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "PARTIAL",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the compiled candidate at Section 6.08(a) only states the base prohibition and generically points to 'permitted payments (i)-(vi)' without individually modeling any of the specific gated baskets - critically, the $500,000/year fixed basket the GT explicitly names never appears as a captured figure anywhere, compiled or flagged -> fails necessary condition 3 (missing material dimensions), NO_CREDIT, consistent with the GT's own predicted 'decomposition-discipline risk' of flattening multiple independently-gated baskets into one rule. Surfacing: only one narrow sub-clause (6.08(a)(v), the Payment-Conditions-gated basket) carries a genuine claim-specific flag; the $500,000 fixed basket and the other carve-outs remain completely silent and unflagged -> per the pattern applied elsewhere in this set, a flag on one minor sub-part does not prevent dangerous silence on the claim's other, more concrete material content -> NOT_SPECIFICALLY_SURFACED. Completeness: the best candidate establishes identity via the base chapeau but omits essentially all of the specific carve-out mechanics and figures -> PARTIAL. Verification: NOT_EVALUATED.",
+      "confidence": "MEDIUM"
+    },
+    {
+      "caseId": "lsb-def-abl-notes-priority-collateral",
+      "creditEligibility": "NO_CREDIT",
+      "surfacingStatus": "NOT_SPECIFICALLY_SURFACED",
+      "representationCompleteness": "NONE",
+      "verificationStatus": "NOT_EVALUATED",
+      "evidenceQuality": "SUFFICIENT",
+      "rationale": "Credit: the candidate pool for this claim is entirely empty (0 of 0 candidates) - no compiled representation, no discovery candidate, no honest-unresolved marker, nothing at all -> fails necessary condition 1, NO_CREDIT. Surfacing: the GT's own commentary states the 'correct' extraction would be an explicit UnresolvedContractItem/UNRESOLVED_CROSS_REFERENCE marker naming the missing Intercreditor Agreement - but the actual evidence packet contains no such marker or any candidate whatsoever, so dimension B's necessary condition (a candidate that explicitly shows unresolved semantics) is not met by anything in the record -> a total, unflagged void on a CRITICAL claim is a dangerous silent omission (INVARIANT_7), not a safe honest-unresolved declaration -> NOT_SPECIFICALLY_SURFACED. Completeness: nothing corresponds to this claim at all -> NONE. Verification: NOT_EVALUATED.",
+      "confidence": "HIGH"
+    }
+  ]
+}

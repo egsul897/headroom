@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "CLAIM_IDENTITY_DESIGN",
+  "generatedAt": "2026-08-29T23:43:00Z",
+  "purpose": "Section 4: a stable, pre-compilation, sibling-safe claim identity - never sectionRef alone.",
+  "primaryIdentitySource": {
+    "source": "MaterialSemanticUnit.semanticUnitId (lib/contract-model/compiler/semantic-coverage/identity.ts's computeSemanticUnitId)",
+    "derivation": "Content-derived from (documentId + anchor span + detection signature) - already proven, already shipped, already used at Phase 3E scale across FWRG/LSB/CONMED.",
+    "whyThisDistinguishesSiblings": "Anchor span (structuralNodeId + charStart/charEnd) is occurrence-safe per Phase 3F.1.2's structural-identity work - two sibling sub-provisions under the same base section have distinct anchors and therefore distinct semanticUnitIds, even when they'd share an identical human-readable sectionRef prefix.",
+    "namespacePrefix": "su: (see identity.ts's claimKeyFromSemanticUnit) - prevents a coincidental string collision between this scheme and the fallback scheme below from silently merging two unrelated claims."
+  },
+  "fallbackIdentitySource": {
+    "source": "The compiler's own candidateRef convention (SemanticCompilerInput.candidateRef's own documented rule): a Phase 2B DiscoveredCandidate.discoveryId where one exists, else the normalized source section ref.",
+    "whenUsed": "Only when no semantic-coverage unit has been built yet for this claim (e.g. a hypothetical future emission point wired directly at the compiler/verifier stage rather than the coverage auditor - not used by this phase's own single wired emission point, which always has a MaterialSemanticUnit available, but reserved for forward compatibility).",
+    "namespacePrefix": "cr:",
+    "residualRiskDisclosed": "candidateRef's OWN fallback (when no discoveryId exists) can in principle still collide across two sibling sub-provisions discovery never separately distinguished - the exact same class of risk Workstream A's evaluator fix addressed for the frozen matcher in Phase 3F.1.5.3. This module does not attempt to re-solve that risk (Section 20 forbids casually reopening the frozen evaluator matcher, and the fallback path is unused by this phase's actual wiring anyway). Per Section 31, a claim identified only through this degraded fallback path, with no discoveryId, is closer to the 'undiscovered claim' case this architecture explicitly does not claim to solve."
+  },
+  "designAlternativesConsidered": [
+    { "alternative": "Invent a brand-new claim-identity scheme from scratch for this phase.", "rejected": "Directly contradicts Section 4's own instruction and the established discipline throughout this codebase's history (Phase 3F.1.2's ARCH-PROP work exists specifically because inventing parallel identity schemes has caused real defects before)." },
+    { "alternative": "Use sectionRef alone.", "rejected": "Section 4 explicitly forbids this - does not distinguish sibling/sub-provisions under the same base section." },
+    { "alternative": "Use a fresh random id per detection.", "rejected": "Breaks Section 11's dedup requirement entirely - every detection would look like a new claim." }
+  ]
+}

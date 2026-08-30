@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "SUPERSESSION_REMEDIATION",
+  "generatedAt": "2026-08-30T00:07:00Z",
+  "purpose": "Section 17: close P1-11 (supersession awareness gap).",
+  "defectId": "P1-11",
+  "consumerAudit": {
+    "namedInScope": ["lib/contract-model/compiler/discovery/pass-a-signals.ts", "lib/contract-model/compiler/semantic-verification/source-inventory.ts"],
+    "confirmedGap": "Both read StructuralNode text directly with zero amendment/operative-state consultation.",
+    "additionalPatternFoundNotFixedThisPhase": [
+      { "location": "coverage-audit/source-inventory.ts (+ pipeline.ts, context-inventory.ts)", "disposition": "Same gap, but this module is under a mechanically-enforced independence contract (tests/contract-model/coverage-audit-independence.test.ts) that forbids importing amendment/* - fixing it the named way would require relaxing a deliberate architecture invariant. Flagged, not touched - same disposition class as P1-10's own prior architecture-change-required category, but resolved this time by finding a fix that does NOT require relaxing the invariant (see design below)." },
+      { "location": "semantic-coverage/router.ts", "disposition": "Same raw-scan pattern at candidate-generation time - not one of the two named files; not fixed this phase." },
+      { "location": "semantic-coverage/cross-reference-audit.ts + pipeline.ts", "disposition": "Already has an ad hoc, narrower version of this exact fix (auditOperativeStateForUnits matches nodeId against operativeState.provisions[].supersededSourceNodeIds). Its own gap: when input.operativeState is null, it silently produces zero findings (fails OPEN, not closed). Disclosed, not fixed - out of the two-named-files scope." },
+      { "location": "context-retrieval/* (structural-context.ts, region-expansion.ts, pipeline.ts, reference-context.ts)", "disposition": "Same raw-text pattern; this subsystem is Workstream E's territory from a prior phase (CTX-01/CTX-02) - not touched." }
+    ]
+  },
+  "designChosen": "Option (b), the functional/service-boundary fix - not a StructuralNode schema field. StructuralNode is a plain in-memory TypeScript interface with 26+ consumers mapped to Prisma's DocumentNode only inside persistence.ts; a schema-level flag would ripple through persistence and every consumer for no real benefit.",
+  "implementation": {
+    "newTypes": "amendment/types.ts: NodeSupersessionStatus (CURRENT_OPERATIVE | KNOWN_SUPERSEDED | UNKNOWN_SUPERSESSION_STATUS), NodeSupersessionRecord, NodeSupersessionResult, NodeSupersessionIndex.",
+    "newFunctions": "amendment/operative-state.ts: buildNodeSupersessionIndex(entries) (generalizes the ad hoc nodeId-keyed lookup cross-reference-audit.ts already does, into a reusable O(1) index covering multiple instruments), getNodeSupersessionStatus(index, documentId, nodeId) (the fail-closed three-way query primitive - no nodeId, ambiguous target, or uncovered document all resolve UNKNOWN, never CURRENT_OPERATIVE), EMPTY_SUPERSESSION_INDEX (the safe default).",
+    "wiredConsumers": "discovery/pass-a-signals.ts + pipeline.ts: new optional trailing supersessionIndex param; every DeterministicCandidate now carries supersessionStatus/supersessionReason. semantic-verification/source-inventory.ts + verify.ts: new optional structuralNodeId/supersessionIndex params; determineStatus downgrades to REVIEW_REQUIRED only on an affirmed KNOWN_SUPERSEDED verdict, never on UNKNOWN.",
+    "backwardCompatibility": "All new params are optional/trailing - every existing call site (production and ~30 test call sites) compiles and behaves unchanged."
+  },
+  "historicalVsOperativeDistinction": "Superseded nodes remain generated as candidates - history stays queryable (Section 12's own historicalQueryability requirement) - they are just honestly labeled rather than silently treated as current."
+}

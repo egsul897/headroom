@@ -192,6 +192,29 @@ export type OperativeStateStatus = "OPERATIVE_STATE_RESOLVED" | "OPERATIVE_STATE
 
 export type ProvisionTargetResolutionStatus = "UNIQUE" | "AMBIGUOUS" | "NOT_FOUND";
 
+// ---------------------------------------------------------------------------
+// Phase 3F.1.5.R (sub-task 3) - fail-closed composition with the structural
+// index's OWN health diagnostics (structural-index.ts's healthDiagnostics(),
+// I1-I16). Orthogonal to ProvisionTargetResolutionStatus above: a base
+// reference can be a genuinely UNIQUE legal-reference match (exactly one
+// physical occurrence carries this section/definition) while that SAME
+// physical occurrence is independently flagged by the structural index as
+// corrupted (e.g. INVALID_SOURCE_SPAN, OVERLAPPING_INCOMPATIBLE_SPAN,
+// CYCLE - any ERROR-severity finding, never an INFO one, which the index's
+// own header comment already treats as a normal, expected drafting
+// reality never worth gating on). Before this fix, operative-state.ts never
+// called healthDiagnostics() at all, so a section already known-corrupted
+// at the structural layer could still be confidently reported
+// OPERATIVE_STATE_RESOLVED once a real amendment targeted it - the two
+// subsystems never composed (docs/foundation-remediation/
+// 13-remaining-foundation-risks.json's "operativeStateHealthDiagnosticsGap",
+// reproduced by tests/foundation-audit/combined-failures.test.ts's first
+// describe block). OPERATIVE_CONFIDENCE now requires
+// STRUCTURAL_HEALTH_SUFFICIENT, not merely a unique target match.
+// ---------------------------------------------------------------------------
+
+export type ProvisionStructuralHealthStatus = "STRUCTURAL_HEALTH_SUFFICIENT" | "STRUCTURAL_HEALTH_UNSAFE";
+
 export interface AmendmentChainEntry {
   effectId: string;
   amendmentDocumentId: string;
@@ -234,6 +257,10 @@ export interface OperativeProvisionView {
   targetResolutionReason: string | null;
   /** Phase 3F.1.4 §6B - the real physical occurrence (SECTION) or definition (DEFINITION) identities the base reference matched when AMBIGUOUS (2+ genuinely distinct candidates) - never a guessed pick among them. Always empty when targetResolutionStatus is UNIQUE or NOT_FOUND. */
   candidateSourceNodeIds: string[];
+  /** Phase 3F.1.5.R (sub-task 3) - whether the structural index's OWN health diagnostics consider this provision's resolved physical occurrence (or a structural descendant of it) safe to trust. Independent of targetResolutionStatus: a target can be UNIQUE and still STRUCTURAL_HEALTH_UNSAFE. Always STRUCTURAL_HEALTH_SUFFICIENT (vacuously - no physical occurrence was resolved to check) when targetResolutionStatus is not UNIQUE. Only a UNIQUE target AND a SUFFICIENT structural health verdict may ever produce a confidently-attached currentText/OPERATIVE_STATE_RESOLVED status. */
+  structuralHealthStatus: ProvisionStructuralHealthStatus;
+  /** Populated only when structuralHealthStatus is STRUCTURAL_HEALTH_UNSAFE - names the real ERROR-severity structural-index finding(s) (code + message) that blocked confidence, matching targetResolutionReason's own "tell the reviewer WHY" discipline. Empty when SUFFICIENT. */
+  structuralHealthIssues: string[];
   /** Phase 3F.1.4 §6B - the most recent applied effect's own captured newText, preserved for reviewer visibility EVEN WHEN targetResolutionStatus is not UNIQUE. "We know what the amendment says" (this field, once any effect supplies newText) is never conflated with "we know exactly what operative provision it changes" (currentText, gated on targetResolutionStatus === "UNIQUE"). Null when no applied effect ever supplied newText, or the most recent applied effect was a deletion. */
   attemptedText: string | null;
   /** Explicit review-required signal (the audit's own required "review flag" disclosure) - true whenever status is not OPERATIVE_STATE_RESOLVED, so a consumer never needs to enumerate every non-RESOLVED status value itself. */
@@ -277,4 +304,66 @@ export interface AmendmentPipelineSummary {
   wallClockMs: number;
   inputTokens: number;
   outputTokens: number;
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.5 Workstream B - P1-11 (Q8 supersession-awareness) fix.
+//
+// The audit's finding: consumers that read a StructuralNode's own text
+// directly (lib/contract-model/compiler/discovery/pass-a-signals.ts,
+// lib/contract-model/compiler/semantic-verification/source-inventory.ts,
+// and any sibling with the same shape) never went through this module at
+// all, so a base document's ORIGINAL text for a provision that has since
+// been superseded by a real, resolved amendment looked exactly as "live"
+// to them as a provision that was never amended. `currentText`/
+// `supersededSourceNodeIds` on OperativeProvisionView already carry the
+// right ANSWER per-provision; what was missing was a generalized,
+// document-shape-agnostic way for a node-level (not provision-level)
+// consumer to ask "is THIS specific physical occurrence still operative?"
+// and get a DETERMINISTIC three-way answer - CURRENT_OPERATIVE,
+// KNOWN_SUPERSEDED (with provenance: which effect, which amendment
+// document, as of when), or - critically - UNKNOWN_SUPERSESSION_STATUS
+// whenever the evidence does not support either of the first two, so a
+// consumer can never silently default an unresolved case to "safely
+// current." No family/company/document-specific assumption appears
+// anywhere below - this operates purely on nodeId/documentId identity and
+// the real OperativeContractState objects a caller supplies, exactly the
+// same generalization discipline every other Phase 2G/3F.1.4 fix in this
+// file already uses.
+// ---------------------------------------------------------------------------
+
+export type NodeSupersessionStatus = "CURRENT_OPERATIVE" | "KNOWN_SUPERSEDED" | "UNKNOWN_SUPERSESSION_STATUS";
+
+/** Provenance for a KNOWN_SUPERSEDED verdict - "why" (which amendment, what date), never a bare boolean. Populated ONLY when status is KNOWN_SUPERSEDED. */
+export interface NodeSupersessionRecord {
+  nodeId: string;
+  instrumentKey: string;
+  provisionKey: string;
+  supersededByEffectId: string;
+  supersededByAmendmentDocumentId: string;
+  /** The effective date of the amendment effect that superseded this node, ISO date string - null only if the superseding effect's own effective date evidence was itself null (should not occur for an APPLIED effect, but never assumed). */
+  supersededEffectiveDate: string | null;
+}
+
+export interface NodeSupersessionResult {
+  status: NodeSupersessionStatus;
+  record: NodeSupersessionRecord | null;
+  /** Always populated - explains the verdict, including WHY a verdict is UNKNOWN (never checked / ambiguous target / no node identity supplied), mirroring targetResolutionReason's own disclosure-quality discipline above. */
+  reason: string;
+}
+
+/**
+ * A queryable index built once per (package/analysis-date) from every
+ * OperativeContractState the caller has actually computed - see
+ * `buildNodeSupersessionIndex` in operative-state.ts. Deliberately a plain
+ * data structure (no class) so it is trivially constructible in tests and
+ * serializable if a caller ever wants to log/cache it.
+ */
+export interface NodeSupersessionIndex {
+  /** documentIds for which a real OperativeContractState computation actually ran - a node whose documentId is NOT in this set was never checked at all, and must resolve UNKNOWN, never CURRENT_OPERATIVE by silent default. */
+  coveredDocumentIds: Set<string>;
+  /** nodeId -> the record explaining why it is superseded. */
+  supersededByNodeId: Map<string, NodeSupersessionRecord>;
+  /** nodeIds that are one of 2+ real physical occurrences an amendment target reference could not be uniquely attached to (ProvisionTargetResolutionStatus === "AMBIGUOUS") - each such occurrence's own individual supersession status is genuinely unknowable without guessing which one the amendment meant, so every one of them resolves UNKNOWN rather than either extreme. */
+  ambiguousNodeIds: Set<string>;
 }

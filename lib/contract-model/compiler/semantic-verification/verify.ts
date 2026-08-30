@@ -12,12 +12,13 @@
  * it was given; it never edits/repairs/replaces any IRRule/IRDefinition.
  */
 import { buildSourceInventory } from "./source-inventory";
+import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex } from "../amendment/operative-state";
 import { buildIrInventory } from "./ir-inventory";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
 import { runAdversarialSemanticReview } from "./reviewer";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION } from "./types";
-import type { IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, VerificationInput } from "./types";
+import type { IrInventory, ReconciliationResult, SemanticVerificationFinding, SemanticVerificationResult, SemanticVerificationSeverity, SemanticVerificationStatus, SourceInventory, VerificationInput } from "./types";
 import type { StageCaller } from "../llm-caller";
 import type { SemanticCompilerInput } from "../semantic/types";
 
@@ -102,12 +103,27 @@ function mergeFindings(deterministic: SemanticVerificationFinding[], semantic: S
  * blesses an IR as fully trusted merely because it matches text retrieved
  * under known-incomplete conditions (task §18's explicit requirement).
  */
-function determineStatus(compilerInput: SemanticCompilerInput, findings: SemanticVerificationFinding[], semanticReviewInvoked: boolean, semanticReviewFailed: boolean): SemanticVerificationStatus {
+function determineStatus(compilerInput: SemanticCompilerInput, findings: SemanticVerificationFinding[], semanticReviewInvoked: boolean, semanticReviewFailed: boolean, sourceInventory: SourceInventory): SemanticVerificationStatus {
   if (semanticReviewInvoked && semanticReviewFailed) return "VERIFICATION_FAILED";
   if (findings.some((f) => f.severity === "MATERIAL")) return "MATERIAL_DISCREPANCY";
   if (compilerInput.contextBundle.sufficiencyState !== "SUFFICIENT") return "VERIFICATION_INCOMPLETE";
   const lineage = compilerInput.operativeLineage;
   if (lineage && (lineage.operativeStatus === "OPERATIVE_STATE_CONFLICTED" || lineage.operativeStatus === "OPERATIVE_STATE_REVIEW_REQUIRED")) return "REVIEW_REQUIRED";
+  // Phase 3F.1.5 Workstream B (P1-11/Q8 fix) - an AFFIRMATIVELY confirmed
+  // KNOWN_SUPERSEDED verdict (never UNKNOWN_SUPERSESSION_STATUS - that case
+  // is left to the same honest-but-not-blocking treatment
+  // compilerInput.operativeLineage === null already receives above, per
+  // this module's own established "never amended is a legitimate state"
+  // discipline) means the very source text this candidate's reconciliation
+  // was built against is real, disclosed, no-longer-governing text - this
+  // must never be silently blessed as VERIFIED_NO_MATERIAL_GAP_FOUND
+  // merely because its numbers happen to reconcile against the IR. Only
+  // reachable when a caller actually supplied both a real physical nodeId
+  // and a real OperativeContractState (see verifyCompiledCandidate above) -
+  // never triggered merely because supersession was never checked, which
+  // is exactly the fail-closed-without-being-fail-loud distinction task
+  // §23 already draws for the rest of this pipeline.
+  if (sourceInventory.supersessionStatus === "KNOWN_SUPERSEDED") return "REVIEW_REQUIRED";
   if (findings.some((f) => f.severity === "UNCERTAIN")) return "REVIEW_REQUIRED";
   if (findings.length > 0) return "VERIFIED_WITH_NON_MATERIAL_FINDINGS";
   return "VERIFIED_NO_MATERIAL_GAP_FOUND";
@@ -116,7 +132,25 @@ function determineStatus(compilerInput: SemanticCompilerInput, findings: Semanti
 export async function verifyCompiledCandidate(input: VerificationInput, options: VerifyOptions = {}): Promise<SemanticVerificationResult> {
   const { compilerInput, compilationResult } = input;
 
-  const sourceInventory = buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText, compilerInput.sourceDocumentId, compilerInput.sourceSectionRef ?? "(no section ref)", null);
+  // Phase 3F.1.5 Workstream B (P1-11/Q8 fix) - real physical node identity
+  // and the real, already-computed OperativeContractState for this exact
+  // instrument are both already present on compilerInput (toolAccess is an
+  // "allowed input" per this module's own independence contract above -
+  // operative contract state/lineage - and toolAccess.structuralIndex is
+  // the same shared, allowed low-level navigation primitive). Resolving
+  // both here, rather than inside source-inventory.ts itself, keeps that
+  // module a pure function of its own explicit arguments (no index/state
+  // reach-around) while still giving it everything it needs to answer
+  // honestly. A section ref that does not resolve to a UNIQUE physical
+  // node (ambiguous or not found) intentionally yields nodeId === null,
+  // which getNodeSupersessionStatus resolves to UNKNOWN_SUPERSESSION_STATUS
+  // - never guessed.
+  const structuralIndex = compilerInput.toolAccess.structuralIndex;
+  const nodeResolution = compilerInput.sourceSectionRef ? structuralIndex.resolveUniqueNodeByRef(compilerInput.sourceDocumentId, compilerInput.sourceSectionRef) : null;
+  const structuralNodeId = nodeResolution?.status === "UNIQUE" ? nodeResolution.node.nodeId : null;
+  const supersessionIndex = compilerInput.toolAccess.operativeState ? buildNodeSupersessionIndex([{ baseDocumentId: compilerInput.sourceDocumentId, state: compilerInput.toolAccess.operativeState }]) : EMPTY_SUPERSESSION_INDEX;
+
+  const sourceInventory = buildSourceInventory(compilerInput.candidateRef, compilerInput.operativeSourceText, compilerInput.sourceDocumentId, compilerInput.sourceSectionRef ?? "(no section ref)", null, structuralNodeId, supersessionIndex);
   const irInventory = buildIrInventory(compilerInput.candidateRef, compilationResult.rules, compilationResult.definitions);
   const reconciliation = reconcileInventories(sourceInventory, irInventory);
   const deterministicFindings = buildFindingsFromReconciliation(input, reconciliation);
@@ -139,7 +173,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
 
   return {
     candidateRef: compilerInput.candidateRef,
-    status: determineStatus(compilerInput, allFindings, semanticReviewInvoked, semanticReviewFailed),
+    status: determineStatus(compilerInput, allFindings, semanticReviewInvoked, semanticReviewFailed, sourceInventory),
     findings: allFindings,
     sourceInventory,
     irInventory,

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "CREDIT_ELIGIBILITY_RESULTS",
+  "generatedAt": "2026-08-29T23:15:00Z",
+  "purpose": "Section 15/23: full results for the primary safety-critical dimension - creditEligibility.",
+  "certificationClass": "SAFETY_CRITICAL",
+  "testsRequired": {
+    "interReviewerReproducibility": { "description": "Can 3 independent adjudicators reproduce the same CREDIT/NO_CREDIT call on the same evidence?", "threshold": 0.90, "observed": 0.9574468085106383, "result": "PASSED" },
+    "evaluatorVsIndependentConsensus": { "description": "Does the evaluator's own atomic disposition agree with the independent majority consensus?", "threshold": 0.90, "observed": 0.8936170212765957, "result": "FAILED", "note": "Per Section 24, reproducibility and accuracy are two distinct required tests for a safety-critical dimension. creditEligibility passes the first (interReviewer) but fails the second (evaluatorVsConsensus) by 0.64 percentage points (89.36% vs 90% required)." }
+  },
+  "falseCreditControlsCrossCheck": {
+    "description": "All 14 historical false-credit controls: do all 3 adjudicators AND the evaluator's own sealed disposition agree these are NO_CREDIT?",
+    "result": "ALL 14 PASS - unanimous NO_CREDIT across all 3 adjudicators and the evaluator, with zero regression.",
+    "detail": "See 18-known-false-credit-controls.json for the full per-case table."
+  },
+  "evaluatorVsConsensusMismatches": [
+    { "caseId": "doc-a::I::applicable-ebitda", "independentConsensus": "CREDIT", "evaluatorSealed": "NO_CREDIT" },
+    { "caseId": "doc-a::X::10.01a-us-guaranty", "independentConsensus": "NO_CREDIT", "evaluatorSealed": "CREDIT" },
+    { "caseId": "fwrg-6.01-j", "independentConsensus": "CREDIT", "evaluatorSealed": "NO_CREDIT" },
+    { "caseId": "fwrg-6.04-a-iii", "independentConsensus": "CREDIT", "evaluatorSealed": "NO_CREDIT" },
+    { "caseId": "lsb-6.01-general-ratio-gated", "independentConsensus": "CREDIT", "evaluatorSealed": "NO_CREDIT" }
+  ],
+  "mismatchPatternObservation": "4 of the 5 mismatches are the evaluator being MORE conservative than the independent human-equivalent consensus (evaluator says NO_CREDIT where consensus says CREDIT) - i.e. the evaluator's frozen matcher is stricter about claim-identity correspondence than the median adjudicator, consistent with Workstream A's deliberately conservative sibling-claim-identity discipline (Section 10). Exactly 1 mismatch (doc-a::X::10.01a-us-guaranty) runs the other direction (evaluator more permissive than consensus) and is flagged in 22-remaining-evaluator-risks.json for scrutiny, since an evaluator-permissive/reviewer-strict mismatch is the more safety-relevant failure mode of the two.",
+  "conclusion": "creditEligibility passes its inter-reviewer reproducibility gate but fails its evaluator-vs-consensus accuracy gate. Per Section 24, BOTH tests are required for a safety-critical dimension to certify; this dimension does not fully certify this phase."
+}

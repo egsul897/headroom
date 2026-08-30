@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "SECTION_28_KNOWN_PACKAGE_REGRESSION",
+  "generatedAt": "2026-08-30T03:33:30.840Z",
+  "purpose": "Section 28: run FWRG/LSB/CONMED/DSGR through real, already-existing, zero-cost regression scripts/fixtures; report exactly what real data is obtainable, honestly disclosing any gap rather than fabricating numbers. NO package-specific production tuning performed as a result of these numbers.",
+  "noBenchmarkGamingConfirmation": "This script performs no branching, tuning, or threshold adjustment based on any package's identity or results. It only calls existing, unmodified production functions (runSemanticCoverageAudit, recordClaimReviewsFromDocumentCoverage) against real fixture data and reports the output verbatim.",
+  "reproducibilityAndFixtureFreshnessFinding": {
+    "severity": "INFORMATIONAL",
+    "description": "Running scripts/phase-3f1-dsgr-remediation-regression.ts and scripts/phase-2g-rerun-conmed.ts (both real, pre-existing scripts, invoked read-only for this audit) rewrites their own checked-in preserved-evidence fixture files as a documented side effect of their own design (each calls a local preserve()/writeFileSync helper). This session confirmed the resulting numbers DIFFER materially from the versions already committed to the repository (e.g. DSGR total unit count 7517 -> 7349, contextuallyElevatedCount 552 -> 0) -- not because of nondeterminism (two consecutive reruns at the SAME commit, performed explicitly to test this, produced byte-identical output modulo timestamps/wallClockMs -- direct, positive evidence for Architecture Invariant #21), but because the checked-in fixture was generated at an earlier commit in this branch's history, before subsequent real structural/contextual-elevation fixes landed. All fixture files this audit's scripts touched (tests/fixtures/unseen-packages/phase-2f-freeze/phase-2g/conmed-amendment-regression.json and tests/fixtures/unseen-packages/phase-3f1-dsgr-remediation-regression/{final-summary,stage5-operative-state-recomputed,stage8-coverage-result}.json) were deliberately reverted via `git checkout --` immediately after this audit captured the numbers it needed, per this certification's zero-production-and-fixture-change discipline -- this audit does not consider it its place to silently refresh another phase's preserved historical evidence as an incidental side effect of a read-only certification run. The numbers reported below for CONMED/DSGR reflect this session's OWN fresh, current-commit runs (captured in /tmp/audit-out before revert), not the (now-restored) stale committed fixture."
+  },
+  "packages": {
+    "FWRG": {
+      "packageKey": "FWRG",
+      "dataAvailability": "FULL_SEMANTIC_COVERAGE",
+      "disclosedGap": null,
+      "documentCount": 1,
+      "structuralNodeCount": 418,
+      "residualStructuralAnomalies": {
+        "duplicateLegalLabels": 0,
+        "errorFindings": 0,
+        "infoFindings": 0
+      },
+      "discoveredCandidateCount": 252,
+      "totalMaterialSemanticUnits": 711,
+      "materialTierUnits": 398,
+      "coverageStateBreakdown": {
+        "UNREPRESENTED": 395,
+        "AMBIGUOUS_MATCH": 93,
+        "FULLY_REPRESENTED_REVIEW_REQUIRED": 3,
+        "SOURCE_CONTEXT_INCOMPLETE": 220
+      },
+      "dangerousUnaccountedCount": 395,
+      "documentGateStatuses": [
+        {
+          "documentId": "fwrg-article-6",
+          "gateStatus": "DOCUMENT_GATE_FAILED"
+        }
+      ],
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+      "claimReviewItemsWouldBeCreated": 398,
+      "claimReviewByReasonCode": null,
+      "materialUnitsWithoutClaimReviewItem": 0,
+      "operativeStateStatus": null,
+      "operativeStateUnattachedEffectsCount": null,
+      "amendmentIndependentVerificationAllPassed": null,
+      "amendmentDangerousUnflaggedCount": null
+    },
+    "LSB": {
+      "packageKey": "LSB",
+      "dataAvailability": "FULL_SEMANTIC_COVERAGE",
+      "disclosedGap": null,
+      "documentCount": 1,
+      "structuralNodeCount": 76,
+      "residualStructuralAnomalies": {
+        "duplicateLegalLabels": 0,
+        "errorFindings": 0,
+        "infoFindings": 0
+      },
+      "discoveredCandidateCount": 82,
+      "totalMaterialSemanticUnits": 116,
+      "materialTierUnits": 79,
+      "coverageStateBreakdown": {
+        "UNREPRESENTED": 77,
+        "AMBIGUOUS_MATCH": 21,
+        "FULLY_REPRESENTED_REVIEW_REQUIRED": 2,
+        "SOURCE_CONTEXT_INCOMPLETE": 16
+      },
+      "dangerousUnaccountedCount": 77,
+      "documentGateStatuses": [
+        {
+          "documentId": "lsb-article-6",
+          "gateStatus": "DOCUMENT_GATE_FAILED"
+        }
+      ],
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+      "claimReviewItemsWouldBeCreated": 79,
+      "claimReviewByReasonCode": null,
+      "materialUnitsWithoutClaimReviewItem": 0,
+      "operativeStateStatus": null,
+      "operativeStateUnattachedEffectsCount": null,
+      "amendmentIndependentVerificationAllPassed": null,
+      "amendmentDangerousUnflaggedCount": null
+    },
+    "CONMED": {
+      "packageKey": "CONMED",
+      "dataAvailability": "STRUCTURAL_AND_AMENDMENT_ONLY",
+      "disclosedGap": "No semantic-coverage (Phase 3E) fixture exists for CONMED anywhere in this repository — unlike FWRG/LSB (whole-document Layer A/B coverage regressions exist) and DSGR (a full coverage run was produced this session by the DSGR remediation regression), CONMED has never been run through runSemanticCoverageAudit. Discovered-material-claim counts, semantic-representation-state counts, and claim-review-item-would-be-created counts are therefore honestly NOT AVAILABLE zero-cost for CONMED — reported as null below rather than fabricated. This mirrors this repository's own honest disclosure elsewhere (e.g. phase-3f1-5-r-safe-failure-volume-analysis.ts covering only FWRG/LSB) and does not represent new production tuning of any kind.",
+      "documentCount": 4,
+      "structuralNodeCount": 2695,
+      "residualStructuralAnomalies": {
+        "duplicateLegalLabels": 366,
+        "errorFindings": 0,
+        "infoFindings": 1070
+      },
+      "discoveredCandidateCount": null,
+      "totalMaterialSemanticUnits": null,
+      "materialTierUnits": null,
+      "coverageStateBreakdown": null,
+      "dangerousUnaccountedCount": null,
+      "documentGateStatuses": null,
+      "packageCoverageStatus": null,
+      "claimReviewItemsWouldBeCreated": null,
+      "claimReviewByReasonCode": null,
+      "materialUnitsWithoutClaimReviewItem": null,
+      "operativeStateStatus": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "operativeStateUnattachedEffectsCount": 4,
+      "amendmentIndependentVerificationAllPassed": false,
+      "amendmentDangerousUnflaggedCount": 0
+    },
+    "DSGR": {
+      "packageKey": "DSGR",
+      "dataAvailability": "FULL_SEMANTIC_COVERAGE",
+      "disclosedGap": "Reused a preserved, already-computed (this session, zero-cost) DocumentCoverageResult fixture from scripts/phase-3f1-dsgr-remediation-regression.ts rather than rerunning the full pipeline a second time — the fixture is real, not synthetic, and was produced from the real 4-document DSGR package.",
+      "documentCount": 4,
+      "structuralNodeCount": 4149,
+      "residualStructuralAnomalies": {
+        "duplicateLegalLabels": 517,
+        "errorFindings": 0,
+        "infoFindings": 1518
+      },
+      "discoveredCandidateCount": 2847,
+      "totalMaterialSemanticUnits": 7349,
+      "materialTierUnits": 2299,
+      "coverageStateBreakdown": {
+        "UNREPRESENTED": 5979,
+        "AMBIGUOUS_MATCH": 1370
+      },
+      "dangerousUnaccountedCount": 2299,
+      "documentGateStatuses": [
+        {
+          "documentId": "doc-a",
+          "gateStatus": "DOCUMENT_GATE_FAILED"
+        },
+        {
+          "documentId": "doc-b",
+          "gateStatus": "DOCUMENT_GATE_FAILED"
+        },
+        {
+          "documentId": "doc-c",
+          "gateStatus": "DOCUMENT_GATE_FAILED"
+        },
+        {
+          "documentId": "doc-d",
+          "gateStatus": "DOCUMENT_GATE_FAILED"
+        }
+      ],
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+      "claimReviewItemsWouldBeCreated": 2299,
+      "claimReviewByReasonCode": {
+        "MISSING_REQUIRED_SEMANTIC_DIMENSION": 2299
+      },
+      "materialUnitsWithoutClaimReviewItem": 0,
+      "operativeStateStatus": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "operativeStateUnattachedEffectsCount": 4,
+      "amendmentIndependentVerificationAllPassed": null,
+      "amendmentDangerousUnflaggedCount": null
+    }
+  },
+  "dangerousSilentFailureCheck": {
+    "description": "For every package with a real semantic-coverage run (FWRG, LSB, DSGR), every CRITICAL/MATERIAL semantic unit in a non-FULLY_REPRESENTED_VERIFIED coverage state must have produced exactly one ClaimReviewItem — materialUnitsWithoutClaimReviewItem must be 0 for all three.",
+    "fwrg": 0,
+    "lsb": 0,
+    "dsgr": 0,
+    "conmed": "NOT_APPLICABLE — no semantic-coverage run exists for CONMED (see disclosedGap)",
+    "allZero": true
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "SAFE_SURFACING_RESULTS",
+  "generatedAt": "2026-08-29T23:16:00Z",
+  "purpose": "Section 15/23: full results for the second safety-critical dimension - surfacingStatus, scoped to applicable NO_CREDIT cases.",
+  "certificationClass": "SAFETY_CRITICAL",
+  "applicableScope": "36 of 47 cases (cases where a 2-of-3 majority of adjudicators independently assigned creditEligibility=NO_CREDIT).",
+  "testsRequired": {
+    "interReviewerReproducibility": { "description": "Can 3 independent adjudicators reproduce the same SPECIFICALLY_SURFACED / NOT_SPECIFICALLY_SURFACED / NOT_APPLICABLE call, on the same NO_CREDIT-applicable evidence?", "threshold": 0.90, "observed": 0.7407407407407408, "result": "FAILED" },
+    "evaluatorVsIndependentConsensus": { "description": "Does the evaluator's own atomic disposition agree with the independent majority consensus, on applicable cases?", "threshold": 0.90, "observed": 0.6666666666666666, "result": "FAILED" }
+  },
+  "bothTestsFail": true,
+  "dominantConfusion": "SPECIFICALLY_SURFACED vs NOT_SPECIFICALLY_SURFACED: 26 of 36 applicable cases have at least one adjudicator pair split exactly on this boundary (72% of applicable cases show disagreement on the single most safety-relevant distinction in the entire contract).",
+  "evaluatorVsConsensusMismatchSample": [
+    { "caseId": "a-7.1", "independentConsensus": "SPECIFICALLY_SURFACED", "evaluatorSealed": "NOT_SPECIFICALLY_SURFACED", "direction": "evaluator_more_conservative" },
+    { "caseId": "a-7.10", "independentConsensus": "SPECIFICALLY_SURFACED", "evaluatorSealed": "NOT_SPECIFICALLY_SURFACED", "direction": "evaluator_more_conservative" },
+    { "caseId": "doc-a::I::1.04-accounting-terms-gaap", "independentConsensus": "SPECIFICALLY_SURFACED", "evaluatorSealed": "NOT_SPECIFICALLY_SURFACED", "direction": "evaluator_more_conservative" },
+    { "caseId": "doc-a::I::interest-coverage-ratio", "independentConsensus": "NOT_SPECIFICALLY_SURFACED", "evaluatorSealed": "SPECIFICALLY_SURFACED", "direction": "evaluator_more_permissive_SAFETY_RELEVANT" },
+    { "caseId": "doc-a::VI::6.05-ip-flush-prohibition", "independentConsensus": "NOT_SPECIFICALLY_SURFACED", "evaluatorSealed": "SPECIFICALLY_SURFACED", "direction": "evaluator_more_permissive_SAFETY_RELEVANT", "note": "This is one of the 14 permanent false-credit controls. Its creditEligibility is correctly NO_CREDIT (see 18), but the evaluator's surfacingStatus call disagrees with the independent consensus on whether it was safely surfaced." },
+    { "caseId": "doc-a::VI::6.08b-chapeau", "independentConsensus": "NOT_SPECIFICALLY_SURFACED", "evaluatorSealed": "SPECIFICALLY_SURFACED", "direction": "evaluator_more_permissive_SAFETY_RELEVANT", "note": "Also one of the 14 permanent false-credit controls, same pattern as above." },
+    { "caseId": "doc-b::VI::6-01-lead-in", "independentConsensus": "NOT_SPECIFICALLY_SURFACED", "evaluatorSealed": "SPECIFICALLY_SURFACED", "direction": "evaluator_more_permissive_SAFETY_RELEVANT" },
+    { "caseId": "doc-d::VI::6-04-chapeau", "independentConsensus": "NOT_SPECIFICALLY_SURFACED", "evaluatorSealed": "SPECIFICALLY_SURFACED", "direction": "evaluator_more_permissive_SAFETY_RELEVANT" }
+  ],
+  "safetyImplication": "The evaluator-more-permissive direction (evaluator claims SPECIFICALLY_SURFACED when independent adjudicators say NOT_SPECIFICALLY_SURFACED) is the dangerous direction: it means the atomic contract could certify a claim as 'safely failed' when independent human-equivalent review believes it was actually a silent, dangerous omission. Several of these mismatches occur on chapeau/lead-in cases that ARE among the 14 permanent false-credit controls - meaning even on cases the evaluator gets right for creditEligibility (NO_CREDIT, correctly), its surfacingStatus call for the SAME case is not reliably agreed upon by independent reviewers. This is a direct, concrete illustration of why surfacingStatus is treated as a separate atomic dimension from creditEligibility (Section 4B) rather than assumed to follow from it.",
+  "conclusion": "surfacingStatus fails BOTH required tests (Section 24: reproducibility AND accuracy). This is the dimension most responsible for the Section 30 closure gate failing this phase. Per Section 9's definition, this means the evaluator's own dangerousSilentOmission flag cannot yet be trusted at the reliability level required to certify Headroom's answers to CFO-facing computation."
+}

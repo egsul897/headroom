@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "REMAINING_EVALUATOR_RISKS",
+  "generatedAt": "2026-08-29T23:35:00Z",
+  "purpose": "Carry forward disclosed matcher risks from prior phases, plus disclose any new risks this validation study surfaced.",
+  "carriedForwardFromPhase3F1_5_3_untouchedThisPhase": [
+    {
+      "riskId": "DIFFERENT_BASE_SECTION_FALSE_MATCHES",
+      "description": "The frozen matcher can still, in some structural configurations, match a candidate anchored under a different base section than the ground-truth claim's own base section, when vocabulary/defined-term overlap is high. Not fixed this phase per Section 2's explicit instruction (belongs in a later bounded residual foundation closure).",
+      "status": "UNCHANGED - not investigated or touched this phase, matcher frozen throughout."
+    },
+    {
+      "riskId": "BARE_UNDIFFERENTIATED_SECTION_DEFINITIONAL_OVERMATCH",
+      "description": "Bare/undifferentiated section references (a section with no sub-lettering) can still overmatch against a more specific candidate that only partially represents the section's full scope. Not fixed this phase per Section 2's explicit instruction.",
+      "status": "UNCHANGED - not investigated or touched this phase, matcher frozen throughout."
+    }
+  ],
+  "newRisksSurfacedThisPhase": [
+    {
+      "riskId": "SURFACING_STATUS_NOT_YET_RELIABLE",
+      "severity": "HIGH - this is the primary finding of this phase.",
+      "description": "surfacingStatus (Section 4B), despite being isolated into its own atomic dimension away from creditEligibility and representationCompleteness, still fails BOTH the inter-reviewer reproducibility gate (74.1% vs 90% required) and the evaluator-vs-consensus accuracy gate (66.7% vs 90% required). The dominant failure mode is the SPECIFICALLY_SURFACED vs NOT_SPECIFICALLY_SURFACED boundary itself - independent reviewers, and the evaluator, cannot yet reliably agree on whether a given NO_CREDIT claim's failure was a safe, specific flag or a silent, dangerous gap.",
+      "safetyRelevantDirection": "Several mismatches run in the dangerous direction: the evaluator claims SPECIFICALLY_SURFACED where independent consensus says NOT_SPECIFICALLY_SURFACED, including on 2 of the 14 permanent false-credit controls (doc-a::VI::6.05-ip-flush-prohibition, doc-a::VI::6.08b-chapeau). Those controls still correctly resolve creditEligibility=NO_CREDIT (Section 16's gate, which only checks credit, still passes) - but their surfacingStatus disposition is not yet trustworthy, meaning dangerousSilentOmission itself (Section 9) is not yet reliable on cases that most need it to be.",
+      "recommendedDirectionForFutureWork": "This is exactly the kind of finding Section 32 anticipates: it requires a separate human architecture decision, not an in-phase patch. Candidate directions for a future phase (not undertaken now): (a) a sharper, more literal operational definition of 'claim-specific' surfacing evidence than the current rubric provides, since adjudicators appear to be using materially different implicit thresholds for what counts as claim-specific vs generic; (b) tightening surfacedUnsafe() in matching.ts itself (a matcher change, out of scope this phase); (c) a larger, better-powered reproducibility study specifically targeting the SPECIFICALLY_SURFACED/NOT_SPECIFICALLY_SURFACED boundary before any further certification attempt."
+    },
+    {
+      "riskId": "CREDIT_ELIGIBILITY_EVALUATOR_VS_CONSENSUS_MARGINAL_FAIL",
+      "severity": "MODERATE",
+      "description": "creditEligibility passes its inter-reviewer reproducibility gate comfortably (95.7%) but fails its evaluator-vs-consensus accuracy gate narrowly (89.36% vs 90% required, a single-case margin on n=47). 4 of 5 mismatches are the evaluator being MORE conservative (NO_CREDIT where independent consensus says CREDIT) - consistent with, and likely a direct consequence of, Workstream A's deliberately strict sibling-claim-identity discipline (Section 10) causing the evaluator to reject some correspondences that human-equivalent reviewers judge acceptable. Exactly 1 mismatch (doc-a::X::10.01a-us-guaranty) runs the other, more safety-relevant direction (evaluator says CREDIT where consensus says NO_CREDIT) and should be manually re-examined in any follow-up phase, though it is a single case and not itself dispositive of a systemic issue.",
+      "recommendedDirectionForFutureWork": "A larger validation sample (the current n=47 makes a single case worth ~2 percentage points) would clarify whether this is noise near the threshold or a real, small conservative-bias gap. Not addressed this phase per Section 25's no-patching-after-results rule."
+    },
+    {
+      "riskId": "REPRESENTATION_COMPLETENESS_FULL_PARTIAL_BOUNDARY_HARD",
+      "severity": "LOW (diagnostic, non-blocking by design)",
+      "description": "representationCompleteness fails its own (lower, 85%) inter-reviewer threshold at 80.1%, driven almost entirely by the FULL/PARTIAL boundary (22 of 47 cases). This replicates, at smaller scale, the same class of judgment difficulty that caused the historical 12-state detailed taxonomy to fail its own reproducibility study in Phase 3F.1.5.3. It is correctly marked DIAGNOSTIC_ONLY per Section 17's pre-registered branch and does not block closure.",
+      "recommendedDirectionForFutureWork": "A sharper completeness rubric (e.g., an explicit checklist of what 'the same claim's full scope' requires) could improve this in a future phase, but Section 17 explicitly forbids redesigning it this phase."
+    },
+    {
+      "riskId": "EVIDENCE_QUALITY_LOW_INFORMATION_VALUE",
+      "severity": "LOW (diagnostic, non-blocking, expected)",
+      "description": "evidenceQuality's raw agreement (71.6%) is inflated by class imbalance (SUFFICIENT dominates); its chance-adjusted kappa is effectively zero/slightly negative. This dimension currently carries little independent diagnostic signal beyond 'most evidence looks sufficient to most reviewers most of the time.'",
+      "recommendedDirectionForFutureWork": "Per Section 19, no ontology exercise is launched. If evidenceQuality is to become more useful in a future phase, that decision belongs to a human, not an automatic evaluator patch."
+    },
+    {
+      "riskId": "VERIFICATION_STATUS_STRUCTURALLY_UNDERPOPULATED",
+      "severity": "LOW (diagnostic, non-blocking, expected pipeline gap)",
+      "description": "Only 4 of 47 stratified sample cases (8.5%) carry any verification-relevant evidence at all; VERIFIED was never assigned by any adjudicator on any case in the entire 47-case sample or the full 1,115-unit cross-dataset regression population. This is a pipeline-architecture gap (verification evidence is not yet produced upstream for most claim types), not an evaluator-derivation defect.",
+      "recommendedDirectionForFutureWork": "Carried forward explicitly as a Phase 3C/Phase 4 integration requirement per Section 18 - richer verification-evidence production needs to be wired into more claim types before this dimension can be meaningfully assessed for reproducibility, let alone certification."
+    }
+  ],
+  "terminologyCollisionDisclosure": {
+    "riskId": "MATCHSTATUS_HONESTLY_UNSUPPORTED_TERMINOLOGY_COLLISION",
+    "severity": "LOW (already handled correctly by design, disclosed for future maintainers)",
+    "description": "The engine's own matchStatus literal 'HONESTLY_UNSUPPORTED' (a corresponding candidate explicitly declares it cannot represent this claim - SAFE) has the OPPOSITE safety meaning from the historical 12-state rubric's prose definition of the same term (a silent, dangerous gap). deriveDiagnosticLabel() deliberately maps this case to UNRESOLVED_FROM_ATOMIC_FACTS rather than picking either historical label, per Section 6. This is not a bug; it is flagged here so a future maintainer renaming matchStatus values does not accidentally reintroduce ambiguity into derivedDiagnosticLabel's mapping table."
+  },
+  "conclusion": "The two matcher-level risks from Phase 3F.1.5.3 remain open and untouched, as required. This phase's own primary finding is that surfacingStatus - one of the two safety-critical dimensions - is not yet reliably reproducible or accurate, which is the controlling reason for this phase's final verdict."
+}

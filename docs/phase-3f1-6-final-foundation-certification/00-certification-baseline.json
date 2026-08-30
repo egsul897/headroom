@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "CERTIFICATION_BASELINE",
+  "generatedAt": "2026-08-30T01:00:00Z",
+  "startingCommit": {
+    "sha": "ea82ee80f4528117e7dc6669be8e1ebf28b24108",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "workingTreeStatus": "CLEAN at phase start"
+  },
+  "historicalVerdictConfirmedImmutable": {
+    "verdict": "PHASE_3F_1_5_R_RESIDUAL_FOUNDATION_CLOSURE_PASSED",
+    "statement": "Not reinterpreted. This certification phase treats that verdict, and every number in docs/phase-3f1-5-r-residual-foundation/*, as fixed historical fact to be independently verified where practical, never re-litigated or rewritten."
+  },
+  "schemaMigrationState": {
+    "command": "npx prisma migrate status",
+    "result": "27 migrations found, database schema up to date - includes 20260829232147_phase_3f1_5_r_claim_review_safe_failure."
+  },
+  "postgresAvailability": {
+    "initialState": "DOWN at session start (pg_isready: no response) - a different container/session state than the immediately preceding phase.",
+    "action": "Started local Postgres cluster (pg_ctlcluster 16 main start) - local test infrastructure only, not a production code or data change, same action taken without objection in the immediately preceding phase's Workstream C.",
+    "resultAfterStart": "UP - pg_isready: accepting connections; prisma migrate status confirms schema up to date."
+  },
+  "tscBaseline": {
+    "command": "npx tsc --noEmit -p .",
+    "result": "0 errors beyond the same 6 pre-existing baseline errors carried since before Phase 3F.1.5.R: tests/foundation-audit/cascade-and-concurrency.test.ts (2), tests/foundation-audit/discovery-fault-injection.test.ts (1), tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3)."
+  },
+  "eslintBaseline": {
+    "command": "npx eslint .",
+    "result": "1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires) - confirmed present at the immediately preceding phase's own baseline commit, unchanged."
+  },
+  "vitestBaseline": {
+    "command": "npx vitest run",
+    "result": "See 29-quality-gates.json for the exact re-run at phase close; the immediately preceding phase (3F.1.5.R) closed with 189 test files / 1938 tests passing with real Postgres available - used as the reference point for this phase's own certification run."
+  },
+  "buildBaseline": "Confirmed succeeding at the immediately preceding phase's close (npm run build, 21 routes) - re-verified in this phase's own 29-quality-gates.json."
+}

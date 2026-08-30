@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "RANK_STACK_FALSE_NEGATIVE_AUDIT",
+  "section": 6,
+  "generatedAt": "2026-08-30T04:05:00Z",
+  "purpose": "Independently test the OPPOSITE failure mode from P1-10's own regression suite: does the plausibility gate (isPlausibleTopLevelHeading/rejectByPrecedingContext, stage-structure.ts) wrongly suppress a LEGITIMATE heading? Nobody had tested this before this certification phase.",
+  "methodology": {
+    "realDataTrack": {
+      "description": "Built scripts/cert-3f1-6-false-negative-real-data-diff.ts: reconstructs the exact same ARTICLE/SECTION/INTEGER_SECTION/BARE_INTEGER regex patterns stage-structure.ts uses (copied read-only into the script, production file untouched), enumerates every raw regex match across the real FWRG/LSB/CONMED/DSGR fixtures, and calls the gate's own rejectByPrecedingContext predicate directly on each match's charStart - isolating exactly which candidates the GATE ITSELF rejects (never conflating this with unrelated filters like overlapsAny dedup or fallsInsideAnEstablishedSpan nesting rejection, which also make a raw regex hit never become a node for reasons that have nothing to do with P1-10).",
+      "everyRejectionManuallyInspected": true,
+      "counts": { "FWRG": 0, "LSB": 0, "CONMED": 15, "DSGR": 80, "total": 95 },
+      "manualClassificationResult": "All 95 gate-triggered rejections across all 4 real packages were individually read against their real surrounding source text (full evidence printed by the script). Every single one is a genuine in-text citation (predominantly 'pursuant to Section X', 'as defined in Section X', 'under Section X', 'set forth in Section X', 'described in Section X', 'referred to in Section X', 'in accordance with Section X', 'specified in Section X'). ZERO real headings from real documents were found wrongly suppressed.",
+      "reproduction": "npx tsx scripts/cert-3f1-6-false-negative-real-data-diff.ts"
+    },
+    "syntheticAdversarialTrack": {
+      "description": "Independently constructed (fresh strings, not copied from tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts) a fresh test file covering every category named in the certification charter, run against the real, unmodified parseDocumentStructure.",
+      "file": "tests/certification/p1-10-legitimate-heading-false-negative-audit.test.ts",
+      "categoriesTested": [
+        "1. cross-reference language in the immediately preceding sentence, properly period-terminated",
+        "2. ordinary sentence-ending punctuation variants (period, semicolon, em-dash, ellipsis) directly before a real heading",
+        "3. a parenthetical immediately before a real heading",
+        "4. page-break-like whitespace (blank lines + an injected page number) directly before a real heading, when no signal phrase precedes the break",
+        "4b. ADVERSARIAL: page-break-like whitespace directly after a citation-signal phrase with NO injected page number (a pure blank-line break) and no terminal period",
+        "5. OCR-like whitespace artifacts (doubled spaces, stray tabs) around a real heading",
+        "6. a section reference appearing in the immediately preceding sentence's subject position, properly terminated",
+        "6b. a genuine ARTICLE heading following a properly period-terminated cross-reference sentence in the preceding paragraph"
+      ],
+      "counts": { "legitimateHeadingCasesTested": 6, "wronglySuppressed": 1 },
+      "wronglySuppressedCase": {
+        "category": "4b",
+        "description": "A genuine heading directly preceded, across a PURE whitespace-only page-break (no injected page number, no terminal period), by one of the 14 tracked citation-signal phrases IS wrongly rejected. Mechanism: rejectByPrecedingContext trims only trailing whitespace before testing the 80-char lookback window, so a pure blank-line break does not defeat the match the way a real page-break's injected page number empirically does (see note below).",
+        "importantIndependentSubFinding": "Constructing this case required care: an initial attempt that included a page NUMBER between the signal phrase and the heading (mimicking a typical real page-break, e.g. '...set forth in\\n\\n12\\n\\nSection 8.01...') did NOT reproduce the failure - the page number itself becomes the last non-whitespace token before the match and does not match the signal-phrase regex, so the heading survives. The real risk is narrower than 'any page break': it requires a page break with NO running header/page-number text at all between the signal phrase and the heading. This narrows, but does not eliminate, the practical risk - it also explains, in combination with the STRUCT-1 finding in 03-structural-integrity-certification.json, why this category did not manifest in any of the 4 real known packages (real page breaks in real extracted documents typically do carry page numbers)."
+      },
+      "reproduction": "npx vitest run tests/certification/p1-10-legitimate-heading-false-negative-audit.test.ts"
+    },
+    "priorPhaseTestIndependentlyReRun": {
+      "file": "tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts",
+      "result": "24/24 PASS (independently re-run, unmodified, in this worktree) - confirms the prior phase's own claim about this file's own contents is real, not merely asserted."
+    }
+  },
+  "exactNumbersRequestedByCharter": {
+    "realDataCandidatesGateRejected": 95,
+    "realDataWronglySuppressedLegitimateHeadings": 0,
+    "syntheticLegitimateHeadingCasesTested": 6,
+    "syntheticWronglySuppressed": 1,
+    "combinedLegitimateHeadingTestSurface": "6 synthetic cases + 4 real-package-floor regression assertions (tests/certification/p1-10-legitimate-heading-false-negative-audit.test.ts section (A), one assertion per package confirming known real section refs still present) + 95 individually-inspected real gate-rejections confirmed correct = 105 total legitimate-heading-adjacent data points independently examined this phase"
+  },
+  "findings": [
+    {
+      "id": "FN-1",
+      "severity": "MAJOR_NON_BLOCKING",
+      "title": "The plausibility gate has a real, demonstrated (if narrow) false-negative failure mode: a genuine heading directly preceded by a citation-signal phrase across a pure whitespace-only break (no page number, no terminal punctuation) is wrongly rejected",
+      "evidence": "tests/certification/p1-10-legitimate-heading-false-negative-audit.test.ts, case 4b.",
+      "whyNotBlocker": "The charter's own BLOCKER bar for this section is 'a real heading from a real document in your sample being wrongly rejected.' None was found across all 4 real known packages (95/95 gate rejections independently confirmed to be genuine citations, 0 false negatives). The failure mode is real and reproducible, but only under a specific, comparatively unusual real-world condition (an extraction artifact that drops BOTH a page number/running header AND the sentence-terminating punctuation at exactly the same page-break point) not observed in any of the 4 known packages. Recorded as MAJOR_NON_BLOCKING because it is a genuine architectural fragility worth closing (e.g. by requiring the signal-phrase match to also be within N characters of the heading, or by treating any blank-line run as an implicit sentence break regardless of phrase), not because the risk is zero.",
+      "affectedFiles": ["lib/contract-model/compiler/stage-structure.ts"]
+    }
+  ],
+  "verdict": "PASS",
+  "verdictReasoning": "Zero material (real-document) legitimate-heading losses found across 95 independently-inspected real gate-rejections spanning all 4 known packages. One narrow, non-blocking synthetic-only false-negative risk documented and permanently regression-tested (FN-1)."
+}

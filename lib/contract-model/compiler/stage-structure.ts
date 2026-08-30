@@ -107,6 +107,89 @@ const INTEGER_SECTION_PATTERNS = [
  */
 const BARE_INTEGER_SECTION_PATTERN = /^(\d{1,2})\.\s+([A-Z][a-z][^\n]*)$/gm;
 
+/**
+ * Phase 3F.1.5.R (Workstream A) - P1-10 rank-stack structural-corruption
+ * root-cause fix (see docs/foundation-remediation/01-source-accounting-
+ * remediation.json's `p110Q3Determination` for the full prior investigation
+ * this closes, candidate design 1 - "plausibility gate before a same/
+ * shallower-rank pop", smallest blast radius). An in-text citation shaped
+ * exactly like a real heading (the known fixture: "...permitted under
+ * Section 6.05 Reserved . and subject to...") previously satisfied
+ * SECTION_PATTERNS pattern 1 - the intentionally non-line-anchored pattern,
+ * added precisely so a heading buried in a single continuous line of text
+ * (no `\n` at all) is still found - just as well as a genuine heading. Once
+ * accepted as a raw top-level SECTION, that spurious node corrupted BOTH the
+ * clause-tree region-slicing below (which bounds each SECTION's own clause-
+ * parsing region by the NEXT top-level raw's charStart, so the spurious raw
+ * truncated the real enclosing section's own region before its later
+ * lettered clauses were reached) and the global rank-based stack pass
+ * (which popped the real section early and re-parented those later clauses
+ * under the spurious node instead) - both consumers trusted the same
+ * uncritically-accepted raw list.
+ *
+ * This gate runs BEFORE either consumer ever sees the candidate - filtering
+ * ARTICLE/SECTION regex matches at raw-acceptance time, immediately after
+ * `bestMatches` selects the winning pattern shape for this document, using a
+ * purely typographic/positional signal that is deliberately never keyed to
+ * any specific package's own content (task's own "no package-specific
+ * heading rules" constraint): PRECEDING CONTEXT. A genuine heading starts a
+ * new sentence or paragraph. An in-text citation instead directly follows a
+ * citation-signal phrase ("under", "pursuant to", "referred to in", "as
+ * defined in", "set forth in", ...) with no intervening sentence break -
+ * exactly the Q3 fixture's own shape ("...permitted under Section 6.05
+ * Reserved ."). `rejectByPrecedingContext` below checks exactly this.
+ *
+ * A companion signal was also evaluated - rejecting a candidate whose own
+ * trailing period is immediately followed by a LOWERCASE word (a real
+ * heading's body should start a new sentence, an in-text citation's
+ * "period" is really just a mid-sentence pause: "Section 6.05 Reserved . and
+ * subject to..." continues in lowercase "and"). It was deliberately NOT
+ * adopted: it has a real, observed false-positive cost against this repo's
+ * own existing legitimate regression fixtures - tests/contract-model/
+ * cross-reference-boundary-remediation.test.ts's "SECTION 1.10. Calculations
+ * . the greater of $9,000,000..." is a genuine heading whose own body
+ * legitimately continues in lowercase (an unusual but real drafting/test
+ * style) - which that signal would incorrectly reject, a hard-constraint
+ * regression this fix must never introduce. Preceding-context alone is
+ * already sufficient to catch every known Q3-shaped citation (its own
+ * defining trait is precisely that it directly follows a citation-
+ * introducing preposition, with no intervening sentence break), so nothing
+ * is lost by leaving it out.
+ *
+ * A candidate failing the check is dropped entirely, never pushed into
+ * `raws` - per the fix's own requirement, this is NOT a re-parented/
+ * demoted node, there is no synthetic substitute: the text is simply never
+ * treated as a structural boundary at all, so it falls through as ordinary
+ * body prose of whichever real node's region already contains it (region-
+ * slicing and the rank-stack below never learn the candidate existed).
+ *
+ * This is a heuristic gate, not a certainty - the original determination's
+ * own disclosed caveat ("could misfire on legitimate non-monotonic
+ * numbering") still applies, which is exactly why
+ * structural-index.ts's SECTION_NUMBER_SEQUENCE_ANOMALY detection (Phase
+ * 3F.1.4's bounded, detection-only mitigation for this same defect) is kept
+ * as defense-in-depth rather than removed - see that health-code's own
+ * doc-comment for the up-to-date division of labor between the two.
+ * Real-package regression evidence (FWRG/LSB/CONMED/DSGR - see
+ * docs/foundation-remediation/11-known-package-regression.json) confirms
+ * this gate does not alter known-healthy structural output.
+ */
+const HEADING_CITATION_SIGNAL_PHRASE =
+  /(?:under|pursuant\s+to|referred\s+to\s+in|as\s+defined\s+in|set\s+forth\s+in|described\s+in|specified\s+in|contemplated\s+by|required\s+by|permitted\s+by|governed\s+by|in\s+accordance\s+with|subject\s+to|provided\s+(?:for\s+)?in)\s*$/i;
+
+/** True if `text` immediately before `matchIndex` ends in a citation-signal phrase (mid-sentence continuation) rather than a genuine sentence/paragraph boundary. Never true at document start (nothing precedes a real heading there but the document's own opening). */
+function rejectByPrecedingContext(text: string, matchIndex: number): boolean {
+  const windowStart = Math.max(0, matchIndex - 80);
+  const before = text.slice(windowStart, matchIndex).replace(/\s+$/, "");
+  if (before.length === 0) return false;
+  return HEADING_CITATION_SIGNAL_PHRASE.test(before);
+}
+
+/** The actual gate - see the module-level P1-10 doc-comment above for the full rationale (including why a companion "sentence-fragment continuation" signal was evaluated and deliberately not adopted). */
+function isPlausibleTopLevelHeading(text: string, matchIndex: number): boolean {
+  return !rejectByPrecedingContext(text, matchIndex);
+}
+
 function bestMatches(text: string, patterns: RegExp[]): RegExpExecArray[] {
   let best: RegExpExecArray[] = [];
   for (const pattern of patterns) {
@@ -145,9 +228,20 @@ function overlapsAny(candidate: RegExpExecArray, existing: RegExpExecArray[]): b
 }
 
 export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNode[] {
-  const articleMatches = bestMatches(doc.text, ARTICLE_PATTERNS);
-  const decimalSectionMatches = bestMatches(doc.text, SECTION_PATTERNS);
-  const integerSectionMatches = bestMatches(doc.text, INTEGER_SECTION_PATTERNS).filter((m) => !overlapsAny(m, decimalSectionMatches));
+  // P1-10 plausibility gate (see the doc-comment above `bestMatches`):
+  // applied to each match SOURCE right after `bestMatches` selects the
+  // winning pattern shape (pattern-selection is a shape-richness contest,
+  // never affected by plausibility) and before any match is used for
+  // anything else - overlap dedup, established-span computation, or raw
+  // node construction - so an implausible match is uniformly invisible to
+  // every downstream consumer, never merely to the rank-stack.
+  const isPlausible = (m: RegExpExecArray) => isPlausibleTopLevelHeading(doc.text, m.index);
+
+  const articleMatches = bestMatches(doc.text, ARTICLE_PATTERNS).filter(isPlausible);
+  const decimalSectionMatches = bestMatches(doc.text, SECTION_PATTERNS).filter(isPlausible);
+  const integerSectionMatches = bestMatches(doc.text, INTEGER_SECTION_PATTERNS)
+    .filter(isPlausible)
+    .filter((m) => !overlapsAny(m, decimalSectionMatches));
   const bareIntegerRe = new RegExp(BARE_INTEGER_SECTION_PATTERN.source, BARE_INTEGER_SECTION_PATTERN.flags);
   const bareIntegerMatchesRaw: RegExpExecArray[] = [];
   let bm: RegExpExecArray | null;
@@ -179,7 +273,9 @@ export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNo
     }
     return false;
   }
-  const bareIntegerMatches = bareIntegerMatchesRaw.filter((m) => !overlapsAny(m, decimalSectionMatches) && !overlapsAny(m, integerSectionMatches) && !fallsInsideAnEstablishedSpan(m.index));
+  const bareIntegerMatches = bareIntegerMatchesRaw
+    .filter(isPlausible)
+    .filter((m) => !overlapsAny(m, decimalSectionMatches) && !overlapsAny(m, integerSectionMatches) && !fallsInsideAnEstablishedSpan(m.index));
   // Union, not replacement: a decimal-style document's own matches are completely unaffected (FWRG/LSB regression-safe by construction), and a flat-integer-only document (no decimal matches at all) gets its headings from the integer sets instead.
   const sectionMatches = [...decimalSectionMatches, ...integerSectionMatches, ...bareIntegerMatches].sort((a, b) => a.index - b.index);
 

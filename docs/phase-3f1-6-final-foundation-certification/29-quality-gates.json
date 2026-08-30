@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "QUALITY_GATES",
+  "generatedAt": "2026-08-30T04:15:00Z",
+  "purpose": "Section 34 (Task 273): run the full required quality-gate suite after all 6 independent auditor commits are integrated onto the working branch, and compare against the phase's own 00-certification-baseline.json.",
+  "integrationState": {
+    "allSixAuditorsCherryPicked": true,
+    "commits": [
+      "8c191f5 (Auditor 1, Sections 5-7)",
+      "40d0ab5 (Auditor 2, Sections 8-11)",
+      "5659adc (Auditor 3, Sections 12/13/24/25)",
+      "97779c4 (Auditor 4, Sections 14-17)",
+      "29ae09d (Auditor 5, Sections 18-23)",
+      "89dff7e (Auditor 6, Sections 26-30)"
+    ],
+    "conflictsDuringIntegration": 0
+  },
+  "tscGate": {
+    "command": "npx tsc --noEmit -p .",
+    "exitCode": 2,
+    "result": "6 errors, byte-identical to the 00-certification-baseline.json pre-existing set: tests/foundation-audit/cascade-and-concurrency.test.ts (2), tests/foundation-audit/discovery-fault-injection.test.ts (1), tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3). Zero new errors introduced by any of the 6 auditors' new files.",
+    "verdict": "PASS (baseline-consistent)"
+  },
+  "eslintGate": {
+    "command": "npx eslint .",
+    "exitCode": 1,
+    "result": "1 error, identical to the 00-certification-baseline.json pre-existing item: tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169 (@typescript-eslint/no-var-requires). Zero new errors introduced by any of the 6 auditors' new files.",
+    "verdict": "PASS (baseline-consistent)"
+  },
+  "vitestGate": {
+    "command": "npx vitest run",
+    "result": "202 test files (201 passed, 1 failed), 2043 tests (2042 passed, 1 failed). 13 new test files / ~105 new tests added by the 6 auditors, all passing, composing cleanly with the pre-existing 189-file/1938-test suite (the 3F.1.5.R closing baseline).",
+    "newFailure": {
+      "file": "tests/extraction/vercel-ai-gateway-provider.test.ts",
+      "test": "VercelAIGatewayExtractionProvider - construction and shared transport logic > defaults to a provider-prefixed, sensible production model id",
+      "assertionFailure": "expected gw.model to be 'anthropic/claude-opus-5', received ''",
+      "diagnosis": "Confirmed reproducible in isolation (npx vitest run on this single file alone) and in the full suite; NOT a code regression - lib/extraction/vercel-ai-gateway-provider.ts, get-provider.ts, anthropic-provider.ts, and this test file are byte-identical between the phase's own starting commit (ea82ee80f4528117e7dc6669be8e1ebf28b24108) and the current integrated HEAD (git diff empty). Diagnostic instrumentation (added, verified, then git-checkout-reverted - confirmed via git status --short showing no diff on this file) showed process.env.EXTRACTION_MODEL already resolves to the empty string at the very top of this test file's module scope, before any of the module's own imports execute - i.e. this is a property of this session's own Vitest/Node process environment at test-run time, not of any production or test code in the repository. Root cause not further pursued: this phase forbids production-code changes, this specific test file was not created or touched by any of the 6 auditors, and the underlying default-model-id configuration it exercises (lib/extraction/vercel-ai-gateway-provider.ts) is outside all 16 certified trust boundaries (A-P) - it concerns the LLM extraction provider's default model selection, not source fidelity, structural/semantic identity, amendment/supersession state, safe-failure architecture, tenant isolation, or persistence integrity.",
+      "classification": "OUT_OF_CERTIFICATION_SCOPE_ENVIRONMENTAL_ANOMALY",
+      "notCountedAsBlocker": true,
+      "notCountedAsCertificationFinding": true,
+      "rationale": "Disclosed per this phase's own no-silent-repair discipline rather than hidden or quietly re-run until green. Does not affect the verdict either way: the certification already fails on 11 independently-confirmed BLOCKER findings inside the 16 certified trust boundaries, and this item touches none of them."
+    },
+    "verdict": "1 failure, fully disclosed and classified as out-of-scope; not treated as a gate failure for certification purposes, not counted in the findings ledger's severity tallies."
+  },
+  "buildGate": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "result": "Succeeds. 21 routes, identical route list and bundle-size profile to the 00-certification-baseline.json reference point (3F.1.5.R's own close).",
+    "verdict": "PASS (baseline-consistent)"
+  },
+  "postgresState": "UP throughout (pg_ctlcluster 16 main start at baseline; confirmed still up via pg_isready before this gate run); all 6 auditors' new tests that touch Postgres passed.",
+  "overallGateSummary": "tsc, eslint, and build are all baseline-consistent with zero new errors. vitest has exactly one new failure, fully diagnosed as a pre-existing (byte-identical code since the phase's starting commit), out-of-scope, environment-dependent anomaly unrelated to any certified trust boundary or to any of the 6 auditors' work - disclosed here rather than repaired, per this phase's production-freeze discipline. All 6 auditors' own new tests (~105 tests across 13 new files) pass without exception."
+}

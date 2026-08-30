@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "REMAINING_FOUNDATION_RISKS",
+  "generatedAt": "2026-08-30T00:17:00Z",
+  "purpose": "Catalog everything this phase did NOT close, so a PASSED verdict is never mistaken for a clean bill of health.",
+  "residualDefectScopeGaps": [
+    {
+      "id": "P1-11 broader consumer population",
+      "description": "The two NAMED consumers (pass-a-signals.ts, source-inventory.ts) are genuinely fixed. A broader audit found the same raw-scan-without-supersession-awareness pattern in 3 more places: coverage-audit/source-inventory.ts (protected by a mechanically-enforced independence contract that forbids importing amendment/* - fixing it as done for the named files would require relaxing a deliberate architecture invariant), semantic-coverage/router.ts (not named, not fixed), and semantic-coverage/cross-reference-audit.ts (has its own ad hoc, narrower version of this fix already, but fails OPEN rather than closed when operativeState is null).",
+      "risk": "A future consumer added in one of these 3 locations could still silently treat superseded text as current. Disclosed, not silently omitted.",
+      "recommendedNextStep": "A future bounded phase could either relax coverage-audit's independence contract deliberately (with an ARCHITECTURE_CHANGE_PROPOSAL, since it's a permanent invariant per Architecture Invariant #18) or build a supersession-aware variant of its source-inventory that stays within the contract; and fix cross-reference-audit.ts's fail-open null-operative-state case to fail closed instead."
+    },
+    {
+      "id": "P1-11 currently dormant in production",
+      "description": "No production code outside tests/scripts currently constructs a full SemanticCompilerInput or calls runDiscoveryPipeline with real operative-state (confirmed by grep) - the new supersession-index mechanism exists and generalizes correctly, but has not yet demonstrably prevented a real, currently-observable stale-data instance in this phase's own regression run (CONMED's own conditional-date amendments never reach appliedChain, and DSGR's package graph never links the amendment documents in this fixture).",
+      "risk": "None currently observable, but the mechanism's real-world value is not yet proven end-to-end until (a) a real orchestrator wires discovery/verification with real operative-state, or (b) CONMED's conditional dates resolve concretely in a future re-parse.",
+      "recommendedNextStep": "Verify this composition explicitly as part of Phase 3F.1.6 Final Foundation Certification, once/if a live orchestrator path exists."
+    },
+    {
+      "id": "Claim-identity residual risks remain open (by design, per Section 20)",
+      "description": "Different-base-section false matches and bare/undifferentiated-section definitional overmatch remain confirmed evaluator-only (12-claim-identity-residual-risk-audit.json) - the frozen evaluator matcher was correctly not reopened.",
+      "risk": "None to production; a residual note for whoever eventually revisits evaluator methodology (explicitly not this phase, and not proposed here)."
+    }
+  ],
+  "safeFailureArchitectureLimitations": [
+    {
+      "id": "Single wired emission point",
+      "description": "Only the coverage-auditor's own reconciliation output is wired to persist ClaimReviewItems. This was a deliberate, documented choice (05-emission-policy.json) because the coverage auditor already independently combines discovery+compiler+verifier+operative-state evidence - but it also means the safe-failure architecture inherits any latent gap in semantic-coverage's own reconciliation logic (an area this phase did not re-audit)."
+    },
+    {
+      "id": "Not yet wired into any live app/ route",
+      "description": "Like runSemanticCoverageAudit() itself, the safe-failure integration functions are called only from a script/test this phase - there is no live production route that calls them yet. This matches the current, disclosed state of the whole semantic-coverage pipeline (not wired to app/ at all) and is explicitly out of scope for this phase (Section 39 forbids building dashboard/simulation/new live routes)."
+    },
+    {
+      "id": "False-credit-control emission not literally executed against DSGR",
+      "description": "19-false-credit-control-regression.json's conclusion (all 14 controls would emit a review event) is a reasoned extrapolation from real evaluator disposition data, not a literal end-to-end execution of semantic-coverage's pipeline against a real DSGR fixture (which does not exist yet, unlike FWRG/LSB)."
+    }
+  ],
+  "carriedForwardFromPriorPhasesUntouched": [
+    "P0-6 (evaluation-methodology circularity, deferred to Phase 3F.1.5 by design in a much earlier phase - remains disclosed, not fixed).",
+    "The full Tier 3/Tier 4 P2/P3 catalog from docs/foundation-assurance/17-remediation-priority-map.json not addressed by any phase to date, except where a workstream's own root-cause fix incidentally closed one (none this phase)."
+  ],
+  "closingStatement": "This phase closed all 4 explicitly-assigned residual defects (P1-10, P1-11, P1-3, plus the 3 grouped sub-tasks in Workstream D) and built the explicit claim-level safe-failure architecture the human decision required. It did not achieve perfect, exhaustive closure of every possible instance of each defect's pattern across the whole codebase - each genuinely new finding beyond the assigned scope is disclosed above, not silently rounded up to 'complete.'"
+}

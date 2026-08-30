@@ -38,7 +38,43 @@
 import type { StructuralIndex } from "../structural-index";
 import type { DetectedDefinition } from "../structural-definitions";
 import { groupEffectsByProvision, buildProvisionChain, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
-import type { AmendmentEffectCandidate, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionTargetResolutionStatus } from "./types";
+import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
+
+/**
+ * Phase 3F.1.5.R (sub-task 3) - the fail-closed composition point named by
+ * docs/foundation-remediation/13-remaining-foundation-risks.json's
+ * "operativeStateHealthDiagnosticsGap": OPERATIVE_CONFIDENCE now requires
+ * STRUCTURAL_HEALTH_SUFFICIENT, checked against the structural index's own
+ * `healthDiagnostics()` (I1-I16) for the exact physical occurrence a
+ * provision's base reference resolved to, plus every structural descendant
+ * of it (a SECTION's own reported text is `getNodeText(nodeId,
+ * "DESCENDANTS")` below - a corrupted descendant corrupts that text just as
+ * surely as a corrupted node itself). Only `severity: "ERROR"` findings ever
+ * gate anything here, exactly like every other consumer of this API - an
+ * `"INFO"` finding (AMBIGUOUS_LEGAL_REFERENCE, DUPLICATE_LABEL_EXPECTED,
+ * DUPLICATE_NORMALIZED_PATH, SECTION_NUMBER_SEQUENCE_ANOMALY) is a normal,
+ * expected drafting reality per structural-index.ts's own header comment,
+ * never a reason to withhold confidence.
+ *
+ * Deliberately independent of resolveUniqueNodeByRef/
+ * resolveUniqueDefinitionByRef's own UNIQUE/AMBIGUOUS/NOT_FOUND axis: a
+ * reference can be genuinely UNIQUE (exactly one physical occurrence
+ * carries this legal reference) while that SAME occurrence is
+ * independently known-corrupted at the structural layer - the exact
+ * emergent, compound risk tests/foundation-audit/combined-failures.test.ts's
+ * first describe block reproduces.
+ */
+function structuralHealthForNode(index: StructuralIndex, nodeId: string): { status: ProvisionStructuralHealthStatus; issues: string[] } {
+  const relevantNodeIds = new Set<string>([nodeId, ...index.getDescendants(nodeId).map((d) => d.nodeId)]);
+  const errors = index.healthDiagnostics().filter((f) => f.severity === "ERROR" && f.nodeId !== undefined && relevantNodeIds.has(f.nodeId));
+  if (errors.length === 0) return { status: "STRUCTURAL_HEALTH_SUFFICIENT", issues: [] };
+  return {
+    status: "STRUCTURAL_HEALTH_UNSAFE",
+    issues: errors.map((e) => `Structural index health check flags this provision's own resolved physical occurrence${e.nodeId === nodeId ? "" : " (or a structural descendant of it)"} as ${e.code}: ${e.message}`),
+  };
+}
+
+const STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS = { structuralHealthStatus: "STRUCTURAL_HEALTH_SUFFICIENT" as const, structuralHealthIssues: [] as string[] };
 
 export interface OperativeStateInput {
   instrumentKey: string;
@@ -101,6 +137,10 @@ interface BaseTextResolution {
   targetResolutionReason: string | null;
   /** Real physical occurrence/definition identities the base reference matched when AMBIGUOUS (2+ genuinely distinct candidates) - never a guessed pick among them. Always empty for UNIQUE/NOT_FOUND. */
   candidateSourceNodeIds: string[];
+  /** Phase 3F.1.5.R (sub-task 3) - see structuralHealthForNode's own header comment. STRUCTURAL_HEALTH_SUFFICIENT (vacuously) whenever targetResolutionStatus !== "UNIQUE", since no physical occurrence was resolved to check. */
+  structuralHealthStatus: ProvisionStructuralHealthStatus;
+  /** Populated only when structuralHealthStatus is STRUCTURAL_HEALTH_UNSAFE. */
+  structuralHealthIssues: string[];
 }
 
 function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: StructuralIndex): BaseTextResolution {
@@ -114,7 +154,18 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
     const resolution = index.resolveUniqueNodeByRef(baseDocumentId, group.ref);
     if (resolution.status === "UNIQUE") {
       const node = resolution.node;
-      return { text: index.getNodeText(node.nodeId, "DESCENDANTS"), nodeKey: node.nodeKey, nodeId: node.nodeId, targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [] };
+      // Phase 3F.1.5.R (sub-task 3) - a UNIQUE legal-reference match is
+      // NECESSARY but no longer SUFFICIENT for a confidently-attached
+      // text/status: the resolved physical occurrence itself (and every
+      // structural descendant getNodeText("DESCENDANTS") below would pull
+      // text from) must also clear the structural index's own health
+      // diagnostics. text is withheld (never derived from a node the index
+      // itself already flags as corrupted) whenever it is not.
+      const health = structuralHealthForNode(index, node.nodeId);
+      if (health.status === "STRUCTURAL_HEALTH_UNSAFE") {
+        return { text: null, nodeKey: node.nodeKey, nodeId: node.nodeId, targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [], structuralHealthStatus: health.status, structuralHealthIssues: health.issues };
+      }
+      return { text: index.getNodeText(node.nodeId, "DESCENDANTS"), nodeKey: node.nodeKey, nodeId: node.nodeId, targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [], ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS };
     }
     if (resolution.status === "AMBIGUOUS") {
       return {
@@ -124,6 +175,7 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
         targetResolutionStatus: "AMBIGUOUS",
         targetResolutionReason: `${resolution.candidates.length} distinct physical occurrences in the base document share the legal reference "${group.ref}" - the amendment's own target cannot be attached to a single provision without guessing which one governs.`,
         candidateSourceNodeIds: resolution.candidates.map((c) => c.nodeId),
+        ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS,
       };
     }
     return {
@@ -133,6 +185,7 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
       targetResolutionStatus: "NOT_FOUND",
       targetResolutionReason: `No section matching legal reference "${group.ref}" was found in the base document's own structural index.`,
       candidateSourceNodeIds: [],
+      ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS,
     };
   }
   // DEFINITION branch. Phase 3F.1.4 §6A: targetResolutionStatus is derived
@@ -164,6 +217,7 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
       targetResolutionStatus: "AMBIGUOUS",
       targetResolutionReason: `${docScoped.candidates.length} distinct definitions of "${group.ref}" exist in the base document - the amendment's own target cannot be attached to a single provision without guessing which one governs.`,
       candidateSourceNodeIds: docScoped.candidates.map((d) => d.sourceNodeId).filter((id): id is string => id !== null),
+      ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS,
     };
   }
   if (docScoped.status === "NOT_FOUND") {
@@ -176,7 +230,7 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
     // disclosable NOT_FOUND, exactly like the SECTION branch's own miss.
     const isAmendmentOriginatedTerm = group.effects.some((e) => e.operation === "ADD_DEFINITION");
     if (isAmendmentOriginatedTerm) {
-      return { text: null, nodeKey: null, nodeId: null, targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [] };
+      return { text: null, nodeKey: null, nodeId: null, targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [], ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS };
     }
     return {
       text: null,
@@ -185,13 +239,29 @@ function resolveBaseText(group: ProvisionGroup, baseDocumentId: string, index: S
       targetResolutionStatus: "NOT_FOUND",
       targetResolutionReason: `No definition matching "${group.ref}" was found in the base document's own definitions.`,
       candidateSourceNodeIds: [],
+      ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS,
     };
   }
   // docScoped.status === "UNIQUE": the independent check confirms exactly
   // one real definition of this term in this document, so `def` (however
   // it was actually resolved above) is trusted for TEXT EXTRACTION only.
-  if (!def) return { text: null, nodeKey: null, nodeId: null, targetResolutionStatus: "NOT_FOUND", targetResolutionReason: `No definition matching "${group.ref}" was found in the base document's own definitions.`, candidateSourceNodeIds: [] };
-  return { text: index.getDefinitionFullText(def.exactTerm, def.documentId) ?? null, nodeKey: def.sourceNodeKey, nodeId: def.sourceNodeId, targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [] };
+  if (!def) return { text: null, nodeKey: null, nodeId: null, targetResolutionStatus: "NOT_FOUND", targetResolutionReason: `No definition matching "${group.ref}" was found in the base document's own definitions.`, candidateSourceNodeIds: [], ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS };
+  // Phase 3F.1.5.R (sub-task 3) - same fail-closed composition as the
+  // SECTION branch above: a UNIQUE definition match whose own declaring
+  // physical occurrence (def.sourceNodeId) is independently flagged
+  // corrupted by the structural index must not support a confidently-
+  // attached definition text either. A definition with no recorded
+  // sourceNodeId at all (the LLM DEFINITIONS-stage candidate path, which
+  // never anchors one - see persistDefinedTerms' own header) has no
+  // physical occurrence to check, so health is vacuously SUFFICIENT for it,
+  // exactly like an AMBIGUOUS/NOT_FOUND verdict above.
+  if (def.sourceNodeId) {
+    const health = structuralHealthForNode(index, def.sourceNodeId);
+    if (health.status === "STRUCTURAL_HEALTH_UNSAFE") {
+      return { text: null, nodeKey: def.sourceNodeKey, nodeId: def.sourceNodeId, targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [], structuralHealthStatus: health.status, structuralHealthIssues: health.issues };
+    }
+  }
+  return { text: index.getDefinitionFullText(def.exactTerm, def.documentId) ?? null, nodeKey: def.sourceNodeKey, nodeId: def.sourceNodeId, targetResolutionStatus: "UNIQUE", targetResolutionReason: null, candidateSourceNodeIds: [], ...STRUCTURAL_HEALTH_SUFFICIENT_VACUOUS };
 }
 
 const DELETE_OPERATIONS = new Set(["DELETE_TEXT", "DELETE_DEFINITION", "REMOVE_COVENANT", "REMOVE_EXCEPTION"]);
@@ -243,6 +313,15 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
   const hasSequenceUnresolved = conflicts.some((c) => c.conflictType === "AMENDMENT_SEQUENCE_UNRESOLVED");
   const hasReviewOrUnresolvedEffect = group.effects.some((e) => e.status === "REVIEW_REQUIRED" || e.status === "UNRESOLVED");
   const targetUnresolved = base.targetResolutionStatus !== "UNIQUE";
+  // Phase 3F.1.5.R (sub-task 3) - OPERATIVE_CONFIDENCE requires
+  // STRUCTURAL_HEALTH_SUFFICIENT, not merely targetResolutionStatus ===
+  // "UNIQUE". This is genuinely independent of targetUnresolved above: the
+  // base reference can be a real, UNIQUE physical-occurrence match while
+  // that SAME occurrence is separately flagged corrupted by the structural
+  // index's own health diagnostics - see structuralHealthForNode's header
+  // comment and tests/foundation-audit/combined-failures.test.ts's first
+  // describe block for the exact compound scenario this closes.
+  const structuralHealthUnsafe = base.structuralHealthStatus === "STRUCTURAL_HEALTH_UNSAFE";
 
   // Phase 3F.1.4 §6D - a genuinely CONFLICTED provision (same effective
   // date, same provision, different resulting text, no evidence-based
@@ -263,7 +342,7 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
     currentText = null;
     currentSourceNodeKey = null;
     currentSourceNodeId = null;
-  } else if (targetUnresolved) {
+  } else if (targetUnresolved || structuralHealthUnsafe) {
     // Phase 3F.1.4 §6A (CENTRAL FINDING FIX) - never let the mere
     // presence of newText on an applied effect substitute for actually
     // knowing WHERE it applies. This is the exact line the P0 finding's
@@ -276,6 +355,17 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
     // combined-failure "ambiguous target + not-yet-effective amendment"
     // finding: honesty about the base reference itself must never depend
     // on appliedChain being non-empty).
+    //
+    // Phase 3F.1.5.R (sub-task 3) - `structuralHealthUnsafe` withholds
+    // currentText for exactly the same reason even when targetUnresolved is
+    // false and an applied effect already overwrote currentText with its
+    // own newText above: attaching that amendment's text to a physical
+    // occurrence the structural index itself flags as corrupted (I1-I16
+    // ERROR) is a confidence claim about WHERE the amendment applies that
+    // the corrupted node cannot actually support, regardless of how
+    // confident-looking the amendment's own captured text is. attemptedText
+    // (set inside the loop above) is left untouched - "what the amendment
+    // says" remains visible even when "where it safely applies" is not.
     currentText = null;
   }
 
@@ -283,7 +373,7 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
   // resolved target is a correct, INTENDED null-governance outcome, not a
   // derivation failure - it must never be conflated with "an effect
   // governs but its resulting text honestly could not be captured."
-  const textMissingDespiteAppliedEffect = appliedChain.length > 0 && !hasConflict && !targetUnresolved && currentText === null && !lastAppliedWasCleanDeletion;
+  const textMissingDespiteAppliedEffect = appliedChain.length > 0 && !hasConflict && !targetUnresolved && !structuralHealthUnsafe && currentText === null && !lastAppliedWasCleanDeletion;
 
   const unresolvedIssues: string[] = [];
   let status: OperativeStateStatus;
@@ -299,6 +389,18 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
     status = "OPERATIVE_STATE_PARTIAL";
     unresolvedIssues.push(
       `This provision's own target reference could not be confidently resolved in the base document (${base.targetResolutionStatus === "AMBIGUOUS" ? "ambiguous - multiple real candidates" : "not found"}): ${base.targetResolutionReason}`
+    );
+  } else if (structuralHealthUnsafe) {
+    // Phase 3F.1.5.R (sub-task 3) - OPERATIVE_CONFIDENCE requires
+    // STRUCTURAL_HEALTH_SUFFICIENT. This provision's base reference IS a
+    // genuinely UNIQUE physical-occurrence match (targetUnresolved is
+    // false here) - the uncertainty is not "which node" but "can this
+    // node's own extraction be trusted at all," per the structural index's
+    // own ERROR-severity health finding(s) below.
+    status = "OPERATIVE_STATE_PARTIAL";
+    unresolvedIssues.push(
+      "OPERATIVE_CONFIDENCE requires STRUCTURAL_HEALTH_SUFFICIENT: this provision's own base reference resolved to a UNIQUE physical occurrence, but the structural index's own health diagnostics independently flag that occurrence (or a structural descendant of it) as corrupted - no confident operative text or status can be reported for it until the underlying structural extraction is corrected.",
+      ...base.structuralHealthIssues
     );
   } else if (textMissingDespiteAppliedEffect) {
     status = "OPERATIVE_STATE_PARTIAL";
@@ -329,6 +431,8 @@ function buildProvisionView(group: ProvisionGroup, baseDocumentId: string, asOfD
     targetResolutionStatus: base.targetResolutionStatus,
     targetResolutionReason: base.targetResolutionStatus === "UNIQUE" ? null : base.targetResolutionReason,
     candidateSourceNodeIds: base.candidateSourceNodeIds,
+    structuralHealthStatus: base.structuralHealthStatus,
+    structuralHealthIssues: base.structuralHealthIssues,
     attemptedText,
     reviewRequired: status !== "OPERATIVE_STATE_RESOLVED",
     candidateTexts,
@@ -381,4 +485,130 @@ export { normalizeDefinedTermRef };
 export function getOperativeDefinition(state: OperativeContractState, term: string): OperativeProvisionView | null {
   const normalized = normalizeDefinedTermRef(term);
   return state.provisions.find((p) => p.kind === "DEFINITION" && p.definedTermRef === normalized) ?? null;
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.5 Workstream B - P1-11 (Q8 supersession-awareness) fix.
+// EVERYTHING BELOW THIS LINE IS NEW - added surgically as pure additions
+// (no existing line above was changed) so this can merge cleanly alongside
+// Workstream D's own work in this same file. See amendment/types.ts's own
+// comment block (same phase/workstream tag) for the full design rationale.
+//
+// `buildNodeSupersessionIndex` generalizes the same nodeId-keyed lookup
+// semantic-coverage/cross-reference-audit.ts's own `auditOperativeStateForUnits`
+// already does ad hoc for ITS one subsystem (operativeState.provisions.find
+// ((p) => p.supersededSourceNodeIds.includes(nodeId))) into a reusable,
+// O(1)-lookup, multi-instrument, fail-closed-by-default utility any
+// StructuralNode consumer can call - rather than every consumer
+// reimplementing (or, as the audit found, simply never implementing) its
+// own copy of this check.
+// ---------------------------------------------------------------------------
+
+/** A single OperativeContractState paired with the base documentId it was computed for (OperativeContractState itself does not carry this - see OperativeStateInput.baseDocumentId - so a caller supplies it here rather than this function guessing it from provisions[0], which would be wrong/undefined whenever provisions is empty). */
+export interface OperativeStateForDocument {
+  baseDocumentId: string;
+  state: OperativeContractState;
+}
+
+/**
+ * Builds a queryable supersession index from every OperativeContractState
+ * the caller has actually computed for this analysis run. Deliberately
+ * accepts a LIST (never a single state) - a real package can involve
+ * several instruments/base documents, and a node-level consumer scanning
+ * one document at a time still needs the whole package's knowledge to
+ * correctly mark `coveredDocumentIds` (a document that was never analyzed
+ * for amendments AT ALL must resolve UNKNOWN for every one of its nodes -
+ * the fail-closed default `getNodeSupersessionStatus` falls back to
+ * whenever the empty-array/no-index case applies).
+ *
+ * No document-specific assumption: this only ever reads generic
+ * OperativeProvisionView fields (documentId, supersededSourceNodeIds,
+ * candidateSourceNodeIds, appliedChain) already produced by
+ * computeOperativeContractState above for ANY instrument's ANY provision -
+ * it generalizes identically across FWRG/LSB/CONMED/DSGR or any future
+ * document family.
+ */
+export function buildNodeSupersessionIndex(entries: OperativeStateForDocument[]): NodeSupersessionIndex {
+  const coveredDocumentIds = new Set<string>();
+  const supersededByNodeId = new Map<string, NodeSupersessionRecord>();
+  const ambiguousNodeIds = new Set<string>();
+
+  for (const { baseDocumentId, state } of entries) {
+    coveredDocumentIds.add(baseDocumentId);
+    for (const provision of state.provisions) {
+      coveredDocumentIds.add(provision.documentId);
+
+      // AMBIGUOUS target resolution (Phase 3F.1.4 §6A/§6B, unchanged by this
+      // fix): the real physical occurrences that share a colliding legal
+      // reference/definition term. Each one's OWN supersession status is
+      // genuinely unknowable - the amendment could target any one of them,
+      // never guessed here.
+      for (const nodeId of provision.candidateSourceNodeIds) ambiguousNodeIds.add(nodeId);
+
+      // KNOWN_SUPERSEDED: buildProvisionView's own loop (above in this file)
+      // pushes the provision's ORIGINAL base nodeId into
+      // supersededSourceNodeIds exactly once, on the first applied-chain
+      // iteration - i.e. the earliest (appliedChain is date-sorted, oldest
+      // first, per chain.ts's buildProvisionChain) effect that actually
+      // applied as of this state's own asOfDate. That effect is the real,
+      // disclosable provenance for "why is this superseded."
+      if (provision.supersededSourceNodeIds.length === 0) continue;
+      const supersedingEffect = provision.appliedChain[0] ?? null;
+      for (const nodeId of provision.supersededSourceNodeIds) {
+        // A node already recorded as superseded by an earlier-processed
+        // state is left alone (first writer wins) rather than overwritten -
+        // in practice one nodeId belongs to exactly one provision/instrument
+        // by construction, so this is a defensive no-op, never a real
+        // precedence decision.
+        if (supersededByNodeId.has(nodeId)) continue;
+        supersededByNodeId.set(nodeId, {
+          nodeId,
+          instrumentKey: provision.instrumentKey,
+          provisionKey: provision.provisionKey,
+          supersededByEffectId: supersedingEffect?.effectId ?? "(unknown-superseding-effect)",
+          supersededByAmendmentDocumentId: supersedingEffect?.amendmentDocumentId ?? provision.currentSourceDocumentId,
+          supersededEffectiveDate: supersedingEffect?.effectiveDate.date ?? null,
+        });
+      }
+    }
+  }
+
+  return { coveredDocumentIds, supersededByNodeId, ambiguousNodeIds };
+}
+
+/** The honest default for a consumer that has not (yet, or ever) been wired to any real amendment/operative-state computation - every lookup against this resolves UNKNOWN_SUPERSESSION_STATUS, never CURRENT_OPERATIVE, since `coveredDocumentIds` is empty. This is what makes "no supersession index was supplied" fail closed rather than silently behaving exactly as the pre-fix code did (implicitly certifying every node current). */
+export const EMPTY_SUPERSESSION_INDEX: NodeSupersessionIndex = { coveredDocumentIds: new Set(), supersededByNodeId: new Map(), ambiguousNodeIds: new Set() };
+
+/**
+ * The single query primitive every bypass-prone StructuralNode consumer
+ * should call before treating a physical node's own text as safely
+ * current. Three-way, deterministic, fail-closed:
+ *   - no nodeId supplied at all -> UNKNOWN (a supersession verdict is
+ *     meaningless without a specific physical-occurrence identity - never
+ *     answered at the bare document/label level).
+ *   - nodeId is a real, disclosed superseded occurrence -> KNOWN_SUPERSEDED
+ *     with full provenance.
+ *   - nodeId is one of several colliding candidates for an amendment target
+ *     the resolver could not uniquely attach -> UNKNOWN (never guessed).
+ *   - nodeId's own documentId was never covered by any state this index was
+ *     built from -> UNKNOWN (never assumed safe merely because nothing
+ *     contradicts it - the whole point of this fix).
+ *   - otherwise -> CURRENT_OPERATIVE (a document this index DOES cover, and
+ *     this specific node was never recorded as superseded or ambiguous).
+ */
+export function getNodeSupersessionStatus(index: NodeSupersessionIndex, documentId: string, nodeId: string | null): NodeSupersessionResult {
+  if (!nodeId) {
+    return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label." };
+  }
+  const record = index.supersededByNodeId.get(nodeId);
+  if (record) {
+    return { status: "KNOWN_SUPERSEDED", record, reason: `Superseded by amendment effect "${record.supersededByEffectId}" from document "${record.supersededByAmendmentDocumentId}"${record.supersededEffectiveDate ? `, effective ${record.supersededEffectiveDate}` : ""} - the operative-state resolver has already determined this physical occurrence's own text no longer governs.` };
+  }
+  if (index.ambiguousNodeIds.has(nodeId)) {
+    return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: "This physical occurrence is one of multiple real candidates sharing a legal reference/definition term that an amendment target could not be uniquely attached to - whether THIS specific occurrence is the one superseded cannot be determined without guessing." };
+  }
+  if (!index.coveredDocumentIds.has(documentId)) {
+    return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: `No operative-state computation covers document "${documentId}" - amendment/supersession status for this node was never checked, so it must not be assumed current.` };
+  }
+  return { status: "CURRENT_OPERATIVE", record: null, reason: "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for." };
 }

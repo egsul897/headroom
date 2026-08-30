@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "EVIDENCE_QUALITY_RESULTS",
+  "generatedAt": "2026-08-29T23:19:00Z",
+  "purpose": "Section 19: measure evidenceQuality reproducibility; report only, no threshold; do not launch another ontology exercise if reviewers disagree heavily between AMBIGUOUS and INSUFFICIENT (or, as observed here, AMBIGUOUS and SUFFICIENT).",
+  "certificationClass": "DIAGNOSTIC - never blocks evaluator closure (Section 8/15/19).",
+  "scope": "All 47 cases.",
+  "meanPairwiseRawAgreement": 0.7163120567375887,
+  "unanimousAgreementRate": 0.574468085106383,
+  "fleissKappa": -0.07715813598166445,
+  "kappaInterpretation": "Effectively zero / slightly negative chance-adjusted agreement - worse than chance once expected agreement under the observed marginal distribution is accounted for. The raw 71.6% pairwise figure is inflated by the fact that SUFFICIENT is the overwhelming majority class (evaluator's own sealed labels assign SUFFICIENT to nearly all 47 cases), so two raters who both lean toward SUFFICIENT will agree often by base-rate alone even if their underlying judgment is not well correlated.",
+  "dominantConfusion": "SUFFICIENT vs AMBIGUOUS (40 of the pairwise comparisons touch this boundary). INSUFFICIENT was almost never selected by any adjudicator.",
+  "priorPrediction": "Exactly matches Section 19's anticipated failure mode ('if reviewers disagree heavily between AMBIGUOUS and INSUFFICIENT, do not launch another ontology exercise') - substituting AMBIGUOUS/SUFFICIENT for AMBIGUOUS/INSUFFICIENT as the actual observed boundary, the instruction applies identically.",
+  "action": "Per Section 19's explicit instruction: mark evidenceQuality diagnostic-only and move on. No redesign, no re-adjudication, no ontology exercise is undertaken.",
+  "conclusion": "evidenceQuality is reported as required, with no certification threshold. It remains permanently metadata-only per Section 4E (never independently grants/denies credit, never counts as surfacing) and never blocks Section 30 closure."
+}

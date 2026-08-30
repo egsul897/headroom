@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "REPRESENTATION_COMPLETENESS_RESULTS",
+  "generatedAt": "2026-08-29T23:17:00Z",
+  "purpose": "Section 17: determine whether representationCompleteness (NONE/PARTIAL/FULL) is reproducible enough to become CERTIFICATION_GRADE, or remains DIAGNOSTIC_ONLY.",
+  "certificationClass": "DIAGNOSTIC (per Section 8) unless this study proves otherwise (Section 17).",
+  "interReviewerReproducibility": { "threshold": 0.85, "observed": 0.8014184397163121, "result": "FAILED" },
+  "designationPerSection17": "DIAGNOSTIC_ONLY",
+  "evaluatorVsConsensusGate": {
+    "computedAnyway": true,
+    "observed": 0.44680851063829785,
+    "note": "Per the frozen preregistration, this gate is NOT a certification requirement once the interReviewerGate fails (DIAGNOSTIC_ONLY dimensions never require an evaluator-vs-consensus certification threshold). It is reported here only for honest completeness, not as a pass/fail criterion. At 44.7% it is far below even the failed inter-reviewer figure, reinforcing that the FULL/PARTIAL boundary is genuinely difficult for both the evaluator and independent reviewers to pin down consistently."
+  },
+  "dominantConfusionPattern": "FULL vs PARTIAL: 22 of 47 cases (47%) show at least one adjudicator pair split on exactly this boundary. NONE vs PARTIAL is a smaller but present source of disagreement (6 of 47).",
+  "interpretation": "This replicates, at a smaller and more specific scale, the same class of difficulty that caused Phase 3F.1.5.3's detailed 12-state taxonomy to fail its reproducibility study (76.7%/69.7% detailed agreement vs 94.9%/97.0% binary agreement) - completeness/degree judgments are inherently harder to reproduce than binary credit/no-credit calls, even when isolated into their own atomic dimension. This is evidence the atomic decomposition (Section 4) was the right move: isolating this specific difficulty into its own diagnostic dimension, rather than letting it degrade agreement on the safety-critical creditEligibility dimension (which itself reproduces well at 95.7%).",
+  "closureImpact": "NONE. Per Section 8/15/17/30, representationCompleteness's failure to reach CERTIFICATION_GRADE does not block evaluator closure by design. It remains DIAGNOSTIC_ONLY.",
+  "conclusion": "representationCompleteness does not qualify for CERTIFICATION_GRADE this phase. It is designated DIAGNOSTIC_ONLY, exactly as Section 17 anticipated as an allowed outcome. No redesign is undertaken this phase (Section 17 explicitly forbids it)."
+}

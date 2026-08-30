@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "DATABASE_INTEGRITY_CERTIFICATION",
+  "generatedAt": "2026-08-30T03:55:00Z",
+  "auditorRole": "INDEPENDENT_CERTIFICATION_AUDITOR",
+  "purpose": "Section 24: real-Postgres integrity certification of the NEW ClaimReviewItem/ClaimReviewObservation/ClaimReviewDecision models, plus spot-checks of SourceArtifact/DefinedTermNode uniqueness and Document/Company cascade behavior.",
+  "testFile": "tests/foundation-audit/database-integrity-certification.test.ts",
+  "testResult": "15/15 PASS (stable across 5+ repeated runs)",
+  "dbConstraintVerificationResults": {
+    "foreignKeyEnforcement": [
+      { "test": "ClaimReviewObservation.reviewItemId set to a bogus, nonexistent id", "result": "REJECTED at the DB layer, Prisma error code P2003 (real Postgres FK violation, not an app-level check)." },
+      { "test": "ClaimReviewDecision.reviewItemId set to a bogus, nonexistent id", "result": "REJECTED, P2003." },
+      { "test": "ClaimReviewItem.documentId set to a bogus, nonexistent id", "result": "REJECTED, P2003." },
+      { "test": "ClaimReviewItem.companyId set to a bogus, nonexistent id", "result": "REJECTED, P2003." }
+    ],
+    "uniquenessEnforcement": [
+      { "test": "Raw duplicate (companyId, claimKey) insert bypassing recordClaimReview entirely", "result": "REJECTED, P2002 - confirms the constraint is a real DB-level unique index (claim_review_items_companyId_claimKey_key), not merely an application-level findUnique-then-branch check that a raw script could bypass." },
+      { "test": "Raw duplicate SourceArtifact (companyId, contentHash) insert", "result": "REJECTED, P2002." },
+      { "test": "Raw duplicate DefinedTermNode (companyId, stableKey) insert", "result": "REJECTED, P2002." }
+    ],
+    "cascadeDeleteBehavior": [
+      { "test": "Delete a Company that owns a ClaimReviewItem (with an observation and a decision attached) and a Document", "result": "ALL cascade away: the ClaimReviewItem, its ClaimReviewObservation, its ClaimReviewDecision, and the Document row are all gone after the Company delete - matches the schema's onDelete: Cascade on every one of these 4 FK relations." },
+      { "test": "Delete a Document directly (Company untouched) that owns a ClaimReviewItem", "result": "The ClaimReviewItem cascades away too (its own documentId FK is independently onDelete: Cascade, not merely inherited via the companyId FK)." }
+    ]
+  },
+  "appendOnlyVerification": {
+    "method": "Direct source-code inspection of lib/contract-model/compiler/safe-failure/service.ts (the ONLY module that writes these 3 models in production code).",
+    "result": "CONFIRMED - grep across the file's full source found zero `.delete(`, `.deleteMany(`, `.update(`, or `.updateMany(` calls against claimReviewObservation or claimReviewDecision. Both models are the target of `.create` ONLY (via the nested `observations: { create: ... }` / `decisions: { create: ... }` relations in recordClaimReview/resolveClaimReview). ClaimReviewItem itself IS updated (status/resolvedAt/etc.) - which is the documented, intended mutable 'current state' row - but its own history lives exclusively in the 2 append-only child tables."
+  },
+  "transactionalityVerification": {
+    "claim": "resolveClaimReview's item-status-update + decision-create pair is atomic.",
+    "sourceInspection": "CONFIRMED - the function's body is `await prisma.$transaction([prisma.claimReviewItem.update(...), prisma.claimReviewDecision.create(...)])`, a real Prisma batch transaction (both statements committed or rolled back together).",
+    "behavioralConfirmation": "A direct test called resolveClaimReview once and verified the item's new status and the single decision row's previousStatus/newStatus were both consistent and present together - no observed partial-write state in any run."
+  },
+  "concurrencyTestExactResults": [
+    {
+      "scenario": "Two GENUINELY concurrent recordClaimReview calls for the SAME, brand-new claimKey (no prior row exists for either).",
+      "result": "In the majority of runs, one call fulfilled (outcome: CREATED) and the other REJECTED with an unhandled P2002 error. In a minority of runs both calls fulfilled (Postgres happened to serialize the two transactions with enough separation). In EVERY run, exactly 1 ClaimReviewItem row exists afterward for that claimKey - no data corruption, no duplicate row, no lost claim - ever observed.",
+      "rootCause": "recordClaimReview's existing-item lookup (`prisma.claimReviewItem.findUnique(...)`) and its subsequent `prisma.claimReviewItem.create(...)` on a miss are two separate round-trips with no P2002 catch around the create - unlike lib/connectors/upload-connector.ts's own uploadDocumentThroughIngestion, which has exactly this pattern but IS wrapped in a P2002-catch-and-refetch for precisely this race class.",
+      "findingId": "AUD-S24-01"
+    },
+    {
+      "scenario": "Two GENUINELY concurrent recordClaimReview calls for an EXISTING claim, both submitting the identical observation.",
+      "result": "PASS - both calls always fulfilled, both resolving to reviewItemId consistent with each other, outcome always one of ALREADY_RECORDED/OBSERVATION_APPENDED (never an error, never a corrupted/duplicate item), and the resulting observation count was always exactly 1 or 2 (never more, never a lost write) across repeated runs."
+    },
+    {
+      "scenario": "Two GENUINELY concurrent resolveClaimReview calls for the SAME item, one ACCEPT and one REJECT.",
+      "result": "Both calls always fulfilled (never an unhandled error - findUniqueOrThrow always finds the row, since it is never deleted mid-race). Exactly 2 ClaimReviewDecision rows always exist afterward (append-only integrity holds: neither decision is ever lost). The item's final `status` always equals ONE of the two real decisions' newStatus (RESOLVED_ACCEPTED or RESOLVED_REJECTED) - never a third, corrupted value. HOWEVER: the audit trail's own causal accuracy is compromised under this race - see finding AUD-S24-02.",
+      "findingId": "AUD-S24-02"
+    }
+  ],
+  "findings": [
+    {
+      "id": "AUD-S24-01",
+      "severity": "MAJOR_NON_BLOCKING",
+      "title": "recordClaimReview's create-path for a brand-new claimKey is not atomic - reliably reproduces an unhandled P2002 under real concurrency",
+      "description": "Same root pattern as AUD-S12-01 (lib/connectors/registry.ts): a `findUnique` used to decide whether to branch into `create`, with no catch around the create for the case where a concurrent caller won the race in between. Two pipeline runs (or a pipeline re-run overlapping with an in-flight run) detecting the SAME brand-new claim for the first time, at genuinely the same moment, can produce one thrown, unhandled error.",
+      "dataIntegrityImpact": "NONE - the @@unique([companyId, claimKey]) constraint itself is never violated (confirmed: exactly 1 row exists after every race, across many repeated runs). The defect is purely an unhandled-error path for the losing caller.",
+      "whyMajorNonBlockingNotBlocker": "No corruption, no duplicate row, no cross-tenant issue, no FK/migration issue. Narrow window: only the very FIRST detection of a given claimKey races; every subsequent detection of the same claim goes through the (correctly handled) update path.",
+      "recommendedNextStep": "Wrap the `create` call in recordClaimReview with the same P2002-catch-and-refetch pattern already proven in lib/connectors/upload-connector.ts's uploadDocumentThroughIngestion."
+    },
+    {
+      "id": "AUD-S24-02",
+      "severity": "MAJOR_NON_BLOCKING",
+      "title": "resolveClaimReview's audit trail can record a stale previousStatus, and its chronological (createdAt) order can disagree with which transaction actually committed last, under concurrent resolution of the SAME claim",
+      "description": "resolveClaimReview reads the item's current `status` via `prisma.claimReviewItem.findUniqueOrThrow(...)` BEFORE opening its `$transaction([update, create])` - that initial read is not itself part of the atomic transaction. Two genuinely concurrent resolveClaimReview calls for the same reviewItemId can both read status='OPEN_REVIEW' before either one's transaction commits, so BOTH resulting ClaimReviewDecision rows can record previousStatus='OPEN_REVIEW' - even though, by the time the second transaction actually executes its UPDATE, the true prior state was already the first decision's own outcome. Separately, because each row's `createdAt` reflects `now()` evaluated at STATEMENT/transaction START (not commit), the decision log's own chronological order does not reliably indicate which transaction's UPDATE actually committed last - a reader of the audit trail could be misled about which of two racing human/automated resolutions 'really won.'",
+      "reproducedExactOutput": "decisions=[{action:REJECT, previousStatus:OPEN_REVIEW, newStatus:RESOLVED_REJECTED},{action:ACCEPT, previousStatus:OPEN_REVIEW, newStatus:RESOLVED_ACCEPTED}], finalItem.status=RESOLVED_ACCEPTED - i.e. the item's real final state (ACCEPTED) matches the SECOND-created decision row in this particular run, but both decision rows claim an identical (and, for the second one, stale) previousStatus, and in OTHER runs of the identical test the chronological-vs-actual-winner relationship flipped, confirming the ordering itself is racy, not merely one fixed 'last insert wins' outcome.",
+      "dataIntegrityImpact": "NONE in the strict sense of lost writes - both decisions are always persisted, append-only, and the item's final status always equals one of the two real, valid outcomes (never a third, corrupted value). The impact is narrower and specific to the audit trail's OWN causal-accuracy promise: 'previousStatus' can misstate what the actual prior state was at transaction-execution time, and reading the decision log in createdAt order does not reliably reconstruct which resolution the system actually landed on.",
+      "whyMajorNonBlockingNotBlocker": "Never loses a decision, never corrupts the item into an invalid/undefined status, never crosses tenants, never touches FK/migration integrity. The scenario (two DIFFERENT resolution actions racing on the exact SAME claim at the exact same moment) is a genuine but narrow real-world case (e.g. two reviewers resolving the same flagged claim within milliseconds of each other, or a human resolution racing an automated reopen).",
+      "recommendedNextStep": "Move the current-status read inside the same $transaction (e.g. a SELECT ... FOR UPDATE via a raw query, or re-reading status as the first statement inside the transaction array) so previousStatus reflects the true state at the moment each transaction actually executes, and/or add an optimistic-concurrency check (e.g. an updatedAt/version comparison in the WHERE clause) so a losing concurrent resolve fails explicitly rather than silently recording a stale previousStatus."
+    }
+  ],
+  "certifiedClaims": {
+    "foreignKeysRealAndEnforced": "CERTIFIED",
+    "cascadeDeleteMatchesSchemaIntent": "CERTIFIED",
+    "uniquenessEnforcedAtDbLevel": "CERTIFIED",
+    "appendOnlyHistoryAssumptionsHold": "CERTIFIED (source-code inspection: zero delete/update calls against the 2 append-only tables in the only module that writes them)",
+    "resolveClaimReviewIsTransactional": "CERTIFIED (real prisma.$transaction, confirmed by source inspection and behavior)",
+    "concurrentObservationsAreSane": "CERTIFIED WITH ONE FINDING - never data corruption, but recordClaimReview's brand-new-claim create path can throw an unhandled error under concurrency (AUD-S24-01)",
+    "concurrentResolutionsAreSane": "CERTIFIED WITH ONE FINDING - never a lost write or corrupted status, but the audit trail's own previousStatus/ordering can be misleading under concurrency (AUD-S24-02)"
+  },
+  "verdict": "SECTION_24_CERTIFIED_WITH_TWO_MAJOR_NON_BLOCKING_CONCURRENCY_FINDINGS",
+  "verdictNarrative": "Every structural integrity guarantee (real FKs, real cascade behavior, real DB-level uniqueness, append-only history, transactional resolution) was independently confirmed against real Postgres with zero BLOCKER-class defects - no data corruption, no lost writes, no orphaned rows, no bypassed constraints anywhere this audit tested. Two MAJOR_NON_BLOCKING concurrency findings were discovered, both following the same 'read-then-write outside one atomic operation' pattern, and both bounded to narrow, non-corrupting failure modes (an unhandled error on a first-detection race; a stale/misordered audit-trail field under a genuinely simultaneous dual-resolution race)."
+}

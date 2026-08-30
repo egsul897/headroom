@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "DEFINITION_ISOLATION_AUDIT",
+  "generatedAt": "2026-08-30T00:09:00Z",
+  "purpose": "Section 19: close no-documentId definition fallbacks.",
+  "originalFixPatternFound": "lib/contract-model/compiler/amendment/operative-state.ts's resolveBaseText DEFINITION branch: index.getDefinition(group.ref, baseDocumentId), no fallback (the P0-2 fix from Phase 3F.1.4).",
+  "callSitesAudited": [
+    { "file": "lib/contract-model/compiler/semantic/tools.ts", "finding": "getDefinition/getDefinitionDependencies tools fell back to getDefinitionFullText(term) with NO documentId, searching the entire index across every instrument/company.", "fix": "New getScopedDefinitionFullText() helper falls back only across this file's own already-enforced instrument scope (allowedDocs), never the whole index - an explicit, scoped, documented fallback rather than a silent generic one." },
+    { "file": "lib/contract-model/compiler/amendment/pipeline.ts", "finding": "getTargetCurrentText fell back to a documentId-less lookup even though target.targetDocumentId was already a specifically-resolved target; this text is fed to the LLM as amendment interpretation context.", "fix": "Fallback removed entirely (mirrors the original P0-2 fix) - a miss on the resolved targetDocumentId is a genuine NOT_FOUND, never a reason to widen scope." },
+    { "file": "lib/contract-model/compiler/amendment/independent-verification.ts", "finding": "Investigated and found already safe - resolveDefinitionIndependently is document-scoped with no fallback, fixed as a side effect of this phase's own earlier structural-health-composition work.", "fix": "None needed - left untouched." }
+  ],
+  "note": "The 3 exact file paths cited in the prior phase's disclosure (docs/foundation-remediation/13-remaining-foundation-risks.json) matched exactly - no files had moved.",
+  "invariantEnforced": "Definition lookup remains instrument/document isolated - no cross-document contamination through a convenience fallback. Where a fallback is genuinely needed, it is explicit and scoped (getScopedDefinitionFullText), never silent and generic."
+}

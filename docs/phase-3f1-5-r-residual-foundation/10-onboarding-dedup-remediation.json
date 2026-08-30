@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "ONBOARDING_DEDUP_REMEDIATION",
+  "generatedAt": "2026-08-30T00:08:00Z",
+  "purpose": "Section 18: close P1-3 (onboarding content-hash dedup gap).",
+  "defectId": "P1-3 / FA-DOCID-01",
+  "filesFound": {
+    "wiredOnboardingUploadAction": "app/[companyId]/onboarding/documents/actions.ts (uploadDocumentAction) - same path the prior audit named, unchanged location.",
+    "rawUploadPrimitive": "lib/onboarding/documents.ts (uploadAndChunkDocument) - left untouched by design; remains the low-level storage/parse/chunk primitive.",
+    "existingTestedDedupWrapper": "lib/connectors/upload-connector.ts (uploadDocumentThroughIngestion), backed by lib/connectors/dedup.ts (findDuplicateArtifact), keyed on SourceArtifact's @@unique([companyId, contentHash])."
+  },
+  "fix": {
+    "actionsTs": "uploadDocumentAction now calls uploadDocumentThroughIngestion instead of uploadAndChunkDocument. The wrapper's UploadDocumentParams shape was already identical to what the action built, so no adapter code was needed.",
+    "raceConditionFoundAndFixed": "Wiring this in surfaced a real TOCTOU race in upload-connector.ts: the dedup pre-check (findDuplicateArtifact) and the SourceArtifact insert are separate round-trips, so two concurrent uploads of identical bytes could both pass the check, both create a Document row, and the loser would throw a raw Postgres P2002 instead of converging. Fixed with a catch that detects P2002, unwinds the loser's own just-created Document row + stored blob (safe - nothing else references it yet, DocumentChunk cascade-deletes), and returns the winner's artifact as { duplicate: true }.",
+    "tenantIsolationDedupContentSemantics": "Come for free from the existing wrapper/schema (@@unique([companyId, contentHash])) - no new dedup mechanism invented."
+  },
+  "testResults": {
+    "newFile": "tests/onboarding/documents-actions-dedup.test.ts (5 tests): same-tenant re-upload no-ops; cross-tenant identical bytes do NOT dedup; a genuinely different amendment is never deduped; metadata-only differences (renamed file, same bytes) still dedup; an existing supersedesDocumentId amendment relationship survives a later duplicate re-upload of the base document untouched.",
+    "extendedFile": "tests/connectors/upload-connector.test.ts (+2 tests): cross-entry-point convergence (direct wrapper call vs. the action's own params shape) converges on one document; a real 10-way concurrent-duplicate-ingestion race converges on exactly one Document/SourceArtifact, no unhandled errors, all losers' orphans cleaned up.",
+    "uiContractRisk": "Low, mitigated: uploadDocumentAction's return value was already discarded by the original code (fire-and-forget, then revalidatePath); the consuming page re-queries fresh on every render rather than reading anything from the action's return."
+  },
+  "verdict": "GENUINELY REMEDIATED."
+}

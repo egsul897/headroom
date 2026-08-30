@@ -24,7 +24,9 @@
  *    connection like any other, not a special case.
  */
 
+import { Prisma } from "@prisma/client";
 import { prisma } from "../prisma";
+import { getDocumentStorageProvider } from "../document-storage";
 import { uploadAndChunkDocument, type UploadDocumentParams } from "../onboarding/documents";
 import { computeContentHash, findDuplicateArtifact } from "./dedup";
 import { getOrCreateUploadConnection } from "./registry";
@@ -97,6 +99,18 @@ export interface UploadThroughIngestionResult {
  * artifact's id WITHOUT calling uploadAndChunkDocument at all (no duplicate
  * Document row, no duplicate blob write) - on a miss, uploads as normal and
  * creates the linking SourceArtifact row.
+ *
+ * Concurrency: the findDuplicateArtifact check above and the
+ * prisma.sourceArtifact.create below are two separate round-trips, so two
+ * near-simultaneous callers for the SAME (companyId, contentHash) can both
+ * pass the check and both proceed to call uploadAndChunkDocument - each
+ * creating its own real Document row before either writes the SourceArtifact
+ * row that the @@unique([companyId, contentHash]) constraint actually
+ * serializes on. The loser's `create` throws Postgres's own real P2002
+ * unique-violation; rather than let that raw DB error surface to the caller
+ * (and leave behind an orphaned Document + blob nothing ever links to), the
+ * loser unwinds its own just-created Document/blob and converges on the
+ * winner's artifact, exactly as if it had lost the race at the first check.
  */
 export async function uploadDocumentThroughIngestion(params: UploadDocumentParams): Promise<UploadThroughIngestionResult> {
   const contentHash = computeContentHash(params.data);
@@ -108,18 +122,47 @@ export async function uploadDocumentThroughIngestion(params: UploadDocumentParam
   const uploadConnection = await getOrCreateUploadConnection(params.companyId);
   const { document, chunkCount } = await uploadAndChunkDocument(params);
 
-  const artifact = await prisma.sourceArtifact.create({
-    data: {
-      companyId: params.companyId,
-      sourceConnectionId: uploadConnection.id,
-      artifactType: "DOCUMENT",
-      sourceIdentifier: params.filename,
-      retrievedAt: new Date(),
-      contentHash,
-      storageRef: document.storageRef,
-      documentId: document.id,
-    },
-  });
+  try {
+    const artifact = await prisma.sourceArtifact.create({
+      data: {
+        companyId: params.companyId,
+        sourceConnectionId: uploadConnection.id,
+        artifactType: "DOCUMENT",
+        sourceIdentifier: params.filename,
+        retrievedAt: new Date(),
+        contentHash,
+        storageRef: document.storageRef,
+        documentId: document.id,
+      },
+    });
+    return { duplicate: false, document, chunkCount, artifactId: artifact.id };
+  } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+      await unwindLosingUpload(document);
+      const winner = await findDuplicateArtifact(params.companyId, contentHash);
+      if (winner) {
+        return { duplicate: true, artifactId: winner.id };
+      }
+    }
+    throw err;
+  }
+}
 
-  return { duplicate: false, document, chunkCount, artifactId: artifact.id };
+/**
+ * Unwinds a Document row (and its stored blob) created by a caller that lost
+ * the concurrent-duplicate race above. Safe to do unconditionally: at this
+ * point in the function nothing else in the system has had a chance to
+ * reference this Document row yet (its own SourceArtifact row is exactly
+ * the create that just failed, and no ExtractionRun/chunk-review step runs
+ * until a later, separate action) - DocumentChunk rows cascade-delete with
+ * it (schema: `onDelete: Cascade`). Best-effort in the same spirit as
+ * uploadAndChunkDocument's own orphan-blob cleanup: never let a cleanup
+ * failure mask the real outcome (convergence on the winner's artifact).
+ */
+async function unwindLosingUpload(document: Awaited<ReturnType<typeof uploadAndChunkDocument>>["document"]): Promise<void> {
+  const storage = getDocumentStorageProvider();
+  if (document.storageRef) {
+    await storage.delete(document.storageRef).catch(() => {});
+  }
+  await prisma.document.delete({ where: { id: document.id } }).catch(() => {});
 }

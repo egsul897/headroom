@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "REVIEW_EVENT_FALSE_NEGATIVE_AUDIT",
+  "generatedAt": "2026-08-30T00:00:00Z",
+  "auditorRole": "INDEPENDENT_CERTIFICATION_AUDITOR",
+  "purpose": "Section 22 (artifact 20): distinct from Section 21's volume/quality sample. Construct encountered-but-unresolved material cases and independently verify review items exist for each, specifically hunting for a SYSTEMATIC class of encountered material claim that could disappear with NEITHER a trusted representation NOR an explicit review state - a genuine gap in the invariant, not merely an example of it working (that is Section 20/artifact-18's job).",
+  "scriptUsed": "scripts/cert-3f1-6-section22-false-negative-construction.ts",
+  "approach": "Rather than re-testing the five canonical derivation-level failure classes (already exhaustively confirmed to work in 18-no-silent-material-failure-certification.json), this audit stress-tested the ONE WIRED INTEGRATION FUNCTION's (recordClaimReviewsFromDocumentCoverage) own documented contract: that DocumentCoverageResult.units and .coverageEntries correspond 1:1. This contract is NOT enforced by any assertion, type constraint, or runtime check anywhere in integrate.ts - it holds today only because the current pipeline.ts construction happens to always produce matched arrays (independently verified by reading document-coverage.ts and cross-reference-audit.ts's applyOperativeStateFindingsToCoverage, both of which preserve array length 1:1 via unconditional .map()/.push() with no filtering). A future caller - exactly the kind Section 19 finds does not exist YET but would need to exist for this architecture to matter in production - is not guaranteed to preserve this invariant, and nothing in the exported function's own code would catch a violation.",
+  "constructedFalseNegativeClasses": [
+    {
+      "id": "FN-1",
+      "family": "Orphaned coverage entry (entry present, matching unit absent from units[])",
+      "construction": "A synthetic DocumentCoverageResult with units=[] and a single coverageEntries entry: CRITICAL materiality, UNREPRESENTED state, fully-populated reasoning describing a real $40,000,000 debt basket with zero compiled IR representation.",
+      "observedBehavior": "recordClaimReviewsFromDocumentCoverage() completed without throwing any error or exception. The orphaned entry was counted only in the function's generic `skippedBelowMaterialityOrHealthy` bucket - a counter that also legitimately increments for FULLY_REPRESENTED_VERIFIED units with no prior OPEN item (a healthy, expected outcome) - making a silent integration-level drop statistically indistinguishable from routine healthy skips in the function's own reported metrics. outcomesByType.CREATED was 0. No ClaimReviewItem row was created; a direct lookup by this unit's own claimKey confirmed the row does not exist.",
+      "invariant37Status": "VIOLATED IN THIS CONSTRUCTION - neither a trusted representation nor a review state exists for this claim, and the caller receives no signal distinguishing this from a healthy outcome."
+    },
+    {
+      "id": "FN-2",
+      "family": "Orphaned material unit (unit present, no corresponding entry in coverageEntries[] at all)",
+      "construction": "A synthetic DocumentCoverageResult with a single CRITICAL-materiality unit (a real anchor, a real $55,000,000 restricted-payments basket) and coverageEntries=[].",
+      "observedBehavior": "recordClaimReviewsFromDocumentCoverage() completed without error. Because the integration loop iterates over `result.coverageEntries` (never over `result.units`), this unit is not merely skipped - it is never visited by the loop AT ALL, and is not counted in ANY metric the function returns (not even `skippedBelowMaterialityOrHealthy`, which only increments inside the loop body). This is a strictly worse silent-failure mode than FN-1: FN-1 at least produces a (misleadingly generic) counter increment; FN-2 leaves absolutely no trace in the function's own return value.",
+      "invariant37Status": "VIOLATED IN THIS CONSTRUCTION - same as FN-1, with zero observability even in aggregate metrics."
+    }
+  ],
+  "controlCheck": {
+    "description": "The identical unit+entry pair used in FN-1/FN-2, when CORRECTLY paired in a single DocumentCoverageResult, was run through the same function to confirm the gap is specifically about the units/entries pairing contract, not a general malfunction.",
+    "result": "outcomesByType.CREATED === 1 - a review item was created normally, confirming derive.ts/service.ts themselves are not at fault; the gap is specifically in recordClaimReviewsFromDocumentCoverage's lack of any defensive check on its own input contract."
+  },
+  "checksExecuted": 8,
+  "checksPassed": 8,
+  "isThisExploitableToday": {
+    "answer": "NO, not today, and this is an important qualification.",
+    "reasoning": "The sole real caller of this function today (scripts/phase-3f1-5-r-safe-failure-volume-analysis.ts) always passes a DocumentCoverageResult produced directly by runSemanticCoverageAudit(), and this audit independently traced (via reading pipeline.ts, document-coverage.ts, and cross-reference-audit.ts line-by-line) that the real pipeline's own internal construction DOES preserve the 1:1 units/entries correspondence unconditionally today - reconcileFrozenInventory() pushes exactly one entry per unit in frozenInventory.units with no filtering, and applyOperativeStateFindingsToCoverage() only ever .map()s the entries array (same length in, same length out), never drops or adds entries independent of units. So this specific false-negative class cannot occur via the ONE real call path that exists as of this audit."
+  },
+  "whyThisIsStillAFindingWorthRecording": {
+    "reasoning": "17-safe-failure-wiring-certification.json (Section 19, BLOCKER) already establishes that closing THAT gap requires a NEW live caller to be wired into the actual analysis pipeline in a future phase. This audit's finding here is that when that wiring work happens, the integration function it will call (recordClaimReviewsFromDocumentCoverage) provides NO defensive protection against its own documented input contract being violated - it fails completely silently, with degraded-to-zero observability, rather than throwing, logging a warning, or asserting. A future live caller assembling or transforming a DocumentCoverageResult in any way that does not perfectly replicate today's script's exact construction (for example, filtering entries for a partial re-run, merging results from two async stages, or a future refactor of document-coverage.ts) could reintroduce exactly this class of silent material-claim loss, and nothing in this module would catch it. This is precisely the 'systematic class of encountered material claim that could disappear with no trusted state and no review state' this section's charter asks for - not a hypothetical unrelated to the architecture's actual design, but a real latent gap in its one wired integration point's own robustness."
+  },
+  "verdict": "GAP_FOUND_LATENT_NOT_CURRENTLY_EXPLOITABLE",
+  "severity": "MAJOR_NON_BLOCKING",
+  "severityRationale": "Not a BLOCKER because it cannot occur via any code path that exists in this repository today (the sole real caller cannot trigger it). Not MINOR because it sits directly inside the phase's own single wired emission point - the ONE piece of code this whole architecture depends on to actually persist review items - and provides zero defense-in-depth against a documented invariant it silently relies on; the failure mode (complete silence, not even a log line) is exactly the failure mode Architecture Invariant #37 exists to eliminate, just one level up the call stack from where the invariant's own tests currently look. Recommended (not implemented by this auditor; production code is frozen for this audit) for a future phase: recordClaimReviewsFromDocumentCoverage should assert entries.length === units.length (or otherwise reconcile the two sets and loudly report/throw on a mismatch) rather than silently iterating over whichever array happens to be shorter."
+}

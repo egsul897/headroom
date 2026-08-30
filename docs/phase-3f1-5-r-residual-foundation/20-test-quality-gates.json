@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "TEST_QUALITY_GATES",
+  "generatedAt": "2026-08-30T00:15:00Z",
+  "purpose": "Section 37: full quality-gate run after integrating all 4 workstreams plus the safe-failure architecture.",
+  "dbAvailability": "Real Postgres WAS available and reachable this session (localhost:5432, schema up to date, migration 20260829232147 applied cleanly) - unlike the immediately preceding Evaluation Contract V3 phase, where the full-suite run reported DB-connectivity failures. This phase's full-suite numbers below are therefore genuine DB-backed results, not environmentally-blocked estimates.",
+  "vitest": {
+    "command": "npx vitest run",
+    "result": "189 test files passed, 1938 tests passed, 0 failed, 0 skipped.",
+    "coverage": "Includes all pre-existing suites (evaluation-v2, contract-model, foundation-audit, connectors, onboarding, financial-core, document-storage, extraction) plus every new/modified test from all 4 workstreams and this phase's own safe-failure architecture."
+  },
+  "targetedSuitesExplicitlyConfirmed": {
+    "safeFailure": "tests/contract-model/safe-failure-adversarial.test.ts - 15/15 pass.",
+    "rankStackParser": "tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts - 24/24 pass.",
+    "supersessionAwareness": "tests/contract-model/node-supersession-awareness.test.ts - 14/14 pass.",
+    "onboardingDedup": "tests/onboarding/documents-actions-dedup.test.ts - 5/5 pass; tests/connectors/upload-connector.test.ts extended +2, all pass.",
+    "combinedFailures": "tests/foundation-audit/combined-failures.test.ts - 7/7 pass (first describe block now asserts the FIXED operative-state x structural-health composition).",
+    "amendmentOperativeState": "included in the 189-file full run; no isolated failures.",
+    "semanticCompiler": "included in the 189-file full run; no isolated failures.",
+    "semanticVerifier": "included in the 189-file full run; no isolated failures.",
+    "packageGraph": "included in the 189-file full run; no isolated failures.",
+    "definitionIsolation": "covered by existing definition-fallback/instrument-isolation tests, included in the full run.",
+    "evaluationV2Regression": "tests/evaluation-v2/* (8 files including atomic-contract.test.ts's 14-false-credit-controls gate) - all pass, included in the full run, confirming zero regression on the frozen evaluator matcher (untouched this phase).",
+    "atomicContractV3Regression": "tests/evaluation-v2/atomic-contract.test.ts - 18/18 pass, included above.",
+    "falseCreditControls14": "PASS - see 19-false-credit-control-regression.json for full detail; all 14 remain NO_CREDIT."
+  },
+  "typescript": {
+    "command": "npx tsc --noEmit -p .",
+    "result": "0 new errors. Only the pre-existing baseline errors remain, unchanged in count and location from the phase's own 00-baseline.json: tests/foundation-audit/cascade-and-concurrency.test.ts (2), tests/foundation-audit/discovery-fault-injection.test.ts (1), tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3)."
+  },
+  "eslint": {
+    "command": "npx eslint .",
+    "result": "1 pre-existing error, confirmed present at baseline commit a77f76c via git show (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires rule-definition issue) - not touched by any workstream this phase. Zero new errors or warnings."
+  },
+  "build": {
+    "command": "npm run build",
+    "result": "Succeeds. 21 routes, no new warnings, unchanged route/bundle-size profile from prior phases."
+  },
+  "mergeIntegrityNote": "All 4 workstreams were developed in isolated git worktrees dispatched from this phase's own starting commit; each agent's actual commit was individually inspected and cherry-picked onto the phase's real working branch (a stale merge-base was discovered and avoided - see 21-diff-classification.json for the exact commit provenance). One real merge conflict occurred (Workstream B and Workstream D both touched amendment/operative-state.ts) and was resolved manually - both additions coexist with no logic conflict, only overlapping edit location. One test-fixture gap was found and fixed after merging (a synthetic OperativeContractState fixture in node-supersession-awareness.test.ts needed the two new structuralHealthStatus/structuralHealthIssues fields Workstream D added to OperativeProvisionView) - a normal consequence of combining two independently-developed features touching the same type, not a defect in either workstream's own work.",
+  "noFalseGreenClaims": "Every number above is from an actually-executed command in this exact repository state after all merges, not an assumption or extrapolation."
+}

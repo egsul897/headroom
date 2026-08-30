@@ -135,6 +135,8 @@ function makeProvision(overrides: Partial<OperativeProvisionView> = {}): Operati
     targetResolutionStatus: "UNIQUE",
     targetResolutionReason: null,
     candidateSourceNodeIds: [],
+    structuralHealthStatus: "STRUCTURAL_HEALTH_SUFFICIENT",
+    structuralHealthIssues: [],
     attemptedText: null,
     reviewRequired: false,
     candidateTexts: [],

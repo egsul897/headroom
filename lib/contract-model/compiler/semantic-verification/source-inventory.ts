@@ -23,6 +23,8 @@
 import { countInlineEnumerationMarkers } from "../coverage-audit/signals";
 import { hashParts } from "../hashing";
 import type { SourceInventory, SourceInventoryItem, SourceInventoryItemKind } from "./types";
+import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../amendment/operative-state";
+import type { NodeSupersessionIndex } from "../amendment/types";
 
 export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v1";
 
@@ -68,7 +70,25 @@ function collectPatternMatches(text: string, kind: SourceInventoryItemKind, re: 
   return out;
 }
 
-export function buildSourceInventory(candidateRef: string, operativeSourceText: string, sourceDocumentId: string, sourceCitation: string, structuralNodeKey: string | null): SourceInventory {
+/**
+ * Phase 3F.1.5 Workstream B (P1-11/Q8 fix) - `structuralNodeId` and
+ * `supersessionIndex` are new, OPTIONAL, trailing parameters (every
+ * existing call site - production and test - keeps compiling unchanged).
+ * When the caller supplies both a real physical nodeId and a
+ * supersessionIndex actually covering `sourceDocumentId`, the returned
+ * inventory's own `supersessionStatus`/`supersessionReason` honestly
+ * reflect amendment/operative-state.ts's verdict for that node. Omitting
+ * either argument resolves UNKNOWN_SUPERSESSION_STATUS (see
+ * getNodeSupersessionStatus) - never CURRENT_OPERATIVE by silent default -
+ * so a reconciliation built from this inventory can never mistake "nobody
+ * checked" for "confirmed current." This never changes which items are
+ * detected/extracted from `operativeSourceText` itself (that text's own
+ * currentness is the CALLER's responsibility per this module's own
+ * "operativeSourceText - already resolved against Phase 2G's amendment
+ * chain" doc comment on SemanticCompilerInput); this only makes that
+ * caller-side assumption checkable rather than implicit.
+ */
+export function buildSourceInventory(candidateRef: string, operativeSourceText: string, sourceDocumentId: string, sourceCitation: string, structuralNodeKey: string | null, structuralNodeId: string | null = null, supersessionIndex: NodeSupersessionIndex = EMPTY_SUPERSESSION_INDEX): SourceInventory {
   const items: SourceInventoryItem[] = [];
 
   for (const pattern of PATTERNS) {
@@ -116,11 +136,15 @@ export function buildSourceInventory(candidateRef: string, operativeSourceText: 
     });
   }
 
+  const supersession = getNodeSupersessionStatus(supersessionIndex, sourceDocumentId, structuralNodeId);
+
   return {
     candidateRef,
     items,
     apparentIndependentUnitCount: genuineMarkers.length,
     apparentIndependentUnitEvidence: genuineMarkers,
     inventoryAlgorithmVersion: SOURCE_INVENTORY_ALGORITHM_VERSION,
+    supersessionStatus: supersession.status,
+    supersessionReason: supersession.reason,
   };
 }

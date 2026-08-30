@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-final-foundation-certification.v1",
+  "artifactId": "SECTION_27_CROSS_MODULE_FAILURE_PROPAGATION",
+  "generatedAt": "2026-08-30T03:45:00Z",
+  "purpose": "Test that uncertainty actually COMPOSES across module boundaries rather than being dropped at each individual boundary. All 4 required chains constructed and EXECUTED end-to-end via real, unmodified production code (real Postgres for every ClaimReviewItem persistence step).",
+  "testFile": "tests/foundation-audit/cross-module-propagation-chains.test.ts",
+  "testRunResult": "5/5 tests passed (npx vitest run tests/foundation-audit/cross-module-propagation-chains.test.ts)",
+  "chains": [
+    {
+      "chainId": 1,
+      "name": "structural uncertainty -> operative uncertainty -> semantic trust withheld -> explicit review item",
+      "verdict": "FULLY_COMPOSES",
+      "linksVerified": [
+        "Real StructuralIndex.healthDiagnostics() flags a truncated/corrupted section INVALID_SOURCE_SPAN (ERROR severity) -- lib/contract-model/compiler/structural-index.ts.",
+        "Real computeOperativeContractState (amendment/operative-state.ts) consults structuralHealthForNode and withholds currentText, reporting OPERATIVE_STATE_PARTIAL with structuralHealthStatus=STRUCTURAL_HEALTH_UNSAFE.",
+        "Real auditOperativeStateForUnits (semantic-coverage/cross-reference-audit.ts) matches the covering provision via currentSourceNodeId and produces a real finding (STALE_SUPERSEDED_TEXT_CREDITED in the executed scenario, since any applied effect marks the pre-effect node superseded -- a legitimate, real code path, not a test artifact).",
+        "Real applyOperativeStateFindingsToCoverage overrides the coverage entry to OPERATIVE_STATE_UNRESOLVED and adds the unit to dangerousUnaccounted.",
+        "Real deriveFromCoverageEntry + recordClaimReview persist a real ClaimReviewItem (status OPEN_REVIEW, materiality CRITICAL, correct structuralNodeId) in Postgres."
+      ],
+      "notes": "Every link independently verified with its own assertion, not just the end-to-end outcome -- per the task's own 'trace/execute the WHOLE chain, not just the first or last link' instruction."
+    },
+    {
+      "chainId": 2,
+      "name": "definition uncertainty -> semantic uncertainty -> review item",
+      "verdict": "BREAKS",
+      "severity": "BLOCKER",
+      "brokenLink": "lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts, auditOperativeStateForUnits, the `coveringProvision` lookup (line ~112): `p.currentSourceNodeId === nodeId || (p.sectionRef && unit.anchors[0]?.sectionRef && p.sectionRef === unit.anchors[0].sectionRef)`.",
+      "rootCause": "This lookup has exactly two match paths: an exact currentSourceNodeId match, or a sectionRef match. Both are structurally NULL for every DEFINITION-kind OperativeProvisionView whose targetResolutionStatus is AMBIGUOUS (buildProvisionView's resolveBaseText DEFINITION branch never populates sectionRef at all -- only SECTION-kind provisions do -- and an AMBIGUOUS definition resolution leaves currentSourceNodeId null by design, since no single physical occurrence was chosen). The function never consults `candidateSourceNodeIds`, which is exactly where the real, known set of ambiguous definition nodes lives. Confirmed independently by static grep in Section 28 (finding SP-1): this is the ONLY bare-sectionRef-without-occurrence-identity lookup found anywhere in production code, and it is precisely this site.",
+      "demonstratedRealAndReproduced": true,
+      "evidence": [
+        "Two real, distinct physical DetectedDefinition occurrences for the same normalized term in the same document (index.allDefinitions() genuinely returns 2).",
+        "A real amendment effect targeting that term correctly and honestly resolves computeOperativeContractState's provision to targetResolutionStatus=AMBIGUOUS, status=OPERATIVE_STATE_PARTIAL, candidateSourceNodeIds=[nodeA, nodeB] -- the operative-state LAYER ITSELF is honest here.",
+        "auditOperativeStateForUnits(unitAnchoredToNodeA, state) returns ZERO findings despite the genuine, independently-confirmed ambiguity -- the uncertainty is silently dropped at this exact boundary.",
+        "The worst-case consequence was then constructed and confirmed: with a real discovered candidate + compiled rule + verifiedCandidateRefs membership for that same unit, reconciliation (acting without any operative-state override, since none was produced) reaches coverageState=FULLY_REPRESENTED_VERIFIED -- a confident-but-wrong answer that Architecture Invariant #13 exists specifically to forbid, produced via a real, reproducible cross-module composition gap.",
+        "Because FULLY_REPRESENTED_VERIFIED is the sole non-reviewable coverage state, deriveFromCoverageEntry correctly returns null for it (the safe-failure architecture behaves correctly given its input -- the defect is entirely upstream, in what coverage state it was handed)."
+      ],
+      "contrastWithChain4": "The SECTION-kind equivalent of this exact scenario (Chain 4 below) does NOT break, because SECTION-kind provisions DO populate sectionRef even when AMBIGUOUS, so the sectionRef fallback path catches it. This asymmetry (SECTION-kind fails closed, DEFINITION-kind fails open) is the precise, narrow, fully-diagnosed defect."
+    },
+    {
+      "chainId": 3,
+      "name": "verification contradiction -> trusted state withheld -> review item",
+      "verdict": "COMPOSES_WITH_DISCLOSED_GAP",
+      "severity": "MINOR",
+      "linksVerified": [
+        "A compiled rule anchored to a unit's citation, with a matching numeric value, that is NOT a member of verifiedCandidateRefs correctly reaches FULLY_REPRESENTED_REVIEW_REQUIRED, never FULLY_REPRESENTED_VERIFIED -- trust is genuinely withheld.",
+        "deriveFromCoverageEntry + recordClaimReview persist a real ClaimReviewItem for it (status OPEN_REVIEW) -- confirmed against real Postgres."
+      ],
+      "disclosedGap": "reconciliation.ts's verifiedCandidateRefs contract (a Set<string> of candidateRefs Phase 3C ran AND found no unresolved MATERIAL finding for) has no way to express a 3rd, more severe state: 'Phase 3C ran and found an actual contradiction' as distinct from 'Phase 3C never ran at all.' Both produce byte-identical downstream coverageState AND reasoning (proven directly in the test by constructing both scenarios with the identical input shape and asserting the outputs are equal) -- proving the two are genuinely indistinguishable given this pipeline's real, current contract, not merely untested. This is a reviewer-triage fidelity gap (a genuinely contradicted claim is under-classified as merely ambiguous), not a silent-drop safety gap -- the claim is never lost; it is always still surfaced as an open review item either way.",
+      "recommendedNextStep": "A future bounded phase could extend verifiedCandidateRefs to a 3-way Map<string, 'PASSED'|'FAILED'|'NOT_RUN'> so reasonCode can correctly distinguish VERIFICATION_CONTRADICTION from ordinary SEMANTIC_AMBIGUITY -- not proposed as a change here (production code frozen for this certification)."
+    },
+    {
+      "chainId": 4,
+      "name": "amendment ambiguity (SECTION-kind) -> fail-closed operative state -> review item",
+      "verdict": "FULLY_COMPOSES",
+      "linksVerified": [
+        "A real duplicate-labeled SECTION (2 genuine physical occurrences sharing '6.04') correctly resolves index.resolveUniqueNodeByRef to AMBIGUOUS.",
+        "A real amendment effect (future-dated, so it never applies) targeting that ambiguous section correctly resolves computeOperativeContractState's provision to targetResolutionStatus=AMBIGUOUS, status=OPERATIVE_STATE_PARTIAL, WITH sectionRef populated ('6.04') even though AMBIGUOUS -- the key structural difference from Chain 2's DEFINITION-kind case.",
+        "auditOperativeStateForUnits correctly flags BOTH real physical occurrences (via the sectionRef fallback) -- fails closed/over-inclusive, never silently misses either one.",
+        "Both units independently persist their OWN distinct ClaimReviewItem (different structuralNodeId, different claimKey) -- confirmed against real Postgres, proving sibling-safety holds even under amendment-target ambiguity."
+      ]
+    }
+  ],
+  "overallVerdict": "3 of 4 chains fully or acceptably compose (Chain 1 fully; Chain 3 with a disclosed MINOR reasonCode-fidelity gap that never drops the claim; Chain 4 fully). Chain 2 BREAKS with a precisely diagnosed, reproduced, real defect: DEFINITION-kind operative-state ambiguity can silently fail to reach semantic-coverage's auditOperativeStateForUnits, and in the worst case demonstrated here, the same claim can reach a confident-but-wrong FULLY_REPRESENTED_VERIFIED coverage state -- a genuine violation of the charter's own standard ('a module being safe individually is insufficient if the next module drops its uncertainty'). This is a certification BLOCKER per this audit's own charter, though narrowly scoped to DEFINITION-kind amendment-ambiguity composing into semantic-coverage specifically (the operative-state layer itself, and the SECTION-kind equivalent, both remain honest)."
+}

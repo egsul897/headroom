@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "1.0",
+  "evaluationVersion": "evaluation-contract-v3.v1",
+  "artifactId": "EVALUATOR_VS_CONSENSUS",
+  "generatedAt": "2026-08-29T23:21:00Z",
+  "purpose": "Section 23: compare the evaluator's own atomic output (sealed, computed by deriveAtomicContract() against the real frozen matcher, never shown to adjudicators) against the independent majority (2-of-3) consensus per dimension, per Section 14's per-dimension-not-monolithic discipline.",
+  "consensusRule": "Majority (2-of-3) per case per dimension. A genuine 3-way split (all 3 adjudicators disagree) is UNRESOLVED_CONSENSUS, excluded from that case's denominator, reported not dropped. 0 cases hit UNRESOLVED_CONSENSUS for creditEligibility, surfacingStatus, or representationCompleteness.",
+  "creditEligibility": {
+    "certificationClass": "SAFETY_CRITICAL",
+    "requiredThreshold": 0.9,
+    "nScored": 47,
+    "nUnresolvedConsensus": 0,
+    "matches": 42,
+    "agreementRate": 0.8936170212765957,
+    "gateResult": "FAILED",
+    "mismatches": [
+      {
+        "caseId": "doc-a::I::applicable-ebitda",
+        "consensus": "CREDIT",
+        "evaluator": "NO_CREDIT",
+        "match": false
+      },
+      {
+        "caseId": "doc-a::X::10.01a-us-guaranty",
+        "consensus": "NO_CREDIT",
+        "evaluator": "CREDIT",
+        "match": false
+      },
+      {
+        "caseId": "fwrg-6.01-j",
+        "consensus": "CREDIT",
+        "evaluator": "NO_CREDIT",
+        "match": false
+      },
+      {
+        "caseId": "fwrg-6.04-a-iii",
+        "consensus": "CREDIT",
+        "evaluator": "NO_CREDIT",
+        "match": false
+      },
+      {
+        "caseId": "lsb-6.01-general-ratio-gated",
+        "consensus": "CREDIT",
+        "evaluator": "NO_CREDIT",
+        "match": false
+      }
+    ]
+  },
+  "surfacingStatus": {
+    "certificationClass": "SAFETY_CRITICAL",
+    "scope": "Applicable NO_CREDIT cases only (n=36), same scope as the inter-reviewer gate.",
+    "requiredThreshold": 0.9,
+    "nScored": 36,
+    "nUnresolvedConsensus": 0,
+    "matches": 24,
+    "agreementRate": 0.6666666666666666,
+    "gateResult": "FAILED",
+    "mismatches": [
+      {
+        "caseId": "a-7.1",
+        "consensus": "SPECIFICALLY_SURFACED",
+        "evaluator": "NOT_SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "a-7.10",
+        "consensus": "SPECIFICALLY_SURFACED",
+        "evaluator": "NOT_SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "doc-a::I::1.04-accounting-terms-gaap",
+        "consensus": "SPECIFICALLY_SURFACED",
+        "evaluator": "NOT_SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "doc-a::I::interest-coverage-ratio",
+        "consensus": "NOT_SPECIFICALLY_SURFACED",
+        "evaluator": "SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "doc-a::VI::6.05-ip-flush-prohibition",
+        "consensus": "NOT_SPECIFICALLY_SURFACED",
+        "evaluator": "SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "doc-a::VI::6.08b-chapeau",
+        "consensus": "NOT_SPECIFICALLY_SURFACED",
+        "evaluator": "SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "doc-a::X::10.01a-us-guaranty",
+        "consensus": "SPECIFICALLY_SURFACED",
+        "evaluator": "NOT_APPLICABLE",
+        "match": false
+      },
+      {
+        "caseId": "doc-b::VI::6-01-lead-in",
+        "consensus": "NOT_SPECIFICALLY_SURFACED",
+        "evaluator": "SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "doc-d::VI::6-04-chapeau",
+        "consensus": "NOT_SPECIFICALLY_SURFACED",
+        "evaluator": "SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "doc-d::VI::6-05-chapeau",
+        "consensus": "SPECIFICALLY_SURFACED",
+        "evaluator": "NOT_SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "lsb-6.04-b-notes-collateral-disposal",
+        "consensus": "SPECIFICALLY_SURFACED",
+        "evaluator": "NOT_SPECIFICALLY_SURFACED",
+        "match": false
+      },
+      {
+        "caseId": "lsb-6.08-subordinated-debt-payments",
+        "consensus": "SPECIFICALLY_SURFACED",
+        "evaluator": "NOT_SPECIFICALLY_SURFACED",
+        "match": false
+      }
+    ]
+  },
+  "representationCompleteness": {
+    "certificationClass": "DIAGNOSTIC",
+    "requiredThreshold": "N/A - per Section 15, the evaluator-vs-consensus gate for a diagnostic dimension is only computed as a certification requirement if that dimension is independently designated CERTIFICATION_GRADE via its own inter-reviewer gate. representationCompleteness's inter-reviewer gate already failed (see 15-representation-completeness-results.json), so it is DIAGNOSTIC_ONLY and this comparison is reported for completeness only, not as a certification criterion.",
+    "nScored": 47,
+    "nUnresolvedConsensus": 0,
+    "matches": 21,
+    "agreementRate": 0.44680851063829785,
+    "gateResult": "NOT_A_CERTIFICATION_CRITERION_THIS_PHASE (reported only)"
+  },
+  "summary": {
+    "creditEligibility_evaluatorVsConsensus": "FAILED (89.36% < 90%)",
+    "surfacingStatus_evaluatorVsConsensus": "FAILED (66.67% < 90%)",
+    "conclusion": "Both safety-critical dimensions fail their evaluator-vs-consensus gate, in addition to surfacingStatus already failing its inter-reviewer reproducibility gate. Per Section 24, a safety-critical dimension requires BOTH reproducibility (reviewers agree with each other) AND accuracy (evaluator agrees with consensus) to certify. Neither creditEligibility nor surfacingStatus satisfies both tests this phase."
+  }
+}

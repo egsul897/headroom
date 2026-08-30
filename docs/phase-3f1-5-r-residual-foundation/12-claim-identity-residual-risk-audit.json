@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-5-r-residual-foundation.v1",
+  "artifactId": "CLAIM_IDENTITY_RESIDUAL_RISK_AUDIT",
+  "generatedAt": "2026-08-30T00:10:00Z",
+  "purpose": "Section 20: determine whether the two narrower claim-identity risks carried forward from Phase 3F.1.5.3 (different-base-section false matches; bare/undifferentiated-section definitional overmatch) are production-relevant or evaluator-correspondence-only.",
+  "risksAudited": [
+    { "id": "different-base-section false matches", "originalDisclosure": "docs/evaluation-contract-v3/22-remaining-evaluator-risks.json" },
+    { "id": "bare/undifferentiated-section definitional overmatch", "originalDisclosure": "docs/evaluation-contract-v3/22-remaining-evaluator-risks.json" }
+  ],
+  "whereTheRiskLives": {
+    "location": "lib/contract-model/evaluation-v2/matching.ts and semantic-correspondence.ts - the FROZEN EVALUATOR MATCHER used exclusively for scoring evaluation runs.",
+    "mechanicallyVerifiedNeverImportedByProduction": "grep across lib/contract-model/compiler/** (the entire live production pipeline: discovery, context-retrieval, amendment, semantic compiler, semantic-verification, semantic-coverage, coverage-audit, package-graph) for any import from lib/contract-model/evaluation-v2 - zero results. This is also mechanically enforced by tests/evaluation-v2/import-boundary.test.ts, a permanent independence-contract test."
+  },
+  "productionsOwnIdentityMechanisms": {
+    "note": "Production code does not use evaluation-v2's matcher for claim identity at all - it has its own, independently-built and independently-hardened identity mechanisms: structuralNodeId (Phase 3F.1.2's occurrence-safe physical-node identity), discoveryId (Phase 2B's content-derived candidate identity), and semanticUnitId (Phase 3E's anchor-span-derived semantic-coverage identity, reused directly by this phase's own ClaimReviewItem.claimKey - see 04-claim-identity-design.json). None of these three production identity schemes share code with the evaluator's own matching.ts/semantic-correspondence.ts."
+  },
+  "determination": "EVALUATOR-ONLY. Both risks are properties of the frozen evaluator matcher's own correspondence-resolution logic (used to score how well Headroom's output matches ground truth), not defects in production semantic identity or representation. Production code has no equivalent defect of this shape because its identity mechanisms are structurally different from the evaluator's own string/section-ref-based correspondence heuristics.",
+  "actionTaken": "None - per Section 20's explicit instruction, the frozen evaluator matcher is not reopened casually. These two risks are recorded here, for Final Foundation Certification's own record, and are NOT fixed, NOT investigated further, and do NOT trigger any restart of evaluator development (which per this phase's own charter is closed as a standalone development stream).",
+  "note": "This determination itself does not require touching any evaluator file - it was reached purely by structural/import-graph inspection of where the two disclosed risks actually live."
+}
