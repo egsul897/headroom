@@ -92,6 +92,26 @@ function walkExpression(ctx: WalkCtx, expr: IRExpression | null, path: string, i
       walkExpression(ctx, expr.denominator, `${path}.denominator`, isAlternative);
       return;
     case "COMPARE":
+      // Phase 3F.1.6.R Workstream D (BLOCKER-9 fix). A COMPARE node is a
+      // real, semantically-operative qualifying condition wherever it
+      // appears in the tree - not only when the compiler happens to have
+      // also duplicated it into rule.conditions[]/IRException.conditions[]
+      // (walkCondition/walkException below). The most common real-world
+      // counter-example: a ratio-gated UNLIMITED_CAPACITY permission ("may
+      // pay dividends so long as the Leverage Ratio does not exceed 4.00 to
+      // 1.00") is correctly represented entirely inside
+      // capacityExpression.gatedBy, with rule.conditions[] legitimately
+      // empty - before this fix that left irConditionOrExceptionCount at 0
+      // for a rule that in fact fully and correctly represents its source
+      // condition, which is exactly the false-positive
+      // reconciliation.ts's buildAggregateSignals must not raise (task
+      // §28). Marking every COMPARE node (also reached via IF.condition,
+      // EVENT_ACTIVE.triggerCondition, and AND/OR combinations of these)
+      // as its own CONDITION item makes "does the IR represent a
+      // qualifying condition anywhere" match what is actually true of the
+      // compiled semantics, not merely one particular storage location for
+      // it.
+      pushItem(ctx, "CONDITION", path, null, `COMPARE:${expr.operator}`, isAlternative, citation, excerpt);
       walkExpression(ctx, expr.left, `${path}.left`, isAlternative);
       walkExpression(ctx, expr.right, `${path}.right`, isAlternative);
       return;

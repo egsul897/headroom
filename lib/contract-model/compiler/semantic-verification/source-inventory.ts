@@ -46,7 +46,18 @@ const PATTERNS: PatternDef[] = [
   { kind: "PERCENT", re: /\d+(?:\.\d+)?\s?%/g, parseValue: (m) => Number(m[0].replace("%", "").trim()) / 100 },
   { kind: "RATIO", re: /\d+(?:\.\d+)?\s*(?:to\s*1\.0*\b|:\s*1\.0*\b|x\b)/gi, parseValue: (m) => Number((m[0].match(/^\d+(?:\.\d+)?/) ?? ["0"])[0]) },
   { kind: "COMPARISON_OPERATOR", re: /\b(?:greater of|lesser of|not to exceed|not less than|at least|no more than|not more than|shall not exceed|equal to or greater than|equal to or less than)\b/gi },
-  { kind: "CONDITIONAL_PHRASE", re: /\b(?:so long as|provided(?:,?\s+that)?|unless|except(?:\s+that)?|if and only if|only if|subject to|notwithstanding)\b/gi },
+  // Phase 3F.1.6.R Workstream D (BLOCKER-9 fix) - two generic additions to
+  // this alternation, neither package/company-specific (Architecture
+  // Invariants #29): "until such time as" (a common generic temporal
+  // qualifying-condition connective alongside the already-present "so long
+  // as"/"unless"), and "no (Event of )?Default" (the single most common
+  // credit-agreement negative-condition idiom - "no Event of Default shall
+  // have occurred and be continuing" - which, unlike every other entry
+  // here, is often stated as its OWN independent proviso sentence with no
+  // "so long as"/"provided that"/"subject to" connective at all, so it must
+  // be its own generic pattern rather than relying on catching a connective
+  // next to it).
+  { kind: "CONDITIONAL_PHRASE", re: /\b(?:so long as|provided(?:,?\s+that)?|unless|except(?:\s+that)?|if and only if|only if|subject to|notwithstanding|until\s+such\s+time\s+as|no\s+(?:Event\s+of\s+)?Default)\b/gi },
   { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding)\b/gi },
   { kind: "PROVISO_MARKER", re: /\bprovided,?\s+further\b/gi },
   { kind: "SHARED_CAP_MARKER", re: /\b(?:combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under))\b/gi },

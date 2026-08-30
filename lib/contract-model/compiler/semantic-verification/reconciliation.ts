@@ -90,9 +90,37 @@ function buildAggregateSignals(source: SourceInventory, ir: IrInventory): Reconc
     });
   }
 
+  // Phase 3F.1.6.R Workstream D (BLOCKER-9 root-cause fix). This threshold
+  // used to require >=2 independent conditional/exception/proviso markers
+  // before firing at all - see docs/phase-3f1-6-final-foundation-
+  // certification/15-independent-verifier-certification.json finding F17-1.
+  // That >=2 floor was precisely why a single, otherwise fully
+  // dollar-reconciled qualifying condition (e.g. one lone "so long as no
+  // Default has occurred and is continuing" on an otherwise clean basket -
+  // one of the most common real drafting patterns, not a rare shape) never
+  // produced ANY aggregate signal here, which in turn meant
+  // shouldInvokeSemanticReview (verify.ts) also skipped Layer 2 for that
+  // exact shape (single reconciled unit, no unresolved signal, no
+  // alternation) - so neither verification layer ever looked at the
+  // dropped condition. Lowering this to >=1 does NOT itself declare a
+  // MATERIAL discrepancy (this stays classified AMBIGUOUS, and
+  // findings.ts's determineDeterministicSeverity keeps every AMBIGUOUS
+  // item at UNCERTAIN, never auto-escalated to MATERIAL by this
+  // deterministic layer alone) - its only effect is that
+  // materialUnresolvedCount becomes >0, which is what actually drives
+  // shouldInvokeSemanticReview's routing decision. That routes the
+  // candidate to Layer 2's own independent adversarial reading of the real
+  // source text (reviewer.ts/prompt.ts already instruct it to check for a
+  // dropped "condition" specifically, and to investigate every
+  // deterministic signal "using your own independent reading... do not
+  // simply rubber-stamp"), which is the correct place for a real
+  // materiality judgment on a single, possibly-boilerplate marker (e.g. a
+  // stray "unless the context otherwise requires" in unrelated
+  // definitional boilerplate) to be made - never this generic, source-only,
+  // no-package-knowledge counting layer (Architecture Invariants #29).
   const sourceConditionalSignalCount = source.items.filter((i) => i.kind === "CONDITIONAL_PHRASE" || i.kind === "EXCEPTION_MARKER" || i.kind === "PROVISO_MARKER").length;
   const irConditionOrExceptionCount = ir.items.filter((i) => i.kind === "CONDITION" || i.kind === "EXCEPTION").length;
-  if (sourceConditionalSignalCount >= 2 && irConditionOrExceptionCount === 0) {
+  if (sourceConditionalSignalCount >= 1 && irConditionOrExceptionCount === 0) {
     out.push({
       classification: "AMBIGUOUS",
       sourceItem: null,
