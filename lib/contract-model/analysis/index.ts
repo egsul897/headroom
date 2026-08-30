@@ -5,6 +5,7 @@
 export { runContractAnalysis } from "./orchestrator";
 export type { ContractAnalysisCallers, RunContractAnalysisOptions } from "./orchestrator";
 export { CONTRACT_ANALYSIS_ORCHESTRATOR_VERSION, computeAnalysisPackageKey, canonicalDocumentIdOrder, standaloneInstrumentKey } from "./identity";
-export { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailureLogsForCompany } from "./service";
+export { getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailureLogsForCompany, getAnalysisReadinessForCompany } from "./service";
+export type { AnalysisReadiness, AnalysisReadinessReason } from "./service";
 export { getTrustedSemanticTruth, getAllSemanticTruthForInstrument, getSemanticTruthForRun } from "./semantic-truth/service";
 export * from "./types";

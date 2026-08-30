@@ -67,7 +67,7 @@
  */
 import { prisma } from "../../prisma";
 import { Prisma } from "@prisma/client";
-import type { AnalysisRun } from "@prisma/client";
+import type { AnalysisRun, AnalysisRunStatus } from "@prisma/client";
 
 /**
  * A RUNNING row younger than this is treated as an active, in-flight run -
@@ -281,4 +281,60 @@ export async function recordAnalysisFailureLog(input: RecordAnalysisFailureLogIn
 
 export async function getAnalysisFailureLogsForCompany(companyId: string) {
   return prisma.analysisFailureLog.findMany({ where: { companyId }, orderBy: { createdAt: "desc" } });
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.6.RX-FINAL Workstream F (FINDING-7 - live product-flow gating).
+// ---------------------------------------------------------------------------
+
+/**
+ * The only two AnalysisRunStatus values that represent authoritative,
+ * "actually completed appropriately" contract-model truth - see
+ * docs/phase-3f1-6-rx-final-terminal-closure/08-product-flow-gating.json.
+ * PENDING/RUNNING/PARTIAL/FAILED (and no row at all) are all deliberately
+ * excluded: PARTIAL means at least one instrument's analysis durably FAILED
+ * (AUDIT-F3) and must not be presented as "review-ready," matching this
+ * phase's own required invariant verbatim.
+ */
+const ANALYSIS_READY_STATUSES = new Set<AnalysisRunStatus>(["COMPLETED", "COMPLETED_WITH_REVIEW"]);
+
+export type AnalysisReadinessReason = "NO_DOCUMENTS" | "NEVER_ANALYZED" | "RUN_IN_PROGRESS" | "RUN_NOT_READY" | "STALE_DOCUMENTS_SINCE_LAST_RUN" | "READY";
+
+export interface AnalysisReadiness {
+  /** True only when a real, current AnalysisRun genuinely covers every document this company currently has, with a status this phase's own invariant treats as "completed appropriately." */
+  ready: boolean;
+  run: AnalysisRun | null;
+  reason: AnalysisReadinessReason;
+}
+
+/**
+ * The single gate predicate FINDING-7 requires: "a document/package must not
+ * be presented in the UI as analysis-complete / review-ready / usable
+ * contract truth unless an authoritative AnalysisRun for the current
+ * document package + algorithm version has actually completed appropriately
+ * (COMPLETED or COMPLETED_WITH_REVIEW, not PENDING/RUNNING/FAILED/absent)."
+ *
+ * A company with zero documents at all is treated as trivially "ready" -
+ * there is nothing to analyze, and gating an empty onboarding company would
+ * only block the pre-existing "no candidates yet" empty state, not close any
+ * real bypass. Once at least one Document exists, this requires BOTH a
+ * completed-appropriately run AND that every current document id is covered
+ * by that run's own documentIds - a document uploaded after the last
+ * completed run (before a fresh analysis has run over it) is the same
+ * bypass shape as never having analyzed at all, and must not read as ready
+ * either.
+ */
+export async function getAnalysisReadinessForCompany(companyId: string): Promise<AnalysisReadiness> {
+  const [documentIds, run] = await Promise.all([prisma.document.findMany({ where: { companyId }, select: { id: true } }), getLatestAnalysisRunForCompany(companyId)]);
+
+  if (documentIds.length === 0) return { ready: true, run, reason: "NO_DOCUMENTS" };
+  if (!run) return { ready: false, run: null, reason: "NEVER_ANALYZED" };
+  if (run.status === "PENDING" || run.status === "RUNNING") return { ready: false, run, reason: "RUN_IN_PROGRESS" };
+  if (!ANALYSIS_READY_STATUSES.has(run.status)) return { ready: false, run, reason: "RUN_NOT_READY" };
+
+  const coveredIds = new Set(run.documentIds);
+  const stale = documentIds.some((d) => !coveredIds.has(d.id));
+  if (stale) return { ready: false, run, reason: "STALE_DOCUMENTS_SINCE_LAST_RUN" };
+
+  return { ready: true, run, reason: "READY" };
 }

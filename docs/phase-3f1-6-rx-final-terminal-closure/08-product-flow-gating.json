@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "PRODUCT_FLOW_GATING",
+  "workstream": "F",
+  "finding": "FINDING-7",
+  "correspondsTo": "AUDIT-F6",
+  "priorEvidence": [
+    "docs/phase-3f1-6-rx-final-blocker-closure/29-part-b-auditf3-f6-f7-recertification.json",
+    "tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts"
+  ],
+
+  "problemRestated": "A user could upload a document and click an unconditional 'Continue to Review' link straight through to /onboarding/review with ZERO gate, reaching a screen that presented review candidates as if the company's state were settled, without contract-model analysis (runContractAnalysis) ever having run. Separately, the documents page's 'Contract analysis' status card's own 'view findings' link pointed at that same review page, whose entire data layer (lib/onboarding/review.ts) had zero awareness of ClaimReviewItem - a real, persisted ClaimReviewItem row was proven invisible there.",
+
+  "scopeDiscipline": "No UX redesign. The pre-existing, deliberately-allowed two-step upload-vs-analyze design is unchanged: uploadDocumentAction and runExtractionAction (which also fires runContractAnalysis) remain two separate actions, and app/[companyId]/onboarding/documents/page.tsx's own 'Continue to Review' <Link> is BYTE-IDENTICAL to before this fix - still a plain, unconditional link with no run.status/AnalysisRunStatus/disabled={} guard anywhere near it (verified: tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts's own static-trace assertions about that exact markup still pass unmodified). The gate was deliberately placed downstream instead - see mechanism below - which the task's own charter explicitly allows ('redirect... whichever fits this codebase's existing conventions with the least new surface area') and avoids touching a screen a separate, already-scoped workstream (documents page visibility) owns.",
+
+  "gateMechanism": {
+    "summary": "A new predicate, getAnalysisReadinessForCompany(companyId) (lib/contract-model/analysis/service.ts, exported via lib/contract-model/analysis's barrel), is the single source of truth for 'is this company's current document set genuinely analyzed'. app/[companyId]/onboarding/review/page.tsx (the real, unmodified route a user's 'Continue to Review' click and the documents page's 'view findings' link both lead to) now calls this predicate FIRST, before any of its own extraction-candidate queries, and calls next/navigation's redirect(`/${companyId}/onboarding/documents`) whenever the company is not ready - a genuine server-side block on the actual Next.js route, not a client-side disabled affordance that a direct URL visit could route around.",
+    "statesReused": "Reuses AnalysisRunStatus verbatim - no new enum value was added to the Prisma schema. 'Completed appropriately' is defined as status COMPLETED or COMPLETED_WITH_REVIEW only, per the phase's own required-invariant wording ('not PENDING/RUNNING/FAILED/absent'). PARTIAL (AUDIT-F3's own status for 'at least one instrument durably failed') is deliberately NOT treated as ready - a partially-failed analysis must not be presented as review-ready contract truth either.",
+    "genuineGapAddressed": "AnalysisRunStatus alone cannot express 'this specific run's own documentIds no longer cover every document the company currently has' (e.g. a user analyzes doc A, gets a COMPLETED run, then uploads doc B without re-running). getAnalysisReadinessForCompany closes this by comparing the latest run's documentIds against the company's CURRENT document id set and additionally requiring full coverage - a bypass in the same shape (proceeding past unanalyzed content) but subtler, since a stale COMPLETED run would otherwise still read as globally 'ready'. This is the one place a genuine gap justified inference beyond the raw enum, per the task's own allowance ('unless a genuine gap requires a new value') - no new persisted state was introduced, only a derived comparison.",
+    "emptyCompanyHandling": "A company with zero Document rows at all is treated as trivially ready (reason NO_DOCUMENTS) - there is nothing to gate, and blocking it would only interfere with the pre-existing, honest 'No extraction candidates yet' empty state, not close any real bypass.",
+    "codeLocations": [
+      "lib/contract-model/analysis/service.ts - getAnalysisReadinessForCompany, AnalysisReadiness, AnalysisReadinessReason (new)",
+      "lib/contract-model/analysis/index.ts - barrel export of the above (new)",
+      "app/[companyId]/onboarding/review/page.tsx - the actual gate call + redirect at the top of the ReviewPage server component (new)"
+    ],
+    "notModified": [
+      "app/[companyId]/onboarding/documents/page.tsx - completely unchanged; the 'Continue to Review' link keeps its exact prior markup",
+      "app/[companyId]/onboarding/documents/actions.ts - unchanged; upload and run-extraction remain the same two actions",
+      "lib/onboarding/review.ts - unchanged; getCandidatesForReview/getReviewProgress remain ExtractionCandidate-only, never conflated with ClaimReviewItem"
+    ]
+  },
+
+  "viewFindingsFix": {
+    "priorDefect": "The 'Contract analysis' status card's 'view findings' link pointed at /onboarding/review, but that page's entire data layer (lib/onboarding/review.ts) had zero knowledge of ClaimReviewItem - a persisted ClaimReviewItem row was provably invisible there (AUDIT-F6's own compounding-defect finding).",
+    "fix": "Added getClaimReviewItemsForCompany(companyId, opts?) to lib/contract-model/compiler/safe-failure/service.ts - the correct domain owner of the ClaimReviewItem model (co-located with recordClaimReview/resolveClaimReview/checkExplicitSafeFailure, never duplicated into lib/onboarding/review.ts, which stays scoped to the separate ExtractionCandidate model). app/[companyId]/onboarding/review/page.tsx now calls it directly and renders a new 'Contract analysis findings' Card - a real, minimal, additional section (not a new page, not a UX redesign) showing each open ClaimReviewItem's materiality, reasonCode, source document, section reference, sourceEvidence quote, and rationale. Defaults to OPEN_REVIEW status, matching AnalysisRun.reviewItemCount's own definition.",
+    "whyNotInLibOnboardingReview": "lib/onboarding/review.ts's getReviewProgress/getCandidatesForReview are specifically, correctly scoped to ExtractionCandidate (the older, separate review pipeline) - conflating ClaimReviewItem into those same functions would blur two genuinely distinct domain models and their own progress semantics (e.g. ExtractionCandidate's PENDING/APPROVED/REJECTED lifecycle vs. ClaimReviewItem's OPEN_REVIEW/RESOLVED_*/SUPERSEDED lifecycle). The already-committed recertification test's own assertion that lib/onboarding/review.ts contains no 'ClaimReviewItem' string continues to hold and pass - by design, not by accident: that file's job never changed, and putting ClaimReviewItem in the same file would be exactly the kind of unwarranted scope creep this phase forbids.",
+    "destinationConfirmedReal": "The documents page's own 'view findings' link text ('N open review item(s) · view findings') already points at /onboarding/review - unchanged. Since that route now genuinely renders ClaimReviewItem rows once analysis has actually completed, the link's destination is fixed without touching the link itself."
+  },
+
+  "testEvidence": {
+    "newFile": "tests/onboarding/product-flow-gating.test.ts",
+    "methodology": "Exercises the REAL, literal exported default component (ReviewPage from app/[companyId]/onboarding/review/page.tsx) and the REAL server actions (uploadDocumentAction, runExtractionAction) against real Postgres - never an isolated helper called out of context. next/cache and next/navigation are mocked only for the same reason every other test in this codebase mocks them (no live Next.js request context in vitest); getAnalysisReadinessForCompany's own real Prisma queries run unmocked. ReviewPage's returned React element is inspected with react-dom/server's renderToStaticMarkup to confirm actual rendered HTML content, not merely in-memory state.",
+    "case1_bypassBlocked": {
+      "description": "Upload a document, never run extraction/analysis, then call the real ReviewPage() directly.",
+      "result": "getAnalysisReadinessForCompany returns {ready:false, reason:'NEVER_ANALYZED'}; ReviewPage calls redirect('/{companyId}/onboarding/documents') and returns null - it never constructs getCandidatesForReview/getReviewProgress output at all. The prior bypass (reaching a rendered review-looking screen with zero AnalysisRun rows) no longer succeeds."
+    },
+    "case2_staleBlocked": {
+      "description": "A company with one already-analyzed (COMPLETED_WITH_REVIEW) document uploads a SECOND document without re-running analysis, then calls the real ReviewPage() again.",
+      "result": "getAnalysisReadinessForCompany returns {ready:false, reason:'STALE_DOCUMENTS_SINCE_LAST_RUN'} despite a real, completed prior run existing for this company; ReviewPage redirects again. Proves the gate is tied to the CURRENT document package, not merely 'has this company ever completed one run.'"
+    },
+    "case3_goldenPathWorks": {
+      "description": "The exact same real runExtractionAction a user's 'Run extraction' click invokes is called for the uploaded document (deliberately an undiscovered $6,750,000 Investments covenant, no LLM callers injected, matching this codebase's own live-contract-analysis-app-action.test.ts convention so the deterministic semantic-coverage layer is what must catch it).",
+      "result": "getAnalysisReadinessForCompany returns {ready:true}; ReviewPage does NOT call redirect and returns a real element; a real, persisted OPEN_REVIEW ClaimReviewItem for the $6,750,000 covenant is confirmed both in Postgres AND in the actual rendered HTML output (renderToStaticMarkup), including the item's own rationale text - the golden path is not merely unblocked, the 'view findings' destination genuinely shows the real finding."
+    },
+    "case4_reopensAndRecloses": {
+      "description": "After the golden path, the second (stale) document is itself analyzed via runExtractionAction.",
+      "result": "getAnalysisReadinessForCompany returns {ready:true} again and ReviewPage renders without redirecting - confirms the gate is not a one-way trap and correctly re-opens once the current document set is genuinely, fully covered by a completed run."
+    },
+    "priorTestStillPasses": "tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts (the already-committed Part B recertification test that documented both original gaps) passes unmodified: its 'BYPASS STILL REACHABLE' assertion is about uploadDocumentAction alone leaving zero AnalysisRun rows (still true - upload behavior is unchanged, only downstream navigation is gated); its 'STATIC TRACE' assertion that the documents page's Continue-to-Review link carries no gate token is still true (the gate was deliberately placed on the review route instead, not that link); its ClaimReviewItem-invisible-to-lib/onboarding/review.ts assertion is still true (that file was deliberately left unchanged, since the fix lives in the safe-failure domain service + the review PAGE component instead)."
+  },
+
+  "qualityGates": {
+    "tscNoEmit": {
+      "command": "npx tsc --noEmit -p .",
+      "workstreamFOwnFilesClean": true,
+      "note": "This worktree was observed to be a live, shared filesystem: during this session, changes made by other concurrently-running Phase 3F.1.6.RX-FINAL workstreams (E: FINDING-6 AnalysisRun execution-generation fencing; G: FINDING-8) appeared on disk mid-session in files this workstream never touched (orchestrator.ts, types.ts, semantic-truth/**, compiler/amendment/operative-state.ts, compiler/semantic/tools.ts, compiler/semantic-coverage/**, prisma/schema.prisma, several tests/contract-model/part-b-recert-* files) - and at one point an external `git reset --hard` (reflog: 'reset: moving to HEAD') wiped ALL uncommitted work in this shared working tree back to commit ccab207, including this workstream's own first attempt at these edits. This workstream's changes were reconstructed and re-applied afterward, then committed promptly. A raw `npx tsc --noEmit -p .` run during active concurrent editing showed additional errors (e.g. orchestrator.ts 'Expected 3 arguments, but got 2') attributable entirely to Workstream E's own in-progress, not-yet-reconciled refactor of recordAnalysisRunIssue/setAnalysisRunStage/completeAnalysisRun signatures - none of Workstream F's own files (app/[companyId]/onboarding/review/page.tsx, lib/contract-model/analysis/service.ts's getAnalysisReadinessForCompany addition, lib/contract-model/analysis/index.ts, lib/contract-model/compiler/safe-failure/service.ts's getClaimReviewItemsForCompany addition) appear anywhere in that error list at any point they were checked. `npx eslint` on Workstream F's own touched files individually returns zero findings."
+    },
+    "eslint": {
+      "command": "npx eslint app/[companyId]/onboarding/review/page.tsx lib/contract-model/analysis/service.ts lib/contract-model/analysis/index.ts lib/contract-model/compiler/safe-failure/service.ts",
+      "result": "0 findings"
+    },
+    "targetedTests": {
+      "tests/onboarding": "11 files, 47 tests, all passing (includes the new product-flow-gating.test.ts and the unmodified, still-passing part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts)",
+      "tests/contract-model": "Confirmed no regression attributable to this workstream's own files. Failures observed at various points during the session in tests/contract-model/compatibility.test.ts, coverage-structural.test.ts, partial-instrument-failure.test.ts, part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts, part-b-recert-crosscutting-tenant-isolation.test.ts, and part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts were all traced to OTHER, concurrently in-progress workstreams' own not-yet-reconciled edits (Workstream E's AnalysisRunIssue fencing refactor mid-flight, and Workstream G's FINDING-8 work on the nolog-onlyfailure test file) - none of these files were staged or committed by this workstream, and none depend on anything this workstream's own files changed."
+    }
+  },
+
+  "sharedWorktreeDisclosure": "This session's worktree was observed to be a live, shared filesystem concurrently modified by at least two other active Phase 3F.1.6.RX-FINAL workstreams (E: FINDING-6 AnalysisRun execution-generation/zombie-writer fencing; G: FINDING-8 recordAnalysisFailureLog robustness) while this work was performed. At one point mid-session an external `git reset --hard` wiped all uncommitted work in this shared working tree (reflog shows 'reset: moving to HEAD' back to ccab207) - this affected every workstream's in-progress edits simultaneously, not only this one's. This workstream's own changes were re-applied immediately afterward and committed promptly, staging ONLY this workstream's own files: app/[companyId]/onboarding/review/page.tsx, lib/contract-model/analysis/index.ts, lib/contract-model/analysis/service.ts's addition, lib/contract-model/compiler/safe-failure/service.ts, tests/onboarding/product-flow-gating.test.ts, and this document. No file exclusively owned by another workstream was staged or committed here. Given the demonstrated volatility of this shared worktree, this workstream's own commit should be treated as the authoritative record of its work; if a subsequent reset or conflicting commit from another concurrent session is observed, the fix described here should be re-applied from this document rather than assumed lost.",
+
+  "finalDisposition": "AUDIT-F6 / FINDING-7: CLOSED. A user can no longer reach /onboarding/review (directly, or via the documents page's unchanged 'Continue to Review' link) in a state that presents contract-model analysis as complete/review-ready unless a real, current AnalysisRun genuinely covers the company's current document set with a COMPLETED or COMPLETED_WITH_REVIEW status. The 'view findings' link's destination now genuinely surfaces real, persisted ClaimReviewItem rows rather than a page structurally blind to them. The golden path (upload -> real analysis -> real review, including a document set that grows and must be re-analyzed) is verified to keep working end to end."
+}

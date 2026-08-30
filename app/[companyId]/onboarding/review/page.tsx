@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Card, Chip, type ChipTone } from "@/components/ui";
 import { ReviewerNameField } from "@/components/ReviewerNameField";
 import { getCandidatesForReview, getReviewProgress, getReviewHistoryForCompany, type CandidateForReview } from "@/lib/onboarding/review";
 import { approveCandidateAction, rejectCandidateAction, markReviewRequiredAction, editCandidateAction } from "./actions";
 import type { ExtractionCandidateKind, ExtractionCandidateReviewStatus } from "@prisma/client";
+import { getAnalysisReadinessForCompany } from "@/lib/contract-model/analysis";
+import { getClaimReviewItemsForCompany } from "@/lib/contract-model/compiler/safe-failure";
 
 export const metadata = { title: "Headroom — Review extraction candidates" };
 export const dynamic = "force-dynamic";
@@ -151,10 +154,56 @@ function CandidateCard({ companyId, candidate, history }: { companyId: string; c
 
 export default async function ReviewPage({ params }: { params: Promise<{ companyId: string }> }) {
   const { companyId } = await params;
-  const [byKind, progress, historyByCandidateId] = await Promise.all([getCandidatesForReview(companyId), getReviewProgress(companyId), getReviewHistoryForCompany(companyId)]);
+
+  // Phase 3F.1.6.RX-FINAL Workstream F (FINDING-7 - live product-flow
+  // gating). A real, server-side block, not merely a hidden/disabled link on
+  // the documents page: this route must never render as if contract-model
+  // analysis has run unless a genuine, current AnalysisRun has actually
+  // completed appropriately (getAnalysisReadinessForCompany - see
+  // docs/phase-3f1-6-rx-final-terminal-closure/08-product-flow-gating.json).
+  // Reaching here without analysis (never run, still running, failed, or
+  // stale relative to the current document set) redirects back to the
+  // documents page instead of ever presenting this content as review-ready.
+  const readiness = await getAnalysisReadinessForCompany(companyId);
+  if (!readiness.ready) {
+    redirect(`/${companyId}/onboarding/documents`);
+    return null;
+  }
+
+  const [byKind, progress, historyByCandidateId, claimReviewItems] = await Promise.all([
+    getCandidatesForReview(companyId),
+    getReviewProgress(companyId),
+    getReviewHistoryForCompany(companyId),
+    getClaimReviewItemsForCompany(companyId),
+  ]);
 
   return (
     <div className="stack">
+      {claimReviewItems.length > 0 && (
+        <Card>
+          <div className="card-title">Contract analysis findings ({claimReviewItems.length} open)</div>
+          <div className="card-subtitle">
+            Real ClaimReviewItem rows from the contract-model pipeline (lib/contract-model/analysis) — claims the compiler could not confidently represent and flagged for human review. Distinct from the extraction candidates below, which come from
+            the older lib/extraction/** pipeline.
+          </div>
+          {claimReviewItems.map((item) => (
+            <div key={item.id} className="candidate-card">
+              <div className="candidate-card-header">
+                <div>
+                  <Chip tone="tight">{item.materiality}</Chip> <span className="row-note">{item.reasonCode.replace(/_/g, " ")}</span>
+                </div>
+                <div className="row-note">
+                  {item.document.name}
+                  {item.sectionRef ? ` · §${item.sectionRef}` : ""}
+                </div>
+              </div>
+              <div className="candidate-excerpt">&ldquo;{item.sourceEvidence}&rdquo;</div>
+              <div className="row-note">{item.rationale}</div>
+            </div>
+          ))}
+        </Card>
+      )}
+
       <Card>
         <div className="card-title">Review extraction candidates</div>
         <div className="card-subtitle">
