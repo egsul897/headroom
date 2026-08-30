@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-terminal-architecture-decision.v1",
+  "artifactId": "FAILURE_OBSERVABILITY_BOTTOM_FIX",
+  "part": "A",
+  "defectId": "OPEN-6",
+  "correspondsTo": "AUDIT-F7 (residual, FINDING-8's own fallback-of-the-fallback)",
+  "file": "lib/contract-model/analysis/orchestrator.ts (runContractAnalysis, PRE_RUN_IDENTITY catch block)",
+  "alsoChanged": ["lib/contract-model/analysis/types.ts (RunContractAnalysisResult)"],
+  "serviceTsChanged": false,
+
+  "reproductionReviewed": {
+    "source": "docs/phase-3f1-6-rx-final-terminal-closure/20-part-b-finding8-recertification.json",
+    "summary": "The PRIMARY defect FINDING-8 was created for (recordAnalysisFailureLog's own Postgres write throwing uncaught) was genuinely fixed and reverified against real, unmocked Postgres FK violations (P2003) from two independent upstream call sites (constructions 1 and 2). However the fallback's own bare `console.error(...)` call at the former orchestrator.ts:467-470 had no try/catch of its own. Construction 3 in the auditor's test forced console.error itself to throw (simulating a wrapped/instrumented console - Sentry's console integration, a Winston/pino console transport, Next.js edge-runtime console interception - all realistic production conditions) and captured a stack trace showing the exception propagating directly out of runContractAnalysis uncaught, with the top frames being the injected console.error exception, then `Module.runContractAnalysis (orchestrator.ts:467:15)`, then `processTicksAndRejections` - nothing intervened. This recreated the exact log-only/no-visibility failure mode FINDING-8 exists to eliminate, one tier deeper."
+  },
+
+  "fixSummary": {
+    "designPrinciple": "A genuine, NON-RECURSIVE three-tier fallback hierarchy, with no tier ever calling back into a DB-backed logger from within that logger's own failure path.",
+    "tiers": [
+      {
+        "tier": "PRIMARY",
+        "mechanism": "recordAnalysisFailureLog(...) - a real, durable Postgres write (AnalysisFailureLog row). Already correct (unchanged by this fix): wrapped in its own try/catch, verified against real Prisma driver exceptions.",
+        "onSuccess": "failureRecordPersisted = true. This is the ANALYSIS_FAILED_AND_RECORDED case."
+      },
+      {
+        "tier": "SECONDARY",
+        "mechanism": "On PRIMARY failure: failureRecordPersisted is set to false, and the recording write's own classified error is captured into a NEW local (`failureRecordError`) that is now RETURNED to the caller in the RunContractAnalysisResult object itself - not just embedded in a console line. The caller therefore always has BOTH the original failure (`fatalError`, never masked or replaced) AND the persistence-failure detail (`failureRecordError`) in the structured result, with no further DB write of any kind attempted. This is the ANALYSIS_FAILED_BUT_DURABLE_RECORD_FAILED case.",
+        "newField": "failureRecordError: { message: string; errorClass: string } | null"
+      },
+      {
+        "tier": "TERTIARY (true bottom)",
+        "mechanism": "The console.error call is now wrapped in its OWN try/catch, nested inside the SECONDARY catch block, with an otherwise-empty catch body (no retry, no alternate channel, and above all no call back into recordAnalysisFailureLog/Postgres - that would just be 'log the logging failure' recursing into the same failing abstraction this whole branch exists to route around). Whether the console.error succeeds or itself throws, the function always proceeds to its normal `return` statement - it never lets anything propagate uncaught from this catch block.",
+        "newField": "failureRecordFallbackLogged: boolean | null - true when the last-resort console trace was emitted successfully, false when even that itself threw (swallowed, recorded honestly), null when not applicable (failureRecordPersisted is true or null)."
+      }
+    ],
+    "resultContractInvariant": "`outcome` is always \"FAILED\" for every case in this branch (never anything success-shaped), in every one of the three tiers above, including when both PRIMARY and the TERTIARY console.error fallback fail. `failureRecordPersisted`/`failureRecordError`/`failureRecordFallbackLogged` are the caller-facing signals that let a caller/operator distinguish ANALYSIS_FAILED_AND_RECORDED (failureRecordPersisted: true) from ANALYSIS_FAILED_BUT_DURABLE_RECORD_FAILED (failureRecordPersisted: false), and further distinguish whether even the last-resort trace landed (failureRecordFallbackLogged). None of these fields, nor `outcome`, nor `status`, is ever set in a way that could be read as analysis completion or success for any branch of this catch block."
+  },
+
+  "handTracedConfirmationNoCodePathCanThrowUncaught": {
+    "method": "Every statement inside the `catch (err)` block (PRE_RUN_IDENTITY) was traced by hand, in execution order, after the fix.",
+    "steps": [
+      { "step": "classifyError(err) -> fatalError", "canThrow": false, "reason": "Pure, total function over `unknown` (String(err) and a set of instanceof checks; cannot throw for any JS value)." },
+      { "step": "let failureRecordPersisted = true; let failureRecordError = null; let failureRecordFallbackLogged = null;", "canThrow": false, "reason": "Local variable declarations/literal assignments." },
+      { "step": "try { await recordAnalysisFailureLog(...) }", "canThrow": "yes, but contained", "reason": "The one real Postgres write in this branch; already wrapped in its own try. If it throws, control transfers to the enclosing `catch (recordErr)` below - it cannot escape further." },
+      { "step": "catch (recordErr) { failureRecordPersisted = false; ... }", "canThrow": false, "reason": "Reached at most once (a single await inside a single try). Plain assignment." },
+      { "step": "classifyError(recordErr) -> recordFailure; failureRecordError = {...}", "canThrow": false, "reason": "Same pure/total function as fatalError's classification, plus a literal object assignment." },
+      { "step": "try { console.error(...); failureRecordFallbackLogged = true; }", "canThrow": "yes, but now contained", "reason": "THE FIX: this call is now wrapped in its own try. If console.error throws (the FINDING-8-residual construction), control transfers to the new `catch {}` immediately below - it can no longer escape the surrounding PRE_RUN_IDENTITY catch block, let alone runContractAnalysis itself." },
+      { "step": "catch { failureRecordFallbackLogged = false; }", "canThrow": false, "reason": "Plain assignment, no further Postgres/console call of any kind - this is the deliberate, disclosed, non-recursive bottom. There is no further tier beneath this for anything to escape into." },
+      { "step": "return { outcome: \"FAILED\", ..., fatalError, failureRecordPersisted, failureRecordError, failureRecordFallbackLogged, ... }", "canThrow": false, "reason": "Object-literal construction from already-computed local values only (no further async/throwing calls); always reached now, in every one of the three tiers." }
+    ],
+    "conclusion": "Every statement in the PRE_RUN_IDENTITY catch block either cannot throw for any input, or is directly wrapped in its own try whose catch does nothing but set an already-declared local flag. There is no longer any statement in this fallback chain capable of propagating an exception out of runContractAnalysis. The other five `RunContractAnalysisResult`-constructing return sites in the file (SKIPPED_NO_CONTRACT_DOCUMENTS, SKIPPED_ALREADY_RUNNING, SKIPPED_SUPERSEDED, the PER_INSTRUMENT_ANALYSIS whole-run-failure branch, STARTED_TO_COMPLETION, and the outer INGESTION_OR_STRUCTURAL catch) were updated only to add the two new required fields as `null` - none of those call sites is part of this fallback chain, and none was otherwise touched."
+  },
+
+  "recursionCheck": {
+    "claim": "No tier of this fallback ever calls back into a DB-backed logger from within that logger's own failure path.",
+    "verification": "Reading the fixed code: the ONLY Postgres write anywhere in the PRE_RUN_IDENTITY catch block is the single `await recordAnalysisFailureLog(...)` call, attempted exactly once. Its own catch block contains no further call to recordAnalysisFailureLog, prisma.analysisFailureLog.*, or any other prisma.*.create/update/delete of any kind - only a console.error call (itself now guarded) and local flag assignments. Confirmed empirically in the OPEN-6 fix-confirmation test (construction 3): `createLogSpy` (prisma.analysisFailureLog.create) and `consoleErrorSpy` (console.error) are each asserted `toHaveBeenCalledTimes(1)` even when console.error itself throws - proving the failure of the last-resort trace never triggers a second attempt at either call."
+  },
+
+  "typesChanges": {
+    "file": "lib/contract-model/analysis/types.ts",
+    "fieldsAdded": [
+      "failureRecordError: { message: string; errorClass: string } | null",
+      "failureRecordFallbackLogged: boolean | null"
+    ],
+    "note": "Both fields are set (non-null) only inside the PRE_RUN_IDENTITY catch block when failureRecordPersisted is false; null in every other outcome/branch, including the ordinary durable-recording-succeeded case."
+  },
+
+  "testsAdded": {
+    "file": "tests/contract-model/part-b-recert-finding8-independent.test.ts (extended, not deleted, per instructions)",
+    "changes": [
+      "Construction 1 and construction 2 (real, unmocked Postgres FK-violation constructions) extended with new assertions on failureRecordError and failureRecordFallbackLogged (== true, since console.error succeeds in those constructions).",
+      "Construction 3 REWRITTEN from a falsification record into a fix-confirmation test ('OPEN-6 fix: construction 3 ... now FIXED'): the SAME adversarial construction (original failure + recording failure + console.error itself throwing) is re-run against the fixed code and now asserts: thrown === null, result !== null, result.outcome === 'FAILED', result.status === null, result.fatalError still carries the ORIGINAL failure text, result.failureRecordPersisted === false, result.failureRecordError carries the recording failure's own text, result.failureRecordFallbackLogged === false (the honest tertiary-tier signal), and BOTH consoleErrorSpy and createLogSpy were each called exactly once (no recursive logger call).",
+      "Regression-sanity test extended to assert failureRecordError === null and failureRecordFallbackLogged === null on the ordinary (non-degraded) path."
+    ]
+  },
+
+  "testOutputVerbatim": {
+    "command": "npx vitest run tests/contract-model/part-b-recert-finding8-independent.test.ts --reporter=verbose",
+    "output": "✓ construction 1: a REAL (unmocked) Postgres FK constraint violation on recordAnalysisFailureLog's own write - never a hand-authored Error\n✓ construction 2: the SAME real FK-violation construction, but the original failure originates from a DIFFERENT call site (prisma.analysisRun.create inside startOrResumeAnalysisRun, never document.findMany)\n✓ OPEN-6 fix: construction 3 (formerly a falsification, now FIXED) - the console.error fallback itself throwing no longer escapes runContractAnalysis, and never reports false success\n✓ regression sanity: the ordinary pre-identity failure path (recordAnalysisFailureLog healthy) is unaffected by this file's own adversarial constructions\n\n Test Files  1 passed (1)\n      Tests  4 passed (4)",
+    "stability": "Re-ran three times consecutively (once combined with Part A's own AUDIT-F3/F6/F7 test file, twice standalone); identical PASS result every time, no flakiness observed.",
+    "combinedRunWithPartAsOwnTest": "npx vitest run tests/contract-model/part-b-recert-finding8-independent.test.ts tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts --reporter=verbose -> Test Files 2 passed (2), Tests 7 passed (7)"
+  },
+
+  "dbCleanlinessVerification": {
+    "testCompanyId": "part-b-finding8-independent-recert-test",
+    "everyDeleteScopedToExactId": "Unchanged from the prior recertification - every prisma.*.delete/deleteMany in the test file is scoped to `where: { id: COMPANY_ID }` or `where: { companyId: COMPANY_ID }` with COMPANY_ID a single fixed literal string; no broad/global delete added.",
+    "postRunQuery": "npx tsx one-off script querying prisma.company.findUnique / document.count / analysisRun.count / analysisFailureLog.count, all scoped to this exact id",
+    "result": "{ company: null, docs: 0, runs: 0, logs: 0 } - fully cleaned up, no residue left in the shared database",
+    "destructiveDbPatternCheck": {
+      "command": "npx tsx scripts/check-destructive-db-patterns.ts",
+      "exitCode": 1,
+      "findingCount": 12,
+      "newFindingsFromThisChange": 0,
+      "note": "All 12 findings are pre-existing (the checker's own pattern-definition strings in scripts/check-destructive-db-patterns.ts itself, plus tests/infrastructure/db-isolation-adversarial.test.ts, a deliberate adversarial fixture for a different, already-closed infrastructure workstream). Neither file was touched by this change; count is identical before and after."
+    }
+  },
+
+  "typecheckAndLint": {
+    "tsc": {
+      "command": "npx tsc --noEmit -p .",
+      "baselineErrorCount": 12,
+      "afterErrorCount": 12,
+      "newErrors": 0,
+      "note": "Baseline errors are all pre-existing, in unrelated files (tests/foundation-audit/*, and two lines in tests/contract-model/part-b-recert-finding8-independent.test.ts caused by vi.spyOn's own generic-inference limits on Prisma delegate methods - present before this change too, only their line numbers shifted from the new comments/fields added). Verified identical via `git stash` diff of both runs."
+    },
+    "eslint": {
+      "command": "npx eslint . (full repo) and npx eslint on the three changed files directly",
+      "changedFilesResult": "0 problems",
+      "fullRepoBaselineAndAfter": "1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, missing @typescript-eslint/no-var-requires rule definition), unrelated to and untouched by this change; identical count before and after."
+    }
+  },
+
+  "outOfScopeNoteOnConcurrentWorkstream": {
+    "observation": "At the time of this fix, the working tree also contained an UNCOMMITTED, in-progress modification to lib/contract-model/analysis/semantic-truth/service.ts and tests/contract-model/part-b-recert-finding6-independent.test.ts, addressing a DIFFERENT defect (OPEN-5 / AUDIT-F2 residual, FINDING-6's own zombie-writer-fencing gap in SemanticTruthRecord persistence) - evidently a sibling Part A workstream on this same branch/container, not authored by this task.",
+    "actionTaken": "Left entirely untouched (neither reverted nor committed) - out of scope for OPEN-6. Confirmed via `git stash`/`git diff --stat` that this task's own changes are limited to lib/contract-model/analysis/orchestrator.ts, lib/contract-model/analysis/types.ts, and tests/contract-model/part-b-recert-finding8-independent.test.ts, plus this new doc file. The two pre-existing test failures observed in a full tests/contract-model/ run (tests/contract-model/part-b-recert-finding5-independent.test.ts and part-b-recert-finding6-independent.test.ts) were independently reproduced against the clean, fully-committed HEAD commit (74af819) via `git stash` before this task made any change, confirming they predate and are unrelated to this fix."
+  },
+
+  "disposition": "FIXED",
+  "dispositionRationale": "The console.error last-resort fallback (the fix's own designated bottom of the fallback hierarchy) is now wrapped in its own try/catch, making it incapable of throwing uncaught regardless of whether the runtime's console has been wrapped/instrumented. Every statement in the PRE_RUN_IDENTITY catch block was hand-traced and confirmed either provably total or contained by its own try/catch. The result contract now exposes failureRecordPersisted (ANALYSIS_FAILED_AND_RECORDED vs ANALYSIS_FAILED_BUT_DURABLE_RECORD_FAILED), failureRecordError (both the original and the persistence failure, returned to the caller, not just logged), and failureRecordFallbackLogged (whether even the tertiary trace landed) - `outcome` remains \"FAILED\" in every branch, never success-shaped. No tier of the fallback ever calls back into a DB-backed logger from within that logger's own failure path, verified both by code inspection and by an explicit call-count assertion in the extended test. Construction 3 from the independent Part B recertification, which previously falsified the fix's own claimed invariant, now passes against the fixed code."
+}

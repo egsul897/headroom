@@ -411,7 +411,7 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
   try {
     documents = await prisma.document.findMany({ where: { companyId, type: { in: [...CONTRACT_DOCUMENT_TYPE_SET] as never[] } }, orderBy: { createdAt: "asc" } });
     if (documents.length === 0) {
-      return { outcome: "SKIPPED_NO_CONTRACT_DOCUMENTS", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: null, instrumentFailures: [], failureRecordPersisted: null };
+      return { outcome: "SKIPPED_NO_CONTRACT_DOCUMENTS", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: null, instrumentFailures: [], failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
     }
 
     documentIds = canonicalDocumentIdOrder(documents.map((d) => d.id));
@@ -419,7 +419,7 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
 
     const startOutcome = await startOrResumeAnalysisRun({ companyId, packageKey, documentIds, analysisAlgorithmVersion });
     if (startOutcome.kind === "ALREADY_RUNNING") {
-      return { outcome: "SKIPPED_ALREADY_RUNNING", runId: startOutcome.run.id, status: startOutcome.run.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: startOutcome.run.reviewItemCount, fatalError: null, instrumentFailures: [], failureRecordPersisted: null };
+      return { outcome: "SKIPPED_ALREADY_RUNNING", runId: startOutcome.run.id, status: startOutcome.run.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: startOutcome.run.reviewItemCount, fatalError: null, instrumentFailures: [], failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
     }
     runId = startOutcome.run.id;
     generation = startOutcome.run.executionGeneration;
@@ -447,30 +447,81 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     // through the same failing abstraction (prisma/Postgres) - retrying or
     // routing to a different table would just be "log failure -> log the
     // logging failure" with new names, which this phase's own constraint
-    // forbids. A structured console.error is the genuine, deliberate BOTTOM
-    // of this fallback hierarchy: it does not depend on the abstraction that
-    // just failed, it cannot itself recurse (there is nothing further to
-    // "record" its own failure - it cannot throw in a way this function
-    // still needs to catch), and it is never confused with the durable case
-    // via the separately-observable `failureRecordPersisted` result field.
+    // forbids. A structured console.error is the genuine, deliberate SECOND
+    // tier of this fallback hierarchy: it does not depend on the abstraction
+    // that just failed, and it is never confused with the durable case via
+    // the separately-observable `failureRecordPersisted` result field.
+    //
+    // OPEN-6 / AUDIT-F7 (Part B FINDING-8 recertification, construction 3 -
+    // docs/phase-3f1-6-rx-final-terminal-closure/20-part-b-finding8-
+    // recertification.json): an earlier version of this fallback assumed a
+    // bare `console.error` call "cannot throw under this runtime's own
+    // semantics" and left it unguarded. That premise does not hold for a
+    // wrapped/instrumented `console` (Sentry's console integration, a
+    // Winston/pino console transport, Next.js edge-runtime console
+    // interception, or any other environment that monkey-patches console
+    // methods) - a reproducible construction showed that throwing escaping
+    // this call uncaught, one tier deeper than the original defect. The
+    // console.error call is therefore now ITS OWN try/catch, deliberately
+    // narrow and with an otherwise-empty catch body: there is genuinely
+    // nothing further to attempt from inside a DB-logger's own failure path
+    // - in particular, NEVER another call back into
+    // recordAnalysisFailureLog/Postgres (that would just be "log the logging
+    // failure" recursing into the same failing abstraction this whole branch
+    // exists to route around; see `failureRecordFallbackLogged` below for
+    // this tier's own success/failure signal, which is set but never itself
+    // logged anywhere). This is the true, disclosed BOTTOM of the fallback
+    // hierarchy: whatever happens here, this function still returns its
+    // normal structured `FAILED` result below rather than letting anything
+    // propagate uncaught.
     let failureRecordPersisted = true;
+    let failureRecordError: { message: string; errorClass: string } | null = null;
+    let failureRecordFallbackLogged: boolean | null = null;
     try {
       await recordAnalysisFailureLog({ companyId, triggeringDocumentId: input.triggeringDocumentId ?? null, stage: fatalError.stage, errorClass: fatalError.errorClass, message: fatalError.message });
     } catch (recordErr) {
       failureRecordPersisted = false;
       const recordFailure = classifyError(recordErr);
-      // Deliberate, disclosed, terminal last-resort observability path -
-      // NOT a substitute for the durable AnalysisFailureLog row that could
-      // not be written. Kept clearly distinguished (both in this label and
-      // in the structured payload) from the ordinary, durably-persisted
-      // case so this can never be mistaken for a successful recording.
-      console.error("[runContractAnalysis] AUDIT-F7 fallback: could not durably record a PRE_RUN_IDENTITY failure - the AnalysisFailureLog write itself failed. This console line is a last-resort trace only; no Postgres row exists for the original failure below.", {
-        originalFailure: fatalError,
-        failureRecordError: { message: recordFailure.message, errorClass: recordFailure.errorClass },
-      });
+      failureRecordError = { message: recordFailure.message, errorClass: recordFailure.errorClass };
+      try {
+        // Deliberate, disclosed, terminal last-resort observability path -
+        // NOT a substitute for the durable AnalysisFailureLog row that could
+        // not be written. Kept clearly distinguished (both in this label and
+        // in the structured payload) from the ordinary, durably-persisted
+        // case so this can never be mistaken for a successful recording.
+        console.error("[runContractAnalysis] AUDIT-F7 fallback: could not durably record a PRE_RUN_IDENTITY failure - the AnalysisFailureLog write itself failed. This console line is a last-resort trace only; no Postgres row exists for the original failure below.", {
+          originalFailure: fatalError,
+          failureRecordError,
+        });
+        failureRecordFallbackLogged = true;
+      } catch {
+        // TRUE bottom: even the last-resort console trace itself threw (a
+        // wrapped/instrumented console - see comment above). Intentionally
+        // swallowed with no further action of any kind - no retry, no
+        // alternate channel, and above all no call back into any
+        // Postgres-backed logger. `failureRecordFallbackLogged` records the
+        // fact honestly; the caller still gets a normal, structured,
+        // never-success-shaped `FAILED` result below.
+        failureRecordFallbackLogged = false;
+      }
     }
 
-    return { outcome: "FAILED", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError, failureRecordPersisted, instrumentFailures: [] };
+    return {
+      outcome: "FAILED",
+      runId: null,
+      status: null,
+      companyId,
+      packageKey: null,
+      documentIds: [],
+      analysisAlgorithmVersion,
+      instruments: [],
+      openReviewItemCount: 0,
+      fatalError,
+      failureRecordPersisted,
+      failureRecordError,
+      failureRecordFallbackLogged,
+      instrumentFailures: [],
+    };
   }
 
   const callers: Required<Pick<ContractAnalysisCallers, "discoveryCaller" | "amendmentCaller" | "verificationCaller" | "semanticCaller">> & Pick<ContractAnalysisCallers, "aiInventoryCaller"> = {
@@ -503,6 +554,8 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     fatalError: null,
     instrumentFailures: [],
     failureRecordPersisted: null,
+    failureRecordError: null,
+    failureRecordFallbackLogged: null,
   });
 
   try {
@@ -612,6 +665,8 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
         fatalError: { stage: "PER_INSTRUMENT_ANALYSIS", message: firstError.message, errorClass: firstError.errorClass },
         instrumentFailures: instrumentErrors.map((e) => ({ instrumentKey: e.instrumentKey, errorClass: e.errorClass, message: e.message })),
         failureRecordPersisted: null,
+        failureRecordError: null,
+        failureRecordFallbackLogged: null,
       };
     }
 
@@ -649,12 +704,14 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
       fatalError: null,
       instrumentFailures: instrumentErrors.map((e) => ({ instrumentKey: e.instrumentKey, errorClass: e.errorClass, message: e.message })),
       failureRecordPersisted: null,
+      failureRecordError: null,
+      failureRecordFallbackLogged: null,
     };
   } catch (err) {
     if (err instanceof RunSupersededError) return supersededResult(err.stage);
     const { message, errorClass } = classifyError(err);
     const failResult = await failAnalysisRun(runId, { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, generation);
     if (!failResult) return supersededResult("INGESTION_OR_STRUCTURAL");
-    return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, instrumentFailures: [], failureRecordPersisted: null };
+    return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, instrumentFailures: [], failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
   }
 }

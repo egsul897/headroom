@@ -2,9 +2,22 @@
  * Phase 3F.1.6.RX-FINAL Part B (independent recertification) - FINDING-8
  * (AUDIT-F7 residual: recordAnalysisFailureLog can itself throw uncaught).
  *
- * This is an INDEPENDENT falsification attempt against Workstream G's own
- * fix (docs/phase-3f1-6-rx-final-terminal-closure/09-failure-observability-
- * final.json), written FRESH for Part B - it does NOT rerun or import
+ * UPDATED for Phase 3F.1-terminal, OPEN-6 (this finding's own remaining
+ * open item, docs/phase-3f1-6-rx-final-terminal-closure/20-part-b-finding8-
+ * recertification.json): construction 3 below originally FALSIFIED
+ * Workstream G's fix - a bare, unguarded `console.error` fallback call
+ * (orchestrator.ts) could itself throw uncaught out of runContractAnalysis
+ * when console.error is wrapped/instrumented. OPEN-6's fix wraps that call
+ * in its own try/catch (see orchestrator.ts's own comment at the call
+ * site) and extends `RunContractAnalysisResult` with `failureRecordError`
+ * (the SECONDARY tier - both the original and the persistence failure,
+ * returned to the caller, not just logged) and
+ * `failureRecordFallbackLogged` (the TERTIARY/true-bottom tier's own
+ * success signal). Construction 3 is now re-run against the FIXED code and
+ * asserts the invariant holds; constructions 1, 2, and the regression
+ * sanity case are unchanged and still independently exercise the PRIMARY
+ * tier (recordAnalysisFailureLog's own write) against real, unmocked
+ * Postgres failures, never rerunning or importing Part A's own test file:
  * tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts
  * (Part A's own test, which only exercises MOCKED plain `Error` rejections
  * for BOTH the original failure and the recording failure). Every
@@ -157,6 +170,16 @@ describe("Part B independent recertification - FINDING-8 (recordAnalysisFailureL
     // (c) failureRecordPersisted correctly reflects false.
     expect(result!.failureRecordPersisted).toBe(false);
 
+    // OPEN-6 fix: the SECONDARY tier - the result object itself (not just
+    // the console line) carries BOTH the original failure (fatalError,
+    // asserted above) and the failure-persistence failure.
+    expect(result!.failureRecordError).not.toBeNull();
+    expect(result!.failureRecordError!.errorClass).toBe("PrismaClientKnownRequestError");
+    expect(result!.failureRecordError!.message.toLowerCase()).toMatch(/foreign key|constraint/);
+    // The last-resort console.error itself succeeded here (an ordinary,
+    // unwrapped console) - the TERTIARY tier's own signal is honestly true.
+    expect(result!.failureRecordFallbackLogged).toBe(true);
+
     // No AnalysisFailureLog row exists (the write genuinely failed) - and
     // critically, this must be provable even though the Company row itself
     // is gone (cascade-delete concerns do not apply here since the insert
@@ -203,6 +226,9 @@ describe("Part B independent recertification - FINDING-8 (recordAnalysisFailureL
     expect(result!.fatalError).not.toBeNull();
     expect(result!.fatalError!.message).toContain("original AnalysisRun-claim failure");
     expect(result!.failureRecordPersisted).toBe(false);
+    expect(result!.failureRecordError).not.toBeNull();
+    expect(result!.failureRecordError!.errorClass).toBe("PrismaClientKnownRequestError");
+    expect(result!.failureRecordFallbackLogged).toBe(true);
     expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
     const [, logPayload] = consoleErrorSpy.mock.calls[0]!;
     expect((logPayload as { failureRecordError: { errorClass: string } }).failureRecordError.errorClass).toBe("PrismaClientKnownRequestError");
@@ -211,15 +237,17 @@ describe("Part B independent recertification - FINDING-8 (recordAnalysisFailureL
     void consoleErrorSpy;
   });
 
-  it("construction 3 (FALSIFICATION - see disposition doc): the console.error fallback ITSELF throwing (a realistic case - a logging transport wraps/monkey-patches console.error and that write fails) DOES escape runContractAnalysis uncaught, contradicting the fix's own claimed invariant", async () => {
+  it("OPEN-6 fix: construction 3 (formerly a falsification, now FIXED) - the console.error fallback itself throwing no longer escapes runContractAnalysis, and never reports false success", async () => {
     // Both the original failure and the recording failure are mocked here
     // (deliberately, to isolate this one variable): the point of this test
     // is NOT the recording write's own failure mode (already covered by
     // constructions 1-2 and by Part A), it is whether the LAST-RESORT
-    // console.error call the design document calls "the genuine, disclosed
-    // bottom" of the fallback hierarchy is actually wrapped defensively, or
-    // whether it is a bare, unguarded call that can itself propagate an
-    // exception out of the surrounding catch block.
+    // console.error call - now its own try/catch, per OPEN-6's fix - truly
+    // cannot propagate an exception out of the surrounding catch block, even
+    // when console.error itself throws (a wrapped/instrumented console, a
+    // realistic production condition - Sentry's console integration,
+    // Winston/pino console transports, Next.js edge-runtime console
+    // interception).
     const findManySpy = vi.spyOn(prisma.document, "findMany").mockRejectedValueOnce(new Error("INJECTED (Part B independent): original failure, construction 3"));
     const createLogSpy = vi.spyOn(prisma.analysisFailureLog, "create").mockRejectedValueOnce(new Error("INJECTED (Part B independent): recording write also fails, construction 3"));
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {
@@ -234,50 +262,45 @@ describe("Part B independent recertification - FINDING-8 (recordAnalysisFailureL
       thrown = err;
     }
 
-    // THE CENTRAL FALSIFICATION QUESTION for invariant (d): "no code path
-    // anywhere in this fallback chain can itself throw uncaught." The
-    // design document (09-failure-observability-final.json,
-    // whyThisTerminatesAndNeverRecurses) asserts this is categorically true
-    // because "a call to console.error does not throw under this runtime's
-    // own semantics." That premise is only true for the vanilla, unmodified
-    // built-in console - nothing in orchestrator.ts's own source guards the
-    // console.error call with its own try/catch, so if ANY caller/operator
-    // environment has console.error wrapped (a common real-world pattern:
-    // Sentry's console integration, Winston/pino console transports,
-    // Next.js edge-runtime console interception), that wrapper's own
-    // failure propagates out of this nested catch block - and because this
-    // whole block is already the innermost catch in runContractAnalysis
-    // with nothing further wrapping it, it propagates all the way out of
-    // runContractAnalysis UNCAUGHT, reproducing the exact log-only /
-        // no-visibility failure mode FINDING-8 exists to eliminate, one tier
-    // deeper than the original AUDIT-F7 gap.
-    //
-    // MEASURED RESULT (this exact test, this exact commit): thrown IS
-    // non-null. The exception's own stack trace bottoms out at
-    // orchestrator.ts's own console.error call site inside the nested
-    // catch block (no intervening catch frame), then directly at
-    // `processTicksAndRejections` - i.e. it propagates all the way out of
-    // runContractAnalysis with NOTHING in between. This FALSIFIES the fix's
-    // own claimed invariant ("this function never throws uncaught from this
-    // catch block, no matter how the recording write goes" /
-    // "[console.error] cannot itself fail in a way this function still
-    // needs to catch") for the one precondition the design document's own
-    // reasoning did not defend against: a console.error that is itself
-    // wrapped/monkey-patched (Sentry's console integration, Winston/pino
-    // console transports, custom observability middleware - all realistic,
-    // common production patterns) and whose own write can fail.
-    expect(thrown).not.toBeNull();
-    expect(thrown).toBeInstanceOf(Error);
-    expect((thrown as Error).message).toContain("console.error transport itself throws");
-    expect(result).toBeNull();
-    // no result, so no failureRecordPersisted signal reaches the caller
-    // either - this reproduces the ORIGINAL AUDIT-F7 log-only failure mode
-    // (thrown!==null, result===null) at a deeper tier of the SAME fallback
-    // chain FINDING-8 built specifically to eliminate that mode.
+    // THE CENTRAL QUESTION for invariant (d): "no code path anywhere in this
+    // fallback chain can itself throw uncaught." Prior to the OPEN-6 fix,
+    // this construction FALSIFIED that invariant (see git history / this
+    // finding's own recertification doc for the pre-fix measured result:
+    // thrown!==null, result===null, stack bottoming out at orchestrator.ts's
+    // bare console.error call site). The fix wraps that call in its own
+    // try/catch with an empty catch body - nothing else. Re-measured here
+    // against the SAME adversarial construction:
+    expect(thrown).toBeNull();
+    expect(result).not.toBeNull();
+
+    // Never success-shaped in any field, even at this deepest tier.
+    expect(result!.outcome).toBe("FAILED");
+    expect(result!.status).toBeNull();
+
+    // The ORIGINAL failure is still fully surfaced (SECONDARY tier: the
+    // result carries both the original failure AND the persistence
+    // failure - never masked by the deeper console.error failure either).
+    expect(result!.fatalError).not.toBeNull();
+    expect(result!.fatalError!.message).toContain("original failure, construction 3");
+    expect(result!.failureRecordPersisted).toBe(false);
+    expect(result!.failureRecordError).not.toBeNull();
+    expect(result!.failureRecordError!.message).toContain("recording write also fails, construction 3");
+
+    // TERTIARY tier: the last-resort console.error fallback itself failed -
+    // this is honestly reported, never conflated with the ordinary
+    // (failureRecordFallbackLogged === true) degraded case.
+    expect(result!.failureRecordFallbackLogged).toBe(false);
+
+    // No recursive logger call: console.error was attempted exactly once
+    // (the single call this catch block ever makes), and critically
+    // recordAnalysisFailureLog/prisma.analysisFailureLog.create was ALSO
+    // called exactly once - the console.error failure never triggers a
+    // second attempt to write through the same (already-failing) DB
+    // abstraction, nor a second console.error call of any kind.
+    expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+    expect(createLogSpy).toHaveBeenCalledTimes(1);
 
     void findManySpy;
-    void createLogSpy;
-    void consoleErrorSpy;
   });
 
   it("regression sanity: the ordinary pre-identity failure path (recordAnalysisFailureLog healthy) is unaffected by this file's own adversarial constructions", async () => {
@@ -288,6 +311,8 @@ describe("Part B independent recertification - FINDING-8 (recordAnalysisFailureL
 
     expect(result.outcome).toBe("FAILED");
     expect(result.failureRecordPersisted).toBe(true);
+    expect(result.failureRecordError).toBeNull();
+    expect(result.failureRecordFallbackLogged).toBeNull();
     expect(consoleErrorSpy).not.toHaveBeenCalled();
 
     const logs = await getAnalysisFailureLogsForCompany(COMPANY_ID);

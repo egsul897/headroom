@@ -119,6 +119,48 @@ export interface RunContractAnalysisResult {
    *               a different, already-robust mechanism out of this
    *               finding's scope), or this outcome predates a fatalError
    *               entirely (SKIPPED_* or STARTED_TO_COMPLETION).
+   *
+   * Together with `outcome` (always `"FAILED"`, never anything
+   * success-shaped, for every case this field is non-null), this is this
+   * result's ANALYSIS_FAILED_AND_RECORDED (`true`) vs.
+   * ANALYSIS_FAILED_BUT_DURABLE_RECORD_FAILED (`false`) distinction - the
+   * second is an infrastructure-degraded condition that must never be read
+   * as, or confused with, analysis completion/success in any field.
    */
   failureRecordPersisted: boolean | null;
+  /**
+   * Phase 3F.1-terminal (OPEN-6 / AUDIT-F7 residual, Part B FINDING-8
+   * falsification construction 3) - the SECONDARY tier of the
+   * PRE_RUN_IDENTITY fallback hierarchy: when `failureRecordPersisted` is
+   * `false`, this carries the failure-persistence write's OWN classified
+   * error (never the original failure - that is always `fatalError` above,
+   * never masked or replaced), so a caller/operator has BOTH the original
+   * fatal error and the reason no durable AnalysisFailureLog row exists for
+   * it, without needing to parse the last-resort console line. `null`
+   * whenever `failureRecordPersisted` is `true` or `null` (nothing to
+   * report - either the write succeeded, or this stage never failed).
+   */
+  failureRecordError: { message: string; errorClass: string } | null;
+  /**
+   * Phase 3F.1-terminal (OPEN-6 / AUDIT-F7 residual) - the TERTIARY,
+   * genuinely-last-resort tier: whether the `console.error` fallback that
+   * runs when `failureRecordPersisted` is `false` itself completed without
+   * throwing.
+   *   - `true`  - the durable write failed, but the last-resort console
+   *               trace was emitted successfully (the ordinary degraded
+   *               case).
+   *   - `false` - the durable write failed AND the console.error fallback
+   *               itself threw (e.g. a wrapped/instrumented `console` in an
+   *               observability integration) - even that last-ditch trace
+   *               could not be emitted. The function still returns this
+   *               structured `FAILED` result rather than throwing uncaught
+   *               (see orchestrator.ts's own try/catch around this call);
+   *               there is deliberately no further/deeper tier - a caller
+   *               seeing `false` here has the same original `fatalError`
+   *               and `failureRecordError` as any other degraded case, just
+   *               with zero trace of any kind left behind anywhere else.
+   *   - `null`  - not applicable: `failureRecordPersisted` is `true` or
+   *               `null` (the fallback never ran).
+   */
+  failureRecordFallbackLogged: boolean | null;
 }
