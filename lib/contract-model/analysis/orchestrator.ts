@@ -114,6 +114,25 @@ function classifyError(err: unknown): { message: string; errorClass: string } {
   return { message: err instanceof Error ? err.message : String(err), errorClass: err instanceof Error ? err.constructor.name : "UnknownError" };
 }
 
+/**
+ * FINDING-6 (zombie-writer fencing) - thrown by `setStageOrBail` (inside
+ * `runContractAnalysis`) the instant a `setAnalysisRunStage` call reports it
+ * did NOT apply (a newer execution has since reclaimed this same `runId` and
+ * bumped its `executionGeneration` past what this execution was handed at
+ * claim time). Caught by `runContractAnalysis`'s own outer try/catch and
+ * routed to a `SKIPPED_SUPERSEDED` result WITHOUT calling `failAnalysisRun`
+ * (which would itself just no-op against the same stale generation, and
+ * would incorrectly suggest this execution still had standing to report a
+ * failure for a run it no longer owns) - this execution simply stops making
+ * further state-mutating calls the moment it learns it has been superseded.
+ */
+class RunSupersededError extends Error {
+  constructor(public readonly stage: string) {
+    super(`AnalysisRun execution superseded at stage ${stage} (a newer owner has since reclaimed this run)`);
+    this.name = "RunSupersededError";
+  }
+}
+
 /** One instrument-shaped unit of work: either a real package-graph InstrumentGroupingResult, or a single un-grouped document standing in for itself (see identity.ts's standaloneInstrumentKey doc comment). */
 interface InstrumentUnit {
   instrumentKey: string;
@@ -176,6 +195,8 @@ async function analyzeInstrument(params: {
   companyId: string;
   analysisPackageKey: string;
   runId: string;
+  /** FINDING-6 (zombie-writer fencing) - the generation this execution held at claim time, threaded down so persistSemanticTruthForInstrument can gate its own write against a fresh read of the run's CURRENT generation (see semantic-truth/service.ts's own doc comment on why this is a pre-write gate, not a per-row CAS). */
+  expectedGeneration: number;
   unit: InstrumentUnit;
   index: StructuralIndex;
   packageGraph: PackageGraphResult;
@@ -183,7 +204,7 @@ async function analyzeInstrument(params: {
   exactTermsByDocument: Map<string, Map<string, string>>;
   callers: Required<Pick<ContractAnalysisCallers, "discoveryCaller" | "amendmentCaller" | "verificationCaller" | "semanticCaller">> & Pick<ContractAnalysisCallers, "aiInventoryCaller">;
 }): Promise<InstrumentAnalysisOutcome> {
-  const { companyId, analysisPackageKey, runId, unit, index, packageGraph, packageDocsById, exactTermsByDocument, callers } = params;
+  const { companyId, analysisPackageKey, runId, expectedGeneration, unit, index, packageGraph, packageDocsById, exactTermsByDocument, callers } = params;
   const instrumentDocs = unit.documentIds.map((id) => packageDocsById.get(id)!).filter(Boolean);
 
   // --- amendment/operative state ---
@@ -313,7 +334,7 @@ async function analyzeInstrument(params: {
     const definitionObjects: SemanticTruthObjectInput[] = entry.result.definitions.map((def) => ({ kind: "DEFINITION", object: def, candidateRef: entry.discoveryId, compilerVersions, verification, verifierPromptVersion: verification ? SEMANTIC_VERIFIER_PROMPT_VERSION : null }));
     return [...ruleObjects, ...definitionObjects];
   });
-  const semanticTruthSummary = await persistSemanticTruthForInstrument({ companyId, packageKey: analysisPackageKey, instrumentKey: unit.instrumentKey, analysisRunId: runId, objects: semanticTruthObjects });
+  const semanticTruthSummary = await persistSemanticTruthForInstrument({ companyId, packageKey: analysisPackageKey, instrumentKey: unit.instrumentKey, analysisRunId: runId, objects: semanticTruthObjects, expectedGeneration });
 
   // --- whole-document semantic coverage (the freeze-before-load independent audit) ---
   const coverageResult = await runSemanticCoverageAudit({
@@ -381,10 +402,16 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
   let documentIds: string[];
   let packageKey: string;
   let runId: string;
+  // FINDING-6 (zombie-writer fencing) - the execution generation THIS call
+  // won at claim time (StartAnalysisRunOutcome.run.executionGeneration).
+  // Every mutating call this execution makes from here on presents this
+  // exact value, never a value re-read later (see service.ts's own
+  // setAnalysisRunStage doc comment for why that distinction matters).
+  let generation: number;
   try {
     documents = await prisma.document.findMany({ where: { companyId, type: { in: [...CONTRACT_DOCUMENT_TYPE_SET] as never[] } }, orderBy: { createdAt: "asc" } });
     if (documents.length === 0) {
-      return { outcome: "SKIPPED_NO_CONTRACT_DOCUMENTS", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: null, instrumentFailures: [] };
+      return { outcome: "SKIPPED_NO_CONTRACT_DOCUMENTS", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: null, instrumentFailures: [], failureRecordPersisted: null };
     }
 
     documentIds = canonicalDocumentIdOrder(documents.map((d) => d.id));
@@ -392,13 +419,58 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
 
     const startOutcome = await startOrResumeAnalysisRun({ companyId, packageKey, documentIds, analysisAlgorithmVersion });
     if (startOutcome.kind === "ALREADY_RUNNING") {
-      return { outcome: "SKIPPED_ALREADY_RUNNING", runId: startOutcome.run.id, status: startOutcome.run.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: startOutcome.run.reviewItemCount, fatalError: null, instrumentFailures: [] };
+      return { outcome: "SKIPPED_ALREADY_RUNNING", runId: startOutcome.run.id, status: startOutcome.run.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: startOutcome.run.reviewItemCount, fatalError: null, instrumentFailures: [], failureRecordPersisted: null };
     }
     runId = startOutcome.run.id;
+    generation = startOutcome.run.executionGeneration;
   } catch (err) {
     const { message, errorClass } = classifyError(err);
-    await recordAnalysisFailureLog({ companyId, triggeringDocumentId: input.triggeringDocumentId ?? null, stage: "PRE_RUN_IDENTITY", errorClass, message });
-    return { outcome: "FAILED", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "PRE_RUN_IDENTITY", message, errorClass }, instrumentFailures: [] };
+    const fatalError = { stage: "PRE_RUN_IDENTITY" as const, message, errorClass };
+
+    // Part B AUDIT-F7 recertification (FINDING-8): recordAnalysisFailureLog
+    // is itself a Postgres write, independent of the ORIGINAL failure just
+    // classified above - a single transient statement failure there (a
+    // serialization error, momentary pool exhaustion, a bad FK), not
+    // necessarily a total outage, can throw on its own. This call is
+    // therefore wrapped in its OWN try/catch, deliberately narrow (it must
+    // never widen to swallow anything else in this catch block). Two
+    // invariants this specific try/catch exists to guarantee:
+    //   1. The ORIGINAL error (`fatalError` above) is NEVER masked or
+    //      replaced by a failure of the recording write - it is already
+    //      fully captured before this write is even attempted, and is
+    //      always what gets returned to the caller below regardless of how
+    //      this write goes.
+    //   2. This function still NEVER throws uncaught from this catch block
+    //      (the one contract this whole PRE_RUN_IDENTITY branch exists to
+    //      hold) - a bad recording write must not defeat that.
+    // The fallback on failure is deliberately NOT another attempt to write
+    // through the same failing abstraction (prisma/Postgres) - retrying or
+    // routing to a different table would just be "log failure -> log the
+    // logging failure" with new names, which this phase's own constraint
+    // forbids. A structured console.error is the genuine, deliberate BOTTOM
+    // of this fallback hierarchy: it does not depend on the abstraction that
+    // just failed, it cannot itself recurse (there is nothing further to
+    // "record" its own failure - it cannot throw in a way this function
+    // still needs to catch), and it is never confused with the durable case
+    // via the separately-observable `failureRecordPersisted` result field.
+    let failureRecordPersisted = true;
+    try {
+      await recordAnalysisFailureLog({ companyId, triggeringDocumentId: input.triggeringDocumentId ?? null, stage: fatalError.stage, errorClass: fatalError.errorClass, message: fatalError.message });
+    } catch (recordErr) {
+      failureRecordPersisted = false;
+      const recordFailure = classifyError(recordErr);
+      // Deliberate, disclosed, terminal last-resort observability path -
+      // NOT a substitute for the durable AnalysisFailureLog row that could
+      // not be written. Kept clearly distinguished (both in this label and
+      // in the structured payload) from the ordinary, durably-persisted
+      // case so this can never be mistaken for a successful recording.
+      console.error("[runContractAnalysis] AUDIT-F7 fallback: could not durably record a PRE_RUN_IDENTITY failure - the AnalysisFailureLog write itself failed. This console line is a last-resort trace only; no Postgres row exists for the original failure below.", {
+        originalFailure: fatalError,
+        failureRecordError: { message: recordFailure.message, errorClass: recordFailure.errorClass },
+      });
+    }
+
+    return { outcome: "FAILED", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError, failureRecordPersisted, instrumentFailures: [] };
   }
 
   const callers: Required<Pick<ContractAnalysisCallers, "discoveryCaller" | "amendmentCaller" | "verificationCaller" | "semanticCaller">> & Pick<ContractAnalysisCallers, "aiInventoryCaller"> = {
@@ -409,9 +481,33 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     aiInventoryCaller: options.callers?.aiInventoryCaller,
   };
 
+  // FINDING-6 (zombie-writer fencing): every stage transition below presents
+  // the SAME `generation` this execution won at claim time; the instant one
+  // reports it did not apply, this execution has been superseded and must
+  // stop making further AnalysisRun-mutating calls (see RunSupersededError's
+  // own doc comment and the outer catch block below).
+  const setStageOrBail = async (stage: string): Promise<void> => {
+    const applied = await setAnalysisRunStage(runId, stage, generation);
+    if (!applied) throw new RunSupersededError(stage);
+  };
+  const supersededResult = (stage: string): RunContractAnalysisResult => ({
+    outcome: "SKIPPED_SUPERSEDED",
+    runId,
+    status: null,
+    companyId,
+    packageKey,
+    documentIds,
+    analysisAlgorithmVersion,
+    instruments: [],
+    openReviewItemCount: 0,
+    fatalError: null,
+    instrumentFailures: [],
+    failureRecordPersisted: null,
+  });
+
   try {
     // --- document ingestion: real bytes -> real parsed text (never chunk-reconstructed - see this function's own note below) ---
-    await setAnalysisRunStage(runId, "INGESTION");
+    await setStageOrBail("INGESTION");
     const storage = getDocumentStorageProvider();
     // Deliberately re-parses each document's own stored bytes via the SAME
     // parseDocument this document's own upload-time pipeline already used
@@ -433,7 +529,7 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     const packageDocsById = new Map(packageDocs.map((d) => [d.documentId, d] as const));
 
     // --- structural analysis ---
-    await setAnalysisRunStage(runId, "STRUCTURAL_ANALYSIS");
+    await setStageOrBail("STRUCTURAL_ANALYSIS");
     const structureRes = runStructureStage(packageDocs);
     const allNodes = structureRes.output;
     const nodesByDocument = new Map(packageDocs.map((d) => [d.documentId, { text: d.text, nodes: allNodes.filter((n) => n.documentId === d.documentId) }] as const));
@@ -442,11 +538,11 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     const index = buildStructuralIndex(nodesByDocument, allDefinitions, allReferences);
 
     // --- structural persistence ---
-    await setAnalysisRunStage(runId, "STRUCTURAL_PERSISTENCE");
+    await setStageOrBail("STRUCTURAL_PERSISTENCE");
     await persistStructuralNodes(companyId, allNodes);
 
     // --- package relationships ---
-    await setAnalysisRunStage(runId, "PACKAGE_RELATIONSHIPS");
+    await setStageOrBail("PACKAGE_RELATIONSHIPS");
     const packageGraph = buildPackageGraph(companyId, packageKey, packageDocs);
     await persistPackageGraph(companyId, packageGraph);
 
@@ -506,6 +602,7 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
         openReviewItemCount: 0,
         fatalError: { stage: "PER_INSTRUMENT_ANALYSIS", message: firstError.message, errorClass: firstError.errorClass },
         instrumentFailures: instrumentErrors.map((e) => ({ instrumentKey: e.instrumentKey, errorClass: e.errorClass, message: e.message })),
+        failureRecordPersisted: null,
       };
     }
 
@@ -535,10 +632,11 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
       openReviewItemCount,
       fatalError: null,
       instrumentFailures: instrumentErrors.map((e) => ({ instrumentKey: e.instrumentKey, errorClass: e.errorClass, message: e.message })),
+      failureRecordPersisted: null,
     };
   } catch (err) {
     const { message, errorClass } = classifyError(err);
     await failAnalysisRun(runId, { stage: "INGESTION_OR_STRUCTURAL", message, errorClass });
-    return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, instrumentFailures: [] };
+    return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, instrumentFailures: [], failureRecordPersisted: null };
   }
 }

@@ -17,22 +17,27 @@
  *    docs/phase-3f1-6-rx-final-blocker-closure/16-no-log-only-failure.json
  *    ("a total Postgres outage would still defeat this") by asking whether
  *    anything CHEAPER than a full outage can reproduce the same silent
- *    log-only failure mode. Finding: YES - the fix's own pre-identity catch
- *    block in lib/contract-model/analysis/orchestrator.ts calls
- *    recordAnalysisFailureLog(...) with NO try/catch of its own around that
- *    call. If THAT SECOND write itself fails for any reason (not a full
- *    outage - a single transient error, e.g. a serialization failure, a
- *    momentary connection-pool exhaustion for that one statement, or a
- *    foreign-key violation if companyId does not reference a real Company
- *    row), the second exception propagates UNCAUGHT out of
- *    runContractAnalysis entirely - past every durability mechanism this
- *    fix built - and is caught ONLY by app/'s own runExtractionAction
- *    catch block, which does nothing but console.error it. This is exactly
- *    the log-only failure mode AUDIT-F7 was chartered to eliminate,
- *    reproduced here with Postgres otherwise fully healthy (every other
- *    query in this same test file succeeds against the real database) -
- *    i.e. a materially CHEAPER trigger than the disclosed "total Postgres
- *    outage" residual.
+ *    log-only failure mode. Finding: YES (see AUDIT_F7 in
+ *    docs/phase-3f1-6-rx-final-blocker-closure/
+ *    29-part-b-auditf3-f6-f7-recertification.json) - the fix's own
+ *    pre-identity catch block in lib/contract-model/analysis/orchestrator.ts
+ *    called recordAnalysisFailureLog(...) with NO try/catch of its own
+ *    around that call, so a failure of that SECOND write alone (Postgres
+ *    otherwise fully healthy) propagated UNCAUGHT out of
+ *    runContractAnalysis, reproducing the exact log-only failure mode
+ *    AUDIT-F7 exists to eliminate, via a materially CHEAPER trigger than
+ *    the disclosed "total Postgres outage" residual.
+ *
+ *    Phase 3F.1.6.RX-FINAL Workstream G (FINDING-8) closes this gap: the
+ *    call is now wrapped in its own try/catch with a deliberately
+ *    non-recursive fallback (a structured console.error - see the call
+ *    site's own comment for why that is the genuine, terminal bottom of
+ *    this fallback hierarchy). The tests below now assert the FIXED
+ *    behavior: the ORIGINAL failure is never masked, runContractAnalysis
+ *    still never throws uncaught, the caller receives a real structured
+ *    FAILED result, and `failureRecordPersisted: false` on that result
+ *    separately (and honestly) reports that no durable Postgres trace of
+ *    the original failure exists - never conflated with success.
  */
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "../../lib/prisma";
@@ -110,7 +115,7 @@ describe("Part B recertification - AUDIT-F7 no-log-only-failure, alternate const
     void doc;
   });
 
-  it("REAL GAP BEYOND THE DISCLOSED RESIDUAL: if recordAnalysisFailureLog's OWN write fails (Postgres otherwise fully healthy), the original failure is lost with no durable trace anywhere, and the exception propagates uncaught out of runContractAnalysis - reproducible far more cheaply than a total DB outage", async () => {
+  it("FINDING-8 FIX: if recordAnalysisFailureLog's OWN write fails (Postgres otherwise fully healthy), the ORIGINAL failure is still returned as a structured FAILED result (never masked, never thrown uncaught), and the persistence gap is separately, honestly reported via failureRecordPersisted:false plus a non-recursive console.error fallback", async () => {
     // Trigger the ordinary, already-proven PRE_RUN_IDENTITY path (the
     // initial Document query throwing) ...
     const findManySpy = vi.spyOn(prisma.document, "findMany").mockRejectedValueOnce(new Error("INJECTED (Part B recert): the ORIGINAL failure this run should have recorded"));
@@ -119,7 +124,21 @@ describe("Part B recertification - AUDIT-F7 no-log-only-failure, alternate const
     // same test file (see the sibling test above, and every other Part B
     // suite) succeeds against this exact same live Postgres instance in
     // this same test run, proving the database itself is healthy.
+    //
+    // Captured explicitly (belt-and-suspenders alongside createLogSpy's own
+    // mockRestore() below): Prisma's generated model delegate exposes
+    // `create` via a non-own accessor, and this codebase has empirically
+    // observed vi.spyOn(...).mockRestore() on this specific
+    // (model, "create") pairing leave the property `undefined` for a LATER
+    // test in this same file rather than genuinely restored - unlike the
+    // other spied methods in this file (document.findMany,
+    // analysisRun.updateMany), which restore cleanly. Reassigning the
+    // original bound implementation directly after the test sidesteps that
+    // without masking it (mockRestore() below is still called first; this
+    // is only a defensive fallback if it did not fully take).
+    const originalAnalysisFailureLogCreate = prisma.analysisFailureLog.create.bind(prisma.analysisFailureLog);
     const createLogSpy = vi.spyOn(prisma.analysisFailureLog, "create").mockRejectedValueOnce(new Error("INJECTED (Part B recert): a single transient failure on the failure-recording write itself"));
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     let thrown: unknown = null;
     let result: Awaited<ReturnType<typeof runContractAnalysis>> | null = null;
@@ -129,30 +148,69 @@ describe("Part B recertification - AUDIT-F7 no-log-only-failure, alternate const
       thrown = err;
     }
 
-    // THIS IS THE GAP: runContractAnalysis's own pre-identity catch block
-    // (lib/contract-model/analysis/orchestrator.ts) awaits
-    // recordAnalysisFailureLog(...) with no try/catch of its own around
-    // that specific call. When that write itself throws, the exception is
-    // NOT the original "Document query failed" error being durably
-    // recorded and structurally returned - it propagates straight out of
-    // runContractAnalysis as an UNCAUGHT exception instead of the
-    // structured {outcome: "FAILED", ...} result AUDIT-F7 promises for
-    // every pre-identity failure.
-    expect(thrown).not.toBeNull();
-    expect(result).toBeNull();
+    // FINDING-8 FIX: runContractAnalysis's own pre-identity catch block now
+    // wraps recordAnalysisFailureLog(...) in its own try/catch. When that
+    // write itself throws, the function still never throws uncaught - it
+    // returns the SAME structured {outcome: "FAILED", ...} result AUDIT-F7
+    // promises for every pre-identity failure, carrying the ORIGINAL
+    // "Document query failed" error, not the recording write's own error.
+    expect(thrown).toBeNull();
+    expect(result).not.toBeNull();
+    expect(result!.outcome).toBe("FAILED");
+    expect(result!.runId).toBeNull();
+    expect(result!.fatalError).not.toBeNull();
+    expect(result!.fatalError!.stage).toBe("PRE_RUN_IDENTITY");
+    // The ORIGINAL error, never the recording write's own error.
+    expect(result!.fatalError!.message).toContain("the ORIGINAL failure this run should have recorded");
+    expect(result!.fatalError!.message).not.toContain("failure-recording write itself");
 
-    // Confirm the ORIGINAL failure (the actual, real problem an operator
-    // would want to know about) left NO durable trace anywhere - not in
-    // AnalysisFailureLog (the write itself failed), not in AnalysisRun (no
-    // runId was ever obtained), i.e. exactly the "log-only" failure mode
-    // (caught only by app/'s own runExtractionAction console.error) that
-    // AUDIT-F7's own fix was chartered to eliminate - reproduced here with
-    // a single failed write, not a total outage.
+    // The persistence gap is separately, honestly observable - never
+    // conflated with the ordinary durably-persisted case.
+    expect(result!.failureRecordPersisted).toBe(false);
+
+    // A single, non-recursive last-resort console.error fallback ran -
+    // exactly once (proving no "log failure -> log logging failure" loop),
+    // carrying both the original failure and the recording failure.
+    expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
+    const [logMessage, logPayload] = consoleErrorSpy.mock.calls[0]!;
+    expect(String(logMessage)).toContain("AUDIT-F7 fallback");
+    expect(JSON.stringify(logPayload)).toContain("the ORIGINAL failure this run should have recorded");
+    expect(JSON.stringify(logPayload)).toContain("failure-recording write itself");
+
+    // Confirm the ORIGINAL failure left NO durable Postgres trace this time
+    // (the recording write itself failed) - this is the disclosed,
+    // honestly-reported residual (failureRecordPersisted:false above), NOT
+    // a silent log-only failure: the caller still gets the real failure
+    // result and the gap is visible in that result, never hidden.
     const logs = await getAnalysisFailureLogsForCompany(COMPANY_ID);
     expect(logs.length).toBe(0);
     expect(await prisma.analysisRun.count({ where: { companyId: COMPANY_ID } })).toBe(0);
 
     findManySpy.mockRestore();
     createLogSpy.mockRestore();
+    if (typeof prisma.analysisFailureLog.create !== "function") {
+      prisma.analysisFailureLog.create = originalAnalysisFailureLogCreate;
+    }
+    consoleErrorSpy.mockRestore();
+  });
+
+  it("FINDING-8 FIX regression check: the ORDINARY (non-nested-failure) pre-identity path is unchanged - recordAnalysisFailureLog succeeds, no console.error fallback fires, and failureRecordPersisted:true honestly reports the durable write", async () => {
+    const findManySpy = vi.spyOn(prisma.document, "findMany").mockRejectedValueOnce(new Error("INJECTED (Part B recert): ordinary single failure, recording write itself is healthy"));
+    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const result = await runContractAnalysis({ companyId: COMPANY_ID, triggeringDocumentId: "doc-ordinary-check" });
+
+    expect(result.outcome).toBe("FAILED");
+    expect(result.fatalError).not.toBeNull();
+    expect(result.fatalError!.message).toContain("ordinary single failure");
+    expect(result.failureRecordPersisted).toBe(true);
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+
+    const logs = await getAnalysisFailureLogsForCompany(COMPANY_ID);
+    expect(logs.length).toBe(1);
+    expect(logs[0]!.message).toContain("ordinary single failure");
+
+    findManySpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 });
