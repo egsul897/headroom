@@ -32,6 +32,15 @@
  * CovenantContextBundle objects via the same production primitives the
  * implementer's own file uses (buildStructuralIndex, computeOperativeContractState,
  * buildCovenantContextBundle, RealSemanticCaller) - never a hand-mocked gate.
+ *
+ * HEADROOM OPEN-2 UPDATE (universal evidence-trust invariant): scenario 1's
+ * three "FALSIFICATION ATTEMPT" tests below have been updated IN PLACE to
+ * assert the FIXED behavior (evidenceUnresolved=true, REVIEW_REQUIRED,
+ * trustStatus REVIEW_REQUIRED never VERIFIED) - the safety property under
+ * test (a genuinely CONFLICTED section's getOperativeProvision exploit
+ * cannot reach VERIFIED) now holds; see docs/phase-3f1-human-architecture-
+ * decision/07-operative-provision-fix.json for the full before/after
+ * reproduction. This file's own STILL_OPEN status is CLOSED as of that fix.
  */
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type Anthropic from "@anthropic-ai/sdk";
@@ -227,24 +236,26 @@ Section 6.99 Indebtedness Cap Detail . The Borrower may incur up to $5,000,000 o
     expect(result.toolCallLog[0]!.toolName).toBe("getOperativeProvision");
     expect(result.toolCallLog[0]!.outputSummary).toContain("OPERATIVE_STATE_CONFLICTED");
 
-    // THE DISCLOSED GAP, CONFIRMED: evidenceUnresolved is never set true for
-    // this call, unlike getDefinition's own equivalent call (see scenario 2
-    // below for the contrast).
-    expect(result.toolCallLog[0]!.evidenceUnresolved).not.toBe(true);
+    // HEADROOM OPEN-2 FIX CONFIRMED (was: THE DISCLOSED GAP): getOperativeProvision's
+    // execute() now derives evidenceUnresolved from the SAME shared helper
+    // (isConfirmedCurrentOperativeEvidence, amendment/operative-state.ts)
+    // getDefinition's own equivalent call already used (see scenario 2 below
+    // for the contrast this asymmetry used to produce) - a real, on-file
+    // OPERATIVE_STATE_CONFLICTED status now flips this machine-readable flag
+    // regardless of whether the model itself reads the payload's own status
+    // string.
+    expect(result.toolCallLog[0]!.evidenceUnresolved).toBe(true);
 
-    // THE CONSEQUENCE: none of compile.ts's THREE OR'd signals fire -
-    // toolCallLog[].evidenceUnresolved is unset, the context bundle never
-    // carried this section (inputHasUnresolvedOperativeEvidence is false),
-    // and hasStaleReferencedDefinition only re-checks IRDefinition.termName
-    // (there are zero definitions in this submission) so it cannot see a
-    // SECTION-shaped gap at all. The result reaches COMPLETED - the exact
-    // outcome the required invariant says must never happen for a
-    // genuinely-relied-upon CONFLICTED provision.
-    expect(result.failureReasons).not.toContain("OPERATIVE_STATE_UNRESOLVED");
-    expect(result.status).toBe("COMPLETED");
+    // THE CONSEQUENCE, FIXED: compile.ts's own toolCallLog[].evidenceUnresolved
+    // OR-signal now fires for this attempt, forcing OPERATIVE_STATE_UNRESOLVED
+    // into failureReasons and the result out of COMPLETED - the exact outcome
+    // the required invariant says must never happen for a genuinely-relied-
+    // upon CONFLICTED provision no longer happens.
+    expect(result.failureReasons).toContain("OPERATIVE_STATE_UNRESOLVED");
+    expect(result.status).toBe("REVIEW_REQUIRED");
   });
 
-  it("FALSIFICATION ATTEMPT (verify.ts layer): verifyCompiledCandidate ALSO reaches a VERIFIED_* status for the same compilationResult, skipping semantic review", async () => {
+  it("HEADROOM OPEN-2 FIX CONFIRMED (verify.ts layer): verifyCompiledCandidate no longer reaches a VERIFIED_* status for the same compilationResult", async () => {
     const { index, state, access } = buildState();
     const node = index.getNodeByRef(DOC, "6.01")!;
     const candidate = makeCandidate({ documentId: DOC, structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: "6.01" });
@@ -278,7 +289,9 @@ Section 6.99 Indebtedness Cap Detail . The Borrower may incur up to $5,000,000 o
     };
     const caller = new RealSemanticCaller("test", "test-model", client);
     const compilationResult = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
-    expect(compilationResult.status).toBe("COMPLETED");
+    // Fixed: compilation itself already fails closed (see the previous
+    // describe block's own first two tests) - REVIEW_REQUIRED, not COMPLETED.
+    expect(compilationResult.status).toBe("REVIEW_REQUIRED");
 
     // skipSemanticReview mirrors the implementer's own scenario-1/7 pattern
     // (a genuinely single, fully-reconciled fixed basket with matching
@@ -288,17 +301,17 @@ Section 6.99 Indebtedness Cap Detail . The Borrower may incur up to $5,000,000 o
     // depending on an unrelated LLM-classifier call's own behavior).
     const verification = await verifyCompiledCandidate({ compilerInput, compilationResult }, { skipSemanticReview: true });
 
-    // THE FALSIFICATION: this reaches a VERIFIED_* status even though the
-    // rule's own real justification (the model's own tool call) came from a
-    // genuinely CONFLICTED section - none of hasUnresolvedDefinitionEvidence
-    // (toolCallLog-based), hasUnresolvedContextBundleEvidence (bundle-based),
-    // or hasStaleReferencedDefinition (IRDefinition-only, and this
-    // submission has zero definitions) can see a SECTION-shaped gap reached
-    // purely through getOperativeProvision's own tool-call path.
-    expect(verification.status).toMatch(/^VERIFIED_/);
+    // HEADROOM OPEN-2 FIX CONFIRMED: verify.ts's own hasUnresolvedDefinitionEvidence
+    // (toolCallLog-based) now correctly sees this attempt's own
+    // evidenceUnresolved=true entry (fixed at the source in tools.ts, not
+    // patched here) and forces REVIEW_REQUIRED - the rule's own real
+    // justification (the model's own tool call) came from a genuinely
+    // CONFLICTED section, and this can no longer be blessed VERIFIED_*.
+    expect(verification.status).toBe("REVIEW_REQUIRED");
+    expect(verification.status).not.toMatch(/^VERIFIED_/);
   });
 
-  it("FALSIFICATION ATTEMPT (persistence layer): the resulting SemanticTruthRecord persists with trustStatus VERIFIED, not REVIEW_REQUIRED", async () => {
+  it("HEADROOM OPEN-2 FIX CONFIRMED (persistence layer): the resulting SemanticTruthRecord persists with trustStatus REVIEW_REQUIRED, never VERIFIED", async () => {
     const TRUTH_INSTRUMENT = "instrument:fix2-indep-tool-only-persist";
     const { index, definitions } = buildRealIndex(DOC, TEXT);
     const effectA = baseEffect({ effectId: "eff-tool-persist-a", amendmentDocumentId: "amendment-doc-tool-persist-a", target: sectionTarget(DOC, TRUTH_INSTRUMENT, "6.99"), newText: `Section 6.99 . up to $9,000,000 (Amendment No. 1).`, effectiveDate: DATED("2021-06-01") });
@@ -355,12 +368,14 @@ Section 6.99 Indebtedness Cap Detail . The Borrower may incur up to $5,000,000 o
     const trusted = await getTrustedSemanticTruth(COMPANY_ID, TRUTH_INSTRUMENT);
     const all = await getAllSemanticTruthForInstrument(COMPANY_ID, TRUTH_INSTRUMENT);
     expect(all.length).toBeGreaterThan(0);
-    // THE FALSIFICATION, CONFIRMED END TO END THROUGH REAL PERSISTENCE: a
+    // HEADROOM OPEN-2 FIX CONFIRMED END TO END THROUGH REAL PERSISTENCE: a
     // rule whose real justification depended on a genuinely CONFLICTED
-    // section (reached only via a tool call FIX-2 does not instrument)
-    // persists as trusted current truth.
-    expect(trusted.length).toBeGreaterThan(0);
-    expect(all[0]!.trustStatus).toBe("VERIFIED");
+    // section (reached only via a tool call) no longer persists as trusted
+    // current truth - getTrustedSemanticTruth's own VERIFIED-only filter
+    // correctly excludes it, and the raw record's own trustStatus is
+    // REVIEW_REQUIRED.
+    expect(trusted.length).toBe(0);
+    expect(all[0]!.trustStatus).toBe("REVIEW_REQUIRED");
   });
 });
 

@@ -38,7 +38,7 @@
 import type { StructuralIndex } from "../structural-index";
 import type { DetectedDefinition } from "../structural-definitions";
 import { groupEffectsByProvision, buildProvisionChain, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
-import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
+import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, NodeSupersessionStatus, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
 
 /**
  * Phase 3F.1.5.R (sub-task 3) - the fail-closed composition point named by
@@ -623,6 +623,68 @@ export function getNodeSupersessionStatus(index: NodeSupersessionIndex, document
     return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: `No operative-state computation covers document "${documentId}" - amendment/supersession status for this node was never checked, so it must not be assumed current.` };
   }
   return { status: "CURRENT_OPERATIVE", record: null, reason: "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for." };
+}
+
+// ---------------------------------------------------------------------------
+// HEADROOM OPEN-2 (universal evidence-trust invariant, root-cause fix for the
+// getOperativeProvision/getDefinition asymmetry - see semantic/tools.ts's own
+// ToolExecutionOutcome.evidenceUnresolved header comment for the incident).
+//
+// ROOT CAUSE: getDefinition correctly derives ToolExecutionOutcome.
+// evidenceUnresolved from its OWN resolution's `isCurrentTruth` boolean
+// (resolveOperativeDefinitionEvidence, above). getOperativeProvision computes
+// a real, equally-informative status (`OperativeProvisionView.status`) but
+// its execute() body never translated that into evidenceUnresolved at all -
+// not because the underlying signal didn't exist, but because each tool's
+// execute() was independently deciding, in its own body, whether/how to set
+// the flag. Two near-identical tools computing the same KIND of status
+// object independently is exactly how one of them silently skipped the
+// translation.
+//
+// FIX: one shared boolean primitive every CURRENT_OPERATIVE_EVIDENCE tool in
+// semantic/tools.ts that resolves either vocabulary below calls - never a
+// second copy of "which status values count as safe" per tool. Accepts BOTH
+// status vocabularies a CURRENT_OPERATIVE_EVIDENCE tool in this codebase can
+// produce:
+//   - OperativeStateStatus - an OperativeProvisionView's own aggregate
+//     status (getOperativeProvision's "a real view was found" branch,
+//     getRelatedAmendments).
+//   - NodeSupersessionStatus - a single physical node's own supersession
+//     verdict (resolveNodeWithSupersessionAwareness's return value, already
+//     used by getParentClause/getSiblingClauses/getReferencedProvision, and
+//     getOperativeProvision's OWN raw base-document fallback branch, which
+//     - independently found during this audit - never consulted
+//     supersessionIndex at all, unlike its getDefinition sibling's
+//     equivalent base-document fallback branch).
+// Exactly one literal value per vocabulary is ever treated as positively
+// confirmed current; every other value (OPERATIVE_STATE_CONFLICTED/PARTIAL/
+// REVIEW_REQUIRED, KNOWN_SUPERSEDED, UNKNOWN_SUPERSESSION_STATUS) fails
+// closed - `!isConfirmedCurrentOperativeEvidence(status)` is the ONE
+// expression every one of those tools' execute() bodies assigns to
+// `evidenceUnresolved`, so a future new CURRENT_OPERATIVE_EVIDENCE tool that
+// forgets to set it produces `undefined`/falsy (fail-open) only if it also
+// forgets to call this helper at all - the registry-iterating test in
+// tests/contract-model/semantic-tools-operative-state-discipline.test.ts is
+// the mechanical backstop for that remaining human-discipline step (a
+// runner-level, fully-generic derivation was evaluated and rejected: each
+// tool's result payload shape differs too much - some via a provision
+// view's own `status`, some via a per-node `supersessionStatus`, some via
+// neither field name at all - for ToolRunner.run to locate "the status"
+// generically without per-tool knowledge of its own result shape; see
+// docs/phase-3f1-human-architecture-decision/05-universal-evidence-trust-
+// invariant.json for the full mechanism writeup).
+// ---------------------------------------------------------------------------
+
+export type CurrentOperativeEvidenceStatus = OperativeStateStatus | NodeSupersessionStatus;
+
+/**
+ * The SINGLE shared "is this positively confirmed current operative truth"
+ * boolean every CURRENT_OPERATIVE_EVIDENCE-declared tool in semantic/tools.ts
+ * derives its own ToolExecutionOutcome.evidenceUnresolved from. See the
+ * header comment immediately above for the full rationale.
+ */
+export function isConfirmedCurrentOperativeEvidence(status: CurrentOperativeEvidenceStatus): boolean {
+  return status === "OPERATIVE_STATE_RESOLVED" || status === "CURRENT_OPERATIVE";
 }
 
 // ---------------------------------------------------------------------------

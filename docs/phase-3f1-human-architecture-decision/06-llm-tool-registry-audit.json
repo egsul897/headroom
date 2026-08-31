@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "OPEN2_LLM_TOOL_REGISTRY_AUDIT",
+  "method": "Every tool enumerated by reading lib/contract-model/compiler/semantic/tools.ts's buildToolSet() end to end (14 tools, matching the pre-existing registry test's own count) - never trusting the pre-existing enforcement test's own docstring claims, which this audit found to be STALE in one respect (see findings below).",
+  "toolCount": 14,
+  "tools": [
+    {
+      "name": "getOperativeProvision",
+      "declaredDiscipline": "CURRENT_OPERATIVE_EVIDENCE",
+      "returnsCurrentEvidenceText": true,
+      "evidenceUnresolvedDerivation": "FIXED THIS PHASE. Found-view branch: !isConfirmedCurrentOperativeEvidence(view.status). Raw base-document fallback branch: !isConfirmedCurrentOperativeEvidence(supersession.status), now consulting supersessionIndex (previously never consulted at all).",
+      "safeNow": true,
+      "notes": "THE CONFIRMED DEFECT. See 07-operative-provision-fix.json for the full before/after."
+    },
+    {
+      "name": "getDefinition",
+      "declaredDiscipline": "CURRENT_OPERATIVE_EVIDENCE",
+      "returnsCurrentEvidenceText": true,
+      "evidenceUnresolvedDerivation": "Already correct, unchanged: outcome.evidenceUnresolved = !resolution.isCurrentTruth, where resolution comes from resolveOperativeDefinitionEvidence (amendment/operative-state.ts), which independently checks both the amendment-chain branch and the base-document/supersessionIndex branch.",
+      "safeNow": true,
+      "notes": "The contrast case that proved the getOperativeProvision asymmetry was tool-specific, not a general tool-call blind spot."
+    },
+    {
+      "name": "getDefinitionDependencies",
+      "declaredDiscipline": "NOT_CONTRACT_TEXT_EVIDENCE",
+      "returnsCurrentEvidenceText": false,
+      "evidenceUnresolvedDerivation": "N/A - returns only a list of OTHER defined-term NAMES appearing inside the queried term's own text, never provision/economic text itself.",
+      "safeNow": true,
+      "notes": "Classification confirmed correct by reading execute(): only `dependencies: string[]` (term names) is returned."
+    },
+    {
+      "name": "getParentClause",
+      "declaredDiscipline": "CURRENT_OPERATIVE_EVIDENCE",
+      "returnsCurrentEvidenceText": true,
+      "evidenceUnresolvedDerivation": "FIXED THIS PHASE. Previously disclosed resolved.supersessionStatus in the payload but never set evidenceUnresolved. Now: !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus).",
+      "safeNow": true,
+      "notes": "INDEPENDENTLY-FOUND REGISTRY-AUDIT GAP (not in the originally confirmed defect scope) - same class of bug as getOperativeProvision: real text + real supersessionStatus disclosed in the payload, but the machine-readable flag was never derived. Fixed for consistency/universality of the invariant."
+    },
+    {
+      "name": "getChildren",
+      "declaredDiscipline": "CURRENT_OPERATIVE_EVIDENCE",
+      "returnsCurrentEvidenceText": "borderline - only child nodeId/sectionRef/heading (short heading text), no full provision text",
+      "evidenceUnresolvedDerivation": "FIXED THIS PHASE (defensive). Now: !isConfirmedCurrentOperativeEvidence(parentSupersession.status).",
+      "safeNow": true,
+      "notes": "Lower-severity gap than getParentClause/getSiblingClauses/getReferencedProvision since no full provision text is returned - only short headings, which CAN carry economics (e.g. a basket amount stated in a heading) but rarely do. Fixed for universal-invariant consistency rather than a demonstrated live exploit; not reclassified to a weaker discipline since a heading is still independently-interpretable text in principle."
+    },
+    {
+      "name": "getSiblingClauses",
+      "declaredDiscipline": "CURRENT_OPERATIVE_EVIDENCE",
+      "returnsCurrentEvidenceText": true,
+      "evidenceUnresolvedDerivation": "FIXED THIS PHASE. Previously disclosed each sibling's own supersessionStatus in the payload but never derived evidenceUnresolved from ANY of them. Now: rendered.some(sibling => !isConfirmedCurrentOperativeEvidence(sibling.supersessionStatus)) - fails closed for the whole call if ANY sibling is unresolved.",
+      "safeNow": true,
+      "notes": "INDEPENDENTLY-FOUND REGISTRY-AUDIT GAP, same class as getOperativeProvision. This tool returns MULTIPLE items per call, each with its own status - the fix correctly ORs across all of them rather than checking only the first."
+    },
+    {
+      "name": "getReferencedProvision",
+      "declaredDiscipline": "CURRENT_OPERATIVE_EVIDENCE",
+      "returnsCurrentEvidenceText": true,
+      "evidenceUnresolvedDerivation": "FIXED THIS PHASE (both the fromNodeId-relative branch and the absolute-ref document-loop branch). Now: !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus).",
+      "safeNow": true,
+      "notes": "INDEPENDENTLY-FOUND REGISTRY-AUDIT GAP, same class as getOperativeProvision. This tool's own pre-existing description explicitly told the MODEL to check supersessionStatus before trusting the text for economics - exactly the anti-pattern (\"metadata in the payload is not enough\") the governing spec calls out; description left in place for human/model context, but safety no longer depends on it."
+    },
+    {
+      "name": "getRelatedAmendments",
+      "declaredDiscipline": "CURRENT_OPERATIVE_EVIDENCE",
+      "returnsCurrentEvidenceText": "borderline - the amendment chain's oldText/newText per entry is already explicitly historical; the top-level `status` field describes the provision's own current aggregate status as context for interpreting the chain",
+      "evidenceUnresolvedDerivation": "FIXED THIS PHASE (defensive). Now: !isConfirmedCurrentOperativeEvidence(view.status).",
+      "safeNow": true,
+      "notes": "Lower-severity than getOperativeProvision/getParentClause/etc since this tool's primary content is inherently historical (a chain of past effects), never a single 'this is the current text' claim. Fixed for universal-invariant consistency since it is declared CURRENT_OPERATIVE_EVIDENCE and does disclose the provision's own aggregate status."
+    },
+    {
+      "name": "getPriorVersion",
+      "declaredDiscipline": "HISTORICAL_EVIDENCE_WITH_STATUS",
+      "returnsCurrentEvidenceText": false,
+      "evidenceUnresolvedDerivation": "N/A by design - deliberately historical (the PRIOR, now-superseded text), already labels itself via description and the `supersededBy` field. Never claims current operative truth, so the invariant does not apply.",
+      "safeNow": true,
+      "notes": "Confirmed via the fresh attack matrix's historical-request-path scenario: a getPriorVersion call on a cleanly-RESOLVED chain never sets evidenceUnresolved and the attempt COMPLETES - the invariant correctly does not over-fire on a tool that was never claiming current truth."
+    },
+    {
+      "name": "getInstrumentDocuments",
+      "declaredDiscipline": "NOT_CONTRACT_TEXT_EVIDENCE",
+      "returnsCurrentEvidenceText": false,
+      "evidenceUnresolvedDerivation": "N/A - topology only (a list of documentIds), never provision/economic text.",
+      "safeNow": true,
+      "notes": "Classification confirmed correct by reading execute(): only `documentIds: string[]` is returned."
+    },
+    {
+      "name": "getContextBundleComponent",
+      "declaredDiscipline": "HISTORICAL_EVIDENCE_WITH_STATUS",
+      "returnsCurrentEvidenceText": true,
+      "evidenceUnresolvedDerivation": "N/A by design (Phase 3F.1.6.RX Workstream B, prior phase) - echoes a context-bundle item's excerptText verbatim (never substituted) and discloses a real, independently-computed supersessionStatus per item; the DEFINITION-side/SECTION-side trust-gate for this text is compile.ts's inputHasUnresolvedOperativeEvidence (bundle-level, FIX-2), not this tool's own evidenceUnresolved.",
+      "safeNow": true,
+      "notes": "Confirmed unchanged and correctly classified this phase - the FIX-2 bundle-level gate (reconfirmed by the fresh attack matrix's scenario 8) is the actual trust boundary for context-bundle-sourced text, independent of this OPEN-2 tool-call-path fix."
+    },
+    {
+      "name": "getSharedCapContext",
+      "declaredDiscipline": "HISTORICAL_EVIDENCE_WITH_STATUS",
+      "returnsCurrentEvidenceText": true,
+      "evidenceUnresolvedDerivation": "Same as getContextBundleComponent above (identical mechanism, filtered to SHARED_CAP items).",
+      "safeNow": true,
+      "notes": "Same reasoning as getContextBundleComponent."
+    },
+    {
+      "name": "getSourceSpan",
+      "declaredDiscipline": "HISTORICAL_EVIDENCE_WITH_STATUS",
+      "returnsCurrentEvidenceText": true,
+      "evidenceUnresolvedDerivation": "N/A by design - deliberately raw/as-drafted-by-design (never substitutes amended text for the exact physical occurrence requested), already discloses a real supersessionStatus/supersessionReason per response.",
+      "safeNow": true,
+      "notes": "Unchanged this phase; classification and behavior confirmed correct by reading execute()."
+    },
+    {
+      "name": "getRuleDependency",
+      "declaredDiscipline": "NOT_CONTRACT_TEXT_EVIDENCE",
+      "returnsCurrentEvidenceText": false,
+      "evidenceUnresolvedDerivation": "N/A - returns only context-bundle graph edges (relationship metadata), never provision/economic text.",
+      "safeNow": true,
+      "notes": "Classification confirmed correct by reading execute(): only `edges: ...[]` is returned."
+    }
+  ],
+  "summary": {
+    "totalTools": 14,
+    "currentOperativeEvidenceTools": 7,
+    "historicalEvidenceWithStatusTools": 4,
+    "notContractTextEvidenceTools": 3,
+    "notContractTextEvidenceToolsList": ["getDefinitionDependencies", "getInstrumentDocuments", "getRuleDependency"],
+    "note": "7 CURRENT_OPERATIVE_EVIDENCE + 4 HISTORICAL_EVIDENCE_WITH_STATUS + 3 NOT_CONTRACT_TEXT_EVIDENCE = 14 total, matching buildToolSet()'s own registered count.",
+    "toolsWithConfirmedLiveExploit": 1,
+    "toolsWithIndependentlyFoundRegistryAuditGap": 5,
+    "toolsAlreadyCorrect": 1,
+    "toolsExemptByDesign": 7,
+    "allNowSafe": true
+  },
+  "staleDocstringFindingInPreExistingTest": {
+    "file": "tests/contract-model/semantic-tools-operative-state-discipline.test.ts",
+    "claim": "The file's own header comment describes only the SUPER-5-era fix (5 tools moved off raw StructuralIndex navigation) and does not mention evidenceUnresolved derivation at all - it was written before this invariant existed and never claimed anything false about it, but it also never verified it. This phase extended the file in place with a new describe block covering the invariant this file's own docstring predates."
+  },
+  "secondaryObservationNotFixed": {
+    "finding": "resolveOperativeDefinitionEvidence's base-document fallback (used by getDefinition) treats UNKNOWN_SUPERSESSION_STATUS as CURRENT/isCurrentTruth:true (it only special-cases KNOWN_SUPERSEDED), whereas getNodeSupersessionStatus's own SECTION-side consumers (resolveNodeWithSupersessionAwareness, and getOperativeProvision's raw fallback after this fix) treat anything other than CURRENT_OPERATIVE - including UNKNOWN - as not-confirmed-current. This is a genuine, pre-existing asymmetry between the DEFINITION-side and SECTION-side base-document-fallback conventions when an instrument's amendment pipeline was never run at all (operativeState entirely null/undefined, as opposed to a real, computed, empty OperativeContractState).",
+    "whyNotFixedThisPhase": "Changing resolveOperativeDefinitionEvidence's own UNKNOWN-handling is a materially different, broader change than the confirmed defect and the spec's explicit scope (it would affect getDefinition's behavior across every already-passing test suite that exercises a null-operativeState instrument, plus context-retrieval's own definition-evidence-state computation, both outside this phase's touched-file list). Flagged here for a future phase's own architecture decision rather than patched opportunistically.",
+    "practicalImpact": "Low in practice: real production callers that HAVE run the amendment pipeline for an instrument (even one with zero effects) produce a real, non-null, empty OperativeContractState, under which the fresh attack matrix's own scenarios 1 and 7 confirm both getOperativeProvision and getDefinition correctly report CURRENT/COMPLETED. The asymmetry only manifests when operativeState is passed as a bare null/undefined for the whole instrument - a state the codebase's own documentation treats as 'no amendment computation was ever run,' not 'confirmed never amended.'"
+  }
+}

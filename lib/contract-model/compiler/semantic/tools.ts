@@ -17,7 +17,7 @@
  */
 import type { NodeSupersessionIndex, NodeSupersessionStatus, OperativeProvisionView } from "../amendment/types";
 import type { StructuralNode } from "../types";
-import { buildNodeSupersessionIndex, getNodeSupersessionStatus, normalizeDefinedTermRef, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
+import { buildNodeSupersessionIndex, getNodeSupersessionStatus, isConfirmedCurrentOperativeEvidence, normalizeDefinedTermRef, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
 import type { SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
 
@@ -271,9 +271,42 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
   return [
     {
       name: "getOperativeProvision",
-      description: "Get the CURRENT operative text of a section (post-amendment where applicable) by its section reference (e.g. '6.10(a)'). Use this when you need a provision's real, up-to-date text that was not already included in your initial context.",
+      description: "Get the CURRENT operative text of a section (post-amendment where applicable) by its section reference (e.g. '6.10(a)'). Use this when you need a provision's real, up-to-date text that was not already included in your initial context. Check the returned `status` field before treating the text as confidently current: this tool never silently substitutes a confident answer for a section with a real, on-file amendment conflict/ambiguity.",
       inputSchema: { type: "object", properties: { sectionRef: { type: "string", description: "e.g. '6.10(a)'" } }, required: ["sectionRef"] },
       operativeStateDiscipline: "CURRENT_OPERATIVE_EVIDENCE",
+      /**
+       * HEADROOM OPEN-2 (universal evidence-trust invariant) root-cause fix.
+       * CONFIRMED DEFECT: this execute() body used to return `view.status`
+       * (and the raw base-document fallback's own hardcoded
+       * "OPERATIVE_STATE_RESOLVED") in the response PAYLOAD only - never
+       * translating it into `outcome.evidenceUnresolved`, unlike its own
+       * sibling getDefinition below (`outcome.evidenceUnresolved =
+       * !resolution.isCurrentTruth`). A genuinely OPERATIVE_STATE_CONFLICTED
+       * section reached only via this tool's own call path (never in the
+       * pre-loaded context bundle) could therefore reach a persisted
+       * SemanticTruthRecord.trustStatus of VERIFIED, because "OPERATIVE_STATE_
+       * CONFLICTED" is metadata inside the model-readable payload, not the
+       * machine-readable flag compile.ts/verify.ts actually gate on - see
+       * tests/certification/part-b-final-recert-fix2-independent.test.ts.
+       *
+       * FIX: both branches now derive `evidenceUnresolved` from the SAME
+       * shared helper (`isConfirmedCurrentOperativeEvidence`,
+       * amendment/operative-state.ts) getParentClause/getSiblingClauses/
+       * getReferencedProvision/getRelatedAmendments below all now also use -
+       * never a second, independent judgment call per tool.
+       *
+       * SECOND, INDEPENDENTLY-FOUND GAP (same audit): the raw base-document
+       * fallback branch (no OperativeProvisionView for this section at all)
+       * never consulted `supersessionIndex`, unlike getDefinition's own
+       * equivalent fallback (resolveOperativeDefinitionEvidence's Branch 2)
+       * and unlike this file's own resolveNodeWithSupersessionAwareness used
+       * by every other section-reading tool - a section resolved via the raw
+       * fallback whose physical occurrence is independently known-superseded
+       * (e.g. its enclosing chapter was restated) was reported
+       * "OPERATIVE_STATE_RESOLVED" with no supersession check at all. Fixed
+       * by consulting supersessionIndex here too, mirroring getDefinition's
+       * KNOWN_SUPERSEDED -> legacyStatus OPERATIVE_STATE_PARTIAL convention.
+       */
       execute: (input) => {
         const budgetErr = guardBudget();
         if (budgetErr) return refuse(budgetErr);
@@ -282,7 +315,13 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         if (view) {
           const { text, truncated } = truncate(view.currentText ?? "(no current text recorded)");
           charsUsedRef.current += text.length;
-          return ok({ sectionRef, status: view.status, currentText: text, truncated, unresolvedIssues: view.unresolvedIssues }, text, `operative provision ${sectionRef} (status ${view.status})`);
+          const outcome = ok({ sectionRef, status: view.status, currentText: text, truncated, unresolvedIssues: view.unresolvedIssues }, text, `operative provision ${sectionRef} (status ${view.status})`);
+          // Never fabricated for a refusal; set here, unconditionally,
+          // whenever real evidence IS returned but the provision's own
+          // aggregate status is not confidently current (see
+          // ToolExecutionOutcome's own header comment above).
+          outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(view.status);
+          return outcome;
         }
         // Phase 3F.1.2 (task §15, critical safety fix): a legal-reference
         // lookup can legitimately match more than one physical structural
@@ -300,7 +339,16 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const node = resolution.node;
         const { text, truncated } = truncate(access.structuralIndex.getNodeText(node.nodeId, "OWN"));
         charsUsedRef.current += text.length;
-        return ok({ sectionRef, status: "OPERATIVE_STATE_RESOLVED", currentText: text, truncated, unresolvedIssues: [] }, text, `base-document provision ${sectionRef} (never amended)`);
+        const supersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
+        const status = supersession.status === "KNOWN_SUPERSEDED" ? "OPERATIVE_STATE_PARTIAL" : "OPERATIVE_STATE_RESOLVED";
+        const unresolvedIssues = supersession.status === "KNOWN_SUPERSEDED" ? [supersession.reason] : [];
+        const outcome = ok(
+          { sectionRef, status, currentText: text, truncated, unresolvedIssues, supersessionStatus: supersession.status, supersessionReason: supersession.reason },
+          text,
+          `base-document provision ${sectionRef} (never individually amended, ${supersession.status})`
+        );
+        outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(supersession.status);
+        return outcome;
       },
     },
     {
@@ -459,11 +507,18 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, parent);
         const { text, truncated } = truncate(resolved.text);
         charsUsedRef.current += text.length;
-        return ok(
+        const outcome = ok(
           { nodeId: parent.nodeId, sectionRef: parent.sectionRef, heading: parent.heading, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
           text,
           `parent clause ${parent.sectionRef} (${resolved.supersessionStatus})`
         );
+        // HEADROOM OPEN-2 registry audit finding: this tool returns real
+        // provision text (the parent chapeau/lead-in) and already disclosed
+        // supersessionStatus in the payload, but - like getOperativeProvision
+        // before this fix - never translated it into the machine-readable
+        // evidenceUnresolved flag; only CURRENT_OPERATIVE may be trusted.
+        outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus);
+        return outcome;
       },
     },
     {
@@ -478,7 +533,15 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const parentSupersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
         const children = access.structuralIndex.getChildren(nodeId).map((c) => ({ nodeId: c.nodeId, sectionRef: c.sectionRef, heading: c.heading }));
         const summary = `${children.length} child clause(s) of ${node.sectionRef} (parent ${parentSupersession.status})`;
-        return ok({ children, parentSupersessionStatus: parentSupersession.status, parentSupersessionReason: parentSupersession.reason }, summary, summary);
+        const outcome = ok({ children, parentSupersessionStatus: parentSupersession.status, parentSupersessionReason: parentSupersession.reason }, summary, summary);
+        // HEADROOM OPEN-2 registry audit finding: children[].heading is
+        // short but independently-interpretable text (a heading can itself
+        // carry the economics, e.g. "$50,000,000 General Basket"), and this
+        // listing's own validity depends on the PARENT not having been
+        // superseded - the same discipline every other CURRENT_OPERATIVE_
+        // EVIDENCE tool in this file now applies, applied here for parity.
+        outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(parentSupersession.status);
+        return outcome;
       },
     },
     {
@@ -500,7 +563,17 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         });
         charsUsedRef.current += rendered.reduce((sum, r) => sum + r.text.length, 0);
         const summary = `${siblings.length} sibling clause(s) of ${node.sectionRef}`;
-        return ok({ siblings: rendered }, summary, summary);
+        const outcome = ok({ siblings: rendered }, summary, summary);
+        // HEADROOM OPEN-2 registry audit finding: this tool returns real
+        // provision text per sibling and already disclosed each one's own
+        // supersessionStatus in the payload, but never translated ANY of
+        // them into the machine-readable evidenceUnresolved flag - unresolved
+        // whenever ANY sibling's own text is not confirmed current (fails
+        // closed for the whole call, mirroring how the aggregate
+        // toolCallLog-level OR already treats one unresolved call among many
+        // as unresolved for the whole attempt).
+        outcome.evidenceUnresolved = rendered.some((r) => !isConfirmedCurrentOperativeEvidence(r.supersessionStatus));
+        return outcome;
       },
     },
     {
@@ -533,11 +606,15 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
                 const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, targetNode);
                 const { text, truncated } = truncate(resolved.text);
                 charsUsedRef.current += text.length;
-                return ok(
+                const outcome = ok(
                   { ref, resolvedSectionRef: targetNode.sectionRef, nodeId: targetNode.nodeId, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
                   text,
                   `resolved reference "${ref}" -> ${targetNode.sectionRef} (${resolved.supersessionStatus})`
                 );
+                // HEADROOM OPEN-2 registry audit finding: see getParentClause's
+                // own comment above - identical gap, identical fix.
+                outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus);
+                return outcome;
               }
             }
           }
@@ -558,11 +635,13 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
             const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, node);
             const { text, truncated } = truncate(resolved.text);
             charsUsedRef.current += text.length;
-            return ok(
+            const outcome = ok(
               { ref, resolvedSectionRef: node.sectionRef, nodeId: node.nodeId, documentId, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
               text,
               `resolved reference "${ref}" -> ${node.sectionRef} (${resolved.supersessionStatus})`
             );
+            outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus);
+            return outcome;
           }
         }
         if (anyAmbiguous) return refuse(`reference "${ref}" matches more than one physical location within this instrument's documents - ambiguous, not resolved. Provide a fromNodeId for context-scoped resolution, or narrow the reference.`);
@@ -583,7 +662,15 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           return { operation: entry.operation, effectiveDate: entry.effectiveDate, sourceCitation: entry.sourceCitation, appliedAsOfQuery: entry.appliedAsOfQuery, oldText: effect?.oldText ?? null, newText: effect?.newText ?? null };
         });
         const summary = `${chain.length} amendment effect(s) recorded for "${ref}" (status ${view.status})`;
-        return ok({ ref, status: view.status, chain, unresolvedIssues: view.unresolvedIssues }, summary, summary);
+        const outcome = ok({ ref, status: view.status, chain, unresolvedIssues: view.unresolvedIssues }, summary, summary);
+        // HEADROOM OPEN-2 registry audit finding: discloses this provision's
+        // own aggregate view.status (the SAME field getOperativeProvision's
+        // now-fixed found-view branch gates on) - derived via the same
+        // shared helper for consistency, even though this tool's own primary
+        // content (the amendment chain's oldText/newText) is itself already
+        // explicitly historical per entry.
+        outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(view.status);
+        return outcome;
       },
     },
     {
