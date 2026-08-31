@@ -26,6 +26,7 @@ import type { AmendmentEffectCandidate, OperativeContractState } from "../amendm
 import type { PackageGraphResult } from "../package-graph/types";
 import type { IRDefinition, IRRule, IRSharedCapacity, OperativeLineageRef } from "../../ir/types";
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
+import type { DefinitionCompletenessCheckResult } from "./completeness-check";
 
 /**
  * Phase 3B.1 (task §35) - any change to output orchestration, tool-use
@@ -86,6 +87,8 @@ export interface ToolCallLogEntry {
    * whether the model's own self-reported sufficiency noticed it.
    */
   evidenceUnresolved?: boolean;
+  /** POST-3F.2 remediation (Unit A3) - mirrors ToolExecutionOutcome.evidenceTruncated in semantic/tools.ts verbatim; see that field's own header comment for the full contract. */
+  evidenceTruncated?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -148,7 +151,11 @@ export type SemanticCompilerFailureReason =
   /** Phase 3B.1 (task §16) - the dependency genuinely exists and is source-referenced, but the specific evidence needed to resolve it (a document, a schedule, an external agreement) is confirmed absent even after an attempted bounded tool retrieval - distinct from UNSUPPORTED_SEMANTICS, which means the IR itself cannot faithfully express a mechanic even with full evidence in hand. */
   | "TOOL_RESOLUTION_FAILED"
   /** Phase 3F.1 §33/F6 - a genuine thrown exception escaped the model-call/tool-use loop (network/transport error, timeout, an unexpected internal error) rather than compileCovenantToIR's own structured MODEL_SCHEMA_FAILURE/IR_VALIDATION_FAILURE paths, which only ever trigger on a returned-but-unusable response. Distinct because the caller never even received a response to classify - see errorDetail below for the specific failure class/message. */
-  | "TRANSPORT_OR_INTERNAL_ERROR";
+  | "TRANSPORT_OR_INTERNAL_ERROR"
+  /** POST-3F.2 remediation (Unit A2) - checkDefinitionCompleteness (./completeness-check.ts) found strong, quoted-citation evidence that the supplied source declares a defined term this attempt's compiled definitions[] does not represent. Never asserts what the missing term means; routes the attempt to at least REVIEW_REQUIRED via determineStatus below, exactly like every other failureReason. */
+  | "DEFINITION_COMPLETENESS_SUSPECT"
+  /** POST-3F.2 remediation (Unit A3) - at least one evidence tool call this attempt made returned text truncated at semantic/tools.ts's MAX_TEXT_RESULT_CHARS ceiling (ToolCallLogEntry.evidenceTruncated). Truncated evidence must never be silently treated as complete - this failureReason makes that explicit rather than leaving it to the model's own judgment of a JSON `truncated` flag it could ignore. */
+  | "TRUNCATED_EVIDENCE_USED";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {
@@ -204,6 +211,25 @@ export interface SemanticCompilationResult {
   inputHasUnresolvedOperativeEvidence?: boolean;
   /** itemIds from the context bundle that set inputHasUnresolvedOperativeEvidence above - bounded provenance, mirrors CovenantContextBundle.unresolvedEvidenceItemIds verbatim (never re-derived). */
   unresolvedEvidenceItemIds?: string[];
+  /**
+   * POST-3F.2 remediation (Unit A2) - the deterministic definition-
+   * completeness cross-check's own result for this attempt (see
+   * ./completeness-check.ts), preserved verbatim for provenance/audit.
+   * Null whenever the check ran and found no suspected omission (the
+   * common case). Diagnostic only: this field never itself contributes
+   * semantic content to `definitions`/`rules` - see failureReasons for how
+   * a `fired: true` result participates in `status` (via determineStatus,
+   * exactly like every other failure reason - never a new/different status
+   * kind).
+   *
+   * Optional (mirrors inputHasUnresolvedOperativeEvidence's own established
+   * convention immediately above) - undefined only for a result object
+   * hand-built by pre-existing test fixtures/mocks that predate this
+   * remediation, or for the no-submission/transport-failure paths where no
+   * compiled definitions ever existed to check. Every real
+   * compileCovenantToIR call that reaches normalization sets a real value.
+   */
+  definitionCompletenessCheck?: DefinitionCompletenessCheckResult | null;
   /** The raw, unnormalized wire object the model actually submitted - preserved for audit/debugging, never treated as authoritative (task §9). */
   rawModelOutput: unknown;
   provider: string;

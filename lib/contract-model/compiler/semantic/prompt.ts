@@ -38,6 +38,8 @@ export function buildSystemPrompt(opts: { irSchemaVersion: string; toolPolicyVer
     "",
     "MULTIPLE RULES: one source section or clause group may contain more than one independently operative rule (e.g. three separately-gated baskets in one section). Emit one WireRule per independently operative rule - never merge distinct baskets into one, and never invent extra rules that are not really there.",
     "",
+    "MULTIPLE DEFINITIONS (equally mandatory - a frequent real mistake): a definitions section (e.g. a numbered 'Definitions' article) routinely declares many independent defined terms one after another. When your supplied source contains multiple independently meaningful defined terms, extract EVERY materially relevant definition supported by the supplied source - never select only the representative, salient, or apparently covenant-relevant ones and silently drop the rest. Emit one WireDefinition per distinct defined term you find, exactly as you would emit one WireRule per independently operative rule. A definitions batch that captures ten sibling terms correctly but silently omits an eleventh is exactly as much a defect as merging two independent rules into one - it is not mitigated by how many neighboring terms you got right.",
+    "",
     "CONDITIONS AND EXCEPTIONS are first-class - never fold a material condition or exception into free-text notes. Preserve the real logical structure (A OR (B AND C) is NOT the same as (A OR B) AND C) using nested AND/OR/NOT expressions, never a flattened list.",
     "",
     "TOOL USE: you were given a bounded initial context (the provision's own text plus Phase 2's already-gathered related evidence). Try to compile from that FIRST. Request additional evidence via your tools ONLY when you can state a SPECIFIC reason a SPECIFIC piece of evidence is needed (e.g. 'I need the definition of X because this basket's percentage is stated as a fraction of X'). Never request evidence you cannot justify, and never request the same thing twice. If your tool budget is exhausted before you have what you need, mark the affected component MISSING_CONTEXT rather than guessing.",
@@ -93,6 +95,16 @@ export function buildFewShotExamplesBlock(): string {
         { localRef: "r6a", sourceSectionRef: "9.04", covenantFamily: "RESTRICTED_PAYMENTS", ruleType: "QUANTITATIVE_PERMISSION", posture: "PERMISSION", action: "PAY_DIVIDEND", capacityExpression: { kind: "MONEY", amount: 2_000_000, currency: "USD" }, sufficiency: "COMPLETE" },
         { localRef: "r6b", sourceSectionRef: "9.04", covenantFamily: "RESTRICTED_PAYMENTS", ruleType: "PROHIBITION", posture: "PROHIBITION", action: "PAY_DIVIDEND", exceptions: [{ description: "dividends up to $2,000,000 per fiscal year", permissionRef: "r6a" }], sufficiency: "COMPLETE" },
       ],
+    },
+    {
+      title: "Multiple sibling definitions in one Article/Section - extract ALL of them, never only the ones that look most relevant",
+      sourceText: "§1.01: \"Zeta Threshold\" means an amount equal to $3,000,000. \"Zeta Measurement Period\" means, as of any date of determination, the four consecutive fiscal quarters most recently ended. \"Zeta Excluded Assets\" means, collectively, (a) any Vault Property and (b) any asset subject to a Permitted Zeta Lien.",
+      wireDefinitions: [
+        { localRef: "d1", termName: "Zeta Threshold", covenantFamily: "DEFINITIONS_CALCULATION_RULES", calculationExpression: { kind: "MONEY", amount: 3_000_000, currency: "USD", citation: "§1.01" }, sufficiency: "COMPLETE", citation: "§1.01" },
+        { localRef: "d2", termName: "Zeta Measurement Period", covenantFamily: "DEFINITIONS_CALCULATION_RULES", calculationExpression: null, sufficiency: "COMPLETE", citation: "§1.01", excerpt: "the four consecutive fiscal quarters most recently ended" },
+        { localRef: "d3", termName: "Zeta Excluded Assets", covenantFamily: "DEFINITIONS_CALCULATION_RULES", calculationExpression: { kind: "UNSUPPORTED", semanticDescription: "a two-part exclusion list referencing 'Vault Property' and 'Permitted Zeta Lien', both themselves defined terms not included in the supplied source", reason: "dependent defined terms not resolvable from the evidence given", sourceEvidence: "§1.01" }, dependsOnTerms: ["Vault Property", "Permitted Zeta Lien"], sufficiency: "PARTIAL", citation: "§1.01" },
+      ],
+      note: "Three independent terms declared back-to-back in one section - three WireDefinition outputs, not one. Notice d1/d2 are fully COMPLETE even though d3 is only PARTIAL: an unsupported sibling never justifies dropping the siblings you CAN represent, and a well-represented sibling never justifies silently dropping one you cannot fully resolve - each term's sufficiency is assessed independently.",
     },
     {
       title: "Genuinely unsupported fragment - the correct, safe answer, never a guess",
