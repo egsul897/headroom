@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "startingSha": "602d38949ea5ec356f98c5d054df0a75275cbf12",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeState": "clean",
+  "postgres": "started clean (service was down at container start, standard unclean-shutdown pattern for this sandbox; WAL crash recovery lossless)",
+  "qualityGates": {
+    "tsc": "6 pre-existing errors, identical set to every prior phase's documented baseline",
+    "eslint": "1 pre-existing error, identical to baseline"
+  },
+  "historicalArtifactImmutability": "Confirmed: all prior docs/phase-3f1-*, docs/open2-terminal-trust-correction/ directories present, git status clean. This phase writes only to a NEW directory docs/open2-final-direct-patch/."
+}
