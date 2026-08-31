@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PRIOR_EVIDENCE_AUDIT",
+  "artifactsInspected": {
+    "docsPhase3f2UnseenValidation": 31,
+    "allPresent": true,
+    "allValidJson": true,
+    "list": ["00-validation-contract.json", "01-baseline.json", "02-production-freeze.json", "03-candidate-pool.json", "04-selection-proof.json", "05-contamination-check.json", "06-package-manifest.json", "07-source-acquisition.json", "08-execution-manifest.json", "09-ai-telemetry.json", "10-structural-results.json", "11-package-graph-results.json", "12-operative-state-results.json", "13-discovery-results.json", "14-semantic-compilation-results.json", "15-verification-results.json", "16-safe-failure-results.json", "17-persistence-results.json", "18-ground-truth-methodology.json", "19-ground-truth-inventory.json", "19a-ground-truth-reviewer-A.json", "19b-ground-truth-reviewer-B.json", "20-independent-review.json", "21-claim-level-comparison.json", "22-pipeline-attribution.json", "23-metrics.json", "24-threshold-gate.json", "25-false-credit-controls.json", "26-known-package-regression.json", "27-production-freeze-proof.json", "28-findings.json", "29-phase4-readiness.json", "30-final-verdict.json"]
+  },
+  "preservedExecutionOutputInspected": {
+    "directory": "tests/fixtures/unseen-packages/phase-3f2-riot-unseen-run/",
+    "files": ["final-summary.json", "stage1-all-nodes.json", "stage1-all-definitions.json", "stage1-all-references.json", "stage1-structural-summary.json", "stage2-all-discovery-candidates.json", "stage2-discovery-candidates-doc-a.json", "stage2-discovery-candidates-doc-b.json", "stage2-discovery-candidates-doc-c.json", "stage2-discovery-summary.json", "stage3-package-graph.json", "stage4-summary.json", "stage5-amendment-effects.json", "stage5-amendment-summary.json", "stage5-operative-state.json", "stage6-compiled-results.json", "stage7-verification-results.json", "stage8-coverage-result.json"],
+    "allPresent": true
+  },
+  "rawPackageInspected": {
+    "directory": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/",
+    "rawHtmlPresent": true,
+    "extractedTextPresent": true,
+    "extractionManifestPresent": true
+  },
+  "priorVerdictConfirmed": "PHASE_3F_2_ENVIRONMENT_BLOCKED (30-final-verdict.json)",
+  "internalConsistencyChecks": [
+    "30-final-verdict.json's basis matches 09-ai-telemetry.json's cost figure ($0.820356) and 14/15-semantic-compilation/verification-results.json's 3-succeeded/12-blocked breakdown - consistent.",
+    "19a (100 claims, 53/44/3) and 19b (84 claims, 43/38/3) match 19-ground-truth-inventory.json's consolidated summary and 20-independent-review.json's agreement analysis - consistent.",
+    "27-production-freeze-proof.json's empty-diff claim against 00f49ac is independently re-verified below (resume section) and still holds."
+  ],
+  "disposition": "MATERIAL PRIOR EVIDENCE PRESENT AND CONSISTENT - proceeding with resume. PHASE_3F_2_RESUME_BLOCKED_MISSING_PRIOR_ARTIFACTS does NOT apply."
+}
