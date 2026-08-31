@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RIOT_REPLAY_COST_FORECAST",
+  "evidenceCategory": "IMPLEMENTATION_EVIDENCE",
+  "forecastMethod": "Per mission Section 34, this is NOT a naive total-cost/candidate-count division. It uses the actual per-candidate compile+verify cost basis already established from Phase 3F.2's own real telemetry (docs/phase-3f2-unseen-validation/resume/06-ai-telemetry.json: $0.254845/candidate compile cost, derived from the 3 real prior successes, plus this session's own established $0.10/candidate margin for verification/condition-suspicion overhead), applied to the actual bounded candidate set this replay needs - not the full 38-candidate Phase 3F.2 population.",
+  "boundedScope": "This replay is deliberately NOT a full re-run of all 38 previously-compiled Riot candidates. Per the mission's own 'bounded to the two remediated capabilities' instruction, only the specific candidates that exhibited the ORIGINAL documented defects need recompiling under the new code: (1) discovery-candidate:b33c341e3169731f00d02245 (doc-a Section 1.01, covers RGT-C-008/RGT-C-029/RGT-C-022 - the multi-definition omission + truncation claims), (2) discovery-candidate:3b57707452b7d665665ea2f5 (doc-c Section 1.01, covers RGT-C-030 - the multi-definition omission claim), (3) discovery-candidate:5913769a32bdcaf9212050ca (doc-a Section 6.01(d) - the frozen deleted-carve-out safety check, required by mission Section 25). The doc-b/doc-c package-graph target resolution and operative-document result are computed by the Unit B deterministic code (relationship-resolution.ts, chain.ts, operative-state.ts) - zero AI cost, no model call involved.",
+  "candidateCount": 3,
+  "perCandidateEstimateUsd": 0.35,
+  "forecastTotalUsd": 1.05,
+  "budgetCeilingUsd": 15,
+  "forecastResult": "WELL_UNDER_CEILING - proceeding without further authorization request, per the mission's own framing of the Riot regression replay as a required step of this remediation (not a new discretionary spend decision)."
+}

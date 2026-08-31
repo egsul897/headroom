@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FULL_TEST_RESULTS",
+  "evidenceCategory": "IMPLEMENTATION_EVIDENCE",
+  "fullRepositorySuite": {
+    "command": "npx vitest run",
+    "result": "3 test files failed | 277 passed (280 total); 3 tests failed | 3075 passed (3078 total)",
+    "failures": [
+      {
+        "test": "tests/contract-model/architecture-proposal-node-identity.test.ts > ... no new directory was created under tests/fixtures/unseen-packages/",
+        "classification": "PRE_EXISTING_UNRELATED_FAILURE - identical to the failure already documented in 00-baseline.json (Phase 3F.2's own committed phase-3f2-riot-resume-run fixture directory, assertion never updated to account for it). Not caused by, and out of scope for, this remediation."
+      },
+      {
+        "test": "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts > ... no new package directory was created under tests/fixtures/unseen-packages/",
+        "classification": "PRE_EXISTING_UNRELATED_FAILURE - same root cause as above, identical to 00-baseline.json."
+      },
+      {
+        "test": "tests/contract-model/part-b-recert-finding4-independent.test.ts > FIXED: wall-clock time now grows roughly linearly ...",
+        "classification": "FLAKY_TIMING_TEST - a wall-clock performance-ratio assertion (expected < 8, observed 8.5) in an unrelated module (bare-or chain O(n) termination proof, no relationship to semantic-compiler/package-graph/amendment). Reproduced FAILING once under full-suite CPU load; passed cleanly (12/12) when re-run in isolation immediately after. Same category as the baseline's own documented repro-connection-race.test.ts timing flake - not caused by, and out of scope for, this remediation's production changes."
+      }
+    ],
+    "amendmentAndVersioningFlake": {
+      "test": "tests/contract-model/amendment-and-versioning.test.ts > the AmendmentEffect rows themselves form a complete, queryable audit trail of what changed and when",
+      "occurredIn": "a narrower combined run (semantic-compiler + verification + package-graph + amendment suites together), NOT in this full-repository run, which passed all 6 amendment-and-versioning tests",
+      "classification": "FLAKY_DB_ROW_ORDER - prisma.amendmentEffect.findMany() with no explicit orderBy; Postgres row order without one is not guaranteed. Reproduced once, passed in isolation and in the full-repository run above. Not caused by this remediation's production changes (none write to the amendmentEffect persistence path)."
+    },
+    "netAssessment": "Zero NEW deterministic failures attributable to Unit A or Unit B production changes. All observed failures are either the 2 pre-existing baseline failures (documented in 00-baseline.json, predate this session) or timing/ordering flakes in unrelated modules, each confirmed to pass in isolated re-runs."
+  },
+  "typeScript": {
+    "command": "npx tsc --noEmit -p tsconfig.json",
+    "result": "6 errors, identical set to 00-baseline.json's preExistingErrors (same files, same lines, same messages) - zero new errors introduced by Unit A or Unit B."
+  },
+  "lint": {
+    "command": "npx eslint .",
+    "result": "1 error, identical to 00-baseline.json's lintBaseline (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169:5 @typescript-eslint/no-var-requires rule-not-found) - zero new lint errors introduced by Unit A or Unit B."
+  }
+}
