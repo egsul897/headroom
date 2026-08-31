@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT",
+  "verdict": "PHASE_3F_1_FINAL_CLOSURE_FAILED",
+  "basis": [
+    "Final pass standard (governing spec SS37) requires OPEN-1, OPEN-2, OPEN-4, and OPEN-6 all CERTIFIED_CLOSED, plus OPEN-3/OPEN-5 inherited closed. Only OPEN-6 is CERTIFIED_CLOSED among the four in-scope items.",
+    "OPEN-1 (structural heading) is STILL_OPEN with a genuine, freshly-reproduced code-level false-positive: titleBodySeparationHolds only detects a fake citation when its continuation is lowercase, so any ordinary capitalized/digit-led/quote-led continuation - the normal shape of real drafting - still launders through and reproduces rank-stack corruption. The new wrap-tolerance mechanism built to fix an unrelated real-fixture regression is itself an independent false-positive path.",
+    "OPEN-2 (context-evidence trust) is STILL_OPEN with a genuine, freshly-reproduced code-level bypass: the implementer's own disclosed residual gap (getOperativeProvision's tool-call path never setting evidenceUnresolved) was claimed to be independently covered by the new gates 'regardless' - this claim was directly tested and found FALSE. A real end-to-end exploit reaches persisted VERIFIED trust status off a genuinely conflicted section, confirmed via real Postgres.",
+    "OPEN-4 (condition-suspicion real-model validation) is ENVIRONMENT_BLOCKED, not CERTIFIED_CLOSED - the account-level Vercel AI Gateway budget remains exhausted ($50.05/$50.00, real cost $0.00 for this phase's probe). This alone would warrant PHASE_3F_1_FINAL_CLOSURE_ENVIRONMENT_BLOCKED per SS39 ONLY if Part A/Part B had otherwise passed for the other three fixes. It has not: OPEN-1 and OPEN-2 carry genuine, independently-reproduced code-level defects entirely unrelated to any environment or credential constraint.",
+    "Production freeze held throughout Part B: zero lib/app/prisma changes since the b641ebf freeze (20-production-freeze-proof.json).",
+    "Crosscutting quality gates otherwise pass: 262 files / 2799 tests, 0 failures; tsc/eslint at exact pre-existing baseline; build succeeds; known-package regression NO_REGRESSION (identical to pre-fix baseline); 14/14 false-credit controls NO_CREDIT; OPEN-3/OPEN-5 not reopened."
+  ],
+  "notAPass": "This is not PHASE_3F_1_FINAL_CLOSURE_PASSED. Two of the four in-scope items remain open with concrete, independently-reproduced code-level evidence.",
+  "notEnvironmentBlockedOverall": "This is not PHASE_3F_1_FINAL_CLOSURE_ENVIRONMENT_BLOCKED overall, per SS39's own qualifier ('appropriate ONLY if the real-model OPEN-4 holdout cannot execute for external credential/budget/provider reasons after Part A has otherwise passed'). Part A did not otherwise pass: OPEN-1 and OPEN-2 are genuinely, independently STILL_OPEN for reasons having nothing to do with the Gateway budget.",
+  "actionPerGoverningSpec": "Per SS41: FAILED - do not auto-repair after freeze. Return the exact remaining defects and their blast radius to a human architecture lead. No new named 3F.1 remediation phase automatically. This session stops here."
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INHERITED_REGRESSION_CHECKS",
+  "targeted": {
+    "OPEN-3": "N-way claim decomposition - NOT reopened. semantic-coverage/* untouched (confirmed absent from production diff, artifact 20). Its own tests (part-b-terminal-recert-open3-independent.test.ts) pass except one confirmed-flaky timing assertion, reproducible identically at the pre-this-phase baseline commit.",
+    "OPEN-5": "AnalysisRun/SemanticTruth fencing - NOT reopened. semantic-truth/service.ts untouched (confirmed absent from production diff). Its own tests (part-b-terminal-recert-open5-independent.test.ts) pass in the full suite run.",
+    "durableSemanticTruthPersistence": "Covered by the full vitest run (2799/2799 passing) including semantic-truth persistence suites.",
+    "sourceTraceReferentialIntegrity": "Covered by the full vitest run; no regression observed.",
+    "partialInstrumentFailurePersistence": "Covered by orchestrator/AnalysisFailureLog suites; FIX-3's own new tests plus the existing suite all pass.",
+    "supersessionLineagePropagation": "Covered by amendment/operative-state suites; FIX-2 explicitly reused resolveOperativeDefinitionEvidence's supersession status field, no regression observed.",
+    "productFlowAnalysisGate": "AUDIT-F6 - not reopened, no related file touched, full suite passes.",
+    "tenantIsolation": "Covered by the full vitest run; tenant-isolation test files pass with 0 failures.",
+    "dbIsolationInfrastructure": "lib/testing/disposable-db.ts and ephemeral-db.ts untouched; not exercised by this phase's fixes (no whole-database resets needed)."
+  },
+  "verdict": "NO_REGRESSION on any inherited-closed item"
+}

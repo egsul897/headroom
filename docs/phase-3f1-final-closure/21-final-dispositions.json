@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_DISPOSITIONS",
+  "dispositions": [
+    {
+      "id": "OPEN-1",
+      "scope": "BLOCKER-1 structural heading (stage-structure.ts)",
+      "fix": "FIX-1: removed NOISE_DISCOUNTED as acceptance weight; added candidate-local titleBodySeparationHolds signal inspecting following-text separation, plus a wrap-tolerance mechanism for multi-line headings.",
+      "disposition": "STILL_OPEN",
+      "reason": "The original noise-adjacency false-positive is genuinely closed - no construction reintroduces acceptance via unrelated noise. But titleBodySeparationHolds only detects a fake citation when its continuation is LOWERCASE. Any well-punctuated citation followed by an ordinary capitalized/digit-led/quote-led new sentence - the normal shape of real drafting, not an edge case - still launders through, reproducing the exact rank-stack corruption with zero footnote/noise/bad-grammar involved. A minimal Case-C-vs-Case-D pair (identical text, correctly rejected unwrapped, wrongly accepted once a single newline splits the title before its own lowercase tell) isolates the new wrap-tolerance mechanism itself as an independent false-positive path - exactly the new-surface-area risk this phase's own charter asked the auditor to scrutinize. A secondary, lower-confidence opposite-direction finding: a 'Term. means ...' definitions-style real heading is wrongly vetoed.",
+      "evidence": "tests/certification/part-b-final-fix1-independent-recert.test.ts (19 fresh tests)"
+    },
+    {
+      "id": "OPEN-2",
+      "scope": "BLOCKER-5/6 context-evidence trust boundary",
+      "fix": "FIX-2: bundle-construction-time routing of DEFINITION/SECTION/CROSS_REFERENCE context items through resolveOperativeDefinitionEvidence/resolveOperativeSectionEvidence; independent tool-call-free compile/verify gate.",
+      "disposition": "STILL_OPEN",
+      "reason": "The original zero-tool-call context-bundle bypass is genuinely closed - bundle-construction-time routing checks out at every real call site. But the implementer's own disclosed residual gap (getOperativeProvision's tool-call path never sets evidenceUnresolved) was claimed to be independently covered by the new gates 'regardless' - this claim is FALSE in general. A fresh end-to-end exploit (a genuinely OPERATIVE_STATE_CONFLICTED section, never in the context bundle, reached only via a real getOperativeProvision tool call) reaches persisted SemanticTruthRecord.trustStatus = VERIFIED, confirmed via a real Postgres round-trip. None of the three OR'd gates (toolCallLog.evidenceUnresolved, contextBundle.hasUnresolvedOperativeEvidence, hasStaleReferencedDefinition - the last scoped only to IRDefinition, never sections) fire for this shape.",
+      "evidence": "tests/certification/part-b-final-recert-fix2-independent.test.ts (9 fresh tests, real Postgres)"
+    },
+    {
+      "id": "OPEN-4",
+      "scope": "BLOCKER-9 condition-suspicion architecture real-model validation",
+      "fix": "N/A - production code explicitly frozen this phase per governing spec SS2 (architecture already passed inspection in the immediately preceding phase; not touched here).",
+      "disposition": "ENVIRONMENT_BLOCKED",
+      "reason": "A process-local one-shot probe against the Vercel AI Gateway (credential injected via env var for a single command, never persisted) returned HTTP 402 'Team budget exceeded. Current spend: $50.05, limit: $50.00' - identical account state to the immediately preceding phase's finding, real cost $0.00. No auditor was dispatched; no classifier code was touched or rewritten, per SS26/SS29. The 22 frozen adversarial constructions from the prior phase remain untouched and ready to run once budget is restored.",
+      "evidence": "docs/phase-3f1-final-closure/15-condition-real-model-validation.json (rerun instructions included)"
+    },
+    {
+      "id": "OPEN-6",
+      "scope": "AUDIT-F7 total error classification (classifyError)",
+      "fix": "FIX-3: decomposed classifyError into safeErrorMessage/safeErrorClass, each property read/coercion independently try/catch-guarded, including the instanceof check itself.",
+      "disposition": "CERTIFIED_CLOSED",
+      "reason": "A fresh 19-value hostile-value matrix (Symbol.hasInstance poisoning, has-trap-only Proxies, toStringTag divergence, getOwnPropertyDescriptor-trap Proxies, two-level constructor.name poisoning, thenables, callable Proxies, multi-hop circular+throwing-toJSON structures, revoked Proxy.revocable(), boxed-primitive poisoning, and more) found no way to break totality. Line-by-line code review confirmed every property access on the untrusted value is independently guarded, and several requested attack channels are structurally inert (no in operator, Object.prototype.toString.call, getOwnPropertyDescriptor, or JSON.stringify of the raw value exists anywhere in the path). The auditor's own initial false positive (vitest's .toThrow() internals also doing an instanceof Error check, tripped by the same global Symbol.hasInstance poisoning used to test the production code) was correctly diagnosed as a test-methodology artifact, not a production defect, and fully disclosed.",
+      "evidence": "tests/certification/part-b-recert-fix3-independent-adversarial.test.ts (19 fresh hostile values + 3 e2e re-proofs)"
+    },
+    {
+      "id": "OPEN-3",
+      "scope": "N-way claim decomposition",
+      "disposition": "INHERITED_CERTIFIED_CLOSED",
+      "reason": "Not reopened. semantic-coverage/* confirmed absent from the production diff since the prior phase's freeze. No regression observed in the full suite (one confirmed-flaky, pre-existing timing test unrelated to this phase's changes)."
+    },
+    {
+      "id": "OPEN-5",
+      "scope": "AnalysisRun/SemanticTruth fencing",
+      "disposition": "INHERITED_CERTIFIED_CLOSED",
+      "reason": "Not reopened. semantic-truth/service.ts confirmed absent from the production diff. No regression observed."
+    }
+  ],
+  "tally": {
+    "inScopeThisPhase": { "certifiedClosed": 1, "stillOpen": 2, "environmentBlocked": 1, "total": 4, "note": "OPEN-1 STILL_OPEN, OPEN-2 STILL_OPEN, OPEN-4 ENVIRONMENT_BLOCKED, OPEN-6 CERTIFIED_CLOSED" },
+    "inheritedNotReopened": { "certifiedClosed": 2, "total": 2, "note": "OPEN-3, OPEN-5 both INHERITED_CERTIFIED_CLOSED" },
+    "overallCertifiedClosedOfSix": 3
+  }
+}
