@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "NULL_CURRENTTEXT_SEMANTICS",
+  "description": "Exhaustive reasoning table for every real cause buildProvisionView (lib/contract-model/compiler/amendment/operative-state.ts) can produce view.currentText === null, cross-referenced against what resolveNodeWithSupersessionAwareness now does for each. buildProvisionView itself (the producer) is UNCHANGED by this fix - only the consumer's handling of a null currentText was wrong.",
+  "causes": [
+    {
+      "id": "A",
+      "cause": "OPERATIVE_STATE_CONFLICTED",
+      "producerCondition": "hasConflict === true (2+ real effects targeting the same provision, same effective-date precedence, genuinely different resulting text, no evidence-based rule to prefer one)",
+      "textReturned": "raw base-document text (textSource: BASE_DOCUMENT_TEXT)",
+      "evidenceCurrent": false,
+      "reasonString": "\"This section's own real amendment history is not confidently resolved (operative status OPERATIVE_STATE_CONFLICTED) - the base document's text shown here must not be treated as confirmed-current, regardless of this physical node's own supersession record (...).\" plus view.unresolvedIssues (the real competing candidateTexts context)",
+      "regressionCoverage": "tests/certification/open-2-recert-independent-fresh.test.ts section 4 (the prospective/not-yet-applied CONFLICTED shape - the core exploit this fix closes); tests/contract-model/semantic-tools-operative-state-discipline.test.ts's HEADROOM OPEN-2 describe block and its new registry-mechanical-invariant UNRESOLVED probe; tests/contract-model/open2-terminal-four-tool-matrix.test.ts cases 1 and 2"
+    },
+    {
+      "id": "B",
+      "cause": "OPERATIVE_STATE_PARTIAL (targetUnresolved: AMBIGUOUS or NOT_FOUND target resolution)",
+      "producerCondition": "base.targetResolutionStatus !== 'UNIQUE' - the provision's own base reference could not be confidently attached to one physical occurrence/definition",
+      "textReturned": "raw base-document text (textSource: BASE_DOCUMENT_TEXT)",
+      "evidenceCurrent": false,
+      "reasonString": "same template as A, with operative status OPERATIVE_STATE_PARTIAL",
+      "regressionCoverage": "tests/contract-model/open2-terminal-four-tool-matrix.test.ts case 3 (via textMissingDespiteAppliedEffect, the sibling PARTIAL cause - see cause D below for the specific variant exercised); the AMBIGUOUS/NOT_FOUND targetResolutionStatus variant of PARTIAL is exercised indirectly by the same view.status gate (identical branch in the fix) and is covered pre-existingly by tests/contract-model/node-supersession-awareness.test.ts's own AMBIGUOUS-candidate cases at the getNodeSupersessionStatus layer"
+    },
+    {
+      "id": "C",
+      "cause": "OPERATIVE_STATE_PARTIAL (structuralHealthUnsafe)",
+      "producerCondition": "base.structuralHealthStatus === 'STRUCTURAL_HEALTH_UNSAFE' - a UNIQUE target match whose own physical occurrence (or a structural descendant) is independently flagged corrupted by the structural index's own I1-I16 health diagnostics",
+      "textReturned": "raw base-document text (textSource: BASE_DOCUMENT_TEXT)",
+      "evidenceCurrent": false,
+      "reasonString": "same template as A/B, operative status OPERATIVE_STATE_PARTIAL",
+      "regressionCoverage": "covered by the same view.status-gated branch as B/D (no separate code path in the consumer fix - buildProvisionView already collapses this into the same OPERATIVE_STATE_PARTIAL status the consumer gates on); structural-health-specific producer behavior is covered by tests/foundation-audit/combined-failures.test.ts (unchanged, out of scope for this fix)"
+    },
+    {
+      "id": "D",
+      "cause": "OPERATIVE_STATE_REVIEW_REQUIRED",
+      "producerCondition": "hasSequenceUnresolved (AMENDMENT_SEQUENCE_UNRESOLVED conflict) OR hasReviewOrUnresolvedEffect (an effect's own status is REVIEW_REQUIRED or UNRESOLVED)",
+      "textReturned": "raw base-document text (textSource: BASE_DOCUMENT_TEXT)",
+      "evidenceCurrent": false,
+      "reasonString": "same template as A/B/C, operative status OPERATIVE_STATE_REVIEW_REQUIRED",
+      "regressionCoverage": "tests/contract-model/open2-terminal-four-tool-matrix.test.ts case 4; tests/certification/open-2-recert-independent-fresh.test.ts section 6 (model-ignores-warning end-to-end)"
+    },
+    {
+      "id": "E",
+      "cause": "OPERATIVE_STATE_PARTIAL (textMissingDespiteAppliedEffect - a real, resolved, dated effect applies but supplied no capturable resulting text, e.g. a bare threshold change or 'is hereby amended' with no quoted replacement)",
+      "producerCondition": "appliedChain.length > 0 AND !hasConflict AND !targetUnresolved AND !structuralHealthUnsafe AND currentText === null AND !lastAppliedWasCleanDeletion",
+      "textReturned": "raw base-document text (textSource: BASE_DOCUMENT_TEXT)",
+      "evidenceCurrent": false,
+      "reasonString": "same template as A-D, operative status OPERATIVE_STATE_PARTIAL - 'the fact that it governs is known, its exact wording is not' (buildProvisionView's own unresolvedIssues text, echoed via view.unresolvedIssues)",
+      "regressionCoverage": "tests/contract-model/open2-terminal-four-tool-matrix.test.ts case 3 (MODIFY_THRESHOLD effect, newText: null, applied, unique target - this exact producer branch)"
+    },
+    {
+      "id": "F",
+      "cause": "an unresolved/ambiguous TARGET with no applied effect at all (the exact prospective-conflict combination: a real AMENDMENT_CONFLICT computed from fullChain regardless of whether any effect has actually applied yet, per buildProvisionView's own header comment - 'honesty about the base reference itself must never depend on appliedChain being non-empty')",
+      "producerCondition": "subset of cause A (or B) where additionally appliedChain.length === 0, so supersededSourceNodeIds is NEVER populated for this provision - the ROOT CAUSE this entire fix closes, because the pre-fix consumer fell through to a physical-node check that had zero record of the conflict",
+      "textReturned": "raw base-document text (textSource: BASE_DOCUMENT_TEXT)",
+      "evidenceCurrent": false,
+      "reasonString": "identical to cause A's reason string, but the underlying nodeSupersessionStatus in this specific case is CURRENT_OPERATIVE (not KNOWN_SUPERSEDED) - proof that view.status, not node-level history, is now the gate",
+      "regressionCoverage": "tests/certification/open-2-recert-independent-fresh.test.ts section 4 SETUP test explicitly asserts view.supersededSourceNodeIds has length 0 for this exact shape; tests/contract-model/open2-terminal-four-tool-matrix.test.ts case 2"
+    },
+    {
+      "id": "G",
+      "cause": "clean deletion - status is OPERATIVE_STATE_RESOLVED despite currentText === null",
+      "producerCondition": "the most recently applied real effect had operation in DELETE_OPERATIONS (DELETE_TEXT, DELETE_DEFINITION, REMOVE_COVENANT, REMOVE_EXCEPTION), so lastAppliedWasCleanDeletion === true; this deliberately EXCLUDES the textMissingDespiteAppliedEffect check (cause E), so status falls through to the else branch: OPERATIVE_STATE_RESOLVED, NOT_PARTIAL - a valid deletion is a correct, intended null-governance outcome, not a derivation failure, per buildProvisionView's own P3 comment",
+      "textReturned": "raw base-document (pre-deletion) text, EXPLICITLY marked historical (textSource: HISTORICAL_BASE_TEXT, distinct from BASE_DOCUMENT_TEXT used by causes A-E)",
+      "evidenceCurrent": false,
+      "reasonString": "\"This provision was validly deleted by a resolved amendment as of the analysis date - the base document's original text is shown here for historical reference only and must never be treated as current operative text, even though the provision's own aggregate operative state is itself resolved.\" - deliberately does NOT reuse the 'not confidently resolved' wording from causes A-E, since nothing here is actually unresolved; the deletion is a settled fact",
+      "designChoice": "option (b) from the task spec was taken: return the historical base text EXPLICITLY marked superseded/historical, rather than refusing outright (option a) - preserves maximum disclosure for a human reviewer/audit trail while still never labeling it current",
+      "regressionCoverage": "tests/contract-model/open2-terminal-clean-deletion.test.ts (dedicated file, 5 tests: SETUP proving real appliedChain/deletion-provenance data via a real applied DELETE_TEXT AmendmentEffectCandidate through the real computeOperativeContractState pipeline; getReferencedProvision and getSiblingClauses regression; distinctness from the CONFLICTED reason string; a never-amended sibling control proving the fix does not degrade the ordinary case); tests/contract-model/open2-terminal-four-tool-matrix.test.ts case 7"
+    }
+  ],
+  "note": "Causes B, C, D, E all collapse into the SAME consumer-side branch (view.status !== OPERATIVE_STATE_RESOLVED -> BASE_DOCUMENT_TEXT, evidenceCurrent: false) because the fix gates on view.status, which buildProvisionView itself already correctly distinguishes at the PRODUCER level (unchanged) - the consumer fix does not need to re-derive AMBIGUOUS vs NOT_FOUND vs sequence-unresolved vs review-required distinctions a second time; it only needs to trust view.status unconditionally instead of discarding it. Cause A and cause F are the SAME producer branch (OPERATIVE_STATE_CONFLICTED) with different appliedChain lengths - F is called out separately because it is the exact scenario that exposed the bug (an empty appliedChain means the node-level supersession index has nothing recorded, which is precisely what let the old code's fallback misreport CURRENT_OPERATIVE). Cause G (clean deletion) is the one genuinely DIFFERENT branch requiring its own textSource/reason string, per the task's explicit special-case requirement."
+}

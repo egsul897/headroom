@@ -15,7 +15,7 @@
  * a request naming a foreign document is refused with an honest reason,
  * never silently served.
  */
-import type { NodeSupersessionIndex, NodeSupersessionStatus, OperativeProvisionView } from "../amendment/types";
+import type { NodeSupersessionIndex, NodeSupersessionStatus, OperativeProvisionView, OperativeStateStatus } from "../amendment/types";
 import type { StructuralNode } from "../types";
 import { buildNodeSupersessionIndex, getNodeSupersessionStatus, isConfirmedCurrentOperativeEvidence, normalizeDefinedTermRef, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
@@ -214,37 +214,188 @@ function findProvisionView(operativeState: OperativeProvisionView[] | undefined,
 }
 
 /**
- * Phase 3F.1.6.R BLOCKER-5 fix. Certification finding SUPER-5: 5 of 14
- * tools (getReferencedProvision, getParentClause, getChildren,
- * getSiblingClauses, getSourceSpan) navigated `access.structuralIndex`
- * directly and never consulted `access.operativeState` at all - unlike
- * their 9 siblings (getOperativeProvision chief among them), which already
- * call `findProvisionView(access.operativeState?.provisions, ...)` first.
- * This helper generalizes that EXACT already-working pattern (never
- * duplicates a second, parallel implementation) for every tool that
- * resolves a node BY ITS OWN sectionRef: prefer the real, amendment-aware
- * `OperativeProvisionView.currentText` when one covers this section;
- * otherwise fall back to the raw structural text, but ALWAYS attach a real
- * `supersessionStatus`/`supersessionReason` (via the same
- * `getNodeSupersessionStatus` primitive `discovery/pass-a-signals.ts` and
- * `semantic-coverage/cross-reference-audit.ts` already rely on) so a
- * fallback raw read can never be silently mistaken for confirmed-current
- * text merely because no tracked amendment happened to target it by
- * section reference.
+ * HEADROOM OPEN-2 TERMINAL (Part A) - CONFIRMED ROOT CAUSE FIX.
+ *
+ * CONFIRMED DEFECT (independently reproduced pre-fix in
+ * tests/certification/open-2-recert-independent-fresh.test.ts's own section
+ * 4, and see docs/open2-terminal-trust-correction/01-root-cause-code-audit.json
+ * for the full trace): the OLD implementation gated its ENTIRE trust
+ * determination on whether `view.currentText` happened to be non-null. When
+ * a real, on-file `OperativeProvisionView` existed for this section but its
+ * own aggregate `view.status` was CONFLICTED/PARTIAL/REVIEW_REQUIRED (all of
+ * which `buildProvisionView` correctly nulls `currentText` for - a producer
+ * behavior that is correct and untouched here), the OLD code discarded
+ * `view.status` entirely and fell through to a raw per-PHYSICAL-NODE
+ * `getNodeSupersessionStatus` check. That check answers a genuinely
+ * different question (has anything ever applied OVER this exact physical
+ * occurrence) and reports CURRENT_OPERATIVE for a section whose competing
+ * amendments are real but simply have not applied yet as of the query date
+ * (appliedChain.length === 0, so buildProvisionView's own
+ * supersededSourceNodeIds - the only thing the node-level index can key off
+ * - was never populated for it). A signed-but-not-yet-effective conflicting
+ * amendment therefore reached this tool's own physical-node fallback with
+ * ZERO record of the conflict at all.
+ *
+ * CORE INVARIANT (enforced below): TEXT SELECTION and TRUST SELECTION are
+ * separate questions. `currentText` presence may determine WHICH TEXT is
+ * served; it must never determine WHETHER that text is trustworthy.
+ * Whenever a real matching `OperativeProvisionView` exists, its own
+ * `view.status` participates in the trust determination UNCONDITIONALLY -
+ * never silently discarded merely because `currentText` is null.
+ *
+ * TRUST RULE (text-source-dependent - see ResolvedNodeEvidence's own header
+ * comment for the full per-textSource reasoning table, and
+ * docs/open2-terminal-trust-correction/03-null-currenttext-semantics.json for
+ * the exhaustive null-currentText cause-by-cause writeup):
+ *   - AMENDED_CURRENT_TEXT (view.currentText is non-null - by
+ *     buildProvisionView's own invariant this only ever happens when
+ *     view.status === OPERATIVE_STATE_RESOLVED): evidenceCurrent = true,
+ *     unconditionally. The base node's own nodeSupersessionStatus being
+ *     KNOWN_SUPERSEDED here is EXPECTED and IRRELEVANT - the amended text
+ *     superseding the base node is exactly the point of an amendment; it
+ *     must never be AND-ed against the trust verdict for the replacement
+ *     text itself.
+ *   - a real view exists but currentText is null (CONFLICTED / PARTIAL /
+ *     REVIEW_REQUIRED / a validly-resolved clean deletion): evidenceCurrent
+ *     = false, full stop - gated on view.status alone, regardless of what
+ *     getNodeSupersessionStatus reports for the underlying physical node
+ *     (this is the exact line the fix lives on: the physical node's own
+ *     history is a different, narrower question than the provision's real
+ *     aggregate operative state, and must never substitute for it once a
+ *     real view exists). A clean deletion (status RESOLVED, currentText
+ *     null by buildProvisionView's own DELETE_OPERATIONS branch) is
+ *     distinguished from a genuine unresolved conflict via textSource
+ *     (HISTORICAL_BASE_TEXT vs BASE_DOCUMENT_TEXT) so a caller can label the
+ *     served base text as historical rather than merely "unresolved" - but
+ *     BOTH are evidenceCurrent: false; only serving old base text as though
+ *     it were still-governing would be the actual harm.
+ *   - no matching view exists at all (this section has no recorded
+ *     amendment activity whatsoever - the pure node-supersession case
+ *     `getNodeSupersessionStatus`/`NodeSupersessionIndex` exist for):
+ *     evidenceCurrent = (nodeSupersessionStatus === "CURRENT_OPERATIVE").
+ *     Unchanged from before this fix - this is the ONE case where the
+ *     physical-node-history question genuinely IS the whole answer, because
+ *     there is no provision-level view to ask instead.
  */
-function resolveNodeWithSupersessionAwareness(access: SemanticToolAccess, supersessionIndex: NodeSupersessionIndex, node: StructuralNode): { text: string; supersessionStatus: NodeSupersessionStatus; supersessionReason: string; source: "amended" | "base-document" } {
+export interface ResolvedNodeEvidence {
+  text: string;
+  textSource: "AMENDED_CURRENT_TEXT" | "BASE_DOCUMENT_TEXT" | "HISTORICAL_BASE_TEXT";
+  /** null iff no matching OperativeProvisionView exists for this section at all - the pure node-supersession case. */
+  provisionOperativeStatus: OperativeStateStatus | null;
+  /** The underlying physical node's own supersession verdict - always computed and always disclosed for provenance, but (per the trust rule above) NEVER the trust gate on its own once a real view exists. */
+  nodeSupersessionStatus: NodeSupersessionStatus;
+  /** The ONE boolean a caller may gate `evidenceUnresolved` on. */
+  evidenceCurrent: boolean;
+  /** Always populated when evidenceCurrent is false - explains why, mirroring every other disclosure-quality reason string in this codebase (targetResolutionReason, NodeSupersessionResult.reason). Empty when evidenceCurrent is true. */
+  unresolvedReasons: string[];
+}
+
+function resolveNodeWithSupersessionAwareness(access: SemanticToolAccess, supersessionIndex: NodeSupersessionIndex, node: StructuralNode): ResolvedNodeEvidence {
   const view = findProvisionView(access.operativeState?.provisions, node.sectionRef);
-  if (view?.currentText !== null && view?.currentText !== undefined) {
+  const nodeSupersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
+
+  if (view) {
+    if (view.currentText !== null && view.currentText !== undefined) {
+      // A real, resolved amended replacement. Per buildProvisionView's own
+      // invariant this only happens when view.status is RESOLVED - the base
+      // node's own (very likely KNOWN_SUPERSEDED, which is expected and
+      // correct) supersession record is irrelevant to trusting THIS text.
+      return { text: view.currentText, textSource: "AMENDED_CURRENT_TEXT", provisionOperativeStatus: view.status, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent: true, unresolvedReasons: [] };
+    }
+    // currentText is null. THE FIX: view.status gates this unconditionally -
+    // never the physical node's own (possibly-stale-for-this-purpose)
+    // nodeSupersessionStatus. Distinguish a validly-resolved clean deletion
+    // (status RESOLVED despite null currentText - see buildProvisionView's
+    // own DELETE_OPERATIONS branch and lastAppliedWasCleanDeletion) from a
+    // genuine unresolved conflict/partial/review-required state, per the
+    // null-currentText reasoning table (docs/open2-terminal-trust-
+    // correction/03-null-currenttext-semantics.json) - but BOTH are
+    // evidenceCurrent: false.
+    const raw = access.structuralIndex.getNodeText(node.nodeId, "OWN");
+    const isCleanDeletion = view.status === "OPERATIVE_STATE_RESOLVED";
+    const unresolvedReasons = isCleanDeletion
+      ? [`This provision was validly deleted by a resolved amendment as of the analysis date - the base document's original text is shown here for historical reference only and must never be treated as current operative text, even though the provision's own aggregate operative state is itself resolved.`]
+      : [
+          `This section's own real amendment history is not confidently resolved (operative status ${view.status}) - the base document's text shown here must not be treated as confirmed-current, regardless of this physical node's own supersession record (${nodeSupersession.status}).`,
+          ...view.unresolvedIssues,
+        ];
+    return { text: raw, textSource: isCleanDeletion ? "HISTORICAL_BASE_TEXT" : "BASE_DOCUMENT_TEXT", provisionOperativeStatus: view.status, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent: false, unresolvedReasons };
+  }
+
+  // No matching OperativeProvisionView exists for this section at all - the
+  // pure node-supersession case getNodeSupersessionStatus/NodeSupersessionIndex
+  // exist for. This branch is unchanged by this fix.
+  const raw = access.structuralIndex.getNodeText(node.nodeId, "OWN");
+  const evidenceCurrent = nodeSupersession.status === "CURRENT_OPERATIVE";
+  return { text: raw, textSource: "BASE_DOCUMENT_TEXT", provisionOperativeStatus: null, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent, unresolvedReasons: evidenceCurrent ? [] : [nodeSupersession.reason] };
+}
+
+/**
+ * getChildren's OWN trust check - deliberately NOT a call to
+ * resolveNodeWithSupersessionAwareness above (per this fix's own design
+ * note: getChildren has "its own separate, structurally different
+ * parentSupersession check"). resolveNodeWithSupersessionAwareness answers
+ * "is the TEXT I'm about to serve for this section trustworthy," and for a
+ * fully-resolved amended replacement legitimately ignores the base node's
+ * own supersession record - the amendment superseding it IS the point.
+ * getChildren answers a different question: "does THIS PHYSICAL node's own
+ * child listing still accurately represent the section's CURRENT
+ * substructure." Those two questions diverge in exactly one real case: a
+ * section with a real, fully-resolved amended currentText (view.status ===
+ * OPERATIVE_STATE_RESOLVED, view.currentText non-null) - the TEXT is
+ * trustworthy, but the OLD physical node's own children are NOT reliable
+ * evidence of the amended text's real substructure (an amendment
+ * substituting an entire section's text is never assumed to preserve its
+ * old lettered sub-clause layout) - by that point buildProvisionView's own
+ * loop has already pushed the original node into supersededSourceNodeIds,
+ * so nodeSupersessionStatus alone (KNOWN_SUPERSEDED) already correctly
+ * disqualifies it, exactly like the pre-fix code already did for this one
+ * case. So this check requires BOTH: nodeSupersessionStatus ===
+ * CURRENT_OPERATIVE (this physical node was never itself replaced) AND (no
+ * matching view exists at all, OR the matching view's own status is
+ * OPERATIVE_STATE_RESOLVED). The second conjunct is the actual OPEN-2
+ * TERMINAL fix for this tool: a real, on-file but not-yet-applied
+ * CONFLICTED/PARTIAL/REVIEW_REQUIRED view for this exact section must gate
+ * this trust verdict too - never only "has something already physically
+ * superseded this node," which (per the confirmed root cause) says nothing
+ * about a conflict that has not applied yet.
+ */
+function resolveParentSubstructureEvidence(access: SemanticToolAccess, supersessionIndex: NodeSupersessionIndex, node: StructuralNode): { evidenceCurrent: boolean; nodeSupersessionStatus: NodeSupersessionStatus; reason: string } {
+  const view = findProvisionView(access.operativeState?.provisions, node.sectionRef);
+  const nodeSupersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
+  const viewBlocksTrust = view !== undefined && view.status !== "OPERATIVE_STATE_RESOLVED";
+  const evidenceCurrent = nodeSupersession.status === "CURRENT_OPERATIVE" && !viewBlocksTrust;
+  if (evidenceCurrent) {
+    return { evidenceCurrent, nodeSupersessionStatus: nodeSupersession.status, reason: nodeSupersession.reason };
+  }
+  if (viewBlocksTrust) {
     return {
-      text: view.currentText,
-      supersessionStatus: view.status === "OPERATIVE_STATE_RESOLVED" ? "CURRENT_OPERATIVE" : "UNKNOWN_SUPERSESSION_STATUS",
-      supersessionReason: `resolved against this section's own real amendment history (operative status ${view.status})`,
-      source: "amended",
+      evidenceCurrent,
+      nodeSupersessionStatus: nodeSupersession.status,
+      reason: `This section's own real amendment history is not confidently resolved (operative status ${view!.status}) - its child listing cannot be confirmed to reflect the section's current substructure, regardless of this physical node's own supersession record (${nodeSupersession.status}).`,
     };
   }
-  const raw = access.structuralIndex.getNodeText(node.nodeId, "OWN");
-  const result = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
-  return { text: raw, supersessionStatus: result.status, supersessionReason: result.reason, source: "base-document" };
+  return { evidenceCurrent, nodeSupersessionStatus: nodeSupersession.status, reason: nodeSupersession.reason };
+}
+
+/**
+ * Maps a ResolvedNodeEvidence back to the pre-existing
+ * `{supersessionStatus, supersessionReason}` wire shape every tool's JSON
+ * payload already commits callers to (this file's own established
+ * disclosure convention, unchanged by this fix) - display only, never the
+ * trust gate itself (`resolved.evidenceCurrent` is). CURRENT_OPERATIVE iff
+ * evidenceCurrent; otherwise KNOWN_SUPERSEDED when the underlying physical
+ * node itself independently carries that record, else
+ * UNKNOWN_SUPERSESSION_STATUS - never CURRENT_OPERATIVE merely because the
+ * physical node's own history happens to look clean (the exact bug this fix
+ * closes).
+ */
+function legacySupersessionDisplay(resolved: ResolvedNodeEvidence): { supersessionStatus: NodeSupersessionStatus; supersessionReason: string } {
+  if (resolved.evidenceCurrent) {
+    return { supersessionStatus: "CURRENT_OPERATIVE", supersessionReason: resolved.provisionOperativeStatus ? `resolved against this section's own real amendment history (operative status ${resolved.provisionOperativeStatus})` : "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for." };
+  }
+  const supersessionStatus: NodeSupersessionStatus = resolved.nodeSupersessionStatus === "KNOWN_SUPERSEDED" ? "KNOWN_SUPERSEDED" : "UNKNOWN_SUPERSESSION_STATUS";
+  return { supersessionStatus, supersessionReason: resolved.unresolvedReasons.join(" ") || "not confirmed as current operative evidence" };
 }
 
 /**
@@ -505,19 +656,20 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const parent = access.structuralIndex.getParent(nodeId);
         if (!parent) return refuse(`node "${nodeId}" has no parent clause (it is a top-level node)`);
         const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, parent);
+        const display = legacySupersessionDisplay(resolved);
         const { text, truncated } = truncate(resolved.text);
         charsUsedRef.current += text.length;
         const outcome = ok(
-          { nodeId: parent.nodeId, sectionRef: parent.sectionRef, heading: parent.heading, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
+          { nodeId: parent.nodeId, sectionRef: parent.sectionRef, heading: parent.heading, text, truncated, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason },
           text,
-          `parent clause ${parent.sectionRef} (${resolved.supersessionStatus})`
+          `parent clause ${parent.sectionRef} (${display.supersessionStatus})`
         );
-        // HEADROOM OPEN-2 registry audit finding: this tool returns real
-        // provision text (the parent chapeau/lead-in) and already disclosed
-        // supersessionStatus in the payload, but - like getOperativeProvision
-        // before this fix - never translated it into the machine-readable
-        // evidenceUnresolved flag; only CURRENT_OPERATIVE may be trusted.
-        outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus);
+        // HEADROOM OPEN-2 TERMINAL Part A: evidenceUnresolved is now derived
+        // directly from resolved.evidenceCurrent, which (unlike the pre-fix
+        // supersessionStatus) is gated on the parent's own real
+        // OperativeProvisionView.status whenever one exists - never silently
+        // discarded merely because currentText happened to be null.
+        outcome.evidenceUnresolved = !resolved.evidenceCurrent;
         return outcome;
       },
     },
@@ -530,17 +682,27 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const nodeId = String(input.nodeId ?? "");
         const node = access.structuralIndex.getNode(nodeId);
         if (!node || !allowedDocs.has(node.documentId)) return refuse(`nodeId "${nodeId}" is not a valid node in this instrument's documents`);
-        const parentSupersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
+        // HEADROOM OPEN-2 TERMINAL Part A: this used to be a bare
+        // getNodeSupersessionStatus(node) call - a pure physical-node check
+        // that never consulted the PARENT's own real
+        // OperativeProvisionView.status at all, so a parent section with a
+        // real, on-file but not-yet-applied conflict/partial/review-required
+        // amendment was reported CURRENT_OPERATIVE by omission merely
+        // because nothing had physically superseded its node yet. Fixed via
+        // resolveParentSubstructureEvidence's own (deliberately NOT
+        // resolveNodeWithSupersessionAwareness - see its header comment)
+        // combined check.
+        const parentResolved = resolveParentSubstructureEvidence(access, supersessionIndex, node);
+        const parentSupersessionStatus: NodeSupersessionStatus = parentResolved.evidenceCurrent ? "CURRENT_OPERATIVE" : parentResolved.nodeSupersessionStatus === "KNOWN_SUPERSEDED" ? "KNOWN_SUPERSEDED" : "UNKNOWN_SUPERSESSION_STATUS";
         const children = access.structuralIndex.getChildren(nodeId).map((c) => ({ nodeId: c.nodeId, sectionRef: c.sectionRef, heading: c.heading }));
-        const summary = `${children.length} child clause(s) of ${node.sectionRef} (parent ${parentSupersession.status})`;
-        const outcome = ok({ children, parentSupersessionStatus: parentSupersession.status, parentSupersessionReason: parentSupersession.reason }, summary, summary);
-        // HEADROOM OPEN-2 registry audit finding: children[].heading is
-        // short but independently-interpretable text (a heading can itself
-        // carry the economics, e.g. "$50,000,000 General Basket"), and this
-        // listing's own validity depends on the PARENT not having been
-        // superseded - the same discipline every other CURRENT_OPERATIVE_
-        // EVIDENCE tool in this file now applies, applied here for parity.
-        outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(parentSupersession.status);
+        const summary = `${children.length} child clause(s) of ${node.sectionRef} (parent ${parentSupersessionStatus})`;
+        const outcome = ok({ children, parentSupersessionStatus, parentSupersessionReason: parentResolved.reason }, summary, summary);
+        // children[].heading is short but independently-interpretable text (a
+        // heading can itself carry the economics, e.g. "$50,000,000 General
+        // Basket"), and this listing's own validity depends on the PARENT
+        // not having been superseded/unresolved - evidenceUnresolved is
+        // derived directly from the dedicated resolver's own trust verdict.
+        outcome.evidenceUnresolved = !parentResolved.evidenceCurrent;
         return outcome;
       },
     },
@@ -558,21 +720,19 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const siblings = access.structuralIndex.getSiblings(nodeId);
         const rendered = siblings.map((s) => {
           const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, s);
+          const display = legacySupersessionDisplay(resolved);
           const { text } = truncate(resolved.text);
-          return { nodeId: s.nodeId, sectionRef: s.sectionRef, heading: s.heading, text, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason };
+          return { nodeId: s.nodeId, sectionRef: s.sectionRef, heading: s.heading, text, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason, evidenceCurrent: resolved.evidenceCurrent };
         });
         charsUsedRef.current += rendered.reduce((sum, r) => sum + r.text.length, 0);
         const summary = `${siblings.length} sibling clause(s) of ${node.sectionRef}`;
-        const outcome = ok({ siblings: rendered }, summary, summary);
-        // HEADROOM OPEN-2 registry audit finding: this tool returns real
-        // provision text per sibling and already disclosed each one's own
-        // supersessionStatus in the payload, but never translated ANY of
-        // them into the machine-readable evidenceUnresolved flag - unresolved
-        // whenever ANY sibling's own text is not confirmed current (fails
-        // closed for the whole call, mirroring how the aggregate
-        // toolCallLog-level OR already treats one unresolved call among many
-        // as unresolved for the whole attempt).
-        outcome.evidenceUnresolved = rendered.some((r) => !isConfirmedCurrentOperativeEvidence(r.supersessionStatus));
+        const outcome = ok({ siblings: rendered.map(({ evidenceCurrent: _ec, ...rest }) => rest) }, summary, summary);
+        // HEADROOM OPEN-2 TERMINAL Part A: fails closed for the WHOLE call
+        // whenever ANY sibling's own evidence is not confirmed current -
+        // now derived from resolved.evidenceCurrent per sibling (gated on
+        // that sibling's own real OperativeProvisionView.status whenever one
+        // exists), not the pre-fix physical-node-only supersessionStatus.
+        outcome.evidenceUnresolved = rendered.some((r) => !r.evidenceCurrent);
         return outcome;
       },
     },
@@ -604,16 +764,17 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
                 // same supersession-aware access path getOperativeProvision
                 // already uses.
                 const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, targetNode);
+                const display = legacySupersessionDisplay(resolved);
                 const { text, truncated } = truncate(resolved.text);
                 charsUsedRef.current += text.length;
                 const outcome = ok(
-                  { ref, resolvedSectionRef: targetNode.sectionRef, nodeId: targetNode.nodeId, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
+                  { ref, resolvedSectionRef: targetNode.sectionRef, nodeId: targetNode.nodeId, text, truncated, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason },
                   text,
-                  `resolved reference "${ref}" -> ${targetNode.sectionRef} (${resolved.supersessionStatus})`
+                  `resolved reference "${ref}" -> ${targetNode.sectionRef} (${display.supersessionStatus})`
                 );
-                // HEADROOM OPEN-2 registry audit finding: see getParentClause's
-                // own comment above - identical gap, identical fix.
-                outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus);
+                // HEADROOM OPEN-2 TERMINAL Part A: see getParentClause's own
+                // comment above - identical gap, identical fix.
+                outcome.evidenceUnresolved = !resolved.evidenceCurrent;
                 return outcome;
               }
             }
@@ -633,14 +794,15 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           if (resolution.status === "UNIQUE") {
             const node = resolution.node;
             const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, node);
+            const display = legacySupersessionDisplay(resolved);
             const { text, truncated } = truncate(resolved.text);
             charsUsedRef.current += text.length;
             const outcome = ok(
-              { ref, resolvedSectionRef: node.sectionRef, nodeId: node.nodeId, documentId, text, truncated, supersessionStatus: resolved.supersessionStatus, supersessionReason: resolved.supersessionReason },
+              { ref, resolvedSectionRef: node.sectionRef, nodeId: node.nodeId, documentId, text, truncated, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason },
               text,
-              `resolved reference "${ref}" -> ${node.sectionRef} (${resolved.supersessionStatus})`
+              `resolved reference "${ref}" -> ${node.sectionRef} (${display.supersessionStatus})`
             );
-            outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus);
+            outcome.evidenceUnresolved = !resolved.evidenceCurrent;
             return outcome;
           }
         }

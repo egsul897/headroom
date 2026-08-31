@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "TARGETED_TESTS",
+  "filesChanged": [
+    {
+      "file": "tests/certification/open-2-recert-independent-fresh.test.ts",
+      "changeType": "modified in place (5 assertions in section 4, plus the file's own header disposition comment) - preserving the file's identity and full history exactly like its own header notes the previous cycle did for part-b-final-recert-fix2-independent.test.ts",
+      "preFixRun": "16/16 passed against unmodified pre-fix code (confirmed reproduction of the exploit - required by the task before touching any code)",
+      "postFixRun": "16/16 passed against the fixed code (5 assertions updated in place to certify the fixed/safe behavior: getParentClause/getChildren/getSiblingClauses/getReferencedProvision no longer report CURRENT_OPERATIVE and now correctly set evidenceUnresolved=true; the full E2E case now reaches REVIEW_REQUIRED/not-VERIFIED/zero-trusted-records instead of COMPLETED/VERIFIED/one-trusted-record)"
+    },
+    {
+      "file": "tests/contract-model/semantic-tools-operative-state-discipline.test.ts",
+      "changeType": "new describe block appended (registry mechanical invariant - see 05-registry-invariant.json)",
+      "result": "16/16 passed (13 pre-existing unchanged + 3 new)"
+    },
+    {
+      "file": "tests/contract-model/open2-terminal-clean-deletion.test.ts",
+      "changeType": "new file",
+      "purpose": "Dedicated regression for the clean-deletion special case (null-currentText cause G) - real appliedChain/deletion-provenance data via a real applied DELETE_TEXT AmendmentEffectCandidate through the real computeOperativeContractState pipeline, distinct from the CONFLICTED case.",
+      "tests": [
+        "SETUP: a real, applied DELETE_TEXT effect produces status RESOLVED with currentText null, appliedChain non-empty, and the original node recorded in supersededSourceNodeIds",
+        "getReferencedProvision on the deleted section: never reports CURRENT_OPERATIVE and always sets evidenceUnresolved=true, despite view.status being OPERATIVE_STATE_RESOLVED",
+        "getSiblingClauses reading the deleted section as a sibling: fails the WHOLE call closed",
+        "DISTINCT from a genuine CONFLICTED provision: the clean-deletion reason string is its own ('validly deleted'), never conflated with 'not confidently resolved'",
+        "a never-amended sibling in the SAME state remains safely CURRENT - the clean-deletion fix does not degrade the ordinary case"
+      ],
+      "result": "5/5 passed"
+    },
+    {
+      "file": "tests/contract-model/open2-terminal-four-tool-matrix.test.ts",
+      "changeType": "new file",
+      "purpose": "The required 8-case x 4-tool end-to-end matrix (32 cells) - see 04-four-tool-fix.json for the full result table.",
+      "result": "8/8 passed (each test asserts all 4 tools for one case = 32 assertions total)"
+    }
+  ],
+  "filesUnchanged": {
+    "lib/contract-model/compiler/amendment/operative-state.ts": "NOT modified - buildProvisionView's producer logic (its fail-closed null-currentText behavior) is untouched, as required. isConfirmedCurrentOperativeEvidence, resolveOperativeDefinitionEvidence, resolveOperativeSectionEvidence, getNodeSupersessionStatus, buildNodeSupersessionIndex all untouched.",
+    "lib/contract-model/compiler/amendment/types.ts": "NOT modified."
+  },
+  "regressionScope": {
+    "targeted": "tests/contract-model/**, tests/foundation-audit/**, tests/certification/** - 203 files, 2302 tests, all passing (one pre-existing flaky timing test in tests/contract-model/part-b-terminal-recert-open3-independent.test.ts failed once in a combined run and passed on isolated re-run and in the full sweep - confirmed unrelated to this change, an O(n) vs O(n^2) scaling-ratio timing measurement)",
+    "fullSuite": "npx vitest run (entire repository) - 274 files, 2956 tests, all passing"
+  },
+  "regressionOfThreeAlreadySafeTools": {
+    "tools": ["getOperativeProvision", "getDefinition", "getRelatedAmendments"],
+    "confirmation": "Their own existing dedicated tests in tests/contract-model/semantic-tools-operative-state-discipline.test.ts's HEADROOM OPEN-2 describe block (CURRENT + CONFLICTED cases for each), tests/certification/open-2-recert-independent-fresh.test.ts sections 2, 3, 4 (CONTRAST case), 5, 6, and tests/certification/semantic-tools-supersession-blind-navigation.test.ts all pass unchanged after this fix. getOperativeProvision and getRelatedAmendments happen to internally call the SAME rewritten findProvisionView helper (unchanged) but do not call resolveNodeWithSupersessionAwareness or resolveParentSubstructureEvidence at all, so their own execute() bodies are byte-for-byte unmodified by this change. getDefinition is entirely untouched (it was already routed through resolveOperativeDefinitionEvidence, the already-correct sibling pattern this fix generalizes)."
+  }
+}

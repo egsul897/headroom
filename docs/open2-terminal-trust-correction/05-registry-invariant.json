@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "REGISTRY_INVARIANT",
+  "priorState": {
+    "permanentTestFile": "tests/contract-model/semantic-tools-operative-state-discipline.test.ts",
+    "note": "This file's own permanent enforcement test ('all 14 tools are present...') already iterates buildToolSet's REAL registry generically (not a hardcoded name list) and only asserts tools.length === 14 (total registered tool count) plus that every tool declares a member of VALID_DISCIPLINES - it does not hardcode a '7' count anywhere. The individual CURRENT_OPERATIVE_EVIDENCE per-tool tests in this same file (the 'HEADROOM OPEN-2' describe block) are 7 separate hand-named it() blocks - correct today, but a future 8th CURRENT_OPERATIVE_EVIDENCE tool could be added without anyone adding a matching test, and nothing would fail.",
+    "separateHardcodedCount": "tests/certification/open-2-recert-independent-fresh.test.ts's own section 1 ('independent registry recount') DOES hardcode 'exactly 7 of 14 tools' with an explicit sorted name list. This file is an independent AUDIT record (frozen historical disposition, mirroring every other Part B recertification artifact in this codebase) rather than a mechanism this fix is chartered to redesign - left untouched per the task's own framing of 'find the existing permanent registry test... in tests/contract-model/semantic-tools-operative-state-discipline.test.ts or similar', which points at the discipline-test file as the canonical permanent mechanism."
+  },
+  "fix": {
+    "location": "tests/contract-model/semantic-tools-operative-state-discipline.test.ts, new describe block 'HEADROOM OPEN-2 TERMINAL (Part A): registry mechanical invariant - never a hardcoded tool count'",
+    "mechanism": "A PROBES map (tool name -> tool input) is built from a small, real, shared 3-level structural fixture. A coverage test asserts: tools.filter(t => t.operativeStateDiscipline === 'CURRENT_OPERATIVE_EVIDENCE').map(t => t.name).sort() EQUALS Object.keys(PROBES).sort() - i.e. the REAL, freshly-built registry's own CURRENT_OPERATIVE_EVIDENCE tool set must exactly match the set of tools this test file has a demonstrable probe for. A future new CURRENT_OPERATIVE_EVIDENCE tool with no corresponding PROBES entry fails this coverage assertion outright (a real toEqual mismatch naming the missing tool), rather than a hardcoded count silently continuing to pass.",
+    "whyStructural": "This replaces 'exactly N tools' (a number that must be manually bumped and could just as easily be bumped without adding real test coverage) with 'every tool the registry declares must have a machine-checkable CURRENT+UNRESOLVED probe' - the coverage check and the actual behavioral checks are the SAME map, so it is not possible to satisfy the coverage assertion without also running that tool through both required cases.",
+    "additionalTests": [
+      "'every probed tool: CURRENT case -> evidenceUnresolved falsy, real evidence returned' - iterates PROBES generically, calling each tool with a shared fixture where the probed section carries a real, resolved OperativeProvisionView",
+      "'every probed tool: UNRESOLVED case (a real, on-file CONFLICTED view whose base physical node has NOT itself been superseded - the exact prospective/not-yet-applied shape this fix targets) -> evidenceUnresolved TRUE for every one of them' - the generic, registry-wide version of the exact exploit shape fixed by this change, run against every CURRENT_OPERATIVE_EVIDENCE tool without per-tool special-casing"
+    ]
+  },
+  "result": "3 new tests added (coverage assertion + CURRENT matrix + UNRESOLVED matrix), all passing against the real, current 7-tool registry. Running `npx vitest run tests/contract-model/semantic-tools-operative-state-discipline.test.ts` -> 16/16 pass (13 pre-existing + 3 new)."
+}

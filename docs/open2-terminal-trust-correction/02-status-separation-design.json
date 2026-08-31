@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STATUS_SEPARATION_DESIGN",
+  "coreInvariant": "TEXT SELECTION and TRUST SELECTION are separate questions. currentText presence may determine WHICH TEXT a tool serves; it must never determine WHETHER that text is trustworthy. Whenever a real matching OperativeProvisionView exists, its own view.status participates in the trust determination UNCONDITIONALLY - never silently discarded merely because currentText happens to be null.",
+  "implementation": {
+    "file": "lib/contract-model/compiler/semantic/tools.ts",
+    "primaryHelper": "resolveNodeWithSupersessionAwareness (kept its existing name for continuity with existing comments/tests that reference it by name; internals rewritten and its return type replaced)",
+    "secondaryHelper": "resolveParentSubstructureEvidence (new, getChildren's own dedicated check - see design note below on why it is deliberately NOT the same helper)",
+    "displayAdapter": "legacySupersessionDisplay (maps the new ResolvedNodeEvidence shape back onto the pre-existing {supersessionStatus, supersessionReason} wire fields every tool's JSON payload already committed callers to, so the fix is additive to the wire contract, not breaking)"
+  },
+  "resolvedNodeEvidenceShape": {
+    "text": "string - the text actually being returned to the model",
+    "textSource": "'AMENDED_CURRENT_TEXT' | 'BASE_DOCUMENT_TEXT' | 'HISTORICAL_BASE_TEXT'",
+    "provisionOperativeStatus": "OperativeStateStatus | null - null iff no matching OperativeProvisionView exists for this section at all",
+    "nodeSupersessionStatus": "NodeSupersessionStatus - always computed and always disclosed for provenance, but per the trust rule below NEVER the trust gate on its own once a real view exists",
+    "evidenceCurrent": "boolean - the ONE field a caller gates evidenceUnresolved on (evidenceUnresolved = !evidenceCurrent)",
+    "unresolvedReasons": "string[] - always populated when evidenceCurrent is false, explaining why; empty when true"
+  },
+  "trustRulePerTextSource": [
+    {
+      "textSource": "AMENDED_CURRENT_TEXT",
+      "condition": "view exists AND view.currentText is non-null. By buildProvisionView's own invariant this only ever happens when view.status === OPERATIVE_STATE_RESOLVED.",
+      "evidenceCurrent": true,
+      "reasoning": "The base node's own nodeSupersessionStatus being KNOWN_SUPERSEDED here is EXPECTED and IRRELEVANT - the amended text superseding the base node is exactly the point of an amendment. Never AND the physical node's own history against the trust verdict for its own replacement text."
+    },
+    {
+      "textSource": "BASE_DOCUMENT_TEXT (real view, null currentText, genuine CONFLICTED/PARTIAL/REVIEW_REQUIRED)",
+      "condition": "view exists AND view.currentText is null AND view.status !== OPERATIVE_STATE_RESOLVED",
+      "evidenceCurrent": false,
+      "reasoning": "THE ROOT-CAUSE FIX: gated on view.status alone, unconditionally, regardless of what getNodeSupersessionStatus reports for the underlying physical node. Before this fix, a not-yet-applied conflicting amendment left the physical node with no supersession record at all (appliedChain empty -> supersededSourceNodeIds never populated), so the old code silently reported CURRENT_OPERATIVE by omission. Now the real, on-file view.status always participates."
+    },
+    {
+      "textSource": "HISTORICAL_BASE_TEXT (clean deletion)",
+      "condition": "view exists AND view.currentText is null AND view.status === OPERATIVE_STATE_RESOLVED (a valid deletion is a correct, intended null-governance outcome per buildProvisionView's own DELETE_OPERATIONS branch, not a derivation failure)",
+      "evidenceCurrent": false,
+      "reasoning": "Distinguished from the genuine-unresolved-conflict case above via textSource and a distinct reason string ('validly deleted...') so a caller/audit trail never conflates 'this provision has a real unresolved conflict' with 'this provision was cleanly, validly deleted.' Both are evidenceCurrent:false - serving the old base text as though it still governed would be the actual harm in either case. See 03-null-currenttext-semantics.json reason G for the full writeup, and tests/contract-model/open2-terminal-clean-deletion.test.ts for the dedicated regression."
+    },
+    {
+      "textSource": "BASE_DOCUMENT_TEXT (no matching view at all - pure node-supersession case)",
+      "condition": "no OperativeProvisionView matches this section's sectionRef",
+      "evidenceCurrent": "nodeSupersessionStatus === 'CURRENT_OPERATIVE'",
+      "reasoning": "Unchanged by this fix - this is the ONE case where the physical-node-history question genuinely IS the whole answer, because there is no provision-level view to ask instead. This is exactly what getNodeSupersessionStatus/NodeSupersessionIndex exist for and must not be weakened."
+    }
+  ],
+  "whyGetChildrenIsSeparate": {
+    "helper": "resolveParentSubstructureEvidence",
+    "reasoning": "resolveNodeWithSupersessionAwareness answers 'is the TEXT I'm about to serve for this section trustworthy' - and for a fully-resolved amended replacement it legitimately ignores the base node's own supersession record, since the amendment superseding it is the whole point. getChildren answers a genuinely different question: 'does THIS PHYSICAL node's own child listing still accurately represent the section's CURRENT substructure.' Those two questions diverge in exactly one real case: a section with a real, fully-resolved amended currentText - the TEXT is trustworthy, but the OLD physical node's own children are NOT reliable evidence of the amended text's real substructure (an amendment substituting an entire section's text is never assumed to preserve its old lettered sub-clause layout). getChildren therefore requires BOTH nodeSupersessionStatus === CURRENT_OPERATIVE (this physical node was never itself replaced) AND (no matching view exists at all, OR the matching view's own status is OPERATIVE_STATE_RESOLVED). The second conjunct is the actual OPEN-2 TERMINAL fix for this tool: a real, on-file but not-yet-applied CONFLICTED/PARTIAL/REVIEW_REQUIRED view must gate this trust verdict too - never only 'has something already physically superseded this node.'",
+    "provenCell": "tests/contract-model/open2-terminal-four-tool-matrix.test.ts case 6_clean_resolved_amended documents and asserts this exact, deliberate divergence: getParentClause/getSiblingClauses/getReferencedProvision correctly report evidenceUnresolved falsy for that case, while getChildren correctly reports evidenceUnresolved true for the same fixture."
+  },
+  "callSitesFixed": [
+    "getParentClause (execute body) - now derives evidenceUnresolved from resolved.evidenceCurrent",
+    "getSiblingClauses (execute body) - per-sibling resolve via resolveNodeWithSupersessionAwareness, whole-call evidenceUnresolved = rendered.some(r => !r.evidenceCurrent)",
+    "getReferencedProvision (both call sites - the fromNodeId relative-reference branch and the absolute-reference per-document loop branch)",
+    "getChildren (execute body) - now calls the new resolveParentSubstructureEvidence instead of a bare getNodeSupersessionStatus call"
+  ],
+  "wireContractPreserved": "Every tool's JSON payload still exposes exactly the same field names it did before this fix (supersessionStatus, supersessionReason, parentSupersessionStatus, parentSupersessionReason) - legacySupersessionDisplay derives these display values from the new ResolvedNodeEvidence so no existing consumer of the tool result shape (model prompt rendering, other tests) needed to change field names, only the underlying trust computation changed."
+}

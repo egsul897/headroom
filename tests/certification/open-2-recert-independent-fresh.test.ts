@@ -13,26 +13,39 @@
  * of them besides getOperativeProvision, all fixed via the one shared
  * isConfirmedCurrentOperativeEvidence helper").
  *
- * DISPOSITION: this audit does NOT confirm closure. Section 4 below
- * reproduces a genuine, independently-discovered, STILL-OPEN gap in 4 of the
- * 7 CURRENT_OPERATIVE_EVIDENCE tools (getParentClause, getChildren,
- * getSiblingClauses, getReferencedProvision): whenever a real, on-file
- * amendment conflict/ambiguity has not yet been APPLIED as of the analysis
- * date (the ordinary, realistic case of a competing amendment with a future
- * or otherwise-not-yet-effective date, or an amendment whose base target is
- * genuinely ambiguous/unresolved), these four tools silently fall back to a
- * NODE-only supersession check that never consults the provision's own real
- * OperativeProvisionView.status at all - unlike getOperativeProvision,
- * getDefinition, and getRelatedAmendments, which correctly read view.status
- * directly and are independently confirmed safe in every scenario tested
- * here, including the exact same prospective-conflict shape. Section 4.4
- * proves this reaches compile.ts status COMPLETED, verify.ts
+ * ORIGINAL DISPOSITION (as first written): this audit did NOT confirm
+ * closure. Section 4 reproduced a genuine, independently-discovered,
+ * STILL-OPEN gap in 4 of the 7 CURRENT_OPERATIVE_EVIDENCE tools
+ * (getParentClause, getChildren, getSiblingClauses, getReferencedProvision):
+ * whenever a real, on-file amendment conflict/ambiguity had not yet been
+ * APPLIED as of the analysis date (the ordinary, realistic case of a
+ * competing amendment with a future or otherwise-not-yet-effective date, or
+ * an amendment whose base target is genuinely ambiguous/unresolved), these
+ * four tools silently fell back to a NODE-only supersession check that never
+ * consulted the provision's own real OperativeProvisionView.status at all -
+ * unlike getOperativeProvision, getDefinition, and getRelatedAmendments,
+ * which correctly read view.status directly. Section 4's own "consequence"
+ * case proved this reached compile.ts status COMPLETED, verify.ts
  * VERIFIED_NO_MATERIAL_GAP_FOUND, and a persisted SemanticTruthRecord.
- * trustStatus of VERIFIED end to end through real production code - the
- * exact class of defect OPEN-2 was chartered to universally close.
+ * trustStatus of VERIFIED end to end through real production code.
  *
  * See docs/phase-3f1-human-architecture-decision/16-evidence-tool-
- * recertification.json for the full disposition writeup.
+ * recertification.json for the full original disposition writeup.
+ *
+ * HEADROOM OPEN-2 TERMINAL (Part A) UPDATE: the gap section 4 named is now
+ * FIXED (lib/contract-model/compiler/semantic/tools.ts's
+ * resolveNodeWithSupersessionAwareness and getChildren's own parent check
+ * now derive their trust verdict from the section's real
+ * OperativeProvisionView.status UNCONDITIONALLY whenever a matching view
+ * exists, never only when currentText happens to be non-null). Section 4's
+ * own assertions were re-run against pre-fix code (confirmed reproducing,
+ * captured in docs/open2-terminal-trust-correction/06-targeted-tests.json)
+ * and then updated in place, exactly like this file's own sibling
+ * part-b-final-recert-fix2-independent.test.ts did for its own scenario-1
+ * previously, to certify the now-fixed (safe) behavior - never deleted or
+ * silently dropped, so the historical exploit shape and its resolution both
+ * remain on file. See docs/open2-terminal-trust-correction/04-four-tool-fix.json
+ * for the full fix writeup and end-to-end matrix.
  */
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import type Anthropic from "@anthropic-ai/sdk";
@@ -290,24 +303,33 @@ describe("3. CURRENT baseline (never-amended, real structure) for every one of t
 });
 
 // ---------------------------------------------------------------------------
-// 4. THE FALSIFICATION: a genuinely CONFLICTED provision whose competing
-// effects have NOT yet applied as of the analysis date (a real, on-file
-// amendment with a stated future/not-yet-effective date competing with
-// another - an entirely ordinary real-world shape, e.g. a signed-but-not-yet-
-// effective side letter). getOperativeProvision/getDefinition/
-// getRelatedAmendments correctly derive evidenceUnresolved from the
-// provision's own real view.status regardless of application timing.
-// getParentClause/getChildren/getSiblingClauses/getReferencedProvision do
-// NOT: their shared resolveNodeWithSupersessionAwareness helper (and
-// getChildren's own parity check) only consults view.status when
-// view.currentText happens to be non-null; a CONFLICTED (or
-// targetUnresolved/structuralHealthUnsafe-PARTIAL) view ALWAYS has
-// currentText === null by buildProvisionView's own design, so these four
-// tools silently fall through to a raw per-PHYSICAL-NODE supersession check
-// that has no record of this node at all unless something has actually
-// applied over it - reporting CURRENT_OPERATIVE by omission.
+// 4. HEADROOM OPEN-2 TERMINAL (Part A) - this section originally
+// falsified getParentClause/getChildren/getSiblingClauses/
+// getReferencedProvision against a genuinely CONFLICTED provision whose
+// competing effects had NOT yet applied as of the analysis date (a real,
+// on-file amendment with a stated future/not-yet-effective date competing
+// with another - an entirely ordinary real-world shape, e.g. a
+// signed-but-not-yet-effective side letter). Confirmed reproducing against
+// pre-fix production code (all 5 assertions below passed before this fix -
+// see docs/open2-terminal-trust-correction/06-targeted-tests.json for the
+// captured pre-fix run). ROOT CAUSE: the shared
+// resolveNodeWithSupersessionAwareness helper (and getChildren's own parity
+// check) only consulted view.status when view.currentText happened to be
+// non-null; a CONFLICTED (or targetUnresolved/structuralHealthUnsafe-
+// PARTIAL) view ALWAYS has currentText === null by buildProvisionView's own
+// design, so these four tools silently fell through to a raw per-PHYSICAL-
+// NODE supersession check that has no record of this node at all unless
+// something has actually applied over it - reporting CURRENT_OPERATIVE by
+// omission.
+//
+// FIXED (lib/contract-model/compiler/semantic/tools.ts): both
+// resolveNodeWithSupersessionAwareness and getChildren's own parent check
+// now derive their trust verdict from the section's real
+// OperativeProvisionView.status UNCONDITIONALLY whenever a matching view
+// exists - never only when currentText happens to be present. The
+// assertions below now certify the FIXED (safe) behavior.
 // ---------------------------------------------------------------------------
-describe("4. STILL-OPEN gap: prospective (not-yet-applied) CONFLICTED provision bypasses 4 of the 7 tools", () => {
+describe("4. FIXED: prospective (not-yet-applied) CONFLICTED provision no longer bypasses getParentClause/getChildren/getSiblingClauses/getReferencedProvision", () => {
   const DOC = "recert-doc-prospective-conflict";
   const INSTRUMENT = "instrument:recert-prospective-conflict";
   // Section 5.01 (the candidate's own primary source) states the SAME
@@ -351,31 +373,32 @@ describe("4. STILL-OPEN gap: prospective (not-yet-applied) CONFLICTED provision 
     expect(related.evidenceUnresolved).toBe(true);
   });
 
-  it("FALSIFICATION: getParentClause on a CHILD of the conflicted section reports evidenceUnresolved=false and hands back the conflicted section's own text as CURRENT_OPERATIVE", () => {
+  it("FIXED: getParentClause on a CHILD of the conflicted section no longer reports CURRENT_OPERATIVE and now correctly sets evidenceUnresolved=true", () => {
     const { index, state, effects } = buildState();
     const child = index.getNodeByRef(DOC, "7.40(a)")!;
     const charsUsed = { current: 0 };
     const tools = buildToolSet({ structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: effects, contextBundle: emptyContextBundle() }, DOC, charsUsed, DEFAULT_TOOL_BUDGET);
     const outcome = tools.find((t) => t.name === "getParentClause")!.execute({ nodeId: child.nodeId });
     expect(outcome.ok).toBe(true);
-    expect((outcome.result as { supersessionStatus: string }).supersessionStatus).toBe("CURRENT_OPERATIVE");
-    // THE BUG: a genuinely CONFLICTED provision's own physical text is
-    // reported as safe/current.
-    expect(outcome.evidenceUnresolved).not.toBe(true);
+    // FIXED: the parent's own real OperativeProvisionView.status (CONFLICTED)
+    // now gates this unconditionally - never CURRENT_OPERATIVE merely
+    // because the physical node itself hasn't (yet) been superseded.
+    expect((outcome.result as { supersessionStatus: string }).supersessionStatus).not.toBe("CURRENT_OPERATIVE");
+    expect(outcome.evidenceUnresolved).toBe(true);
   });
 
-  it("FALSIFICATION: getChildren on the conflicted section's OWN node reports parentSupersessionStatus CURRENT_OPERATIVE and evidenceUnresolved=false", () => {
+  it("FIXED: getChildren on the conflicted section's OWN node no longer reports parentSupersessionStatus CURRENT_OPERATIVE and now correctly sets evidenceUnresolved=true", () => {
     const { index, state, effects } = buildState();
     const parent = index.getNodeByRef(DOC, "7.40")!;
     const charsUsed = { current: 0 };
     const tools = buildToolSet({ structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: effects, contextBundle: emptyContextBundle() }, DOC, charsUsed, DEFAULT_TOOL_BUDGET);
     const outcome = tools.find((t) => t.name === "getChildren")!.execute({ nodeId: parent.nodeId });
     expect(outcome.ok).toBe(true);
-    expect((outcome.result as { parentSupersessionStatus: string }).parentSupersessionStatus).toBe("CURRENT_OPERATIVE");
-    expect(outcome.evidenceUnresolved).not.toBe(true);
+    expect((outcome.result as { parentSupersessionStatus: string }).parentSupersessionStatus).not.toBe("CURRENT_OPERATIVE");
+    expect(outcome.evidenceUnresolved).toBe(true);
   });
 
-  it("FALSIFICATION: getSiblingClauses reading the conflicted section as a sibling reports evidenceUnresolved=false", () => {
+  it("FIXED: getSiblingClauses reading the conflicted section as a sibling no longer reports CURRENT_OPERATIVE and now correctly sets evidenceUnresolved=true", () => {
     const { index, state, effects } = buildState();
     const node501 = index.getNodeByRef(DOC, "5.01")!;
     const charsUsed = { current: 0 };
@@ -385,21 +408,21 @@ describe("4. STILL-OPEN gap: prospective (not-yet-applied) CONFLICTED provision 
     const siblings = (outcome.result as { siblings: { sectionRef: string; supersessionStatus: string }[] }).siblings;
     const conflictedSibling = siblings.find((s) => s.sectionRef === "7.40")!;
     expect(conflictedSibling).toBeDefined();
-    expect(conflictedSibling.supersessionStatus).toBe("CURRENT_OPERATIVE");
-    expect(outcome.evidenceUnresolved).not.toBe(true);
+    expect(conflictedSibling.supersessionStatus).not.toBe("CURRENT_OPERATIVE");
+    expect(outcome.evidenceUnresolved).toBe(true);
   });
 
-  it("FALSIFICATION: getReferencedProvision resolving an absolute reference to the conflicted section reports evidenceUnresolved=false", () => {
+  it("FIXED: getReferencedProvision resolving an absolute reference to the conflicted section no longer reports CURRENT_OPERATIVE and now correctly sets evidenceUnresolved=true", () => {
     const { index, state, effects } = buildState();
     const charsUsed = { current: 0 };
     const tools = buildToolSet({ structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: effects, contextBundle: emptyContextBundle() }, DOC, charsUsed, DEFAULT_TOOL_BUDGET);
     const outcome = tools.find((t) => t.name === "getReferencedProvision")!.execute({ ref: "7.40" });
     expect(outcome.ok).toBe(true);
-    expect((outcome.result as { supersessionStatus: string }).supersessionStatus).toBe("CURRENT_OPERATIVE");
-    expect(outcome.evidenceUnresolved).not.toBe(true);
+    expect((outcome.result as { supersessionStatus: string }).supersessionStatus).not.toBe("CURRENT_OPERATIVE");
+    expect(outcome.evidenceUnresolved).toBe(true);
   });
 
-  it("THE CONSEQUENCE, PROVEN END TO END: a real getSiblingClauses tool call reaching the prospectively-conflicted section drives a genuinely conflicted rule all the way to compile.ts status COMPLETED, verify.ts VERIFIED_NO_MATERIAL_GAP_FOUND, and a persisted SemanticTruthRecord.trustStatus of VERIFIED", async () => {
+  it("FIXED, PROVEN END TO END: a real getSiblingClauses tool call reaching the prospectively-conflicted section no longer drives the rule to compile.ts COMPLETED/verify.ts VERIFIED - it now correctly reaches REVIEW_REQUIRED and no SemanticTruthRecord persists as trusted VERIFIED", async () => {
     const { index, state, effects } = buildState();
     const node501 = index.getNodeByRef(DOC, "5.01")!;
     const candidate = makeCandidate({ documentId: DOC, structuralNodeKeys: [node501.nodeKey], structuralNodeIds: [node501.nodeId], normalizedSourceRef: "5.01" });
@@ -417,13 +440,14 @@ describe("4. STILL-OPEN gap: prospective (not-yet-applied) CONFLICTED provision 
 
     expect(compilationResult.toolCallLog).toHaveLength(1);
     expect(compilationResult.toolCallLog[0]!.toolName).toBe("getSiblingClauses");
-    // THE GAP, END TO END:
-    expect(compilationResult.toolCallLog[0]!.evidenceUnresolved).not.toBe(true);
-    expect(compilationResult.failureReasons).not.toContain("OPERATIVE_STATE_UNRESOLVED");
-    expect(compilationResult.status).toBe("COMPLETED");
+    // THE FIX, END TO END:
+    expect(compilationResult.toolCallLog[0]!.evidenceUnresolved).toBe(true);
+    expect(compilationResult.failureReasons).toContain("OPERATIVE_STATE_UNRESOLVED");
+    expect(compilationResult.status).toBe("REVIEW_REQUIRED");
 
     const verification = await verifyCompiledCandidate({ compilerInput, compilationResult }, { skipSemanticReview: true });
-    expect(verification.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
+    expect(verification.status).toBe("REVIEW_REQUIRED");
+    expect(verification.status).not.toMatch(/^VERIFIED_/);
 
     const compilerVersions = { irSchemaVersion: IR_SCHEMA_VERSION, compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION, toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION };
     await persistSemanticTruthForInstrument({
@@ -433,10 +457,10 @@ describe("4. STILL-OPEN gap: prospective (not-yet-applied) CONFLICTED provision 
     const trusted = await getTrustedSemanticTruth(COMPANY_ID, INSTRUMENT);
     const all = await getAllSemanticTruthForInstrument(COMPANY_ID, INSTRUMENT);
     expect(all.length).toBeGreaterThan(0);
-    // THE FULL CONSEQUENCE: a rule whose real justification depended on a
-    // genuinely CONFLICTED section persists as trusted current truth.
-    expect(trusted.length).toBe(1);
-    expect(all[0]!.trustStatus).toBe("VERIFIED");
+    // THE FULL FIX: a rule whose real justification depended on a genuinely
+    // CONFLICTED section can no longer persist as trusted current truth.
+    expect(trusted.length).toBe(0);
+    expect(all[0]!.trustStatus).toBe("REVIEW_REQUIRED");
   });
 
   it("root cause, confirmed directly against amendment/operative-state.ts: isConfirmedCurrentOperativeEvidence itself is correct (CONFLICTED is never a confirmed-current value) - the defect is which status value the 4 broken tools pass to it, not the shared helper", () => {

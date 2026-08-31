@@ -320,4 +320,116 @@ describe("BLOCKER-5 permanent enforcement: every registered LLM-facing evidence 
       expect(typeof tool.operativeStateDiscipline).toBe("string");
     }
   });
+
+  // ---------------------------------------------------------------------------
+  // HEADROOM OPEN-2 TERMINAL (Part A) - registry MECHANICAL invariant.
+  //
+  // The individual `it(...)` blocks above (one per CURRENT_OPERATIVE_EVIDENCE
+  // tool, by name) prove each tool's own behavior today, but a hardcoded list
+  // of 7 names is exactly the shape of assertion that goes silently stale the
+  // moment an 8th CURRENT_OPERATIVE_EVIDENCE tool is added without anyone
+  // remembering to add a matching test for it - a human-discipline gap, not a
+  // mechanical one. This block replaces that risk with a STRUCTURAL
+  // assertion: it iterates buildToolSet's own real, freshly-built registry
+  // (never a hardcoded name list), and for every tool currently declared
+  // CURRENT_OPERATIVE_EVIDENCE, demands a registered PROBE below. A future
+  // new CURRENT_OPERATIVE_EVIDENCE tool with no matching PROBE entry fails
+  // this test outright (the coverage assertion at the bottom) rather than
+  // silently passing - forcing a human to prove ITS trust-determination path
+  // is real, exactly the property a fixed count could never enforce.
+  //
+  // One shared, minimal fixture serves every probe: a real 3-level nested
+  // structural tree (root section "6" -> child "6.02" -> grandchild
+  // "6.02(a)"), plus a sibling "6.01" with no amendment history of its own.
+  // Section "6.02" (never in any supersededSourceNodeIds - isolating the
+  // exact prospective/not-yet-applied-conflict shape this fix targets, not
+  // the already-otherwise-covered physically-superseded shape) carries a real
+  // OperativeProvisionView whose OWN status alone flips between the CURRENT
+  // and UNRESOLVED probe cases; a sibling DEFINITION view does the same for
+  // getDefinition.
+  // ---------------------------------------------------------------------------
+  describe("HEADROOM OPEN-2 TERMINAL (Part A): registry mechanical invariant - never a hardcoded tool count", () => {
+    const PROBE_DOC = "probe-doc";
+    function buildProbeIndex() {
+      const root: StructuralNode = { documentId: PROBE_DOC, nodeType: "SECTION", heading: "Covenants", sectionRef: "6", nodeKey: `${PROBE_DOC}::6`, nodeId: "n-probe-6", charStart: 0, charEnd: 100, ordinal: 0, parentSectionRef: null, parentNodeId: null };
+      const sibling: StructuralNode = { documentId: PROBE_DOC, nodeType: "SECTION", heading: "Indebtedness", sectionRef: "6.01", nodeKey: `${PROBE_DOC}::6.01`, nodeId: "n-probe-6-01", charStart: 0, charEnd: 40, ordinal: 0, parentSectionRef: "6", parentNodeId: root.nodeId };
+      const probe: StructuralNode = { documentId: PROBE_DOC, nodeType: "SECTION", heading: "Liens", sectionRef: "6.02", nodeKey: `${PROBE_DOC}::6.02`, nodeId: "n-probe-6-02", charStart: 40, charEnd: 80, ordinal: 1, parentSectionRef: "6", parentNodeId: root.nodeId };
+      const grandchild: StructuralNode = { documentId: PROBE_DOC, nodeType: "CLAUSE", heading: "(a)", sectionRef: "6.02(a)", nodeKey: `${PROBE_DOC}::6.02(a)`, nodeId: "n-probe-6-02-a", charStart: 40, charEnd: 60, ordinal: 0, parentSectionRef: "6.02", parentNodeId: probe.nodeId };
+      const text = "Section 6 Covenants.\nSection 6.01 Indebtedness. text.\nSection 6.02 Liens. text. (a) sub-clause.\n";
+      const index = buildStructuralIndex(new Map([[PROBE_DOC, { text, nodes: [root, sibling, probe, grandchild] }]]), [], []);
+      return { index, root, sibling, probe, grandchild };
+    }
+
+    function baseView(overrides: Partial<OperativeProvisionView>): OperativeProvisionView {
+      return {
+        instrumentKey: "probe-instrument", provisionKey: "probe-key", kind: "SECTION", documentId: PROBE_DOC,
+        sectionRef: null, definedTermRef: null, asOfDate: "2026-01-01",
+        currentSourceDocumentId: PROBE_DOC, currentSourceNodeKey: null, currentSourceNodeId: null,
+        currentText: null, fullChain: [], appliedChain: [], supersededSourceNodeKeys: [], supersededSourceNodeIds: [],
+        status: "OPERATIVE_STATE_RESOLVED", unresolvedIssues: [], conflicts: [], targetResolutionStatus: "UNIQUE",
+        targetResolutionReason: null, candidateSourceNodeIds: [], structuralHealthStatus: "STRUCTURAL_HEALTH_SUFFICIENT",
+        structuralHealthIssues: [], attemptedText: null, reviewRequired: false, candidateTexts: [],
+        ...overrides,
+      };
+    }
+
+    function buildProbeState(caseKind: "CURRENT" | "UNRESOLVED"): OperativeContractState {
+      const sectionView =
+        caseKind === "CURRENT"
+          ? baseView({ sectionRef: "6.02", status: "OPERATIVE_STATE_RESOLVED", currentText: "Section 6.02 Liens (amended). text.", currentSourceNodeId: "external-amendment-node" })
+          : baseView({ sectionRef: "6.02", status: "OPERATIVE_STATE_CONFLICTED", currentText: null, reviewRequired: true, unresolvedIssues: ["currentText is withheld for a genuinely conflicted provision"], candidateTexts: ["candidate A", "candidate B"] });
+      const definitionView =
+        caseKind === "CURRENT"
+          ? baseView({ kind: "DEFINITION", sectionRef: null, definedTermRef: "probe defined term", status: "OPERATIVE_STATE_RESOLVED", currentText: "\"Probe Defined Term\" means the amended definition.", currentSourceNodeId: "external-amendment-def-node" })
+          : baseView({ kind: "DEFINITION", sectionRef: null, definedTermRef: "probe defined term", status: "OPERATIVE_STATE_CONFLICTED", currentText: null, reviewRequired: true, unresolvedIssues: ["currentText is withheld for a genuinely conflicted definition"], candidateTexts: ["candidate A", "candidate B"] });
+      const status = caseKind === "CURRENT" ? "OPERATIVE_STATE_RESOLVED" : "OPERATIVE_STATE_CONFLICTED";
+      return { instrumentKey: "probe-instrument", asOfDate: "2026-01-01", provisions: [sectionView, definitionView], status, summary: "probe", unattachedEffects: [] };
+    }
+
+    // Every tool declared CURRENT_OPERATIVE_EVIDENCE MUST have an entry here.
+    // The coverage assertion below fails the test if the real registry ever
+    // contains a name this map does not - so a future new tool cannot pass
+    // silently merely by existing.
+    function buildProbes(nodes: ReturnType<typeof buildProbeIndex>): Record<string, Record<string, unknown>> {
+      return {
+        getOperativeProvision: { sectionRef: "6.02" },
+        getDefinition: { term: "Probe Defined Term" },
+        getParentClause: { nodeId: nodes.grandchild.nodeId },
+        getChildren: { nodeId: nodes.probe.nodeId },
+        getSiblingClauses: { nodeId: nodes.sibling.nodeId },
+        getReferencedProvision: { ref: "6.02" },
+        getRelatedAmendments: { ref: "6.02" },
+      };
+    }
+
+    it("every tool the real registry currently declares CURRENT_OPERATIVE_EVIDENCE has a registered probe (coverage never silently drops a future tool)", () => {
+      const { index } = buildProbeIndex();
+      const tools = buildToolSet({ structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, PROBE_DOC, { current: 0 }, DEFAULT_TOOL_BUDGET);
+      const registeredCurrentOperativeEvidenceTools = tools.filter((t) => t.operativeStateDiscipline === "CURRENT_OPERATIVE_EVIDENCE").map((t) => t.name).sort();
+      const probedToolNames = Object.keys(buildProbes(buildProbeIndex())).sort();
+      expect(registeredCurrentOperativeEvidenceTools, "every CURRENT_OPERATIVE_EVIDENCE tool in the real registry must have a probe entry below - add one rather than widen this exemption").toEqual(probedToolNames);
+    });
+
+    it("every probed tool: CURRENT case -> evidenceUnresolved falsy, real evidence returned", () => {
+      const nodes = buildProbeIndex();
+      const state = buildProbeState("CURRENT");
+      const tools = buildToolSet({ structuralIndex: nodes.index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, PROBE_DOC, { current: 0 }, DEFAULT_TOOL_BUDGET);
+      const probes = buildProbes(nodes);
+      for (const [name, input] of Object.entries(probes)) {
+        const outcome = tools.find((t) => t.name === name)!.execute(input);
+        expect(outcome.evidenceUnresolved, `${name} (CURRENT case) expected evidenceUnresolved falsy`).not.toBe(true);
+      }
+    });
+
+    it("every probed tool: UNRESOLVED case (a real, on-file CONFLICTED view whose base physical node has NOT itself been superseded - the exact prospective/not-yet-applied shape this fix targets) -> evidenceUnresolved TRUE for every one of them", () => {
+      const nodes = buildProbeIndex();
+      const state = buildProbeState("UNRESOLVED");
+      const tools = buildToolSet({ structuralIndex: nodes.index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle() }, PROBE_DOC, { current: 0 }, DEFAULT_TOOL_BUDGET);
+      const probes = buildProbes(nodes);
+      for (const [name, input] of Object.entries(probes)) {
+        const outcome = tools.find((t) => t.name === name)!.execute(input);
+        expect(outcome.evidenceUnresolved, `${name} (UNRESOLVED case) expected evidenceUnresolved TRUE - a real, on-file but not-yet-superseded conflicted view must never be reported safe`).toBe(true);
+      }
+    });
+  });
 });
