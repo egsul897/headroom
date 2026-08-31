@@ -18,6 +18,8 @@ import { validateCompilationUnit } from "../../ir/validate";
 import { getSemanticCaller, type SemanticCaller } from "./caller";
 import { InMemorySemanticCompilationCache, computeCacheKey, type SemanticCompilationCache } from "./cache";
 import { normalizeSubmission } from "./normalize";
+import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
+import type { IRDefinition } from "../../ir/types";
 import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticCompilerErrorDetail, SemanticCompilerFailureReason, SemanticCompilerInput } from "./types";
 
 // Phase 3F.1.4 (P1-1 remediation) - this module-level singleton is used by
@@ -50,8 +52,43 @@ export function classifyFailureCategory(errorClass: string, message: string): Se
   return "INTERNAL";
 }
 
+/** Phase 3F.1 FIX-2 - the ONE place `inputHasUnresolvedOperativeEvidence`/`unresolvedEvidenceItemIds` are ever derived, straight off the context bundle's own already-computed fields (never re-scanning `items` a second, independent way here). */
+function contextBundleEvidenceFlags(input: SemanticCompilerInput): Pick<SemanticCompilationResult, "inputHasUnresolvedOperativeEvidence" | "unresolvedEvidenceItemIds"> {
+  return { inputHasUnresolvedOperativeEvidence: input.contextBundle.hasUnresolvedOperativeEvidence, unresolvedEvidenceItemIds: input.contextBundle.unresolvedEvidenceItemIds };
+}
+
+/**
+ * Phase 3F.1 FIX-2 (§5, defense in depth - "optional but preferred where
+ * practical") - independent of `contextBundleEvidenceFlags` above (which
+ * depends on the context bundle's own items having been routed through
+ * evidenceState at CONSTRUCTION time - the normal, real production path):
+ * for every IRDefinition this compilation actually emitted, directly
+ * re-resolves that exact term's CURRENT operative status against the real
+ * operativeState/structuralIndex this compilation's own toolAccess already
+ * carries (the SAME canonical resolveOperativeDefinitionEvidence primitive
+ * context-retrieval's own resolveDefinitionEvidenceState and semantic/
+ * tools.ts's getDefinition already rely on). This is what keeps the
+ * required end-to-end invariant true even for a bundle that was HAND-BUILT
+ * or produced by code that predates this fix (no evidenceState on its own
+ * items at all, `hasUnresolvedOperativeEvidence` never set) - a compiled
+ * definition can never be silently trusted merely because the upstream
+ * bundle construction step happened to skip trust annotation. Mirrors
+ * semantic-verification/verify.ts's OWN independent copy of this exact
+ * check (deliberately duplicated, never imported, per that module's own
+ * independence-from-compile.ts contract) rather than a shared helper.
+ */
+function hasStaleReferencedDefinition(input: SemanticCompilerInput, definitions: IRDefinition[]): boolean {
+  const { operativeState, structuralIndex } = input.toolAccess;
+  if (definitions.length === 0) return false;
+  const supersessionIndex = operativeState ? buildNodeSupersessionIndex([{ baseDocumentId: input.sourceDocumentId, state: operativeState }]) : EMPTY_SUPERSESSION_INDEX;
+  return definitions.some((def) => {
+    const resolution = resolveOperativeDefinitionEvidence({ index: structuralIndex, operativeState, term: def.termName, searchDocumentIds: [def.sourceDocumentId ?? input.sourceDocumentId], supersessionIndex });
+    return resolution.outcome !== "FOUND" || !resolution.isCurrentTruth;
+  });
+}
+
 /** Phase 3F.1 §33/F6 - builds a structured FAILED result for a genuinely thrown exception, so compileCovenantToIR never lets a caller's own try/catch discard the failure's real content (the exact gap the DSGR first-blind run exposed: 2 compile failures preserved only `{candidateRef, status: "FAILED"}`). Never cached - a thrown exception is more likely transient (network blip, timeout) than a structured, deterministic model/schema failure, and caching it would incorrectly treat a transient condition as a permanent verdict for this cache key's lifetime. */
-function buildTransportFailureResult(err: unknown, caller: SemanticCaller, cacheKey: string, retryCount: number | null): SemanticCompilationResult {
+function buildTransportFailureResult(err: unknown, caller: SemanticCaller, cacheKey: string, retryCount: number | null, evidenceFlags: Pick<SemanticCompilationResult, "inputHasUnresolvedOperativeEvidence" | "unresolvedEvidenceItemIds">): SemanticCompilationResult {
   const errorClass = err instanceof Error ? err.constructor.name : "UnknownError";
   const rawMessage = err instanceof Error ? err.message : String(err);
   const sanitizedMessage = sanitizeErrorMessage(rawMessage);
@@ -72,6 +109,7 @@ function buildTransportFailureResult(err: unknown, caller: SemanticCaller, cache
     irExtensionCandidates: [],
     unresolvedIssues: [`Compilation threw ${errorClass}: ${sanitizedMessage}`],
     toolCallLog: [],
+    ...evidenceFlags,
     rawModelOutput: null,
     provider: caller.providerName,
     model: caller.model,
@@ -101,6 +139,8 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   const cached = cache.get(cacheKey);
   if (cached) return cached;
 
+  const evidenceFlags = contextBundleEvidenceFlags(input);
+
   // Phase 3F.1 §33/F6 - this call is never allowed to throw out of
   // compileCovenantToIR uncaught: a genuine transport/internal exception is
   // converted into the same structured SemanticCompilationResult shape every
@@ -111,7 +151,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
   try {
     callResult = await caller.compile(input);
   } catch (err) {
-    return buildTransportFailureResult(err, caller, cacheKey, null);
+    return buildTransportFailureResult(err, caller, cacheKey, null, evidenceFlags);
   }
   const compiledAt = new Date().toISOString();
 
@@ -126,6 +166,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       irExtensionCandidates: [],
       unresolvedIssues: callResult.failureDetail ? [callResult.failureDetail] : [],
       toolCallLog: callResult.toolCallLog,
+      ...evidenceFlags,
       rawModelOutput: callResult.rawSubmission,
       provider: caller.providerName,
       model: caller.model,
@@ -180,7 +221,26 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     // failureReasons as at least REVIEW_REQUIRED (never silently upgraded
     // by ruleCount>0 alone). Never suppressed even when the model's own
     // narrative text made no mention of the issue.
-    if (!failureReasons.includes("OPERATIVE_STATE_UNRESOLVED") && callResult.toolCallLog.some((entry) => entry.evidenceUnresolved)) failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
+    //
+    // Phase 3F.1 FIX-2 ("the actual safety gate must not require any tool
+    // call") - `evidenceFlags.inputHasUnresolvedOperativeEvidence` is an
+    // INDEPENDENT second source for this exact same gate, computed from the
+    // context bundle handed to the model on turn 1 (context-retrieval/
+    // pipeline.ts's own hasUnresolvedOperativeEvidence), never from anything
+    // the model did. This is the fix for the reproduced exploit: a model
+    // that submits sufficiency COMPLETE on turn 1 with a completely EMPTY
+    // toolCallLog can no longer reach COMPLETED/REVIEW_REQUIRED-free status
+    // when the bundle it was given already embedded a CONFLICTED/AMBIGUOUS/
+    // PARTIAL/superseded definition or section excerpt - determineStatus
+    // below already treats any non-empty failureReasons as at least
+    // REVIEW_REQUIRED regardless of the model's own self-reported
+    // sufficiency, exactly mirroring the pre-existing toolCallLog-derived
+    // check this is threaded alongside (never instead of).
+    if (
+      !failureReasons.includes("OPERATIVE_STATE_UNRESOLVED") &&
+      (callResult.toolCallLog.some((entry) => entry.evidenceUnresolved) || evidenceFlags.inputHasUnresolvedOperativeEvidence || hasStaleReferencedDefinition(input, normalized.definitions))
+    )
+      failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
 
     const hasReviewRequiredSufficiency = normalized.rules.some((r) => r.sufficiency !== "COMPLETE") || normalized.definitions.some((d) => d.sufficiency !== "COMPLETE");
     const unresolvedIssues = [
@@ -200,6 +260,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       irExtensionCandidates: normalized.irExtensionCandidates,
       unresolvedIssues,
       toolCallLog: callResult.toolCallLog,
+      ...evidenceFlags,
       rawModelOutput: callResult.rawSubmission,
       provider: caller.providerName,
       model: caller.model,
@@ -210,7 +271,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     cache.set(cacheKey, result);
     return result;
   } catch (err) {
-    const failure = buildTransportFailureResult(err, caller, cacheKey, null);
+    const failure = buildTransportFailureResult(err, caller, cacheKey, null, evidenceFlags);
     return { ...failure, errorDetail: failure.errorDetail ? { ...failure.errorDetail, hadPartialOutput: true } : null };
   }
 }

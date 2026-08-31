@@ -837,3 +837,88 @@ export function resolveOperativeDefinitionEvidence(input: ResolveOperativeDefini
   }
   return { outcome: "NOT_FOUND", reason: `no defined term matching "${term}" found in this instrument's documents` };
 }
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1 FIX-2 (trust-metadata-belongs-to-the-evidence-itself remediation)
+// - the SECTION-kind counterpart to resolveOperativeDefinitionEvidence above,
+// added so context-retrieval (Phase 2D) can route a SECTION/PROVISO/
+// EXCEPTION/CONDITION/SHARED_CAP/CROSS_REFERENCE context item through the
+// exact same amendment-aware resolution discipline semantic/tools.ts's own
+// resolveNodeWithSupersessionAwareness already applies for the model's
+// evidence tools - reusing the SAME DefinitionEvidenceResolution/
+// DefinitionEvidenceStatus union (never a second, parallel vocabulary; see
+// this module's own header note on "do not over-normalize if existing types
+// already carry most of what's needed"). Deliberately NODE-based rather than
+// ref-string-based: every context-retrieval call site that needs this
+// already holds a real, previously-resolved StructuralNode (the candidate's
+// own primary node, an ancestor, a child, a sibling, a cross-reference
+// target) - re-resolving a bare ref string via resolveUniqueNodeByRef here
+// would just redundantly repeat a uniqueness check the caller's own
+// traversal already performed, and would risk a DIFFERENT answer than the
+// one physical occurrence the caller actually has in hand.
+// ---------------------------------------------------------------------------
+
+export interface ResolveOperativeSectionEvidenceInput {
+  /** Null/undefined - no amendment pipeline run exists for this instrument at all (never amended is not an error) - resolution proceeds straight to the supersession-only check below. */
+  operativeState: OperativeContractState | null | undefined;
+  /** The document this node's own OperativeProvisionView (if any) is anchored under - matches OperativeStateInput.baseDocumentId's own convention (every provision view in one instrument's OperativeContractState shares the same baseDocumentId, regardless of which real document a section physically lives in - see buildProvisionView's own `documentId: baseDocumentId`). */
+  documentId: string;
+  /** The already-resolved, real physical occurrence - never re-resolved from a bare ref string here (see this function's own header comment). */
+  node: { nodeId: string; sectionRef: string };
+  /** Optional - when supplied, a section with no recorded amendment activity of its own whose physical occurrence this index independently knows to be superseded (e.g. its enclosing section was independently replaced) is labeled KNOWN_SUPERSEDED rather than CURRENT. Omitting this (or passing EMPTY_SUPERSESSION_INDEX) degrades to the pre-existing "never amended, never checked against wider supersession evidence" default of CURRENT. */
+  supersessionIndex?: NodeSupersessionIndex;
+}
+
+/**
+ * The single canonical primitive for "what is this SECTION's real operative
+ * evidence, right now" - mirrors resolveOperativeDefinitionEvidence's own
+ * two-branch structure exactly (a real, on-file OperativeProvisionView for
+ * this section takes priority; otherwise a supersession-only check against
+ * the base-document occurrence the caller already resolved), reusing
+ * OperativeProvisionView fields already computed by buildProvisionView above
+ * rather than deriving anything new.
+ */
+export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEvidenceInput): DefinitionEvidenceResolution {
+  const { operativeState, documentId, node, supersessionIndex } = input;
+  const normalizedSection = node.sectionRef.replace(/\s+/g, "");
+  const view = operativeState?.provisions.find((p) => p.kind === "SECTION" && (p.sectionRef ?? "").replace(/\s+/g, "") === normalizedSection) ?? null;
+
+  if (view) {
+    // A real, on-file OperativeProvisionView for this exact section is
+    // ALWAYS disclosed (outcome FOUND, never a refusal) regardless of its
+    // own targetResolutionStatus - mirroring resolveOperativeDefinitionEvidence's
+    // own Branch 1 discipline above.
+    if (view.targetResolutionStatus === "AMBIGUOUS") {
+      return { outcome: "AMBIGUOUS", status: "AMBIGUOUS_TARGET", reason: view.targetResolutionReason ?? `Section "${node.sectionRef}" has an ambiguous amendment target.`, candidateCount: view.candidateSourceNodeIds.length, documentId: view.documentId };
+    }
+    if (view.targetResolutionStatus === "NOT_FOUND") {
+      // A real amendment claims new text for this section, but the section's
+      // own base-document target could not be confirmed to exist - disclosed
+      // as explicitly historical/unconfirmed (attemptedText), never as
+      // current, exactly mirroring the DEFINITION-side HISTORICAL_ONLY branch.
+      return { outcome: "FOUND", status: "HISTORICAL_ONLY", text: view.attemptedText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
+    }
+    let status: DefinitionEvidenceStatus;
+    if (view.status === "OPERATIVE_STATE_CONFLICTED") status = "OPERATIVE_STATE_UNRESOLVED";
+    else if (view.status === "OPERATIVE_STATE_PARTIAL") status = "PARTIAL_AMENDMENT";
+    else if (view.status === "OPERATIVE_STATE_REVIEW_REQUIRED") status = "OPERATIVE_STATE_UNRESOLVED";
+    else status = "CURRENT";
+    return { outcome: "FOUND", status, text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: status === "CURRENT", unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
+  }
+
+  // No recorded amendment activity for this section at all - the caller
+  // already holds a real, uniquely-resolved physical node (no ambiguity
+  // check to repeat here); the only remaining question is whether that
+  // SAME physical occurrence is independently known-superseded (e.g. its
+  // enclosing section was itself replaced by a SECTION-kind amendment
+  // effect elsewhere, or a document-level restatement recorded it) - the
+  // exact same discipline getDefinition's own base-document fallback
+  // already applies (Phase 3F.1.6-terminal Part A).
+  if (supersessionIndex) {
+    const supersession = getNodeSupersessionStatus(supersessionIndex, documentId, node.nodeId);
+    if (supersession.status === "KNOWN_SUPERSEDED") {
+      return { outcome: "FOUND", status: "KNOWN_SUPERSEDED", text: null, documentId, source: "base-document", isCurrentTruth: false, unresolvedIssues: [supersession.reason], legacyStatus: "OPERATIVE_STATE_PARTIAL" };
+    }
+  }
+  return { outcome: "FOUND", status: "CURRENT", text: null, documentId, source: "base-document", isCurrentTruth: true, unresolvedIssues: [], legacyStatus: "OPERATIVE_STATE_RESOLVED" };
+}

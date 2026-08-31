@@ -12,7 +12,8 @@
  * it was given; it never edits/repairs/replaces any IRRule/IRDefinition.
  */
 import { buildSourceInventory } from "./source-inventory";
-import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex } from "../amendment/operative-state";
+import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
+import type { NodeSupersessionIndex } from "../amendment/types";
 import { buildIrInventory } from "./ir-inventory";
 import { reconcileInventories } from "./reconciliation";
 import { buildFindingsFromReconciliation } from "./findings";
@@ -187,6 +188,50 @@ function hasUnresolvedDefinitionEvidence(compilationResult: Pick<SemanticCompila
 }
 
 /**
+ * Phase 3F.1 FIX-2 ("the actual safety gate must not require any tool
+ * call") - INDEPENDENT of hasUnresolvedDefinitionEvidence above (which can
+ * only ever see something if a tool was actually called): true when the
+ * context bundle this candidate's own compilation was built from ITSELF
+ * carried unresolved operative evidence (a CONFLICTED/AMBIGUOUS/PARTIAL/
+ * superseded definition or section excerpt embedded directly in the
+ * model's first-turn prompt - see compile.ts's own
+ * inputHasUnresolvedOperativeEvidence, computed from the SAME bundle this
+ * verifier's own compilerInput carries). This is what closes the reproduced
+ * exploit at the VERIFIER layer too: a compilation whose toolCallLog is
+ * completely EMPTY (the model answered on turn 1, zero tool calls) can
+ * still never reach VERIFIED_NO_MATERIAL_GAP_FOUND when its own input
+ * already embedded stale/conflicted evidence.
+ */
+function hasUnresolvedContextBundleEvidence(compilationResult: Pick<SemanticCompilationResult, "inputHasUnresolvedOperativeEvidence">): boolean {
+  return compilationResult.inputHasUnresolvedOperativeEvidence === true;
+}
+
+/**
+ * Phase 3F.1 FIX-2 (§5, defense in depth - "optional but preferred where
+ * practical") - independent of whether any context item happened to be
+ * marked unresolved or any tool was called: for every IRDefinition this
+ * candidate's own compilation actually emitted, directly re-resolves that
+ * exact term's CURRENT operative status against the real operativeState/
+ * structuralIndex this compilation's own toolAccess already carries (the
+ * SAME canonical resolveOperativeDefinitionEvidence primitive
+ * semantic/tools.ts's getDefinition and context-retrieval's own
+ * resolveDefinitionEvidenceState already rely on - never a second, parallel
+ * definition-access discipline). Catches the residual case where a term
+ * genuinely never appeared in the context bundle Phase 2D happened to
+ * assemble (a real, on-file amendment scoping gap) but the compiled IR
+ * still references it. AMBIGUOUS/NOT_FOUND outcomes are conservatively
+ * treated as unresolved too (never assumed safe merely because this
+ * independent re-check itself could not confirm currency).
+ */
+function hasStaleReferencedDefinition(compilerInput: SemanticCompilerInput, compilationResult: Pick<SemanticCompilationResult, "definitions">, supersessionIndex: NodeSupersessionIndex): boolean {
+  const { operativeState, structuralIndex } = compilerInput.toolAccess;
+  return compilationResult.definitions.some((def) => {
+    const resolution = resolveOperativeDefinitionEvidence({ index: structuralIndex, operativeState, term: def.termName, searchDocumentIds: [def.sourceDocumentId ?? compilerInput.sourceDocumentId], supersessionIndex });
+    return resolution.outcome !== "FOUND" || !resolution.isCurrentTruth;
+  });
+}
+
+/**
  * Task §17/§18 - verification status, a dimension separate from
  * RepresentationSufficiency. Order matters: a failed required review always
  * wins over everything else; a MATERIAL finding always wins over context/
@@ -211,14 +256,19 @@ function determineStatus(
   semanticReviewInvoked: boolean,
   semanticReviewFailed: boolean,
   sourceInventory: SourceInventory,
-  compilationResult: Pick<SemanticCompilationResult, "toolCallLog">
+  compilationResult: Pick<SemanticCompilationResult, "toolCallLog" | "inputHasUnresolvedOperativeEvidence" | "definitions">,
+  supersessionIndex: NodeSupersessionIndex
 ): SemanticVerificationStatus {
   if (semanticReviewInvoked && semanticReviewFailed) return "VERIFICATION_FAILED";
   if (findings.some((f) => f.severity === "MATERIAL")) return "MATERIAL_DISCREPANCY";
   if (compilerInput.contextBundle.sufficiencyState !== "SUFFICIENT") return "VERIFICATION_INCOMPLETE";
   const lineage = compilerInput.operativeLineage;
   if (lineage && (lineage.operativeStatus === "OPERATIVE_STATE_CONFLICTED" || lineage.operativeStatus === "OPERATIVE_STATE_REVIEW_REQUIRED")) return "REVIEW_REQUIRED";
-  if (hasUnresolvedDefinitionEvidence(compilationResult)) return "REVIEW_REQUIRED";
+  // Phase 3F.1 FIX-2 - forced from EITHER source (tool-call-derived OR
+  // context-bundle-derived), never only the tool-call one; plus the
+  // independent defense-in-depth re-check against every emitted
+  // IRDefinition's own CURRENT operative status (§5).
+  if (hasUnresolvedDefinitionEvidence(compilationResult) || hasUnresolvedContextBundleEvidence(compilationResult) || hasStaleReferencedDefinition(compilerInput, compilationResult, supersessionIndex)) return "REVIEW_REQUIRED";
   // Phase 3F.1.5 Workstream B (P1-11/Q8 fix) - an AFFIRMATIVELY confirmed
   // KNOWN_SUPERSEDED verdict (never UNKNOWN_SUPERSESSION_STATUS - that case
   // is left to the same honest-but-not-blocking treatment
@@ -315,7 +365,7 @@ export async function verifyCompiledCandidate(input: VerificationInput, options:
 
   return {
     candidateRef: compilerInput.candidateRef,
-    status: determineStatus(compilerInput, allFindings, semanticReviewInvoked, semanticReviewFailed, sourceInventory, compilationResult),
+    status: determineStatus(compilerInput, allFindings, semanticReviewInvoked, semanticReviewFailed, sourceInventory, compilationResult, supersessionIndex),
     findings: allFindings,
     sourceInventory,
     irInventory,

@@ -9,7 +9,7 @@
 import type { StructuralIndex } from "../structural-index";
 import type { PackageGraphResult } from "../package-graph/types";
 import { detectAbsoluteReferenceMentions } from "../structural-references";
-import { addEdge, addItem, makeItemInput, withinBudget, type RetrievalState } from "./state";
+import { addEdge, addItem, makeItemInput, resolveSectionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import { expandReferencedRegion } from "./region-expansion";
 import { retrieveAmendmentLeadsForSection } from "./cross-document-context";
 
@@ -124,7 +124,8 @@ export function retrieveCrossReferencesFromNode(state: RetrievalState, index: St
     if (!withinBudget(state, targetText.length)) return;
 
     const itemType = classifyReferencedProvision(targetText);
-    const item = addItem(state, makeItemInput(itemType, documentId, ref.targetNodeKey, ref.targetNodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Explicitly cross-referenced by "${ref.referenceText}".${expansion.includedNodeIds.length > 0 ? ` Expanded to include ${expansion.includedNodeIds.length} descendant clause(s) whose own text carried real operative content.` : ""}`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1));
+    const targetEvidenceState = resolveSectionEvidenceState(state, targetNode.documentId, { nodeId: targetNode.nodeId, sectionRef: targetNode.sectionRef });
+    const item = addItem(state, makeItemInput(itemType, documentId, ref.targetNodeKey, ref.targetNodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Explicitly cross-referenced by "${ref.referenceText}".${expansion.includedNodeIds.length > 0 ? ` Expanded to include ${expansion.includedNodeIds.length} descendant clause(s) whose own text carried real operative content.` : ""}`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1, targetEvidenceState));
     addEdge(state, parentItemId, item.itemId, "REFERENCES", `"${ref.referenceText}"`);
 
     // CTX-01 fix: this cross-referenced target's own retrieved text is
@@ -213,7 +214,8 @@ export function retrieveCrossReferencesFromDefinitionText(state: RetrievalState,
     if (targetText.trim().length === 0) continue;
     if (!withinBudget(state, targetText.length)) return;
     const itemType = classifyReferencedProvision(targetText);
-    const item = addItem(state, makeItemInput(itemType, documentId, targetNode.nodeKey, targetNode.nodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Referenced within a definition's own text ("${mention.referenceText}").`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1));
+    const targetEvidenceState = resolveSectionEvidenceState(state, targetNode.documentId, { nodeId: targetNode.nodeId, sectionRef: targetNode.sectionRef });
+    const item = addItem(state, makeItemInput(itemType, documentId, targetNode.nodeKey, targetNode.nodeId, targetNode.sectionRef, `Section ${targetNode.sectionRef}`, targetText, `Referenced within a definition's own text ("${mention.referenceText}").`, depth, [parentItemId], "CROSS_REFERENCE_INDEX", 1, targetEvidenceState));
     addEdge(state, parentItemId, item.itemId, "REFERENCES", `"${mention.referenceText}" inside a definition.`);
     if (packageGraph) {
       retrieveAmendmentLeadsForSection(state, packageGraph, targetNode.documentId, targetNode.sectionRef, item.itemId);

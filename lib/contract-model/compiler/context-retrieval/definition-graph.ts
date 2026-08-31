@@ -9,7 +9,7 @@
  * structural-definitions.ts already declared, never a fuzzy guess.
  */
 import type { StructuralIndex } from "../structural-index";
-import { addEdge, addItem, makeItemInput, withinBudget, type RetrievalState } from "./state";
+import { addEdge, addItem, makeItemInput, resolveDefinitionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import { computeItemId } from "./identity";
 import type { ContextItem } from "./types";
 
@@ -100,10 +100,18 @@ export function retrieveDefinitionsRecursive(state: RetrievalState, index: Struc
     const fullText = index.getDefinitionFullText(mention.exactTerm, documentId) ?? index.getDefinition(mention.exactTerm, documentId)?.definitionExcerpt ?? "";
     if (!withinBudget(state, fullText.length)) return;
 
+    // Phase 3F.1 FIX-2 - this is the exact defect class the reproduced
+    // exploit targeted: fullText above is raw base-document text with NO
+    // amendment/operative-state check of any kind. evidenceState is
+    // computed here, BEFORE this item is ever placed in the bundle, so a
+    // CONFLICTED/AMBIGUOUS/superseded definition is never silently
+    // presented as current truth regardless of whether the model ever
+    // calls getDefinition itself.
+    const evidenceState = resolveDefinitionEvidenceState(state, index, documentId, mention.exactTerm);
     const type = depth === 1 ? "DEFINITION" : "DEFINITION_DEPENDENCY";
     const item = addItem(
       state,
-      makeItemInput(type, documentId, null, null, mention.exactTerm, `Definition of "${mention.exactTerm}"`, fullText, depth === 1 ? `Defined term used directly in the discovered covenant's own text.` : `Defined term used within the definition of "${pathTermsStack[pathTermsStack.length - 1]}", ${depth - 1} level(s) removed from the covenant's own text.`, depth, [parentItemId], "DEFINITION_INDEX", 1)
+      makeItemInput(type, documentId, null, null, mention.exactTerm, `Definition of "${mention.exactTerm}"`, fullText, depth === 1 ? `Defined term used directly in the discovered covenant's own text.` : `Defined term used within the definition of "${pathTermsStack[pathTermsStack.length - 1]}", ${depth - 1} level(s) removed from the covenant's own text.`, depth, [parentItemId], "DEFINITION_INDEX", 1, evidenceState)
     );
     addEdge(state, parentItemId, item.itemId, "DEPENDS_ON_DEFINITION", depth === 1 ? "Directly used defined term." : "Transitive definition dependency.");
 

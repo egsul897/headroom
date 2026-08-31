@@ -317,31 +317,38 @@ Section 6.01 Leverage Ratio . The Borrower shall not permit the Consolidated Lev
 });
 
 // ---------------------------------------------------------------------------
-// Group 4 (CRITICAL): an end-to-end attempt to coerce compile.ts/verify.ts
+// Group 4 (CRITICAL) - CLOSED by Phase 3F.1 FIX-2 ("trust metadata belongs
+// to the evidence itself, not to the retrieval mechanism"). This group
+// originally reproduced an end-to-end path that coerced compile.ts/verify.ts
 // into COMPLETED/VERIFIED status off a genuinely unresolved (CONFLICTED)
 // definition through a path Part A's own tests never exercised: Phase 2D's
 // own already-gathered CovenantContextBundle, which caller.ts's
-// summarizeContextBundle() dumps VERBATIM (raw excerptText, no operative-
-// state/supersession annotation of any kind - confirmed by reading
-// caller.ts's summarizeContextBundle end to end) into the model's very
-// FIRST turn. A model that answers straight from that bundle - as the
-// system prompt explicitly invites it to do ("Already-gathered context...
-// read this BEFORE requesting tools") - never calls getDefinition at all,
-// so ToolCallLogEntry.evidenceUnresolved (the ENTIRE signal compile.ts/
-// verify.ts's OPEN-2 fix depends on) is never set, because it is only ever
-// populated by a getDefinition call that actually happened. The exact same
-// real, on-file CONFLICTED amendment evidence that getDefinition would
-// have disclosed (proven in the SETUP CHECK below) is invisible to both
-// downstream gates the moment it arrives via context instead of a tool
-// call - a definition-side counterpart to the ALREADY-DOCUMENTED gap this
-// codebase's own comments elsewhere admit for getContextBundleComponent/
-// getSharedCapContext's raw excerptText (semantic/tools.ts's own header
-// comment on summarizeItemWithSupersession), except that fix only ever
-// covers a tool RESPONSE re-reading the bundle - never the always-present
-// INITIAL context dump every compilation attempt receives regardless of
-// whether any tool is ever called.
+// summarizeContextBundle() dumped VERBATIM (raw excerptText, no operative-
+// state/supersession annotation of any kind) into the model's very FIRST
+// turn. A model that answered straight from that bundle - as the system
+// prompt explicitly invited it to do ("Already-gathered context... read
+// this BEFORE requesting tools") - never called getDefinition at all, so
+// ToolCallLogEntry.evidenceUnresolved (the ENTIRE signal Part A's own
+// OPEN-2 fix depended on) was never set.
+//
+// FIX-2 closes this at the root: context-retrieval's own ContextItem now
+// carries a real evidenceState computed via amendment/operative-state.ts's
+// resolveOperativeDefinitionEvidence/resolveOperativeSectionEvidence AT
+// BUNDLE-CONSTRUCTION time (context-retrieval/state.ts), independent of
+// whether the model ever calls a tool; CovenantContextBundle.
+// hasUnresolvedOperativeEvidence is derived from that; and compile.ts/
+// verify.ts both force non-COMPLETED/non-VERIFIED status off THAT signal
+// alongside (never instead of) the pre-existing toolCallLog-derived one.
+// The tests below construct their `staleContextItem` WITHOUT an
+// evidenceState field (exactly as the original exploit fixture did, and
+// exactly as a bundle built by code that predates this fix would look) to
+// prove the fix is not merely "the new field, if populated correctly,
+// works" - see the additional adversarial coverage in
+// tests/certification/part-a-final-fix2-context-trust.test.ts for the
+// fully-wired, real buildCovenantContextBundle repro of the identical
+// scenario end-to-end.
 // ---------------------------------------------------------------------------
-describe("OPEN-2 independent recert - CRITICAL: context-bundle-sourced stale definition bypasses evidenceUnresolved entirely (zero tool calls)", () => {
+describe("OPEN-2 independent recert - CRITICAL (CLOSED by FIX-2): context-bundle-sourced stale definition no longer bypasses evidence-trust gating (zero tool calls)", () => {
   const TEXT = `
 ARTICLE I DEFINITIONS
 
@@ -399,7 +406,7 @@ Section 1.01 Definitions . As used in this Agreement, "Consolidated EBITDA" mean
     expect(result.isCurrentTruth).toBe(false);
   });
 
-  it("FALSIFICATION: compileCovenantToIR reaches status COMPLETED for a definition whose real operative state is CONFLICTED, because the model answered from the context bundle's raw excerptText and never called getDefinition - toolCallLog is empty, so evidenceUnresolved is never set anywhere and compile.ts's OPEN-2 propagation check has nothing to see", async () => {
+  it("FIXED (was FALSIFICATION): compileCovenantToIR no longer reaches status COMPLETED for a definition whose real operative state is CONFLICTED, even though the model answered from the context bundle's raw excerptText and never called getDefinition - FIX-2's own defense-in-depth (compile.ts's hasStaleReferencedDefinition) independently re-resolves the compiled IRDefinition's own termName against the real operativeState, regardless of toolCallLog or the bundle item's own (here, deliberately absent) evidenceState", async () => {
     const { index, state } = buildState();
 
     // Phase 2D's own "already-gathered context" bundle - built exactly the
@@ -452,22 +459,27 @@ Section 1.01 Definitions . As used in this Agreement, "Consolidated EBITDA" mean
     const caller = new RealSemanticCaller("test", "test-model", client);
     const result = await compileCovenantToIR(input, { caller, cache: new InMemorySemanticCompilationCache() });
 
-    // The smoking gun: zero tool calls were made at all this attempt.
+    // Zero tool calls were made at all this attempt, and the toolCallLog-
+    // derived signal genuinely has nothing to see (exactly as originally
+    // reproduced) - the fix does NOT depend on that signal for this path.
     expect(result.toolCallLog).toHaveLength(0);
     expect(result.toolCallLog.some((e) => e.evidenceUnresolved === true)).toBe(false);
-    expect(result.failureReasons).not.toContain("OPERATIVE_STATE_UNRESOLVED");
-    // This is the falsification: a definition whose real, on-file operative
-    // state is genuinely CONFLICTED (proven in the SETUP CHECK above)
-    // reaches COMPLETED status - the exact outcome the OPEN-2 fix's own
-    // stated design principle ("must not become trusted verified current
-    // truth solely from that definition") was supposed to make
-    // unreachable, reached here via a path (context-bundle-sourced answer,
-    // no tool call) neither compile.ts's failureReasons wiring nor Part A's
-    // own required tests ever exercised.
-    expect(result.status).toBe("COMPLETED");
+    // FIX-2: OPERATIVE_STATE_UNRESOLVED is now forced via the INDEPENDENT
+    // defense-in-depth re-check (compile.ts's hasStaleReferencedDefinition),
+    // which re-resolves "Consolidated EBITDA" directly against the real,
+    // on-file CONFLICTED operativeState - never relying on the toolCallLog
+    // signal, and never relying on the (here, deliberately omitted)
+    // evidenceState field on staleContextItem either.
+    expect(result.failureReasons).toContain("OPERATIVE_STATE_UNRESOLVED");
+    // CLOSED: a definition whose real, on-file operative state is genuinely
+    // CONFLICTED (proven in the SETUP CHECK above) can no longer reach
+    // COMPLETED status via this path (context-bundle-sourced answer, no
+    // tool call) - it is forced to REVIEW_REQUIRED instead. Never silently
+    // trusted, though still a usable candidate output (never FAILED).
+    expect(result.status).toBe("REVIEW_REQUIRED");
   });
 
-  it("FALSIFICATION (verify.ts): the SAME real compilationResult (toolCallLog empty) reaches VERIFIED_NO_MATERIAL_GAP_FOUND under verifyCompiledCandidate, despite the candidate's own compiled definition resting entirely on a genuinely CONFLICTED, never-independently-checked defined term", async () => {
+  it("FIXED (was FALSIFICATION, verify.ts): the SAME real compilationResult (toolCallLog empty) no longer reaches VERIFIED_NO_MATERIAL_GAP_FOUND under verifyCompiledCandidate - both compile.ts's own defense-in-depth (forcing REVIEW_REQUIRED into failureReasons/status already) and verify.ts's OWN independent copy of the same re-check (hasStaleReferencedDefinition) now catch the candidate's compiled definition resting entirely on a genuinely CONFLICTED, on-file defined term", async () => {
     const { index, state } = buildState();
     const staleContextItem: ContextItem = {
       itemId: "def-consolidated-ebitda",
@@ -502,18 +514,24 @@ Section 1.01 Definitions . As used in this Agreement, "Consolidated EBITDA" mean
     const caller = new RealSemanticCaller("test", "test-model", client);
     const compilationResult: SemanticCompilationResult = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
     expect(compilationResult.toolCallLog).toHaveLength(0);
-    expect(compilationResult.status).toBe("COMPLETED");
+    // FIX-2: compile.ts's own defense-in-depth already forces this to
+    // REVIEW_REQUIRED (see the sibling test above) - verify.ts is given
+    // this REAL (already-fixed) compilationResult, exactly as production
+    // wires it, rather than a hand-constructed COMPLETED stand-in.
+    expect(compilationResult.status).toBe("REVIEW_REQUIRED");
 
     const verification = await verifyCompiledCandidate({ compilerInput, compilationResult }, { skipSemanticReview: true });
 
-    // The falsification: verify.ts's own hasUnresolvedDefinitionEvidence
-    // check (Part A's OPEN-2 downstream gate) only ever inspects
-    // compilationResult.toolCallLog - it has no independent way to notice
-    // that the candidate's OWN compiled definition is entirely built on a
-    // term with a real, on-file AMENDMENT_CONFLICT, because that evidence
-    // never flowed through a tool call this time.
-    expect(verification.status).not.toBe("MATERIAL_DISCREPANCY");
-    expect(verification.status).not.toBe("REVIEW_REQUIRED");
-    expect(["VERIFIED_NO_MATERIAL_GAP_FOUND", "VERIFIED_WITH_NON_MATERIAL_FINDINGS"]).toContain(verification.status);
+    // CLOSED: verify.ts's own hasUnresolvedContextBundleEvidence/
+    // hasStaleReferencedDefinition (FIX-2's independent, verifier-side
+    // re-checks - see determineStatus) now catch this even considered
+    // entirely on their own merits, independent of compile.ts's own status:
+    // the candidate's compiled definition rests entirely on a term with a
+    // real, on-file AMENDMENT_CONFLICT, and that is never reachable as
+    // VERIFIED_NO_MATERIAL_GAP_FOUND/VERIFIED_WITH_NON_MATERIAL_FINDINGS
+    // regardless of whether the evidence arrived via a tool call.
+    expect(verification.status).not.toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
+    expect(verification.status).not.toBe("VERIFIED_WITH_NON_MATERIAL_FINDINGS");
+    expect(verification.status).toBe("REVIEW_REQUIRED");
   });
 });

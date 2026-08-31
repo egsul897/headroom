@@ -38,8 +38,17 @@ import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
  * (structural index, context bundles, operative state) completely
  * untouched - this is an additive cache-key input, not a schema migration.
  */
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "phase-3b1-semantic-compiler.v2";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "phase-3b1-semantic-compiler-prompt.v2";
+// Phase 3F.1 FIX-2 (trust-metadata-belongs-to-the-evidence-itself
+// remediation) - bumped to v3: summarizeContextBundle (caller.ts) now
+// renders each item's own evidenceStatus/reason in the model's first-turn
+// prompt (a prompt-wording change), and compile.ts's own determineStatus
+// gating now also forces non-COMPLETED status off a context-bundle-derived
+// unresolved-evidence signal (an output-orchestration change) - either
+// change alone requires a version bump per this module's own header
+// comment; a cached Phase 3B/3B.1-era compilation (produced under the old
+// prompt, with no such gating) must never be silently served as-is.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "phase-3f1-fix2-semantic-compiler.v3";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "phase-3f1-fix2-semantic-compiler-prompt.v3";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------
@@ -178,6 +187,23 @@ export interface SemanticCompilationResult {
   /** Human-readable notes surfaced by deterministic post-processing or the model's own overallNotes - never silent (matches StageRunResult.notes's own existing convention). */
   unresolvedIssues: string[];
   toolCallLog: ToolCallLogEntry[];
+  /**
+   * Phase 3F.1 FIX-2 (§4 of the governing fix spec, "the actual safety gate
+   * must not require any tool call") - computed directly from
+   * `input.contextBundle.hasUnresolvedOperativeEvidence`, independent of
+   * `toolCallLog` (which can be completely EMPTY when the model answers on
+   * its very first turn with zero tool calls - the exact reproduced
+   * exploit). True whenever the context bundle handed to the model itself
+   * contained a CONFLICTED/AMBIGUOUS/PARTIAL/superseded item. Threaded
+   * ALONGSIDE (never instead of) `toolCallLog[].evidenceUnresolved` -
+   * semantic-verification/verify.ts's own determineStatus and this module's
+   * own determineStatus both force non-COMPLETED/non-VERIFIED status off
+   * EITHER source.
+   */
+  /** Optional (mirrors CovenantContextBundle's own fields this is derived from) - undefined only for a result object hand-built by pre-existing test fixtures that predate this fix; every real compileCovenantToIR call sets a real boolean. verify.ts's own gating treats undefined identically to false - never upgraded to a false "resolved" claim by omission. */
+  inputHasUnresolvedOperativeEvidence?: boolean;
+  /** itemIds from the context bundle that set inputHasUnresolvedOperativeEvidence above - bounded provenance, mirrors CovenantContextBundle.unresolvedEvidenceItemIds verbatim (never re-derived). */
+  unresolvedEvidenceItemIds?: string[];
   /** The raw, unnormalized wire object the model actually submitted - preserved for audit/debugging, never treated as authoritative (task §9). */
   rawModelOutput: unknown;
   provider: string;

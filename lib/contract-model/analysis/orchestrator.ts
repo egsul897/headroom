@@ -353,7 +353,14 @@ async function analyzeInstrument(params: {
   }
 
   // --- recursive context retrieval (per candidate) ---
-  const access: PackageAccess = { index, packageGraph, exactTermsByDocument };
+  // Phase 3F.1 FIX-2 - operativeState/supersessionIndex are the SAME real,
+  // already-computed values threaded into SemanticToolAccess below for the
+  // model's own evidence tools; passing them here too closes the gap a prior
+  // independent auditor found (buildCovenantContextBundle previously had no
+  // operative-state awareness at all - every DEFINITION/SECTION excerpt was
+  // read raw and unconditionally, regardless of a real, on-file
+  // CONFLICTED/AMBIGUOUS/superseded amendment state).
+  const access: PackageAccess = { index, packageGraph, exactTermsByDocument, operativeState, supersessionIndex };
   const bundlesByDiscoveryId = new Map<string, ReturnType<typeof buildCovenantContextBundle>>();
   for (const candidate of allCandidates) {
     bundlesByDiscoveryId.set(candidate.discoveryId, buildCovenantContextBundle({ candidate, packageKey: analysisPackageKey, companyId, instrumentKey: unit.instrumentKey }, access));

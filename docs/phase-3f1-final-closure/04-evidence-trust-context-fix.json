@@ -1,0 +1,139 @@
+{
+  "workstream": "FIX-2",
+  "title": "Trust metadata belongs to the evidence itself, not to the retrieval mechanism",
+  "governingInvariant": "TRUST METADATA BELONGS TO THE EVIDENCE ITSELF, NOT TO THE RETRIEVAL MECHANISM. Safety must not depend on the model voluntarily calling the right evidence tool.",
+  "priorFindingClosed": {
+    "auditor": "Part B independent recertification, OPEN-2",
+    "file": "tests/certification/part-b-terminal-recert-open2-independent.test.ts",
+    "originalDefect": "summarizeContextBundle (semantic/caller.ts) dumped CovenantContextBundle items' raw excerptText verbatim into the model's first turn with zero trust annotation; ToolCallLogEntry.evidenceUnresolved was only ever set inside getDefinition's own tool execution, so a model that answered from the pre-loaded bundle with zero tool calls left toolCallLog empty and both compile.ts and verify.ts had nothing to gate on - reaching COMPLETED / VERIFIED_NO_MATERIAL_GAP_FOUND off a genuinely CONFLICTED definition.",
+    "disposition": "CLOSED - both FALSIFICATION tests in that file were updated (with clear before/after framing preserved) to certify the fixed, fail-closed behavior; all 17 reproduction cases in that file now pass."
+  },
+  "trustModel": {
+    "canonicalEnumReused": "amendment/operative-state.ts's DefinitionEvidenceStatus (CURRENT | KNOWN_SUPERSEDED | OPERATIVE_STATE_UNRESOLVED | AMBIGUOUS_TARGET | PARTIAL_AMENDMENT | HISTORICAL_ONLY) - reused verbatim, never a second parallel vocabulary, per the fix spec's explicit instruction.",
+    "newPrimitive": "resolveOperativeSectionEvidence (amendment/operative-state.ts) - the SECTION-kind sibling of the existing resolveOperativeDefinitionEvidence, built by directly reusing OperativeProvisionView fields and getNodeSupersessionStatus rather than any new detection logic. Node-based (accepts an already-resolved {nodeId, sectionRef}) rather than ref-string-based, since every context-retrieval call site already holds a real, uniquely-resolved StructuralNode from its own traversal.",
+    "newContextItemField": "ContextItem.evidenceState?: { status: DefinitionEvidenceStatus; isCurrentTruth: boolean; reason: string } | null - optional (mirrors ToolCallLogEntry.evidenceUnresolved's own established convention) for backward compatibility with pre-existing fixtures/tests; every real context-retrieval call site now populates a real, non-null value for every SECTION/DEFINITION-shaped item.",
+    "newBundleFields": "CovenantContextBundle.hasUnresolvedOperativeEvidence?: boolean and unresolvedEvidenceItemIds?: string[] - computed once in context-retrieval/pipeline.ts's finalize() from the bundle's own items, independent of any tool call.",
+    "newCompilationResultFields": "SemanticCompilationResult.inputHasUnresolvedOperativeEvidence?: boolean and unresolvedEvidenceItemIds?: string[] - copied straight from the context bundle in compile.ts's contextBundleEvidenceFlags(), threaded ALONGSIDE (never instead of) the existing toolCallLog[].evidenceUnresolved mechanism.",
+    "whyOptionalNotRequired": "All new fields were made optional rather than required to avoid a large, risky mechanical rewrite of ~15 pre-existing test files that hand-construct ContextItem/CovenantContextBundle/SemanticCompilationResult object literals. Every REAL production code path (context-retrieval/pipeline.ts, semantic/compile.ts) always populates a real value; undefined is treated identically to 'unresolved-status unknown, never upgraded to a false CURRENT/resolved claim' - the same fail-open-for-genuinely-unchecked-cases discipline EMPTY_SUPERSESSION_INDEX already established elsewhere in this codebase."
+  },
+  "callSitesFixed": [
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/structural-context.ts",
+      "functions": ["retrieveOperativeSource", "retrieveParentScope", "retrieveChildRules", "retrieveSiblingContext"],
+      "itemTypes": ["OPERATIVE_SOURCE", "PARENT_SCOPE", "CHILD_RULE", "SIBLING_CONTEXT/PROVISO/EXCEPTION/CONDITION/SHARED_CAP", "UNVERIFIED_SIBLING_SIGNAL"],
+      "fix": "each now calls resolveSectionEvidenceState(state, documentId, node) before constructing the item"
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/definition-graph.ts",
+      "functions": ["retrieveDefinitionsRecursive"],
+      "itemTypes": ["DEFINITION", "DEFINITION_DEPENDENCY"],
+      "fix": "calls resolveDefinitionEvidenceState(state, index, documentId, exactTerm) before constructing the item - this is the exact call site the reproduced exploit's definition traveled through"
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/reference-context.ts",
+      "functions": ["retrieveCrossReferencesFromNode", "retrieveCrossReferencesFromDefinitionText"],
+      "itemTypes": ["CROSS_REFERENCE", "CALCULATION_PROVISION"],
+      "fix": "calls resolveSectionEvidenceState on the resolved cross-reference target node"
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+      "functions": ["retrieveCrossDocumentDefinitionFallback", "finalize"],
+      "itemTypes": ["DEFINITION (cross-document fallback)"],
+      "fix": "calls resolveDefinitionEvidenceState for the cross-document-resolved definition; finalize() computes bundle-level hasUnresolvedOperativeEvidence/unresolvedEvidenceItemIds from every item's evidenceState"
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/cross-document-context.ts",
+      "functions": ["addAmendmentLeadItem", "retrieveCrossDocumentReferenceLeads"],
+      "itemTypes": ["AMENDMENT_LEAD/SUPPLEMENT_LEAD (explicit OPERATIVE_STATE_UNRESOLVED, already self-labeled by excerpt prefix)", "CROSS_DOCUMENT_REFERENCE/INTERCREDITOR_LEAD (evidenceState null - NON_CONTRACT_TEXT, no provision/economic claim made)"],
+      "fix": "explicit trust classification per item shape rather than a routed resolution call"
+    },
+    {
+      "file": "lib/contract-model/analysis/orchestrator.ts",
+      "functions": ["analyzeInstrument"],
+      "fix": "PackageAccess passed to buildCovenantContextBundle now includes the SAME operativeState/supersessionIndex already threaded into SemanticToolAccess for the model's own evidence tools - this is the wiring that makes the whole fix live in production, not just in tests"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic/caller.ts",
+      "functions": ["summarizeContextBundle / formatContextItem (new)"],
+      "fix": "renders each item's evidenceStatus/reason explicitly in the model's first-turn prompt, with a [NOT CONFIRMED CURRENT] marker for non-CURRENT items - a courtesy to the model, NOT the safety mechanism (see compile.ts)"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic/compile.ts",
+      "functions": ["compileCovenantToIR / contextBundleEvidenceFlags / hasStaleReferencedDefinition (both new)"],
+      "fix": "failureReasons now gains OPERATIVE_STATE_UNRESOLVED from EITHER toolCallLog[].evidenceUnresolved OR the context-bundle-derived flag OR an independent per-IRDefinition defense-in-depth re-check against the real operativeState (§5) - the actual safety gate, requiring zero tool calls"
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-verification/verify.ts",
+      "functions": ["determineStatus / hasUnresolvedContextBundleEvidence / hasStaleReferencedDefinition (both new)"],
+      "fix": "REVIEW_REQUIRED is now forced from EITHER the tool-call-derived signal OR the context-bundle-derived signal OR the same independent per-IRDefinition defense-in-depth re-check, mirrored (deliberately duplicated, never imported, per this module's own independence-from-compile.ts contract) from compile.ts's own copy"
+    },
+    {
+      "file": "lib/contract-model/compiler/amendment/operative-state.ts",
+      "functions": ["resolveOperativeSectionEvidence (new)"],
+      "fix": "the canonical SECTION-kind evidence-resolution primitive, reusing OperativeProvisionView/getNodeSupersessionStatus - the missing sibling function the fix spec asked to check for"
+    }
+  ],
+  "auditTable": {
+    "scope": "Every path that places raw contract text into a model prompt BEFORE evidence tools run, across lib/contract-model/compiler/** (semantic/caller.ts's summarizeContextBundle is the only first-turn prompt assembly point in this codebase; semantic-verification/reviewer.ts and semantic-coverage's own AI-inventory prompt builder were also audited as the only other model-prompt-assembly sites).",
+    "classificationLegend": "OPERATIVE_AWARE = routed through evidenceState/operative-state resolution before being served as fact; HISTORICAL_LABELED = intentionally raw/historical, already self-labeled as such; NON_CONTRACT_TEXT = never an independently-interpretable provision/economic claim; UNSAFE = the defect class this fix closes",
+    "entries": [
+      { "path": "context-retrieval items: OPERATIVE_SOURCE/PARENT_SCOPE/CHILD_RULE/SIBLING_CONTEXT/PROVISO/EXCEPTION/CONDITION/SHARED_CAP/UNVERIFIED_SIBLING_SIGNAL", "before": "UNSAFE - raw StructuralIndex.getNodeText, no operative-state check", "after": "OPERATIVE_AWARE - resolveSectionEvidenceState at construction time" },
+      { "path": "context-retrieval items: DEFINITION/DEFINITION_DEPENDENCY", "before": "UNSAFE - the exact reproduced exploit's own call site", "after": "OPERATIVE_AWARE - resolveDefinitionEvidenceState at construction time" },
+      { "path": "context-retrieval items: CROSS_REFERENCE/CALCULATION_PROVISION", "before": "UNSAFE - raw target-node text via region-expansion, no check", "after": "OPERATIVE_AWARE - resolveSectionEvidenceState on the resolved target node" },
+      { "path": "context-retrieval items: AMENDMENT_LEAD/SUPPLEMENT_LEAD", "before": "HISTORICAL_LABELED already (excerpt is prefixed [AMENDMENT_RESOLUTION_REQUIRED])", "after": "HISTORICAL_LABELED, now also carries an explicit OPERATIVE_STATE_UNRESOLVED evidenceState for machine-readable disclosure (was previously prose-only)" },
+      { "path": "context-retrieval items: CROSS_DOCUMENT_REFERENCE/INTERCREDITOR_LEAD", "before": "NON_CONTRACT_TEXT (names another agreement's existence, not its economic terms)", "after": "unchanged - NON_CONTRACT_TEXT, evidenceState null, explicitly commented as such" },
+      { "path": "context-retrieval items: ENTITY_SCOPE/RELATED_COVENANT/OTHER_REQUIRED_CONTEXT", "before": "reserved types, never constructed anywhere in production code (confirmed by grep)", "after": "unchanged - no live call site exists to fix" },
+      { "path": "semantic/tools.ts's getContextBundleComponent/getSharedCapContext", "before": "already fixed by a prior workstream (Phase 3F.1.6.RX) to disclose supersessionStatus - a POST-tool-call disclosure, not pre-tool-call, so out of this fix's own scope", "after": "unchanged - already HISTORICAL_EVIDENCE_WITH_STATUS, and now the underlying item it echoes ALSO carries evidenceState from construction time (a strict improvement, no code change needed there)" },
+      { "path": "semantic/tools.ts's getOperativeProvision", "before": "UNSAFE-ADJACENT (RESIDUAL, NOT FIXED) - unlike getDefinition, this tool never sets ToolExecutionOutcome.evidenceUnresolved even when it returns a genuinely CONFLICTED section's status, so a model that DOES call this tool for a CONFLICTED section still leaves toolCallLog[].evidenceUnresolved unset", "after": "NOT FIXED - out of scope: this is a POST-tool-call gap (the model did call a tool), a different bug shape than the pre-tool-call class this fix targets. Documented as residual risk below; FIX-2's own context-bundle-level and defense-in-depth gates independently catch the SAME underlying CONFLICTED section regardless (proven by test group 2 in the new test file), so the end-to-end invariant still holds even with this residual gap." },
+      { "path": "semantic-verification/reviewer.ts's adversarial-review prompt", "before": "reads compilerInput.operativeSourceText (already amendment-resolved by the orchestrator before compilation, per SemanticCompilerInput's own doc comment) and IR/reconciliation output, never a raw unresolved bundle item", "after": "OPERATIVE_AWARE - no change needed; verified by direct reading, not modified" },
+      { "path": "semantic-coverage's AI-inventory prompt (Layer C, optional)", "before": "reads structural node text for whole-document inventory, a recall-oriented pass explicitly independent of amendment/operative-state (by design - it exists to catch candidates discovery missed, not to assert current truth)", "after": "unchanged - NON_CONTRACT_TEXT/NOT_CURRENT-TRUTH-CLAIMING by design; out of this fix's scope (no VERIFIED/COMPLETED status is ever derived from this layer alone)" }
+    ]
+  },
+  "defenseInDepth": {
+    "description": "§5 of the fix spec (optional but preferred) - implemented in BOTH compile.ts and verify.ts as independent, deliberately-duplicated (never a shared import, per verify.ts's own independence-from-compile.ts contract) per-IRDefinition re-checks against the real operativeState/structuralIndex, regardless of whether any context item was marked unresolved or any tool was called.",
+    "provenTests": "part-b-terminal-recert-open2-independent.test.ts's Group 4 hand-builds a ContextItem with NO evidenceState field at all (simulating a bundle from code that predates this fix) - this defense-in-depth check is what still catches it."
+  },
+  "requiredInvariantVerified": {
+    "statement": "CONFLICTED definition + stale raw context excerpt + model answers on first turn with zero tool calls -> the compile/verify pipeline MUST NOT reach VERIFIED_NO_MATERIAL_GAP_FOUND / trusted current truth.",
+    "result": "HOLDS - proven by tests/certification/part-a-final-fix2-context-trust.test.ts group 1 (compile.ts reaches REVIEW_REQUIRED, never COMPLETED) and group 7 (verify.ts reaches REVIEW_REQUIRED or VERIFICATION_INCOMPLETE, never VERIFIED_*; persisted SemanticTruthRecord.trustStatus is REVIEW_REQUIRED, never VERIFIED, confirmed via a real Postgres round-trip through a fresh read)."
+  },
+  "adversarialTestResults": {
+    "newFile": "tests/certification/part-a-final-fix2-context-trust.test.ts",
+    "testCount": 19,
+    "status": "all pass",
+    "coverage": [
+      "1. exact original exploit via the REAL buildCovenantContextBundle (auto-discovered, not hand-built) - fails closed end to end including persistence",
+      "2. stale SECTION excerpt (not just definitions) - the candidate's own CONFLICTED operative source",
+      "3. historical context item (HISTORICAL_ONLY) correctly labeled via the canonical primitive and the context-retrieval adapter",
+      "4. ambiguous definition (two colliding physical definitions, never amended)",
+      "5. partial amendment (real, resolved, dated effect with no capturable text), including via the real buildCovenantContextBundle auto-discovery path",
+      "6. same term across sibling documents does not cross-contaminate operative status (two independent instruments/OperativeContractStates)",
+      "7. full chain end-to-end: context -> compile -> verify -> persisted SemanticTruthRecord (real Postgres round-trip)",
+      "8. courtesy rendering: the real first-turn prompt text (captured via a spy on the real tool-use loop) carries the explicit evidenceStatus/[NOT CONFIRMED CURRENT] marker"
+    ]
+  },
+  "priorAuditorTestUpdated": {
+    "file": "tests/certification/part-b-terminal-recert-open2-independent.test.ts",
+    "change": "the two Group-4 tests titled 'FALSIFICATION' (which asserted the vulnerable COMPLETED/VERIFIED_NO_MATERIAL_GAP_FOUND outcome as proof of the bug) were renamed to 'FIXED (was FALSIFICATION)' and their assertions inverted to certify the now-safe REVIEW_REQUIRED outcome, with the group's own header comment updated to record the closure while preserving the original defect's provenance/history",
+    "result": "all 17 reproduction cases in this file now pass"
+  },
+  "regressionResults": {
+    "commandsRun": ["npx tsc --noEmit -p .", "npx eslint .", "npx vitest run tests/contract-model tests/certification tests/foundation-audit"],
+    "tscBaseline": "6 pre-existing errors (all in tests/foundation-audit/{cascade-and-concurrency,real-db-duplicate-physical-occurrence}.test.ts and discovery-fault-injection.test.ts - unrelated DiscoveredCandidate.sectionRef/StructuralNode-literal shape issues) - 0 new errors introduced by this fix",
+    "eslintBaseline": "1 pre-existing error (amendment-operative-state-adversarial.test.ts's @typescript-eslint/no-var-requires) - 0 new errors introduced",
+    "vitestResult": "1735+ tests passing across tests/contract-model + tests/certification + tests/foundation-audit; a handful of intermittent failures observed during development were independently confirmed (by reverting only the unrelated file, and by re-running in isolation) to be caused by (a) a DIFFERENT, concurrently-in-progress, uncommitted workstream's own WIP edits to lib/contract-model/compiler/stage-structure.ts (a heading-detection fix unrelated to this workstream, shared worktree) and (b) genuine timing/DB-concurrency flakiness under this shared, multi-agent environment's CPU/DB load (O(n) scaling probes, a Postgres connection-race repro) - NONE of the flaky/concurrent-WIP failures import or depend on any file this workstream modified, confirmed by direct grep and by isolated re-runs that all pass cleanly",
+    "requiredRegressionSuites": "tests/contract-model/context-retrieval-pipeline.test.ts, semantic-tools-operative-state-discipline.test.ts, semantic-compiler/**, semantic-verification-*.test.ts, semantic-truth-persistence.test.ts all pass unmodified (except the one required prior-auditor file update above)"
+  },
+  "constraintsRespected": [
+    "No prisma migrate dev/reset/db push - no schema change required at all (the fix threads its new signal purely through TypeScript object fields already flowing through compile.ts -> verify.ts -> mapping.ts's existing verification.status -> trustStatus mapping, which already required no new DB column)",
+    "condition-suspicion-classifier.ts and verify.ts's two-gate CONDITION routing left untouched except its own operative-state/unresolved-evidence gating line, exactly as scoped",
+    "N-way claim decomposition, AnalysisRun/SemanticTruth fencing internals untouched",
+    "docs/phase-3f1-* historical artifact files untouched (only this new 04-*.json was written)",
+    "git add scoped to only the specific files changed by this workstream - never git add -A (verified: another agent has concurrent uncommitted WIP in lib/contract-model/compiler/stage-structure.ts in this same worktree, deliberately left untouched and unstaged)"
+  ],
+  "residualRisk": [
+    "semantic/tools.ts's getOperativeProvision tool does not set ToolExecutionOutcome.evidenceUnresolved for a genuinely CONFLICTED/AMBIGUOUS/PARTIAL section, unlike its getDefinition sibling - a real, pre-existing, POST-tool-call gap (the model DID call a tool) that is a different bug shape than this fix's own pre-tool-call scope. FIX-2's context-bundle-level and defense-in-depth gates independently cover the same underlying scenario for the required end-to-end invariant, so this residual gap does not currently permit VERIFIED/COMPLETED off a CONFLICTED section reached via THIS tool alone reaching a materially different rule than the one already covered - but it should be closed by a future, narrowly-scoped workstream mirroring getDefinition's own fix.",
+    "The new trust fields (ContextItem.evidenceState, CovenantContextBundle.hasUnresolvedOperativeEvidence, SemanticCompilationResult.inputHasUnresolvedOperativeEvidence) are optional rather than required, to avoid a large mechanical rewrite of pre-existing test fixtures. This means a FUTURE test or script that hand-constructs one of these object types without populating the new field will silently NOT benefit from the context-bundle-derived gate (though it still benefits from the independent defense-in-depth per-definition re-check in both compile.ts and verify.ts, which requires no bundle cooperation at all). A future hardening pass could tighten these to required once every real and test call site is confirmed migrated.",
+    "The defense-in-depth re-check (§5) is scoped to IRDefinition.termName only, not to a defined term referenced only inside an IRRule's own conditions/exceptions/capacityExpression tree (IRDefinedTermReference) - the governing spec named this 'optional but preferred where practical' and the definition-level case is the one the reproduced exploit and required tests exercise; extending it to rule-embedded term references is a reasonable, bounded future addition, not required to close this finding."
+  ]
+}
