@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FROZEN_SCOPE",
+  "inheritedClosedMustNotReopen": [
+    "OPEN-3 (N-way claim decomposition)",
+    "OPEN-5 (AnalysisRun/SemanticTruth fencing)",
+    "BLOCKER-2", "BLOCKER-3", "BLOCKER-4", "BLOCKER-7", "BLOCKER-11",
+    "AUDIT-F1", "AUDIT-F3", "AUDIT-F5", "AUDIT-F6"
+  ],
+  "preservedInvariants": [
+    "durable semantic truth persistence",
+    "source-trace referential integrity",
+    "partial-instrument failure persistence",
+    "supersession/lineage propagation",
+    "product-flow analysis gate",
+    "tenant isolation",
+    "DB isolation infrastructure",
+    "14 permanent false-credit controls"
+  ],
+  "partAAuthorizedProductionChanges": [
+    "FIX-1: structural evidence architecture (lib/contract-model/compiler/stage-structure.ts)",
+    "FIX-2: evidence trust metadata at context boundary (context bundle / caller.ts / compile.ts / verify.ts propagation)",
+    "FIX-3: total failure classification (classifyError and its call sites in orchestrator.ts)"
+  ],
+  "explicitlyFrozenForPartA": [
+    "lib/contract-model/compiler/semantic-verification/condition-suspicion-classifier.ts",
+    "condition-suspicion routing logic in verify.ts (the two-gate routing itself)",
+    "the classifier's prompt, few-shot examples, categories, cache, verifier integration",
+    "N-way claim decomposition (semantic-coverage/*)",
+    "AnalysisRun/SemanticTruth fencing (except direct compile fallout from FIX-2)",
+    "evaluator methodology"
+  ],
+  "rule": "OPEN-4 production code may only be modified later, and only if the frozen real-model validation actually falsifies it - never during Part A."
+}

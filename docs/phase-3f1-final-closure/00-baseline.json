@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "startingSha": "228b6f17c6e8e5112af20d364bf92301317c6f24",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeState": "clean",
+  "priorPartAFreezeSha": "0ef66a94bfe51d4c5652749ae1b57033d1c0e72f",
+  "postgres": "started clean (service was down at container start, standard unclean-shutdown pattern for this sandbox; WAL crash recovery lossless, confirmed by unchanged migration/row state)",
+  "migrationState": "30 migrations found, Database schema is up to date!",
+  "isolatedTestDbInfra": "lib/testing/disposable-db.ts + ephemeral-db.ts present and unmodified since the incident-hardening phase; unaffected by this phase's scope",
+  "persistentRegressionSnapshot": "FWRG/LSB/CONMED/DSGR persistent fixture companies present, unaffected (read-only regression only, per governing spec SS22/SS34)",
+  "qualityGates": {
+    "tsc": "6 pre-existing errors, identical set: cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3",
+    "eslint": "1 pre-existing error: amendment-operative-state-adversarial.test.ts no-var-requires rule-def gap",
+    "vitest": "255 test files, 2686 tests. Full run: 1 failure (tests/contract-model/part-b-terminal-recert-open3-independent.test.ts, a timing/scaling-ratio assertion sensitive to machine load) - reran standalone, passed 10/10. Confirmed flaky/non-regression, not attributable to this phase (file predates this phase, from OPEN-3's own prior recertification)."
+  },
+  "historicalArtifactImmutability": "Confirmed: all docs/phase-3f1-* and docs/test-infrastructure-incident-2026-08-30* directories/files present, git status clean (no modifications pending against any historical artifact)."
+}
