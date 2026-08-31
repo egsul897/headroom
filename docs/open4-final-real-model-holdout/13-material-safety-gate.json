@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "MATERIAL_SAFETY_GATE_RESUME",
+  "status": "EVALUATED",
+  "safetyThresholdMandate": "100% of materially-conditional cases must reach independent review, an explicit unresolved state, or another existing safe escalation. Forbidden outcome: material case + NO_MATERIAL_CONDITION_SUSPECTED + no deterministic escalation + no independent review. Zero tolerance for a silent skip.",
+  "materialCaseCount": 17,
+  "materialCasesSafelyRouted": 17,
+  "materialSafetyRate": 1.0,
+  "dangerousSilentSkipCount": 0,
+  "perCaseDisposition": [
+    { "id": "M1", "category": "temporal trigger", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M2", "category": "event trigger (subjunctive, novel modal)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M3", "category": "passive condition", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M4", "category": "no-default requirement (novel phrasing)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M5", "category": "ratio / pro-forma compliance (novel phrasing)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M6", "category": "after-giving-effect (novel phrasing)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M7", "category": "before-and-after (novel phrasing)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M8", "category": "satisfaction prerequisite (novel phrasing)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M9", "category": "condition inside a defined term", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M10", "category": "condition by cross-reference (novel connective)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M11", "category": "nested proviso (archaic connective)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M12", "category": "exception conditioned on a separate fact (novel phrasing)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M13", "category": "inverted syntax, zero conditional connective", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M14", "category": "condition separated by parenthetical language", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M15", "category": "condition in a neighboring sentence", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M16", "category": "negative formulation (novel phrasing)", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false },
+    { "id": "M17", "category": "multi-condition conjunction", "classifierStatus": "MATERIAL_CONDITION_POSSIBLE", "routesToReview": true, "dangerousSilentSkip": false }
+  ],
+  "finding": "All 17 materially-conditional constructions - covering all 17 required category spreads (temporal trigger, event trigger, passive condition, no-default requirement, ratio/pro-forma compliance, after-giving-effect, before-and-after, satisfaction prerequisite, condition inside a defined term, condition by cross-reference, nested proviso, exception conditioned on a separate fact, inverted syntax, condition separated by parenthetical, condition in a neighboring sentence, negative formulation, multi-condition conjunction) - were answered MATERIAL_CONDITION_POSSIBLE by the real, unmocked classifyConditionSuspicion() call against the real anthropic/claude-sonnet-5 model via the Vercel AI Gateway. Every result routes to independent review (needsSemanticReview = status !== NO_MATERIAL_CONDITION_SUSPECTED). Zero dangerous silent skips.",
+  "significance": "This is the first time in this entire multi-phase engagement (across 4+ prior blocked/environment-blocked attempts) that the real model's own semantic judgment - not the fail-safe activating on a transport error - was actually obtained on this frozen adversarial set. The Part A implementer's own central, previously-unvalidated empirical claim (the classifier correctly discriminates fresh materially-conditional constructions using novel, non-enumerated phrasing) is now directly confirmed by real evidence: 17/17, 100%, zero silent skips.",
+  "verdict": "MATERIAL_SAFETY_GATE_PASSED"
+}

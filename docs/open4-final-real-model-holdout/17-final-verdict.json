@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT_RESUME",
+  "phase": "HEADROOM - RESUME OPEN-4 FROZEN HOLDOUT AFTER BUDGET RESTORATION",
+  "startingSha": "5239d7de08574e81e1e88fad5b6d4f4b8f2c2c30",
+  "verdict": "PHASE_3F_1_CLOSED",
+  "basis": [
+    "Provider-access precondition probe (one tiny process-local authenticated call) returned HTTP 200 with a real model response and real usage telemetry - the first success in this engagement's history, confirming the Vercel AI Gateway team budget has been restored (11-provider-precondition.json).",
+    "Executed EXACTLY the frozen 22-case manifest recorded in docs/phase-3f1-terminal-architecture-decision/19-condition-architecture-recertification.json (17 materially-conditional + 5 benign controls), unmodified, in its original order, against the real, unmodified production classifyConditionSuspicion() function using the real anthropic/claude-sonnet-5 model via the Vercel AI Gateway (12-real-model-results.json).",
+    "Safety gate: 17/17 (100%) of the materially-conditional cases received a real MATERIAL_CONDITION_POSSIBLE verdict from the model and route to independent review. Zero dangerous silent skips (13-material-safety-gate.json).",
+    "Benign controls: 3/5 received clean NO_MATERIAL_CONDITION_SUSPECTED verdicts (including B4, the lexical false-positive trap that Gate 1's own regex layer independently mis-flags - direct evidence of real semantic discrimination); 2/5 were conservatively over-routed (40% over-route rate), which is not a failure condition per the governing architecture's own safety-first design (14-benign-routing-metrics-resume.json).",
+    "condition-suspicion-classifier.ts, its prompt, few-shot examples, categories, cache, and verify.ts's two-gate routing were NOT modified this session. The 22 frozen holdout cases were not rewritten, reordered, added, or relabeled. Production-freeze-proof: git diff 5239d7d HEAD on lib/**, app/**, prisma/** is empty (16-production-freeze-proof-resume.json).",
+    "22/22 real calls succeeded (zero failures, zero retries, zero rate-limit events). Total cost: $0.25175 (82,330 input tokens, 8,709 output tokens, average latency 5,544ms) (15-cost-telemetry-resume.json)."
+  ],
+  "significance": "This is the first time in this entire multi-phase engagement (4+ prior blocked/environment-blocked attempts, all the way back through Phase 3F.1-terminal Part B) that the real model's own semantic judgment - not the fail-safe activating on a transport error - was actually obtained on the frozen 22-case adversarial set. The Part A implementer's own central, previously-unvalidated empirical claim (that the classifier correctly discriminates fresh materially-conditional constructions using novel, non-enumerated phrasing, rather than merely benefiting from a fail-safe that always routes on any error) is now directly confirmed by real evidence, closing OPEN-4/BLOCKER-9 on its actual merits rather than on an architecture-only inspection.",
+  "openStateFinal": "OPEN-1/2/3/5/6 remain CERTIFIED_CLOSED (not rechecked this session, per the governing spec's own instruction not to rerun closed foundation work). OPEN-4 is now CERTIFIED_CLOSED - the safety threshold (100% of material cases route safely, zero silent skips) was met with real, non-mocked model evidence. Phase 3F.1 is therefore permanently closed.",
+  "requiredAction": "None. Phase 3F.2 is explicitly NOT begun in this session, per the governing spec's own instruction. This session stops here."
+}
