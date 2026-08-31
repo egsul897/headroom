@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CONDITION_REAL_MODEL_VALIDATION",
+  "disposition": "ENVIRONMENT_BLOCKED",
+  "preconditionCheck": {
+    "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages, model anthropic/claude-sonnet-5, max_tokens 8) using the existing Gateway credential injected as a process-local environment variable for a single command invocation only - never written to .env, never persisted to any committed file, per governing spec SS26.",
+    "result": "HTTP 402: {\"error\":{\"message\":\"Team budget exceeded. Current spend: $50.05, limit: $50.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+    "realCostIncurred": "$0.00 (rejected before any token billing)",
+    "comparisonToPriorFinding": "Identical account state to the prior Part B auditor's own finding in the immediately preceding phase (docs/phase-3f1-terminal-architecture-decision/19-condition-architecture-recertification.json) - the account budget has not been increased since."
+  },
+  "productionCodeStatus": "condition-suspicion-classifier.ts, its prompt, few-shot examples, categories, cache, and verify.ts's two-gate routing were NOT modified. No classifier rewrite was attempted in response to this blocker, per SS29 (\"DO NOT immediately edit production code\") and SS26 (\"Do not rewrite classifier code\").",
+  "frozenHoldoutStatus": "The 22 fresh adversarial constructions authored by the prior phase's auditor D (17 materially conditional + 5 benign controls, covering all 17 required categories) remain untouched and unedited in that phase's own artifact/commit history. No new examples were added to the classifier prompt. No case was pre-tested against the model and then tuned.",
+  "rerunInstructions": {
+    "whatIsNeeded": "A human administrator must increase the Vercel AI Gateway team budget above the current $50.05 spend (e.g. to $100+) via the Gateway's billing/budget settings.",
+    "howToRerun": [
+      "1. Confirm budget increase with a tiny one-call probe (the same shape used here) BEFORE dispatching any auditor or spending on the full 22-case run.",
+      "2. Re-dispatch a single auditor scoped ONLY to OPEN-4/artifact 15 (this file) - do not rerun Part A, do not rerun the already-certified FIX-1/FIX-2/FIX-3 auditors (artifacts 13/14/16).",
+      "3. The auditor must use the SAME 22 frozen constructions from the prior phase (do not re-author new ones unless the prior set is judged stale) - run each once against the real classifyConditionSuspicion(), recording per-case: source text, expected safety class, classifier status, evidence category, whether independent review is invoked, model, provider, prompt version, algorithm version, token usage, cost, latency.",
+      "4. Safety requirement: 100% of the 17 materially-conditional cases must reach independent review or an explicit unresolved/review-required state - zero tolerance for a silent skip.",
+      "5. Manually re-inspect the classifier's actual code for lexical-phrase dependence (the disqualifying bar it already passed on architecture inspection in the immediately preceding phase) - re-confirm this still holds, since production code is unchanged, but do not skip the check.",
+      "6. Update this artifact and 21-final-dispositions.json with the real result: CERTIFIED_CLOSED (if the safety threshold + phrase-dependence checks pass) or STILL_OPEN (with concrete falsifying evidence) - never re-open the whole 3F.1-final phase to do this; it is a single targeted rerun."
+    ]
+  }
+}
