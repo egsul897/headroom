@@ -1,0 +1,448 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "POST_3F2_GENERALIZATION_ARCHITECTURE_DECISION",
+  "sessionType": "ARCHITECTURE_DECISION_ONLY_NO_IMPLEMENTATION",
+  "inputContext": {
+    "phase32FinalVerdict": "PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_FAILED",
+    "phase4ReadinessAtEntry": "NO_GENERALIZATION_NOT_YET_SUFFICIENT",
+    "productionFrozenAt": "00f49ac2d451fb41ca25b7e255422170c654f415",
+    "finalEvidenceHead": "1711ee8",
+    "failedGates": [
+      { "gate": "materialSubstantiveCreditRateMin", "threshold": 0.85, "measured": 0.4615, "numerator": 6, "denominator": 13 },
+      { "gate": "operativeStateCorrectnessOnMateriallyRelevantMin", "threshold": 0.95, "measured": 0.0, "numerator": 0, "denominator": 1 }
+    ],
+    "hardSafetyGates": "ALL MET - this is a generalization-quality investigation, not a trust/safety investigation"
+  },
+
+  "1_executiveDiagnosis": {
+    "coreFraming": "The system did not become unsafe on Riot; it became incomplete in two independent, narrow, and separately-fixable ways. Neither failure is architectural in the sense of requiring a redesign or schema migration. Both are bounded gaps in already-sound architecture: (A) the semantic compiler's schema/IR/normalization layers already fully support extracting an arbitrary number of sibling propositions per source region, but the PROMPT never instructs the model to be exhaustive about definitions specifically (only about rules), and there is no deterministic check that would notice an incomplete extraction; (B) the package-graph's restatement-target-resolution regex is tuned for a caption-style reference pattern ('the X, dated as of Y') that does not match the recital-style pattern Riot's actual documents use ('parties to a Credit Agreement dated as of...'), and even a correctly-resolved restatement chain has no downstream consumer that would ever compute 'document X is now operative' - that concept does not exist anywhere in the current data model.",
+    "safetyVerdictUnchanged": "Every failure mode identified below failed safely. Zero dangerous silent omissions, zero false-VERIFIED certifications, zero stale-document assertions occurred anywhere in Phase 3F.2. This document is exclusively about closing generalization gaps, not about fixing a trust boundary."
+  },
+
+  "2_claimLevelFailureLedger": {
+    "scope": "All 7 material IN_SAMPLE NO_CREDIT claims from docs/phase-3f2-unseen-validation/resume/10-claim-level-comparison.json. Each row is a distinct failure mode - none collapsed.",
+    "rows": [
+      {
+        "gtClaimId": "RGT-C-008",
+        "sourceSection": "doc-a Section 1.01, definition of \"Final Maturity Date\"",
+        "materiality": "CRITICAL",
+        "sourceRequires": "\"Final Maturity Date\" = date 364 days after the Agreement date (the \"Initial Final Maturity Date\"), subject to extension per Section 2.03(a).",
+        "headroomDiscovered": "Yes - discovery-candidate:b33c341e3169731f00d02245 (doc-a Section 1.01), compiled 3x as near-duplicate candidates.",
+        "contextCompilerReceived": "Full doc-a Section 1.01 text, built via index.getNodeText(structuralNodeIds, \"DESCENDANTS\") in the orchestrator - unbounded, no truncation applied at this stage.",
+        "irProduced": "A definitions[] array containing roughly a dozen OTHER defined terms from the same section, correctly extracted.",
+        "omittedOrMisstated": "\"Final Maturity Date\" is entirely absent from the definitions array on all 3 compiled candidates - a wholesale omission of one CRITICAL term from an otherwise well-populated batch.",
+        "verifierDisposition": "MATERIAL_DISCREPANCY (non-confident status on the housing candidate)",
+        "safeFailureDisposition": "SPECIFICALLY_SURFACED",
+        "earliestFailureLayer": "SEMANTIC_COMPILATION",
+        "exactProductionFunctions": ["compileCovenantToIR (lib/contract-model/compiler/semantic/compile.ts:133)", "buildSystemPrompt (lib/contract-model/compiler/semantic/prompt.ts)"],
+        "failureModeCategory": "MODEL_SEMANTIC_OMISSION (prompt-adherence gap, not schema/cardinality)"
+      },
+      {
+        "gtClaimId": "RGT-C-029",
+        "sourceSection": "doc-a Section 1.01, definition of \"Collateral Documents\"",
+        "materiality": "MATERIAL",
+        "sourceRequires": "\"Collateral Documents\" = the Pledge and Collateral Account Control Agreement + Custody Agreement, plus other perfecting documents.",
+        "headroomDiscovered": "Yes - same candidate as RGT-C-008 (discovery-candidate:b33c341e3169731f00d02245).",
+        "contextCompilerReceived": "Same full doc-a Section 1.01 text as RGT-C-008.",
+        "irProduced": "Same definitions[] array as RGT-C-008 (a dozen other terms correctly extracted).",
+        "omittedOrMisstated": "\"Collateral Documents\" entirely absent from all 3 compiled candidates' definitions arrays, despite the section housing it being compiled.",
+        "verifierDisposition": "MATERIAL_DISCREPANCY",
+        "safeFailureDisposition": "SPECIFICALLY_SURFACED",
+        "earliestFailureLayer": "SEMANTIC_COMPILATION",
+        "exactProductionFunctions": ["compileCovenantToIR (semantic/compile.ts:133)", "buildSystemPrompt (semantic/prompt.ts)"],
+        "failureModeCategory": "MODEL_SEMANTIC_OMISSION"
+      },
+      {
+        "gtClaimId": "RGT-C-030",
+        "sourceSection": "doc-c Section 1.01, definitions of \"Collateral Documents\", \"Security Confirmation\", \"Second Security Confirmation\"",
+        "materiality": "MATERIAL",
+        "sourceRequires": "Representation that \"Collateral Documents\" now embeds both \"Security Confirmation\" (doc-b original) and \"Second Security Confirmation\" (doc-c addition) - 3 linked, interdependent definitions.",
+        "headroomDiscovered": "Yes - discovery-candidate:3b57707452b7d665665ea2f5.",
+        "contextCompilerReceived": "Full doc-c Section 1.01 text housing all 3 linked definitions.",
+        "irProduced": "definitions[] array containing only \"Second Security Confirmation\", extracted correctly and verbatim.",
+        "omittedOrMisstated": "2 of the 3 interlinked definitions the claim requires (\"Collateral Documents\", \"Security Confirmation\") are missing from the compiled output entirely.",
+        "verifierDisposition": "MATERIAL_DISCREPANCY",
+        "safeFailureDisposition": "SPECIFICALLY_SURFACED",
+        "earliestFailureLayer": "SEMANTIC_COMPILATION",
+        "exactProductionFunctions": ["compileCovenantToIR (semantic/compile.ts:133)", "buildSystemPrompt (semantic/prompt.ts)"],
+        "failureModeCategory": "MODEL_SEMANTIC_OMISSION"
+      },
+      {
+        "gtClaimId": "RGT-C-022",
+        "sourceSection": "doc-a Section 1.01, definition of \"Day Count Fraction\"",
+        "materiality": "MATERIAL",
+        "sourceRequires": "Formula: days from prepayment date to six-month anniversary of first Drawdown Date, divided by 365, with an explicit qualifier \"(or zero if there is no such period)\" and a leap/no-exact-anniversary proviso.",
+        "headroomDiscovered": "Yes - discovery-candidate:b33c341e3169731f00d02245.",
+        "contextCompilerReceived": "Full doc-a Section 1.01 text.",
+        "irProduced": "\"Day Count Fraction\" definition extracted, with a calculationExpression modeling the numerator as an opaque external TRANSACTION_INPUT_REFERENCE.",
+        "omittedOrMisstated": "The compiler's own excerpt text truncates with an internal ellipsis exactly at the required qualifier (\"or zero if there is no such period\") and the leap/no-anniversary proviso; neither branch is encoded in the structured expression.",
+        "verifierDisposition": "UNCERTAIN-severity finding that independently and specifically names the same dropped zero-floor/leap-date branches - verification caught the exact gap.",
+        "safeFailureDisposition": "SPECIFICALLY_SURFACED",
+        "earliestFailureLayer": "SEMANTIC_COMPILATION",
+        "exactProductionFunctions": ["compileCovenantToIR (semantic/compile.ts)", "tools.ts truncate()/MAX_TEXT_RESULT_CHARS (semantic/tools.ts:86-90)", "caller.ts tool loop"],
+        "failureModeCategory": "MODEL_SEMANTIC_OMISSION / plausible OUTPUT_TRUNCATION_ARTIFACT (see section 5 - most likely the model's own generated ellipsis, possibly paraphrasing a getDefinition/getReferencedProvision tool result already truncated at the 4000-char MAX_TEXT_RESULT_CHARS ceiling; not a backend post-processing truncation, not a schema cap)"
+      },
+      {
+        "gtClaimId": "RGT-C-018",
+        "sourceSection": "doc-a Section 2.03(h) (upfront fee)",
+        "materiality": "MATERIAL",
+        "sourceRequires": "1.00% upfront fee on the Commitment, payable on first Drawdown Date, nettable against the disbursement.",
+        "headroomDiscovered": "Yes - discovery-candidate:4f6d049986c629e4ce8ec916, the only compiled candidate at this location.",
+        "contextCompilerReceived": "A table-of-contents fragment only (\"Section 2.03. Repayment and Prepayment\" + page number) - no operative text at all, because getOperativeProvision found the '2.03' reference ambiguous across 2 physical structural-node locations (a TOC entry and the real heading) with no nodeId to disambiguate.",
+        "irProduced": "Sufficiency MISSING_CONTEXT - no rule/definition content for the upfront fee.",
+        "omittedOrMisstated": "The entire upfront-fee content of 2.03(h) was never retrieved at all - a context-retrieval failure, not a compilation-quality failure.",
+        "verifierDisposition": "VERIFICATION_FAILED - explicitly and prominently flags this as an unresolved section.",
+        "safeFailureDisposition": "SPECIFICALLY_SURFACED",
+        "earliestFailureLayer": "STRUCTURAL_INDEX / CONTEXT_RETRIEVAL",
+        "exactProductionFunctions": ["getOperativeProvision (semantic/tools.ts)", "structural-index.ts node resolution"],
+        "failureModeCategory": "STRUCTURAL_AMBIGUITY"
+      },
+      {
+        "gtClaimId": "RGT-C-014",
+        "sourceSection": "doc-a Section 1.01 (definition of \"Applicable Margin\") + Section 2.04(a) (base-rate mechanic)",
+        "materiality": "CRITICAL",
+        "sourceRequires": "Compound proposition: interest = greater of Fed Funds Rate or 3.25% floor, plus Applicable Margin (4.50% / 4.75% during Second Deleveraging Trigger Period) - spans two sections.",
+        "headroomDiscovered": "Yes for both halves in the full 887-candidate discovery population; only the 1.01 half's candidate (discovery-candidate:b33c341e3169731f00d02245) was among the 38 compiled within budget. Section 2.04(a) was never selected for compilation.",
+        "contextCompilerReceived": "Full doc-a Section 1.01 text for the compiled half only.",
+        "irProduced": "The Applicable Margin figures (4.50%/4.75%) are correctly captured in the compiled 1.01 half.",
+        "omittedOrMisstated": "The Section 2.04(a) half (the base-rate/floor mechanic) is entirely absent from any compiled output because that candidate was never selected for compilation within the 38-candidate cost-ceiling budget - a sampling-budget artifact, not a single-layer compiler or retrieval bug.",
+        "verifierDisposition": "MATERIAL_DISCREPANCY on the compiled 1.01 half (not a confident \"complete\" status).",
+        "safeFailureDisposition": "SPECIFICALLY_SURFACED",
+        "earliestFailureLayer": "COMPILATION_SCOPE / SAMPLING (cost-ceiling)",
+        "exactProductionFunctions": ["compilePackageToIR / eligibility+sampling logic (semantic/package-compile.ts)"],
+        "failureModeCategory": "SAMPLING_ARTIFACT"
+      },
+      {
+        "gtClaimId": "RGT-C-058",
+        "sourceSection": "doc-b Section 3.03 (a)-(e) (conditions precedent to Amendment and Restatement Effective Date)",
+        "materiality": "MATERIAL",
+        "sourceRequires": "All 5 lettered conditions (consents, certificates, Security Confirmation delivery, Constituent Documents, legal opinion, KYC/AML) represented.",
+        "headroomDiscovered": "Yes for all 5 in the full discovery population; only conditions (a) and (d) (discovery-candidate:c6d837ef87f548c09e2aafe1, discovery-candidate:c6b0828601004c2185e7cf98) were among the 38 compiled candidates.",
+        "contextCompilerReceived": "Full text for conditions (a) and (d) only.",
+        "irProduced": "Rules for conditions (a) and (d) correctly extracted.",
+        "omittedOrMisstated": "Conditions (b), (c), (e) - carrying the Security Confirmation delivery, Constituent Documents, and KYC/AML elements the GT description highlights - were never selected for compilation within the 38-candidate budget.",
+        "verifierDisposition": "VERIFICATION_INCOMPLETE (condition (d) candidate) and MATERIAL_DISCREPANCY (condition (a) candidate) - both non-confident.",
+        "safeFailureDisposition": "SPECIFICALLY_SURFACED",
+        "earliestFailureLayer": "COMPILATION_SCOPE / SAMPLING (cost-ceiling)",
+        "exactProductionFunctions": ["compilePackageToIR / eligibility+sampling logic (semantic/package-compile.ts)"],
+        "failureModeCategory": "SAMPLING_ARTIFACT"
+      }
+    ],
+    "distributionSummary": {
+      "MODEL_SEMANTIC_OMISSION": 4,
+      "STRUCTURAL_AMBIGUITY": 1,
+      "SAMPLING_ARTIFACT": 2
+    }
+  },
+
+  "3_semanticCompilerRootCause": {
+    "claimUnderTest": "The dominant substantive-credit failure pattern is semantic compilation partially under-extracting definition-heavy sections.",
+    "testResult": "CONFIRMED, with a precise, code-evidenced root cause - NOT a schema/cardinality limitation.",
+    "questionA_didModelSeeNecessarySource": {
+      "answer": "MOST LIKELY YES for RGT-C-008/029/030. operativeSourceText is built via index.getNodeText(structuralNodeIds, \"DESCENDANTS\") - the full, unbounded character span of the candidate's structural node(s) - and is passed to the model with no truncation applied at this stage (caller.ts renders it verbatim in the initial context bundle). This was NOT independently re-verified against the raw discovery-candidate boundary for these 3 specific claims (that would require inspecting the discovery layer's exact structuralNodeIds for candidate b33c341e3169731f00d02245 against the source text), so this is flagged as highly-probable-but-not-100%-independently-confirmed.",
+      "conclusionIfNo": "N/A - evidence points to source being present."
+    },
+    "questionB_omittedDespiteSeeingSource": {
+      "answer": "YES - this is the operative finding.",
+      "causeIdentified": "prompt.ts contains an explicit exhaustiveness instruction for RULES ('MULTIPLE RULES: one source section or clause group may contain more than one independently operative rule ... Emit one WireRule per independently operative rule - never merge distinct baskets into one') but NO equivalent instruction for DEFINITIONS anywhere in the file. None of the prompt's six few-shot examples demonstrates extracting multiple sibling definitions from one section. The model therefore has an explicit contract for rule-completeness and no contract at all for definition-completeness.",
+      "eliminatedCauses": [
+        "NOT a batch-containing-multiple-propositions issue at the schema level (definitions[] is already unbounded array-typed at every layer)",
+        "NOT output-token pressure in the ordinary sense (max_tokens is 128,000; genuine max_tokens truncation is handled by a distinct, explicit OUTPUT_TRUNCATED prefix-recovery path, not a silent per-item drop)",
+        "NOT schema normalization dropping siblings (normalize.ts performs a straight 1:1 .map() over every element the model returns, with no filter/dedup/first-N logic anywhere)",
+        "NOT a parser taking one item where many were returned (wire-schema.ts's SubmitCompilationSchema uses plain unbounded z.array(), no .max())",
+        "NOT tool/context limits on the primary source text (only follow-up tool-call RESULTS are capped, at 4000 chars, via tools.ts's truncate() - the primary operativeSourceText is never truncated)"
+      ]
+    },
+    "questionC_wasIrCapableOfRepresentingMissedSemantics": {
+      "answer": "YES, fully. lib/contract-model/ir/types.ts's IRCompilationUnit declares rules: IRRule[], definitions: IRDefinition[], sharedCapacities: IRSharedCapacity[] - all plain unbounded arrays, no fixed-length tuple, no singular non-array field, no numeric cap anywhere in the type file or in validate.ts.",
+      "verdict": "DO NOT BLAME THE IR. This is not a representation-architecture problem."
+    },
+    "questionD_didVerificationCatchTheOmission": {
+      "answer": "YES for all 4 SEMANTIC_COMPILATION-attributed claims (RGT-C-008, 022, 029, 030) - every housing candidate carried a non-confident verification status (MATERIAL_DISCREPANCY, or for RGT-C-022 an UNCERTAIN-severity finding that independently and specifically named the exact dropped qualifier). Zero of these 4 claims reached a false-VERIFIED state.",
+      "verdict": "SAFETY WORKED, AUTOMATION FAILED. This is not a separate verifier defect - it is exactly the intended safe-failure behavior. No additional verifier fix is required for these 4 claims."
+    }
+  },
+
+  "4_multiClaimCardinalityAnalysis": {
+    "missionQuestion": "Does the compiler architecture currently have an implicit 1 candidate -> 1 claim assumption anywhere?",
+    "finding": "NO. Exhaustive search of compile.ts, types.ts, wire-schema.ts, normalize.ts, and ir/types.ts found zero singular-result-shape assumptions: no result[0], no first-item extraction, no array truncation, no one-candidate-ID-to-one-semantic-truth mapping, no validator logic assuming exactly one proposition. SemanticCompilationResult.rules/definitions/sharedCapacities are all arrays from the type declaration down through normalization to the final IR. The architecture ALREADY implements SOURCE CANDIDATE -> 1..N SEMANTIC CLAIMS, not SOURCE CANDIDATE -> 1 SEMANTIC CLAIM.",
+    "onlyPlaceCollapseOccurs": "recoverPartialSubmission (semantic/caller.ts:180-214) intentionally keeps only the longest valid CONTIGUOUS PREFIX of returned elements, discarding the rest - but this fires ONLY on a genuine, positively-detected message.stop_reason === \"max_tokens\" event (a real output-truncation signal), never as a normal-path 'pick the best one' heuristic.",
+    "implicationForSection6": "Because the array-of-N architecture already exists end-to-end, the fix for the definition-omission pattern does NOT require separating candidate identity from claim identity, does NOT require an IR/schema change, and does NOT require a migration. The fix is entirely at the prompt-instruction layer plus (optionally) a new deterministic completeness-verification layer - both additive, non-breaking changes.",
+    "impactIfArchitectureChangeWereNeeded_hypotheticalOnly": "Not applicable given the finding above; retained for completeness per mission instructions. Had a 1:1 assumption existed, it would have touched: semantic compiler (candidate/claim identity split), IR (definition of a 'claim' as distinct from a 'candidate'), verification (per-claim vs per-candidate disposition), ClaimReviewItem (identity keying), SemanticTruthRecord (persistence keying), provenance (multi-claim attribution), deduplication (claim-level not candidate-level), scoring/evaluation (the very framework used in Phase 3F.2's own claim-comparison), and the precedent system (retrieval keyed to claim not candidate). None of this is required."
+  },
+
+  "5_tokenTruncationAnalysis": {
+    "distinctMechanismsChecked": {
+      "SOURCE_TRUNCATION": "NOT EVIDENCED EITHER WAY from the files inspected - would require inspecting the raw source text and structural-node boundaries directly, which is outside the semantic-compiler code path.",
+      "CONTEXT_WINDOW_TRUNCATION": "RULED OUT for the primary operativeSourceText (built via unbounded index.getNodeText(...,\"DESCENDANTS\") and passed to the model with no truncation in caller.ts). PARTIALLY IN PLAY for follow-up tool calls: tools.ts:86-90 defines MAX_TEXT_RESULT_CHARS = 4000 and truncate(), applied to getOperativeProvision/getDefinition/getParentClause/getSiblingClauses/getReferencedProvision/getPriorVersion/getSourceSpan results. If the model called getDefinition(\"Day Count Fraction\") or getReferencedProvision and the true text exceeded 4000 chars, this ceiling could plausibly explain the RGT-C-022 truncation.",
+      "MODEL_OUTPUT_TRUNCATION": "A real, explicit, well-instrumented mechanism exists (message.stop_reason === \"max_tokens\", gating recoverPartialSubmission and an OUTPUT_TRUNCATED status/failureReason), but it behaves as a structured whole-item drop, not a silent mid-string ellipsis inside an otherwise-COMPLETE, validated definition - so this is an UNLIKELY exact match for RGT-C-022's specific presentation.",
+      "POST_PROCESSING_TRUNCATION": "RULED OUT. Neither normalize.ts nor wire-schema.ts truncates, slices, or length-caps excerpt/sourceEvidence/termName/calculationExpression strings anywhere.",
+      "DISPLAY_ONLY_TRUNCATION": "No display/formatting layer was found in the five backend files inspected; not fully ruled out at a UI layer outside this investigation's scope, but implausible given the finding was recorded in the persisted compiled IR itself, not a UI rendering."
+    },
+    "mostPlausibleExplanation": "The RGT-C-022 ellipsis most likely originated as the MODEL'S OWN generated text - either (a) the model quoting a definition with its own abbreviating '...' (the prompt asks for 'a short excerpt of the actual source text' but never says 'verbatim, never elided'), or (b) the model paraphrasing a tool result that itself hit the 4000-char MAX_TEXT_RESULT_CHARS ceiling and re-summarized it with its own ellipsis rather than the tool's own literal, self-describing truncation marker ('... (truncated - request a narrower span if you need more)'). This is flagged as INFERRED, NOT DIRECTLY EVIDENCED without inspecting the raw model transcript for this specific call.",
+    "tokenBudgetConfiguration": {
+      "value": 128000,
+      "envVarOverride": "SEMANTIC_COMPILER_MAX_TOKENS",
+      "location": "semantic/caller.ts (DEFAULT_MAX_OUTPUT_TOKENS, resolveMaxTokens())",
+      "historicalNote": "This 128,000-token ceiling replaced an earlier, documented 8,192-token ceiling as part of a prior (Phase 3B.1) fix; the codebase's own comment at that time explicitly rejected a full decomposition/continuation architecture as 'disproportionate to the measured failure scale' - the same judgment this document reaches again for the definition-omission problem (see section 10, Option 3)."
+    },
+    "continuationSupportFinding": {
+      "exists": false,
+      "detail": "No ask-the-model-for-more / continuation retry protocol exists anywhere in this codebase. llm-caller.ts (the older, general-purpose caller) has zero references to stop_reason, continuation, truncated, or max_tokens at all - per its own header comment it is a one-shot, tool-less forced-schema call with no loop. The semantic compiler's caller.ts has ONLY the prefix-keep-and-drop recovery described above, which is a truncation-DAMAGE-CONTROL mechanism, not a completeness-ensuring one - it cannot recover an omission that occurred before truncation was even detected (e.g., the model simply never emitting a WireDefinition for a term, with no truncation signal at all, which is the RGT-C-008/029/030 pattern)."
+    },
+    "structuralBatchBoundingFinding": {
+      "currentBoundingMechanism": "Bounded only by (i) whatever text the discovery/structural-index layer assigned to one candidate's structuralNodeIds, and (ii) the 128,000-output-token ceiling. There is NO deterministic pre-count of 'how many definitions/rules should exist in this candidate' anywhere in compile.ts, package-compile.ts, or validate.ts that the model's output could be checked against after the fact.",
+      "recommendationImplication": "This absence is precisely what Option 2 in section 10 below proposes to close - a lightweight, deterministic, model-independent expected-term-count signal, rather than relying purely on the model's own judgment of what is 'in scope.'"
+    }
+  },
+
+  "6_packageGraphRootCause": {
+    "fixtureGroundTruth": {
+      "amendmentEffects": "Both doc-b and doc-c carry a RESTATE_AGREEMENT effect with status REVIEW_REQUIRED, confidence 0.3, resolutionMethod DETERMINISTIC_FULL_RESTATEMENT, target.targetDocumentId: null, unresolvedReason: \"This document is classified as a full amendment-and-restatement, but its own restated target document could not be resolved.\"",
+      "packageGraph": "doc-a classified COMPLIANCE_CERTIFICATE (0.9); doc-b and doc-c both correctly classified AMENDED_AND_RESTATED_AGREEMENT (0.9, DETERMINISTIC_TITLE_PATTERN). All RESTATES/CERTIFIES_COMPLIANCE_WITH relationshipCandidates are UNRESOLVED, confidence 0, resolutionMethod DETERMINISTIC_NO_SIGNAL, unresolvedReason 'no explicit reference to another agreement (by name + execution date) was found in this document's own text'. doc-a/doc-b/doc-c were never merged into one instrument (two isolated single-document instrument groups resulted)."
+    },
+    "bug1_regexTooNarrow": {
+      "location": "lib/contract-model/compiler/package-graph/relationship-resolution.ts - AGREEMENT_REF_RE",
+      "mechanism": "The regex requires the pattern '(the|that certain) [restatement-prefix][agreement-label], dated as of [date]' with NO intervening free text between the determiner and the agreement label.",
+      "actualRiotText": "Doc-b/doc-c's recitals read: \"The Borrower and Lender are parties to a Credit Agreement dated as of April 22, 2025 (the \\\"Existing Credit Agreement\\\")...\" - the determiner immediately before 'Credit Agreement' is 'a', not 'the'/'that certain', and free text ('Borrower and Lender are parties to') separates the sentence-initial 'The' from the agreement label.",
+      "result": "findAllAgreementReferences returns zero matches for both doc-b and doc-c, forcing the RESTATES relationshipCandidate to UNRESOLVED/confidence 0/DETERMINISTIC_NO_SIGNAL, which propagates directly (via pipeline.ts's restatesEdge?.targetDocumentId ?? null) into deterministic-parser.ts's confidence 0.3/REVIEW_REQUIRED assignment on the RESTATE_AGREEMENT effect - an exact, traceable chain from this one regex miss to the fixture's observed output.",
+      "existingUnusedFix": "document-identity.ts's originalAgreementReferenceHint field already uses a LOOSER regex that DOES match this exact sentence (captures up to 60 chars of intervening text between 'the' and the agreement label) - and it DID successfully extract 'The Borrower and Lender are parties to a Credit Agreement dated as of April 22, 2025' for both doc-b and doc-c, visible in the preserved stage3-package-graph.json fixture. This successful extraction is never consumed by relationship-resolution.ts, which re-derives its own (stricter, failing) match from raw text independently.",
+      "classification": "LOCAL_BUG - narrow regex pattern, with an already-working alternative sitting unused one module away."
+    },
+    "bug2_dateAmbiguityRisk": {
+      "description": "Even if bug 1's regex were loosened, naive date-based resolution alone would misresolve doc-c's target. Both doc-b's AND doc-c's recitals cite the ORIGINAL April 22, 2025 date (doc-a's execution date) as the 'Existing Credit Agreement' - a standard drafting convention where the defined term anchors to the deal's original date across successive restatements. Doc-c's recital additionally states the Existing Credit Agreement is 'as amended and restated as of the First Amendment and Restatement Effective Date' - an explicit textual pointer that doc-c's real predecessor is doc-b's restated form, not doc-a itself. resolveAgreementReference currently resolves purely by matching the cited date against a candidate's raw executionDate, which would match doc-a (not doc-b) for doc-c's reference.",
+      "classification": "ANALYTICALLY-DERIVED RISK, NOT YET FIXTURE-OBSERVED - the actual Riot run never reached this ambiguity because bug 1 stopped it earlier. Any fix to bug 1 MUST also handle this qualifying-clause parsing or it will introduce a new, silent misresolution (doc-c pointing to doc-a instead of doc-b) rather than fixing the problem."
+    },
+    "bug3_operativeStateEscapeHatchNotWired": {
+      "location": "lib/contract-model/compiler/amendment/operative-state.ts:481 and its two real call sites",
+      "mechanism": "computeOperativeContractState filters allEffects to instrumentEffects via target.targetInstrumentKey === input.instrumentKey (strict equality). Both RESTATE_AGREEMENT effects have targetInstrumentKey: null (because the target never resolved), so they are excluded BEFORE grouping even runs - they never even reach the unattachedEffects array via the normal path. The module's own authors already anticipated exactly this failure mode (documented in code comments as the 'DSGR first-blind F3 finding') and built an escape hatch: an optional input.unresolvedTargetEffectsForThisInstrument parameter that gets unioned into unattachedEffects specifically to prevent status from defaulting to OPERATIVE_STATE_RESOLVED merely because provisions came back empty.",
+      "gapFound": "This escape hatch is NEVER wired at either real production call site: lib/contract-model/analysis/orchestrator.ts:347 and scripts/phase-3f2-riot-unseen-run.ts:155 both omit it. By contrast, scripts/phase-3f1-dsgr-remediation-regression.ts:139-145 DOES pass it, as a regression test for exactly this class of bug - meaning the fix already exists in the codebase's own test harness and was simply never connected to the two real callers.",
+      "classification": "LOCAL_WIRING_BUG - the fix already exists; it needs to be connected, not invented."
+    },
+    "bug4_missingOperativeDocumentConcept": {
+      "description": "chain.ts's provisionKeyFor function only recognizes SECTION or DEFINITION kind targets (returns null for anything else). A RESTATE_AGREEMENT effect's target is always DOCUMENT-kind with no section/definition ref (by construction, since a full restatement replaces the whole prior document, not a specific provision). This means groupEffectsByProvision ALWAYS routes RESTATE_AGREEMENT effects to unattachedEffects and NEVER into a ProvisionGroup, REGARDLESS of whether the target ever resolves. Exhaustive grep across the entire amendment module for any concept of 'operative document' / 'currently operative' / 'isOperativeDocument' returned zero hits outside deterministic-parser.ts's effect CONSTRUCTION - nothing CONSUMES a resolved RESTATE_AGREEMENT effect to answer 'which whole document is now in force.'",
+      "implication": "This is the deepest gap: even a hypothetically PERFECT fix to bug 1 (regex) and bug 2 (date ambiguity) would still not, by itself, produce a 'doc-c is operative' answer, because no code path exists anywhere that would consume a correctly-resolved restatement chain and turn it into that answer. OperativeContractState today answers only 'what text governs section X / definition Y as of date D' - never 'which whole document is currently in force.'",
+      "classification": "BOUNDED_ARCHITECTURAL_LIMITATION - a genuine, real gap, but closable via an ADDITIVE extension of the existing effect/chain pattern (see section 10, Option 2), not a redesign."
+    },
+    "overallRootCauseStatement": "The proximate, directly-reproducible cause of THIS run's empty operative-state result is bug 1 (the regex miss) compounded by bug 3 (the unwired escape hatch, which converts what should have been an honest REVIEW_REQUIRED signal into a falsely-clean-looking OPERATIVE_STATE_RESOLVED-with-nothing-tracked). But fixing bugs 1 and 3 alone would still not answer the actual mission question ('which document is operative') - that requires closing bug 4 as well. Bug 2 is a latent risk that must be designed around when fixing bug 1, or it converts a NO_SIGNAL failure into a silent WRONG_SIGNAL failure (doc-a instead of doc-b) - which would be strictly worse."
+  },
+
+  "7_restatementSemantics": {
+    "currentModeling": "The relationship-TYPE taxonomy is NOT collapsed: PackageRelationshipType maps 1:1 onto the real Prisma DocumentRelationshipType enum (AMENDS, RESTATES, SUPPLEMENTS, SUPERSEDES, INCORPORATES_BY_REFERENCE, GOVERNS, SECURES, GUARANTEES, SUBORDINATES, INTERCREDITOR_WITH, MODIFIES_COLLATERAL, MODIFIES_GUARANTOR_STRUCTURE, REPLACES_SECTION, ADDS_SECTION, DELETES_SECTION, plus JOINS and CERTIFIES_COMPLIANCE_WITH added later) - RESTATES already has its own distinct value, separate from AMENDS.",
+    "whatIsConflated": "The EVIDENCE-CLASSIFICATION and TARGET-RESOLUTION machinery (relationship-resolution.ts's MODIFICATION_RELATIONSHIP_TYPES = {AMENDS, RESTATES, SUPPLEMENTS, JOINS}) applies the IDENTICAL caption-style reference matcher to all four types. A full restatement's real target is normally established through a RECITAL ('parties to a Credit Agreement dated as of...') rather than the captioned 'Amendment to the X, dated as of Y' naming convention a targeted amendment's own title typically uses - the resolver was evidently tuned for the latter shape, causing it to miss the former for restatements specifically.",
+    "effectLayerIsAlreadyCorrectlySeparated": "At the amendment-EFFECT layer (deterministic-parser.ts), a full restatement IS explicitly handled differently: isFullRestatement short-circuits to a single RESTATE_AGREEMENT effect with target.kind: \"DOCUMENT\" and no section/definition ref, bypassing the normal per-ModificationCandidate loop entirely. So the conflation exists ONLY at the upstream evidence/resolution layer, not at the effect-representation layer.",
+    "newDocumentSupersedesRelationshipConceptNeeded": "PARTIALLY. The RESTATES relationship type and the RESTATE_AGREEMENT effect kind already model 'new document supersedes/replaces prior version' as conceptually distinct from a provision-level amendment instruction. What is missing is not a new relationship TYPE but (a) a recital-aware evidence pattern for detecting this relationship (see section 6 bug 1), and (b) a consumer that turns a resolved instance of this relationship into an operative-document answer (see section 6 bug 4).",
+    "verdict": "Do NOT introduce a new relationship-type taxonomy. RESTATES already exists and is structurally sound. Fix the evidence pattern feeding it, and add the missing consumer."
+  },
+
+  "8_documentVersionChainAnalysis": {
+    "missionQuestionA_isExistingArchitectureSufficient": "MOSTLY YES, in spirit. The existing effect-based model (RESTATE_AGREEMENT effects + chain.ts's chain-building pattern for section/definition-level amendments) already demonstrates the right general shape: detect a modification event, resolve its target, sequence it into a chain, expose the result. The gap is that this pattern was never extended to DOCUMENT-kind targets - chain.ts's data model (provisionKeyFor) structurally excludes them, and no analogous 'document chain' builder or consumer exists.",
+    "missionQuestionB_doRestatementsRequireAnExplicitVersionChainAbstraction": "A NARROW, ADDITIVE one - not the full first-class DocumentVersionChain domain object with its own Prisma migration described in the mission's illustrative model. The existing amendment/types.ts + chain.ts pattern can be extended with a parallel, DOCUMENT-kind chain (predecessor/successor/effectiveDate/confidence/provenance, mirroring the existing ProvisionGroup/chain fields) without touching persistence schema, because OperativeContractState can carry an additive optional field (e.g. operativeDocumentId) fed by this new capability.",
+    "recommendation": "Choose 'existing architecture sufficient + narrow additive extension', NOT 'full new version-chain abstraction requiring migration'. The evidence does not require choosing the heavier option: the fix is bounded to adding one new consumer function and one new (additive, non-migrating) field, reusing patterns already proven for section/definition-level chains rather than replacing them.",
+    "explicitInstructionCompliance": "Per mission section 12's own instruction ('Do not choose B unless evidence requires it') - evidence does NOT require the heavy version-chain domain object. It requires finishing the existing pattern, not replacing it."
+  },
+
+  "9_operativeStateAggregateStatusAnalysis": {
+    "missionQuestion": "Is OPERATIVE_STATE_RESOLVED semantically overloaded, and if so is this the same root cause as the core package-graph defect, or a separate cosmetic issue?",
+    "confirmedOverload": "YES, directly confirmed in code. OperativeStateStatus = \"OPERATIVE_STATE_RESOLVED\" | \"OPERATIVE_STATE_PARTIAL\" | \"OPERATIVE_STATE_REVIEW_REQUIRED\" | \"OPERATIVE_STATE_CONFLICTED\" has no value distinguishing 'nothing existed to resolve' from 'resolution was attempted and failed to attach anything'. The single assignment site (operative-state.ts:481: status = unattachedEffects.length === 0 ? RESOLVED : REVIEW_REQUIRED) makes these two cases byte-for-byte identical in the returned status field whenever the failed effects never make it into unattachedEffects in the first place.",
+    "sameRootCauseAsPackageGraphDefect": "YES - code proves this, satisfying the mission's explicit bar ('do not merge this cosmetic/product issue into the core package-graph defect unless code proves they share the same root'). The type design ALREADY anticipates and intends to distinguish these two cases via the unattachedEffects array/summary text (documented in the type comment referencing the prior 'DSGR first-blind F3 finding'), and that safeguard depends entirely on every call site correctly populating unresolvedTargetEffectsForThisInstrument - which section 6's bug 3 shows the two real production call sites do not do. Fixing bug 3 (wiring the existing escape hatch) directly and completely resolves this status-overload symptom for the Riot case; it is not a separate defect requiring its own fix.",
+    "verdict": "One fix (wire the escape hatch at both real call sites), not two. No new status-enum value is strictly required to fix the RIOT case, though a future, independent product-quality improvement could still consider adding a fifth status value (e.g. OPERATIVE_STATE_NO_AMENDMENTS_FOUND) to make the 'genuinely nothing happened' case self-evidently distinguishable from 'REVIEW_REQUIRED effects existed but none attached' even before inspecting unattachedEffects - this is a nice-to-have, not required to close the Riot gap."
+  },
+
+  "10_architectureOptions": {
+    "semanticCompilation": [
+      {
+        "option": "1 - Prompt-completeness fix",
+        "mechanism": "Add an explicit 'MULTIPLE DEFINITIONS' exhaustiveness instruction mirroring the existing 'MULTIPLE RULES' instruction, plus at least one worked few-shot example showing extraction of several sibling definitions from one section.",
+        "filesModulesAffected": ["lib/contract-model/compiler/semantic/prompt.ts"],
+        "schemaImpact": "None",
+        "migrationImpact": "None",
+        "backwardCompatibility": "Full",
+        "verificationImpact": "None required - verifier already independently catches gaps via its own text comparison",
+        "precedentSystemImpact": "None",
+        "expectedImprovement": "Likely meaningful reduction in the wholesale-sibling-omission pattern (4 of 7 failures this run)",
+        "newRisks": "Prompt drift/regression on existing rule-extraction quality if poorly worded; needs synthetic regression coverage",
+        "complexity": "LOW",
+        "satisfiesAntiEnumeration": true
+      },
+      {
+        "option": "2 - Deterministic completeness cross-check",
+        "mechanism": "Add a lightweight, deterministic (regex-based) 'expected defined-term count' auditor that scans a candidate's source span for quoted defined-term citation patterns (e.g. '\"X\" means') and compares the count/set against the compiled definitions[] array. If the model's returned set is a strict subset of the deterministically-detected term set, flag the candidate for required review or trigger a targeted second pass for the missing terms.",
+        "filesModulesAffected": ["New module e.g. lib/contract-model/compiler/semantic/completeness-check.ts", "lib/contract-model/compiler/semantic/compile.ts (wire into determineStatus/failureReasons)"],
+        "schemaImpact": "Additive only - a new field/failureReason on SemanticCompilationResult",
+        "migrationImpact": "None (additive)",
+        "backwardCompatibility": "Full",
+        "verificationImpact": "Strengthens it - gives verification a structural, model-independent signal instead of relying purely on the model's own self-report",
+        "precedentSystemImpact": "None",
+        "expectedImprovement": "HIGH - mechanically catches exactly the '12 of 13 defined terms extracted' pattern regardless of model behavior, cheaply (no extra AI calls needed for detection itself)",
+        "newRisks": "The regex-based defined-term detector could have its own false-positive/negative rate on unusual drafting styles; must be wired as an OR-combined review-routing signal, never used to auto-fail an otherwise-correct candidate",
+        "complexity": "MEDIUM",
+        "satisfiesAntiEnumeration": true,
+        "condition": "Implemented as a generic pattern detector (e.g. quoted-term-before-\"means\"), never as an enumerated list of expected legal terms"
+      },
+      {
+        "option": "3 - Structural decomposition (term-level candidates)",
+        "mechanism": "Split DEFINITION-role discovery candidates at term granularity (one candidate per detected defined term) instead of section granularity, so each compile call targets exactly one term.",
+        "filesModulesAffected": ["lib/contract-model/compiler/discovery/pipeline.ts", "discovery candidate construction", "semantic/package-compile.ts eligibility rules"],
+        "schemaImpact": "None to IR; materially increases discovery-candidate volume",
+        "migrationImpact": "None to schema, but changes existing discovery-count/telemetry baselines used across all 4 known-package regressions",
+        "backwardCompatibility": "Requires re-baselining known-package regression (FWRG/LSB/DSGR/CONMED)",
+        "verificationImpact": "Neutral-to-positive (smaller units are easier to verify exhaustively)",
+        "precedentSystemImpact": "Changes candidate identity granularity, which the precedent system's semantic-signature matching keys off - would need re-validation",
+        "expectedImprovement": "HIGH for this specific omission pattern, at real, nontrivial cost increase (more compile+verify calls)",
+        "newRisks": "Most invasive of the three; broadest blast radius; discovery-layer regression risk across all known packages",
+        "complexity": "HIGH",
+        "satisfiesAntiEnumeration": true,
+        "note": "Rejected as disproportionate - mirrors the codebase's own prior explicit rejection of an equally invasive 'full decomposition/continuation' approach for the unrelated token-truncation problem (caller.ts's own header comment)."
+      }
+    ],
+    "packageGraph": [
+      {
+        "option": "1 - Targeted regex/wiring fixes",
+        "mechanism": "Broaden relationship-resolution.ts's evidence pattern to recognize recital-style references (reusing document-identity.ts's already-successful originalAgreementReferenceHint extraction as a fallback when the stricter caption-style regex finds nothing), with explicit handling for the 'as amended and restated as of the First Amendment and Restatement Effective Date' qualifying clause to avoid the date-ambiguity risk in section 6 bug 2; separately, wire the existing unresolvedTargetEffectsForThisInstrument escape hatch at both real call sites (orchestrator.ts:347, and the equivalent path any future unseen-package script uses).",
+        "filesModulesAffected": ["lib/contract-model/compiler/package-graph/relationship-resolution.ts", "lib/contract-model/analysis/orchestrator.ts (call site only, not core logic)"],
+        "schemaImpact": "None",
+        "migrationImpact": "None",
+        "backwardCompatibility": "Full - requires re-running known-package regression (FWRG/LSB/DSGR/CONMED) to confirm no regression on their existing restatement cases",
+        "verificationImpact": "N/A (package-graph is upstream of semantic verification)",
+        "precedentSystemImpact": "None",
+        "expectedImprovement": "Fixes the PROXIMATE cause of this run's empty result (both the regex miss and the false-clean-status wiring gap) but does NOT by itself give Headroom the 'document X is operative' concept (bug 4 remains open)",
+        "newRisks": "Loosening the regex could increase false-positive relationship matches on other packages if the qualifying-clause handling (date-ambiguity fix) is not implemented carefully alongside it",
+        "complexity": "LOW-MEDIUM",
+        "satisfiesAntiEnumeration": true
+      },
+      {
+        "option": "2 - Additive operative-document concept",
+        "mechanism": "Extend chain.ts with a parallel document-level chain builder (alongside the existing buildProvisionChain) capable of consuming DOCUMENT-kind RESTATE_AGREEMENT/SUPERSEDES effects, and add a new consumer function (e.g. computeOperativeDocument) that walks a resolved document chain to answer 'which whole document is currently in force,' feeding that answer into an additive new field on OperativeContractState (e.g. operativeDocumentId + confidence + provenance).",
+        "filesModulesAffected": ["lib/contract-model/compiler/amendment/types.ts (new type)", "lib/contract-model/compiler/amendment/chain.ts (new function alongside existing one)", "lib/contract-model/compiler/amendment/operative-state.ts (new additive output field)"],
+        "schemaImpact": "Additive only (new optional field); no breaking change to any existing consumer",
+        "migrationImpact": "Low - additive field only if persisted; existing persisted records unaffected",
+        "backwardCompatibility": "Full",
+        "verificationImpact": "Enables a currently-nonexistent hard safety check (is the asserted operative document ever stale/superseded) - directly closes the operativeStateCorrectnessOnMateriallyRelevantMin gate class of failure",
+        "precedentSystemImpact": "None",
+        "expectedImprovement": "HIGH and durable - this is the piece that makes a CORRECTLY-resolved restatement chain actually answer 'doc-c is operative,' which today never happens even in the best case",
+        "newRisks": "Genuinely new code path requiring its own synthetic test matrix (chain conflicts, multiple restatements, partial/ambiguous chains) before being trusted; must preserve safe-failure discipline (never assert an operative document below a hard confidence bar)",
+        "complexity": "MEDIUM-HIGH",
+        "satisfiesAntiEnumeration": true
+      },
+      {
+        "option": "3 - Full explicit Document Version Chain domain object",
+        "mechanism": "A first-class DocumentVersionChain domain object (predecessor/successor/effectiveDate/supersedes/confidence/provenance) with its own Prisma model, replacing/subsuming today's effect-based RESTATE_AGREEMENT representation.",
+        "filesModulesAffected": ["prisma/schema.prisma (new model + migration)", "package-graph/*", "amendment/*", "persistence.ts", "possibly app/-layer consumers"],
+        "schemaImpact": "HIGH - new Prisma model/migration",
+        "migrationImpact": "HIGH",
+        "backwardCompatibility": "Requires a careful compatibility shim for existing persisted amendment-effect records",
+        "verificationImpact": "Positive but requires re-validating the whole amendment/operative-state test suite",
+        "precedentSystemImpact": "None directly, but the broad blast radius increases general regression risk",
+        "expectedImprovement": "SAME functional outcome as Option 2 for this demonstrated problem, at substantially higher cost/risk",
+        "newRisks": "Large blast radius, schema migration risk, redundant with the existing effect-based model unless a genuinely new capability requires the heavier object",
+        "complexity": "HIGH",
+        "satisfiesAntiEnumeration": true,
+        "note": "Rejected per section 8's explicit finding: evidence does not require this heavier option; the existing pattern only needs to be finished, not replaced."
+      }
+    ]
+  },
+
+  "11_recommendedArchitectures": {
+    "semanticCompilation": {
+      "recommendation": "Option 2 (deterministic completeness cross-check), bundled with Option 1 (prompt exhaustiveness fix) as a cheap, complementary first layer. Explicitly reject Option 3.",
+      "rationale": "Minimizes complexity while solving the demonstrated general problem. The schema/IR/normalize layers already fully support N-of-N output, so no migration is needed for either recommended piece. A deterministic, model-independent completeness signal generalizes across covenant families, basket counts, and jurisdictions without enumerating anything package-specific - it detects the SHAPE of an omission ('some terms cited in the source never appeared in the output'), not any particular term's name."
+    },
+    "packageGraphVersion": {
+      "recommendation": "Option 1 (targeted regex/wiring fixes, including the date-ambiguity safeguard) bundled with Option 2 (additive operative-document concept). Explicitly reject Option 3 per the mission's own instruction not to choose the heavier option unless evidence requires it.",
+      "rationale": "The evidence shows the EXISTING effect-based architecture (RESTATE_AGREEMENT effects, chain.ts's chain-building pattern) is conceptually sound and was simply never finished - chain.ts structurally excludes DOCUMENT-kind targets, and no consumer turns a resolved restatement into an operative-document answer. Finishing it via an additive extension reuses proven patterns rather than replacing them, at a fraction of Option 3's blast radius and migration risk."
+    }
+  },
+
+  "12_implementationBlastRadius": {
+    "semanticCompilerRemediationUnit": {
+      "name": "SEMANTIC-COMPILER DEFINITION-EXHAUSTIVENESS REMEDIATION",
+      "estimatedScope": "LOW-MEDIUM",
+      "filesTouched": ["lib/contract-model/compiler/semantic/prompt.ts", "new: lib/contract-model/compiler/semantic/completeness-check.ts", "lib/contract-model/compiler/semantic/compile.ts (wiring only)"],
+      "schemaMigrationRequired": false,
+      "testingRequired": "Synthetic definitions-heavy-section tests (5-15 sibling terms), synthetic qualifier-truncation tests, regression on all 4 known packages' existing definition extraction (to confirm no regression on currently-correct behavior)"
+    },
+    "packageGraphRemediationUnit": {
+      "name": "PACKAGE-GRAPH RESTATEMENT-TARGET-RESOLUTION REMEDIATION",
+      "estimatedScope": "MEDIUM",
+      "filesTouched": ["lib/contract-model/compiler/package-graph/relationship-resolution.ts", "lib/contract-model/analysis/orchestrator.ts (call-site wiring)", "lib/contract-model/compiler/amendment/types.ts (new additive type)", "lib/contract-model/compiler/amendment/chain.ts (new function)", "lib/contract-model/compiler/amendment/operative-state.ts (new additive field)"],
+      "schemaMigrationRequired": false,
+      "testingRequired": "Synthetic recital-phrasing restatement tests (non-caption shapes), synthetic multi-restatement chain tests (A restates B restates C), date-ambiguity adversarial test (predecessor cites original date, not immediate predecessor's date), regression on all 4 known packages' existing amendment/restatement cases"
+    },
+    "combinationDecision": {
+      "answer": "SEPARATE implementation units, ONE shared validation gate",
+      "rationale": "The two remediation units touch completely disjoint modules (semantic/* vs package-graph/*, amendment/*) with no shared code paths identified by either investigation. Mission's own default preference (separate units + shared gate) applies cleanly since code coupling does not make combination rational."
+    }
+  },
+
+  "13_validationStrategy": {
+    "sequence": [
+      {
+        "step": 1,
+        "name": "Narrow synthetic/adversarial tests per demonstrated failure",
+        "detail": "Semantic: synthetic definitions-heavy sections (5-15 sibling terms) verifying exhaustive extraction; synthetic qualifier-heavy definitions verifying no ellipsis-truncation of required qualifier language. Package-graph: synthetic non-caption recital phrasings ('parties to a [Type] dated as of...') verifying resolution; synthetic multi-restatement chains (A->B->C) verifying the new operative-document concept designates the latest; a specific date-ambiguity adversarial case (predecessor's recital cites the ORIGINAL date, not the immediate predecessor's date) verifying the fix does not silently misresolve."
+      },
+      {
+        "step": 2,
+        "name": "Known-package regression",
+        "detail": "Read-only rerun of FWRG/LSB/DSGR/CONMED, confirming no regression - particularly on any existing amendment/restatement cases in these packages."
+      },
+      {
+        "step": 3,
+        "name": "Frozen Riot replay AS A REGRESSION TEST, not new unseen evidence",
+        "detail": "Rerun the exact same 38-candidate compiled sample (or a superset within the same or similar budget) against the FIXED code and compare directly against the frozen 3F.2 results. This is explicitly a targeted regression check against already-known, already-scored ground truth - not a new unseen-package validation. Success criteria: RGT-C-008/022/029/030 move from NO_CREDIT to CREDIT (or materially improve), doc-c is correctly and non-emptily identified as operative, and no currently-CREDIT claim regresses."
+      },
+      {
+        "step": 4,
+        "name": "One future genuinely unseen package - OPTIONAL, not a hard gate",
+        "detail": "Recommended as a strengthening step but NOT strictly required before Phase 4, contingent on steps 1-3 cleanly demonstrating the fixes generalize. Re-validating the same Riot evidence after a real, non-Riot-specific fix is legitimate confirmatory evidence, not overfitting, AS LONG AS no Riot-specific code was written (this is the difference between fixing a real generalization gap and reusing the same benchmark to prove it, versus tuning against Riot, which remains forbidden)."
+      }
+    ],
+    "explicitlyAvoid": ["endless Riot reruns beyond step 3's single regression confirmation", "package-specific tuning of any kind", "another giant foundation audit"]
+  },
+
+  "14_phase4ReleaseCriterion": {
+    "criteria": [
+      "Hard safety gates remain clean (0 dangerous silent omissions, 0 false-VERIFIED, 0 stale-as-current, 0 cross-tenant contamination, safe-failure recall >=95%) - non-negotiable, unchanged from 3F.2's already-passing state.",
+      "Material substantive credit rate materially improved - not a mechanical re-hit of >=85% given known small-sample noise (n=13), but a real, demonstrated closure of the 4 specific SEMANTIC_COMPILATION omissions (RGT-C-008/022/029/030 move from NO_CREDIT to CREDIT or materially improve) on the frozen-Riot-replay, with no regression on the 7 currently-CREDIT claims.",
+      "Restatement/operative-document concept resolved on frozen Riot - doc-c correctly and non-emptily identified as operative, with proper provenance back to the resolved restatement chain.",
+      "No package-specific logic introduced - grep-verifiable absence of Riot/Coinbase/Bitcoin-specific tokens, section numbers, or defined-term names in the fix code.",
+      "Frozen Riot regression improved with no new regressions on FWRG/LSB/DSGR/CONMED's existing known-package baselines.",
+      "Independent unseen confirmation - RECOMMENDED but DISCRETIONARY, not a hard blocker, per the validation-strategy reasoning above."
+    ],
+    "explicitNonRequirement": "Do NOT mechanically require perfect scores or a literal re-clearing of every generalization threshold with statistical confidence - the small IN_SAMPLE sample size makes that an unrealistic and not-yet-meaningful bar. The criterion is DEMONSTRATED CLOSURE of the SPECIFIC, NAMED failure modes identified in this document, not a fresh, larger unseen-package statistical proof."
+  },
+
+  "15_explicitThingsNotToDo": [
+    "Do NOT write any Riot-specific prompt text, definitions list, section-number rule, or Bitcoin/digital-asset-specific handling.",
+    "Do NOT create Phase 3F.2.1 automatically.",
+    "Do NOT reopen Phase 3F.1.",
+    "Do NOT begin Phase 4.",
+    "Do NOT modify production code in this session - this document is architecture decision only.",
+    "Do NOT rerun Riot as new unseen evidence, and do NOT tune anything against Riot's specific results.",
+    "Do NOT skip, disable, or quarantine any existing test to make a future remediation appear to pass.",
+    "Do NOT choose the full Document Version Chain schema migration (Option 3) without new evidence specifically requiring it - the current evidence supports only the narrower additive extension.",
+    "Do NOT perform term-level candidate-splitting (semantic Option 3) as a first response - it is disproportionate to the measured failure scale, mirroring the codebase's own prior explicit rejection of a similarly invasive continuation architecture.",
+    "Do NOT conflate the operative-state status-overload finding with a need for a new enum value as a hard requirement - wiring the existing escape hatch fully resolves the Riot case.",
+    "Do NOT run more than the single frozen-Riot-replay regression check described in the validation strategy - avoid endless reruns.",
+    "Do NOT name this remediation Phase 3G or any other new macro-phase label - it is bounded Phase 3F closure remediation, referred to as POST-3F.2 GENERALIZATION REMEDIATION ARCHITECTURE DECISION."
+  ],
+
+  "finalResponseSummary": {
+    "semanticCompilationRootCause": "Prompt-completeness gap: an explicit exhaustiveness instruction exists for RULES but not for DEFINITIONS, with zero worked examples of multi-definition extraction; compounded by the total absence of any deterministic completeness cross-check. Schema/IR/normalization layers are fully sound and already array-typed end-to-end - NOT the cause.",
+    "packageGraphRootCause": "(a) relationship-resolution.ts's restatement-target regex requires an immediately-adjacent caption-style phrase and misses Riot's actual recital-style phrasing; (b) the operative-state module's own pre-built escape hatch for exactly this failure mode is not wired at either real production call site, converting an honest REVIEW_REQUIRED signal into a falsely-clean OPERATIVE_STATE_RESOLVED-with-nothing-tracked; (c) even a fully-resolved restatement chain has no consumer anywhere that would compute 'which whole document is operative' - that concept does not exist in the current data model.",
+    "trustBoundaryDefect": "NO for either root cause. Both failed safely at every step observed.",
+    "architectureDefect": "NO for semantic compilation (bounded, prompt+verification-layer fix, schema sound). PARTIALLY for package graph (the regex/wiring bugs are local and bounded; the missing operative-document concept is a genuine but narrow, additively-closable architectural gap).",
+    "preferredSemanticArchitecture": "Deterministic completeness cross-check (Option 2) bundled with a prompt exhaustiveness fix (Option 1); reject term-level candidate splitting (Option 3).",
+    "preferredPackageVersionArchitecture": "Targeted regex/wiring fixes with date-ambiguity safeguard (Option 1) bundled with an additive operative-document concept (Option 2); reject the full schema-migrated Document Version Chain (Option 3).",
+    "estimatedImplementationScope": "Semantic: LOW-MEDIUM. Package-graph: MEDIUM. Neither requires a schema migration.",
+    "schemaMigrationNeeded": false,
+    "anotherUnseenPackageRequired": "NOT strictly mandatory before Phase 4 - recommended but discretionary, contingent on a clean frozen-Riot-replay + synthetic tests + known-package regression.",
+    "proposedNextImplementationUnitNames": [
+      "SEMANTIC-COMPILER DEFINITION-EXHAUSTIVENESS REMEDIATION",
+      "PACKAGE-GRAPH RESTATEMENT-TARGET-RESOLUTION REMEDIATION",
+      "POST-3F.2 REMEDIATION VALIDATION GATE (shared, covers both units)"
+    ],
+    "phase4ReleaseCriterion": "Hard safety gates clean (unchanged); the 4 named SEMANTIC_COMPILATION omissions demonstrably closed on frozen-Riot-replay with no regression on currently-credited claims; the operative-document concept correctly and non-emptily resolves doc-c on frozen Riot; no package-specific logic introduced; no new regressions on known packages; independent unseen confirmation recommended but not a hard blocker."
+  }
+}
