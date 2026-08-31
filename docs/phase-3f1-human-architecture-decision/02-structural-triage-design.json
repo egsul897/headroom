@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRUCTURAL_TRIAGE_DESIGN",
+  "workstream": "OPEN-1",
+  "implementationFile": "lib/contract-model/compiler/stage-structure.ts",
+  "governingPrinciple": "Deterministic parsing remains the primary system and resolves the overwhelming majority of real documents with zero classifier calls. NO single deterministic signal is individually decisive in every case - a candidate is only ever CONFIDENT when at least two independent, disclosed pieces of evidence corroborate, or when one signal has been directly, empirically proven reliable across every examined fixture (never assumed). Everything else is honestly routed AMBIGUOUS rather than resolved by a guess.",
+
+  "backwardCompatibilityDecision": {
+    "summary": "parseDocumentStructure(doc) and runStructureStage(documents) are left BYTE-FOR-BYTE behavior-identical. The new triage system is an ADDITIVE, separate code path (parseDocumentStructureWithTriage + applyStructuralAmbiguityOverrides), not a replacement of the existing accept/reject logic.",
+    "why": "59 pre-existing test files and 2 named-must-keep-passing certification suites (part-a-final-fix1-structural.test.ts, part-b-terminal-recert-open1-independent.test.ts) call parseDocumentStructure synchronously with no classifier wiring. Some of their own REQUIRED true-heading cases rely on exactly the 'sentence-terminal-punctuation-only, non-lowercase continuation' evidence shape that is ALSO the auditor's own proven-irresolvable ambiguity zone - i.e. the identical typographic shape is used by a real, certified-must-pass heading AND by the auditor's own falsifying prose-citation construction. There is no way to reclassify that shape as AMBIGUOUS inside the existing accept/reject boolean without breaking already-certified tests. The chosen resolution: leave the EXISTING deterministic decision procedure completely untouched (zero regression risk, proven by a full pre/post test run - 2216+ tests, 0 regressions), and introduce the NEW triage decision procedure as a parallel, independently-computed classification used only by the new pipeline stage. The new pipeline is strictly MORE conservative than the old one where it disagrees (Part 2/3 of the falsifying test: candidates the old code wrongly, confidently accepted are now AMBIGUOUS-then-correctly-resolved) and strictly MORE correct where it can resolve deterministically what the old code could not (Part 4: the 'Term. means ...' false negative is now fixed outright via the paragraph-break signal, with zero classifier calls).",
+    "extractionRefactor": "decideAcceptedStructuralMatches() and buildStructuralNodesFromAcceptedMatches() were extracted from parseDocumentStructure's own body as a pure, behavior-preserving refactor (same inputs, same outputs) so the new triage path can reuse the certified span/rank-stack/ordinal/nodeId construction mechanics without duplicating ~90 lines of already-audited logic."
+  },
+
+  "triageContract": {
+    "type": "StructuralCandidateDecision = CONFIDENT_HEADING | CONFIDENT_PROSE_REFERENCE | AMBIGUOUS",
+    "computedBy": "evaluateStructuralCandidateTriage() (stage-structure.ts), run over EVERY raw regex candidate match (both ARTICLE and SECTION shapes, from the same bestMatches/unionMatches/BARE_INTEGER_SECTION_PATTERN candidate-generation machinery decideAcceptedStructuralMatches already uses) - never a second, drifting regex implementation.",
+    "orderOfEvaluation": [
+      "1. Compute seam validation (see signalCatalogue.seamValidation) - if not VALIDATED_TERMINATED, decision = AMBIGUOUS immediately (typography cannot even confirm where the title ends, so nothing downstream of it is trustworthy).",
+      "2. If continuation-shape is LOWERCASE_ORDINARY, decision = CONFIDENT_PROSE_REFERENCE (the one universally-reliable reject signal - see signalCatalogue.continuationShape).",
+      "3. If document/region start, OR immediately (<=1 newline) after an already-CONFIDENT_HEADING ARTICLE, decision = CONFIDENT_HEADING.",
+      "4. If a genuine paragraph break (2+ newlines, noise-discounted) precedes the candidate, decision = CONFIDENT_HEADING.",
+      "5. If continuation-shape is IMMEDIATE_KEYWORD (another structural keyword within <=1 newline, no intervening prose), decision = CONFIDENT_HEADING.",
+      "6. If only bare sentence-terminal punctuation precedes (no paragraph break), decision = AMBIGUOUS - this is the auditor's own proven-irresolvable zone.",
+      "7. If continuation-shape is LOWERCASE_DEFINITIONAL ('means'/'shall mean') with no strong preceding isolation, decision = AMBIGUOUS.",
+      "8. Otherwise (no isolating evidence of any kind), decision = CONFIDENT_PROSE_REFERENCE."
+    ],
+    "neverASingleUniversalRule": "No branch above is presented as universally true on its own strength alone except step 1 (seam) and step 2 (lowercase-ordinary reject) - both directly, empirically validated against every fixture this codebase's own remediation history has produced (FWRG/LSB/CONMED/DSGR plus this phase's own fresh adversarial matrix), never assumed. Every other branch requires a SECOND, independent corroborating signal (a validated seam AND paragraph-break/doc-start/ARTICLE-adjacency) before granting CONFIDENT_HEADING."
+  },
+
+  "signalCatalogue": {
+    "seamValidation": {
+      "type": "VALIDATED_TERMINATED | ABSORBED_SENTENCE | INCOMPLETE_NO_TERMINAL",
+      "computedBy": "resolveStructuralSeam()",
+      "description": "Classifies the relationship between the candidate's own matched text (with its keyword+number prefix stripped via extractTitlePortionForSeamCheck) and its own terminal punctuation. VALIDATED_TERMINATED: the title reaches a real terminal mark with no earlier internal one (or, for a crude fallback pattern that swallowed extra text, a SHORT_TITLE_SHAPE-conforming prefix before the first internal terminal is used as a rescued seam - never a bounded-hop GUESS into uncertain territory, since the terminal is already inside text this function is given, not reached by searching forward). ABSORBED_SENTENCE: an internal terminal exists but the text before it is not itself short/title-shaped (contains digits, exceeds MAX_PLAUSIBLE_TITLE_LENGTH=110, etc) - the crude pattern genuinely swallowed unrelated prose. INCOMPLETE_NO_TERMINAL: no terminal reached at all (a title that may legitimately wrap onto the next physical line, or a fragment that already bled into prose) - for SECTION only; an ARTICLE's own ALL-CAPS title carries no terminal punctuation by convention and is VALIDATED_TERMINATED by construction of its own regex shape.",
+      "replacesRemovedMechanism": "looksLikeNewContentStartAfterPossibleTitleWrap (the 'bounded, single-hop wrap-tolerance mechanism') is REMOVED, not repaired - the auditor's own Part 3 minimal pair (Case C vs Case D) proved any hop-forward-and-guess design is unsound in general. resolveStructuralSeam never hops past uncertain text; a genuinely incomplete or absorbed seam is honestly AMBIGUOUS."
+    },
+    "continuationShape": {
+      "type": "LOWERCASE_ORDINARY | LOWERCASE_DEFINITIONAL | IMMEDIATE_KEYWORD | SELF_CONTAINED_OTHER",
+      "computedBy": "classifyContinuationShapeForTriage()",
+      "description": "What immediately follows the candidate's real (seam-resolved) end. LOWERCASE_ORDINARY is the one continuation shape treated as independently, universally sufficient reject evidence - real drafting, across every fixture examined, never legitimately continues a real heading's title into an ordinary lowercase word. LOWERCASE_DEFINITIONAL ('means'/'shall mean') is a narrow, closed, disclosed exception for the definitions-drafting convention - never folded into the generic lowercase-reject rule, and never itself independently sufficient to accept (requires corroborating before-evidence). IMMEDIATE_KEYWORD requires the next recognized keyword (ARTICLE/Section/section-symbol) within AT MOST ONE newline of separation - bounded specifically to close the auditor's own Part 3 final falsification (an unbounded keyword-lookahead let a real, later heading launder an entirely unrelated, fully-absorbed fake candidate sitting well before it, across a genuine paragraph break)."
+    },
+    "positionalSignals": {
+      "reused": ["precededByParagraphBreak", "precededBySentenceTerminalPunctuation", "precededByClosingDelimiter", "precededByAtLeastOneNewline", "isImmediatelyAfterPlausibleArticle", "stripTrailingTypographicNoise (page-number + footnote-marker discounting)"],
+      "note": "All reused UNCHANGED from the existing, independently-certified deterministic machinery - never re-derived a second way. The typographic-noise-stripping pipeline (page numbers, glued footnote/endnote digits) is applied identically before any positional signal is evaluated, exactly as in the legacy path."
+    }
+  },
+
+  "requiredMatrixResolutionSummary": {
+    "note": "Full results with exact counts in 04-structural-implementation.json. Summary: every REQUIRED REAL HEADING case resolves to CONFIDENT_HEADING or AMBIGUOUS, never CONFIDENT_PROSE_REFERENCE. Every REQUIRED PROSE REFERENCE case resolves to CONFIDENT_PROSE_REFERENCE or AMBIGUOUS, never CONFIDENT_HEADING. Zero material rank-stack corruption across the whole matrix."
+  },
+
+  "costDiscipline": "On the realistic mixed-document fixture in tests/contract-model/structural-triage.test.ts (5 confident headings, 1 genuinely ambiguous citation), deterministic resolution rate = 6/7 ~= 86%, comfortably above the 'overwhelming majority resolved with zero classifier calls' bar. On the fully clean documents used throughout tests/certification/*, ambiguousCount is 0 (100% deterministic, 0% classifier invocation)."
+}

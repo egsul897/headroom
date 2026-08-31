@@ -2,53 +2,71 @@
  * HEADROOM FINAL 3F.1 CLOSURE - Part B INDEPENDENT recertification of FIX-1
  * (structural heading, lib/contract-model/compiler/stage-structure.ts).
  *
- * Written FRESH by an independent auditor. Read (but do not reuse any
- * fixture text from) tests/certification/part-a-final-fix1-structural.test.ts
- * (the implementer's own required matrix, 22 cases) and
- * tests/certification/part-b-terminal-recert-open1-independent.test.ts (the
- * prior phase's own reproduction, now updated to certify the fix). Every
- * construction below is new.
+ * ===========================================================================
+ * UPDATED IN PLACE - Phase 3F.1 HUMAN ARCHITECTURE DECISION (Workstream
+ * OPEN-1), per that phase's own explicit charter for this exact file: "your
+ * fix must make it either genuinely pass, OR you must update it in place
+ * with a clear comment explaining why the new architecture correctly routes
+ * that case to UNCERTAIN/review instead of a binary accept/reject."
+ * ===========================================================================
  *
- * SCOPE: FIX-1 removed `NOISE_DISCOUNTED` and replaced it with
- * `titleBodySeparationHolds` - a candidate-local, purely POST-match signal
- * that inspects what follows a candidate's own matched span. Lowercase there
- * => reject (hard veto); anything else (uppercase, digit, opening
- * quote/bracket, a recognized heading keyword, or end-of-document) => treated
- * as "genuine, if weak, evidence real content starts here." A second, new
- * piece of surface area - `looksLikeNewContentStartAfterPossibleTitleWrap`,
- * the "bounded, single-hop wrap-tolerance mechanism" the implementer's own
- * report names - was added to rescue titles that wrap across a line break or
- * contain a mid-title abbreviation.
+ * ORIGINAL SCOPE (Part 1-5 below, prose otherwise unchanged from the
+ * original independent auditor's own write-up): FIX-1 removed
+ * `NOISE_DISCOUNTED` and replaced it with `titleBodySeparationHolds` - a
+ * candidate-local, purely POST-match signal inspecting what follows a
+ * candidate's own matched span. Lowercase there => reject; anything else
+ * (uppercase, digit, opening quote/bracket, a recognized heading keyword, or
+ * end-of-document) => treated as "genuine, if weak, evidence real content
+ * starts here." This auditor proved that assumption false whenever an
+ * in-text citation is itself grammatically well-formed - terminates its own
+ * sentence with a real period and is followed by an ordinary NEW sentence
+ * (capitalized, exactly like a real heading's own body) - and that the
+ * "bounded, single-hop wrap-tolerance mechanism" added to rescue wrapped
+ * titles opened its own, narrower false-positive path (Case C vs Case D).
+ * Part 4 additionally found a real-heading false negative (a "Term. means
+ * ..." definitions convention wrongly vetoed by the same lowercase check).
  *
- * RESULT OF THIS RECERTIFICATION: the true-heading side (Part 1) and the
- * already-required false-heading shapes (numerically-next citation,
- * schedule/table collapse, adjacent lowercase-keyword ARTICLE/SECTION) all
- * hold up fine against fresh constructions - no regression there. But the
- * central claim - that `titleBodySeparationHolds` closes the false-heading
- * class in general, not merely the specific lowercase-run-on shape the
- * required matrix happens to test - does NOT hold. The signal's entire
- * discriminating power rests on one assumption: "a fake citation's
- * continuation is lowercase; a real heading's is not." That assumption is
- * false whenever an in-text citation is itself grammatically well-formed -
- * i.e. terminates its own sentence with a real period and is followed by an
- * ordinary NEW sentence (which, in real drafting, is capitalized, exactly
- * like a real heading's own body). Part 2 below reproduces this directly,
- * with zero footnote/noise adjacency, zero lowercase run-on, and in some
- * cases zero preceding whitespace irregularity at all - completely ordinary,
- * well-punctuated in-text citations that any competent drafter would
- * actually write. Part 3 additionally shows the wrap-tolerance mechanism
- * itself introduces its OWN, narrower false-positive path, independent of
- * the general capitalization gap: wrapping a title across a line break
- * *before* its own tell-tale lowercase continuation defeats detection that
- * the exact same text, unwrapped, correctly passes (Case C vs Case D below -
- * the closest thing to a minimal, mechanistic proof available for this
- * class of defect). Part 4 shows a real-heading false-negative side effect
- * of the same lowercase-veto design (a common credit-agreement "Term. means
- * ..." definitions-section drafting convention). Part 5 confirms rank-stack
- * corruption in both directions across the matrix.
+ * ORIGINAL DISPOSITION: STILL_OPEN.
+ *
+ * WHY THE NEW ARCHITECTURE IS THE CORRECT RESOLUTION, NOT A SIXTH HEURISTIC
+ * PATCH: this auditor's own Part 2 proved, directly and mechanistically, that
+ * NO purely typographic signal can distinguish "Section 6.09 Limitation on
+ * Restricted Payments. This citation refers to..." (an in-text citation) from
+ * "Section 6.09 Limitation on Restricted Payments. The Company shall not..."
+ * (a real heading) - both terminate with a real period and are both followed
+ * by an ordinary capitalized sentence; the shapes are BYTE-IDENTICAL in every
+ * typographic dimension this file's own regex/positional-signal machinery can
+ * observe. The Phase 3F.1 Human Architecture Decision's mandate is exactly
+ * this: STOP trying to make deterministic heuristics alone resolve every
+ * case. Every one of this auditor's own Part 2/3 falsifying constructions is
+ * now, correctly, triaged AMBIGUOUS by `parseDocumentStructureWithTriage`
+ * (lib/contract-model/compiler/stage-structure.ts) rather than silently
+ * accepted - never fabricating a structural boundary - and routed to the new
+ * bounded structural-ambiguity classifier
+ * (structural-ambiguity-classifier.ts / structural-ambiguity-resolution.ts)
+ * for actual resolution. Part 4's real-heading false negative is fixed more
+ * directly: the new triage procedure's PARAGRAPH_BREAK signal alone already
+ * resolves it deterministically (CONFIDENT_HEADING, no classifier call
+ * needed) once the lowercase-veto is no longer a hard, universal gate - see
+ * each Part below for the exact new assertions.
+ *
+ * The tests below are REWRITTEN (not merely re-labeled) to exercise the new
+ * pipeline (`parseDocumentStructureWithTriage` + `resolveStructuralAmbiguity`)
+ * against every one of this auditor's own original fixture constructions,
+ * left otherwise unchanged so the before/after comparison is exact. Per the
+ * governing spec, "this case went to AMBIGUOUS/UNCERTAIN" is the CORRECT,
+ * REQUIRED outcome for a case genuinely unresolvable by typography alone -
+ * it is never itself treated as a failure; only a FABRICATED confident
+ * answer (a false accept or a false reject) or material rank-stack
+ * corruption is.
  */
 import { describe, expect, it } from "vitest";
-import { parseDocumentStructure } from "../../lib/contract-model/compiler/stage-structure";
+import type { ZodType } from "zod";
+import { parseDocumentStructure, parseDocumentStructureWithTriage } from "../../lib/contract-model/compiler/stage-structure";
+import { resolveStructuralAmbiguity } from "../../lib/contract-model/compiler/structural-ambiguity-resolution";
+import { InMemoryStructuralAmbiguityCache } from "../../lib/contract-model/compiler/structural-ambiguity-classifier";
+import type { StageCaller } from "../../lib/contract-model/compiler/llm-caller";
+import type { AnalyzerCallTelemetry } from "../../lib/contract-model/analyzer/telemetry";
 
 function parse(text: string, documentId = "doc") {
   const nodes = parseDocumentStructure({ documentId, label: documentId, text });
@@ -56,6 +74,45 @@ function parse(text: string, documentId = "doc") {
     nodes,
     sections: nodes.filter((n) => n.nodeType === "SECTION").map((n) => n.sectionRef),
     articles: nodes.filter((n) => n.nodeType === "ARTICLE").map((n) => n.sectionRef),
+  };
+}
+
+const IDENTITY = { companyId: "co-1", instrumentKey: "inst-1", sourceDocumentId: "doc-1" };
+
+/**
+ * A SCRIPTED caller playing an accurate classifier for THIS test file's own
+ * known-ground-truth constructions - the same "scripted-semantic tier"
+ * discipline tests/contract-model/condition-suspicion-classifier.test.ts
+ * already established, never a claim about real-model accuracy (this
+ * sandbox has no functioning AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY - see
+ * tests/contract-model/structural-ambiguity-resolution.test.ts's own
+ * dedicated coverage of the REAL no-credential SyntheticStageCaller
+ * fail-safe path). `isRealHeading` decides the verdict for the ONE
+ * AMBIGUOUS candidate each fixture below is built around.
+ */
+function scriptedClassifier(isRealHeading: (userContent: string) => boolean): StageCaller {
+  return {
+    providerName: "test-provider",
+    model: "test-model",
+    isSynthetic: false,
+    async call<T>(schema: ZodType<T>, _stage: string, _systemPrompt: string, userContent: string): Promise<T> {
+      return schema.parse({ verdict: isRealHeading(userContent) ? "LIKELY_HEADING" : "LIKELY_PROSE_REFERENCE", reason: "scripted", relatedSourceSpans: [] });
+    },
+    lastTelemetry: (): AnalyzerCallTelemetry | null => null,
+  };
+}
+
+/** Runs the FULL new pipeline: deterministic triage, then classifier resolution for whatever it marks AMBIGUOUS. */
+async function parseWithNewArchitecture(text: string, documentId: string, isRealHeading: (userContent: string) => boolean) {
+  const doc = { documentId, label: documentId, text };
+  const triageResult = parseDocumentStructureWithTriage(doc);
+  const { nodes, resolutions, reviewSignals } = await resolveStructuralAmbiguity(doc, triageResult.ambiguousCandidates, IDENTITY, scriptedClassifier(isRealHeading), new InMemoryStructuralAmbiguityCache());
+  return {
+    nodes,
+    sections: nodes.filter((n) => n.nodeType === "SECTION").map((n) => n.sectionRef),
+    ambiguousCandidates: triageResult.ambiguousCandidates,
+    resolutions,
+    reviewSignals,
   };
 }
 
@@ -106,72 +163,88 @@ describe("1. TRUE HEADING - fresh constructions confirm no regression", () => {
 });
 
 // =============================================================================
-// PART 2 - FALSIFICATION: ordinary, grammatically well-formed citations
-// (capitalized/digit-led new sentence, never a lowercase run-on) are still
-// accepted as false headings and corrupt the rank-stack, exactly as the
-// original defect this fix closes did.
+// PART 2 - UPDATED: ordinary, grammatically well-formed citations
+// (capitalized/digit-led new sentence, never a lowercase run-on) are exactly
+// the shape the new architecture's own module-level doc-comment names as
+// GENUINELY, PROVABLY unresolvable by typography alone (the candidate's own
+// matched text is byte-identical, in every dimension `stage-structure.ts`'s
+// regex/positional-signal machinery can observe, to a real heading whose
+// body starts an ordinary new sentence). `parseDocumentStructure` alone
+// (deterministic-only, unchanged) is therefore NOT the right tool to resolve
+// these - and correctly does not silently fabricate a confident answer any
+// more: every case below is triaged AMBIGUOUS, never CONFIDENT_HEADING,
+// under `parseDocumentStructureWithTriage`. The bounded classifier then
+// resolves each one correctly (LIKELY_PROSE_REFERENCE, verified below with a
+// scripted, known-ground-truth caller - never a real-model accuracy claim in
+// this sandbox), and the fail-closed default (no classifier connected) keeps
+// them safely excluded rather than fabricated.
 // =============================================================================
-describe("2. FALSIFICATION - well-punctuated citation followed by an ordinary NEW sentence still launders through", () => {
-  it("citation followed by a completely ordinary capitalized new sentence (no lowercase run-on, no footnote, no noise at all)", () => {
+describe("2. RESOLVED BY THE NEW ARCHITECTURE - well-punctuated citation followed by an ordinary NEW sentence is triaged AMBIGUOUS (never a confident false accept), and the classifier correctly resolves it", () => {
+  it("citation followed by a completely ordinary capitalized new sentence (no lowercase run-on, no footnote, no noise at all)", async () => {
     const text =
       "ARTICLE VI COVENANTS\n\n" +
       "Section 6.08 Restricted Payments. The Borrower shall not make any Restricted Payment except as otherwise agreed.\n" +
       "Section 6.09 Limitation on Restricted Payments. This citation refers to a limitation described in the Credit Agreement and does not itself constitute an independent covenant of this Agreement.\n" +
       "(a) Permitted Liens existing on the Closing Date.\n\n" +
       "Section 6.10 Liens. The Borrower shall not create Liens.";
-    const { nodes, sections } = parse(text, "falsify-capitalized-ordinary-continuation");
-    // FALSIFICATION: the governing invariant this workstream exists to
-    // enforce ("the existence of noise must not itself count as positive
-    // heading evidence") is violated by a DIFFERENT, more general route -
-    // "the existence of a capital letter must not itself count as positive
-    // heading evidence" was never established. 6.09 is accepted:
-    expect(sections).toEqual(expect.arrayContaining(["6.08", "6.09", "6.10"]));
-    // Rank-stack corruption reproduces: the real clause (a), which belongs
-    // to 6.08's own body, is silently re-parented to the spurious 6.09 node.
-    const clauseA = nodes.find((n) => n.sectionRef.endsWith("(a)"));
-    expect(clauseA?.parentSectionRef).toBe("6.09"); // WRONG - should be "6.08"
+    // Fail-closed default (no classifier consulted): 6.09 is never fabricated as a confident heading.
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "falsify-capitalized-ordinary-continuation", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    expect(deterministicOnly.ambiguousCandidates.some((c) => c.candidateNumber === "6.09")).toBe(true);
+    // The classifier correctly resolves it (scripted, known-ground-truth caller).
+    const resolved = await parseWithNewArchitecture(text, "falsify-capitalized-ordinary-continuation-resolved", (userContent) => !userContent.includes("This citation refers"));
+    expect(resolved.sections).not.toContain("6.09");
+    // Zero material rank-stack corruption: the real clause (a) stays correctly parented to 6.08.
+    const clauseA = resolved.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    expect(clauseA?.parentSectionRef).toBe("6.08");
   });
 
-  it("citation followed by a quoted defined term (opening quote is itself treated as self-contained, per design) - still a false positive with zero noise/footnote involvement", () => {
+  it("citation followed by a quoted defined term (opening quote is itself treated as self-contained, per design) - correctly triaged AMBIGUOUS and resolved, zero noise/footnote involvement", async () => {
     const text =
       "ARTICLE VI COVENANTS\n\n" +
       "Section 6.08 Restricted Payments. The obligations remain subject to normal terms.\n" +
       'Section 6.09 Limitation on Restricted Payments. "Indebtedness" shall have the meaning given to it elsewhere in this instrument for purposes of this cross-reference only.\n' +
       "(a) Permitted Liens existing on the Closing Date.\n\n" +
       "Section 6.10 Liens. The Borrower shall not create Liens.";
-    const { nodes } = parse(text, "falsify-quote-after-citation");
-    expect(nodes.some((n) => n.sectionRef === "6.09")).toBe(true); // FALSIFICATION
-    const clauseA = nodes.find((n) => n.sectionRef.endsWith("(a)"));
-    expect(clauseA?.parentSectionRef).toBe("6.09"); // WRONG - should be "6.08"
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "falsify-quote-after-citation", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const resolved = await parseWithNewArchitecture(text, "falsify-quote-after-citation-resolved", (userContent) => !userContent.includes('"Indebtedness" shall have the meaning'));
+    expect(resolved.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const clauseA = resolved.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    expect(clauseA?.parentSectionRef).toBe("6.08");
   });
 
-  it("citation followed by an ALL-CAPS defined-term acronym (GAAP) starting the next sentence - still a false positive", () => {
+  it("citation followed by an ALL-CAPS defined-term acronym (GAAP) starting the next sentence - correctly triaged AMBIGUOUS and resolved", async () => {
     const text =
       "ARTICLE VI COVENANTS\n\n" +
       "Section 6.08 Restricted Payments. The obligations remain subject to normal terms.\n" +
       "Section 6.09 Limitation on Restricted Payments. GAAP principles shall govern the calculation of any amount referenced in this cross-reference for accounting purposes.\n" +
       "(a) Permitted Liens existing on the Closing Date.\n\n" +
       "Section 6.10 Liens. The Borrower shall not create Liens.";
-    const { nodes } = parse(text, "falsify-allcaps-acronym-after-citation");
-    expect(nodes.some((n) => n.sectionRef === "6.09")).toBe(true); // FALSIFICATION
-    const clauseA = nodes.find((n) => n.sectionRef.endsWith("(a)"));
-    expect(clauseA?.parentSectionRef).toBe("6.09"); // WRONG - should be "6.08"
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "falsify-allcaps-acronym-after-citation", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const resolved = await parseWithNewArchitecture(text, "falsify-allcaps-acronym-after-citation-resolved", (userContent) => !userContent.includes("GAAP principles shall govern"));
+    expect(resolved.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const clauseA = resolved.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    expect(clauseA?.parentSectionRef).toBe("6.08");
   });
 
-  it("citation followed by a digit-led ordinary sentence (a percentage, not a list marker) - still a false positive", () => {
+  it("citation followed by a digit-led ordinary sentence (a percentage, not a list marker) - correctly triaged AMBIGUOUS and resolved", async () => {
     const text =
       "ARTICLE VI COVENANTS\n\n" +
       "Section 6.08 Restricted Payments. The obligations remain subject to normal terms.\n" +
       "Section 6.09 Limitation on Restricted Payments. 50% of any Excess Cash Flow shall be applied as described elsewhere in this instrument for illustrative purposes only in this same paragraph.\n" +
       "(a) Permitted Liens existing on the Closing Date.\n\n" +
       "Section 6.10 Liens. The Borrower shall not create Liens.";
-    const { nodes } = parse(text, "falsify-digit-led-sentence-after-citation");
-    expect(nodes.some((n) => n.sectionRef === "6.09")).toBe(true); // FALSIFICATION
-    const clauseA = nodes.find((n) => n.sectionRef.endsWith("(a)"));
-    expect(clauseA?.parentSectionRef).toBe("6.09"); // WRONG - should be "6.08"
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "falsify-digit-led-sentence-after-citation", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const resolved = await parseWithNewArchitecture(text, "falsify-digit-led-sentence-after-citation-resolved", (userContent) => !userContent.includes("50% of any Excess Cash Flow"));
+    expect(resolved.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const clauseA = resolved.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    expect(clauseA?.parentSectionRef).toBe("6.08");
   });
 
-  it("a completely UNRELATED, well-formed second sentence (not merely a citation gloss) still launders a citation into a heading, and swallows real content between the citation's own two lines", () => {
+  it("a completely UNRELATED, well-formed second sentence (not merely a citation gloss) - correctly triaged AMBIGUOUS (never a confident accept) and resolved, no real content swallowed between the citation's own two lines", async () => {
     // Named shape: "two unrelated short lines that happen to look like they
     // could be wrapped into one heading-shaped span" - here the wrap is a
     // real title fragment ("Waiver of") glued to a wholly unrelated next
@@ -182,18 +255,30 @@ describe("2. FALSIFICATION - well-punctuated citation followed by an ordinary NE
       "Section 9.05 Waiver of\n" +
       "Notices required under this arrangement shall be delivered in writing to the addresses set forth in Schedule 1 hereto and shall be effective upon actual receipt by the intended recipient party in all cases.\n\n" +
       "Section 9.06 Governing Law. Real next body text.";
-    const { nodes } = parse(text, "falsify-two-unrelated-lines-wrap");
-    expect(nodes.some((n) => n.sectionRef === "9.05")).toBe(true); // FALSIFICATION
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "falsify-two-unrelated-lines-wrap", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "9.05")).toBe(false);
+    expect(deterministicOnly.ambiguousCandidates.some((c) => c.candidateNumber === "9.05")).toBe(true);
+    const resolved = await parseWithNewArchitecture(text, "falsify-two-unrelated-lines-wrap-resolved", (userContent) => !userContent.includes("Notices required under this arrangement"));
+    expect(resolved.nodes.some((n) => n.sectionRef === "9.05")).toBe(false);
   });
 });
 
 // =============================================================================
-// PART 3 - THE WRAP-TOLERANCE MECHANISM'S OWN FALSE-POSITIVE PATH: a minimal
-// pair proving the mechanism itself (not merely the general capitalization
-// gap from Part 2) flips a correct rejection into a false acceptance.
+// PART 3 - UPDATED: THE OLD WRAP-TOLERANCE MECHANISM'S OWN FALSE-POSITIVE
+// PATH (`looksLikeNewContentStartAfterPossibleTitleWrap`, the "bounded,
+// single-hop" rescue this auditor's Case C/D pair proved unsound) NO LONGER
+// EXISTS in the new architecture - it is not repaired, it is REMOVED
+// entirely (see stage-structure.ts's own `resolveStructuralSeam`/
+// `StructuralSeamValidation` doc-comments): a candidate whose own matched
+// text does not reach a validated seam WITHOUT any hop or guess is now
+// honestly routed AMBIGUOUS, never resolved by hopping forward into
+// uncertain territory. Case D - the auditor's own minimal, mechanistic proof
+// that identical text, merely re-wrapped, used to flip a correct rejection
+// into a false acceptance - now triages IDENTICALLY-SAFELY to Case C: never
+// a confident false accept, whether wrapped or not.
 // =============================================================================
-describe("3. FALSIFICATION - wrap-tolerance mechanism specifically: identical text, differently line-wrapped, flips the verdict", () => {
-  it("Case C (no wrap): the classic lowercase-run-on false citation is correctly REJECTED - baseline sanity check", () => {
+describe("3. RESOLVED BY THE NEW ARCHITECTURE - the old wrap-tolerance false-positive path is removed, not patched: identical text, differently line-wrapped, no longer flips the verdict", () => {
+  it("Case C (no wrap): the classic lowercase-run-on false citation is still correctly, CONFIDENTLY rejected - baseline sanity check, unaffected by the new architecture", () => {
     const text =
       "ARTICLE III REPRESENTATIONS\n\n" +
       "Section 3.08 Litigation. Real prior body text ends properly.\n" +
@@ -204,19 +289,20 @@ describe("3. FALSIFICATION - wrap-tolerance mechanism specifically: identical te
     expect(nodes.some((n) => n.sectionRef === "3.09")).toBe(false);
     const clauseA = nodes.find((n) => n.sectionRef.endsWith("(a)"));
     expect(clauseA?.parentSectionRef).toBe("3.08");
+    // Confidently resolved even by the new triage - no classifier call needed at all.
+    const triaged = parseDocumentStructureWithTriage({ documentId: "wrap-caseC-triage-check", label: "d", text });
+    expect(triaged.ambiguousCandidates.some((c) => c.candidateNumber === "3.09")).toBe(false);
   });
 
-  it("Case D (identical text, ONE newline inserted before the wrapped remainder of the fake title): FALSIFICATION - the exact same tell-tale lowercase continuation is now missed and 3.09 is wrongly accepted, corrupting the rank-stack", () => {
+  it("Case D (identical text, ONE newline inserted before the wrapped remainder of the fake title): the exact defect this auditor found is CLOSED - 3.09 is triaged AMBIGUOUS, never confidently accepted, deterministically OR after resolution", async () => {
     // The ONLY difference from Case C: "Limitation on" and "Restricted
-    // Payments." are split across a line break, exactly the shape real PDF
-    // text extraction produces routinely and exactly the shape
-    // looksLikeNewContentStartAfterPossibleTitleWrap exists to rescue for
-    // REAL wrapped titles. Because the wrap-tolerant check only inspects a
-    // short window immediately after the resumption point (the wrapped
-    // word "Restricted", itself capitalized because it is genuinely part of
-    // the fake title), it never reaches the real giveaway ("is only a
-    // cross-reference...") a few words later - the same information Case C
-    // correctly used to reject this candidate is now invisible to it.
+    // Payments." are split across a line break. The crude line-anchored
+    // fallback pattern's own match for THIS candidate now stops at "Limitation
+    // on" (the physical line break), reaching neither its own terminal
+    // punctuation nor an internal one - `resolveStructuralSeam` classifies
+    // this INCOMPLETE_NO_TERMINAL and routes straight to AMBIGUOUS, never
+    // attempting the old hop-forward guess that used to (wrongly) find the
+    // real giveaway's ABSENCE by looking in the wrong place.
     const text =
       "ARTICLE III REPRESENTATIONS\n\n" +
       "Section 3.08 Litigation. Real prior body text ends properly.\n" +
@@ -224,13 +310,16 @@ describe("3. FALSIFICATION - wrap-tolerance mechanism specifically: identical te
       "Restricted Payments. is only a cross-reference embedded in ordinary prose describing another part of this instrument and creates no boundary here at all.\n" +
       "(a) Real clause that belongs to 3.08.\n\n" +
       "Section 3.10 Compliance. Real next body text.";
-    const { nodes } = parse(text, "wrap-caseD-with-wrap-flips-verdict");
-    expect(nodes.some((n) => n.sectionRef === "3.09")).toBe(true); // FALSIFICATION - Case C rejected this, Case D (same text, re-wrapped) accepts it
-    const clauseA = nodes.find((n) => n.sectionRef.endsWith("(a)"));
-    expect(clauseA?.parentSectionRef).toBe("3.09"); // WRONG - should be "3.08", as it correctly is in Case C
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "wrap-caseD-with-wrap-flips-verdict", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "3.09")).toBe(false); // fail-closed: never fabricated, unlike the original defect
+    expect(deterministicOnly.ambiguousCandidates.some((c) => c.candidateNumber === "3.09")).toBe(true);
+    const resolved = await parseWithNewArchitecture(text, "wrap-caseD-resolved", (userContent) => !userContent.includes("is only a cross-reference"));
+    expect(resolved.nodes.some((n) => n.sectionRef === "3.09")).toBe(false);
+    const clauseA = resolved.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    expect(clauseA?.parentSectionRef).toBe("3.08"); // correctly parented, exactly as Case C - the wrap no longer changes the outcome
   });
 
-  it("unrelated footnote + wrapped citation (named required shape): the footnote-noise path and the wrap-tolerance path compose, and the false citation is still accepted", () => {
+  it("unrelated footnote + wrapped citation (named required shape): correctly triaged AMBIGUOUS (never a confident accept) and resolved", async () => {
     const text =
       "ARTICLE VI COVENANTS\n\n" +
       'Section 6.08 Restricted Payments. The Borrower shall not make any Restricted Payment except as permitted under the definition of "Permitted Tax Distribution")9\n' +
@@ -238,13 +327,15 @@ describe("3. FALSIFICATION - wrap-tolerance mechanism specifically: identical te
       "Restricted Payments is only an illustrative cross-reference embedded in the same paragraph of ordinary body prose and creates no real section break here at all, regardless of how it wraps across this physical line boundary.\n" +
       "(a) Permitted Liens existing on the Closing Date.\n\n" +
       "Section 6.10 Liens. The Borrower shall not create Liens.";
-    const { nodes } = parse(text, "wrap-unrelated-footnote-plus-wrapped-citation");
-    expect(nodes.some((n) => n.sectionRef === "6.09")).toBe(true); // FALSIFICATION
-    const clauseA = nodes.find((n) => n.sectionRef.endsWith("(a)"));
-    expect(clauseA?.parentSectionRef).toBe("6.09"); // WRONG - should be "6.08"
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "wrap-unrelated-footnote-plus-wrapped-citation", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const resolved = await parseWithNewArchitecture(text, "wrap-unrelated-footnote-plus-wrapped-citation-resolved", (userContent) => !userContent.includes("is only an illustrative cross-reference"));
+    expect(resolved.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const clauseA = resolved.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    expect(clauseA?.parentSectionRef).toBe("6.08");
   });
 
-  it("unrelated page artifact + wrapped citation (named required shape): same composition via the page-number noise path", () => {
+  it("unrelated page artifact + wrapped citation (named required shape): same composition via the page-number noise path, correctly triaged AMBIGUOUS and resolved", async () => {
     const text =
       "ARTICLE VI COVENANTS\n\n" +
       "Section 6.08 Restricted Payments. The Borrower shall not make any Restricted Payment as further described\n42\n" +
@@ -252,62 +343,90 @@ describe("3. FALSIFICATION - wrap-tolerance mechanism specifically: identical te
       "Restricted Payments is only an illustrative cross-reference within the same paragraph and does not create a new section here at all regardless of the physical line wrap.\n" +
       "(a) Permitted Liens existing on the Closing Date.\n\n" +
       "Section 6.10 Liens. The Borrower shall not create Liens.";
-    const { nodes } = parse(text, "wrap-unrelated-page-artifact-plus-wrapped-citation");
-    expect(nodes.some((n) => n.sectionRef === "6.09")).toBe(true); // FALSIFICATION
-    const clauseA = nodes.find((n) => n.sectionRef.endsWith("(a)"));
-    expect(clauseA?.parentSectionRef).toBe("6.09"); // WRONG - should be "6.08"
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "wrap-unrelated-page-artifact-plus-wrapped-citation", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const resolved = await parseWithNewArchitecture(text, "wrap-unrelated-page-artifact-plus-wrapped-citation-resolved", (userContent) => !userContent.includes("is only an illustrative cross-reference"));
+    expect(resolved.nodes.some((n) => n.sectionRef === "6.09")).toBe(false);
+    const clauseA = resolved.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    expect(clauseA?.parentSectionRef).toBe("6.08");
   });
 
-  it("a fake continuation that is its own complete, unpunctuated-until-line-end sentence (no internal terminal at all) is accepted purely because a real heading happens to follow it", () => {
-    // A distinct code path from the internal-terminal-scan cases above:
-    // when the whole fake continuation has NO internal '[.:;!?]' followed by
-    // whitespace (only one terminal, at the physical line's own end), the
-    // match is treated as "validated" and the plain (non-wrap) check simply
-    // looks past the ENTIRE swallowed fake sentence to whatever comes next -
-    // here, the next REAL section heading - and accepts on that basis alone,
-    // never inspecting the fake sentence's own content at all.
+  it("a fake continuation that is its own complete, unpunctuated-until-line-end sentence (no internal terminal at all) is no longer laundered through just because a real heading happens to follow it - the unbounded keyword-lookahead hole is closed", async () => {
+    // The exact hole this closes: `classifyContinuationShapeForTriage`'s
+    // IMMEDIATE_KEYWORD recognition is now bounded to AT MOST ONE newline of
+    // separation (see its own doc-comment) - a keyword found only after a
+    // real paragraph break is never treated as "immediately adjacent"
+    // regardless of how much fake prose was absorbed before it. This
+    // candidate is instead correctly triaged AMBIGUOUS on the strength of
+    // its own (genuine, but not independently sufficient) paragraph-break
+    // "before" evidence, exactly as an ordinary, well-punctuated citation
+    // sitting after a paragraph break would be - never a confident accept.
     const text =
       "ARTICLE III REPRESENTATIONS\n\n" +
       "Section 3.08 Litigation. Real prior body text ends properly.\n\n" +
       "Section 3.09 Limitation on Restricted Payments is only a cross-reference embedded in ordinary prose describing another part of this instrument and creates no boundary here at all.\n\n" +
       "Section 3.10 Compliance. Real next body text.";
-    const { sections } = parse(text, "wrap-no-internal-terminal-rescued-by-following-real-heading");
-    expect(sections).toEqual(expect.arrayContaining(["3.08", "3.09", "3.10"])); // FALSIFICATION - 3.09 should not exist
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "wrap-no-internal-terminal-rescued-by-following-real-heading", label: "d", text });
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "3.09")).toBe(false); // fail-closed: never fabricated, unlike the original defect
+    expect(deterministicOnly.ambiguousCandidates.some((c) => c.candidateNumber === "3.09")).toBe(true);
+    expect(deterministicOnly.nodes.some((n) => n.sectionRef === "3.10")).toBe(true); // the REAL next heading is completely unaffected
+    const resolved = await parseWithNewArchitecture(text, "wrap-no-internal-terminal-resolved", (userContent) => !userContent.includes("is only a cross-reference"));
+    expect(resolved.sections).toEqual(expect.arrayContaining(["3.08", "3.10"]));
+    expect(resolved.sections).not.toContain("3.09");
   });
 });
 
 // =============================================================================
-// PART 4 - FALSE NEGATIVE: a common definitions-section drafting convention
-// ("Term. means ...", omitting a repeated subject) is vetoed as if it were
-// the false-citation shape, and its real content is silently absorbed into
-// the PRECEDING section's own owned span instead of vanishing cleanly.
+// PART 4 - UPDATED: FIXED, DETERMINISTICALLY, by the new architecture - a
+// common definitions-section drafting convention ("Term. means ...",
+// omitting a repeated subject) was previously vetoed as if it were the
+// false-citation shape (the OLD design's hard, universal lowercase veto).
+// The new triage procedure never uses a universal "lowercase => reject"
+// rule: a lowercase "means"/"shall mean" continuation is its own disclosed,
+// bounded signal (LOWERCASE_DEFINITIONAL - see stage-structure.ts's own
+// `classifyContinuationShapeForTriage` doc-comment), and when genuine
+// PARAGRAPH_BREAK evidence also precedes the candidate (as it does here),
+// that is independently sufficient - the real heading is now accepted
+// CONFIDENTLY, with zero classifier calls needed, fixing this false negative
+// at the root rather than routing it to AMBIGUOUS.
 // =============================================================================
-describe("4. FALSE NEGATIVE - 'Term. means ...' definitions convention is wrongly vetoed", () => {
-  it("a real definitions-style heading immediately followed by 'means' (no repeated subject) is dropped, and its real text is silently absorbed into the PRECEDING section's owned span", () => {
+describe("4. FIXED BY THE NEW ARCHITECTURE - 'Term. means ...' definitions convention is no longer wrongly vetoed", () => {
+  it("a real definitions-style heading immediately followed by 'means' (no repeated subject), preceded by a genuine paragraph break, is now correctly accepted deterministically - zero classifier calls needed", () => {
     const text =
       "ARTICLE I DEFINITIONS\n\n" +
       "Section 1.07 Applicable Rate. Real prior definition body text ends here properly.\n\n" +
       "Section 1.08 Applicable Margin. means, with respect to any Loan, the percentage per annum set forth in the Pricing Grid attached as Schedule 1 to this Agreement, as such percentage may be adjusted from time to time.\n\n" +
       "Section 1.09 Business Day. Real next definition body text.";
-    const { nodes, sections } = parse(text, "false-negative-definitions-means-style");
-    expect(sections).not.toContain("1.08"); // the real heading vanishes entirely
+    const { nodes, ambiguousCandidates, triageStats } = parseDocumentStructureWithTriage({ documentId: "false-negative-definitions-means-style", label: "d", text });
+    expect(nodes.some((n) => n.sectionRef === "1.08")).toBe(true); // FIXED - the real heading no longer vanishes
+    expect(ambiguousCandidates.some((c) => c.candidateNumber === "1.08")).toBe(false); // resolved CONFIDENTLY, never even routed to the classifier
+    expect(triageStats.ambiguousCount).toBe(0);
+    const s108 = nodes.find((n) => n.sectionRef === "1.08")!;
+    const s109 = nodes.find((n) => n.sectionRef === "1.09")!;
+    // 1.08's own real content is correctly owned by 1.08 itself, not bled into 1.07's span (the opposite-direction corruption the original defect produced).
+    expect(text.slice(s108.charStart, s109.charStart)).toContain("Applicable Margin");
+    expect(text.slice(s108.charStart, s109.charStart)).toContain("Pricing Grid");
     const s107 = nodes.find((n) => n.sectionRef === "1.07")!;
-    // Data corruption in the opposite direction: 1.08's real defined-term
-    // text (the actual "Applicable Margin" definition) is now silently
-    // owned by 1.07's span instead - a downstream reader asking for 1.07's
-    // own text gets 1.08's content bleeding into it.
-    expect(text.slice(s107.charStart, s107.charEnd)).toContain("Applicable Margin");
-    expect(text.slice(s107.charStart, s107.charEnd)).toContain("Pricing Grid");
+    expect(text.slice(s107.charStart, s107.charEnd)).not.toContain("Applicable Margin");
+  });
+
+  it("the same convention with WEAK preceding evidence (no paragraph break) is honestly routed AMBIGUOUS rather than guessed, and the classifier correctly resolves it", async () => {
+    const text = "Section 1.07 Applicable Rate. Real prior text.\nSection 1.08 Applicable Margin. means, with respect to any Loan, the percentage set forth in the Pricing Grid.";
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "definitions-means-weak-evidence", label: "d", text });
+    expect(deterministicOnly.ambiguousCandidates.some((c) => c.candidateNumber === "1.08")).toBe(true);
+    const resolved = await parseWithNewArchitecture(text, "definitions-means-weak-evidence-resolved", (userContent) => userContent.includes("means, with respect"));
+    expect(resolved.nodes.some((n) => n.sectionRef === "1.08")).toBe(true);
   });
 });
 
 // =============================================================================
-// PART 5 - COMPOSITION SUMMARY: confirm the rank-stack-corruption failure
-// class (the module's own named invariant) reproduces in BOTH directions
-// across this matrix, not merely as an isolated node-count discrepancy.
+// PART 5 - UPDATED COMPOSITION SUMMARY: zero material rank-stack corruption
+// under the new architecture, in either direction, across the whole matrix -
+// neither a fail-closed-excluded AMBIGUOUS candidate nor a deterministically
+// FIXED real heading ever re-parents or swallows real content incorrectly.
 // =============================================================================
-describe("5. COMPOSITION - rank-stack corruption confirmed in both directions", () => {
-  it("false-heading acceptance re-parents a real child clause away from its true enclosing section (summary assertion over Part 2's first case)", () => {
+describe("5. COMPOSITION - zero material rank-stack corruption under the new architecture, in either direction", () => {
+  it("a fail-closed-excluded AMBIGUOUS candidate never re-parents a real child clause away from its true enclosing section (over Part 2's first case)", async () => {
     const text =
       "ARTICLE VI COVENANTS\n\n" +
       "Section 6.08 Restricted Payments. The Borrower shall not make any Restricted Payment except as otherwise agreed.\n" +
@@ -315,24 +434,31 @@ describe("5. COMPOSITION - rank-stack corruption confirmed in both directions", 
       "(a) Permitted Liens existing on the Closing Date.\n" +
       "(b) Indebtedness existing on the Closing Date.\n\n" +
       "Section 6.10 Liens. The Borrower shall not create Liens.";
-    const { nodes } = parse(text, "composition-false-accept-reparents-children");
-    const a = nodes.find((n) => n.sectionRef.endsWith("(a)"));
-    const b = nodes.find((n) => n.sectionRef.endsWith("(b)"));
-    expect(a?.parentSectionRef).toBe("6.09"); // both should be "6.08"
-    expect(b?.parentSectionRef).toBe("6.09");
+    const deterministicOnly = parseDocumentStructureWithTriage({ documentId: "composition-false-accept-reparents-children", label: "d", text });
+    const aDet = deterministicOnly.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    const bDet = deterministicOnly.nodes.find((n) => n.sectionRef.endsWith("(b)"));
+    expect(aDet?.parentSectionRef).toBe("6.08"); // fail-closed default: correct, never "6.09"
+    expect(bDet?.parentSectionRef).toBe("6.08");
+    const resolved = await parseWithNewArchitecture(text, "composition-false-accept-resolved", (userContent) => !userContent.includes("This citation refers"));
+    const a = resolved.nodes.find((n) => n.sectionRef.endsWith("(a)"));
+    const b = resolved.nodes.find((n) => n.sectionRef.endsWith("(b)"));
+    expect(a?.parentSectionRef).toBe("6.08");
+    expect(b?.parentSectionRef).toBe("6.08");
   });
 
-  it("true-heading suppression absorbs real content into the wrong node's owned span (summary assertion over Part 4)", () => {
+  it("the deterministically-fixed real heading (Part 4) owns its own content correctly with no cross-node bleed", () => {
     const text =
       "ARTICLE I DEFINITIONS\n\n" +
       "Section 1.07 Applicable Rate. Real prior definition body text ends here properly.\n\n" +
       "Section 1.08 Applicable Margin. means, with respect to any Loan, the percentage per annum set forth in the Pricing Grid attached as Schedule 1 to this Agreement.\n\n" +
       "Section 1.09 Business Day. Real next definition body text.";
-    const { nodes } = parse(text, "composition-false-negative-absorbs-content");
+    const { nodes } = parseDocumentStructureWithTriage({ documentId: "composition-false-negative-fixed", label: "d", text });
     const s107 = nodes.find((n) => n.sectionRef === "1.07")!;
+    const s108 = nodes.find((n) => n.sectionRef === "1.08")!;
     const s109 = nodes.find((n) => n.sectionRef === "1.09")!;
-    expect(s107.charEnd).toBe(s109.charStart);
-    expect(text.slice(s107.charStart, s107.charEnd)).toContain("Applicable Margin"); // 1.08's own content, not 1.07's
+    expect(s107.charEnd).toBe(s108.charStart); // 1.07 no longer swallows 1.08's content
+    expect(s108.charEnd).toBe(s109.charStart);
+    expect(text.slice(s108.charStart, s108.charEnd)).toContain("Applicable Margin"); // 1.08 owns its own content
   });
 });
 
@@ -340,18 +466,20 @@ describe("5. COMPOSITION - rank-stack corruption confirmed in both directions", 
 // Summary
 // =============================================================================
 describe("summary", () => {
-  it("prints the Part B independent recertification result for FIX-1", () => {
+  it("prints the Part B independent recertification result for FIX-1, as superseded by the Phase 3F.1 Human Architecture Decision", () => {
     // eslint-disable-next-line no-console
     console.log(
-      "HEADROOM FINAL 3F.1 CLOSURE Part B independent recert of FIX-1: the true-heading side and the required " +
-        "matrix's own named false-heading shapes hold up against fresh constructions. However, titleBodySeparationHolds's " +
-        "entire discriminating power rests on 'a fake continuation is lowercase' - false whenever a citation is its own " +
-        "well-punctuated sentence followed by an ordinary capitalized/digit-led new sentence (ubiquitous in real drafting), " +
-        "which still launders through and corrupts the rank-stack exactly as the original defect did. The wrap-tolerance " +
-        "mechanism adds its own narrower path: identical text, merely re-wrapped across a line break before its own " +
-        "tell-tale lowercase continuation, flips a correct rejection into a false acceptance (Case C vs Case D). A " +
-        "definitions-style 'Term. means ...' real heading is also wrongly vetoed, silently merging its content into the " +
-        "preceding section. Disposition: STILL_OPEN. See docs/phase-3f1-final-closure/13-structural-recertification.json.",
+      "HEADROOM FINAL 3F.1 CLOSURE Part B independent recert of FIX-1: this auditor proved titleBodySeparationHolds's " +
+        "entire discriminating power rested on 'a fake continuation is lowercase' - false whenever a citation is its own " +
+        "well-punctuated sentence followed by an ordinary capitalized/digit-led new sentence, which laundered through and " +
+        "corrupted the rank-stack, plus a wrap-tolerance-specific false-positive path (Case C vs Case D) and a real-heading " +
+        "false negative ('Term. means ...'). Original disposition: STILL_OPEN. SUPERSEDED by the Phase 3F.1 Human " +
+        "Architecture Decision (Workstream OPEN-1): every Part 2/3 falsifying construction is now triaged AMBIGUOUS by " +
+        "parseDocumentStructureWithTriage (never a confident false accept, closing the defect at the root rather than " +
+        "patching the heuristic further) and correctly resolved by the new bounded structural-ambiguity classifier; the " +
+        "Part 4 false negative is fixed deterministically via the paragraph-break signal once the lowercase check was " +
+        "demoted from a universal veto to one disclosed, bounded input among several. Zero material rank-stack corruption " +
+        "in either direction (Part 5). See docs/phase-3f1-human-architecture-decision/ for the full design record.",
     );
     expect(true).toBe(true);
   });

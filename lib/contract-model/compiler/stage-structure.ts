@@ -1047,7 +1047,28 @@ function overlapsAny(candidate: RegExpExecArray, existing: RegExpExecArray[]): b
 }
 
 export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNode[] {
-  // P1-10 plausibility gate (see the doc-comment above `bestMatches`):
+  const { articleMatches, sectionMatches } = decideAcceptedStructuralMatches(doc);
+  return buildStructuralNodesFromAcceptedMatches(doc, articleMatches, sectionMatches);
+}
+
+/**
+ * The full candidate-generation + deterministic acceptance-decision pipeline
+ * (P1-10 plausibility gate - see the doc-comment above `bestMatches`),
+ * producing the final, DECIDED sets of ARTICLE and SECTION matches
+ * `parseDocumentStructure` builds real nodes from. Extracted as its own
+ * function (Phase 3F.1 Human Architecture Decision, Workstream OPEN-1) so
+ * the new triage-driven candidate GENERATION below
+ * (`collectRawStructuralCandidates`) can reuse the exact same regex/overlap/
+ * established-span mechanics without duplicating them, while this function's
+ * own ACCEPTANCE logic (isPlausible et al.) is left completely untouched -
+ * `parseDocumentStructure` itself is a pure behavior-preserving refactor,
+ * zero risk to the existing regression suite (tests/certification/
+ * part-a-final-fix1-structural.test.ts and
+ * tests/certification/part-b-terminal-recert-open1-independent.test.ts in
+ * particular, which this remediation is required to keep passing
+ * unmodified).
+ */
+function decideAcceptedStructuralMatches(doc: CompilerDocumentInput): { articleMatches: RegExpExecArray[]; sectionMatches: RegExpExecArray[] } {
   // applied to each match SOURCE right after `bestMatches` selects the
   // winning pattern shape (pattern-selection is a shape-richness contest,
   // never affected by plausibility) and before any match is used for
@@ -1118,7 +1139,21 @@ export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNo
     .filter((m) => !overlapsAny(m, decimalSectionMatches) && !overlapsAny(m, integerSectionMatches) && !fallsInsideAnEstablishedSpan(m.index));
   // Union, not replacement: a decimal-style document's own matches are completely unaffected (FWRG/LSB regression-safe by construction), and a flat-integer-only document (no decimal matches at all) gets its headings from the integer sets instead.
   const sectionMatches = [...decimalSectionMatches, ...integerSectionMatches, ...bareIntegerMatches].sort((a, b) => a.index - b.index);
+  return { articleMatches, sectionMatches };
+}
 
+/**
+ * The span/rank-stack/ordinal/nodeId construction that turns a final,
+ * already-DECIDED set of ARTICLE and SECTION matches into real
+ * StructuralNode[] (nested clause parsing, owned-span computation, sibling
+ * ordinals, stable node identity). Extracted, byte-for-byte, from
+ * `parseDocumentStructure`'s own former tail as a PURE REFACTOR (no behavior
+ * change - same inputs produce the same outputs) so the new triage-driven
+ * parse path (`parseDocumentStructureWithTriage`/
+ * `applyStructuralAmbiguityOverrides` below) can reuse this exact,
+ * already-certified mechanical construction instead of duplicating it.
+ */
+function buildStructuralNodesFromAcceptedMatches(doc: CompilerDocumentInput, articleMatches: RegExpExecArray[], sectionMatches: RegExpExecArray[]): StructuralNode[] {
   const raws: RawNode[] = [];
   for (const m of articleMatches) {
     raws.push({ nodeType: "ARTICLE", heading: extractTitleLikeSpan(m[2] ?? ""), sectionRef: (m[1] ?? "").trim(), charStart: m.index, parentSectionRef: null });
@@ -1222,4 +1257,564 @@ export function runStructureStage(documents: CompilerDocumentInput[]): StageRunR
 
 export function structureOutputHash(nodes: StructuralNode[]): string {
   return hashParts([STRUCTURAL_INDEX_VERSION, ...nodes.map((n) => `${n.documentId}|${n.nodeType}|${n.sectionRef}|${n.charStart}|${n.nodeId}`)]);
+}
+
+// =============================================================================
+// Phase 3F.1 HUMAN ARCHITECTURE DECISION (Workstream OPEN-1)
+// =============================================================================
+/**
+ * `parseDocumentStructure` above is the primary, deterministic system and is
+ * left completely UNCHANGED by this remediation (see
+ * `decideAcceptedStructuralMatches`'s own doc-comment) - the large existing
+ * regression suite depends on its exact behavior. But this file's own long
+ * doc-comment history above (NOISE_DISCOUNTED -> titleBodySeparationHolds)
+ * records TWO independent auditors falsifying every attempt to make purely
+ * typographic evidence resolve "Section 6.09 Restricted Payments." as either
+ * a real heading or an ordinary in-prose citation in EVERY case. The most
+ * careful attempt (titleBodySeparationHolds) is providably indistinguishable
+ * for the specific pair that matters most in real drafting: a real heading
+ * whose body starts with an ordinary new sentence, versus a well-punctuated
+ * in-text citation immediately followed by an ordinary new sentence of the
+ * surrounding paragraph. Both end in a real terminal period and are both
+ * followed by non-lowercase text - no refinement of "what does the next
+ * character look like" can ever tell them apart; it requires reading actual
+ * CONTENT on both sides and judging discourse structure.
+ *
+ * The mandated architecture (see docs/phase-3f1-human-architecture-decision/
+ * 02-structural-triage-design.json for the full design record): deterministic
+ * parsing remains primary and resolves the overwhelming majority of real
+ * documents with ZERO model calls. A candidate whose deterministic evidence
+ * cannot safely resolve heading-vs-prose-reference identity is triaged
+ * AMBIGUOUS and routed to a bounded, source-only structural classifier
+ * (structural-ambiguity-classifier.ts) - never a mandatory stage, never a
+ * replacement for this file's own regex/positional-signal machinery, only an
+ * ambiguity resolver for the residual cases that machinery has been
+ * independently, repeatedly proven unable to resolve alone.
+ *
+ * Everything below is ADDITIVE: a new, separate triage-driven parse path
+ * (`parseDocumentStructureWithTriage`, `applyStructuralAmbiguityOverrides`)
+ * that reuses `decideAcceptedStructuralMatches`'s own candidate-GENERATION
+ * mechanics (bestMatches/unionMatches/BARE_INTEGER_SECTION_PATTERN/overlap
+ * dedup - all unchanged) but replaces its accept/reject DECISION with the new
+ * three-valued triage below. `parseDocumentStructure` itself never calls any
+ * of this code and is entirely unaffected.
+ */
+
+/** Conceptually `CONFIDENT_HEADING | CONFIDENT_PROSE_REFERENCE | AMBIGUOUS`, per the governing spec - never collapsed to a boolean or a numeric score that silently resolves ambiguity into certainty. */
+export type StructuralCandidateDecision = "CONFIDENT_HEADING" | "CONFIDENT_PROSE_REFERENCE" | "AMBIGUOUS";
+
+/** How the candidate's own matched title text relates to its own terminal punctuation - see `classifySeamValidation`'s own doc-comment. */
+export type StructuralSeamValidation = "VALIDATED_TERMINATED" | "ABSORBED_SENTENCE" | "INCOMPLETE_NO_TERMINAL";
+
+/** What immediately follows the candidate's own matched span - see `classifyContinuationShapeForTriage`'s own doc-comment. */
+export type StructuralContinuationShape = "LOWERCASE_ORDINARY" | "LOWERCASE_DEFINITIONAL" | "IMMEDIATE_KEYWORD" | "SELF_CONTAINED_OTHER";
+
+/** The full, disclosed signal bundle behind one triage decision - never collapsed to a single opaque score; every field here is real, independently-inspectable, purely typographic/positional evidence (never keyed to drafting phrasing). */
+export interface StructuralCandidateTriageSignals {
+  isDocumentOrRegionStart: boolean;
+  isImmediatelyAfterConfidentArticle: boolean;
+  hasParagraphBreak: boolean;
+  hasSentenceTerminalPunctuation: boolean;
+  hasClosingDelimiter: boolean;
+  hasAtLeastOneNewline: boolean;
+  seamValidation: StructuralSeamValidation;
+  continuationShape: StructuralContinuationShape;
+}
+
+export interface StructuralCandidateTriageResult {
+  decision: StructuralCandidateDecision;
+  reason: string;
+  signals: StructuralCandidateTriageSignals;
+}
+
+/**
+ * Classifies the RELATIONSHIP between a candidate's own matched text and its
+ * own terminal punctuation - a purely typographic, candidate-LOCAL signal
+ * (never keyed to what precedes or follows the match). Three shapes:
+ *
+ *  - VALIDATED_TERMINATED: the match's own last real character is terminal
+ *    punctuation ([.:;!?]), with no EARLIER terminal-followed-by-more-text
+ *    inside the match - the regex construction itself guarantees this IS a
+ *    genuine, complete title span with a known end. Both SECTION_PATTERNS[0]/
+ *    INTEGER_SECTION_PATTERNS[0] (shape-based, `\.(?!\d)` baked into the
+ *    regex) and a crude line-anchored fallback whose own captured line
+ *    happens to end in real punctuation with nothing else inside produce
+ *    this shape.
+ *  - ABSORBED_SENTENCE: the match's own text contains an INTERNAL terminal
+ *    mark followed by more real text, before the match's own end - only a
+ *    title-shape-unvalidated line-anchored fallback pattern (`[^\n]*`) can
+ *    ever produce this, by swallowing an entire, possibly-unrelated sentence
+ *    as if it were part of the "title". This is EXACTLY the shape the
+ *    auditor's own falsifying reproduction
+ *    (tests/certification/part-b-final-fix1-independent-recert.test.ts, Part
+ *    2/3) exploits: a citation's own real title ends, then its surrounding
+ *    sentence's own continuation gets absorbed into the same "match" because
+ *    nothing in the crude pattern's own grammar stops it there. Typography
+ *    genuinely cannot confirm where the real title ends inside this shape -
+ *    routed AMBIGUOUS, never resolved by guessing (the previous, now-removed
+ *    `looksLikeNewContentStartAfterPossibleTitleWrap` wrap-tolerance
+ *    mechanism WAS exactly such a guess, and the auditor's own Part 3 proved
+ *    it unsound: the identical text, merely re-wrapped, flipped a correct
+ *    rejection into a false acceptance).
+ *  - INCOMPLETE_NO_TERMINAL: the match ends in neither its own terminal
+ *    punctuation nor an internal one - only a crude fallback that ran out of
+ *    physical line before reaching ANY punctuation (a title that genuinely
+ *    wraps onto a second physical line) produces this. Typography cannot
+ *    confirm whether the real title legitimately continues (a wrapped real
+ *    heading) or the captured fragment already bled into ordinary prose -
+ *    routed AMBIGUOUS, for the identical reason.
+ */
+/**
+ * Strips the candidate's own leading "KEYWORD NUMBER[.]<gap>" prefix (e.g.
+ * "SECTION 1.", "Section 6.01", "ARTICLE VI") from its matched text, leaving
+ * only the real TITLE portion (still including that title's own trailing
+ * punctuation, if any - the prefix strip stops right before the title
+ * starts, never consuming any of it). This matters because the number
+ * itself routinely carries its own period ("SECTION 1." - a bare-integer
+ * numbering convention's own terminator; "6.01" - an ordinary decimal
+ * separator) which is NOT title/body-seam punctuation at all and must never
+ * be mistaken for one by `classifySeamValidation` below - scanning the RAW
+ * match text for "a terminal mark followed by more text" would otherwise
+ * false-trigger ABSORBED_SENTENCE on every single bare-integer heading
+ * ("SECTION 1. Amendments." - the period after "1" is followed by
+ * whitespace then "Amendments", which looks identical in shape to a real
+ * mid-title sentence break unless the numbering's own period is excluded
+ * first).
+ */
+function extractTitlePortionForSeamCheck(matchText: string, candidateNumber: string): string {
+  if (!candidateNumber) return matchText;
+  const numIdx = matchText.indexOf(candidateNumber);
+  if (numIdx === -1) return matchText;
+  let pos = numIdx + candidateNumber.length;
+  if (matchText[pos] === ".") pos++; // the number's own optional trailing period (BOUNDED_GAP's own leading dot is handled by the whitespace skip below when absent)
+  while (pos < matchText.length && /\s/.test(matchText[pos]!)) pos++;
+  return matchText.slice(pos);
+}
+
+/**
+ * A real title, even an unusually long compound one, is never this long -
+ * SECTION_PATTERNS[0]/INTEGER_SECTION_PATTERNS[0]'s own shape-based title
+ * capture is itself bounded to 90 characters by construction, so any titlePortion
+ * exceeding this (necessarily unbounded-crude-fallback-produced) bound is, by
+ * construction, evidence of an absorbed run-on rather than a real title -
+ * disclosed, purely typographic "title SHAPE" evidence (the spec's own named
+ * signal category), never a phrase list.
+ */
+const MAX_PLAUSIBLE_TITLE_LENGTH = 110;
+
+/**
+ * A short, real-title-shaped run: starts with a capital letter, contains
+ * only ordinary heading-title characters (letters/spaces/standard heading
+ * punctuation - the SAME character class SECTION_PATTERNS/ARTICLE_PATTERNS'
+ * own shape-based title captures already use elsewhere in this file, reused
+ * here rather than inventing a second one), and ends in its own terminal
+ * punctuation - the ENTIRE candidate string must conform (the trailing `$`
+ * anchor is load-bearing: without it, a long absorbed run-on that merely
+ * BEGINS with title-shaped characters would false-pass).
+ */
+const SHORT_TITLE_SHAPE = /^\[?[A-Z][A-Za-z ,&';[\]-]{0,90}?\]?[.:;!?]$/;
+
+interface StructuralSeamResolution {
+  validation: StructuralSeamValidation;
+  /** Absolute offset in the full document text where continuation-shape should actually be evaluated - the candidate's own real seam, which for a rescued short-title-prefix is NOT the same as the crude fallback pattern's own greedy matchEnd. */
+  continuationOffset: number;
+}
+
+/**
+ * Resolves BOTH the seam-validation verdict AND the exact position
+ * continuation-shape evidence should be read from - the latter is not
+ * always simply `matchEnd`. A crude, unbounded fallback pattern
+ * (BARE_INTEGER_SECTION_PATTERN's own `[^\n]*` design in particular)
+ * routinely swallows an entire physical line as "the title" even when the
+ * REAL title is short and reaches its own terminal punctuation well before
+ * the match's own greedy end (e.g. "1. Amendment. The Credit Agreement is
+ * hereby amended..." - the real title is "Amendment.", with ordinary body
+ * text continuing on the very same line, exactly as a shape-based pattern
+ * would have captured had one existed for this convention). When the text
+ * BEFORE the first internal terminal is itself SHORT_TITLE_SHAPE-conforming,
+ * that terminal - not the crude match's own greedy end - is the real,
+ * already-available seam: no hop, no guess, no bounded lookahead into
+ * uncertain territory (the exact mechanism the auditor's own Part 3 proved
+ * unsound) - the terminal is directly inside text this function is already
+ * given. When the pre-terminal text is NOT short-title-shaped (contains
+ * anything outside the title character class - most tellingly, an embedded
+ * "Section 6.09"-style cross-reference, whose digits are never part of that
+ * class - or simply exceeds the same 90-character bound the shape-based
+ * patterns themselves enforce), that is genuine ABSORBED_SENTENCE evidence:
+ * the crude pattern swallowed real, unrelated prose, and typography cannot
+ * safely locate the seam at all.
+ */
+function resolveStructuralSeam(matchIndex: number, matchEnd: number, matchText: string, candidateNumber: string, candidateType: "ARTICLE" | "SECTION"): StructuralSeamResolution {
+  const titlePortion = extractTitlePortionForSeamCheck(matchText, candidateNumber);
+  const titlePortionAbsoluteStart = matchIndex + (matchText.length - titlePortion.length);
+
+  const internalTerminal = titlePortion.match(/[.:;!?]\s+\S/); // a terminal mark followed by more real text still inside the title portion
+  if (internalTerminal) {
+    const prefixBeforeTerminal = titlePortion.slice(0, internalTerminal.index! + 1);
+    if (SHORT_TITLE_SHAPE.test(prefixBeforeTerminal)) {
+      return { validation: "VALIDATED_TERMINATED", continuationOffset: titlePortionAbsoluteStart + internalTerminal.index! + 1 };
+    }
+    return { validation: "ABSORBED_SENTENCE", continuationOffset: matchEnd };
+  }
+  if (/[.:;!?]\s*$/.test(titlePortion)) {
+    if (titlePortion.length > MAX_PLAUSIBLE_TITLE_LENGTH) {
+      // One long, uninterrupted run ending in a single terminal mark with no
+      // internal structure of its own at all - too long to plausibly be a
+      // real title (see MAX_PLAUSIBLE_TITLE_LENGTH's own doc-comment); most
+      // likely an entire absorbed sentence that happens to contain no other
+      // punctuation of its own before its own final period.
+      return { validation: "ABSORBED_SENTENCE", continuationOffset: matchEnd };
+    }
+    return { validation: "VALIDATED_TERMINATED", continuationOffset: matchEnd };
+  }
+  // An ARTICLE's own ALL-CAPS title (ARTICLE_PATTERNS' own shape) carries no
+  // terminal punctuation of its own by convention - it is a title run, not a
+  // sentence - so ARTICLE_PATTERNS[0]'s own lookahead-bounded match (and
+  // ARTICLE_PATTERNS[1]'s full-line fallback, which stops at a real line
+  // break) already constitutes a validated title boundary even with no
+  // internal terminal present. Never extended to SECTION, whose shape-based
+  // pattern (SECTION_PATTERNS[0]/INTEGER_SECTION_PATTERNS[0]) always DOES
+  // require and capture a real trailing period by construction - a SECTION
+  // candidate reaching this branch can only be a title-shape-unvalidated
+  // line-anchored fallback that genuinely ran out of line before any
+  // punctuation, which is exactly the wrap-uncertain shape this file's own
+  // module-level doc-comment (INCOMPLETE_NO_TERMINAL) describes.
+  if (candidateType === "ARTICLE") return { validation: "VALIDATED_TERMINATED", continuationOffset: matchEnd };
+  return { validation: "INCOMPLETE_NO_TERMINAL", continuationOffset: matchEnd };
+}
+
+/**
+ * What immediately follows the candidate's own matched span - deliberately a
+ * SINGLE, bounded, non-recursive check (unlike the now-removed
+ * `looksLikeNewContentStartAfterPossibleTitleWrap`, whose own bounded-but-
+ * still-guessing "hop forward past one more terminal" mechanism was itself
+ * proven, by the auditor's own Part 3 minimal pair, to be a fresh
+ * false-positive path rather than a safe rescue). A candidate whose own seam
+ * is not VALIDATED_TERMINATED never reaches this function's result at all
+ * (see `evaluateStructuralCandidateTriage` below) - it is routed AMBIGUOUS
+ * before any continuation shape is even consulted, closing that exact class
+ * of defect at its root rather than patching the guess.
+ *
+ *  - LOWERCASE_ORDINARY: an ordinary lowercase ASCII letter - the strongest
+ *    remaining reliable reject signal this file has: real drafting practice,
+ *    across every fixture this codebase has examined, never legitimately
+ *    continues a real heading's own title into a lowercase word (the one
+ *    disclosed exception - a "Term. means ..." definitions convention - is
+ *    its own named LOWERCASE_DEFINITIONAL shape below, never silently folded
+ *    into this one).
+ *  - LOWERCASE_DEFINITIONAL: the narrow, closed, near-universal legal-
+ *    drafting convention "Term. means ..." / "Term. shall mean ..." -
+ *    disclosed and bounded (exactly two fixed continuations recognized,
+ *    never an open phrase list) rather than silently lumped in with ordinary
+ *    lowercase prose, because a real definitions-style heading legitimately
+ *    uses it (see the required test matrix's own "definitions-style 'Term.
+ *    means ...' where genuinely structural" case, and the auditor's own
+ *    falsifying reproduction Part 4).
+ *  - IMMEDIATE_KEYWORD: another recognized structural keyword
+ *    (ARTICLE/Section/§, any case) sits within a SHORT whitespace-only gap
+ *    (<=2 characters) of the candidate's own end - the genuine signal-(C)
+ *    shape ("ARTICLE VI COVENANTS Section 6.01 Indebtedness ." with no
+ *    sentence between them). Deliberately BOUNDED (unlike the original
+ *    `looksLikeNewContentStart`'s own unbounded whitespace-skip-then-keyword
+ *    check, which the auditor's own final Part 3 case exploited: a fake,
+ *    fully-absorbed citation "sentence" followed - after a full paragraph
+ *    break - by an unrelated REAL subsequent heading was laundered through
+ *    purely because a keyword eventually appeared somewhere downstream,
+ *    regardless of how much real prose sat between). Requiring near-adjacency
+ *    closes that hole at the root: a keyword found only after skipping a
+ *    genuine paragraph break is never "immediate" and instead falls through
+ *    to SELF_CONTAINED_OTHER below, evaluated on its own positional merits.
+ *  - SELF_CONTAINED_OTHER: anything else self-contained-shaped (an uppercase
+ *    letter, a digit, an opening quote/bracket/paren, or the end of the
+ *    document/region) - genuine, but on its own only WEAK evidence: this is
+ *    the shape a real heading's own body exhibits, but it is ALSO the shape
+ *    an ordinary, well-punctuated in-text citation exhibits when followed by
+ *    an unrelated new sentence of the surrounding paragraph (the auditor's
+ *    own central falsifying finding) - so this shape alone never confers
+ *    CONFIDENT_HEADING in `evaluateStructuralCandidateTriage` below; it must
+ *    be corroborated by independent BEFORE-evidence (paragraph break,
+ *    document start, ARTICLE-adjacency) or is otherwise routed AMBIGUOUS.
+ */
+function classifyContinuationShapeForTriage(text: string, pos: number): StructuralContinuationShape {
+  const after = text.slice(pos, pos + 200);
+  const skipped = after.match(/^\s*/)![0].length;
+  const skippedWhitespace = after.slice(0, skipped);
+  const rest = after.slice(skipped, skipped + 20);
+  if (rest.length === 0) return "SELF_CONTAINED_OTHER"; // end of document/region - trivially self-contained
+  // Bounded adjacency is measured in NEWLINES, not raw character count: a
+  // genuine paragraph break ("\n\n") is only 2 characters but represents
+  // real separation, not immediate adjacency - a naive character-count bound
+  // would let a keyword found only after a full paragraph break (with real,
+  // if entirely absorbed-into-the-match, prose in between) still register as
+  // "immediate", reopening exactly the unbounded-keyword-lookahead hole this
+  // function's own doc-comment describes. At most a single newline (or pure
+  // same-line whitespace) counts as immediate.
+  const newlineCount = (skippedWhitespace.match(/\n/g) ?? []).length;
+  if (newlineCount <= 1 && skipped <= 4 && /^(?:article|section|§)\b/i.test(rest)) return "IMMEDIATE_KEYWORD";
+  if (/^(?:means\b|shall\s+mean\b)/i.test(rest)) return "LOWERCASE_DEFINITIONAL";
+  if (/^[a-z]/.test(rest)) return "LOWERCASE_ORDINARY";
+  return "SELF_CONTAINED_OTHER";
+}
+
+/**
+ * The full triage decision procedure. Per the governing spec, NO single
+ * signal below is individually decisive in every branch except the two
+ * genuinely reliable ones this file's own remediation history has actually
+ * earned the right to treat that way: an ordinary lowercase continuation
+ * (real drafting, across every examined fixture, never legitimately
+ * continues a heading's own title that way) and an unresolved seam
+ * (typography cannot even confirm where the title itself ends, so nothing
+ * downstream of it is trustworthy either). Every other branch requires TWO
+ * independent pieces of corroborating evidence (a validated seam AND
+ * non-lowercase continuation, AND separately strong positional isolation)
+ * before granting CONFIDENT_HEADING - anything resting on only ONE weak
+ * signal (bare sentence-terminal punctuation with no paragraph break; a
+ * definitional continuation with no strong isolation) is honestly routed
+ * AMBIGUOUS rather than resolved by a guess, per this phase's own mandate.
+ */
+function evaluateStructuralCandidateTriage(text: string, matchIndex: number, matchEnd: number, matchText: string, candidateNumber: string, candidateType: "ARTICLE" | "SECTION", isImmediatelyAfterConfidentArticle: boolean): StructuralCandidateTriageResult {
+  const windowStart = Math.max(0, matchIndex - 200);
+  const beforeRaw = text.slice(windowStart, matchIndex);
+  const isDocumentOrRegionStart = windowStart === 0 && beforeRaw.trim().length === 0;
+  const before = stripTrailingTypographicNoise(beforeRaw);
+  const seam = resolveStructuralSeam(matchIndex, matchEnd, matchText, candidateNumber, candidateType);
+  const signals: StructuralCandidateTriageSignals = {
+    isDocumentOrRegionStart,
+    isImmediatelyAfterConfidentArticle,
+    hasParagraphBreak: precededByParagraphBreak(before),
+    hasSentenceTerminalPunctuation: precededBySentenceTerminalPunctuation(before),
+    hasClosingDelimiter: precededByClosingDelimiter(before),
+    hasAtLeastOneNewline: precededByAtLeastOneNewline(before),
+    seamValidation: seam.validation,
+    continuationShape: classifyContinuationShapeForTriage(text, seam.continuationOffset),
+  };
+
+  if (signals.seamValidation !== "VALIDATED_TERMINATED") {
+    // Checked BEFORE the lowercase-continuation check below, deliberately:
+    // when the seam itself is not validated, `continuationShape` was read at
+    // the crude match's own unreliable end (`matchEnd`), not a confirmed
+    // seam - an ordinary lowercase grammatical continuation there (e.g. "...
+    // Termination or Reduction\nof Revolving Credit Commitments." - "of" is
+    // a completely normal continuation of a real, legitimately wrapped
+    // title, not evidence the candidate is prose) must never be trusted as
+    // reject evidence when we do not even know where the real title ends.
+    const reason =
+      signals.seamValidation === "ABSORBED_SENTENCE"
+        ? "the candidate's own matched text already contains an internal sentence-terminal mark followed by more real text that is not itself a short, title-shaped run - typography cannot confirm where the real title actually ends, so nothing about what follows the match is trustworthy either."
+        : "the candidate's own matched text never reaches its own terminal punctuation at all - typography cannot confirm whether this is a legitimately wrapped title or a fragment that already bled into ordinary prose.";
+    return { decision: "AMBIGUOUS", reason, signals };
+  }
+  if (signals.continuationShape === "LOWERCASE_ORDINARY") {
+    return { decision: "CONFIDENT_PROSE_REFERENCE", reason: "an ordinary lowercase word immediately continues past the candidate's own validated title-ending seam - the sentence it sits inside of never really ended here.", signals };
+  }
+  if (signals.isDocumentOrRegionStart) {
+    return { decision: "CONFIDENT_HEADING", reason: "candidate sits at the true start of the document/region - nothing precedes it for it to be the citation object of.", signals };
+  }
+  if (signals.isImmediatelyAfterConfidentArticle) {
+    return { decision: "CONFIDENT_HEADING", reason: "candidate immediately follows (whitespace only) an already-confident ARTICLE heading.", signals };
+  }
+  if (signals.hasParagraphBreak) {
+    return { decision: "CONFIDENT_HEADING", reason: "a genuine paragraph break isolates the candidate - real, strong visual/structural separation on the preceding side, corroborated by a validated, non-lowercase-continuing seam.", signals };
+  }
+  if (signals.continuationShape === "IMMEDIATE_KEYWORD") {
+    return { decision: "CONFIDENT_HEADING", reason: "candidate is immediately (whitespace only, no intervening prose) followed by another recognized structural heading keyword.", signals };
+  }
+  if (signals.hasSentenceTerminalPunctuation) {
+    return {
+      decision: "AMBIGUOUS",
+      reason:
+        "the only preceding evidence is ordinary sentence-terminal punctuation with no paragraph break, and the candidate is followed by ordinary self-contained-shaped text. This exact combination is typographically IDENTICAL for a genuine heading (whose body legitimately starts a new sentence) and for a well-punctuated in-prose citation immediately followed by an unrelated new sentence of the surrounding paragraph - deterministic evidence alone cannot resolve it (see this file's own module-level doc-comment on the human architecture decision).",
+      signals,
+    };
+  }
+  if (signals.continuationShape === "LOWERCASE_DEFINITIONAL") {
+    return { decision: "AMBIGUOUS", reason: "candidate is followed by a 'means'/'shall mean' definitional continuation with no strong preceding isolation evidence - plausibly a real definitions-style heading, or a citation to a defined term.", signals };
+  }
+  return { decision: "CONFIDENT_PROSE_REFERENCE", reason: "no genuine positional isolation evidence of any kind precedes the candidate - it reads as embedded mid-sentence text with no structural separation.", signals };
+}
+
+/** Stable key identifying one physical candidate occurrence for override-map purposes - never a label (sectionRef), which real drafting can legitimately repeat. */
+export function structuralCandidateKey(candidateType: "ARTICLE" | "SECTION", charStart: number): string {
+  return `${candidateType}:${charStart}`;
+}
+
+export interface AmbiguousStructuralCandidate {
+  documentId: string;
+  candidateType: "ARTICLE" | "SECTION";
+  candidateKey: string;
+  /** The regex-captured number/label (e.g. "6.09", "VI") - real, already-visible text, never a parser judgment. */
+  candidateNumber: string;
+  candidateText: string;
+  charStart: number;
+  charEnd: number;
+  precedingWindow: string;
+  followingWindow: string;
+  nearestConfidentHeadingBefore: string | null;
+  nearestConfidentHeadingAfter: string | null;
+  triage: StructuralCandidateTriageResult;
+}
+
+export interface StructuralTriageStats {
+  totalCandidates: number;
+  confidentHeadingCount: number;
+  confidentProseReferenceCount: number;
+  ambiguousCount: number;
+}
+
+export interface StructuralParseWithTriageResult {
+  nodes: StructuralNode[];
+  ambiguousCandidates: AmbiguousStructuralCandidate[];
+  triageStats: StructuralTriageStats;
+}
+
+const TRIAGE_WINDOW_CHARS = 300;
+
+/** One raw regex candidate, tagged with its own triage result and enclosing document text - the shared unit both `parseDocumentStructureWithTriage` and `applyStructuralAmbiguityOverrides` build from `decideRawStructuralCandidates` below. */
+interface TriagedCandidate {
+  candidateType: "ARTICLE" | "SECTION";
+  match: RegExpExecArray;
+  triage: StructuralCandidateTriageResult;
+}
+
+/**
+ * Generates the FULL candidate superset (unfiltered by any acceptance
+ * decision) and triages every one of them, reusing `decideAcceptedStructuralMatches`'s
+ * exact regex/overlap/established-span GENERATION mechanics - never a
+ * second, drifting reimplementation of that matching logic. ARTICLE
+ * candidates are triaged first (document-start/paragraph-break only, never
+ * signal-C, which is section-specific and anchors TO an already-confident
+ * ARTICLE); their own CONFIDENT_HEADING ends become the anchor set section
+ * candidates may use for signal-C, exactly mirroring
+ * `decideAcceptedStructuralMatches`'s own two-phase structure.
+ */
+function decideRawStructuralCandidates(doc: CompilerDocumentInput): TriagedCandidate[] {
+  const rawArticleMatches = bestMatches(doc.text, ARTICLE_PATTERNS);
+  const triagedArticles: TriagedCandidate[] = rawArticleMatches.map((m) => ({
+    candidateType: "ARTICLE",
+    match: m,
+    triage: evaluateStructuralCandidateTriage(doc.text, m.index, m.index + m[0].length, m[0], (m[1] ?? "").trim(), "ARTICLE", false),
+  }));
+  const confidentArticleEnds = triagedArticles.filter((c) => c.triage.decision === "CONFIDENT_HEADING").map((c) => c.match.index + c.match[0].length);
+
+  const rawDecimalSectionMatches = unionMatches(doc.text, SECTION_PATTERNS);
+  const rawIntegerSectionMatches = bestMatches(doc.text, INTEGER_SECTION_PATTERNS).filter((m) => !overlapsAny(m, rawDecimalSectionMatches));
+  const bareIntegerRe = new RegExp(BARE_INTEGER_SECTION_PATTERN.source, BARE_INTEGER_SECTION_PATTERN.flags);
+  const rawBareIntegerMatchesAll: RegExpExecArray[] = [];
+  let bm: RegExpExecArray | null;
+  while ((bm = bareIntegerRe.exec(doc.text)) !== null) {
+    rawBareIntegerMatchesAll.push(bm);
+    if (bm.index === bareIntegerRe.lastIndex) bareIntegerRe.lastIndex++;
+  }
+  // Mirrors decideAcceptedStructuralMatches's own "established span" concept,
+  // but purely mechanically (candidate EXISTENCE, not acceptance CONFIDENCE)
+  // - a bare integer candidate falling inside ANY recognized decimal/integer
+  // candidate's own governed span is still an ordinary enumerated list item
+  // nested inside that section, regardless of whether that enclosing
+  // candidate ultimately triages CONFIDENT or AMBIGUOUS.
+  const establishedForBareIntegerExclusion = [...rawDecimalSectionMatches, ...rawIntegerSectionMatches].sort((a, b) => a.index - b.index);
+  function fallsInsideAnEstablishedSpan(charStart: number): boolean {
+    for (let i = 0; i < establishedForBareIntegerExclusion.length; i++) {
+      const spanStart = establishedForBareIntegerExclusion[i]!.index;
+      const spanEnd = establishedForBareIntegerExclusion[i + 1]?.index ?? Infinity;
+      if (charStart >= spanStart && charStart < spanEnd) return true;
+    }
+    return false;
+  }
+  const rawBareIntegerMatches = rawBareIntegerMatchesAll.filter((m) => !overlapsAny(m, rawDecimalSectionMatches) && !overlapsAny(m, rawIntegerSectionMatches) && !fallsInsideAnEstablishedSpan(m.index));
+
+  const rawSectionMatches = [...rawDecimalSectionMatches, ...rawIntegerSectionMatches, ...rawBareIntegerMatches].sort((a, b) => a.index - b.index);
+  const triagedSections: TriagedCandidate[] = rawSectionMatches.map((m) => {
+    const matchEnd = m.index + m[0].length;
+    const isImmediatelyAfterConfidentArticle = isImmediatelyAfterPlausibleArticle(doc.text, m.index, confidentArticleEnds);
+    return { candidateType: "SECTION", match: m, triage: evaluateStructuralCandidateTriage(doc.text, m.index, matchEnd, m[0], (m[1] ?? "").trim(), "SECTION", isImmediatelyAfterConfidentArticle) };
+  });
+
+  return [...triagedArticles, ...triagedSections].sort((a, b) => a.match.index - b.match.index);
+}
+
+/** Builds the rich, source-only `AmbiguousStructuralCandidate` record for one triaged-AMBIGUOUS candidate - bounded windows only, and neighboring CONFIDENT heading TEXT only (never an id/IR/decision), per the classifier's own independence contract. */
+function buildAmbiguousCandidateRecord(doc: CompilerDocumentInput, candidate: TriagedCandidate, confidentHeadingsSorted: { charStart: number; heading: string; sectionRef: string; candidateType: "ARTICLE" | "SECTION" }[]): AmbiguousStructuralCandidate {
+  const { match, candidateType, triage } = candidate;
+  const charStart = match.index;
+  const charEnd = match.index + match[0].length;
+  const before = confidentHeadingsSorted.filter((h) => h.charStart < charStart).at(-1) ?? null;
+  const after = confidentHeadingsSorted.find((h) => h.charStart >= charEnd) ?? null;
+  const label = (h: { candidateType: "ARTICLE" | "SECTION"; sectionRef: string; heading: string }) => `${h.candidateType === "ARTICLE" ? "ARTICLE" : "Section"} ${h.sectionRef}${h.heading ? " " + h.heading : ""}`.trim();
+  return {
+    documentId: doc.documentId,
+    candidateType,
+    candidateKey: structuralCandidateKey(candidateType, charStart),
+    candidateNumber: (match[1] ?? "").trim(),
+    candidateText: match[0],
+    charStart,
+    charEnd,
+    precedingWindow: doc.text.slice(Math.max(0, charStart - TRIAGE_WINDOW_CHARS), charStart),
+    followingWindow: doc.text.slice(charEnd, Math.min(doc.text.length, charEnd + TRIAGE_WINDOW_CHARS)),
+    nearestConfidentHeadingBefore: before ? label(before) : null,
+    nearestConfidentHeadingAfter: after ? label(after) : null,
+    triage,
+  };
+}
+
+/**
+ * The new, triage-driven parse path (Phase 3F.1 Human Architecture Decision).
+ * CONFIDENT_HEADING candidates are accepted exactly as `parseDocumentStructure`
+ * would accept a plausible match; CONFIDENT_PROSE_REFERENCE candidates are
+ * dropped exactly as it would drop an implausible one; AMBIGUOUS candidates
+ * are, by default (no classifier consulted yet), FAIL-CLOSED excluded from
+ * `nodes` - never fabricating a structural boundary that could re-parent real
+ * content - and instead surfaced in full in `ambiguousCandidates` for
+ * `structural-ambiguity-resolution.ts` to resolve via the bounded classifier.
+ * `triageStats` gives the cost-discipline rate metrics (deterministic
+ * resolution rate = 1 - ambiguousCount/totalCandidates) the governing spec
+ * requires measuring and reporting.
+ */
+export function parseDocumentStructureWithTriage(doc: CompilerDocumentInput): StructuralParseWithTriageResult {
+  const candidates = decideRawStructuralCandidates(doc);
+  const confidentArticles = candidates.filter((c) => c.candidateType === "ARTICLE" && c.triage.decision === "CONFIDENT_HEADING").map((c) => c.match);
+  const confidentSections = candidates.filter((c) => c.candidateType === "SECTION" && c.triage.decision === "CONFIDENT_HEADING").map((c) => c.match);
+  const nodes = buildStructuralNodesFromAcceptedMatches(doc, confidentArticles, confidentSections);
+
+  const confidentHeadingsSorted = candidates
+    .filter((c) => c.triage.decision === "CONFIDENT_HEADING")
+    .map((c) => ({ charStart: c.match.index, heading: (c.match[2] ?? "").trim(), sectionRef: (c.match[1] ?? "").trim(), candidateType: c.candidateType }))
+    .sort((a, b) => a.charStart - b.charStart);
+
+  const ambiguousCandidates = candidates.filter((c) => c.triage.decision === "AMBIGUOUS").map((c) => buildAmbiguousCandidateRecord(doc, c, confidentHeadingsSorted));
+
+  const triageStats: StructuralTriageStats = {
+    totalCandidates: candidates.length,
+    confidentHeadingCount: candidates.filter((c) => c.triage.decision === "CONFIDENT_HEADING").length,
+    confidentProseReferenceCount: candidates.filter((c) => c.triage.decision === "CONFIDENT_PROSE_REFERENCE").length,
+    ambiguousCount: ambiguousCandidates.length,
+  };
+
+  return { nodes, ambiguousCandidates, triageStats };
+}
+
+/**
+ * Rebuilds the final node list once a set of AMBIGUOUS candidates has been
+ * resolved by the async structural-ambiguity classifier
+ * (structural-ambiguity-resolution.ts). `overrides` maps `structuralCandidateKey`
+ * -> true (treat as accepted, i.e. LIKELY_HEADING) | false (treat as
+ * rejected, i.e. LIKELY_PROSE_REFERENCE) - a candidate absent from the map
+ * (UNCERTAIN, a failed/synthetic call, or simply never resolved) keeps the
+ * FAIL-CLOSED default from `parseDocumentStructureWithTriage`: excluded,
+ * never re-parenting real content on a guess. A CONFIDENT_HEADING or
+ * CONFIDENT_PROSE_REFERENCE candidate's own triage decision is never
+ * overridden by this map, even if a key happens to collide - only candidates
+ * this module itself classified AMBIGUOUS are ever eligible for resolution,
+ * enforced by construction in `structural-ambiguity-resolution.ts` (it only
+ * ever builds override entries from `ambiguousCandidates`).
+ */
+export function applyStructuralAmbiguityOverrides(doc: CompilerDocumentInput, overrides: ReadonlyMap<string, boolean>): StructuralNode[] {
+  const candidates = decideRawStructuralCandidates(doc);
+  const isAccepted = (c: TriagedCandidate): boolean => {
+    if (c.triage.decision === "CONFIDENT_HEADING") return true;
+    if (c.triage.decision === "CONFIDENT_PROSE_REFERENCE") return false;
+    return overrides.get(structuralCandidateKey(c.candidateType, c.match.index)) ?? false; // AMBIGUOUS + unresolved -> fail-closed excluded
+  };
+  const acceptedArticles = candidates.filter((c) => c.candidateType === "ARTICLE" && isAccepted(c)).map((c) => c.match);
+  const acceptedSections = candidates.filter((c) => c.candidateType === "SECTION" && isAccepted(c)).map((c) => c.match);
+  return buildStructuralNodesFromAcceptedMatches(doc, acceptedArticles, acceptedSections);
 }
