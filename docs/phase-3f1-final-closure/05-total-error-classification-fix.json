@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FIX-3-TOTAL-ERROR-CLASSIFICATION",
+  "workstream": "FINAL 3F.1 CLOSURE - FIX-3",
+  "targetFile": "lib/contract-model/analysis/orchestrator.ts",
+  "priorDefect": {
+    "reportedBy": "prior independent auditor",
+    "reproduction": "tests/contract-model/part-b-terminal-recert-open6-independent.test.ts",
+    "claim": "classifyError(err) was NOT total over `unknown`: `err.message` and `err.constructor` are property GETTER accesses that can throw even when `err instanceof Error` is true (a poisoned/overridden getter, or a Proxy), and `String(err)` can throw via a hostile Symbol.toPrimitive/toString. A throw here escapes every catch block that calls it uncaught, since JS does not let a catch block catch its own exception.",
+    "confirmedBeforeFix": "Re-ran the reproduction test before making any change: constructions 1-4 in part-b-terminal-recert-open6-independent.test.ts each produced a genuine uncaught throw from inside runContractAnalysis's PRE_RUN_IDENTITY catch block (observed directly via console.log capturing `thrown` as a real Error object with a stack trace rooted at orchestrator.ts's own classifyError line), fully bypassing the already-hardened console.error last-resort fallback one tier below it. The test file itself only asserts conditionally (`if (thrown !== null) {...}`) so it was passing vacuously without ever proving the bug fixed."
+  },
+  "fixApplied": {
+    "helpersAdded": [
+      {
+        "name": "safeErrorMessage(value: unknown): string",
+        "exported": true,
+        "individualGuards": [
+          {
+            "guard": "instanceof Error check wrapped in its own try/catch (not a bare `if`)",
+            "defendsAgainst": "a Proxy whose getPrototypeOf trap throws - `instanceof` invokes the target's internal [[GetPrototypeOf]], which for a Proxy runs that trap, so the check itself can throw before any property of `value` is read. Caught in adversarial testing during self-review (see selfReviewFinding below) and fixed."
+          },
+          {
+            "guard": "value.message read wrapped in its own try/catch, only entered when the (guarded) instanceof check passed",
+            "defendsAgainst": "a real Error/Error-subclass instance whose `message` property has been overridden with a throwing getter (Object.defineProperty) - the exact PoisonedMessageError construction in the prior auditor's own reproduction test"
+          },
+          {
+            "guard": "if `.message` returns a non-string, a nested try/catch around String(msg) before falling back",
+            "defendsAgainst": "a hostile Error subclass whose message getter returns a non-string value whose own coercion also throws"
+          },
+          {
+            "guard": "String(value) wrapped in its own try/catch as the final fallback path",
+            "defendsAgainst": "a non-Error value with a throwing toString()/Symbol.toPrimitive, or a Proxy whose `get` trap throws on ANY property access (toString, Symbol.toPrimitive, valueOf all throw)"
+          }
+        ],
+        "fallback": "\"[unreadable thrown value]\""
+      },
+      {
+        "name": "safeErrorClass(value: unknown): string",
+        "exported": true,
+        "individualGuards": [
+          {
+            "guard": "instanceof Error wrapped inside the same outer try as the constructor read",
+            "defendsAgainst": "a Proxy whose getPrototypeOf trap throws (same instanceof hazard as safeErrorMessage)"
+          },
+          {
+            "guard": "value.constructor read wrapped in its own try/catch",
+            "defendsAgainst": "an object (or Error instance) whose `constructor` property is a throwing getter, or a Proxy that throws on ANY property get trap access"
+          },
+          {
+            "guard": "typeof ctor === \"function\" && typeof ctor.name === \"string\" && ctor.name.length > 0 guard before using ctor.name",
+            "defendsAgainst": "a constructor property that resolves to a non-function or an empty/non-string .name (defensive - avoids returning an empty or wrong-typed class label)"
+          }
+        ],
+        "fallback": "\"Error\" (when instanceof Error was true but the class name could not be read) or \"UnknownError\" (not recognizably an Error at all)"
+      }
+    ],
+    "classifyErrorRewrite": "classifyError(err) now simply returns { message: safeErrorMessage(err), errorClass: safeErrorClass(err) } - no direct property access or String() call of its own, so no additional guarding is needed at that level. Exported (was previously module-private) so it and its two helpers are directly testable.",
+    "callSitesUpdated": "All 4 call sites in orchestrator.ts (PRE_RUN_IDENTITY original-error branch, PRE_RUN_IDENTITY failure-record-write branch, per-instrument-failure classification, and the outer INGESTION_OR_STRUCTURAL catch) were reviewed. None required any change to their own logic: they all already treat classifyError's return value as a plain, already-safe { message, errorClass } string pair, which is now a contract that genuinely holds unconditionally rather than one that was merely assumed.",
+    "designDecisions": [
+      "Each individual property read/coercion is its own try/catch (never one try/catch wrapping the whole function) so one hostile signal (e.g. a poisoned message getter) degrades only that one signal, never both, per the governing spec's explicit requirement.",
+      "No recursion: every fallback is a fixed string literal (UNREADABLE_MESSAGE_FALLBACK / UNKNOWN_ERROR_CLASS_FALLBACK / \"Error\"), never re-fed through safeErrorMessage/safeErrorClass/classifyError.",
+      "No JSON.stringify of the arbitrary thrown value anywhere (not needed - String()/property reads suffice and are already individually guarded)."
+    ],
+    "selfReviewFinding": "While building the adversarial test matrix, an initial version of safeErrorMessage guarded the `.message` read and the final String(value) fallback, but left the `if (value instanceof Error)` check itself as a bare (unguarded) `if`, reasoning incorrectly that `instanceof Error` 'reads no properties'. The Proxy-that-throws-on-ANY-get-trap case (which also overrides getPrototypeOf) falsified that: `instanceof` triggers the Proxy's getPrototypeOf trap internally, so the bare `if` itself threw, and the test written to cover exactly this adversarial value (as instructed by the governing spec) caught it immediately on the first test run. Fixed by moving the instanceof check inside its own try/catch, mirroring the discipline already used in safeErrorClass."
+  },
+  "adversarialMatrixResults": {
+    "testFile": "tests/certification/part-a-final-fix3-error-totality.test.ts",
+    "requiredValuesCovered": [
+      "undefined", "null", "plain string", "number", "bigint", "symbol",
+      "ordinary Error", "Error subclass (MyCustomError)",
+      "object with a toString that throws", "object with a Symbol.toPrimitive that throws",
+      "real Error instance with .message overridden as a throwing getter",
+      "object whose .constructor property is a throwing getter",
+      "Proxy that throws on ANY property get trap access",
+      "circular object (o.self = o)", "frozen object"
+    ],
+    "extraCoverage": "array, empty object, function, uncalled class constructor, NaN, -0, Infinity",
+    "fuzzLoop": {
+      "iterations": 200,
+      "generators": [
+        "throwing valueOf object", "nested Proxies with alternating throwing get traps",
+        "array with a throwing element getter (surfaces via Array.prototype.join during String())",
+        "Error with BOTH .message and .toString() poisoned simultaneously",
+        "frozen circular object wrapped in a Proxy that throws on the circular property",
+        "null/undefined alternation", "large bigint", "symbol", "WeakMap", "Date", "RegExp",
+        "array containing a nested Error plus a throwing-valueOf object"
+      ],
+      "result": "0 throws across all 200 iterations"
+    },
+    "outcome": "ALL required values plus all fuzz iterations: classifyError/safeErrorMessage/safeErrorClass never threw, and classifyError always returned a well-formed { message: string; errorClass: string } pair consistent with the two standalone helpers.",
+    "finalTestRunResult": "28/28 tests passed (part-a-final-fix3-error-totality.test.ts + part-a-final-fix3-orchestrator-e2e-observability.test.ts + the prior auditor's own part-b-terminal-recert-open6-independent.test.ts)"
+  },
+  "endToEndFailureObservabilityProof": {
+    "testFile": "tests/certification/part-a-final-fix3-orchestrator-e2e-observability.test.ts",
+    "scenariosRun": [
+      "hostile non-Error value with BOTH toString and Symbol.toPrimitive poisoned",
+      "real Error instance with a poisoned .message getter",
+      "object with a poisoned .constructor getter",
+      "Proxy that throws on ANY property get trap access",
+      "circular object thrown as the original value",
+      "bigint thrown as the original value"
+    ],
+    "simultaneousConditionsForced": [
+      "1. original operation fails: prisma.document.findMany rejects/throws the hostile value",
+      "2. durable failure-log write also fails: prisma.analysisFailureLog.create mocked to reject",
+      "3. last-resort console.error fallback also fails: console.error mocked to throw",
+      "4. the originally thrown value is itself hostile (one of the 6 scenarios above)"
+    ],
+    "requiredOutcome": "runContractAnalysis must never throw uncaught and must always return a structured FAILED result, never a false SUCCESS.",
+    "observedOutcome": "All 6 scenarios: runContractAnalysis returned normally (no uncaught throw) with outcome === \"FAILED\", status === null, a structured fatalError with stage PRE_RUN_IDENTITY and string message/errorClass, failureRecordPersisted === false, failureRecordError populated, and failureRecordFallbackLogged === false (honestly reflecting that even the console.error fallback was made to throw). No AnalysisFailureLog row and no AnalysisRun row exist for the test company in any scenario, matching the fully-degraded conditions forced.",
+    "result": "PASS - 6/6 scenarios"
+  },
+  "regressionResults": {
+    "priorAuditorReproduction": {
+      "file": "tests/contract-model/part-b-terminal-recert-open6-independent.test.ts",
+      "result": "PASS - 5/5 (construction 1-4 now observe `thrown === null` with a genuine structured FAILED result each time, instead of the pre-fix uncaught throw captured via console.log during initial reproduction; construction 5's existing strict assertions also still pass)"
+    },
+    "broaderOrchestratorSuite": {
+      "filesRun": [
+        "tests/certification/part-b-recert-blocker2-6-orchestrator-e2e.test.ts",
+        "tests/onboarding/product-flow-gating.test.ts",
+        "tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts",
+        "tests/onboarding/live-contract-analysis-app-action.test.ts",
+        "tests/onboarding/live-product-flow-visibility.test.ts",
+        "tests/contract-model/live-contract-analysis-orchestrator.test.ts",
+        "tests/contract-model/partial-instrument-failure.test.ts",
+        "tests/contract-model/part-b-recert-finding8-independent.test.ts",
+        "tests/contract-model/analysis-run-concurrency.test.ts",
+        "tests/contract-model/part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts",
+        "tests/contract-model/semantic-truth-persistence.test.ts",
+        "tests/contract-model/no-log-only-failure.test.ts",
+        "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts",
+        "tests/contract-model/part-b-recert-auditf1-truth-persistence.test.ts",
+        "tests/contract-model/part-b-recert-auditf2-concurrency.test.ts"
+      ],
+      "result": "PASS - 63/63 tests, 15/15 files. RunContractAnalysisResult's failureRecordError/failureRecordFallbackLogged fields (added by the prior AUDIT-F7/OPEN-6 fixes) continue to behave correctly and are exercised directly by the new e2e proof test."
+    },
+    "staticChecks": {
+      "tscNoEmit": "6 pre-existing errors (all in tests/foundation-audit/*, unrelated to this fix - identical set before and after this change), 0 new errors",
+      "eslint": "1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts, @typescript-eslint/no-var-requires rule-not-found, unrelated to this fix), 0 new errors; lib/contract-model/analysis/orchestrator.ts itself: 0 eslint issues"
+    }
+  },
+  "filesChanged": [
+    "lib/contract-model/analysis/orchestrator.ts (classifyError rewritten in terms of new exported safeErrorMessage/safeErrorClass helpers; no call-site logic changes needed)",
+    "tests/certification/part-a-final-fix3-error-totality.test.ts (new)",
+    "tests/certification/part-a-final-fix3-orchestrator-e2e-observability.test.ts (new)"
+  ],
+  "disposition": "CERTIFIED_CLOSED"
+}

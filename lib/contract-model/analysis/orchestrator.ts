@@ -110,8 +110,124 @@ export interface RunContractAnalysisOptions {
   callers?: ContractAnalysisCallers;
 }
 
-function classifyError(err: unknown): { message: string; errorClass: string } {
-  return { message: err instanceof Error ? err.message : String(err), errorClass: err instanceof Error ? err.constructor.name : "UnknownError" };
+/**
+ * Fix 3F.1 FIX-3 (this workstream): `classifyError` is the failure-
+ * observability FLOOR of the whole orchestrator - every catch block in this
+ * file calls it, including ones with nothing further to fall back to (see
+ * the PRE_RUN_IDENTITY catch block below). A prior independent audit
+ * (tests/contract-model/part-b-terminal-recert-open6-independent.test.ts)
+ * proved the previous one-line implementation was NOT total over `unknown`:
+ *
+ *   return { message: err instanceof Error ? err.message : String(err),
+ *             errorClass: err instanceof Error ? err.constructor.name : "UnknownError" };
+ *
+ * Every operation in that line can itself throw for a hostile `err`:
+ *   - `err.message` is a property GETTER access on the real object - a
+ *     genuine `Error` (or subclass) instance can still have `message`
+ *     overridden with a throwing getter (Object.defineProperty). `instanceof
+ *     Error` being true is NOT proof `.message` is safe to read.
+ *   - `err.constructor` is likewise a property GETTER access - a poisoned
+ *     `constructor` getter, or a Proxy that throws on ANY `get` trap, throws
+ *     here even for a value that otherwise looks like a normal object.
+ *   - `String(err)` invokes `ToPrimitive(err, "string")`, which calls a
+ *     user-controlled `Symbol.toPrimitive` or `toString`/`valueOf` - any of
+ *     which can throw (a broken custom class, a hostile mock/wrapper).
+ *
+ * `safeErrorMessage`/`safeErrorClass` below make EACH individual read/
+ * coercion its own defensive try/catch, deliberately NOT one try/catch
+ * wrapping the whole function - a single hostile property (e.g. a poisoned
+ * `message` getter on an otherwise perfectly normal Error) degrades ONLY
+ * that one signal, never the other, and never recurses (a degraded fallback
+ * is always a fixed string literal, never re-fed through these functions).
+ */
+const UNREADABLE_MESSAGE_FALLBACK = "[unreadable thrown value]";
+const UNKNOWN_ERROR_CLASS_FALLBACK = "UnknownError";
+
+/**
+ * Total over ALL of `unknown`. Never assumes `instanceof Error` implies
+ * `.message` is safe (defends the PoisonedMessageError-style construction
+ * above: a real Error subclass with `message` overridden as a throwing
+ * getter), never assumes `String(value)` is safe (defends a non-Error value
+ * with a throwing `toString`/`Symbol.toPrimitive`), and never assumes
+ * `instanceof Error` itself is safe to evaluate - `instanceof` invokes the
+ * target's internal `[[GetPrototypeOf]]`, which for a Proxy runs the
+ * `getPrototypeOf` trap, so a Proxy that throws on ANY trap (including that
+ * one) throws from the `instanceof` check itself, before any property of
+ * `value` is ever explicitly read. That check is therefore inside its own
+ * try below, never gating entry the way a plain `if` would.
+ */
+export function safeErrorMessage(value: unknown): string {
+  let isRealError = false;
+  try {
+    isRealError = value instanceof Error;
+  } catch {
+    // `instanceof Error` itself threw (a Proxy whose getPrototypeOf trap
+    // throws) - treat as "not an Error" and fall through to the generic
+    // String(value) path below.
+  }
+  if (isRealError) {
+    try {
+      const msg = (value as Error).message;
+      if (typeof msg === "string") return msg;
+      // A `.message` getter that returns a non-string (e.g. a hostile
+      // subclass) still needs a safe stringification, not a raw return.
+      try {
+        return String(msg);
+      } catch {
+        return UNREADABLE_MESSAGE_FALLBACK;
+      }
+    } catch {
+      // Reading `.message` itself threw (poisoned getter) - fall through to
+      // the generic String(value) path below rather than giving up
+      // immediately; a poisoned `message` getter does not imply `String()`
+      // on the same object is also poisoned, though it independently might
+      // be (guarded again immediately below).
+    }
+  }
+  try {
+    return String(value);
+  } catch {
+    return UNREADABLE_MESSAGE_FALLBACK;
+  }
+}
+
+/**
+ * Total over ALL of `unknown`. Never assumes `.constructor` is safe to read
+ * (defends a poisoned `constructor` getter, and a Proxy that throws on ANY
+ * property `get` - including `constructor` and `instanceof`'s own internal
+ * `getPrototypeOf` trap, which is why the `instanceof Error` check itself is
+ * inside the try below rather than gating entry into it).
+ */
+export function safeErrorClass(value: unknown): string {
+  try {
+    if (value instanceof Error) {
+      try {
+        const ctor: unknown = value.constructor;
+        if (typeof ctor === "function" && typeof ctor.name === "string" && ctor.name.length > 0) return ctor.name;
+        return "Error";
+      } catch {
+        // `.constructor` itself threw (poisoned getter, or a Proxy) - a real
+        // Error instance whose class name cannot be read still IS an Error,
+        // so this is a safer fallback than the generic UnknownError below.
+        return "Error";
+      }
+    }
+  } catch {
+    // Even the `instanceof Error` check threw (a Proxy whose `get`/
+    // `getPrototypeOf` trap throws on every access). Fall through.
+  }
+  return UNKNOWN_ERROR_CLASS_FALLBACK;
+}
+
+/**
+ * NEVER throws for ANY JavaScript value - see safeErrorMessage/
+ * safeErrorClass above for the specific adversarial value each individual
+ * guard defends against. Every call site in this file relies on this
+ * contract holding even for the value that caused the very failure being
+ * classified.
+ */
+export function classifyError(err: unknown): { message: string; errorClass: string } {
+  return { message: safeErrorMessage(err), errorClass: safeErrorClass(err) };
 }
 
 /**
