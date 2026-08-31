@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0",
-  "artifactId": "PROVIDER_PRECONDITION",
-  "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages, model anthropic/claude-sonnet-5, max_tokens 8, message 'Say OK.'), credential injected as a process-local environment variable for a single command invocation only - never written to any file, per this session's established discipline.",
-  "httpResult": 402,
-  "latencyMs": 812,
-  "responseBody": "{\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}",
+  "artifactId": "PROVIDER_PRECONDITION_POST_TOPUP",
+  "timestamp": "2026-08-31T18:00:00Z",
+  "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages, model anthropic/claude-sonnet-5, max_tokens 8, message 'Say OK.'), credential injected as a process-local environment variable for a single command invocation only - never written to any file.",
+  "httpResult": 200,
+  "latencyMs": 2401,
   "provider": "VERCEL_AI_GATEWAY",
+  "resolvedProvider": "claudeaws",
   "model": "anthropic/claude-sonnet-5",
-  "usageTelemetry": "None - rejected before any token billing (input_tokens/output_tokens not returned).",
-  "comparisonToPriorPhaseEnd": "Identical account state to the post-run probe at the end of the prior Phase 3F.2 session (docs/phase-3f2-unseen-validation/09-ai-telemetry.json's postRunProbe note) - the account has not been topped up since. This is the same insufficient_funds condition, not a new or different failure mode.",
-  "disposition": "PROVIDER_UNAVAILABLE - per the governing resume spec's own S8 explicit instruction ('If provider remains unavailable: PHASE_3F_2_ENVIRONMENT_BLOCKED and STOP'), no further steps (cost forecast, execution-state audit, semantic execution, ground-truth reconciliation, claim-level comparison) are performed this session. Real cost incurred by this probe: $0.00 (rejected before any token billing)."
+  "usageTelemetry": { "inputTokens": 11, "outputTokens": 5, "costUsd": 0.000072 },
+  "disposition": "PROVIDER_ACCESS_CONFIRMED - the Gateway account has been topped up. Proceeding per S6 onward: audit preserved execution state, forecast remaining cost, reconcile ground truth (before any new Headroom output is inspected), then resume semantic execution."
 }
