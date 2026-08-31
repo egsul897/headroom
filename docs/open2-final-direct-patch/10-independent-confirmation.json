@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "OPEN2_FINAL_DIRECT_PATCH_INDEPENDENT_CONFIRMATION",
+  "auditType": "ONE TARGETED INDEPENDENT CONFIRMATION - not a broad recertification campaign",
+  "pinnedProductionCommit": "4ca90f2e700f3baba1a03fcba57eec38a6f1bdac",
+  "auditorSessionHeadCommit": "146f4b4be995d511dfc1444ad2e100069a4afadf",
+  "disposition": "PASS",
+  "centralQuestion": "Can ANY OperativeProvisionView with status !== \"OPERATIVE_STATE_RESOLVED\" reach evidenceCurrent=true (equivalently, evidenceUnresolved: false) through ANY of the CURRENT_OPERATIVE_EVIDENCE text tools?",
+  "centralQuestionAnswer": "NO - not found through direct code reading of every code path, nor through 18 fresh runtime constructions (all with different section numbers, document/instrument names, amendment wording, and condition wording from every fixture already used by the implementer's own deliverables).",
+  "testFile": "tests/certification/open2-final-direct-patch-independent-confirmation.test.ts",
+  "testFileResult": "18 tests, 18 passed, 0 failed (npx vitest run tests/certification/open2-final-direct-patch-independent-confirmation.test.ts)",
+  "targetedRegressionRuns": {
+    "testsCertification": "29 files, 464 tests, 464 passed",
+    "testsContractModel": "144 files, 1561 tests, 1561 passed"
+  },
+  "qualityGates": {
+    "tsc": { "command": "npx tsc --noEmit -p .", "errorCount": 6, "baselineMatch": true, "note": "Identical 6 pre-existing errors, same 3 files (tests/foundation-audit/cascade-and-concurrency.test.ts, discovery-fault-injection.test.ts, real-db-duplicate-physical-occurrence.test.ts) - 0 new errors from this audit's own new test file." },
+    "eslint": { "command": "npx eslint .", "errorCount": 1, "baselineMatch": true, "note": "Identical pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires rule-not-found) - 0 new errors." }
+  },
+  "item1_structuralOrderingReadThroughEveryCodePath": {
+    "method": "Read lib/contract-model/compiler/semantic/tools.ts in full (1033 lines) line by line, plus amendment/operative-state.ts's buildProvisionView/computeOperativeContractState/isConfirmedCurrentOperativeEvidence/resolveOperativeDefinitionEvidence and amendment/chain.ts's buildProvisionChain.",
+    "finding": "CONFIRMED - the claim holds, but via TWO distinct, independently-correct mechanisms, not one:",
+    "mechanism1_resolveNodeWithSupersessionAwareness": "tools.ts lines 309-360. `if (view.status !== \"OPERATIVE_STATE_RESOLVED\") { ...; return { ..., evidenceCurrent: false, ... }; }` is the FIRST branch taken whenever a view exists (line 320), unconditionally returning evidenceCurrent:false regardless of currentText null/non-null. currentText (`currentTextPresent`, computed at line 314) is consulted ONLY inside that branch to choose which text/textSource to LABEL for context (UNRESOLVED_AMENDED_TEXT vs BASE_DOCUMENT_TEXT) - never to flip evidenceCurrent. Only once status===RESOLVED (line 333 onward) does currentText presence select between CASE B (AMENDED_CURRENT_TEXT, evidenceCurrent:true) and CASE C (HISTORICAL_BASE_TEXT, evidenceCurrent:false, clean deletion). Used directly by getParentClause, getSiblingClauses (per-sibling), and both getReferencedProvision resolution paths (absolute-ref and fromNodeId-relative).",
+    "mechanism2_directStatusGates_notThroughTheSharedResolver": "getOperativeProvision and getRelatedAmendments do NOT call resolveNodeWithSupersessionAwareness at all - they derive evidenceUnresolved directly as `!isConfirmedCurrentOperativeEvidence(view.status)` (operative-state.ts line 686: `return status === \"OPERATIVE_STATE_RESOLVED\" || status === \"CURRENT_OPERATIVE\"`), a status-only check with no currentText branch whatsoever. getDefinition routes through resolveOperativeDefinitionEvidence (operative-state.ts lines 811-865), which dispatches on view.status FIRST (CONFLICTED/PARTIAL/REVIEW_REQUIRED map to non-CURRENT DefinitionEvidenceStatus values at lines 859-863) and only reaches `status = \"CURRENT\"` in the final else branch - isCurrentTruth is `status === \"CURRENT\"`, never a currentText truthiness check. getChildren uses its OWN separate resolver, resolveParentSubstructureEvidence (tools.ts lines 392-408), which checks `view.status !== \"OPERATIVE_STATE_RESOLVED\"` directly (viewBlocksTrust, line 395) and never references currentText at all.",
+    "escapeHatchesSearchedForAndNotFound": [
+      "No early return before the status check in any of the 7 CURRENT_OPERATIVE_EVIDENCE tools (getOperativeProvision, getDefinition, getParentClause, getChildren, getSiblingClauses, getReferencedProvision, getRelatedAmendments).",
+      "No CURRENT_OPERATIVE_EVIDENCE-declared tool reads access.structuralIndex directly for its primary text without a status/supersession check first.",
+      "getPriorVersion/getContextBundleComponent/getSharedCapContext/getSourceSpan are HISTORICAL_EVIDENCE_WITH_STATUS by design (never claim current-truth); getDefinitionDependencies/getInstrumentDocuments/getRuleDependency are NOT_CONTRACT_TEXT_EVIDENCE (never return interpretable provision text) - correctly out of scope for this question, confirmed by reading each execute() body."
+    ]
+  },
+  "item2_nonNullCurrentTextNonResolved_freshConstruction": {
+    "fixture": "Section 41.52 'Permitted Acquisitions Basket', instrument:ia10-item2, undated CONDITIONAL_UNRESOLVED effect (\"lender consent gate not yet satisfied\")",
+    "result": "view.status=OPERATIVE_STATE_REVIEW_REQUIRED, currentText non-null (untouched base text). resolveNodeWithSupersessionAwareness: evidenceCurrent=false, textSource=UNRESOLVED_AMENDED_TEXT. getOperativeProvision tool: evidenceUnresolved=true.",
+    "pass": true
+  },
+  "item3_nullCurrentTextNonResolved_regressionCheck": {
+    "fixture": "Section 53.64 'Sale-Leaseback Basket', instrument:ia10-item3, dated-past effect with per-effect status REVIEW_REQUIRED and newText:null",
+    "result": "view.status=OPERATIVE_STATE_REVIEW_REQUIRED, currentText=null. resolveNodeWithSupersessionAwareness: evidenceCurrent=false, textSource=BASE_DOCUMENT_TEXT. getParentClause tool: evidenceUnresolved=true. No regression from the earlier fix.",
+    "pass": true
+  },
+  "item4_unresolvedEffectiveDate_ownFreshFixture": {
+    "fixture": "Section 64.75 'Contingent Basket', instrument:ia10-item4, condition wording \"contingent upon satisfaction of a financial-covenant reset condition not yet certified by the Administrative Agent\" (distinct from every implementer fixture's own wording)",
+    "result": "view.status=OPERATIVE_STATE_REVIEW_REQUIRED, appliedChain empty, currentText non-null. getOperativeProvision: evidenceUnresolved=true.",
+    "pass": true
+  },
+  "item5_mixedAppliedPlusUnresolvedFutureAmendment_sameSection": {
+    "fixture": "Section 75.86 'Layered Basket', instrument:ia10-item5: one dated-past applied REPLACE_TEXT effect ($8,000,000) PLUS a second, later effect on the SAME section with a genuinely unresolved effective date ($30,000,000, regulatory-approval condition)",
+    "result": "view.status=OPERATIVE_STATE_REVIEW_REQUIRED (NOT RESOLVED, despite one real applied amendment), appliedChain.length=1, currentText contains the applied predecessor's own text ('8,000,000', non-null). resolveNodeWithSupersessionAwareness: evidenceCurrent=false, textSource=UNRESOLVED_AMENDED_TEXT. getSiblingClauses (called from the anchor): evidenceUnresolved=true.",
+    "pass": true
+  },
+  "item6_conflictedState": {
+    "fixture": "Section 86.97 'Disputed Basket', instrument:ia10-item6, two competing effects sharing an identical future effective date (2099-06-01), $18,000,000 vs $22,000,000",
+    "result": "view.status=OPERATIVE_STATE_CONFLICTED, currentText=null. getReferencedProvision: evidenceUnresolved=true.",
+    "pass": true
+  },
+  "item7_partialState_differentMechanismThanImplementer": {
+    "fixture": "Section 17.28 'Threshold Basket', instrument:ia10-item7: a DATED, RESOLVED, applied MODIFY_THRESHOLD effect with newText:null (textMissingDespiteAppliedEffect) - deliberately NOT the implementer's own ambiguous-physical-target PARTIAL mechanism",
+    "result": "view.status=OPERATIVE_STATE_PARTIAL, appliedChain.length=1 (it genuinely applied), currentText=null. resolveNodeWithSupersessionAwareness: evidenceCurrent=false.",
+    "pass": true
+  },
+  "item8_reviewRequiredViaDifferentReasonCode": {
+    "fixture": "Section 28.39 'Ambiguous-Target Basket', instrument:ia10-item8: a DATED, PAST, applied effect whose own per-effect status is UNRESOLVED (drafting-ambiguity reason, unrelated to date/sequence) - genuinely enters appliedChain, unlike the AMENDMENT_SEQUENCE_UNRESOLVED (undated) mechanism used by items 2/4/9/10",
+    "result": "view.status=OPERATIVE_STATE_REVIEW_REQUIRED via hasReviewOrUnresolvedEffect (per-effect status), confirmed NOT via AMENDMENT_SEQUENCE_UNRESOLVED (unresolvedIssues contains the drafting-ambiguity text, not 'effective date that could not be safely established'). appliedChain.length=1, currentText contains '17,000,000' (non-null, from the applied effect's own newText). resolveNodeWithSupersessionAwareness: evidenceCurrent=false, textSource=UNRESOLVED_AMENDED_TEXT.",
+    "pass": true
+  },
+  "item9_absoluteReferencePath": {
+    "fixture": "Section 39.50 'Excluded Liens Basket', instrument:ia10-item9, bare `getReferencedProvision({ ref: \"39.50\" })` with no fromNodeId",
+    "result": "evidenceUnresolved=true, supersessionStatus != CURRENT_OPERATIVE.",
+    "pass": true
+  },
+  "item10_relativeFromNodeIdReferencePath": {
+    "fixture": "Section 40.61 'Contingent Debt Basket', instrument:ia10-item10, a real DetectedReference from a distinct source clause (6.60) resolved via fromNodeId",
+    "result": "ref.resolved=true (real reference), getReferencedProvision(ref, fromNodeId): evidenceUnresolved=true.",
+    "pass": true
+  },
+  "item11_siblingClauses_aggregateMaskingAttempt": {
+    "fixture": "instrument:ia10-item11: anchor 3.30, sibling 51.62 (RESOLVED, cleanly amended to $9,500,000) and sibling 52.73 (REVIEW_REQUIRED, unresolved minimum-liquidity condition, $29,000,000) under the same top-level parent",
+    "result": "getSiblingClauses(anchor).evidenceUnresolved=true for the WHOLE call (masking check passes: the one bad sibling correctly poisons the aggregate). The RESOLVED sibling's OWN per-item supersessionStatus stays CURRENT_OPERATIVE and its text correctly shows '9,500,000' - confirming no over-blocking of the clean sibling either.",
+    "pass": true
+  },
+  "item12_parentClause": {
+    "fixture": "Section 62.73 'Parent Basket', instrument:ia10-item12, per-effect status UNRESOLVED mechanism (distinct from items 2/4/9/10's undated construction)",
+    "result": "view.status=OPERATIVE_STATE_REVIEW_REQUIRED. getParentClause(childNodeId): evidenceUnresolved=true.",
+    "pass": true
+  },
+  "item13_getChildrenReconfirmation": {
+    "fixture": "Section 73.84 'Contested Parent', instrument:ia10-item13, CONFLICTED via two competing dated-2099 effects (yet another distinct mechanism from items 6/7/8) - re-confirms getChildren's own SEPARATE resolveParentSubstructureEvidence resolver, not resolveNodeWithSupersessionAwareness",
+    "result": "view.status=OPERATIVE_STATE_CONFLICTED. getChildren(parentNode): parentSupersessionStatus != CURRENT_OPERATIVE, evidenceUnresolved=true. No regression in the separate resolver.",
+    "pass": true
+  },
+  "item14_realEndToEndPersistence_twoFreshConstructions": {
+    "construction1": "getOperativeProvision on item 4's fixture (Section 64.75, unresolved effective date)",
+    "construction2": "getParentClause on item 12's fixture (Section 62.73, per-effect status UNRESOLVED)",
+    "pipeline": "real tool call (evidenceUnresolved=true) -> compileCovenantToIR (status=REVIEW_REQUIRED, failureReasons contains OPERATIVE_STATE_UNRESOLVED) -> verifyCompiledCandidate (status=REVIEW_REQUIRED, never matches /^VERIFIED_/) -> persistSemanticTruthForInstrument -> FRESH getTrustedSemanticTruth/getAllSemanticTruthForInstrument service-layer read AND a raw new prisma.semanticTruthRecord.findMany query",
+    "result": "Both constructions: getTrustedSemanticTruth returns 0 rows; getAllSemanticTruthForInstrument and the raw prisma query both return >0 rows, and EVERY row's trustStatus != VERIFIED.",
+    "pass": true
+  },
+  "item15_cleanControls": {
+    "controlA_resolvedAmendedProvision": {
+      "fixture": "Section 82.93 'Cleanly Amended Basket', instrument:ia10-item15a, dated-past clean REPLACE_TEXT amendment ($14,000,000)",
+      "result": "view.status=OPERATIVE_STATE_RESOLVED, currentText contains '14,000,000'. resolveNodeWithSupersessionAwareness: evidenceCurrent=true, textSource=AMENDED_CURRENT_TEXT. getOperativeProvision and getReferencedProvision tools: evidenceUnresolved=false. No over-blocking.",
+      "pass": true
+    },
+    "controlB_neverAmendedBaseSection": {
+      "fixture": "Section 91.02 'Never Amended Basket', instrument:ia10-item15b, empty effects array (CASE D)",
+      "result": "provisionOperativeStatus=null (no view at all), resolveNodeWithSupersessionAwareness.evidenceCurrent=true. getReferencedProvision: evidenceUnresolved=false, supersessionStatus=CURRENT_OPERATIVE.",
+      "pass": true
+    },
+    "controlC_realE2EPersistedVerified": {
+      "fixture": "Section 95.10 'Indebtedness', instrument:ia10-item15c, never-amended (deliberately mirrors the already-proven-clean reconciliation shape of tests/contract-model/semantic-truth-persistence.test.ts: single non-enumerated basket naming both Borrower and Restricted Subsidiary, entityScope populated, amount matching operativeSourceText exactly)",
+      "pipeline": "real getOperativeProvision tool call (evidenceUnresolved=false) -> compileCovenantToIR -> verifyCompiledCandidate (skipSemanticReview:true) -> persistSemanticTruthForInstrument -> FRESH getTrustedSemanticTruth read AND a raw new prisma.semanticTruthRecord.findMany query",
+      "result": "verification.status matches /^VERIFIED_/ (VERIFIED_NO_MATERIAL_GAP_FOUND). getTrustedSemanticTruth returns >0 rows with trustStatus=VERIFIED, confirmed independently by the raw prisma query. Clean data is NOT over-blocked.",
+      "pass": true
+    },
+    "scopeNoteOnControlC_designChoice": "Control C deliberately uses a never-amended (CASE D) section, not a RESOLVED-amended (CASE B) one, for the full persist-to-VERIFIED path. Direct tracing found that verifyCompiledCandidate (semantic-verification/verify.ts, determineStatus, line ~286) carries its OWN separate, independent gate: `if (sourceInventory.supersessionStatus === \"KNOWN_SUPERSEDED\") return \"REVIEW_REQUIRED\"`, keyed off the OLD base physical node that resolveUniqueNodeByRef(sourceSectionRef) finds - which is unconditionally KNOWN_SUPERSEDED for any section that was itself amendment-replaced, regardless of resolveNodeWithSupersessionAwareness's own (correct) CASE B verdict for that same section. This is a real, pre-existing, intentionally conservative verifier-level mechanism (predates and is orthogonal to the OPEN-2 tools.ts fix under audit here), not an over-blocking regression introduced by this patch. CASE B's own evidenceCurrent=true/evidenceUnresolved=false claim for a RESOLVED-amended section is independently confirmed at both the resolver and tool boundary in Control A above, which is the layer this audit's central question actually concerns."
+  },
+  "summary": "Every one of the 15 attack angles was attempted with fresh, independently-authored fixtures (different section numbers, document/instrument names, amendment wording, and condition wording from every fixture in docs/open2-final-direct-patch/04-06 and their companion test files). Direct line-by-line reading of the current production code (lib/contract-model/compiler/semantic/tools.ts in full, plus the relevant amendment/operative-state.ts and amendment/chain.ts logic) confirms the implementer's structural-ordering claim holds for every one of the 7 CURRENT_OPERATIVE_EVIDENCE-declared tools, via two independently-correct mechanisms (the shared resolveNodeWithSupersessionAwareness helper for getParentClause/getSiblingClauses/getReferencedProvision, and direct status-only gates for getOperativeProvision/getDefinition/getRelatedAmendments/getChildren). All 18 runtime tests in this audit's own independent test file pass, including 2 full compile->verify->persist->fresh-Postgres-read constructions confirming trustStatus is never VERIFIED for a non-RESOLVED view, and a third full pipeline run confirming a genuinely current provision correctly DOES reach persisted VERIFIED (no over-blocking). tsc and eslint show exactly the documented pre-existing baseline (6 tsc errors / 1 eslint error), 0 new. Broader regression runs (tests/certification: 464/464 passed; tests/contract-model: 1561/1561 passed) show no collateral breakage.",
+  "productionCodeModified": false,
+  "filesTouchedByThisAudit": [
+    "tests/certification/open2-final-direct-patch-independent-confirmation.test.ts (new)",
+    "docs/open2-final-direct-patch/10-independent-confirmation.json (new, this file)"
+  ]
+}
