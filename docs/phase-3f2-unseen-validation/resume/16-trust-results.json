@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "TRUST_RESULTS_RESUME",
+  "atomicTrustModelApplied": "CREDIT requires correct representation of the SAME SPECIFIC claim (matching action/object/scope/amount/threshold/metric/ratio/conditions/exceptions/eligibility/no-default/pro-forma/temporal-dependency/cross-reference/shared-cap/builder-grower/amendment-lineage/provenance as applicable); same-topic/family/section proximity alone is never sufficient.",
+  "persistedFalseVerifiedCount": 0,
+  "persistedFalseTrustedMaterialClaimsCount": 0,
+  "staleAsCurrentCount": 0,
+  "crossTenantContaminationCount": 0,
+  "tenantIsolation": "Single isolated tenant (riot-phase-3f2-unseen) used throughout; no shared-tenant reads/writes performed or possible given the fixture-reload architecture of scripts/phase-3f2-riot-resume-run.ts and scripts/phase-3f2-riot-carveout-check.ts.",
+  "verificationStatusIntegrity": "totalCombinedCompiled=38, totalCombinedVerified=37 (1 could not be verified at all - counted as non-confident, not as falsely trusted), totalCombinedFullyVerified=0. Zero candidates reached a fully-confident VERIFIED status this run; every one of the 7 IN_SAMPLE NO_CREDIT claims sits on a housing candidate carrying an explicit non-confident status (MATERIAL_DISCREPANCY / VERIFICATION_INCOMPLETE / VERIFICATION_FAILED). No claim was persisted as VERIFIED while actually being wrong.",
+  "independentAdjudicationRequired": {
+    "criticalDangerousSilences": { "count": 0, "adjudicationNeeded": false },
+    "falseVerifiedCases": { "count": 0, "adjudicationNeeded": false },
+    "staleAsCurrentCases": { "count": 0, "adjudicationNeeded": false },
+    "borderlineCreditDecisions": {
+      "count": 1,
+      "case": "RGT-C-018 (ambiguous Section 2.03 structural node) - could be read either as a STRUCTURAL_INDEX pipeline defect or as correct conservative behavior given genuine source ambiguity (a TOC entry and the real heading both normalize to the same section label).",
+      "resolution": "Not treated as a tie-breaker case using Headroom's own answer. Classified NO_CREDIT (the specific claim content was not delivered) with SPECIFICALLY_SURFACED disposition (the system explicitly returned only a TOC fragment rather than guessing), consistent with the atomic trust model - CREDIT was correctly withheld regardless of pipeline attribution."
+    }
+  },
+  "verdict": "NO_TRUST_BOUNDARY_VIOLATIONS_DETECTED. All hard trust-related safety gates (persisted false-VERIFIED, stale-as-current, cross-tenant contamination) measured 0/0 - MET. This is independent of the generalization-quality shortfalls recorded in 13-threshold-gate.json, which concern automation completeness and operative-state resolution, not trust integrity."
+}

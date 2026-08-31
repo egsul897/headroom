@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "METRICS_RESUME",
+  "sourceArtifacts": ["10-claim-level-comparison.json", "11-pipeline-attribution.json", "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/final-summary.json"],
+  "groundTruthComposition": {
+    "canonicalClaimCount": 117,
+    "materialityBreakdown": { "CRITICAL": 54, "MATERIAL": 59, "BENIGN": 4 },
+    "categoryBreakdown": {
+      "IN_SAMPLE_compiledAndVerified": 14,
+      "DISCOVERED_NOT_SAMPLED_costCeilingExcluded": 97,
+      "NOT_DISCOVERED_genuineDiscoveryMiss": 6
+    }
+  },
+  "discoveryMetrics_full887CandidatePopulation": {
+    "materialCovenantBearingSectionRecall": { "value": 0.9558, "numerator": 108, "denominator": 113 },
+    "criticalMaterialClaimDiscoveryRecall": { "value": 0.9815, "numerator": 53, "denominator": 54 },
+    "notDiscoveredClaims_byMateriality": { "CRITICAL": 1, "MATERIAL": 4, "BENIGN": 1 },
+    "notDiscoveredClaimIds": ["RGT-C-064", "RGT-C-069", "RGT-C-075", "RGT-C-084", "RGT-C-092", "RGT-C-098"],
+    "note": "Computed against the full 887-candidate real discovery population, not the 38-candidate compile sample. This is the correct denominator for discovery recall per the category framework in 10-claim-level-comparison.json."
+  },
+  "semanticAutomationMetrics_inSample14Only": {
+    "materialSubstantiveCreditRate": { "value": 0.4615, "numerator": 6, "denominator": 13, "note": "Denominator excludes the 1 BENIGN-materiality IN_SAMPLE claim; threshold applies to material (CRITICAL+MATERIAL) claims only." },
+    "criticalSubstantiveCreditRate": { "value": 0.6, "numerator": 3, "denominator": 5 },
+    "conditionQualifierPreservationAmongCredited": { "value": 1.0, "numerator": 7, "denominator": 7 },
+    "quantitativeComponentCorrectnessAmongCredited": { "value": 1.0, "numerator": 7, "denominator": 7, "note": "5 of 7 credited claims carry a real quantitative component, all correct; 2 (RGT-C-060, RGT-C-074) have none to check." },
+    "sampleSizeCaveat": "n=14 (13 material) is small. It is an unbiased deterministic-stratified draw per the validation contract's precommitted cap policy, not a cherry-picked or convenience sample, but confidence intervals at this n are wide."
+  },
+  "safeFailureMetrics_inSample14Only": {
+    "claimSpecificSafeFailureRecall": { "value": 1.0, "numerator": 7, "denominator": 7, "note": "All 7 NO_CREDIT IN_SAMPLE claims were SPECIFICALLY_SURFACED via explicit non-confident verification status (MATERIAL_DISCREPANCY / VERIFICATION_INCOMPLETE / VERIFICATION_FAILED) on their housing candidate, never inferred from a generic nearby warning." },
+    "dangerousSilentOmissionCount": 0,
+    "criticalDangerousSilentOmissionCount": 0,
+    "materialClaimCreditOrSafeFailureRate_allCategoryA": { "value": 1.0, "numerator": 14, "denominator": 14 },
+    "materialClaimCreditOrSafeFailureRate_materialPlusCriticalOnly": { "value": 1.0, "numerator": 13, "denominator": 13 }
+  },
+  "pipelineAttribution_7NoCreditClaims": {
+    "SOURCE_EXTRACTION": 0, "STRUCTURAL_INDEX": 1, "PACKAGE_GRAPH": 0, "OPERATIVE_STATE": 0,
+    "DISCOVERY": 0, "CONTEXT_RETRIEVAL": 0, "SEMANTIC_COMPILATION": 4, "VERIFICATION": 0,
+    "SAFE_FAILURE_ROUTING": 0, "PERSISTENCE": 0, "EVALUATION_AMBIGUITY": 0, "OTHER": 2,
+    "dominantPattern": "SEMANTIC_COMPILATION (4/7, 57%): compiler retrieved the correct source section but partially under-extracted (dropped a definition, extracted only some of several linked definitions, or truncated with an ellipsis over a required qualifier). Never a wholesale extraction failure. Verification correctly flagged non-confident status on every one of the 7."
+  },
+  "operativeStateMetric": {
+    "correctness": "INCORRECT_UNRESOLVED",
+    "groundTruth": "doc-c (Second A&R Credit Agreement, 2026-04-21) is operative as of 2026-08-31 per both independent human reviewers.",
+    "headroomResult": "OPERATIVE_STATE_RESOLVED status but 0 amended provisions tracked and no document designated operative - an empty, non-committal result.",
+    "rootCause": "PACKAGE_GRAPH layer: both RESTATE_AGREEMENT amendment effects (doc-b, doc-c) stuck at status REVIEW_REQUIRED, confidence 0.3, because their restated target document could not be resolved.",
+    "failedSafely": true,
+    "note": "Did not assert a wrong operative document with false confidence; asserted nothing. Still fails the operativeStateCorrectnessOnMateriallyRelevantMin >=0.95 generalization gate since it produced neither the correct nor any answer for the one operative-state question this package poses."
+  },
+  "productCostMetrics": {
+    "totalAiCostUsd": 7.238268000000001,
+    "budgetCeilingUsd": 15,
+    "totalCombinedCompiled": 38,
+    "totalCombinedVerified": 37,
+    "totalCombinedFullyVerified": 0,
+    "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE"
+  }
+}

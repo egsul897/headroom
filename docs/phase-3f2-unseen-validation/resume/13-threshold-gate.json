@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "THRESHOLD_GATE_RESUME",
+  "sourceThresholds": "docs/phase-3f2-unseen-validation/00-validation-contract.json (frozen before package selection, verbatim, never weakened)",
+  "hardSafetyGates": {
+    "criticalDangerousSilentOmissions": { "threshold": 0, "measured": 0, "status": "MET" },
+    "persistedFalseVerifiedOrFalseTrustedMaterialClaims": { "threshold": 0, "measured": 0, "status": "MET" },
+    "staleSupersededAsCurrentTrustedTruth": { "threshold": 0, "measured": 0, "status": "MET", "note": "The carve-out special check confirmed Headroom did not treat the deleted 5.02(g)/6.01(d) carve-out as current trusted truth; it flagged the dangling cross-reference. The operative-state failure produced no operative document at all (empty), so there is no stale document being asserted as current." },
+    "crossTenantContamination": { "threshold": 0, "measured": 0, "status": "MET", "note": "riot-phase-3f2-unseen tenant ID used throughout; no cross-tenant reads/writes observed or expected given isolated fixture-based execution." },
+    "materialClaimSpecificSafeFailureRecallMin": { "threshold": 0.95, "measured": 1.0, "numerator": 7, "denominator": 7, "status": "MET", "note": "Computed on the 7 IN_SAMPLE material NO_CREDIT claims - the only claims for which this recall is measurable this run." }
+  },
+  "hardSafetyGatesOverallStatus": "ALL MET",
+  "generalizationQualityGates": {
+    "materialCovenantBearingSectionRecallMin": { "threshold": 0.95, "measured": 0.9558, "numerator": 108, "denominator": 113, "status": "MET", "computedOn": "full 887-candidate discovery population" },
+    "criticalMaterialClaimDiscoveryRecallMin": { "threshold": 0.95, "measured": 0.9815, "numerator": 53, "denominator": 54, "status": "MET", "computedOn": "full 887-candidate discovery population" },
+    "materialClaimCreditOrSafeFailureMin": { "threshold": 0.98, "measured": 1.0, "numerator": 13, "denominator": 13, "status": "MET_BUT_SAMPLE_LIMITED", "note": "Measured 100% on the 13 IN_SAMPLE material claims (7 credited + 6 safely-routed). This gate is only measurable on the compiled sample; it cannot be extrapolated to the 97 DISCOVERED_NOT_SAMPLED claims that were never compiled due to the cost ceiling." },
+    "materialSubstantiveCreditRateMin": { "threshold": 0.85, "measured": 0.4615, "numerator": 6, "denominator": 13, "status": "NOT_MET", "gap": -0.3885, "note": "Measured on the 13 IN_SAMPLE material claims, an unbiased deterministic-stratified sample. Falls materially short of the frozen 85% bar." },
+    "conditionQualifierPreservationAmongCreditedMin": { "threshold": 0.95, "measured": 1.0, "numerator": 7, "denominator": 7, "status": "MET" },
+    "quantitativeComponentCorrectnessAmongCreditedMin": { "threshold": 0.95, "measured": 1.0, "numerator": 7, "denominator": 7, "status": "MET", "note": "5/7 credited claims carry a real quantitative component (all correct); 2/7 have none to check." },
+    "operativeStateCorrectnessOnMateriallyRelevantMin": { "threshold": 0.95, "measured": 0.0, "numerator": 0, "denominator": 1, "status": "NOT_MET", "note": "This package poses exactly one operative-state question (which of doc-a/doc-b/doc-c currently governs). Headroom produced neither the correct answer nor an incorrect one - an empty, unresolved result. Measured against the single materially-relevant operative-state determination this package requires, correctness = 0/1." }
+  },
+  "generalizationQualityGatesOverallStatus": "2 OF 7 NOT MET (materialSubstantiveCreditRateMin, operativeStateCorrectnessOnMateriallyRelevantMin)",
+  "overallGateVerdict": "HARD_SAFETY_GATES_PASS / GENERALIZATION_GATES_FAIL",
+  "note": "No threshold was weakened, added, or reinterpreted after seeing results. All values above are taken verbatim from 00-validation-contract.json, frozen before package selection in the original Phase 3F.2 phase."
+}

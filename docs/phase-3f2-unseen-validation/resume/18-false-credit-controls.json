@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FALSE_CREDIT_CONTROLS_RESUME",
+  "testFiles": ["tests/evaluation-v2/dsgr-false-credit-gate.test.ts", "tests/evaluation-v2/false-credit-prohibitions.test.ts"],
+  "rerunThisResumeAt": "2026-08-31 (post-execution, pre-final-verdict)",
+  "result": "PASS - 14/14 previously-confirmed false credits rejected or flagged, none silently upheld (4 tests in dsgr-false-credit-gate.test.ts including the 14/14 gate test itself), plus 10/10 tests passed in the companion false-credit-prohibitions.test.ts suite. Total 14/14 tests passed across both files.",
+  "verdict": "14/14 REQUIRED - MET, NO REGRESSION",
+  "note": "These are deterministic, package-independent regression controls on production code. Since production (lib/**, app/**, prisma/**) remains byte-identical to the 00f49ac2d451fb41ca25b7e255422170c654f415 freeze throughout this entire Phase 3F.2 effort including this resume, this result is expected to be stable and was re-run only to produce a dated confirmation artifact for this resume's own evidence chain, not because any change to production was suspected."
+}

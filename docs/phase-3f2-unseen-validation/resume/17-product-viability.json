@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PRODUCT_VIABILITY_RESUME",
+  "adjudicatedGroundTruth": {
+    "totalCanonicalClaims": 117,
+    "materialClaims_CRITICALplusMATERIAL": 113,
+    "benignClaims": 4
+  },
+  "populationAccounting": {
+    "IN_SAMPLE_compiledAndVerified": 14,
+    "DISCOVERED_NOT_SAMPLED_costCeilingExcluded": 97,
+    "NOT_DISCOVERED_genuineDiscoveryMiss": 6
+  },
+  "autoCreditedCount": { "value": 7, "scope": "IN_SAMPLE only - the only population where automation-quality credit is measurable this run" },
+  "safelyRoutedCount": { "value": 7, "scope": "IN_SAMPLE NO_CREDIT claims, all SPECIFICALLY_SURFACED (100% claim-specific safe-failure recall on this subset)" },
+  "dangerousSilentCount": 0,
+  "totalClaimReviewItemsGenerated": {
+    "value": "NOT_DIRECTLY_COUNTED_THIS_RUN",
+    "note": "The resume orchestration script (scripts/phase-3f2-riot-resume-run.ts) is a non-production evaluation harness that calls compileCovenantToIR/verifyCompiledCandidate directly; it does not invoke the production ClaimReviewItem persistence path (that lives in the full app-level pipeline orchestration, not in the isolated compile+verify stage-level calls used for this cost-bounded evaluation). The count of non-confident housing candidates that WOULD generate a ClaimReviewItem in the production flow is 37 of 38 combined-verified candidates (all except any candidate reaching full VERIFIED status, of which there were 0)."
+  },
+  "reviewItemsPer100MaterialClaims_estimate": {
+    "value": "NOT_COMPUTABLE_PRECISELY",
+    "reason": "Requires the totalClaimReviewItemsGenerated figure, which was not directly measured this run for the reason above. A rough proxy using compiled-candidate counts (37 non-confident of 38 compiled, against 113 material GT claims) would suggest a high review-item rate, but this proxy conflates candidates (compiler-internal units) with GT claims (evaluation units) and is not offered as a precise metric.",
+    "recommendation": "If Phase 4 or a future validation phase needs this metric precisely, it should be measured by running the full production persistence path (not the isolated compile+verify harness used here) against a real package."
+  },
+  "costPerCoveredClaim": {
+    "totalCostUsd": 7.238268000000001,
+    "materialClaimsCreditedOrSafelyRouted": 13,
+    "roughCostPerCoveredMaterialClaimUsd": 0.5568,
+    "caveat": "This blends compile, retry, and verification cost across 38 compiled candidates against only the 13 material IN_SAMPLE GT claims those candidates happened to cover - not a general per-claim unit economics figure, since most candidate cost also produced coverage for the 4 non-material claims and for claim-adjacent content not mapped 1:1 to a single GT claim."
+  },
+  "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE (0 of 38 compiled candidates reached FULLY_VERIFIED status; 97 of 117 GT claims, 83%, were never compiled at all due to the $15 cost ceiling)."
+}
