@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT",
+  "verdict": "PHASE_3F_1_CODE_FOUNDATION_CLOSED_CONDITION_VALIDATION_ENVIRONMENT_BLOCKED",
+  "basis": [
+    "Per SS19's pass standard: getParentClause, getChildren, getSiblingClauses, getReferencedProvision all CERTIFIED_CLOSED; getOperativeProvision, getDefinition, getRelatedAmendments all confirmed SAFE; and no CURRENT_OPERATIVE_EVIDENCE path can convert a non-resolved OperativeProvisionView into evidenceUnresolved=false - independently confirmed via direct source inspection plus 18 fresh runtime tests across 15 required attack angles, including real Postgres end-to-end persistence checks. OPEN-2 is CERTIFIED_CLOSED.",
+    "Per SS20: after OPEN-2's confirmation, the Gateway was probed once (process-local credential, never persisted) - still HTTP 402, Team budget exceeded, identical $50.05/$50.00 state, $0 real cost. Production code (condition-suspicion-classifier.ts and all related files) was not modified.",
+    "Per SS20's own final-state rule: OPEN-2 CERTIFIED_CLOSED + OPEN-4 still budget-exhausted => PHASE_3F_1_CODE_FOUNDATION_CLOSED_CONDITION_VALIDATION_ENVIRONMENT_BLOCKED.",
+    "Production freeze held throughout the independent confirmation: zero lib/app/prisma changes since the 4ca90f2 freeze (11-production-freeze-proof.json).",
+    "Crosscutting checks pass: 214/215 targeted files (1 confirmed pre-existing OPEN-3 timing flake, unrelated to the single-file diff), tsc/eslint at exact baseline, known-package regression NO_REGRESSION (fwrg=0, lsb=0, dsgr=215, conmed N/A), 14/14 false-credit controls NO_CREDIT, OPEN-1/3/5/6 not reopened."
+  ],
+  "meaning": "NO MORE PRODUCTION REMEDIATION IS AUTHORIZED for the code foundation - it is closed. Only the frozen OPEN-4 real-model holdout remains before formal 3F.1 certification, pending a human increasing the Vercel AI Gateway team budget above the current $50.05 spend.",
+  "actionPerGoverningSpec": "Per SS20: do not touch condition code. This session stops here. When budget is restored, re-dispatch a single auditor scoped only to the frozen 22-case holdout (docs/phase-3f1-terminal-architecture-decision/19-condition-architecture-recertification.json for the frozen cases; the rerun instructions are recorded in docs/phase-3f1-final-closure/15-condition-real-model-validation.json from an earlier phase) - do not rerun any of the code-foundation work closed across this and prior phases."
+}
