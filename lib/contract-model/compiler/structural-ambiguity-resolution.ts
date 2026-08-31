@@ -37,7 +37,7 @@
  * exactly as those existing consumers already do for their own domains.
  */
 import { classifyStructuralAmbiguity, type StructuralAmbiguityCache, type StructuralAmbiguityCacheIdentity, type StructuralAmbiguityClassifierResult } from "./structural-ambiguity-classifier";
-import { applyStructuralAmbiguityOverrides, structuralCandidateKey, type AmbiguousStructuralCandidate } from "./stage-structure";
+import { applyStructuralAmbiguityOverrides, parseDocumentStructureWithTriage, structuralCandidateKey, type AmbiguousStructuralCandidate } from "./stage-structure";
 import type { CompilerDocumentInput, StructuralNode } from "./types";
 import type { StageCaller } from "./llm-caller";
 
@@ -177,3 +177,96 @@ export async function resolveStructuralAmbiguity(
 
 // Re-exported for callers that only need the key helper alongside this module's own API.
 export { structuralCandidateKey };
+
+// =============================================================================
+// Phase 3F.1 Human Architecture Decision (Workstream OPEN-1 WIRING FIX)
+// =============================================================================
+/**
+ * This is the piece that was MISSING before this fix: the actual STRUCTURE-
+ * stage entry point a real orchestrator calls, that (a) runs the pure,
+ * deterministic triage (`parseDocumentStructureWithTriage`) per document,
+ * (b) resolves each document's own AMBIGUOUS candidates through the bounded
+ * classifier via `resolveStructuralAmbiguity` ONLY when that document
+ * actually has any (cost discipline: a document with zero AMBIGUOUS
+ * candidates costs exactly zero classifier calls, never even constructs a
+ * cache identity for it), and (c) merges everything into one final
+ * `StructuralNode[]` in the same shape/order `runStructureStage` always
+ * produced, so every existing downstream consumer of the STRUCTURE stage's
+ * `output` (persistStructuralNodes, structureOutputHash, every later stage
+ * keyed off structural nodes) keeps working unmodified.
+ *
+ * `identity.instrumentKey`: neither orchestrator.ts (legacy Phase C) nor its
+ * `CompilerPackageInput` has a real "instrument" concept distinct from the
+ * package itself (that grouping is a Phase 2 substrate concept - see
+ * package-graph/pipeline.ts) - callers in this pipeline generation pass their
+ * own `packageKey` as `instrumentKey`, mirroring exactly how
+ * classifyStructuralAmbiguity's own tenant-scoping only needs a stable,
+ * unique-enough scope string, never a specific domain meaning.
+ */
+export interface StructureStageWithAmbiguityResolutionResult {
+  /** Mirrors StageRunResult's own status vocabulary (kept as plain string literals here, deliberately not importing @prisma/client into this module - see this file's own module-boundary discipline). */
+  status: "COMPLETED" | "REVIEW_REQUIRED";
+  output: StructuralNode[];
+  notes?: string[];
+  /** Every AMBIGUOUS candidate across every document that the classifier could not confidently resolve (UNCERTAIN, provider failure, or a no-credential synthetic fallback) - fail-closed EXCLUDED from `output`, never silently dropped from the audit trail. */
+  reviewSignals: StructuralReviewSignal[];
+  /** Aggregate cost-discipline metrics across every document in this call - see `computeStructuralAmbiguityResolutionRateMetrics`'s own doc comment for each field's meaning. */
+  metrics: StructuralAmbiguityResolutionRateMetrics;
+}
+
+export async function runStructureStageWithAmbiguityResolution(
+  documents: CompilerDocumentInput[],
+  identity: { companyId: string; instrumentKey: string },
+  caller: StageCaller,
+  cache?: StructuralAmbiguityCache
+): Promise<StructureStageWithAmbiguityResolutionResult> {
+  const allNodes: StructuralNode[] = [];
+  const allResolutions: StructuralAmbiguityResolution[] = [];
+  const allReviewSignals: StructuralReviewSignal[] = [];
+  let totalCandidates = 0;
+
+  for (const doc of documents) {
+    const triage = parseDocumentStructureWithTriage(doc);
+    totalCandidates += triage.triageStats.totalCandidates;
+
+    // Cost discipline (this file's own header comment): a document with no
+    // AMBIGUOUS candidates never even constructs a cache identity for
+    // itself, let alone calls the classifier - `triage.nodes` already IS the
+    // final node set for this document in that case (identical to what
+    // `applyStructuralAmbiguityOverrides` with an empty override map would
+    // recompute, since there is nothing in `overrides` to look up).
+    if (triage.ambiguousCandidates.length === 0) {
+      allNodes.push(...triage.nodes);
+      continue;
+    }
+
+    const docIdentity: StructuralAmbiguityCacheIdentity = { companyId: identity.companyId, instrumentKey: identity.instrumentKey, sourceDocumentId: doc.documentId };
+    const resolved = await resolveStructuralAmbiguity(doc, triage.ambiguousCandidates, docIdentity, caller, cache);
+    allNodes.push(...resolved.nodes);
+    allResolutions.push(...resolved.resolutions);
+    allReviewSignals.push(...resolved.reviewSignals);
+  }
+
+  const metrics = computeStructuralAmbiguityResolutionRateMetrics(totalCandidates, allResolutions);
+
+  const notes: string[] = [];
+  if (allNodes.length === 0) {
+    // Mirrors runStructureStage's own REVIEW_REQUIRED note verbatim - the
+    // same real failure mode (no article/section headers matched any known
+    // structural pattern at all), unrelated to the classifier.
+    notes.push("No article/section headers matched any known structural pattern - structural inventory could not be built; every downstream stage's coverage claims are unreliable for this package until this is resolved.");
+  }
+  if (allReviewSignals.length > 0) {
+    notes.push(
+      `${allReviewSignals.length} structural candidate(s) across this package could not be confidently resolved as heading vs. in-prose-citation (classifier UNCERTAIN, a provider failure, or a no-credential synthetic fallback) and were fail-closed EXCLUDED from the structural index rather than guessed - see this stage's own reviewSignals for the exact document/candidate/reason for each.`
+    );
+  }
+
+  return {
+    status: allNodes.length === 0 ? "REVIEW_REQUIRED" : "COMPLETED",
+    output: allNodes,
+    notes: notes.length > 0 ? notes : undefined,
+    reviewSignals: allReviewSignals,
+    metrics,
+  };
+}

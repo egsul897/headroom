@@ -38,16 +38,32 @@
  * workstream's file) and is left exactly as the prior audit wrote it.
  *
  * Every test proves its claim against the REAL, UNMODIFIED orchestrator.ts
- * cache-gate formulas; the only things ever mocked are (a) stage-structure.ts's
- * exported runStructureStage function, standing in for "the structural
- * algorithm's output", and (b) the STRUCTURAL_INDEX_VERSION constant
- * exported from types.ts (a value-only export — the interfaces the module
- * also exports are erased at compile time and have no runtime presence to
- * disturb), standing in for "the structural algorithm's declared identity
- * bumped" — the same, real mechanism this codebase already uses everywhere
- * else for cache versioning (DISCOVERY_RUN_VERSION, COVERAGE_AUDIT_ALGORITHM_VERSION,
- * etc.). runAmendmentsStage is never mocked anywhere in this file — every
- * AMENDMENTS assertion runs the real, unmodified function.
+ * cache-gate formulas; the only things ever mocked are (a)
+ * structural-ambiguity-resolution.ts's exported
+ * runStructureStageWithAmbiguityResolution function, standing in for "the
+ * structural algorithm's output", and (b) the STRUCTURAL_INDEX_VERSION
+ * constant exported from types.ts (a value-only export — the interfaces the
+ * module also exports are erased at compile time and have no runtime
+ * presence to disturb), standing in for "the structural algorithm's declared
+ * identity bumped" — the same, real mechanism this codebase already uses
+ * everywhere else for cache versioning (DISCOVERY_RUN_VERSION,
+ * COVERAGE_AUDIT_ALGORITHM_VERSION, etc.). runAmendmentsStage is never
+ * mocked anywhere in this file — every AMENDMENTS assertion runs the real,
+ * unmodified function.
+ *
+ * Phase 3F.1 Human Architecture Decision (Workstream OPEN-1 WIRING FIX)
+ * UPDATE: orchestrator.ts's STRUCTURE stage now calls the async, classifier-
+ * aware `runStructureStageWithAmbiguityResolution` (structural-ambiguity-
+ * resolution.ts) instead of the old synchronous `runStructureStage`
+ * (stage-structure.ts) — every mock in this describe block that used to
+ * target `runStructureStage` now targets `runStructureStageWithAmbiguityResolution`
+ * at its new call site instead, returning the same
+ * `{ status, output }` shape (now inside a resolved Promise) the real
+ * function returns. This is purely a mock-target relocation to track the
+ * real call site — the cache-gate formula each test proves (STRUCTURAL_INDEX_VERSION
+ * membership in structureInputHash, real cache-hit/resume behavior, 8D
+ * replay equivalence) is unchanged and still exercised against the real,
+ * unmodified orchestrator.ts.
  */
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { prisma } from "../../lib/prisma";
@@ -108,7 +124,7 @@ describe("Section 16 / §R — cache invalidation assurance: STRUCTURE-stage cac
     vi.resetModules();
   });
   afterEach(() => {
-    vi.doUnmock("../../lib/contract-model/compiler/stage-structure");
+    vi.doUnmock("../../lib/contract-model/compiler/structural-ambiguity-resolution");
     vi.doUnmock("../../lib/contract-model/compiler/types");
   });
 
@@ -128,9 +144,9 @@ describe("Section 16 / §R — cache invalidation assurance: STRUCTURE-stage cac
       const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/types")>("../../lib/contract-model/compiler/types");
       return { ...actual, STRUCTURAL_INDEX_VERSION: "audit-fixture-structural-version.v1" };
     });
-    vi.doMock("../../lib/contract-model/compiler/stage-structure", async () => {
-      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/stage-structure")>("../../lib/contract-model/compiler/stage-structure");
-      return { ...actual, runStructureStage: () => ({ status: "COMPLETED" as const, output: makeNodesV1() }) };
+    vi.doMock("../../lib/contract-model/compiler/structural-ambiguity-resolution", async () => {
+      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/structural-ambiguity-resolution")>("../../lib/contract-model/compiler/structural-ambiguity-resolution");
+      return { ...actual, runStructureStageWithAmbiguityResolution: async () => ({ status: "COMPLETED" as const, output: makeNodesV1(), reviewSignals: [], metrics: null }) };
     });
     const { runContractCompiler: runV1 } = await import("../../lib/contract-model/compiler/orchestrator");
     const summary1 = await runV1({ companyId: COMPANY_ID, packageKey: PACKAGE_KEY, documents: [{ documentId: DOCUMENT_ID, label: "Credit Agreement", text: SAMPLE_TEXT }] });
@@ -150,9 +166,9 @@ describe("Section 16 / §R — cache invalidation assurance: STRUCTURE-stage cac
       const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/types")>("../../lib/contract-model/compiler/types");
       return { ...actual, STRUCTURAL_INDEX_VERSION: "audit-fixture-structural-version.v2" };
     });
-    vi.doMock("../../lib/contract-model/compiler/stage-structure", async () => {
-      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/stage-structure")>("../../lib/contract-model/compiler/stage-structure");
-      return { ...actual, runStructureStage: () => ({ status: "COMPLETED" as const, output: makeNodesV2() }) };
+    vi.doMock("../../lib/contract-model/compiler/structural-ambiguity-resolution", async () => {
+      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/structural-ambiguity-resolution")>("../../lib/contract-model/compiler/structural-ambiguity-resolution");
+      return { ...actual, runStructureStageWithAmbiguityResolution: async () => ({ status: "COMPLETED" as const, output: makeNodesV2(), reviewSignals: [], metrics: null }) };
     });
     const { runContractCompiler: runV2 } = await import("../../lib/contract-model/compiler/orchestrator");
     const summary2 = await runV2({ companyId: COMPANY_ID, packageKey: PACKAGE_KEY, documents: [{ documentId: DOCUMENT_ID, label: "Credit Agreement", text: SAMPLE_TEXT }] });
@@ -175,17 +191,17 @@ describe("Section 16 / §R — cache invalidation assurance: STRUCTURE-stage cac
   });
 
   it("control: `force: true` correctly bypasses the cache and re-runs with the new algorithm regardless", async () => {
-    vi.doMock("../../lib/contract-model/compiler/stage-structure", async () => {
-      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/stage-structure")>("../../lib/contract-model/compiler/stage-structure");
-      return { ...actual, runStructureStage: () => ({ status: "COMPLETED" as const, output: makeNodesV1() }) };
+    vi.doMock("../../lib/contract-model/compiler/structural-ambiguity-resolution", async () => {
+      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/structural-ambiguity-resolution")>("../../lib/contract-model/compiler/structural-ambiguity-resolution");
+      return { ...actual, runStructureStageWithAmbiguityResolution: async () => ({ status: "COMPLETED" as const, output: makeNodesV1(), reviewSignals: [], metrics: null }) };
     });
     const { runContractCompiler: runV1 } = await import("../../lib/contract-model/compiler/orchestrator");
     await runV1({ companyId: COMPANY_ID, packageKey: PACKAGE_KEY, documents: [{ documentId: DOCUMENT_ID, label: "Credit Agreement", text: SAMPLE_TEXT }] });
 
     vi.resetModules();
-    vi.doMock("../../lib/contract-model/compiler/stage-structure", async () => {
-      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/stage-structure")>("../../lib/contract-model/compiler/stage-structure");
-      return { ...actual, runStructureStage: () => ({ status: "COMPLETED" as const, output: makeNodesV2() }) };
+    vi.doMock("../../lib/contract-model/compiler/structural-ambiguity-resolution", async () => {
+      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/structural-ambiguity-resolution")>("../../lib/contract-model/compiler/structural-ambiguity-resolution");
+      return { ...actual, runStructureStageWithAmbiguityResolution: async () => ({ status: "COMPLETED" as const, output: makeNodesV2(), reviewSignals: [], metrics: null }) };
     });
     const { runContractCompiler: runV2 } = await import("../../lib/contract-model/compiler/orchestrator");
     const summary2 = await runV2({ companyId: COMPANY_ID, packageKey: PACKAGE_KEY, documents: [{ documentId: DOCUMENT_ID, label: "Credit Agreement", text: SAMPLE_TEXT }] }, { force: true });
@@ -197,10 +213,10 @@ describe("Section 16 / §R — cache invalidation assurance: STRUCTURE-stage cac
     // all (real cost/performance for a package re-run) — the fix above must
     // never make the gate over-fire and defeat that purpose for genuinely
     // unchanged input.
-    const structureSpy = vi.fn(() => ({ status: "COMPLETED" as const, output: makeNodesV1() }));
-    vi.doMock("../../lib/contract-model/compiler/stage-structure", async () => {
-      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/stage-structure")>("../../lib/contract-model/compiler/stage-structure");
-      return { ...actual, runStructureStage: structureSpy };
+    const structureSpy = vi.fn(async () => ({ status: "COMPLETED" as const, output: makeNodesV1(), reviewSignals: [], metrics: null }));
+    vi.doMock("../../lib/contract-model/compiler/structural-ambiguity-resolution", async () => {
+      const actual = await vi.importActual<typeof import("../../lib/contract-model/compiler/structural-ambiguity-resolution")>("../../lib/contract-model/compiler/structural-ambiguity-resolution");
+      return { ...actual, runStructureStageWithAmbiguityResolution: structureSpy };
     });
     const { runContractCompiler } = await import("../../lib/contract-model/compiler/orchestrator");
     const input = { companyId: COMPANY_ID, packageKey: PACKAGE_KEY, documents: [{ documentId: DOCUMENT_ID, label: "Credit Agreement", text: SAMPLE_TEXT }] };

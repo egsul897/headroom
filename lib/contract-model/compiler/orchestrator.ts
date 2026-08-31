@@ -27,7 +27,8 @@
 import { prisma } from "../../prisma";
 import { hashParts, hashJson } from "./hashing";
 import { getStageCaller, type StageCaller } from "./llm-caller";
-import { runStructureStage, structureOutputHash } from "./stage-structure";
+import { structureOutputHash } from "./stage-structure";
+import { runStructureStageWithAmbiguityResolution, type StructuralReviewSignal, type StructuralAmbiguityResolutionRateMetrics } from "./structural-ambiguity-resolution";
 import { runDefinitionsStage } from "./stage-definitions";
 import { runInventoryStage } from "./stage-inventory";
 import { buildRuleExtractionBatches, runRuleExtractionStage } from "./stage-rule-extraction";
@@ -69,6 +70,22 @@ export interface CompilerRunSummary {
   coverageGapCount: number;
   relationshipsPersisted: number;
   referencesPersisted: number;
+  /**
+   * Phase 3F.1 Human Architecture Decision (Workstream OPEN-1 wiring fix) -
+   * every AMBIGUOUS structural candidate the classifier could not
+   * confidently resolve (UNCERTAIN, provider failure, or a no-credential
+   * synthetic fallback) across the whole package, fail-closed EXCLUDED from
+   * `structuralNodes` rather than guessed. Empty (never undefined) when the
+   * STRUCTURE stage was RESUMED from a cache-hit rather than freshly run
+   * this call (getOrRunStage's own resume path never re-invokes the
+   * classifier, so there is nothing fresh to report that run) - this is a
+   * "was reported this run", not "was ever reported for this run's persisted
+   * output", visibility guarantee; see this file's own STRUCTURE-stage
+   * comment for why that scoping is honest rather than a gap.
+   */
+  structuralReviewSignals: StructuralReviewSignal[];
+  /** Same "empty on resume" scoping as `structuralReviewSignals` above - see that field's own doc comment. */
+  structuralAmbiguityMetrics: StructuralAmbiguityResolutionRateMetrics | null;
 }
 
 async function upsertRun(companyId: string, packageKey: string, documentIds: string[]): Promise<string> {
@@ -116,7 +133,18 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
   const caller: StageCaller = getStageCaller();
   const entityClassTags = new Set(Object.values(EntityClassTag));
 
-  // Stage 1: STRUCTURE (deterministic).
+  // Provider/model identity is part of every LLM-calling stage's inputHash
+  // (not just document content) - a stage run under the synthetic caller
+  // must never be silently "resumed" once a real credential is available,
+  // and a model change must invalidate a stage's cached output exactly like
+  // a document-text change would (task §63 - "a prompt change must be
+  // capable of invalidating/recompiling affected stages"). Moved above the
+  // STRUCTURE stage (Phase 3F.1 Human Architecture Decision, Workstream
+  // OPEN-1 wiring fix) because STRUCTURE is no longer a purely deterministic
+  // stage either - see structureInputHash's own comment immediately below.
+  const providerIdentity = `${caller.providerName}::${caller.model}`;
+
+  // Stage 1: STRUCTURE.
   // Phase 3F.1.4 fix (foundation-audit §R / 10-cache-invalidation-assurance.json,
   // "orchestrator.ts STRUCTURE-stage resumability gate": FAILED) - this hash
   // MUST include STRUCTURAL_INDEX_VERSION alongside document identity/text.
@@ -129,23 +157,37 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
   // Proven both directions in
   // tests/foundation-audit/cache-invalidation-audit.test.ts (version bump
   // now forces recompute; unchanged version + unchanged text still resumes).
-  const structureInputHash = hashParts([STRUCTURAL_INDEX_VERSION, ...documents.map((d) => `${d.documentId}:${d.text}`)]);
+  //
+  // Phase 3F.1 Human Architecture Decision (Workstream OPEN-1 WIRING FIX):
+  // STRUCTURE is no longer purely deterministic - `runStructureStageWithAmbiguityResolution`
+  // (structural-ambiguity-resolution.ts) routes any candidate the
+  // deterministic triage cannot confidently resolve to the bounded
+  // structural-ambiguity classifier, so this stage's real output can now
+  // depend on `providerIdentity` too (a different provider/model - or a
+  // credential becoming available where none existed before - can change an
+  // AMBIGUOUS candidate's resolved verdict over the SAME document text).
+  // `providerIdentity` is therefore folded into structureInputHash exactly
+  // like every other LLM-calling stage's own inputHash already does above -
+  // never leaving a provider/credential change invisible to this cache gate
+  // the way the pre-OPEN-1-wiring, purely-deterministic STRUCTURE stage
+  // never needed to.
+  const structureInputHash = hashParts([STRUCTURAL_INDEX_VERSION, providerIdentity, ...documents.map((d) => `${d.documentId}:${d.text}`)]);
+  let structuralReviewSignals: StructuralReviewSignal[] = [];
+  let structuralAmbiguityMetrics: StructuralAmbiguityResolutionRateMetrics | null = null;
   const structureRes = await getOrRunStage(runId, "STRUCTURE", structureInputHash, shouldForce("STRUCTURE"), async () => {
-    const r = runStructureStage(documents);
-    return { ...r };
+    // instrumentKey: this legacy Phase C pipeline (CompilerPackageInput) has
+    // no "instrument" concept distinct from the package itself - packageKey
+    // is the stable, unique-enough scope this classifier's cache identity
+    // needs (see runStructureStageWithAmbiguityResolution's own doc comment).
+    const r = await runStructureStageWithAmbiguityResolution(documents, { companyId, instrumentKey: packageKey }, caller);
+    structuralReviewSignals = r.reviewSignals;
+    structuralAmbiguityMetrics = r.metrics;
+    return { status: r.status, output: r.output, notes: r.notes };
   });
   stages.push({ stage: "STRUCTURE", status: structureRes.status });
   const structuralNodes = structureRes.output;
   const nodeIndex = await persistStructuralNodes(companyId, structuralNodes);
   const documentIdBySectionRef = new Map(structuralNodes.filter((n) => n.nodeType === "SECTION").map((n) => [n.sectionRef.replace(/\s+/g, ""), n.documentId] as const));
-
-  // Provider/model identity is part of every LLM-calling stage's inputHash
-  // (not just document content) - a stage run under the synthetic caller
-  // must never be silently "resumed" once a real credential is available,
-  // and a model change must invalidate a stage's cached output exactly like
-  // a document-text change would (task §63 - "a prompt change must be
-  // capable of invalidating/recompiling affected stages").
-  const providerIdentity = `${caller.providerName}::${caller.model}`;
 
   // Stage 2: DEFINITIONS (real LLM call).
   const definitionsInputHash = hashParts([providerIdentity, structureOutputHash(structuralNodes), ...documents.map((d) => d.text)]);
@@ -296,5 +338,7 @@ export async function runContractCompiler(input: CompilerPackageInput, options: 
     coverageGapCount: coverageRes.output.filter((c) => c.disposition === "REVIEW_REQUIRED" || c.disposition === "UNHANDLED").length,
     relationshipsPersisted,
     referencesPersisted,
+    structuralReviewSignals,
+    structuralAmbiguityMetrics,
   };
 }
