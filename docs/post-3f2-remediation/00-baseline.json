@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "REMEDIATION_BASELINE",
+  "startingHead": "8c531157d6d0240f1f14c86bece5dc1f9fb24fe0",
+  "architectureDecisionCommitInAncestry": true,
+  "phase3f2ProductionFreezeSha": "00f49ac2d451fb41ca25b7e255422170c654f415",
+  "phase3f2FinalEvidenceHead": "1711ee8",
+  "gitStatusAtBaseline": "clean (no uncommitted changes)",
+  "typeScriptBaseline": {
+    "exitCode": 1,
+    "preExistingErrors": [
+      "tests/foundation-audit/cascade-and-concurrency.test.ts(140,7): TS2783 'sectionRef' specified more than once",
+      "tests/foundation-audit/cascade-and-concurrency.test.ts(143,7): TS2783 'charStart' specified more than once",
+      "tests/foundation-audit/discovery-fault-injection.test.ts(58,45): TS2339 Property 'sectionRef' does not exist on type 'DiscoveredCandidate'",
+      "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts(26,5): TS2783 'sectionRef' specified more than once",
+      "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts(27,5): TS2783 'heading' specified more than once",
+      "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts(30,5): TS2783 'charStart' specified more than once"
+    ],
+    "classification": "PRE_EXISTING_UNRELATED_FAILURE - all 6 errors are in test files unrelated to semantic-compiler or package-graph modules, predate this remediation session, and are not touched by Units A or B. Not repaired in this session per instruction not to silently fix unrelated failures."
+  },
+  "lintBaseline": {
+    "exitCode": 1,
+    "preExistingErrors": [
+      "tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169:5 - Definition for rule '@typescript-eslint/no-var-requires' was not found"
+    ],
+    "classification": "PRE_EXISTING_UNRELATED_FAILURE - an eslint config/rule-registration issue in a test file, unrelated to this remediation's scope. Not repaired in this session."
+  },
+  "fullTestSuiteBaseline": {
+    "run1": { "testFiles": "4 failed | 274 passed (278)", "tests": "4 failed | 3039 passed (3043)" },
+    "run2": { "testFiles": "3 failed | 275 passed (278)", "tests": "3 failed | 3040 passed (3043)" },
+    "failuresObserved": [
+      {
+        "test": "tests/contract-model/architecture-proposal-node-identity.test.ts > ... no new directory was created under tests/fixtures/unseen-packages/",
+        "classification": "PRE_EXISTING_UNRELATED_FAILURE - this assertion predates Phase 3F.2 and asserts no new unseen-package directory exists beyond DSGR/FWRG/LSB/CONMED. Phase 3F.2's own already-committed work legitimately added tests/fixtures/unseen-packages/phase-3f2-riot-unseen-run/ and phase-3f2-riot-resume-run/, which this assertion was never updated to account for. Not caused by, and out of scope for, this remediation session.",
+        "consistentAcrossRuns": true
+      },
+      {
+        "test": "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts > ... no new package directory was created under tests/fixtures/unseen-packages/",
+        "classification": "PRE_EXISTING_UNRELATED_FAILURE - same root cause as above (Riot fixtures legitimately added in Phase 3F.2, assertion not updated).",
+        "consistentAcrossRuns": true
+      },
+      {
+        "test": "tests/foundation-audit/cache-invalidation-audit.test.ts > ... STRUCTURAL_INDEX_VERSION bump ... now correctly forces recomputation",
+        "classification": "PRE_EXISTING_UNRELATED_FAILURE - unrelated to semantic-compiler/package-graph modules, present before any remediation change.",
+        "consistentAcrossRuns": true
+      },
+      {
+        "test": "tests/foundation-audit/repro-connection-race.test.ts > N concurrent first-time calls should all succeed and converge on one row",
+        "classification": "FLAKY - failed in run 1, passed in run 2 with no code change in between. A concurrency-race test of DB connection upsert logic, unrelated to this remediation's scope.",
+        "consistentAcrossRuns": false
+      }
+    ]
+  },
+  "testDbIsolation": "Local Postgres instance (service postgresql), single shared dev database used by the existing test suite's own established convention (matches how all prior phases in this session ran tests) - no new database created, no destructive prisma migrate workflow used, no shared-Postgres migration executed this session.",
+  "noSilentRepairPolicy": "All 4 observed baseline failures (1 flaky, 3 consistent-but-unrelated) are classified above and will be re-checked, not silently fixed, after Unit A/B implementation to confirm no NEW failures were introduced beyond this known baseline."
+}
