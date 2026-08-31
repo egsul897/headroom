@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "phase": "3F.2 - Second Genuinely Unseen Whole-Package Validation",
+  "recordedAt": "2026-08-31T16:00:00Z",
+  "exactHead": "00f49ac2d451fb41ca25b7e255422170c654f415",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "gitStatus": "clean (no untracked or modified files at session start)",
+  "productionTreeHashes": {
+    "lib": "02ec3398923c494264dc99b2410a749cd3512fd3",
+    "app": "7b6172c09878f60235cdebcb5b5addeab1f15c12",
+    "prisma": "2669c503a0ba718cbc4c7d9ad3ebbf795febf4e4"
+  },
+  "prismaMigrationStatus": "30 migrations found in prisma/migrations. Database schema is up to date (against local disposable Postgres 16 cluster started this session, empty of prior application data beyond schema).",
+  "testBaseline": {
+    "testFileCount": 275,
+    "note": "Full regression suite (vitest/tsc/eslint/build/goldens) was last run and passed at the end of the immediately preceding closed phases (3F.1-final, HAD, OPEN2-TC, OPEN2-FDP) against this same HEAD lineage. It will be re-run in full as part of this phase's own §26 known-package regression / final gate computation, not re-run redundantly here at baseline."
+  },
+  "databaseIdentity": {
+    "server": "localhost:5432",
+    "cluster": "local disposable PostgreSQL 16 (pg_lsclusters: 16/main, was down at session start, started via `service postgresql start` for this session only)",
+    "database": "headroom (schema public) - the standard dev/test database from DATABASE_URL in .env",
+    "note": "Per governing spec S9, this phase's own unseen-package execution will NOT write into shared/persistent regression company records. It will use a dedicated, uniquely-named company/tenant identifier (see 06-package-manifest.json once written) so its rows are trivially isolable from - and harmless to - any other data in this database. No `prisma migrate dev` will be run against this database; only `prisma migrate deploy`/`migrate status` (already-applied migrations, no schema changes needed for this phase)."
+  },
+  "testIsolationConfiguration": {
+    "existingInfrastructure": ["lib/testing/disposable-db.ts", "lib/testing/ephemeral-db.ts", "tests/infrastructure/db-isolation-adversarial.test.ts", "scripts/check-destructive-db-patterns.ts"],
+    "disposition": "This phase's live pipeline execution will run as a standalone script (following the scripts/phase-3f-first-blind-run.ts precedent from Phase 3F) writing only to rows scoped under a fresh, unique companyId/packageKey/instrumentKey - never touching FWRG/LSB/CONMED/DSGR/Coherent/Matthews rows and never running a destructive or broad cleanup command."
+  },
+  "gatewayProviderModel": {
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "credentialSource": ".env's commented-out AI_GATEWAY_API_KEY line, injected process-locally only per this session's established discipline - never written to any file."
+  },
+  "availableGatewayBudget": "Confirmed restored and working as of the immediately preceding phase (OPEN-4 resume): a live probe and a real 22-call run both succeeded (docs/open4-final-real-model-holdout/11-provider-precondition.json, 12-real-model-results.json). A fresh tiny probe will still be run per this phase's own §1 requirement before any expensive execution.",
+  "existingKnownPackageFixtureState": {
+    "knownPackages": ["FWRG (First Watch Restaurant Group)", "LSB (LSB Industries)", "CONMED", "DSGR (Distribution Solutions Group)", "Coherent Corp (Company A)", "Matthews International (Company B)"],
+    "fixtureLocations": ["tests/fixtures/unseen-packages/fwrg-*", "tests/fixtures/unseen-packages/lsb-*", "tests/fixtures/unseen-packages/conmed-*", "tests/fixtures/unseen-packages/dsgr-*"],
+    "disposition": "None of these will be modified. §26's known-package regression will run their existing read-only regression checks unchanged for comparison purposes only."
+  }
+}
