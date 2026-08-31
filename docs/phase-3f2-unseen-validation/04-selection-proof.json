@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SELECTION_PROOF",
+  "algorithm": "SHA256(freezeSha + sortedCandidateIssuerIdentifiers + fixedSelectionSalt), interpreted as a big-endian integer mod poolSize, giving a zero-based index into the pool sorted alphabetically by ticker.",
+  "inputs": {
+    "freezeSha": "00f49ac2d451fb41ca25b7e255422170c654f415",
+    "sortedCandidateIssuerIdentifiers": "ASTH,BHE,CACI,FANG,KTB,LEA,REZI,RIOT,SSD,UEIC",
+    "selectionSalt": "PHASE_3F_2_SELECTION_SALT_v1",
+    "combinedString": "00f49ac2d451fb41ca25b7e255422170c654f415ASTH,BHE,CACI,FANG,KTB,LEA,REZI,RIOT,SSD,UEICPHASE_3F_2_SELECTION_SALT_v1"
+  },
+  "resultingHash": "6014655c55b3044480256d8b9ca6b4764921a63a04af4f6cfbf0c53c1782f7af",
+  "poolSize": 10,
+  "hashModPoolSize": 7,
+  "poolSortedIndexed": ["ASTH(0)", "BHE(1)", "CACI(2)", "FANG(3)", "KTB(4)", "LEA(5)", "REZI(6)", "RIOT(7)", "SSD(8)", "UEIC(9)"],
+  "selectedTicker": "RIOT",
+  "selectedIssuer": "Riot Platforms, Inc.",
+  "computationMethod": "python3 hashlib.sha256(combinedString.encode()).hexdigest(); int(hexdigest, 16) % 10",
+  "postSelectionEligibilityConfirmation": {
+    "note": "After the hash pointed to RIOT, per S4-S5 discipline title-block-only reads were made on RIOT's own exhibit documents (never covenant/operative text) to confirm document TYPE and identify the amendment chain, exactly mirroring the Phase 3F precedent's own step 4.",
+    "documentsConfirmedByTitleBlockOnly": [
+      { "date": "2025-04-22", "title": "CREDIT AGREEMENT", "parties": "Riot Platforms, Inc. (Borrower) / Coinbase Credit, Inc. (Lender/Administrative Agent/Collateral Agent)", "amount": "$100,000,000", "relation": "original base agreement" },
+      { "date": "2025-05-19", "title": "AMENDED AND RESTATED CREDIT AGREEMENT", "parties": "same", "amount": "$200,000,000", "relation": "amends and restates the 2025-04-22 Credit Agreement (the 'Existing Credit Agreement')" },
+      { "date": "2026-04-21", "title": "Second Amended and Restated Credit Agreement", "parties": "same", "amount": "$200,000,000", "relation": "amends and restates the 2025-05-19 Amended and Restated Credit Agreement" }
+    ],
+    "eligibilityAssessment": "Genuine 3-document base+amendment-and-restatement+second-amendment-and-restatement chain between the same two parties, same facility, novel domain (crypto-asset-collateralized lending from Coinbase Credit, Inc.) never previously touched by this codebase in any phase. Meets S4.B (multi-document, at the low end of the 3-6 range) and is expected to meet S4.C (meaningful complexity - a $200M secured credit facility of this kind virtually always carries negative covenants, defined terms, baskets, reporting obligations, and cross-references; confirmed during source acquisition, not assumed)."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SOURCE_ACQUISITION",
+  "method": "Each document fetched live from www.sec.gov via HTTPS GET (curl, compliant User-Agent identifying this research agent and a contact email, per SEC EDGAR's fair-access policy). No manual editing, cleaning, or drafting-quirk correction was applied to the raw bytes.",
+  "preservation": {
+    "rawSourceDirectory": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/raw-html/",
+    "extractedTextDirectory": "tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/",
+    "rule": "raw-html/ holds each document's exact bytes as served by sec.gov (verified byte-for-byte size match against the filing index page's own reported exhibit size for all 3 documents - see 06-package-manifest.json). extracted-text/ holds a plain-text extraction of the FULL document (HTML tags stripped, entities decoded, whitespace normalized to preserve paragraph/line breaks) - the whole document, never a hand-selected article or section."
+  },
+  "extractionMethod": "Custom Node.js script (script-tags and style-tags dropped; block-level/line-break tags converted to newlines; remaining tags stripped; numeric and named HTML entities decoded; whitespace normalized per line, paragraph breaks preserved). No cheerio/html-to-text package was available in this environment's node_modules, so a purpose-built regex-based stripper was used instead - functionally equivalent to the DSGR fixture's own documented extraction methodology (tests/fixtures/unseen-packages/dsgr-2022-2025-credit-facility/README.md).",
+  "extractionAnomalies": [
+    "None material. A structural spot-check (Section-number density, Article/Definitions/Covenant/Lien/Default keyword counts, loan-to-value/margin-call mechanic detection) confirms coherent, complete legal text was extracted from all 3 documents - see 06-package-manifest.json's sizeDisclosure field for the full check.",
+    "The source HTML uses non-breaking-space and zero-width-space characters between some Table-of-Contents rows, which the extraction renders as isolated blank-ish lines in the Table of Contents section only (cosmetic - the operative agreement text itself, Article I onward, is unaffected)."
+  ],
+  "byteVerification": [
+    { "documentId": "doc-a", "expectedFromFilingIndex": 534723, "actualDownloaded": 534723, "match": true },
+    { "documentId": "doc-b", "expectedFromFilingIndex": 551112, "actualDownloaded": 551112, "match": true },
+    { "documentId": "doc-c", "expectedFromFilingIndex": 625038, "actualDownloaded": 625038, "match": true }
+  ],
+  "acquisitionDate": "2026-08-31",
+  "readBeyondTitleBlockPriorToAcquisition": false,
+  "note": "Per the governing spec S8, no covenant/basket/definition/condition text was read manually beyond the title-block reads already disclosed in 04-selection-proof.json before these full documents were downloaded. The structural spot-check above (keyword counts via grep, not manual reading) was performed AFTER acquisition, on the full extracted text, solely to confirm eligibility criterion C (meaningful complexity) - it did not select, filter, or otherwise curate which sections the production pipeline will see."
+}
