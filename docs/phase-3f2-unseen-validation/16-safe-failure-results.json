@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SAFE_FAILURE_RESULTS",
+  "status": "NOT_EVALUABLE_AT_SCALE",
+  "reason": "The safe-failure/dangerous-silence metrics (material NO_CREDIT count, specifically-surfaced count, dangerous silent omission count/rate) require a real Headroom answer (compiled+verified, or an explicit review-required/failed state) for each candidate that could in principle correspond to a ground-truth claim. Only 3 of 755 eligible candidates ever received a real semantic attempt this run - the remaining 752 were never reached (12 hit an environment block within the pre-declared 15-candidate cap; the other 740 eligible candidates beyond the cap were never even attempted, per the pre-committed compile-cap design). Computing a 'dangerous silent omission rate' from n=3 against a 184-claim ground truth population would produce a number with no statistical meaning and could mislead in either direction.",
+  "whatIsKnown": [
+    "For the 3 candidates that WERE attempted: zero reached a confident VERIFIED state, and zero were silently marked VERIFIED despite the infrastructure fault - the safe-failure discipline held for every attempted candidate (see 15-verification-results.json).",
+    "The system's package-level coverage audit (Stage 8, stage8-coverage-result.json) correctly reported the package as PACKAGE_SEMANTICALLY_INCOMPLETE with large 'dangerous unaccounted' counts across all 3 documents - this is an accurate, honest reflection of the fact that almost nothing was compiled, not a false claim of completeness. The system did not silently present an incomplete run as a complete one."
+  ],
+  "dangerousSilentOmissionCount": "NOT_EVALUABLE",
+  "materialClaimSpecificSafeFailureRecall": "NOT_EVALUABLE",
+  "hardGatesThatAreEvaluableRegardless": {
+    "criticalDangerousSilentOmissions": "NOT_EVALUABLE (insufficient sample) - but zero were observed among the 3 attempted",
+    "persistedFalseVerifiedOrFalseTrustedMaterialClaims": 0,
+    "staleSupersededAsCurrentTrustedTruth": "N/A - no provisions reached a persisted trusted state",
+    "crossTenantContamination": 0
+  }
+}

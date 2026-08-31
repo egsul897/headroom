@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PRODUCTION_FREEZE",
+  "freezeSha": "00f49ac2d451fb41ca25b7e255422170c654f415",
+  "providerProbe": {
+    "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages, model anthropic/claude-sonnet-5, max_tokens 8, message 'Say OK.'), credential injected as a process-local environment variable for a single command invocation only - never written to any file.",
+    "result": "HTTP 200. Real model response 'OK.'. input_tokens=11, output_tokens=5. Gateway resolved provider: claudeaws (system credential). Real cost: $0.000072.",
+    "disposition": "PROVIDER_ACCESS_CONFIRMED - proceeding."
+  },
+  "frozenPaths": ["lib/**", "app/**", "prisma/**"],
+  "frozenLogic": [
+    "Compiler prompts (lib/contract-model/compiler/semantic/*.ts, structure/structural-index/structural-definitions/structural-references)",
+    "Verifier prompts (lib/contract-model/compiler/semantic-verification/*.ts)",
+    "Structural classifier prompt (lib/contract-model/compiler/document-classifier.ts, package-graph/*)",
+    "Condition-suspicion prompt (lib/contract-model/compiler/semantic-verification/condition-suspicion-classifier.ts, condition-suspicion.ts)",
+    "Evaluator/matcher logic (lib/contract-model/evaluation/**, semantic-coverage/**)",
+    "Scoring thresholds (evaluation config constants)",
+    "Materiality rules (lib/contract-model/compiler/materiality*.ts and callers)",
+    "Discovery configuration (lib/contract-model/compiler/discovery/**)",
+    "Package graph logic (lib/contract-model/compiler/package-graph/**)",
+    "Amendment logic (lib/contract-model/compiler/amendment/**)"
+  ],
+  "productionTreeHashesAtFreeze": {
+    "lib": "02ec3398923c494264dc99b2410a749cd3512fd3",
+    "app": "7b6172c09878f60235cdebcb5b5addeab1f15c12",
+    "prisma": "2669c503a0ba718cbc4c7d9ad3ebbf795febf4e4"
+  },
+  "rule": "From this point until the final verdict (30-final-verdict.json) is written, NO PRODUCTION MODIFICATIONS to lib/**, app/**, or prisma/** are permitted, regardless of what the unseen package's results show. Any defect the package reveals is DOCUMENTED (28-findings.json), never repaired during this validation run. Verified at the end via `git diff 00f49ac HEAD -- 'lib/**' 'app/**' 'prisma/**'` (27-production-freeze-proof.json); a non-empty diff invalidates the run per governing spec S27 (PHASE_3F_2_VALIDATION_CONTAMINATED)."
+}

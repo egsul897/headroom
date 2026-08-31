@@ -1,0 +1,348 @@
+[
+  {
+    "candidateRef": "discovery-candidate:4f6d049986c629e4ce8ec916",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:4f6d049986c629e4ce8ec916",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:4f6d049986c629e4ce8ec916",
+      "items": [
+        {
+          "itemId": "76f9995f65cd1d68594939253975eeea9f822e854b4b30ae675f6a4093047a12",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:927630b14658ae68b91f5e44",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.03",
+          "sourceExcerpt": "Section 2.03.\n\nRepayment and Prepayment\n\n18\n\n"
+        },
+        {
+          "itemId": "594346ff2336ed63ea779ff7de2e30b557c66b8c91cba0313d6de60a6f43ba78",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:927630b14658ae68b91f5e44",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 2.03 'Repayment and Prepayment' - substantive repayment/prepayment mechanics (e.g. mandatory/voluntary prepayment triggers, amounts, application of proceeds)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.03",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:4f6d049986c629e4ce8ec916",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-08-31T16:48:34.845Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:a8260b6951c5e76fea4df760",
+    "status": "VERIFICATION_FAILED",
+    "findings": [
+      {
+        "findingId": "d0da15500e6ace85bb6ebbef1296cad6d82d5a4fd92da0fe5fe0911b1936d084",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "discovery-candidate:a8260b6951c5e76fea4df760",
+        "ruleOrDefinitionId": "ir-definition:0564252975cd1aaa7a71cf79",
+        "irPath": "definitions[0].calculationExpression",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "2.10",
+        "proposedIrEvidence": "definitions[0].calculationExpression=100000000",
+        "verifierReasoning": "compiled IR AMOUNT value 100000000 at definitions[0].calculationExpression has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 100000000 at definitions[0].calculationExpression has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-08-31T16:48:34.850Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:a8260b6951c5e76fea4df760",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:a8260b6951c5e76fea4df760",
+      "items": [
+        {
+          "itemId": "444e4f4f19b66de5841257edeaf206cb49425fc1dda2bbb8eb330cf1167938fe",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:ad552db241dda89a80ed54ac",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(a)",
+          "sourceExcerpt": "The Lender shall maintain in accordance with its usual practice an account or accounts evidencing the indebtedness of the Borrower to the Lender resulting from the Loan owing to the Lender from time to time, including the amounts of principal and interest payable and paid to the Lender from time to time hereunder in respect of the Loan."
+        },
+        {
+          "itemId": "ce463fbf79360bfced4be84f61849ef2b246d8e32852ea714c27c6cefebd50e6",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:ad552db241dda89a80ed54ac",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(a)",
+          "sourceExcerpt": "The Lender shall maintain in accordance with its usual practice an account or accounts evidencing the indebtedness of the Borrower to the Lender resulting from the Loan owing to the Lender from time to time, including the amounts of principal and interest payable and paid to the Lender from time to time hereunder in respect of the Loan."
+        },
+        {
+          "itemId": "9774347a4b7bd372319136fbcc91053a233ef2a8a4d363d3d7074895caf1bd20",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:d7c01d77d5b7c5ffac80c96e",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(a)",
+          "sourceExcerpt": "The Borrower shall execute and deliver to the Lender a Promissory Note payable to the Lender in a principal amount up to the Commitment of the Lender as specified in Section 2.01."
+        },
+        {
+          "itemId": "53342c403f80d335957ac5a0a87062e631de602b205457566ba5f19a42014433",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:d7c01d77d5b7c5ffac80c96e",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(a)",
+          "sourceExcerpt": "The Borrower shall execute and deliver to the Lender a Promissory Note payable to the Lender in a principal amount up to the Commitment of the Lender as specified in Section 2.01."
+        },
+        {
+          "itemId": "b62aa0be3390a27d5fd4b0d92e9832a19969ffabb57744ded2810f5ddfc901d0",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:d7c01d77d5b7c5ffac80c96e",
+          "irPath": "rules[1].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(a)",
+          "sourceExcerpt": "The Borrower shall execute and deliver to the Lender a Promissory Note payable to the Lender in a principal amount up to the Commitment of the Lender as specified in Section 2.01."
+        },
+        {
+          "itemId": "03badad480a2a0bf572f6376ad3e49d235a35c48d32c73efe44e8bc5c3a620fc",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:d7c01d77d5b7c5ffac80c96e",
+          "irPath": "rules[1].capacityExpression",
+          "numericValue": null,
+          "textValue": "Commitment",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "228447b45773f90229a82c3f908bd2e1c030dd16cece5257e3caf9a78c2b8170",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:506c3835f782c22eb392ecb8",
+          "irPath": "rules[2].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(b)",
+          "sourceExcerpt": "Entries made in good faith by the Lender in its account or accounts pursuant to subsection (a) above, shall be prima facie evidence of the amount of principal and interest due and payable or to become due and payable from the Borrower to the Lender, under this Agreement, absent manifest error; provided, however, that the failure of the Lender to make an entry, or any finding that an entry is incorrect, in such account or accounts shall not limit or otherwise affect the obligations of the Borrower under this Agreement."
+        },
+        {
+          "itemId": "2b002cfffc6cc352b26a8a0e1abe67873e92b206fde67027a3d2a7fc2176486d",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:506c3835f782c22eb392ecb8",
+          "irPath": "rules[2].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(b)",
+          "sourceExcerpt": "Entries made in good faith by the Lender in its account or accounts pursuant to subsection (a) above, shall be prima facie evidence of the amount of principal and interest due and payable or to become due and payable from the Borrower to the Lender, under this Agreement, absent manifest error; provided, however, that the failure of the Lender to make an entry, or any finding that an entry is incorrect, in such account or accounts shall not limit or otherwise affect the obligations of the Borrower under this Agreement."
+        },
+        {
+          "itemId": "aeb85b87c64d8a09f393411493fe0f186895dea844f8a619f36d92f31eaf8d8b",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:506c3835f782c22eb392ecb8",
+          "irPath": "rules[2].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(b)",
+          "sourceExcerpt": "Entries made in good faith by the Lender in its account or accounts pursuant to subsection (a) above, shall be prima facie evidence of the amount of principal and interest due and payable or to become due and payable from the Borrower to the Lender, under this Agreement, absent manifest error; provided, however, that the failure of the Lender to make an entry, or any finding that an entry is incorrect, in such account or accounts shall not limit or otherwise affect the obligations of the Borrower under this Agreement."
+        },
+        {
+          "itemId": "996be3796f336ce76633eb60b91be054d65409136f0ac4373adff1380679512c",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:506c3835f782c22eb392ecb8",
+          "irPath": "rules[2].conditions[0]",
+          "numericValue": null,
+          "textValue": "Entries must be made in good faith by the Lender in the account(s) maintained under subsection (a), and are evidentiary only absent manifest error.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(b)",
+          "sourceExcerpt": "Entries made in good faith by the Lender in its account or accounts pursuant to subsection (a) above, shall be prima facie evidence of the amount of principal and interest due and payable ... absent manifest error"
+        },
+        {
+          "itemId": "2402d54736cc3ee977cb6460568e791ec7eef2d1b13c20efae322284e9e9cb50",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:506c3835f782c22eb392ecb8",
+          "irPath": "rules[2].exceptions[0]",
+          "numericValue": null,
+          "textValue": "Failure of the Lender to make an entry, or any finding that an entry is incorrect, does not limit or otherwise affect the Borrower's underlying payment obligations under the Agreement.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10(b)",
+          "sourceExcerpt": "provided, however, that the failure of the Lender to make an entry, or any finding that an entry is incorrect, in such account or accounts shall not limit or otherwise affect the obligations of the Borrower under this Agreement."
+        },
+        {
+          "itemId": "97ccafb52df9a6b2b31e6d892e675653d3f729e8723827851b45a54518c2402e",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-definition:0564252975cd1aaa7a71cf79",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": 100000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.10",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "e63113a2f1f3926d41935e8eceebbce54094a5786d88fa160f73d1d76b0f29fa",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:838070734ce083fcea1f1d6c",
+          "irPath": "definitions[1].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Loan",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 3,
+      "definitionCount": 2,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:a8260b6951c5e76fea4df760",
+      "items": [
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "97ccafb52df9a6b2b31e6d892e675653d3f729e8723827851b45a54518c2402e",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-definition:0564252975cd1aaa7a71cf79",
+              "irPath": "definitions[0].calculationExpression",
+              "numericValue": 100000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§2.10",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 100000000 at definitions[0].calculationExpression has no matching source-side figure"
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-08-31T16:48:35.024Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:30ad2e5ca78d13a74b8aa22b",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:30ad2e5ca78d13a74b8aa22b",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:30ad2e5ca78d13a74b8aa22b",
+      "items": [
+        {
+          "itemId": "0056108cef3f93f05c243a37e5b0a3a27d8473b61e0eb792d111419022a35d13",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:9cf0ea9a8bc02fe5ed26daaf",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.13",
+          "sourceExcerpt": "If any provision of this Agreement is found by a court to be invalid or unenforceable, to the fullest extent permitted by applicable law, each of the parties hereto agrees that such invalidity or unenforceability will not impair the validity or enforceability of any other provision hereof."
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:30ad2e5ca78d13a74b8aa22b",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": {
+      "status": "UNCERTAIN",
+      "evidence": [],
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+      "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+      "telemetry": {
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "stage": "condition_suspicion_classification",
+        "timestamp": "2026-08-31T16:48:35.026Z",
+        "inputTokens": null,
+        "outputTokens": null,
+        "cachedInputTokens": null,
+        "cacheCreationInputTokens": null,
+        "attemptCount": 1,
+        "retryCount": 0,
+        "rateLimitFailures": 0,
+        "latencyMs": 193,
+        "calculatedCostUsd": null,
+        "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+      },
+      "failed": true,
+      "failureDetail": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}",
+      "isSynthetic": false,
+      "fromCache": false
+    },
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-08-31T16:48:35.530Z"
+  }
+]

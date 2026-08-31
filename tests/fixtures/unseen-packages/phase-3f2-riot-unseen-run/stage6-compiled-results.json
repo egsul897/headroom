@@ -1,0 +1,688 @@
+[
+  {
+    "candidateRef": "discovery-candidate:4f6d049986c629e4ce8ec916",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "2.03",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:927630b14658ae68b91f5e44",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.03",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "Section 2.03.\n\nRepayment and Prepayment\n\n18\n\n",
+          "semanticDescription": "Section 2.03 'Repayment and Prepayment' - substantive repayment/prepayment mechanics (e.g. mandatory/voluntary prepayment triggers, amounts, application of proceeds)",
+          "reason": "The only retrievable evidence for this section reference is a table-of-contents-style fragment ('Section 2.03. Repayment and Prepayment' followed by a page number), containing no operative economic terms. getOperativeProvision refused to resolve 'Section 2.03' because the reference matches 2 distinct physical locations in the document (consistent with a TOC entry versus the real section header), and no nodeId was available in the supplied context bundle item to disambiguate via getChildren/getParentClause/getSiblingClauses or a scoped getReferencedProvision call. getReferencedProvision without a fromNodeId also failed to resolve the absolute reference. No further tool in the available set can resolve a bare, ambiguous section-number match without a nodeId anchor.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2.03",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:dd6ff32f933a5a8ae3c9c56c"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Retrieved source text for the cited section is only a heading/table-of-contents fragment, not the operative provision body.",
+          "getOperativeProvision reported the section reference is ambiguous across 2 physical locations in the document and refused to serve a confident answer.",
+          "No nodeId was available to disambiguate via structural navigation tools (getChildren/getParentClause/getSiblingClauses) or a scoped getReferencedProvision call.",
+          "getReferencedProvision could not resolve the absolute reference 'Section 2.03' either.",
+          "Numerous unresolved dependencies in the supplied context (REFERENCED_DOCUMENT_ABSENT across 2 candidate credit agreement documents, UNRESOLVED_DEFINED_TERM, AMBIGUOUS_RELATIVE_REFERENCE) indicate this instrument's evidence package is materially incomplete for this section.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "The only retrievable evidence for this section reference is a table-of-contents-style fragment ('Section 2.03. Repayment and Prepayment' followed by a page number), containing no operative economic terms. getOperativeProvision refused to resolve 'Section 2.03' because the reference matches 2 distinct physical locations in the document (consistent with a TOC entry versus the real section header), and no nodeId was available in the supplied context bundle item to disambiguate via getChildren/getParentClause/getSiblingClauses or a scoped getReferencedProvision call. getReferencedProvision without a fromNodeId also failed to resolve the absolute reference. No further tool in the available set can resolve a bare, ambiguous section-number match without a nodeId anchor."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.03",
+          "excerpt": "Section 2.03.\n\nRepayment and Prepayment\n\n18\n\n"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:46:28.364Z",
+      "inputTokens": 148654,
+      "outputTokens": 4862,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 8,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 64626,
+      "calculatedCostUsd": 0.34592799999999996
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:a8260b6951c5e76fea4df760",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "2.10",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:ad552db241dda89a80ed54ac",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.10(a)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Plain administrative recordkeeping obligation on the Lender, fully stated in the source text with no quantitative or conditional component.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.10(a)",
+          "excerpt": "The Lender shall maintain in accordance with its usual practice an account or accounts evidencing the indebtedness of the Borrower to the Lender resulting from the Loan owing to the Lender from time to time, including the amounts of principal and interest payable and paid to the Lender from time to time hereunder in respect of the Loan."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:d7c01d77d5b7c5ffac80c96e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.10(a)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "DEFINED_TERM_REFERENCE",
+          "type": "MONEY",
+          "termName": "Commitment",
+          "companyId": "riot-phase-3f2-unseen",
+          "instrumentKey": "riot-coinbase-credit-facility-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:e6faf2de25cd465c0f2b3dc7"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The obligation and its cap (up to the Commitment) are both fully stated; the Commitment definition and the Section 2.01 cross-reference were both available in the context bundle, confirming the cap's meaning.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"2.01\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[1].targetRef \"Commitment\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.10(a)",
+          "excerpt": "The Borrower shall execute and deliver to the Lender a Promissory Note payable to the Lender in a principal amount up to the Commitment of the Lender as specified in Section 2.01."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:506c3835f782c22eb392ecb8",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.10(b)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r3].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Entries must be made in good faith by the Lender in the account(s) maintained under subsection (a), and are evidentiary only absent manifest error.",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.10(b)",
+              "excerpt": "Entries made in good faith by the Lender in its account or accounts pursuant to subsection (a) above, shall be prima facie evidence of the amount of principal and interest due and payable ... absent manifest error"
+            }
+          }
+        ],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r3].exception[0]",
+            "appliesToRuleId": "ir-rule:506c3835f782c22eb392ecb8",
+            "description": "Failure of the Lender to make an entry, or any finding that an entry is incorrect, does not limit or otherwise affect the Borrower's underlying payment obligations under the Agreement.",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.10(b)",
+              "excerpt": "provided, however, that the failure of the Lender to make an entry, or any finding that an entry is incorrect, in such account or accounts shall not limit or otherwise affect the obligations of the Borrower under this Agreement."
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The full text of the evidentiary presumption and its qualifying proviso were both available and are non-quantitative, so no external dependency or amount was needed to represent them faithfully.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].targetRef \"2.10(a)\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.10(b)",
+          "excerpt": "Entries made in good faith by the Lender in its account or accounts pursuant to subsection (a) above, shall be prima facie evidence of the amount of principal and interest due and payable or to become due and payable from the Borrower to the Lender, under this Agreement, absent manifest error; provided, however, that the failure of the Lender to make an entry, or any finding that an entry is incorrect, in such account or accounts shall not limit or otherwise affect the obligations of the Borrower under this Agreement."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:0564252975cd1aaa7a71cf79",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Commitment",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 100000000,
+          "currency": "USD",
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2.10",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:67ee5907b8e39004e0fb1c9f"
+        },
+        "dependsOnTerms": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Definition text fully provided in context bundle; fixed dollar amount subject to cancellation/reduction/transfer."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.10",
+          "excerpt": "\"Commitment\" means U.S.$100,000,000, to the extent not cancelled, reduced or transferred by the Lender under this Agreement."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:838070734ce083fcea1f1d6c",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Promissory Note",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Loan"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Definition text fully provided; not itself a dollar/ratio calculation, so no calculationExpression required."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.10",
+          "excerpt": "\"Promissory Note\" means the promissory note of the Borrower payable to the Lender, in the form of Exhibit A hereto, evidencing the aggregate outstanding amount of principal and accrued but unpaid interest owing by the Borrower to the Lender resulting from the Loan made by the Lender."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:47:43.051Z",
+      "inputTokens": 19602,
+      "outputTokens": 8245,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 74682,
+      "calculatedCostUsd": 0.12165400000000001
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:30ad2e5ca78d13a74b8aa22b",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.13",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:9cf0ea9a8bc02fe5ed26daaf",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.13",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Section 7.13 ('Severability') is a standard boilerplate savings clause: if any provision is found invalid/unenforceable, the remainder of the Agreement remains valid and enforceable.",
+          "It contains no quantitative permission, prohibition, ratio test, or other basket/covenant economics that map onto the IR's capacity primitives - it is purely a contract-mechanics clause, so no capacityExpression, action, or entity scope applies.",
+          "The provision has no recorded amendment history and the operative text in the confirmed-current context item was used as-is.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.13",
+          "excerpt": "If any provision of this Agreement is found by a court to be invalid or unenforceable, to the fullest extent permitted by applicable law, each of the parties hereto agrees that such invalidity or unenforceability will not impair the validity or enforceability of any other provision hereof."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:30.881Z",
+      "inputTokens": 128406,
+      "outputTokens": 4014,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 3,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 47824,
+      "calculatedCostUsd": 0.296952
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:b33c341e3169731f00d02245",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:31.318Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 432,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:3d899fd9a46e7fe10cc830c6",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:31.659Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 339,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:379e72cd746b97b71477d4d0",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.01",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:32.089Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 426,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:4e2a42b89a73d72c0c2a4ac2",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.03",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:32.411Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 320,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:d96c162b951f3b4cdd24499e",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.04",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:32.887Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 474,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:7c8eee1b49d1cdfcd14d9e4b",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.04",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:33.181Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 292,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:f3e879b84ba8439a4ccbccf1",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "1.04",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:33.432Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 247,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:d2e278e3c9028664ff00bfaf",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "2.01(a)",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:33.736Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 301,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:973ffb57ac55b8e64b98b4c2",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "2.01(b)",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:33.964Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 226,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:d83cecb778225526591c33e3",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "2.01(c)",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:34.213Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 246,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:28bce3fd7c934936387ebed8",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "2.01",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:34.446Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 232,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:9e687fe10a4afc8df2b686dc",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "2.02(a)",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-08-31T16:48:34.688Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 240,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  }
+]

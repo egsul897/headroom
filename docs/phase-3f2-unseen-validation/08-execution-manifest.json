@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "EXECUTION_MANIFEST",
+  "orchestrationScript": "scripts/phase-3f2-riot-unseen-run.ts (new, non-production script; frozen lib/**, app/**, prisma/** untouched)",
+  "companyId": "riot-phase-3f2-unseen",
+  "packageKey": "riot-2025-2026-coinbase-credit-facility",
+  "instrumentKey": "riot-coinbase-credit-facility-instrument",
+  "dbIsolation": "In-process compute only, no database writes - mirrors the Phase 3F first-blind-run precedent (scripts/phase-3f-first-blind-run.ts) exactly. No prisma migrate dev, no shared-DB mutation, no destructive cleanup. Company/package/instrument keys are unique to this run and do not collide with FWRG/LSB/CONMED/DSGR/Coherent/Matthews.",
+  "executionOrder": ["Phase 2A structural indexing", "Phase 2B discovery (real calls)", "Phase 2C package graph (deterministic)", "Phase 2D context retrieval (deterministic)", "Phase 2G amendment pipeline + operative state (bounded real calls)", "Phase 3B compilation (capped at 15 candidates, document-then-discovery-emission order, pre-committed before any results were seen)", "Phase 3C verification", "Phase 3E whole-package semantic coverage audit (Layers A/B only)"],
+  "noManualSelection": "No section, covenant, or definition was manually pointed to at any stage - the system's own discovery output determined what was compiled, in the pre-committed document-then-discovery-emission order with a pre-declared 15-candidate cap.",
+  "runOutcome": "COMPLETED_WITH_MID_RUN_ENVIRONMENT_BLOCK - Stages 1-5 fully completed with real results; Stage 6 compiled 3/15 candidates before the Vercel AI Gateway account hit HTTP 402 insufficient_funds; Stage 7 ran on those 3; Stage 8 ran on whatever was available (necessarily near-empty given Stage 6's truncation).",
+  "wallClockMs": 3075680,
+  "startedAt": "2026-08-31T15:57:45Z",
+  "finishedAt": "2026-08-31T16:48:36.357Z"
+}

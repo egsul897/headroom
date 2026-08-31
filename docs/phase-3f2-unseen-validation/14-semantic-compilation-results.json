@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SEMANTIC_COMPILATION_RESULTS",
+  "status": "ENVIRONMENT_BLOCKED_PARTWAY",
+  "compileCap": 15,
+  "eligibleCandidatePool": 755,
+  "attempted": 15,
+  "results": {
+    "REVIEW_REQUIRED": 3,
+    "FAILED_ENVIRONMENT_BLOCK": 12
+  },
+  "successfulCompiles": [
+    { "candidateRef": "discovery-candidate:4f6d049986c629e4ce8ec916", "status": "REVIEW_REQUIRED", "costUsd": 0.345928, "attemptCount": 8, "note": "Compiler needed 8 internal tool-use attempts to settle - conservative, ended in review-required rather than a confident IR, consistent with the architecture's safety-first design." },
+    { "candidateRef": "discovery-candidate:a8260b6951c5e76fea4df760", "status": "REVIEW_REQUIRED", "costUsd": 0.121654, "attemptCount": 1 },
+    { "candidateRef": "discovery-candidate:30ad2e5ca78d13a74b8aa22b", "status": "REVIEW_REQUIRED", "costUsd": 0.296952, "attemptCount": 3 }
+  ],
+  "environmentBlockedCompiles": {
+    "count": 12,
+    "errorVerbatim": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}",
+    "costPerAttempt": 0,
+    "candidateSections": ["doc-a::1.01", "doc-a::1.04", "doc-a::2.01(a)", "doc-a::2.01(b)", "doc-a::2.01(c)", "doc-a::2.01", "doc-a::2.02(a)", "and 5 more, all doc-a, sections 1.01-2.0x range"],
+    "significance": "This is a hard account-level funds exhaustion (rejected before any token billing), confirmed live by a post-run probe returning the identical error. It is NOT evidence of a compiler defect on these specific sections - none of them were ever actually attempted by the model."
+  },
+  "verdictOnCompilerBehaviorForTheThreeRealAttempts": "All 3 real, fully-paid compilation attempts resulted in REVIEW_REQUIRED rather than a confident compiled IR or an outright failure - i.e., the compiler chose conservative non-commitment on a genuinely novel covenant style (LTV/margin-call mechanics) rather than guessing. This is the exact 'safe failure over false confidence' behavior the governing architecture is designed to produce, though n=3 is far too small a sample to certify this as a general property of the compiler on this package."
+}

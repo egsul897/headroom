@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CONTAMINATION_CHECK",
+  "searchedTerms": ["Riot Platforms", "Coinbase Credit", "\\bRIOT\\b (word-boundary)", "0001167419 (CIK)"],
+  "searchScope": "Entire repository (Grep tool, case-insensitive, all file types), excluding this phase's own new artifact directory docs/phase-3f2-unseen-validation/",
+  "result": {
+    "hitFiles": ["docs/phase-3f-package-selection-log.md"],
+    "hitDetail": "Line 91 of that file: 'Archrock, LyondellBasell, Wayfair, Riot Platforms, Weyerhaeuser, Lear, ...' - part of Phase 3F's own explicitly-disclosed list of candidates whose company NAMES ONLY appeared in an unopened EDGAR search-results list during that phase's package selection, never inspected beyond the bare name (that same document's own text: 'were not inspected at all ... no content, no filing index, nothing beyond a bare company name in an unopened results list was ever read'). 'Coinbase Credit' and CIK 0001167419 do not appear anywhere in the repository."
+  },
+  "classification": "INCIDENTAL_REFERENCE",
+  "rationale": "A bare company name inside a disclosed, never-opened candidate list from a prior phase's own selection log is not substantive package-specific knowledge - no filing index, no document type, no covenant text, no CIK, no financial terms were ever read or recorded anywhere in this repository before this session. This is the exact class of mention Phase 3F's own precedent explicitly reasoned through and treated as non-disqualifying for DSGR's own selection. Per the governing spec S6, only CONTAMINATED (material package-specific knowledge already exists) requires rejection; INCIDENTAL_REFERENCE does not.",
+  "disposition": "ACCEPT - proceed with Riot Platforms, Inc. as the selected package."
+}

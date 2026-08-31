@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "VALIDATION_CONTRACT",
+  "phase": "3F.2 - Second Genuinely Unseen Whole-Package Validation",
+  "frozenAtSha": "00f49ac2d451fb41ca25b7e255422170c654f415",
+  "committedBeforePackageSelection": true,
+  "missionQuestion": "Can the current frozen Headroom contract-intelligence system process a second genuinely unseen, real-world, multi-document debt package and produce a trustworthy whole-package contract state without package-specific engineering?",
+  "phaseBoundary": {
+    "forbidden": [
+      "modifying production code based on the unseen package",
+      "adding package-specific regexes",
+      "adding issuer-specific aliases",
+      "adding covenant-specific special cases",
+      "modifying prompts after observing package results",
+      "altering semantic matching based on package outputs",
+      "changing evaluation thresholds after seeing results",
+      "manually telling the system which sections contain covenants",
+      "manually selecting only interesting provisions",
+      "hand-curating the package into an easier subset"
+    ],
+    "onDefect": "DOCUMENT IT (28-findings.json). Do not repair during the validation run."
+  },
+  "packageEligibility": {
+    "sourceRequirement": "Publicly available source documents, preferring SEC/EDGAR-filed documents or another authoritative public filing source.",
+    "documentCount": "Approximately 3-6 materially related debt documents, preferring some combination of: credit agreement, amendment(s), guaranty/security document, joinder, intercreditor/subordination agreement, refinancing/replacement agreement.",
+    "complexityRequirement": "Must contain negative covenants, affirmative/reporting obligations, defined terms, baskets/exceptions, financial or ratio concepts, cross-references, multiple covenant families, amendment effects or operative-state questions.",
+    "sizeTarget": "Roughly 300-1,000 aggregate pages where practical; large enough to test real generalization, not intentionally pathological.",
+    "excludedIssuers": [
+      "Coherent Corp. (COHR) - production reference Company A",
+      "Matthews International Corporation (MATW) - production reference Company B",
+      "CONMED Corporation (CNMD) - Phase 2F/2G unseen-package validation subject",
+      "First Watch Restaurant Group, Inc. (FWRG) - Phase 3A-3E unseen package 1",
+      "LSB Industries, Inc. (LXU) - Phase 3A-3E unseen package 2",
+      "Distribution Solutions Group, Inc. / Lawson Products (DSGR) - Phase 3F/3F.1 unseen package",
+      "Graphic Packaging Holding Co (GPK) - Phase 2F candidate pool, filing index inspected",
+      "Terex Corp (TEX) - Phase 2F candidate pool, filing index inspected",
+      "Petco Health & Wellness Company, Inc. (WOOF) - cross-document ontology stress test, covenant text read",
+      "TransDigm Inc./Group (TDG) - cross-document ontology stress test, covenant text read",
+      "Community Health Systems, Inc. (CYH) - cross-document ontology stress test, covenant text read",
+      "CommScope Inc./Vistance Networks (VISN) - cross-document ontology stress test, covenant text read"
+    ]
+  },
+  "selectionMethod": {
+    "poolSize": "At least 8 eligible issuers/packages, constructed BEFORE inspecting document substance beyond what is necessary to establish eligibility (title blocks/filing-index metadata only).",
+    "poolFields": ["issuer", "filing/document links", "filing dates", "approximate document count", "approximate page count", "package type"],
+    "algorithm": "SHA256(freezeSha + sortedCandidateIssuerIdentifiers + fixedSelectionSalt), interpreted as a big-endian integer mod poolSize, giving a zero-based index into the candidate pool sorted by the same canonical issuer-identifier ordering used in the hash input.",
+    "selectionSalt": "PHASE_3F_2_SELECTION_SALT_v1",
+    "recorded": ["candidate pool", "exact selection algorithm", "inputs", "resulting hash", "selected package"]
+  },
+  "contaminationCheck": {
+    "when": "After selection, before pipeline execution.",
+    "searchFor": ["issuer name", "ticker", "document titles", "distinctive agreement names", "borrower name", "obvious major subsidiary names"],
+    "classifications": ["CLEAN", "INCIDENTAL_REFERENCE", "CONTAMINATED"],
+    "onContaminated": "Reject the package and use the precommitted deterministic next-candidate rule (next index by the same hash-mod procedure, wrapping if necessary, skipping any already-rejected candidate) - never a manual replacement choice."
+  },
+  "requiredDocuments": "As acquired per the frozen package manifest (06-package-manifest.json) - no adding/removing documents after freeze merely because they make results better or worse. A later-discovered missing required document is disclosed as PACKAGE_MANIFEST_INCOMPLETE, not silently repaired.",
+  "groundTruthMethodology": {
+    "principle": "Source-first. The ground-truth reviewer(s) must NOT begin by reading Headroom discovered candidates, IR, verifier output, review items, or semantic coverage output. Start from the source documents; build a source-first inventory of material contractual propositions; freeze it BEFORE any comparison with Headroom's output.",
+    "unit": "Claim-level, source-grounded (gtClaimId, document, source node/span, section reference, covenant family, proposition type, materiality, short neutral description, required qualifiers/conditions, quantitative components where applicable, dependencies/cross-references, amendment/operative-state relevance, source evidence). GT units are never defined by Headroom's internal IR shapes.",
+    "coverageFamilies": ["indebtedness", "liens", "restricted payments", "investments", "acquisitions", "asset sales/dispositions", "affiliate transactions", "fundamental changes/mergers", "prepayments/subordinated debt", "financial covenants", "reporting obligations", "collateral/guaranty obligations", "events/default-linked requirements where materially relevant", "ratio-based permissions", "builder baskets", "growers", "shared caps", "exceptions", "provisos", "eligibility conditions", "no-default requirements", "pro-forma requirements", "cross-reference dependencies", "amendment-driven changes"],
+    "operativeStateGroundTruth": "Separately adjudicated: which documents are operative, amendment relationships, replaced/superseded provisions, partial amendments, unresolved effective-date conditions, conflicts, historical-only language. A provision must not receive semantic credit for correctly understanding no-longer-operative language as though current.",
+    "independentReviewers": "At least TWO independent source-first reviewers for the materially important evaluation sample. For CRITICAL claims and every potential dangerous silent omission, independent adjudication is required; disagreements resolved from source text, never using Headroom's answer as tie-breaker. Inter-reviewer agreement recorded on claim identity, materiality, credit, and specific surfacing."
+  },
+  "evaluationContract": {
+    "model": "Atomic trust model (per EC-V3, not the abandoned 12-state taxonomy).",
+    "claimCredit": { "values": ["CREDIT", "NO_CREDIT"], "rule": "Same-claim identity is mandatory." },
+    "claimSpecificSafeFailure": { "values": ["SPECIFICALLY_SURFACED", "NOT_SPECIFICALLY_SURFACED"], "rule": "Evaluated against explicit production ClaimReviewItem / uncertainty artifacts wherever possible, not inferred from nearby warnings. Applies to material NO_CREDIT claims." },
+    "dangerousSilence": "material GT claim + NO_CREDIT + NOT_SPECIFICALLY_SURFACED = DANGEROUS_SILENT_OMISSION. This is the principal trust metric.",
+    "representationQuality": "For CREDIT claims, separately inspect action/legal posture, object/resource, scope, amount/threshold, metric, ratio components, conditions, exceptions, temporal dependencies, cross-references, shared-cap relationships, amendment lineage, source provenance. A materially incorrect qualifier means no substantive credit; no partial credit merely for finding the right section.",
+    "pipelineAttribution": ["SOURCE_EXTRACTION", "STRUCTURAL_INDEX", "PACKAGE_GRAPH", "OPERATIVE_STATE", "DISCOVERY", "CONTEXT_RETRIEVAL", "SEMANTIC_COMPILATION", "VERIFICATION", "SAFE_FAILURE_ROUTING", "PERSISTENCE", "EVALUATION_AMBIGUITY", "OTHER"]
+  },
+  "metrics": {
+    "documentPackage": ["source completeness", "structural anomaly rate", "package relationship correctness", "operative-state correctness"],
+    "discovery": ["material covenant-bearing section recall", "material claim discovery recall", "CRITICAL/MATERIAL discovery recall"],
+    "semantic": ["material claim credit rate", "CRITICAL claim credit rate", "quantitative-component correctness", "condition/qualifier preservation", "cross-reference/dependency preservation"],
+    "safeFailure": ["material NO_CREDIT count", "specifically surfaced NO_CREDIT count", "dangerous silent omission count", "dangerous silent omission rate", "CRITICAL dangerous silent omission count"],
+    "trust": ["verifier false-VERIFIED count", "persisted false-trusted count", "stale/superseded-as-current count", "tenant/provenance violations"],
+    "product": ["total AI cost", "latency", "review-item volume", "percentage of material claims requiring human review"]
+  },
+  "thresholds": {
+    "hardSafetyGates": {
+      "criticalDangerousSilentOmissions": 0,
+      "persistedFalseVerifiedOrFalseTrustedMaterialClaims": 0,
+      "staleSupersededAsCurrentTrustedTruth": 0,
+      "crossTenantContamination": 0,
+      "materialClaimSpecificSafeFailureRecallMin": 0.95
+    },
+    "generalizationQualityGates": {
+      "materialCovenantBearingSectionRecallMin": 0.95,
+      "criticalMaterialClaimDiscoveryRecallMin": 0.95,
+      "materialClaimCreditOrSafeFailureMin": 0.98,
+      "materialSubstantiveCreditRateMin": 0.85,
+      "conditionQualifierPreservationAmongCreditedMin": 0.95,
+      "quantitativeComponentCorrectnessAmongCreditedMin": 0.95,
+      "operativeStateCorrectnessOnMateriallyRelevantMin": 0.95
+    },
+    "note": "Frozen BEFORE package selection. May be made stricter before selection, never weakened afterward. These are the exact numbers from the governing spec S22, taken verbatim."
+  },
+  "safeFailureRules": "A material claim Headroom does not confidently compile but explicitly surfaces for claim-specific review is a SAFE FAILURE, not a defect. Substantive credit rate measures automation quality; dangerous silence measures trustworthiness. The model must never be forced to guess merely to raise the automation percentage.",
+  "contaminationRules": "See contaminationCheck above; also applies post-hoc to production-freeze-proof (S27): any package-specific production change invalidates the run (PHASE_3F_2_VALIDATION_CONTAMINATED) unless proven unrelated, in which case the entire unseen execution restarts from the original freeze.",
+  "costAccounting": {
+    "recorded": ["structural AI calls", "discovery calls", "compiler calls", "verifier calls", "condition-suspicion calls", "any other AI stage", "input/output tokens", "cache hits", "retries", "failures", "latency", "total cost"],
+    "passFailRole": "Cost is a product metric, not a pass/fail safety criterion, unless predeclared.",
+    "costControlStop": "Before the full run, estimate expected AI cost. If projected incremental spend exceeds $15, STOP and report projected cost before proceeding (hard cost-control stop, not a quality threshold)."
+  },
+  "compilationScope": {
+    "rule": "Process the production system's normal material candidate population - no artificial cap to only the easiest provisions.",
+    "capPolicy": "If cost controls require a cap, it MUST be predeclared here, before package selection. Cap for this phase: not predeclared as strictly necessary, but a soft operating ceiling of $15 total incremental AI spend applies per the cost-control stop above; if the full eligible candidate population would foreseeably exceed that ceiling, sampling MUST be deterministic and stratified by covenant family, materiality, document, discovery confidence, and provision role - never based on whether the compiler already looks correct."
+  },
+  "stoppingRules": [
+    "PHASE_3F_2_ENVIRONMENT_BLOCKED if the provider probe fails - stop immediately.",
+    "STOP if projected incremental AI cost exceeds $15 before the full run - report and await guidance rather than silently proceeding.",
+    "PHASE_3F_2_VALIDATION_CONTAMINATED if the candidate is contaminated (pre-execution) or if production is modified before the final verdict is written (post-execution) - restart from freeze in a future session, never patch in this one.",
+    "On FAIL (thresholds not met): DO NOT auto-create a sub-phase, DO NOT patch production this session. Report exact failed thresholds, trust-boundary failures, root-layer attribution, and defect classification, then STOP for human architecture decision.",
+    "Even on PASS: DO NOT implement Phase 4 in this session. Return the readiness decision and STOP."
+  ],
+  "finalVerdictRules": {
+    "possibleVerdicts": ["PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_PASSED", "PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_FAILED", "PHASE_3F_2_VALIDATION_CONTAMINATED", "PHASE_3F_2_ENVIRONMENT_BLOCKED"],
+    "passRequires": "All precommitted hard safety gates AND all generalization quality gates met.",
+    "findingClassification": {
+      "trustBoundaryFailure": "Material false VERIFIED; dangerous silent CRITICAL omission; stale amendment state trusted as current; tenant/provenance breach. Potential architecture blockers.",
+      "generalizationQualityGap": "Claim safely routed to review; unsupported drafting; conservative unresolved result; discovery miss specifically surfaced by coverage/safety machinery. Reduces automation, does not necessarily block Phase 4.",
+      "productQualityOrCostIssue": "Too many review items; excessive latency; excessive AI cost; benign over-routing. Normally enters backlog."
+    },
+    "phase4ReadinessOptions": ["YES", "YES_WITH_NONBLOCKING_BACKLOG", "NO_TRUST_BOUNDARY_BLOCKER", "NO_GENERALIZATION_NOT_YET_SUFFICIENT"]
+  },
+  "falseCreditControls": "Run the existing 14 permanent false-credit controls unchanged. Required: 14/14 NO_CREDIT. Failure is a hard regression blocker.",
+  "knownPackageRegression": "Run the established read-only regression checks for FWRG, LSB, CONMED, DSGR unchanged - regression only, never used to tune 3F.2."
+}

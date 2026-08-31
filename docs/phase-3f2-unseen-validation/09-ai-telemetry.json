@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "AI_TELEMETRY",
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "totalCostUsd": 0.820356,
+  "budgetCeilingUsd": 15,
+  "byStage": {
+    "structuralIndexing": { "calls": 0, "costUsd": 0, "note": "deterministic" },
+    "discovery": {
+      "docA": { "modelCalls": 33, "inputTokens": 120236, "outputTokens": 108325, "costUsd": 0.0185, "candidatesFound": 285, "health": "DISCOVERY_HEALTHY" },
+      "docB": { "modelCalls": 35, "inputTokens": 125199, "outputTokens": 101389, "costUsd": 0.0185, "candidatesFound": 291, "health": "DISCOVERY_HEALTHY" },
+      "docC": { "modelCalls": 39, "inputTokens": 135403, "outputTokens": 109814, "costUsd": 0.0188, "candidatesFound": 311, "health": "DISCOVERY_HEALTHY" },
+      "totalCostUsd": 0.0558,
+      "totalCandidates": 887
+    },
+    "packageGraph": { "calls": 0, "costUsd": 0, "note": "deterministic" },
+    "contextRetrieval": { "calls": 0, "costUsd": 0, "note": "deterministic" },
+    "amendmentPipeline": { "semanticCallsMade": 0, "costUsd": 0, "note": "2 deterministic amendment effects found; the architecture's own cost-discipline design determined no AI call was needed for this package - not a failure." },
+    "compilation": {
+      "attempted": 15,
+      "succeeded": 3,
+      "failedEnvironmentBlock": 12,
+      "costUsd": 0.820356,
+      "note": "Compilation began succeeding (candidates 1-3: $0.3459, $0.1217, $0.2970 respectively, real tool-use compiler calls with 8/1/3 internal attempts) then candidate 4 onward hit HTTP 402 insufficient_funds at $0.0000 cost each (rejected before any token billing) - a hard account-level funds exhaustion, not a per-call model failure."
+    },
+    "verification": { "attempted": 3, "costUsd": 0, "note": "Verification's own real-call telemetry is not separately exposed by verifyCompiledCandidate's aggregate return shape in this codebase version; the $0 shown here is a placeholder for the orchestration script's own cost-logging call, not proof no cost was incurred - see 15-verification-results.json for the qualitative outcome." },
+    "coverageAudit": { "calls": 0, "costUsd": 0, "note": "Layers A/B only (deterministic), per pre-declared budget discipline matching the Phase 3F DSGR precedent." }
+  },
+  "retries": 0,
+  "rateLimitFailures": 0,
+  "cacheHits": 0,
+  "postRunProbe": "A fresh one-shot probe after the run completed (same method as the pre-run precondition check) confirmed the account remains at HTTP 402 insufficient_funds as of this artifact's writing."
+}

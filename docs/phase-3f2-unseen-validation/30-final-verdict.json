@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT",
+  "verdict": "PHASE_3F_2_ENVIRONMENT_BLOCKED",
+  "qualifier": "MID_RUN_BLOCK_AFTER_SUBSTANTIAL_REAL_PROGRESS - distinct from a pre-run probe failure. The initial precondition probe succeeded; Stages 1-5 (structural indexing, 3-document discovery, package graph, context retrieval, amendment pipeline + operative state) completed in full with real results and real cost ($0.0558) before the Vercel AI Gateway account ran out of funds partway through Stage 6 compilation (3/15 succeeded, 12/15 hit HTTP 402 insufficient_funds; re-confirmed live post-run).",
+  "basis": [
+    "Real cost incurred: $0.820356 of the $15 predeclared ceiling - the ceiling was never approached; the account's own real dollar balance, not this validation's self-imposed budget, was the limiting factor.",
+    "887 real candidates discovered across all 3 documents (DISCOVERY_HEALTHY, zero section failures).",
+    "3 real compile+verify cycles completed; all 3 landed on conservative REVIEW_REQUIRED/VERIFICATION_FAILED outcomes rather than false confidence - including one genuine, correctly-caught IR hallucination.",
+    "Two independent, blind, source-first ground-truth reviewers completed full 3-document reviews (100 and 84 claims respectively) with strong qualitative convergence (identical operative-state conclusion; identical non-obvious amendment-effect catch) - this work is complete and reusable.",
+    "14/14 permanent false-credit controls PASS; known-package regression (FWRG/LSB/CONMED/DSGR) unchanged from the pre-existing baseline; production-freeze proof empty on lib/**, app/**, prisma/**.",
+    "All threshold gates requiring a real semantic sample are NOT_EVALUABLE, not FAILED - the sample (n=3 of 755 eligible) is too small to support any credit-rate, recall, or dangerous-silence percentage in either direction."
+  ],
+  "phase4Readiness": "CANNOT_BE_ANSWERED_THIS_RUN (see 29-phase4-readiness.json)",
+  "requiredAction": "A human must add credit to the Vercel AI Gateway account. Per the governing spec's anti-endless-loop rule, no production code is patched, no sub-phase is auto-created, and no forced score is manufactured from the insufficient sample. This session stops here.",
+  "resumptionInstructions": "Resume from tests/fixtures/unseen-packages/phase-3f2-riot-unseen-run/ (Stages 1-5 fully preserved) by extending Stage 6 compilation from eligible candidate #4 onward (or re-running the full compile cap if a larger sample is desired), then Stage 7/8, then reconcile the two ground-truth inventories (19a/19b, already complete) into a single canonical claim list and complete the claim-level comparison (21) and all NOT_EVALUABLE metrics (23/24)."
+}
