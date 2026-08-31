@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_QUALITY_GATES",
+  "gates": {
+    "tsc": "6 pre-existing errors, identical set to baseline (00-baseline.json), 0 new.",
+    "eslint": "1 pre-existing error, identical to baseline, 0 new.",
+    "vitest": "npx vitest run (full repo) - 269 test files, 2886 tests. 2 failures, both confirmed pre-existing/flaky and unrelated to this phase, reproducible identically standalone-pass-but-full-suite-fail: tests/contract-model/part-b-recert-finding4-independent.test.ts (a timing/wall-clock scaling-ratio assertion in a file last touched by the frozen, untouched OPEN-3 workstream) and tests/foundation-audit/repro-connection-race.test.ts (a DB-concurrency race-detection test sensitive to shared-sandbox load, confirmed passing 3/3 in isolated reruns).",
+    "build": "npm run build - succeeds.",
+    "prismaMigrateStatus": "Database schema is up to date! No new migration needed - neither fix touched the Prisma schema."
+  },
+  "diffClassification": "git diff a2b00f0 HEAD --name-only -- 'lib/**' 'app/**' 'prisma/**' yields exactly 10 files, each mapping to OPEN-1 (stage-structure.ts, structural-ambiguity-classifier.ts, structural-ambiguity-resolution.ts, structural-classifier-wire-schema.ts, compiler/types.ts, lib/contract-model/compiler/orchestrator.ts, lib/contract-model/analysis/orchestrator.ts, lib/contract-model/analysis/types.ts) or OPEN-2 (semantic/tools.ts, amendment/operative-state.ts). No forbidden-category change: condition-suspicion-classifier.ts, semantic-coverage/* (N-way claim decomposition), and AnalysisRun/SemanticTruth fencing internals (semantic-truth/service.ts) are all absent from the diff. app/** is unchanged - the fix reaches the app only via runContractAnalysis's existing call contract, no route/action changes needed."
+}

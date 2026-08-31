@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_VERDICT",
+  "verdict": "HUMAN_ARCHITECTURE_DECISION_IMPLEMENTATION_READY",
+  "basis": [
+    "OPEN-1: the mandated triage architecture (CONFIDENT_HEADING/CONFIDENT_PROSE_REFERENCE/AMBIGUOUS deterministic triage + a bounded, source-only, fail-closed structural classifier for genuinely ambiguous candidates only) was built, tested (109 unit/integration tests), and - critically - actually wired into the REAL live production entry point (lib/contract-model/analysis/orchestrator.ts's runContractAnalysis, the app's actual call path via app/[companyId]/onboarding/documents/actions.ts), not merely into isolated new modules or the quarantined legacy orchestrator. A dedicated integration test drives the real pipeline end-to-end and proves the classifier's fail-closed path genuinely fires for an ambiguous case while confident headings resolve deterministically with zero classifier cost.",
+    "OPEN-2: the universal, mechanically-enforced evidence-tool trust invariant was built (a shared isConfirmedCurrentOperativeEvidence helper every CURRENT_OPERATIVE_EVIDENCE-declared tool's execute() now calls, rather than per-tool-author discipline). The confirmed getOperativeProvision gap was fixed, AND the same registry audit found and fixed the identical gap in 5 additional tools (getParentClause, getSiblingClauses, getReferencedProvision, getChildren, getRelatedAmendments) that had never been individually reported. The auditor's own end-to-end exploit reproduction now passes.",
+    "Both fixes independently pass the full quality-gate suite: 269 files/2886 tests (2 confirmed pre-existing flaky failures, unrelated), tsc/eslint at exact baseline, build succeeds, known-package regression NO_REGRESSION, 14/14 false-credit controls NO_CREDIT.",
+    "OPEN-4 production code was not touched, per the governing spec's freeze (SS23)."
+  ],
+  "criticalProcessNote": "The first OPEN-1 wiring attempt initially fixed the WRONG orchestrator file (the explicitly-quarantined lib/contract-model/compiler/orchestrator.ts, which app/** is forbidden from calling) - this was caught by that same workstream's own honest self-report, not by an external check, and a targeted follow-up fix wired the actual live orchestrator (lib/contract-model/analysis/orchestrator.ts). This is recorded transparently rather than omitted, since it materially affected whether OPEN-1 is genuinely fixed in production.",
+  "freezeShaForPartB": "a7ee654 (final Part A commit)"
+}
