@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINDINGS_RESUME",
+  "findings": [
+    {
+      "findingId": "F1",
+      "title": "Material substantive credit rate on IN_SAMPLE claims falls well below the frozen 85% gate",
+      "measured": "46.2% (6/13 material IN_SAMPLE claims), CRITICAL subset 60% (3/5)",
+      "classification": "GENERALIZATION_QUALITY_GAP",
+      "rootCharacter": "BOUNDED_GENERALIZATION_GAP",
+      "evidence": "13-threshold-gate.json, 12-metrics.json",
+      "rationale": "This is not a trust-boundary failure - every one of the 7 NO_CREDIT claims was safely routed (100% claim-specific safe-failure recall, 0 dangerous silence). The dominant pipeline attribution (4/7, 57%) is SEMANTIC_COMPILATION partially under-extracting definition-heavy sections (dropping one of several definitions from an otherwise-successful batch, or truncating with an ellipsis over a required qualifier), not a wholesale or architectural failure - the housing candidate almost always got most of the section right. 2/7 are sampling-budget artifacts (multi-clause claims where only some needed sections were compiled). Only 1/7 (RGT-C-018) is a genuine STRUCTURAL_INDEX ambiguity, and it was handled correctly (refused to guess). Sample size is small (n=13) but unbiased (deterministic stratified draw)."
+    },
+    {
+      "findingId": "F2",
+      "title": "Operative-document determination failed - Headroom could not identify which of the 3 agreements currently governs",
+      "measured": "0/1 (the single operative-state question this package poses)",
+      "classification": "GENERALIZATION_QUALITY_GAP",
+      "rootCharacter": "BOUNDED_GENERALIZATION_GAP",
+      "evidence": "14-operative-state-deleted-carveout.json part_a, 12-metrics.json",
+      "rationale": "Root cause is a specific, traceable PACKAGE_GRAPH-layer defect (RESTATE_AGREEMENT amendment effects stuck at REVIEW_REQUIRED because the restated target document could not be resolved for either doc-b or doc-c), not a broad architectural failure of the operative-state concept - the mechanism exists and partially engages (it correctly flags REVIEW_REQUIRED rather than guessing) but does not complete target-document resolution for this package's restatement pattern. This failed safely: it asserted no operative document rather than the wrong one (part_b of the same artifact confirms Headroom did not treat the deleted 5.02(g)/6.01(d) carve-out as current trust). Still, it measurably misses the >=95% operative-state-correctness gate on the only materially relevant test this package offers."
+    },
+    {
+      "findingId": "F3",
+      "title": "Discovery-layer miss: doc-b's copy of the pre-identified carve-out sentence was not discovered, though the identical text exists verbatim",
+      "measured": "1 candidate (of the 3-document carve-out lineage) missing from discovery output",
+      "classification": "GENERALIZATION_QUALITY_GAP",
+      "rootCharacter": "LOCAL_IMPLEMENTATION_DEFECT",
+      "evidence": "14-operative-state-deleted-carveout.json part_c",
+      "rationale": "A narrow, localized discovery gap on one specific candidate in one specific document, found via zero-cost direct inspection of the preserved discovery population (no new AI spend needed). Does not affect the overall discovery-recall gates, which both measured MET (95.6% material section recall, 98.1% CRITICAL/MATERIAL discovery recall) against the full 887-candidate population. Worth fixing but narrowly scoped, not indicative of a systemic discovery-architecture problem."
+    },
+    {
+      "findingId": "F4",
+      "title": "Top-level operative-state status label (OPERATIVE_STATE_RESOLVED) is misleading in isolation given 0 tracked provisions and no operative document",
+      "measured": "Qualitative - a downstream consumer reading only the top-level status field could mistake an unresolved determination for a clean 'nothing needed amending' result",
+      "classification": "PRODUCT_QUALITY_OR_COST",
+      "rootCharacter": "LOCAL_IMPLEMENTATION_DEFECT",
+      "evidence": "14-operative-state-deleted-carveout.json part_d, 15-safe-failure-results.json",
+      "rationale": "Not a dangerous silent omission (no wrong answer was asserted with confidence) and not counted against any hard safety gate, but it is a safe-failure-surfacing quality issue: the underlying REVIEW_REQUIRED markers are honest, yet the label chosen for the aggregate status does not itself communicate that the operative document is unknown. Worth product-level attention independent of the F2 root cause."
+    },
+    {
+      "findingId": "F5-POSITIVE",
+      "title": "Zero dangerous silent omissions and zero false-VERIFIED results across the entire real, funded execution",
+      "measured": "0/117 GT claims dangerously silent; 0/38 compiled candidates falsely certified VERIFIED; claim-specific safe-failure recall 100% (7/7) on the measurable subset",
+      "classification": "NOT_A_DEFECT - explicitly noted as a positive result",
+      "rootCharacter": "N/A",
+      "evidence": "15-safe-failure-results.json, 16-trust-results.json",
+      "rationale": "Across every non-confident outcome this run produced (7 IN_SAMPLE NO_CREDIT claims, the operative-state gap, and the targeted carve-out check), the system consistently expressed its own uncertainty through explicit, checkable markers (non-confident verification status, REVIEW_REQUIRED, sufficiency=PARTIAL) rather than ever asserting a materially wrong answer with confidence. No TRUST_BOUNDARY_FAILURE was identified anywhere in this validation."
+    },
+    {
+      "findingId": "F6",
+      "title": "38 of 887 real discovered candidates were compiled (4.3%); 97 of 117 material-relevant GT claims (83%) were never compiled at all due to the $15 cost ceiling",
+      "measured": "PACKAGE_SEMANTICALLY_INCOMPLETE, totalCombinedFullyVerified=0",
+      "classification": "PRODUCT_QUALITY_OR_COST",
+      "rootCharacter": "N/A",
+      "evidence": "17-product-viability.json, 12-metrics.json",
+      "rationale": "This is a cost-ceiling/sampling artifact licensed by the validation contract's own precommitted fallback rule, not a system-quality defect. It does explain why the materialClaimCreditOrSafeFailureMin gate (measured MET at 100%, n=13) cannot be extrapolated with confidence to the full material population, and it is the largest single constraint on this run's evidentiary reach."
+    }
+  ],
+  "noTrustBoundaryFailureIdentified": true,
+  "summaryNarrative": "This run identified 2 real generalization-quality gates that measurably fall below the frozen bar (material substantive credit rate at 46.2% vs >=85% required; operative-state correctness at 0/1 vs >=95% required), plus 2 smaller quality findings (a narrow doc-b discovery miss; a misleading top-level operative-state label). None of these are trust-boundary failures - every non-confident output was honestly and specifically surfaced, with zero dangerous silent omissions and zero false-VERIFIED certifications across the entire real, funded execution. The story this evidence tells is: the frozen system knows what it does not know on this unseen package (a positive, gate-meeting result on every hard safety criterion), but it does not yet automate enough of the material content, and does not yet resolve this package's operative-document question, to clear the generalization bar this phase set for building deterministic contract computation on top of it."
+}

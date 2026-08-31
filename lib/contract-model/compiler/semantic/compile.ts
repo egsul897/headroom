@@ -18,6 +18,7 @@ import { validateCompilationUnit } from "../../ir/validate";
 import { getSemanticCaller, type SemanticCaller } from "./caller";
 import { InMemorySemanticCompilationCache, computeCacheKey, type SemanticCompilationCache } from "./cache";
 import { normalizeSubmission } from "./normalize";
+import { checkDefinitionCompleteness } from "./completeness-check";
 import { EMPTY_SUPERSESSION_INDEX, buildNodeSupersessionIndex, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { IRDefinition } from "../../ir/types";
 import type { SemanticCompilationResult, SemanticCompilationStatus, SemanticCompilerErrorDetail, SemanticCompilerFailureReason, SemanticCompilerInput } from "./types";
@@ -110,6 +111,7 @@ function buildTransportFailureResult(err: unknown, caller: SemanticCaller, cache
     unresolvedIssues: [`Compilation threw ${errorClass}: ${sanitizedMessage}`],
     toolCallLog: [],
     ...evidenceFlags,
+    definitionCompletenessCheck: null,
     rawModelOutput: null,
     provider: caller.providerName,
     model: caller.model,
@@ -167,6 +169,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       unresolvedIssues: callResult.failureDetail ? [callResult.failureDetail] : [],
       toolCallLog: callResult.toolCallLog,
       ...evidenceFlags,
+      definitionCompletenessCheck: null,
       rawModelOutput: callResult.rawSubmission,
       provider: caller.providerName,
       model: caller.model,
@@ -242,6 +245,30 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
     )
       failureReasons.push("OPERATIVE_STATE_UNRESOLVED");
 
+    // POST-3F.2 remediation (Unit A3, S7) - a definition/qualifier read off
+    // a tool result truncated at semantic/tools.ts's MAX_TEXT_RESULT_CHARS
+    // ceiling must never be silently treated as complete evidence merely
+    // because it happened to validate against the IR schema. Independent
+    // of OPERATIVE_STATE_UNRESOLVED above (truncation is a COMPLETENESS
+    // concern, not a CURRENCY/staleness concern) and threaded the same way
+    // every other deterministic safety signal in this function is: into
+    // failureReasons, so determineStatus below can never upgrade this
+    // attempt past REVIEW_REQUIRED regardless of the model's own
+    // self-reported sufficiency.
+    if (callResult.toolCallLog.some((entry) => entry.evidenceTruncated)) failureReasons.push("TRUNCATED_EVIDENCE_USED");
+
+    // POST-3F.2 remediation (Unit A2) - deterministic, model-independent
+    // completeness cross-check (see completeness-check.ts's own header for
+    // the full scope/conservatism contract). Run against the SAME source
+    // text the model itself was given (input.operativeSourceText), never a
+    // wider span, so a "missing" finding always means "missing from what
+    // this attempt actually saw." Diagnostic-safety-net only: a `fired`
+    // result never manufactures IR content, never silently marks the
+    // attempt complete, and routes through the exact same failureReasons ->
+    // determineStatus safe-failure machinery as every other signal here.
+    const definitionCompletenessCheck = checkDefinitionCompleteness(input.operativeSourceText, normalized.definitions);
+    if (definitionCompletenessCheck.fired) failureReasons.push("DEFINITION_COMPLETENESS_SUSPECT");
+
     const hasReviewRequiredSufficiency = normalized.rules.some((r) => r.sufficiency !== "COMPLETE") || normalized.definitions.some((d) => d.sufficiency !== "COMPLETE");
     const unresolvedIssues = [
       ...(callResult.failureDetail ? [callResult.failureDetail] : []),
@@ -261,6 +288,7 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       unresolvedIssues,
       toolCallLog: callResult.toolCallLog,
       ...evidenceFlags,
+      definitionCompletenessCheck: definitionCompletenessCheck.fired ? definitionCompletenessCheck : null,
       rawModelOutput: callResult.rawSubmission,
       provider: caller.providerName,
       model: caller.model,

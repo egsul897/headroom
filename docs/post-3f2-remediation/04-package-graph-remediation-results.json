@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "UNIT_B_PACKAGE_GRAPH_REMEDIATION_RESULTS",
+  "evidenceCategory": "IMPLEMENTATION_EVIDENCE",
+  "note": "This artifact reports IMPLEMENTATION-level test results (synthetic/generic, no Riot data) only. Riot-specific regression results belong in 08-riot-regression-replay.json (RIOT_REGRESSION_EVIDENCE category) - never blurred together per the governing spec.",
+  "filesChanged": [
+    "lib/contract-model/compiler/package-graph/relationship-resolution.ts (Unit B1 regex generalization + Unit B2 chronological-predecessor date-ambiguity safeguard)",
+    "lib/contract-model/compiler/amendment/deterministic-parser.ts (Unit B3 confidence-propagation fix: restatementTargetResolution replaces the flat target-present binary)",
+    "lib/contract-model/compiler/amendment/pipeline.ts (Unit B3: restatesEdge best-candidate selection instead of arbitrary .find(); passes full resolution object)",
+    "lib/contract-model/compiler/amendment/types.ts (additive: OperativeContractState.operativeDocument, new OperativeDocumentResolution interface)",
+    "lib/contract-model/compiler/amendment/chain.ts (new function: computeOperativeDocument)",
+    "lib/contract-model/compiler/amendment/operative-state.ts (wires computeOperativeDocument into computeOperativeContractState's return value)",
+    "lib/contract-model/analysis/orchestrator.ts (Unit B3 production wiring: computes unresolvedTargetEffectsForThisInstrument and passes it into the real computeOperativeContractState call site)"
+  ],
+  "schemaMigration": false,
+  "schemaMigrationCommand": "git diff <production-freeze-sha> HEAD -- 'prisma/**' returns empty",
+  "twoCompetingParsersIntroduced": false,
+  "targetedTestFile": "tests/contract-model/post-3f2-package-graph-restatement.test.ts",
+  "targetedTestResults": {
+    "totalTests": 15,
+    "passed": 15,
+    "failed": 0,
+    "coverageMap": {
+      "B1_captionStyleReferenceResolvesViaPreExistingPath": "PASS",
+      "B2_recitalStyleReferenceResolvesGenerically": "PASS (the exact Riot failure pattern, direct date match since v2's quoted date is v1's own real execution date)",
+      "B3_ordinaryAmendmentNeverProducesOperativeDocumentClaim": "PASS (NOT_APPLICABLE, never a guess)",
+      "B4_singleRestatementTwoDocumentChainResolves": "PASS",
+      "B5_B6_threeDocumentVersionChainResolvesV3Operative": "PASS (V1/V2 correctly reported as historical predecessors, full evidence-backed 2-edge relationshipChain in chronological order; the date-ambiguity safeguard verified to actually engage for v3's own recital, which quotes the ORIGINAL v1 date)",
+      "B7_sameTypeSameDateCandidatesNeverGuessedUnresolved": "PASS",
+      "B8_sameDateIncompatiblePartiesCandidatesNeverGuessedUnresolved": "PASS",
+      "B9_unrelatedRecitalMentionExcludedPkg01RegressionCheck": "PASS",
+      "B10_multipleHistoricalDocumentsInOneRecitalNeverAllTreatedAsTargets": "PASS",
+      "B11_fallbackResolutionThroughRealProductionCaller": "PASS (mirrors orchestrator.ts's own exact unresolvedTargetEffectsForThisInstrument computation and computeOperativeContractState call; confirms status is never falsely OPERATIVE_STATE_RESOLVED)",
+      "B12_unresolvedRestatementTargetNeverGuessed": "PASS (no candidate document of the referenced type exists at all -> UNRESOLVED, null target)",
+      "B13_resolvedChainCorrectOperativeDocumentViaComputeOperativeContractStateItself": "PASS (not merely chain.ts in isolation)",
+      "B14_predecessorsStayHistoricalNeverOperative": "PASS",
+      "B15_nodeSupersessionCoexistsUnchanged": "PASS (buildNodeSupersessionIndex/getNodeSupersessionStatus called unchanged, confirms operativeDocument is additive, not a replacement)",
+      "B16_zeroProvisionsPlusUnresolvedRestatementNeverPresentsAsResolved": "PASS (synthetic Cascade Textiles/Union Point Lender analogue of the exact original Riot bug)"
+    }
+  },
+  "testDesignCorrections": [
+    "Initial B11/B12 fixtures used [v1, v3] with v2 omitted, intending to force a genuinely unresolvable target - but v1 is itself a valid (if inferential) chronological-predecessor candidate given v3's superseding-qualifier recital, so it legitimately resolved to v1 at REVIEW_REQUIRED/0.7 rather than staying UNRESOLVED. This is CORRECT production behavior (the deterministic layer correctly used the best available evidence, downgraded to REVIEW_REQUIRED because it is inferential), not a defect - fixed by using [v3] alone (no candidate document of the referenced type present at all) to exercise the genuinely-no-candidate DETERMINISTIC_NO_CANDIDATE path instead.",
+    "computeOperativeDocument's original notResolved filter required every restatement effect to have status === RESOLVED, which incorrectly blocked document-graph resolution whenever the underlying effect was REVIEW_REQUIRED (e.g. Unit B2's own deliberately-inferential chronological-predecessor resolution) even though it carried a real, unambiguous targetDocumentId. Fixed to require only a non-null targetDocumentId (the true 'genuinely unknown link' condition) - see chain.ts's own updated comment for the safety rationale distinguishing effect-level confidence from document-graph-level ambiguity."
+  ],
+  "fullPackageGraphAndAmendmentSuiteRegression": {
+    "command": "npx vitest run tests/contract-model/package-graph-real-evidence.test.ts tests/contract-model/post-3f2-package-graph-restatement.test.ts tests/contract-model/amendment-and-versioning.test.ts",
+    "result": "3 test files, 25 tests, 0 failures",
+    "note": "tests/contract-model/amendment-and-versioning.test.ts (a real-Postgres test querying prisma.amendmentEffect.findMany with no explicit orderBy) intermittently fails on row ORDER (not content) when run as part of a large combined suite - reproduced once during this session's broader regression run, passed on immediate re-run in isolation and in this 3-file combination. Classified FLAKY / PRE_EXISTING, same category as the baseline's own documented repro-connection-race.test.ts flake - the test lacks a deterministic orderBy and Postgres row order without one is not guaranteed; not caused by, and not in scope for, this remediation's production code changes (none of which write to the amendmentEffect table's persistence path)."
+  }
+}

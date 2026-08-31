@@ -287,6 +287,46 @@ export interface OperativeContractState {
    * known, unresolved amendment effects for the same instrument).
    */
   unattachedEffects: AmendmentEffectCandidate[];
+  /**
+   * POST-3F.2 remediation (Unit B3) - additive, optional: "which whole
+   * agreement document currently governs," a question `provisions` above
+   * cannot answer even when it is non-empty (provisions are per-section/
+   * per-definition; a full restatement's own effect is DOCUMENT-kind and
+   * never attaches to a ProvisionGroup - see chain.ts's own
+   * provisionKeyFor). Derived exclusively from resolved RESTATE_AGREEMENT
+   * effects via computeOperativeDocument (chain.ts) - never a second,
+   * independent source of truth. Undefined only for a hand-built
+   * OperativeContractState fixture that predates this remediation;
+   * present (status NOT_APPLICABLE when this instrument never had any
+   * restatement activity at all) on every real computeOperativeContractState
+   * result.
+   */
+  operativeDocument?: OperativeDocumentResolution;
+}
+
+/**
+ * POST-3F.2 remediation (Unit B3) - see docs/post-3f2-generalization-
+ * architecture-decision.json section 8: a narrow, additive extension of
+ * the existing amendment-chain pattern (never a first-class, separately-
+ * persisted "Document Version Chain" domain object - the architecture
+ * decision found no evidence requiring that heavier alternative). Answers
+ * "which whole document is the currently operative agreement" by walking
+ * the resolved RESTATE_AGREEMENT effects for an instrument as a directed
+ * graph (successor restates predecessor) and finding the graph's own
+ * un-superseded end - see chain.ts's computeOperativeDocument for the
+ * full algorithm and its safe-failure behavior on forks/cycles/disconnected
+ * chains/unresolved targets.
+ */
+export interface OperativeDocumentResolution {
+  status: "RESOLVED" | "REVIEW_REQUIRED" | "NOT_APPLICABLE";
+  /** Non-null only when status is RESOLVED. */
+  operativeDocumentId: string | null;
+  /** Every other document in this instrument's own resolved restatement chain (historical predecessors) - populated only when status is RESOLVED. */
+  predecessorDocumentIds: string[];
+  /** The resolved restatement edges themselves, ordered by effective date where known, for provenance - populated only when status is RESOLVED. */
+  relationshipChain: { documentId: string; restatesDocumentId: string | null; effectId: string; confidence: number; effectiveDate: string | null }[];
+  /** Non-null only when status is REVIEW_REQUIRED - the specific, honest reason no single operative document could be safely designated (never a guess). */
+  reviewReason: string | null;
 }
 
 // ---------------------------------------------------------------------------

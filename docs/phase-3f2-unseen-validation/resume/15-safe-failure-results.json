@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SAFE_FAILURE_RESULTS_RESUME",
+  "scope": "The 7 IN_SAMPLE material NO_CREDIT claims out of the 14-claim compiled sample, plus the targeted carve-out check and the operative-state result.",
+  "claimSpecificSafeFailureRecall": { "value": 1.0, "numerator": 7, "denominator": 7 },
+  "perClaimDisposition": [
+    { "canonicalClaimId": "RGT-C-008", "materiality": "CRITICAL", "disposition": "SPECIFICALLY_SURFACED", "evidence": "Housing candidate's compile result entirely omits 'Final Maturity Date' from its definitions array; verification status non-confident on the same candidate." },
+    { "canonicalClaimId": "RGT-C-014", "materiality": "CRITICAL", "disposition": "SPECIFICALLY_SURFACED", "evidence": "Compound claim spans 1.01 + 2.04(a); the 2.04(a) half was never compiled (sampling exclusion) and the 1.01 half's housing candidate carries non-confident verification status." },
+    { "canonicalClaimId": "RGT-C-018", "materiality": "MATERIAL", "disposition": "SPECIFICALLY_SURFACED", "evidence": "getOperativeProvision correctly refused to guess between two ambiguous Section 2.03 structural nodes and returned only a TOC fragment - a self-declared sufficiency gap, not a silent guess." },
+    { "canonicalClaimId": "RGT-C-022", "materiality": "MATERIAL", "disposition": "SPECIFICALLY_SURFACED", "evidence": "Verification independently named the exact defect: the dropped 'zero if there is no such period' day-count branch, via a specific finding." },
+    { "canonicalClaimId": "RGT-C-029", "materiality": "MATERIAL", "disposition": "SPECIFICALLY_SURFACED", "evidence": "Housing candidate's compile result omits 'Collateral Documents' from its definitions array; non-confident verification status on the same candidate." },
+    { "canonicalClaimId": "RGT-C-030", "materiality": "MATERIAL", "disposition": "SPECIFICALLY_SURFACED", "evidence": "Only 1 of 2 linked terms extracted ('Second Security Confirmation' present, 'Security Confirmation' absent); non-confident verification status on the housing candidate." },
+    { "canonicalClaimId": "RGT-C-058", "materiality": "MATERIAL", "disposition": "SPECIFICALLY_SURFACED", "evidence": "Only 2 of 5 lettered conditions precedent were compiled (sampling exclusion for the other 3); the 2 compiled carry non-confident verification status." }
+  ],
+  "dangerousSilentOmissionCount": 0,
+  "criticalDangerousSilentOmissionCount": 0,
+  "dangerousSilentOmissionDefinition_asApplied": "material + NO_CREDIT + NOT_SPECIFICALLY_SURFACED (i.e., a materially wrong or missing claim that the production system asserted or implied with confidence, with no ClaimReviewItem/unresolved-state/explicit-review-event evidence). None of the 117 GT claims met this definition anywhere in the resumed execution.",
+  "carveoutSpecialCheck": {
+    "disposition": "SPECIFICALLY_SURFACED",
+    "evidence": "sufficiency=PARTIAL, status=VERIFICATION_INCOMPLETE, with an explicit sufficiencyReasons entry noting the dangling 'Section 5.02(g)' cross-reference could not be resolved."
+  },
+  "operativeStateResult": {
+    "disposition": "AMBIGUOUS_SAFE_FAILURE",
+    "evidence": "Underlying amendment effects carry explicit REVIEW_REQUIRED status (a genuine review marker), but the top-level stage5-operative-state.json status field reads OPERATIVE_STATE_RESOLVED with an empty provisions list - technically non-committal rather than falsely confident, but the top-level label alone does not clearly surface to a downstream consumer that the operative document is unknown. See 14-operative-state-deleted-carveout.json part_d for full discussion.",
+    "note": "Not counted as a dangerous silent omission because no wrong document was asserted with confidence; flagged instead as a safe-failure-surfacing quality gap in 21-findings.json."
+  }
+}

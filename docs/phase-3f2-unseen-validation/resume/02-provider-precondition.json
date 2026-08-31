@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PROVIDER_PRECONDITION_POST_TOPUP",
+  "timestamp": "2026-08-31T18:00:00Z",
+  "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages, model anthropic/claude-sonnet-5, max_tokens 8, message 'Say OK.'), credential injected as a process-local environment variable for a single command invocation only - never written to any file.",
+  "httpResult": 200,
+  "latencyMs": 2401,
+  "provider": "VERCEL_AI_GATEWAY",
+  "resolvedProvider": "claudeaws",
+  "model": "anthropic/claude-sonnet-5",
+  "usageTelemetry": { "inputTokens": 11, "outputTokens": 5, "costUsd": 0.000072 },
+  "disposition": "PROVIDER_ACCESS_CONFIRMED - the Gateway account has been topped up. Proceeding per S6 onward: audit preserved execution state, forecast remaining cost, reconcile ground truth (before any new Headroom output is inspected), then resume semantic execution."
+}

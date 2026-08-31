@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "COST_FORECAST",
+  "frozenCeilingUsd": 15,
+  "priorSpendUsd": 0.820356,
+  "remainingBudgetUsd": 14.179644,
+  "perCandidateCostDerivation": {
+    "method": "Actual telemetry from the 3 real compile completions in the prior session (not a naive division of total prior spend by 3, since prior spend also includes $0.0558 of discovery cost that is NOT part of the per-candidate compile/verify cost).",
+    "realCompileCosts": [0.345928, 0.121654, 0.296952],
+    "sumCompileCosts": 0.764534,
+    "meanCompileCostUsd": 0.254845,
+    "verificationCostNote": "Verification's own real cost could not be separately isolated from telemetry in the prior run (its aggregate return shape does not expose separate token/cost accounting in this codebase version, and the account exhausted funds during/around verification for 2 of the 3 candidates) - treated conservatively as already included within the $0.764534 compile-stage total, with an additional margin applied below for verification and any condition-suspicion routing calls this resume triggers."
+  },
+  "populationSizingDecision": {
+    "fullEligiblePopulation": 755,
+    "fullPopulationNaiveForecastUsd": "755 x ~$0.30 (conservative all-in estimate) = ~$226 - grossly exceeds the $15 ceiling",
+    "contractFallbackRuleApplied": "00-validation-contract.json's own compilationScope.capPolicy: 'If cost controls require a cap... sampling MUST be deterministic and stratified by covenant family, materiality, document, discovery confidence, and provision role - never based on whether the compiler already looks correct.' This is a rule frozen BEFORE Riot was selected, so applying it now is following the frozen contract exactly, not inventing a new cap.",
+    "strataUsed": "documentId x role (covenant 'family' tagging is populated for only 45/887 candidates in this discovery output - materiality/confidence and document/role are the discriminators actually available at scale; disclosed here rather than silently substituted)",
+    "targetNewAttempts": 23,
+    "retryOfEnvironmentBlockedAttempts": 12,
+    "totalNewRealAttemptsThisResume": 35,
+    "totalFrozenSampleSizeIncludingReuse": 38
+  },
+  "forecastMath": {
+    "estimatedAllInCostPerNewAttemptUsd": 0.35,
+    "reasoning": "$0.254845 mean compile cost + a $0.10 margin for verification/condition-suspicion calls not separately captured in the prior sample (conservative - biases the forecast toward stopping earlier, not spending more).",
+    "forecastTotalNewSpendUsd": "35 x $0.35 = $12.25",
+    "forecastGrandTotalUsd": "0.820356 (prior) + 12.25 (forecast new) = ~$13.07",
+    "marginRemainingUsd": "~$1.93 below the $15 ceiling",
+    "verdict": "WITHIN_CEILING - proceeding. A hard runtime stop at $15.00 cumulative spend is enforced by the resume execution script regardless of this forecast, exactly mirroring the original run's own runningCostUsd tracking."
+  },
+  "disposition": "PHASE_3F_2_COST_CONTROL_BLOCKED does NOT apply - the deterministic stratified sample sized against actual telemetry is forecast to complete within the frozen $15 ceiling with margin."
+}

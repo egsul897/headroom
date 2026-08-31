@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RESUME_BASELINE",
+  "phase": "3F.2 RESUME - Complete Semantic Execution + Final Generalization Gate",
+  "recordedAt": "2026-08-31T17:10:00Z",
+  "currentHead": "b16a9b042e1d32f21359ecc9c04929085bf96c07",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "gitStatus": "clean at session start",
+  "originalProductionFreezeSha": "00f49ac2d451fb41ca25b7e255422170c654f415",
+  "priorEnvironmentBlockedEvidenceSha": "b16a9b042e1d32f21359ecc9c04929085bf96c07",
+  "mergedLineageShaCheck": {
+    "cited": "48b010254cf14e2fb5caab229e55c893e409744b",
+    "found": true,
+    "description": "Merge commit for PR #38 on origin/main, merging this branch (through b16a9b0) into main. Confirmed via `git merge-base --is-ancestor b16a9b0 48b0102` (true). Current working branch HEAD (b16a9b0) is identical to what was merged - no divergence, no rebase needed. Work continues on the same designated branch."
+  },
+  "productionTreeHashesNow": {
+    "lib": "02ec3398923c494264dc99b2410a749cd3512fd3",
+    "app": "7b6172c09878f60235cdebcb5b5addeab1f15c12",
+    "prisma": "2669c503a0ba718cbc4c7d9ad3ebbf795febf4e4"
+  },
+  "productionTreeHashesAtOriginalFreeze": {
+    "lib": "02ec3398923c494264dc99b2410a749cd3512fd3",
+    "app": "7b6172c09878f60235cdebcb5b5addeab1f15c12",
+    "prisma": "2669c503a0ba718cbc4c7d9ad3ebbf795febf4e4"
+  },
+  "treeHashesIdentical": true,
+  "dbIdentity": {
+    "server": "localhost:5432",
+    "cluster": "local disposable PostgreSQL 16 (was down at session start, started via `service postgresql start` for this session only, same pattern as every prior phase)",
+    "note": "This resume, like the original run, executes the compute pipeline in-process only (no DB persistence) - see 17-persistence-results.json from the original run. Postgres was started only as a safety precaution matching established session discipline, not because this resume writes to it."
+  },
+  "gatewayProviderModel": {
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "credentialSource": ".env's commented-out AI_GATEWAY_API_KEY line, injected process-locally only - never written to any file, per this session's established discipline."
+  },
+  "testIsolationConfiguration": "Same as original run: unique companyId (riot-phase-3f2-unseen), packageKey, instrumentKey; no prisma migrate dev; no shared-DB mutation; no destructive cleanup."
+}

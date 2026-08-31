@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "AI_TELEMETRY_RESUME",
+  "provider": "vercel-ai-gateway",
+  "resolvedProvider": "claudeaws",
+  "model": "anthropic/claude-sonnet-5",
+  "priorSpendUsd_beforeThisResume": 0.820356,
+  "totalCostUsd_afterThisResume": 7.238268000000001,
+  "incrementalResumeCostUsd": 6.417912,
+  "budgetCeilingUsd_frozenPhase3F2Total": 15,
+  "budgetHeadroomRemainingUsd": 7.761732,
+  "callAccounting": {
+    "reuseCount_priorSuccessesNotReCalled": 3,
+    "retriedCount_priorFailuresRetried": 12,
+    "newAttemptedCount_neverBeforeAttempted": 35,
+    "targetedS16CarveoutCheck_additionalCompileVerifyCalls": 1,
+    "totalCombinedCompiled": 38,
+    "totalCombinedVerified": 37,
+    "totalCombinedFullyVerified": 0
+  },
+  "costForecastAccuracyNote": "The pre-resume cost forecast (03-cost-forecast.json) derived a per-candidate compile cost of $0.254845 from the 3 real prior successes plus an explicit $0.10/candidate margin for verification/condition-suspicion, rather than naively dividing total prior spend by 3 (which would have understated true per-candidate cost by mixing in non-compile discovery spend). Actual incremental spend ($6.417912 for 35 new + 12 retried = 47 compile attempts plus their verification passes) came in within the forecasted range and well under the $15 total ceiling.",
+  "noPersistedCredentials": "AI_GATEWAY_API_KEY was injected process-locally via shell variable substitution for every script invocation this resume (riot-resume-run.ts, riot-carveout-check.ts, the provider-precondition probe, and the false-credit-controls/known-package-regression read-only reruns which required no AI spend). At no point was the key written to .env, .env.local, source, fixtures, or any committed artifact.",
+  "packageCoverageStatusAfterResume": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+  "note": "This telemetry covers the resume's real production-pipeline spend only. It excludes the $0.00 provider-precondition probe cost of $0.000072 (recorded separately in 02-provider-precondition.json) which is immaterial and predates the resumed execution."
+}

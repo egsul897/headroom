@@ -1,0 +1,64 @@
+{
+  "scope": "Aggregated pipeline-failure attribution across the 7 category-A (IN_SAMPLE) NO_CREDIT claims out of 117 GT claims. Category B (97 DISCOVERED_NOT_SAMPLED) and category C (6 NOT_DISCOVERED) claims are excluded from this breakdown because they were never compiled at all -- B is a cost-ceiling sampling exclusion (discovery succeeded, compile budget did not reach it) and C is a discovery-layer miss (see the separate discoveryRecall figures in 10-claim-level-comparison.json), neither of which reflects a semantic-compilation or verification failure.",
+  "categoryA_totalClaims": 14,
+  "categoryA_creditedClaims": 7,
+  "categoryA_noCreditClaims": 7,
+  "attributionCounts": {
+    "SOURCE_EXTRACTION": 0,
+    "STRUCTURAL_INDEX": 1,
+    "PACKAGE_GRAPH": 0,
+    "OPERATIVE_STATE": 0,
+    "DISCOVERY": 0,
+    "CONTEXT_RETRIEVAL": 0,
+    "SEMANTIC_COMPILATION": 4,
+    "VERIFICATION": 0,
+    "SAFE_FAILURE_ROUTING": 0,
+    "PERSISTENCE": 0,
+    "EVALUATION_AMBIGUITY": 0,
+    "OTHER": 2
+  },
+  "attributionDetail": {
+    "SEMANTIC_COMPILATION": [
+      {
+        "canonicalClaimId": "RGT-C-008",
+        "materiality": "CRITICAL",
+        "shortRationale": "Doc-a Section 1.01 was compiled three times, but \"Final Maturity Date\" (364 days after Agreement date, subject to Section 2.03(a) extension) is entirely absent from all three candidates' definitions arrays -- a wholesale"
+      },
+      {
+        "canonicalClaimId": "RGT-C-022",
+        "materiality": "MATERIAL",
+        "shortRationale": "\"Day Count Fraction\" formula (days-to-six-month-anniversary / 365) is captured, but the compiler's excerpt truncates the definition with an internal ellipsis exactly where the source states the required qualifier \"(or ze"
+      },
+      {
+        "canonicalClaimId": "RGT-C-029",
+        "materiality": "MATERIAL",
+        "shortRationale": "\"Collateral Documents\" (Pledge and Collateral Account Control Agreement + Custody Agreement, plus other perfecting documents) is entirely absent from all three doc-a 1.01 candidates' definitions arrays, despite that sect"
+      },
+      {
+        "canonicalClaimId": "RGT-C-030",
+        "materiality": "MATERIAL",
+        "shortRationale": "GT claim requires representing that \"Collateral Documents\" now embeds both \"Security Confirmation\" and \"Second Security Confirmation.\" The one doc-c candidate compiled at this location extracted only \"Second Security Con"
+      }
+    ],
+    "OTHER": [
+      {
+        "canonicalClaimId": "RGT-C-014",
+        "materiality": "CRITICAL",
+        "shortRationale": "This GT claim is a compound proposition spanning 1.01 (Applicable Margin: 4.50%/4.75%) and 2.04(a) (the base-rate mechanic: greater of Fed Funds Rate or 3.25% floor, plus the margin). Only the 1.01 half was in the compil"
+      },
+      {
+        "canonicalClaimId": "RGT-C-058",
+        "materiality": "MATERIAL",
+        "shortRationale": "GT claim requires that all five lettered conditions precedent (a)-(e) to doc-b's Amendment and Restatement Effective Date be represented (consents, certificates, Security Confirmation delivery, Constituent Documents, leg"
+      }
+    ],
+    "STRUCTURAL_INDEX": [
+      {
+        "canonicalClaimId": "RGT-C-018",
+        "materiality": "MATERIAL",
+        "shortRationale": "The only compiled candidate at doc-a Section 2.03 retrieved nothing but a table-of-contents fragment (\"Section 2.03. Repayment and Prepayment\" + page number) with no operative text, because getOperativeProvision found th"
+      }
+    ]
+  },
+  "dominantPattern_narrative": "The dominant failure pattern (4 of 7, ~57%) is SEMANTIC_COMPILATION: the compiler retrieved the correct source section but either (a) silently dropped an entire required defined term from an otherwise-successfully-compiled 1.01 definitions batch (RGT-C-008 'Final Maturity Date', RGT-C-029 'Collateral Documents', both CRITICAL/MATERIAL and both housed in the same doc-a 1.01 candidate that DID correctly extract a dozen other definitions from the same section), (b) extracted only one of several interlinked definitions the claim requires (RGT-C-030, 2 of 3 linked terms missing), or (c) truncated a definition's text with an internal ellipsis at exactly the point containing a required qualifier, externalizing the day-count into an opaque unstructured input instead (RGT-C-022). None of these are wholesale extraction failures -- the housing candidate almost always got most of the section right -- they are narrower 'compiled some but not all of the content this specific claim needs' gaps. The second pattern (2 of 7, ~29%), bucketed OTHER, is a sampling-budget artifact rather than a pipeline-layer defect: both RGT-C-014 and RGT-C-058 are claims whose full proposition spans multiple sections/sub-clauses, and only some of the needed sections were selected into the 38-candidate compile budget (doc-a 2.04(a) was never compiled at all for RGT-C-014; only 2 of 5 lettered conditions precedent were compiled for RGT-C-058). Given a larger compile budget these would likely resolve on their own without any compiler or verifier fix. The remaining 1 claim (RGT-C-018) is a genuine STRUCTURAL_INDEX ambiguity: two physical structural nodes both normalize to 'Section 2.03' (a table-of-contents entry and the real heading) with no nodeId supplied to disambiguate, so getOperativeProvision correctly refused to guess and returned only the TOC fragment. \n\nCrucially, VERIFICATION performed exactly as it should have across all 7: every housing candidate for every one of these 7 NO_CREDIT claims carried a non-confident status (MATERIAL_DISCREPANCY, VERIFICATION_INCOMPLETE, or VERIFICATION_FAILED), and in at least one case (RGT-C-022) verification independently named the exact defect (the dropped 'zero if there is no such period' day-count branch) via a specific finding. Zero of the 7 are silent, confidently-wrong outputs -- dangerousSilentOmissionCount is 0 across all 117 GT claims. So the story of this run's compilation failures is not 'verification is asleep at the wheel'; it is 'the semantic compiler partially under-extracts definition-heavy sections and multi-clause claims, but the safety net (verification flagging non-confident status, plus the compiler's own sufficiency/requiredReview markers) reliably catches it before it would ever reach a human as a false negative.' The much larger practical constraint on this run's usefulness is not compilation or verification quality at all -- it is the 38-of-755 compile-budget cap itself: 97 of 117 GT claims (83%) were never compiled simply because the AI-Gateway cost ceiling stopped the run after 38 candidates, even though discovery correctly located the right section for the vast majority of them (materialCovenantBearingSectionRecall = 108/113 = 95.6% using the full 887-candidate discovery population)."
+}

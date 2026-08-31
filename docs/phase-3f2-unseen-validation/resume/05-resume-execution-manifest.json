@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RESUME_EXECUTION_MANIFEST",
+  "selectionMethod": "Deterministic stratified sample per 00-validation-contract.json's compilationScope.capPolicy fallback rule. Strata = (documentId x role). Within each stratum, candidates ranked by SHA256(originalFreezeSha + discoveryId) ascending (same hash-based deterministic-selection methodology already used for package selection in 04-selection-proof.json - consistent methodology, not a new invention). Per-stratum allocation sized proportionally to stratum population via largest-remainder rounding, target 23 new picks.",
+  "reuseFromPriorSession": {
+    "count": 3,
+    "candidateRefs": ["discovery-candidate:4f6d049986c629e4ce8ec916", "discovery-candidate:a8260b6951c5e76fea4df760", "discovery-candidate:30ad2e5ca78d13a74b8aa22b"],
+    "action": "Load their preserved compile+verify results from stage6/stage7 JSON - NOT recomputed."
+  },
+  "retryThisSession": {
+    "count": 12,
+    "reason": "Received $0 real cost in the prior session (Gateway rejected before token billing) - never actually reached the model. Retrying is not a double-spend.",
+    "candidateRefs": ["discovery-candidate:b33c341e3169731f00d02245", "discovery-candidate:3d899fd9a46e7fe10cc830c6", "discovery-candidate:379e72cd746b97b71477d4d0", "discovery-candidate:4e2a42b89a73d72c0c2a4ac2", "discovery-candidate:d96c162b951f3b4cdd24499e", "discovery-candidate:7c8eee1b49d1cdfcd14d9e4b", "discovery-candidate:f3e879b84ba8439a4ccbccf1", "discovery-candidate:d2e278e3c9028664ff00bfaf", "discovery-candidate:973ffb57ac55b8e64b98b4c2", "discovery-candidate:d83cecb778225526591c33e3", "discovery-candidate:28bce3fd7c934936387ebed8", "discovery-candidate:9e687fe10a4afc8df2b686dc"]
+  },
+  "newStratifiedPicksThisSession": {
+    "count": 23,
+    "strataAllocationSummary": "40 total (documentId x role) strata identified in the never-attempted pool of 738 candidates; allocation proportional to stratum size, largest-remainder rounded to hit exactly 23.",
+    "fullListLocation": "tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/resume-sample-manifest.json (committed alongside this manifest, contains all 23 discoveryIds, documentId, role, stratum, and section reference)"
+  },
+  "totalNewRealAttemptsThisSession": 35,
+  "totalFrozenSampleSize": 38,
+  "totalFrozenSampleAsPercentOfEligible": "38/755 = 5.0%",
+  "noHandSelectionDisclosure": "No candidate was chosen because it looked easy, important, or likely to succeed. The 12 retries were already fixed by the prior session's own document-order attempt list (not chosen now). The 23 new picks were chosen entirely by a SHA256 hash ranking within proportionally-sized strata, computed before any of the 35 candidates' compile results were known."
+}

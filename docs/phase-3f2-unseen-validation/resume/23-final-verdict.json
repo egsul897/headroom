@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT_RESUME",
+  "supersedes": "This file previously (as of Resume #1) recorded PHASE_3F_2_ENVIRONMENT_BLOCKED, reflecting the Vercel AI Gateway account's 402 insufficient_funds state at that time. Following the account top-up, this resume (Resume #2) executed the real, funded validation described below. This is the current and final content of this artifact.",
+  "phase": "HEADROOM - PHASE 3F.2 RESUME (RIOT frozen unseen-package validation, post-top-up execution)",
+  "options": ["PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_PASSED", "PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_FAILED", "PHASE_3F_2_VALIDATION_CONTAMINATED", "PHASE_3F_2_ENVIRONMENT_BLOCKED", "PHASE_3F_2_COST_CONTROL_BLOCKED"],
+  "verdict": "PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_FAILED",
+  "basis": [
+    "NOT PASSED: 2 of 7 generalization-quality gates measurably fall below their frozen thresholds (materialSubstantiveCreditRateMin 46.2% vs >=85%; operativeStateCorrectnessOnMateriallyRelevantMin 0/1 vs >=95%). PASS requires ALL frozen gates met (13-threshold-gate.json).",
+    "NOT CONTAMINATED: production (lib/**, app/**, prisma/**) remains byte-identical to the 00f49ac2d451fb41ca25b7e255422170c654f415 freeze throughout this resume - `git diff 00f49ac... HEAD --stat -- 'lib/**' 'app/**' 'prisma/**'` returns empty (20-production-freeze-proof.json, reconfirmed at final synthesis).",
+    "NOT ENVIRONMENT_BLOCKED: the provider precondition probe returned HTTP 200 with a real response (02-provider-precondition.json), and the full resumed semantic execution completed for real - 38 candidates compiled, 37 verified, at a real cost of $7.238268.",
+    "NOT COST_CONTROL_BLOCKED: total spend across the original run and this resume ($7.238268 combined, per tests/fixtures/unseen-packages/phase-3f2-riot-resume-run/final-summary.json) stayed comfortably under the frozen $15 total Phase 3F.2 ceiling - $7.76 of headroom remained unused."
+  ],
+  "hardSafetyGates": "ALL MET (0 critical dangerous silent omissions, 0 persisted false-VERIFIED/false-trusted material claims, 0 stale-as-current, 0 cross-tenant contamination, 100% material claim-specific safe-failure recall).",
+  "generalizationQualityGates": "5 of 7 MET; 2 of 7 NOT MET (materialSubstantiveCreditRateMin, operativeStateCorrectnessOnMateriallyRelevantMin). See 13-threshold-gate.json for full per-gate detail.",
+  "phase4Readiness": "NO_GENERALIZATION_NOT_YET_SUFFICIENT (22-phase4-readiness.json)",
+  "requiredAction": "Per the governing resume spec's anti-endless-loop rule: no production code is patched, no Phase 3F.2.1 sub-phase is auto-created, Riot is not re-run or re-tuned, and no other unseen package is auto-started. This session stops here and returns the evidence for a human architecture decision on how to close the 2 identified generalization gaps (SEMANTIC_COMPILATION definition-batch under-extraction plus the PACKAGE_GRAPH restatement-target-resolution defect) before any future validation attempt."
+}

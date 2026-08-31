@@ -43,6 +43,25 @@ export interface ToolExecutionOutcome {
    * enforced.
    */
   evidenceUnresolved?: boolean;
+  /**
+   * POST-3F.2 remediation (Unit A3, S7 - truncation/qualifier-integrity):
+   * true whenever this call's own returned text was cut at
+   * MAX_TEXT_RESULT_CHARS (see `truncate()` below) - i.e. the model may not
+   * have received the FULL text of whatever it asked for. Distinct from
+   * `evidenceUnresolved` (which is about the STALENESS/currency of the
+   * evidence returned, not its completeness): a call can be fully current
+   * operative truth and STILL truncated, or vice versa. Copied verbatim
+   * onto this call's ToolCallLogEntry by ToolRunner.run below and threaded
+   * into semantic/compile.ts's failureReasons wiring, so a definition or
+   * qualifier read off a truncated tool result can never be silently
+   * treated as complete evidence merely because the model's own excerpt
+   * happened to validate against the IR schema - the Phase 3F.2 Riot
+   * "Day Count Fraction" qualifier-truncation finding (docs/post-3f2-
+   * generalization-architecture-decision.json §5) traced this exact gap:
+   * the 4000-char ceiling was already visible to the model as JSON, but
+   * nothing downstream of the model's own judgment ever acted on it.
+   */
+  evidenceTruncated?: boolean;
 }
 
 /**
@@ -501,6 +520,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           // aggregate status is not confidently current (see
           // ToolExecutionOutcome's own header comment above).
           outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(view.status);
+          outcome.evidenceTruncated = truncated;
           return outcome;
         }
         // Phase 3F.1.2 (task §15, critical safety fix): a legal-reference
@@ -528,6 +548,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
           `base-document provision ${sectionRef} (never individually amended, ${supersession.status})`
         );
         outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(supersession.status);
+        outcome.evidenceTruncated = truncated;
         return outcome;
       },
     },
@@ -649,6 +670,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // truth status off this call alone (see ToolExecutionOutcome's own
         // header comment).
         outcome.evidenceUnresolved = !resolution.isCurrentTruth;
+        outcome.evidenceTruncated = truncated;
         return outcome;
       },
     },
@@ -699,6 +721,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // OperativeProvisionView.status whenever one exists - never silently
         // discarded merely because currentText happened to be null.
         outcome.evidenceUnresolved = !resolved.evidenceCurrent;
+        outcome.evidenceTruncated = truncated;
         return outcome;
       },
     },
@@ -750,8 +773,8 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         const rendered = siblings.map((s) => {
           const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, s);
           const display = legacySupersessionDisplay(resolved);
-          const { text } = truncate(resolved.text);
-          return { nodeId: s.nodeId, sectionRef: s.sectionRef, heading: s.heading, text, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason, evidenceCurrent: resolved.evidenceCurrent };
+          const { text, truncated } = truncate(resolved.text);
+          return { nodeId: s.nodeId, sectionRef: s.sectionRef, heading: s.heading, text, truncated, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason, evidenceCurrent: resolved.evidenceCurrent };
         });
         charsUsedRef.current += rendered.reduce((sum, r) => sum + r.text.length, 0);
         const summary = `${siblings.length} sibling clause(s) of ${node.sectionRef}`;
@@ -762,6 +785,10 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // that sibling's own real OperativeProvisionView.status whenever one
         // exists), not the pre-fix physical-node-only supersessionStatus.
         outcome.evidenceUnresolved = rendered.some((r) => !r.evidenceCurrent);
+        // POST-3F.2 remediation (Unit A3) - fails closed for the WHOLE call
+        // whenever ANY sibling's own text was truncated at MAX_TEXT_RESULT_CHARS,
+        // mirroring the evidenceUnresolved discipline immediately above.
+        outcome.evidenceTruncated = rendered.some((r) => r.truncated);
         return outcome;
       },
     },
@@ -804,6 +831,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
                 // HEADROOM OPEN-2 TERMINAL Part A: see getParentClause's own
                 // comment above - identical gap, identical fix.
                 outcome.evidenceUnresolved = !resolved.evidenceCurrent;
+                outcome.evidenceTruncated = truncated;
                 return outcome;
               }
             }
@@ -832,6 +860,7 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
               `resolved reference "${ref}" -> ${node.sectionRef} (${display.supersessionStatus})`
             );
             outcome.evidenceUnresolved = !resolved.evidenceCurrent;
+            outcome.evidenceTruncated = truncated;
             return outcome;
           }
         }
@@ -883,7 +912,9 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         if (!effect?.oldText) return refuse(`the amendment history for "${ref}" is recorded, but the prior version's full text was not captured by the amendment pipeline - do not guess what it said`);
         const { text, truncated } = truncate(effect.oldText);
         charsUsedRef.current += text.length;
-        return ok({ ref, priorText: text, truncated, supersededBy: lastEntry.sourceCitation }, text, `prior version of "${ref}" (superseded by ${lastEntry.sourceCitation})`);
+        const outcome = ok({ ref, priorText: text, truncated, supersededBy: lastEntry.sourceCitation }, text, `prior version of "${ref}" (superseded by ${lastEntry.sourceCitation})`);
+        outcome.evidenceTruncated = truncated;
+        return outcome;
       },
     },
     {
@@ -956,11 +987,13 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // supersessionStatus/supersessionReason so the model can never
         // mistake "the raw text I asked for" for "confirmed current text."
         const supersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
-        return ok(
+        const outcome = ok(
           { nodeId, sectionRef: node.sectionRef, text, truncated, supersessionStatus: supersession.status, supersessionReason: supersession.reason },
           text,
           `source span for ${node.sectionRef} (${supersession.status})`
         );
+        outcome.evidenceTruncated = truncated;
+        return outcome;
       },
     },
     {
@@ -1026,7 +1059,7 @@ export class ToolRunner {
     // determineStatus) can deterministically detect "this attempt's own
     // evidence included an unresolved definition" without depending on the
     // model itself having faithfully self-reported it.
-    this.log.push({ toolName, input: rawInput, outputSummary: outcome.outputSummary, charsReturned: outcome.charsReturned, timestamp, evidenceUnresolved: outcome.evidenceUnresolved });
+    this.log.push({ toolName, input: rawInput, outputSummary: outcome.outputSummary, charsReturned: outcome.charsReturned, timestamp, evidenceUnresolved: outcome.evidenceUnresolved, evidenceTruncated: outcome.evidenceTruncated });
     return outcome.result;
   }
 }

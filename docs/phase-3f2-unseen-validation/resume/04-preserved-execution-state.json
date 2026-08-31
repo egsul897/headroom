@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PRESERVED_EXECUTION_STATE",
+  "recomputationMethod": "Recounted directly from preserved artifact files (stage1-all-nodes.json, stage2-all-discovery-candidates.json, stage6-compiled-results.json, stage7-verification-results.json) and by re-invoking the real, unmodified production isEligibleForSemanticCompilation() function against the preserved discovery output - not by repeating the numbers already reported in the prior session's artifacts.",
+  "totalStructuralNodes": 1372,
+  "totalDiscoveredCandidates": 887,
+  "eligibleSemanticCandidates": 755,
+  "excludedCandidates": {
+    "count": 132,
+    "reason": "role REPRESENTATION is representations/warranties boilerplate, not a covenant capacity mechanic (single, uniform exclusion reason for all 132 - re-verified via the real isEligibleForSemanticCompilation() function, not assumed)"
+  },
+  "alreadyAttemptedCandidates": {
+    "count": 15,
+    "realSuccessfulCompletions": 3,
+    "environmentBlockedFailures": 12,
+    "note": "The 3 successes each produced a real compiled+verified answer (REVIEW_REQUIRED/VERIFICATION_FAILED, per 15-verification-results.json) and will be REUSED, not recomputed, per S11. The 12 environment-blocked failures received $0 real cost (rejected by the Gateway before any token billing) and are therefore genuinely never-attempted from a model's perspective - they will be RETRIED this session, which is not a double-spend."
+  },
+  "neverAttemptedCandidates": {
+    "count": 738,
+    "note": "755 eligible - 15 already-attempted (success + failed) = 738. This is the pool from which this resume's new deterministic stratified sample (23 candidates) is drawn - see 05-resume-execution-manifest.json."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "TARGETED_TESTS",
+  "evidenceCategory": "IMPLEMENTATION_EVIDENCE",
+  "unitA": {
+    "file": "tests/contract-model/semantic-compiler/definition-completeness-check.test.ts",
+    "result": "20/20 passed, 0 failed"
+  },
+  "unitB": {
+    "file": "tests/contract-model/post-3f2-package-graph-restatement.test.ts",
+    "result": "15/15 passed, 0 failed"
+  },
+  "semanticCompilerSuite": {
+    "command": "npx vitest run tests/contract-model/semantic-compiler/",
+    "result": "9 test files, 98 tests, 0 failures"
+  },
+  "semanticVerifierSuite": {
+    "command": "npx vitest run tests/contract-model/semantic-verification-independence.test.ts tests/contract-model/semantic-verification-findings.test.ts tests/contract-model/semantic-verification-reviewer.test.ts tests/contract-model/semantic-verification-source-inventory.test.ts",
+    "result": "4 test files, 23 tests, 0 failures",
+    "independenceConfirmation": "lib/contract-model/compiler/semantic/verify.ts was not modified by Unit A or Unit B - unchanged file, tests pass unchanged, confirms verifier independence from the compiler preserved"
+  },
+  "packageGraphSuite": {
+    "command": "npx vitest run tests/contract-model/package-graph-real-evidence.test.ts tests/contract-model/post-3f2-package-graph-restatement.test.ts",
+    "result": "2 test files, 19 tests, 0 failures"
+  },
+  "amendmentOperativeStateSuite": {
+    "command": "npx vitest run tests/contract-model/amendment-and-versioning.test.ts",
+    "result": "1 test file, 6 tests, 0 failures in isolation - see 06-full-test-results.json for a documented flaky-under-load occurrence unrelated to this remediation's production changes"
+  },
+  "combinedSemanticAndPackageGraphAndAmendmentRun": {
+    "command": "npx vitest run tests/contract-model/semantic-compiler/ tests/contract-model/semantic-verification*.test.ts tests/contract-model/package-graph*.test.ts tests/contract-model/amendment*.test.ts tests/contract-model/post-3f2-package-graph-restatement.test.ts",
+    "result": "24 test files, 303 tests, 1 failure (amendment-and-versioning.test.ts row-order flake, reproduced once, passed on immediate re-run and in a 3-file isolated re-run - see 06-full-test-results.json)"
+  }
+}

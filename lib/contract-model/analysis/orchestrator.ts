@@ -343,8 +343,22 @@ async function analyzeInstrument(params: {
   // --- amendment/operative state ---
   const asOfDate = new Date().toISOString().slice(0, 10);
   const amendmentResult = await runAmendmentPipeline(callers.amendmentCaller, { documents: instrumentDocs, packageGraph, index });
+  // POST-3F.2 remediation (Unit B2) - wires computeOperativeContractState's
+  // own pre-existing, purpose-built escape hatch (its own doc comment: "the
+  // DSGR first-blind F3 finding") into this real production call site.
+  // amendmentResult.effects is already scoped to exactly this instrument's
+  // own document set (runAmendmentPipeline above was only ever given
+  // instrumentDocs), so every effect here genuinely belongs to this
+  // instrument's own document family per real topology - never guessed:
+  // any such effect whose target never resolved to ANY instrument
+  // (target.targetInstrumentKey null) is real, known, unresolved amendment
+  // activity for this instrument and must not be silently dropped before
+  // `status` is computed, which is exactly what left this gap open in the
+  // Phase 3F.2 Riot run (see docs/post-3f2-generalization-architecture-
+  // decision.json section 6 bug 3).
+  const unresolvedTargetEffectsForThisInstrument = amendmentResult.effects.filter((e) => e.target.targetInstrumentKey === null);
   const operativeState: OperativeContractState | null = unit.baseDocumentId
-    ? computeOperativeContractState({ instrumentKey: unit.instrumentKey, baseDocumentId: unit.baseDocumentId, asOfDate, index, allEffects: amendmentResult.effects })
+    ? computeOperativeContractState({ instrumentKey: unit.instrumentKey, baseDocumentId: unit.baseDocumentId, asOfDate, index, allEffects: amendmentResult.effects, unresolvedTargetEffectsForThisInstrument })
     : null;
 
   // Phase 3F.1.6.RX Workstream B / orchestrator-integration fix (the
