@@ -1,0 +1,2223 @@
+{
+  "reviewerId": "A",
+  "methodology": "source-first, independent, no Headroom output consulted",
+  "documentsReviewed": [
+    "doc-a",
+    "doc-b",
+    "doc-c"
+  ],
+  "operativeStateAssessment": {
+    "operativeDocument": "doc-c (Second Amended and Restated Credit Agreement, dated April 21, 2026)",
+    "reasoning": "Doc-c's own recitals state that Riot and Coinbase Credit \"have agreed to amend and restate the Existing Credit Agreement with effect from the Second Amendment and Restatement Effective Date,\" where \"Existing Credit Agreement\" is defined as doc-b (the Amended and Restated Credit Agreement dated May 19, 2025, itself in the form it took after restating doc-a, which doc-c separately defines as the \"Original Credit Agreement\"). New Section 1.05 (\"Amendment and Restatement\"), which has no counterpart in doc-a or doc-b, states in operative terms that \"[u]pon the effectiveness of this Agreement, the terms and provisions of the Existing Credit Agreement shall be superseded hereby\" and that \"[a]ll references to the Credit Agreement or any similar term contained in the Loan Documents shall be deemed to refer to this Agreement.\" Doc-c is signed (Jason Chung for Riot as CFO; Matthew Boyd for Coinbase Credit as Head of Prime Finance) and dated April 21, 2026, matching its own defined \"Second Amendment and Restatement Effective Date\" trigger mechanics in Section 3.04, which is itself gated on customary closing conditions including delivery of the Second Security Confirmation and (newly) a requirement that no Blocking Event be continuing. Taken together, doc-c's recitals, its Section 1.05 supersession language, and its execution/dating establish it as the document intended to be currently controlling as of the April 21, 2026 date in question, fully superseding doc-b (which itself had fully superseded doc-a per doc-b's own recitals and Section 3.03). The chain of supersession is therefore doc-a -> doc-b -> doc-c, with doc-c current and operative, and the underlying indebtedness treated as continuous (no novation) throughout."
+  },
+  "claims": [
+    {
+      "gtClaimId": "RGT-A-001",
+      "document": "doc-a",
+      "sourceSpan": "Section 1.01 (definition of \"Commitment\")",
+      "covenantFamily": "indebtedness",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The original facility's Commitment (maximum loan amount) is US$100,000,000.",
+      "requiredQualifiersConditions": [
+        "to the extent not cancelled, reduced or transferred by the Lender"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Commitment amount",
+          "value": "US$100,000,000"
+        }
+      ],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Doubled to US$200,000,000 in doc-b (2025-05-19) and held at US$200,000,000 in doc-c (2026-04-21).",
+      "sourceEvidence": "\u201cCommitment\u201d means U.S.$100,000,000, to the extent not cancelled, reduced or transferred by the Lender under this Agreement."
+    },
+    {
+      "gtClaimId": "RGT-A-002",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Commitment\")",
+      "covenantFamily": "indebtedness",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Commitment (maximum loan amount) is US$200,000,000, unchanged from doc-b.",
+      "requiredQualifiersConditions": [
+        "to the extent not cancelled, reduced or transferred by the Lender"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Commitment amount",
+          "value": "US$200,000,000"
+        }
+      ],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Increased from US$100,000,000 in doc-a to US$200,000,000 in doc-b; unchanged in doc-c.",
+      "sourceEvidence": "\u201cCommitment\u201d means U.S.$200,000,000, to the extent not cancelled, reduced or transferred by the Lender under this Agreement."
+    },
+    {
+      "gtClaimId": "RGT-A-003",
+      "document": "doc-a",
+      "sourceSpan": "Section 1.01 (definition of \"Availability Period\")",
+      "covenantFamily": "eligibility-condition",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "Borrowings may be drawn only during a 2-calendar-month Availability Period from the date of the original Agreement.",
+      "requiredQualifiersConditions": [
+        "Period runs from (and including) the date of the Agreement to and including the date falling two calendar months later"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Availability Period length",
+          "value": "2 calendar months"
+        }
+      ],
+      "dependencies": [
+        "Section 2.01",
+        "Section 2.02"
+      ],
+      "amendmentOperativeStateRelevance": "Extended to 3 calendar months (measured from the Original Signing Date) in doc-b and doc-c.",
+      "sourceEvidence": "\u201cAvailability Period\u201d means the period from (and including) the date of this Agreement to and including the date falling two calendar months after the date of this Agreement."
+    },
+    {
+      "gtClaimId": "RGT-A-004",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Availability Period\")",
+      "covenantFamily": "eligibility-condition",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "Borrowings may be drawn only during a 3-calendar-month Availability Period measured from the Original Signing Date (April 22, 2025).",
+      "requiredQualifiersConditions": [
+        "Period runs from Original Signing Date to and including the date falling three calendar months later"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Availability Period length",
+          "value": "3 calendar months"
+        },
+        {
+          "description": "Original Signing Date",
+          "value": "April 22, 2025"
+        }
+      ],
+      "dependencies": [
+        "Section 2.01",
+        "Section 2.02",
+        "definition of Original Signing Date"
+      ],
+      "amendmentOperativeStateRelevance": "Extended from 2 months (doc-a) to 3 months as of doc-b; unchanged in doc-c. Note the Availability Period (anchored to the 2025 Original Signing Date) had already expired well before doc-c's 2026-04-21 effective date given the 3-month window, so no new drawdowns appear possible under Section 2.01/2.02 as currently worded.",
+      "sourceEvidence": "\u201cAvailability Period\u201d means the period from (and including) the Original Signing Date to and including the date falling three calendar months after the Original Signing Date."
+    },
+    {
+      "gtClaimId": "RGT-A-005",
+      "document": "doc-a",
+      "sourceSpan": "Section 2.02(a)",
+      "covenantFamily": "other",
+      "propositionType": "permission-with-conditions",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Loan may be drawn in up to three separate disbursements during the Availability Period.",
+      "requiredQualifiersConditions": [
+        "Aggregate of all disbursements capped at the Commitment"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Maximum number of disbursements",
+          "value": "3"
+        }
+      ],
+      "dependencies": [
+        "Section 2.01",
+        "definition of Availability Period"
+      ],
+      "amendmentOperativeStateRelevance": "Increased to up to four disbursements in doc-b and doc-c.",
+      "sourceEvidence": "The Borrowings of the Loan may be made during the Availability Period in up to three separate disbursements of the Loan in an aggregate principal amount for all such Borrowings up to the Commitment."
+    },
+    {
+      "gtClaimId": "RGT-A-006",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.02(a)",
+      "covenantFamily": "other",
+      "propositionType": "permission-with-conditions",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Loan may be drawn in up to four separate disbursements during the Availability Period.",
+      "requiredQualifiersConditions": [
+        "Aggregate of all disbursements capped at the Commitment"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Maximum number of disbursements",
+          "value": "4"
+        }
+      ],
+      "dependencies": [
+        "Section 2.01",
+        "definition of Availability Period"
+      ],
+      "amendmentOperativeStateRelevance": "Increased from three disbursements in doc-a; unchanged in doc-b and doc-c.",
+      "sourceEvidence": "The Borrowings of the Loan may be made during the Availability Period in up to four separate disbursements of the Loan in an aggregate principal amount for all such Borrowings up to the Commitment."
+    },
+    {
+      "gtClaimId": "RGT-A-007",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.02(b); Section 2.03(b)",
+      "covenantFamily": "other",
+      "propositionType": "eligibility-gate",
+      "materiality": "MATERIAL",
+      "shortDescription": "Each disbursement, and each partial voluntary prepayment, must be at least US$5,000,000.",
+      "requiredQualifiersConditions": [
+        "Applies to disbursements under 2.02(b) and to partial prepayments under 2.03(b)"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Minimum disbursement/prepayment amount",
+          "value": "US$5,000,000"
+        }
+      ],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical in doc-a, doc-b and doc-c.",
+      "sourceEvidence": "Each disbursement of the Loan (or part thereof) shall be made in a minimum amount of U.S.$5,000,000 on notice given not later than 11:00 a.m. (New York City time) one (1) Business Day prior to the date of the proposed Borrowing"
+    },
+    {
+      "gtClaimId": "RGT-A-008",
+      "document": "doc-a",
+      "sourceSpan": "Section 1.01 (definition of \"Final Maturity Date\")",
+      "covenantFamily": "other",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Final (Initial) Maturity Date is 364 days after the date of the original Agreement (i.e., April 21, 2026), subject to a possible 364-day extension.",
+      "requiredQualifiersConditions": [
+        "Subject to extension per Section 2.03(a)"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Initial term",
+          "value": "364 days from April 22, 2025 = April 21, 2026"
+        }
+      ],
+      "dependencies": [
+        "Section 2.03(a)"
+      ],
+      "amendmentOperativeStateRelevance": "In doc-b the reference point becomes the defined \"Original Signing Date\" (same April 22, 2025 date, so no substantive change). In doc-c the reference point becomes a new defined \"Original Maturity Date\" (April 21, 2026), effectively resetting the maturity clock for a fresh 364-day term running from the date doc-c itself was dated.",
+      "sourceEvidence": "\u201cFinal Maturity Date\u201d means the date that is 364 days after the date of this Agreement (the \u201cInitial Final Maturity Date\u201d), subject to extension in accordance with Section 2.03(a)."
+    },
+    {
+      "gtClaimId": "RGT-A-009",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definitions of \"Final Maturity Date\" and \"Original Maturity Date\")",
+      "covenantFamily": "other",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Final (Initial) Maturity Date is redefined as 364 days after a new defined term, \"Original Maturity Date,\" which is fixed as April 21, 2026 \u2014 resetting the maturity clock to run a fresh year from the Second Amendment and Restatement.",
+      "requiredQualifiersConditions": [
+        "Subject to extension per Section 2.03(a)"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Original Maturity Date",
+          "value": "April 21, 2026"
+        },
+        {
+          "description": "New initial term from Original Maturity Date",
+          "value": "364 days (\u2192 approx. April 20, 2027)"
+        }
+      ],
+      "dependencies": [
+        "Section 2.03(a)"
+      ],
+      "amendmentOperativeStateRelevance": "Materially changed from doc-a/doc-b, which measured the 364-day term from the April 22, 2025 signing date (i.e., the loan's original maturity was already April 21, 2026 \u2014 the exact date doc-c is dated). Doc-c's redefinition effectively refinances/extends the facility for another 364-day term rather than simply continuing the original maturity schedule.",
+      "sourceEvidence": "\u201cFinal Maturity Date\u201d means the date that is 364 days after the Original Maturity Date (the \u201cInitial Final Maturity Date\u201d), subject to extension in accordance with Section 2.03(a). ... \u201cOriginal Maturity Date\u201d means April 21, 2026."
+    },
+    {
+      "gtClaimId": "RGT-A-010",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.03(a)",
+      "covenantFamily": "other",
+      "propositionType": "permission-with-conditions",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower may request one additional 364-day extension of the Final Maturity Date by giving notice at least 90 days before the Initial Final Maturity Date; the Lender may consent in its sole and absolute discretion.",
+      "requiredQualifiersConditions": [
+        "Request must be at least 90 days before the Initial Final Maturity Date",
+        "Lender consent is discretionary (sole and absolute discretion)",
+        "Extension occurs only following consent, not automatically"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Extension length",
+          "value": "364 days"
+        },
+        {
+          "description": "Notice lead time",
+          "value": "90 days before Initial Final Maturity Date"
+        }
+      ],
+      "dependencies": [
+        "definition of Final Maturity Date",
+        "definition of Initial Final Maturity Date"
+      ],
+      "amendmentOperativeStateRelevance": "Identical mechanism in doc-a, doc-b, and doc-c; only the underlying maturity-date reference point changed (see RGT-A-009).",
+      "sourceEvidence": "the Borrower may request that the Final Maturity Date be extended by an additional 364 days by way of a notice of such election delivered to the Lender no later than ninety (90) days prior to the Initial Final Maturity Date and the Lender may, in its sole and absolute discretion, consent to such request"
+    },
+    {
+      "gtClaimId": "RGT-A-011",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"LTV Table\")",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The LTV Table sets Liquidation LTV at 80%/75%/70%, Top Up LTV at 70%/65%/60%, Initial LTV at 60%/55%/50%, and Release LTV at 50%/45%/40%, depending respectively on whether no Deleveraging Trigger Period, a Deleveraging Trigger Period, or a Second Deleveraging Trigger Period is in effect.",
+      "requiredQualifiersConditions": [
+        "Applicable column depends on whether a Deleveraging Trigger Period or Second Deleveraging Trigger Period is in effect"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Liquidation LTV (normal/Deleveraging/Second Deleveraging)",
+          "value": "80% / 75% / 70%"
+        },
+        {
+          "description": "Top Up LTV (normal/Deleveraging/Second Deleveraging)",
+          "value": "70% / 65% / 60%"
+        },
+        {
+          "description": "Initial LTV (normal/Deleveraging/Second Deleveraging)",
+          "value": "60% / 55% / 50%"
+        },
+        {
+          "description": "Release LTV (normal/Deleveraging/Second Deleveraging)",
+          "value": "50% / 45% / 40%"
+        }
+      ],
+      "dependencies": [
+        "definition of Deleveraging Trigger Period",
+        "definition of Second Deleveraging Trigger Period",
+        "Actual LTV Ratio"
+      ],
+      "amendmentOperativeStateRelevance": "These percentages are IDENTICAL, unchanged word-for-word, across doc-a, doc-b, and doc-c despite the Commitment doubling and the maturity/rate mechanics changing \u2014 the core margin thresholds were never renegotiated.",
+      "sourceEvidence": "Liquidation LTV / 80% / 75% / 70% ... Top Up LTV / 70% / 65% / 60% ... Initial LTV / 60% / 55% / 50% ... Release LTV / 50% / 45% / 40%"
+    },
+    {
+      "gtClaimId": "RGT-A-012",
+      "document": "doc-a",
+      "sourceSpan": "Section 1.01 (definition of \"Deleveraging Trigger Period\")",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "A Deleveraging Trigger Period begins on any day the Administrative Agent determines Collateral value is below 70% of Initial Prevailing Market Value, and ends when it is back at or above 100% of that value.",
+      "requiredQualifiersConditions": [
+        "Determination made by Administrative Agent",
+        "Excludes any period that is a Second Deleveraging Trigger Period"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Trigger threshold",
+          "value": "less than 70% of Initial Prevailing Market Value"
+        }
+      ],
+      "dependencies": [
+        "definition of Initial Prevailing Market Value",
+        "definition of Second Deleveraging Trigger Period"
+      ],
+      "amendmentOperativeStateRelevance": "In doc-c this definition is refined to require the trigger/cure to be assessed as of 9:00am Eastern Time on the relevant day and the immediately preceding day, and to run from/until the next Business Day rather than any calendar day \u2014 a more precise (and arguably stickier) timing mechanic than doc-a/doc-b's single-day-determination test.",
+      "sourceEvidence": "\u201cDeleveraging Trigger Period\u201d means any period ... from and including any day on which the Administrative Agent determines that the Prevailing Market Value of the Collateral is less than 70% of the Initial Prevailing Market Value to but excluding the first day thereafter when the Administrative Agent determines that the Prevailing Market Value of the Collateral is equal to or greater than the Initial Prevailing Market Value."
+    },
+    {
+      "gtClaimId": "RGT-A-013",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Deleveraging Trigger Period\")",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "A Deleveraging Trigger Period begins on the first Business Day on/after any day the Collateral's value (measured at 9:00am ET on that day and the immediately preceding day) is below 70% of Initial Prevailing Market Value, and ends on the first Business Day on/after it returns to 100%.",
+      "requiredQualifiersConditions": [
+        "Measured at 9:00am Eastern Time on the trigger day AND the immediately preceding day",
+        "Start/end pegged to the first Business Day on or after the qualifying day, not the day itself"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Trigger threshold",
+          "value": "less than 70% of Initial Prevailing Market Value"
+        }
+      ],
+      "dependencies": [
+        "definition of Initial Prevailing Market Value",
+        "definition of Second Deleveraging Trigger Period"
+      ],
+      "amendmentOperativeStateRelevance": "Materially more precise than doc-a/doc-b's single-day, any-calendar-day formulation; adds a two-day (current + prior day) confirmation requirement and shifts start/end dates to the next Business Day.",
+      "sourceEvidence": "any period ... after the Original Effective Date from and including the first Business Day to occur on or after any day on which the Administrative Agent determines that the Prevailing Market Value of the Collateral as at 9:00 am (Eastern Time) on that day and the immediately preceding day is less than 70% of the Initial Prevailing Market Value"
+    },
+    {
+      "gtClaimId": "RGT-A-014",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Second Deleveraging Trigger Period\")",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "A Second Deleveraging Trigger Period is triggered when Collateral value falls below 50% of Initial Prevailing Market Value (using the same 9:00am ET two-day test as the Deleveraging Trigger Period in doc-c).",
+      "requiredQualifiersConditions": [
+        "Measured at 9:00am ET on the trigger day and the immediately preceding day",
+        "Ends when value returns to 100% of Initial Prevailing Market Value or a (first-tier) Deleveraging Trigger Period begins"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Trigger threshold",
+          "value": "less than 50% of Initial Prevailing Market Value"
+        }
+      ],
+      "dependencies": [
+        "definition of Initial Prevailing Market Value",
+        "definition of Deleveraging Trigger Period"
+      ],
+      "amendmentOperativeStateRelevance": "Same structural refinement as the Deleveraging Trigger Period definition (see RGT-A-013); doc-a/doc-b used a simpler single-day, any-calendar-day test at the same 50% threshold.",
+      "sourceEvidence": "\u201cSecond Deleveraging Trigger Period\u201d means any period after the Original Effective Date from and including the first Business Day to occur on or after any day on which the Administrative Agent determines that the Prevailing Market Value of the Collateral as at 9:00 am (Eastern Time) on that day and the immediately preceding day is less than 50% of the Initial Prevailing Market Value"
+    },
+    {
+      "gtClaimId": "RGT-A-015",
+      "document": "doc-a",
+      "sourceSpan": "Section 1.01 (definition of \"Applicable Margin\"); Section 2.04(a)",
+      "covenantFamily": "financial-covenant",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "Interest accrues at the greater of the Federal Funds Rate or 3.25% per annum, plus an Applicable Margin of 4.50% per annum (4.75% during a Second Deleveraging Trigger Period).",
+      "requiredQualifiersConditions": [
+        "Higher margin (4.75%) applies only during a Second Deleveraging Trigger Period"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Applicable Margin (normal)",
+          "value": "4.50% per annum"
+        },
+        {
+          "description": "Applicable Margin (Second Deleveraging Trigger Period)",
+          "value": "4.75% per annum"
+        },
+        {
+          "description": "Rate floor",
+          "value": "3.25% per annum"
+        }
+      ],
+      "dependencies": [
+        "Federal Funds Rate",
+        "Second Deleveraging Trigger Period"
+      ],
+      "amendmentOperativeStateRelevance": "In doc-c this floating-rate-plus-margin structure is eliminated entirely and replaced by a flat, redacted \"Fixed Rate\" (see RGT-A-016/017) \u2014 a fundamental change to the interest-rate mechanic, not merely a rate change.",
+      "sourceEvidence": "\u201cApplicable Margin\u201d means (a) during any Second Deleveraging Trigger Period, 4.75% per annum and (b) otherwise, 4.50% per annum. ... at a rate per annum equal to the sum of (x) the greater of (i) Federal Funds Rate for such day and (ii) 3.25% plus (y) the Applicable Margin."
+    },
+    {
+      "gtClaimId": "RGT-A-016",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Fixed Rate\")",
+      "covenantFamily": "financial-covenant",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "Doc-c replaces \"Applicable Margin\" with a new defined term \"Fixed Rate,\" and the actual percentage figures (for both the normal case and the Second Deleveraging Trigger Period case) are redacted as confidential ([***]%).",
+      "requiredQualifiersConditions": [
+        "Higher rate applies only during a Second Deleveraging Trigger Period",
+        "Exact percentages are not disclosed in the public filing"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Fixed Rate (normal)",
+          "value": "[***]% per annum (redacted)"
+        },
+        {
+          "description": "Fixed Rate (Second Deleveraging Trigger Period)",
+          "value": "[***]% per annum (redacted)"
+        }
+      ],
+      "dependencies": [
+        "Second Deleveraging Trigger Period"
+      ],
+      "amendmentOperativeStateRelevance": "New defined term replacing \"Applicable Margin\"; unlike doc-a/doc-b where the 4.50%/4.75% figures were disclosed, doc-c redacts the actual pricing \u2014 a change in disclosure/confidentiality treatment, not merely a renaming.",
+      "sourceEvidence": "\u201cFixed Rate\u201d means (a) during any Second Deleveraging Trigger Period, [***]% per annum and (b) otherwise, [***]% per annum."
+    },
+    {
+      "gtClaimId": "RGT-A-017",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.04(a)",
+      "covenantFamily": "financial-covenant",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "Interest on the Loan now accrues simply at the (redacted) Fixed Rate \u2014 the prior floating Federal Funds Rate component and 3.25% floor have been removed.",
+      "requiredQualifiersConditions": [
+        "No floating-rate component or floor remains"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Interest rate",
+          "value": "the Fixed Rate (redacted)"
+        }
+      ],
+      "dependencies": [
+        "definition of Fixed Rate"
+      ],
+      "amendmentOperativeStateRelevance": "Structural change from doc-a/doc-b's floating-rate-with-floor-plus-margin formula (Federal Funds Rate or 3.25% floor, plus Applicable Margin) to a flat fixed rate; this changes how the Borrower's interest cost responds to market rate movements.",
+      "sourceEvidence": "The Borrower shall pay interest on the outstanding principal amount of the Loan owing to the Lender, for each day during the period from the first Drawdown Date until the entire outstanding principal amount of the Loan shall be paid in full, at a rate per annum equal to the Fixed Rate."
+    },
+    {
+      "gtClaimId": "RGT-A-018",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.05(a)",
+      "covenantFamily": "financial-covenant",
+      "propositionType": "affirmative-obligation",
+      "materiality": "CRITICAL",
+      "shortDescription": "Default Interest accrues at 2% per annum above the otherwise-applicable Section 2.04 rate on any overdue principal, interest, fee or other amount.",
+      "requiredQualifiersConditions": [
+        "Applies upon failure to pay when due, or during continuance of any Event of Default",
+        "Following acceleration under Section 6.01, Default Interest accrues automatically without prior demand"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Default Interest spread",
+          "value": "2% per annum above the Section 2.04 rate"
+        }
+      ],
+      "dependencies": [
+        "Section 2.04",
+        "Section 6.01"
+      ],
+      "amendmentOperativeStateRelevance": "Identical mechanism and 2% spread in doc-a, doc-b, and doc-c; only the underlying base rate to which it is added changed (see RGT-A-017).",
+      "sourceEvidence": "the Lender may require the Borrower to pay interest (\u201cDefault Interest\u201d) ... at a rate per annum equal at all times to 2% per annum above the rate per annum required to be paid on the outstanding principal amount of the Loan pursuant to Section 2.04 above"
+    },
+    {
+      "gtClaimId": "RGT-A-019",
+      "document": "doc-a",
+      "sourceSpan": "Section 2.03(h)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "On the first Drawdown Date the Borrower must pay an upfront fee equal to 1.00% of the Commitment (US$1,000,000), which may be netted against the disbursement.",
+      "requiredQualifiersConditions": [
+        "Payable on the first Drawdown Date only",
+        "May be netted against the Borrowing"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Upfront fee",
+          "value": "1.00% of Commitment = US$1,000,000"
+        }
+      ],
+      "dependencies": [
+        "definition of Commitment",
+        "Section 2.01"
+      ],
+      "amendmentOperativeStateRelevance": "The doc-b text retains the identical \"1.00% ... (being U.S.$1,000,000)\" wording even though the Commitment had by then doubled to $200,000,000 (1% of which would be $2,000,000) \u2014 an apparent drafting carryover, since the underlying original $100,000,000 draw/fee had already occurred under doc-a. In doc-c both the percentage and dollar figure are redacted as confidential.",
+      "sourceEvidence": "On the first Drawdown Date, the Borrower shall pay to the Lender by way of upfront fee, an amount equal to 1.00% of the Commitment (being U.S.$1,000,000). Such amount may be netted against and deducted from the Borrowing of the Loan on such Drawdown Date"
+    },
+    {
+      "gtClaimId": "RGT-A-020",
+      "document": "doc-b",
+      "sourceSpan": "Section 2.03(h)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "Doc-b repeats the upfront-fee clause verbatim (1.00% of the Commitment, being U.S.$1,000,000) even though the Commitment is now US$200,000,000 \u2014 the stated dollar figure no longer equals 1% of the current Commitment.",
+      "requiredQualifiersConditions": [
+        "Payable on the first Drawdown Date only",
+        "May be netted against the Borrowing"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Upfront fee as stated",
+          "value": "1.00% of Commitment (being U.S.$1,000,000, though Commitment is $200,000,000)"
+        }
+      ],
+      "dependencies": [
+        "definition of Commitment"
+      ],
+      "amendmentOperativeStateRelevance": "Carried over unchanged from doc-a despite the Commitment increase; the $1,000,000 figure reflects 1% of the original $100,000,000 Commitment, not the new $200,000,000 Commitment. Redacted entirely in doc-c.",
+      "sourceEvidence": "On the first Drawdown Date, the Borrower shall pay to the Lender by way of upfront fee, an amount equal to 1.00% of the Commitment (being U.S.$1,000,000)."
+    },
+    {
+      "gtClaimId": "RGT-A-021",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.03(h)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The upfront fee provision is retained in doc-c but both the percentage and the dollar amount are now redacted as confidential.",
+      "requiredQualifiersConditions": [
+        "Payable on the first Drawdown Date only",
+        "May be netted against the Borrowing"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Upfront fee",
+          "value": "[***]% of Commitment (US$[***]) (redacted)"
+        }
+      ],
+      "dependencies": [
+        "definition of Commitment"
+      ],
+      "amendmentOperativeStateRelevance": "Both the percentage and dollar figure that were publicly disclosed in doc-a/doc-b (1.00% / $1,000,000) are redacted in doc-c.",
+      "sourceEvidence": "On the first Drawdown Date, the Borrower shall pay to the Lender by way of upfront fee, an amount equal to [***]% of the Commitment (being U.S.$[***])."
+    },
+    {
+      "gtClaimId": "RGT-A-022",
+      "document": "doc-b",
+      "sourceSpan": "Section 2.03(k)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "New provision (not present in doc-a): on the Amendment and Restatement Effective Date the Borrower must pay an upsize fee equal to 1.00% of the increase in the Commitment effected on that date (US$1,000,000, reflecting the $100M increase from $100M to $200M).",
+      "requiredQualifiersConditions": [
+        "Payable only on the Amendment and Restatement Effective Date",
+        "Calculated on the amount of the Commitment increase, not the full Commitment"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Upsize fee",
+          "value": "1.00% of the $100,000,000 Commitment increase = US$1,000,000"
+        }
+      ],
+      "dependencies": [
+        "definition of Commitment",
+        "Section 3.03 (Amendment and Restatement Effective Date)"
+      ],
+      "amendmentOperativeStateRelevance": "Entirely new provision introduced in doc-b; renamed to reference the \"First Amendment and Restatement Effective Date\" in doc-c, with the percentage/dollar figures redacted there.",
+      "sourceEvidence": "On the Amendment and Restatement Effective Date, the Borrower shall pay to the Lender by way of upsize fee, an amount equal to 1.00% of the increase in the Commitment effected on the Amendment and Restatement Effective Date (being U.S.$1,000,000))."
+    },
+    {
+      "gtClaimId": "RGT-A-023",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.03(k)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The doc-b upsize fee provision is carried forward but retitled to reference the \"First Amendment and Restatement Effective Date,\" and both the percentage and dollar figure are redacted; no equivalent new upsize fee is created for the Second Amendment and Restatement (consistent with the Commitment not increasing at that restatement).",
+      "requiredQualifiersConditions": [
+        "Payable only on the First Amendment and Restatement Effective Date",
+        "No commitment increase occurred at the Second Amendment and Restatement Effective Date, so no parallel fee was added for it"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Upsize fee",
+          "value": "[***]% of the Commitment increase effected on the First A&R Effective Date (US$[***]) (redacted)"
+        }
+      ],
+      "dependencies": [
+        "definition of Commitment",
+        "Section 3.03 (First Amendment and Restatement Effective Date)"
+      ],
+      "amendmentOperativeStateRelevance": "Carried forward from doc-b with figures redacted; confirms the Commitment did not increase again between doc-b and doc-c ($200M in both).",
+      "sourceEvidence": "On the First Amendment and Restatement Effective Date, the Borrower shall pay to the Lender by way of upsize fee, an amount equal to [***]% of the increase in the Commitment effected on the First Amendment and Restatement Effective Date (being U.S.$[***])."
+    },
+    {
+      "gtClaimId": "RGT-A-024",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Early Termination Fee\"); Section 2.03(i)-(j)",
+      "covenantFamily": "prepayments-subordinated-debt",
+      "propositionType": "permission-with-conditions",
+      "materiality": "CRITICAL",
+      "shortDescription": "Any voluntary or otherwise-triggered repayment/prepayment prior to the Final Maturity Date must generally be accompanied by an Early Termination Fee equal to principal repaid \u00d7 the Fixed Rate \u00d7 the Day Count Fraction, unless a listed exception applies.",
+      "requiredQualifiersConditions": [
+        "No fee due for prepayments under Sections 2.03(b) (deleveraging-cure prepayment), 2.03(c) (Change of Control), 2.03(e) (Custodian/Agent departure events), 2.03(f) (LTV Breach mandatory prepayment), Section 2.07 (Illegality) or Section 2.12(d) (Increased Costs prepayment within 30 days)",
+        "Fee is stated to compensate for lost anticipated profit, not as a penalty"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Fee formula",
+          "value": "principal being repaid \u00d7 Fixed Rate \u00d7 Day Count Fraction"
+        }
+      ],
+      "dependencies": [
+        "definition of Day Count Fraction",
+        "definition of Fixed Rate",
+        "Section 2.03(b),(c),(e),(f)",
+        "Section 2.07",
+        "Section 2.12(d)"
+      ],
+      "amendmentOperativeStateRelevance": "Formula and exception list identical in doc-a/doc-b (using Applicable Margin) and doc-c (using Fixed Rate); the Day Count Fraction reference point changed materially (see RGT-A-025/026).",
+      "sourceEvidence": "\u201cEarly Termination Fee\u201d means as of any determination date, an amount in U.S.$ calculated by the Administrative Agent equal to the product of (i) the principal amount of the Loan being repaid or prepaid, multiplied by (ii) the Fixed Rate, multiplied by (iii) the applicable Day Count Fraction."
+    },
+    {
+      "gtClaimId": "RGT-A-025",
+      "document": "doc-a",
+      "sourceSpan": "Section 1.01 (definition of \"Day Count Fraction\")",
+      "covenantFamily": "prepayments-subordinated-debt",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Day Count Fraction used in the Early Termination Fee formula measures days from the prepayment date to the six-month anniversary of the first Drawdown Date, divided by 365.",
+      "requiredQualifiersConditions": [
+        "Zero if the prepayment date is already past that six-month anniversary"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Reference window",
+          "value": "6 months from first Drawdown Date"
+        },
+        {
+          "description": "Denominator",
+          "value": "365"
+        }
+      ],
+      "dependencies": [
+        "definition of Drawdown Date"
+      ],
+      "amendmentOperativeStateRelevance": "In doc-c the reference point changes from the first Drawdown Date (6-month window) to the new \"Original Maturity Date\" (4-month window) \u2014 see RGT-A-026 \u2014 materially altering the prepayment-fee economics.",
+      "sourceEvidence": "\u201cDay Count Fraction\u201d means, in respect of any early repayment or prepayment date, a number equal to the quotient of (i) the number of calendar days during the period commencing on such early repayment or prepayment date and ending on the six-month anniversary of the first Drawdown Date (or zero if there is no such period) divided by (ii) 365."
+    },
+    {
+      "gtClaimId": "RGT-A-026",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Day Count Fraction\")",
+      "covenantFamily": "prepayments-subordinated-debt",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Day Count Fraction now measures days from the prepayment date to the four-month anniversary of the Original Maturity Date (April 21, 2026), divided by 365, rather than the six-month-from-first-Drawdown-Date test used in doc-a/doc-b.",
+      "requiredQualifiersConditions": [
+        "Zero if the prepayment date is already past that four-month anniversary"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Reference window",
+          "value": "4 months from Original Maturity Date (April 21, 2026)"
+        },
+        {
+          "description": "Denominator",
+          "value": "365"
+        }
+      ],
+      "dependencies": [
+        "definition of Original Maturity Date"
+      ],
+      "amendmentOperativeStateRelevance": "Changed reference point (Original Maturity Date instead of first Drawdown Date) and shortened window (4 months instead of 6 months) compared to doc-a/doc-b \u2014 this changes the magnitude and duration of make-whole exposure on early prepayment under the new facility term.",
+      "sourceEvidence": "\u201cDay Count Fraction\u201d means, in respect of any early repayment or prepayment date, a number equal to the quotient of (i) the number of calendar days during the period commencing on such early repayment or prepayment date and ending on the four-month anniversary of the Original Maturity Date (or zero if there is no such period) divided by (ii) 365."
+    },
+    {
+      "gtClaimId": "RGT-A-027",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.06(a)(i)-(ii)",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "A \"Margin Call Event\" occurs whenever, on any Business Day, the Actual LTV Ratio is at or above the Top Up LTV; the Administrative Agent may then issue a Margin Funding Notice within 2 Business Days, and the Borrower must post Additional Collateral by the Margin Funding Deadline (1 Business Day after the notice) sufficient to bring the Actual LTV Ratio back down to the Initial LTV.",
+      "requiredQualifiersConditions": [
+        "Only one Margin Funding Notice permitted per calendar day, though a Subsequent Margin Funding Notice on the same day supersedes the prior one and resets the deadline",
+        "Additional Collateral amount is sized by the Administrative Agent to restore the LTV to the Initial LTV level"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Trigger",
+          "value": "Actual LTV Ratio \u2265 Top Up LTV (70%/65%/60% depending on period)"
+        },
+        {
+          "description": "Notice window",
+          "value": "Administrative Agent may issue notice within 2 Business Days of the Margin Call Event"
+        },
+        {
+          "description": "Cure deadline",
+          "value": "1 Business Day after Margin Funding Notice delivered"
+        }
+      ],
+      "dependencies": [
+        "definition of Top Up LTV",
+        "definition of Initial LTV",
+        "definition of Margin Funding Deadline",
+        "definition of Blocking Event"
+      ],
+      "amendmentOperativeStateRelevance": "Mechanism and thresholds unchanged across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "If the Actual LTV Ratio is on any Business Day equal to or in excess of the Top Up LTV (a \u201cMargin Call Event\u201d), the Administrative Agent may, within (2) Business Days following the Margin Call Event, deliver a Margin Funding Notice to the Borrower ... and the Borrower shall, by the Margin Funding Deadline ... satisfy such Margin Funding Notice by depositing additional Collateral"
+    },
+    {
+      "gtClaimId": "RGT-A-028",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.03(f)",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "If the Actual LTV Ratio reaches or exceeds the Liquidation LTV, the Administrative Agent may deliver an LTV Breach Notice and the Borrower must prepay the entire outstanding Loan in full by the Prepayment Deadline (24 hours after the notice, extended to the next Business Day if the deadline would otherwise fall outside Business Days).",
+      "requiredQualifiersConditions": [
+        "Notice may be delivered at any time, whether or not a Business Day or within normal business hours",
+        "No Early Termination Fee is payable on a prepayment made under this Section"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Trigger",
+          "value": "Actual LTV Ratio \u2265 Liquidation LTV (80%/75%/70% depending on period)"
+        },
+        {
+          "description": "Prepayment deadline",
+          "value": "24 hours after LTV Breach Notice (next Business Day if applicable)"
+        }
+      ],
+      "dependencies": [
+        "definition of Liquidation LTV",
+        "definition of Prepayment Deadline",
+        "definition of LTV Breach Notice"
+      ],
+      "amendmentOperativeStateRelevance": "Mechanism and thresholds unchanged across doc-a, doc-b, and doc-c (only the internal cross-reference letter to this subsection shifted from 2.03(f) label consistently).",
+      "sourceEvidence": "If at any time (whether or not it is a Business Day or within normal business hours) the Actual LTV Ratio is equal to or in excess of the Liquidation LTV, the Administrative Agent may deliver an \u201cLTV Breach Notice\u201d to the Borrower ... and the Borrower shall, by the Prepayment Deadline, prepay in full the entire outstanding principal amount of the Loan."
+    },
+    {
+      "gtClaimId": "RGT-A-029",
+      "document": "doc-a",
+      "sourceSpan": "Section 2.06(b)(i)",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "permission-with-conditions",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower may request release of Additional Collateral only if the Actual LTV Ratio has been at or below the Release LTV for at least two consecutive Business Days, and no Blocking Event is continuing immediately before or after the release.",
+      "requiredQualifiersConditions": [
+        "Two consecutive Business Days test (not calendar days)",
+        "No Blocking Event continuing before or after giving effect to the release",
+        "Request notice is deemed a Borrower certification that these conditions are satisfied",
+        "Only one Release Request Notice permitted per calendar day"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Trigger",
+          "value": "Actual LTV Ratio \u2264 Release LTV (50%/45%/40% depending on period) for \u22652 consecutive Business Days"
+        }
+      ],
+      "dependencies": [
+        "definition of Release LTV",
+        "definition of Blocking Event"
+      ],
+      "amendmentOperativeStateRelevance": "In doc-c the \"two (2) consecutive Business Days\" test is changed to \"two (2) consecutive days\" (the word \"Business\" is dropped), and doc-c adds a deemed-receipt mechanic for notices received outside business hours (see RGT-A-030).",
+      "sourceEvidence": "If (A) at any time the Actual LTV Ratio is less than or equal to the Release LTV for at least two (2) consecutive Business Days and (B) so long as immediately before and after giving effect thereto no Blocking Event shall have occurred and then be continuing, the Borrower may ... request that the Collateral Agent direct the Custodian to release a portion of the Additional Collateral."
+    },
+    {
+      "gtClaimId": "RGT-A-030",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.06(b)(i)",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "permission-with-conditions",
+      "materiality": "CRITICAL",
+      "shortDescription": "The consecutive-days test for a collateral release request is now \"two (2) consecutive days\" rather than \"two (2) consecutive Business Days,\" and a new deemed-receipt rule provides that a Release Request Notice received on a non-Business Day or after 5:00pm NY time is deemed received at 9:00am NY time the next Business Day.",
+      "requiredQualifiersConditions": [
+        "Two consecutive days (not limited to Business Days)",
+        "No Blocking Event continuing before or after giving effect to the release",
+        "New: notices outside business hours are deemed received the next Business Day at 9am NY time"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Trigger",
+          "value": "Actual LTV Ratio \u2264 Release LTV for \u22652 consecutive days"
+        },
+        {
+          "description": "Deemed-receipt time",
+          "value": "9:00 a.m. (New York City time) next Business Day, for notices received after 5:00 p.m. or on a non-Business Day"
+        }
+      ],
+      "dependencies": [
+        "definition of Release LTV",
+        "definition of Blocking Event"
+      ],
+      "amendmentOperativeStateRelevance": "Changed from doc-a/doc-b's \"two (2) consecutive Business Days\" standard; also adds the new deemed-receipt provision not present in doc-a/doc-b, which affects when the real-time LTV recalculation and same-day/next-day transfer deadlines under Section 2.06(b)(iii) begin to run.",
+      "sourceEvidence": "If (A) at any time the Actual LTV Ratio is less than or equal to the Release LTV for at least two (2) consecutive days ... Any Release Request Notice received by the Collateral Agent on a day that is not a Business Day or after 5:00 p.m. (New York City time) on a Business Day shall be deemed to be received by the Collateral Agent at 9am (New York City time) on the next following Business Day."
+    },
+    {
+      "gtClaimId": "RGT-A-031",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.06(b)(iii)",
+      "covenantFamily": "margin-ltv-mechanic",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "Once a Release Request Notice is confirmed, the Collateral Agent must instruct the Custodian to transfer collateral sized to restore the Actual LTV Ratio to the Initial LTV, by 5:00pm NY time same-day (if received before 2:00pm) or 12:00pm NY time the next Business Day (otherwise); only one release permitted per Business Day.",
+      "requiredQualifiersConditions": [
+        "Deadline depends on whether the notice was received/deemed received before or after 2:00pm NY time",
+        "Only one Release Request Notice may be received/deemed received per Business Day"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Same-day transfer deadline",
+          "value": "5:00 p.m. NY time"
+        },
+        {
+          "description": "Next-day transfer deadline",
+          "value": "12:00 p.m. NY time"
+        },
+        {
+          "description": "Cutoff distinguishing same-day vs next-day",
+          "value": "2:00 p.m. NY time"
+        }
+      ],
+      "dependencies": [
+        "Section 2.06(b)(i)",
+        "definition of Initial LTV"
+      ],
+      "amendmentOperativeStateRelevance": "Doc-c reframes the timing tests around \"received (or deemed received)\" and \"Business Day\" rather than doc-a/doc-b's plain calendar-day framing, consistent with the new deemed-receipt rule.",
+      "sourceEvidence": "if the Actual LTV Ratio in such real-time calculation is at such time less than or equal to the Release LTV, the Collateral Agent shall instruct the Custodian to transfer Collateral ... which transfer shall be initiated, in the case of a Release Request Notice received (or deemed received) prior to 2:00 p.m. (New York City time) on a Business Day, no later than 5:00 p.m. (New York City time) on the same Business Day"
+    },
+    {
+      "gtClaimId": "RGT-A-032",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Blocking Event\")",
+      "covenantFamily": "cross-reference-dependency",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "A \"Blocking Event\" (which gates new borrowings and collateral releases) exists if any of five conditions occur: (a) a continuing Event of Default or Default with respect to a Specified Event of Default; (b) the Loan has become or would become due/payable under Section 2.03; (c) the Lender has notified the Borrower of an Illegality event under Section 2.07; (d) the Actual LTV Ratio is at or above the Top Up LTV; or (e) a Margin Funding Notice has been delivered but the required Additional Collateral was not delivered by the deadline.",
+      "requiredQualifiersConditions": [
+        "Any one of the five triggers is sufficient",
+        "Continues so long as the circumstances described continue to apply (Section 1.04)"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 6.01 (Events of Default)",
+        "definition of Specified Event of Default",
+        "Section 2.03",
+        "Section 2.07",
+        "definition of Top Up LTV",
+        "Section 2.06"
+      ],
+      "amendmentOperativeStateRelevance": "Definition identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "\u201cBlocking Event\u201d means: (a)an Event of Default as provided in Section 6.01 has occurred and is continuing; or a Default has occurred and is continuing with respect to any Specified Event of Default; (b)the Loan has become due and payable pursuant to Section 2.03 ... (d)the Actual LTV Ratio is equal to or in excess of the Top Up LTV; or (e)a Margin Funding Notice has been delivered pursuant to Section 2.06 but the required Additional Collateral has not been delivered by the deadline specified in such Section."
+    },
+    {
+      "gtClaimId": "RGT-A-033",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Prevailing Market Value\")",
+      "covenantFamily": "eligibility-condition",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "Only Bitcoin (BTC) is given value as Collateral for LTV purposes; any other type of Collateral is valued at zero, meaning the facility is functionally a BTC-only collateralized loan.",
+      "requiredQualifiersConditions": [
+        "BTC price determined by the Administrative Agent by reference to executed transactions on an NYDFS-regulated trading platform it selects in its sole discretion"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Collateral",
+        "definition of Actual LTV Ratio"
+      ],
+      "amendmentOperativeStateRelevance": "Identical in doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "\u201cPrevailing Market Value\u201d means (a) with respect to Bitcoin (BTC), the price of Bitcoin (BTC) as determined by the Administrative Agent by reference to executed transactions on a trading platform registered with and regulated by the New York Department of Financial Services as selected by the Administrative Agent in its sole and absolute discretion and (b) with respect to any other Collateral, zero."
+    },
+    {
+      "gtClaimId": "RGT-A-034",
+      "document": "doc-a",
+      "sourceSpan": "Section 1.01 (definition of \"Collateral Documents\")",
+      "covenantFamily": "collateral-guaranty",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "At origination, \"Collateral Documents\" comprised the Pledge and Collateral Account Control Agreement and the Custody Agreement (plus any other perfecting document).",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Custody Agreement"
+      ],
+      "amendmentOperativeStateRelevance": "Doc-b adds a new \"Security Confirmation\" (dated May 19, 2025) to this defined list; doc-c further adds a \"Second Security Confirmation\" (dated on/about the Second Amendment and Restatement Effective Date) \u2014 each restatement is accompanied by a fresh confirmation that the security interest remains effective.",
+      "sourceEvidence": "\u201cCollateral Documents\u201d means the Pledge and Collateral Account Control Agreement, the Custody Agreement and any other agreement or document that creates or purports to create or perfect a Lien on property of the Borrower in favor of the Collateral Agent."
+    },
+    {
+      "gtClaimId": "RGT-A-035",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definitions of \"Collateral Documents\", \"Security Confirmation\", \"Second Security Confirmation\")",
+      "covenantFamily": "collateral-guaranty",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "\"Collateral Documents\" now includes both the original \"Security Confirmation\" (dated May 19, 2025, from doc-b) and a new \"Second Security Confirmation\" (dated on/about the Second Amendment and Restatement Effective Date), each of which confirms the continued effectiveness of the Borrower's security in favor of the Agents/Lender.",
+      "requiredQualifiersConditions": [
+        "Second Security Confirmation delivery is itself a condition precedent to the Second Amendment and Restatement Effective Date under Section 3.04(c)(i)"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 3.04(c)(i)"
+      ],
+      "amendmentOperativeStateRelevance": "Progressive expansion from doc-a (no confirmations) \u2192 doc-b (adds Security Confirmation) \u2192 doc-c (adds Second Security Confirmation), reflecting that the security package was reconfirmed at each restatement rather than re-executed from scratch.",
+      "sourceEvidence": "\u201cCollateral Documents\u201d means the Pledge and Collateral Account Control Agreement, the Security Confirmation, the Second Security Confirmation, the Custody Agreement and any other agreement or document that creates or purports to create or perfect a Lien on property of the Borrower in favor of the Collateral Agent. ... \u201cSecond Security Confirmation\u201d means the confirmation of the effectiveness of security provided by the Borrower in favour of the Administrative Agent, Collateral Agent and Lender and dated on or about the Second Amendment and Restatement Effective Date."
+    },
+    {
+      "gtClaimId": "RGT-A-036",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.01(e)",
+      "covenantFamily": "collateral-guaranty",
+      "propositionType": "affirmative-obligation",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower must at all times maintain a First Priority Lien over the Collateral for the benefit of the Secured Parties.",
+      "requiredQualifiersConditions": [
+        "\"First Priority\" is defined as being subject to no Liens other than Permitted Liens"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of First Priority",
+        "definition of Permitted Liens",
+        "Section 5.02(a)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "Security Interest. It will maintain a First Priority Lien in the Collateral for the benefit of the Secured Parties, their successors, transferees and assigns."
+    },
+    {
+      "gtClaimId": "RGT-A-037",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.02(a)",
+      "covenantFamily": "liens",
+      "propositionType": "prohibition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower may not create, incur, assume or permit any Lien on the Collateral except four enumerated categories of Permitted Liens: (i) Liens in favor of the Collateral Agent, (ii) contested/reserved Tax liens, (iii) statutory liens incurred in the ordinary course (with a contest carve-out for amounts overdue more than 5 days), and (iv) the Custodian's contractual/legal liens or setoff/netting rights over the Collateral Account.",
+      "requiredQualifiersConditions": [
+        "Tax liens must be contested in good faith with adequate reserves to qualify",
+        "Statutory liens overdue more than 5 days must be contested in good faith with reserves to qualify"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Contest grace period for overdue statutory-lien amounts",
+          "value": "5 days"
+        }
+      ],
+      "dependencies": [
+        "definition of Permitted Liens",
+        "definition of First Priority"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower shall not, directly or indirectly, create, incur, assume or permit to exist any Lien on or with respect to the Collateral, whether now owned or hereafter acquired ... except: (i)Liens in favor of the Collateral Agent for the benefit of Secured Parties granted pursuant to any Loan Document; (ii)Liens for Taxes not yet due or that are being contested in good faith ... (iv)Liens (whether contractual or arising as a matter of Law, including rights of set-off or netting) in favor of the Custodian in connection with the Collateral Account."
+    },
+    {
+      "gtClaimId": "RGT-A-038",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.02(b)",
+      "covenantFamily": "liens",
+      "propositionType": "prohibition",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower may not enter into any agreement that would prohibit the creation of a Lien on the Collateral to secure the Obligations (a \"negative pledge\" restriction on negative pledges).",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Obligations",
+        "Section 5.02(a)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "No Further Negative Pledges. The Borrower shall not enter into any agreement prohibiting the creation or assumption of any Lien upon any of the Collateral, whether now owned or hereafter acquired, to secure all or any of the Obligations."
+    },
+    {
+      "gtClaimId": "RGT-A-039",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.02(c)",
+      "covenantFamily": "asset-sales",
+      "propositionType": "prohibition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower is absolutely prohibited from selling, assigning, transferring, conveying or otherwise disposing of any Collateral \u2014 there are no carve-outs or baskets for this covenant.",
+      "requiredQualifiersConditions": [
+        "No stated exceptions or de minimis basket",
+        "Expressly covers dispositions effected via a corporate division"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Collateral"
+      ],
+      "amendmentOperativeStateRelevance": "Identical, unqualified prohibition across doc-a, doc-b, and doc-c \u2014 collateral releases can occur only through the separate Section 2.06(b) margin-release mechanic, not as an exception to this covenant.",
+      "sourceEvidence": "Sale of Collateral. The Borrower shall not sell, assign, transfer, convey or otherwise dispose (including without limitation, any effective transfer or other disposition as a result of a division) of any Collateral."
+    },
+    {
+      "gtClaimId": "RGT-A-040",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.02(d)",
+      "covenantFamily": "fundamental-changes",
+      "propositionType": "permission-with-conditions",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower may merge, consolidate, or transfer all or substantially all of its assets only if seven cumulative conditions are satisfied: (i) survivor is the Borrower or a U.S.-state corporation, (ii) survivor expressly assumes all Loan Document obligations if not the Borrower, (iii) no Default/Event of Default results, (iv) no Illegality (Section 2.07) event or new withholding-tax burden results, (v) Collateral Liens remain enforceable first priority, (vi) transaction is on fair/arm's-length terms (and, if with an Affiliate, on terms as favorable as an arm's-length deal), and (vii) evidence equivalent to satisfying the original Effectiveness conditions (Section 3.01, mutatis mutandis) is delivered.",
+      "requiredQualifiersConditions": [
+        "All seven conditions (i) through (vii) must be satisfied cumulatively",
+        "Condition (vi)'s arm's-length standard applies with heightened scrutiny to Affiliate transactions"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 2.07",
+        "Section 3.01",
+        "definition of Affiliate"
+      ],
+      "amendmentOperativeStateRelevance": "Identical seven-part test across doc-a, doc-b, and doc-c (only the cross-reference to the Original Effective Date/Section 3.01 is carried forward unchanged).",
+      "sourceEvidence": "The Borrower shall not consolidate or amalgamate with, or merge with or into, or ... transfer all or substantially all its assets to, or reorganize, reincorporate or reconstitute into or as, another entity unless: (i)the resulting, surviving or transferee entity is the Borrower or another corporation organized and existing under the laws of a state of the United States; ... (vii)the Borrower has caused to be delivered to the Administrative Agent documents and other evidence ... demonstrating that the conditions to the occurrence of the Original Effective Date in Section 3.01, mutatis mutandis, are satisfied after giving effect to such transaction."
+    },
+    {
+      "gtClaimId": "RGT-A-041",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.02(e)",
+      "covenantFamily": "affiliate-transactions",
+      "propositionType": "prohibition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower, its Subsidiaries, and their respective personnel are prohibited from dealing with Restricted Parties, financing Restricted Parties with Loan proceeds, evading Sanctions/AML/Anti-Corruption laws, repaying the Loan with tainted funds, or using Loan proceeds for Improper Payments; the Borrower must also maintain internal Sanctions/AML/Anti-Corruption compliance controls.",
+      "requiredQualifiersConditions": [
+        "Covers the Borrower, its Subsidiaries, and their directors/officers/employees/representatives/agents"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Restricted Party",
+        "definition of Sanctions",
+        "definition of Improper Payment"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "Neither the Borrower nor any of its Subsidiaries nor any of their respective directors, officers, employees, representatives, or agents shall: (i)directly or indirectly, deal in, or otherwise engage in any activity, transaction, or conduct with, relating to, for, or on behalf of, any Restricted Party; ... (v)use any part of the proceeds of the Loan, directly or indirectly, in connection with any Improper Payment."
+    },
+    {
+      "gtClaimId": "RGT-A-042",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.01(j)",
+      "covenantFamily": "reporting-obligation",
+      "propositionType": "affirmative-obligation",
+      "materiality": "CRITICAL",
+      "shortDescription": "Unless publicly available, the Borrower must deliver audited annual financial statements within 120 days of fiscal year end (or, if the SEC grants a Form 10-K filing extension, the later of 120 days or the extension deadline), and unaudited quarterly financial statements within 60 days of quarter end (or the equivalent Form 10-Q extension), accompanied at the quarterly stage by a Compliance Certificate.",
+      "requiredQualifiersConditions": [
+        "Deadlines extend automatically if the SEC grants a late-filing extension under Rule 12b-25",
+        "Obligation is excused to the extent the statements are otherwise publicly available",
+        "Compliance Certificate (Exhibit E form) required with each quarterly delivery"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Annual FS deadline",
+          "value": "120 days after fiscal year end"
+        },
+        {
+          "description": "Quarterly FS deadline",
+          "value": "60 days after fiscal quarter end"
+        }
+      ],
+      "dependencies": [
+        "Exhibit E (Compliance Certificate)",
+        "Section 5.01(k)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "the audited annual Financial Statements of the Borrower as soon as they are available, and in any event, within (i) 120 days of the end of each financial year ... and ... the unaudited quarterly Financial Statements of the Borrower as soon as they are available, and in any event, within (i) 60 days of the end of each financial quarter"
+    },
+    {
+      "gtClaimId": "RGT-A-043",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.01(a)(i)",
+      "covenantFamily": "reporting-obligation",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower must notify the Lender/Administrative Agent of any condition or event constituting a Default or Event of Default within 3 Business Days of any officer obtaining knowledge of it.",
+      "requiredQualifiersConditions": [
+        "Trigger is any officer's actual knowledge, not just executive officers"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Notice deadline",
+          "value": "3 Business Days"
+        }
+      ],
+      "dependencies": [
+        "definition of Default",
+        "definition of Event of Default"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "Promptly (and in any event within three (3) Business Days) upon any officer obtaining knowledge of any condition or event that constitutes a Default or an Event of Default or that notice has been given to it with respect thereto"
+    },
+    {
+      "gtClaimId": "RGT-A-044",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.01(a)(iv)",
+      "covenantFamily": "reporting-obligation",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower must give notice within 3 Business Days of any judgment or order for payment exceeding US$20,000,000 rendered against it, if enforcement proceedings have begun or a stay has lapsed for 40+ consecutive days.",
+      "requiredQualifiersConditions": [
+        "Only triggers if enforcement proceedings commenced, or a 40+ day unstayed period exists"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Judgment threshold",
+          "value": "US$20,000,000"
+        },
+        {
+          "description": "Unstayed-period trigger",
+          "value": "40 or more consecutive days"
+        }
+      ],
+      "dependencies": [
+        "Section 6.01(g) (related Event of Default)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "the rendering of any judgments or orders for the payment of money in excess of U.S.$20,000,000 (or its equivalent in other currencies) in the aggregate against the Borrower if (i) enforcement proceedings shall have been commenced by any creditor upon such judgment or order or (ii) there shall be any period of forty (40) or more consecutive days during which a stay of enforcement ... shall not be in effect"
+    },
+    {
+      "gtClaimId": "RGT-A-045",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.01(f)",
+      "covenantFamily": "reporting-obligation",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Administrative Agent (acting for itself and the Lender) has inspection/audit rights over the Borrower's Collateral-related books and records, but limited to once per calendar year and with only one such visit per year at the Borrower's expense; privileged, trade-secret, and third-party-confidential information is carved out.",
+      "requiredQualifiersConditions": [
+        "Only the Administrative Agent (not the Lender directly) may exercise these rights",
+        "Limited to once per calendar year",
+        "Only one visit per year is at Borrower's expense",
+        "Excludes non-financial trade secrets, legally privileged information, and pre-existing third-party confidentiality obligations"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Inspection frequency cap",
+          "value": "1 time per calendar year"
+        }
+      ],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "provided that (x) only the Administrative Agent on behalf of the Lender may exercise the rights of the Administrative Agent and the Lender under this Section 5.01(f), (y) the Administrative Agent shall not exercise such rights more often than one time during any calendar year and (z) only one such visit per calendar year shall be at the expense of the Borrower"
+    },
+    {
+      "gtClaimId": "RGT-A-046",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.01(i)",
+      "covenantFamily": "reporting-obligation",
+      "propositionType": "affirmative-obligation",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower must notify the Lender of any BTC Financing entered into by it or any Affiliate with any party other than the Lender, with reasonable details, within 2 Business Days of entering into it.",
+      "requiredQualifiersConditions": [
+        "Applies to the Borrower and any of its Affiliates",
+        "Must give reasonable details of the terms"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Notice deadline",
+          "value": "2 Business Days"
+        }
+      ],
+      "dependencies": [
+        "definition of BTC Financing",
+        "Section 4.01(x) (related representation)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower shall give the Lender notice of any BTC Financing entered into by it or any of its Affiliates with any Person other than the Lender, giving reasonable details of the terms of such BTC Financing, promptly and in any event within two (2) Business Days after such BTC Financing has been entered into by the Borrower or any of its Affiliates."
+    },
+    {
+      "gtClaimId": "RGT-A-047",
+      "document": "doc-c",
+      "sourceSpan": "Section 4.01(x)",
+      "covenantFamily": "indebtedness",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower represents that, as of signing, neither it nor its Affiliates had any outstanding BTC Financing other than this facility, and that it has disclosed to the Lender all BTC Financing it has entered into; this second representation is deemed repeated on the first day of each Interest Period and on each Drawdown Date.",
+      "requiredQualifiersConditions": [
+        "First prong (no other BTC Financing) is a point-in-time rep as of the date made",
+        "Second prong (disclosure of all BTC Financing) is repeated periodically"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of BTC Financing",
+        "Section 5.01(i)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "As of the date hereof, neither the Borrower nor any of its Affiliates has entered into and has outstanding any BTC Financing save for the transaction contemplated by this Agreement. ... Neither the Borrower nor any of its Affiliates has entered into or has outstanding any BTC Financing which has not been disclosed to the Lender in accordance with Section 5.01(i). The representations in this Section 4.01(x)(ii) will be deemed to be repeated on the first day of each Interest Period and on each Drawdown Date."
+    },
+    {
+      "gtClaimId": "RGT-A-048",
+      "document": "doc-a",
+      "sourceSpan": "Section 6.01(d)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "prohibition",
+      "materiality": "CRITICAL",
+      "shortDescription": "Doc-a contains an express carve-out stating that, notwithstanding anything to the contrary, a Borrower breach of \"Section 5.02(g)\" shall not constitute an Event of Default \u2014 even though the Negative Covenants article as drafted contains only subsections (a) through (e), meaning this carve-out refers to a covenant subsection that does not appear to exist in the document.",
+      "requiredQualifiersConditions": [
+        "Applies notwithstanding any other provision of the Agreement"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 5.02"
+      ],
+      "amendmentOperativeStateRelevance": "This proviso is carried forward verbatim into doc-b, but is DELETED entirely in doc-c \u2014 see RGT-A-049. Flagged as a drafting anomaly: Section 5.02 in doc-a/doc-b only runs through subsection (e), so the referenced \"Section 5.02(g)\" does not correspond to any actual covenant in the document as executed.",
+      "sourceEvidence": "provided that, notwithstanding anything to the contrary in this Agreement, a breach by the Borrower of Section 5.02(g) shall not constitute an Event of Default."
+    },
+    {
+      "gtClaimId": "RGT-A-049",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(d)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "prohibition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Section 5.02(g) Event-of-Default carve-out present in doc-a and doc-b has been removed entirely from doc-c's Section 6.01(d); no equivalent carve-out sentence appears anywhere in doc-c's Events of Default article.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 5.02"
+      ],
+      "amendmentOperativeStateRelevance": "Material removal relative to doc-a/doc-b. Given the referenced \"Section 5.02(g)\" never corresponded to an actual covenant (Negative Covenants run only through (e)), the practical effect of the deletion may be limited, but as a textual matter this is a clause present in two prior versions and silently dropped in the current operative agreement \u2014 a downstream system asserting this carve-out still exists under the current (doc-c) agreement would be inaccurate.",
+      "sourceEvidence": "the Borrower shall fail to perform or observe any other term, covenant or agreement contained in any Loan Document on its part to be performed or observed (other than the failure to satisfy any covenant or agreement specified in clause (d)(i) above or a default specified in paragraph (a) or (b) above) if such failure shall remain unremedied for twenty-five (25) or more days after the earlier of the date on which (A) any officer of the Borrower becomes aware of such failure or (B) written notice thereof shall have been given to the Borrower by the Lender."
+    },
+    {
+      "gtClaimId": "RGT-A-050",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(d)(i)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "A breach of Section 2.06 (Collateral Adjustments), Section 5.01(b) (as to legal existence), Section 5.02 (Negative Covenants), or any Collateral Document is an immediate Event of Default with no cure period.",
+      "requiredQualifiersConditions": [
+        "No grace/cure period applies to these specific breaches, unlike the 25-day cure for other covenant breaches"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 2.06",
+        "Section 5.01(b)",
+        "Section 5.02"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower shall fail to perform or observe any term, covenant or agreement contained in Section 2.06, Section 5.01(b) (with respect to its legal existence of the Borrower), or Section 5.02, or in any Collateral Document"
+    },
+    {
+      "gtClaimId": "RGT-A-051",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(d)(ii)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "Any other covenant/agreement breach becomes an Event of Default only if unremedied for 25 or more days after the earlier of an officer becoming aware of it or the Lender giving written notice.",
+      "requiredQualifiersConditions": [
+        "Does not apply to breaches already captured under clause (d)(i) or paragraphs (a)/(b)",
+        "25-day clock starts from the earlier of officer awareness or Lender notice"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Cure period",
+          "value": "25 days"
+        }
+      ],
+      "dependencies": [
+        "Section 6.01(d)(i)",
+        "Section 6.01(a)",
+        "Section 6.01(b)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical mechanism across doc-a, doc-b, and doc-c, but doc-a/doc-b append the (removed-in-doc-c) Section 5.02(g) carve-out immediately after this clause (see RGT-A-048/049).",
+      "sourceEvidence": "the Borrower shall fail to perform or observe any other term, covenant or agreement contained in any Loan Document on its part to be performed or observed ... if such failure shall remain unremedied for twenty-five (25) or more days after the earlier of the date on which (A) any officer of the Borrower becomes aware of such failure or (B) written notice thereof shall have been given to the Borrower by the Lender"
+    },
+    {
+      "gtClaimId": "RGT-A-052",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(e)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "A cross-default Event of Default arises if the Borrower or a Subsidiary fails to pay, or otherwise defaults on, Debt owed to the Lender or a Lender Affiliate in a principal/notional amount of at least the lesser of US$15,000,000 or 3% of shareholders' equity (as determined by the Administrative Agent), subject to any applicable grace period in the underlying debt instrument.",
+      "requiredQualifiersConditions": [
+        "Applies only to Debt owed to the Lender or a Lender Affiliate (not third-party debt generally)",
+        "Threshold is the LOWER of the two stated tests",
+        "Subject to grace periods specified in the underlying debt agreement",
+        "Also triggers upon acceleration, mandatory prepayment/redemption, or a required offer to prepay/redeem prior to stated maturity"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Cross-default threshold (absolute)",
+          "value": "US$15,000,000"
+        },
+        {
+          "description": "Cross-default threshold (relative)",
+          "value": "3% of shareholders' equity"
+        }
+      ],
+      "dependencies": [
+        "definition of Debt",
+        "definition of Affiliate"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower or any of the Borrower\u2019s Subsidiaries shall fail to pay any principal of or premium or interest on any Debt owed to the Lender or to an Affiliate of the Lender, in each case, that is outstanding in a principal or notional amount of the lower of (x) U.S.$15,000,000 and (y) an amount equal to 3% of the value of shareholders\u2019 equity, as determined by the Administrative Agent"
+    },
+    {
+      "gtClaimId": "RGT-A-053",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(f)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "An Insolvency Event with respect to the Borrower is an Event of Default, and (per the remedies paragraph) triggers automatic acceleration and automatic termination of the Lender's funding obligation without any notice requirement.",
+      "requiredQualifiersConditions": [
+        "Automatic acceleration applies specifically to clause (f)(ii)-type insolvency scenarios (per the remedies paragraph), unlike other Events of Default which require Administrative Agent election/notice"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Insolvency Event"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "An Insolvency Event occurs with respect to the Borrower ... provided, however, that in the case of an event described under paragraph (ii) of Section 6.01(f) above, (A) the obligation of the Lender to make the Loan shall automatically be terminated and (B) the Promissory Note, the outstanding principal amount of the Loan, all such accrued and unpaid interest and all such other amounts shall automatically become and be due and payable, without presentment, demand, protest or any notice of any kind"
+    },
+    {
+      "gtClaimId": "RGT-A-054",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(g)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "Monetary judgments exceeding US$20,000,000 against the Borrower or its Subsidiaries are an Event of Default (subject to a carve-out for previously disclosed litigation in the 2024 Form 10-K's Contingencies/Legacy Hosting Customer Disputes sections), as are non-monetary judgments that could reasonably be expected to have a Material Adverse Effect \u2014 in each case only if enforcement has begun or a 30+ day unstayed period exists.",
+      "requiredQualifiersConditions": [
+        "Monetary-judgment prong carves out judgments tied to litigation already disclosed in the specified 2024 10-K sections",
+        "Non-monetary judgments must rise to a reasonably-expected Material Adverse Effect",
+        "Requires either commenced enforcement proceedings or a 30+ consecutive day unstayed period"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Monetary judgment threshold",
+          "value": "US$20,000,000"
+        },
+        {
+          "description": "Unstayed period",
+          "value": "30 or more consecutive days"
+        }
+      ],
+      "dependencies": [
+        "definition of Material Adverse Effect"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c, including the same named 2024 Form 10-K carve-out and URL reference.",
+      "sourceEvidence": "monetary judgments or order for the payment of money in excess of U.S.$20,000,000 ... shall be rendered against either of the Borrower or any of the Borrower\u2019s Subsidiaries, other than any judgment for previously disclosed litigation, set forth under the Contingencies and Legacy Hosting Customer Disputes sections of the Borrower\u2019s 2024 Form 10-K"
+    },
+    {
+      "gtClaimId": "RGT-A-055",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(h)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "An Event of Default occurs if an event, circumstance or change occurs that the Lender reasonably believes has caused, evidences, or is reasonably likely to result in or evidence a Material Adverse Effect \u2014 a broad, lender-discretionary trigger not tied to an objective test.",
+      "requiredQualifiersConditions": [
+        "Standard is the Lender's own reasonable belief, not an objective determination or Borrower knowledge"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Material Adverse Effect"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "An event, circumstance or change occurs that the Lender reasonably believes has or evidences, or is reasonably likely to result in or evidence, either individually or in the aggregate, a Material Adverse Effect"
+    },
+    {
+      "gtClaimId": "RGT-A-056",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(i)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "The actual occurrence of a Material Adverse Change (as distinct from a Material Adverse Effect) is itself a standalone Event of Default.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Material Adverse Change"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "A Material Adverse Change occurs;"
+    },
+    {
+      "gtClaimId": "RGT-A-057",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(j)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "It is an Event of Default if the Borrower's obligations under the Loan Documents fail to rank at least pari passu with all other unsecured and unsubordinated Debt of the Borrower (excluding permitted liens).",
+      "requiredQualifiersConditions": [
+        "Excludes liens permitted under the Loan Documents from the pari passu comparison"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Debt"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The obligations of the Borrower under this Agreement or any of the other Loan Documents to which it is a party shall fail to rank at least pari passu in priority of payment and in all other respects with all other unsecured and unsubordinated Debt of the Borrower, excluding liens permitted under the Loan Documents"
+    },
+    {
+      "gtClaimId": "RGT-A-058",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(l)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "It is an Event of Default if any Collateral Document ceases to provide its intended Liens/rights, or any Lien loses its first-priority status (subject to permitted exceptions), or an adverse legal change occurs affecting cross-border security arrangements over the Collateral.",
+      "requiredQualifiersConditions": [
+        "Excludes loss of effect caused solely by failure to timely file a continuation statement",
+        "Excludes situations expressly permitted under the Collateral Documents"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Relevant Jurisdiction",
+        "Section 5.02(a)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "Any Collateral Document ceases for any reason (other than as a result of the failure to timely file a continuation statement with respect to any financing statement previously filed by the Lender or any Agent) to provide the Liens, rights, titles, interests, remedies, powers or privileges created thereby or any Lien once created in any portion of the Collateral shall cease to be effective or fail to have the first priority originally created under the Collateral Documents"
+    },
+    {
+      "gtClaimId": "RGT-A-059",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01(m)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "default-trigger",
+      "materiality": "CRITICAL",
+      "shortDescription": "It is an Event of Default if the Borrower ceases to be the sole and absolute legal/beneficial owner of the Collateral Account, or ceases to have good and marketable title to any Collateral, subject to disposals expressly permitted under the Loan Documents.",
+      "requiredQualifiersConditions": [
+        "Carve-out for disposals permitted by the terms of the Agreement (though the general Sale of Collateral covenant prohibits disposals outright, per RGT-A-039)"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 5.02(c)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "Subject to the Loan Documents and any disposal permitted by the terms of this Agreement, the Borrower ceases to be the sole and absolute legal and beneficial owner of the Collateral Account or the Borrower ceases to have good and marketable title (as sole and absolute beneficial owner) to any of the Collateral"
+    },
+    {
+      "gtClaimId": "RGT-A-060",
+      "document": "doc-c",
+      "sourceSpan": "Section 6.01 (concluding paragraph)",
+      "covenantFamily": "events-of-default",
+      "propositionType": "remedy",
+      "materiality": "CRITICAL",
+      "shortDescription": "Upon an Event of Default, the Administrative Agent may terminate the Lender's funding obligation, accelerate all amounts due (principal, accrued interest, and Hedging Costs) by notice, and foreclose upon or otherwise exercise remedies against the Collateral (directly or through the Custodian).",
+      "requiredQualifiersConditions": [
+        "Acceleration is by Administrative Agent notice (a \"Default Notice\"), except in the automatic-acceleration Insolvency Event scenario under clause (f)(ii)",
+        "Borrower expressly waives presentment, demand, protest, and further notice"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 6.01(a)-(m)",
+        "definition of Hedging Costs"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "the Administrative Agent (i) may declare the obligation of each Lender to make the Loan to be terminated ... (ii) may, by notice to the Borrower (a \u201cDefault Notice\u201d), declare the Promissory Note, the outstanding principal amount of the Loan, all accrued and unpaid interest thereon and all other amounts payable under this Agreement (including any applicable Hedging Costs) to be forthwith due and payable ... and (iii) may foreclose upon the Collateral or exercise remedies in respect of the Collateral"
+    },
+    {
+      "gtClaimId": "RGT-A-061",
+      "document": "doc-c",
+      "sourceSpan": "Section 3.02",
+      "covenantFamily": "eligibility-condition",
+      "propositionType": "eligibility-gate",
+      "materiality": "CRITICAL",
+      "shortDescription": "Each new Borrowing is conditioned on, among other things: reps and warranties remaining true, no MAE-level Adverse Proceeding, no continuing/resulting Default, a perfected first-priority Collateral Agent lien with UCC filings made, delivery of a Notice of Borrowing, pre-funding collateralization sufficient to keep the Actual LTV Ratio at or below the Initial LTV, delivery of the Promissory Note, payment of Lender/Custodian fees (capped at US$50,000 in the aggregate), satisfactory lien search results, and no continuing or resulting Blocking Event.",
+      "requiredQualifiersConditions": [
+        "Also requires the Original Effective Date, First Amendment and Restatement Effective Date, and Second Amendment and Restatement Effective Date to all have already occurred (doc-c)"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Fee/expense cap for borrowing conditions",
+          "value": "US$50,000"
+        }
+      ],
+      "dependencies": [
+        "Section 4.01",
+        "Section 3.01",
+        "Section 3.03",
+        "Section 3.04",
+        "definition of Initial LTV",
+        "definition of Blocking Event"
+      ],
+      "amendmentOperativeStateRelevance": "Same list of conditions across doc-a, doc-b, and doc-c, with doc-c's opening sentence updated to require both restatement effective dates to have occurred as a precondition to any further borrowing.",
+      "sourceEvidence": "On or prior to the date of the proposed Borrowing, there shall be credited to the Collateral Account Collateral with a sufficient aggregate Prevailing Market Value to cause the Actual LTV Ratio (computed after giving effect to the proposed Borrowing) to be less than or equal to the Initial LTV. ... No Blocking Event shall be continuing or would result from the proposed Loan."
+    },
+    {
+      "gtClaimId": "RGT-A-062",
+      "document": "doc-b",
+      "sourceSpan": "Section 3.03",
+      "covenantFamily": "eligibility-condition",
+      "propositionType": "eligibility-gate",
+      "materiality": "CRITICAL",
+      "shortDescription": "Doc-b's Amendment and Restatement Effective Date (its own restatement trigger) is conditioned on governmental consents, officer certificates as to reps/no MAE-Adverse-Proceeding/no Default, delivery of the executed Agreement and Security Confirmation, Constituent Documents, corporate authorization evidence, officer signature certificates, and a Greenberg Traurig legal opinion, plus KYC/AML documentation.",
+      "requiredQualifiersConditions": [
+        "All conditions in (a) through (e) must be satisfied"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Security Confirmation",
+        "Section 4.01"
+      ],
+      "amendmentOperativeStateRelevance": "This is the doc-b analogue to doc-c's Section 3.04; notably, doc-b's list does NOT include a \"no continuing Blocking Event\" condition, which doc-c adds as new paragraph (f) for the Second Amendment and Restatement Effective Date (see RGT-A-063).",
+      "sourceEvidence": "The Lender shall have received on or before the Amendment and Restatement Effective Date the following, each dated such day, in form and substance satisfactory to the Lender: (i)a copy of this Agreement and the Security Confirmation duly executed by the parties thereto"
+    },
+    {
+      "gtClaimId": "RGT-A-063",
+      "document": "doc-c",
+      "sourceSpan": "Section 3.04(f)",
+      "covenantFamily": "eligibility-condition",
+      "propositionType": "eligibility-gate",
+      "materiality": "CRITICAL",
+      "shortDescription": "New condition precedent, not present in doc-b's parallel restatement-effectiveness section: the Second Amendment and Restatement Effective Date cannot occur while a Blocking Event is continuing.",
+      "requiredQualifiersConditions": [
+        "Applies as of the Second Amendment and Restatement Effective Date specifically"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Blocking Event"
+      ],
+      "amendmentOperativeStateRelevance": "This is a materially new condition added in doc-c that has no counterpart in doc-a's Section 3.01 or doc-b's Section 3.03 restatement-effectiveness conditions \u2014 the Lender added an explicit no-Blocking-Event gate specifically for entering into the Second Amended and Restated Credit Agreement.",
+      "sourceEvidence": "On the Second Amendment and Restatement Effective Date, no Blocking Event shall be continuing."
+    },
+    {
+      "gtClaimId": "RGT-A-064",
+      "document": "doc-c",
+      "sourceSpan": "Section 3.04(c)(i)",
+      "covenantFamily": "collateral-guaranty",
+      "propositionType": "eligibility-gate",
+      "materiality": "MATERIAL",
+      "shortDescription": "As a condition to the Second Amendment and Restatement Effective Date, the Lender must receive an executed copy of doc-c itself and the new Second Security Confirmation (plus any other Collateral-related document it requires).",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Second Security Confirmation"
+      ],
+      "amendmentOperativeStateRelevance": "Parallels doc-b's equivalent condition requiring the (first) Security Confirmation at the First Amendment and Restatement Effective Date.",
+      "sourceEvidence": "a copy of this Agreement and the Second Security Confirmation duly executed by the parties thereto and any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement as the Lender requires in writing"
+    },
+    {
+      "gtClaimId": "RGT-A-065",
+      "document": "doc-a",
+      "sourceSpan": "Section 7.04(a)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower must reimburse the Lender/Custodian's documented, reasonable costs and expenses for preparing/executing/amending the Loan Documents, but the reimbursement cap for the original preparation and execution of the Loan Documents was US$50,000.",
+      "requiredQualifiersConditions": [
+        "Cap applies only to preparation and execution of the Loan Documents, not post-closing enforcement costs"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Fee cap",
+          "value": "US$50,000"
+        }
+      ],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Doc-b extends this same $50,000 cap to also cover costs of the Amendment and Restatement itself; doc-c further extends the cap to cover costs of BOTH the First and Second Amendment and Restatement \u2014 see RGT-A-066.",
+      "sourceEvidence": "provided that, in the case of the preparation and execution of the Loan Documents only, the Borrower shall not be required to pay an amount in aggregate in excess of U.S.$50,000 in respect of such costs and expenses."
+    },
+    {
+      "gtClaimId": "RGT-A-066",
+      "document": "doc-c",
+      "sourceSpan": "Section 7.04(a)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The US$50,000 aggregate cap on Borrower-reimbursable Lender/Custodian costs now expressly covers the initial Loan Document preparation/execution AND the costs of both the First and Second Amendment and Restatement.",
+      "requiredQualifiersConditions": [
+        "Cap does not apply to post-Event-of-Default enforcement costs, which remain uncapped"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Fee cap",
+          "value": "US$50,000 (aggregate, covering initial docs plus both restatements)"
+        }
+      ],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Progressively broadened wording: doc-a's cap covered only initial document preparation; doc-b's covered initial preparation plus its own restatement; doc-c's covers initial preparation plus both restatements to date.",
+      "sourceEvidence": "provided that, in the case of the initial preparation and execution of the Loan Documents, the amendment and restatement of the Original Credit Agreement on the First Amendment and Restatement Effective Date and the amendment and restatement of the Existing Credit Agreement on the Second Amendment and Restatement Effective Date only, the Borrower shall not be required to pay an amount in aggregate in excess of U.S.$50,000 in respect of such costs and expenses."
+    },
+    {
+      "gtClaimId": "RGT-A-067",
+      "document": "doc-c",
+      "sourceSpan": "Section 3.02(f)",
+      "covenantFamily": "other",
+      "propositionType": "eligibility-gate",
+      "materiality": "MATERIAL",
+      "shortDescription": "Separately from the overall cost-reimbursement cap, the Borrower's obligation to pre-pay Lender/Custodian fees as a condition to any Borrowing is itself capped at US$50,000 in the aggregate for invoices presented at least 1 Business Day before the Drawdown Date.",
+      "requiredQualifiersConditions": [
+        "Applies only to invoices presented at least 1 Business Day prior to the Drawdown Date (or a later agreed date)"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Fee cap",
+          "value": "US$50,000"
+        }
+      ],
+      "dependencies": [
+        "Section 7.04(a)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "provided that the Borrower shall not be required to pay an amount in aggregate in excess of U.S.$50,000 in respect of such fees and expenses."
+    },
+    {
+      "gtClaimId": "RGT-A-068",
+      "document": "doc-c",
+      "sourceSpan": "Section 7.06(a)",
+      "covenantFamily": "other",
+      "propositionType": "permission-with-conditions",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Lender may freely assign all or part of its rights/obligations to an Affiliate or successor (including, expressly, Coinbase Asset Management) without Borrower consent, or while an Event of Default is continuing; otherwise Borrower's prior written consent (not to be unreasonably withheld or delayed) is required, and the Collateral cannot be moved to a different custodian without Borrower's prior written consent.",
+      "requiredQualifiersConditions": [
+        "Consent-free assignment permitted only to an Affiliate/successor of the Lender (Coinbase Asset Management named as example) or while an Event of Default is continuing",
+        "Assignment must be of a constant (not varying) percentage of rights/obligations",
+        "Custodian cannot be changed without Borrower's prior written consent, independent of the assignment consent rules"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Affiliate",
+        "Section 6.01"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "unless the assignment (x) is made while an Event of Default has occurred and is continuing or (y) is to an Affiliate or successor of the Lender, including without limitation Coinbase Asset Management, the prior written consent of the Borrower to such assignment is required (such consent not to be unreasonably withheld or delayed) and (iv) the Collateral shall not be transferred from the Custodian to another custodian without the prior written consent of the Borrower."
+    },
+    {
+      "gtClaimId": "RGT-A-069",
+      "document": "doc-c",
+      "sourceSpan": "Section 7.07",
+      "covenantFamily": "other",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Agreement, Promissory Note, and other Loan Documents are governed by New York law.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "This Agreement and the Promissory Note and other Loan Documents shall be governed by and construed in accordance with the laws of the State of New York, USA."
+    },
+    {
+      "gtClaimId": "RGT-A-070",
+      "document": "doc-c",
+      "sourceSpan": "Section 7.09(a)-(b)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower irrevocably submits to the exclusive jurisdiction of New York state/federal courts sitting in New York City and waives objections to venue and forum non conveniens defenses.",
+      "requiredQualifiersConditions": [
+        "Does not prevent the Lender from bringing action in other jurisdictions, including the Borrower's Relevant Jurisdiction, per Section 7.09(c)"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower hereby irrevocably and unconditionally submits, for itself and its property, to the exclusive jurisdiction of any New York State court or federal court of the United States sitting in New York City"
+    },
+    {
+      "gtClaimId": "RGT-A-071",
+      "document": "doc-c",
+      "sourceSpan": "Section 7.12",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "Both the Borrower and the Lender irrevocably waive the right to a jury trial in any action relating to the Agreement, the Promissory Note, or any other Loan Document.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "EACH OF THE BORROWER AND THE LENDER HEREBY IRREVOCABLY WAIVES ALL RIGHT TO TRIAL BY JURY IN ANY ACTION, PROCEEDING OR COUNTERCLAIM"
+    },
+    {
+      "gtClaimId": "RGT-A-072",
+      "document": "doc-c",
+      "sourceSpan": "Section 7.04(b)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower must indemnify the Lender, Custodian, and their Affiliates/personnel against most claims/losses arising from the Loan Documents or use of Loan proceeds, subject to carve-outs for an Indemnified Party's own gross negligence/fraud/willful misconduct (as finally adjudicated), bad-faith breach (as finally adjudicated), inter-Indemnified-Party disputes not involving the Borrower, and certain Regulation T/U/X-related Lender-violation claims; counsel-fee reimbursement is limited to one primary, one local, and one special counsel (absent conflicts).",
+      "requiredQualifiersConditions": [
+        "Carve-outs require a final, non-appealable judgment in most cases",
+        "Counsel-fee limitation: one primary counsel, one local counsel per jurisdiction, one special counsel per specialty (plus one additional of each in a conflict)"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 2.07"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "except to the extent such claim, damage, loss, liability or expense (i) is found in a final, non-appealable judgment by a court of competent jurisdiction to have resulted from such Indemnified Party\u2019s gross negligence, fraud or willful misconduct ... provided, that the Borrower shall only be responsible for the fees, charges and disbursements of one primary counsel for the Administrative Agent and the Lenders (taken as a whole), one local counsel (in each reasonably necessary jurisdiction) and one special counsel"
+    },
+    {
+      "gtClaimId": "RGT-A-073",
+      "document": "doc-c",
+      "sourceSpan": "Section 7.04(b)",
+      "covenantFamily": "other",
+      "propositionType": "prohibition",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower waives any claim for special, indirect, consequential, or punitive damages against the Lender and related parties arising from the Loan Documents or use of Loan proceeds.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower also agrees not to assert any claim for special, indirect, consequential or punitive damages against the Lender, any of its Affiliates, or any of their respective directors, officers, employees, attorneys and agents, on any theory of liability arising out of or otherwise relating to the Promissory Note, this Agreement, any other Loan Document"
+    },
+    {
+      "gtClaimId": "RGT-A-074",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.12(a)-(c)",
+      "covenantFamily": "other",
+      "propositionType": "permission-with-conditions",
+      "materiality": "MATERIAL",
+      "shortDescription": "If a Change in Law increases the Lender's costs or reduces its returns, the Borrower must compensate the Lender, but the Lender cannot claim compensation for costs/reductions incurred more than 6 months before it notifies the Borrower of the Change in Law (extended to cover the full retroactive period if the Change in Law itself is retroactive).",
+      "requiredQualifiersConditions": [
+        "6-month lookback limit on the Lender's compensation claims",
+        "Lookback period extends to match retroactive effect if the underlying Change in Law is itself retroactive"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Lookback limitation period",
+          "value": "6 months"
+        }
+      ],
+      "dependencies": [
+        "definition of Change in Law"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "the Borrower shall not be required to compensate the Lender pursuant to this Section for any increased costs incurred or reductions suffered more than six (6) months prior to the date that the Lender notifies the Borrower of the Change in Law giving rise to such increased costs or reductions"
+    },
+    {
+      "gtClaimId": "RGT-A-075",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.12(d)-(e)",
+      "covenantFamily": "prepayments-subordinated-debt",
+      "propositionType": "permission-with-conditions",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower may prepay the Loan in full within 30 days of receiving an Increased Costs certificate without paying an Early Termination Fee; a prepayment after that 30-day window does require the fee.",
+      "requiredQualifiersConditions": [
+        "30-day window runs from receipt of the Section 2.12(b) certificate"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Fee-free prepayment window",
+          "value": "30 days after receipt of the Increased Costs certificate"
+        }
+      ],
+      "dependencies": [
+        "Section 2.12(b)",
+        "definition of Early Termination Fee"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "No Early Termination Fee shall be payable if the Borrower prepays in full the entire outstanding principal amount of the Loan as provided in this Section 2.12 within thirty (30) days following receipt of the certificate described in paragraph (b) above."
+    },
+    {
+      "gtClaimId": "RGT-A-076",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.09(d)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower must indemnify each Recipient (Lender/Administrative Agent) within 10 days of demand for the full amount of Indemnified Taxes, regardless of whether such Taxes were correctly imposed.",
+      "requiredQualifiersConditions": [
+        "Applies whether or not the Indemnified Taxes were correctly or legally imposed"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Payment deadline",
+          "value": "10 days after demand"
+        }
+      ],
+      "dependencies": [
+        "definition of Indemnified Taxes",
+        "definition of Excluded Taxes"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower shall indemnify each Recipient, within ten (10) days after demand therefor, for the full amount of any Indemnified Taxes ... whether or not such Indemnified Taxes were correctly or legally imposed or asserted by the relevant Governmental Authority."
+    },
+    {
+      "gtClaimId": "RGT-A-077",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.08(a)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "All payments must be made in U.S. Dollars, free of counterclaim/setoff, no later than 4:00pm New York City time on the due date.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [
+        {
+          "description": "Payment cutoff time",
+          "value": "4:00 p.m. New York City time"
+        }
+      ],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower shall make each payment hereunder and under the Promissory Note in U.S. Dollars, irrespective of any right of counterclaim or set-off, not later than 4:00 p.m. (New York City time) on the day when due"
+    },
+    {
+      "gtClaimId": "RGT-A-078",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.08(b)",
+      "covenantFamily": "other",
+      "propositionType": "permission-with-conditions",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Lender is authorized to charge (setoff against) the Borrower's accounts with the Lender or its Affiliates for any amount not paid when due, with prompt notice to the Borrower after the fact.",
+      "requiredQualifiersConditions": [
+        "Notice to Borrower is given after, not before, the charge occurs"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower hereby authorizes the Lender, if and to the extent payment owed to the Lender is not made when due hereunder or under the Promissory Note held by the Lender, to charge from time to time against any or all of the Borrower\u2019s accounts with the Lender or any of its Affiliates any amount so due."
+    },
+    {
+      "gtClaimId": "RGT-A-079",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Debt\")",
+      "covenantFamily": "indebtedness",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "\"Debt\" is defined broadly to include borrowed money, deferred purchase-price obligations (excluding trade payables not overdue more than 60 days), note/bond obligations, capital lease obligations, LC/acceptance obligations, hedge/repo obligations, guaranteed debt of others, and debt secured by a Lien on the Person's property even if not assumed.",
+      "requiredQualifiersConditions": [
+        "Trade payables carve-out applies only if not overdue by more than 60 days"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Trade payables carve-out threshold",
+          "value": "60 days overdue"
+        }
+      ],
+      "dependencies": [
+        "Section 6.01(e) (cross-default trigger)",
+        "Section 6.01(j) (pari passu trigger)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c; this definition underlies the cross-default (Section 6.01(e)) and pari passu (Section 6.01(j)) Events of Default.",
+      "sourceEvidence": "\u201cDebt\u201d of any Person means, without duplication, (a) all indebtedness of such Person for borrowed money, (b) all obligations of such Person for the deferred purchase price of property or services (other than trade payables not overdue by more than sixty (60) days incurred in the ordinary course of such Person\u2019s business)"
+    },
+    {
+      "gtClaimId": "RGT-A-080",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Material Adverse Effect\")",
+      "covenantFamily": "cross-reference-dependency",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "\"Material Adverse Effect\" is a five-pronged definition covering adverse effects on: (a) the Borrower/Subsidiaries' business, financial condition, operations or properties; (b) the Agents'/Lender's rights and remedies; (c) the Borrower's ability to perform; (d) the legality/validity/enforceability of the Loan Documents or related rights/remedies; or (e) the priority/perfection of any Collateral Lien.",
+      "requiredQualifiersConditions": [
+        "Any one of the five prongs is sufficient to constitute a Material Adverse Effect"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c. This is one of the most heavily cross-referenced defined terms in the Agreement (representations, covenants, and Events of Default (h) and (i) all depend on it).",
+      "sourceEvidence": "\u201cMaterial Adverse Effect\u201d means a material adverse effect on (a) the business, financial condition, operations or properties of the Borrower and its Subsidiaries taken as a whole, (b) the rights and remedies of the Administrative Agent, the Collateral Agent or the Lender under any Loan Document ... or (e) the priority or perfection of any Lien granted or purported to be granted under any Collateral Document."
+    },
+    {
+      "gtClaimId": "RGT-A-081",
+      "document": "doc-c",
+      "sourceSpan": "Recitals; Section 1.05",
+      "covenantFamily": "amendment-effect",
+      "propositionType": "affirmative-obligation",
+      "materiality": "CRITICAL",
+      "shortDescription": "Doc-c states that it amends and restates the Existing Credit Agreement (doc-b) with effect from the Second Amendment and Restatement Effective Date; upon effectiveness, the Existing Credit Agreement's terms are superseded, but the parties' outstanding obligations continue under doc-c's terms without novation or a deemed repayment/reborrowing.",
+      "requiredQualifiersConditions": [
+        "Effective only from the Second Amendment and Restatement Effective Date (i.e., once Section 3.04's conditions precedent are satisfied)",
+        "Expressly not a novation or repayment-and-reborrowing"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 3.04",
+        "definition of Existing Credit Agreement",
+        "definition of Second Amendment and Restatement Effective Date"
+      ],
+      "amendmentOperativeStateRelevance": "This is the central operative-state provision: it establishes that doc-c is intended to be the current, controlling agreement, fully superseding doc-b (which itself had superseded doc-a), while treating the underlying debt as continuous rather than refinanced from scratch. Section 1.05 itself is new text not present in doc-a or doc-b (doc-b's equivalent mechanic is stated only in its recitals and Section 3.03, without an analogous 'no novation' operative section).",
+      "sourceEvidence": "The Existing Credit Agreement shall be amended and restated in the form of this Agreement with effect from the Second Amendment and Restatement Effective Date. Upon the effectiveness of this Agreement, the terms and provisions of the Existing Credit Agreement shall be superseded hereby. ... this Agreement shall not be deemed to evidence or result in a novation or repayment and re-borrowing of those obligations. All references to the \u201cCredit Agreement\u201d or any similar term contained in the Loan Documents shall be deemed to refer to this Agreement."
+    },
+    {
+      "gtClaimId": "RGT-A-082",
+      "document": "doc-b",
+      "sourceSpan": "Recitals",
+      "covenantFamily": "amendment-effect",
+      "propositionType": "affirmative-obligation",
+      "materiality": "CRITICAL",
+      "shortDescription": "Doc-b states it amends and restates the \"Existing Credit Agreement\" (doc-a) with effect from the Amendment and Restatement Effective Date defined in its Section 3.03.",
+      "requiredQualifiersConditions": [
+        "Effective only once Section 3.03's conditions precedent are satisfied"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 3.03",
+        "definition of Amendment and Restatement Effective Date"
+      ],
+      "amendmentOperativeStateRelevance": "Confirms doc-b's own recital-based supersession of doc-a; doc-c's recitals in turn describe doc-b (as it existed on the First Amendment and Restatement Effective Date) as the \"Existing Credit Agreement\" being restated by doc-c, and doc-a (as originally signed) as the separately defined \"Original Credit Agreement.\"",
+      "sourceEvidence": "The Borrower and Lender are parties to a Credit Agreement dated as of April 22, 2025 (the \u201cExisting Credit Agreement\u201d) and, in consideration of the mutual covenants and agreements herein contained, have agreed to amend and restate the Existing Credit Agreement with effect from the Amendment and Restatement Effective Date as follows"
+    },
+    {
+      "gtClaimId": "RGT-A-083",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definitions of \"Existing Credit Agreement\" and \"Original Credit Agreement\"); Recitals",
+      "covenantFamily": "amendment-effect",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "Doc-c's recitals define \"Original Credit Agreement\" as the agreement as it existed on the Original Effective Date (i.e., doc-a as originally signed), and \"Existing Credit Agreement\" as that agreement in the form it took after the First Amendment and Restatement (i.e., doc-b) \u2014 doc-c amends and restates the latter.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Original Effective Date",
+        "definition of First Amendment and Restatement Effective Date"
+      ],
+      "amendmentOperativeStateRelevance": "Establishes the precise document lineage: doc-a (Original Credit Agreement) \u2192 doc-b (Existing Credit Agreement, effective as of the First Amendment and Restatement Effective Date, May 19, 2025) \u2192 doc-c (this Second Amended and Restated Credit Agreement, effective as of the Second Amendment and Restatement Effective Date).",
+      "sourceEvidence": "The Borrower and Lender are parties to a Credit Agreement dated as of April 22, 2025, as amended and restated as of the First Amendment and Restatement Effective Date (this Agreement in the form as of the First Amendment and Restatement Effective Date, the \u201cExisting Credit Agreement\u201d, and as in effect on the Original Effective Date, the \u201cOriginal Credit Agreement\u201d)"
+    },
+    {
+      "gtClaimId": "RGT-A-084",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Promissory Note\")",
+      "covenantFamily": "amendment-effect",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Promissory Note under doc-c is issued in exchange for, and supersedes, the prior Promissory Note under the Existing Credit Agreement (doc-b), and this reissuance is not deemed a repayment and reborrowing of the underlying indebtedness.",
+      "requiredQualifiersConditions": [
+        "Not deemed a repayment/reborrowing"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 1.05"
+      ],
+      "amendmentOperativeStateRelevance": "Mirrors the same no-novation Promissory Note reissuance mechanic first introduced in doc-b (which reissued the note in exchange for doc-a's original note).",
+      "sourceEvidence": "This Promissory Note is issued in exchange for, and supersedes in its entirety, the original promissory note referred to in the Existing Credit Agreement; but the issuance of the Promissory Note shall not constitute a repayment and reborrowing of indebtedness of the Borrower evidenced by such original promissory note."
+    },
+    {
+      "gtClaimId": "RGT-A-085",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.01 (preamble)",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Article V covenant package (affirmative and negative covenants) applies for as long as any Commitment is in effect and until the outstanding principal of the Loan is paid in full.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Commitment"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower covenants and agrees that, so long as any Commitment is in effect and until payment in full of all outstanding principal amounts of the Loan, the Borrower shall perform all covenants in this Article 5."
+    },
+    {
+      "gtClaimId": "RGT-A-086",
+      "document": "doc-c",
+      "sourceSpan": "Section 2.11",
+      "covenantFamily": "other",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "Loan proceeds may be used solely for the Borrower's general corporate purposes.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The proceeds of the Loan shall be available (and the Borrower agrees that it shall use such proceeds) solely for general corporate purposes of the Borrower."
+    },
+    {
+      "gtClaimId": "RGT-A-087",
+      "document": "doc-c",
+      "sourceSpan": "Section 4.01(o)",
+      "covenantFamily": "other",
+      "propositionType": "prohibition",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower represents that no Loan proceeds will be used in a manner that violates Federal Reserve Regulation T, U, or X margin-lending rules.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 2.07 (related illegality carve-outs referencing Reg T/U/X)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "No portion of the proceeds of the Loan shall be used in any manner, whether directly or indirectly, that causes or could reasonably be expected to cause the Loan or the application of such proceeds to violate Regulation T, Regulation U or Regulation X of the Board of Governors."
+    },
+    {
+      "gtClaimId": "RGT-A-088",
+      "document": "doc-c",
+      "sourceSpan": "Section 4.01(l)",
+      "covenantFamily": "collateral-guaranty",
+      "propositionType": "definition",
+      "materiality": "CRITICAL",
+      "shortDescription": "The Borrower represents the Collateral is owned free and clear of Liens other than Permitted Liens, that it has full authority to grant a first-priority security interest in it, and that upon execution of the Collateral Documents the Collateral Agent will have (or has) a perfected First Priority Lien.",
+      "requiredQualifiersConditions": [
+        "Subject to Permitted Liens exception throughout"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Permitted Liens",
+        "definition of First Priority"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c (only the cross-referenced effective date label changes from \"Effective Date\" to \"Original Effective Date\").",
+      "sourceEvidence": "The Collateral and each part thereof is owned by the Borrower free and clear of any Lien or restrictions on transferability (other than Permitted Liens), and the Borrower has the full right, power and lawful authority to pledge and grant a first priority security interest, subject to Permitted Liens, in the Collateral in favor of the Collateral Agent for the benefit of the Secured Parties"
+    },
+    {
+      "gtClaimId": "RGT-A-089",
+      "document": "doc-c",
+      "sourceSpan": "Section 4.01(q)",
+      "covenantFamily": "other",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower represents, as of any Drawdown Date, that it is Solvent and will not become insolvent after giving effect to the transactions contemplated by the Loan Documents.",
+      "requiredQualifiersConditions": [
+        "Made specifically as of each Drawdown Date"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Solvent"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "As of any Drawdown Date, it is Solvent and it will not become insolvent after giving effect to the transactions contemplated by the Loan Documents."
+    },
+    {
+      "gtClaimId": "RGT-A-090",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Affiliate\")",
+      "covenantFamily": "affiliate-transactions",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "\"Affiliate\" is defined using a 30%-or-more voting-stock control threshold (or other management/policy-direction control), rather than the more common 50% threshold \u2014 this lower bar sweeps a broader set of relationships into affiliate-transaction and cross-default provisions.",
+      "requiredQualifiersConditions": [
+        "Control can also arise via contract or other means of directing management/policy, not just stock ownership"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Voting-stock control threshold",
+          "value": "30% or more"
+        }
+      ],
+      "dependencies": [
+        "Section 5.02(d)(vi) (Affiliate merger fairness test)",
+        "Section 6.01(e) (Affiliate cross-default)",
+        "Section 7.06(a) (Affiliate assignment carve-out)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c; this 30% threshold (lower than the 50%+ threshold used for \"Subsidiary\") is a load-bearing definitional choice feeding several other provisions.",
+      "sourceEvidence": "For purposes of this definition, the term \u201ccontrol\u201d (including the terms \u201ccontrolling\u201d, \u201ccontrolled by\u201d and \u201cunder common control with\u201d) of a Person means the possession, direct or indirect, of the power to vote 30% or more of the Voting Stock of such Person or to direct or cause the direction of the management and policies of such Person"
+    },
+    {
+      "gtClaimId": "RGT-A-091",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Custodian\"; definition of \"Custody Agreement\")",
+      "covenantFamily": "collateral-guaranty",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Collateral is held by Coinbase Custody Trust Company, LLC as Custodian, under a prime broker custody agreement dated December 16, 2024 (pre-dating even the original Credit Agreement).",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Collateral Account"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c \u2014 the Custody Agreement itself was never amended or replaced across the three restatements.",
+      "sourceEvidence": "\u201cCustodian\u201d means Coinbase Custody Trust Company, LLC. \u201cCustody Agreement\u201d means the Coinbase prime broker custody agreement dated December 16, 2024, between the Borrower and the Custodian, as amended or otherwise modified from time to time."
+    },
+    {
+      "gtClaimId": "RGT-A-092",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Specified Event of Default\")",
+      "covenantFamily": "cross-reference-dependency",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "\"Specified Event of Default\" is a defined subset of six particular Events of Default (certain covenant breaches, cross-default, insolvency without grace period, pari passu failure, certain unenforceability assertions, and loss of Collateral ownership) that is itself cross-referenced in the definition of \"Blocking Event\" and \"Default.\"",
+      "requiredQualifiersConditions": [
+        "Only the six enumerated sub-provisions of Section 6.01 qualify"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 6.01(d)(ii)",
+        "Section 6.01(e)",
+        "Section 6.01(f)",
+        "Section 6.01(j)",
+        "Section 6.01(k)",
+        "Section 6.01(m)",
+        "definition of Blocking Event"
+      ],
+      "amendmentOperativeStateRelevance": "Identical list across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "\u201cSpecified Event of Default\u201d means any of: (1) Section 6.01(d)(ii) (but solely in respect of any of the following subsections of Section 5.01: (b), (e), (g), (j) and (k)(i)); (2) Section 6.01(e); (3) 6.01(f) (without regard to any grace period specified in the definition of \u201cInsolvency Event\u201d); (4) Section 6.01(j); (5) Section 6.01(k) ...; and (6) 6.01(m)."
+    },
+    {
+      "gtClaimId": "RGT-A-093",
+      "document": "doc-c",
+      "sourceSpan": "Section 7.02(b)",
+      "covenantFamily": "cross-reference-dependency",
+      "propositionType": "other",
+      "materiality": "BENIGN",
+      "shortDescription": "The notice-timing carve-out cross-reference was updated from citing \"Sections 2.03(f) and 2.03(g)\" (in doc-a/doc-b) to citing \"Sections 2.03(f) and 2.06(b)\" in doc-c.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 2.03(f)",
+        "Section 2.06(b)"
+      ],
+      "amendmentOperativeStateRelevance": "Corrective cross-reference change: Section 2.03(g) is \"[Reserved]\" in all three documents and contains no timing rule, so the doc-a/doc-b cross-reference pointed to an empty placeholder; doc-c redirects the citation to Section 2.06(b), which is the substantive margin-release timing provision, suggesting a drafting fix rather than a substantive policy change.",
+      "sourceEvidence": "provided that, except as provided in Sections 2.03(f) and 2.06(b), any notice not given during normal business hours for the recipient, shall be deemed to have been given at the opening of business on the next Business Day for the recipient"
+    },
+    {
+      "gtClaimId": "RGT-A-094",
+      "document": "doc-c",
+      "sourceSpan": "Section 3.01(c)(vi)",
+      "covenantFamily": "eligibility-condition",
+      "propositionType": "eligibility-gate",
+      "materiality": "MATERIAL",
+      "shortDescription": "A favorable legal opinion from Greenberg Traurig, LLP (special New York counsel to the Borrower) is a condition precedent to the original facility's effectiveness, and equivalent Greenberg Traurig opinions are separately required as conditions to both the First and Second Amendment and Restatement Effective Dates.",
+      "requiredQualifiersConditions": [
+        "Same named counsel firm required at each restatement"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 3.03(c)(v)",
+        "Section 3.04(c)(v)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical requirement repeated at each of the three effectiveness gates (original, first restatement, second restatement).",
+      "sourceEvidence": "favorable opinions of Greenberg Traurig, LLP, special New York counsel to the Borrower."
+    },
+    {
+      "gtClaimId": "RGT-A-095",
+      "document": "doc-c",
+      "sourceSpan": "Signature pages",
+      "covenantFamily": "other",
+      "propositionType": "other",
+      "materiality": "BENIGN",
+      "shortDescription": "Doc-c was executed by Jason Chung as Chief Financial Officer for Riot Platforms, Inc. and by Matthew Boyd as Head of Prime Finance for Coinbase Credit, Inc.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Doc-a and doc-b were executed by Colin Yee (CFO and EVP) for Riot and Matt Boyd (Head of Industrial Financing) for Coinbase Credit \u2014 signatory and Coinbase-side title changed by the time of doc-c's execution.",
+      "sourceEvidence": "RIOT PLATFORMS, INC. ... By /s/ Jason Chung ... Name: Jason Chung ... Title: Chief Financial Officer ... COINBASE CREDIT, INC. ... By /s/ Matthew Boyd ... Name: Matthew Boyd ... Title: Head of Prime Finance"
+    },
+    {
+      "gtClaimId": "RGT-A-096",
+      "document": "doc-c",
+      "sourceSpan": "Cover page; Recitals",
+      "covenantFamily": "other",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "Doc-c is titled the \"Second Amended and Restated Credit Agreement,\" dated April 21, 2026, for a US$200,000,000 facility between Riot Platforms, Inc. (Borrower, Nevada corporation) and Coinbase Credit, Inc. (Lender, Collateral Agent, and Administrative Agent, Delaware corporation).",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [
+        {
+          "description": "Facility size",
+          "value": "US$200,000,000"
+        },
+        {
+          "description": "Agreement date",
+          "value": "April 21, 2026"
+        }
+      ],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Third and most recent instrument in the chain: doc-a ($100M, 2025-04-22) \u2192 doc-b ($200M, 2025-05-19) \u2192 doc-c ($200M, 2026-04-21).",
+      "sourceEvidence": "U.S.$200,000,000 SECOND AMENDED AND RESTATED CREDIT AGREEMENT Dated as of April 21, 2026 Between RIOT PLATFORMS, INC. as Borrower and COINBASE CREDIT, INC. as Lender, Collateral Agent and Administrative Agent."
+    },
+    {
+      "gtClaimId": "RGT-A-097",
+      "document": "doc-c",
+      "sourceSpan": "Section 1.01 (definition of \"Financial Statements\")",
+      "covenantFamily": "reporting-obligation",
+      "propositionType": "definition",
+      "materiality": "MATERIAL",
+      "shortDescription": "\"Financial Statements\" is defined to require U.S. Dollar-denominated balance sheet, income statement, cash flow statement, sources-and-uses statement, and statement of changes in equity, all prepared under Applicable Accounting Rules (U.S. GAAP).",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "definition of Applicable Accounting Rules",
+        "Section 5.01(j)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "\u201cFinancial Statements\u201d means, as of any relevant date and for any relevant period, as applicable, the Borrower\u2019s balance sheet, income statement, cash flow statement, statement of sources and uses of fund and statement showing changes in equity and any exhibits and notes thereto, which shall be prepared in U.S. Dollars"
+    },
+    {
+      "gtClaimId": "RGT-A-098",
+      "document": "doc-c",
+      "sourceSpan": "Section 4.01(y)",
+      "covenantFamily": "other",
+      "propositionType": "definition",
+      "materiality": "BENIGN",
+      "shortDescription": "The Borrower represents its books/records and chief executive office/primary place of business are maintained in Colorado, and its UCC \"place of business\" is in the United States.",
+      "requiredQualifiersConditions": [],
+      "quantitativeComponents": [],
+      "dependencies": [],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "The Borrower (i) maintains its respective books and records and its chief executive office and primary place of business in the State of Colorado, and (ii) its \u201cplace of business\u201d (as defined in the UCC) is in the United States of America."
+    },
+    {
+      "gtClaimId": "RGT-A-099",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.01(a)(v)",
+      "covenantFamily": "reporting-obligation",
+      "propositionType": "affirmative-obligation",
+      "materiality": "MATERIAL",
+      "shortDescription": "The Borrower must give at least 5 Business Days' advance written notice of any change to its corporate name, identity/structure, jurisdiction of organization, EIN, or chief executive office location, and may not implement such a change until all UCC (or equivalent) filings needed to preserve the Collateral Agent's perfected security interest have been made.",
+      "requiredQualifiersConditions": [
+        "5 Business Days' advance notice required",
+        "Change cannot be effected/permitted until required perfection filings are completed"
+      ],
+      "quantitativeComponents": [
+        {
+          "description": "Advance notice period",
+          "value": "5 Business Days"
+        }
+      ],
+      "dependencies": [
+        "Section 5.01(e)"
+      ],
+      "amendmentOperativeStateRelevance": "Identical across doc-a, doc-b, and doc-c.",
+      "sourceEvidence": "At least five (5) Business Days prior to the effective date thereof, written notice of any change in (A) its corporate name, (B) its identity or corporate structure ... The Borrower agrees not to effect or permit any change referred to in the preceding sentence unless all filings have been made under the UCC or otherwise that are required in order for the Collateral Agent to continue at all times following such change to have a valid, legal and perfected security interest"
+    },
+    {
+      "gtClaimId": "RGT-A-100",
+      "document": "doc-c",
+      "sourceSpan": "Section 5.02 (absence of financial-ratio covenants); LTV Table",
+      "covenantFamily": "financial-covenant",
+      "propositionType": "other",
+      "materiality": "CRITICAL",
+      "shortDescription": "The facility contains no traditional financial maintenance covenants (e.g., leverage ratio, interest coverage ratio, minimum liquidity, net worth test) anywhere in Article V; the only financial/quantitative discipline imposed on the Borrower is the LTV-based margin/collateral mechanic in Section 2.06 and the LTV Table.",
+      "requiredQualifiersConditions": [
+        "Applies equally across doc-a, doc-b, and doc-c \u2014 no financial-ratio covenant was ever added at any restatement"
+      ],
+      "quantitativeComponents": [],
+      "dependencies": [
+        "Section 2.06",
+        "definition of LTV Table"
+      ],
+      "amendmentOperativeStateRelevance": "Consistent structural feature across all three documents: this is a crypto-collateralized margin facility governed by LTV/margin-call mechanics rather than a conventional leveraged-finance facility with EBITDA-based covenants.",
+      "sourceEvidence": "Section 5.02.Negative Covenants. (a)Liens. ... (b)No Further Negative Pledges. ... (c)Sale of Collateral. ... (d)Mergers and Consolidations; Disposition of Assets. ... (e)Anti-Corruption Laws; Anti-Money Laundering Laws; Sanctions. [no financial ratio covenant appears among these five negative covenants]"
+    }
+  ],
+  "claimCount": 100,
+  "materialityBreakdown": {
+    "CRITICAL": 53,
+    "MATERIAL": 44,
+    "BENIGN": 3
+  }
+}
