@@ -63,7 +63,7 @@ import { prisma } from "../../prisma";
 import { getDocumentStorageProvider } from "../../document-storage";
 import { parseDocument } from "../../extraction/parse";
 import { inferContentType } from "../../onboarding/documents";
-import { runStructureStage } from "../compiler/stage-structure";
+import { runStructureStageWithAmbiguityResolution, type StructuralReviewSignal, type StructuralAmbiguityResolutionRateMetrics } from "../compiler/structural-ambiguity-resolution";
 import { STRUCTURAL_INDEX_VERSION } from "../compiler/types";
 import { detectStructuralDefinitions } from "../compiler/structural-definitions";
 import { detectStructuralReferences } from "../compiler/structural-references";
@@ -101,6 +101,23 @@ export interface ContractAnalysisCallers {
   discoveryCaller?: StageCaller;
   amendmentCaller?: StageCaller;
   verificationCaller?: StageCaller;
+  /**
+   * Phase 3F.1 Human Architecture Decision (Workstream OPEN-1, REAL-orchestrator
+   * wiring fix - docs/phase-3f1-human-architecture-decision/
+   * 04-structural-implementation.json's own "workstreamOPEN1RealOrchestratorWiringFix"
+   * section). The STRUCTURE stage below now calls
+   * `runStructureStageWithAmbiguityResolution` (structural-ambiguity-resolution.ts)
+   * instead of the old, purely-deterministic `runStructureStage` - a genuinely
+   * AMBIGUOUS structural candidate (one the deterministic triage cannot
+   * confidently resolve on typography alone) is routed to the bounded
+   * structural-ambiguity classifier, which is itself an LLM call and therefore
+   * needs a real `StageCaller` exactly like discoveryCaller/amendmentCaller/
+   * verificationCaller above. Injectable here for the identical reason those
+   * are: a test can supply a ScriptedStageCaller to deterministically drive
+   * (or force fail-closed on) the classifier without a real credential or
+   * network call. Defaults to the real, env-var-driven getStageCaller() below.
+   */
+  structuralCaller?: StageCaller;
   semanticCaller?: SemanticCaller;
   /** Layer C (bounded AI inventory) for semantic-coverage - omit for the legitimate, cheaper Layers-A/B-only deterministic configuration (this orchestrator's default; see runSemanticCoverageAudit's own doc comment on this being "a legitimate, cheaper, deterministic-only configuration"). */
   aiInventoryCaller?: StageCaller;
@@ -534,7 +551,7 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
   try {
     documents = await prisma.document.findMany({ where: { companyId, type: { in: [...CONTRACT_DOCUMENT_TYPE_SET] as never[] } }, orderBy: { createdAt: "asc" } });
     if (documents.length === 0) {
-      return { outcome: "SKIPPED_NO_CONTRACT_DOCUMENTS", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: null, instrumentFailures: [], failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
+      return { outcome: "SKIPPED_NO_CONTRACT_DOCUMENTS", runId: null, status: null, companyId, packageKey: null, documentIds: [], analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: null, instrumentFailures: [], structuralReviewSignals: [], structuralAmbiguityMetrics: null, failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
     }
 
     documentIds = canonicalDocumentIdOrder(documents.map((d) => d.id));
@@ -542,7 +559,7 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
 
     const startOutcome = await startOrResumeAnalysisRun({ companyId, packageKey, documentIds, analysisAlgorithmVersion });
     if (startOutcome.kind === "ALREADY_RUNNING") {
-      return { outcome: "SKIPPED_ALREADY_RUNNING", runId: startOutcome.run.id, status: startOutcome.run.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: startOutcome.run.reviewItemCount, fatalError: null, instrumentFailures: [], failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
+      return { outcome: "SKIPPED_ALREADY_RUNNING", runId: startOutcome.run.id, status: startOutcome.run.status, companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: startOutcome.run.reviewItemCount, fatalError: null, instrumentFailures: [], structuralReviewSignals: [], structuralAmbiguityMetrics: null, failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
     }
     runId = startOutcome.run.id;
     generation = startOutcome.run.executionGeneration;
@@ -644,16 +661,31 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
       failureRecordError,
       failureRecordFallbackLogged,
       instrumentFailures: [],
+      structuralReviewSignals: [],
+      structuralAmbiguityMetrics: null,
     };
   }
 
-  const callers: Required<Pick<ContractAnalysisCallers, "discoveryCaller" | "amendmentCaller" | "verificationCaller" | "semanticCaller">> & Pick<ContractAnalysisCallers, "aiInventoryCaller"> = {
+  const callers: Required<Pick<ContractAnalysisCallers, "discoveryCaller" | "amendmentCaller" | "verificationCaller" | "structuralCaller" | "semanticCaller">> & Pick<ContractAnalysisCallers, "aiInventoryCaller"> = {
     discoveryCaller: options.callers?.discoveryCaller ?? getStageCaller(),
     amendmentCaller: options.callers?.amendmentCaller ?? getStageCaller(),
     verificationCaller: options.callers?.verificationCaller ?? getStageCaller(),
+    structuralCaller: options.callers?.structuralCaller ?? getStageCaller(),
     semanticCaller: options.callers?.semanticCaller ?? getSemanticCaller(),
     aiInventoryCaller: options.callers?.aiInventoryCaller,
   };
+
+  // Phase 3F.1 Human Architecture Decision (Workstream OPEN-1, REAL-orchestrator
+  // wiring fix): populated by the STRUCTURE stage below (empty/null until then,
+  // and left at their default whenever a return path is reached before the
+  // STRUCTURE stage ever runs - e.g. SKIPPED_NO_CONTRACT_DOCUMENTS/
+  // SKIPPED_ALREADY_RUNNING/the PRE_RUN_IDENTITY FAILED case above, none of
+  // which ever reach INGESTION). See `RunContractAnalysisResult`'s own doc
+  // comment on these two fields for the full rationale - this mirrors
+  // CompilerRunSummary.structuralReviewSignals/structuralAmbiguityMetrics in
+  // the (quarantined) lib/contract-model/compiler/orchestrator.ts exactly.
+  let structuralReviewSignals: StructuralReviewSignal[] = [];
+  let structuralAmbiguityMetrics: StructuralAmbiguityResolutionRateMetrics | null = null;
 
   // FINDING-6 (zombie-writer fencing): every stage transition below presents
   // the SAME `generation` this execution won at claim time; the instant one
@@ -676,6 +708,8 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     openReviewItemCount: 0,
     fatalError: null,
     instrumentFailures: [],
+    structuralReviewSignals,
+    structuralAmbiguityMetrics,
     failureRecordPersisted: null,
     failureRecordError: null,
     failureRecordFallbackLogged: null,
@@ -706,7 +740,26 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
 
     // --- structural analysis ---
     await setStageOrBail("STRUCTURAL_ANALYSIS");
-    const structureRes = runStructureStage(packageDocs);
+    // Phase 3F.1 Human Architecture Decision (Workstream OPEN-1, REAL-
+    // orchestrator wiring fix): this is THE live entry point a real end
+    // user's compile run actually reaches (app/[companyId]/onboarding/
+    // documents/actions.ts -> runContractAnalysis), unlike
+    // lib/contract-model/compiler/orchestrator.ts (quarantined - see that
+    // file's own header). Before this fix, this call site independently
+    // called the old, synchronous, classifier-free `runStructureStage`
+    // directly - the deterministic-triage + bounded-classifier architecture
+    // (b017fee) was reachable in unit tests and through the quarantined
+    // pipeline, but NEVER through a real user's compile. `instrumentKey:
+    // packageKey` mirrors the identical choice the quarantined file's own
+    // wiring fix already made (see that file's STRUCTURE-stage comment):
+    // this stage runs ONCE for the whole package (`packageDocs`), before
+    // `instrumentUnits` is even computed below, so the package's own
+    // already-unique `packageKey` is the stable, unique-enough classifier-
+    // cache identity scope - there is no per-instrument identity available
+    // yet at this point in the pipeline.
+    const structureRes = await runStructureStageWithAmbiguityResolution(packageDocs, { companyId, instrumentKey: packageKey }, callers.structuralCaller);
+    structuralReviewSignals = structureRes.reviewSignals;
+    structuralAmbiguityMetrics = structureRes.metrics;
     const allNodes = structureRes.output;
     const nodesByDocument = new Map(packageDocs.map((d) => [d.documentId, { text: d.text, nodes: allNodes.filter((n) => n.documentId === d.documentId) }] as const));
     const allDefinitions = packageDocs.flatMap((d) => detectStructuralDefinitions(d.documentId, d.text, allNodes.filter((n) => n.documentId === d.documentId)));
@@ -787,6 +840,8 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
         openReviewItemCount: 0,
         fatalError: { stage: "PER_INSTRUMENT_ANALYSIS", message: firstError.message, errorClass: firstError.errorClass },
         instrumentFailures: instrumentErrors.map((e) => ({ instrumentKey: e.instrumentKey, errorClass: e.errorClass, message: e.message })),
+        structuralReviewSignals,
+        structuralAmbiguityMetrics,
         failureRecordPersisted: null,
         failureRecordError: null,
         failureRecordFallbackLogged: null,
@@ -826,6 +881,8 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
       openReviewItemCount,
       fatalError: null,
       instrumentFailures: instrumentErrors.map((e) => ({ instrumentKey: e.instrumentKey, errorClass: e.errorClass, message: e.message })),
+      structuralReviewSignals,
+      structuralAmbiguityMetrics,
       failureRecordPersisted: null,
       failureRecordError: null,
       failureRecordFallbackLogged: null,
@@ -835,6 +892,6 @@ export async function runContractAnalysis(input: RunContractAnalysisInput, optio
     const { message, errorClass } = classifyError(err);
     const failResult = await failAnalysisRun(runId, { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, generation);
     if (!failResult) return supersededResult("INGESTION_OR_STRUCTURAL");
-    return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, instrumentFailures: [], failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
+    return { outcome: "FAILED", runId, status: "FAILED", companyId, packageKey, documentIds, analysisAlgorithmVersion, instruments: [], openReviewItemCount: 0, fatalError: { stage: "INGESTION_OR_STRUCTURAL", message, errorClass }, instrumentFailures: [], structuralReviewSignals, structuralAmbiguityMetrics, failureRecordPersisted: null, failureRecordError: null, failureRecordFallbackLogged: null };
   }
 }

@@ -9,6 +9,7 @@ import type { DocumentAuditOutput } from "../compiler/semantic-coverage/pipeline
 import type { PackageCoverageResult } from "../compiler/semantic-coverage/types";
 import type { RecordClaimReviewsFromCoverageResult } from "../compiler/safe-failure/integrate";
 import type { PersistSemanticTruthSummary } from "./semantic-truth/types";
+import type { StructuralReviewSignal, StructuralAmbiguityResolutionRateMetrics } from "../compiler/structural-ambiguity-resolution";
 
 export type { AnalysisRunStatus };
 
@@ -92,6 +93,29 @@ export interface RunContractAnalysisResult {
   fatalError: { stage: string; message: string; errorClass: string } | null;
   /** AUDIT-F3 - every instrument-level failure this attempt recorded (durably persisted as AnalysisRunIssue rows - this is a convenience in-memory mirror of that, never the sole record of it). Empty when every instrument succeeded, or when the run never reached the per-instrument stage at all. */
   instrumentFailures: { instrumentKey: string; errorClass: string; message: string }[];
+  /**
+   * Phase 3F.1 Human Architecture Decision (Workstream OPEN-1, REAL-
+   * orchestrator wiring fix - docs/phase-3f1-human-architecture-decision/
+   * 04-structural-implementation.json's own "workstreamOPEN1RealOrchestratorWiringFix"
+   * section). Every genuinely AMBIGUOUS structural candidate (across the
+   * whole package - the STRUCTURE stage runs once for `packageDocs`, before
+   * any per-instrument split) that the bounded structural-ambiguity
+   * classifier could not confidently resolve (UNCERTAIN verdict, a real
+   * provider failure, or the no-credential synthetic fallback) - fail-closed
+   * EXCLUDED from the structural nodes every downstream stage sees, never
+   * silently dropped from this audit trail. Mirrors
+   * CompilerRunSummary.structuralReviewSignals in the (quarantined)
+   * lib/contract-model/compiler/orchestrator.ts exactly (same field name/
+   * shape - see StructuralReviewSignal's own doc comment). Empty on every
+   * return path that never reaches the STRUCTURE stage at all (e.g.
+   * SKIPPED_NO_CONTRACT_DOCUMENTS/SKIPPED_ALREADY_RUNNING/the
+   * PRE_RUN_IDENTITY FAILED case), never on a genuine completed run with
+   * zero ambiguous candidates (that case is `[]` too, but for the honest
+   * reason of nothing to report, not because the stage never ran).
+   */
+  structuralReviewSignals: StructuralReviewSignal[];
+  /** Aggregate cost-discipline/rate metrics for the SAME STRUCTURE-stage classifier run `structuralReviewSignals` reports on above - `null` under the identical "never reached STRUCTURE" condition documented there, non-null (including for a package with zero ambiguous candidates, where every rate is simply 0) for every run that reached the STRUCTURE stage. See `StructuralAmbiguityResolutionRateMetrics`'s own doc comment (structural-ambiguity-resolution.ts) for each field's meaning. */
+  structuralAmbiguityMetrics: StructuralAmbiguityResolutionRateMetrics | null;
   /**
    * Part B AUDIT-F7 recertification (FINDING-8, "failure-recording itself
    * must not fail silently") - applies ONLY to the PRE_RUN_IDENTITY fatalError

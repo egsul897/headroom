@@ -2,7 +2,6 @@
   "schemaVersion": "1.0",
   "artifactId": "STRUCTURAL_IMPLEMENTATION",
   "workstream": "OPEN-1",
-
   "filesChanged": {
     "modified": [
       "lib/contract-model/compiler/stage-structure.ts",
@@ -30,9 +29,7 @@
     ],
     "note": "The two orchestrators were deliberately left unwired to the new async ambiguity-resolution stage in this pass - runStructureStage()/parseDocumentStructure() remain 100% synchronous and behavior-identical, per the backward-compatibility decision in 02-structural-triage-design.json. parseDocumentStructureWithTriage()/resolveStructuralAmbiguity() are complete, independently tested, and ready to be wired into either orchestrator as a follow-up (call parseDocumentStructureWithTriage instead of parseDocumentStructure, then await resolveStructuralAmbiguity for any ambiguousCandidates using the package's own companyId/instrumentKey/documentId as cache identity) - this was not done in this pass to avoid touching orchestrator.ts/analysis/orchestrator.ts, which are outside this workstream's minimal-diff mandate and carry their own extensive resumability/caching machinery."
   },
-
   "architectureSummary": "HIGH-CONFIDENCE DETERMINISTIC + BOUNDED SEMANTIC/STRUCTURAL CLASSIFICATION FOR AMBIGUITY + FAIL-CLOSED UNRESOLVED STATE, exactly as mandated. A new triage decision procedure (evaluateStructuralCandidateTriage, stage-structure.ts) classifies every raw regex candidate as CONFIDENT_HEADING / CONFIDENT_PROSE_REFERENCE / AMBIGUOUS using several independent, disclosed, purely-typographic signals (seam validation, continuation shape, paragraph break, ARTICLE adjacency, document start) - no single signal is universally decisive except the two directly, empirically validated ones (seam validity and ordinary-lowercase-continuation). AMBIGUOUS candidates are, by default, fail-closed excluded (parseDocumentStructureWithTriage) and only resolved by a new bounded classifier (structural-ambiguity-classifier.ts) when a caller explicitly runs resolveStructuralAmbiguity (structural-ambiguity-resolution.ts) - architecturally modeled on condition-suspicion-classifier.ts (StageCaller abstraction, tenant-scoped cache, three-valued verdict, synthetic-fallback fail-safe), independently at the type level (own wire schema, own cache, zero shared imports beyond generic infrastructure). The existing deterministic parseDocumentStructure()/runStructureStage() are completely UNCHANGED (a pure, behavior-preserving refactor extracted their span/rank-stack construction for reuse) - zero regression risk to the 59 pre-existing test files and the entire prior remediation history.",
-
   "keyDesignChoices": [
     "Seam validation (VALIDATED_TERMINATED/ABSORBED_SENTENCE/INCOMPLETE_NO_TERMINAL) replaces the removed wrap-tolerance mechanism outright rather than repairing it - the auditor's own Case C/D minimal pair proved any hop-forward-and-guess design is unsound in general; an unresolved seam is now honestly AMBIGUOUS, never guessed.",
     "A narrow, disclosed LOWERCASE_DEFINITIONAL exception ('means'/'shall mean') prevents the one universal lowercase-reject rule from over-firing on the real 'Term. means ...' definitions convention, without turning it into an open phrase list - exactly two fixed continuations recognized, both closed, near-universal legal-drafting tells.",
@@ -40,7 +37,6 @@
     "Title-length plausibility (MAX_PLAUSIBLE_TITLE_LENGTH=110, mirroring SECTION_PATTERNS[0]'s own 90-char shape-based bound) prevents a crude, unbounded fallback pattern's own greedy title capture from being mistaken for a validated seam merely because it happens to end in one terminal period with nothing internal.",
     "The triage system is purely ADDITIVE - parseDocumentStructure/runStructureStage are byte-identical to before this change, proven by a full pre/post regression run (2216+ tests unaffected)."
   ],
-
   "testMatrixResults": {
     "testFiles": [
       "tests/contract-model/structural-triage.test.ts (28 tests)",
@@ -52,7 +48,6 @@
       "tests/certification/part-b-final-fix1-independent-recert.test.ts (20 tests, UPDATED IN PLACE)"
     ],
     "combinedResult": "109/109 tests passing across these 7 files",
-
     "requiredRealHeadingMatrix": {
       "coverage": [
         "capitalized title + capitalized body -> CONFIDENT_HEADING",
@@ -72,7 +67,6 @@
       ],
       "result": "0 fabricated CONFIDENT_PROSE_REFERENCE across all 14 cases"
     },
-
     "requiredProseReferenceMatrix": {
       "coverage": [
         "complete citation sentence followed by a capitalized sentence -> AMBIGUOUS",
@@ -89,14 +83,12 @@
       ],
       "result": "0 fabricated CONFIDENT_HEADING across all 11 cases"
     },
-
     "auditorFalsifyingReproductionUpdate": {
       "file": "tests/certification/part-b-final-fix1-independent-recert.test.ts",
       "originalDisposition": "STILL_OPEN",
       "action": "Updated in place per the governing spec's own explicit instruction for this file. Every Part 2 (5 cases) and Part 3 (5 cases) falsifying construction is now proven to triage AMBIGUOUS under parseDocumentStructureWithTriage (never a confident false accept, closing the defect at the root) and to be correctly resolved by resolveStructuralAmbiguity with a scripted, known-ground-truth classifier. The Part 4 false negative ('Term. means ...') is fixed DETERMINISTICALLY (zero classifier calls) via the paragraph-break signal. Part 5's rank-stack-corruption composition checks are re-verified clean under the new pipeline in both directions.",
       "newDisposition": "SUPERSEDED - the identified defect class is closed by architecture (fail-closed AMBIGUOUS routing), not by a sixth heuristic patch."
     },
-
     "rateMetrics": {
       "source": "tests/contract-model/structural-triage.test.ts's RATE METRICS describe block and tests/contract-model/structural-ambiguity-resolution.test.ts's own rate-metrics describe block",
       "mixedRealisticDocumentExample": {
@@ -117,22 +109,18 @@
       "materialHierarchyCorruptionCount": 0
     }
   },
-
   "regressionResults": {
     "fullSuiteBeforeAndAfter": "Ran the complete tests/certification, tests/contract-model, and tests/foundation-audit directories both before and after every code change (2216 tests, 195 files) - 0 regressions. Full repo-wide `npx vitest run` (2880 tests) shows exactly 1 pre-existing, unrelated failure (tests/contract-model/part-b-recert-finding4-independent.test.ts's own wall-clock-timing-based performance ratio assertion for an entirely different subsystem - condition-parsing bare-or-chain complexity - which fails identically in isolation and is untouched by this workstream's diff; confirmed flaky/environment-sensitive, not a regression this work introduced).",
     "typeChecking": "npx tsc --noEmit -p . : exactly the same 6 pre-existing baseline errors (all in unrelated test files: cascade-and-concurrency.test.ts, discovery-fault-injection.test.ts, real-db-duplicate-physical-occurrence.test.ts), 0 new errors.",
     "linting": "npx eslint . : exactly the same 1 pre-existing baseline error (amendment-operative-state-adversarial.test.ts, an unrelated missing-rule-definition issue), 0 new errors."
   },
-
   "workstreamOPEN1WiringFix": {
     "note": "NEW SECTION added by a follow-up workstream. Everything above this key is the ORIGINAL OPEN-1 record, unmodified. This section documents closing the exact gap the original record's own `filesChanged.note` (above) flagged and deliberately deferred: 'The two orchestrators were deliberately left unwired to the new async ambiguity-resolution stage in this pass.' `lib/contract-model/compiler/orchestrator.ts` (the legacy, quarantined Phase C compiler - see that file's own QUARANTINE NOTICE) is now wired. `lib/contract-model/analysis/orchestrator.ts` (runContractAnalysis) - the codebase's own explicitly-documented 'ONE authoritative live contract-analysis orchestration boundary', the actual entry point app/[companyId]/onboarding/documents/actions.ts calls - was NOT wired in this pass; see criticalCaveatAboutRealProductionImpact below.",
-
     "whatWasWired": {
       "newFunction": "runStructureStageWithAmbiguityResolution(documents, identity: {companyId, instrumentKey}, caller, cache?) - added to lib/contract-model/compiler/structural-ambiguity-resolution.ts (kept out of stage-structure.ts deliberately, preserving that file's own 'pure, deterministic, no LLM call' module-boundary discipline). Per document: calls parseDocumentStructureWithTriage; if a document has zero AMBIGUOUS candidates it costs zero classifier calls and its triage.nodes are used directly; otherwise resolveStructuralAmbiguity is called with a per-document StructuralAmbiguityCacheIdentity ({companyId, instrumentKey, sourceDocumentId: doc.documentId}). Confident nodes + resolved-ambiguous nodes are merged into the same StructuralNode[] shape/order runStructureStage always produced. Returns {status, output, notes, reviewSignals, metrics} - reviewSignals (StructuralReviewSignal[]) and metrics (StructuralAmbiguityResolutionRateMetrics) are the audit-trail fields the original design flagged as needing a real sink; they are threaded all the way to CompilerRunSummary.structuralReviewSignals/structuralAmbiguityMetrics (new fields), the closest existing pattern this file's own StageRunResult.notes convention offered (that field turned out to be dead code everywhere else in orchestrator.ts - never persisted by getOrRunStage, never read by any stages.push call - so this is a genuine new sink, not a reuse of a working prior pattern).",
       "instrumentKeyChoice": "orchestrator.ts's CompilerPackageInput has no 'instrument' concept distinct from the package itself (that grouping is a Phase 2 substrate concept - package-graph/pipeline.ts) - the wiring passes packageKey as instrumentKey, matching classifyStructuralAmbiguity's own tenant-scoping requirement (a stable, unique-enough scope string, never a specific domain meaning).",
       "callSiteChange": "orchestrator.ts's STRUCTURE stage closure changed from `const r = runStructureStage(documents); return {...r};` to `const r = await runStructureStageWithAmbiguityResolution(documents, {companyId, instrumentKey: packageKey}, caller); structuralReviewSignals = r.reviewSignals; structuralAmbiguityMetrics = r.metrics; return {status: r.status, output: r.output, notes: r.notes};` - `caller` (the real getStageCaller() already constructed a few lines above for every other LLM-calling stage) is passed straight through, never a new caller-acquisition mechanism."
     },
-
     "cacheInvalidationDecision": {
       "structuralIndexVersionBumped": true,
       "oldValue": "phase-3f1-2-structural-identity.v1",
@@ -141,7 +129,6 @@
       "providerIdentityAlsoFoldedIntoStructureInputHash": "Yes - structureInputHash changed from hashParts([STRUCTURAL_INDEX_VERSION, ...documents]) to hashParts([STRUCTURAL_INDEX_VERSION, providerIdentity, ...documents]) (providerIdentity's own computation was moved earlier in the function, before the STRUCTURE stage, to make it available). Reasoning: STRUCTURE now depends on provider/model exactly like every other LLM-calling stage's own inputHash already accounts for - a credential becoming available where none existed before (synthetic -> real caller) must never be silently resumed as if nothing changed.",
       "testRerun": "tests/foundation-audit/cache-invalidation-audit.test.ts - all 11 tests pass. The 3 tests in the STRUCTURE describe block that mocked stage-structure.ts's exported `runStructureStage` were updated to mock structural-ambiguity-resolution.ts's exported `runStructureStageWithAmbiguityResolution` instead (the mock's TARGET relocated to track the real new call site; the cache-gate formula each test proves - STRUCTURAL_INDEX_VERSION membership, real cache-hit/resume behavior via attemptCount, 8D replay equivalence - is unchanged and still exercised against the real, unmodified orchestrator.ts). Verified: a version bump over unchanged text still forces recompute; unchanged version+text still resumes with zero re-invocation."
     },
-
     "newEndToEndIntegrationTest": {
       "file": "tests/foundation-audit/structural-ambiguity-orchestrator-wiring.test.ts (3 tests, all passing)",
       "method": "Runs the exact falsifying reproduction from tests/certification/part-b-final-fix1-independent-recert.test.ts (Part 2, first case) THROUGH runContractCompiler itself - zero mocking of any structural/classifier module; only the ambient, unmocked absence of AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY in this sandbox (asserted directly in test 1), the same real getStageCaller() selection order every other stage already runs under.",
@@ -153,7 +140,6 @@
         "A second test confirms a document with ZERO ambiguous candidates costs exactly zero classifier calls through the real orchestrator (ambiguousCount===0, classifierInvocationRate===0, deterministicResolutionRate===1, reviewSignals===[]) - cost discipline holds end-to-end, not just in the prior workstream's isolated unit tests."
       ]
     },
-
     "fullRegressionResults": {
       "fullSuite": "npx vitest run (complete repo, 2883 tests, 268 files): 2881 passed, 2 failed. Both failures are PRE-EXISTING, environment/timing-sensitive flakes, confirmed unrelated to this change by re-running each in isolation immediately after the full-suite run, where both passed: tests/contract-model/part-b-recert-finding4-independent.test.ts (a wall-clock O(n) growth-ratio assertion for an unrelated condition-parsing bare-or-chain subsystem, not touched by this diff) and tests/foundation-audit/repro-connection-race.test.ts (a Postgres P2002-concurrency race test for an unrelated upload-connection code path, not touched by this diff). Zero failures attributable to the STRUCTURE-stage wiring change.",
       "cacheInvalidationAuditSpecifically": "tests/foundation-audit/cache-invalidation-audit.test.ts: 11/11 passing (see cacheInvalidationDecision.testRerun above).",
@@ -162,19 +148,80 @@
       "linting": "npx eslint . : exactly the same 1 pre-existing baseline error, 0 new.",
       "callersOfRunStructureStageAndParseDocumentStructureOutsideThisWiring": "Searched tests/, lib/, app/, scripts/ for other direct callers of runStructureStage/parseDocumentStructure - all remaining callers (lib/contract-model/analysis/orchestrator.ts; scripts/phase-3b-real-regression.ts, phase-3f-first-blind-run.ts, foundation-audit-known-package-replay.ts, cert-3f1-6-residual-anomaly-inspect.ts, phase-3f1-2-known-package-structural-regression.ts, foundation-audit-source-span-accounting.ts; tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts) call the OLD, untouched, still-fully-supported synchronous functions directly for their own regression/replay/analysis purposes - none of them break, because runStructureStage/parseDocumentStructure themselves were left completely unmodified, exactly as the original OPEN-1 design mandated."
     },
-
     "knownPackageRegression": {
       "scriptRun": "npx tsx scripts/phase-3f1-6-known-package-regression.ts (read-only production-function calls against real fixtures; rewrites docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json as a documented side effect of its own design)",
-      "dangerousSilentFailureCheckResult": { "fwrg": 0, "lsb": 0, "dsgr": 215, "conmed": "NOT_APPLICABLE - no semantic-coverage run exists for CONMED", "allZero": false, "matchesExpected": true },
+      "dangerousSilentFailureCheckResult": {
+        "fwrg": 0,
+        "lsb": 0,
+        "dsgr": 215,
+        "conmed": "NOT_APPLICABLE - no semantic-coverage run exists for CONMED",
+        "allZero": false,
+        "matchesExpected": true
+      },
       "historicalArtifactReverted": "git checkout -- docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json run immediately after capturing the numbers above - confirmed clean (git status shows no diff) before this deliverable was finalized.",
       "note": "This script does not exercise lib/contract-model/compiler/orchestrator.ts at all (it calls runSemanticCoverageAudit/recordClaimReviewsFromDocumentCoverage directly against preserved fixtures) - these numbers are therefore, correctly, UNCHANGED by this wiring fix, as expected."
     },
-
     "criticalCaveatAboutRealProductionImpact": {
       "severity": "IMPORTANT - READ BEFORE ASSUMING THIS FIX CHANGES WHAT REAL USERS EXPERIENCE",
       "finding": "lib/contract-model/compiler/orchestrator.ts's OWN header comment explicitly labels it a 'QUARANTINE'-ed legacy pipeline: 'app/** must never import runContractCompiler from this file' (enforced by .eslintrc.json's no-restricted-imports override and tests/foundation-audit/legacy-phase-c-quarantine.test.ts). lib/contract-model/analysis/orchestrator.ts's own header comment independently, explicitly states it is 'the ONE authoritative live contract-analysis orchestration boundary' and that it 'DOES NOT reuse or resurrect lib/contract-model/compiler/orchestrator.ts (a different, quarantined compiler generation)'. Confirmed by grep: app/[companyId]/onboarding/documents/actions.ts (the real upload/analyze flow) calls runContractAnalysis from lib/contract-model/analysis/orchestrator.ts, never runContractCompiler.",
       "implication": "lib/contract-model/analysis/orchestrator.ts's own STRUCTURE stage (line ~709: `const structureRes = runStructureStage(packageDocs);`) has the IDENTICAL gap this workstream was asked to fix, independently, and it was NOT wired in this pass - it was outside the explicit file/line scope this task specified (which named lib/contract-model/compiler/orchestrator.ts and its exact lines verbatim), and wiring it touches a much larger, heavily-tested live surface (18+ test files exercise runContractAnalysis) that was not budgeted for in this pass.",
       "honestAnswerToTheKeyQuestion": "Wiring lib/contract-model/compiler/orchestrator.ts does NOT change what a real user experiences through the live app today, because the app never calls that pipeline. If genuine end-user-facing production behavior change is the goal, lib/contract-model/analysis/orchestrator.ts's own STRUCTURE stage needs the identical fix (add a `structuralAmbiguityCaller` to its ContractAnalysisCallers bundle, replace its synchronous runStructureStage call with an awaited runStructureStageWithAmbiguityResolution call using {companyId, instrumentKey: packageKey}) - this is a natural, scoped fast-follow using the exact same new function this workstream already built, but was not performed here without an explicit go-ahead given the scope/testing-surface tradeoff involved."
+    }
+  },
+  "workstreamOPEN1RealOrchestratorWiringFix": {
+    "note": "NEW SECTION added by a THIRD follow-up workstream. Everything above this key (the ORIGINAL OPEN-1 record and workstreamOPEN1WiringFix) is unmodified. That prior wiring fix's own criticalCaveatAboutRealProductionImpact honestly disclosed it had wired the WRONG orchestrator: lib/contract-model/compiler/orchestrator.ts is explicitly QUARANTINED legacy code (own header: 'app/** must never import runContractCompiler from this file', enforced by ESLint + tests/foundation-audit/legacy-phase-c-quarantine.test.ts) that the live app never calls. THIS workstream closes the real gap: lib/contract-model/analysis/orchestrator.ts (runContractAnalysis) - that file's own header explicitly calls itself 'the ONE authoritative live contract-analysis orchestration boundary' - independently had the IDENTICAL unwired STRUCTURE-stage gap, and IS what app/[companyId]/onboarding/documents/actions.ts calls for every real user compile run.",
+    "whatWasWired": {
+      "callSiteChanged": "lib/contract-model/analysis/orchestrator.ts, runContractAnalysis, the STRUCTURE-analysis block (previously ~line 709). Before: `const structureRes = runStructureStage(packageDocs);` (old, synchronous, classifier-free path). After: `const structureRes = await runStructureStageWithAmbiguityResolution(packageDocs, { companyId, instrumentKey: packageKey }, callers.structuralCaller); structuralReviewSignals = structureRes.reviewSignals; structuralAmbiguityMetrics = structureRes.metrics; const allNodes = structureRes.output;` - `structureRes.output`/`.status` are used downstream (persistStructuralNodes, buildStructuralIndex, detectStructuralDefinitions/References) EXACTLY as before; nothing downstream of the STRUCTURE stage was touched.",
+      "instrumentKeyChoice": "packageKey (already in scope, computed via computeAnalysisPackageKey before the try block) is passed as instrumentKey - the STRUCTURE stage runs once for the whole package's packageDocs, BEFORE instrumentUnits is even resolved further down, so there is no finer-grained instrument identity available yet at this call site. This is the identical choice the quarantined file's own (already-complete) wiring fix made for the same structural reason - see that file's STRUCTURE-stage comment.",
+      "callerAcquisitionPattern": "A new `structuralCaller?: StageCaller` field was added to the existing `ContractAnalysisCallers` interface, populated in the existing `callers` object exactly like its siblings already are: `structuralCaller: options.callers?.structuralCaller ?? getStageCaller()` - the SAME options.callers?.X ?? getStageCaller() acquisition pattern already used for discoveryCaller/amendmentCaller/verificationCaller in this same file, reused verbatim rather than inventing a new one. This also makes the classifier's own caller independently injectable/scriptable in tests, mirroring the existing convention.",
+      "functionReused": "runStructureStageWithAmbiguityResolution (lib/contract-model/compiler/structural-ambiguity-resolution.ts) is imported and called directly - not rebuilt or duplicated. No changes were made to structural-ambiguity-resolution.ts, structural-ambiguity-classifier.ts, or stage-structure.ts."
+    },
+    "cacheInvalidationDecision": {
+      "existingMechanism": "lib/contract-model/analysis/orchestrator.ts has NO per-stage content-hash memoization/resumability gate analogous to the quarantined file's getOrRunStage(runId, stage, inputHash, ...) - confirmed by reading the full file and lib/contract-model/analysis/service.ts. The only 'resumability' concept in this file is AnalysisRun-row-level: startOrResumeAnalysisRun claims/reclaims a RUNNING row via a Postgres CAS (create-then-updateMany with STALE_RUNNING_THRESHOLD_MS), and setAnalysisRunStage/completeAnalysisRun/failAnalysisRun gate writes on `executionGeneration` (zombie-writer fencing, FINDING-6). None of this is a stage-output CACHE keyed on document/provider identity - every genuinely re-entered run (fresh trigger, or a reclaimed stale-but-real run) unconditionally RE-RUNS structural analysis (parseDocument re-invoked on the immutable stored bytes, then runStructureStageWithAmbiguityResolution called fresh) from scratch every single time.",
+      "decision": "No STRUCTURAL_INDEX_VERSION/providerIdentity hash-folding fix was needed or made in this file, because there is no cache gate here for a stale value to hide behind in the first place. The quarantined file's own STRUCTURAL_INDEX_VERSION+providerIdentity fold into structureInputHash (d91e656) exists specifically to invalidate getOrRunStage's cache-hit check - a mechanism this file simply does not have. This was verified, not assumed: grepped this file and service.ts for any cache/inputHash/resumability construct scoped to STRUCTURAL_ANALYSIS specifically, found none, and confirmed by inspection of startOrResumeAnalysisRun's own doc comment (which independently documents that 'resuming/re-running from the top never duplicates state, it only redoes deterministic/cheap work and re-upserts already-upserted rows' - i.e. the file's own designed behavior already always re-executes STRUCTURAL_ANALYSIS on any re-entry, which is exactly the correct, non-stale behavior for a stage whose real output can now depend on classifier/provider state).",
+      "structuralIndexVersionSharedModule": "STRUCTURAL_INDEX_VERSION is imported from lib/contract-model/compiler/types.ts - the SAME module the quarantined file's already-bumped constant lives in. No further bump was needed or made; this file's own single remaining use of the constant (structuralParserVersion on the per-instrument semantic-truth object) is unaffected by and unrelated to this fix."
+    },
+    "newEndToEndIntegrationTest": {
+      "file": "tests/foundation-audit/structural-ambiguity-real-orchestrator-wiring.test.ts (3 tests, all passing)",
+      "method": "Drives the REAL runContractAnalysis (lib/contract-model/analysis/orchestrator.ts) end-to-end - real Postgres, a real Document row created via the real uploadAndChunkDocument upload path (the same one a real user's document goes through), real persistStructuralNodes. Discovery/amendment/verification/semantic callers are scripted (this test is scoped to the STRUCTURE stage, mirroring tests/contract-model/live-contract-analysis-orchestrator.test.ts's own established scripting convention); the new `structuralCaller` is DELIBERATELY left un-injected so it falls through to the real, unmocked, env-var-driven getStageCaller() - the exact live-path default a real user's compile gets. Uses the identical falsifying reproduction fixture as the quarantined-file wiring test (tests/foundation-audit/structural-ambiguity-orchestrator-wiring.test.ts): 6.08/6.10 are ordinary confident headings, 6.09 is a well-punctuated in-prose citation of a section's own title immediately followed by an ordinary new sentence - typographically indistinguishable from a real heading.",
+      "result": "3/3 passing.",
+      "assertionsProven": [
+        "This sandbox genuinely has no AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY configured (the real, unmocked ambient condition the fail-closed synthetic-fallback path depends on).",
+        "result.structuralAmbiguityMetrics is non-null with ambiguousCount=1, classifierSyntheticCount=1, uncertainCount=1, classifierInvocationRate>0, totalCandidates>1 - the classifier architecture genuinely ran as part of a real runContractAnalysis call, not a cache-hit resume (brand-new fixture).",
+        "result.structuralReviewSignals has exactly 1 signal for 6.09 with classifierVerdict=UNCERTAIN, classifierFailed=true, classifierIsSynthetic=true - the real no-credential fail-closed fallback, not a scripted stand-in.",
+        "The real persisted DocumentNode rows never contain sectionRef '6.09' - no false structural boundary was created end-to-end through real persistence.",
+        "The real persisted DocumentNode rows DO contain 'VI','6.08','6.10' - confident headings in the same package parsed normally, unaffected by the classifier.",
+        "A second document with zero ambiguous candidates costs exactly zero classifier calls through the real orchestrator (classifierInvocationRate=0, deterministicResolutionRate=1, zero review signals) - cost discipline holds end-to-end, not just in isolation or through the quarantined pipeline."
+      ]
+    },
+    "resultTypeExtension": {
+      "fieldsAddedTo": "RunContractAnalysisResult (lib/contract-model/analysis/types.ts)",
+      "fieldsAdded": {
+        "structuralReviewSignals": "StructuralReviewSignal[] - every AMBIGUOUS candidate across the whole package the classifier could not confidently resolve, fail-closed excluded from the structural nodes. Empty [] on every return path that never reaches the STRUCTURE stage (SKIPPED_NO_CONTRACT_DOCUMENTS/SKIPPED_ALREADY_RUNNING/the PRE_RUN_IDENTITY FAILED case), and also [] (honestly) on a genuine completed run with zero ambiguous candidates.",
+        "structuralAmbiguityMetrics": "StructuralAmbiguityResolutionRateMetrics | null - aggregate rate/cost-discipline metrics for the same classifier run. null under the identical 'never reached STRUCTURE' condition; non-null (with every rate 0 where applicable) for any run that reached the STRUCTURE stage."
+      },
+      "reasoning": "RunContractAnalysisResult had no existing structural-health/review-signal field to reuse (checked: instrumentFailures is the closest existing additive-field precedent - an array populated at the per-instrument-failure granularity, a different concept). These two new fields mirror CompilerRunSummary.structuralReviewSignals/structuralAmbiguityMetrics (added to the quarantined file by the prior wiring fix) exactly in name and shape, added purely additively (every existing field/behavior unchanged) to every one of this file's 7 return sites, following the same additive-field discipline documented on failureRecordError/failureRecordFallbackLogged in this same type."
+    },
+    "regressionResults": {
+      "typescript": "npx tsc --noEmit -p . - exactly the same pre-existing 6 errors (all in tests/foundation-audit/*, unrelated to this change - cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3). Zero new errors.",
+      "eslint": "npx eslint . - exactly the same pre-existing 1 error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, '@typescript-eslint/no-var-requires' rule-definition-not-found). Zero new errors.",
+      "vitestFullSuite": "npx vitest run - 269 test files, 2886 tests, ALL PASSING (0 failures). Includes both the quarantined-file's own wiring test (structural-ambiguity-orchestrator-wiring.test.ts, 3/3) and this workstream's new real-orchestrator wiring test (3/3), plus every existing runContractAnalysis-dependent test file (live-contract-analysis-orchestrator.test.ts and 17+ others) unmodified and green.",
+      "knownPackageRegressionScript": {
+        "command": "npx tsx scripts/phase-3f1-6-known-package-regression.ts",
+        "result": {
+          "fwrg": 0,
+          "lsb": 0,
+          "dsgr": 215,
+          "conmed": "NOT_APPLICABLE \u2014 no semantic-coverage run exists for CONMED (same as before)"
+        },
+        "matchesExpected": true,
+        "sideEffectFileReverted": "docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json was rewritten by the script as documented; `git checkout --` was run immediately after capturing the numbers above, confirmed clean via `git status --short` (no diff)."
+      }
+    },
+    "priorCaveatResolution": {
+      "priorCaveatText": "'Wiring lib/contract-model/compiler/orchestrator.ts does NOT change what a real user experiences through the live app today, because the app never calls that pipeline... lib/contract-model/analysis/orchestrator.ts's own STRUCTURE stage needs the identical fix... but was not performed here without an explicit go-ahead.'",
+      "status": "RESOLVED - the explicit go-ahead was given and the fix described in that caveat has now been performed, verbatim to the approach it proposed (structuralCaller added to ContractAnalysisCallers, runStructureStageWithAmbiguityResolution called with {companyId, instrumentKey: packageKey}).",
+      "confirmedFact": "A real end user's compile run through app/[companyId]/onboarding/documents/actions.ts -> runContractAnalysis NOW genuinely reaches the deterministic-triage + bounded fail-closed LLM classifier architecture. This is proven by: (1) static wiring - the only call site in lib/contract-model/analysis/orchestrator.ts that produces structural nodes is now runStructureStageWithAmbiguityResolution, no other path exists; (2) the new end-to-end integration test above, which drives runContractAnalysis itself (not an isolated module call) and observes the classifier's real fail-closed synthetic-fallback path genuinely fire, with zero false structural boundaries created and zero classifier involvement for confident headings; (3) the full, unmodified regression suite (2886 tests) and the known-package regression script both remain green, confirming this wiring introduced no behavior change for every already-certified real-document case."
     }
   }
 }
