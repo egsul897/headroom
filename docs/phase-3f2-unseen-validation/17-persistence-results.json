@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PERSISTENCE_RESULTS",
+  "status": "NOT_EXERCISED",
+  "reason": "This run executed the compute pipeline in-process only, writing JSON artifacts to disk - it did not persist any result to the application database (Prisma/Postgres), mirroring the Phase 3F first-blind-run precedent (scripts/phase-3f-first-blind-run.ts) exactly. This is a deliberate, established choice for this class of validation run, not an oversight.",
+  "verifierFalseVerifiedCount": 0,
+  "persistedFalseTrustedCount": 0,
+  "staleOrSupersededAsCurrentCount": 0,
+  "tenantProvenanceViolations": 0,
+  "note": "All four TRUST metrics in the governing spec's S21 (verifier false-VERIFIED, persisted false-trusted, stale-as-current, tenant/provenance violations) are trivially 0 because nothing was ever persisted - not because the trust-preservation layer was tested and passed at scale. Disclosed honestly here rather than presented as a certified PASS."
+}

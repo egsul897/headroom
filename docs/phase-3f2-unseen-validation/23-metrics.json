@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "METRICS",
+  "documentPackage": {
+    "sourceCompleteness": "3/3 documents acquired and structurally parsed; COMPLETE",
+    "structuralAnomalyRate": "No gross anomaly detected (see 10-structural-results.json); not formally computed as a numeric rate",
+    "packageRelationshipCorrectness": "Correct (single instrument, single borrower/lender pair across all 3 documents) - COMPLETE, matches ground truth",
+    "operativeStateCorrectness": "Document-level: consistent with ground truth (doc-c operative). Provision-level: NOT_EVALUABLE (compilation shortfall)"
+  },
+  "discovery": {
+    "materialCovenantBearingSectionRecall": "NOT_PRECISELY_COMPUTABLE (qualitatively strong - see 13-discovery-results.json)",
+    "materialClaimDiscoveryRecall": "NOT_EVALUABLE (requires claim-level comparison, blocked)",
+    "criticalMaterialDiscoveryRecall": "NOT_EVALUABLE"
+  },
+  "semantic": {
+    "materialClaimCreditRate": "NOT_EVALUABLE (n=3)",
+    "criticalClaimCreditRate": "NOT_EVALUABLE (n=3)",
+    "quantitativeComponentCorrectness": "NOT_EVALUABLE (n=3, and the one candidate with a quantitative finding showed an INCORRECT fabricated figure, correctly caught by verification - not itself a credit-worthy correct case)",
+    "conditionQualifierPreservation": "NOT_EVALUABLE (0 candidates reached CREDIT status)",
+    "crossReferenceDependencyPreservation": "NOT_EVALUABLE"
+  },
+  "safeFailure": {
+    "materialNoCreditCount": 3,
+    "specificallySurfacedNoCreditCount": 3,
+    "dangerousSilentOmissionCount": "NOT_EVALUABLE_AT_SCALE (0 observed among the 3 attempted)",
+    "dangerousSilentOmissionRate": "NOT_EVALUABLE",
+    "criticalDangerousSilentOmissionCount": "NOT_EVALUABLE (0 observed among the 3 attempted)"
+  },
+  "trust": {
+    "verifierFalseVerifiedCount": 0,
+    "persistedFalseTrustedCount": 0,
+    "staleAsCurrentCount": 0,
+    "tenantProvenanceViolations": 0
+  },
+  "product": {
+    "totalAiCostUsd": 0.820356,
+    "wallClockMs": 3075680,
+    "reviewItemVolume": "NOT_COMPUTED (claim review item generation was not separately exercised at this scale in this in-process run)",
+    "percentMaterialClaimsRequiringHumanReview": "NOT_EVALUABLE"
+  }
+}

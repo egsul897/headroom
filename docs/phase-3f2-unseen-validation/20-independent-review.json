@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INDEPENDENT_REVIEW",
+  "reviewersUsed": 2,
+  "agreementOnOperativeDocument": "100% (2/2) - both concluded doc-c.",
+  "agreementOnMaterialityDistributionShape": "Similar (A: 53/44/3 CRITICAL/MATERIAL/BENIGN out of 100; B: 43/38/3 out of 84) - both skew heavily toward CRITICAL+MATERIAL with a small BENIGN tail, consistent between reviewers.",
+  "agreementOnDistinctiveFindings": "Both independently surfaced the identical non-obvious Section 5.02(g)/6.01(d) carve-out deletion between doc-b and doc-c without being prompted to look for it specifically - a strong qualitative signal that both reviewers did a genuine close read of all three documents rather than a shallow pass.",
+  "formalInterRaterStatisticComputed": false,
+  "reasonNotComputed": "A formal claim-identity/materiality/credit/surfacing agreement statistic (as the governing spec's S24 describes) requires reconciling the two reviewers' independently-assigned claim IDs into a shared claim space first, then comparing per-claim judgments. That reconciliation work was not performed this run because it would only be useful in service of a claim-level comparison against Headroom's own output (21-claim-level-comparison.json) - and that comparison is itself blocked by the compilation shortfall (only 3 of 755 eligible Headroom candidates were ever compiled). Computing a full formal agreement statistic now, disconnected from any actual use in scoring Headroom, would not serve this validation's purpose and was deprioritized in favor of documenting the environment block precisely and preserving all real work for a future resumption.",
+  "recommendationForResumption": "When this validation resumes (after the Gateway account is topped up), reconcile the 100+84 claims into a single deduplicated canonical claim list (adjudicating any conflicts from source text, never using Headroom's answer as tie-breaker, per S24), THEN compute the formal per-dimension agreement statistics, THEN run the full claim-level comparison against the (at that point, hopefully complete) Headroom compiled/verified output."
+}

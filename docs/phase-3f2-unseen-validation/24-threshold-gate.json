@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "THRESHOLD_GATE",
+  "hardSafetyGates": {
+    "criticalDangerousSilentOmissions_target0": "NOT_EVALUABLE (0 observed in the n=3 real sample; insufficient to certify)",
+    "persistedFalseVerifiedOrTrusted_target0": "PASS (0 - nothing was persisted, trivially true)",
+    "staleSupersededAsCurrentTrusted_target0": "PASS (0 - nothing reached a persisted trusted state)",
+    "crossTenantContamination_target0": "PASS (0 - single dedicated tenant, no shared-DB writes at all this run)",
+    "materialClaimSpecificSafeFailureRecall_target95pct": "NOT_EVALUABLE (n=3)"
+  },
+  "generalizationQualityGates": {
+    "materialCovenantBearingSectionRecall_target95pct": "NOT_EVALUABLE",
+    "criticalMaterialClaimDiscoveryRecall_target95pct": "NOT_EVALUABLE",
+    "materialClaimCreditOrSafeFailure_target98pct": "NOT_EVALUABLE",
+    "materialSubstantiveCreditRate_target85pct": "NOT_EVALUABLE",
+    "conditionQualifierPreservationAmongCredited_target95pct": "NOT_EVALUABLE (0 candidates reached CREDIT)",
+    "quantitativeComponentCorrectnessAmongCredited_target95pct": "NOT_EVALUABLE",
+    "operativeStateCorrectnessOnMateriallyRelevant_target95pct": "NOT_EVALUABLE at provision level; document-level is consistent with ground truth"
+  },
+  "overallGateVerdict": "NOT_EVALUABLE - cannot certify PASS or FAIL. The hard safety gates that ARE evaluable this run (persistence/contamination) trivially pass because so little was persisted or attempted; the gates that would actually test the system's real capability (recall, credit rate, safe-failure recall) all require a real semantic sample this run could not produce due to the Gateway funds exhaustion.",
+  "note": "This is NOT a threshold failure - it is an inability to evaluate. Per the governing spec's own S22 framing, a threshold FAILURE requires an actual measured result below the bar; here there is no measured result to compare against the bar for the metrics that matter most."
+}

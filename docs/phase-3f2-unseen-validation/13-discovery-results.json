@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "DISCOVERY_RESULTS",
+  "status": "COMPLETE",
+  "totalDiscoveredCandidates": 887,
+  "eligibleForCompilation": 755,
+  "perDocument": [
+    { "documentId": "doc-a", "nodesInspected": 440, "deterministicCandidatesGenerated": 151, "semanticCandidatesEvaluated": 302, "duplicatesReconciled": 34, "finalCandidateCount": 285, "modelCalls": 33, "sectionFailures": 0, "health": "DISCOVERY_HEALTHY" },
+    { "documentId": "doc-b", "nodesInspected": 456, "deterministicCandidatesGenerated": 159, "semanticCandidatesEvaluated": 302, "duplicatesReconciled": 24, "finalCandidateCount": 291, "modelCalls": 35, "sectionFailures": 0, "health": "DISCOVERY_HEALTHY" },
+    { "documentId": "doc-c", "nodesInspected": 476, "deterministicCandidatesGenerated": 164, "semanticCandidatesEvaluated": 314, "duplicatesReconciled": 22, "finalCandidateCount": 311, "modelCalls": 39, "sectionFailures": 0, "health": "DISCOVERY_HEALTHY" }
+  ],
+  "materialCovenantBearingSectionRecall": "NOT_PRECISELY_COMPUTABLE against ground truth without a full claim-level reconciliation, but qualitatively strong: discovery ran DISCOVERY_HEALTHY on all 3 documents (zero section failures across 107 total sections attempted) and surfaced 887 candidates against a 184-claim (100+84) two-reviewer ground-truth inventory spanning far fewer distinct source sections - discovery volume alone does not appear to be the limiting factor in this run. The genuine bottleneck was downstream (compilation funds exhaustion), not discovery under-recall.",
+  "note": "This stage completed in full at real, paid, non-trivial cost ($0.0558 total) BEFORE the funds exhaustion hit at Stage 6. Discovery output is fully real and usable for future resumption."
+}

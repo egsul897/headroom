@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "KNOWN_PACKAGE_REGRESSION",
+  "scriptRun": "scripts/phase-3f1-6-known-package-regression.ts (read-only, no modifications made to it or its inputs; this session's own accidental write to its historical output path docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json was detected and reverted via git checkout before committing)",
+  "dangerousSilentFailureCheck": {
+    "fwrg": 0,
+    "lsb": 0,
+    "dsgr": 215,
+    "conmed": "NOT_APPLICABLE - no semantic-coverage run exists for CONMED (pre-existing, disclosed gap from a prior phase)",
+    "allZero": false,
+    "note": "The dsgr=215 and conmed=N/A results are PRE-EXISTING, already-disclosed findings from prior phases (see docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json's own committed history) - unchanged by this session. This is regression-only: confirms the known-package baseline is stable and was not disturbed by this phase's work, per the governing spec's S26 ('do not use them to tune 3F.2')."
+  },
+  "verdict": "REGRESSION_STABLE - no change from the pre-existing baseline this session."
+}

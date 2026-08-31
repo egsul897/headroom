@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "GROUND_TRUTH_INVENTORY_CONSOLIDATED",
+  "sourceFiles": ["19a-ground-truth-reviewer-A.json", "19b-ground-truth-reviewer-B.json"],
+  "reviewerA": { "claimCount": 100, "materialityBreakdown": { "CRITICAL": 53, "MATERIAL": 44, "BENIGN": 3 }, "operativeDocumentConclusion": "doc-c" },
+  "reviewerB": { "claimCount": 84, "materialityBreakdown": { "CRITICAL": 43, "MATERIAL": 38, "BENIGN": 3 }, "operativeDocumentConclusion": "doc-c" },
+  "combinedApproxUniqueMaterialClaimUniverse": "~100-184 depending on how much the two inventories overlap on the same underlying provisions (both reviewers independently authored their own claim IDs and section groupings rather than reconciling a single canonical list at authoring time - reconciling the two into a single deduplicated canonical list was not performed this run because the downstream comparison against Headroom's output is itself blocked by the compilation shortfall, per 21-claim-level-comparison.json; doing that reconciliation work now would be spending real effort against an evaluation that cannot yet be completed).",
+  "familyCoverageBothReviewers": ["indebtedness", "liens", "asset-sales", "fundamental-changes", "affiliate-transactions (A only)", "eligibility-condition", "margin-ltv-mechanic", "financial-covenant (A only)", "prepayments-subordinated-debt", "cross-reference-dependency", "collateral-guaranty", "reporting-obligation", "events-of-default", "amendment-effect"],
+  "keyConvergentFindings": [
+    "Both reviewers independently concluded doc-c (Second Amended and Restated Credit Agreement, 2026-04-21) is the operative document.",
+    "Both reviewers independently identified the same striking amendment-effect: a Section 5.02(g)/6.01(d)-referencing carve-out ('a breach by the Borrower of Section 5.02(g) shall not constitute an Event of Default') present verbatim in doc-a and doc-b that is silently absent from doc-c - a genuine drafting change with real operative-state consequences neither reviewer was prompted to look for specifically.",
+    "Both reviewers independently identified the interest-rate mechanic change (a floating Fed-Funds-plus-margin formula in doc-a/b replaced by a flat, redacted 'Fixed Rate' in doc-c) and the LTV/margin-call/collateral mechanics as the facility's central financial-covenant-equivalent structure (rather than a traditional leverage ratio)."
+  ],
+  "assessment": "The two independent reviewers' strong qualitative convergence (same operative-state conclusion, same non-obvious amendment-effect catch, overlapping family coverage) is a positive signal for the ground truth's own reliability, even though a full quantitative inter-rater agreement statistic (Cohen's kappa or similar) was not computed - see 20-independent-review.json."
+}

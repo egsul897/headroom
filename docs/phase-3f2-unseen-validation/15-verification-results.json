@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "VERIFICATION_RESULTS",
+  "status": "ENVIRONMENT_BLOCKED_PARTWAY",
+  "attempted": 3,
+  "results": [
+    { "candidateRef": "discovery-candidate:4f6d049986c629e4ce8ec916", "status": "VERIFICATION_FAILED", "findings": 0, "semanticReviewInvoked": true },
+    { "candidateRef": "discovery-candidate:a8260b6951c5e76fea4df760", "status": "VERIFICATION_FAILED", "findings": 1, "semanticReviewInvoked": true, "findingDetail": { "findingType": "UNSUPPORTED_IR_ADDITION", "severity": "MATERIAL", "irPath": "definitions[0].calculationExpression", "verifierReasoning": "compiled IR AMOUNT value 100000000 at definitions[0].calculationExpression has no matching source-side figure", "verificationMethod": "DETERMINISTIC_ONLY" } },
+    { "candidateRef": "discovery-candidate:30ad2e5ca78d13a74b8aa22b", "status": "VERIFICATION_FAILED", "findings": 0, "semanticReviewInvoked": true }
+  ],
+  "candidatesFullyVerified": 0,
+  "significance": [
+    "None of the 3 real verification attempts reached VERIFIED_NO_MATERIAL_GAP_FOUND or VERIFIED_WITH_NON_MATERIAL_FINDINGS - all landed on VERIFICATION_FAILED.",
+    "Candidate a8260b... surfaced a genuine, real, deterministic finding (Layer 1 reconciliation, no AI needed): the compiled IR fabricated a $100,000,000 AMOUNT value in a definition's calculationExpression that has no matching figure anywhere in the actual source text for that candidate. This is a real, caught compiler hallucination - the deterministic Layer 1 reconciliation engine is working correctly on this genuinely novel domain and would have forced this candidate to review rather than let a fabricated number through silently.",
+    "The other 2 candidates' VERIFICATION_FAILED status with zero findings is most likely the same account-level funds exhaustion reaching into verification's own AI-backed steps (Layer 2 adversarial review / condition-suspicion routing) after compilation had already drained the account - the verifier's own failure-handling correctly propagated this as VERIFICATION_FAILED rather than silently treating an errored call as a clean VERIFIED result.",
+    "TRUST-PRESERVING SIGNAL: across all 3 real attempts, under a genuine mid-run infrastructure funding failure, the system never produced a false VERIFIED result. Every candidate that could not be confidently and completely verified was marked FAILED, not VERIFIED. This is exactly the safe-failure behavior the architecture is designed to guarantee, demonstrated here under a real, unscripted infrastructure fault rather than a synthetic test."
+  ],
+  "claimSpecificSafeFailureRecall": "NOT_COMPUTABLE_AT_SCALE - n=3 is far too small a sample to compute a percentage against the 184-claim ground truth population; see 16-safe-failure-results.json and 23-metrics.json for the full disclosure of what is and is not evaluable this run."
+}

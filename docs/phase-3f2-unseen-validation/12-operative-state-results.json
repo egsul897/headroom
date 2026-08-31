@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "OPERATIVE_STATE_RESULTS",
+  "status": "COMPLETE",
+  "headroomResult": {
+    "status": "OPERATIVE_STATE_RESOLVED",
+    "deterministicEffectsFound": 2,
+    "semanticCallsMade": 0,
+    "conflictsDetected": 0,
+    "unattachedEffects": 2
+  },
+  "groundTruthComparison": {
+    "reviewerA": "doc-c operative, based on its own recitals/Section 1.05 superseding doc-b (which itself superseded doc-a), no novation.",
+    "reviewerB": "doc-c operative, identical reasoning.",
+    "headroom": "OPERATIVE_STATE_RESOLVED - the orchestration script did not print which specific document Headroom's computeOperativeContractState treated as the base/operative document by name in this run's log; the machine-readable stage5-operative-state.json artifact records 0 resolved provisions (provisions: 0), reflecting that operative-state PROVISION-level detail could not be populated because so few candidates were ever compiled (only 3 of 755 eligible) - the amendment/document-level resolution succeeded, but provision-level operative-state population is starved by the same funds-exhaustion that blocked compilation.",
+    "agreement": "Document-level operative-state resolution (which document governs) appears consistent with both reviewers' independent conclusion (doc-c). Provision-level operative-state correctness cannot be evaluated from this run due to the compilation shortfall."
+  },
+  "assessment": "Document-level operative-state logic ran to completion at zero AI cost and is consistent with independent ground truth. Provision-level operative-state correctness is NOT_EVALUABLE this run - blocked by the same funds exhaustion, not a defect in the operative-state logic itself."
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINDINGS",
+  "findings": [
+    {
+      "id": "F1",
+      "classification": "ENVIRONMENTAL",
+      "summary": "The Vercel AI Gateway account ran out of funds (HTTP 402 insufficient_funds) after the 3rd of 15 pre-committed compilation attempts, blocking 12/15 compilations and starving verification of any further real candidates. Re-confirmed live by a fresh probe after the run.",
+      "isArchitectureBlocker": false,
+      "requiredAction": "A human must top up the Vercel AI Gateway account balance. No production code change is implicated or warranted."
+    },
+    {
+      "id": "F2",
+      "classification": "GENERALIZATION_QUALITY_GAP (positive signal, not a defect)",
+      "summary": "Under a genuine, live infrastructure funding failure hitting mid-verification, the system never produced a false VERIFIED result - every affected candidate correctly surfaced as FAILED. This mirrors the same safe-failure discipline this engagement has repeatedly certified in prior phases (e.g. OPEN-4's condition-suspicion classifier), now observed under a real, unscripted fault rather than a synthetic test.",
+      "isArchitectureBlocker": false,
+      "requiredAction": "None - working as designed."
+    },
+    {
+      "id": "F3",
+      "classification": "GENERALIZATION_QUALITY_GAP (positive signal, not a defect)",
+      "summary": "The deterministic Layer 1 reconciliation engine caught a real compiled-IR hallucination on this genuinely novel package (a fabricated $100,000,000 AMOUNT value with no matching source-side figure) without needing any AI call, correctly forcing that candidate to a non-VERIFIED state.",
+      "isArchitectureBlocker": false,
+      "requiredAction": "None - working as designed."
+    },
+    {
+      "id": "F4",
+      "classification": "EVALUATION_DEFECT (of this validation run, not of Headroom)",
+      "summary": "The pre-committed 15-candidate compile cap, combined with the account running dry after only 3 real compiles, means this run cannot answer its own core mission question (whether the compiler generalizes to a genuinely novel LTV/margin-call-based covenant style) at any meaningful statistical confidence. The two independent ground-truth reviewers (184 combined claims, strong qualitative convergence including catching the same non-obvious amendment-effect) represent substantial completed, reusable work that is currently unscored against Headroom's output.",
+      "isArchitectureBlocker": false,
+      "requiredAction": "Resume compilation/verification/coverage from where this run left off once the Gateway account is funded, then complete the claim-level comparison against the already-built ground truth."
+    }
+  ],
+  "noTrustBoundaryFailureIdentified": true,
+  "noBoundedGeneralizationGapIdentified": "Cannot be determined either way this run - insufficient sample.",
+  "noArchitectureDefectIdentified": true
+}

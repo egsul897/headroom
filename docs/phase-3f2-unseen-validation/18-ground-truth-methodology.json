@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "GROUND_TRUTH_METHODOLOGY",
+  "reviewerCount": 2,
+  "independence": "Two separate subagents (Reviewer A, Reviewer B) were dispatched in parallel with explicit instructions to read ONLY the three raw extracted-text source documents and never access any Headroom/production output. Both were dispatched and completed their work before this session read the RIOT pipeline's compiled/verified output for comparison purposes (the pipeline run and the ground-truth authoring ran concurrently in the background, but neither reviewer's prompt referenced or granted access to the pipeline's output directory).",
+  "unit": "Claim-level, source-grounded (gtClaimId, document, sourceSpan, covenantFamily, propositionType, materiality, shortDescription, requiredQualifiersConditions, quantitativeComponents, dependencies, amendmentOperativeStateRelevance, sourceEvidence).",
+  "sourceEvidenceVerification": "Reviewer B's own process included programmatic verification that every sourceEvidence quote is a genuine (whitespace/quote-style-normalized) substring of the extracted text; Reviewer A's report did not describe an equivalent automated check but its excerpts were spot-checked as part of this synthesis and found consistent with the source documents.",
+  "coverageFamiliesInstructed": ["indebtedness", "liens", "restricted-payments", "investments", "acquisitions", "asset-sales", "affiliate-transactions", "fundamental-changes", "prepayments-subordinated-debt", "financial-covenant", "reporting-obligation", "collateral-guaranty", "events-of-default", "ratio-based-permission", "margin-ltv-mechanic", "eligibility-condition", "no-default-requirement", "cross-reference-dependency", "amendment-effect", "other"],
+  "note": "Reviewers were explicitly told not to restrict themselves to negative covenants only and to cover the full breadth of material claim families present in the text."
+}
