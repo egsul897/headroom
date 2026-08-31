@@ -214,72 +214,81 @@ function findProvisionView(operativeState: OperativeProvisionView[] | undefined,
 }
 
 /**
- * HEADROOM OPEN-2 TERMINAL (Part A) - CONFIRMED ROOT CAUSE FIX.
+ * HEADROOM OPEN-2 FINAL DIRECT PATCH (Part A) - CONFIRMED ROOT CAUSE FIX,
+ * SECOND CORRECTION. See docs/open2-final-direct-patch/01-confirmed-bug.json
+ * and docs/open2-terminal-trust-correction/13-four-tool-recertification.json
+ * (independent recert auditor, STILL_OPEN finding) for the full incident.
  *
- * CONFIRMED DEFECT (independently reproduced pre-fix in
- * tests/certification/open-2-recert-independent-fresh.test.ts's own section
- * 4, and see docs/open2-terminal-trust-correction/01-root-cause-code-audit.json
- * for the full trace): the OLD implementation gated its ENTIRE trust
- * determination on whether `view.currentText` happened to be non-null. When
- * a real, on-file `OperativeProvisionView` existed for this section but its
- * own aggregate `view.status` was CONFLICTED/PARTIAL/REVIEW_REQUIRED (all of
- * which `buildProvisionView` correctly nulls `currentText` for - a producer
- * behavior that is correct and untouched here), the OLD code discarded
- * `view.status` entirely and fell through to a raw per-PHYSICAL-NODE
- * `getNodeSupersessionStatus` check. That check answers a genuinely
- * different question (has anything ever applied OVER this exact physical
- * occurrence) and reports CURRENT_OPERATIVE for a section whose competing
- * amendments are real but simply have not applied yet as of the query date
- * (appliedChain.length === 0, so buildProvisionView's own
- * supersededSourceNodeIds - the only thing the node-level index can key off
- * - was never populated for it). A signed-but-not-yet-effective conflicting
- * amendment therefore reached this tool's own physical-node fallback with
- * ZERO record of the conflict at all.
+ * CONFIRMED DEFECT (this correction): the prior "OPEN-2 terminal" fix
+ * (commit b3773adb) restructured the null-currentText branch correctly, but
+ * its OWN `if (view.currentText !== null && view.currentText !== undefined)`
+ * branch (taken FIRST, before any view.status check) still carried its
+ * predecessor's exact defect: it asserted in a comment that non-null
+ * currentText "only ever happens when view.status is RESOLVED" and, on the
+ * strength of that unenforced claim, returned evidenceCurrent: true
+ * unconditionally. The claim is false: `buildProvisionChain` places any
+ * effect whose effective date is CONDITIONAL_UNRESOLVED/UNKNOWN at the end
+ * of the chain and raises AMENDMENT_SEQUENCE_UNRESOLVED for it, but such an
+ * effect is ALSO excluded from `appliedChain` (operative-state.ts's own
+ * `e.effectiveDate.date !== null` filter) - so the text-nulling loop inside
+ * buildProvisionView never runs for it. Whenever hasConflict/targetUnresolved/
+ * structuralHealthUnsafe are all false, `currentText` is left exactly as it
+ * was before the loop: the UNTOUCHED base-document text (non-null) if this
+ * is the provision's only effect, or a real applied predecessor's own
+ * newText (also non-null) if an earlier DATED effect already applied. Either
+ * way `view.status` is honestly OPERATIVE_STATE_REVIEW_REQUIRED while
+ * `currentText` is non-null - the exact combination the removed comment
+ * claimed could not occur. This let a real, on-file, review-required
+ * amendment reach persisted VERIFIED trust for getParentClause,
+ * getSiblingClauses, and getReferencedProvision (both its absolute-reference
+ * and fromNodeId/relative paths) - independently reproduced end-to-end
+ * (compile -> verify -> persist -> fresh Postgres read) in
+ * tests/certification/open2-terminal-independent-recert-fresh2.test.ts
+ * section 10 (now updated to assert the fix), and again, with 4 fresh
+ * per-tool fixtures, in this phase's own
+ * tests/certification/open2-final-direct-patch-e2e.test.ts.
  *
- * CORE INVARIANT (enforced below): TEXT SELECTION and TRUST SELECTION are
- * separate questions. `currentText` presence may determine WHICH TEXT is
- * served; it must never determine WHETHER that text is trustworthy.
- * Whenever a real matching `OperativeProvisionView` exists, its own
- * `view.status` participates in the trust determination UNCONDITIONALLY -
- * never silently discarded merely because `currentText` is null.
- *
- * TRUST RULE (text-source-dependent - see ResolvedNodeEvidence's own header
- * comment for the full per-textSource reasoning table, and
- * docs/open2-terminal-trust-correction/03-null-currenttext-semantics.json for
- * the exhaustive null-currentText cause-by-cause writeup):
- *   - AMENDED_CURRENT_TEXT (view.currentText is non-null - by
- *     buildProvisionView's own invariant this only ever happens when
- *     view.status === OPERATIVE_STATE_RESOLVED): evidenceCurrent = true,
- *     unconditionally. The base node's own nodeSupersessionStatus being
- *     KNOWN_SUPERSEDED here is EXPECTED and IRRELEVANT - the amended text
- *     superseding the base node is exactly the point of an amendment; it
- *     must never be AND-ed against the trust verdict for the replacement
- *     text itself.
- *   - a real view exists but currentText is null (CONFLICTED / PARTIAL /
- *     REVIEW_REQUIRED / a validly-resolved clean deletion): evidenceCurrent
- *     = false, full stop - gated on view.status alone, regardless of what
- *     getNodeSupersessionStatus reports for the underlying physical node
- *     (this is the exact line the fix lives on: the physical node's own
- *     history is a different, narrower question than the provision's real
- *     aggregate operative state, and must never substitute for it once a
- *     real view exists). A clean deletion (status RESOLVED, currentText
- *     null by buildProvisionView's own DELETE_OPERATIONS branch) is
- *     distinguished from a genuine unresolved conflict via textSource
- *     (HISTORICAL_BASE_TEXT vs BASE_DOCUMENT_TEXT) so a caller can label the
- *     served base text as historical rather than merely "unresolved" - but
- *     BOTH are evidenceCurrent: false; only serving old base text as though
- *     it were still-governing would be the actual harm.
- *   - no matching view exists at all (this section has no recorded
- *     amendment activity whatsoever - the pure node-supersession case
- *     `getNodeSupersessionStatus`/`NodeSupersessionIndex` exist for):
+ * CORE INVARIANT (enforced below, now STRUCTURALLY - not by a convention a
+ * later edit can silently violate again): `view.status ===
+ * OPERATIVE_STATE_RESOLVED` is the FIRST, dominant question whenever a real
+ * matching view exists. `currentText` presence/absence is consulted ONLY
+ * after that question is answered, and only to select WHICH text to serve -
+ * never whether it is trustworthy. Decision table:
+ *   - CASE A (view.status !== OPERATIVE_STATE_RESOLVED - CONFLICTED,
+ *     PARTIAL, or REVIEW_REQUIRED): evidenceCurrent = false, unconditionally,
+ *     regardless of whether currentText is null or non-null, and regardless
+ *     of nodeSupersessionStatus. If currentText happens to be present (the
+ *     exploit shape above), it is still returned for context/provenance but
+ *     labeled textSource UNRESOLVED_AMENDED_TEXT - never AMENDED_CURRENT_TEXT
+ *     - so a caller can never mistake it for confirmed current text. If
+ *     currentText is null, the raw base/historical text is returned instead
+ *     (textSource BASE_DOCUMENT_TEXT), exactly as before this correction.
+ *     view.unresolvedIssues is always included.
+ *   - CASE B (view.status === OPERATIVE_STATE_RESOLVED, currentText
+ *     non-null): the genuine resolved-amended-replacement case.
+ *     evidenceCurrent = true. The base node's own nodeSupersessionStatus
+ *     being KNOWN_SUPERSEDED here is EXPECTED and IRRELEVANT - the amendment
+ *     superseding it is the point - exactly as the pre-existing (correct)
+ *     behavior for this case, unchanged by this correction.
+ *   - CASE C (view.status === OPERATIVE_STATE_RESOLVED, currentText null):
+ *     by buildProvisionView's own status ladder (see this fix's own
+ *     docs/open2-final-direct-patch/02-status-first-design.json for the
+ *     exhaustive proof) this combination can only be a valid, resolved clean
+ *     deletion - never a genuine unresolved state, since every other
+ *     null-currentText cause (CONFLICTED, targetUnresolved,
+ *     structuralHealthUnsafe, textMissingDespiteAppliedEffect) forces a
+ *     non-RESOLVED status. evidenceCurrent = false; textSource
+ *     HISTORICAL_BASE_TEXT, distinguished from CASE A's wording via the
+ *     disclosed reason string ("validly deleted", never "not confidently
+ *     resolved").
+ *   - CASE D (no matching view exists at all): unchanged from before this
+ *     correction - the pure node-supersession case
+ *     `getNodeSupersessionStatus`/`NodeSupersessionIndex` exist for.
  *     evidenceCurrent = (nodeSupersessionStatus === "CURRENT_OPERATIVE").
- *     Unchanged from before this fix - this is the ONE case where the
- *     physical-node-history question genuinely IS the whole answer, because
- *     there is no provision-level view to ask instead.
  */
 export interface ResolvedNodeEvidence {
   text: string;
-  textSource: "AMENDED_CURRENT_TEXT" | "BASE_DOCUMENT_TEXT" | "HISTORICAL_BASE_TEXT";
+  textSource: "AMENDED_CURRENT_TEXT" | "UNRESOLVED_AMENDED_TEXT" | "BASE_DOCUMENT_TEXT" | "HISTORICAL_BASE_TEXT";
   /** null iff no matching OperativeProvisionView exists for this section at all - the pure node-supersession case. */
   provisionOperativeStatus: OperativeStateStatus | null;
   /** The underlying physical node's own supersession verdict - always computed and always disclosed for provenance, but (per the trust rule above) NEVER the trust gate on its own once a real view exists. */
@@ -290,41 +299,61 @@ export interface ResolvedNodeEvidence {
   unresolvedReasons: string[];
 }
 
-function resolveNodeWithSupersessionAwareness(access: SemanticToolAccess, supersessionIndex: NodeSupersessionIndex, node: StructuralNode): ResolvedNodeEvidence {
+/**
+ * Exported (was module-private) so this phase's own direct-resolver status
+ * matrix (docs/open2-final-direct-patch/04-direct-resolver-matrix.json) and
+ * its permanent per-status invariant test can call this helper directly,
+ * per this phase's own requirement to test the fixed function itself, not
+ * only through the tools that wrap it. No behavior change from exporting.
+ */
+export function resolveNodeWithSupersessionAwareness(access: SemanticToolAccess, supersessionIndex: NodeSupersessionIndex, node: StructuralNode): ResolvedNodeEvidence {
   const view = findProvisionView(access.operativeState?.provisions, node.sectionRef);
   const nodeSupersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId);
 
   if (view) {
-    if (view.currentText !== null && view.currentText !== undefined) {
-      // A real, resolved amended replacement. Per buildProvisionView's own
-      // invariant this only happens when view.status is RESOLVED - the base
-      // node's own (very likely KNOWN_SUPERSEDED, which is expected and
-      // correct) supersession record is irrelevant to trusting THIS text.
-      return { text: view.currentText, textSource: "AMENDED_CURRENT_TEXT", provisionOperativeStatus: view.status, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent: true, unresolvedReasons: [] };
+    const currentTextPresent = view.currentText !== null && view.currentText !== undefined;
+
+    // THE FIX: view.status is the FIRST, structurally-dominant question -
+    // checked before currentText is ever consulted, so a future producer
+    // change (or a future edit to this function) cannot silently reintroduce
+    // a currentText-presence shortcut around it.
+    if (view.status !== "OPERATIVE_STATE_RESOLVED") {
+      // CASE A - see this function's own header comment above.
+      const raw = access.structuralIndex.getNodeText(node.nodeId, "OWN");
+      const text = currentTextPresent ? view.currentText! : raw;
+      const unresolvedReasons = [
+        `This section's own real amendment history is not confidently resolved (operative status ${view.status})${
+          currentTextPresent ? " - an amendment's own captured replacement text exists on file, but the provision's aggregate operative status has not resolved to confirm it actually governs" : ""
+        } - the text shown here must not be treated as confirmed-current, regardless of this physical node's own supersession record (${nodeSupersession.status}).`,
+        ...view.unresolvedIssues,
+      ];
+      return { text, textSource: currentTextPresent ? "UNRESOLVED_AMENDED_TEXT" : "BASE_DOCUMENT_TEXT", provisionOperativeStatus: view.status, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent: false, unresolvedReasons };
     }
-    // currentText is null. THE FIX: view.status gates this unconditionally -
-    // never the physical node's own (possibly-stale-for-this-purpose)
-    // nodeSupersessionStatus. Distinguish a validly-resolved clean deletion
-    // (status RESOLVED despite null currentText - see buildProvisionView's
-    // own DELETE_OPERATIONS branch and lastAppliedWasCleanDeletion) from a
-    // genuine unresolved conflict/partial/review-required state, per the
-    // null-currentText reasoning table (docs/open2-terminal-trust-
-    // correction/03-null-currenttext-semantics.json) - but BOTH are
-    // evidenceCurrent: false.
+
+    // view.status === OPERATIVE_STATE_RESOLVED here - trust is already
+    // settled; currentText presence only selects WHICH text to serve.
+    if (currentTextPresent) {
+      // CASE B - a real, resolved amended replacement. The base node's own
+      // (very likely KNOWN_SUPERSEDED, which is expected and correct)
+      // supersession record is irrelevant to trusting THIS text.
+      return { text: view.currentText!, textSource: "AMENDED_CURRENT_TEXT", provisionOperativeStatus: view.status, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent: true, unresolvedReasons: [] };
+    }
+
+    // CASE C - RESOLVED with null currentText: by buildProvisionView's own
+    // status ladder this is only ever a valid, resolved clean deletion (see
+    // buildProvisionView's own DELETE_OPERATIONS branch / lastAppliedWasCleanDeletion) -
+    // never a genuine unresolved conflict, which always forces a non-RESOLVED
+    // status instead (handled by CASE A above).
     const raw = access.structuralIndex.getNodeText(node.nodeId, "OWN");
-    const isCleanDeletion = view.status === "OPERATIVE_STATE_RESOLVED";
-    const unresolvedReasons = isCleanDeletion
-      ? [`This provision was validly deleted by a resolved amendment as of the analysis date - the base document's original text is shown here for historical reference only and must never be treated as current operative text, even though the provision's own aggregate operative state is itself resolved.`]
-      : [
-          `This section's own real amendment history is not confidently resolved (operative status ${view.status}) - the base document's text shown here must not be treated as confirmed-current, regardless of this physical node's own supersession record (${nodeSupersession.status}).`,
-          ...view.unresolvedIssues,
-        ];
-    return { text: raw, textSource: isCleanDeletion ? "HISTORICAL_BASE_TEXT" : "BASE_DOCUMENT_TEXT", provisionOperativeStatus: view.status, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent: false, unresolvedReasons };
+    const unresolvedReasons = [
+      `This provision was validly deleted by a resolved amendment as of the analysis date - the base document's original text is shown here for historical reference only and must never be treated as current operative text, even though the provision's own aggregate operative state is itself resolved.`,
+    ];
+    return { text: raw, textSource: "HISTORICAL_BASE_TEXT", provisionOperativeStatus: view.status, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent: false, unresolvedReasons };
   }
 
-  // No matching OperativeProvisionView exists for this section at all - the
-  // pure node-supersession case getNodeSupersessionStatus/NodeSupersessionIndex
-  // exist for. This branch is unchanged by this fix.
+  // CASE D - no matching OperativeProvisionView exists for this section at
+  // all - the pure node-supersession case getNodeSupersessionStatus/
+  // NodeSupersessionIndex exist for. This branch is unchanged by this fix.
   const raw = access.structuralIndex.getNodeText(node.nodeId, "OWN");
   const evidenceCurrent = nodeSupersession.status === "CURRENT_OPERATIVE";
   return { text: raw, textSource: "BASE_DOCUMENT_TEXT", provisionOperativeStatus: null, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent, unresolvedReasons: evidenceCurrent ? [] : [nodeSupersession.reason] };

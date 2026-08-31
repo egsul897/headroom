@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SAFE_TOOL_REGRESSION",
+  "testFile": "tests/certification/open2-final-direct-patch-e2e.test.ts (describe block 'safe-tool regression'), plus tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 7 (fresh regression, unmodified by this phase) and section 10's cross-tool test (updated to assert the fix, see 03-production-change.json)",
+  "purpose": "Confirm getChildren (its own dedicated resolveParentSubstructureEvidence, untouched by this patch) and the 3 already-safe tools (getOperativeProvision, getDefinition, getRelatedAmendments) still correctly fail closed against the SAME REVIEW_REQUIRED-with-non-null-currentText exploit shape, and were never regressed by this patch.",
+  "results": [
+    {
+      "tool": "getChildren",
+      "fixture": "fdp-safe-regression-doc, section 66.61, undated conditional effect (same exploit class)",
+      "result": "parentSupersessionStatus !== CURRENT_OPERATIVE, evidenceUnresolved === true",
+      "note": "Confirms getChildren's own resolveParentSubstructureEvidence was never vulnerable to this defect (it gates on view.status directly, never branching on currentText null-ness) - unaffected by this patch, as expected since no change was made to it.",
+      "pass": true
+    },
+    {
+      "tool": "getOperativeProvision",
+      "fixture": "same 66.61 fixture",
+      "result": "status === OPERATIVE_STATE_REVIEW_REQUIRED, evidenceUnresolved === true",
+      "note": "Already-safe: derives evidenceUnresolved from view.status via isConfirmedCurrentOperativeEvidence directly, never through resolveNodeWithSupersessionAwareness.",
+      "pass": true
+    },
+    {
+      "tool": "getDefinition",
+      "fixture": "control regression fixture, a never-amended defined term (fdp-safe-regression-def-doc)",
+      "result": "evidenceUnresolved is not true (correctly remains current)",
+      "note": "Confirms the clean/never-amended path for getDefinition (also unaffected by this patch) still works after the fix.",
+      "pass": true
+    },
+    {
+      "tool": "getRelatedAmendments",
+      "fixture": "same 66.61 fixture",
+      "result": "evidenceUnresolved === true, real chain disclosed (chain.length > 0)",
+      "note": "Already-safe, unaffected by this patch.",
+      "pass": true
+    }
+  ],
+  "crossToolConfirmation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 10's own cross-tool test (updated for this phase) independently re-confirms, on its own pre-existing REVIEW_REQUIRED fixture (section 66.60), that getChildren/getOperativeProvision/getRelatedAmendments all correctly failed closed BOTH before and after this patch, while getParentClause/getSiblingClauses/getReferencedProvision only fail closed AFTER this patch.",
+  "testRunResult": "All safe-tool regression assertions pass under `npx vitest run tests/certification/open2-final-direct-patch-e2e.test.ts tests/certification/open2-terminal-independent-recert-fresh2.test.ts` - 35 tests, 0 failures."
+}

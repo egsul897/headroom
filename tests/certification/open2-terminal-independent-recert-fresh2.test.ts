@@ -343,27 +343,23 @@ describe("4. getReferencedProvision fromNodeId (relative-reference) path against
   });
 
   // ---------------------------------------------------------------------
-  // FINDING (STILL_OPEN): this is NOT the safe outcome. Independently
-  // discovered while building this fixture - see section 10 below for the
-  // full root-cause writeup, cross-tool reproduction (getParentClause and
-  // getSiblingClauses reproduce identically; getChildren does NOT), and
-  // real-Postgres end-to-end persistence confirmation. Documented here,
-  // not silently dropped or "fixed" by loosening the assertion: the
-  // resolveNodeWithSupersessionAwareness fix's own claimed invariant
-  // ("currentText non-null only ever happens when status === RESOLVED",
-  // tools.ts lines ~250-252) is FALSE for a provision whose ONLY recorded
-  // effect has a genuinely unresolvable (CONDITIONAL_UNRESOLVED/UNKNOWN)
-  // effective date: such an effect is correctly excluded from
-  // appliedChain (operative-state.ts's own `e.effectiveDate.date !==
-  // null` filter), so the text-nulling loop never runs and `currentText`
-  // is left as the UNTOUCHED base document text (non-null) even though
-  // `status` is honestly OPERATIVE_STATE_REVIEW_REQUIRED. The tool then
-  // takes the `currentText !== null` branch UNCONDITIONALLY, reporting
-  // CURRENT_OPERATIVE with a reason string that self-contradictorily
-  // names "operative status OPERATIVE_STATE_REVIEW_REQUIRED" in the same
-  // sentence as "resolved... current".
+  // UPDATE (HEADROOM OPEN-2 FINAL DIRECT PATCH): this WAS the STILL_OPEN
+  // finding from the original independent recertification (see
+  // docs/open2-terminal-trust-correction/13-four-tool-recertification.json)
+  // - resolveNodeWithSupersessionAwareness's own `currentText !== null`
+  // branch was taken UNCONDITIONALLY, never re-checking view.status, so a
+  // provision whose ONLY recorded effect has a genuinely unresolvable
+  // (CONDITIONAL_UNRESOLVED/UNKNOWN) effective date - correctly excluded
+  // from appliedChain, leaving `currentText` as the UNTOUCHED base text
+  // (non-null) even though `status` is honestly
+  // OPERATIVE_STATE_REVIEW_REQUIRED - reported CURRENT_OPERATIVE. Fixed by
+  // making `view.status === OPERATIVE_STATE_RESOLVED` the first, dominant
+  // question (see tools.ts's own resolveNodeWithSupersessionAwareness
+  // header comment and docs/open2-final-direct-patch/02-status-first-
+  // design.json). Re-asserted here as a CLOSED confirmation, not silently
+  // deleted - this is the exact regression guard for this exploit shape.
   // ---------------------------------------------------------------------
-  it("FINDING: getReferencedProvision(ref, fromNodeId) INCORRECTLY reports CURRENT_OPERATIVE / evidenceUnresolved=false for the REVIEW_REQUIRED target, because its non-null (untouched base) currentText bypasses the view.status check entirely - reproduced and confirmed against production code at this commit", () => {
+  it("FIXED: getReferencedProvision(ref, fromNodeId) correctly fails closed (NOT CURRENT_OPERATIVE, evidenceUnresolved=true) for the REVIEW_REQUIRED target, even though its currentText is the non-null untouched base text", () => {
     const { index, state, effects } = buildFixture();
     const source = index.getNodeByRef(DOC, "4.44")!;
     const refs = index.findReferencesFrom(source.nodeId);
@@ -373,12 +369,11 @@ describe("4. getReferencedProvision fromNodeId (relative-reference) path against
     expect(outcome.ok).toBe(true);
     const result = outcome.result as { resolvedSectionRef: string; supersessionStatus: string; supersessionReason: string };
     expect(result.resolvedSectionRef).toBe("9.77"); // confirms the fromNodeId branch, not an accidental fall-through to the absolute-ref loop.
-    // THE BUG, CAPTURED: this line documents the CURRENT (unsafe) production
-    // behavior, not the desired one - a genuinely REVIEW_REQUIRED provision
-    // is reported CURRENT_OPERATIVE.
-    expect(result.supersessionStatus).toBe("CURRENT_OPERATIVE");
-    expect(result.supersessionReason).toContain("OPERATIVE_STATE_REVIEW_REQUIRED"); // the self-contradiction: "current" while citing a non-current status.
-    expect(outcome.evidenceUnresolved).not.toBe(true); // FAILS OPEN - never persist this as trusted evidence, yet it does.
+    // THE FIX, CONFIRMED: a genuinely REVIEW_REQUIRED provision is no longer
+    // reported CURRENT_OPERATIVE merely because currentText is non-null.
+    expect(result.supersessionStatus).not.toBe("CURRENT_OPERATIVE");
+    expect(result.supersessionReason).toContain("OPERATIVE_STATE_REVIEW_REQUIRED"); // still honestly discloses the real status.
+    expect(outcome.evidenceUnresolved).toBe(true); // fails closed - never persisted as trusted evidence.
   });
 });
 
@@ -748,28 +743,26 @@ describe("9. real-Postgres end-to-end persisted trust", () => {
 });
 
 // ---------------------------------------------------------------------------
-// 10. FINDING, END TO END (STILL_OPEN): the residual gap found while
-// building section 4's fixture - a provision whose ONLY recorded amendment
-// effect has a genuinely unresolvable (CONDITIONAL_UNRESOLVED/UNKNOWN)
-// effective date is correctly excluded from appliedChain, so its
-// `currentText` is left as the untouched base-document text (non-null)
-// even though `status` is honestly OPERATIVE_STATE_REVIEW_REQUIRED.
-// resolveNodeWithSupersessionAwareness's `currentText !== null` branch is
-// taken UNCONDITIONALLY - never consulting view.status - for
-// getParentClause, getSiblingClauses, and getReferencedProvision (all
-// three reproduced in section 4/this section; getChildren's own SEPARATE
-// resolveParentSubstructureEvidence check does NOT share this defect,
-// since it never branches on currentText at all). This is the exact class
-// of defect OPEN-2 Part A was supposed to close (text-selection state
-// silently gating trust-selection), surviving in a case the implementer's
-// own fix, matrix, and fresh-fixture file never constructed: EVERY one of
-// the implementer's REVIEW_REQUIRED fixtures used a DATED effect (either
-// an already-applied one with no capturable text, or an effect-level
-// `status: "REVIEW_REQUIRED"` field on a dated effect) - never the
-// EffectiveDateResult-level CONDITIONAL_UNRESOLVED/UNKNOWN shape, which is
-// the one path that leaves currentText genuinely non-null.
+// 10. UPDATE (HEADROOM OPEN-2 FINAL DIRECT PATCH): this section originally
+// documented a STILL_OPEN, end-to-end reproduction of the residual gap
+// found while building section 4's fixture - a provision whose ONLY
+// recorded amendment effect has a genuinely unresolvable
+// (CONDITIONAL_UNRESOLVED/UNKNOWN) effective date is correctly excluded
+// from appliedChain, so its `currentText` is left as the untouched
+// base-document text (non-null) even though `status` is honestly
+// OPERATIVE_STATE_REVIEW_REQUIRED. resolveNodeWithSupersessionAwareness's
+// `currentText !== null` branch used to be taken UNCONDITIONALLY - never
+// consulting view.status first - for getParentClause, getSiblingClauses,
+// and getReferencedProvision (getChildren's own SEPARATE
+// resolveParentSubstructureEvidence check never shared this defect, since
+// it never branches on currentText at all). Fixed by making
+// `view.status === OPERATIVE_STATE_RESOLVED` the first, structurally-
+// dominant question (see tools.ts's own resolveNodeWithSupersessionAwareness
+// header comment and docs/open2-final-direct-patch/). Re-asserted below as
+// CLOSED, not silently deleted - this is the permanent regression guard
+// for this exact exploit shape.
 // ---------------------------------------------------------------------------
-describe("10. FINDING end-to-end (STILL_OPEN): a REVIEW_REQUIRED provision with non-null (untouched-base) currentText reaches a persisted VERIFIED SemanticTruthRecord via getSiblingClauses", () => {
+describe("10. FIXED end-to-end: a REVIEW_REQUIRED provision with non-null (untouched-base) currentText no longer reaches a persisted VERIFIED SemanticTruthRecord via getSiblingClauses", () => {
   const DOC = "fresh2-finding-e2e-doc";
   const INSTRUMENT = "instrument:fresh2-finding-e2e";
   const TEXT = `Section 3.03 Anchor . The Borrower shall not incur Indebtedness in excess of $5,000,000.\n\nSection 66.60 Restricted Payments Basket . General provisions: (a) General Basket. The Borrower may make Restricted Payments up to $5,000,000. (b) Additional Basket. up to $3,000,000.`;
@@ -797,7 +790,7 @@ describe("10. FINDING end-to-end (STILL_OPEN): a REVIEW_REQUIRED provision with 
     expect(view.currentText).toContain("Restricted Payments Basket");
   });
 
-  it("CONFIRMS the bug is genuinely cross-tool: getParentClause, getSiblingClauses, and getReferencedProvision ALL report CURRENT_OPERATIVE for this REVIEW_REQUIRED section; getChildren, getOperativeProvision, and getRelatedAmendments (which all derive their trust verdict from view.status directly, never via a currentText-gated shortcut) correctly do NOT", () => {
+  it("CONFIRMS the fix is genuinely cross-tool: getParentClause, getSiblingClauses, and getReferencedProvision now ALL correctly fail closed (NOT CURRENT_OPERATIVE) for this REVIEW_REQUIRED section, exactly like getChildren, getOperativeProvision, and getRelatedAmendments (which always derived their trust verdict from view.status directly, never via a currentText-gated shortcut)", () => {
     const { index, state, effects } = buildState();
     const node303 = index.getNodeByRef(DOC, "3.03")!;
     const target6660 = index.getNodeByRef(DOC, "66.60")!;
@@ -811,32 +804,31 @@ describe("10. FINDING end-to-end (STILL_OPEN): a REVIEW_REQUIRED provision with 
     const gop = tools.find((t) => t.name === "getOperativeProvision")!.execute({ sectionRef: "66.60" });
     const gra = tools.find((t) => t.name === "getRelatedAmendments")!.execute({ ref: "66.60" });
 
-    expect((gpc.result as { supersessionStatus: string }).supersessionStatus).toBe("CURRENT_OPERATIVE");
-    expect(gpc.evidenceUnresolved).not.toBe(true);
+    // THE FIX, CONFIRMED: all 3 previously-vulnerable tools now fail closed.
+    expect((gpc.result as { supersessionStatus: string }).supersessionStatus).not.toBe("CURRENT_OPERATIVE");
+    expect(gpc.evidenceUnresolved).toBe(true);
 
     const sibs = (gsc.result as { siblings: { sectionRef: string; supersessionStatus: string }[] }).siblings;
-    expect(sibs.find((s) => s.sectionRef === "66.60")!.supersessionStatus).toBe("CURRENT_OPERATIVE");
-    expect(gsc.evidenceUnresolved).not.toBe(true);
+    expect(sibs.find((s) => s.sectionRef === "66.60")!.supersessionStatus).not.toBe("CURRENT_OPERATIVE");
+    expect(gsc.evidenceUnresolved).toBe(true);
 
-    expect((grp.result as { supersessionStatus: string }).supersessionStatus).toBe("CURRENT_OPERATIVE");
-    expect(grp.evidenceUnresolved).not.toBe(true);
+    expect((grp.result as { supersessionStatus: string }).supersessionStatus).not.toBe("CURRENT_OPERATIVE");
+    expect(grp.evidenceUnresolved).toBe(true);
 
     // getOperativeProvision and getRelatedAmendments (the 2 SECTION-kind
     // previously-safe tools) correctly fail closed on this EXACT fixture -
-    // positive confirmation the residual defect is scoped to
-    // resolveNodeWithSupersessionAwareness only, never a systemic property
-    // of the tool registry.
+    // positive confirmation this correction did not disturb them.
     expect((gop.result as { status: string }).status).toBe("OPERATIVE_STATE_REVIEW_REQUIRED");
     expect(gop.evidenceUnresolved).toBe(true);
     expect(gra.evidenceUnresolved).toBe(true);
 
-    // getChildren is NOT vulnerable - its own resolveParentSubstructureEvidence
-    // gates on view.status alone, never on currentText null-ness.
+    // getChildren was never vulnerable - its own resolveParentSubstructureEvidence
+    // gates on view.status alone, never on currentText null-ness. Unchanged.
     expect((gch.result as { parentSupersessionStatus: string }).parentSupersessionStatus).not.toBe("CURRENT_OPERATIVE");
     expect(gch.evidenceUnresolved).toBe(true);
   });
 
-  it("END TO END, REAL POSTGRES: a getSiblingClauses call reaching this REVIEW_REQUIRED section reaches compile.ts COMPLETED and a persisted SemanticTruthRecord.trustStatus of VERIFIED - the exact consequence OPEN-2 Part A was meant to close, reproduced via a path the implementer's own fix did not cover", async () => {
+  it("END TO END, REAL POSTGRES: a getSiblingClauses call reaching this REVIEW_REQUIRED section now correctly reaches compile.ts REVIEW_REQUIRED and NEVER a persisted SemanticTruthRecord.trustStatus of VERIFIED - the fix, confirmed via the exact path that used to bypass it", async () => {
     const { index, state, effects } = buildState();
     const node303 = index.getNodeByRef(DOC, "3.03")!;
     const candidate = makeCandidate({ documentId: DOC, structuralNodeKeys: [node303.nodeKey], structuralNodeIds: [node303.nodeId], normalizedSourceRef: "3.03" });
@@ -853,19 +845,15 @@ describe("10. FINDING end-to-end (STILL_OPEN): a REVIEW_REQUIRED provision with 
     const compilationResult = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
 
     expect(compilationResult.toolCallLog[0]!.toolName).toBe("getSiblingClauses");
-    // THE BUG, END TO END: evidenceUnresolved is NOT true for this call,
-    // so nothing tells compile.ts this attempt's evidence was unresolved.
-    expect(compilationResult.toolCallLog[0]!.evidenceUnresolved).not.toBe(true);
-    expect(compilationResult.failureReasons).not.toContain("OPERATIVE_STATE_UNRESOLVED");
-    expect(compilationResult.status).toBe("COMPLETED");
+    // THE FIX, END TO END: evidenceUnresolved IS true for this call now, so
+    // compile.ts correctly learns this attempt's evidence was unresolved.
+    expect(compilationResult.toolCallLog[0]!.evidenceUnresolved).toBe(true);
+    expect(compilationResult.failureReasons).toContain("OPERATIVE_STATE_UNRESOLVED");
+    expect(compilationResult.status).toBe("REVIEW_REQUIRED");
 
     const verification = await verifyCompiledCandidate({ compilerInput, compilationResult }, { skipSemanticReview: true });
-    // verify.ts's own lineage check looks at the CANDIDATE's own source
-    // section (3.03, genuinely clean) - it has no visibility into the
-    // fact that the rule's real justification came from a call into a
-    // REVIEW_REQUIRED section, so it cannot independently catch this
-    // either.
-    expect(verification.status).toMatch(/^VERIFIED_/);
+    expect(verification.status).toBe("REVIEW_REQUIRED");
+    expect(verification.status).not.toMatch(/^VERIFIED_/);
 
     const compilerVersions = { irSchemaVersion: IR_SCHEMA_VERSION, compilerAlgorithmVersion: SEMANTIC_COMPILER_ALGORITHM_VERSION, compilerPromptVersion: SEMANTIC_COMPILER_PROMPT_VERSION, toolPolicyVersion: SEMANTIC_COMPILER_TOOL_POLICY_VERSION };
     await persistSemanticTruthForInstrument({
@@ -873,15 +861,16 @@ describe("10. FINDING end-to-end (STILL_OPEN): a REVIEW_REQUIRED provision with 
       objects: compilationResult.rules.map((rule) => ({ kind: "RULE" as const, object: rule, candidateRef: candidate.discoveryId, compilerVersions, verification, verifierPromptVersion: "test-verifier-v1" })),
     });
 
-    // FRESH Postgres read - the smoking gun.
+    // FRESH Postgres read - the fix, confirmed.
     const trusted = await getTrustedSemanticTruth(COMPANY_ID, INSTRUMENT);
     const all = await getAllSemanticTruthForInstrument(COMPANY_ID, INSTRUMENT);
     expect(all.length).toBeGreaterThan(0);
-    expect(all[0]!.trustStatus).toBe("VERIFIED");
-    expect(trusted.length).toBeGreaterThan(0); // a rule whose real justification depended on a genuinely REVIEW_REQUIRED section persisted as trusted current truth.
+    expect(all[0]!.trustStatus).toBe("REVIEW_REQUIRED");
+    expect(all[0]!.trustStatus).not.toBe("VERIFIED");
+    expect(trusted.length).toBe(0); // a rule whose real justification depended on a genuinely REVIEW_REQUIRED section is never persisted as trusted current truth.
 
     const rows = await prisma.semanticTruthRecord.findMany({ where: { companyId: COMPANY_ID, instrumentKey: INSTRUMENT } });
     expect(rows.length).toBeGreaterThan(0);
-    expect(rows.some((r) => r.trustStatus === "VERIFIED")).toBe(true);
+    for (const row of rows) expect(row.trustStatus).not.toBe("VERIFIED");
   });
 });

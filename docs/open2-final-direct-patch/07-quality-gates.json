@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "QUALITY_GATES",
+  "tsc": {
+    "command": "npx tsc --noEmit -p .",
+    "errorCount": 6,
+    "baselineMatch": true,
+    "note": "Identical 6 pre-existing errors across the same 3 files as the documented baseline (tests/foundation-audit/cascade-and-concurrency.test.ts, tests/foundation-audit/discovery-fault-injection.test.ts, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts) - 0 new errors from this patch, confirmed both immediately after the production edit and again after adding the export/test files."
+  },
+  "eslint": {
+    "command": "npx eslint .",
+    "errorCount": 1,
+    "baselineMatch": true,
+    "note": "Identical pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires rule-not-found) - 0 new errors."
+  },
+  "targetedRegression": {
+    "command": "npx vitest run tests/contract-model tests/foundation-audit tests/certification",
+    "result": "206 files, 2371 tests: 2369-2370 passed, 1-2 failed depending on run (both are pre-existing, environment-timing-flaky performance tests unrelated to this patch)",
+    "flakyFailures": [
+      {
+        "test": "tests/foundation-audit/repro-connection-race.test.ts > N concurrent first-time calls should all succeed and converge on one row",
+        "reason": "a Postgres connection-race timing test; failed once, passed on immediate re-run with no code change - confirmed pre-existing environment flakiness, unrelated to tools.ts."
+      },
+      {
+        "test": "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts > measured multi-point scaling is consistent with O(n), not O(n^2)",
+        "reason": "a wall-clock scaling/perf timing test with a tight ratio threshold; failed with different measured ratios across runs (2.40, 2.61, 2.77 vs threshold ~2.4), confirmed pre-existing environment-timing flakiness unrelated to tools.ts (this test predates this patch and touches unrelated OPEN-3 discovery-scaling code)."
+      },
+      {
+        "test": "tests/contract-model/part-b-recert-finding4-independent.test.ts > FIXED: wall-clock time now grows roughly linearly",
+        "reason": "same class of timing-threshold test (ratio 8.75 vs threshold 8), seen only in the full-suite run under higher machine load - unrelated to tools.ts."
+      }
+    ],
+    "confirmedUnrelated": "None of the flaky tests import or exercise lib/contract-model/compiler/semantic/tools.ts or lib/contract-model/compiler/amendment/operative-state.ts; all 3 are timing-threshold assertions on unrelated OPEN-3 discovery-scaling / connection-pooling code."
+  },
+  "fullVitestRun": {
+    "command": "npx vitest run",
+    "result": "277 files, 3025 tests: 3023 passed, 2 failed (the two OPEN-3 scaling-timing flakes listed above) - 0 failures attributable to this patch."
+  },
+  "falseCreditGate": {
+    "command": "npx vitest run tests/evaluation-v2/atomic-contract.test.ts",
+    "result": "18 tests, 18 passed, including 'GATE (item 17): all 14 historical false-credit controls resolve creditEligibility=NO_CREDIT under the atomic contract' - unchanged, 14/14 pass."
+  },
+  "knownPackageRegression": {
+    "command": "npx tsx scripts/phase-3f1-6-known-package-regression.ts",
+    "result": { "fwrg": 0, "lsb": 0, "dsgr": 215, "conmed": "NOT_APPLICABLE (no semantic-coverage run exists for CONMED)" },
+    "matchesRequiredBaseline": true,
+    "sideEffectFileReverted": "docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json reverted via `git checkout --` immediately after capturing the numbers above; confirmed clean via `git status --short` showing no diff on that path."
+  },
+  "narrowAntiPatternSearch": {
+    "scope": "lib/contract-model/compiler/semantic/tools.ts ONLY (bounded, per the task's own instruction not to broaden)",
+    "method": "grep -n \"currentText\" across the file, then manually inspected every match and every CURRENT_OPERATIVE_EVIDENCE-declared tool's execute() body for a trust decision keyed on currentText/text presence/truthiness BEFORE OR INSTEAD OF an available operative status.",
+    "toolsInspected": [
+      { "tool": "getOperativeProvision", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "finding": "SAFE - currentText is used only for text SELECTION (`view.currentText ?? \"(no current text recorded)\"`); evidenceUnresolved is derived separately and exclusively from `!isConfirmedCurrentOperativeEvidence(view.status)`. No truthiness-based trust decision." },
+      { "tool": "getDefinition", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "finding": "SAFE - routes through resolveOperativeDefinitionEvidence (amendment/operative-state.ts), which derives isCurrentTruth from its own DefinitionEvidenceStatus taxonomy, never from currentText/text truthiness directly." },
+      { "tool": "getParentClause / getSiblingClauses / getReferencedProvision", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "finding": "The exact bug this patch fixes - now closed via resolveNodeWithSupersessionAwareness's status-first restructure." },
+      { "tool": "getChildren", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "finding": "SAFE - resolveParentSubstructureEvidence never branches on currentText at all, only on view.status." },
+      { "tool": "getRelatedAmendments", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "finding": "SAFE - evidenceUnresolved derived from `!isConfirmedCurrentOperativeEvidence(view.status)`; its own oldText/newText payload is explicitly historical per-entry, not a trust signal." },
+      { "tool": "getPriorVersion", "discipline": "HISTORICAL_EVIDENCE_WITH_STATUS (not CURRENT_OPERATIVE_EVIDENCE)", "finding": "N/A - out of scope for this search by design (deliberately historical tool); effect?.oldText truthiness gates only whether the historical text is AVAILABLE to return, never a current-truth claim." },
+      { "tool": "getContextBundleComponent / getSharedCapContext / getSourceSpan", "discipline": "HISTORICAL_EVIDENCE_WITH_STATUS", "finding": "N/A - out of scope by design; each discloses a real supersessionStatus but never claims CURRENT_OPERATIVE_EVIDENCE trust." },
+      { "tool": "getDefinitionDependencies / getInstrumentDocuments / getRuleDependency", "discipline": "NOT_CONTRACT_TEXT_EVIDENCE", "finding": "N/A - never return provision/economic text." }
+    ],
+    "additionalDefectsFound": 0,
+    "conclusion": "No other exact equivalent of this bug exists within the searched scope. The defect was isolated to the single shared helper resolveNodeWithSupersessionAwareness, now fixed. No further production changes made beyond the one function, consistent with the task's narrow-scope mandate."
+  },
+  "prismaMigrateCommandsRun": false,
+  "postgresState": "service postgresql was already running at task start; confirmed via `pg_isready` before running any Postgres-touching test."
+}
