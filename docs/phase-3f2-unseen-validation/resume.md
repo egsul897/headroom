@@ -1,49 +1,106 @@
 # Phase 3F.2 Resume — Final Report
 
-**Verdict: `PHASE_3F_2_ENVIRONMENT_BLOCKED`** (unchanged from the prior session)
+**Verdict: `PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_FAILED`**
+
+This supersedes the prior content of this document, which recorded
+`PHASE_3F_2_ENVIRONMENT_BLOCKED` from the first resume attempt (the Vercel
+AI Gateway account was at HTTP 402 insufficient_funds at that time). After
+the account was topped up, this second resume attempt executed the real,
+funded validation described below.
 
 ## Scope
 
 This session resumed the frozen Riot Platforms, Inc. unseen-package
-validation exactly as instructed: no new package selection, no ground-truth
-changes, no threshold changes, no production changes. Before any new AI
-spend, the governing resume spec requires (1) verifying the prior evidence
-is present and consistent, then (2) a one-shot provider precondition probe,
-with an explicit instruction to stop immediately if the provider remains
-unavailable.
+validation exactly as instructed: the same 3-document package (CIK
+0001167419), the same validation contract (`00-validation-contract.json`,
+unmodified), no re-selection, no threshold changes, no production changes.
 
-## What was checked
+## Sequence executed
 
-**Prior evidence audit**: all 31 required `docs/phase-3f2-unseen-validation/`
-artifacts, plus both raw ground-truth reviewer files (Reviewer A: 100
-claims; Reviewer B: 84 claims) and the full preserved pipeline execution
-output under `tests/fixtures/unseen-packages/phase-3f2-riot-unseen-run/`,
-are present, valid JSON, and internally consistent with the prior verdict.
-The cited merged-lineage commit (`48b0102`, PR #38 merging this branch into
-`main`) was confirmed to contain this branch's `b16a9b0` HEAD — no
-divergence.
+1. **Prior evidence audit** — all required artifacts from the original run
+   and Resume #1 confirmed present, valid, and consistent.
+2. **Provider precondition** — a real probe against the Vercel AI Gateway
+   returned **HTTP 200** (`resolvedProvider: claudeaws`), confirming the
+   account had genuinely been topped up. Real cost: $0.000072.
+3. **Preserved execution state audit** — recomputed (not blindly trusted)
+   candidate/eligible-population counts from the preserved Stage 1–5
+   fixtures.
+4. **Cost forecast** — derived per-candidate cost from the 3 real prior
+   successes plus an explicit margin (not a naive total÷3 split), forecast
+   comfortably inside the frozen $15 total ceiling.
+5. **Ground-truth reconciliation, committed before any comparison** — an
+   adjudicator with no access to any Headroom pipeline output reconciled
+   Reviewer A (100 claims) and Reviewer B (84 claims) into 117 canonical
+   claims (54 CRITICAL / 59 MATERIAL / 4 BENIGN). Frozen at commit
+   `a3cbd4e`, which precedes every commit touching the resumed semantic
+   output — Git history itself proves the ordering.
+6. **Resumed real semantic execution** — reused 3 prior successes, retried
+   12 prior failures, and compiled 35 new candidates via a deterministic
+   stratified sample (licensed by the validation contract's own precommitted
+   cap-policy fallback), for 38 combined compiled / 37 verified / **0 fully
+   verified**. Total cost: **$7.238268** of the $15 ceiling.
+7. **Targeted S16 special check** — one additional, mission-mandated
+   compile+verify call on the pre-identified doc-a Section 6.01(d)
+   Event-of-Default carve-out (the provision both blind reviewers flagged as
+   present in doc-a/doc-b and silently deleted in doc-c).
+8. **Claim-level comparison** (117 claims, three-category framework:
+   IN_SAMPLE / DISCOVERED_NOT_SAMPLED / NOT_DISCOVERED) and **pipeline
+   attribution** of every NO_CREDIT claim.
 
-**Production freeze**: re-verified empty (`git diff 00f49ac HEAD` on
-`lib/**`, `app/**`, `prisma/**`) — unchanged since the original freeze.
+## What the evidence shows
 
-**Provider precondition**: a single authenticated probe against the Vercel
-AI Gateway returned **HTTP 402 insufficient_funds** — the identical account
-state the prior session ended in. No top-up has occurred between sessions.
-Real cost incurred: $0.00.
+**Hard safety gates: ALL MET.** Zero critical dangerous silent omissions,
+zero persisted false-VERIFIED or false-trusted material claims, zero
+stale-as-current assertions, zero cross-tenant contamination, and 100%
+material claim-specific safe-failure recall (7/7 on the measurable IN_SAMPLE
+subset). The targeted carve-out check confirmed Headroom did **not** treat
+the deleted 5.02(g)/6.01(d) carve-out as current trusted truth — it
+extracted the provision honestly, attributed it to doc-a, and flagged the
+dangling "Section 5.02(g)" cross-reference rather than resolving or
+inventing a target for it.
 
-## Why this stops here
+**Discovery-recall gates: MET.** 95.6% material covenant-bearing section
+recall (108/113) and 98.1% CRITICAL/MATERIAL claim discovery recall (53/54),
+both measured against the full 887-candidate real discovery population.
 
-The governing resume spec is explicit: *"If provider remains unavailable:
-`PHASE_3F_2_ENVIRONMENT_BLOCKED` and STOP."* Per that instruction, none of
-the subsequent steps were performed this session — no cost forecast, no
-resumed compilation, no ground-truth reconciliation, no claim-level
-comparison, no new metrics. Everything from the prior session (structural
-indexing, 887 discovered candidates, 3 real compile/verify attempts, both
-independent ground-truth inventories) remains exactly as preserved, ready
-to resume the moment the account is funded.
+**Two generalization gates: NOT MET.**
+
+- **Material substantive credit rate: 46.2%** (6/13 IN_SAMPLE material
+  claims) against a required ≥85%. The dominant cause (4/7 NO_CREDIT
+  claims, 57%) is the semantic compiler partially under-extracting
+  definition-heavy sections — dropping one defined term from an otherwise
+  successful multi-definition batch, or truncating a definition with an
+  ellipsis exactly over a required qualifier — never a wholesale failure.
+  Verification correctly flagged non-confident status on every one of the 7.
+- **Operative-state correctness: 0/1.** Both human reviewers agree doc-c is
+  the operative document; Headroom's operative-state stage produced an
+  empty, non-committal result (0 tracked provisions, no document
+  designated), traced to both RESTATE_AGREEMENT amendment effects being
+  stuck at `REVIEW_REQUIRED` because their restated target document could
+  not be resolved — a PACKAGE_GRAPH-layer defect. This failed safely (no
+  wrong document was asserted) but still misses the package's one
+  operative-state question.
+
+A smaller, related finding: doc-b's own verbatim copy of the carve-out
+sentence was never discovered (though doc-a's copy was, and doc-c correctly
+shows no match), a narrow discovery-layer gap found via zero-cost inspection
+of the preserved discovery population.
 
 ## Verdict
 
-**`PHASE_3F_2_ENVIRONMENT_BLOCKED`.** Phase 4 readiness remains
-`CANNOT_BE_ANSWERED_THIS_RUN`, unchanged from the prior session. A human
-must add credit to the Vercel AI Gateway account. This session stops here.
+**`PHASE_3F_2_UNSEEN_PACKAGE_VALIDATION_FAILED`.** Not contaminated
+(production freeze held empty throughout), not environment-blocked
+(execution completed for real), not cost-control-blocked ($7.24 of $15
+spent). Phase 4 readiness: **`NO_GENERALIZATION_NOT_YET_SUFFICIENT`** —
+explicitly distinguished from a trust-boundary blocker, since the frozen
+system never exhibited dangerous silent certainty anywhere in this real,
+funded execution. It knew what it did not know; it did not yet automate
+enough of the material package, or resolve this package's operative-document
+question, to clear the bar this phase set for building deterministic
+contract computation on top of it.
+
+Per the governing anti-endless-loop rule, this session stops here: no
+production code is patched, no 3F.2.1 sub-phase is created, Riot is not
+re-run or re-tuned, and no other unseen package is started. The evidence is
+returned for a human architecture decision on the two identified
+generalization gaps.
