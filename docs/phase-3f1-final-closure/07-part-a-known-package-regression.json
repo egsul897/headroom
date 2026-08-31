@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_KNOWN_PACKAGE_REGRESSION",
+  "script": "scripts/phase-3f1-6-known-package-regression.ts (read-only w.r.t. persistent fixture data; uses a scratch company id, torn down within the script)",
+  "dangerousSilentFailureCheck": {
+    "fwrg": 0,
+    "lsb": 0,
+    "dsgr": 215,
+    "conmed": "NOT_APPLICABLE - no semantic-coverage fixture exists for CONMED (pre-existing, disclosed gap, unrelated to this phase)"
+  },
+  "comparisonToPriorBaseline": "Identical to the numbers on record before FIX-1/2/3 (fwrg=0, lsb=0, dsgr=215, conmed N/A) - NO_REGRESSION.",
+  "structuralNoteOnFix1": "FIX-1's known-package check (run separately by the FIX-1 workstream) found FWRG/LSB/DSGR structural node output byte-identical, and CONMED losing 6 redundant Table-of-Contents entries (titles containing \"etc.\") while all corresponding real body headings/spans remained intact - documented in 03-structural-fix.json, not a regression against real content.",
+  "verdict": "NO_REGRESSION"
+}
