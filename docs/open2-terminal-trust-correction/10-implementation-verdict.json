@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_VERDICT",
+  "verdict": "OPEN_2_TERMINAL_TRUST_CORRECTION_READY_FOR_RECERTIFICATION",
+  "basis": [
+    "The mandated provision-status/node-supersession separation was built: resolveNodeWithSupersessionAwareness replaced with logic that unconditionally lets a real matching OperativeProvisionView's status participate in trust determination, regardless of whether currentText is present, via a new ResolvedNodeEvidence shape separating textSource from evidenceCurrent. getChildren given its own dedicated parent-substructure trust resolver (structurally different question from the other 3 tools).",
+    "The originally-certified exploit was reproduced against pre-fix code first (confirmed reproducing), then confirmed fixed post-fix: evidenceUnresolved true, non-VERIFIED compile/verify outcome, persisted trustStatus != VERIFIED, zero trusted records.",
+    "Full 8-case x 4-tool (32-cell) end-to-end matrix passes, with one correctly-intentional exception documented (getChildren legitimately flags evidenceUnresolved for a clean resolved amended-text case, since the amendment changed substructure even though the text itself is trustworthy for the other 3 tools - not a defect).",
+    "The 3 already-safe tools (getOperativeProvision, getDefinition, getRelatedAmendments) show zero behavioral change - confirmed by their own unmodified existing regression tests.",
+    "The registry's hardcoded tool-count risk was replaced with a structural coverage assertion (every CURRENT_OPERATIVE_EVIDENCE-declared tool must have a matching probe, not a literal count).",
+    "Independently reconfirmed: exactly ONE production file changed (lib/contract-model/compiler/semantic/tools.ts) - git diff cdf3394 HEAD --name-only -- 'lib/**' 'app/**' 'prisma/**' yields exactly this file, confirming the surgical scope was honored (buildProvisionView producer logic, OPEN-1 structural files, N-way decomposition, fencing, error-totality, and condition classifier all untouched).",
+    "Quality gates independently reconfirmed: tsc 6/6 baseline (0 new), eslint 1/1 baseline (0 new), full vitest 271/274 files passing (3 test-run failures, both traced to 2 confirmed pre-existing flaky files - part-b-recert-finding4-independent.test.ts and repro-connection-race.test.ts - each independently reproduced as flaky via isolated 3x reruns, neither touching or related to tools.ts), build succeeds, known-package regression NO_REGRESSION, 14/14 false-credit NO_CREDIT, Prisma schema up to date."
+  ],
+  "freezeShaForRecertification": "b3773ad"
+}
