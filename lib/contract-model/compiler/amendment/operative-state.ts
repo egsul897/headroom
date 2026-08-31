@@ -37,7 +37,7 @@
  */
 import type { StructuralIndex } from "../structural-index";
 import type { DetectedDefinition } from "../structural-definitions";
-import { groupEffectsByProvision, buildProvisionChain, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
+import { groupEffectsByProvision, buildProvisionChain, computeOperativeDocument, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
 import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, NodeSupersessionStatus, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
 
 /**
@@ -488,7 +488,24 @@ export function computeOperativeContractState(input: OperativeStateInput): Opera
   const unattachedSummary = unattachedEffects.length > 0 ? ` ${unattachedEffects.length} additional effect(s) reference this instrument's amendment activity but could not be attached to any specific provision (unresolved target).` : "";
   const summary = `${provisions.length} amended provision(s) tracked for this instrument as of ${input.asOfDate}: ${Object.entries(byStatus).map(([k, v]) => `${v} ${k}`).join(", ") || "none"}.${unattachedSummary}`;
 
-  return { instrumentKey: input.instrumentKey, asOfDate: input.asOfDate, provisions, status, summary, unattachedEffects };
+  // POST-3F.2 remediation (Unit B3) - additive: "which whole document is
+  // operative" is a question the section/definition-scoped `provisions`
+  // above structurally cannot answer (a full restatement's own effect is
+  // DOCUMENT-kind and never attaches to a ProvisionGroup). Deliberately
+  // uses input.allEffects (NOT the targetInstrumentKey-filtered
+  // instrumentEffects above): a restatement effect's own target commonly
+  // resolves to a DIFFERENT instrument key than its own amending
+  // document's instrument (the predecessor's instrument, per instrument-
+  // grouping.ts's RESOLVED-only merge criterion - a REVIEW_REQUIRED-level
+  // chronological-predecessor resolution, by design, never merges two
+  // documents into one instrument even when it correctly identifies the
+  // relationship). allEffects is already correctly scoped to THIS
+  // instrument's own document set at the call site (runAmendmentPipeline
+  // is only ever given this instrument's own documents), so no additional
+  // filtering is needed or correct here.
+  const operativeDocument = computeOperativeDocument(input.baseDocumentId, input.allEffects, input.unresolvedTargetEffectsForThisInstrument ?? []);
+
+  return { instrumentKey: input.instrumentKey, asOfDate: input.asOfDate, provisions, status, summary, unattachedEffects, operativeDocument };
 }
 
 export { normalizeDefinedTermRef };

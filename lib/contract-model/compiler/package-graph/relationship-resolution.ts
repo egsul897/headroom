@@ -60,7 +60,41 @@ function ws(phrase: string): string {
 
 const RESTATEMENT_PREFIX = `(?:(?:First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth)${ws(" Amended and Restated ")}|${ws("Amended and Restated ")}|${ws("First Lien ")}|${ws("Second Lien ")}|Senior\\s+|Subordinated\\s+)?`;
 const AGREEMENT_LABEL_ALTERNATION = [ws("Credit Agreement"), "Indenture", ws("Loan Agreement"), ws("Intercreditor Agreement"), ws("Guarantee and Collateral Agreement"), ws("Guaranty and Collateral Agreement"), ws("Guarantee and Security Agreement"), ws("Guaranty and Security Agreement"), ws("Pledge and Security Agreement"), ws("Pledge, Guaranty and Security Agreement"), ws("Security Agreement"), ws("Collateral Agreement"), `Guaranty(?:${ws(" Agreement")})?`, ws("Guarantee Agreement")].join("|");
-const AGREEMENT_REF_RE = new RegExp(`(?:the|that certain)\\s+(${RESTATEMENT_PREFIX}(?:${AGREEMENT_LABEL_ALTERNATION}))\\s*,?\\s*dated\\s+(?:as\\s+of\\s+)?(?:the\\s+)?(${DATE_RE.source})`, "gi");
+// POST-3F.2 remediation (Unit B1) - root cause traced in docs/post-3f2-
+// generalization-architecture-decision.json section 6 bug 1: the original
+// determiner set ("the"/"that certain") requires the label to sit
+// IMMEDIATELY after the determiner, which matches a captioned reference
+// ("the Amended and Restated Credit Agreement, dated as of...") but misses
+// the equally standard RECITAL phrasing a well-formed restatement opens
+// with ("The Borrower and Lender are parties to A Credit Agreement dated
+// as of..."). Adding "a"/"an" as determiners generalizes to this second,
+// equally common shape without any package-specific text - both are
+// ordinary English determiners, not a Riot-specific pattern. Kept
+// deliberately minimal (no free-text "flexible lead" was needed once "a"
+// itself sits immediately before the label in the recital shape).
+const AGREEMENT_REF_RE = new RegExp(`(?:the|that certain|an?)\\s+(${RESTATEMENT_PREFIX}(?:${AGREEMENT_LABEL_ALTERNATION}))\\s*,?\\s*dated\\s+(?:as\\s+of\\s+)?(?:the\\s+)?(${DATE_RE.source})`, "gi");
+
+// POST-3F.2 remediation (Unit B1, date-ambiguity safeguard - architecture
+// decision section 6 bug 2): a restatement's recital conventionally quotes
+// the ORIGINAL agreement's own execution date even on a SECOND (or later)
+// restatement - "as amended and restated as of the First Amendment and
+// Restatement Effective Date" is the generic textual signal that the
+// quoted date belongs to a document that has ITSELF already been restated
+// again since. When this phrase appears near a reference, the quoted date
+// must never be used for direct type+date matching (it would resolve to
+// the ORIGINAL document, not the immediately preceding restatement) -
+// resolveAgreementReference instead falls back to chronological-
+// predecessor resolution (see below). Deliberately generic: matches any
+// "Nth Amendment and Restatement Effective Date" phrasing without naming
+// any specific ordinal, date, or party.
+const SUPERSEDING_QUALIFIER_RE = /\bas\s+amended\s+and\s+restated\s+as\s+of\b/i;
+
+/** Parses a DATE_RE-shaped string ("April 22, 2025") into epoch millis for chronological comparison - null when unparseable. Never used for equality matching (normalizeDate's own string comparison remains authoritative there); only for ordering candidates in the chronological-predecessor fallback. */
+function parseDateForComparison(dateStr: string | null): number | null {
+  if (!dateStr) return null;
+  const ms = Date.parse(dateStr);
+  return Number.isNaN(ms) ? null : ms;
+}
 
 type AgreementTypeHint = "CREDIT_AGREEMENT" | "INDENTURE" | "INTERCREDITOR_AGREEMENT" | "SECURITY_AGREEMENT" | "GUARANTEE" | "GUARANTEE_AND_SECURITY_AGREEMENT";
 
@@ -236,14 +270,58 @@ function normalizeDate(d: string | null): string | null {
   return d ? d.replace(/\s+/g, " ").trim().toLowerCase() : null;
 }
 
-/** Resolves ONE agreement reference against the rest of the package - the one shared resolution rule every relationship/modification/cross-reference target uses, so "ambiguous stays unresolved" is enforced in exactly one place. */
-function resolveAgreementReference(ref: AgreementReference, sourceDocumentId: string, classifications: DocumentClassification[], identities: DocumentIdentity[]): { targetDocumentId: string | null; confidence: number; status: ResolutionStatus; unresolvedReason: string | null; resolutionMethod: string } {
+/**
+ * Resolves ONE agreement reference against the rest of the package - the
+ * one shared resolution rule every relationship/modification/cross-
+ * reference target uses, so "ambiguous stays unresolved" is enforced in
+ * exactly one place.
+ *
+ * `qualifierContext` (POST-3F.2 remediation, Unit B1 date-ambiguity
+ * safeguard) - when the reference's own local text carries the
+ * SUPERSEDING_QUALIFIER_RE phrase ("as amended and restated as of..."),
+ * the quoted date is known to belong to the CHAIN'S ORIGINAL document, not
+ * this reference's real (immediately preceding) predecessor - see this
+ * file's own header comment on SUPERSEDING_QUALIFIER_RE. Direct date
+ * matching is skipped entirely in that case; resolution instead falls
+ * back to the most recent OTHER same-type document dated strictly before
+ * this reference's own source document, which is exactly what "the
+ * agreement as it has since been further restated" means structurally,
+ * with no need to parse which specific ordinal restatement is named.
+ */
+function resolveAgreementReference(
+  ref: AgreementReference,
+  sourceDocumentId: string,
+  classifications: DocumentClassification[],
+  identities: DocumentIdentity[],
+  qualifierContext?: { hasSupersedingQualifier: boolean }
+): { targetDocumentId: string | null; confidence: number; status: ResolutionStatus; unresolvedReason: string | null; resolutionMethod: string } {
   const targetTypes = new Set(TARGET_TYPES_BY_HINT[ref.typeHint]);
   const typeMatches = classifications.filter((c) => c.documentId !== sourceDocumentId && targetTypes.has(c.type));
   if (typeMatches.length === 0) {
     return { targetDocumentId: null, confidence: 0, status: "UNRESOLVED", unresolvedReason: `no document in this package is classified as ${[...targetTypes].join("/")}`, resolutionMethod: "DETERMINISTIC_NO_CANDIDATE" };
   }
   const identityById = new Map(identities.map((i) => [i.documentId, i] as const));
+
+  if (qualifierContext?.hasSupersedingQualifier) {
+    const sourceExecutionMs = parseDateForComparison(identityById.get(sourceDocumentId)?.executionDate ?? null);
+    if (sourceExecutionMs === null) {
+      return { targetDocumentId: null, confidence: 0, status: "UNRESOLVED", unresolvedReason: "this reference's own text indicates the quoted date belongs to an already-further-restated agreement, but this document's own execution date could not be established - never guessed from the quoted (original) date alone", resolutionMethod: "DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR_NO_SOURCE_DATE" };
+    }
+    const priorCandidates = typeMatches
+      .map((c) => ({ documentId: c.documentId, ms: parseDateForComparison(identityById.get(c.documentId)?.executionDate ?? null) }))
+      .filter((c): c is { documentId: string; ms: number } => c.ms !== null && c.ms < sourceExecutionMs);
+    if (priorCandidates.length === 0) {
+      return { targetDocumentId: null, confidence: 0, status: "UNRESOLVED", unresolvedReason: "this reference's own text indicates the quoted date belongs to an already-further-restated agreement, but no candidate document of the same type is dated before this document - never guessed", resolutionMethod: "DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR_NO_CANDIDATE" };
+    }
+    const mostRecentMs = Math.max(...priorCandidates.map((c) => c.ms));
+    const mostRecent = priorCandidates.filter((c) => c.ms === mostRecentMs);
+    if (mostRecent.length > 1) {
+      return { targetDocumentId: null, confidence: 0.2, status: "UNRESOLVED", unresolvedReason: `${mostRecent.length} candidate documents (${mostRecent.map((c) => c.documentId).join(", ")}) are tied for the most recent same-type document dated before this one - cannot disambiguate deterministically`, resolutionMethod: "DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR_AMBIGUOUS" };
+    }
+    // A genuine but inferential resolution (never a hard name+date match) - REVIEW_REQUIRED, never RESOLVED, so it can never itself establish a confident modification edge (see resolvePackageRelationships's own SUPPORTING_TARGET_EVIDENCE-style downgrade discipline) without human confirmation.
+    return { targetDocumentId: mostRecent[0]!.documentId, confidence: 0.7, status: "REVIEW_REQUIRED", unresolvedReason: `resolved as the most recent same-type document dated before this one (chronological-predecessor inference, since this reference's own text indicates the quoted date belongs to an already-further-restated agreement rather than this document's true immediate predecessor) - needs human confirmation`, resolutionMethod: "DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR" };
+  }
+
   const dateMatches = typeMatches.filter((c) => normalizeDate(identityById.get(c.documentId)?.executionDate ?? null) === normalizeDate(ref.date));
   if (dateMatches.length === 1) {
     return { targetDocumentId: dateMatches[0]!.documentId, confidence: 0.95, status: "RESOLVED", unresolvedReason: null, resolutionMethod: "DETERMINISTIC_TITLE_DATE_MATCH" };
@@ -357,7 +435,8 @@ export function resolvePackageRelationships(documents: PackageDocumentInput[], c
           });
           continue;
         }
-        const resolution = resolveAgreementReference(ref, doc.documentId, classifications, identities);
+        const hasSupersedingQualifier = SUPERSEDING_QUALIFIER_RE.test(localWindow(doc.text, ref));
+        const resolution = resolveAgreementReference(ref, doc.documentId, classifications, identities, { hasSupersedingQualifier });
         // SUPPORTING_TARGET_EVIDENCE (title/date/party coincidence alone, or
         // a WHEREAS recital tied to amend-language) must never by itself
         // establish a modification-type edge - cap at REVIEW_REQUIRED even
@@ -416,7 +495,8 @@ export function resolvePackageRelationships(documents: PackageDocumentInput[], c
     // agreements in one amending document is a real but rarer case this V1
     // leaves REVIEW_REQUIRED rather than guessing which one a given clause targets.
     if (refs.length > 1) return { ...mc, status: "REVIEW_REQUIRED", unresolvedReason: "the source document references more than one other agreement - which one this specific modification targets was not disambiguated" };
-    const resolution = resolveAgreementReference(refs[0]!, mc.sourceDocumentId, classifications, identities);
+    const hasSupersedingQualifier = SUPERSEDING_QUALIFIER_RE.test(localWindow(docText, refs[0]!));
+    const resolution = resolveAgreementReference(refs[0]!, mc.sourceDocumentId, classifications, identities, { hasSupersedingQualifier });
     return { ...mc, targetDocumentId: resolution.targetDocumentId, targetHint: refs[0]!.rawText, status: resolution.status, unresolvedReason: resolution.unresolvedReason, confidence: Math.min(mc.confidence, resolution.confidence) };
   });
 

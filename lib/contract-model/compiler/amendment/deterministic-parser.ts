@@ -25,7 +25,7 @@
  *    guarantee/obligations" - a real, common amendment/joinder clause
  *    that changes nothing textually but must not be silently dropped.
  */
-import type { ModificationCandidate } from "../package-graph/types";
+import type { ModificationCandidate, ResolutionStatus } from "../package-graph/types";
 import type { AmendmentEffectCandidate, AmendmentOperation, AmendmentTarget, EffectiveDateResult } from "./types";
 import { hashParts } from "../hashing";
 
@@ -81,9 +81,22 @@ export interface DeterministicParseInput {
   amendmentLabel: string;
   /** Whether Phase 2C classified this SOURCE document as AMENDED_AND_RESTATED_AGREEMENT - drives the full-restatement short-circuit (task §14). */
   isFullRestatement: boolean;
-  /** The resolved target document/instrument this restatement applies to, when isFullRestatement is true. */
-  restatementTargetDocumentId: string | null;
-  restatementTargetInstrumentKey: string | null;
+  /**
+   * POST-3F.2 remediation (Unit B) - the package-graph's OWN relationship
+   * candidate for this restatement (RelationshipCandidate, relationship-
+   * resolution.ts), carried through with its real confidence/status
+   * instead of collapsing to a target-document-id-present binary. Prior
+   * behavior: `restatementTargetDocumentId ? 0.9/RESOLVED : 0.3/
+   * REVIEW_REQUIRED` promoted EVERY non-null target - including a
+   * REVIEW_REQUIRED, lower-confidence chronological-predecessor or
+   * type-only-match resolution - to a flat confidence-0.9 RESOLVED effect,
+   * silently discarding the relationship layer's own honest uncertainty.
+   * Null when no restates-type relationship candidate exists at all for
+   * this document (target genuinely unresolved, per relationship-
+   * resolution.ts's own DETERMINISTIC_NO_SIGNAL/DETERMINISTIC_NO_CANDIDATE
+   * paths) - never a guess.
+   */
+  restatementTargetResolution: { targetDocumentId: string | null; targetInstrumentKey: string | null; confidence: number; status: ResolutionStatus; unresolvedReason: string | null } | null;
   modificationCandidates: ModificationCandidate[];
   resolveEffectiveDate: () => EffectiveDateResult;
   instrumentKeyForDocument: (documentId: string | null) => string | null;
@@ -112,15 +125,35 @@ export function parseDeterministicAmendmentEffects(input: DeterministicParseInpu
   // §14 - full amendment-and-restatement short-circuit: one effect for
   // the whole target instrument, never a synthesized per-section list.
   if (input.isFullRestatement) {
+    const resolution = input.restatementTargetResolution;
+    const targetDocumentId = resolution?.targetDocumentId ?? null;
     const target: AmendmentTarget = {
       kind: "DOCUMENT",
-      targetDocumentId: input.restatementTargetDocumentId,
-      targetInstrumentKey: input.restatementTargetInstrumentKey,
+      targetDocumentId,
+      targetInstrumentKey: resolution?.targetInstrumentKey ?? null,
       targetStructuralNodeKey: null,
       targetSectionRef: null,
       targetDefinedTermRef: null,
-      targetHint: input.restatementTargetDocumentId ? null : "full agreement restatement, target document not resolved",
+      targetHint: targetDocumentId ? null : "full agreement restatement, target document not resolved",
     };
+    // POST-3F.2 remediation (Unit B) - propagate the relationship layer's
+    // OWN confidence/status honestly instead of a target-present binary:
+    // a chronological-predecessor or type-only-match resolution (both
+    // REVIEW_REQUIRED at the relationship-candidate level, per
+    // relationship-resolution.ts) must never be silently promoted to a
+    // flat confidence-0.9 RESOLVED effect merely because SOME
+    // targetDocumentId is non-null - that would assert an operative
+    // document below the confidence bar the underlying evidence actually
+    // supports. status/confidence/unresolvedReason are taken verbatim from
+    // the resolution when one exists; a genuinely absent resolution (no
+    // restates-type relationship candidate found at all) still falls back
+    // to the pre-existing REVIEW_REQUIRED/0.3 default.
+    const status: ResolutionStatus = resolution?.status ?? "REVIEW_REQUIRED";
+    const confidence = resolution?.confidence ?? 0.3;
+    const unresolvedReason =
+      status === "RESOLVED"
+        ? null
+        : (resolution?.unresolvedReason ?? "This document is classified as a full amendment-and-restatement, but its own restated target document could not be resolved.");
     results.push({
       effectId: hashParts(["amendment-effect", input.amendmentDocumentId, "RESTATE_AGREEMENT", "full-restatement"]),
       amendmentDocumentId: input.amendmentDocumentId,
@@ -131,9 +164,9 @@ export function parseDeterministicAmendmentEffects(input: DeterministicParseInpu
       oldText: null,
       sourceCitation: input.amendmentLabel,
       sourceExcerpt: input.amendmentText.slice(0, 300).replace(/\s+/g, " ").trim(),
-      confidence: input.restatementTargetDocumentId ? 0.9 : 0.3,
-      status: input.restatementTargetDocumentId ? "RESOLVED" : "REVIEW_REQUIRED",
-      unresolvedReason: input.restatementTargetDocumentId ? null : "This document is classified as a full amendment-and-restatement, but its own restated target document could not be resolved.",
+      confidence,
+      status,
+      unresolvedReason,
       resolutionMethod: "DETERMINISTIC_FULL_RESTATEMENT",
     });
     return results;

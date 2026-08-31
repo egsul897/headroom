@@ -6,7 +6,7 @@
  * (never amendment number alone - task's own explicit instruction), and
  * flags real ambiguity rather than picking silently.
  */
-import type { AmendmentChainEntry, AmendmentConflict, AmendmentEffectCandidate } from "./types";
+import type { AmendmentChainEntry, AmendmentConflict, AmendmentEffectCandidate, OperativeDocumentResolution } from "./types";
 
 export interface ProvisionGroup {
   instrumentKey: string;
@@ -92,4 +92,105 @@ export function buildProvisionChain(group: ProvisionGroup): ChainResult {
   }));
 
   return { fullChain, conflicts };
+}
+
+/**
+ * POST-3F.2 remediation (Unit B3) - see types.ts's own OperativeDocumentResolution
+ * doc comment for the full rationale. Builds a directed graph over
+ * RESTATE_AGREEMENT effects (successor = amendmentDocumentId "restates"
+ * predecessor = target.targetDocumentId) and finds its own un-superseded
+ * end - the document nothing else restates. Fails safe (REVIEW_REQUIRED,
+ * never a guess) on any unresolved target, fork (two documents claiming to
+ * restate the same predecessor), or cycle; NOT_APPLICABLE when this
+ * instrument has no restatement activity at all.
+ *
+ * `unresolvedRestatementEffects` mirrors computeOperativeContractState's
+ * own `unresolvedTargetEffectsForThisInstrument` parameter - restatement
+ * effects the CALLER has independently determined (from real package/
+ * document topology) belong to this instrument's document family despite
+ * carrying an unresolved target. Their mere presence is enough to force
+ * REVIEW_REQUIRED (never RESOLVED) even when the fully-resolved effects
+ * alone would otherwise form a clean chain - an instrument with ANY known
+ * unresolved restatement activity can never be confidently designated.
+ */
+export function computeOperativeDocument(baseDocumentId: string, allEffects: AmendmentEffectCandidate[], unresolvedRestatementEffects: AmendmentEffectCandidate[] = []): OperativeDocumentResolution {
+  const restatementEffects = allEffects.filter((e) => e.operation === "RESTATE_AGREEMENT");
+  const unresolvedRestatements = unresolvedRestatementEffects.filter((e) => e.operation === "RESTATE_AGREEMENT");
+
+  if (restatementEffects.length === 0 && unresolvedRestatements.length === 0) {
+    return { status: "NOT_APPLICABLE", operativeDocumentId: null, predecessorDocumentIds: [], relationshipChain: [], reviewReason: null };
+  }
+
+  // A restatement effect only blocks document-graph resolution when it has
+  // NO target document at all (status UNRESOLVED, targetDocumentId null - a
+  // genuinely unknown link). A REVIEW_REQUIRED effect with a real
+  // targetDocumentId (e.g. DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR's
+  // inferential-but-unambiguous resolution, or DETERMINISTIC_TYPE_ONLY_MATCH)
+  // still names a concrete document and is used to build the graph - the
+  // underlying effect's own REVIEW_REQUIRED/lower-confidence status already
+  // flags that specific provision-level effect for human confirmation
+  // (see deterministic-parser.ts), which is a separate concern from whether
+  // the document-identity GRAPH itself is unambiguous. A graph built only
+  // from confirmed-with-a-target links can still be a clean single chain.
+  const notResolved = [...restatementEffects, ...unresolvedRestatements].filter((e) => e.target.kind !== "DOCUMENT" || !e.target.targetDocumentId);
+  if (notResolved.length > 0) {
+    return {
+      status: "REVIEW_REQUIRED",
+      operativeDocumentId: null,
+      predecessorDocumentIds: [],
+      relationshipChain: [],
+      reviewReason: `${notResolved.length} restatement effect(s) relevant to this instrument have an unresolved target document - which whole document currently governs cannot be determined without guessing (effect(s): ${notResolved.map((e) => e.effectId).join(", ")}).`,
+    };
+  }
+
+  const edges = restatementEffects.map((e) => ({ successor: e.amendmentDocumentId, predecessor: e.target.targetDocumentId!, effectId: e.effectId, confidence: e.confidence, effectiveDate: e.effectiveDate.date }));
+
+  const successorsOf = new Map<string, string[]>();
+  for (const edge of edges) {
+    const arr = successorsOf.get(edge.predecessor) ?? [];
+    arr.push(edge.successor);
+    successorsOf.set(edge.predecessor, arr);
+  }
+  const forked = [...successorsOf.entries()].filter(([, successors]) => new Set(successors).size > 1);
+  if (forked.length > 0) {
+    return {
+      status: "REVIEW_REQUIRED",
+      operativeDocumentId: null,
+      predecessorDocumentIds: [],
+      relationshipChain: [],
+      reviewReason: `More than one document claims to restate the same predecessor (${forked.map(([pred, succs]) => `${pred} restated by [${[...new Set(succs)].join(", ")}]`).join("; ")}) - a genuine fork, never resolved by guessing which is authoritative.`,
+    };
+  }
+
+  const successors = new Set(edges.map((e) => e.successor));
+  const predecessors = new Set(edges.map((e) => e.predecessor));
+  const allNodes = new Set([...successors, ...predecessors]);
+  const terminalCandidates = [...successors].filter((id) => !predecessors.has(id));
+
+  if (!allNodes.has(baseDocumentId)) {
+    // This instrument's own base document is not part of the resolved restatement graph at all - conservative: never claim an operative document for an unrelated chain.
+    return { status: "NOT_APPLICABLE", operativeDocumentId: null, predecessorDocumentIds: [], relationshipChain: [], reviewReason: null };
+  }
+
+  if (terminalCandidates.length !== 1) {
+    return {
+      status: "REVIEW_REQUIRED",
+      operativeDocumentId: null,
+      predecessorDocumentIds: [],
+      relationshipChain: [],
+      reviewReason:
+        terminalCandidates.length === 0
+          ? "The restatement relationships resolved for this instrument form a cycle - no document is ever the un-superseded end of the chain, so no document can be safely designated as currently operative."
+          : `${terminalCandidates.length} distinct documents (${terminalCandidates.join(", ")}) are each the un-superseded end of a separate restatement chain - this instrument's document family is not a single connected chain, so no single operative document can be safely designated.`,
+    };
+  }
+
+  const operativeDocumentId = terminalCandidates[0]!;
+  const predecessorDocumentIds = [...allNodes].filter((id) => id !== operativeDocumentId);
+  const relationshipChain = edges
+    .slice()
+    .sort((a, b) => (a.effectiveDate && b.effectiveDate ? new Date(a.effectiveDate).getTime() - new Date(b.effectiveDate).getTime() : 0))
+    .map((e) => ({ documentId: e.successor, restatesDocumentId: e.predecessor, effectId: e.effectId, confidence: e.confidence, effectiveDate: e.effectiveDate }));
+
+  return { status: "RESOLVED", operativeDocumentId, predecessorDocumentIds, relationshipChain, reviewReason: null };
 }

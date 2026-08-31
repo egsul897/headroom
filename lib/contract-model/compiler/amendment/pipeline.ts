@@ -90,7 +90,19 @@ function runDeterministicPass(input: AmendmentPipelineInput): AmendmentEffectCan
     if (!classification || !AMENDMENT_SHAPED_TYPES.has(classification.type)) continue;
 
     const isFullRestatement = classification.type === "AMENDED_AND_RESTATED_AGREEMENT";
-    const restatesEdge = isFullRestatement ? packageGraph.relationshipCandidates.find((r) => r.sourceDocumentId === doc.documentId && r.relationshipType === "RESTATES") : undefined;
+    // POST-3F.2 remediation (Unit B) - a document can carry more than one
+    // RESTATES-type relationship candidate once recital-style detection is
+    // in play (e.g. a caption-style UNRESOLVED match alongside a
+    // recital-style REVIEW_REQUIRED one) - pick the strongest one
+    // (RESOLVED > REVIEW_REQUIRED > UNRESOLVED, ties broken by confidence)
+    // rather than an arbitrary array-order .find(), so a weaker match
+    // never shadows a stronger one that happens to sort later.
+    const STATUS_RANK: Record<string, number> = { RESOLVED: 2, REVIEW_REQUIRED: 1, UNRESOLVED: 0 };
+    const restatesEdge = isFullRestatement
+      ? packageGraph.relationshipCandidates
+          .filter((r) => r.sourceDocumentId === doc.documentId && r.relationshipType === "RESTATES")
+          .sort((a, b) => STATUS_RANK[b.status]! - STATUS_RANK[a.status]! || b.confidence - a.confidence)[0]
+      : undefined;
 
     // §17 - every document this amendment RESOLVED an AMENDS/GUARANTEES/SECURES-etc edge to (multi-target amendments, task §11, produce more than one) - the real candidate set section-existence disambiguation checks against.
     const resolvedTargetDocumentIds = [...new Set(packageGraph.relationshipCandidates.filter((r) => r.sourceDocumentId === doc.documentId && r.status === "RESOLVED" && r.targetDocumentId).map((r) => r.targetDocumentId as string))];
@@ -100,8 +112,22 @@ function runDeterministicPass(input: AmendmentPipelineInput): AmendmentEffectCan
       amendmentText: doc.text,
       amendmentLabel: doc.label,
       isFullRestatement,
-      restatementTargetDocumentId: restatesEdge?.targetDocumentId ?? null,
-      restatementTargetInstrumentKey: restatesEdge?.targetDocumentId ? instrumentKeyForDocument(packageGraph, restatesEdge.targetDocumentId) : null,
+      // POST-3F.2 remediation (Unit B) - carries the relationship
+      // candidate's own status/confidence/unresolvedReason through
+      // verbatim (never collapsed to a target-present binary) so a
+      // REVIEW_REQUIRED-level resolution (e.g. the new chronological-
+      // predecessor path for a restatement whose recital cites its
+      // original, not its immediate, predecessor's date) is never
+      // silently promoted to a confident RESOLVED effect.
+      restatementTargetResolution: restatesEdge
+        ? {
+            targetDocumentId: restatesEdge.targetDocumentId,
+            targetInstrumentKey: restatesEdge.targetDocumentId ? instrumentKeyForDocument(packageGraph, restatesEdge.targetDocumentId) : null,
+            confidence: restatesEdge.confidence,
+            status: restatesEdge.status,
+            unresolvedReason: restatesEdge.unresolvedReason,
+          }
+        : null,
       modificationCandidates: packageGraph.modificationCandidates,
       resolveEffectiveDate: () => resolveEffectiveDate({ amendmentText: doc.text, executionDate: identityById.get(doc.documentId)?.executionDate ?? null }),
       instrumentKeyForDocument: (targetDocId) => instrumentKeyForDocument(packageGraph, targetDocId),
