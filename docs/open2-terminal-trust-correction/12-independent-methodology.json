@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INDEPENDENT_METHODOLOGY",
+  "assignment": { "auditor": "A", "scope": "OPEN-2 terminal trust correction - provision-status/node-supersession separation", "artifacts": ["13-four-tool-recertification.json", "14-three-safe-tool-regression.json", "15-persistence-recertification.json"] },
+  "commonRules": [
+    "Pinned to frozen commit b3773adb8643d83cb2c57c029aef7eded59199ec. Forbidden from modifying production code (lib/, app/, prisma/).",
+    "Must write FRESH adversarial tests never seen by the implementer - never rerun the implementer's own tests as the sole evidence, though reading them first is expected.",
+    "Never run prisma migrate dev/reset/db push. Exact-scoped test cleanup only.",
+    "Must manually inspect the actual production code (the new resolveNodeWithSupersessionAwareness / ResolvedNodeEvidence-shaped helper and getChildren's own resolver), not just trust the implementer's deliverable docs' own self-assessment.",
+    "Disposition: CERTIFIED_CLOSED or STILL_OPEN with concrete reproduction evidence."
+  ],
+  "requiredChecklist": [
+    "1. Independently re-derive the root cause from the code itself (do not assume the implementer's stated root cause is exactly correct - verify).",
+    "2. Reproduce the ORIGINAL certified exploit against frozen production to confirm it now fails closed.",
+    "3. Invent FRESH conflict-timing combinations (not copied from the implementer's own 32-cell matrix) - vary which of already-effective vs. not-yet-effective vs. partial vs. review-required applies, and combine with different tools.",
+    "4. Attack all four previously-unsafe tools (getParentClause, getChildren, getSiblingClauses, getReferencedProvision) with fresh constructions.",
+    "5. Verify all three previously-safe tools (getOperativeProvision, getDefinition, getRelatedAmendments) still hold - no regression.",
+    "6. Attempt aggregate sibling/children masking (one resolved item hiding an unresolved sibling/child) with a fresh construction.",
+    "7. Attempt the clean-deletion special case with a fresh construction - confirm it is never labeled current evidence, and is distinguishable from a genuine unresolved conflict.",
+    "8. Verify persisted trust end-to-end using REAL Postgres (not just in-memory) for at least the core exploit and one fresh variant."
+  ]
+}
