@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_DISPOSITIONS",
+  "dispositions": [
+    {
+      "id": "OPEN-1",
+      "scope": "Structural heading triage + bounded ambiguity classifier",
+      "disposition": "CERTIFIED_CLOSED",
+      "reason": "The mandated architecture (deterministic triage into CONFIDENT_HEADING/CONFIDENT_PROSE_REFERENCE/AMBIGUOUS, with a bounded, source-only, fail-closed classifier for AMBIGUOUS candidates only) was built, and - after an internal process correction (the first wiring attempt targeted the wrong, explicitly-quarantined orchestrator file; caught within this same phase and fixed) - genuinely wired into the real live production entry point (lib/contract-model/analysis/orchestrator.ts's runContractAnalysis). An independent Part B auditor traced the call chain themselves (not trusting the implementers' report), confirmed the wiring holds, and ran 38 fresh adversarial cases spanning every required true-heading and prose-reference shape plus dedicated rank-stack composition checks: zero false accepts, zero false rejects, zero material hierarchy corruption. Confident documents cost zero classifier calls.",
+      "evidence": "docs/phase-3f1-human-architecture-decision/15-structural-recertification.json; tests/certification/part-b-open1-recert-adversarial-matrix.test.ts, part-b-open1-recert-real-pipeline.test.ts"
+    },
+    {
+      "id": "OPEN-2",
+      "scope": "Universal evidence-tool trust invariant",
+      "disposition": "STILL_OPEN",
+      "reason": "The mandated universal invariant (a shared helper every CURRENT_OPERATIVE_EVIDENCE-declared tool's execute() must call) was built and genuinely closes the originally-reported getOperativeProvision exploit for an already-effective conflict. The registry audit's count (7 CURRENT_OPERATIVE_EVIDENCE tools) was independently re-derived and confirmed correct, and 3 of 7 tools (getOperativeProvision, getDefinition, getRelatedAmendments) are genuinely safe in every case tested. But 4 of 7 tools (getParentClause, getChildren, getSiblingClauses, getReferencedProvision) share an identical, precisely root-caused residual gap: resolveNodeWithSupersessionAwareness (and getChildren's parity check) only consults the real operative status when view.currentText is non-null, but buildProvisionView always nulls currentText for exactly the CONFLICTED/unresolved cases this invariant must catch - so these 4 tools silently fall back to a raw per-node check that defaults to CURRENT_OPERATIVE whenever no effect has yet actually applied (a real-world 'signed but not-yet-effective' conflict shape, distinct from the already-effective shape the original fix covered). A real end-to-end exploit via getSiblingClauses reaches a persisted SemanticTruthRecord.trustStatus of VERIFIED off a genuinely conflicted section.",
+      "evidence": "docs/phase-3f1-human-architecture-decision/16-evidence-tool-recertification.json; tests/certification/open-2-recert-independent-fresh.test.ts",
+      "recommendedFix": "Make resolveNodeWithSupersessionAwareness and getChildren's equivalent check consult view.status directly and unconditionally whenever a real OperativeProvisionView exists for the node's section, mirroring how getOperativeProvision/getDefinition/getRelatedAmendments already do it - never branching on whether currentText happens to be non-null. Not applied in this phase per the production freeze and the governing spec's explicit stop rule."
+    },
+    {
+      "id": "OPEN-3",
+      "scope": "N-way claim decomposition",
+      "disposition": "INHERITED_CERTIFIED_CLOSED",
+      "reason": "Not reopened. semantic-coverage/* confirmed absent from the production diff since the a7ee654 freeze."
+    },
+    {
+      "id": "OPEN-4",
+      "scope": "Condition-suspicion architecture real-model validation",
+      "disposition": "ENVIRONMENT_BLOCKED",
+      "reason": "Gateway budget remains exhausted ($50.05/$50.00, real cost $0.00, reconfirmed at this phase's start). Production code frozen and untouched. The frozen 22-case holdout was not run since OPEN-2's STILL_OPEN result already determines the overall FAILED outcome regardless of OPEN-4's state."
+    },
+    {
+      "id": "OPEN-5",
+      "scope": "AnalysisRun/SemanticTruth fencing",
+      "disposition": "INHERITED_CERTIFIED_CLOSED",
+      "reason": "Not reopened. semantic-truth/service.ts confirmed absent from the production diff."
+    },
+    {
+      "id": "OPEN-6",
+      "scope": "Total error classification",
+      "disposition": "INHERITED_CERTIFIED_CLOSED",
+      "reason": "Not touched this phase (no direct compile integration required it). classifyError/safeErrorMessage/safeErrorClass files absent from the production diff."
+    }
+  ],
+  "tally": { "certifiedClosed": 4, "stillOpen": 1, "environmentBlocked": 1, "total": 6 }
+}

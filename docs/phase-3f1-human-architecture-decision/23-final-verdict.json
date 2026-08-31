@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT",
+  "verdict": "PHASE_3F_1_ARCHITECTURE_DECISION_EXECUTION_FAILED",
+  "basis": [
+    "Per the governing spec's own final-outcome rule (SS36): 'If OPEN-1 or OPEN-2 remains open: return PHASE_3F_1_ARCHITECTURE_DECISION_EXECUTION_FAILED.' OPEN-2 remains STILL_OPEN after independent Part B recertification (22-final-dispositions.json): 4 of 7 CURRENT_OPERATIVE_EVIDENCE tools still bypass the mandated evidenceUnresolved invariant for a prospective/not-yet-effective amendment conflict, and a real end-to-end exploit reaches a persisted VERIFIED trust status.",
+    "OPEN-1 is genuinely CERTIFIED_CLOSED - the mandated triage/classifier architecture was built and, after an internal process correction, wired into the real live orchestrator, and independently recertified with a fresh 38-case adversarial matrix and zero material corruption. This success does not offset OPEN-2's failure; the governing spec requires BOTH.",
+    "OPEN-4 stays ENVIRONMENT_BLOCKED (Gateway budget exhausted, $0 real cost, production code untouched) - but per SS36's own framing, the ENVIRONMENT_BLOCKED outcome (PHASE_3F_1_CODE_FOUNDATION_CLOSED_CONDITION_VALIDATION_ENVIRONMENT_BLOCKED) is reserved for the case where OPEN-1 AND OPEN-2 both close and ONLY OPEN-4 remains externally blocked. That precondition is not met here.",
+    "Production freeze held throughout Part B: zero lib/app/prisma changes since the a7ee654 freeze (21-production-freeze-proof.json).",
+    "Crosscutting checks otherwise pass: 209 files/2421 tests targeted regression (0 failures), tsc/eslint at exact baseline, known-package regression NO_REGRESSION, 14/14 false-credit controls NO_CREDIT, OPEN-3/OPEN-5/OPEN-6 not reopened."
+  ],
+  "stopRuleApplied": "Per SS37 ('Do NOT invent another remediation phase... No sixth/sixteenth incremental parser patch'), this execution does NOT loop back into another fix-and-recertify cycle for OPEN-2's residual 4-tool gap, even though the auditor's own report includes a precise, narrow recommended fix. The exact failure mechanism is returned below for a human to decide whether Phase 3F's current approach has reached its economic limit.",
+  "exactFailureMechanism": "resolveNodeWithSupersessionAwareness (lib/contract-model/compiler/semantic/tools.ts) and getChildren's equivalent parity check only consult a section's real OperativeProvisionView.status when view.currentText is non-null. buildProvisionView always sets currentText=null for CONFLICTED/targetUnresolved/structuralHealthUnsafe provisions - precisely the cases the universal evidenceUnresolved invariant exists to catch. Result: getParentClause, getChildren, getSiblingClauses, and getReferencedProvision silently fall back to a raw per-physical-node supersession check that defaults to CURRENT_OPERATIVE whenever no amendment effect has yet actually applied as of the analysis date - a real, ordinary 'signed but not-yet-effective' conflicting-amendment shape.",
+  "actionPerGoverningSpec": "Per SS37: STOP. Return the exact remaining defect to a human. Do not auto-repair. Do not invent another named remediation phase. Do not begin 3F.2."
+}
