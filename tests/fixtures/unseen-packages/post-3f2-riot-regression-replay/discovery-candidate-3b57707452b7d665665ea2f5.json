@@ -1,0 +1,292 @@
+{
+  "targetCandidateId": "discovery-candidate:3b57707452b7d665665ea2f5",
+  "note": "doc-c Section 1.01 - RGT-C-030 (Collateral Documents / Security Confirmation / Second Security Confirmation)",
+  "documentId": "doc-c",
+  "normalizedSourceRef": "3.04(c)(i)",
+  "compileResult": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "riot-phase-3f2-unseen",
+        "instrumentKey": "riot-coinbase-credit-facility-instrument",
+        "sourceDocumentId": "doc-c",
+        "sourceSectionRef": "3.04(c)(i)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The Lender must have received a copy of this Agreement, duly executed by the parties thereto.",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§3.04(c)(i)",
+              "excerpt": "a copy of this Agreement ... duly executed by the parties thereto"
+            }
+          },
+          {
+            "conditionId": "rule[r1].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "type": "MONEY",
+              "termName": "Second Security Confirmation",
+              "companyId": "riot-phase-3f2-unseen",
+              "instrumentKey": "riot-coinbase-credit-facility-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:70ee90148b0e58fa3bb91aa2"
+            },
+            "referencesDefinitionId": null,
+            "description": "The Lender must have received the Second Security Confirmation, duly executed by the parties thereto.",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§3.04(c)(i)",
+              "excerpt": "the Second Security Confirmation duly executed by the parties thereto"
+            }
+          },
+          {
+            "conditionId": "rule[r1].condition[2]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "type": "MONEY",
+              "termName": "Pledge and Collateral Account Control Agreement",
+              "companyId": "riot-phase-3f2-unseen",
+              "instrumentKey": "riot-coinbase-credit-facility-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:62553bad84523de89e8a4a67"
+            },
+            "referencesDefinitionId": null,
+            "description": "The Lender must have received any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement, but only to the extent the Lender requires such document in writing (i.e., this sub-item is a Lender-driven, open-ended discretionary delivery requirement rather than a fixed, enumerated document list).",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§3.04(c)(i)",
+              "excerpt": "any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement as the Lender requires in writing"
+            }
+          },
+          {
+            "conditionId": "rule[r1].condition[3]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Each of the items above must be dated the Second Amendment and Restatement Effective Date and be in form and substance satisfactory to the Lender (chapeau requirement shared by all sub-items of clause (c)).",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§3.04(c)",
+              "excerpt": "each dated such day, in form and substance satisfactory to the Lender"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "All defined terms used in this clause (Second Security Confirmation; Pledge and Collateral Account Control Agreement) were resolved from supplied context with confirmed-current status.",
+          "This is a documentary condition precedent with no quantitative dollar/ratio capacity, so no MONEY/RATIO capacityExpression applies (left null); the operative economics are fully captured via the conditions array.",
+          "A pre-flagged AMBIGUOUS_RELATIVE_REFERENCE (2 physical occurrences) may affect whether 'duly executed by the parties thereto' grammatically attaches to 'this Agreement' alone, to 'the Second Security Confirmation' alone, or to both; this compilation conservatively treats due execution as required for both documents (the substantively conservative reading), since either resolution imposes the same practical delivery requirement on the Borrower.",
+          "The Lender's requirement for 'any other document ... as the Lender requires in writing' is inherently open-ended/discretionary by the drafting itself, not a gap in the evidence - represented faithfully as a discretionary condition rather than an enumerated list.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"CONDITION_PRECEDENT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"DOCUMENT_DELIVERY\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"DOCUMENT_DELIVERY\" not recognized - normalized to UNSUPPORTED",
+          "condition[2].conditionType \"DOCUMENT_DELIVERY_DISCRETIONARY\" not recognized - normalized to UNSUPPORTED",
+          "condition[3].conditionType \"FORM_AND_TIMING_REQUIREMENT\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"§3.04(c)\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[1].targetRef \"§3.04\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[2].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+          "dependsOn[2].targetRef \"Second Security Confirmation\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[3].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+          "dependsOn[3].targetRef \"Pledge and Collateral Account Control Agreement\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§3.04(c)(i)",
+          "excerpt": "a copy of this Agreement and the Second Security Confirmation duly executed by the parties thereto and any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement as the Lender requires in writing;"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "failureReasons": [],
+    "definitionCompletenessCheck": null,
+    "toolCallLogTruncationFlags": []
+  },
+  "verificationResult": {
+    "candidateRef": "discovery-candidate:3b57707452b7d665665ea2f5",
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:3b57707452b7d665665ea2f5",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "CURRENT_OPERATIVE",
+      "supersessionReason": "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:3b57707452b7d665665ea2f5",
+      "items": [
+        {
+          "itemId": "6fcc94dcc58a249d0b55e82475b9043fdd466dc44b029eb39cafd4bbbd8b7c3f",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§3.04(c)(i)",
+          "sourceExcerpt": "a copy of this Agreement and the Second Security Confirmation duly executed by the parties thereto and any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement as the Lender requires in writing;"
+        },
+        {
+          "itemId": "5d21b5a4154a69c000717b519b352a030aa9940209454d0bbf8e484411a223d6",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§3.04(c)(i)",
+          "sourceExcerpt": "a copy of this Agreement and the Second Security Confirmation duly executed by the parties thereto and any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement as the Lender requires in writing;"
+        },
+        {
+          "itemId": "7d7a99ddeb323568ade85e6bd4c07db861acb63561a2563bb90feb9217b7f436",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§3.04(c)(i)",
+          "sourceExcerpt": "a copy of this Agreement and the Second Security Confirmation duly executed by the parties thereto and any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement as the Lender requires in writing;"
+        },
+        {
+          "itemId": "38addb0369f2193857392ab3e2d6c9bfc270d012d01cadf5987e916e879a123f",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "The Lender must have received a copy of this Agreement, duly executed by the parties thereto.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§3.04(c)(i)",
+          "sourceExcerpt": "a copy of this Agreement ... duly executed by the parties thereto"
+        },
+        {
+          "itemId": "058f0fdfd7d3c596f690b71b116f0fd508fc3367a9ec56ee81ccad453abf5abe",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "textValue": "The Lender must have received the Second Security Confirmation, duly executed by the parties thereto.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§3.04(c)(i)",
+          "sourceExcerpt": "the Second Security Confirmation duly executed by the parties thereto"
+        },
+        {
+          "itemId": "6c2ffa6f522ecbf4a130169b62581d946854cd3a4bb33a7f6cd1c3e756f02a89",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].conditions[1].expression",
+          "numericValue": null,
+          "textValue": "Second Security Confirmation",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8f32ea1814636d3811a6ae71654efc39ff992efcc755dc7429e268a84fa31557",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].conditions[2]",
+          "numericValue": null,
+          "textValue": "The Lender must have received any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement, but only to the extent the Lender requires such document in writing (i.e., this sub-item is a Lender-driven, open-ended discretionary delivery requirement rather than a fixed, enumerated document list).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§3.04(c)(i)",
+          "sourceExcerpt": "any other document relating to any asset which is the subject of the Pledge and Collateral Account Control Agreement as the Lender requires in writing"
+        },
+        {
+          "itemId": "05d93e5e0a409d9784e47f0cdbc1de1ba7842758e94af24e14625758023b282b",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].conditions[2].expression",
+          "numericValue": null,
+          "textValue": "Pledge and Collateral Account Control Agreement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b585de072a99d4a98cb27a2ec660e13647f7df815dd8b9b28bc929c3a1cd38b8",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:0d0daf29a14b5e0b0d925b14",
+          "irPath": "rules[0].conditions[3]",
+          "numericValue": null,
+          "textValue": "Each of the items above must be dated the Second Amendment and Restatement Effective Date and be in form and substance satisfactory to the Lender (chapeau requirement shared by all sub-items of clause (c)).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§3.04(c)",
+          "sourceExcerpt": "each dated such day, in form and substance satisfactory to the Lender"
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:3b57707452b7d665665ea2f5",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": false,
+    "semanticReviewSkippedReason": "deterministic reconciliation found a single, fully-reconciled, non-alternating compiled unit with no unresolved numeric/structural signal, AND the source-only condition-suspicion classifier (VERCEL_AI_GATEWAY/anthropic/claude-sonnet-5) explicitly reported NO_MATERIAL_CONDITION_SUSPECTED with zero evidence spans - conservative two-gate V1 routing (task §32 + this phase's Architecture Decision) skipped adversarial semantic review",
+    "conditionSuspicion": {
+      "status": "NO_MATERIAL_CONDITION_SUSPECTED",
+      "evidence": [],
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+      "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+      "telemetry": {
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "stage": "condition_suspicion_classification",
+        "timestamp": "2026-08-31T23:18:57.875Z",
+        "inputTokens": 3677,
+        "outputTokens": 447,
+        "cachedInputTokens": null,
+        "cacheCreationInputTokens": null,
+        "attemptCount": 1,
+        "retryCount": 0,
+        "rateLimitFailures": 0,
+        "latencyMs": 6088,
+        "calculatedCostUsd": 0.011824
+      },
+      "failed": false,
+      "failureDetail": null,
+      "isSynthetic": false,
+      "fromCache": false
+    },
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-08-31T23:19:03.963Z"
+  }
+}
