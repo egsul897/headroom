@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT",
+  "verdict": "PHASE_3F_1_CONDITION_VALIDATION_ENVIRONMENT_BLOCKED",
+  "basis": [
+    "Per governing spec SS1: the provider-access precondition probe (one tiny process-local authenticated call) returned HTTP 402 'Team budget exceeded. Current spend: $50.05, limit: $50.00' - identical account state to every probe performed across this entire multi-phase engagement. Real cost incurred: $0.00.",
+    "Per SS1's explicit instruction, this requires immediate STOP: no holdout execution, no code changes, no rewriting/dropping/adding/previewing cases, no prompt tuning.",
+    "condition-suspicion-classifier.ts and every related production file were NOT modified this session (production-freeze-proof: empty diff since the 855b7bf starting SHA).",
+    "Confirmed independence at the type level from the frozen production code without modifying it: classifyConditionSuspicion(sourceText: string, ...) - the classifier's content input is exactly `string`, no compiled IR or compiler answer reaches it (08-independent-source-only-confirmation.json).",
+    "The frozen 22-case holdout (17 material, 5 benign) was located and verified unmodified, but NOT executed - zero cases were sent to any model this session."
+  ],
+  "openStateUnchanged": "OPEN-1/2/3/5/6 remain CERTIFIED_CLOSED (not rechecked this session, per SS12 - no foundation recertification was performed or needed). OPEN-4 remains ENVIRONMENT_BLOCKED - neither newly failed nor newly closed, simply still unable to run.",
+  "actionPerGoverningSpec": "Per SS15: do NOT rerun closed foundation work. The frozen 22-case holdout remains ready to execute unchanged, exactly as-is, the moment a human increases the Vercel AI Gateway team budget above the current $50.05 spend. This session stops here. Phase 3F.2 is not begun."
+}

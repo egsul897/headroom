@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PROVIDER_PRECONDITION",
+  "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages, model anthropic/claude-sonnet-5, max_tokens 8, messages: [{role:user, content:'Say OK.'}]). Credential injected as a process-local environment variable for a single command invocation only - never written to .env, .env.local, source files, test fixtures, or any committed artifact.",
+  "result": {
+    "httpStatus": 402,
+    "body": "{\"error\":{\"message\":\"Team budget exceeded. Current spend: $50.05, limit: $50.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+    "realProviderReached": true,
+    "realModelReached": false,
+    "usageTelemetryReturned": false,
+    "realCostIncurred": "$0.00 (rejected before any token billing)"
+  },
+  "comparisonToPriorProbes": "Identical account state ($50.05/$50.00) to every probe performed across this entire multi-phase engagement, most recently at the immediately preceding phase's end (docs/open2-final-direct-patch/12-condition-status.json).",
+  "conclusion": "Provider access precondition FAILED. Per governing spec SS1, this requires immediate PHASE_3F_1_CONDITION_VALIDATION_ENVIRONMENT_BLOCKED and STOP - no holdout execution, no code changes."
+}

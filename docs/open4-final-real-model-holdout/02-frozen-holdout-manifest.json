@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FROZEN_HOLDOUT_MANIFEST",
+  "sourceArtifact": "docs/phase-3f1-terminal-architecture-decision/19-condition-architecture-recertification.json",
+  "rerunInstructionsArtifact": "docs/phase-3f1-final-closure/15-condition-real-model-validation.json",
+  "constructionCount": 22,
+  "materialConstructionCount": 17,
+  "benignControlCount": 5,
+  "verifiedUnmodified": true,
+  "verificationMethod": "Read the source artifact directly this session; confirmed 22 constructions (17 material + 5 benign) present, each with its original id/category/text/note/expected-materiality fields intact from when it was first authored. Every prior classifierStatus/classifierFailed field on file reflects the SAME budget-exhaustion condition confirmed again by this session's own precondition probe - no case has ever actually reached the real model.",
+  "status": "NOT EXECUTED this session - provider precondition failed (see 01-provider-precondition.json). Per governing spec SS1/SS3, the holdout was not run: no case text was sent to any model, no case was rewritten, dropped, added, or previewed, no expected label was altered."
+}
