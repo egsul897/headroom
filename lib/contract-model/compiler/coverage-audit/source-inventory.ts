@@ -103,6 +103,15 @@ export function buildSourceCoverageInventory(documentId: string, index: Structur
       inlineEnumeratedItemCount: unrepresentedMarkers.length,
       auditAlgorithmVersion: COVERAGE_AUDIT_ALGORITHM_VERSION,
       provenance: `independent structural scan of ${node.nodeType} ${node.sectionRef}'s own text - no discovery/context-retrieval output consulted`,
+      // Phase 3F.1.6.R BLOCKER-3 fix (see types.ts's own OPERATIVE-STATE
+      // DISCLOSURE header): this file remains 100% independent of
+      // amendment/* (mechanically enforced, unchanged) and therefore
+      // cannot itself know whether this node's text is still operative -
+      // UNKNOWN_SUPERSESSION_STATUS, never CURRENT_OPERATIVE by omission.
+      // Only runIndependentCoverageAudit (pipeline.ts), given a real
+      // supersessionIndex, may re-tag this field post-hoc.
+      supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+      supersessionReason: "independent inventory generation (source-inventory.ts) is mechanically forbidden from consulting amendment/operative-state - this region's real supersession status is only ever known post-hoc, by runIndependentCoverageAudit, when a caller supplies a real supersessionIndex.",
     });
   }
 

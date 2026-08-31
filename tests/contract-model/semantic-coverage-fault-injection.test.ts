@@ -74,6 +74,8 @@ function makeCandidate(discoveryId: string, nodeKeys: string[]): DiscoveredCandi
     confidence: 0.9,
     sourceCitation: `doc-1::${nodeKeys[0]}`,
     discoveryRunVersion: "test",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
   };
 }
 
@@ -123,11 +125,19 @@ const candidateB = makeCandidate("disc-b", ["doc-1::6.01(b)"]);
 const ruleA = makeRule("6.01(a)", 10_000_000);
 const ruleB = makeRule("6.01(b)", 5_000_000);
 
+// Phase 3F.1.6.R BLOCKER-4 fix: auditOperativeStateForUnits now fails
+// CLOSED (flags every unit) when operativeState is null. These fault-
+// injection scenarios are not exercising that check by default; a real,
+// RESOLVED, empty-provisions OperativeContractState (not null) is the
+// honest "never amended" input. Individual scenarios below that DO want to
+// exercise operative-state findings pass their own real operativeState.
+const defaultOperativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [], status: "OPERATIVE_STATE_RESOLVED", summary: "no amendments recorded for this test fixture", unattachedEffects: [] };
+
 const baseInput = {
   companyId,
   packageKey,
   instrumentKey,
-  operativeState: null,
+  operativeState: defaultOperativeState,
   operativeVersionRef: null,
   structuralParserVersion: "test",
   providerIdentity: null,

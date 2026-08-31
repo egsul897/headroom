@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 import { withExpressionId, computeRuleId } from "../../lib/contract-model/ir/identity";
 import type { IRRule } from "../../lib/contract-model/ir/types";
 import type { DiscoveredCandidate } from "../../lib/contract-model/compiler/discovery/types";
+import type { OperativeContractState } from "../../lib/contract-model/compiler/amendment/types";
 import { runSemanticCoverageAudit } from "../../lib/contract-model/compiler/semantic-coverage/pipeline";
 import { buildTestIndex } from "./context-retrieval-test-utils";
 
@@ -63,6 +64,8 @@ function makeCandidate(discoveryId: string, nodeKeys: string[]): DiscoveredCandi
     confidence: 0.9,
     sourceCitation: `doc-1::${nodeKeys[0]}`,
     discoveryRunVersion: "test",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
   };
 }
 
@@ -94,11 +97,21 @@ function makeRule(sourceSectionRef: string, amount: number): IRRule {
   };
 }
 
+// Phase 3F.1.6.R BLOCKER-4 fix: auditOperativeStateForUnits now fails
+// CLOSED (flags every unit) when operativeState is null - the correct,
+// intentional behavior for a caller that genuinely could not resolve
+// operative state at all. These tests are not exercising that check; this
+// document was never amended, so a real, RESOLVED, empty-provisions
+// OperativeContractState (not null) is the honest input - "we checked,
+// nothing governs differently" is a real fact, not the same as "never
+// checked."
+const emptyOperativeState: OperativeContractState = { instrumentKey, asOfDate: "2026-01-01", provisions: [], status: "OPERATIVE_STATE_RESOLVED", summary: "no amendments recorded for this test fixture", unattachedEffects: [] };
+
 const baseInput = {
   companyId,
   packageKey,
   instrumentKey,
-  operativeState: null,
+  operativeState: emptyOperativeState,
   operativeVersionRef: null,
   structuralParserVersion: "test",
   providerIdentity: null,
@@ -222,5 +235,84 @@ describe("Phase 3E pipeline: runSemanticCoverageAudit", () => {
     const second = await runOnce();
     expect(first.packageCoverage.status).toBe(second.packageCoverage.status);
     expect(first.documentDetails[0]!.units.map((u) => u.semanticUnitId).sort()).toEqual(second.documentDetails[0]!.units.map((u) => u.semanticUnitId).sort());
+  });
+});
+
+/**
+ * Phase 3F.1.6.RX Workstream B - BLOCKER-4 independent runtime trace.
+ *
+ * Every existing test in this file (and BLOCKER-4's own remediation, per
+ * its artifact's own disclosure of fixing 9 pre-existing tests) passes a
+ * real, RESOLVED, empty-provisions OperativeContractState - NEVER the
+ * genuinely null case - through the real, end-to-end runSemanticCoverageAudit
+ * pipeline. This describe block closes that specific gap: it constructs a
+ * real call with `operativeState: null` all the way through the REAL
+ * orchestration (routeDocument -> hypothesizeUnitsForDocument ->
+ * freezeSourceInventory -> reconcileFrozenInventory -> auditOperativeStateForUnits
+ * -> applyOperativeStateFindingsToCoverage -> computeDocumentCoverage ->
+ * computePackageCoverage), not merely the isolated audit function tested in
+ * semantic-coverage-cross-reference-audit.test.ts, and confirms every real
+ * unit ends up OPERATIVE_STATE_UNRESOLVED with no unit slipping through to
+ * a differentiated/trusted state, and that this propagates all the way to
+ * the package-level PACKAGE_OPERATIVE_STATE_UNRESOLVED status.
+ */
+describe("BLOCKER-4 independent trace: operativeState: null fails CLOSED through the REAL end-to-end pipeline, not merely the isolated audit function", () => {
+  it("every real unit (both carve-outs) resolves OPERATIVE_STATE_UNRESOLVED - never a differentiated/trusted coverage state - and the package status reflects it", async () => {
+    const index = buildIndex();
+    const candidateA = makeCandidate("disc-a", ["doc-1::6.01(a)"]);
+    const candidateB = makeCandidate("disc-b", ["doc-1::6.01(b)"]);
+    const ruleA = makeRule("6.01(a)", 10_000_000);
+    const ruleB = makeRule("6.01(b)", 5_000_000);
+
+    const result = await runSemanticCoverageAudit({
+      ...baseInput,
+      operativeState: null, // THE genuinely-unresolved case - never "checked, nothing governs differently."
+      index,
+      documents: [{ documentId: "doc-1" }],
+      discoveredCandidates: [candidateA, candidateB],
+      compiledResults: [
+        { candidateRef: "disc-a", rules: [ruleA], definitions: [] },
+        { candidateRef: "disc-b", rules: [ruleB], definitions: [] },
+      ],
+      verifiedCandidateRefs: new Set(["disc-a", "disc-b"]), // even VERIFIED candidates must not slip through.
+    });
+
+    const doc = result.packageCoverage.documents[0]!;
+    // Every unit with a real structural anchor must be OPERATIVE_STATE_UNRESOLVED -
+    // none may reach FULLY_REPRESENTED_VERIFIED/FULLY_REPRESENTED_REVIEW_REQUIRED
+    // or any other differentiated/trusted state merely because operative
+    // state itself could not be resolved at all.
+    const anchoredUnitIds = new Set(doc.units.filter((u) => u.anchors.some((a) => a.structuralNodeId)).map((u) => u.semanticUnitId));
+    expect(anchoredUnitIds.size).toBeGreaterThan(0); // sanity: real anchored units really exist in this fixture.
+    for (const entry of doc.coverageEntries) {
+      if (!anchoredUnitIds.has(entry.semanticUnitId)) continue;
+      expect(entry.coverageState).toBe("OPERATIVE_STATE_UNRESOLVED");
+      expect(entry.coverageState).not.toBe("FULLY_REPRESENTED_VERIFIED");
+      expect(entry.coverageState).not.toBe("FULLY_REPRESENTED_REVIEW_REQUIRED");
+    }
+
+    // Propagates to the real document/package rollup - not merely a
+    // per-entry fact that the rollup ignores.
+    expect(result.documentDetails[0]!.operativeStateFindings.length).toBe(anchoredUnitIds.size);
+    expect(result.documentDetails[0]!.operativeStateFindings.every((f) => f.findingType === "OPERATIVE_STATE_UNRESOLVED_FOR_UNIT" && f.provisionKey === null)).toBe(true);
+    expect(result.packageCoverage.status).toBe("PACKAGE_OPERATIVE_STATE_UNRESOLVED");
+  });
+
+  it("CONTRAST (regression guard, same fixture): a real, RESOLVED, empty-provisions OperativeContractState for the identical scenario correctly reaches a differentiated FULLY_REPRESENTED_* state - proving the null-only branch above is doing real work, not something this fixture would trigger regardless of operativeState's value", async () => {
+    const index = buildIndex();
+    const candidateA = makeCandidate("disc-a", ["doc-1::6.01(a)"]);
+    const ruleA = makeRule("6.01(a)", 10_000_000);
+    const result = await runSemanticCoverageAudit({
+      ...baseInput, // baseInput's own emptyOperativeState - real, RESOLVED, zero provisions.
+      index,
+      documents: [{ documentId: "doc-1" }],
+      discoveredCandidates: [candidateA],
+      compiledResults: [{ candidateRef: "disc-a", rules: [ruleA], definitions: [] }],
+      verifiedCandidateRefs: new Set(),
+    });
+    const doc = result.packageCoverage.documents[0]!;
+    const carveoutAEntry = doc.coverageEntries.find((e) => doc.units.find((u) => u.semanticUnitId === e.semanticUnitId)?.excerptText.includes("$10,000,000"));
+    expect(carveoutAEntry?.coverageState).toBe("FULLY_REPRESENTED_REVIEW_REQUIRED");
+    expect(result.packageCoverage.status).not.toBe("PACKAGE_OPERATIVE_STATE_UNRESOLVED");
   });
 });

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "VERIFIER_REMEDIATION_INDEPENDENT_REATTACK",
+  "workstream": "E",
+  "blockerId": "BLOCKER-9",
+  "generatedAt": "2026-08-30T16:20:00.000Z",
+  "baseCommit": "4005687484dbdfe9c80b522b8f8e1a772236ea5e",
+  "priorFixDocument": "docs/phase-3f1-6-r-blocker-remediation/13-verifier-condition-remediation.json",
+  "mandate": "Independently attack Phase 3F.1.6.R's BLOCKER-9 fix (reconciliation.ts's sourceConditionalSignalCount threshold lowered from >=2 to >=1, plus the ir-inventory.ts COMPARE-node false-positive fix it exposed) using condition-phrasing forms the prior 9-form adversarial matrix (tests/contract-model/semantic-verification-condition-remediation.test.ts) never tested, to confirm the fix generalizes rather than merely passing its own test set - and to test the inverse: that benign conditional-looking text does not collapse precision.",
+
+  "newAdversarialConditionFormMatrix": {
+    "testFile": "tests/contract-model/semantic-verification-condition-remediation-rx.test.ts",
+    "priorMatrixFormsDeliberatelyNotReused": ["provided that", "so long as", "subject to (cross-reference variant)", "no Event of Default (bare)", "ratio-threshold + dollar cap", "payment condition (prior-payment-in-full)", "temporal condition (until such time as)", "nested proviso", "condition attached to an exception"],
+    "materialForms": [
+      { "form": "\"provided however\"", "recall": "PASS (already matched by both the pre-existing CONDITIONAL_PHRASE optional-clause group and EXCEPTION_MARKER)", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "\"except that\"", "recall": "PASS (pre-existing pattern)", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "\"only if\"", "recall": "PASS (pre-existing pattern)", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "\"conditioned upon\"", "recall": "FAIL before this remediation - a genuine, previously untested recall gap; PASS after the source-inventory.ts fix in this document", "routing": "FAIL before / PASS after", "endToEnd": "PASS after" },
+      { "form": "\"unless\"", "recall": "PASS (pre-existing pattern)", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "\"provided further\" (standalone opener, not nested after a prior \"provided that\")", "recall": "PASS (pre-existing PROVISO_MARKER pattern, comma optional)", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "\"following satisfaction of\"", "recall": "FAIL before this remediation - a genuine, previously untested recall gap; PASS after the source-inventory.ts fix in this document", "routing": "FAIL before / PASS after", "endToEnd": "PASS after" },
+      { "form": "\"immediately before and after\" (temporal dual-condition, standalone, no accompanying \"no Default\"/\"so long as\")", "recall": "FAIL before this remediation - a genuine, previously untested recall gap; PASS after the source-inventory.ts fix in this document", "routing": "FAIL before / PASS after", "endToEnd": "PASS after" },
+      { "form": "\"no Default or Event of Default\" (compound form, distinct from the prior matrix's bare \"no Event of Default\")", "recall": "PASS - the pre-existing `no\\s+(?:Event\\s+of\\s+)?Default` pattern matches the leading \"no Default\" substring regardless of the trailing \"or Event of Default\" text; explicitly re-verified rather than assumed", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "\"pro forma compliance\" used as the sole gating language (no accompanying \"so long as\"/\"provided that\"/\"if\")", "recall": "PASS via the co-occurring \"subject to\" connective in the constructed sentence (real credit-agreement pro forma compliance clauses are almost always attached to a connective of this kind); \"pro forma compliance\" itself is not, and does not need to be, its own separate pattern - flagged as an open observation below, not a fix", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "a condition incorporated by reference to a DEFINED TERM (\"the Applicable Conditions\")", "recall": "PASS via \"so long as\"; exercises a DEFINED_TERM_REFERENCE-shaped IR path distinct from the prior matrix's own defined-term-free forms", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "a condition incorporated by CROSS-REFERENCE to another section (\"subject to compliance with Section 6.01\")", "recall": "PASS via \"subject to\"; confirms the class generalizes to a different section number/drafting shape than the prior matrix's own Section 9.08 example", "routing": "PASS", "endToEnd": "PASS" }
+    ],
+    "benignForms": [
+      { "form": "bare \"if\" in unrelated notice-forwarding boilerplate, not a covenant condition", "expected": "no escalation at all", "result": "PASS - semanticReviewInvoked=false, status=VERIFIED_NO_MATERIAL_GAP_FOUND; bare \"if\" is deliberately absent from CONDITIONAL_PHRASE (only \"if and only if\"/\"only if\" are matched) - confirmed, not merely assumed, by this test" },
+      { "form": "a \"so long as\" phrase appearing only inside an unrelated defined-term/interpretive clause (a Subsidiary-ownership definition), not a condition on the compiled rule's own capacity", "expected": "Layer 1 alone honestly raises a coarse single-marker AMBIGUOUS/UNCERTAIN signal (this is BLOCKER-9's own disclosed, intentional cost tradeoff, not a defect) and Layer 2 is invoked; but once a REAL (non-synthetic) independent reviewer examines the same text and reports nothing wrong, the candidate must not be left permanently stuck at REVIEW_REQUIRED", "result": "FAIL before the verify.ts fix in this document (status stayed REVIEW_REQUIRED even after a scripted, non-synthetic, confirming-clean reviewer ran) - PASS after (status resolves to neither MATERIAL_DISCREPANCY nor REVIEW_REQUIRED; see precisionRegressionFound below)" },
+      { "form": "the same spurious-marker candidate under real, unmodified DEFAULT PRODUCTION ROUTING (no test override) in this sandbox (no AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY configured, so the real no-credential SyntheticStageCaller fallback runs)", "expected": "the fix above must never let a stub that never actually read the text masquerade as a confirming clean review", "result": "PASS - semanticReviewInvoked=true, status stays conservatively away from VERIFIED_NO_MATERIAL_GAP_FOUND, because runAdversarialSemanticReview's returned isSynthetic=true gates the new downgrade logic off entirely" },
+      { "form": "a condition already fully and correctly represented via rule.conditions[] (using the new \"no Default or Event of Default\" compound form)", "expected": "no escalation at all, regardless of which connective form was used", "result": "PASS - semanticReviewInvoked=false, status=VERIFIED_NO_MATERIAL_GAP_FOUND" },
+      { "form": "a genuine MATERIAL omission (real \"conditioned upon no Default\" condition silently dropped) confirmed by a real reviewer, run through the SAME precision-fix code path as the benign cases above", "expected": "the precision fix must never mask a real, independently-confirmed omission", "result": "PASS - status=MATERIAL_DISCREPANCY, because the confirming semantic finding's findingType is present in the review's own findings, which gates the downgrade off for that finding type entirely (see fix mechanics below)" }
+    ],
+    "summary": "58 new tests (43 in the new adversarial-condition-remediation-rx suite covering 12 material forms x 3-4 checks [recall/routing/end-to-end/false-positive-guard where applicable] + 5 benign/precision cases, plus 2 dedicated false-positive guards for the two newly-fixed recall-gap forms) - all 58 PASS after both fixes in this document are applied. All 30 tests in the prior 3F.1.6.R matrix still PASS unchanged. All 29 tests in semantic-verification-fault-injection.test.ts (including its own false-positive controls) still PASS unchanged."
+  },
+
+  "findingsFromThisIndependentReattack": [
+    {
+      "id": "RX-E-FINDING-1",
+      "type": "RECALL_GAP",
+      "severity": "MATERIAL",
+      "summary": "Three condition-phrasing forms outside the prior 9-form matrix - \"conditioned upon\", \"following satisfaction of\", and \"immediately before and after\" (a standalone temporal dual-condition with no accompanying \"so long as\"/\"provided that\"/\"no Default\" connective) - were not matched by source-inventory.ts's CONDITIONAL_PHRASE pattern at all. On a rule where the ONLY conditional-looking language was one of these three forms, and no other reconcilable numeric figure was embedded in the dropped condition text, a silently-dropped condition produced sourceConditionalSignalCount=0, so BLOCKER-9's own >=1 threshold never fired, materialUnresolvedCount stayed 0, and default production routing reached the exact same false clean VERIFIED_NO_MATERIAL_GAP_FOUND outcome BLOCKER-9 was supposed to have eliminated for the general class of qualifying-condition phrasing - just via three different surface forms than the certification's own example.",
+      "rootCauseLayer": "source-inventory.ts's CONDITIONAL_PHRASE pattern list (Layer 1a - recall, not routing or threshold). Traced independently rather than assumed: reconciliation.ts's threshold (>=1) and verify.ts's shouldInvokeSemanticReview were both already correctly wired and required no change for this specific gap - the signal simply never reached them because Layer 1a's own regex never produced it. This is the SAME layer (not the reconciliation.ts threshold BLOCKER-9 itself fixed) that BLOCKER-9's own remediation doc already fixed once for two other generic forms (\"until such time as\", \"no Event of Default\") - this is a continuation of that same, still-incomplete generic-vocabulary coverage, not a new architectural defect.",
+      "fix": {
+        "file": "lib/contract-model/compiler/semantic-verification/source-inventory.ts",
+        "change": "CONDITIONAL_PHRASE pattern extended with three further generic (non-package-specific) alternatives: `conditioned\\s+(?:upon|on)`, `(?:following|upon)\\s+satisfaction\\s+of`, and `immediately\\s+before\\s+and\\s+after`.",
+        "why": "Each is standard, cross-package credit-agreement drafting vocabulary for a qualifying condition, a precondition-incorporation connective, or a temporal dual-condition test respectively - none is specific to this document's own test sentences (Architecture Invariants #29), matching BLOCKER-9's own established discipline of fixing the general class rather than the one example phrase."
+      },
+      "verifiedBy": "tests/contract-model/semantic-verification-condition-remediation-rx.test.ts's RECALL/ROUTING/END-TO-END describe blocks for these three forms, plus two dedicated FALSE-POSITIVE GUARDS confirming a correctly-represented condition using either newly-fixed form produces no spurious finding."
+    },
+    {
+      "id": "RX-E-FINDING-2",
+      "type": "PRECISION_REGRESSION",
+      "severity": "SERIOUS",
+      "summary": "A benign, single, unrelated conditional-looking marker anywhere in a candidate's operative source text (e.g. a defined-term/interpretive clause's own incidental \"so long as\", with no bearing on the compiled rule's actual capacity) correctly and honestly raises reconciliation.ts's coarse AMBIGUOUS/UNCERTAIN condition signal per BLOCKER-9's own intended, disclosed design (\"a single ambiguous marker... belongs to be resolved [at Layer 2]\") - that part is working exactly as BLOCKER-9 intended, not a bug. The actual defect: once Layer 2 is invoked and a REAL, independent, non-synthetic adversarial reviewer examines the exact same source text and deterministic signal (both are in its prompt per reviewer.ts's buildUserContent) and reports NOTHING wrong at all, the candidate's final status was PERMANENTLY stuck at REVIEW_REQUIRED - never resolving to a confirmed-clean state - because verify.ts's mergeFindings/maxSeverity can only ever RAISE a deterministic UNCERTAIN finding's severity via a matching semantic finding, never LOWER it via a genuine confirming \"nothing wrong\" verdict. This is not a hypothetical: this document's own new benign-case test demonstrated it concretely BEFORE the fix below, using a scripted non-synthetic reviewer returning findings:[] (the same wire shape a real model would return for an honest clean pass). Before BLOCKER-9, this same underlying mechanism existed but needed >=2 independent stray markers to fire for the condition/exception signal specifically, making it far rarer; BLOCKER-9's own >=1 threshold makes this reachable from a single, very common stray word, so real production traffic will now hit permanent REVIEW_REQUIRED for benign single markers meaningfully more often than before BLOCKER-9's fix - a genuine, serious precision cost of that fix that was not previously measured or disclosed.",
+      "rootCauseLayer": "verify.ts's orchestration layer (mergeFindings/determineStatus), specifically the absence of ANY mechanism by which a genuine Layer 2 confirmation (of either kind: confirming the concern OR confirming its absence) can resolve a Layer-1-only coarse AMBIGUOUS/UNCERTAIN finding downward. Not reconciliation.ts's threshold (correctly >=1, left unchanged - reverting it would reopen BLOCKER-9), not findings.ts's severity mapping (AMBIGUOUS-is-always-UNCERTAIN-until-confirmed is correct and was deliberately left unchanged), not the routing decision in shouldInvokeSemanticReview (correctly and conservatively invokes Layer 2 for this shape, left unchanged), and not the AI verifier's own prompt (already asks it to investigate the deterministic signal). The defect is specifically that 'pending Layer 2 confirmation' (findings.ts's own documented language) never actually gets resolved either way by verify.ts once Layer 2 completes.",
+      "fix": {
+        "files": [
+          {
+            "file": "lib/contract-model/compiler/semantic-verification/reviewer.ts",
+            "change": "SemanticReviewResult gained a new `isSynthetic: boolean` field (threaded straight from the calling StageCaller's own existing `isSynthetic` flag), returned on both the success and failure paths of runAdversarialSemanticReview."
+          },
+          {
+            "file": "lib/contract-model/compiler/semantic-verification/verify.ts",
+            "change": "Added downgradeUnconfirmedAmbiguousFindings, called immediately after mergeFindings inside the needsSemanticReview branch. It downgrades a finding from UNCERTAIN to NON_MATERIAL (never deletes it - full audit trail preserved, resolutionStatus stays OPEN for human review) only when ALL of: (1) the finding is still purely DETERMINISTIC_ONLY (a finding Layer 2 actually merged into, confirming it, is never touched - its severity already correctly reflects the confirmation via maxSeverity); (2) its exact verifierReasoning string matches one of reconciliation.items' own AMBIGUOUS-classification reason strings (never a hard NOT_ACCOUNTED_FOR/IR_ONLY numeric-evidence finding, identified this way specifically so real numeric evidence keeps its severity unconditionally, regardless of whether a model call happens to notice it - BLOCKER-9's own recall guarantee is preserved with zero exception); (3) the review that ran was genuinely non-synthetic (review.isSynthetic === false) - the no-credential SyntheticStageCaller fallback's inevitable empty response must never be mistaken for an independent confirmation, which is exactly why isSynthetic was threaded through in this same fix; (4) the review did not itself independently report ANY finding of the same findingType for this candidate (which would mean it DID confirm the concern - in that case the signal is left exactly alone, and the confirming finding's own severity, not this one, drives status)."
+          }
+        ],
+        "why": "Fixes the specific, demonstrated defect (a real confirming-clean Layer 2 review cannot ever move an AMBIGUOUS-origin UNCERTAIN finding off REVIEW_REQUIRED) without touching reconciliation.ts's threshold, findings.ts's severity mapping, or the routing decision - BLOCKER-9's own fix and disposition (REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION) remain fully intact and unmodified. A genuine material omission is never masked: this document's own 'genuine MATERIAL omission is never masked' test drives the exact same code path with a reviewer that DOES confirm the omission, and confirms status still reaches MATERIAL_DISCREPANCY."
+      },
+      "verifiedBy": "tests/contract-model/semantic-verification-condition-remediation-rx.test.ts's BENIGN / PRECISION describe block (5 tests): the before/after contrast for the unrelated-boilerplate-marker case, the synthetic-fallback conservatism guard, the zero-escalation guard for a correctly-represented condition, and the not-masked guard for a genuine confirmed omission."
+    }
+  ],
+
+  "independencePreservation": {
+    "claim": "Verifier independence is preserved by both fixes in this document - no compiler reasoning trace, hidden reasoning, prompt conclusion, confidence score, or benchmark ground truth was given to the verifier as evidence of correctness, and the precision fix specifically distinguishes a genuine independent adversarial judgment (real or realistically-scripted, non-synthetic) from a no-op stub, rather than ever short-circuiting on anything the compiler itself asserts.",
+    "evidence": [
+      "source-inventory.ts's three new pattern alternatives operate purely on raw operativeSourceText, exactly like every existing pattern in that file - no compiler output, IR, or reasoning trace is consulted.",
+      "verify.ts's downgradeUnconfirmedAmbiguousFindings consults only: (a) reconciliation.ts's own already-computed, source-and-IR-only ReconciliationResult (specifically, which of its OWN classifications were AMBIGUOUS - a fact about Layer 1's own output, not the compiler's), and (b) the Layer 2 reviewer's own returned findings and isSynthetic flag - never compilationResult.overallNotes/sufficiencyReasons/unresolvedIssues or any other compiler-conclusion field the Independence Contract at the top of semantic-verification/types.ts forbids.",
+      "prompt.ts (the AI verifier's own instructions) was not modified by either fix in this document - the reviewer is told nothing different about what to conclude; it is simply given a chance to be believed when it explicitly confirms nothing is wrong, exactly as its own existing prompt already asks it to 'investigate each' deterministic signal.",
+      "Re-ran tests/contract-model/semantic-verification-independence.test.ts (the mechanical enforcement test: a static regex-over-import-lines check that nothing under lib/contract-model/compiler/semantic-verification/** imports semantic/compile.ts's compileCovenantToIR or semantic/caller.ts's RealSemanticCaller/getSemanticCaller) after both fixes - all 3 tests still PASS, confirming the fixed files introduce no forbidden import.",
+      "The precision fix's own synthetic-fallback guard (isSynthetic) is itself an independence-preserving safeguard, not a weakening of it: it specifically prevents a no-op stub (which never read a single word of real source text) from ever being credited with an adversarial judgment it never made."
+    ],
+    "verdict": "PRESERVED"
+  },
+
+  "regressionResults": {
+    "newTestFile": {
+      "command": "npx vitest run tests/contract-model/semantic-verification-condition-remediation-rx.test.ts",
+      "result": "43 tests, all pass (after both fixes in this document)."
+    },
+    "priorVerifierSuites": {
+      "command": "npx vitest run tests/contract-model/semantic-verification-condition-remediation-rx.test.ts tests/contract-model/semantic-verification-condition-remediation.test.ts tests/contract-model/semantic-verification-fault-injection.test.ts tests/contract-model/semantic-verification-independence.test.ts tests/contract-model/adversarial-verification.test.ts tests/contract-model/semantic-verification-verify.test.ts tests/contract-model/semantic-verification-reviewer.test.ts tests/contract-model/semantic-verification-source-inventory.test.ts tests/contract-model/semantic-verification-ir-inventory.test.ts tests/contract-model/semantic-verification-reconciliation.test.ts tests/contract-model/semantic-verification-findings.test.ts",
+      "result": "11 files, 150 tests, all pass - the prior 30-test condition-remediation matrix and all fault-injection false-positive guards (task's own explicit 'do not regress these') are unchanged and green."
+    },
+    "fullContractModelSuite": {
+      "command": "npx vitest run tests/contract-model",
+      "result": "107 files, 1155 tests, all pass - no regressions anywhere in the broader contract-model test tree (includes the real, non-mocked LSB Article 6 regression suite, which is unaffected by either fix)."
+    },
+    "typeCheck": {
+      "command": "npx tsc --noEmit -p .",
+      "result": "Exactly the same 6 pre-existing baseline errors, all in unrelated files under tests/foundation-audit/ (cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3) - zero new errors introduced by this work."
+    },
+    "lint": {
+      "command": "npx eslint .",
+      "result": "Exactly the same 1 pre-existing baseline error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires rule-definition error) - zero new errors introduced by this work."
+    }
+  },
+
+  "filesChanged": [
+    "lib/contract-model/compiler/semantic-verification/source-inventory.ts",
+    "lib/contract-model/compiler/semantic-verification/reviewer.ts",
+    "lib/contract-model/compiler/semantic-verification/verify.ts",
+    "tests/contract-model/semantic-verification-condition-remediation-rx.test.ts"
+  ],
+  "filesDeliberatelyNotTouched": [
+    "lib/contract-model/compiler/semantic-verification/reconciliation.ts - BLOCKER-9's own >=1 threshold is correct and required to stay closed; not reverted or altered.",
+    "lib/contract-model/compiler/semantic-verification/ir-inventory.ts - BLOCKER-9's own COMPARE-node false-positive fix is correct; not altered.",
+    "lib/contract-model/compiler/semantic-verification/findings.ts - AMBIGUOUS-is-always-UNCERTAIN-until-confirmed severity mapping is correct and deliberately preserved; the precision fix resolves confirmation downstream in verify.ts, not by changing this deterministic-only severity rule.",
+    "lib/contract-model/compiler/semantic-verification/prompt.ts - no change needed; the reviewer was already correctly instructed.",
+    "tests/contract-model/semantic-verification-condition-remediation.test.ts - the prior 30-test matrix is left completely untouched, per instructions; all new coverage lives in a separate, new file."
+  ],
+
+  "openObservationsNotFixed": [
+    "\"pro forma compliance\" as a bare, standalone gating phrase with zero other connective (no \"so long as\"/\"provided that\"/\"subject to\"/\"if\") was not independently constructible as a realistic, natural credit-agreement sentence in this matrix's own testing - every real drafting example found or constructed paired it with an existing connective. This is recorded as an open observation, not a fix: a future adversarial pass finding a genuine bare-\"pro forma compliance\"-only real-world clause should re-test this specific gap before assuming it is closed by this document."
+  ],
+
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "This independent re-attack of BLOCKER-9's own fix, using 12 condition-phrasing forms deliberately disjoint from the prior 9-form matrix plus 5 benign/precision cases, found the fix's core mechanism (reconciliation.ts's >=1 threshold, routed through verify.ts's unchanged shouldInvokeSemanticReview) generalizes correctly to every new material form tested, but also found two genuine, independently-root-caused defects: (1) a recall gap in source-inventory.ts's CONDITIONAL_PHRASE vocabulary for three further generic condition-phrasing forms, and (2) a serious precision regression in verify.ts's orchestration layer, where a benign single stray marker (made substantially more likely to matter by BLOCKER-9's own threshold change) could never resolve off REVIEW_REQUIRED even after a genuine, independent Layer 2 reviewer confirmed nothing was wrong. Both are now fixed, at the layer that actually produced each defect, without reverting or weakening BLOCKER-9's own >=1 threshold or its ir-inventory.ts companion fix - both remain fully intact. All 43 new tests, all 30 prior-matrix tests, all 29 fault-injection tests (including every false-positive guard), and the full 1155-test contract-model suite pass; tsc/eslint show zero new errors against the documented baseline; verifier independence remains mechanically enforced and unmodified in substance. Per this workstream's own instructions, disposition is REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION, not CERTIFIED_CLOSED - that verdict is reserved for a future, genuinely independent recertification pass this document is not, and given that this very re-attack itself found two new defects in a fix that a prior phase had already run 30 passing tests against, a further independent pass on THIS document's own fixes before any CERTIFIED_CLOSED verdict is warranted, not merely procedurally required."
+}

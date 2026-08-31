@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "FINAL_VERDICT",
+  "generatedAt": "2026-08-30T06:50:00Z",
+  "purpose": "Section 33: apply the pass-criteria checklist and deliver exactly one of the three allowed verdict strings.",
+  "blockerDispositionSummary": [
+    { "id": "BLOCKER-1", "title": "Rank-stack/heading structural corruption", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-2", "title": "Supersession signal lost before DiscoveredCandidate", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-3", "title": "Source-inventory operative-state mislabeling", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-4", "title": "Null operativeState fails open", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-5", "title": "LLM evidence tools bypass operative-state", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-6", "title": "Ambiguous DEFINITION amendment reaches false-verified", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-7", "title": "95 unbackfilled ContractRule rows", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-8", "title": "Claim identity collision", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-9", "title": "Verifier misses omitted qualifying condition", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-10", "title": "Zero live application callers", "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION" },
+    { "id": "BLOCKER-11", "title": "Architecture Invariant #35 violated", "disposition": "ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION" }
+  ],
+  "passCriteriaChecklist": [
+    { "id": 1, "requirement": "All 11 certified blockers REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION, or ARCHITECTURE_SCOPE_RESOLVED for Blocker-11 only", "result": "PASS", "evidence": "Table above; 01-frozen-certification-blockers.json." },
+    { "id": 2, "requirement": "All 7 known structural errors resolved generally, no package-specific patches", "result": "PASS", "evidence": "03-structural-heading-remediation.json - positive-evidence heuristic, zero phrase-list additions." },
+    { "id": 3, "requirement": "No material heading false-negative regression", "result": "PASS", "evidence": "04-structural-false-negative-results.json - 23/23 (24/24 total cases) passing false-negative guard." },
+    { "id": 4, "requirement": "Supersession reaches real consumers", "result": "PASS", "evidence": "05-supersession-propagation-remediation.json - supersessionStatus now on DiscoveredCandidate itself, the type real consumers receive." },
+    { "id": 5, "requirement": "Null operative state fails closed", "result": "PASS", "evidence": "07-null-operative-state-remediation.json." },
+    { "id": 6, "requirement": "All relevant AI evidence tools are operative-safe", "result": "PASS", "evidence": "08-semantic-tools-operative-remediation.json - 4 tools fixed, 1 explicitly labeled raw-by-design, mandatory operativeStateDiscipline field enforced by TypeScript for future tools." },
+    { "id": 7, "requirement": "Ambiguous DEFINITION amendment cannot verify", "result": "PASS", "evidence": "09-definition-ambiguity-propagation.json." },
+    { "id": 8, "requirement": "Affected persisted ContractRule state repaired", "result": "PASS", "evidence": "10-contract-rule-backfill.json - 95/95 rows, idempotent, 0 unrecoverable." },
+    { "id": 9, "requirement": "Claim identity collision fixed generally", "result": "PASS", "evidence": "11-claim-identity-remediation.json - fixed at both discovery and semantic-coverage layers; one disclosed residual gap (same-family fused claims) does not block this criterion, which requires general (not exhaustive) remediation." },
+    { "id": 10, "requirement": "Verifier catches material condition omission", "result": "PASS", "evidence": "13-verifier-condition-remediation.json - 7/7 fault-injection cases now caught, 9-form adversarial matrix passing." },
+    { "id": 11, "requirement": "Real application/service path executes contract-model pipeline", "result": "PASS", "evidence": "15-live-contract-analysis-orchestrator.json - wired into app/[companyId]/onboarding/documents/actions.ts's runExtractionAction." },
+    { "id": 12, "requirement": "Real unresolved claim persists ClaimReviewItem", "result": "PASS", "evidence": "18-live-e2e-results.json - proven via a real call to the actual server action, both positive (review item created) and negative (no bogus review item) cases." },
+    { "id": 13, "requirement": "Tenant isolation holds", "result": "PASS", "evidence": "Workstream E's backfill scoped every write via companyId; no tenant-isolation-relevant file shows a regression in the full quality-gate suite." },
+    { "id": 14, "requirement": "All 14 permanent false-credit controls remain safe", "result": "PASS", "evidence": "23-false-credit-regression.json - 32/32 tests, unanimous NO_CREDIT." },
+    { "id": 15, "requirement": "No package-specific tuning", "result": "PASS", "evidence": "26-diff-classification.json - zero package-specific logic found across all 80 changed files." },
+    { "id": 16, "requirement": "Full quality gates acceptable", "result": "PASS", "evidence": "25-test-quality-gates.json - tsc/eslint/build baseline-consistent, vitest fully green (210/210 files, 2148/2148 tests)." },
+    { "id": 17, "requirement": "At least one golden E2E path uses the same code path as app/ service boundaries", "result": "PASS", "evidence": "tests/onboarding/live-contract-analysis-app-action.test.ts - calls the literal runExtractionAction server action." }
+  ],
+  "checklistSummary": { "total": 17, "pass": 17, "fail": 0 },
+  "verdict": "PHASE_3F_1_6_R_CERTIFICATION_BLOCKER_REMEDIATION_PASSED",
+  "explicitStatement": "All 17 pass criteria are met. All 11 certified blockers from Phase 3F.1.6's independent, production-frozen certification have been remediated: 10 with a genuine root-cause code fix (BLOCKER-1 through 10) and 1 with a genuine architecture-scope decision backed by investigation, not a code-level workaround (BLOCKER-11, correctly deferred to Phase 6 per the actual roadmap rather than fabricating provenance to satisfy the invariant check). The product-state change this phase's own charter demanded is real: a document entering the live application now reaches one authoritative contract-analysis flow (previously it did not reach any of this apparatus at all); structural and operative uncertainty now propagate safely to the type real downstream consumers actually receive; semantic identity no longer collapses the specific sibling-claim pattern the certification proved colliding; the verifier now independently catches a material condition-omission pattern it previously missed; and encountered material failures produce explicit, persisted review state through the live path, proven end-to-end via the real server action. This verdict does NOT itself certify any of these fixes - per this phase's own charter, no disposition above may ever read CERTIFIED; that determination belongs exclusively to the next, independent Phase 3F.1.6.RC.",
+  "explicitlyNotClaimed": "This verdict does not claim: that every possible edge case for each of the 11 fixes has been found (several honest residual risks are disclosed in 27-remaining-risks.json); that discovery/coverage recall has improved (explicitly out of scope, Section 24); that any MAJOR_NON_BLOCKING certification finding was fixed (all 8 remain deferred, 21-major-finding-dispositions.json); or that the DSGR known-package regression's fixture-versioning artifact has been resolved (explicitly disclosed as pre-existing and out of scope, 22-known-package-regression.json)."
+}

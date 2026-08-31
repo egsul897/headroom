@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "OPEN2_OPERATIVE_PROVISION_FIX",
+  "filesChanged": [
+    "lib/contract-model/compiler/amendment/operative-state.ts (new exported isConfirmedCurrentOperativeEvidence helper + CurrentOperativeEvidenceStatus type)",
+    "lib/contract-model/compiler/semantic/tools.ts (getOperativeProvision, getParentClause, getSiblingClauses, getReferencedProvision, getChildren, getRelatedAmendments)",
+    "tests/contract-model/semantic-tools-operative-state-discipline.test.ts (extended in place - new §17 registry-audit describe block)",
+    "tests/certification/open-2-fresh-attack-matrix.test.ts (new file - §20 fresh attack matrix)",
+    "tests/certification/part-b-final-recert-fix2-independent.test.ts (3 assertions updated in place, per the task's explicit allowance, to assert the FIXED behavior; the safety property under test is unchanged and now holds)"
+  ],
+  "beforeAfterExploitReproduction": {
+    "reproductionFile": "tests/certification/part-b-final-recert-fix2-independent.test.ts, describe block 1",
+    "scenario": "A genuinely OPERATIVE_STATE_CONFLICTED section (6.99, two competing same-effective-date REPLACE_TEXT effects), never embedded in the candidate's own context bundle (the candidate's primary section 6.01 never mentions 6.99), reached only via a real getOperativeProvision('6.99') tool call during a scripted 2-turn RealSemanticCaller loop; the model then submits a rule with sufficiency COMPLETE.",
+    "before": {
+      "toolCallLogEvidenceUnresolved": "undefined (falsy) - THE BUG",
+      "compileFailureReasons": "did not contain OPERATIVE_STATE_UNRESOLVED",
+      "compileStatus": "COMPLETED",
+      "verifyStatus": "VERIFIED_NO_MATERIAL_GAP_FOUND (matched /^VERIFIED_/)",
+      "persistedTrustStatus": "VERIFIED",
+      "trustedRecordCount": "> 0 (the exploit reached persisted, queryable trusted current truth)"
+    },
+    "after": {
+      "toolCallLogEvidenceUnresolved": true,
+      "compileFailureReasons": "contains OPERATIVE_STATE_UNRESOLVED",
+      "compileStatus": "REVIEW_REQUIRED",
+      "verifyStatus": "REVIEW_REQUIRED (no longer matches /^VERIFIED_/)",
+      "persistedTrustStatus": "REVIEW_REQUIRED",
+      "trustedRecordCount": 0
+    },
+    "verifiedBy": "Ran the full reproduction file before AND after the fix (git-tracked in this session's own tool-call history): 3 of 9 tests failed pre-fix with exactly the 'before' values above (confirming the exploit reproduces against unmodified tools.ts), then all 9 passed post-fix with exactly the 'after' values, after updating the 3 assertions in place to assert the fixed behavior (the underlying safety property those 3 tests exist to check - the CONFLICTED-section exploit cannot reach VERIFIED - was never weakened, only the expected-value framing was flipped from 'documents the bug' to 'documents the fix')."
+  },
+  "freshAttackMatrixResults": {
+    "file": "tests/certification/open-2-fresh-attack-matrix.test.ts",
+    "totalTests": 15,
+    "allPassing": true,
+    "scenarios": [
+      { "id": 1, "name": "getOperativeProvision on a CURRENT section (never amended)", "expected": "COMPLETED, evidenceUnresolved falsy", "result": "PASS" },
+      { "id": 2, "name": "getOperativeProvision on a genuinely CONFLICTED section (fresh fixture, independent of the certification reproduction)", "expected": "REVIEW_REQUIRED, evidenceUnresolved true", "result": "PASS (2 tests: setup check + falsification attempt)" },
+      { "id": 3, "name": "getOperativeProvision on a PARTIAL-amendment section (amendment target NOT_FOUND in the base document)", "expected": "REVIEW_REQUIRED, evidenceUnresolved true", "result": "PASS" },
+      { "id": 4, "name": "getOperativeProvision on an UNRESOLVED-target (AMBIGUOUS) section - two colliding physical occurrences sharing one section number", "expected": "honest refusal, never a guessed answer, evidenceUnresolved never fabricated true for a refusal", "result": "PASS (2 tests: setup check + refusal confirmation)" },
+      { "id": 5, "name": "getOperativeProvision raw base-document fallback reaching a KNOWN_SUPERSEDED physical occurrence (the second, independently-found gap in the same tool)", "expected": "REVIEW_REQUIRED, evidenceUnresolved true, via the newly-added supersessionIndex consultation in the raw fallback branch", "result": "PASS" },
+      { "id": 6, "name": "historical-request path (getPriorVersion) on a cleanly-resolved chain", "expected": "COMPLETED - the invariant does not over-fire on a tool that is deliberately historical by design", "result": "PASS" },
+      { "id": 7, "name": "getDefinition CURRENT (fresh fixture, contrast/regression baseline)", "expected": "COMPLETED, evidenceUnresolved falsy", "result": "PASS" },
+      { "id": 8, "name": "context-bundle CURRENT text vs UNRESOLVED text, zero tool calls (already fixed by a prior phase - reconfirmed, not re-fixed)", "expected": "COMPLETED for the current bundle; fails closed for the unresolved bundle", "result": "PASS (2 tests)" },
+      { "id": 9, "name": "sequence: ONE tool call CURRENT then a LATER call UNRESOLVED in the same attempt (both orderings)", "expected": "the aggregate signal ORs across the WHOLE attempt regardless of call order - never last-call-wins, never first-call-wins", "result": "PASS (2 tests: CURRENT-then-UNRESOLVED and UNRESOLVED-then-CURRENT, both correctly fail closed)" },
+      { "id": 10, "name": "scripted model ignores an unresolved warning and submits sufficiency COMPLETE anyway", "expected": "the model's own self-reported sufficiency is preserved verbatim on the rule, but the ATTEMPT-level status/failureReasons are never overridden by the model's own claimed confidence", "result": "PASS" },
+      { "id": 11, "name": "tool-only path with an EMPTY context bundle (zero pre-loaded items) - the exact new exploit shape", "expected": "fails closed purely via the tool-call-path fix, independent of and never masked by the (correctly clean) bundle-level flag", "result": "PASS" }
+    ]
+  },
+  "regressionResults": {
+    "certificationReproductionFile": { "file": "tests/certification/part-b-final-recert-fix2-independent.test.ts", "tests": 9, "passing": 9 },
+    "priorRegistryEnforcementFile": { "file": "tests/contract-model/semantic-tools-operative-state-discipline.test.ts", "tests": 13, "passing": 13, "note": "5 original tests unchanged and passing; 8 new tests added in the HEADROOM OPEN-2 describe block covering the full §17 per-tool CURRENT/UNRESOLVED matrix." },
+    "relatedCertificationFiles": [
+      { "file": "tests/certification/part-b-recert-finding2-3-independent.test.ts", "tests": 15, "passing": 15 },
+      { "file": "tests/certification/semantic-tools-supersession-blind-navigation.test.ts", "tests": 5, "passing": 5 },
+      { "file": "tests/contract-model/part-b-recert-blocker2-6-tools-adversarial.test.ts", "tests": 5, "passing": 5 }
+    ],
+    "fullSuiteRun": {
+      "scope": "tests/contract-model, tests/certification, tests/foundation-audit (192 files, 2168 tests) plus a subsequent full-repo run (263 files, 2822 tests)",
+      "result": "All passing except one KNOWN pre-existing flaky OPEN-3 timing/scaling test (tests/contract-model/part-b-terminal-recert-open3-independent.test.ts or tests/contract-model/part-b-recert-finding4-independent.test.ts, depending on run - a wall-clock O(n) vs O(n^2) ratio assertion under parallel-test-run CPU contention, unrelated to any file this phase touched), reconfirmed by re-running that file alone where it passed cleanly.",
+      "regressionsFromThisFix": 0
+    },
+    "qualityGates": {
+      "tscNoEmit": "6 errors, identical set to the documented pre-existing baseline (all in unrelated tests/foundation-audit/*.ts files, none touched this phase)",
+      "eslint": "1 error, identical to the documented pre-existing baseline (tests/foundation-audit/amendment-operative-state-adversarial.test.ts, unrelated)"
+    }
+  },
+  "persistenceDiscipline": {
+    "rootFixLayer": "evidence/tool-trust-propagation layer (semantic/tools.ts's own evidenceUnresolved derivation) - the actual defect. No new check was added at the SemanticTruthRecord persistence layer itself (lib/contract-model/analysis/semantic-truth/service.ts and mapping.ts were read but not modified) - persistence already correctly derives trustStatus from verification.status via the pre-existing computeTrustStatus mapping (mapping.ts), which was never the defect.",
+    "verificationLayerCheck": "No additional verification-layer check was added. verify.ts's own pre-existing hasUnresolvedDefinitionEvidence (toolCallLog[].evidenceUnresolved-based, unmodified) already correctly forces REVIEW_REQUIRED once evidenceUnresolved is correctly set at the source - it was already fully enforced; the confirmed defect was entirely upstream of it (the flag was never being set true in the first place for getOperativeProvision), so the optional verification-layer check the spec allows was not needed."
+  }
+}

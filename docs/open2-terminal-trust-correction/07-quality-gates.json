@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "QUALITY_GATES",
+  "tsc": {
+    "command": "npx tsc --noEmit -p .",
+    "baselinePreExistingErrors": 6,
+    "baselineFiles": [
+      "tests/foundation-audit/cascade-and-concurrency.test.ts (2 errors, TS2783)",
+      "tests/foundation-audit/discovery-fault-injection.test.ts (1 error, TS2339)",
+      "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3 errors, TS2783)"
+    ],
+    "postFixErrorCount": 6,
+    "newErrors": 0,
+    "confirmed": "Ran tsc before any change to capture the baseline, then after every edit including the 3 new test files - error count and file list identical throughout."
+  },
+  "eslint": {
+    "command": "npx eslint .",
+    "baselinePreExistingErrors": 1,
+    "baselineFile": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169 (@typescript-eslint/no-var-requires rule-definition-not-found)",
+    "postFixErrorCount": 1,
+    "newErrors": 0,
+    "changedFilesLintedCleanIndividually": [
+      "lib/contract-model/compiler/semantic/tools.ts",
+      "tests/contract-model/semantic-tools-operative-state-discipline.test.ts",
+      "tests/contract-model/open2-terminal-clean-deletion.test.ts",
+      "tests/contract-model/open2-terminal-four-tool-matrix.test.ts",
+      "tests/certification/open-2-recert-independent-fresh.test.ts"
+    ]
+  },
+  "vitest": {
+    "targetedRun": {
+      "command": "npx vitest run tests/contract-model tests/foundation-audit tests/certification",
+      "result": "203 files, 2302 tests, all passing"
+    },
+    "fullRun": {
+      "command": "npx vitest run",
+      "result": "274 files, 2956 tests, all passing",
+      "durationSeconds": 122.39
+    },
+    "flakeNote": "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts's own O(n) vs O(n^2) scaling-ratio timing assertion failed once when run concurrently alongside ~200 other test files (contended CPU skews a wall-clock timing ratio) and passed cleanly both in isolation and in the full un-contended sweep - unrelated to this change, a pre-existing timing-based test property."
+  },
+  "knownPackageRegression": {
+    "command": "npx tsx scripts/phase-3f1-6-known-package-regression.ts",
+    "result": {
+      "fwrg": 0,
+      "lsb": 0,
+      "dsgr": 215,
+      "conmed": "NOT_APPLICABLE - no semantic-coverage run exists for CONMED (disclosed gap, unchanged)"
+    },
+    "matchesExpected": true,
+    "sideEffectHandling": "The script rewrote docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json as a documented side effect; reverted immediately via `git checkout -- docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json` after capturing the numbers above. Confirmed via `git status --porcelain` that this file shows no diff after the revert."
+  },
+  "prismaConstraint": "No `prisma migrate dev/reset/db push` was run at any point in this work."
+}

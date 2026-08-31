@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_DISPOSITION_TABLE",
+  "dispositions": [
+    {
+      "id": "FINDING-1",
+      "title": "Structural heading false negatives",
+      "disposition": "STILL_OPEN",
+      "evidence": "docs/phase-3f1-6-rx-final-terminal-closure/14-part-b-finding1-recertification.json",
+      "summary": "ciKeyword() and BOUNDED_GAP are genuinely general (confirmed). stripTrailingFootnoteMarker's regex requires the noise class to begin with literal terminal punctuation - a footnote digit glued directly onto a bare closing paren/quote with no separate terminal punctuation (e.g. '(the \"Agreement\")1') is invisible to it, reproducing the exact original 'child re-parented to null' failure verbatim."
+    },
+    {
+      "id": "FINDING-2",
+      "title": "getDefinition stale/ambiguous-amendment safety",
+      "disposition": "STILL_OPEN",
+      "evidence": "docs/phase-3f1-6-rx-final-terminal-closure/15-part-b-finding2-3-recertification.json",
+      "summary": "findProvisionView's DEFINITION-branch term comparison uses only .trim().toLowerCase() - never collapses internal whitespace, unlike its own SECTION-branch sibling two lines above. A doubled-internal-space term variant (a realistic LLM-echoed form) makes it miss the match, fall through to the base-document fallback, and return stale text labeled RESOLVED when the real state is CONFLICTED."
+    },
+    {
+      "id": "FINDING-3",
+      "title": "Coupled ambiguous-definition bypass",
+      "disposition": "STILL_OPEN",
+      "evidence": "docs/phase-3f1-6-rx-final-terminal-closure/15-part-b-finding2-3-recertification.json",
+      "summary": "Same root cause and same reproduction as FINDING-2 (one fix, two consequences, per this phase's own §4) - the whitespace-normalization gap bypasses the ambiguous-definition protection identically."
+    },
+    {
+      "id": "FINDING-4",
+      "title": "N-way fused-claim decomposition",
+      "disposition": "STILL_OPEN",
+      "evidence": "docs/phase-3f1-6-rx-final-terminal-closure/16-part-b-finding4-recertification.json",
+      "summary": "Oxford-comma lists (no repeated modal) always collapse to exactly 2 segments regardless of true claim count - bare commas are never a recognized delimiter. Restated-modal prohibition chains ('shall not X and shall not Y and shall not Z') collapse entirely to 1 segment, reproducing the ORIGINAL defect exactly. The fix's own written O(n) termination proof is empirically false (quadratic-shaped scaling measured)."
+    },
+    {
+      "id": "FINDING-5",
+      "title": "Condition-verification architecture (third recurrence)",
+      "disposition": "STILL_OPEN",
+      "evidence": "docs/phase-3f1-6-rx-final-terminal-closure/17-part-b-finding5-recertification.json",
+      "summary": "Two slot dimensions (nominalization suffix, citation identifier) genuinely generalize, but every one of the 9 grammar categories is still gated by a small, closed, hand-typed word list at the connective/preposition/participle/modal level. 7 fresh, realistic drafting constructions (subjunctive inversion, ordinary prepositional synonyms, a direct doc/code mismatch where 'circumstance' is claimed-but-absent from the live regex) all bypass verification entirely, reproducing BLOCKER-9's exact failure signature. This is the highest-stakes finding in the phase and the fourth consecutive recurrence of the same architecture mistake."
+    },
+    {
+      "id": "FINDING-6",
+      "title": "AnalysisRun zombie-writer fencing",
+      "disposition": "STILL_OPEN",
+      "evidence": "docs/phase-3f1-6-rx-final-terminal-closure/18-part-b-finding6-recertification.json",
+      "summary": "The core AnalysisRun-row mutators (setAnalysisRunStage/completeAnalysisRun/failAnalysisRun/recordAnalysisRunIssue) are genuinely, atomically fenced - CERTIFIED for that subset. But persistSemanticTruthForInstrument uses a check-then-act generation gate (one findUnique read, then unguarded upserts), not a per-row CAS. Reproduced, against real Postgres, a superseded writer's stale content clobbering a new owner's already-persisted fresh content for the same semanticObjectId, via two independent methods, reliable across 6 consecutive runs."
+    },
+    {
+      "id": "FINDING-7",
+      "title": "Product-flow analysis bypass + broken findings link",
+      "disposition": "CERTIFIED_CLOSED",
+      "evidence": "docs/phase-3f1-6-rx-final-terminal-closure/19-part-b-finding7-recertification.json",
+      "summary": "8 fresh adversarial routes (zero documents/runs, FAILED-only run, PENDING/RUNNING run, PARTIAL run, out-of-band document insert, two-tab race, direct sub-route navigation, post-resolution reviewItemCount) all could not falsify the gate. One disclosed non-reopening residual: reviewItemCount is a write-once snapshot that can overstate outstanding items after resolution - errs toward over-caution, not toward hiding content."
+    },
+    {
+      "id": "FINDING-8",
+      "title": "recordAnalysisFailureLog non-recursive fallback",
+      "disposition": "STILL_OPEN",
+      "evidence": "docs/phase-3f1-6-rx-final-terminal-closure/20-part-b-finding8-recertification.json",
+      "summary": "The core defect (the failure-recording write itself throwing uncaught) is genuinely fixed, confirmed with real unmocked Postgres FK violations from two call sites. But the fallback's own unwrapped console.error call (orchestrator.ts:467) can itself throw uncaught if console is wrapped/instrumented (e.g. Sentry) - reproduced with a captured stack trace bottoming out exactly there - recreating the exact log-only failure mode one tier deeper."
+    }
+  ],
+  "summary": { "CERTIFIED_CLOSED": 1, "STILL_OPEN": 6, "STILL_OPEN_including_coupled": "FINDING-2 and FINDING-3 share one root cause, so distinct defects = 6 (1,2/3,4,5,6,8)." }
+}

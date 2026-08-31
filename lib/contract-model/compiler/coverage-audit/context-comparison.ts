@@ -61,6 +61,11 @@ export function auditContextCoverage(input: ContextComparisonInput): AuditFindin
       semanticPromptVersion: null,
       providerIdentity: null,
       provenance: "context-comparison.ts - comparison stage (real Phase 2D bundle read here only, never during independent context-inventory generation)",
+      // Phase 3F.1.6.R BLOCKER-3 fix - see coverage-audit/types.ts's own
+      // OPERATIVE-STATE DISCLOSURE header; re-tagged post-hoc by
+      // runIndependentCoverageAudit when a real supersessionIndex is supplied.
+      supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+      supersessionReason: "context-comparison.ts does not itself consult amendment/operative-state - real disposition, if any, is applied post-hoc by runIndependentCoverageAudit.",
     });
   };
 

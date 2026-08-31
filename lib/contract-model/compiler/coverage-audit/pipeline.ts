@@ -9,6 +9,8 @@ import type { StructuralIndex } from "../structural-index";
 import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
 import type { CovenantContextBundle } from "../context-retrieval/types";
+import type { NodeSupersessionIndex } from "../amendment/types";
+import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../amendment/operative-state";
 import { STRUCTURAL_INDEX_VERSION } from "../types";
 import { buildSourceCoverageInventory, type SourceInventoryOptions } from "./source-inventory";
 import { auditDiscoveryCoverage } from "./discovery-comparison";
@@ -30,6 +32,19 @@ export interface AuditPackageInput {
   packageGraph: PackageGraphResult | null;
   /** One bundle per audited covenant - the auditor does not build its own bundles; it audits whatever the real Phase 2D pipeline already produced for the candidates the caller chooses to audit context coverage for. */
   bundles: CovenantContextBundle[];
+  /**
+   * Phase 3F.1.6.R BLOCKER-3 fix - OPTIONAL and additive, exactly mirroring
+   * discovery/pipeline.ts's own `supersessionIndex` parameter for
+   * `DeterministicCandidate`. This module's independent inventory
+   * (source-inventory.ts and friends) remains mechanically forbidden from
+   * ever importing amendment/* - see types.ts's own OPERATIVE-STATE
+   * DISCLOSURE header. Supplying a real index here lets THIS orchestration
+   * layer (never the protected generation files) re-tag every region and
+   * finding's own supersessionStatus/supersessionReason post-hoc. Omitting
+   * it defaults every one of those fields to UNKNOWN_SUPERSESSION_STATUS -
+   * an honest downgrade, never a silent regression to "safely current."
+   */
+  supersessionIndex?: NodeSupersessionIndex;
 }
 
 export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageAuditRunResult {
@@ -97,6 +112,18 @@ export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageA
   }
   const deterministicWallClockMs = Date.now() - start;
 
+  // Phase 3F.1.6.R BLOCKER-3 fix - post-hoc supersession tagging, applied
+  // here at the orchestration layer (never inside source-inventory.ts
+  // itself) BEFORE the comparison stages run, so every downstream
+  // AuditFinding built from a region (discovery-comparison.ts) inherits an
+  // already-accurate disposition rather than needing its own separate pass.
+  const supersessionIndex = input.supersessionIndex ?? EMPTY_SUPERSESSION_INDEX;
+  for (let i = 0; i < regions.length; i++) {
+    const region = regions[i]!;
+    const result = getNodeSupersessionStatus(supersessionIndex, region.documentId, region.structuralNodeId);
+    regions[i] = { ...region, supersessionStatus: result.status, supersessionReason: result.reason };
+  }
+
   const comparisonStart = Date.now();
   findings.push(...auditDiscoveryCoverage(regions, input.candidates, input.index));
 
@@ -118,6 +145,19 @@ export function runIndependentCoverageAudit(input: AuditPackageInput): CoverageA
     findings.push(...auditDefinitionCompleteness(bundle, input.index, bundle.originatingDocumentId, input.companyId, input.packageKey, input.instrumentKey));
   }
   const comparisonWallClockMs = Date.now() - comparisonStart;
+
+  // Phase 3F.1.6.R BLOCKER-3 fix - uniform post-hoc re-tag of EVERY finding
+  // regardless of which comparison stage produced it (a finding is not
+  // always 1:1 with a single already-tagged region - context-comparison.ts
+  // and definition-audit.ts findings reference their own structuralNodeId).
+  // A finding with no structuralNodeId (raw-source-fallback's own
+  // document/span-level findings) resolves UNKNOWN via
+  // getNodeSupersessionStatus's own fail-closed "no nodeId supplied" branch.
+  for (let i = 0; i < findings.length; i++) {
+    const finding = findings[i]!;
+    const result = getNodeSupersessionStatus(supersessionIndex, finding.documentId, finding.structuralNodeId);
+    findings[i] = { ...finding, supersessionStatus: result.status, supersessionReason: result.reason };
+  }
 
   const discoveredNodeIds = new Set(input.candidates.flatMap((c) => c.structuralNodeIds));
   const coverageMap = buildCoverageMap(regions, findings, discoveredNodeIds);

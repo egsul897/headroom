@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "TEST_QUALITY_GATES",
+  "generatedAt": "2026-08-30T06:42:00Z",
+  "purpose": "Section 31: run the full required quality-gate suite after all 7 workstreams (A-G) are integrated, and compare against the certified 3F.1.6 baseline recorded in this phase's own 00-baseline.json.",
+  "tscGate": {
+    "command": "npx tsc --noEmit -p .",
+    "result": "6 errors, byte-identical to the certified baseline: tests/foundation-audit/cascade-and-concurrency.test.ts (2), tests/foundation-audit/discovery-fault-injection.test.ts (1), tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3).",
+    "newErrors": 0,
+    "verdict": "PASS (baseline-consistent)"
+  },
+  "eslintGate": {
+    "command": "npx eslint .",
+    "result": "1 error, identical to the certified baseline: tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169 (@typescript-eslint/no-var-requires).",
+    "newErrors": 0,
+    "verdict": "PASS (baseline-consistent)"
+  },
+  "vitestGate": {
+    "command": "npx vitest run",
+    "result": "210 test files, 2148 tests, ALL PASSING - a complete green run including the two previously-flaky/disclosed items from the certification phase: tests/extraction/vercel-ai-gateway-provider.test.ts (an out-of-scope, environment-dependent anomaly disclosed in the certification's own 29-quality-gates.json) and tests/foundation-audit/repro-connection-race.test.ts (a disclosed, non-deterministic real-concurrency test, MAJOR_NON_BLOCKING per the certification, unrelated to any of the 11 blockers).",
+    "newTestFileCount": "~29 new test files added across the 7 workstreams, all passing, composing cleanly with the pre-existing suite.",
+    "verdict": "PASS - fully green, no failures of any kind this run."
+  },
+  "buildGate": {
+    "command": "npm run build",
+    "result": "Succeeds. 21 routes, identical route list and bundle-size profile to the certified baseline (the new lib/contract-model/analysis/** code is a library module, not a route, so it does not appear in the route list).",
+    "verdict": "PASS (baseline-consistent)"
+  },
+  "migrationGate": {
+    "command": "npx prisma migrate status; npx prisma migrate diff --from-schema-datamodel prisma/schema.prisma --to-url <DATABASE_URL> --script",
+    "result": "28 migrations, schema up to date, zero drift between the live database and prisma/schema.prisma.",
+    "verdict": "PASS"
+  },
+  "certificationArtifactImmutabilityIncident": {
+    "whatHappened": "Running the certification's own pre-existing script (scripts/phase-3f1-6-known-package-regression.ts) as part of this phase's known-package regression (Task 284) had an undisclosed side effect: the script itself hardcodes a fs.writeFileSync call that overwrites docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json with its own fresh output. This produced an uncommitted modification to a file under the frozen certification directory, caught by this session's own stop-hook git check before any commit was made.",
+    "remediation": "Immediately reverted via `git checkout -- docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json`, confirmed via `git diff` (empty) and `git status --short` (clean) that the frozen artifact was fully restored byte-for-byte, and confirmed via a repo-wide `git diff --stat -- docs/phase-3f1-6-final-foundation-certification/` that no other file under that directory was ever touched. The regression data itself was independently captured and correctly written to this phase's own artifact (22-known-package-regression.json, under docs/phase-3f1-6-r-blocker-remediation/, not the frozen directory) before the revert, so no information was lost.",
+    "disclosure": "Recorded here in full rather than omitted, per this phase's own transparency discipline - the frozen certification directory (docs/phase-3f1-6-final-foundation-certification/) remains byte-for-byte unmodified as of this phase's final commit, confirmed immediately before this artifact was written."
+  },
+  "overallGateSummary": "tsc, eslint, build, and migrations are all baseline-consistent with zero new errors. vitest is fully green (210/210 files, 2148/2148 tests) - a stronger result than the certification's own baseline, which had 2 disclosed pre-existing flaky/out-of-scope failures. One certification-artifact-immutability near-miss occurred during this phase (a pre-existing certification script's own hardcoded write path) and was caught and fully reverted before any commit; the frozen certification directory is confirmed byte-for-byte unmodified."
+}

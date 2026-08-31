@@ -1,0 +1,104 @@
+{
+  "workstream": "FIX-1 Part B independent recertification",
+  "auditor": "Independent Part B recertification auditor, HEADROOM FINAL 3F.1 CLOSURE",
+  "targetCommit": "b641ebf (FIX-1: remove NOISE_DISCOUNTED as heading-acceptance evidence) - Part A freeze",
+  "headAtAuditTime": "70ea103 (unrelated later documentation/other-auditor commits; lib/, app/, prisma/ not touched past b641ebf)",
+  "disposition": "STILL_OPEN",
+  "testFile": "tests/certification/part-b-final-fix1-independent-recert.test.ts (19 tests, all passing - documents actual observed production behavior)",
+  "summary": "FIX-1's genuinely-fixed original defect (NOISE_DISCOUNTED laundering unrelated noise adjacency into acceptance) stays closed - not reopened by any construction tried. But titleBodySeparationHolds's entire discriminating power rests on one unstated assumption: 'a fake in-text citation's continuation is lowercase; a real heading's own body is not.' That assumption is false whenever an in-text citation is itself a grammatically ordinary, well-punctuated sentence followed by a new sentence - which in real drafting is capitalized (or digit-led), exactly like a real heading's own body. Every such construction still launders a citation into a false top-level SECTION/ARTICLE and reproduces the module's own named 'rank-stack corruption' failure class (a real child clause silently re-parented to the spurious node) - with ZERO footnote, ZERO page-number noise, ZERO run-on lowercase grammar, and in several cases ZERO whitespace irregularity of any kind. The new wrap-tolerance mechanism adds its own narrower, additional false-positive path on top of this: identical text, merely re-wrapped across a line break immediately before its own tell-tale lowercase continuation, flips a correct rejection into a false acceptance (a minimal, mechanistic before/after pair, not merely a hypothetical). A real-world 'Term. means ...' definitions-section drafting convention is also wrongly vetoed as a false negative, silently merging its real content into the preceding section's owned span.",
+  "methodology": {
+    "codeRead": ["lib/contract-model/compiler/stage-structure.ts (full file, both before and after FIX-1's own doc-comments)", "docs/phase-3f1-final-closure/03-structural-fix.json (implementer's self-report - not trusted uncritically)"],
+    "existingTestsRead": ["tests/certification/part-a-final-fix1-structural.test.ts (implementer's own 22-case required matrix)", "tests/certification/part-b-terminal-recert-open1-independent.test.ts (prior-phase auditor's reproduction, now updated to certify FIX-1)"],
+    "approach": "Every construction in the new test file is fresh (no fixture text copied from either file above). Behavior was verified empirically against the real parseDocumentStructure/titleBodySeparationHolds/looksLikeNewContentStart(AfterPossibleTitleWrap) code paths via a scratch probe script before being committed to the test file, then confirmed a second time inside vitest.",
+    "regressionRun": "npx vitest run tests/certification/ tests/foundation-audit/ tests/contract-model/phase-2f1-structural-robustness.test.ts -> 54 test files, 696 tests, all passing (including this audit's own new file). No existing test already documents or accepts any of this audit's new findings as a known tradeoff - the implementer's own residualRisks[2] anticipated a narrower, 'theoretical' version of the wrap-tolerance gap (a fake continuation resolving within the bound AND coincidentally followed by new-looking content) and judged it 'not observed in any real fixture ... low, theoretical'; this audit demonstrates the underlying gap is neither narrow nor theoretical - it covers the ordinary case of any well-punctuated citation, with or without wrap-tolerance being invoked at all."
+  },
+  "confirmedStillClosed": {
+    "originalDefect": "NOISE_DISCOUNTED is genuinely gone from PLAUSIBILITY_SIGNAL_WEIGHT and isPlausibleByPositionalSignals; no construction reintroduced acceptance purely on the basis of unrelated noise adjacency.",
+    "requiredMatrixShapesReVerifiedWithFreshConstructions": [
+      "footnote-adjacent true heading (fresh numbers/wording) - holds",
+      "true heading immediately followed by its own OCR-style whitespace/tab artifacts (not merely preceded by them) - holds",
+      "adjacent ARTICLE/lowercase-keyword SECTION (signal C) - holds, correct parentage",
+      "lower-case real heading (both keywords lowercase) - holds, correct parentage",
+      "numerically-next prose citation - correctly rejected, real preceding section's clause correctly retained",
+      "schedule/table/list collapse - not independently re-tested in the new file (already covered exhaustively by the implementer's own matrix and 3 other unmodified suites); no reason found to doubt it"
+    ]
+  },
+  "falsifications": [
+    {
+      "id": "F1-capitalized-ordinary-continuation",
+      "test": "2. FALSIFICATION > citation followed by a completely ordinary capitalized new sentence",
+      "construction": "Section 6.08 Restricted Payments. The Borrower shall not make any Restricted Payment except as otherwise agreed.\nSection 6.09 Limitation on Restricted Payments. This citation refers to a limitation described in the Credit Agreement and does not itself constitute an independent covenant of this Agreement.\n(a) Permitted Liens existing on the Closing Date.\n\nSection 6.10 Liens. ...",
+      "expected": "6.09 is not a real heading; clause (a) belongs to 6.08.",
+      "actual": "6.09 is accepted as a top-level SECTION; clause (a) is re-parented to 6.09.",
+      "whyItMatters": "No footnote, no page-number noise, no lowercase run-on, no unusual whitespace - just an ordinary citation ending its own sentence with a real period, followed by an ordinary new sentence. This is not an edge case; it is the default shape of a well-written in-text citation, and it reproduces the exact rank-stack corruption the fix was certified to close."
+    },
+    {
+      "id": "F2-quote-after-citation",
+      "test": "2. FALSIFICATION > citation followed by a quoted defined term",
+      "actual": "6.09 accepted; clause (a) re-parented to 6.09.",
+      "whyItMatters": "Confirms the same gap for the opening-quote self-contained-start branch, independently of the plain-capital-letter branch."
+    },
+    {
+      "id": "F3-allcaps-acronym-after-citation",
+      "test": "2. FALSIFICATION > citation followed by ALL-CAPS defined-term acronym (GAAP)",
+      "actual": "6.09 accepted; clause (a) re-parented.",
+      "whyItMatters": "An ALL-CAPS acronym starting the next sentence is exactly as common in real drafting as a Title-Case sentence start, and defeats the signal identically."
+    },
+    {
+      "id": "F4-digit-led-sentence-after-citation",
+      "test": "2. FALSIFICATION > citation followed by a digit-led ordinary sentence (50% ...)",
+      "actual": "6.09 accepted; clause (a) re-parented.",
+      "whyItMatters": "A leading digit is treated identically to an uppercase letter by looksLikeNewContentStart - an ordinary numeric sentence opener (a percentage, a dollar figure, a defined threshold) is just as common in contracts as a capitalized one."
+    },
+    {
+      "id": "F5-two-unrelated-lines-wrap",
+      "test": "2. FALSIFICATION > two genuinely unrelated short lines wrapped together",
+      "actual": "A citation fragment ('Waiver of') glued via a line wrap to a wholly unrelated sentence about notice delivery is accepted as 'Section 9.05'.",
+      "whyItMatters": "Directly exercises the task's named 'two different unrelated short lines that happen to look wrapped into one heading-shaped span' risk."
+    },
+    {
+      "id": "F6-wrap-tolerance-minimal-pair",
+      "test": "3. FALSIFICATION > Case C vs Case D",
+      "construction": "Identical text in both cases (the classic lowercase-run-on false citation, 'Limitation on Restricted Payments. is only a cross-reference...'). Case C: no line wrap. Case D: one newline inserted between 'Limitation on' and 'Restricted Payments.'",
+      "expected": "Both cases reject 3.09 identically - a line-wrap position is a PDF-extraction artifact, never real evidence.",
+      "actual": "Case C correctly rejects 3.09 (clause (a) stays parented to 3.08). Case D - the SAME text, re-wrapped - wrongly ACCEPTS 3.09 and re-parents clause (a) to it.",
+      "whyItMatters": "This is the sharpest, most mechanistic falsification in the matrix: it isolates the wrap-tolerance mechanism specifically (looksLikeNewContentStartAfterPossibleTitleWrap's plain-check-first, short-window behavior) as the causal factor, independent of the general capitalization gap in F1-F5. The wrap-tolerance mechanism was added to rescue REAL wrapped titles (DSGR ARTICLE III, CONMED SECTION 2.10/2.4) but, as built, also rescues a FAKE wrapped citation whenever the wrap happens to land before its own tell-tale lowercase word - which is exactly the scrutiny this audit's brief asked for ('a mechanism built to fix a real-fixture regression could itself introduce a new false-positive path')."
+    },
+    {
+      "id": "F7-F8-named-required-shapes",
+      "tests": ["3. FALSIFICATION > unrelated footnote + wrapped citation", "3. FALSIFICATION > unrelated page artifact + wrapped citation"],
+      "actual": "Both named shapes from the governing spec reproduce the false acceptance + rank-stack corruption when combined with a mid-title wrap.",
+      "whyItMatters": "Directly answers the two explicitly-named required shapes, confirming the wrap-tolerance gap composes with the noise-stripping paths already present in the file."
+    },
+    {
+      "id": "F9-no-internal-terminal-rescued-by-following-heading",
+      "test": "3. FALSIFICATION > fake continuation with no internal terminal, rescued by a following real heading",
+      "actual": "A fake citation whose entire swallowed continuation has no internal '[.:;!?]\\s+' boundary (only one terminal, at its own physical line's end) is accepted purely because the NEXT REAL SECTION happens to follow shortly after - the fake continuation's own content is never inspected at all.",
+      "whyItMatters": "A third, structurally distinct code path (endsInOwnTerminalPunctuation branch, no wrap-tolerance hop even needed) with the same net effect - real documents routinely place sections close together, so this is a broadly available bypass, not a narrow corner case."
+    },
+    {
+      "id": "F10-definitions-means-false-negative",
+      "test": "4. FALSE NEGATIVE > 'Term. means ...' definitions convention",
+      "construction": "Section 1.08 Applicable Margin. means, with respect to any Loan, the percentage per annum set forth in the Pricing Grid...",
+      "actual": "1.08 is dropped entirely (titleBodySeparationHolds vetoes it, since 'means' is lowercase); its real text is silently absorbed into 1.07's owned span (charEnd(1.07) === charStart(1.09)).",
+      "severity": "secondary - lower confidence than F1-F9 since this exact convention was not found in any of the four certified real fixtures (FWRG/LSB/CONMED/DSGR), so it does not contradict the implementer's own fixture-scoped claim. Reported because 'Term. means ...' (omitting a repeated defined-term subject) is a real, common drafting convention outside this specific fixture set, and the resulting data corruption (one section's real text silently attributed to a different section) is the same class of harm rank-stack corruption protects against, just in the false-negative direction."
+    }
+  ],
+  "rankStackCorruptionConfirmedBothDirections": {
+    "falseAcceptDirection": "F1/F2/F3/F4/F6/F7/F8/F9 above all re-parent a real child clause from its true enclosing section to a spurious one - the module's own named failure class, reproduced with ordinary well-formed prose, not merely footnote/noise-adjacent constructions.",
+    "falseNegativeDirection": "F10 shows a real section's own text silently merged into an unrelated preceding section's owned span when the real section is wrongly dropped."
+  },
+  "residualRiskFromImplementerReportRevisited": {
+    "implementerClaim": "residualRisks[2]: 'a hypothetical adversarial shape not covered by the required matrix ... not observed in any real fixture or required adversarial case ... low, theoretical'",
+    "auditorFinding": "This significantly understates the risk. The gap is not confined to the wrap-tolerance bound at all (F1-F5, F9 need no wrap-tolerance whatsoever - the PLAIN, non-wrap check is what's fooled), is not coincidental (it fires on the single most common real-world citation shape: a citation that is its own complete, well-punctuated sentence), and is trivially reproducible without any adversarial cleverness."
+  },
+  "constraintsRespected": [
+    "No prisma migrate dev/reset/db push run",
+    "No file under lib/, app/, or prisma/ modified",
+    "No historical docs/phase-3f1-* artifact file modified (this is a new file)",
+    "npx tsc --noEmit -p .: 6 errors, identical to the documented baseline, none in the new test file",
+    "npx eslint .: 1 error, identical to the documented baseline, not in the new test file",
+    "git add scoped to exactly the two files this audit added (this JSON and the new test file) - never git add -A; working tree had no sibling-session files present at audit time"
+  ],
+  "recommendation": "Do not close FIX-1 as CERTIFIED_CLOSED. The fix correctly closes the specific NOISE_DISCOUNTED defect and the specific lowercase-run-on shape the required matrix tests, but titleBodySeparationHolds needs a materially different design (or an explicit, documented scope narrowing to 'only catches lowercase-run-on citations, not well-punctuated ones') before the false-heading class can be considered closed. The wrap-tolerance mechanism in particular should not treat a bare capital-letter/digit/keyword check as sufficient at the FIRST character after a resumption point without also verifying the resumed text does not itself trail off into an ordinary sentence shortly after - the same failure this file's own doc-comment says an early open-ended/multi-hop draft was rejected for reintroducing, just reached from the opposite (too-short-a-check) direction instead of a too-long one."
+}

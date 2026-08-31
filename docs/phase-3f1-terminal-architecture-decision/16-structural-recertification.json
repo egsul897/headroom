@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-terminal-architecture-decision.v1",
+  "artifactId": "STRUCTURAL_RECERTIFICATION",
+  "part": "B",
+  "role": "INDEPENDENT auditor, adversarial falsification only - never rerunning Part A's own tests as sole evidence",
+  "defectId": "OPEN-1",
+  "correspondsTo": "BLOCKER-1 (structural heading false negatives / rank-stack corruption)",
+  "auditedCommit": "0ef66a9",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "file": "lib/contract-model/compiler/stage-structure.ts",
+
+  "partAClaim": {
+    "source": "docs/phase-3f1-terminal-architecture-decision/03-structural-final-fix.json",
+    "disposition": "root-cause fixed",
+    "mechanism": "stripTrailingFootnoteMarker generalized from 'begins with literal terminal punctuation' to 'a short digit run glued to any preceding character, guarded against splitting a real decimal number'. The old strict boolean signal-A-OR-signal-B gate replaced with isPlausibleByPositionalSignals, a SCORED evaluation of five weighted signals (PARAGRAPH_BREAK=3, SENTENCE_TERMINAL_PUNCTUATION=3, NOISE_DISCOUNTED=1, CLOSING_DELIMITER=1, AT_LEAST_ONE_NEWLINE=1) accepted at threshold 3.",
+    "ownSelfDisclosedLimitation": "Part A's own honest self-assessment already discloses one residual gap on the false-negative side (a footnote digit glued to a plain word with no punctuation/bracket still scores below threshold and is rejected, deliberately, to avoid reopening a certified false-positive boundary). It does not discuss the inverse risk investigated here: whether the same scoring composition can now accept something it should not."
+  },
+
+  "codeReadDirectly": {
+    "method": "Read lib/contract-model/compiler/stage-structure.ts in full at the audited commit (not Part A's JSON) before writing any test.",
+    "keyObservation": "isPlausibleByPositionalSignals computes `noiseDiscounted = withoutNoise !== before` (line ~619) purely as 'did stripping typographic noise change the `before` text at all' within a 200-char lookback window. Nothing in this computation, nor in precededByClosingDelimiter or precededByAtLeastOneNewline, requires that the discounted noise be causally connected to THIS candidate being a genuine heading boundary - it only requires that a footnote/page-marker-shaped digit run existed SOMEWHERE in the trailing 200 characters before the candidate, glued to whatever character preceded it, and that after stripping it, the residual text also happens to end in a closing quote/bracket and contains at least one newline. A wholly unrelated genuine footnote belonging to an entirely different, earlier sentence can supply this same evidence for a completely unrelated candidate that merely happens to sit on the very next physical line."
+  },
+
+  "newAdversarialTests": {
+    "file": "tests/certification/part-b-terminal-recert-open1-independent.test.ts",
+    "newFileConfirmed": true,
+    "neverRerunsPartAsOwnTestAsSoleEvidence": true,
+    "noveltyCheck": "Read tests/certification/part-b-recert-finding1-independent.test.ts in full (all 13 describe blocks, including Part A's own 8 freshly-added categories) before writing this file. Part A's own false-positive controls (describe block 9) only pair a closing-bracket-ending citation with NO glued noise, to prove the bracket shape alone is insufficient. None combine a REAL, genuine footnote marker - glued to something UNRELATED to the candidate under test - with a following ordinary in-text citation. That composition is the entire content of this file's describe blocks 1, 2 and 5.",
+    "constructions": [
+      {
+        "id": "describe block 1 (primary)",
+        "description": "A real Section 6.08 heading whose OWN sentence ends in a genuine footnote marker glued to a closing paren/quote (the exact shape Part A's fix targets and correctly recognizes as noise for 6.08 itself). Immediately following, on the very next physical line, an ORDINARY in-text cross-reference - 'Section 6.09 Limitation on Restricted Payments. is only an illustrative cross-reference...' - continues the SAME paragraph of body prose (it is not a real heading; the paragraph carries on describing the same restriction). A real lettered clause '(a)' genuinely belonging to Section 6.08's own body follows.",
+        "targetsMechanism": "NOISE_DISCOUNTED(1) + CLOSING_DELIMITER(1) + AT_LEAST_ONE_NEWLINE(1) = 3, meeting PLAUSIBILITY_SCORE_THRESHOLD, computed for the 'Section 6.09' candidate using noise that belongs entirely to the PRECEDING, unrelated Section 6.08 sentence.",
+        "observed": "'Section 6.09' is wrongly accepted as a real top-level SECTION node. Clause '(a)' - genuinely part of Section 6.08's own body text - is re-parented (via the rank-based stack pass) to the spurious 6.09 node instead of its true parent, 6.08.",
+        "isolationControl": "Removing only the glued footnote digit (identical text otherwise) correctly reverts to rejecting 6.09 and correctly parents clause (a) to 6.08 - isolates the false positive to the unrelated noise, not to the citation's own shape or the newline alone."
+      },
+      {
+        "id": "describe block 2 (generalization)",
+        "description": "Identical class reproduced with a materially different combination: fully lowercase keyword throughout ('section'), a closing SQUARE BRACKET instead of quote/paren, and a 2-digit marker instead of 1-digit.",
+        "observed": "Spurious 'Section 8.06' accepted; clause (a) re-parented from its true parent 8.05 to the spurious 8.06. Isolation control (digit removed) correctly rejects 8.06 and correctly parents clause (a) to 8.05.",
+        "significance": "Proves this is a genuine CLASS reachable via the scoring design, not an artifact of one specific punctuation/case/digit-width combination."
+      },
+      {
+        "id": "describe blocks 3-4 (false-negative honesty check)",
+        "description": "Fresh false-negative probes across pattern families Part A's own suite never composed with footnote-adjacency for OPEN-1: the flat-integer amendment convention (INTEGER_SECTION_PATTERNS, 'SECTION N. Title.') and the bare no-keyword convention (BARE_INTEGER_SECTION_PATTERN, 'N. Title'), plus a tighter stacking of the §10 invariant's four adverse conditions (lowercase Roman-numeral ARTICLE + square-bracket-glued footnote + zero blank lines + an immediately-adjacent SECTION with no gap at all).",
+        "observed": "HOLDS in all cases - both integer-style headings, both bare-integer headings, and the tightly-stacked ARTICLE/SECTION pair all survive with correct sectionRef/parentSectionRef. Included as the honest positive counterpart, not merely defect-hunting: Part A's false-negative fix does generalize correctly across pattern families it never explicitly tested."
+      },
+      {
+        "id": "describe block 5 (invariant restatement)",
+        "description": "Restates the phase's own §10 false-positive invariant directly against block 2's lowercase reproduction: capitalization plays no role in the false positive at all - a fully lowercase citation-shaped candidate, with no ALL-CAPS or Title-Case anywhere nearby, is still laundered into a heading by unrelated noise adjacency alone.",
+        "observed": "Confirms the operative invariant violation is 'line-start position + heading-like SHAPE + causally-unrelated noise adjacency', a strictly broader and more commonly-reachable condition than 'line-start position + heading-like capitalization' (which Part A's own block 9(c) already correctly guards)."
+      }
+    ]
+  },
+
+  "testOutputVerbatim": {
+    "command": "npx vitest run tests/certification/part-b-terminal-recert-open1-independent.test.ts --reporter=verbose",
+    "result": "Test Files  1 passed (1) / Tests  9 passed (9). All 9 tests PASS as written - each assertion documents the ACTUAL (observed) output of the current implementation, so a passing test here is itself the falsifying evidence (the same convention Part A's own now-fixed FINDING-1 suite used before its fix, run in reverse: these assertions encode the wrong behavior the code currently produces, not the correct behavior it should)."
+  },
+
+  "reproductionEvidence": {
+    "primaryConstruction_input": "ARTICLE VI COVENANTS\\n\\nSection 6.08 Restricted Payments. The Borrower shall not make any Restricted Payment except as permitted under the definition of \"Permitted Tax Distribution\")9\\nSection 6.09 Limitation on Restricted Payments. is only an illustrative cross-reference embedded in the same paragraph of ordinary body prose, not a real document heading, and the paragraph continues describing the same limitation without any true section break here at all.\\n\\n(a) Permitted Liens existing on the Closing Date.\\n\\nSection 6.10 Liens. The Borrower shall not create Liens.",
+    "primaryConstruction_actualOutput": [
+      { "nodeType": "ARTICLE", "sectionRef": "VI", "parentSectionRef": null, "charStart": 0 },
+      { "nodeType": "SECTION", "sectionRef": "6.08", "parentSectionRef": "VI", "charStart": 22 },
+      { "nodeType": "SECTION", "sectionRef": "6.09", "parentSectionRef": "VI", "charStart": 182, "note": "SPURIOUS - an ordinary in-text citation, not a real heading" },
+      { "nodeType": "SUBSECTION", "sectionRef": "6.09(a)", "parentSectionRef": "6.09", "charStart": 458, "note": "CORRUPTION - genuinely part of Section 6.08's own body, re-parented to the spurious node" },
+      { "nodeType": "SECTION", "sectionRef": "6.10", "parentSectionRef": "VI", "charStart": 509 }
+    ],
+    "isolationControl_sameTextWithoutGluedDigit_actualOutput": [
+      { "nodeType": "ARTICLE", "sectionRef": "VI", "parentSectionRef": null },
+      { "nodeType": "SECTION", "sectionRef": "6.08", "parentSectionRef": "VI" },
+      { "nodeType": "SUBSECTION", "sectionRef": "6.08(a)", "parentSectionRef": "6.08", "note": "CORRECT - no 6.09 node created, clause (a) correctly parented to 6.08" },
+      { "nodeType": "SECTION", "sectionRef": "6.10", "parentSectionRef": "VI" }
+    ],
+    "commonPattern": "The rank-based stack pass (stage-structure.ts, the RANK-driven forEach near the end of parseDocumentStructure) is entirely correct given its inputs - it faithfully computes physical nesting from whatever `raws` array it is handed. The corruption originates upstream, at isPlausibleByPositionalSignals's acceptance of a raw node that should never have been constructed at all. This is structurally the SAME class of defect OPEN-1 names (real content re-parented away from its true physical ancestor to a different node) - just reached via a false POSITIVE (an ordinary citation wrongly accepted as a heading) rather than the false NEGATIVE (a real heading wrongly dropped) Part A's own fix targeted, and it was introduced by, not merely left over from, Part A's own new scoring composition (the pre-Part-A boolean gate did not have a NOISE_DISCOUNTED signal at all)."
+  },
+
+  "dbCleanlinessVerification": {
+    "note": "This defect area (lib/contract-model/compiler/stage-structure.ts) is pure, synchronous, in-memory text parsing with no database interaction of any kind. The new test file makes zero Prisma calls and creates no test company/fixture rows.",
+    "destructiveDbPatternCheck": {
+      "command": "npx tsx scripts/check-destructive-db-patterns.ts",
+      "exitCode": 1,
+      "findingCount": 12,
+      "newFindingsFromThisChange": 0,
+      "note": "Identical 12 pre-existing findings as Part A's own remediation doc and every other recertification in this phase reported (the checker's own pattern-definition strings in scripts/check-destructive-db-patterns.ts, plus tests/infrastructure/db-isolation-adversarial.test.ts's own deliberate guard-exercise). Grep-confirmed zero occurrences of the new test file's path in the checker's output."
+    }
+  },
+
+  "regressionConfirmation": {
+    "command": "npx vitest run tests/certification/part-b-recert-finding1-independent.test.ts tests/certification/part-b-terminal-recert-open1-independent.test.ts tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts",
+    "result": "4 files, 78 tests, all pass. Part A's own full 21-test FINDING-1 suite remains green, and the pre-existing rank-stack/false-negative-guard suites remain green - confirming this recertification's new file does not depend on, conflict with, or require modifying any existing suite, and that the newly-found false positive is a genuinely fresh gap invisible to every previously-committed test."
+  },
+
+  "scopeDiscipline": {
+    "productionCodeModified": false,
+    "filesTouchedByThisRecertification": [
+      "tests/certification/part-b-terminal-recert-open1-independent.test.ts (new)",
+      "docs/phase-3f1-terminal-architecture-decision/16-structural-recertification.json (new, this file)"
+    ],
+    "noExistingTestFileModifiedOrDeleted": true,
+    "partAsOwnFixLeftEntirelyIntact": "lib/contract-model/compiler/stage-structure.ts was read only, never edited by this task."
+  },
+
+  "assessmentOfPartAsClaim": {
+    "whatPartAGotRight": "The originally-frozen FINDING-1 falsification (a footnote digit glued directly to a bare closing paren/quote/bracket dropping a real ARTICLE or SECTION, with a child re-parented to null) is genuinely fixed. All 21 tests in Part A's own suite pass, and this audit's own fresh false-negative probes across the integer-section and bare-integer pattern families (never explicitly composed with footnote-adjacency in Part A's own suite) confirm the fix generalizes correctly on the false-negative side. The generalized stripTrailingFootnoteMarker noise CLASS and the Category-6 decimal-number guard both hold under adversarial pressure.",
+    "wherePartAsClaimOverreaches": "Part A's own design record frames NOISE_DISCOUNTED as evidence that 'something is obscuring the true boundary character' for THIS candidate, and explicitly argues CLOSING_DELIMITER is 'never treated as standalone-sufficient' because 'nothing about the bracket itself tells the two apart' - correctly identifying the risk in the abstract, but the actual implementation of NOISE_DISCOUNTED does not check that the discounted noise is adjacent to and part of the SAME sentence/boundary as the candidate's own preceding text, only that stripping changed something within a 200-character lookback window. A genuine footnote belonging to a completely different, earlier sentence supplies the exact same weight. Because CLOSING_DELIMITER and AT_LEAST_ONE_NEWLINE are cheap, common properties of ordinary in-text citations sitting at a line start (word-wrapped prose routinely puts 'Section N.NN ...' at the start of a physical line without it being a heading - the same real-world shape Part A's own doc-comment for signal (B) and the original P1-10 gate were written to guard against), any document containing both an ordinary footnote/endnote reference AND a line-wrapped in-text section citation nearby is newly exposed to a false positive that did not exist under the pre-Part-A boolean gate (which had no NOISE_DISCOUNTED signal to misapply)."
+  },
+
+  "disposition": "STILL_OPEN",
+  "dispositionRationale": "OPEN-1 is NOT closed. Part A's remediation correctly fixes the specific false-negative reproduction it inherited (a real heading dropped and its child re-parented to null when preceded by a footnote glued to a bare closing delimiter), and this audit's own fresh false-negative probes across untested pattern families confirm that fix generalizes honestly. However, the SAME scoring composition Part A introduced to achieve that fix (NOISE_DISCOUNTED + CLOSING_DELIMITER + AT_LEAST_ONE_NEWLINE = 3, meeting threshold) opens a new, freshly-constructed false-positive path: a genuine footnote marker belonging to an entirely unrelated, earlier sentence, sitting immediately before an ordinary in-text section citation that happens to begin a new physical line, launders that citation into a false top-level heading. This reproduces the exact 'rank-stack corruption' failure class OPEN-1 is named for - a real child node (a lettered clause genuinely belonging to the true enclosing section's own body) is silently re-parented away from its correct ancestor to the spurious node - via a false POSITIVE rather than the false NEGATIVE direction Part A's fix targeted, confirmed under two materially different punctuation/case/digit-width combinations and isolated via controls that show removing only the unrelated glued digit restores correct behavior. Recommended remediation (not applied, per this task's read-only-on-production-code constraint): require NOISE_DISCOUNTED to only contribute weight when the discounted noise sits in the SAME unbroken run of non-newline text as the rest of the evaluated boundary (i.e. the footnote/page-marker artifact and the closing delimiter/newline evidence must all describe the one physical line immediately preceding the candidate, not merely something within an arbitrary 200-character lookback window that may span an entirely different sentence)."
+}

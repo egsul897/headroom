@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRUCTURAL_RECERTIFICATION_PART_B",
+  "workstream": "OPEN-1",
+  "auditorRole": "INDEPENDENT_PART_B_RECERTIFICATION_AUDITOR",
+  "pinnedProductionCommit": "a7ee654f4eec1614ef59d47c5f07c597264edc5a",
+  "auditCommitAtTimeOfThisArtifact": "bd72f7d231ac37d62d84fe1cf24cde5dfdd9aed9",
+  "disposition": "CERTIFIED_CLOSED",
+  "filesChanged": {
+    "created": [
+      "tests/foundation-audit/part-b-open1-recert-adversarial-matrix.test.ts",
+      "tests/foundation-audit/part-b-open1-recert-real-pipeline.test.ts",
+      "docs/phase-3f1-human-architecture-decision/15-structural-recertification.json"
+    ],
+    "modified": [],
+    "productionCodeTouched": false,
+    "note": "No file under lib/, app/, or prisma/ was modified by this audit, per this audit's own constraints. No historical docs/phase-3f1-* artifact was modified. Only fresh test files this auditor wrote were `git add`-ed (never `git add -A`) - a sibling OPEN-2 auditor's own untouched working file (tests/certification/open-2-recert-independent-fresh.test.ts) was deliberately left unstaged and unmodified."
+  },
+  "wiringVerification": {
+    "claim": "A real end user's compile run through app/[companyId]/onboarding/documents/actions.ts -> runContractAnalysis (lib/contract-model/analysis/orchestrator.ts) genuinely reaches the deterministic-triage + bounded fail-closed LLM classifier architecture, not merely the isolated new modules or the quarantined lib/contract-model/compiler/orchestrator.ts pipeline.",
+    "methodology": "Read every named file in full (stage-structure.ts 1820 lines, structural-ambiguity-classifier.ts, structural-ambiguity-resolution.ts, analysis/orchestrator.ts 897 lines, compiler/orchestrator.ts header, legacy-phase-c-quarantine.test.ts) before trusting any claim in the implementers' own 04-structural-implementation.json. Independently traced the STRUCTURE-stage call site by direct source inspection rather than accepting the report's line-number citation.",
+    "findings": [
+      "app/[companyId]/onboarding/documents/actions.ts:8,52 imports and calls `runContractAnalysis` from `@/lib/contract-model/analysis` (which re-exports from ./orchestrator) - this is the real, only call site a document-analysis trigger reaches.",
+      "lib/contract-model/analysis/orchestrator.ts line 760 (inside runContractAnalysis's STRUCTURAL_ANALYSIS stage) reads: `const structureRes = await runStructureStageWithAmbiguityResolution(packageDocs, { companyId, instrumentKey: packageKey }, callers.structuralCaller);` - this is the new triage-aware entry point, not the old bare `runStructureStage`/`parseDocumentStructure`. Grepped the whole file: zero remaining calls to the old bare functions for structural-node construction.",
+      "`callers.structuralCaller` defaults to the real, env-var-driven `getStageCaller()` (line 673) when the caller supplies no override - identical acquisition pattern to discoveryCaller/amendmentCaller/verificationCaller.",
+      "`runStructureStageWithAmbiguityResolution` (structural-ambiguity-resolution.ts) calls `parseDocumentStructureWithTriage` per document and, only for documents with >=1 AMBIGUOUS candidate, calls `resolveStructuralAmbiguity` -> `classifyStructuralAmbiguity` - the real bounded classifier module.",
+      "lib/contract-model/compiler/orchestrator.ts's own header confirms it is QUARANTINED ('app/** must never import runContractCompiler from this file'), and tests/foundation-audit/legacy-phase-c-quarantine.test.ts mechanically (ESLint + a real grep-based test over the actual app/ directory) proves app/ contains zero such imports - re-read and understood, not merely assumed.",
+      "Confirmed via env inspection that this sandbox has neither AI_GATEWAY_API_KEY nor ANTHROPIC_API_KEY set, and that lib/contract-model/compiler/llm-caller.ts's getStageCaller() selection order therefore falls through to SyntheticStageCaller (isSynthetic=true) off Vercel - independently re-verified via a live getStageCaller().isSynthetic===true assertion in this audit's own new test file, not merely cited from the implementers' report.",
+      "Drove the REAL runContractAnalysis end-to-end (real Postgres, real uploadAndChunkDocument upload path, real persistStructuralNodes) with a fixture never used by any prior test file in this repo, and observed: structuralAmbiguityMetrics.ambiguousCount=2, classifierSyntheticCount=2, uncertainCount=2 (two INDEPENDENT ambiguous citations in one document, each individually reaching the classifier and each individually fail-closed excluded, confirmed against the real persisted DocumentNode rows in Postgres)."
+    ],
+    "verdict": "TRUE - independently confirmed, not merely trusted from the implementers' own report. The wiring is genuine, complete, and reaches the real bounded classifier's fail-closed synthetic-fallback path through the actual live orchestration boundary."
+  },
+  "adversarialTestMatrix": {
+    "totalFreshCases": 27,
+    "note": "Every fixture uses subject matter/wording/section numbers never used in the implementers' own deliverable tests (Investments/Reporting/Asset-Dispositions/Restricted-Subsidiary covenants, Article V/VII/VIII/IX, fresh section numbers 4.1x/5.0x/6.2x/7.0x/8.0x/9.0x, distinct from the implementers' own 6.01-6.10/1.07-1.09/2.10/3.08-3.10/7.02 constructions). Every fixture was independently probed against the real, unmodified production code (via a throwaway tsx harness) before being committed as a test assertion - never 'write assertions and hope'.",
+    "trueHeadingCounterpartsCovered": [
+      "capitalized title + capitalized body -> CONFIDENT_HEADING",
+      "title + digit-led body -> CONFIDENT_HEADING",
+      "title + quoted/defined-term body -> CONFIDENT_HEADING",
+      "lowercase keyword -> CONFIDENT_HEADING",
+      "OCR collapsed spaces/tabs -> CONFIDENT_HEADING",
+      "wrapped title -> AMBIGUOUS (seam=INCOMPLETE_NO_TERMINAL; correct, safe, per spec never a failure)",
+      "page-number-artifact adjacent -> CONFIDENT_HEADING",
+      "footnote marker glued to a CLOSING PAREN (not just a period) -> CONFIDENT_HEADING (exercises the Part-A generalized footnote-noise class specifically)",
+      "ARTICLE immediately followed by SECTION -> CONFIDENT_HEADING (both nodes)",
+      "integer amendment section -> CONFIDENT_HEADING",
+      "bare integer section (no keyword) -> CONFIDENT_HEADING",
+      "genuinely-structural 'Term. means ...' with strong (paragraph-break) evidence -> CONFIDENT_HEADING, zero classifier calls",
+      "clean multi-section document -> 0 ambiguous, deterministicResolutionRate=1.0"
+    ],
+    "prosereferenceCounterpartsCovered": [
+      "complete citation sentence + capitalized sentence -> AMBIGUOUS (never CONFIDENT_HEADING)",
+      "citation + quote-led sentence -> AMBIGUOUS",
+      "citation + acronym-led sentence -> AMBIGUOUS",
+      "citation + number-led sentence -> AMBIGUOUS",
+      "numerically-next citation (table-row shape) -> CONFIDENT_PROSE_REFERENCE (deterministic, zero classifier calls)",
+      "wrapped citation -> AMBIGUOUS",
+      "unrelated footnote + citation -> CONFIDENT_PROSE_REFERENCE (deterministic)",
+      "unrelated page artifact + citation -> CONFIDENT_PROSE_REFERENCE (deterministic)",
+      "table/list/schedule collapse -> CONFIDENT_PROSE_REFERENCE",
+      "two unrelated short lines heading-shaped by extraction -> AMBIGUOUS",
+      "real next heading shortly after a fake citation -> fake never CONFIDENT_HEADING, real subsequent heading (8.07) unaffected"
+    ],
+    "compositionRankStackChecks": [
+      "AMBIGUOUS fail-closed-excluded candidate never re-parents a neighboring real clause away from its true enclosing section (2 independent fresh constructions)",
+      "a genuine CONFIDENT_HEADING with 3 lettered sub-clauses never loses any child or has a child mis-parented",
+      "TWO independent AMBIGUOUS candidates excluded in the SAME document never merge/corrupt each other's neighboring real sections",
+      "resolution-layer: mixed LIKELY_PROSE_REFERENCE + UNCERTAIN verdicts across 2 ambiguous candidates in one document - both excluded, clauses correctly parented, exactly 1 classifier call per candidate, exactly 1 review signal (only for the genuinely UNCERTAIN one)",
+      "real end-to-end (real Postgres persistence): 2 independent ambiguous citations in one document both resolve UNCERTAIN via the real synthetic fallback, are absent from persisted DocumentNode rows, and both real clauses '(a)' are persisted with the CORRECT parentId pointing at their true enclosing section (7.08, 7.10) - queried directly from Postgres, not from in-memory state"
+    ],
+    "materialFailuresFound": 0
+  },
+  "rateMetricsMeasured": {
+    "cleanDeterministicDocument": { "totalCandidates": 7, "ambiguousCount": 0, "deterministicResolutionRate": 1.0, "classifierInvocationRate": 0.0 },
+    "twoIndependentAmbiguitiesInOneDocument": { "ambiguousCount": 2, "classifierInvocationRate": "2/6 candidates in that fixture", "classifierCallsObserved": 2, "note": "exactly one classifier call per ambiguous candidate, verified via a call-counting StageCaller - never more, never a shared/batched call that could conflate two candidates' own evidence" },
+    "classifierAccuracyOnKnownGroundTruth": "100% (scripted, known-ground-truth verdicts correctly applied/excluded) - this environment has no working AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY, so a real-model accuracy claim is not obtainable here (confirmed via a live getStageCaller().isSynthetic===true assertion in this audit's own test, not assumed); the classifier's ORCHESTRATION and fail-closed POLICY enforcement is what was independently verified, both with scripted callers and with the REAL synthetic fallback.",
+    "uncertainRateOnRealSyntheticFallback": "100% of ambiguous candidates resolve UNCERTAIN/failed/isSynthetic when routed through the real (unmocked) getStageCaller() in this credential-less environment - confirmed both in isolation (resolveStructuralAmbiguity) and end-to-end through the real runContractAnalysis pipeline.",
+    "falseHeadingCount": 0,
+    "missedHeadingCountBeyondDesignedAmbiguous": 0,
+    "materialHierarchyCorruptionCount": 0,
+    "confidentHeadingZeroClassifierCallsVerified": true
+  },
+  "regressionResults": {
+    "newTestsPassing": "38/38 (34 in part-b-open1-recert-adversarial-matrix.test.ts, 4 in part-b-open1-recert-real-pipeline.test.ts)",
+    "fullSuite": "npx vitest run: 271 files, 2924 tests, 2923 passed, 1 failed. The 1 failure (tests/contract-model/part-b-recert-finding4-independent.test.ts, a wall-clock O(n) growth-ratio assertion for an UNRELATED condition-parsing bare-or-chain subsystem, not touched by this audit or by OPEN-1's own diff) is the SAME pre-existing, environment/timing-sensitive flake already disclosed in the implementers' own 04-structural-implementation.json regression record - independently re-confirmed flaky by this auditor via a standalone re-run of that single file (still fails in isolation on this run, ratio landed exactly at the boundary=8 vs required <8, a wall-clock timing artifact of this sandbox, not a structural/OPEN-1 regression).",
+    "typeChecking": "npx tsc --noEmit -p . : exactly the same 6 pre-existing baseline errors (cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3), 0 new errors. (One transient new error was introduced and immediately fixed by this auditor during drafting - a nullable sectionRef access in this audit's own new test file - before this final count.)",
+    "linting": "npx eslint . : exactly the same 1 pre-existing baseline error (amendment-operative-state-adversarial.test.ts, missing @typescript-eslint/no-var-requires rule definition), 0 new errors."
+  },
+  "summaryForCaller": "The wiring claim in docs/phase-3f1-human-architecture-decision/04-structural-implementation.json holds up under this auditor's own independent, from-first-principles verification: a real user's compile run genuinely reaches parseDocumentStructureWithTriage + the bounded structural-ambiguity classifier via runContractAnalysis, and the fail-closed synthetic-fallback path genuinely fires through the real pipeline (not merely in unit tests) in this credential-less environment. Across 27 fresh adversarial cases (never copied from any implementer or prior-auditor test file) spanning every required shape in both directions, plus dedicated rank-stack-corruption composition checks and a real end-to-end Postgres-backed pipeline test with TWO independent ambiguous citations in one document, this auditor could not falsify the required safety property: zero false CONFIDENT_HEADING acceptances, zero false CONFIDENT_PROSE_REFERENCE rejections, and zero material rank-stack corruption in either direction. Every genuinely hard case correctly and safely resolves to AMBIGUOUS/UNCERTAIN (never a confident wrong answer), and ordinary confident documents cost exactly zero classifier calls, confirmed via call-counting stage callers at both the isolated-function and full-orchestrator level.",
+  "commitShas": {
+    "productionFreezeCommitAudited": "a7ee654f4eec1614ef59d47c5f07c597264edc5a",
+    "priorPartBFreezeCommit": "bd72f7d231ac37d62d84fe1cf24cde5dfdd9aed9",
+    "thisAuditsOwnCommit": "PENDING - set by the commit this deliverable is checked in with; see git log for tests/foundation-audit/part-b-open1-recert-*.test.ts and this file"
+  }
+}

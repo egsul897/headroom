@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_KNOWN_PACKAGE",
+  "script": "scripts/phase-3f1-6-known-package-regression.ts (read-only w.r.t. persistent fixture data; scratch company id, torn down within the script)",
+  "dangerousSilentFailureCheck": { "fwrg": 0, "lsb": 0, "dsgr": 215, "conmed": "NOT_APPLICABLE - no semantic-coverage fixture exists for CONMED (pre-existing, disclosed gap, unrelated to this phase)" },
+  "comparisonToPriorBaseline": "Identical to the numbers on record before OPEN-1/OPEN-2 (fwrg=0, lsb=0, dsgr=215, conmed N/A) - NO_REGRESSION, confirmed independently three times across this phase's three workstreams (structural triage, quarantined-orchestrator wiring, real-orchestrator wiring).",
+  "sideEffectHandling": "This script rewrites docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json as a documented side effect. Reverted via git checkout -- each time it was run this phase, preserving historical-artifact immutability.",
+  "verdict": "NO_REGRESSION"
+}

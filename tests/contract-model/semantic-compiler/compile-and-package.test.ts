@@ -56,6 +56,8 @@ function discoveredCandidate(discoveryId: string, role: DiscoveredCandidate["rol
     confidence: 1,
     sourceCitation: "§9.01",
     discoveryRunVersion: "test-v1",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
   } as DiscoveredCandidate;
 }
 

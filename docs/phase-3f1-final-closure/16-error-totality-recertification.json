@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART-B-FIX3-INDEPENDENT-RECERTIFICATION",
+  "workstream": "HEADROOM - FINAL 3F.1 CLOSURE - Part B recertification of FIX-3 (total error classification)",
+  "role": "INDEPENDENT Part B recertification auditor - no production code modified",
+  "pinnedProductionFreeze": "b641ebfb9d1e9145470d06823b52c20dcd90e0a1",
+  "auditCommit": "70ea103fbe7f2d1018d8c45c3a889bff303bb795",
+  "targetFile": "lib/contract-model/analysis/orchestrator.ts",
+  "targetFunctions": ["safeErrorMessage", "safeErrorClass", "classifyError"],
+  "priorArtifactsRead": [
+    "docs/phase-3f1-final-closure/05-total-error-classification-fix.json (implementer's self-report - read, not trusted uncritically)",
+    "tests/certification/part-a-final-fix3-error-totality.test.ts (read in full to avoid pure duplication)",
+    "tests/certification/part-a-final-fix3-orchestrator-e2e-observability.test.ts (read in full to avoid pure duplication)"
+  ],
+  "newEvidenceFile": "tests/certification/part-b-recert-fix3-independent-adversarial.test.ts",
+  "methodology": {
+    "codeLineByLineReview": "Read safeErrorMessage/safeErrorClass/classifyError line by line and mapped every property access/operator touching `err`: (1) `value instanceof Error` - independently try/catch-guarded in BOTH functions, never a bare `if`. (2) `.message` read - its own try/catch, entered only after the guarded instanceof passed. (3) non-string `.message` -> `String(msg)` - its own nested try/catch. (4) final `String(value)` fallback - its own try/catch. (5) `.constructor` read - its own try/catch inside the guarded instanceof branch. (6) `ctor.name` read - happens INSIDE THE SAME try block as `.constructor` (not a separate unguarded access), confirmed to cover two-level poisoning. No `in` operator, no `Object.prototype.toString.call`, no `Object.getOwnPropertyDescriptor`, and no `JSON.stringify` of the raw value anywhere in the guarded path (confirmed via grep) - so those specific hostile channels are structurally inert here rather than merely untested.",
+    "freshHostileValueCount": 19,
+    "note": "19 exceeds the required minimum of 15; overlap with the implementer's own matrix was deliberately avoided (see each test's own comment for the distinct JS mechanism it targets)."
+  },
+  "freshAdversarialMatrix": [
+    { "case": "Error[Symbol.hasInstance] globally poisoned to throw", "distinctFrom": "implementer's Proxy getPrototypeOf-trap finding - this attacks instanceof via the constructor side (Error itself), not the value side", "result": "safeErrorMessage/safeErrorClass caught it internally and returned normally (proven by direct try/catch capture around the real functions); see methodologyFinding below for a related test-framework artifact this surfaced" },
+    { "case": "Proxy over a real Error where ONLY the `has` trap throws", "targets": "the `in` operator / Reflect.has", "result": "no throw (confirms no `in` check anywhere in the guarded path)" },
+    { "case": "Symbol.toStringTag divergence: Object.prototype.toString.call() would succeed but the object's own toString() throws", "result": "no throw - code uses String(value)/toString path, correctly guarded, never silently substitutes the toStringTag" },
+    { "case": "Proxy whose getOwnPropertyDescriptor trap throws (get/getPrototypeOf pass through)", "result": "no throw (confirms no reflection call on the raw value)" },
+    { "case": "Real Error subclass whose .constructor succeeds but .constructor.name is a throwing getter (two-level poisoning)", "result": "no throw; degrades honestly to errorClass \"Error\"" },
+    { "case": "Thenable object and a real resolved Promise thrown as the error value", "result": "no throw; treated as an ordinary object/value, nothing mistakes it for awaitable" },
+    { "case": "Callable Proxy (function target) with a throwing get trap", "result": "no throw" },
+    { "case": "3-hop circular structure with throwing toString AND throwing toJSON on every node", "result": "no throw; confirms toJSON is genuinely never invoked" },
+    { "case": "Crafted toString returning a 2,000,000-character string (no throw, absurd size)", "result": "classifyError returns the full string with no truncation-related throw or different failure mode" },
+    { "case": "Object.freeze() applied to a throwing Proxy wrapper", "result": "no throw" },
+    { "case": "Proxy where ONLY getPrototypeOf throws, get passes through (different combination than implementer's combined get+getPrototypeOf repro)", "result": "no throw - confirms the fix generalizes, not a narrow patch for the implementer's exact repro" },
+    { "case": "Revoked Proxy.revocable() (engine-level TypeError on every internal op, not a hand-written trap)", "result": "no throw" },
+    { "case": "Real Error whose .message getter succeeds but returns a hostile non-string object with throwing toString/valueOf", "result": "no throw; degrades to \"[unreadable thrown value]\" via the nested String(msg) guard" },
+    { "case": "Boxed Number wrapper with poisoned valueOf and toString", "result": "no throw" },
+    { "case": "Proxy over a real Error where get throws ONLY for 'constructor', all else passes through", "result": "no throw; message channel unaffected, class channel degrades independently to \"Error\"" },
+    { "case": "Symbol.toPrimitive returns a non-primitive (engine-level TypeError, not a user throw)", "result": "no throw" },
+    { "case": "Duck-typed error-like object (message/stack/name) that is NOT instanceof Error, with poisoned toString", "result": "no throw; correctly classified UnknownError, not Error" },
+    { "case": "E2E: revoked Proxy.revocable() as the original thrown value, through full runContractAnalysis with DB-log-write AND console.error both also forced to fail", "result": "runContractAnalysis returned structured FAILED, never threw" },
+    { "case": "E2E: two-level constructor.name-poisoning Error subclass as the original thrown value, same triple-failure conditions", "result": "runContractAnalysis returned structured FAILED, never threw" },
+    { "case": "E2E: Error[Symbol.hasInstance] globally poisoned + duck-typed thrown value, same triple-failure conditions", "result": "runContractAnalysis returned structured FAILED, never threw" }
+  ],
+  "methodologyFinding": {
+    "description": "A genuine finding surfaced during this audit, but it is a TEST-FRAMEWORK artifact, not a production defect: globally poisoning `Error[Symbol.hasInstance]` (required to properly test that specific JS interception channel, since Symbol.hasInstance is looked up on the constructor operand of `instanceof`, not the value) breaks every `x instanceof Error` check in the whole process for as long as it stays poisoned - including inside vitest/chai's OWN `.toThrow()` matcher, which performs its own internal `instanceof Error` check even when the wrapped callback completes normally without throwing. An initial version of this test used `expect(() => safeErrorMessage(value)).not.toThrow()` while the global was still poisoned, and vitest reported a failure carrying the injected message - APPEARING to show classifyError leaking an exception. Direct reproduction with a raw try/catch (bypassing the assertion library entirely) and console-log instrumentation of an inlined copy of the guard logic proved the production function's own try/catch genuinely caught the poisoned instanceof and returned normally in every case; the second throw vitest reported originated from its own matcher's internal instanceof check, executed AFTER the production function had already returned. The final test file (committed) never invokes any assertion-library matcher while the global remains poisoned - it captures results via plain try/catch first, restores the global in `finally`, and only then asserts. This is disclosed here in full rather than silently worked around, since it could otherwise be mistaken for evidence against the fix.",
+    "affectsDisposition": false,
+    "reproducible": "Poison Error[Symbol.hasInstance] globally, then call expect(() => anything).not.toThrow() inside vitest for ANY function, even one with no relation to error classification - the matcher itself fails."
+  },
+  "regressionResults": {
+    "implementerOwnTests": {
+      "files": [
+        "tests/certification/part-a-final-fix3-error-totality.test.ts",
+        "tests/certification/part-a-final-fix3-orchestrator-e2e-observability.test.ts",
+        "tests/contract-model/part-b-terminal-recert-open6-independent.test.ts"
+      ],
+      "result": "PASS - 28/28 tests, 3/3 files"
+    },
+    "newIndependentTests": {
+      "file": "tests/certification/part-b-recert-fix3-independent-adversarial.test.ts",
+      "result": "PASS - 20/20 tests"
+    },
+    "broaderOrchestratorSuite": {
+      "filesRun": [
+        "tests/certification/part-b-recert-blocker2-6-orchestrator-e2e.test.ts",
+        "tests/onboarding/product-flow-gating.test.ts",
+        "tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts",
+        "tests/onboarding/live-contract-analysis-app-action.test.ts",
+        "tests/onboarding/live-product-flow-visibility.test.ts",
+        "tests/contract-model/live-contract-analysis-orchestrator.test.ts",
+        "tests/contract-model/partial-instrument-failure.test.ts",
+        "tests/contract-model/part-b-recert-finding8-independent.test.ts",
+        "tests/contract-model/analysis-run-concurrency.test.ts",
+        "tests/contract-model/part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts",
+        "tests/contract-model/semantic-truth-persistence.test.ts",
+        "tests/contract-model/no-log-only-failure.test.ts",
+        "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts",
+        "tests/contract-model/part-b-recert-auditf1-truth-persistence.test.ts",
+        "tests/contract-model/part-b-recert-auditf2-concurrency.test.ts"
+      ],
+      "result": "PASS - 63/63 tests, 15/15 files - identical count to the implementer's own report, no regressions found"
+    },
+    "staticChecks": {
+      "tscNoEmit": "6 pre-existing errors, all in tests/foundation-audit/*, identical set before and after this audit's new test file - 0 new errors",
+      "eslint": "1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts, @typescript-eslint/no-var-requires rule-not-found) - 0 new errors"
+    }
+  },
+  "productionCodeModified": false,
+  "prismaMigrationsRun": false,
+  "disposition": "CERTIFIED_CLOSED",
+  "dispositionRationale": "Across 19 fresh, independently-invented hostile values (17 unit-level plus 2 additional through the full runContractAnalysis path, for 3 total end-to-end re-proofs) specifically targeting JS semantics distinct from the implementer's own matrix - Symbol.hasInstance interception on the Error constructor, has-trap-only Proxies, toStringTag divergence, getOwnPropertyDescriptor-trap Proxies, two-level constructor.name poisoning, thenables, callable Proxies, multi-hop circular+toJSON structures, absurd-size strings, frozen Proxies, isolated getPrototypeOf-only Proxies, revoked Proxy.revocable(), non-string .message with hostile coercion, boxed-primitive poisoning, selective per-property Proxy traps, and a Symbol.toPrimitive spec violation - classifyError, safeErrorMessage, and safeErrorClass never threw and always returned a well-formed {message: string, errorClass: string} pair. The implementer's own self-reported bug class (unguarded instanceof via a Proxy's getPrototypeOf trap) was re-attempted with a genuinely different combination (getPrototypeOf-only, and a revoked Proxy) and the fix generalized correctly rather than being a narrow patch. No falsifying case was found; the one anomaly encountered (Error[Symbol.hasInstance] global poisoning appearing to break the code under vitest's own .toThrow() matcher) was traced conclusively to the test framework's own internal instanceof check, not to the production code, and is fully disclosed in methodologyFinding above rather than omitted."
+}

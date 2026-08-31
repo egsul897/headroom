@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "STRUCTURAL_HEADING_REMEDIATION",
+  "workstream": "C",
+  "blockerId": "BLOCKER-1",
+  "generatedAt": "2026-08-30T05:30:00Z",
+  "startingCommit": "bbb82fce8a68675a2637725b682a898da93a4f70",
+  "affectedFiles": ["lib/contract-model/compiler/stage-structure.ts"],
+
+  "rootCause": {
+    "summary": "P1-10's original fix (Phase 3F.1.5.R) rejected an in-text-citation-shaped heading candidate only when it was immediately preceded by an EXACT match of one of 14 hand-enumerated citation-signal phrases ('under', 'pursuant to', 'as defined in', 'set forth in', ...). This is a phrase-list gate: it encodes the ABSENCE of a known-bad phrase as its only evidence of plausibility, never POSITIVE evidence that the candidate is a genuine heading.",
+    "certifiedEvidence": "docs/phase-3f1-6-final-foundation-certification/03-structural-integrity-certification.json, finding STRUCT-1: all 7 residual SECTION_NUMBER_SEQUENCE_ANOMALY findings (CONMED 1, DSGR 6) were independently traced to real source text and are genuine in-text citations that defeated the phrase list by one missing word, a substituted preposition, or an absent preposition entirely - 'partly defined in' (list only had 'as defined in'), 'in compliance with' (not tracked at all), 'as provided by' (list only had 'provided ... in'), 'in accordance with the requirements of' (extra words after the tracked phrase), 'subject to the terms of' (same, twice - doc-a and doc-d), and a bare parenthetical subject with no preposition at all ('(and Section 2.07 shall apply...)').",
+    "whyAppendingPhrasesWasRejected": "This phase's charter explicitly forbids the phrase-list arms race: appending these 5 new phrasings would only encode today's 7 known gaps, producing the 8th gap in the next unseen document. The fix instead had to invert the check - require positive, typographic evidence of a genuine heading boundary, never keyed to the specific words that precede the candidate."
+  },
+
+  "designRationale": {
+    "corePrinciple": "Ask 'is there positive evidence this candidate opens a new structural block' instead of 'does the preceding text avoid every known-bad phrase'. Neither signal below inspects WHAT WORD precedes the candidate - only WHERE the nearest sentence/paragraph boundary, or another already-established heading's own boundary, sits relative to it. A document using phrasing this fix's own author never anticipated is handled identically to every known package, closing the exact class of gap a phrase list structurally cannot.",
+    "groundedInRealText": "Design was derived by directly reading the real preceding-context text at all 7 STRUCT-1 sites (via scripts/cert-3f1-6-residual-anomaly-inspect.ts, read-only reference) AND the real heading text immediately surrounding them in the same CONMED/DSGR documents, plus FWRG's own newline-free real heading style and LSB's own doubled-whitespace real heading style - never assumed from one document's own formatting convention.",
+    "signals": [
+      {
+        "id": "A",
+        "name": "PARAGRAPH BREAK",
+        "rule": "The whitespace run immediately before the candidate contains two or more newline characters, after first discounting a single page-number-shaped decorative artifact (a short, whitespace-bounded 1-4 digit run, e.g. '.\\n\\n168\\n\\nSECTION 7.01').",
+        "whyNeeded": "Dominant real shape in CONMED/DSGR: a genuine heading is typographically isolated on its own line, separated by a real blank line. This also covers the shape no phrase list can ever generalize to - a SECTION heading immediately following an ARTICLE heading with no intervening sentence, and therefore no period, at all.",
+        "safetyAgainstMisuse": "A page-number token is only ever stripped when it is whitespace-bounded on BOTH sides at the exact position adjacent to the candidate. A citation's own section/clause number is never whitespace-bounded that way (it is always attached to 'Section '/'Article '/a decimal point), and a dollar figure's trailing digit group is comma-preceded, never whitespace-preceded - so neither is ever mistaken for a page break."
+      },
+      {
+        "id": "B",
+        "name": "SENTENCE-BOUNDARY PUNCTUATION",
+        "rule": "Once trailing whitespace (and any page-number artifact) is stripped, the real preceding text's own last character terminates a sentence/clause - '.', ':', ';', '!', or '?' - optionally followed by a closing quote/bracket (e.g. '...applied).') or preceded by peeling off exactly one trailing OPENING quote/bracket first (e.g. '...to read in full as follows: \"Section 6.04...' - the colon underneath the opening quote is what actually satisfies this signal, never the quote alone).",
+        "whyNeeded": "Dominant real shape in FWRG, which - a separate, previously-diagnosed defect (see the ARTICLE_PATTERNS doc-comment) - contains NO newline characters anywhere at all, so signal (A) can never fire there; every real FWRG heading is instead immediately preceded by the end of a genuinely complete sentence or an enumeration-introducing colon (e.g. '...Agreement that: Section 6.01. Indebtedness .', or a page-number-interrupted '...permitted hereby. 147 Section 6.02. Liens .')."
+      },
+      {
+        "id": "C",
+        "name": "ADJACENT TO A PLAUSIBLE ARTICLE",
+        "rule": "A SECTION-shaped candidate sits immediately after (whitespace only between) the end of an ARTICLE match that ALREADY passed signal (A), (B), or document-start on its OWN merits.",
+        "whyNeeded": "Discovered while regression-testing: an ALL-CAPS ARTICLE title routinely gives way directly to its first SECTION with no terminating punctuation and no blank line of its own ('ARTICLE VI COVENANTS Section 6.01 Indebtedness .' - there is no 'sentence' for an ALL-CAPS title to end with). This shape is exercised throughout this repo's own existing regression fixtures (tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts and others) and is a realistic minimalist heading convention, not merely a test artifact.",
+        "safetyAgainstMisuse": "Anchored ONLY to an ARTICLE match already independently established as plausible via (A)/(B)/document-start - never to an arbitrary all-caps word (a defined-term acronym like 'GAAP' or 'EBITDA' sitting just before a citation must never launder that citation into a heading), and never cascaded through an ARTICLE reference that was itself rejected as a citation."
+      }
+    ],
+    "verifiedAgainstAll7CertifiedSites": "Every one of the 7 STRUCT-1 sites was individually checked against signals (A) and (B) using the real preceding-context text quoted in the certification: each is separated from its own real preceding text by exactly one newline (CONMED 1.1, DSGR doc-a 2.07/6.01/6.04, DSGR doc-b 2.18, DSGR doc-d 2.03/6.01) or none at all, and that preceding text ends mid-word/mid-clause ('in', '(and', 'of', 'with', 'by') - never in terminal punctuation and never across two-or-more newlines. All 7 correctly fail both signals and are rejected."
+  },
+
+  "implementationSummary": {
+    "functionsReplaced": ["HEADING_CITATION_SIGNAL_PHRASE (14-phrase regex constant, removed)", "rejectByPrecedingContext (removed)", "isPlausibleTopLevelHeading (rewritten)"],
+    "functionsAdded": ["stripTrailingPageNumberArtifact", "precededByParagraphBreak", "precededBySentenceTerminalPunctuation", "isPlausibleByPositionalSignals", "nearestPrecedingEnd", "isImmediatelyAfterPlausibleArticle"],
+    "wiringChange": "parseDocumentStructure now resolves ARTICLE candidates first using signals (A)/(B)/document-start only, then builds `plausibleArticleEnds` from the surviving ARTICLE matches, then filters SECTION-family candidates (decimal, integer, bare-integer) using (A) OR (B) OR (C-anchored-to-plausibleArticleEnds). A candidate failing every signal is dropped entirely before ever being pushed into `raws` - unchanged from the original P1-10 contract: never a re-parented/demoted node, never a synthetic substitute, just invisible structure that falls through as ordinary body prose of whichever real node's region already contains it.",
+    "packageSpecificLogic": "None. Zero references to any specific documentId, package name, or package-specific phrase anywhere in the new gate. All three signals are purely positional/typographic and apply identically to every document.",
+    "downstreamComponentsUnchanged": "structural-index.ts's SECTION_NUMBER_SEQUENCE_ANOMALY detection is kept as defense-in-depth, unmodified. Node occurrence identity (computeStableKey over documentId+nodeType+charStart), the rank-based stack pass, and clause-hierarchy.ts are all unmodified - the fix is isolated entirely to which candidates ever reach `raws`."
+  },
+
+  "beforeAfterRegression": {
+    "methodology": "npx tsx scripts/foundation-audit-known-package-replay.ts (unmodified, prior-phase-authored script) run against the real FWRG/LSB/CONMED/DSGR fixtures, once on the unmodified bbb82fc baseline (verified via git stash) and once with this fix applied. npx tsx scripts/cert-3f1-6-residual-anomaly-inspect.ts (unmodified, certification-authored reference script) re-run to reproduce the exact anomaly count and, where 0 remain, confirm that.",
+    "fwrg": {
+      "before": { "totalNodes": 418, "nodeIdCollisions": 0, "errorFindings": 0, "duplicateLegalLabels": 0, "structureOutputHash": "69fde4267a2e955f86a2e67a425dfbf6f3df76a4a9aa51d72ac9c6140ace81c1" },
+      "after": { "totalNodes": 418, "nodeIdCollisions": 0, "errorFindings": 0, "duplicateLegalLabels": 0, "structureOutputHash": "69fde4267a2e955f86a2e67a425dfbf6f3df76a4a9aa51d72ac9c6140ace81c1" },
+      "verdict": "BYTE-IDENTICAL. structureOutputHash unchanged - FWRG's own real headings were already all accepted via signal (B) (its continuous, newline-free style always terminates in real sentence punctuation before a heading; see docs/phase-3f1-6-r-blocker-remediation/04-structural-false-negative-results.json category 2/4/5), and it contains zero citation-shaped false candidates under either gate (0 rejections under the certification's own real-data diff both before and after).",
+      "note": "The 12-node figure quoted for FWRG in docs/phase-3f1-6-final-foundation-certification/03-structural-integrity-certification.json's independentRegressionReproduction section does not match this replay script's own 418-node output; this discrepancy was independently confirmed (via git stash to the unmodified bbb82fc baseline) to be PRE-EXISTING and completely unaffected by this fix - not something this workstream introduced or can explain from the frozen certification's own script alone. FWRG's own structureOutputHash is byte-identical before and after this change, which is the regression-safety property this remediation is actually responsible for."
+    },
+    "lsb": {
+      "before": { "totalNodes": 76, "nodeIdCollisions": 0, "errorFindings": 0, "duplicateLegalLabels": 0, "structureOutputHash": "0b178f70b599949b076421e8a3d8747c857fa0bda7b35cbfa1bd472702d3c070" },
+      "after": { "totalNodes": 76, "nodeIdCollisions": 0, "errorFindings": 0, "duplicateLegalLabels": 0, "structureOutputHash": "0b178f70b599949b076421e8a3d8747c857fa0bda7b35cbfa1bd472702d3c070" },
+      "verdict": "BYTE-IDENTICAL. Matches the certification's own stated baseline exactly and is completely unaffected by this fix."
+    },
+    "conmed": {
+      "before": { "totalNodes": 2695, "nodeIdCollisions": 0, "errorFindings": 0, "duplicateLegalLabels": 366, "sectionNumberSequenceAnomalyCount": 1, "structureOutputHash": "2b03982a5674a0b415c609bac36e58137613ac36d3eaa88880d25b0e3c151b88" },
+      "after": { "totalNodes": 2348, "nodeIdCollisions": 0, "errorFindings": 0, "duplicateLegalLabels": 29, "sectionNumberSequenceAnomalyCount": 0, "structureOutputHash": "f7674d090b2f2126a3dbf6b112b152d3df14a3dc031fa516f34d4704ad619007" },
+      "verdict": "sectionNumberSequenceAnomalyCount drops from the certified 1 to 0 (re-confirmed independently via scripts/cert-3f1-6-residual-anomaly-inspect.ts: '0 SECTION_NUMBER_SEQUENCE_ANOMALY finding(s)'). nodeIdCollisions and errorFindings remain 0 - identity and acyclicity invariants hold throughout.",
+      "whyTotalNodesDropped": "The single spurious 'Section 1.1' sibling that used to truncate the real Section 1.2's own clause-tree region at char 158254 is gone; Section 1.2's own region now correctly extends to char 160021 (the real Section 1.3), so clause-hierarchy.ts's exact-sequence parser runs ONCE over the full real region instead of being split into two separate, independently-reset parses (previously: a truncated parse over the real Section 1.2's own too-short region, plus a second, separate parse over the spurious sibling's own region reusing the SAME underlying text). Merging these into one continuous parse is what drops duplicateLegalLabels from 366 to 29 and totalNodes from 2695 to 2348 - this is the fix correctly UNDOING the artificial double-counting the original defect caused, not a new loss of real structure. Directly verified: the real Section 1.2 node's own charEnd is now 160021 (was 158254), and the spurious second 'Section 1.1' node no longer exists at all - confirmed by direct re-parse and inspection."
+    },
+    "dsgr": {
+      "before": { "totalNodes": 4155, "nodeIdCollisions": 0, "errorFindings": 0, "duplicateLegalLabels": 517, "sectionNumberSequenceAnomalyCount": 6, "structureOutputHash": "fca597a47b776b9ce5d99e53e36f74f4f505b5a891ec145373a50155cf15d52a" },
+      "after": { "totalNodes": 3897, "nodeIdCollisions": 0, "errorFindings": 0, "duplicateLegalLabels": 314, "sectionNumberSequenceAnomalyCount": 0, "structureOutputHash": "7d180bb7c51eafa02b4d5ba3f71e36bba6a191b5cf6ecaba926513071ae3e466" },
+      "verdict": "sectionNumberSequenceAnomalyCount drops from the certified 6 to 0 (re-confirmed independently via scripts/cert-3f1-6-residual-anomaly-inspect.ts: '0 SECTION_NUMBER_SEQUENCE_ANOMALY finding(s)'). nodeIdCollisions and errorFindings remain 0.",
+      "whyTotalNodesDropped": "Same mechanism as CONMED, at all 6 real sites, independently re-parsed and directly text-inspected after the fix: doc-a Section 2.05 (Swingline Loans) now correctly extends from char 222571 to 229695 (the real Section 2.06), doc-a Section 6.04 (Investments...) now extends from 455225 to 463076 (the real Section 6.05), doc-b Section 2.05 now extends from 267852 to 274976 (the real Section 2.06), doc-d Section 2.09 (Termination and Reduction of Commitments) now extends from 280652 to 293979 (the real Section 2.10), and doc-d Section 6.04 now extends from 474787 to 484376 (the real Section 6.05) - in every case the spurious duplicate sibling node (the false 'Section 2.07'/'6.01'/'2.18'/'2.03' occurrence) is confirmed GONE from the raw node list, and the real section's own span now runs uninterrupted to the real next heading.",
+      "note": "foundation-audit-known-package-replay.ts's own DSGR reconciliation assertion (totalNodes===4149, duplicateLegalLabels===546) is a PRE-EXISTING stale assertion already flagged as MINOR in the certification's own STRUCT-2 finding (it was never updated after the original P1-10 fix landed, and compares against the PRE-P1-10 baseline, not the post-3F.1.6-certification baseline) - it legitimately prints matchesHistoricalRecord=false both before AND after this fix, and is not a regression this workstream introduces or is responsible for fixing (out of BLOCKER-1's scope)."
+    },
+    "directTextInspectionConfirmation": "In addition to the health-diagnostic-based zero-anomaly confirmation above, every one of the 7 certified sites was independently re-parsed and its real, corrected span checked by slicing the actual document text at the new charEnd and confirming it lands exactly at the start of the real next SECTION heading (e.g. text.slice(node.charEnd, node.charEnd+50) === 'SECTION 6.06. Sale and Leaseback Transactions...' for DSGR doc-a's real Section 6.05) - the same direct-inspection discipline the original certification used, not a health-code message string taken on faith."
+  },
+
+  "regressionTestsUpdatedAndWhy": [
+    {
+      "file": "tests/certification/p1-10-legitimate-heading-false-negative-audit.test.ts",
+      "change": "Category 4b ('page-break-like whitespace directly after a citation-signal phrase') previously asserted the OLD gate's own documented false-negative (a real heading wrongly suppressed) as EXPECTED behavior. The new positive-evidence gate correctly RESOLVES this case (a genuine 4-newline paragraph break satisfies signal (A) regardless of what word precedes it), so the test now asserts the corrected, improved behavior. This is a strict recall IMPROVEMENT, not a regression - the case is a synthetic worst-case construction the certification itself already labeled 'MINOR SYNTHETIC RISK, not observed in any real document.'"
+    },
+    {
+      "file": "tests/foundation-audit/part1-independent-reverification.test.ts",
+      "change": "The 'I15 with THREE-way ambiguity' test's middle occurrence was constructed as an in-text citation ('As referenced in Section 6.04 ... above') that happened to slip through the OLD phrase list by accident (the list tracked 'referred to in' but not the differently-worded 'referenced in'). The new positive-evidence gate correctly rejects this citation (it is preceded only by 'in ' with no sentence/paragraph break - textbook citation shape), so it no longer contributes a spurious third occurrence. Replaced with a genuinely duplicate, paragraph-separated physical heading (the legitimate repeated-numbering shape this fix must never suppress), which still fully exercises the 3-way AMBIGUOUS resolution logic the test is actually about."
+    }
+  ],
+
+  "unrelatedPreExistingFailuresConfirmedOutOfScope": [
+    {
+      "test": "tests/extraction/vercel-ai-gateway-provider.test.ts",
+      "confirmation": "Fails identically on the unmodified bbb82fc baseline (via git stash) - already documented in this phase's own 00-baseline.json as a pre-existing, environment-dependent anomaly unrelated to any of the 11 certified blockers."
+    },
+    {
+      "test": "tests/certification/section11-source-trace-independent.test.ts",
+      "confirmation": "Fails identically on the unmodified bbb82fc baseline (via git stash). Asserts against mutable, currently-live Postgres row data (real ContractRule.definedTermRefs legacy encoding) unrelated to structural parsing - tracked separately under BLOCKER-7 (Workstream E, 'no backfill' for persisted rows), not BLOCKER-1."
+    }
+  ],
+
+  "qualityGates": {
+    "tscNoEmit": "6 errors, byte-identical to the certified baseline (tests/foundation-audit/cascade-and-concurrency.test.ts x2, tests/foundation-audit/discovery-fault-injection.test.ts x1, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts x3) - none in lib/contract-model/compiler/stage-structure.ts or in this workstream's new/changed test files.",
+    "eslint": "1 error, identical to the certified baseline (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires).",
+    "vitestFullRun": "2067 tests, 2065 passed, 2 failed (both pre-existing and confirmed unrelated - see unrelatedPreExistingFailuresConfirmedOutOfScope above). 0 tests newly failing as a result of this change. 24 new tests added (tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts)."
+  },
+
+  "falseNegativeGuardReference": "docs/phase-3f1-6-r-blocker-remediation/04-structural-false-negative-results.json and tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts - the full adversarial matrix built and run BEFORE this remediation was declared complete, per the charter's explicit requirement.",
+
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "All 7 certified MATERIAL_STRUCTURAL_ERROR anomalies (CONMED 1, DSGR 6) are eliminated, independently reconfirmed both via the health-diagnostic mechanism the certification itself used (0 SECTION_NUMBER_SEQUENCE_ANOMALY findings, down from 7) and via direct text inspection of every one of the 7 real sites (each real parent section's span now correctly extends to its real next sibling, and each spurious duplicate-sectionRef node is confirmed gone). The fix is a general, positive-evidence heuristic with zero package-specific logic, verified not to regress FWRG/LSB (byte-identical structureOutputHash) and to correctly explain CONMED/DSGR's node-count changes as the fix undoing artificial double-counting from the original defect. A dedicated false-negative adversarial guard (04-structural-false-negative-results.json) was built and passed BEFORE this disposition was set, per the charter's explicit requirement. Per the phase charter, this disposition is pending an independent recertification pass by a separate auditor - it is never self-certified as CERTIFIED by the workstream that performed the fix."
+}

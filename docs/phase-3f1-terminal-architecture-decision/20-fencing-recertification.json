@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-terminal.v1",
+  "artifactId": "OPEN5_PART_B_RECERTIFICATION",
+  "defectId": "OPEN-5",
+  "correspondsTo": "AUDIT-F2",
+  "role": "Phase 3F.1-terminal Part B - INDEPENDENT recertification of Part A's fix (docs/phase-3f1-terminal-architecture-decision/07-analysis-run-fencing.json), written by a separate auditor who did not implement the fix.",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "frozenAt": "0ef66a9",
+
+  "methodology": {
+    "principle": "Never rerun Part A's own test file as sole evidence. A brand-new adversarial test file was written from scratch, exercising attack shapes Part A's own tests never attempted: multi-object batches, a genuine three-generation flux race, and a dedicated lock-contention/deadlock probe.",
+    "codeRead": [
+      "lib/contract-model/analysis/semantic-truth/service.ts (persistSemanticTruthForInstrument, as currently committed)",
+      "lib/contract-model/analysis/service.ts (startOrResumeAnalysisRun, setAnalysisRunStage, completeAnalysisRun, failAnalysisRun, recordAnalysisRunIssue)",
+      "prisma/schema.prisma (AnalysisRun.executionGeneration column doc comment, @@unique identity)",
+      "tests/contract-model/part-b-recert-finding6-independent.test.ts (Part A's own extended test file, read but not reused as evidence)"
+    ],
+    "testFile": "tests/contract-model/part-b-terminal-recert-open5-independent.test.ts",
+    "infrastructure": "Real, unmocked local Postgres via the repo's own DATABASE_URL / PrismaClient - no mocked prisma calls anywhere in the new file except one manual (non-vi.spyOn) monkey-patch of prisma.analysisRun.findUnique used only to hold open an already-real read's return value for the deterministic-interleave scenario, exactly the technique Part A's own file documents as necessary (vi.spyOn corrupts Prisma's internal proxy).",
+    "testCompanyId": "part-b-terminal-recert-open5-independent",
+    "cleanupScoping": "beforeAll/afterAll/beforeEach in the new file delete only rows scoped to this exact company id (claimReviewItem, analysisRunIssue, semanticTruthRecord, analysisFailureLog, analysisRun, documentNode, document, then the company row itself). A final 'CLEANUP SANITY CHECK' test additionally asserts zero residual rows.",
+    "destructiveDbPatternsCheck": "npx tsx scripts/check-destructive-db-patterns.ts run before and after writing the new test file: 12 findings both times, identical set (the checker's own pattern-definition source lines plus tests/infrastructure/db-isolation-adversarial.test.ts's own intentional adversarial demonstrations) - matches Part A's documented baseline exactly. No new findings from the new file.",
+    "noMigrateDevResetOrPush": true
+  },
+
+  "scenariosAttempted": [
+    {
+      "name": "SCENARIO 1 - deterministic controlled interleave, batch of 5 distinct objects",
+      "shape": "A stale (gen1) call persisting 5 distinct semanticObjectIds is held open past a real reclaim (via the manual findUnique gate technique), while the new (gen2) owner persists fresh content for the SAME 5 objects first. Goes beyond Part A's own deterministic test, which used exactly one object.",
+      "result": "PASS - skippedSupersededGeneration true, upserted 0 for the stale batch; all 5 rows carry only the fresh owner's content at version 1."
+    },
+    {
+      "name": "SCENARIO 2 - genuine Promise.all race, 6 concurrent objects, two owners",
+      "shape": "The stale batch write (6 objects) and the real reclaim fired together via one Promise.all with zero artificial sequencing, then the new owner's fresh batch write for the same 6 objects strictly afterward.",
+      "result": "PASS - all 6 objects show only the fresh owner's final content regardless of the real scheduler's interleaving of the stale write vs. the reclaim."
+    },
+    {
+      "name": "SCENARIO 3 - three-way generation-flux race, single object",
+      "shape": "A definite zombie (gen1, already 1 hop stale before the race begins), a legitimately-current writer (gen2) whose own write is itself racing a concurrent reclaim, and the reclaim that mints gen3 - all three fired together in ONE Promise.all. Includes an INTERMEDIATE-state assertion (the record must never show the zombie's content, even transiently, before the true gen3 owner's own subsequent write).",
+      "result": "PASS, run 7/7 consecutive times - the zombie was unconditionally rejected every run; the intermediate record was always either absent or exactly the gen2 writer's legitimate content, never the zombie's; the final gen3 write always won; final row version never exceeded 2 (one real write from gen2 if it won its own race, one from gen3)."
+    },
+    {
+      "name": "SCENARIO 4 - three-way generation-flux race, 4 distinct objects at once (12 concurrent operations in one Promise.all)",
+      "shape": "Extends SCENARIO 3's zombie/current/reclaim flux across 4 independent semanticObjectIds fired together, stressing the SAME parent-row FOR UPDATE lock from many more directions simultaneously than Part A's own tests ever exercised (which never exceeded a two-generation, single- or few-object race).",
+      "result": "PASS - every one of the 4 objects independently resisted the zombie; all 4 converged on the true gen3 owner's final content."
+    },
+    {
+      "name": "SCENARIO 5 - lock-contention / deadlock-risk probe",
+      "shape": "25 concurrent, genuinely VALID (same, non-stale generation) persistSemanticTruthForInstrument calls against the SAME AnalysisRun row: 15 targeting distinct semanticObjectIds and 10 concurrent writers all targeting one SHARED semanticObjectId (stressing both the parent-row lock contention and the child-row read-existing/create-or-update race). Wrapped in a 25-second wall-clock timeout guard (Promise.race) specifically to catch a hang/deadlock rather than let it stall the whole suite.",
+      "result": "PASS, run 7/7 consecutive times, never timed out - settled in 122-146ms every run (well under the 25000ms guard). No P2002 duplicate-key errors, no partial/mixed writes on the shared object, no corruption. Every legitimate concurrent write applied (skippedSupersededGeneration false, upserted 1 each). The parent-row FOR UPDATE lock correctly SERIALIZES concurrent per-object transactions (one at a time) rather than deadlocking - and, as a useful side effect, this same serialization also protects the shared-object's own read-existing-then-create/update step (which is otherwise unguarded at the child-row level) from a duplicate-key race between two concurrent writers targeting a brand-new same-object row under the same valid generation."
+    }
+  ],
+
+  "testOutput": {
+    "command": "npx vitest run tests/contract-model/part-b-terminal-recert-open5-independent.test.ts",
+    "repeatedRuns": 7,
+    "result": "7/7 consecutive full-file runs: 6/6 tests passing every single time (5 adversarial scenarios + 1 cleanup sanity check). Zero flakes, zero timeouts, zero stale-content clobbers observed across any run.",
+    "sampleTimings": "Deadlock probe (25 concurrent per-object transactions on one row) settled in 122ms, 129ms, 137ms, 138ms, 138ms, 140ms, 146ms across the 7 runs - consistently fast, consistently far under the 25s timeout guard.",
+    "typeCheck": "npx tsc --noEmit -p . : zero errors attributable to the new file. Pre-existing baseline errors unrelated to this defect remain (tests/foundation-audit/cascade-and-concurrency.test.ts, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts, tests/foundation-audit/discovery-fault-injection.test.ts - all pre-existing, none touched by this recertification).",
+    "lint": "npx eslint tests/contract-model/part-b-terminal-recert-open5-independent.test.ts : zero findings.",
+    "adjacentRegressionSpotCheck": {
+      "note": "Run for context only, never as this recertification's own evidence for OPEN-5 - the falsification evidence is entirely the new file above.",
+      "filesRun": ["tests/contract-model/part-b-recert-finding6-independent.test.ts", "tests/contract-model/analysis-run-concurrency.test.ts", "tests/contract-model/semantic-truth-persistence.test.ts"],
+      "result": "3 files, 18/18 tests passing - Part A's own fix-verification tests and the pre-existing AnalysisRun/SemanticTruthRecord suites remain unaffected by this recertification's read-only investigation."
+    },
+    "cleanupVerified": "Direct post-suite query: prisma.company.count / analysisRun.count / semanticTruthRecord.count, all scoped to id/companyId 'part-b-terminal-recert-open5-independent' -> {co: 0, runs: 0, str: 0}. No residue left in the shared database."
+  },
+
+  "findings": {
+    "staleWriteFencing": "Not falsified. Every attempted stale write - single-object, multi-object batch, and under three-generation flux with a race against a concurrent reclaim - was correctly rejected (skippedSupersededGeneration: true) by the per-object transaction's SELECT ... FOR UPDATE re-check, exactly as Part A's fix design claims. No stale content was ever observed as a FINAL persisted value, and in SCENARIO 3/4 not even as an intermediate value.",
+    "deadlockRisk": "Investigated and NOT found. The per-object transaction takes FOR UPDATE on the single parent analysis_runs row for every object's write, so N concurrent writers to DIFFERENT objects on the SAME run serialize on that one lock rather than deadlocking - there is only one lockable resource in this pattern (the single parent row), so no lock-ordering inversion is possible between concurrent callers, and 25 concurrent transactions consistently settled in well under 150ms with no timeout across 7 repeated runs.",
+    "sideBenefitObserved": "The same parent-row lock incidentally also serializes two concurrent, equally-valid writers targeting the SAME new semanticObjectId under the SAME generation (a possible child-row create/create race the design's own write-up does not explicitly call out), since the second writer cannot even begin its own semanticTruthRecord.findUnique check until the first writer's transaction (holding the parent lock) commits. Confirmed empirically in SCENARIO 5 (10 concurrent writers to one shared object, exactly one final value, no P2002 crash) - a positive finding, not a gap, but noted here as it was not explicitly claimed in the Part A closure document."
+  },
+
+  "disposition": "CERTIFIED_CLOSED",
+  "dispositionScope": "OPEN-5 / AUDIT-F2's persistSemanticTruthForInstrument check-then-act gap, as closed by Phase 3F.1-terminal Part A (docs/phase-3f1-terminal-architecture-decision/07-analysis-run-fencing.json), is independently reconfirmed closed under materially harder adversarial conditions than Part A's own verification used: multi-object concurrent batches, a genuine three-generation flux race (beyond Part A's two-generation ceiling), and a dedicated deadlock-risk probe specifically targeting the new failure mode the FOR UPDATE-based fix could plausibly have introduced. No stale mutation was observed to take effect in any of 5 adversarial scenarios across 7 consecutive full-suite runs, and no new deadlock/hang risk was found under concurrent writes to different objects on the same run row.",
+
+  "filesChanged": {
+    "added": ["tests/contract-model/part-b-terminal-recert-open5-independent.test.ts", "docs/phase-3f1-terminal-architecture-decision/20-fencing-recertification.json"],
+    "modified": [],
+    "productionCodeTouched": false
+  }
+}

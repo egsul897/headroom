@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "ISOLATION_ADVERSARIAL_TEST_RESULT",
+  "purpose": "§18: executed proof, real Postgres, before any recovery resumption.",
+  "testFile": "tests/infrastructure/db-isolation-adversarial.test.ts",
+  "procedure": [
+    "Provisioned TEST_A/TEST_B/TEST_C as three real, separate Postgres databases (createdb + prisma migrate deploy each) on the same server as the persistent regression database.",
+    "Seeded each with a distinctly-named, id-unique company (iso-test-a-company / -b- / -c-).",
+    "Confirmed each ephemeral database's own current_database() matches the disposable naming convention, and that the REAL persistent `headroom` database is correctly REJECTED by the same check.",
+    "Ran a destructive `company.deleteMany({})` reset against TEST_A ONLY, gated by assertDisposableDatabase(clientA) immediately before it (the same call pattern any real reset helper must use).",
+    "Verified: TEST_A's company count is 0; TEST_B's and TEST_C's companies are untouched; the persistent database's own company set (coherent, matthews, fixture-fwrg-2021-credit-agreement-co) is unchanged and does NOT contain the TEST_A company.",
+    "Confirmed a naive `assertDisposableDatabase(persistent)` call against the real database throws before any destructive statement could run.",
+    "Destroyed TEST_A/TEST_B/TEST_C (dropdb --if-exists --force each) in the test's own afterAll."
+  ],
+  "result": "npx vitest run tests/infrastructure/db-isolation-adversarial.test.ts -> 1 file, 4 tests, ALL PASSING.",
+  "postTestVerification": {
+    "leftoverEphemeralDatabases": "NONE (psql -l shows zero headroom_test_* databases after the run)",
+    "persistentDatabaseCompanySet": "['fixture-fwrg-2021-credit-agreement-co', 'coherent', 'matthews'] - identical to before the adversarial test ran; byte-for-byte unaffected by three real database creations, a real seed, and a real destructive reset happening elsewhere on the same server."
+  },
+  "conclusion": "Isolation is demonstrated, not merely designed. Per §18's own explicit instruction ('If this cannot be demonstrated: STOP'), this clears the gate to proceed to package recovery (§19-26)."
+}

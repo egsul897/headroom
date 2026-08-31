@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PRODUCTION_CHANGE",
+  "file": "lib/contract-model/compiler/semantic/tools.ts",
+  "function": "resolveNodeWithSupersessionAwareness",
+  "summaryOfChange": "Restructured the branch order so `view.status === 'OPERATIVE_STATE_RESOLVED'` is checked FIRST and dominates, before `view.currentText` presence is ever consulted. Previously the function checked `view.currentText !== null` first and returned evidenceCurrent: true unconditionally inside that branch, relying on an unenforced comment claim that non-null currentText implied RESOLVED status. Added one new ResolvedNodeEvidence.textSource literal ('UNRESOLVED_AMENDED_TEXT') so a real-but-unresolved amendment's proposed text is never labeled identically to a genuinely resolved replacement (AMENDED_CURRENT_TEXT). Exported the function (previously module-private) so it can be tested directly, per this phase's own requirement.",
+  "linesChanged": "lines ~216-334 (header comment through function body) in the pre-patch file; net +40/-30 lines (see git diff)",
+  "beforeCode": "if (view) { if (view.currentText !== null && view.currentText !== undefined) { return { text: view.currentText, textSource: \"AMENDED_CURRENT_TEXT\", provisionOperativeStatus: view.status, nodeSupersessionStatus: nodeSupersession.status, evidenceCurrent: true, unresolvedReasons: [] }; } const raw = access.structuralIndex.getNodeText(node.nodeId, \"OWN\"); const isCleanDeletion = view.status === \"OPERATIVE_STATE_RESOLVED\"; ... return { text: raw, textSource: isCleanDeletion ? \"HISTORICAL_BASE_TEXT\" : \"BASE_DOCUMENT_TEXT\", ..., evidenceCurrent: false, unresolvedReasons }; } ... CASE D ...",
+  "afterCode": "if (view) { const currentTextPresent = view.currentText !== null && view.currentText !== undefined; if (view.status !== \"OPERATIVE_STATE_RESOLVED\") { /* CASE A */ const text = currentTextPresent ? view.currentText! : raw; return { text, textSource: currentTextPresent ? \"UNRESOLVED_AMENDED_TEXT\" : \"BASE_DOCUMENT_TEXT\", ..., evidenceCurrent: false, unresolvedReasons }; } if (currentTextPresent) { /* CASE B */ return { text: view.currentText!, textSource: \"AMENDED_CURRENT_TEXT\", ..., evidenceCurrent: true, unresolvedReasons: [] }; } /* CASE C */ return { text: raw, textSource: \"HISTORICAL_BASE_TEXT\", ..., evidenceCurrent: false, unresolvedReasons }; } /* CASE D unchanged */",
+  "fullGitDiff": "see docs/open2-final-direct-patch/prod-diff.txt (git diff -- lib/contract-model/compiler/semantic/tools.ts, captured at implementation time) - also reproducible via `git show <commit-sha> -- lib/contract-model/compiler/semantic/tools.ts` once this phase's commit lands.",
+  "typeChange": "ResolvedNodeEvidence.textSource widened from 3 to 4 literals: 'AMENDED_CURRENT_TEXT' | 'UNRESOLVED_AMENDED_TEXT' (NEW) | 'BASE_DOCUMENT_TEXT' | 'HISTORICAL_BASE_TEXT'. Confirmed non-breaking: no consumer in the repository switches on textSource (grep -rn textSource across lib/ and tests/ confirms only the interface declaration, this function's own returns, and descriptive doc-comments reference it).",
+  "exportChange": "resolveNodeWithSupersessionAwareness changed from a module-private `function` to `export function` - no behavior change, confirmed via tsc/eslint/full regression.",
+  "callersUnchanged": "getParentClause, getSiblingClauses, getReferencedProvision (absolute + fromNodeId paths) - all 4 call sites in tools.ts are byte-identical before/after this patch; only the shared helper's own internal logic changed.",
+  "otherFilesTouchedInThisPhase": {
+    "productionCode": ["lib/contract-model/compiler/semantic/tools.ts (the only production file changed)"],
+    "testsUpdatedToReflectFix": [
+      "tests/certification/open2-terminal-independent-recert-fresh2.test.ts - 3 assertions that previously documented the STILL_OPEN bug (section 4's FINDING test, section 10's cross-tool FINDING test, section 10's END TO END REAL POSTGRES FINDING test) were updated to assert the CLOSED/fixed behavior instead, since this phase's fix directly closes the exact gap those tests were recording. Comments were rewritten from 'STILL_OPEN'/'FINDING' framing to 'FIXED'/'UPDATE' framing, preserving the historical narrative rather than deleting it."
+    ],
+    "testsAdded": [
+      "tests/certification/open2-final-direct-patch-matrix.test.ts",
+      "tests/certification/open2-final-direct-patch-e2e.test.ts"
+    ]
+  }
+}

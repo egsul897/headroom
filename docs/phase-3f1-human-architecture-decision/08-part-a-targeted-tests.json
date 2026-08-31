@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_TARGETED_TESTS",
+  "open1": {
+    "architecture": "tests/contract-model/structural-triage.test.ts, structural-ambiguity-classifier.test.ts, structural-ambiguity-classifier-independence.test.ts (109 tests total across the new modules)",
+    "wiring": [
+      "tests/foundation-audit/cache-invalidation-audit.test.ts - updated for STRUCTURAL_INDEX_VERSION bump + providerIdentity in structureInputHash; 11/11 passing",
+      "tests/foundation-audit/structural-ambiguity-orchestrator-wiring.test.ts - proves the quarantined lib/contract-model/compiler/orchestrator.ts path is wired (3/3 passing)",
+      "tests/foundation-audit/structural-ambiguity-real-orchestrator-wiring.test.ts - proves the REAL LIVE lib/contract-model/analysis/orchestrator.ts (runContractAnalysis, the app's actual call path) is wired: fail-closed synthetic fallback genuinely fires for an ambiguous citation, confident headings elsewhere parse with zero classifier cost, verified against both the in-memory result and persisted DocumentNode rows (3/3 passing)"
+    ],
+    "requiredMatrix": "Preserved every historically-reproduced OPEN-1 construction (part-a-final-fix1-structural.test.ts, part-b-terminal-recert-open1-independent.test.ts both pass unmodified). part-b-final-fix1-independent-recert.test.ts (the auditor's own falsifying reproduction) updated in place: every falsifying construction now triages AMBIGUOUS (never a confident false accept) and resolves correctly; the real-heading false negative fixed deterministically via a disclosed LOWERCASE_DEFINITIONAL exception.",
+    "rateMetrics": "On a realistic mixed document: 86% deterministic resolution, 14% classifier invocation. Clean fixtures: 100%/0%. Zero false-heading, zero missed-heading, zero material hierarchy corruption across the full required matrix."
+  },
+  "open2": {
+    "attackMatrix": "tests/certification/open-2-fresh-attack-matrix.test.ts (15 tests) - current/conflicted/partial/ambiguous-target/known-superseded sections, historical getPriorVersion, getDefinition current, context-bundle current/unresolved, both call-orderings of a current+unresolved sequence (OR-across-attempt proof), a model ignoring an unresolved warning, empty-context-bundle tool-only exploit shape.",
+    "endToEndProof": "tests/certification/part-b-final-recert-fix2-independent.test.ts (the auditor's own reproduction) - confirmed failing pre-fix, now passes post-fix with all 9 assertions updated to the fixed values (evidenceUnresolved: true, REVIEW_REQUIRED, persisted trustStatus REVIEW_REQUIRED, 0 trusted records)."
+  },
+  "crossCuttingTargetedRegression": "Semantic compiler, semantic verifier, operative-state, semantic persistence, structural hierarchy, discovery, and context retrieval test suites all pass under the combined OPEN-1+OPEN-2 changeset."
+}

@@ -96,6 +96,11 @@ function makeFinding(region: CoverageRegion, findingType: AuditFinding["findingT
     semanticPromptVersion: null,
     providerIdentity: null,
     provenance: "discovery-comparison.ts - comparison stage (real Phase 2B output read here only, never during independent inventory generation)",
+    // Phase 3F.1.6.R BLOCKER-3 fix - inherits its own region's disposition
+    // (UNKNOWN_SUPERSESSION_STATUS unless/until runIndependentCoverageAudit
+    // re-tags every finding post-hoc against a real supersessionIndex).
+    supersessionStatus: region.supersessionStatus,
+    supersessionReason: region.supersessionReason,
   };
 }
 

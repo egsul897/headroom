@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_DISPOSITIONS",
+  "dispositions": [
+    {
+      "id": "OPEN-1",
+      "scope": "BLOCKER-1 structural heading (stage-structure.ts)",
+      "auditor": "A",
+      "disposition": "STILL_OPEN",
+      "reason": "Part A's new scored-heading mechanism closes the inherited false-negative but opens a fresh false-positive class: NOISE_DISCOUNTED only checks whether noise-stripping changed anything within a 200-char lookback, without requiring the discounted noise to belong to the same boundary as the candidate. A genuine footnote glued to an unrelated earlier sentence's closing delimiter, sitting on the line before an ordinary in-text section citation, reaches the acceptance threshold and launders that citation into a false SECTION heading, re-parenting a real lettered clause under it. Reproduced under two materially different combinations; isolation control (removing only the glued digit) reverts to correct behavior, confirming causation.",
+      "evidence": "tests/certification/part-b-terminal-recert-open1-independent.test.ts (9 fresh tests)"
+    },
+    {
+      "id": "OPEN-2",
+      "scope": "BLOCKER-5/6 getDefinition operative-state safety",
+      "auditor": "B",
+      "disposition": "STILL_OPEN",
+      "reason": "The whitespace-normalization root-cause fix and the canonical resolveOperativeDefinitionEvidence primitive are genuinely robust when the getDefinition tool is actually invoked. But evidenceUnresolved is only ever set inside that tool's own execution - it requires the model to call it. caller.ts's summarizeContextBundle dumps CovenantContextBundle items' raw excerptText verbatim into the model's first turn, inviting an answer from that context with zero tool calls; ContextItem carries no operative-state/supersession field. An end-to-end reproduction (a real CONFLICTED definition with competing $9M/$12M amendments, stale $5M text embedded in the context bundle, a scripted model that submits sufficiency:COMPLETE with zero tool calls) yields compileCovenantToIR status COMPLETED with no OPERATIVE_STATE_UNRESOLVED, and verifyCompiledCandidate on that result yields VERIFIED_NO_MATERIAL_GAP_FOUND - exactly the outcome Part A's design principle claims is unreachable.",
+      "evidence": "tests/certification/part-b-terminal-recert-open2-independent.test.ts (17 fresh tests)"
+    },
+    {
+      "id": "OPEN-3",
+      "scope": "BLOCKER-8/AUDIT-F4 N-way claim decomposition",
+      "auditor": "C",
+      "disposition": "CERTIFIED_CLOSED",
+      "reason": "Oxford-comma delimiter recognition, the narrowed restated-modal guard, and the linear-time incremental-Set scanning all held under fresh adversarial construction: mixed Oxford+restated-modal combinations, a novel false-positive control, nested parentheticals, and an independent linear-scaling re-measurement (slope ~1.00/0.98) confirming the quadratic-complexity fix.",
+      "evidence": "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts"
+    },
+    {
+      "id": "OPEN-4",
+      "scope": "BLOCKER-9 condition-verification architecture (the deciding test)",
+      "auditor": "D",
+      "disposition": "STILL_OPEN",
+      "reason": "Code inspection passes the disqualifying bar: condition-suspicion-classifier.ts's system prompt is genuinely compositional (role-based reasoning, zero regex/word lists), and verify.ts's two-gate routing matches its own documentation - no path can skip review without an explicit successful NO_MATERIAL_CONDITION_SUSPECTED from Gate 2. But the deciding empirical claim - real semantic generalization on 22 fresh, never-seen condition constructions - could not be validated: the account-level Vercel AI Gateway budget was already exhausted ($50.05/$50.00) before this recertification began, so all 22 real classifyConditionSuspicion() calls and an independent raw HTTP probe returned HTTP 402 (real cost incurred: $0.00). Every call fail-safed to UNCERTAIN, producing 100% routing-to-review, but this is the fail-safe path, not genuine model judgment - it does not validate Part A's central disclosed limitation. Per this exact defect class's history (four prior recertifications failed on unvalidated empirical claims), architecture inspection alone is insufficient grounds for closure.",
+      "evidence": "docs/phase-3f1-terminal-architecture-decision/19-condition-architecture-recertification.json; 22 pre-authored fresh constructions ready to run once budget is restored",
+      "blockerType": "ENVIRONMENT_BLOCKED (external account budget cap), not a code defect"
+    },
+    {
+      "id": "OPEN-5",
+      "scope": "AUDIT-F2 zombie-writer / AnalysisRun-SemanticTruth fencing",
+      "auditor": "E",
+      "disposition": "CERTIFIED_CLOSED",
+      "reason": "7 consecutive clean runs against real, unmocked local Postgres covering multi-object races, a three-generation flux race (zombie/legitimate/reclaim) across single and 4 concurrent objects, and a dedicated 25-way deadlock-risk probe (never hung, 122-146ms). No stale write ever took effect. The parent-row SELECT...FOR UPDATE lock serializes concurrent per-object writes without deadlocking and incidentally also prevents a same-object create/create race.",
+      "evidence": "tests/contract-model/part-b-terminal-recert-open5-independent.test.ts"
+    },
+    {
+      "id": "OPEN-6",
+      "scope": "AUDIT-F7 failure-recording robustness (observability bottom)",
+      "auditor": "F",
+      "disposition": "STILL_OPEN",
+      "reason": "Part A correctly wrapped the last-resort console.error in try/catch, closing the reported reproduction. But classifyError, called before console.error at both call sites, can itself throw via a poisoned error value's toString()/.message getter - a new, different sub-defect one statement earlier in the same call chain, still capable of producing a completely silent failure.",
+      "evidence": "tests/contract-model/part-b-terminal-recert-open6-independent.test.ts"
+    }
+  ],
+  "tally": {
+    "certifiedClosed": 2,
+    "stillOpen": 4,
+    "total": 6
+  }
+}

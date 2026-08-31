@@ -7,7 +7,7 @@
  */
 import type { StructuralIndex } from "../structural-index";
 import type { StructuralNode } from "../types";
-import { addEdge, addItem, makeItemInput, withinBudget, type RetrievalState } from "./state";
+import { addEdge, addItem, makeItemInput, resolveSectionEvidenceState, withinBudget, type RetrievalState } from "./state";
 import type { ContextItem } from "./types";
 
 /**
@@ -133,7 +133,8 @@ export function retrieveOperativeSource(state: RetrievalState, index: Structural
   const node = index.getNodeById(nodeId);
   if (!node) return null;
   const text = index.getNodeText(nodeId, "DESCENDANTS");
-  return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1));
+  const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId, sectionRef: node.sectionRef });
+  return addItem(state, makeItemInput("OPERATIVE_SOURCE", documentId, node.nodeKey, nodeId, node.sectionRef, `Section ${node.sectionRef}`, text, "The discovered covenant candidate's own source text.", 0, [], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
 }
 
 /** Every ancestor closer than the enclosing ARTICLE (an ARTICLE heading is never itself operative language) - task §7's "the individual exception cannot be interpreted correctly without that [parent] scope." */
@@ -143,7 +144,8 @@ export function retrieveParentScope(state: RetrievalState, index: StructuralInde
     const text = index.getNodeText(ancestor.nodeId, "OWN");
     if (text.trim().length === 0) continue;
     if (!withinBudget(state, text.length)) return;
-    const item = addItem(state, makeItemInput("PARENT_SCOPE", documentId, ancestor.nodeKey, ancestor.nodeId, ancestor.sectionRef, `Section ${ancestor.sectionRef}`, text, `Enclosing scope for Section ${ancestor.sectionRef} - the operative prohibition/permission language a nested exception or basket depends on.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1));
+    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: ancestor.nodeId, sectionRef: ancestor.sectionRef });
+    const item = addItem(state, makeItemInput("PARENT_SCOPE", documentId, ancestor.nodeKey, ancestor.nodeId, ancestor.sectionRef, `Section ${ancestor.sectionRef}`, text, `Enclosing scope for Section ${ancestor.sectionRef} - the operative prohibition/permission language a nested exception or basket depends on.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
     addEdge(state, item.itemId, operativeItemId, "PARENT_OF", "Encloses the operative provision.");
   }
 }
@@ -167,7 +169,8 @@ export function retrieveChildRules(state: RetrievalState, index: StructuralIndex
     const text = index.getNodeText(child.nodeId, "OWN");
     if (text.trim().length === 0) continue;
     if (!withinBudget(state, text.length)) return;
-    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1));
+    const evidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: child.nodeId, sectionRef: child.sectionRef });
+    const item = addItem(state, makeItemInput("CHILD_RULE", documentId, child.nodeKey, child.nodeId, child.sectionRef, `Section ${child.sectionRef}`, text, `A sub-rule of the discovered candidate's own section - the candidate may bundle multiple independently operative clauses.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 1, evidenceState));
     addEdge(state, operativeItemId, item.itemId, "CHILD_OF", "Independently operative sub-rule of the discovered section.");
   }
 }
@@ -212,10 +215,11 @@ export function retrieveSiblingContext(state: RetrievalState, index: StructuralI
     // from elsewhere.
     const siblingEvidenceText = index.getNodeText(sibling.nodeId, "DESCENDANTS");
     const assessment = assessSiblingRelevance(candidateText, candidateSectionRef, siblingEvidenceText);
+    const siblingEvidenceState = resolveSectionEvidenceState(state, documentId, { nodeId: sibling.nodeId, sectionRef: sibling.sectionRef });
     if (assessment.relevant) {
       const item = addItem(
         state,
-        makeItemInput(classification.type, documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision containing ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") that may modify or limit the discovered candidate - subject-correspondence evidence: ${assessment.signals.join(", ")}.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.7)
+        makeItemInput(classification.type, documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision containing ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") that may modify or limit the discovered candidate - subject-correspondence evidence: ${assessment.signals.join(", ")}.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.7, siblingEvidenceState)
       );
       addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Trailing/neighboring ${classification.type.toLowerCase()} language.`);
     } else {
@@ -226,7 +230,7 @@ export function retrieveSiblingContext(state: RetrievalState, index: StructuralI
       // negation). Never silently attached at normal confidence/shape.
       const item = addItem(
         state,
-        makeItemInput("UNVERIFIED_SIBLING_SIGNAL", documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision contains ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") but subject-correspondence with the discovered candidate could NOT be verified (no clause backreference, shared named resource, enclosing-scope linkage, or grammatical continuation found) - possible context only; do not treat as equivalent to a verified ${classification.type} item.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.2)
+        makeItemInput("UNVERIFIED_SIBLING_SIGNAL", documentId, sibling.nodeKey, sibling.nodeId, sibling.sectionRef, `Section ${sibling.sectionRef}`, text, `Sibling provision contains ${classification.type.toLowerCase().replace("_", " ")} language ("${classification.signal}") but subject-correspondence with the discovered candidate could NOT be verified (no clause backreference, shared named resource, enclosing-scope linkage, or grammatical continuation found) - possible context only; do not treat as equivalent to a verified ${classification.type} item.`, 1, [operativeItemId], "STRUCTURAL_TRAVERSAL", 0.2, siblingEvidenceState)
       );
       addEdge(state, item.itemId, operativeItemId, "SIBLING_OF", `Unverified/possible ${classification.type.toLowerCase()} language - relevance not established.`);
     }

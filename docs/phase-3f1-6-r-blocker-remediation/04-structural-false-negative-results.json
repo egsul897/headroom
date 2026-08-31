@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "STRUCTURAL_FALSE_NEGATIVE_RESULTS",
+  "workstream": "C",
+  "blockerId": "BLOCKER-1",
+  "generatedAt": "2026-08-30T05:30:00Z",
+  "purpose": "The false-negative guard required by this phase's own charter BEFORE declaring BLOCKER-1 remediated: 'a fix that improves precision by destroying recall is not acceptable.' This is the full adversarial matrix of LEGITIMATE headings that must survive the new positive-evidence gate (lib/contract-model/compiler/stage-structure.ts's isPlausibleByPositionalSignals/isImmediatelyAfterPlausibleArticle), covering every category the charter names at minimum, exercised against real fixture text wherever practical and fresh synthetic constructions for the specific tricky shapes.",
+  "testFile": "tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts",
+  "howToReproduce": "npx vitest run tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts",
+
+  "resultSummary": {
+    "totalCases": 23,
+    "realFixtureCases": 12,
+    "syntheticCases": 11,
+    "wronglySuppressed": 0,
+    "vitestResult": "24/24 tests passed (23 category cases + 1 summary case) on the first run, with no changes needed to the gate implementation itself after the ARTICLE-adjacency signal (C) was added (see 03-structural-heading-remediation.json for how signal (C) was discovered - via this workstream's OWN pre-existing regression suite, before this dedicated guard file was even written)."
+  },
+
+  "matrix": [
+    {
+      "category": "1. ARTICLE headings",
+      "cases": [
+        { "kind": "real", "source": "CONMED Eighth A&R Credit Agreement (ex10-1-eighth-ar-credit-agreement-2025-06-16.htm)", "assertion": "ARTICLE VI (both its real TOC entry and its real body occurrence) survives", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "two roman-numeral ARTICLEs (I at document start, II after a real sentence break) both survive", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "2. SECTION headings",
+      "cases": [
+        { "kind": "real", "source": "FWRG article-6-negative-covenants.txt", "assertion": "the full real 6.01-6.10 SECTION set survives, exercising FWRG's own newline-free continuous-prose style end-to-end", "result": "PASS" },
+        { "kind": "real", "source": "CONMED Second Amendment 2022 (ex10-2-second-amendment-2022-08-02.htm)", "assertion": "the flat-integer amendment SECTION style ('SECTION 1. Amendments .') survives", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "3. Heading immediately after a sentence containing another section citation",
+      "cases": [
+        { "kind": "real", "source": "DSGR doc-a (2022 A&R Credit Agreement)", "assertion": "the real Section 6.12 (Financial Covenants) - cited by name throughout the document by other real clauses - still survives as its own heading", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "a preceding sentence citing TWO different sections (6.01, 6.02), properly period-terminated, does not suppress the following real heading (4.02)", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "4. Headings after semicolon/colon",
+      "cases": [
+        { "kind": "real", "source": "FWRG article-6-negative-covenants.txt", "assertion": "the real colon-introduced first heading ('...that: Section 6.01. Indebtedness .') survives", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "a heading directly after a semicolon, no whitespace at all, survives", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "a heading directly after a colon introducing an enumerated list survives", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "5. Page-boundary-like headings",
+      "cases": [
+        { "kind": "real", "source": "FWRG article-6-negative-covenants.txt", "assertion": "the real page-number-prefixed heading ('...permitted hereby. 147 Section 6.02. Liens .', no newlines at all) survives", "result": "PASS" },
+        { "kind": "real", "source": "DSGR doc-d (2025 Second A&R Credit Agreement)", "assertion": "the real page-number-sandwiched-between-blank-lines heading ('...RFR Borrowing).\\n\\n69\\n\\nSECTION 2.09...') survives", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "a bare page number on its own line, no punctuation before it, does not suppress the following real heading", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "6. OCR-like irregular whitespace",
+      "cases": [
+        { "kind": "real", "source": "LSB article-6-negative-covenants.txt", "assertion": "the real doubled-internal-space heading style ('SECTION  6.01 Indebtedness') survives", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "tabs and doubled spaces around a heading, with a real sentence break present, do not suppress it", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "7. Headings without a descriptive title (bare number / [Reserved] only)",
+      "cases": [
+        { "kind": "real", "source": "LSB article-6-negative-covenants.txt", "assertion": "two consecutive real '[Reserved]' SECTION headings (6.05, 6.06) both survive, and the real heading after them (6.07) is not suppressed", "result": "PASS" },
+        { "kind": "real", "source": "FWRG article-6-negative-covenants.txt", "assertion": "the real bare '[Reserved]' Section 6.03, sitting directly between two real titled sections, survives", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "8. Repeated section labels (legitimate duplicate numbering across different articles)",
+      "cases": [
+        { "kind": "synthetic", "assertion": "'Section 1' under ARTICLE I and 'Section 1' under ARTICLE II are both accepted as independent, uniquely-identified physical occurrences with correct distinct parentSectionRef", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "9. Schedules/exhibits headings",
+      "cases": [
+        { "kind": "synthetic", "assertion": "a real sentence ending in a Schedule/Exhibit cross-reference ('...identified on Schedule 6.01 attached hereto.') directly precedes the next real SECTION heading, which survives", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "conversely, a Schedule reference that itself embeds a heading-shaped in-text citation to a DIFFERENT section (Section 6.05) is still correctly REJECTED, never corrupting the real sections around it - confirms the false-negative fix did not weaken the original false-positive protection", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "10. Deeply nested clause headings",
+      "cases": [
+        { "kind": "real", "source": "FWRG article-6-negative-covenants.txt", "assertion": "real (a)/(i)/(A)/(1)-depth nesting under Section 6.01 is fully preserved (SUBSECTION/CLAUSE/SUBCLAUSE counts all > 0)", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "a full ARTICLE -> SECTION -> SUBSECTION -> CLAUSE -> SUBCLAUSE chain round-trips through the gate untouched, reaching sectionRef '6.01(a)(i)(A)(1)'", "result": "PASS" }
+      ]
+    },
+    {
+      "category": "11. Headings surrounded by malformed/irregular neighboring text",
+      "cases": [
+        { "kind": "real", "source": "CONMED Eighth A&R Credit Agreement", "assertion": "real HTML-entity-mangled neighboring text ('&#147;Ratio Debt&#148;' and similar) does not suppress the real Section 10.23 heading elsewhere in the document", "result": "PASS" },
+        { "kind": "synthetic", "assertion": "stray punctuation runs and an unclosed parenthetical/redaction marker immediately before a real heading (with a genuine sentence break) do not suppress it", "result": "PASS" }
+      ]
+    }
+  ],
+
+  "signalCDiscoveryNote": "Signal (C) (ADJACENT TO A PLAUSIBLE ARTICLE - see 03-structural-heading-remediation.json) was NOT anticipated in the original design; it was discovered when this workstream's existing, unrelated regression suites (tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts, tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts) failed after the initial 2-signal (paragraph-break OR sentence-punctuation) gate was implemented - multiple existing legitimate-heading fixtures use the shape 'ARTICLE VI COVENANTS Section 6.01 Indebtedness .' (an ALL-CAPS ARTICLE title giving way directly to its SECTION with only a single space, no period, no blank line). This is exactly the kind of false-negative regression this guard exists to catch, and it was caught and fixed BEFORE this dedicated guard file was written or this disposition was set - documented here as evidence the guard process worked as intended, not only as a static list of passing cases.",
+
+  "knownResidualRiskResolvedAsASideEffect": {
+    "description": "The original certification (docs/phase-3f1-6-final-foundation-certification/04-rank-stack-false-negative-audit.json) documented one synthetic-only adversarial category as a MINOR, not-observed-in-real-data risk: a genuine heading separated from a preceding citation-signal phrase by a PURE whitespace-only page break (no injected page number) was wrongly suppressed under the OLD phrase-list gate, because the gate found the literal citation phrase as the 'last thing before the match' regardless of the blank lines in between.",
+    "resolution": "The new positive-evidence gate resolves this case as a direct, unplanned side effect of testing WHETHER a real paragraph break exists rather than WHAT WORD precedes it - a real 2+-newline break is signal (A) regardless of the phrase before it. tests/certification/p1-10-legitimate-heading-false-negative-audit.test.ts's own category 4b (originally written to document the old defect) was updated to assert the corrected, improved behavior - see 03-structural-heading-remediation.json's regressionTestsUpdatedAndWhy."
+  },
+
+  "falsePositiveProtectionNotWeakened": "The false-negative fixes above (especially signal (C) and the Section 9 schedule/exhibit case) were each cross-checked against the original P1-10 false-positive regression suite (tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts, 24 tests) and the certification's own real-data track (tests/certification/p1-10-legitimate-heading-false-negative-audit.test.ts track (A)) - both suites pass unchanged in outcome (only the one intentional, documented improvement in category 4b), confirming the broadened acceptance criteria did not reopen any previously-closed citation-shaped false-positive path.",
+
+  "disposition": "PASS - zero legitimate headings wrongly suppressed across 23 adversarial cases (12 real-fixture, 11 synthetic) spanning all 11 required categories. Guard executed and passed BEFORE BLOCKER-1's REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION disposition was set, per the phase charter's explicit ordering requirement."
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "WORKSTREAM_G_INVARIANT_35_REVALIDATION",
+  "workstream": "G",
+  "blockerId": "BLOCKER-11",
+  "generatedAt": "2026-08-30T15:36:20Z",
+  "priorArtifact": {
+    "path": "docs/phase-3f1-6-r-blocker-remediation/20-invariant-35-architecture-decision.json",
+    "priorDetermination": "DEFERRED_TO_PHASE_6_BY_ARCHITECTURE_DECISION",
+    "priorDisposition": "ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION",
+    "modifiedByThisWorkstream": false,
+    "note": "Read and cited only. Not edited. This is a new, independent artifact re-validating that decision against current code, not a rewrite of it."
+  },
+  "task": "Independently re-run the prior workstream's BLOCKER-11 investigation against the CURRENT repository state (HEAD 4005687), specifically re-checking whether Phase 3F.1.6.R's own Workstream F (the new live contract-analysis orchestrator under lib/contract-model/analysis/** and the modified app/[companyId]/onboarding/documents/actions.ts) introduced any new DebtEvent creation call site or any new dependency on a populated sourceLedgerEntryId.",
+  "worktreeVerification": {
+    "startingHeadObserved": "f85125d (stale merge commit; worktree had drifted from the assigned branch tip)",
+    "correctiveAction": "git fetch origin claude/headroom-scaffold-covenant-engine-jrijk8 && git reset --hard origin/claude/headroom-scaffold-covenant-engine-jrijk8 (tree was clean; no local work discarded)",
+    "verifiedHeadAfterReset": "4005687 - Phase 3F.1.6.RX: baseline + frozen work items + independent audit findings"
+  },
+  "investigation": {
+    "documentsReRead": [
+      "docs/phase-3f1-6-r-blocker-remediation/20-invariant-35-architecture-decision.json (full, cited above)",
+      "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md - invariant #35's current text and the existing FUTURE_ENFORCED scope note the prior workstream added underneath it (both unchanged since the prior decision; verified by direct read, not paraphrase)",
+      "docs/HEADROOM-ROADMAP.md - re-read directly (not trusted from the prior artifact's paraphrase): line 111 (Phase 6 goal statement: 'This is also where the current LedgerEntry/DebtEvent fork (§3.3) gets resolved into the real transaction/capacity-truth model.'), line 178 (§3.3/§5: 'DebtEvent is the richer, newer, event-sourced model, explicitly designed with a sourceLedgerEntryId link back to LedgerEntry that has never actually been populated. Migration path: Phase 6 is where these should be reconciled...'), line 237 (status table: LedgerEntry is PARTIALLY_ALIGNED, 'narrow and unlinked from DebtEvent. Migrate per §5, don't discard')"
+    ],
+    "greps": [
+      "grep -rn \"debtEvent\\.(create|createMany)\" (whole repo, all .ts) - 10 hits total, ALL in scripts/populate-coherent-financial-core.ts, scripts/populate-matthews-financial-provenance.ts, scripts/financial-core-acceptance-run.ts (the same 3 offline engineer-run scripts the prior workstream found), plus tests/financial-core/*.test.ts fixture setup (synthetic-company-{a,b,c,d}*.test.ts - direct prisma test fixtures, not app/ or lib/ production code). Zero hits in app/ or lib/.",
+      "grep -rln \"DebtEvent\" lib app - 14 files. All either (a) lib/financial-core/* pure in-memory consumers of already-loaded DebtEvent[] (capital-structure.ts, liquidity.ts, position-service.ts, maturity.ts, interest.ts, scenario.ts, scenario-service.ts, solver-adapter.ts, types.ts, scenario-runner.ts, dashboard-service.ts - same set the prior workstream identified), (b) lib/financial-core-db/adapter.ts (the sole DB reader), or (c) two NEW hits this workstream specifically checked: lib/contract-model/ir/types.ts and lib/contract-model/compiler/semantic-precedent/types.ts - both are doc-comment-only citations of the roadmap's LedgerEntry/DebtEvent fork as design-rationale prose for an unrelated decision (why a new IR node type deliberately does not couple to the transitional LedgerEntry schema), not code that creates, reads, or depends on any DebtEvent row.",
+      "grep -rn \"sourceLedgerEntryId\" (whole repo) - exactly 3 hits, same as the prior workstream's 4 (one fewer because this grep excludes the schema.prisma declaration itself, checked separately below): lib/financial-core/types.ts:168 (TS type field), lib/financial-core-db/adapter.ts:90 (DB row interface) and :194 (the single read-with-`?? undefined`-fallback site). Zero write sites anywhere in app/ or lib/.",
+      "grep -rni \"ledger|debtevent\" lib/contract-model/analysis - ZERO hits. The new orchestrator package has no textual reference to LedgerEntry or DebtEvent of any kind, comment or code.",
+      "grep -n \"DebtEvent|LedgerEntry\" app/[companyId]/onboarding/documents/actions.ts - ZERO hits."
+    ],
+    "newOrchestratorDirectAudit": {
+      "filesInspected": [
+        "lib/contract-model/analysis/index.ts",
+        "lib/contract-model/analysis/service.ts",
+        "lib/contract-model/analysis/orchestrator.ts",
+        "lib/contract-model/analysis/identity.ts",
+        "lib/contract-model/analysis/types.ts"
+      ],
+      "prismaModelsTouchedByThisPackage": [
+        "prisma.analysisRun (findUnique, upsert, update x3, findFirst) - service.ts",
+        "prisma.document (findMany) - orchestrator.ts:286",
+        "prisma.claimReviewItem (count) - orchestrator.ts:383",
+        "prisma.analysisRun (findUniqueOrThrow) - orchestrator.ts:386"
+      ],
+      "finding": "The new live contract-analysis orchestrator and its AnalysisRun model touch exactly three Prisma models (AnalysisRun, Document, ClaimReviewItem) and none of them are DebtEvent or LedgerEntry, directly or via a relation. Confirmed directly in prisma/schema.prisma: model AnalysisRun has fields id/companyId/packageKey/documentIds/analysisAlgorithmVersion/status/currentStage/startedAt/completedAt/fatalError/reviewItemCount/createdAt/updatedAt and a single relation to Company - no field or relation referencing Facility, DebtEvent, or LedgerEntry in any form. This is exactly as expected: contract-model/analysis is about covenant/definition/rule truth extracted from documents, not the financial ledger, and the schema confirms it has no coupling point to the financial-core-db tables at all."
+    },
+    "onboardingActionsAudit": "app/[companyId]/onboarding/documents/actions.ts (the file Workstream F modified to wire in the new orchestrator) was read in full. It handles document upload, content-hash dedup, and now triggers the live analysis orchestrator (runOrEnqueueAnalysis-style call). It contains no DebtEvent or LedgerEntry reference of any kind, and no financial-core-db import."
+  },
+  "conclusion": {
+    "determination": "B - STILL_DEFERRED_TO_PHASE_6_NO_NEW_LIVE_DEPENDENCY_FOUND",
+    "reasoning": "Every fact the prior workstream's decision rested on is independently reconfirmed against the current HEAD (4005687), which includes all of Phase 3F.1.6.R's own new work (Workstream F's live contract-analysis orchestrator and its onboarding-actions integration): (1) the only three DebtEvent write call sites in the entire repository remain the same three offline, engineer-run, one-off scripts under scripts/ - no new call site exists anywhere in app/ or lib/, including nowhere in the new lib/contract-model/analysis/** package; (2) sourceLedgerEntryId remains written nowhere and read in exactly one place (lib/financial-core-db/adapter.ts, with the same `?? undefined` fallback); (3) the new AnalysisRun model and its orchestrator/service code touch only AnalysisRun, Document, and ClaimReviewItem - zero relation, zero field, zero runtime reference to DebtEvent or LedgerEntry, confirmed both by exhaustive grep (including a case-insensitive sweep for 'ledger'/'debtevent' across the entire analysis package, which returned nothing) and by direct reading of the five orchestrator source files and the AnalysisRun Prisma model definition; (4) docs/HEADROOM-ROADMAP.md, re-read directly rather than trusted from paraphrase, still explicitly and unambiguously assigns the LedgerEntry/DebtEvent reconciliation to Phase 6 - Living Headroom State, by name, in both its Phase 6 goal statement (line 111) and its dedicated §3.3/§5 fork discussion (line 178), with no contradicting or superseding language found anywhere else in the document. The two isolated comment-only 'DebtEvent'/'LedgerEntry' mentions found in lib/contract-model/ir/types.ts and lib/contract-model/compiler/semantic-precedent/types.ts are pre-existing design-rationale prose (present before this re-validation, unrelated to Workstream F's orchestrator) citing the roadmap's own fork discussion as a reason NOT to couple new IR/semantic-precedent schemas to the transitional LedgerEntry model - if anything, this is corroborating evidence that engineers building adjacent new schemas during this same phase are actively treating the fork as open, Phase-6-scoped architectural debt, not silently re-coupling to it. No fact underlying the prior decision has changed. The prior decision holds on independent re-inspection of the current code.",
+    "confirmedUnchangedSinceProDecision": [
+      "DebtEvent write call sites: still exactly the same 3 offline scripts (scripts/populate-coherent-financial-core.ts, scripts/populate-matthews-financial-provenance.ts, scripts/financial-core-acceptance-run.ts), plus test-fixture-only prisma.debtEvent.create calls in tests/financial-core/*.test.ts (never production app/lib code).",
+      "sourceLedgerEntryId write sites: still zero, in app/ or lib/.",
+      "sourceLedgerEntryId read sites: still exactly one (lib/financial-core-db/adapter.ts:194).",
+      "docs/HEADROOM-ROADMAP.md's Phase 6 assignment of the LedgerEntry/DebtEvent fork: still present, unchanged, unambiguous.",
+      "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md's invariant #35 text and its FUTURE_ENFORCED scope note: still present, unchanged, accurate as re-verified against current code - no clarifying addition to it was found to be genuinely needed."
+    ],
+    "newFactsCheckedThisWorkstream": [
+      "lib/contract-model/analysis/** (Workstream F's new live orchestrator, did not exist at the time of the prior BLOCKER-11 decision): confirmed zero DebtEvent/LedgerEntry coupling of any kind.",
+      "AnalysisRun Prisma model (new since the prior decision): confirmed no relation or field referencing Facility, DebtEvent, or LedgerEntry.",
+      "app/[companyId]/onboarding/documents/actions.ts modifications from Workstream F: confirmed zero DebtEvent/LedgerEntry reference introduced."
+    ]
+  },
+  "codeChangesImplemented": "None. Determination (B) confirms no current app/ or lib/ code path - including the new contract-analysis orchestrator added since the prior decision - has a real, honest dependency on a populated sourceLedgerEntryId. Per this workstream's charter, no speculative or placeholder DebtEvent<->LedgerEntry linking code was written, and none was needed.",
+  "documentationChangesMade": [],
+  "documentationChangeConsidered": "The task allowed a small clarifying addition to docs/HEADROOM-ARCHITECTURE-INVARIANTS.md's existing invariant #35 scope note if genuinely needed. On direct re-read, the existing scope note (added by the prior workstream) already accurately reflects the current state of the code after this independent re-check - it names Phase 6 correctly, describes the current DebtEvent/LedgerEntry split accurately, and its reasoning holds unchanged. No new fact surfaced by this re-validation (including the new orchestrator's total non-coupling) contradicts or requires expanding that note. Per instructions ('do not rewrite it if it's already accurate'), it was left untouched.",
+  "verificationCommandsRun": "No production code was changed, so per the task's own conditional ('if you make any code change'), tsc/eslint baseline comparison was not required and was not run for this workstream.",
+  "disposition": "ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "This is an independent re-validation, not a re-decision: it confirms the prior workstream's (Phase 3F.1.6.R Workstream G) ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION disposition for BLOCKER-11 continues to hold against the current codebase, including all new code Phase 3F.1.6.R's own Workstream F added (the live contract-analysis orchestrator). It is explicitly NOT CERTIFIED_SCOPE_RESOLVED - that classification is reserved for this same phase's separate, independent Part B recertification, which this Part A workstream does not perform."
+}

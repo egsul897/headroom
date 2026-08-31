@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "PART_B_CROSSCUTTING_RECERTIFICATION",
+  "auditor": 8,
+  "generatedAt": "2026-08-30T17:15:00Z",
+  "purpose": "Auditor 8's cross-cutting recertification per 22-recertification-baseline.json's own dispatch plan: known-package regression re-verification (independent, not a rerun), false-credit control re-verification, tenant isolation across every new table, database/migration integrity, the production-freeze-proof, and a diff-classification sanity check across Part A's full range.",
+  "productionFreezeSha": "d098cb4",
+  "auditorEndCommit": "920b9b7478d5a156d8cff4fbedf83265faad21e6",
+  "note_sharedEnvironment": "This branch/worktree is being used concurrently by all 8 Part B auditors (each committing directly to the same branch). By the time this artifact was written, auditors 1-7 had already committed 23-part-b-blocker1-blocker11-recertification.json through 29-part-b-auditf3-f6-f7-recertification.json. Several found genuine STILL_OPEN defects (BLOCKER-1, BLOCKER-5, BLOCKER-6 NEW_COUPLED_BLOCKER_DISCOVERED, BLOCKER-8/AUDIT-F4, BLOCKER-9, AUDIT-F2, AUDIT-F6, AUDIT-F7) - this artifact's own clean findings on items 1-6 below do NOT imply the phase as a whole recertifies; the phase's overall Part B verdict is an aggregate across all 8 auditors' reports, which is not this artifact's assignment to render.",
+
+  "item1_knownPackageRegression": {
+    "disposition": "CERTIFIED_CLOSED",
+    "summary": "Independently re-verified, not a rerun of scripts/phase-3f1-6-known-package-regression.ts. Wrote tests/contract-model/part-b-recert-crosscutting-known-package-regression.test.ts, which calls the real, unmodified runSemanticCoverageAudit and recordClaimReviewsFromDocumentCoverage directly against the real FWRG/LSB fixtures (own scratch companyId, distinct from Part A's own scratch company), then derives the 'must have a ClaimReviewItem' set by calling the actual production gate function deriveFromCoverageEntry directly (not a re-approximation of its logic) and confirms via a DIRECT POSTGRES QUERY - never a return-value/outcome-tally - that every such claimKey resolves to a real, persisted row.",
+    "fwrg": { "materialUnitsWithoutClaimReviewItem_independentlyMeasured": 0, "matchesPartAClaim": true, "expectedRequiredCount": ">0 (non-vacuous check)", "skippedNoAnchorButOtherwiseRequired": 0 },
+    "lsb": { "materialUnitsWithoutClaimReviewItem_independentlyMeasured": 0, "matchesPartAClaim": true, "skippedNoAnchorButOtherwiseRequired": 0 },
+    "dsgr": {
+      "gitDiffVerification": {
+        "command": "git diff 4005687 d098cb4 --stat -- lib/contract-model/compiler/safe-failure/",
+        "result": "ZERO diff - confirmed independently, not trusted from Part A's own claim.",
+        "secondCommand": "git diff 4005687 d098cb4 --stat -- tests/fixtures/unseen-packages/phase-3f1-dsgr-remediation-regression/",
+        "secondResult": "ZERO diff - the preserved fixture file is byte-identical across this entire phase's range.",
+        "totalUnitsInFixture": 7517,
+        "matchesDisclosedPreRegenerationCount": true
+      },
+      "significantAdditionalFinding": {
+        "title": "Part A's own DSGR 'materialUnitsWithoutClaimReviewItem=215' is a measurement artifact of its own tallying formula, not 215 units genuinely missing a review item",
+        "detail": "This test's own DB-query-based ground truth (does a real, persisted ClaimReviewItem row exist for every unit deriveFromCoverageEntry says requires one?) finds ZERO missing across all 7517 DSGR units, not 215. Investigation traced the discrepancy precisely: the DSGR fixture's 4 documents (doc-a/b/c/d) share 466 duplicate semanticUnitIds across documents (485 extra occurrences) - most plausibly the same provision re-appearing verbatim across an amendment lineage. When recordClaimReviewsFromDocumentCoverage processes the SAME claimKey a second time with unchanged content, recordClaimReview correctly returns outcome=ALREADY_RECORDED (a REAL, persisted ClaimReviewItem row already exists - this is the correct, safe behavior). Part A's own script's formula (materialReviewableCount - created, where created = CREATED + OBSERVATION_APPENDED + REOPENED_FROM_RESOLVED) deliberately EXCLUDES ALREADY_RECORDED from 'created', so every ALREADY_RECORDED occurrence is miscounted as 'a material unit with no review item' even though a real item exists. This test independently reproduced Part A's own formula (partAFormulaTotal) alongside the DB-query ground truth in the SAME run: totalAlreadyRecorded=215, partAFormulaTotal=215 (exactly matching Part A's disclosed number), while the real DB-query-based totalMissing=0.",
+        "safetyImplication": "NOT a dangerous silent failure and NOT a regression - the underlying safe-failure architecture's actual invariant (every material/reviewable unit has a real, persisted ClaimReviewItem) holds, and holds MORE strongly than Part A's own report suggested. This is a metric-definition quality issue in scripts/phase-3f1-6-known-package-regression.ts's own summarizeDocument formula (an outcome-tally proxy that undercounts ALREADY_RECORDED as 'missing'), not a defect in the safe-failure production code path (safe-failure/derive.ts, safe-failure/service.ts, safe-failure/integrate.ts - all independently exercised here and all behaving correctly).",
+        "recommendation": "Non-blocking. A future phase should fix scripts/phase-3f1-6-known-package-regression.ts's own materialUnitsWithoutClaimReviewItem formula to query actual persisted ClaimReviewItem existence (as this test does) rather than tallying CREATED-type outcomes, so this metric stops falsely reading as if it were disclosing a real gap. Not a change to any frozen certification artifact or production code - this is a request to fix a SCRIPT's own instrumentation."
+      },
+      "verdict": "Part A's core claim ('no regression, unchanged from 3F.1.6.R, non-dangerous') independently confirmed true, and independently found to understate the actual safety margin - the real figure is 0 missing, not 215."
+    },
+    "evidence": ["tests/contract-model/part-b-recert-crosscutting-known-package-regression.test.ts (3 tests, all passing, run standalone and inside the full 234-file/125-file contract-model suite under real parallel load)"]
+  },
+
+  "item2_falseCreditControls": {
+    "disposition": "CERTIFIED_CLOSED",
+    "summary": "Read tests/evaluation-v2/atomic-contract.test.ts and lib/contract-model/evaluation-v2/atomic-contract.ts in full. Confirmed atomic-contract.ts contains ZERO branching by gtUnitId/claimId anywhere - creditEligibility is a single mechanical rule (CREDIT iff matchStatus is EXACT_SINGLE or EXACT_COMPOSITE, else NO_CREDIT) applied uniformly. Manually traced 3 of the 14 historical false-credit control gt units through the REAL frozen matcher (runEvaluationV2 against the real, frozen DSGR ground-truth/candidate fixtures) via a standalone script, independent of the test file's own assertions.",
+    "tracedControls": [
+      {
+        "gtUnitId": "doc-a::VI::6.01-chapeau",
+        "historicalFalseCredit": "phase-3f-scoring-report.json records auditMatch=EXACT with auditMaterialityAssigned=INFORMATIONAL (the old rubric awarded/implied credit despite a materiality misclassification and SOURCE_CONTEXT_INCOMPLETE coverage).",
+        "realMatchStatusComputedByFrozenMatcher": "UNREPRESENTED",
+        "realEvidence": "58 of 60 candidates were near enough to be evaluated and each conflicts materially (closest: WRONG_OPERATIVE_VERSION conflict) - a genuine, evidence-based omission determination, not an assumption.",
+        "mechanicalConsequence": "creditEligibility=NO_CREDIT purely because UNREPRESENTED is not in CREDIT_STATUSES={EXACT_SINGLE,EXACT_COMPOSITE} - the exact same rule applied to every other unit in the codebase.",
+        "dangerousSilentOmission": true
+      },
+      {
+        "gtUnitId": "doc-b::VI::6-01-lead-in",
+        "realMatchStatusComputedByFrozenMatcher": "HONESTLY_UNRESOLVED",
+        "realEvidence": "A semantically-corresponding candidate explicitly surfaces this claim as unresolved rather than asserting a confident answer (real verifierFindings/self-report data, not fabricated).",
+        "mechanicalConsequence": "creditEligibility=NO_CREDIT (HONESTLY_UNRESOLVED not in CREDIT_STATUSES); surfacingStatus=SPECIFICALLY_SURFACED because explicitlySurfacedAsUnsafe=true - correctly NOT flagged dangerousSilentOmission since the system did flag it.",
+        "dangerousSilentOmission": false
+      },
+      {
+        "gtUnitId": "doc-d::VI::6-08-b-chapeau",
+        "realMatchStatusComputedByFrozenMatcher": "UNREPRESENTED",
+        "realEvidence": "No substantive representation exists, but 2 semantically-corresponding candidates explicitly flag the gap (review-required/dangerous-unaccounted/verifier finding) - explicitlySurfacedAsUnsafe=true.",
+        "mechanicalConsequence": "creditEligibility=NO_CREDIT; surfacingStatus=SPECIFICALLY_SURFACED; dangerousSilentOmission=false (correctly, since it was surfaced).",
+        "dangerousSilentOmission": false
+      }
+    ],
+    "conclusion": "All 3 traced NO_CREDIT results are genuine, evidence-grounded consequences of the frozen matcher's real semantic-dimension comparisons (real conflict codes: WRONG_OPERATIVE_VERSION, WRONG_CAP_STRUCTURE, MISSING_CONDITION, SCOPE_BREADTH_MISMATCH were observed in the actual pairAssessments output), passed through one uniform, non-branching mechanical rule - not a hardcoded expectation with no real teeth. The gate is testing real historical false-credit scenarios."
+  },
+
+  "item3_tenantIsolation": {
+    "disposition": "CERTIFIED_CLOSED",
+    "schemaReview": {
+      "SemanticTruthRecord": { "companyIdIsRealColumn": true, "criticalUniqueConstraint": "@@unique([companyId, instrumentKey, kind, semanticObjectId]) - tenant key IS part of the unique index, not a bare global key.", "queryIndexes": ["@@index([companyId, trustStatus])", "@@index([companyId, instrumentKey])"] },
+      "AnalysisRunIssue": { "companyIdIsRealColumn": true, "uniqueConstraint": "@@unique([runId, instrumentKey]) - not companyId-prefixed directly, but runId is a globally-unique cuid FK to exactly one AnalysisRun.companyId, so no two rows sharing a runId can belong to different companies by construction.", "queryIndexes": ["@@index([companyId])", "@@index([runId])"] }
+    },
+    "adversarialTest": "tests/contract-model/part-b-recert-crosscutting-tenant-isolation.test.ts (5 tests, all passing). Seeds two synthetic companies (X, Y) that each write a SemanticTruthRecord using a BYTE-IDENTICAL instrumentKey and semanticObjectId (ruleId) - deliberately not trusting IRRule.ruleId's own doc-comment claim that it is company-namespaced by construction. Confirms: (a) both writes succeed independently (no unique-constraint collision) with distinct row ids and distinct payload content: (b) getTrustedSemanticTruth/getAllSemanticTruthForInstrument never cross-return the other company's row even under the forced collision; (c) a raw prisma.create for a THIRD company under the identical key succeeds, proving companyId is genuinely part of the DB-level unique index, not merely an application convention. For AnalysisRunIssue: two companies' real AnalysisRun rows both record an issue under an identical instrumentKey string; getAnalysisRunIssues(runId) and a direct companyId+instrumentKey query both correctly isolate per company with zero leakage.",
+    "disclosedDefenseInDepthObservation": {
+      "title": "getAnalysisRunIssues(runId) and getSemanticTruthForRun(analysisRunId) are NOT themselves companyId-scoped",
+      "detail": "Both functions (lib/contract-model/analysis/service.ts:253, lib/contract-model/analysis/semantic-truth/service.ts:164) query by run/analysisRun id alone and trust the caller to have already resolved that id via a company-scoped path. Audited every call site in the repository: getAnalysisRunIssues has exactly one call site (app/[companyId]/onboarding/documents/page.tsx:46), and it is safe - `run` is obtained from getLatestAnalysisRunForCompany(companyId) (the URL's own companyId param) BEFORE run.id is passed in, so no caller can currently supply a cross-tenant runId. getSemanticTruthForRun has ZERO call sites anywhere in app/ or lib/ today - it is exported but unused.",
+      "risk": "Latent, not live. A future caller that ever passes an untrusted/externally-supplied runId or analysisRunId directly to either function (bypassing a companyId-scoped lookup first) would leak cross-tenant data. No such caller exists today.",
+      "recommendation": "Non-blocking. A future phase should consider adding an optional companyId parameter to both functions (defense in depth) so a future caller cannot introduce this class of bug by omission. Not a certified defect against this phase's own scope - the concrete tenant-isolation property the charter names (SemanticTruthRecord, AnalysisRunIssue - no cross-tenant leakage in read or write paths) holds for every live, exercised call path today."
+    }
+  },
+
+  "item4_databaseMigrationIntegrity": {
+    "disposition": "CERTIFIED_CLOSED",
+    "prismaMigrateStatus": { "command": "npx prisma migrate status", "result": "29 migrations found in prisma/migrations. Database schema is up to date! (independently run, not trusted from Part A's report)" },
+    "prismaMigrateDiff": { "command": "npx prisma migrate diff --from-schema-datasource prisma/schema.prisma --to-schema-datamodel prisma/schema.prisma", "result": "No difference detected. (independently run)" },
+    "migrationFileReview": {
+      "newMigrationsInRange": ["prisma/migrations/20260830154356_phase_3f1_6_rx_workstream_h_semantic_truth/migration.sql"],
+      "fileCountConfirmation": "git log 4005687..d098cb4 -- prisma/migrations/ shows exactly 1 file changed, 111 insertions, 0 deletions.",
+      "contentReview": "Read the full 112-line SQL file. Confirmed fully additive/backward-compatible: 2 new CREATE TYPE enums (semantic_truth_kind, semantic_truth_trust_status), 1 ALTER TYPE ... ADD VALUE 'PARTIAL' on the pre-existing analysis_run_status enum (additive - Postgres ADD VALUE never removes or renumbers an existing value), 3 new CREATE TABLE statements (analysis_run_issues, analysis_failure_logs, semantic_truth_records) with their own indexes/FKs, and 5 new ADD FOREIGN KEY constraints all referencing the new tables. ZERO ALTER TABLE DROP COLUMN, ZERO column-type changes, ZERO new NOT NULL constraint added to any pre-existing table's pre-existing column, ZERO data-loss operation of any kind against any table that predates this phase.",
+      "verdict": "Fully additive and backward-compatible, safe for a live-adjacent system."
+    }
+  },
+
+  "item5_productionFreezeProof": {
+    "disposition": "CERTIFIED_CLOSED",
+    "selfCheckCommand": "git diff d098cb4 920b9b7478d5a156d8cff4fbedf83265faad21e6 -- 'lib/**' 'app/**' 'prisma/schema.prisma' 'prisma/migrations/**'",
+    "selfCheckResult": "EMPTY (0 bytes, 0 lines of diff output) - confirmed at auditor-8's own end-commit, which includes this auditor's own 2 new test files plus all commits from auditors 1-7 (23-part-b-blocker1-blocker11-recertification.json through 29-part-b-auditf3-f6-f7-recertification.json and their own test files).",
+    "verifiedAtMultipleCheckpoints": [
+      { "checkpoint": "session start (worktree reset verification)", "command": "git diff HEAD origin/claude/headroom-scaffold-covenant-engine-jrijk8 --stat", "result": "empty - worktree was already at origin head 2663271, itself byte-identical to d098cb4 in every production file" },
+      { "checkpoint": "before this auditor's own commit", "command": "git diff d098cb4 HEAD -- 'lib/**' 'app/**' 'prisma/schema.prisma' 'prisma/migrations/**'", "result": "empty, re-verified immediately before writing this artifact" }
+    ],
+    "patternForOtherAuditors": "The reliable, mechanical self-check every Part B auditor should run immediately before finalizing: `git diff d098cb4 <your-own-end-commit-sha> -- 'lib/**' 'app/**' 'prisma/schema.prisma' 'prisma/migrations/**'` must print nothing. Run it AFTER your own last commit (not just after your last edit) so it also catches an accidental production-file change staged/committed by mistake. If it prints anything, your Part B verdict must be STILL_OPEN/FAILED for that item, never a silent revert-and-recertify."
+  },
+
+  "item6_diffClassificationSanityCheck": {
+    "disposition": "CERTIFIED_CLOSED",
+    "command": "git diff 4005687 d098cb4 --stat",
+    "totalsAcrossPartAsFullRange": "66 files changed, 6419 insertions(+), 108 deletions(-)",
+    "nonTestNonDocProductionFiles": 26,
+    "spotCheckedMappings": [
+      { "files": ["lib/contract-model/compiler/discovery/pass-b-semantic.ts", "pass-c-neighborhood.ts", "pass-d-reconcile.ts", "pipeline.ts", "types.ts", "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts", "types.ts", "lib/contract-model/compiler/value-anchors.ts (new)"], "mapsTo": "BLOCKER-8 + AUDIT-F4 (Claim Identity V2 - grounded value-anchor fingerprinting + verified-quote disambiguation)", "confirmed": "Read the full diffs; SEMANTIC_COVERAGE_ALGORITHM_VERSION bumped v3->v4 with an explicit, on-point comment naming BLOCKER-8/AUDIT-F4; computeCandidateContentFingerprint genuinely extended with valueAnchors/verifiedQuoteFingerprint, matching 06-claim-identity-v2.json's own design writeup." },
+      { "files": ["lib/contract-model/compiler/semantic/tools.ts"], "mapsTo": "BLOCKER-5 (LLM-facing tools bypassing operative state)", "confirmed": "Read the diff; getContextBundleComponent/getSharedCapContext's classification and per-item supersessionStatus disclosure fix matches the disclosed root cause exactly." },
+      { "files": ["lib/contract-model/analysis/orchestrator.ts", "lib/contract-model/analysis/*", "lib/contract-model/analysis/semantic-truth/*"], "mapsTo": "AUDIT-F1/F2/F3/F6/F7 + BLOCKER-10 + the orchestrator supersession/lineage NEW_COUPLED_BLOCKER_DISCOVERED closure", "confirmed": "Read the diff; buildNodeSupersessionIndex/deriveOperativeLineage wiring, persistSemanticTruthForInstrument call, and recordAnalysisRunIssue/recordAnalysisFailureLog wiring all match the disclosed fixes with on-point inline documentation naming each finding." },
+      { "files": ["prisma/schema.prisma", "prisma/migrations/20260830154356_.../migration.sql"], "mapsTo": "Workstream H's own AUDIT-F1/F2/F3/F7 schema additions", "confirmed": "See item 4 above." },
+      { "files": ["scripts/backfill-defined-term-node-stable-key.ts"], "mapsTo": "BLOCKER-7 + AUDIT-F5 (the coupled DefinedTermNode.stableKey staleness fix disclosed in 05-source-trace-referential-integrity.json)", "confirmed": "File name and phase match the disclosed coupled fix; not independently re-run here since BLOCKER-7/AUDIT-F5 is auditor 3's own dedicated scope (25-part-b-blocker7-recertification.json)." },
+      { "files": ["lib/contract-model/compiler/context-retrieval/pipeline.ts", "types.ts"], "mapsTo": "BLOCKER-2/3/4/5/6 (Workstream B revalidation - context-retrieval real consumer gap)", "confirmed": "Consistent with 04-operative-supersession-remediation.json's own disclosure; auditor 2's own dedicated scope (24-part-b-blocker2-6-orchestrator-recertification.json) already independently re-verified this in depth." }
+    ],
+    "forbiddenCategorySearch": "Manually reviewed all 26 non-test/non-doc file paths for anything resembling UI redesign, a new dashboard, a simulation feature, a financial connector, Phase 4 computation, a newly-introduced unseen package, an evaluator V4 change, or package-specific tuning. Found none - the single app/ change (app/[companyId]/onboarding/documents/page.tsx) is a status-visibility card addition (AUDIT-F6), not a redesign, and adds no new route/feature surface.",
+    "verdict": "No forbidden-category work found. Every changed production file plausibly and, on inspection, ACTUALLY maps to one of the 11 blockers, 7 AUDIT-F items, or the orchestrator NEW_COUPLED_BLOCKER_DISCOVERED closure."
+  },
+
+  "qualityGates": {
+    "tsc": { "command": "npx tsc --noEmit -p .", "ownFilesResult": "0 new errors introduced by this auditor's own 2 new test files.", "repoWideResult": "6 pre-existing baseline errors (tests/foundation-audit/* - unchanged) PLUS 2 errors in another (uncommitted-at-time-of-check, later committed) Part B auditor's own test file (tests/contract-model/part-b-recert-blocker2-6-tools-adversarial.test.ts) that are NOT this auditor's own work and outside this auditor's assigned scope to fix.", "disclosure": "Reported honestly rather than silently ignored - not fixed here because modifying another auditor's in-flight test file without their own context risks masking or misrepresenting their own findings." },
+    "eslint": { "command": "npx eslint .", "ownFilesResult": "0 new errors.", "repoWideResult": "1 pre-existing baseline error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169), unchanged." },
+    "vitest": { "command": "npx vitest run (full repo)", "result": "234 test files, 2416 tests: 2414 passing. 1 pre-existing/unrelated failure (tests/extraction/vercel-ai-gateway-provider.test.ts - independently re-confirmed as environment-configuration-dependent, matching Part A's own disclosure verbatim). This auditor's own 2 new test files passed reliably standalone, together, and inside the full 234-file parallel run after a robustness fix (see below).", "robustnessFindingDuringDevelopment": "One transient failure was observed in this auditor's own DSGR test during a full-suite parallel run: a claim_review_items_documentId_fkey violation caused by this shared, multi-auditor Postgres environment - the DSGR fixture's own document ids ('doc-a'/'doc-b'/'doc-c'/'doc-d') are bare, non-namespaced GLOBAL Prisma primary keys, and this same fixture/script pattern is used by Part A's own script and is available for reuse by any other concurrent auditor session sharing this database, creating a real cross-session collision hazard on those literal ids under concurrent execution. Fixed by remapping this test's own document ids to a scratch-company-namespaced value before use, fully isolating this test's own Postgres footprint from any other concurrent session. Disclosed as a general test-infrastructure hygiene finding, not a production defect - no production code path uses these bare literal ids as a real multi-tenant identity key (Document.id is always a cuid()-generated value in every real, non-test code path)." }
+  },
+
+  "overallSummaryForThisAuditorsAssignedScope": {
+    "items1through6Disposition": "CERTIFIED_CLOSED for all 6 assigned cross-cutting items.",
+    "keyFindings": [
+      "Known-package regression: confirmed no regression AND discovered that Part A's own DSGR 'materialUnitsWithoutClaimReviewItem=215' figure is a measurement-methodology artifact (ALREADY_RECORDED outcomes undercounted), not 215 genuinely-missing review items - the real, DB-verified figure is 0, a stronger safety result than Part A itself reported.",
+      "False-credit controls: independently traced 3/14 controls through the real frozen matcher; all resolve NO_CREDIT as a genuine, non-branching mechanical consequence of real semantic-dimension evidence.",
+      "Tenant isolation: SemanticTruthRecord and AnalysisRunIssue both hold under a forced non-tenant-key collision adversarial test; one non-blocking defense-in-depth observation disclosed (two run-id-scoped convenience read functions are not independently companyId-guarded, though every current call site is safe).",
+      "Database/migration integrity: zero drift, exactly 1 new migration, fully additive.",
+      "Production freeze: zero diff in lib/**, app/**, prisma/schema.prisma, prisma/migrations/** between d098cb4 and this auditor's own end commit - self-check passed.",
+      "Diff classification: all 26 non-test production files spot-checked map to a disclosed blocker/audit-finding; no forbidden-category work found."
+    ],
+    "importantCaveatForTheOverallPhaseVerdict": "This auditor's clean CERTIFIED_CLOSED results on items 1-6 are scoped ONLY to the cross-cutting concerns this auditor was assigned (22-recertification-baseline.json's auditor 8 row). By this artifact's own writing time, auditors 1, 2 (partially), 4, 5, 6, and 7 had already reported multiple genuine STILL_OPEN defects and one NEW_COUPLED_BLOCKER_DISCOVERED against their own assigned blockers/audit-findings (see 23, 24, 26, 27, 28, 29). This artifact does not attempt to resolve, dispute, or paper over those findings, and the phase's overall Part B verdict must be computed as the honest aggregate across all 8 auditors' reports - a clean cross-cutting result does not offset a real per-blocker defect found elsewhere."
+  },
+
+  "newTestFilesAdded": [
+    "tests/contract-model/part-b-recert-crosscutting-tenant-isolation.test.ts",
+    "tests/contract-model/part-b-recert-crosscutting-known-package-regression.test.ts"
+  ]
+}

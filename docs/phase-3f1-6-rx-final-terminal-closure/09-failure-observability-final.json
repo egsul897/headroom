@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "FAILURE_OBSERVABILITY_FINAL",
+  "workstream": "G",
+  "finding": "FINDING-8",
+  "correspondsTo": "AUDIT-F7",
+  "priorEvidence": [
+    "docs/phase-3f1-6-rx-final-blocker-closure/29-part-b-auditf3-f6-f7-recertification.json (AUDIT_F7 section, task3_cheaperThanTotalOutageGap)",
+    "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts (already-committed, forced the gap before this fix)"
+  ],
+
+  "problemRestated": "AUDIT-F7's own fix gave runContractAnalysis a durable pre-AnalysisRun-ownership failure trace (recordAnalysisFailureLog -> AnalysisFailureLog) for a failure occurring before a real AnalysisRun row is claimed. But the call to recordAnalysisFailureLog inside that pre-identity catch block (lib/contract-model/analysis/orchestrator.ts) had NO try/catch of its own. If that SECOND write itself failed - a single transient statement failure (serialization error, momentary pool exhaustion, a bad FK), not necessarily a total Postgres outage - the resulting exception propagated UNCAUGHT out of runContractAnalysis, past every durability mechanism the AUDIT-F7 fix built, reproducing exactly the log-only failure mode (caught only by app/'s own runExtractionAction console.error) that fix existed to eliminate. This is materially cheaper to trigger than the fix's own disclosed 'total Postgres outage' residual.",
+
+  "scopeDiscipline": "This is a small, targeted fix to ONE call site's own error handling (the pre-identity catch block's recordAnalysisFailureLog call in runContractAnalysis). No other part of the broader runContractAnalysis failure-handling architecture was touched: failAnalysisRun/recordAnalysisRunIssue (used once a real AnalysisRun row exists) are untouched and out of scope - they operate against a durably-claimed row via a different, already-robust mechanism, and this finding is scoped to the ONE call site with no runId yet to attach a trace to instead.",
+
+  "fixLocation": {
+    "file": "lib/contract-model/analysis/orchestrator.ts",
+    "function": "runContractAnalysis",
+    "site": "the pre-AnalysisRun-ownership catch block (the one wrapping the initial Document query and startOrResumeAnalysisRun)"
+  },
+
+  "fallbackHierarchyDesign": {
+    "step1_primary": "Attempt the durable failure record exactly as AUDIT-F7's original fix did: await recordAnalysisFailureLog({...}) - a real Postgres write to AnalysisFailureLog, unchanged in shape or content from before this fix.",
+    "step2_isolation": "That call is now wrapped in its OWN try/catch, deliberately narrow - it wraps ONLY the recordAnalysisFailureLog call, nothing else in the surrounding catch block, so it can never accidentally swallow an unrelated later step.",
+    "step3_fallbackOnFailure": "If the write throws, the fallback is a single structured console.error call carrying BOTH the ORIGINAL failure (fatalError: {stage, message, errorClass}) and the recording write's OWN failure (failureRecordError: {message, errorClass}), clearly labeled '[runContractAnalysis] AUDIT-F7 fallback: could not durably record...' and explicitly stating 'no Postgres row exists for the original failure below' so it is never mistaken for a successful recording.",
+    "step4_neverMasksOriginal": "The ORIGINAL error is classified into `fatalError` BEFORE recordAnalysisFailureLog is ever attempted, and that same `fatalError` object is what gets returned in the function's result regardless of how the recording write goes. A failure of the recording write can only ever set `failureRecordPersisted` to false and trigger the console.error fallback - it can never overwrite, wrap, or otherwise replace the original error's own message/errorClass/stage in the returned result.",
+    "step5_stillReturnsStructuredFailure": "runContractAnalysis's pre-identity catch block already returns a structured {outcome:'FAILED', fatalError, ...} result rather than throwing (this is the pre-existing convention for this exact branch, established by the original AUDIT-F7 fix and unchanged here - other branches of this function that already own a real AnalysisRun row use failAnalysisRun/throw differently, which this finding does not touch). This fix preserves that convention in BOTH the ordinary case and the nested-failure case: the function never throws uncaught from this catch block, no matter how the recording write goes.",
+    "step6_separateObservability": "A new result field, `failureRecordPersisted: boolean | null` (lib/contract-model/analysis/types.ts, RunContractAnalysisResult), reports which case occurred: true (durable AnalysisFailureLog row exists - the ordinary case), false (the recording write itself failed - only the console.error fallback ran; a caller/operator should treat this as more urgent), or null (not applicable - a different fatalError stage, or no fatalError at all). This is never inferred or hidden - it is an explicit, typed, separately-observable field on the function's own return value."
+  },
+
+  "whyThisTerminatesAndNeverRecurses": {
+    "constraint": "This phase's own explicit constraint: do NOT build an infinite 'log failure -> log logging failure -> log logging failure...' chain. There is an unavoidable bottom to error reporting - this fix reaches it deliberately, not accidentally.",
+    "argument": [
+      "The fallback (console.error) is NOT another attempt to write through the same failing abstraction (Prisma/Postgres). It does not call recordAnalysisFailureLog again, does not retry the same write, and does not route to a different table via the same database connection pool that just failed. It depends on nothing but the Node.js `console` global, which is not a durability mechanism this fix is trying to protect and cannot itself fail in a way this function needs to catch (a call to console.error does not throw under this runtime's own semantics).",
+      "There is therefore no THIRD tier for this hierarchy to fall back to if the console.error 'fails' - the design deliberately treats it as the genuine, disclosed bottom, not merely the next rung of a ladder that could keep going. Nothing after it is wrapped in try/catch, because nothing after it exists.",
+      "The bottom is reached exactly ONCE per invocation of this catch block: the try/catch around recordAnalysisFailureLog can only execute its catch body zero or one times per call (a single await, a single try), so the console.error fallback fires at most once per failed run - never in a loop, never recursively.",
+      "This mirrors app/'s own runExtractionAction console.error, already disclosed in the original AUDIT-F7 fix's own header comment as legitimate, disclosed, unchanged defense-in-depth OUTSIDE the lib/contract-model/analysis/** tree - this fix adds one more, symmetric, equally-terminal layer INSIDE that tree, at the one call site that needed it, without inventing a new class of retry/re-log machinery."
+    ]
+  },
+
+  "residualDisclosure": {
+    "statement": "If a total Postgres outage prevents ALL durable writes (the pre-existing, already-disclosed residual from the original AUDIT-F7 fix), this function still returns an explicit {outcome:'FAILED', fatalError, failureRecordPersisted:false} result to the caller rather than pretending durable observability was achieved. The console.error fallback fires and is a genuine last-ditch observability measure, but `failureRecordPersisted:false` in the returned result makes explicit and machine-checkable that it is NOT equivalent to a successfully persisted AnalysisFailureLog row. No caller can mistake the two cases by inspecting the result.",
+    "notEliminated": "A total outage still means no AnalysisFailureLog row exists for the original failure - this fix does not and cannot eliminate that residual (there is no durable substrate left to write to). What changes is that the CALLER now always learns about it explicitly and structurally (thrown/returned failure + failureRecordPersisted:false), instead of the function throwing uncaught and the only trace being a bare console.error at a call site outside this tree that has no way to distinguish 'durably recorded' from 'not durably recorded'."
+  },
+
+  "codeChanges": [
+    {
+      "file": "lib/contract-model/analysis/orchestrator.ts",
+      "change": "The pre-identity catch block now classifies the original error into a `fatalError` object first, then wraps the `recordAnalysisFailureLog(...)` call in its own try/catch. On success, `failureRecordPersisted` stays true. On failure, `failureRecordPersisted` is set to false and a single structured console.error fallback runs, carrying both the original failure and the recording write's own failure. The function's return statement is unchanged in every other respect - same outcome:'FAILED', same fatalError shape, same never-throws-uncaught contract - with the addition of `failureRecordPersisted` on the result. Every OTHER return site in this function (SKIPPED_NO_CONTRACT_DOCUMENTS, SKIPPED_ALREADY_RUNNING, the PER_INSTRUMENT_ANALYSIS FAILED case, STARTED_TO_COMPLETION, and the INGESTION_OR_STRUCTURAL FAILED case) sets `failureRecordPersisted: null` - not applicable, since none of those paths call recordAnalysisFailureLog at all."
+    },
+    {
+      "file": "lib/contract-model/analysis/types.ts",
+      "change": "RunContractAnalysisResult gains `failureRecordPersisted: boolean | null`, documented with its three-way meaning (true/false/null) directly on the field."
+    },
+    {
+      "file": "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts",
+      "change": "The already-committed test that forced this gap (originally named 'REAL GAP BEYOND THE DISCLOSED RESIDUAL...', asserting the BROKEN behavior: thrown!==null, result===null, zero AnalysisFailureLog rows) is renamed to 'FINDING-8 FIX: ...' and rewritten to assert the FIXED behavior instead: thrown===null, a real structured FAILED result carrying the ORIGINAL error message (never the recording error's own message), failureRecordPersisted===false, and exactly one console.error fallback call whose payload contains both the original and recording failures. A new second test ('FINDING-8 FIX regression check') was added to independently confirm the ORDINARY (non-nested-failure) pre-identity path is unchanged: recordAnalysisFailureLog succeeds normally, failureRecordPersisted===true, no console.error fallback fires, and the AnalysisFailureLog row is durably written exactly as AUDIT-F7's original fix already proved. The pre-existing sibling test (no-log-only-failure.test.ts) and this file's own first test (the reclaim-path/updateMany construction) were left unmodified and still pass unchanged - no regression to AUDIT-F7's already-correct behavior for the ordinary branch."
+    }
+  ],
+
+  "testEvidence": {
+    "nestedFailureCase": {
+      "test": "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts > 'FINDING-8 FIX: if recordAnalysisFailureLog's OWN write fails...'",
+      "construction": "prisma.document.findMany mocked to throw the ORIGINAL failure; prisma.analysisFailureLog.create ALSO mocked to throw once (Postgres otherwise fully healthy, matching the recertification's own cheaper-than-outage construction); console.error spied.",
+      "assertions": [
+        "thrown === null (no uncaught exception escapes runContractAnalysis)",
+        "result.outcome === 'FAILED', result.fatalError.stage === 'PRE_RUN_IDENTITY'",
+        "result.fatalError.message contains the ORIGINAL failure's message and does NOT contain the recording failure's message (original never masked/replaced)",
+        "result.failureRecordPersisted === false (the persistence gap is separately, honestly observable)",
+        "console.error called exactly once (proves the fallback is non-recursive - no logging-a-logging-failure loop), with a payload containing BOTH the original and recording failures",
+        "zero AnalysisFailureLog rows exist afterward (the disclosed, honestly-reported residual - never silently hidden, since failureRecordPersisted already told the caller)"
+      ],
+      "result": "PASS"
+    },
+    "ordinaryFailureCase": {
+      "test": "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts > 'FINDING-8 FIX regression check: the ORDINARY (non-nested-failure) pre-identity path is unchanged...' AND the pre-existing tests/contract-model/no-log-only-failure.test.ts (both tests, unmodified)",
+      "construction": "prisma.document.findMany mocked to throw; prisma.analysisFailureLog.create left real/healthy.",
+      "assertions": [
+        "result.outcome === 'FAILED', fatalError carries the injected message",
+        "result.failureRecordPersisted === true",
+        "console.error NOT called (no fallback needed or fired)",
+        "exactly one real AnalysisFailureLog row exists, matching the injected message"
+      ],
+      "result": "PASS - no regression to AUDIT-F7's already-correct ordinary-path behavior"
+    },
+    "siblingUpdateManyReclaimCase": {
+      "test": "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts > 'a failure inside startOrResumeAnalysisRun's RECLAIM path...' (unmodified, still exercises a DIFFERENT branch of the SAME pre-identity catch block via prisma.analysisRun.updateMany failing, with recordAnalysisFailureLog itself healthy)",
+      "result": "PASS - unaffected by this fix, confirming the fix is narrowly scoped to the recordAnalysisFailureLog call itself"
+    }
+  },
+
+  "verification": {
+    "tsc": "npx tsc --noEmit -p . -> 6 pre-existing errors (all in tests/foundation-audit/**, unrelated to lib/contract-model/analysis/**), 0 new",
+    "eslint": "npx eslint . -> 1 pre-existing error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts, @typescript-eslint/no-var-requires rule-definition issue, unrelated), 0 new",
+    "targetedTests": "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts (3/3 pass) and tests/contract-model/no-log-only-failure.test.ts (2/2 pass) both green",
+    "broaderRegressionCheck": "tests/contract-model/** run in full alongside this fix; the only failing tests observed (compatibility.test.ts, coverage-structural.test.ts, part-b-recert-blocker8-adversarial.test.ts's version-bump test, and others touching real Coherent/Matthews seed data or SEMANTIC_COVERAGE_ALGORITHM_VERSION) were independently confirmed to fail IDENTICALLY with this fix's own 3 files reverted to their committed baseline (i.e. pre-existing/caused by other concurrent Workstream A-F work-in-progress sharing this same worktree, not by this fix) - see this doc's own methodology note below."
+  },
+
+  "methodologyNote": "This phase's own container runs Workstreams A-G concurrently in the SAME shared worktree/filesystem. During this workstream's own verification pass, the working tree was reset to HEAD (ccab207) by an external process mid-task, which lost this workstream's in-progress edits alongside other workstreams' concurrent WIP; the edits documented here were reconstructed and reapplied from this workstream's own record of them and re-verified in full (tsc/eslint/targeted tests) before being committed. The isolation check for the 5 pre-existing, unrelated test failures (seed-data-dependent Coherent/Matthews tests and a version-bump test belonging to a different finding) was performed by stashing ONLY this workstream's 3 files and re-running those specific tests against the resulting (other-workstreams-only) tree, confirming byte-identical failures with and without this fix present.",
+
+  "finalDisposition": "FINDING-8 (AUDIT-F7 residual gap) CLOSED. recordAnalysisFailureLog's own call site now has a robust, non-recursive fallback hierarchy: durable Postgres write (primary) -> structured console.error (deliberate, terminal, non-recursive last resort) -> the original failure is always returned/never masked -> the fallback outcome is always separately, honestly observable via failureRecordPersisted. No infinite or recursive logging chain was introduced."
+}

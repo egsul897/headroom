@@ -91,8 +91,24 @@ export function auditCrossSectionRelationships(units: MaterialSemanticUnit[], co
  * whose covering provision's own operative status is not RESOLVED
  * (OPERATIVE_STATE_UNRESOLVED_FOR_UNIT). Never re-derives amendment
  * precedence - only ever reads Phase 2G's own real conclusion.
+ *
+ * Phase 3F.1.6.R BLOCKER-4 fix: `operativeState` is now explicitly
+ * nullable and handled INSIDE this function - the one place every real
+ * caller (semantic-coverage/pipeline.ts included) reaches for this
+ * determination. A caller that could not resolve operative state at all is
+ * not "nothing to check" - it is the single worst case this audit exists
+ * to catch (Architecture Invariant #13: unresolved operative state must
+ * never be silently treated as safely current). Every unit with a real
+ * structural anchor is therefore flagged OPERATIVE_STATE_UNRESOLVED_FOR_UNIT
+ * with a null provisionKey and an honest reason distinguishing "no
+ * operative state was ever available" from "a specific provision's own
+ * status is unresolved". Previously this null-handling lived in the
+ * CALLER (`input.operativeState ? auditOperativeStateForUnits(...) : []`
+ * in pipeline.ts) and defaulted to zero findings - a silent fail-OPEN any
+ * future caller could reintroduce merely by copying that ternary. Moving
+ * the fail-CLOSED behavior here means no caller can bypass it by omission.
  */
-export function auditOperativeStateForUnits(units: MaterialSemanticUnit[], operativeState: OperativeContractState): OperativeStateAuditFinding[] {
+export function auditOperativeStateForUnits(units: MaterialSemanticUnit[], operativeState: OperativeContractState | null): OperativeStateAuditFinding[] {
   const findings: OperativeStateAuditFinding[] = [];
 
   for (const unit of units) {
@@ -103,15 +119,44 @@ export function auditOperativeStateForUnits(units: MaterialSemanticUnit[], opera
     const nodeId = unit.anchors[0]?.structuralNodeId;
     if (!nodeId) continue;
 
+    if (!operativeState) {
+      findings.push({
+        findingType: "OPERATIVE_STATE_UNRESOLVED_FOR_UNIT",
+        semanticUnitId: unit.semanticUnitId,
+        provisionKey: null,
+        reasoning: `no OperativeContractState was available at all for this unit's instrument - whether this unit's own source text (node ${nodeId}) is still current-operative cannot be established with confidence, and per Architecture Invariant #13 an unresolved operative state must never be silently treated as safely current`,
+        materiality: unit.materiality,
+      });
+      continue;
+    }
+
     const supersededBy = operativeState.provisions.find((p) => p.supersededSourceNodeIds.includes(nodeId));
     if (supersededBy) {
       findings.push({ findingType: "STALE_SUPERSEDED_TEXT_CREDITED", semanticUnitId: unit.semanticUnitId, provisionKey: supersededBy.provisionKey, reasoning: `this unit was inventoried from a source node (${nodeId}) that Phase 2G's own operative-state resolution has already determined is SUPERSEDED for provision ${supersededBy.provisionKey} - crediting it as currently operative would contradict the authoritative operative-state conclusion`, materiality: unit.materiality });
       continue;
     }
 
-    const coveringProvision = operativeState.provisions.find((p) => p.currentSourceNodeId === nodeId || (p.sectionRef && unit.anchors[0]?.sectionRef && p.sectionRef === unit.anchors[0].sectionRef));
+    // Phase 3F.1.6.R BLOCKER-6 fix: a covering provision is now also found
+    // via `candidateSourceNodeIds` - the real set of ambiguous-occurrence
+    // node identities `buildProvisionView` records whenever
+    // targetResolutionStatus is AMBIGUOUS (see amendment/types.ts). The
+    // prior two-branch lookup (currentSourceNodeId exact match, or a bare
+    // sectionRef string match) is structurally NULL for every AMBIGUOUS
+    // DEFINITION-kind provision: DEFINITION-kind provisions never populate
+    // sectionRef at all (only SECTION-kind does), and an AMBIGUOUS
+    // resolution leaves currentSourceNodeId null by design (no single
+    // occurrence was chosen) - so a unit anchored to one of the real
+    // ambiguous candidate nodes was previously invisible to this audit
+    // entirely. candidateSourceNodeIds is populated ONLY when
+    // targetResolutionStatus !== "UNIQUE" (amendment/types.ts's own
+    // contract), so this added branch can only ever widen matching for a
+    // provision that is already non-RESOLVED - it can never turn a
+    // genuinely resolved, current provision into a false match.
+    const coveringProvision = operativeState.provisions.find(
+      (p) => p.currentSourceNodeId === nodeId || (p.sectionRef && unit.anchors[0]?.sectionRef && p.sectionRef === unit.anchors[0].sectionRef) || p.candidateSourceNodeIds.includes(nodeId)
+    );
     if (coveringProvision && coveringProvision.status !== "OPERATIVE_STATE_RESOLVED") {
-      findings.push({ findingType: "OPERATIVE_STATE_UNRESOLVED_FOR_UNIT", semanticUnitId: unit.semanticUnitId, provisionKey: coveringProvision.provisionKey, reasoning: `this unit's covering provision (${coveringProvision.provisionKey}) has operative status ${coveringProvision.status}, not RESOLVED - its current governing text is itself uncertain`, materiality: unit.materiality });
+      findings.push({ findingType: "OPERATIVE_STATE_UNRESOLVED_FOR_UNIT", semanticUnitId: unit.semanticUnitId, provisionKey: coveringProvision.provisionKey, reasoning: `this unit's covering provision (${coveringProvision.provisionKey}) has operative status ${coveringProvision.status}, not RESOLVED - its current governing text is itself uncertain${coveringProvision.targetResolutionStatus === "AMBIGUOUS" ? ` (matched via candidateSourceNodeIds: this unit's own source node is one of ${coveringProvision.candidateSourceNodeIds.length} real physical occurrences an amendment target could not be uniquely attached to)` : ""}`, materiality: unit.materiality });
     }
   }
 

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INDEPENDENT_AUDITOR_METHODOLOGY",
+  "assignments": [
+    { "auditor": "A", "scope": "OPEN-1 structural heading", "artifact": "16-structural-recertification.json" },
+    { "auditor": "B", "scope": "OPEN-2 getDefinition safety", "artifact": "17-definition-recertification.json" },
+    { "auditor": "C", "scope": "OPEN-3 N-way claim decomposition", "artifact": "18-claim-decomposition-recertification.json" },
+    { "auditor": "D", "scope": "OPEN-4 condition-suspicion architecture (deciding test, real-model validation authorized)", "artifact": "19-condition-architecture-recertification.json" },
+    { "auditor": "E", "scope": "OPEN-5 AnalysisRun/SemanticTruth fencing", "artifact": "20-fencing-recertification.json" },
+    { "auditor": "F", "scope": "OPEN-6 failure-observability bottom", "artifact": "21-failure-observability-recertification.json" }
+  ],
+  "commonRules": [
+    "Pinned to frozen commit 0ef66a9. Forbidden from modifying production code (lib/, app/, prisma/).",
+    "Must write FRESH adversarial tests never seen by the Part A implementer - never rerun Part A's own tests as the sole evidence.",
+    "Never run prisma migrate dev/reset/db push. Exact-scoped test cleanup only.",
+    "Must manually inspect the actual production code, not just trust the Part A deliverable doc's own self-assessment.",
+    "Disposition: CERTIFIED_CLOSED or STILL_OPEN with concrete reproduction evidence."
+  ],
+  "auditorDSpecificRules": "Per the governing phase spec §24: after implementation freeze, invent at least 20 fresh condition constructions not present in implementation examples/phrase dictionaries/Part A test cases/historical failed sets - at least 15 materially conditional, at least 5 benign controls. Required safety threshold: 100% of materially conditional cases must reach independent review or explicit unresolved/review-required state - no material case may silently skip review. Benign over-routing may exist, report it. Also manually inspect the implementation - if it still fundamentally depends on enumerating exact lexical phrases, FAIL regardless of test score. User has authorized real Vercel AI Gateway spend (~$1-3) for this auditor to run actual classifier calls, not mocks."
+}

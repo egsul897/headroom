@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "BLOCKER_6_DEFINITION_AMBIGUITY_PROPAGATION",
+  "blockerId": "BLOCKER-6",
+  "sourceFinding": "25-cross-module-failure-propagation.json (Chain 2) and 28-static-danger-pattern-audit.json (SP-1) - same defect, counted once",
+  "generatedAt": "2026-08-30T05:30:00Z",
+  "rootCause": {
+    "summary": "lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts's auditOperativeStateForUnits located a unit's covering OperativeProvisionView via exactly two match paths: `p.currentSourceNodeId === nodeId` (an exact-occurrence match) or `(p.sectionRef && unit.anchors[0]?.sectionRef && p.sectionRef === unit.anchors[0].sectionRef)` (a bare sectionRef string match). Both are structurally NULL for every AMBIGUOUS DEFINITION-kind OperativeProvisionView: buildProvisionView's DEFINITION branch never populates sectionRef at all (only SECTION-kind provisions do), and an AMBIGUOUS resolution leaves currentSourceNodeId null by design (no single physical occurrence was chosen). The function never consulted candidateSourceNodeIds - the field that holds exactly the real set of ambiguous definition-node identities amendment/types.ts's own OperativeProvisionView already carries whenever targetResolutionStatus !== 'UNIQUE'. The result: a unit anchored to one of the real, independently-confirmed ambiguous definition occurrences was entirely invisible to this audit, and reconciliation.ts (acting alone, with no override) could reach FULLY_REPRESENTED_VERIFIED for it - the exact 'confident but wrong' state Architecture Invariant #13 forbids.",
+    "asymmetryWithSectionKind": "The SECTION-kind equivalent (Chain 4 in the certification, re-confirmed unchanged by this fix) never had this gap, because SECTION-kind provisions DO populate sectionRef even when AMBIGUOUS, so the pre-existing sectionRef fallback already caught it. DEFINITION-kind failed open; SECTION-kind failed closed. This fix makes both fail closed identically."
+  },
+  "fix": {
+    "filesChanged": ["lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts"],
+    "description": "Extended the coveringProvision lookup in auditOperativeStateForUnits to also match `p.candidateSourceNodeIds.includes(nodeId)`. Because amendment/types.ts's own documented contract guarantees candidateSourceNodeIds is populated ONLY when targetResolutionStatus is AMBIGUOUS (always empty for UNIQUE or NOT_FOUND), this added branch can only ever WIDEN matching for a provision that is already non-RESOLVED (AMBIGUOUS implies status is at best OPERATIVE_STATE_PARTIAL, never OPERATIVE_STATE_RESOLVED) - it cannot manufacture a false match against a genuinely resolved, current provision. Once matched, the existing `coveringProvision.status !== 'OPERATIVE_STATE_RESOLVED'` check already correctly fires (PARTIAL != RESOLVED), producing the OPERATIVE_STATE_UNRESOLVED_FOR_UNIT finding this module exists to produce - no other logic branch needed to change. The finding's own reasoning string was extended to name candidateSourceNodeIds explicitly when this new branch is what matched, for reviewer clarity.",
+    "minimalityNote": "This is precisely the smallestRemediationBoundary the certification itself named: 'Extend the coveringProvision lookup to also match against candidateSourceNodeIds for AMBIGUOUS provisions.' No change was needed to buildProvisionView, computeOperativeContractState, or applyOperativeStateFindingsToCoverage - the operative-state layer itself was already honest (confirmed by the certification's own Chain 2 evidence); only the ONE lookup that failed to consult evidence the layer below it already produced needed fixing."
+  },
+  "testEvidence": {
+    "unitTests": {
+      "file": "tests/contract-model/semantic-coverage-cross-reference-audit.test.ts",
+      "describeBlock": "BLOCKER-6 fix: AMBIGUOUS DEFINITION-kind provisions are now matched via candidateSourceNodeIds",
+      "cases": [
+        "flags OPERATIVE_STATE_UNRESOLVED_FOR_UNIT for a unit anchored to one of an AMBIGUOUS DEFINITION-kind provision's real candidateSourceNodeIds, even though currentSourceNodeId and sectionRef are both null",
+        "the OTHER real ambiguous candidate node is flagged too - never only the first one checked",
+        "never widens matching for an already-RESOLVED provision - candidateSourceNodeIds is empty whenever targetResolutionStatus is UNIQUE, so this fix cannot manufacture a false match (a direct proof of the minimality claim above)"
+      ]
+    },
+    "crossModuleChainReproduction": {
+      "file": "tests/foundation-audit/cross-module-propagation-chains.test.ts",
+      "note": "Chain 2 - the certification's own end-to-end reproduction - was extended in place per the task's own instruction (a test file, explicitly named as safe to build on). The chain was re-run through the REAL, now-fixed auditOperativeStateForUnits and rewritten to prove full composition: (1) the real ambiguity is now flagged (findings.length === 1, findingType OPERATIVE_STATE_UNRESOLVED_FOR_UNIT, reasoning mentions candidateSourceNodeIds); (2) reconciliation.ts ALONE (a different module, correctly out of this blocker's scope) is confirmed to STILL independently reach FULLY_REPRESENTED_VERIFIED in isolation - proving the override below is doing real work, not vacuously passing; (3) applyOperativeStateFindingsToCoverage now correctly OVERRIDES that to OPERATIVE_STATE_UNRESOLVED before it becomes the unit's final coverage state; (4) a real ClaimReviewItem is now persisted to Postgres for this exact claim (status OPEN_REVIEW, correct structuralNodeId) - where before this fix NO review item was ever created for it (a true silent-failure gap, not merely a triage-quality one). Chain 2's own verdict label in the test file was updated from BREAKS to COMPOSES; Chains 1, 3, and 4 were re-verified to still pass completely unmodified.",
+      "result": "5/5 passed (npx vitest run tests/foundation-audit/cross-module-propagation-chains.test.ts) - real Postgres, all 4 chains."
+    },
+    "staticDangerPatternReCheck": "SP-1 (28-static-danger-pattern-audit.json) named lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts:112 as the ONLY bare-sectionRef-without-occurrence-identity lookup in production code. The fix adds a THIRD match arm (candidateSourceNodeIds) to the SAME lookup rather than introducing a new lookup site elsewhere - re-grepping the codebase confirms no new instance of the SP-1 pattern was introduced.",
+    "regressionSuiteResults": "npx vitest run tests/contract-model/ tests/foundation-audit/ - 132/132 test files passed, 1370/1370 tests passed. Full suite: 202/204 files passed, 2062/2064 tests passed (2 pre-existing, out-of-scope failures - see BLOCKER-2's artifact).",
+    "tscBaseline": "6 errors, byte-identical to certified baseline.",
+    "eslintBaseline": "1 error, identical to certified baseline.",
+    "buildResult": "npm run build succeeds, 21 routes."
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+}

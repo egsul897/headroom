@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INHERITED_REGRESSION",
+  "targeted": {
+    "OPEN-3": "N-way claim decomposition - NOT reopened. semantic-coverage/* confirmed absent from the production diff (git diff a7ee654 HEAD -- 'lib/**' 'app/**' 'prisma/**' is empty at Part B end). Its own tests pass in the targeted regression run (209 files/2421 tests).",
+    "OPEN-5": "AnalysisRun/SemanticTruth fencing - NOT reopened. semantic-truth/service.ts confirmed absent from the production diff. Its own tests pass.",
+    "OPEN-6": "Total error classification - NOT touched (per governing spec SS21, only if direct compile integration requires it - it did not). classifyError/safeErrorMessage/safeErrorClass files absent from the production diff.",
+    "structuralIndex": "Covered - OPEN-1's own fixed and recertified 38+27+109 tests exercise this directly.",
+    "structuralPersistence": "Covered by the targeted run; persisted DocumentNode rows verified directly by both OPEN-1 auditors.",
+    "discoveryDependenceOnHierarchy": "Covered by tests/contract-model discovery suites in the targeted run - no regression observed.",
+    "contextRetrieval": "Covered - OPEN-2's own fix touches this area; targeted suites pass.",
+    "semanticTools": "Covered - OPEN-2's own fix is here; targeted suites pass, though the OPEN-2 auditor's own STILL_OPEN finding is a genuine gap, not a regression (the 4 affected tools' behavior for an ALREADY-EFFECTIVE conflict is unchanged/still-correct; only the PROSPECTIVE/not-yet-applied conflict shape remains unsafe, which is the residual defect itself, not a new regression).",
+    "compiler": "Covered - no regression.",
+    "verifier": "Covered - no regression.",
+    "semanticTruthPersistence": "Covered - no regression.",
+    "claimReview": "Covered - no regression.",
+    "tenantIsolation": "Covered by the targeted run; tenant-isolation test files pass with 0 failures."
+  },
+  "verdict": "NO_REGRESSION on any inherited-closed item (OPEN-3, OPEN-5, OPEN-6). The one open item (OPEN-2's residual 4-tool gap) is a genuine, independently-reproduced defect, not a regression caused by this phase's own changes - the 4 affected tools were ALREADY unsafe for this exact case before this phase (this phase fixed the ORIGINAL reported case, getOperativeProvision's already-effective-conflict shape, and found+fixed nothing for the other 6 tools until the auditor's fresh testing revealed the prospective-conflict gap persists in 4 of them)."
+}

@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "CLAIM_IDENTITY_V2",
+  "workstream": "D",
+  "blockerIds": ["BLOCKER-8", "AUDIT-F4"],
+  "generatedAt": "2026-08-30T16:10:00Z",
+  "commitBase": "4005687484dbdfe9c80b522b8f8e1a772236ea5e",
+
+  "purpose": "AUDIT-F4 froze the residual gap the prior BLOCKER-8 fix (docs/phase-3f1-6-r-blocker-remediation/11-claim-identity-remediation.json, part4_disclosedResidualRisk RESIDUAL-1) explicitly disclosed but did not close: 'SAME FAMILY + SAME ROLE + SAME SOURCE NODE DOES NOT IMPLY SAME CLAIM.' This artifact designs and implements a generalized CLAIM IDENTITY V2, distinguishes two distinct propositions sharing family/role/node (the phase's own named example: a real sentence bundling a '$50m acquisition debt basket' and a '$25m working-capital debt basket' - same family INDEBTEDNESS, same role BASKET, same source node), and reports the required 9-case adversarial matrix plus a compatibility/migration determination.",
+
+  "priorState": {
+    "whatWasFixed": "docs/phase-3f1-6-r-blocker-remediation/11-claim-identity-remediation.json closed the ORIGINAL certified case (13-claim-identity-certification.json F15-1): two claims fused in one un-enumerated sentence with DIFFERENT covenant families (e.g. Liens vs Indebtedness) collapsed to one discoveryId/semanticUnitId. Fixed by folding a `families`-derived fingerprint into discoveryId/mergeKey (discovery layer) and by adding a cross-family findCoordinateClauseSplit (semantic-coverage layer).",
+    "whatWasDisclosedNotFixed": "11-claim-identity-remediation.json's own part4_disclosedResidualRisk (RESIDUAL-1): two DISTINCT claims fused in one un-enumerated sentence that ALSO share the exact SAME family (e.g. two different Indebtedness baskets) still collapsed, because a families-only fingerprint has nothing left to disambiguate them - explicitly named as a 'recommended follow-up, not silently left undocumented.'",
+    "whyThisIsNowMandatory": "AUDIT-F4 (docs/phase-3f1-6-rx-final-blocker-closure/02-independent-code-audit-findings.json) froze this residual as a mandatory Part A work item with requiredOutcome: 'Generalized, source-grounded claim identity that does not conflate distinct propositions sharing family/role/node.'"
+  },
+
+  "designPrinciples": [
+    "Root-cause, generalized fix - never hardcoded to the $50m/$25m illustration or to any specific covenant family pair. Every mechanism below operates over the same open, generic FAMILY_KEYWORDS taxonomy and a purely numeric/text-grammar value-anchor extractor - zero package-, company-, or covenant-specific keyword lists (Architecture Invariants #29).",
+    "GROUNDED, never raw-AI-paraphrase-hashed: this task's own explicit prohibition. Every new identity input is either (a) real, deterministic SOURCE TEXT itself (the semantic-coverage layer operates purely on real document text, no LLM involved at all), or (b) a candidate-supplied value/quote INDEPENDENTLY VERIFIED present in the real source text before being trusted for anything (the discovery layer, which does see LLM-authored `description`/`distinguishingQuote` fields). An unverified AI claim is discarded, never used as a partial/weak signal - fail-closed, matching this codebase's own established discipline (e.g. Phase 1A's exact-resolution-only relativeRef policy).",
+    "Formatting-invariant by construction: every numeric value is canonicalized (comma/whitespace/multiplier-word stripped, parsed to a plain number) before comparison, and every quote match is whitespace-normalized before substring-checking - two differently-formatted renderings of the identical real value/text always produce the identical anchor.",
+    "Never turns a genuine duplicate into a false-distinct sibling: two independently-worded re-detections of the SAME real clause normalize to the SAME grounded anchor set regardless of paraphrase wording (adversarial case 8), because the anchor is the underlying VALUE/verbatim-quote, never the wording that carries it.",
+    "Graceful, disclosed degradation - never a crash, never a silently-wrong identity. When no source-grounded disambiguating signal exists at all (no differing verified number, no verified quote), identity falls back to exactly the pre-existing (already-disclosed) V1 behavior for that pair - a strict superset of remediation, never a regression."
+  ],
+
+  "identityDesign": {
+    "sharedUtility": {
+      "file": "lib/contract-model/compiler/value-anchors.ts",
+      "purpose": "New, generic, package-agnostic module shared identically by both identity layers (discovery/pass-c-neighborhood.ts and semantic-coverage/unit-hypothesis.ts) - reused, not duplicated, so 'these two claims are distinct' can never diverge between layers merely because they extracted numbers differently.",
+      "functions": [
+        "extractValueAnchors(text): currency/percentage/ratio value extraction via generic regex grammar (no covenant keywords), canonicalized to tagged anchor strings ('usd:50000000', 'pct:5', 'ratio:3') - '$50,000,000', '$50 million', and '$50MM' all normalize identically.",
+        "valueAnchorSetsDisjointAndNonEmpty(a, b): true only when both sides carry at least one anchor AND share none - the genuine-numeric-difference test used by the coverage-layer splitter.",
+        "extractGroundedValueAnchors(candidateText, sourceGroundTruthText): extracts anchors from (possibly AI-authored) candidateText but keeps only those independently confirmed present in the real source ground truth - the GROUNDING discipline that lets the discovery layer safely use Pass B's own `description` field without hashing raw paraphrase.",
+        "verifyDistinguishingQuote(quote, sourceGroundTruthText): whitespace-normalized verbatim-substring verification with a minimum non-trivial length (12 non-whitespace chars) to reject generic-word false positives - returns the normalized quote (safe to use for identity) only when verified, else null."
+      ]
+    },
+
+    "discoveryLayer": {
+      "files": ["lib/contract-model/compiler/discovery/pass-b-semantic.ts", "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts", "lib/contract-model/compiler/discovery/pass-d-reconcile.ts", "lib/contract-model/compiler/discovery/types.ts", "lib/contract-model/compiler/discovery/pipeline.ts"],
+      "newFingerprintFormula": "computeCandidateContentFingerprint(c) = [familyPart, valuePart, quotePart].join('|') where familyPart = sorted(dedupe(families)).join(','), valuePart = sorted(dedupe(valueAnchors)).join(','), quotePart = verifiedQuoteFingerprint ?? ''. Folded into BOTH discoveryId and pass-d-reconcile.ts's mergeKey, exactly as the V1 fix already established (so 'these merge' and 'these get the same discoveryId' can never diverge).",
+      "dimension1_groundedDescriptionValues": {
+        "mechanism": "For every ExpandedCandidate, extractGroundedValueAnchors(item.description, anchorNode's real full OWN text) - extracts numeric/currency/percentage/ratio values from the candidate's own (possibly AI-authored) description, keeping only values independently verified present in the real source text of the resolved anchor node.",
+        "requiresPassBChange": false,
+        "whyThisClosesTheMotivatingExample": "Pass B's prompt already instructs 'Emit one WireRule per independently operative rule - never merge distinct baskets into one' (semantic/prompt.ts) and the ORIGINAL certification's own part3_confirmedNewFinding F15-1 already confirmed Pass B's OWN detection is correct (2 distinct items, 2 distinct descriptions) even in the collision case - the defect was always purely in downstream identity derivation, never detection. A real $50m/$25m basket pair's own descriptions virtually always name their own dollar figure (that IS what makes them distinct, real, differently-sized covenant baskets) - grounding those figures against the shared source node's real text (which contains BOTH figures) yields two disjoint, verified anchor sets with zero Pass B schema or prompt dependency.",
+        "groundingDiscipline": "A hallucinated or mis-paraphrased number that does not actually appear in the source is silently dropped, never trusted (verified by a direct unit test in tests/contract-model/claim-identity-v2.test.ts)."
+      },
+      "dimension2_verifiedDistinguishingQuote": {
+        "mechanism": "OPTIONAL, tolerant Pass B wire-schema extension: `distinguishingQuote` (a short verbatim excerpt, <=200 chars in the prompt guidance, capped to 240 chars on ingestion). pass-c-neighborhood.ts verifies it via verifyDistinguishingQuote against the anchor node's real full text; when verified, the normalized quote becomes `verifiedQuoteFingerprint` and any value anchors WITHIN the quote are folded into `valueAnchors` too.",
+        "passBChanges": "WireSemanticRuleItemSchema gained the optional field; SYSTEM_PROMPT gained one new instruction sentence (DISTINGUISHING QUOTE); DISCOVERY_PROMPT_VERSION bumped v2 -> v3 (a real contract change per this file's own established bump discipline).",
+        "toleranceAndGenerality": "Never covenant/section-specific - the instruction is entirely generic ('when this section bundles two or more independently operative rules into ONE un-enumerated sentence... give distinguishingQuote for EACH'). An absent, empty, or unverifiable quote degrades gracefully to whatever dimension-1 (grounded description values) already contributes - never a crash, never a silently wrong identity.",
+        "honestLimitation": "This dimension's real-world effectiveness for a NON-numeric distinguishing case (e.g. 'Revolving Facility' vs 'Term Facility', no dollar figures at all) depends on Pass B (a live LLM call) actually following the new prompt instruction. This session has no configured LLM API key (the same disclosed constraint 13-claim-identity-certification.json's own part3_confirmedNewFinding F15-1 and this phase's Workstream H both already carry) - so this dimension's live-prompt-compliance rate is NOT independently verified here, only its VERIFICATION mechanics (a supplied quote is exercised and correctly split/rejected via direct construction of SemanticRuleItem objects, matching every prior claim-identity test file's own established discipline of bypassing the LLM boundary and constructing Pass B's OUTPUT shape directly)."
+      },
+      "mergeAndPropagation": "pass-d-reconcile.ts unions valueAnchors on a genuine-duplicate merge (mirroring its existing mergedNodeKeys/mergedMethods/mergedSignals union pattern) and keeps whichever verifiedQuoteFingerprint exists. Both new fields are exposed as OPTIONAL fields on DiscoveredCandidate itself (never hidden only inside the opaque discoveryId hash) so a downstream reviewer can see exactly why two same-family/role/node candidates were kept distinct - consistent with this codebase's own disclosure discipline elsewhere (supersessionReason, roleNormalizationStatus, etc). Optional (not required) specifically so pre-existing ExpandedCandidate/DiscoveredCandidate test-fixture literals across the repo (grep-confirmed 26 files reference DiscoveredCandidate) continue to type-check unmodified.",
+      "versionBump": "DISCOVERY_PIPELINE_VERSION v3 -> v4 (identity-formula change, per this constant's own established bump discipline) and DISCOVERY_PROMPT_VERSION v2 -> v3 (wire schema + prompt change)."
+    },
+
+    "semanticCoverageLayer": {
+      "files": ["lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts", "lib/contract-model/compiler/semantic-coverage/types.ts"],
+      "mechanism": "findCoordinateClauseSplit's existing cross-family trigger is UNCHANGED (regression-safe). A NEW same-family trigger is added: when both sides of a top-level 'and'/'or' independently match the SAME family keyword (not different), the split now ALSO fires when valueAnchorSetsDisjointAndNonEmpty(extractValueAnchors(leftText), extractValueAnchors(rightText)) is true - i.e. each side independently states a numeric/currency/percentage/ratio value AND the two values genuinely differ.",
+      "whyThisIsStronglyGeneral": "This layer is FULLY deterministic (semantic-coverage's own Independence Contract forbids any LLM/discovery/conclusion-module dependency, mechanically enforced by tests/contract-model/semantic-coverage-independence.test.ts) - the fix requires ZERO model cooperation and is therefore an unconditional, always-active closure of the numeric-anchored same-family case, not merely an opt-in improvement. This is the PREFERRED identity source per safe-failure/identity.ts's own documented precedence (`su:` semanticUnitId preferred over `cr:` candidateRef fallback), so the strongest, most model-independent half of this fix lives exactly where the codebase already says identity should be trusted first.",
+      "regressionGuards": [
+        "Same family, no number on either side ('shall not create or suffer to exist any Lien... except Permitted Liens') - never splits (no anchor to compare).",
+        "Same family, IDENTICAL value on both sides (a clause restating its own single cap) - never splits (sets are not disjoint).",
+        "Right clause restates a modal verb ('...and shall not permit...') - never splits, regardless of family/value (pre-existing guard, unchanged)."
+      ],
+      "versionBump": "SEMANTIC_COVERAGE_ALGORITHM_VERSION v3 -> v4 (detection-algorithm change, per this constant's own established bump discipline)."
+    }
+  },
+
+  "passBExtensionJustification": {
+    "wasExtensionNecessary": true,
+    "whatWasExtended": "WireSemanticRuleItemSchema gained one new OPTIONAL string field, `distinguishingQuote`; the prompt gained one new generic instruction sentence.",
+    "toleranceCheck": "Fully backward compatible: the field is optional on the wire schema (an omitting model response still parses successfully - the same tolerant-schema discipline this file's own header already documents for `role`/`families`), and pass-c-neighborhood.ts treats an absent/unverifiable quote as though it were never supplied. No existing caller, test, or persisted shape is broken by its addition (confirmed: full tsc/eslint/test suite run below).",
+    "generalityCheck": "The prompt instruction names no family, role, section, or package - it describes the GENERAL drafting pattern ('two or more independently operative rules... bundled into ONE un-enumerated sentence... each with its own dollar cap or its own named facility/purpose') and asks for a generic verbatim excerpt, never a covenant-specific answer shape.",
+    "whyNotSkipped": "The exact non-numeric residual case named in the prior fix's own disclosure (Revolving Facility vs Term Facility, no dollar figures at all) has NO deterministic source-text signal available to the coverage layer (by architectural design - it must never call an LLM) and NO deterministic signal available to the discovery layer's grounded-description-value mechanism (dimension 1, which requires a number). Per this task's own explicit instruction ('you're allowed to extend its normalized output in a TOLERANT, GENERAL way'), a minimal, optional, verified-before-trusted extension was the correct, smallest-blast-radius way to give the discovery layer a chance to close that narrower residual too, without inventing a second identity mechanism or hardcoding any covenant-specific rule."
+  },
+
+  "adversarialMatrix": {
+    "testFiles": ["tests/contract-model/claim-identity-v2.test.ts (29 tests, new)", "tests/contract-model/claim-identity-blocker8-remediation.test.ts (13 tests, 2 new + 1 updated + all pre-existing unmodified assertions still pass)"],
+    "methodology": "Every case is run through the REAL production functions - runPassCNeighborhoodExpansion / runPassDReconciliation (discoveryId/candidateRef) and hypothesizeUnitsForDocument (semanticUnitId) - never re-derived stand-ins, matching every prior claim-identity test file's own established discipline (tests/foundation-audit/section15-claim-identity-adversarial.ts, tests/contract-model/claim-identity-blocker8-remediation.test.ts). SemanticRuleItem inputs are constructed directly (Pass B's own output shape) since no LLM API key is configured in this environment - the identical technique every predecessor claim-identity test file already uses for exactly this reason.",
+    "cases": [
+      {
+        "case": 1,
+        "title": "Two Indebtedness baskets in the same sentence ($50m acquisition debt + $25m working-capital debt) - the exact motivating example",
+        "discoveryLayer": "RESOLVED - 2 distinct discoveryIds via grounded value anchors extracted from each item's own description and verified against the shared source node's real text. Zero Pass B schema dependency.",
+        "coverageLayer": "RESOLVED - 2 distinct semanticUnitIds via findCoordinateClauseSplit's new same-family value-disjoint trigger.",
+        "verdict": "PASS"
+      },
+      { "case": 2, "title": "Two Lien baskets, same sentence, different dollar amounts", "discoveryLayer": "RESOLVED", "coverageLayer": "RESOLVED", "verdict": "PASS" },
+      { "case": 3, "title": "Two Restricted Payment baskets, same family, same sentence, different dollar amounts", "discoveryLayer": "RESOLVED", "coverageLayer": "RESOLVED", "verdict": "PASS" },
+      {
+        "case": 4,
+        "title": "A chapeau clause plus a same-family exception clause",
+        "discoveryLayer": "ALREADY-CORRECT, reconfirmed - `role` (GENERAL_PROHIBITION vs EXCEPTION) was already an independent dimension of both discoveryId and mergeKey BEFORE this workstream's change, so a same-family chapeau+exception never collided even without any distinguishing value/quote. This workstream added a direct adversarial test confirming this explicitly (it was previously only implied by architecture, never adversarially tested for the SAME-family, no-sub-ref shape).",
+        "coverageLayer": "REGRESSION-CONFIRMED via the existing enumerated chapeau-vs-child mechanism (unaffected by this workstream) - chapeau + 2 same-family (RESTRICTED_PAYMENTS, via headingHint) exception children remain 3 distinct units.",
+        "verdict": "PASS"
+      },
+      {
+        "case": 5,
+        "title": "Identical dollar value ($10,000,000), different object (Indebtedness vs Investments)",
+        "discoveryLayer": "PASS (no regression) - families already distinguish these; the new value-anchor dimension never causes a false merge merely because two DIFFERENT-family claims happen to share a dollar figure.",
+        "coverageLayer": "PASS (no regression) - cross-family split still fires regardless of the shared value.",
+        "verdict": "PASS"
+      },
+      {
+        "case": 6,
+        "title": "Identical action ('may incur Indebtedness'), different (numeric-gated) conditions, fused with no sub-ref",
+        "discoveryLayer": "RESOLVED for the numeric-condition shape (differing Leverage Ratio / Fixed Charge Coverage Ratio values) via grounded value anchors.",
+        "coverageLayer": "RESOLVED for the numeric-condition shape via the same-family value-disjoint split.",
+        "preExistingShape": "The sub-ref-present shape (task's own original 'same-object-different-condition' case) already passed before this workstream and continues to pass unmodified (regression guard included).",
+        "disclosedNarrowerGap": "A condition difference with NO number on either side (e.g. 'if no Default has occurred' vs 'if the Required Lenders consent') is the SAME class of residual as the non-numeric case in AUDIT-F4-RESIDUAL-1 below - honestly disclosed, not silently claimed resolved.",
+        "verdict": "PASS (numeric shape); residual disclosed (non-numeric shape, see AUDIT-F4-RESIDUAL-1)"
+      },
+      {
+        "case": 7,
+        "title": "Identical text repeated in TWO DIFFERENT PHYSICAL source occurrences - must NOT collapse (genuinely distinct claims, different source locations)",
+        "discoveryLayer": "PASS (no regression) - documentId/normalizedSourceRef were already part of discoveryId before this workstream and remain so; byte-identical text/description in two different sections of the same document still yields 2 distinct discoveryIds.",
+        "coverageLayer": "PASS (no regression) - documentId is part of the anchor key; identical text in two different documents never collides.",
+        "verdict": "PASS"
+      },
+      {
+        "case": 8,
+        "title": "The exact same true claim independently detected TWICE by different pipeline stages (a genuine duplicate) - MUST still deduplicate",
+        "discoveryLayer": "PASS - two differently-worded/differently-formatted detections of the SAME real $50,000,000 basket ('$50,000,000' vs '$50 million') still merge into ONE candidate, because both normalize to the identical grounded value anchor. The pre-existing zero-number duplicate shape (tests/contract-model/discovery-pipeline.test.ts scenario 18's own construction) also re-verified still merging, confirming the value-anchor addition never regresses the families-only duplicate path.",
+        "verdict": "PASS"
+      },
+      {
+        "case": 9,
+        "title": "Formatting-perturbation stability - irrelevant whitespace/punctuation differences must produce the SAME identity",
+        "discoveryLayer": "PASS - discoveryId is byte-identical when the identical documentId/section/role/family/description is re-run, AND when only whitespace/punctuation in the source text and description is perturbed (holding documentId/section/role/family fixed). Confirmed distinct at the value-anchors unit level too: '$50,000,000', '$50 million', and '$50MM' all canonicalize to the identical anchor; '5%' and '5.0%' canonicalize identically; '3.00 to 1.00' and '3:1.00' canonicalize identically.",
+        "verdict": "PASS"
+      }
+    ],
+    "summary": { "totalCases": 9, "fullyResolved": 8, "resolvedWithNarrowerDisclosedGap": 1, "regressed": 0 }
+  },
+
+  "disclosedResidual": {
+    "id": "AUDIT-F4-RESIDUAL-1",
+    "severity": "MINOR (disclosed, not silently hidden - matches this phase's own and the prior phase's disclosure discipline)",
+    "title": "Two genuinely distinct, same-family, same-role, same-source-node claims fused in one un-enumerated sentence STILL collide when NEITHER side states any numeric/currency/percentage/ratio value AND Pass B does not supply a distinguishingQuote that independently verifies against the real source text",
+    "example": "'The Company shall not incur Indebtedness under the Revolving Facility or incur Indebtedness under the Term Facility.' - both clauses are INDEBTEDNESS family, neither states a number, and (in this session's necessarily-LLM-free test construction) no distinguishingQuote was supplied.",
+    "whyThisIsMaterially-narrowerThanBefore": [
+      "Before this workstream: ANY same-family fused pair collided (RESIDUAL-1 in 11-claim-identity-remediation.json), including the exact $50m/$25m motivating example.",
+      "After this workstream: the collision now requires the ADDITIONAL, simultaneous absence of (a) any independently-verifiable numeric value differential on either side, AND (b) a Pass-B-supplied, source-verified distinguishing quote. A real covenant basket that is economically meaningful virtually always states its own dollar figure or percentage - that IS what typically makes two baskets distinct in the first place. A purely name-based distinction with zero numeric content anywhere is a materially rarer real-drafting shape than the general defect class AUDIT-F4 froze."
+    ],
+    "whyNotFullyClosed": "No field on SemanticRuleItem or the semantic-coverage layer's own deterministic text scan is simultaneously (a) source-grounded, (b) free of raw-AI-paraphrase-hashing risk, (c) free of ordinal/position instability, and (d) capable of splitting two same-family, zero-number, zero-model-cooperation claims. Fully closing this would require either mandatory (not optional) Pass B quote compliance verified against a live model - unverifiable in this environment (no configured LLM API key, the same disclosed constraint every predecessor claim-identity artifact in this codebase already carries) - or a materially larger, more aggressive text-similarity/embedding-based mechanism explicitly out of scope for a deterministic, non-package-specific fix.",
+    "coveredByTest": "tests/contract-model/claim-identity-blocker8-remediation.test.ts's 'AUDIT-F4 STILL-OPEN (undisclosed by Pass B)' test - asserts and documents the current (still-merged) behavior explicitly for this exact narrower shape, immediately followed by two RESOLVED tests proving the SAME fused sentence splits correctly the moment either a numeric value or a verified quote is available - so the boundary of what remains open is precisely pinned down in CI, not left vague.",
+    "mitigatingFactors": [
+      "Every mitigating factor 11-claim-identity-remediation.json's own part4_disclosedResidualRisk already named for the BROADER pre-V2 residual still applies unchanged: multipleRulesLikely disclosure, the semantic compiler's own multi-rule prompt recovering both claims from full operativeSourceText at compile time (live-model-dependent, unverified this session per the same disclosed constraint), coverage-layer reconciliation matching by compiled-rule citation rather than candidateRef, and the safe-failure verification gate remaining conservative (an unresolved MATERIAL finding under either sub-claim still fails the whole merged candidateRef - this residual can under-credit, never falsely over-credit, a genuinely correct claim).",
+      "The semantic-coverage layer (semanticUnitId, the PREFERRED identity source) now has NO remaining residual for the numeric-anchored case at all, and only this narrower zero-number sub-case remains open there too - a strict improvement over the pre-V2 state where EVERY same-family fusion collided regardless of numeric content."
+    ]
+  },
+
+  "compatibilityAndMigration": {
+    "instruction": "Re-verify the prior 'zero persisted ClaimReviewItem rows' finding fresh rather than assuming it still holds, per this task's own explicit instruction.",
+    "importantChangeSincePriorFinding": "11-claim-identity-remediation.json's own part5_consumerAudit and 12-claim-identity-compatibility.json both relied in part on 'zero live application callers for the entire contract-model compiler/safe-failure pipeline' (a grep-based finding). That premise is NO LONGER TRUE as of this commit: `app/[companyId]/onboarding/documents/actions.ts` (git history: commit 986c63c, 'Phase 3F.1.6.R: Workstream F - BLOCKER-10 remediated') now imports and calls `runContractAnalysis` from `lib/contract-model/analysis`, which internally drives the discovery/semantic-coverage/safe-failure pipeline and explicitly persists ClaimReviewItem rows (lib/contract-model/analysis/orchestrator.ts, 'explicit ClaimReviewItem persistence (the ONE wired safe-failure emission point)'). This workstream does NOT rely on the stale 'no live callers' argument - it re-derives NO_PERSISTED_STATE_AFFECTED from a fresh, direct, primary-evidence source instead (below).",
+    "freshVerification": {
+      "method": "Direct Prisma query against the live local Postgres instance (pg_isready confirmed accepting connections) run at THIS commit, after all of this workstream's code changes were made: `prisma.claimReviewItem.count()`, `count({where:{claimKey:{startsWith:'cr:'}}})`, `count({where:{claimKey:{startsWith:'su:'}}})`.",
+      "result": "{\"total\": 0, \"crPrefixed\": 0, \"suPrefixed\": 0, \"other\": 0}",
+      "interpretation": "Even though a real live application entry point now exists and CAN persist ClaimReviewItem rows, zero rows exist in this environment's database right now. Whether that is because no document has yet been run end-to-end through the live path, or because runs so far produced zero OPEN_REVIEW items, is a question for Workstream H's own AUDIT-F6 (product-flow inevitability) - it does not change this workstream's own conclusion, which rests on the row COUNT itself, not on an inference about caller reachability."
+    },
+    "schemaCheck": "grep -n \"candidateRef\\|discoveryId\" prisma/schema.prisma -> 1 doc-comment line, 0 columns (re-run fresh, same result as the prior phase). grep -n \"semanticUnitId\" prisma/schema.prisma -> 2 doc-comment lines, 0 columns (re-run fresh, same result). ClaimReviewItem.claimKey remains the only column derived from either identity scheme, and it is a plain unconstrained String (@@unique([companyId, claimKey])) - the schema's SHAPE is unaffected by this workstream's change; only the string VALUE claimKey encodes (via the underlying discoveryId/semanticUnitId) changes for candidates computed under the new algorithm versions going forward.",
+    "versioningMechanismReused": "DISCOVERY_PIPELINE_VERSION (v3->v4), DISCOVERY_PROMPT_VERSION (v2->v3), and SEMANTIC_COVERAGE_ALGORITHM_VERSION (v3->v4) were all bumped as part of this change - the SAME pre-existing cache/staleness-gate mechanism this codebase has used for every prior claim-identity algorithm change (see pipeline.ts's and types.ts's own header comments). No new versioning mechanism was invented; the existing one was applied exactly as designed.",
+    "conclusion": "NO_PERSISTED_STATE_AFFECTED",
+    "conclusionRationale": "Zero ClaimReviewItem rows of any kind exist in this environment's database as of this commit, verified by a fresh direct query run AFTER this workstream's own changes were made (not merely re-cited from an earlier phase). This conclusion is independent of, and does not rely on, the now-stale 'zero live callers' premise the prior phase's compatibility artifact used - it is derived from primary evidence (a row count) that remains valid regardless of how many callers exist upstream of the table.",
+    "migrationDecision": {
+      "migrationNeeded": false,
+      "aliasOrMappingTableNeeded": false,
+      "recomputationScriptNeeded": false,
+      "explicitStatement": "No migration, alias table, or backfill script is being written as part of this workstream, because a fresh, direct database query (not an assumption, and not merely a re-citation of a prior finding) confirms zero rows exist in the one table (ClaimReviewItem) this identity change could affect."
+    },
+    "recommendationForFutureScenario": "Because a real live caller now exists (unlike when the prior compatibility artifact was written), any FUTURE workstream that finds non-zero ClaimReviewItem rows must re-run this exact check before assuming NO_PERSISTED_STATE_AFFECTED still holds - this conclusion is proven true as of THIS commit's live database state only, and the caller-reachability landscape has already changed once within this same phase's own history (3F.1.6.R Workstream F). If rows are ever found under the pre-V2 discoveryId/semanticUnitId formulas, the version-bump mechanism above already provides the staleness signal a re-keying/recomputation script would need to act on."
+  },
+
+  "implementationSummary": {
+    "filesChanged": [
+      "lib/contract-model/compiler/value-anchors.ts (NEW) - shared generic value-anchor extraction + verified-quote matching, used identically by both identity layers.",
+      "lib/contract-model/compiler/discovery/pass-b-semantic.ts - optional distinguishingQuote wire field + prompt instruction; DISCOVERY_PROMPT_VERSION v2 -> v3.",
+      "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts - computeCandidateContentFingerprint now folds in grounded valueAnchors + verifiedQuoteFingerprint; ExpandedCandidate gained both (optional) fields.",
+      "lib/contract-model/compiler/discovery/pass-d-reconcile.ts - merge path unions valueAnchors and keeps verifiedQuoteFingerprint, same discipline as every other multi-valued merged field.",
+      "lib/contract-model/compiler/discovery/types.ts - DiscoveredCandidate gained the same two optional fields for downstream auditability/disclosure.",
+      "lib/contract-model/compiler/discovery/pipeline.ts - DISCOVERY_PIPELINE_VERSION v3 -> v4.",
+      "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts - findCoordinateClauseSplit gained a same-family, value-anchor-disjoint trigger alongside the existing (unchanged) cross-family trigger.",
+      "lib/contract-model/compiler/semantic-coverage/types.ts - SEMANTIC_COVERAGE_ALGORITHM_VERSION v3 -> v4.",
+      "tests/contract-model/claim-identity-blocker8-remediation.test.ts - the old disclosed-residual test was split into 3: one confirming the narrower residual is STILL open when Pass B gives no signal at all, and two new RESOLVED tests (verified quote; grounded value anchors) proving the exact motivating example and the Revolving/Term Facility shape both now split when a source-grounded signal exists.",
+      "tests/contract-model/claim-identity-v2.test.ts (NEW) - the full required 9-case adversarial matrix plus direct unit tests of value-anchors.ts's own canonicalization/grounding/verification behavior."
+    ],
+    "noHardcodedException": "No file added by or modified in this workstream references 'Liens', 'Indebtedness', 'Revolving Facility', or any other specific covenant term or package. value-anchors.ts is pure currency/percentage/ratio grammar; the same-family split trigger in unit-hypothesis.ts and the grounded-value/quote mechanisms in pass-c-neighborhood.ts operate generically over whatever families/text a document actually contains."
+  },
+
+  "testEvidence": {
+    "newAndUpdatedTests": "tests/contract-model/claim-identity-v2.test.ts: 29/29 passing. tests/contract-model/claim-identity-blocker8-remediation.test.ts: 13/13 passing (11 pre-existing assertions unmodified + 2 new RESOLVED cases + 1 updated STILL-OPEN case, all green).",
+    "tscBaseline": {
+      "command": "npx tsc --noEmit -p .",
+      "result": "6 errors, byte-identical to this phase's own documented baseline (00-baseline.json): tests/foundation-audit/cascade-and-concurrency.test.ts (2), tests/foundation-audit/discovery-fault-injection.test.ts (1), tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3). Zero new errors."
+    },
+    "eslintBaseline": {
+      "command": "npx eslint .",
+      "result": "1 error, identical to this phase's own documented baseline: tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires. Zero new errors."
+    },
+    "targetedSuiteResults": "npx vitest run tests/contract-model/ tests/foundation-audit/ tests/certification/ (run in isolation to avoid a known cross-file Postgres connection race): 143/145 files pass; the 2 pre-existing failures are BOTH tests/certification/section11-source-trace-independent.test.ts's own real-DB-legacy-data-dependent findings, independently reconfirmed on the UNMODIFIED tree (git stash + rerun) to fail identically before this workstream's changes - not a regression.",
+    "fullSuiteResults": {
+      "command": "npx vitest run --pool=forks --poolOptions.forks.singleFork=true (single-fork to eliminate the known cross-file Postgres race)",
+      "result": "207/211 files pass, 2173/2179 tests pass. The 4 failing files (6 tests) are all independently reconfirmed pre-existing and unrelated to this workstream's changes: tests/certification/section11-source-trace-independent.test.ts (2 - real-DB legacy data, reconfirmed on the unmodified tree), tests/extraction/get-provider.test.ts and tests/extraction/vercel-ai-gateway-provider.test.ts (3 - an environment/default-model-id test with zero relationship to contract-model/compiler code, reconfirmed failing identically on the unmodified tree in isolation), tests/foundation-audit/repro-connection-race.test.ts (1 - the SAME test this codebase's own prior phase already named 'a known-flaky Postgres concurrency race'; reconfirmed PASSING on a separate isolated rerun of the unmodified tree, consistent with genuine timing flakiness rather than a real regression)."
+    },
+    "regressionConfirmation": "Every pre-existing passing test in tests/contract-model/discovery-pipeline.test.ts (including its own scenario 18 genuine-duplicate-merge case), tests/foundation-audit/section15-claim-identity-adversarial.ts's own 7 pre-existing PASS cases, and every pre-V2 assertion in claim-identity-blocker8-remediation.test.ts continues to pass unmodified."
+  },
+
+  "rulesCompliance": {
+    "noBlocker1Touch": "lib/contract-model/compiler/stage-structure.ts not modified.",
+    "noBlocker7Touch": "lib/contract-model/compiler/persistence.ts not modified.",
+    "noBlocker9Touch": "lib/contract-model/compiler/semantic-verification/** not modified.",
+    "verifiedByDiff": "git diff --stat against this workstream's starting commit shows exactly 8 modified files (all under discovery/, semantic-coverage/, and one test file) plus 2 new files (value-anchors.ts, claim-identity-v2.test.ts) - no file outside this workstream's own scope was touched."
+  },
+
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "AUDIT-F4's frozen defect class ('SAME FAMILY + SAME ROLE + SAME SOURCE NODE DOES NOT IMPLY SAME CLAIM') is closed at its root cause - a generalized, source-grounded, non-hardcoded identity mechanism - for the exact motivating example (numeric baskets of any family, at BOTH identity layers) with zero live-model dependency at the semantic-coverage layer and zero Pass B schema dependency for the discovery layer's primary mechanism. 8 of the 9 required adversarial cases fully resolve; the 9th (formatting stability) is a direct pass. A materially narrower residual than the one this workstream inherited is honestly disclosed (AUDIT-F4-RESIDUAL-1: same-family, zero-number, zero-Pass-B-cooperation fusions), pinned precisely by dedicated tests rather than left vague, with every mitigating factor the prior phase already established for the broader version still applying. The compatibility/migration question was independently re-verified with fresh, direct database evidence rather than assumed - and a real, materially relevant change to the caller-reachability landscape since the last check (BLOCKER-10's live wiring) is explicitly surfaced rather than silently glossed over. tsc/eslint baselines are unchanged and the full test suite shows zero new failures. Per this phase's own charter, disposition is never CERTIFIED_CLOSED - only an independent recertification phase (Part B) may assign that."
+}

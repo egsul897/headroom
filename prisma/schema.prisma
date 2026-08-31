@@ -137,6 +137,17 @@ model Company {
   // Additive only. Zero rows for any company as of this migration.
   claimReviewItems ClaimReviewItem[]
 
+  // --- Phase 3F.1.6.R Workstream F: live contract-analysis orchestration ---
+  // Additive only. Zero rows for any company as of this migration.
+  analysisRuns AnalysisRun[]
+
+  // --- Phase 3F.1.6.RX Workstream H: durable semantic truth persistence,
+  // partial-instrument-failure durability, and pre-identity failure trace ---
+  // Additive only. Zero rows for any company as of this migration.
+  semanticTruthRecords SemanticTruthRecord[]
+  analysisRunIssues    AnalysisRunIssue[]
+  analysisFailureLogs  AnalysisFailureLog[]
+
   @@map("companies")
 }
 
@@ -3201,4 +3212,437 @@ model ClaimReviewDecision {
 
   @@index([reviewItemId])
   @@map("claim_review_decisions")
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.6.R Workstream F - the live contract-analysis orchestration
+// boundary's own minimal run-tracking state (BLOCKER-10 remediation,
+// docs/phase-3f1-6-r-blocker-remediation/16-live-analysis-idempotency.json).
+//
+// This is deliberately NOT a second ContractCompilerRun/ContractCompilerStage
+// (that model belongs to the quarantined legacy Phase C pipeline -
+// lib/contract-model/compiler/orchestrator.ts's own header comment - and is
+// never reused for the new, live-wired pipeline this model tracks). It is
+// also deliberately NOT a per-stage cache/resume table the way
+// ContractCompilerStage is: every real pipeline stage this run composes
+// (structural persistence, package-graph persistence, ClaimReviewItem
+// recording) is already independently idempotent (upsert-by-stableKey or
+// upsert-by-claimKey - see lib/contract-model/compiler/persistence.ts,
+// package-graph/persistence.ts, safe-failure/service.ts's own header
+// comments), so re-running this run's own body to completion after an
+// interruption is always safe by construction; this row exists to make that
+// run's own identity/status/audit trail explicit and queryable, not to cache
+// intermediate stage output.
+//
+// Idempotency/identity (task's own "tenant + document/package version-or-
+// hash + analysis algorithm version"): `packageKey` is a content-derived
+// hash of this run's own sorted document-id set (lib/contract-model/analysis/identity.ts) -
+// Document rows are immutable once created in this codebase (a re-upload of
+// byte-identical content converges on the EXISTING row via
+// lib/connectors/upload-connector.ts's own dedup contract, and there is no
+// in-place "edit this document's text" mutation anywhere), so a document's
+// id is already a safe, sufficient proxy for its content identity. Adding a
+// genuinely new document to the analyzed set changes `packageKey`, which
+// changes this row's own identity - "a new document version runs
+// independently" - while re-running over the SAME document set resolves to
+// the SAME row every time (the `@@unique` below), and bumping
+// `analysisAlgorithmVersion` deliberately changes identity too, causing
+// fresh, intentional reprocessing.
+enum AnalysisRunStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  COMPLETED_WITH_REVIEW
+  FAILED
+  // Phase 3F.1.6.RX Workstream H (AUDIT-F3) - at least one instrument's own
+  // analysis threw an unexpected, unhandled exception (NOT a compiled/
+  // verified claim needing review - that is COMPLETED_WITH_REVIEW's own,
+  // separate signal), while at least one OTHER instrument in the same run
+  // completed successfully. Deliberately distinct from COMPLETED_WITH_REVIEW
+  // (which means every instrument's own analysis genuinely finished, and
+  // SOME of what it found needs human review) and from FAILED (which means
+  // NO instrument produced usable output at all) - overloading either of
+  // those to also mean "one instrument's code threw" would make "did every
+  // instrument's analysis actually finish running?" unanswerable from
+  // status alone. A PARTIAL run always has >=1 durable AnalysisRunIssue row
+  // for THIS run (see that model's own header comment) - status alone says
+  // WHETHER something failed; AnalysisRunIssue says WHAT and WHY.
+  PARTIAL
+
+  @@map("analysis_run_status")
+}
+
+model AnalysisRun {
+  id        String @id @default(cuid())
+  companyId String
+
+  // Content-derived hash of this run's own sorted document-id set - see this model's own header comment. Never a human-chosen label. 
+  packageKey               String
+  // The exact document ids this run analyzed together, in the same sorted order packageKey was derived from - kept alongside the hash for direct queryability/debugging without re-deriving it. 
+  documentIds              String[]
+  // Bumping this intentionally changes this row's own unique identity (see @@unique below), causing a fresh AnalysisRun row and full reprocessing - the mechanism task step 5's "bumping the analysis algorithm version can intentionally cause reprocessing" requires. 
+  analysisAlgorithmVersion String
+
+  status       AnalysisRunStatus @default(PENDING)
+  // Free-text stage name (e.g. "STRUCTURAL_ANALYSIS", "SEMANTIC_COVERAGE") - a plain string, not a closed enum, so a later stage can be added/renamed without a migration; this field is progress/observability state only, never consulted for correctness by any resume logic (see this model's own header comment on why full stage-level resume is out of this model's scope).
+  currentStage String?
+
+  // Phase 3F.1.6.RX-FINAL Workstream E (FINDING-6 - "zombie writer" fencing).
+  // A lease/execution-generation token, authoritative only in Postgres
+  // (never process-local memory). Every successful ownership acquisition -
+  // BOTH the brand-new-row `create()` path (which gets the column default,
+  // 1) AND the stale-reclaim `updateMany` path in
+  // lib/contract-model/analysis/service.ts's own startOrResumeAnalysisRun
+  // (which atomically increments it as PART OF the same CAS statement that
+  // wins the reclaim) - mints/returns a NEW generation value to whichever
+  // caller actually won that claim. Every subsequent mutating call on this
+  // row (setAnalysisRunStage/completeAnalysisRun/failAnalysisRun) must
+  // present the generation it was handed at claim time and is applied ONLY
+  // via `updateMany({ where: { id, executionGeneration: held }, ... })`,
+  // checking `count === 1` - a caller presenting a superseded (stale)
+  // generation always sees `count === 0` and its write silently does not
+  // apply, because a newer claim (create() or reclaim) has since bumped this
+  // column to a value the stale caller never learned.
+  //
+  // This closes the gap the Part B AUDIT-F2 recertification found and
+  // reproduced (docs/phase-3f1-6-rx-final-blocker-closure/
+  // 28-part-b-auditf1-f2-recertification.json's own NEW_GENUINE_DEFECT_FOUND,
+  // and tests/contract-model/part-b-recert-auditf2-concurrency.test.ts's own
+  // "ZOMBIE WRITER" test): the ORIGINAL claim-time compare-and-swap (task's
+  // own AUDIT-F2 charter) was always genuinely atomic and remains completely
+  // unchanged by this column - this generation counter protects a
+  // DIFFERENT, later window (a reclaimed row's former, merely-slow-not-dead
+  // owner writing to it after losing ownership), which the claim-time CAS
+  // alone cannot see because it only runs once, at claim time.
+  executionGeneration Int @default(1)
+
+  startedAt       DateTime?
+  completedAt     DateTime?
+  // Structured detail for a genuinely fatal (whole-run-aborting) failure only - never populated for an ordinary per-claim/per-candidate uncertainty, which routes to its own ClaimReviewItem instead of failing the run (task step 7's "no single generic fatal error"). Shape: { stage: string, message: string, errorClass: string }.
+  fatalError      Json?
+  // The count of OPEN_REVIEW ClaimReviewItem rows this run's own package/company scope had at completion - a convenience denormalization for run-listing UIs, always re-derivable from ClaimReviewItem itself.
+  reviewItemCount Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // Phase 3F.1.6.RX Workstream H additions - both scoped to THIS run's own
+  // id (never cross-run), and both cleared/re-derived fresh at the start of
+  // every re-entry of this SAME row (see service.ts's own re-entry
+  // discipline) so a resolved-on-retry instrument never leaves a stale
+  // issue row, and a superseded semantic-truth row from an abandoned
+  // attempt is never confused with this run's own real output.
+  issues               AnalysisRunIssue[]
+  semanticTruthRecords SemanticTruthRecord[]
+
+  // The dedup/idempotency key (this model's own header comment): at most one
+  // AnalysisRun row ever exists per (companyId, packageKey,
+  // analysisAlgorithmVersion) - a duplicate trigger for the SAME document
+  // set under the SAME algorithm version always resolves to, and updates,
+  // this SAME row rather than creating a second one.
+  @@unique([companyId, packageKey, analysisAlgorithmVersion])
+  @@index([companyId, status])
+  @@map("analysis_runs")
+}
+
+/// Phase 3F.1.6.RX Workstream H (AUDIT-F3 - partial instrument failure
+/// durability). A durable, queryable record of ONE instrument unit's own
+/// unexpected, unhandled failure during one AnalysisRun - the fix for the
+/// NO_SILENT_MATERIAL_FAILURE gap where a prior run could complete
+/// COMPLETED/COMPLETED_WITH_REVIEW while an instrument's real failure
+/// existed only in an in-memory array and a console log.
+///
+/// Lifecycle: rows for a given `runId` are cleared at the START of every
+/// re-entry of that run (see lib/contract-model/analysis/service.ts's
+/// startOrResumeAnalysisRun) and freshly re-populated only for instruments
+/// that actually fail during THAT attempt - so a retried run whose
+/// previously-failing instrument now succeeds leaves no stale issue row
+/// behind, while an instrument that fails again on retry gets a fresh row
+/// with this attempt's own real error detail. This mirrors
+/// lib/contract-model/compiler/persistence.ts's own P1-9 tombstoning
+/// discipline (delete-then-repopulate within one run's own scope), applied
+/// here to a per-run rather than per-document scope.
+model AnalysisRunIssue {
+  id        String @id @default(cuid())
+  runId     String
+  companyId String
+
+  instrumentKey String
+  documentIds   String[]
+
+  failedStage String
+  errorClass  String
+  // Bounded/sanitized - reuses the exact credential-redaction discipline
+  // lib/contract-model/compiler/semantic/compile.ts's own sanitizeErrorMessage
+  // already established for this codebase's other persisted error messages,
+  // never a raw stack dump.
+  message     String
+
+  createdAt DateTime @default(now())
+
+  run     AnalysisRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  company Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // At most one issue row per (runId, instrumentKey) - a re-detection of the
+  // SAME instrument failing again within the SAME attempt (should not
+  // happen given the orchestrator's own per-instrument try/catch runs each
+  // unit exactly once per attempt, but guarded here anyway) updates this row
+  // rather than duplicating it.
+  @@unique([runId, instrumentKey])
+  @@index([companyId])
+  @@index([runId])
+  @@map("analysis_run_issues")
+}
+
+/// Phase 3F.1.6.RX Workstream H (AUDIT-F7 - no log-only failure). A durable
+/// Postgres trace for an unexpected exception that occurred BEFORE
+/// runContractAnalysis had enough identity to own/claim a real AnalysisRun
+/// row (e.g. the initial Document query itself failing, a transient DB
+/// connectivity failure, or an unexpected exception inside
+/// startOrResumeAnalysisRun's own claim attempt) - the one class of failure
+/// that could previously reach app/'s own runExtractionAction with NO
+/// durable trace anywhere except a console.error. Every failure that DOES
+/// have a real runId by the time it occurs is instead recorded on that
+/// AnalysisRun's own `fatalError` column (see AnalysisRun's own header
+/// comment) or, for a per-instrument failure, as an AnalysisRunIssue row
+/// above - this table exists ONLY for the narrower pre-identity case, so a
+/// genuine failure is never only a log line.
+model AnalysisFailureLog {
+  id                   String  @id @default(cuid())
+  companyId            String
+  triggeringDocumentId String?
+
+  stage      String
+  errorClass String
+  message    String
+
+  createdAt DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, createdAt])
+  @@map("analysis_failure_logs")
+}
+
+/// Phase 3F.1.6.RX Workstream H (AUDIT-F1). Which IR object this row is
+/// durable state for - IRRule.ruleId or IRDefinition.definitionId
+/// (lib/contract-model/ir/types.ts). Shared-capacity resources
+/// (IRSharedCapacity) are not yet persisted here - see
+/// 09-semantic-truth-persistence-design.json's own disclosed scope note.
+enum SemanticTruthKind {
+  RULE
+  DEFINITION
+
+  @@map("semantic_truth_kind")
+}
+
+/// Phase 3F.1.6.RX Workstream H (AUDIT-F1, this phase's own charter Section
+/// 19 - "Trust gating"). Deliberately a SEPARATE dimension from IR's own
+/// RepresentationSufficiency (COMPLETE/PARTIAL/AMBIGUOUS/UNSUPPORTED/
+/// MISSING_CONTEXT/CONFLICTED, preserved verbatim in `sufficiency` below):
+/// sufficiency asks "how completely was this represented," this asks
+/// "is this representation currently allowed to be treated as trusted
+/// current contract truth." A rule can be sufficiency=COMPLETE and
+/// trustStatus=REVIEW_REQUIRED (the independent verifier has not yet run,
+/// or found something to check) - COMPLETE representation is never, by
+/// itself, proof of correctness (task's own "COMPLETE sufficiency faces
+/// STRONGER scrutiny, never a free pass" - semantic-verification/types.ts).
+///
+///   COMPILED        - Phase 3B produced this rule/definition; independent
+///                      verification (Phase 3C) has not run for it, or its
+///                      candidate's verification result is absent. A real,
+///                      disclosed "compiled but not yet independently
+///                      checked" state - never silently promoted.
+///   VERIFIED         - the candidate this object was compiled from reached
+///                      VERIFIED_NO_MATERIAL_GAP_FOUND or
+///                      VERIFIED_WITH_NON_MATERIAL_FINDINGS. The ONLY status
+///                      downstream "current semantic contract truth" reads
+///                      may treat as trusted (see service.ts's own
+///                      getTrustedSemanticTruth, which filters on exactly
+///                      this value).
+///   REVIEW_REQUIRED  - verification ran but could not clear the candidate
+///                      (REVIEW_REQUIRED/VERIFICATION_INCOMPLETE/
+///                      VERIFICATION_FAILED/NOT_VERIFIED) - a real signal a
+///                      human should look at, distinct from a hard
+///                      contradiction.
+///   CONTRADICTED     - verification found a MATERIAL_DISCREPANCY: the
+///                      independent verifier affirmatively believes this
+///                      representation does not faithfully match the real
+///                      source. Never silently downgraded to
+///                      REVIEW_REQUIRED - a materially wrong claim is a
+///                      stronger, more urgent signal than an unresolved one.
+///   UNSUPPORTED      - this specific rule/definition's own IR sufficiency
+///                      is UNSUPPORTED (an IRUnsupportedExpression-shaped
+///                      escape hatch, or the whole rule/definition itself is
+///                      UNSUPPORTED) - mechanically never executable/
+///                      trustable regardless of what verification found,
+///                      since there is no faithful structured meaning to
+///                      verify in the first place.
+enum SemanticTruthTrustStatus {
+  COMPILED
+  VERIFIED
+  REVIEW_REQUIRED
+  CONTRADICTED
+  UNSUPPORTED
+
+  @@map("semantic_truth_trust_status")
+}
+
+/// Phase 3F.1.6.RX Workstream H (AUDIT-F1) - durable, versioned,
+/// reloadable persistence for the compiled/verified semantic IR
+/// (lib/contract-model/ir/types.ts's IRRule/IRDefinition) that, before this
+/// workstream, existed only in-memory for the duration of one
+/// runContractAnalysis call (19-contract-truth-ownership-map.json's own
+/// disclosed "semantic claim truth: NONE, DURABLY, TODAY" finding, from the
+/// prior BLOCKER-10 remediation phase).
+///
+/// PERSISTENCE SHAPE DECISION (see 09-semantic-truth-persistence-design.json
+/// for the full rationale): `payload` is the ENTIRE serialized IRRule or
+/// IRDefinition object as JSON, versioned by `payloadSchemaVersion`
+/// (currently IR_SCHEMA_VERSION verbatim) - a V1 JSON-payload body, NOT a
+/// fully-normalized relational AST across dozens of tables. Every field a
+/// caller needs to QUERY (tenant/instrument/document scope, trust status,
+/// algorithm/prompt versions, provenance) is still a real relational
+/// column, never buried inside the JSON blob - only the recursive
+/// expression tree itself (IRExpression, which can nest arbitrarily deep
+/// and has no natural row-per-node shape that any current caller needs to
+/// query into independently - see IRExpression's own module header on why
+/// even the in-memory IR chose a tree over a graph at the expression level)
+/// is opaque JSON. Deserializing `payload` with the matching
+/// `payloadSchemaVersion` reproduces the exact in-memory IRRule/IRDefinition
+/// object the compiler produced - a real "reload without rerunning AI"
+/// contract, proven in
+/// tests/contract-model/semantic-truth-persistence.test.ts's own
+/// process-boundary-simulating test.
+///
+/// IDEMPOTENCY: keyed by (companyId, instrumentKey, kind, semanticObjectId).
+/// `semanticObjectId` (IRRule.ruleId / IRDefinition.definitionId) is ITSELF
+/// already stable and content-derived - lib/contract-model/ir/identity.ts's
+/// computeRuleId/computeDefinitionId are pure functions of
+/// (companyId, instrumentKey, sourceSectionRef/termName, a content
+/// discriminator) and are NEVER derived from sufficiency, verification
+/// status, or any other mutable field (that module's own header comment) -
+/// so re-running analysis over unchanged source text always re-derives the
+/// SAME ruleId/definitionId and this table upserts the SAME row rather than
+/// duplicating it. `contentHash`/`version` exist purely to make a REAL
+/// content change to an already-persisted logical rule/definition visible
+/// (a new `version` and `updatedAt`) without treating a genuine no-op
+/// re-verification (identical payload) as if new state had been produced -
+/// mirroring package-graph/persistence.ts's own "no-op skip" discipline.
+///
+/// TRUTH OWNERSHIP (this phase's own charter Section 10; see
+/// 17-truth-ownership.json for the full map): once this table is populated,
+/// it is the SOLE authoritative store for durable CURRENT semantic contract
+/// truth (a rule/definition's own compiled meaning) - the legacy
+/// lib/extraction/** pipeline's ExtractionCandidate/ContractRule rows
+/// remain their own valid, separate candidate-suggestion/compatibility
+/// workflow and can never override a row here; see that document for why no
+/// compatibility adapter was needed (the two pipelines' outputs do not
+/// overlap in the same table).
+model SemanticTruthRecord {
+  id String @id @default(cuid())
+
+  companyId     String
+  // Nullable: a standalone-instrument analysis run (identity.ts's own
+  // standaloneInstrumentKey) still has a real packageKey from the
+  // orchestrator's own run identity - kept here purely as a convenience
+  // denormalization for company-wide package-scoped queries, never the
+  // identity key itself (instrumentKey + semanticObjectId already uniquely
+  // scope this row within a company).
+  packageKey    String?
+  instrumentKey String
+  // Nullable: an analysis run that failed before reaching this instrument
+  // could not have produced this row in the first place, but a REPLAY of
+  // this table's own row (e.g. a future migration/backfill tool) may
+  // legitimately need to write a row with no live AnalysisRun to point at.
+  // onDelete: SetNull - deleting an old AnalysisRun row (e.g. a future
+  // retention policy) must never cascade-delete the durable semantic truth
+  // it produced; only the provenance LINK to that specific run is lost, not
+  // the trusted state itself.
+  analysisRunId String?
+
+  kind             SemanticTruthKind
+  // The idempotency key alongside (companyId, instrumentKey, kind) - see
+  // this model's own header comment on why this is already safe to key on
+  // directly rather than a synthetic content hash.
+  semanticObjectId String
+
+  // Source provenance (task's own required field list).
+  candidateRef     String?
+  sourceDocumentId String
+  sourceSectionRef String?
+  sourceCitation   String?
+  // Bounded excerpt (mirrors SourceProvenance.excerpt's own "never a
+  // synthesized paraphrase" discipline) - never the full document text.
+  sourceExcerpt    String?
+
+  // Algorithm/prompt/tool version provenance (task's own required field
+  // list) - reused verbatim from the real compiler/verifier version
+  // constants, never re-derived or paraphrased.
+  irSchemaVersion          String
+  compilerAlgorithmVersion String
+  compilerPromptVersion    String
+  toolPolicyVersion        String
+  // Null when independent verification never ran for this object's own
+  // candidate (trustStatus is then COMPILED, never VERIFIED) - a real,
+  // disclosed "not yet checked" state.
+  verifierAlgorithmVersion String?
+  verifierPromptVersion    String?
+
+  // SemanticVerificationStatus's own vocabulary, preserved as a free string
+  // (mirrors ClaimReviewItem.covenantFamily's own "free string, not a
+  // duplicate Prisma enum" discipline, so the two never drift out of sync)
+  // - null when verification never ran.
+  verificationStatus String?
+  // The trust-gating dimension (this model's own required field per this
+  // phase's own charter Section 19) - see SemanticTruthTrustStatus's own
+  // doc comment for the full taxonomy and downstream-read contract.
+  trustStatus        SemanticTruthTrustStatus
+
+  // IRRule/IRDefinition's own RepresentationSufficiency, preserved verbatim
+  // (COMPLETE/PARTIAL/AMBIGUOUS/UNSUPPORTED/MISSING_CONTEXT/CONFLICTED) - a
+  // separate axis from trustStatus (see SemanticTruthTrustStatus's own
+  // header comment on why these are deliberately not merged).
+  sufficiency        String
+  sufficiencyReasons String[]
+
+  // Operative-state lineage reference (task's own required field), reused
+  // verbatim from IRRule.operativeLineage/OperativeLineageRef - null for an
+  // instrument/provision never amended (a legitimate, honest state, not an
+  // error - see OperativeLineageRef's own callers elsewhere in this
+  // codebase for the same convention).
+  operativeLineage Json?
+  // Bounded summary of the independent verifier's own SemanticVerificationFinding[]
+  // for this object's candidate (findingId/findingType/severity/
+  // sourceCitation/verifierReasoning only - never the full finding's raw
+  // proposedIrEvidence dump) - "verification status and findings/summary"
+  // per this phase's own required field list. Null when verification never
+  // ran (trustStatus COMPILED) or produced zero findings.
+  findingsSummary  Json?
+
+  // The full serialized IRRule or IRDefinition - see this model's own
+  // header comment on the JSON-payload-body design decision.
+  payloadSchemaVersion String
+  payload              Json
+
+  // sha256 of the canonical (sorted-key) serialization of `payload` - used
+  // ONLY to detect a genuine content change on re-upsert (bump `version`)
+  // versus an idempotent no-op re-persist of identical content (this
+  // model's own header comment) - never itself a queried/business field.
+  contentHash String
+  version     Int    @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  company     Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  analysisRun AnalysisRun? @relation(fields: [analysisRunId], references: [id], onDelete: SetNull)
+
+  @@unique([companyId, instrumentKey, kind, semanticObjectId])
+  @@index([companyId, trustStatus])
+  @@index([companyId, instrumentKey])
+  @@index([analysisRunId])
+  @@map("semantic_truth_records")
 }

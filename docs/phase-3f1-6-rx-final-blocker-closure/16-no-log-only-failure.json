@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "NO_LOG_ONLY_FAILURE",
+  "workstream": "H",
+  "auditFinding": "AUDIT-F7",
+  "generatedAt": "2026-08-30T16:42:00Z",
+  "baseCommit": "4005687",
+  "purpose": "Audit every failure path in runContractAnalysis and its callers (runExtractionAction), especially failures occurring BEFORE AnalysisRun ownership/row creation, and fix any path where a real failure could occur with no durable Postgres trace, only a console log.",
+  "auditMethodology": "Read runContractAnalysis line by line, identifying every point where a thrown exception could occur, and for each, traced what (if anything) durably records it before the exception reaches app/'s own runExtractionAction, whose OWN catch block only ever calls console.error - confirmed by reading actions.ts directly, not assumed.",
+  "failurePathsFoundAndTheirPriorDurability": [
+    {
+      "path": "prisma.document.findMany(...) - the very first statement in runContractAnalysis.",
+      "priorState": "NO try/catch anywhere around it. A thrown exception here (a DB connectivity blip, a malformed companyId causing an unexpected query error) propagated straight up through runContractAnalysis, uncaught, to runExtractionAction's own catch - which ONLY console.errors it. NO Postgres row of any kind existed to record this failure - the exact gap this audit finding describes.",
+      "fixed": true
+    },
+    {
+      "path": "computeAnalysisPackageKey/canonicalDocumentIdOrder (identity.ts) - pure functions, but called before a runId exists.",
+      "priorState": "Same gap in principle (no try/catch, no runId to attach a fatalError to) though these specific functions are unlikely to throw for well-formed input - included for completeness since the fix wraps the whole pre-identity span, not just the one likeliest failure point.",
+      "fixed": true
+    },
+    {
+      "path": "startOrResumeAnalysisRun(...) itself - the ownership-claim call.",
+      "priorState": "Same gap - a thrown exception during the create/updateMany/findUniqueOrThrow sequence (e.g. a transient DB error) occurs before a runId is returned to the caller, so there is nothing yet to call failAnalysisRun on.",
+      "fixed": true
+    },
+    {
+      "path": "Everything from `setAnalysisRunStage(runId, 'INGESTION')` onward (document ingestion, structural analysis, per-instrument analysis, review persistence, completion).",
+      "priorState": "ALREADY correctly durable before this workstream - the pre-existing outer try/catch (unchanged by this fix) calls failAnalysisRun(runId, ...), which durably records the failure in the real AnalysisRun row's own fatalError column. This span was never the gap; it is confirmed here, not re-fixed.",
+      "fixed": "N/A - already correct"
+    }
+  ],
+  "fix": {
+    "mechanism": "The entire pre-identity span (document fetch through startOrResumeAnalysisRun) is now wrapped in its own try/catch. On any exception there, a new AnalysisFailureLog row is created (companyId, triggeringDocumentId, stage: 'PRE_RUN_IDENTITY', errorClass, message) - a minimal, additive model whose SOLE purpose is this one narrow failure class (never used once a runId exists, which uses the pre-existing AnalysisRun.fatalError / AnalysisRunIssue mechanisms instead, per AUDIT-F3). runContractAnalysis then returns a structured `{outcome: 'FAILED', runId: null, ..., fatalError: {...}}` result rather than letting the exception propagate - so it NEVER throws uncaught to its own caller for this failure class.",
+    "callerBehaviorUnchanged": "app/[companyId]/onboarding/documents/actions.ts's runExtractionAction is deliberately left UNCHANGED - its own try/catch around runContractAnalysis remains legitimate defense-in-depth (its own comment already correctly describes this), now genuinely true rather than aspirational: a failure reaching that catch is, after this fix, ALREADY durably recorded in Postgres (AnalysisFailureLog, or AnalysisRun.fatalError/AnalysisRunIssue for anything with a runId) before that catch's own console.error ever runs."
+  },
+  "residualLimitDisclosed": {
+    "finding": "If Postgres itself is so unreachable that even the AnalysisFailureLog write inside the new catch block also fails, that SECOND exception would propagate uncaught (there is no further fallback durability layer, e.g. a local file, by design/scope).",
+    "whyThisIsDisclosedRatherThanClaimedFullyClosed": "This is an inherent limit of any 'durable Postgres trace' guarantee when the durability store itself is the thing that is broken - closing it fully would require a non-Postgres fallback (e.g. a local file or external logging service), which is a materially different and larger architectural commitment than this audit finding asks for ('every failure that happens once it has enough identity to do so' - a total Postgres outage is a case where NO application-level durability mechanism in this codebase, old or new, could succeed, since AnalysisRun.fatalError itself has the identical dependency). Disclosed honestly here rather than silently glossed over."
+  },
+  "testEvidence": {
+    "testFile": "tests/contract-model/no-log-only-failure.test.ts",
+    "runCommand": "npx vitest run tests/contract-model/no-log-only-failure.test.ts",
+    "result": "2/2 passing",
+    "cases": [
+      {
+        "name": "a failure inside the initial Document query itself",
+        "method": "vi.spyOn(prisma.document, 'findMany').mockRejectedValueOnce(...) - the real Prisma client method is spied, not a separate mock database.",
+        "result": "runContractAnalysis does NOT throw (confirmed via an explicit try/catch around the call in the test itself asserting `thrown` stays null); it returns {outcome: 'FAILED', runId: null, fatalError: {stage: 'PRE_RUN_IDENTITY', ...}}. A real AnalysisFailureLog row is confirmed to exist via getAnalysisFailureLogsForCompany, with the correct stage/errorClass/message/triggeringDocumentId."
+      },
+      {
+        "name": "a failure inside startOrResumeAnalysisRun's own claim attempt",
+        "method": "vi.spyOn(prisma.analysisRun, 'create').mockRejectedValueOnce(...) after a real Document row already exists (so the failure occurs strictly AFTER document-fetch succeeds, strictly BEFORE a runId is ever obtained).",
+        "result": "Identical outcome shape - no uncaught throw, a real AnalysisFailureLog row with stage PRE_RUN_IDENTITY."
+      }
+    ]
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "Every failure path identified by direct code audit is now either already-durable (unchanged, confirmed correct) or newly durable (the pre-identity span, fixed here) - with one disclosed, inherent residual limit (a total Postgres outage defeating the durability mechanism itself, which no application-level fix can close). Reserved CERTIFIED status for this phase's own separate, later, independent Part B."
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_TARGETED_TESTS",
+  "fix1": {
+    "file": "tests/certification/part-a-final-fix1-structural.test.ts",
+    "cases": 23,
+    "result": "ALL PASSING (9 true-heading, 10 false-heading including two shapes broader than the original noise-adjacency reproduction, 3 rank-stack composition)",
+    "priorAuditorFile": "tests/certification/part-b-terminal-recert-open1-independent.test.ts updated in place - 5 previously-red assertions now certify closure"
+  },
+  "fix2": {
+    "file": "tests/certification/part-a-final-fix2-context-trust.test.ts",
+    "cases": 19,
+    "result": "ALL PASSING (original exploit, stale SECTION excerpt, historical/ambiguous/partial evidence, sibling-document isolation, full persisted-SemanticTruthRecord chain)",
+    "priorAuditorFile": "tests/certification/part-b-terminal-recert-open2-independent.test.ts updated in place - 17/17 now pass, certifying closure"
+  },
+  "fix3": {
+    "files": [
+      "tests/certification/part-a-final-fix3-error-totality.test.ts",
+      "tests/certification/part-a-final-fix3-orchestrator-e2e-observability.test.ts"
+    ],
+    "result": "Full required adversarial value matrix (15 named values + 200-iteration fuzz loop) - 0 throws. End-to-end proof: original op failure + failure-log DB write failure + console.error failure + hostile thrown value simultaneously -> runContractAnalysis still returns structured FAILED, never throws uncaught.",
+    "priorAuditorFile": "tests/contract-model/part-b-terminal-recert-open6-independent.test.ts now passes 5/5 (previously passing only vacuously)"
+  },
+  "crossCuttingTargetedRegression": "Semantic compiler, semantic verifier, operative-state, semantic persistence, and structural hierarchy test suites all pass under the combined FIX-1/2/3 changeset."
+}

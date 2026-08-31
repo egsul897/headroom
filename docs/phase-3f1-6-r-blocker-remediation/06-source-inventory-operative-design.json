@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "BLOCKER_3_SOURCE_INVENTORY_OPERATIVE_DESIGN",
+  "blockerId": "BLOCKER-3",
+  "sourceFinding": "05-supersession-certification.json, finding SUPER-2",
+  "generatedAt": "2026-08-30T05:30:00Z",
+  "rootCause": {
+    "summary": "The prior remediation phase (3F.1.5.R) labeled coverage-audit/source-inventory.ts (and its 3 sibling INVENTORY_GENERATION_FILES: signals.ts, materiality.ts, context-inventory.ts) PROTECTED_BY_INDEPENDENCE_INVARIANT, implying supersession awareness was categorically out of scope. Reading tests/contract-model/coverage-audit-independence.test.ts line-by-line (verbatim, per the task's own instruction) confirms this label is not supported: its FORBIDDEN_ANYWHERE and FORBIDDEN_FOR_INVENTORY_GENERATION lists never mention amendment/* at all. The ONLY real restriction touching these 4 files is an allowlist of low-level structural-infrastructure import prefixes that happens not to include amendment/* - but coverage-audit/pipeline.ts is NOT one of the 4 restricted files and was always free to import amendment/operative-state.ts directly, exactly the same 'optional trailing param at the orchestration layer' pattern already used successfully for discovery/pipeline.ts's own supersessionIndex parameter. This was not done, and as a result buildSourceCoverageInventory scanned every structural node's own text - including a node whose text had since been fully superseded - and produced CoverageRegion/AuditFinding records with no supersession disposition of any kind."
+  },
+  "architectureDecision": {
+    "optionChosen": "B - keep source inventory raw/historical, add an explicit gate any consumer must pass through before treating it as current contract truth",
+    "reasoning": "Option A (make source-inventory.ts itself operative-state aware) would require relaxing tests/contract-model/coverage-audit-independence.test.ts's own allowedPrefixes allowlist for the 4 INVENTORY_GENERATION_FILES to admit amendment/* - a real, deliberate weakening of the independence contract's own mechanical guarantee, which the task explicitly said not to do without an ARCHITECTURE_CHANGE_PROPOSAL. Option B requires no change to the independence contract at all (confirmed unchanged by this fix's own first test group) and matches the certification's own suggested smallest-remediation-boundary exactly: an optional trailing parameter at the orchestration layer (coverage-audit/pipeline.ts, NOT one of the 4 protected files).",
+    "whatTheIndependenceContractGuaranteesNow": "source-inventory.ts, signals.ts, materiality.ts, and context-inventory.ts still import NOTHING from amendment/*, discovery/*, or context-retrieval/* CONCLUSION modules - the independent inventory they build (CoverageRegion[], AuditFinding[] from the comparison stages) remains a pure, judgment-free scan of raw structural text, with zero Phase 2B/2D/amendment input. What changed: every CoverageRegion/AuditFinding/CoverageMapEntry now carries an explicit supersessionStatus/supersessionReason field, defaulting to UNKNOWN_SUPERSESSION_STATUS (never CURRENT_OPERATIVE by omission) as constructed by the independent-inventory files themselves (which cannot know the real answer), and accurately re-tagged POST-HOC by runIndependentCoverageAudit (coverage-audit/pipeline.ts) ONLY when a caller supplies a real, optional NodeSupersessionIndex. The explicit guarantee, documented in coverage-audit/types.ts's own header: a consumer must check supersessionStatus === 'CURRENT_OPERATIVE' before treating any region/finding/coverageMap entry as describing a presently-governing gap or presently-governing text; a caller that never supplies a real supersessionIndex must treat the whole result as historical-only."
+  },
+  "fix": {
+    "filesChanged": [
+      "lib/contract-model/compiler/coverage-audit/types.ts",
+      "lib/contract-model/compiler/coverage-audit/source-inventory.ts",
+      "lib/contract-model/compiler/coverage-audit/discovery-comparison.ts",
+      "lib/contract-model/compiler/coverage-audit/context-comparison.ts",
+      "lib/contract-model/compiler/coverage-audit/definition-audit.ts",
+      "lib/contract-model/compiler/coverage-audit/raw-source-fallback.ts",
+      "lib/contract-model/compiler/coverage-audit/coverage-map.ts",
+      "lib/contract-model/compiler/coverage-audit/pipeline.ts"
+    ],
+    "description": "Added supersessionStatus/supersessionReason to CoverageRegion, AuditFinding, and CoverageMapEntry (types.ts) with a full OPERATIVE-STATE DISCLOSURE header explaining the design. source-inventory.ts sets the fail-closed default (UNKNOWN_SUPERSESSION_STATUS) on every region it builds, with no new import. The 4 finding-constructing modules (discovery-comparison.ts, context-comparison.ts, definition-audit.ts, raw-source-fallback.ts) likewise set the same fail-closed default at construction. coverage-map.ts carries the field from region to CoverageMapEntry. runIndependentCoverageAudit (pipeline.ts) gained an OPTIONAL supersessionIndex?: NodeSupersessionIndex parameter; when supplied, it re-tags every region and every finding's own supersessionStatus/supersessionReason post-hoc via getNodeSupersessionStatus, keyed by each item's own real structuralNodeId/documentId - exactly mirroring discovery/pipeline.ts's own established pattern for DeterministicCandidate."
+  },
+  "testEvidence": {
+    "independenceContractUnchanged": {
+      "test": "tests/contract-model/coverage-audit-independence.test.ts",
+      "result": "7/7 passed, UNMODIFIED by this fix - proves the mechanical independence guarantee is untouched."
+    },
+    "newPermanentTest": {
+      "file": "tests/contract-model/coverage-audit-supersession-gate.test.ts",
+      "coverage": [
+        "source-inventory.ts (and every other INVENTORY_GENERATION_FILE) still imports NOTHING from amendment/* - re-confirmed by direct source-file grep, independent of the shared independence test",
+        "pipeline.ts is confirmed to be the one file that imports amendment/* for this fix",
+        "buildSourceCoverageInventory called directly (no pipeline) marks every region UNKNOWN_SUPERSESSION_STATUS",
+        "runIndependentCoverageAudit called WITHOUT a supersessionIndex defaults every region/finding/coverageMap entry to UNKNOWN_SUPERSESSION_STATUS",
+        "a real supersessionIndex correctly re-tags a region/finding/coverageMap entry anchored to a KNOWN_SUPERSEDED node as such, without source-inventory.ts itself ever consulting amendment/*",
+        "a document never covered by the supplied supersessionIndex resolves UNKNOWN, never CURRENT_OPERATIVE - fail-closed even with a real but incomplete index",
+        "a node the supersessionIndex genuinely covers and does not mark superseded/ambiguous correctly resolves CURRENT_OPERATIVE"
+      ],
+      "result": "7/7 passed (npx vitest run tests/contract-model/coverage-audit-supersession-gate.test.ts)"
+    },
+    "regressionSuiteResults": "npx vitest run tests/contract-model/ - 102/102 test files passed, 1054/1054 tests passed, including all pre-existing coverage-audit-* suites (coverage-audit-fault-injection.test.ts, coverage-audit-map-and-isolation.test.ts, coverage-audit-pipeline.test.ts) unmodified.",
+    "tscBaseline": "6 errors, byte-identical to certified baseline - no new errors.",
+    "eslintBaseline": "1 error, identical to certified baseline.",
+    "buildResult": "npm run build succeeds, 21 routes."
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+}

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "STRUCTURAL_HEADING_FINAL_REMEDIATION",
+  "workstream": "A",
+  "finding": "FINDING-1 (structural heading false negatives)",
+  "generatedAt": "2026-08-30T18:10:00Z",
+  "scope": "lib/contract-model/compiler/stage-structure.ts - the 4 genuine, general false-negative defects Part B's own production-frozen recertification found (docs/phase-3f1-6-rx-final-blocker-closure/23-part-b-blocker1-blocker11-recertification.json), plus one directly-coupled consequence discovered while fixing them.",
+  "priorArtifactsRead": [
+    "docs/phase-3f1-6-rx-final-blocker-closure/23-part-b-blocker1-blocker11-recertification.json (the frozen Part B report of what to fix)",
+    "lib/contract-model/compiler/stage-structure.ts (full file, before any change)",
+    "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts (the 4 already-committed, red-pinned adversarial tests)",
+    "tests/certification/structural-heading-rx-adversarial-expansion.test.ts (Workstream A's own prior 31-case suite, including the deliberately-preserved Category 6 precision boundary)",
+    "tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts (23-case recall guard)",
+    "tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts (24-case precision/rank-stack guard)",
+    "docs/phase-3f1-6-final-foundation-certification/03-structural-integrity-certification.json (the original 7 STRUCT-1 real-fixture anomaly sites, historical/superseded phrase-list mechanism)"
+  ],
+
+  "architecturalRedesign": {
+    "summary": "Heading recognition is redesigned around compositional, non-lexical evidence rather than any single hard-required signal, per this phase's explicit anti-special-casing charter. No phrase list of any kind was added anywhere. Each of the 4 findings was traced to a general, root-cause mechanism gap - not patched as an isolated case.",
+    "mechanisms": [
+      {
+        "name": "ciKeyword - capitalization as evidence, not a hard gate",
+        "whatChanged": "ARTICLE_PATTERNS[0], SECTION_PATTERNS[0], and INTEGER_SECTION_PATTERNS[0] previously required the LITERAL keyword spelling ('ARTICLE'/'Section'/'SECTION', no `i` flag) - only the line-anchored fallback patterns carried `i`. `ciKeyword(word)` builds a per-letter case-insensitive alternation (e.g. '[Ss][Ee][Cc][Tt][Ii][Oo][Nn]') and is substituted for the literal keyword string in all three shape-based patterns.",
+        "whyThisIsGeneral": "The whole-regex `i` flag was deliberately NOT used, because it would also relax the TITLE-shape character classes ([A-Z] for a SECTION title's first letter, [A-Z ,&';-] for an ARTICLE's ALL-CAPS title run) - the very capitalization evidence that distinguishes a genuine heading-shaped title from an ordinary lowercase sentence continuation. `ciKeyword` isolates case-insensitivity to exactly the one signal that carries no real evidentiary weight (a fixed keyword's own spelling case is typographic/OCR noise, not proof of anything) while leaving the title's own capitalization - genuine positive evidence - fully intact. This is the literal embodiment of the phase charter's own instruction: 'capitalization treated as evidence, not hard requirement.'",
+        "closesFinding": "Category 'inconsistent capitalization' (lowercase 'section'/'article' keyword, mid-sentence, invisible on a continuous-prose document)."
+      },
+      {
+        "name": "stripTrailingTypographicNoise - a real typographic-noise CLASS, not enumerated literal strings",
+        "whatChanged": "`stripTrailingPageNumberArtifact` gained an `i` flag (its label regex has no OTHER case-sensitive character class, so `i` alone is the fully general fix - no companion workaround needed). A new `stripTrailingFootnoteMarker` function recognizes a short (1-3 digit) run glued DIRECTLY - no intervening whitespace - onto real sentence-terminal punctuation, as the general shape a superscript footnote/endnote marker collapses to under plain-text PDF extraction. Both are composed into one pipeline, `stripTrailingTypographicNoise`, applied uniformly to BOTH positional signals (A: paragraph break: B: sentence-terminal punctuation) and to BOTH SECTION and ARTICLE candidates, BEFORE either signal is ever evaluated.",
+        "whyThisIsGeneral": "Adding a new noise class in the future means adding one more general strip function to the pipeline - never a per-document or per-phrase special case - and it automatically, uniformly protects every downstream consumer. The footnote-marker recognizer requires NO intervening whitespace between the punctuation and the digit run, which is exactly what makes it a purely typographic (never content-based) signal: a real inline citation number is always space-separated from its own keyword ('Section 6.05'), and a dollar figure's trailing digit group is comma-grouped, never a bare 1-3 digit stray glued to punctuation - so this cannot misfire on ordinary prose numerals.",
+        "criticalPrecisionGuard": "The footnote-marker regex uses a `(?<!\\d)` negative lookbehind on the punctuation character. WITHOUT this guard, a first draft of the fix silently misidentified an ORDINARY DECIMAL NUMBER ending a real sentence ('...shall not exceed 4.00 to 1.00') as 'terminal punctuation (the decimal point in 1.00) plus a glued footnote digit (00)', manufacturing a false sentence-end signal and reopening the already-certified Category 6 precision boundary (structural-heading-rx-adversarial-expansion.test.ts, describe block 6 - a numeric table row followed by the next section number must NOT become a heading). Caught empirically by re-running that exact test file after the first draft; fixed with the lookbehind; re-verified passing. Documented here because it is direct, load-bearing evidence that 'a heading whose removal would orphan a real child should weigh against dropping it' cuts both ways - a naive generalization that RECOVERS more headings can just as easily REOPEN a precision hole, and both directions were checked empirically, not assumed.",
+        "closesFinding": "Categories 'footnote marker' (SECTION and ARTICLE alike) and 'ALL-CAPS page-artifact label'.",
+        "rankStackCorruptionPreventionIsRootCause": "The ARTICLE case's real rank-stack corruption (its child SECTION silently re-parented to parentSectionRef=null) is prevented BY CONSTRUCTION, not by a separate rank-stack patch layered on top: once the noise hiding the ARTICLE's own real positional evidence is discounted BEFORE either signal is evaluated, the ARTICLE is never dropped in the first place, so there is nothing left to re-parent incorrectly. This directly satisfies the phase charter's 'a heading whose removal would orphan a real child should weigh against dropping it' via the stronger form of that requirement: removing the ROOT CAUSE of the wrongful drop, rather than adding a second, independent check to catch the consequence after the fact."
+      },
+      {
+        "name": "BOUNDED_GAP - a directly-coupled, pre-existing latent defect fixed at its root",
+        "whatChanged": "ARTICLE_PATTERNS[0]'s (and, for the same general reason, SECTION_PATTERNS[0]'s and INTEGER_SECTION_PATTERNS[0]'s) number-to-title whitespace gap was a bare, UNBOUNDED `\\s+`, able to span an entire real paragraph break (2+ newlines). `BOUNDED_GAP` restricts this specific gap to same-line whitespace or at most ONE newline - matching how every real heading's own number and title actually sit relative to each other in every real fixture (same line, or two immediately adjacent lines; never separated by a genuine blank line).",
+        "howThisWasDiscovered": "NOT found by adversarial construction - surfaced as a real test regression while empirically verifying the `ciKeyword` fix. structural-heading-positive-evidence-false-negative-guard.test.ts's own 'repeated section label across two different ARTICLEs' case uses a Title-Case in-prose citation ('for Article I.') immediately before a real, distinct 'ARTICLE II COVENANTS' heading; making the ARTICLE keyword case-insensitive newly let that citation's own keyword match, and the pattern's unbounded gap then let its non-greedy title capture skip straight past the real paragraph break and swallow the entire, unrelated 'ARTICLE II COVENANTS' heading as if it were the citation's own title - silently deleting the real ARTICLE II occurrence from the index.",
+        "confirmedPreExisting": "Verified via direct regex probing (not assumed) that this reproduces IDENTICALLY against the ORIGINAL, unmodified, purely case-sensitive pattern when the citation is written in ALL CAPS ('ARTICLE I.' instead of 'Article I.') - this is a genuine, pre-existing latent defect in the gap's own unboundedness, orthogonal to keyword case, that no existing committed test had ever exercised (every prior test's own citation-shaped ARTICLE reference happened to use Title Case, which the literal-'ARTICLE'-only pattern could not match at all, accidentally dodging the bug rather than avoiding it by design).",
+        "whyFixedHereRatherThanFiledSeparately": "Directly coupled to this remediation's own scope per the phase's own antiEndlessLoopScopeBoundary rule ('directly-coupled consequences discovered during their own fix ... fixed only if necessary to close one of the 8'): it is the same file, the same pattern, the same 'does this candidate reach the plausibility gate as a well-formed match at all' question, and if left unfixed it produces exactly this module's own named failure class (a real heading silently vanishing) as a direct, mechanical side effect of legitimately fixing FINDING-1's own keyword-case gap. Recorded here as COUPLED-NEW per the phase's own terminology.",
+        "generalityCheck": "Applied uniformly to all three keyword-anchored patterns with an analogous number-to-title gap, not only ARTICLE_PATTERNS[0] where it was discovered - the same general principle at every call site with the same shape."
+      }
+    ]
+  },
+
+  "findingByFinding": [
+    {
+      "category": "inconsistent capitalization (SECTION and ARTICLE)",
+      "disposition": "FIXED_GENERALLY",
+      "mechanism": "ciKeyword",
+      "evidence": "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts describe block 1 (flipped from red-pinned to green/fixed, 3 tests) plus tests/certification/structural-heading-final-remediation-adversarial.test.ts describe block 1 (4 additional tests: ARTICLE lowercase at doc start, ARTICLE lowercase mid-document, fully mixed-case keyword 'SeCtIoN', and a case where the recovered heading's real child-count would otherwise have been corrupted)."
+    },
+    {
+      "category": "footnote-marker digit glued to terminal punctuation (SECTION and ARTICLE, with ARTICLE-side rank-stack corruption)",
+      "disposition": "FIXED_GENERALLY",
+      "mechanism": "stripTrailingTypographicNoise (stripTrailingFootnoteMarker)",
+      "evidence": "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts describe block 2 (flipped, 4 tests, including the ARTICLE case's own parentSectionRef assertion flipped from null to the correct 'VI') plus tests/certification/structural-heading-final-remediation-adversarial.test.ts describe block 4 (2-digit marker, marker-after-colon, and a dedicated negative-guard test proving the fix does NOT misfire on an ordinary decimal number)."
+    },
+    {
+      "category": "multi-column-layout collapse",
+      "disposition": "CONFIRMED_SAME_BOUNDARY_AS_EXISTING_CATEGORY_6 - not independently fixable without reopening a real, existing, certified precision regression",
+      "mechanism": "none applied - deliberately left as-is",
+      "evidence": "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts describe block 3, UNCHANGED assertion (heading still correctly not recovered) plus a NEW second test in the same block that is the concrete proof of the claim: the most obvious general candidate fix (accept a heading via strict sequential section-numbering continuity, e.g. this candidate's number is exactly the immediately-prior accepted section's number + 1, combined with 'at least one newline present') was constructed, and directly, empirically verified to ALSO accept structural-heading-rx-adversarial-expansion.test.ts's own already-certified Category 6 false-positive case ('Section 5.01 ... \\nSection 5.02 ...' - a numeric table row with no terminal punctuation, single newline, sequential-by-one numbering - required by that test's own assertion to NOT become a heading). Both defect 3's own shape and Category 6's own shape reduce to the identical, indistinguishable typographic signature: prior line ends in ordinary content (no terminal punctuation), exactly one newline, next candidate's number is the immediate successor. No positional, paragraph-geometry, or numbering-sequence evidence available to this design tells the two apart, so no general fix exists that recovers one without also recovering the other - and the other is a real, tested, deliberately-preserved boundary this phase's charter (and Workstream A's own prior RX pass) already examined and correctly refused to cross. Treated as the SAME boundary re-confirmed under a new name, not a fourth independent defect, consistent with the phase's own 'antiEndlessLoopScopeBoundary' instruction not to re-litigate already-certified boundaries."
+    },
+    {
+      "category": "ALL-CAPS 'PAGE' running-footer label",
+      "disposition": "FIXED_GENERALLY",
+      "mechanism": "`i` flag on stripTrailingPageNumberArtifact's own regex (part of the same stripTrailingTypographicNoise pipeline)",
+      "evidence": "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts describe block 4 (flipped, 3 tests) plus tests/certification/structural-heading-final-remediation-adversarial.test.ts describe block 6 (6 case variants in one parameterized pass: ALL-CAPS, Title-Case, lowercase, mixed-case, dash-wrapped, bare digit)."
+    },
+    {
+      "category": "COUPLED-NEW: ARTICLE_PATTERNS[0] unbounded number-to-title gap balloon-match (pre-existing latent defect, surfaced not introduced, while fixing the capitalization finding above)",
+      "disposition": "FIXED_GENERALLY",
+      "mechanism": "BOUNDED_GAP",
+      "evidence": "tests/certification/structural-heading-final-remediation-adversarial.test.ts describe block 13 (3 tests: ALL-CAPS citation, Title-Case citation, and a positive control confirming a real single-newline-split number/title heading still survives) plus tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts describe block 8 (the pre-existing test whose own assertion this defect broke, now passing again with zero modification to the test itself)."
+    }
+  ],
+
+  "requiredAdversarialMatrixResults": {
+    "testFile": "tests/certification/structural-heading-final-remediation-adversarial.test.ts",
+    "categoriesCovered": [
+      "lowercase 'section'/'article' where structurally heading-shaped (block 1, 4 cases)",
+      "one-newline heading (block 2, 2 cases: SECTION and ARTICLE)",
+      "zero-blank-line OCR-style heading (block 3, 1 case)",
+      "heading following a footnote marker (block 4, 3 cases, including the decimal-number negative guard)",
+      "heading following a footnote body (block 5, 1 case)",
+      "heading after a page number (block 6, 6 case variants)",
+      "heading after a sentence citation, including a lowercase-keyword citation (block 7, 1 case)",
+      "citation beginning at a line start (block 8, 1 case - confirmed pre-existing, intentional, unchanged design boundary, not a defect)",
+      "inline 'section 6.01' prose that must NOT become a heading (block 9, 1 case)",
+      "repeated section labels (block 10, 2 cases, including the BOUNDED_GAP regression guard)",
+      "a malformed prior paragraph (block 11, 1 case)",
+      "a nested subsection after an unusual (lowercase-recovered) heading shape (block 12, 1 case)",
+      "the BOUNDED_GAP fix itself, exercised beyond the one case that surfaced it (block 13, 3 cases)"
+    ],
+    "result": "28/28 tests pass. 0 material false-suppressions found across the matrix; 0 material false-positive regressions found."
+  },
+
+  "realFixtureReverification": {
+    "instruction": "Re-verified empirically against the real fixtures, not trusted from any cached number, per this phase's own requirement.",
+    "method": "npx tsx scripts/cert-3f1-6-residual-anomaly-inspect.ts (unmodified, read-only script; run both BEFORE any production change, as a baseline, and AFTER the full remediation)",
+    "before": { "conmed": 0, "dsgr": 0 },
+    "after": { "conmed": 0, "dsgr": 0 },
+    "conclusion": "Identical - all 7 originally-certified real anomaly sites (CONMED 1, DSGR 6) remain at 0 SECTION_NUMBER_SEQUENCE_ANOMALY findings after the full redesign. Also independently re-ran the 5-site exact-span reconfirmation in tests/certification/structural-heading-rx-adversarial-expansion.test.ts describe block 5 (dsgr-doc-a 2.05/6.04, dsgr-doc-b 2.05, dsgr-doc-d 2.09/6.04) - all pass unchanged."
+  },
+
+  "noPackageSpecificTuning": "Every mechanism above (ciKeyword, stripTrailingTypographicNoise, BOUNDED_GAP) is a general regex/string transform with no document-identity, package-name, or fixture-specific literal anywhere in its own logic - confirmed by inspection of the diff. All package-specific values that appear anywhere in this remediation are confined to test fixtures and test assertions, never to lib/contract-model/compiler/stage-structure.ts itself.",
+
+  "regressionResults": {
+    "structuralHeadingSuites": {
+      "command": "npx vitest run tests/certification/structural-heading-rx-adversarial-expansion.test.ts tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts tests/certification/structural-heading-final-remediation-adversarial.test.ts",
+      "result": "5 files, 123 tests, all pass. Zero regressions in any pre-existing structural-heading suite; the 4 previously red-pinned Part B assertions now pass in their fixed (flipped) form; the 1 deliberately-unfixed assertion (multi-column collapse) is unchanged and still passes as a documented, examined boundary."
+    },
+    "tscNoEmit": {
+      "command": "npx tsc --noEmit -p .",
+      "thisWorkstreamsOwnFiles": "0 tsc errors attributable to lib/contract-model/compiler/stage-structure.ts or either of this workstream's own test files (confirmed by grepping the full tsc output for both paths).",
+      "fullWorkspaceContext": "The full-workspace run shows additional errors beyond the documented 6-error baseline, all in files under concurrent, in-progress modification by SIBLING Part A workstreams sharing this same worktree/container (lib/contract-model/analysis/orchestrator.ts, tests/contract-model/part-b-recert-auditf2-concurrency.test.ts, tests/contract-model/part-b-recert-crosscutting-tenant-isolation.test.ts) - none touch stage-structure.ts, none were introduced by this workstream, and none are this workstream's defect to own or fix."
+    },
+    "eslint": {
+      "command": "npx eslint lib/contract-model/compiler/stage-structure.ts tests/certification/structural-heading-final-remediation-adversarial.test.ts tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts",
+      "result": "0 errors in this workstream's own files."
+    },
+    "broaderSuiteNote": "A broader run of tests/certification + tests/contract-model + tests/foundation-audit was also performed; the additional failures observed there (AnalysisRunIssue/tenant-isolation/partial-instrument-failure/real-Postgres-connection-race tests) were independently confirmed, via `git stash` + re-run, to fail IDENTICALLY with this workstream's own stage-structure.ts change fully reverted - they are pre-existing/concurrent-sibling-workstream-state failures, unrelated to FINDING-1, and are not this workstream's defect to disposition."
+  },
+
+  "sharedWorktreeOperationalNote": "This session's own working-tree edit to stage-structure.ts was silently reverted to HEAD partway through this workstream's own work (confirmed via md5sum matching the last commit and `git diff` showing no changes) - this is a SHARED worktree/container with concurrent sibling Part A workstream sessions (confirmed via unrelated untracked/modified files from other workstreams appearing in `git status` throughout this session, and via HEAD itself advancing to a new sibling commit mid-session). The fix was reapplied and committed as its own dedicated commit (touching ONLY lib/contract-model/compiler/stage-structure.ts, staged explicitly by path, never via a blanket `git add -A`) as soon as it was verified, specifically to minimize the further-uncommitted-work window in this unstable shared environment. All of this workstream's own subsequent commits use the same explicit-path-staging discipline.",
+
+  "commits": [
+    { "sha": "4bcdaffc32605e95afea6f1f4cd1dca1b9b708b6", "summary": "Production fix: ciKeyword, stripTrailingTypographicNoise (page-number `i` flag + new footnote-marker stripping), BOUNDED_GAP - lib/contract-model/compiler/stage-structure.ts only." }
+  ],
+
+  "filesModified": ["lib/contract-model/compiler/stage-structure.ts", "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts"],
+  "filesAdded": ["tests/certification/structural-heading-final-remediation-adversarial.test.ts", "docs/phase-3f1-6-rx-final-terminal-closure/03-structural-heading-final-remediation.json"],
+
+  "overallSummary": "FINDING-1 (structural heading false negatives): 3 of the 4 findings Part B's own recertification reported are FIXED GENERALLY via a redesigned, compositional heading-recognition mechanism (ciKeyword for capitalization-as-evidence; stripTrailingTypographicNoise for a real typographic-noise class covering both the footnote-marker and ALL-CAPS-page-label gaps and preventing the associated rank-stack corruption by construction, at its root, rather than patching the symptom). One directly-coupled, pre-existing latent defect (BOUNDED_GAP) was discovered and fixed along the way, per the phase's own COUPLED-NEW provision. The 4th finding (multi-column-layout collapse) is confirmed, with concrete counter-test evidence rather than assumption, to be the SAME already-examined precision boundary as the existing, deliberately-preserved Category 6 case - no general fix exists that recovers it without reopening a real, certified false-positive regression, so it is left unchanged and clearly documented rather than papered over. All 7 originally-certified real-fixture anomaly sites remain independently re-verified at 0 against the real CONMED/DSGR fixtures. No package-specific tuning anywhere in the production fix. Zero regressions across 123 structural-heading-suite tests, tsc, and eslint for this workstream's own files."
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_VERDICT",
+  "verdict": "OPEN2_FINAL_DIRECT_PATCH_READY_FOR_CONFIRMATION",
+  "basis": [
+    "The mandated status-first restructure was built: view.status === OPERATIVE_STATE_RESOLVED is now checked before currentText presence, matching the exact Case A/B/C/D decision table. A new textSource value (UNRESOLVED_AMENDED_TEXT) ensures Case A's text is never mislabeled AMENDED_CURRENT_TEXT.",
+    "The auditor's exact exploit was reproduced against pre-fix code (git-stash verified) and confirmed closed post-fix for all 4 affected paths (getParentClause, getSiblingClauses, getReferencedProvision absolute+relative): evidenceUnresolved true, non-trusted compile/verify outcome, persisted trustStatus never VERIFIED, getTrustedSemanticTruth returns 0 rows.",
+    "Full 4-tool end-to-end matrix (real compile->verify->persist->fresh Postgres read, fresh fixtures per tool) passes.",
+    "Permanent invariant test (18 cases: 3 non-RESOLVED statuses x null/non-null currentText x 3 node-supersession shapes, plus defensive hand-built CONFLICTED/PARTIAL fixtures the real producer doesn't construct today) passes - the helper remains safe even if future producer behavior changes.",
+    "Narrow anti-pattern search (bounded to lib/contract-model/compiler/semantic/tools.ts) found no other exact equivalent of this defect - every other CURRENT_OPERATIVE_EVIDENCE tool already gates purely on status.",
+    "Independently reconfirmed: exactly ONE production file changed (lib/contract-model/compiler/semantic/tools.ts) - git diff 602d389 HEAD --name-only -- 'lib/**' 'app/**' 'prisma/**' yields exactly this file. buildProvisionView, getChildren's dedicated resolver, and all OPEN-1/3/4/5/6 files untouched.",
+    "Quality gates independently reconfirmed: tsc 6/6 baseline (0 new), eslint 1/1 baseline (0 new), full vitest 276/277 files passing (1 failure traced to the same already-documented flaky OPEN-3 timing test, confirmed via isolated rerun, unrelated to this diff), build succeeds, known-package regression NO_REGRESSION, Prisma schema up to date."
+  ],
+  "freezeShaForConfirmation": "4ca90f2"
+}

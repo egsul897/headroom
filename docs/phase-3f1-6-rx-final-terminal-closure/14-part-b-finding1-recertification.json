@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "PART_B_FINDING1_RECERTIFICATION",
+  "finding": "FINDING-1 (structural heading false negatives)",
+  "auditRole": "Independent Part B recertification auditor - falsification attempt against Workstream A's Part A remediation",
+  "generatedAt": "2026-08-30T19:40:00Z",
+  "productionFreezeShaVerifiedAt": "0a8e8a4",
+  "productionCodeModified": false,
+
+  "priorArtifactsRead": [
+    "docs/phase-3f1-6-rx-final-terminal-closure/01-frozen-eight-defects.json",
+    "docs/phase-3f1-6-rx-final-terminal-closure/03-structural-heading-final-remediation.json (Workstream A's own claimed fix report)",
+    "docs/phase-3f1-6-rx-final-blocker-closure/23-part-b-blocker1-blocker11-recertification.json (the frozen original finding this fix claims to close)",
+    "lib/contract-model/compiler/stage-structure.ts (full file, current state, read before writing any test)",
+    "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts (read in full - no case reused)",
+    "tests/certification/structural-heading-final-remediation-adversarial.test.ts (read in full - no case reused)"
+  ],
+
+  "methodology": "Read the actual current stage-structure.ts implementation directly (ciKeyword, stripTrailingFootnoteMarker, stripTrailingPageNumberArtifact, stripTrailingTypographicNoise, BOUNDED_GAP, the positional-signal gate) rather than trusting Workstream A's own self-assessment. Used scratch tsx probes against the real, unmodified parseDocumentStructure to explore the boundary of stripTrailingFootnoteMarker's regex before formalizing findings into a committed vitest file (tests/certification/part-b-recert-finding1-independent.test.ts). Grepped both committed remediation test files first to confirm every case below is genuinely new, not a rerun of Part A's own suite.",
+
+  "codeInspectionFinding_notAPhraseList": {
+    "conclusion": "CONFIRMED - the production mechanism is genuinely NOT a phrase/case special-case list.",
+    "evidence": "ciKeyword builds a general per-letter case alternation for exactly one fixed keyword spelling (no enumerated word forms). stripTrailingTypographicNoise composes two general regex classes (a whitespace-bounded page/footer-number shape, and a punctuation-glued short digit run) with no document-identity, phrase, or fixture-specific literal anywhere. The positional plausibility gate (isPlausibleByPositionalSignals / precededByParagraphBreak / precededBySentenceTerminalPunctuation) inspects only WHERE whitespace/punctuation sits relative to the candidate, never WHAT WORDS precede it - confirmed by direct inspection, no citation-signal phrase array exists anywhere in the file (the old 14-phrase list this module's own history describes was already removed in an earlier phase). Test block 4 in the new file independently confirms this empirically: a heading preceded by an invented, never-before-seen transitional phrase ('Having duly considered the foregoing wherefore-clauses in their entirety...') is recognized purely from positional evidence, and a lowercase 'article' keyword mid-sentence after a semicolon (a position/punctuation combination absent from every existing test file) is also recognized. Both PASS."
+  },
+
+  "findings": [
+    {
+      "id": "FALSIFICATION-1",
+      "severity": "PRIMARY - reproduces the original finding's own named failure mode",
+      "title": "A footnote/endnote marker glued to a bare closing bracket or quotation mark (no terminal punctuation mark of its own) still defeats both positional signals, dropping the heading entirely and reparenting its real child to parentSectionRef: null",
+      "description": "stripTrailingFootnoteMarker's regex, /(?<!\\d)([.:;!?][\"'’”)\\]]*)\\d{1,3}(\\s*)$/, requires its match to BEGIN with a literal terminal-punctuation character ('.', ':', ';', '!', or '?'); a closing quote/paren/bracket is recognized only when it TRAILS that punctuation mark (the real, already-tested ')' + '.' order). It has no recognition at all for the equally common real shape where the closing bracket or quotation mark IS the last visible character of the sentence and the footnote/endnote digit is glued directly onto IT, with no separate terminal-punctuation mark anywhere - a genuinely common drafting/extraction shape: a sentence ending in a quoted defined term or a parenthetical cross-reference/qualifier with the footnote number glued straight onto the closing bracket/quote (either because the drafting convention never places a period there, or because plain-text PDF extraction is well documented to lose or merge a period that collides with an adjacent superscript glyph). Verified this is NOT covered by any case in either committed remediation test file (grepped both in full before writing).",
+      "reproducedIn": "tests/certification/part-b-recert-finding1-independent.test.ts, describe blocks 1, 2, and 3",
+      "concreteReproduction": {
+        "inputText": "This Credit Agreement is entered into as of the date first written above (the \"Agreement\")1\nARTICLE I DEFINITIONS\n\nSection 1.01 Defined Terms. Capitalized terms used herein have the meanings set forth below.",
+        "actualOutput": "parseDocumentStructure returns exactly ONE node: SECTION ref=1.01 heading=\"Defined Terms\" parentSectionRef=null. ARTICLE I is completely absent from the output.",
+        "expectedCorrectOutput": "ARTICLE I DEFINITIONS should be recognized, and SECTION 1.01's parentSectionRef should be \"I\".",
+        "significance": "This is not merely a missing index entry - it is the EXACT 'child re-parented to null' rank-stack corruption named verbatim in the original frozen finding (docs/phase-3f1-6-rx-final-blocker-closure/23-part-b-blocker1-blocker11-recertification.json), reproduced via a shape (closing-bracket-glued footnote, no separate terminal punctuation) distinct from the shape (punctuation-glued footnote) the remediation actually fixed.",
+        "isolatingControl": "The IDENTICAL text with a period restored before the digit ('...(the \"Agreement\").1\\nARTICLE I...') DOES correctly find ARTICLE I with SECTION 1.01 parented to it - confirming the finding is specific to the missing-punctuation shape, not to footnote markers or first-article documents in general. This control test PASSES."
+      },
+      "generalityConfirmed": "Reproduces identically for a closing quotation mark instead of a closing parenthesis (block 2), and for a SECTION-level heading instead of only ARTICLE-level (block 3, where Section 6.02 is silently dropped) - this is a general gap in the typographic-noise-class definition itself, not a one-off shape."
+    },
+    {
+      "id": "FALSIFICATION-2",
+      "severity": "SECONDARY - data-quality regression, not a false-negative or rank-stack defect",
+      "title": "When ARTICLE_PATTERNS[0]'s ALL-CAPS title-shape requirement fails to match (a genuinely lowercase-titled heading, now reachable at all because ciKeyword makes the keyword itself case-insensitive), bestMatches silently falls back to the crude line-anchored pattern, which applies NO typographic-noise stripping and captures the entire rest of the physical line verbatim as the heading text",
+      "description": "ARTICLE_PATTERNS[1] (the line-anchored fallback, `/^ARTICLE\\s+([IVXLC]+|\\d+)\\.?\\s*([^\\n]*)$/gim`) has no title-shape validation at all and is never run through stripTrailingTypographicNoise or any noise-stripping - unlike the primary shape-based pattern, it simply captures every character to end-of-line. Before ciKeyword, a fully-lowercase ARTICLE heading ('article vi covenants...') at a non-line-start position was invisible outright (no pattern could reach it), so this fallback's own crudeness was never exposed on this shape. Now that ciKeyword makes the keyword case-insensitive, a fully-lowercase-title ARTICLE heading is 'recognized' but via this crude fallback, glueing a trailing footnote digit and parenthetical aside straight into what is presented as the node's own heading text.",
+      "reproducedIn": "tests/certification/part-b-recert-finding1-independent.test.ts, describe block 5",
+      "concreteReproduction": {
+        "inputText": "article vi covenants (the \"Covenants\")1\\nsection 6.01 indebtedness. The Borrower shall not incur Indebtedness.",
+        "actualHeading": "covenants (the \"Covenants\")1",
+        "expectedHeading": "covenants",
+        "note": "Node parentage/typing is NOT corrupted in this case (sectionRef 'vi' and 'VI'-relative parentage are internally consistent) - this is purely a heading-text data-quality regression, reported for completeness but not counted toward the primary rank-stack-corruption falsification."
+      }
+    }
+  ],
+
+  "investigatedButNotCountedAsAFinding": {
+    "title": "A lowercase ARTICLE keyword mid-sentence followed by a lowercase-titled SECTION fails to recognize the ARTICLE at all",
+    "whyExcluded": "Directly verified via isolated control probing that this reproduces IDENTICALLY with the ARTICLE keyword in its original CORRECT case ('Article VII EVENTS OF DEFAULT' followed by a lowercase-titled Section) - it is a pre-existing, orthogonal structural requirement of ARTICLE_PATTERNS[0]'s own end-of-title lookahead (`(?=\\s+[A-Z][a-z]|\\s*$)`, which requires the text immediately following an ALL-CAPS title to itself begin with a new capitalized word, or be the end of the document) that is completely unrelated to and unaffected by ciKeyword's case-insensitivity fix. Confirmed with the control test in describe block 4 (same shape, ARTICLE keyword correctly capitalized, SECTION keyword correctly capitalized) which PASSES. Not reported as a FINDING-1 falsification because this remediation did not touch, and never claimed to fix, this mechanism."
+  },
+
+  "testFileRealOutput": {
+    "command": "npx vitest run tests/certification/part-b-recert-finding1-independent.test.ts",
+    "summaryLine": "Test Files  1 failed (1) | Tests  4 failed | 3 passed (7)",
+    "rawResults": [
+      "PASS  1. STILL OPEN - ... > control: the identical shape WITH the terminal period present before the glued digit ... correctly finds ARTICLE I and preserves parentage",
+      "FAIL  1. STILL OPEN - a footnote marker glued to a bare closing paren (no terminal punctuation of its own) still drops the ARTICLE and reparents its child SECTION to null > ARTICLE I is dropped entirely and its own child SECTION 1.01 is silently reparented to parentSectionRef=null -- AssertionError: expected [] to deeply equal [ 'I' ]",
+      "FAIL  2. STILL OPEN - a footnote marker glued to a bare closing quotation mark (no terminal punctuation) also drops the ARTICLE > ARTICLE I is dropped when the preceding sentence ends in a quoted defined term with the digit glued directly to the closing quote -- AssertionError: expected [] to deeply equal [ 'I' ]",
+      "FAIL  3. STILL OPEN - the same closing-bracket-glued-footnote shape also drops a SECTION heading (not only ARTICLE) > SECTION 6.02 is dropped when Section 6.01's own body ends in a parenthetical defined term with the digit glued to the closing paren and no terminal period -- AssertionError: expected [ '6.01' ] to deeply equal ArrayContaining [\"6.01\", \"6.02\"] (received Array [\"6.01\"])",
+      "PASS  4. HOLDS - genuinely novel drafting phrasing (not on any phrase list, historical or current) does not block recognition > a heading preceded by an invented, never-before-seen transitional phrase is still recognized from positional evidence alone",
+      "PASS  4. HOLDS - ... > a lowercase 'article' keyword mid-sentence, positioned after a semicolon rather than a period ... is still recognized and correctly parents its SECTION",
+      "FAIL  5. STILL OPEN (secondary) - a fully-lowercase-title ARTICLE heading falls back to a crude line-anchored match that captures raw typographic noise into the heading text > a lowercase-keyword, lowercase-title ARTICLE heading is recognized with a CLEAN heading string, not one containing a glued footnote digit and parenthetical noise -- AssertionError: expected 'covenants (the \"Covenants\")1' to be 'covenants'"
+    ],
+    "note": "Failing assertions in this file are DELIBERATE - they encode the CORRECT/expected behavior (so a future remediation pass can flip them to green verbatim) and are left red as the falsification evidence itself. This mirrors the convention already established in tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts under the same production-freeze constraint."
+  },
+
+  "disposition": "STILL_OPEN",
+  "dispositionRationale": "Workstream A's Part A remediation (docs/phase-3f1-6-rx-final-terminal-closure/03-structural-heading-final-remediation.json) is genuinely NOT phrase-list-dependent - direct code inspection and two fresh positive-control tests (novel invented phrasing; lowercase keyword after a semicolon, a position/punctuation combination not in either committed suite) confirm the positional-evidence architecture holds exactly as designed for the cases it was built to cover. However, this independent adversarial pass found a genuine, general, reproducible false-negative gap in the SAME mechanism the remediation itself introduced (stripTrailingFootnoteMarker / stripTrailingTypographicNoise): a footnote/endnote marker glued to a bare closing bracket or quotation mark, with no separate terminal-punctuation character of its own, is not recognized as typographic noise at all, and - for a first-level ARTICLE - reproduces the EXACT 'child re-parented to parentSectionRef: null' rank-stack corruption the original finding named verbatim. This is a fresh construction, distinct from every case in both committed remediation test files (part-b-recert-blocker1-independent-adversarial.test.ts and structural-heading-final-remediation-adversarial.test.ts, both grepped in full before writing this file), and is at least as realistic a real-world PDF-extraction/drafting shape as the punctuation-glued case the remediation did fix (a sentence commonly ends at a closing quote/parenthesis - a quoted defined term or parenthetical qualifier - with no separate period, and a colliding superscript footnote glyph is well documented to displace or merge with adjacent punctuation during plain-text extraction). A secondary, lower-severity data-quality regression (garbage heading text, not corrupted parentage) was also found and is reported for completeness. Per the phase's own disposition rule, a genuine reproducible defect in the SAME failure class the finding names bars CERTIFIED_CLOSED. No production code was modified to fix or work around this, consistent with the Part B production freeze and this task's explicit prohibition on touching lib/, app/, or prisma/.",
+
+  "qualityGates": {
+    "destructiveDbPatternCheck": {
+      "command": "npx tsx scripts/check-destructive-db-patterns.ts",
+      "result": "12 pre-existing findings, all in scripts/check-destructive-db-patterns.ts's own pattern-string definitions and tests/infrastructure/db-isolation-adversarial.test.ts (a test that itself exercises the guard against a real deleteMany({}) call, by design). Neither file was touched by this audit. This audit's own new file (tests/certification/part-b-recert-finding1-independent.test.ts) appears ZERO times in the output - it contains no Prisma/database calls of any kind (pure in-memory parseDocumentStructure calls only), so it introduces no new destructive-pattern risk."
+    },
+    "scopeDiscipline": "No file under lib/, app/, prisma/schema.prisma, or prisma/migrations/ was read for editing purposes or modified. Only tests/certification/part-b-recert-finding1-independent.test.ts (new) and this JSON artifact are added by this audit."
+  },
+
+  "filesAdded": [
+    "tests/certification/part-b-recert-finding1-independent.test.ts",
+    "docs/phase-3f1-6-rx-final-terminal-closure/14-part-b-finding1-recertification.json"
+  ],
+  "filesModified": [],
+  "productionFilesTouched": [],
+
+  "overallSummary": "FINDING-1 (structural heading false negatives): STILL_OPEN. Part A's ciKeyword and BOUNDED_GAP mechanisms hold under fresh adversarial attack and are confirmed to be genuinely general (not phrase-list-based) via direct code inspection plus two passing positive-control tests. However, the stripTrailingFootnoteMarker/stripTrailingTypographicNoise mechanism - the piece of the SAME remediation specifically built to fix the footnote-marker/rank-stack-corruption category - has a fresh, general, reproducible gap: a footnote digit glued to a bare closing bracket/quote (no separate terminal punctuation) is not recognized as noise, and for a first-level ARTICLE this reproduces the original finding's own named failure mode verbatim (child reparented to parentSectionRef: null). A secondary heading-text-quality regression was also found and documented. 4 of 7 fresh assertions fail against the current code; the JSON above and the committed test file are the concrete reproduction evidence."
+}

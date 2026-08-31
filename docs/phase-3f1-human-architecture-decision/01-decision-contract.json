@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "DECISION_CONTRACT",
+  "authoritativeDispositionsAtStart": {
+    "OPEN-1": "STILL_OPEN",
+    "OPEN-2": "STILL_OPEN",
+    "OPEN-3": "CERTIFIED_CLOSED (inherited, not reopened absent direct regression)",
+    "OPEN-4": "ENVIRONMENT_BLOCKED (reconfirmed this phase, SS24)",
+    "OPEN-5": "CERTIFIED_CLOSED (inherited, not reopened absent direct regression)",
+    "OPEN-6": "CERTIFIED_CLOSED (inherited, not touched unless direct compile integration requires it)"
+  },
+  "open1ArchitectureDecision": "Replace the single deterministic score threshold with a three-way StructuralCandidateDecision triage (CONFIDENT_HEADING / CONFIDENT_PROSE_REFERENCE / AMBIGUOUS). Deterministic parsing remains primary. A bounded structural classifier (source-geometry-only input, no legal semantics, no expected-answer leakage) resolves ONLY the AMBIGUOUS bucket. UNCERTAIN classifier output, or any classifier failure/timeout/malformed-output/missing-credential, fails closed to UNCERTAIN -> preserve source text under existing enclosing structure, emit structural uncertainty, never fabricate a boundary.",
+  "open2ArchitectureDecision": "Retain the context-bundle evidence-trust architecture as-is (proven closed by the prior auditor). Make the evidence-tool trust invariant universal and mechanically enforced via a tool registry classification (CURRENT_OPERATIVE_EVIDENCE / HISTORICAL_EVIDENCE_WITH_STATUS / NON_CONTRACT_TEXT_EVIDENCE) rather than per-tool-author discipline. Fix the confirmed getOperativeProvision gap as an instance of this generic invariant, not a one-off patch. Add a permanent registry-iterating test so no future CURRENT_OPERATIVE_EVIDENCE tool can register without defining its machine trust mapping.",
+  "open4Handling": "Production code frozen. Not touched unless the frozen 22-case holdout actually runs and falsifies it.",
+  "stopRule": "If this execution still fails OPEN-1 or OPEN-2, STOP and return PHASE_3F_1_ARCHITECTURE_DECISION_EXECUTION_FAILED. No further named remediation phase will be invented automatically."
+}

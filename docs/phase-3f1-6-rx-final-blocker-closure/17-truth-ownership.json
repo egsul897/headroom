@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "TRUTH_OWNERSHIP_HIERARCHY_UPDATE",
+  "workstream": "H",
+  "generatedAt": "2026-08-30T16:45:00Z",
+  "baseCommit": "4005687",
+  "purpose": "Update docs/phase-3f1-6-r-blocker-remediation/19-contract-truth-ownership-map.json's own truth-ownership table for the ONE row that changed as a direct result of this workstream's AUDIT-F1 fix: semantic claim truth (IRRule/IRDefinition), previously disclosed as 'owned by NEITHER pipeline, durably, today' - now durably owned. Every other row in that prior map is UNCHANGED by this workstream and is not restated in full here; this document is additive, not a replacement.",
+  "changedRow": {
+    "truthKind": "Semantic claim truth (the compiled covenant logic - IRRule/IRDefinition - 'this section IS a $10M debt basket')",
+    "priorOwner": "NONE, DURABLY (docs/phase-3f1-6-r-blocker-remediation/19-contract-truth-ownership-map.json's own disclosed finding - IRRule/IRDefinition existed only in-memory for one runContractAnalysis call).",
+    "newOwner": "lib/contract-model/analysis/semantic-truth/** (the SemanticTruthRecord Prisma model) - the SOLE authoritative store for durable CURRENT semantic contract truth, as of this workstream.",
+    "evidence": "See 09/10-semantic-truth-persistence-{design,results}.json for the full implementation and proof, including the 'reload without rerunning AI' test confirming this state survives a simulated process boundary."
+  },
+  "hierarchyStatement": {
+    "authoritative_for_current_verified_truth": "SemanticTruthRecord rows with trustStatus = VERIFIED, read via lib/contract-model/analysis/semantic-truth/service.ts's getTrustedSemanticTruth - the ONE function any downstream reader of 'current, trusted semantic contract truth' should call.",
+    "available_for_audit_but_never_promoted": "SemanticTruthRecord rows with trustStatus in {COMPILED, REVIEW_REQUIRED, CONTRADICTED, UNSUPPORTED} - readable via getAllSemanticTruthForInstrument for audit/review UIs, but MECHANICALLY distinct from the trusted read path (a different function, a different WHERE clause) so a caller cannot accidentally treat unverified state as trusted by calling the wrong function - there is no single 'get everything, then filter yourself' function that a careless caller could misuse.",
+    "legacy_pipeline_remains_separate_and_subordinate": "lib/extraction/** (ExtractionCandidate -> DefinedTerm/ContractRule via lib/onboarding/promotion.ts's promoteApprovedCandidate) remains its OWN, separate, valid workflow for human-reviewed candidate suggestions and Phase-B-shaped compatibility artifacts. It is NOT capable of overriding SemanticTruthRecord: the two pipelines share no identity/key space (ContractRule.stableKey vs. SemanticTruthRecord's own (companyId, instrumentKey, kind, semanticObjectId) key are unrelated, independently-derived identifiers, confirmed by direct field-by-field comparison in 09-semantic-truth-persistence-design.json's own legacyModelShapeComparison), no code path in either direction reads one table and writes the other, and no compatibility adapter was built (none was needed - the prior BLOCKER-10 phase's own investigation, re-confirmed here, found the two pipelines' real outputs do not overlap in any of the examined truth kinds).",
+    "review_state_still_two_separate_models_by_design": "CandidateReviewEvent/ExtractionCandidate.reviewStatus (legacy: 'did a human approve this AI-proposed FACT') and ClaimReviewItem (contract-model: 'does the PIPELINE ITSELF believe this claim needs a human to look at') remain intentionally unreconciled, per the prior BLOCKER-10 phase's own correct finding - this workstream adds a THIRD, related-but-distinct concept (SemanticTruthTrustStatus - 'has this compiled representation been independently verified') that answers yet another different question and does not collapse into either existing review-state model."
+  },
+  "goingForwardOwnershipTable_fullRestatement": [
+    { "truthKind": "Document ingestion", "owner": "lib/onboarding/documents.ts + lib/connectors/upload-connector.ts (shared, unchanged)." },
+    { "truthKind": "Structural source truth", "owner": "lib/contract-model/compiler/stage-structure.ts et al. via this workstream's orchestrator (unchanged from the prior BLOCKER-10 phase)." },
+    { "truthKind": "Candidate extraction (human-reviewable)", "owner": "lib/extraction/** (unchanged) - remains sole owner of the human-review-and-promotion workflow." },
+    { "truthKind": "Operative contract truth", "owner": "lib/contract-model/compiler/amendment/** (unchanged)." },
+    { "truthKind": "Semantic claim truth (IRRule/IRDefinition)", "owner": "lib/contract-model/analysis/semantic-truth/** - NEWLY DURABLE as of this workstream (previously: none, durably)." },
+    { "truthKind": "Review state - pipeline-detected uncertainty", "owner": "lib/contract-model/compiler/safe-failure/** (ClaimReviewItem, unchanged)." },
+    { "truthKind": "Review state - human decision on an AI proposal", "owner": "lib/onboarding/review.ts (CandidateReviewEvent, unchanged, distinct)." },
+    { "truthKind": "AnalysisRun lifecycle/status", "owner": "lib/contract-model/analysis/service.ts (AnalysisRun) - now with atomic concurrency (AUDIT-F2) and a PARTIAL status distinguishing instrument-execution failure from review-flagging (AUDIT-F3)." },
+    { "truthKind": "Per-instrument execution failure", "owner": "lib/contract-model/analysis/service.ts (AnalysisRunIssue) - NEW as of this workstream." },
+    { "truthKind": "Pre-identity orchestration failure", "owner": "lib/contract-model/analysis/service.ts (AnalysisFailureLog) - NEW as of this workstream." }
+  ],
+  "outOfScopeUnchanged": "The prior BLOCKER-10 phase's own disclosed, larger, out-of-scope finding (lib/covenant-engine.ts's real CovenantProvision capacity-calculation engine is fed by NEITHER pipeline generation, only by hand-authored seed data) is UNCHANGED and remains out of this workstream's own charter - closing AUDIT-F1 (durable semantic-claim persistence) does not, and was never asked to, make a live-uploaded document's covenants computable by the capacity engine. That is a separate, substantially larger undertaking for a future phase.",
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "The truth-ownership hierarchy is updated for the one row this workstream's own AUDIT-F1 fix genuinely changed, with direct evidence rather than a restated assumption, and every other row from the prior phase's own map is confirmed unchanged rather than silently carried forward. Reserved CERTIFIED status for this phase's own separate, later, independent Part B."
+}

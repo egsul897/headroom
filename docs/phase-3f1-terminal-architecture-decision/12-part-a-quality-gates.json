@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_QUALITY_GATES",
+  "gates": {
+    "tsc": "6 pre-existing errors (identical set: cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3), 0 new. (2 transient integration errors from an OPEN-6/sibling-workstream Prisma-mock-typing interaction were found and fixed in commit 93430eb before this gate.)",
+    "eslint": "1 pre-existing error, 0 new.",
+    "vitest": "npx vitest run (full repo) - 250 test files, 2639 tests: ALL PASSING, 0 failures.",
+    "build": "npm run build - succeeds.",
+    "prismaMigrateStatus": "Database schema is up to date! No new migration was needed for any of the six fixes (OPEN-5's fencing fix reused the existing executionGeneration column + a transaction-scoped row lock)."
+  },
+  "isolatedTestInfrastructureUsage": "All 6 workstreams ran against the shared dev Postgres instance using exact-scoped test company ids (per this project's own established, guard-covered convention) - none required the ephemeral-database architecture, since none needed a whole-database reset. No `prisma migrate dev`/`reset`/`db push` was run by any workstream (confirmed in each workstream's own report and by the unchanged destructive-pattern-checker output).",
+  "diffClassification": "Every production file changed maps to exactly one of the 6 open defects. No forbidden-category change."
+}

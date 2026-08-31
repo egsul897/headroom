@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "ROOT_CAUSE_CODE_AUDIT",
+  "confirmedIndependently": true,
+  "exactLocation": "lib/contract-model/compiler/semantic/tools.ts, function resolveNodeWithSupersessionAwareness (around line 235-248)",
+  "exactCode": "function resolveNodeWithSupersessionAwareness(access, supersessionIndex, node) { const view = findProvisionView(access.operativeState?.provisions, node.sectionRef); if (view?.currentText !== null && view?.currentText !== undefined) { return { text: view.currentText, supersessionStatus: view.status === 'OPERATIVE_STATE_RESOLVED' ? 'CURRENT_OPERATIVE' : 'UNKNOWN_SUPERSESSION_STATUS', ... source: 'amended' }; } const raw = access.structuralIndex.getNodeText(node.nodeId, 'OWN'); const result = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId); return { text: raw, supersessionStatus: result.status, ... source: 'base-document' }; }",
+  "confirmedDefect": "When a real matching OperativeProvisionView exists (view is truthy) but view.currentText is null (the CONFLICTED/PARTIAL/REVIEW_REQUIRED cases buildProvisionView deliberately nulls), the entire branch is skipped and the function falls through to the raw base-document path, which computes supersessionStatus purely from getNodeSupersessionStatus (physical-node history) with zero knowledge that a real, unresolved OperativeProvisionView existed for this section. getNodeSupersessionStatus can correctly report CURRENT_OPERATIVE for a physical node no amendment has yet actually superseded - which is true and correct for THAT question, but wrong to treat as confirming the section's operative state is safe when a competing signed-but-not-yet-effective amendment makes that state genuinely CONFLICTED.",
+  "callSites": [
+    "getParentClause (~line 507): outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus)",
+    "getSiblingClauses (~line 560-575): per-sibling resolve, then outcome.evidenceUnresolved = rendered.some((r) => !isConfirmedCurrentOperativeEvidence(r.supersessionStatus))",
+    "getReferencedProvision (~line 606-643, two call sites within the same tool - single-doc and multi-doc resolution branches)",
+    "getChildren (~line 543): does NOT call resolveNodeWithSupersessionAwareness directly - has its own separate 'parentSupersession' parity check that must be verified for the same class of gap"
+  ],
+  "alreadySafeReferencePattern": "getOperativeProvision's own found-view branch (line ~318-324) and getDefinition (via resolveOperativeDefinitionEvidence) both derive evidenceUnresolved directly from the view/resolution's own status object, never falling through to a node-only check when a real view exists - this is the pattern to generalize, not invent."
+}

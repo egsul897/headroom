@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FOUR_TOOL_E2E",
+  "note": "Deliverable name inherited from the task's own filename mandate ('05-three-tool-e2e.json'); content covers all 4 required tool/path combinations (getParentClause, getSiblingClauses, getReferencedProvision absolute-ref, getReferencedProvision fromNodeId/relative-ref) per the task's own 'Required end-to-end three-tool test' section, which explicitly lists 4 cases.",
+  "testFile": "tests/certification/open2-final-direct-patch-e2e.test.ts",
+  "exploitConstruction": "Same class as the original auditor reproduction (docs/open2-terminal-trust-correction/13-four-tool-recertification.json): a real, on-file AmendmentEffectCandidate whose effective date is CONDITIONAL_UNRESOLVED (undated()), so it is excluded from appliedChain, leaving the provision status honestly OPERATIVE_STATE_REVIEW_REQUIRED while currentText remains the untouched, non-null base text. Each of the 4 cases uses a FRESH document/instrument/section-numbering/text combination (never a copy-paste of one fixture).",
+  "methodology": "Real tool call (via buildToolSet) -> RealSemanticCaller with a scriptedClient MinimalAnthropicClient (the established test convention used throughout tests/certification/*.test.ts for exercising the real compile loop without a live model) -> compileCovenantToIR -> verifyCompiledCandidate -> persistSemanticTruthForInstrument (real Postgres, via lib/prisma) -> FRESH Postgres read via both getTrustedSemanticTruth/getAllSemanticTruthForInstrument (service layer) AND a raw prisma.semanticTruthRecord.findMany query.",
+  "cases": [
+    {
+      "tool": "getParentClause",
+      "fixture": { "documentId": "fdp-e2e-parentclause-doc", "anchorSection": "2.02", "unresolvedSection": "61.14" },
+      "beforeFix": { "reproducedViaGitStash": true, "directToolOutcome_evidenceUnresolved": false, "note": "confirmed by running this file against the pre-fix tools.ts (git stash of the production change) - 4 of 4 cases failed the 'evidenceUnresolved must be true' assertion at the tool boundary, exactly as expected for the pre-fix bug" },
+      "afterFix": { "directToolOutcome_evidenceUnresolved": true, "compileStatus": "REVIEW_REQUIRED", "failureReasons_containsOperativeStateUnresolved": true, "verifyStatus": "REVIEW_REQUIRED", "verifyStatusMatchesVerifiedPrefix": false, "persistedTrustStatus": "not VERIFIED for any row", "trustedCount_afterPersist": 0, "rawPrismaConfirmation": "all rows trustStatus !== VERIFIED" },
+      "pass": true
+    },
+    {
+      "tool": "getSiblingClauses",
+      "fixture": { "documentId": "fdp-e2e-siblings-doc", "anchorSection": "3.03", "unresolvedSection": "72.25" },
+      "beforeFix": { "reproducedViaGitStash": true, "directToolOutcome_evidenceUnresolved": false },
+      "afterFix": { "directToolOutcome_evidenceUnresolved": true, "compileStatus": "REVIEW_REQUIRED", "verifyStatus": "REVIEW_REQUIRED", "persistedTrustStatus": "not VERIFIED for any row", "trustedCount_afterPersist": 0 },
+      "pass": true
+    },
+    {
+      "tool": "getReferencedProvision (absolute ref)",
+      "fixture": { "documentId": "fdp-e2e-absref-doc", "anchorSection": "4.04", "unresolvedSection": "83.36", "refPassed": "83.36" },
+      "beforeFix": { "reproducedViaGitStash": true, "directToolOutcome_evidenceUnresolved": false },
+      "afterFix": { "directToolOutcome_evidenceUnresolved": true, "compileStatus": "REVIEW_REQUIRED", "verifyStatus": "REVIEW_REQUIRED", "persistedTrustStatus": "not VERIFIED for any row", "trustedCount_afterPersist": 0 },
+      "pass": true
+    },
+    {
+      "tool": "getReferencedProvision (fromNodeId / relative ref)",
+      "fixture": { "documentId": "fdp-e2e-relref-doc", "anchorSection": "1.15 (separate clean anchor, isolates the tool-call path from context-bundle reference-following)", "crossReferenceSourceSection": "5.55", "unresolvedSection": "94.47", "resolvedVia": "a real DetectedReference (index.findReferencesFrom), confirmed ref.resolved===true before the tool call" },
+      "beforeFix": { "reproducedViaGitStash": true, "directToolOutcome_evidenceUnresolved": false },
+      "afterFix": { "directToolOutcome_evidenceUnresolved": true, "compileStatus": "REVIEW_REQUIRED", "verifyStatus": "REVIEW_REQUIRED", "persistedTrustStatus": "not VERIFIED for any row", "trustedCount_afterPersist": 0 },
+      "pass": true
+    }
+  ],
+  "beforeFixVerificationMethod": "git stash (reverting only lib/contract-model/compiler/semantic/tools.ts) then `npx vitest run tests/certification/open2-final-direct-patch-e2e.test.ts` - all 4 of the 'directOutcome.evidenceUnresolved).toBe(true)' assertions failed with 'expected false to be true', confirming the pre-fix production code reproduces the exploit for every one of the 4 fresh fixtures. git stash pop restored the fix immediately after.",
+  "afterFixTestRunResult": "8 tests, 8 passed (0 failed) - `npx vitest run tests/certification/open2-final-direct-patch-e2e.test.ts` (4 e2e cases + 4 safe-tool-regression cases, see 06-safe-tool-regression.json)"
+}

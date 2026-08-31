@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_VERDICT",
+  "verdict": "PHASE_3F_1_FINAL_THREE_FIXES_READY_FOR_RECERTIFICATION",
+  "basis": [
+    "FIX-1 (OPEN-1 structural heading): NOISE_DISCOUNTED removed as acceptance-granting weight; new candidate-local titleBodySeparationHolds signal (Tier A, deterministic) added, checking what FOLLOWS the candidate rather than what precedes it. Full adversarial matrix (23 cases) passing, prior auditor's own reproduction now certifies closure.",
+    "FIX-2 (OPEN-2 context evidence trust): TRUST METADATA BELONGS TO THE EVIDENCE ITSELF invariant implemented via resolveOperativeSectionEvidence (SECTION-kind sibling of resolveOperativeDefinitionEvidence) applied at bundle-construction time, plus an independent compile/verify-side gate that does not require any tool call. Original zero-tool-call exploit now fails closed. Prior auditor's own reproduction now certifies closure (17/17).",
+    "FIX-3 (OPEN-6 total error classification): classifyError decomposed into safeErrorMessage/safeErrorClass, each individual property read/coercion independently guarded (including the instanceof check itself, caught by the implementer's own adversarial Proxy test before completion). Full adversarial matrix (15 named values + 200-iteration fuzz) - 0 throws. End-to-end 4-simultaneous-failure proof holds. Prior auditor's own reproduction now passes.",
+    "OPEN-4's production code (condition-suspicion-classifier.ts, its prompt/examples/categories/cache/verifier integration) was NOT touched, per this phase's explicit freeze.",
+    "OPEN-3 (N-way decomposition) and OPEN-5 (fencing) production code was NOT touched.",
+    "Known-package regression: NO_REGRESSION (fwrg=0, lsb=0, dsgr=215, conmed N/A - identical to pre-fix baseline). 14/14 false-credit controls: NO_CREDIT. Full quality gates green: 259 files/2751 tests (2 pre-existing flaky failures, confirmed reproducible at the pre-fix baseline commit, unrelated to any of the 3 fixes); tsc/eslint at exact pre-existing baseline; build succeeds; Prisma schema up to date."
+  ],
+  "freezeShaForPartB": "b641ebfb9d1e9145470d06823b52c20dcd90e0a1"
+}

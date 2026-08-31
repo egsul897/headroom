@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-terminal.v1",
+  "artifactId": "OPEN_3_INDEPENDENT_RECERTIFICATION",
+  "defectId": "OPEN-3",
+  "correspondsTo": "BLOCKER-8/AUDIT-F4",
+  "role": "Phase 3F.1-terminal Part B - INDEPENDENT recertification auditor, adversarially probing the Part A fix documented in docs/phase-3f1-terminal-architecture-decision/05-n-way-claim-decomposition.json.",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "frozenCommit": "0ef66a9",
+
+  "methodology": {
+    "codeReadDirectly": [
+      "lib/contract-model/compiler/semantic-coverage/unit-hypothesis.ts (all 1000 lines, including TOP_LEVEL_DELIMITER, RIGHT_CLAUSE_RESTATES_SAME_CLAIM_FOR_SECOND_ACTOR, segmentCoordinateClauses, isGenuineClauseBoundary)",
+      "lib/contract-model/compiler/value-anchors.ts (extractValueAnchors, valueAnchorSetsDisjointAndNonEmpty)"
+    ],
+    "priorTestsReadNotRerunAsEvidence": [
+      "tests/contract-model/open-3-n-way-claim-decomposition.test.ts (Part A's own new file)",
+      "tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts",
+      "tests/contract-model/part-b-recert-finding4-independent.test.ts"
+    ],
+    "newAdversarialFile": "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts (NEW, 10 tests, all fixtures independently authored - no fixture copied from any prior test file)",
+    "disclosure": "Part A's own recorded scaling numbers were re-derived independently (fresh construction, fresh script, fresh run) rather than trusted; the false-positive control, the mixed-delimiter fixture, and the nested-parenthetical fixture are all newly invented shapes not present in any existing test file."
+  },
+
+  "adversarialProbes": [
+    {
+      "id": "PROBE-1",
+      "title": "Fresh 4-claim same-family fixture mixing Oxford-comma AND restated-modal structure in ONE sentence",
+      "why": "Neither Part A's own new test file nor the pre-existing suite tests GAP-1 and GAP-2's fixed code paths interacting within a single sentence - each tests the two patterns in separate fixtures. This is the most direct way to falsify 'both gaps are fixed' as a conjunction rather than as two isolated facts.",
+      "fixture": "\"Section 6.96. Indebtedness. The Company shall not incur Indebtedness in excess of $1,000,000, in excess of $2,000,000, or in excess of $3,000,000, and shall not incur Indebtedness in excess of $4,000,000.\"",
+      "expected": "4 distinct units (3 Oxford-comma-joined baskets sharing one stated verb/family + 1 restated-modal claim), all family INDEBTEDNESS, 4 distinct semanticUnitIds, each unit's own excerpt containing exactly one of the 4 dollar amounts, ascending non-overlapping spans, PROHIBITION_SIGNAL posture on every unit (root explicit, siblings by inheritance).",
+      "actualResult": "PASSED as expected - 4/4 tests in this describe block green. No collapse, no over-count, no misordering.",
+      "verdict": "NOT FALSIFIED"
+    },
+    {
+      "id": "PROBE-2",
+      "title": "Fresh false-positive control: ordinary Oxford-comma-shaped noun coordination, independently invented (not 'cash and cash equivalents')",
+      "why": "GAP-1 turned a bare comma into a candidate delimiter for the first time. The highest-risk regression shape is exactly a grammatically genuine Oxford-comma list ('rights, powers, privileges, and remedies') embedded in ordinary boilerplate with no covenant-family keyword or numeric value anywhere - the shape most likely to newly over-split if the family/value qualification gate were in any way weakened by the comma change.",
+      "fixture": "\"Section 8.02. Miscellaneous. The rights, powers, privileges, and remedies of the Administrative Agent and the Lenders under this Agreement and the other Loan Documents shall be cumulative and not exclusive of any other right or remedy that any such Person would otherwise have.\"",
+      "expected": "Exactly 1 unit; segmentCoordinateClauses itself returns null (no split found at all, not merely overridden downstream).",
+      "actualResult": "PASSED as expected - stays exactly 1 unit (family OTHER_UNCLASSIFIED, full text as excerpt); segmentCoordinateClauses(text) === null confirmed directly.",
+      "verdict": "NOT FALSIFIED"
+    },
+    {
+      "id": "PROBE-3",
+      "title": "Nested parentheticals with their OWN internal commas (and an internal 'or') sitting inside an Oxford-comma list",
+      "why": "Stress the exact boundary between paren-depth tracking (which must exclude in-parenthetical commas from being candidates) and GAP-1's new comma grammar (which makes every other comma a candidate). A regression would look like: internal commas inside a parenthetical aside spuriously fragment a single claim, or corrupt surrounding units' spans/values.",
+      "fixture": "\"Section 6.95. Restrictions. The Company shall not incur Indebtedness (including, without limitation, letters of credit, surety bonds, or similar instruments) in excess of $1,000,000, create Liens (whether arising by contract, statute, or operation of law) in excess of $2,000,000, or make Investments (excluding, for the avoidance of doubt, cash and cash equivalents) in excess of $3,000,000.\"",
+      "expected": "Exactly 3 units (INDEBTEDNESS/LIENS/INVESTMENTS), each parenthetical intact and unsplit inside its own unit's excerpt, each unit's own correct disjoint value, non-overlapping grounded spans.",
+      "actualResult": "PASSED as expected - 3/3 tests in this describe block green. Every parenthetical (including the ones with an internal 'or' and up to 3 internal commas) stayed intact inside its owning unit; no spurious extra units were produced.",
+      "verdict": "NOT FALSIFIED"
+    },
+    {
+      "id": "PROBE-4",
+      "title": "Independent re-measurement of scaling behavior at 6 fresh size points, using a construction Part A's own scaling proof never used",
+      "why": "Part A's own recorded scaling numbers used a bare-'or' chain (the exact reproduction shape from the original GAP-3 finding). GAP-1 introduced an entirely new delimiter code path (bare comma) that the bare-'or' measurement never exercises at all. Re-measuring independently, with a comma-chain construction, at more size points, with median-of-5-trials-per-point noise reduction, and fitting a log-log slope across all 6 points (not just an endpoint ratio) is a materially stronger and independent test of the O(text.length) claim.",
+      "fixture": "`\"widget, \".repeat(n) + \"the Company shall not incur Indebtedness in excess of $1, or make Investments in excess of $2\"` at n = 4000/8000/16000/32000/64000/128000 (matching Part A's own largest bucket at the top end, but 6 points instead of 4, and comma- not or-delimited)",
+      "expected": "Per-step and end-to-end time ratios well below the quadratic prediction (lenRatio^2); log-log regression slope comfortably below 1.7 (linear = 1, quadratic = 2).",
+      "actualResult": "PASSED - measured twice independently (two separate test runs): text length grew ~31.9x (32093 to 1024093 chars) while wall-clock time grew ~28-30x over the same range (7.5ms to ~210-228ms) - i.e. TIME grew slightly SLOWER than TEXT LENGTH. Fitted log-log slope was 1.001 on the first run and 0.984 on the second run - both essentially exactly 1.0 (true linear), nowhere near the 2.0 a quadratic algorithm would produce. No per-step ratio exceeded a small linear-consistent multiple; the algorithm did not hang at n=50000 either.",
+      "rawMeasurements": [
+        { "run": 1, "points": [
+          { "n": 4000, "len": 32093, "ms": 7.639224 },
+          { "n": 8000, "len": 64093, "ms": 11.967724 },
+          { "n": 16000, "len": 128093, "ms": 24.897982 },
+          { "n": 32000, "len": 256093, "ms": 51.492391 },
+          { "n": 64000, "len": 512093, "ms": 106.592901 },
+          { "n": 128000, "len": 1024093, "ms": 228.447697 }
+        ], "estimatedLogLogSlope": 1.001474707853929 },
+        { "run": 2, "points": [
+          { "n": 4000, "len": 32093, "ms": 7.500321 },
+          { "n": 8000, "len": 64093, "ms": 12.105531 },
+          { "n": 16000, "len": 128093, "ms": 24.52237 },
+          { "n": 32000, "len": 256093, "ms": 50.779549 },
+          { "n": 64000, "len": 512093, "ms": 103.962824 },
+          { "n": 128000, "len": 1024093, "ms": 210.640779 }
+        ], "estimatedLogLogSlope": 0.9840600617897531 }
+      ],
+      "verdict": "NOT FALSIFIED - independently confirms genuine near-linear (not merely sub-quadratic, not merely 'better than the old defective version') scaling, on a construction and metric Part A's own writeup never measured."
+    }
+  ],
+
+  "testOutput": {
+    "newFileStandalone": {
+      "command": "npx vitest run tests/contract-model/part-b-terminal-recert-open3-independent.test.ts",
+      "result": "1 file, 10/10 tests passing"
+    },
+    "combinedWithExistingSuites": {
+      "command": "npx vitest run tests/contract-model/finding-4-recursive-coordinate-decomposition.test.ts tests/contract-model/part-b-recert-finding4-independent.test.ts tests/contract-model/open-3-n-way-claim-decomposition.test.ts tests/contract-model/part-b-terminal-recert-open3-independent.test.ts tests/contract-model/claim-identity-v2.test.ts tests/contract-model/claim-identity-blocker8-remediation.test.ts",
+      "result": "6 files, 101/101 tests passing (my 10 new independent tests + 91 pre-existing/Part A tests, unmodified, re-run for combined-regression context only - not used as my own falsification evidence)"
+    },
+    "tscResult": "npx tsc --noEmit -p . : the new test file tests/contract-model/part-b-terminal-recert-open3-independent.test.ts contributes zero compiler errors.",
+    "eslintResult": "npx eslint tests/contract-model/part-b-terminal-recert-open3-independent.test.ts : zero findings.",
+    "destructiveDbPatternsCheckResult": "npx tsx scripts/check-destructive-db-patterns.ts : 12 findings, identical to the established baseline documented in 05-n-way-claim-decomposition.json (the checker's own pattern-definition source lines plus tests/infrastructure/db-isolation-adversarial.test.ts's own intentional adversarial demonstrations). My new test file uses zero database access - pure, synchronous, in-memory calls to segmentCoordinateClauses/hypothesizeUnitsForDocument only - and contributes nothing to this list.",
+    "infrastructureNote": "No Postgres/Prisma was touched anywhere in this recertification. All probes call the production text-processing functions directly, in-memory, with no test company/database fixture of any kind."
+  },
+
+  "productionCodeModified": false,
+  "productionCodeModifiedNote": "No files under lib/, app/, or prisma/ were modified. Only tests/contract-model/part-b-terminal-recert-open3-independent.test.ts (new) and this doc were added.",
+
+  "disposition": "CERTIFIED_CLOSED",
+  "dispositionScope": "OPEN-3/BLOCKER-8/AUDIT-F4's full remaining scope (the 3 gaps Part A's fix addresses: Oxford-comma lists, restated-modal chains, and the false O(text.length) complexity claim) survives independent adversarial re-testing. None of the 4 fresh, independently-invented probes above - a mixed Oxford-comma+restated-modal fusion, a novel false-positive control, a nested-parenthetical stress case, and an independently re-measured 6-point scaling curve on a construction Part A never used - falsified the fix. The measured log-log slope (~1.0 across two independent runs) is materially stronger evidence for genuine linearity than a simple before/after ratio, and it holds on the specific GAP-1-introduced code path (comma delimiter) that Part A's own scaling proof did not directly exercise.",
+  "residualRiskNoted": "Not a defect finding, but worth recording: the same-family value-disjointness heuristic (shared by the pre-existing 2-way primitive and this N-ary successor) is a heuristic, not a semantic parser - a hypothetical same-family clause pair joined by a comma where BOTH sides state DIFFERENT non-basket numbers that are not actually meant to be treated as separate claims (e.g. a cross-reference to 'Section 6.04' immediately followed by a genuinely unrelated but still-family-matching numeric aside) could in principle over-split under this same generic rule now that commas participate too. This is the SAME pre-existing, already-disclosed risk shape AUDIT-F4 accepted for 'and'/'or'/';' before OPEN-3 (see 05-n-way-claim-decomposition.json's own gap1Fix.regressionRiskConsidered), now also reachable via comma - not a new category of risk this recertification discovered, and none of my adversarial probes constructed a fixture that actually triggers it. No test in either Part A's matrix or mine exercises this shape as a live false positive.",
+  "filesChanged": {
+    "added": [
+      "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts",
+      "docs/phase-3f1-terminal-architecture-decision/18-claim-decomposition-recertification.json"
+    ],
+    "modified": [],
+    "productionFilesTouched": []
+  }
+}

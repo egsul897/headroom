@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "COST_TELEMETRY_RESUME",
+  "realCallCount": 22,
+  "failedCallCount": 0,
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+  "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+  "totalInputTokens": 82330,
+  "totalOutputTokens": 8709,
+  "totalCostUsd": 0.25175,
+  "averageLatencyMs": 5544.05,
+  "note": "All 22 frozen cases (17 material + 5 benign) received a real, successful, non-cached, non-synthetic model call. Zero failures, zero retries, zero rate-limit events across the full run. Per-case telemetry (provider, model, input/output tokens, latency, cost) is recorded in 12-real-model-results.json."
+}

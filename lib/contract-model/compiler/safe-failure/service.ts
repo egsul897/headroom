@@ -13,7 +13,7 @@
  * proven pattern elsewhere in this codebase).
  */
 import { prisma } from "../../../prisma";
-import type { ClaimReviewDecisionAction, ClaimReviewItemInput, ClaimReviewObservationInput, ClaimReviewRecordResult, ExplicitSafeFailureCheckResult, ResolveClaimReviewInput } from "./types";
+import type { ClaimReviewDecisionAction, ClaimReviewItemInput, ClaimReviewObservationInput, ClaimReviewRecordResult, ClaimReviewStatus, ExplicitSafeFailureCheckResult, ResolveClaimReviewInput } from "./types";
 
 /**
  * Record (or update) one claim's review need. Idempotent: calling this
@@ -191,4 +191,25 @@ export async function checkExplicitSafeFailure(companyId: string, claimKey: stri
     matchedReviewItemId: item?.id ?? null,
     matchedReviewItemStatus: item?.status ?? null,
   };
+}
+
+/**
+ * Phase 3F.1.6.RX-FINAL Workstream F (FINDING-7) - the real ClaimReviewItem
+ * listing the onboarding review workspace's "view findings" link was
+ * previously missing entirely (docs/phase-3f1-6-rx-final-blocker-closure/
+ * 29-part-b-auditf3-f6-f7-recertification.json's AUDIT-F6 compounding
+ * defect: the link pointed at a page whose data layer, lib/onboarding/
+ * review.ts, has zero awareness of this model). Deliberately a plain,
+ * company-scoped query - no new derivation logic, mirroring
+ * getCandidatesForReview's own shape for the OTHER (ExtractionCandidate)
+ * review model. Defaults to OPEN_REVIEW only (the actionable set), matching
+ * AnalysisRun.reviewItemCount's own definition; pass `status` to see
+ * resolved/superseded items too.
+ */
+export async function getClaimReviewItemsForCompany(companyId: string, opts?: { status?: ClaimReviewStatus[] }) {
+  return prisma.claimReviewItem.findMany({
+    where: { companyId, status: { in: opts?.status ?? ["OPEN_REVIEW"] } },
+    include: { document: { select: { name: true } } },
+    orderBy: [{ materiality: "asc" }, { createdAt: "asc" }],
+  });
 }

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "VERIFIER_CONDITION_REMEDIATION",
+  "workstream": "D",
+  "blockerId": "BLOCKER-9",
+  "generatedAt": "2026-08-30T05:10:00.000Z",
+  "baseCommit": "f85125d26db181971cd903d3bf02eaa8fdd0f750",
+  "sourceFinding": {
+    "document": "docs/phase-3f1-6-final-foundation-certification/15-independent-verifier-certification.json",
+    "findingId": "F17-1",
+    "summary": "A single omitted material condition on an otherwise fully dollar-reconciled, single-rule compiled candidate reached VERIFIED_NO_MATERIAL_GAP_FOUND in real, unmodified default production routing - neither Layer 1 (deterministic reconciliation) nor Layer 2 (adversarial semantic review) ever examined it."
+  },
+  "reproduction": {
+    "method": "Re-ran the certification's own reproduction script, unmodified, against the pre-fix codebase.",
+    "script": "tests/foundation-audit/section17-verifier-fault-injection.ts (npx tsx tests/foundation-audit/section17-verifier-fault-injection.ts)",
+    "preFixResult": "6/7 CAUGHT, 1/7 MISSED - the 'omitted-condition' case reproduced exactly as documented: source text 'so long as no Default has occurred and is continuing' dropped from a compiled rule with conditions:[], default production routing (verifyCompiledCandidate(input), no options override) produced semanticReviewInvoked=false and status=VERIFIED_NO_MATERIAL_GAP_FOUND.",
+    "postFixResult": "7/7 CAUGHT, 0/7 MISSED - the same unmodified case now produces semanticReviewInvoked=true and status=REVIEW_REQUIRED (never a false clean pass) under default production routing, with zero test-only overrides."
+  },
+  "rootCause": {
+    "layerInvestigated": [
+      { "layer": "source inventory (source-inventory.ts)", "verdict": "PARTIALLY CONTRIBUTING - captures the qualifying-condition text via its CONDITIONAL_PHRASE/EXCEPTION_MARKER/PROVISO_MARKER patterns (the certification's own 'so long as' text WAS captured as a single CONDITIONAL_PHRASE item), so the signal reaches the aggregate layer; but its phrase list was incomplete for two generic, non-package-specific forms in the wider condition-form class (a bare temporal 'until such time as' connective, and the extremely common 'no Event of Default'/'no Default' idiom when it is stated as its own independent proviso sentence with no preceding connective at all) - fixed as part of this remediation (see fix #1)." },
+      { "layer": "context retrieval / evidence packet construction (reviewer.ts's buildUserContent)", "verdict": "NOT THE ROOT CAUSE - the full operativeSourceText (containing the dropped condition's real language) and the full proposed IR are already placed in Layer 2's evidence packet exactly as task §12 requires; this was never the blocking layer, and required no change." },
+      { "layer": "semantic comparison dimensions the verifier checks across (types.ts's SemanticVerificationFindingType / reconciliation.ts's buildAggregateSignals dimensions)", "verdict": "NOT THE ROOT CAUSE - MISSING_CONDITION already exists as a first-class finding type, and buildAggregateSignals already has a dedicated condition/exception aggregate-signal dimension; the dimension exists, its THRESHOLD was the defect (see fix #2)." },
+      { "layer": "the AI verifier's own prompt (prompt.ts)", "verdict": "NOT THE ROOT CAUSE - buildVerifierSystemPrompt already explicitly instructs the reviewer to check for 'omissions (an independently operative rule, basket, exception, or condition in the source that the proposed IR never represents at all)' and 'wrong logical grouping (... a proviso silently dropped)'. The prompt already asks about condition completeness; it was simply never being reached for this shape because routing (fix #2) never invoked Layer 2 at all. No prompt change was needed or made." },
+      { "layer": "routing (verify.ts's shouldInvokeSemanticReview)", "verdict": "ROOT CAUSE (compound, downstream of fix #2) - shouldInvokeSemanticReview skips Layer 2 whenever reconciliation.materialUnresolvedCount === 0 AND the candidate is a single compiled unit AND there is no MAX/MIN/IF/SCHEDULE/UNLIMITED_CAPACITY alternation. This routing logic itself is architecturally sound (task §32's own conservative V1 discipline) and was NOT changed - it correctly reads whatever reconciliation.ts hands it. The actual defect was one layer upstream: reconciliation.ts was handing it materialUnresolvedCount=0 for a case that should not have reconciled cleanly." },
+      { "layer": "materiality logic (findings.ts's determineDeterministicSeverity)", "verdict": "NOT THE ROOT CAUSE, AND DELIBERATELY NOT CHANGED - an AMBIGUOUS aggregate signal is intentionally always classified UNCERTAIN (never auto-escalated to MATERIAL) at the deterministic layer, exactly per this module's own documented design ('AMBIGUOUS aggregate/structural signals are coarser and less individually reliable than an exact numeric mismatch ... pending Layer 2 confirmation'). This is correct, independence-preserving behavior, not a bug: a coarse single-marker signal should trigger independent adversarial review, not a mechanically-declared MATERIAL finding with no real reasoning behind it. Preserving this design is why the fix does not go here." },
+      { "layer": "the IR-side inventory (ir-inventory.ts) - NOT in the task's own candidate-layer list, discovered during regression testing", "verdict": "SECOND, RELATED ROOT CAUSE, discovered only after fix #2 was applied and exposed it - see fix #3. buildAggregateSignals compares 'source conditional signal count' against ir.items.filter(i => i.kind === 'CONDITION' || i.kind === 'EXCEPTION').length, but ir-inventory.ts's expression walker never emitted a CONDITION-kind item for a COMPARE node reached only via capacityExpression.gatedBy (the correct, common representation for a ratio-gated UNLIMITED_CAPACITY permission, e.g. 'may pay dividends so long as the Leverage Ratio does not exceed 4.00 to 1.00'). This was DORMANT before fix #2 (masked by the >=2 threshold, since that specific false-positive case has exactly one source-side marker) and became a live false-positive the moment fix #2 lowered the threshold - caught immediately by this repo's own existing false-positive-control test (tests/contract-model/semantic-verification-fault-injection.test.ts's 'a correct ratio permission (UnlimitedCapacity gated by a ratio) produces no material finding')." }
+    ],
+    "narrative": "The blocker is a compound defect across two layers, not a single-line bug. (1) reconciliation.ts's buildAggregateSignals required sourceConditionalSignalCount >= 2 independent condition/exception/proviso markers in the source text before it would raise ANY aggregate condition/exception discrepancy signal - a real, single-marker, single-condition drafting pattern (one of the most common real shapes in credit agreements, exactly as the certification's own materialityOfTheGap notes) never crossed that floor, so reconciliation.materialUnresolvedCount stayed at 0. (2) verify.ts's shouldInvokeSemanticReview - itself correctly designed and untouched by this fix - then legitimately (from its own inputs) concluded this was 'a single, fully-reconciled, non-alternating compiled unit with no unresolved numeric/structural signal' and skipped Layer 2 entirely. The AI verifier's own prompt already asks about dropped conditions/provisos, and the evidence packet already contains the real source text - Layer 2 was never given the chance to look. Lowering the reconciliation.ts threshold from >=2 to >=1 is the direct fix to the layer that actually swallowed the signal; it does not itself force a MATERIAL finding (that stays an honest, Layer-2-pending UNCERTAIN classification per this module's own existing, unchanged severity design), it only ensures materialUnresolvedCount becomes >0 so shouldInvokeSemanticReview's own existing, correct logic naturally routes the candidate to Layer 2 for a real, independent adversarial judgment - exactly where a single ambiguous marker (which could, legitimately, be unrelated boilerplate) belongs to be resolved. Lowering that threshold immediately surfaced dormant false-positive risk in a second, adjacent layer (ir-inventory.ts) which is fixed alongside it."
+  },
+  "fix": {
+    "filesChanged": [
+      {
+        "file": "lib/contract-model/compiler/semantic-verification/reconciliation.ts",
+        "change": "buildAggregateSignals's condition/exception aggregate signal threshold lowered from `sourceConditionalSignalCount >= 2` to `sourceConditionalSignalCount >= 1`.",
+        "why": "This is the layer that actually swallowed the signal for the single-condition drafting pattern (see rootCause above). It only raises an AMBIGUOUS classification (unchanged severity: still UNCERTAIN at this deterministic layer, per findings.ts's own unmodified determineDeterministicSeverity) - its sole effect is to make materialUnresolvedCount > 0 so verify.ts's own unmodified shouldInvokeSemanticReview routes the candidate to Layer 2 for a real independent judgment, rather than silently skipping review altogether."
+      },
+      {
+        "file": "lib/contract-model/compiler/semantic-verification/source-inventory.ts",
+        "change": "CONDITIONAL_PHRASE pattern extended with two additional generic (non-package-specific) alternatives: `until\\s+such\\s+time\\s+as` (a temporal qualifying-condition connective) and `no\\s+(?:Event\\s+of\\s+)?Default` (the extremely common negative-condition idiom, matched as its own marker because - unlike every other entry in this list - it is very often stated as an independent proviso sentence with no preceding 'so long as'/'provided that'/'subject to' connective at all).",
+        "why": "Recall fix for the general class of qualifying-condition phrasing (task requirement: catch the class, not just the certification's own example phrase). Neither addition is company/package-specific (Architecture Invariants #29) - both are standard, cross-package credit-agreement drafting vocabulary."
+      },
+      {
+        "file": "lib/contract-model/compiler/semantic-verification/ir-inventory.ts",
+        "change": "walkExpression's COMPARE case now also emits a CONDITION-kind IrInventoryItem (in addition to continuing to walk its left/right operands for their own numeric reconciliation), so a COMPARE node reached via ANY path in the expression tree (capacityExpression.gatedBy, IF.condition, EVENT_ACTIVE.triggerCondition, or nested inside AND/OR) is counted as a represented condition.",
+        "why": "Fixes the dormant false-positive that fix #1 exposed: a ratio-gated UNLIMITED_CAPACITY permission is a materially and completely correct representation of its source condition, but was previously invisible to buildAggregateSignals's irConditionOrExceptionCount because that count only looked at rule.conditions[]/IRException.conditions[] (walkCondition/walkException), never at conditions expressed structurally as a capacity gate. Confirmed against this repo's own pre-existing false-positive-control test in semantic-verification-fault-injection.test.ts, which failed immediately after fix #1 alone and passes again with this fix."
+      }
+    ],
+    "explicitlyNotChanged": [
+      "prompt.ts (buildVerifierSystemPrompt/buildVerifierFewShotExamplesBlock) - already asks the model to check for dropped conditions/provisos; no change needed.",
+      "verify.ts's shouldInvokeSemanticReview - the routing decision logic itself is correct and untouched; it was simply being fed a wrong (zero) materialUnresolvedCount by reconciliation.ts.",
+      "findings.ts's determineDeterministicSeverity - AMBIGUOUS aggregate signals remain UNCERTAIN at the deterministic layer by design; this fix does not escalate them to MATERIAL without Layer 2 confirmation, preserving the existing, deliberate 'never auto-declare semantic error from a coarse structural signal' discipline.",
+      "reviewer.ts's buildUserContent / the verifier's evidence packet construction - already includes the full real source text and full proposed IR; not the defective layer."
+    ]
+  },
+  "adversarialConditionFormTestMatrix": {
+    "testFile": "tests/contract-model/semantic-verification-condition-remediation.test.ts",
+    "forms": [
+      { "form": "\"provided that\"", "recall": "PASS", "routing": "PASS - semanticReviewInvoked=true, status != VERIFIED_NO_MATERIAL_GAP_FOUND", "endToEnd": "PASS - MATERIAL_DISCREPANCY once Layer 2 confirms" },
+      { "form": "\"so long as\"", "recall": "PASS", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "\"subject to\" (also exercises a condition incorporated by cross-reference, e.g. 'subject to compliance with Section 9.08')", "recall": "PASS", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "\"no Event of Default\" stated as its own independent proviso sentence, no connective at all", "recall": "PASS - required the source-inventory.ts pattern addition in this fix", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "ratio-threshold condition combined with a dollar cap", "recall": "PASS", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "payment condition (a prior-payment-in-full precondition)", "recall": "PASS", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "temporal condition (\"until such time as\")", "recall": "PASS - required the source-inventory.ts pattern addition in this fix", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "nested proviso (\"provided that ... provided, further, that ...\")", "recall": "PASS", "routing": "PASS", "endToEnd": "PASS" },
+      { "form": "condition attached to an exception", "recall": "PASS", "routing": "PASS", "endToEnd": "PASS" }
+    ],
+    "falsePositiveGuards": [
+      { "case": "a correctly-represented rule.conditions[] entry (explicit IRCondition, no gatedBy)", "result": "PASS - no spurious MISSING_CONDITION finding" },
+      { "case": "a correctly-represented ratio gate living entirely inside capacityExpression.gatedBy (no rule.conditions[] entry) - the exact shape that regressed during development of this fix", "result": "PASS - status=VERIFIED_NO_MATERIAL_GAP_FOUND, no spurious MISSING_CONDITION finding, after the ir-inventory.ts fix was added" },
+      { "case": "a clean fixed basket with zero conditional markers at all (threshold change is a no-op)", "result": "PASS - status=VERIFIED_NO_MATERIAL_GAP_FOUND, semanticReviewInvoked=false, unchanged from before this fix" }
+    ],
+    "summary": "30/30 new tests pass (9 condition forms x 3 checks [recall/routing/end-to-end] = 27, plus 3 false-positive guards)."
+  },
+  "regressionResults": {
+    "certificationReproductionScript": "tests/foundation-audit/section17-verifier-fault-injection.ts: 7/7 CAUGHT, 0/7 MISSED (was 6/7 CAUGHT, 1/7 MISSED before this fix) - the omitted-condition case (case 4) now routes to Layer 2 (semanticReviewInvoked=true) and reaches status=REVIEW_REQUIRED (never VERIFIED_NO_MATERIAL_GAP_FOUND) under real, unmodified default production routing with zero options override, exactly as verifyCompiledCandidate is actually called in production.",
+    "existingVerifierSuites": {
+      "command": "npx vitest run tests/contract-model/semantic-verification-fault-injection.test.ts tests/contract-model/semantic-verification-independence.test.ts tests/contract-model/adversarial-verification.test.ts tests/contract-model/semantic-verification-verify.test.ts tests/contract-model/semantic-verification-reviewer.test.ts tests/contract-model/semantic-verification-source-inventory.test.ts tests/contract-model/semantic-verification-ir-inventory.test.ts tests/contract-model/semantic-verification-reconciliation.test.ts tests/contract-model/semantic-verification-findings.test.ts tests/contract-model/semantic-verification-condition-remediation.test.ts",
+      "result": "10 files, 107 tests, all pass (77 pre-existing baseline tests unchanged in behavior + 30 new adversarial-condition-form tests)."
+    },
+    "fullContractModelSuite": {
+      "command": "npx vitest run tests/contract-model",
+      "result": "101 files, 1067 tests, all pass - no regressions anywhere in the broader contract-model test tree."
+    },
+    "typeCheck": {
+      "command": "npx tsc --noEmit -p .",
+      "result": "Exactly the same 6 pre-existing errors as the documented baseline, all in unrelated files (tests/foundation-audit/cascade-and-concurrency.test.ts, tests/foundation-audit/discovery-fault-injection.test.ts, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts) - zero new errors introduced by this fix."
+    },
+    "lint": {
+      "command": "npx eslint .",
+      "result": "Exactly the same 1 pre-existing error as the documented baseline (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires rule-definition error) - zero new errors introduced by this fix."
+    }
+  },
+  "independencePreservation": {
+    "claim": "Verifier independence is preserved - no compiler reasoning trace, hidden reasoning, prompt conclusion, confidence score, or benchmark ground truth was given to the verifier as evidence of correctness, and none was needed for this fix.",
+    "evidence": [
+      "The fix touches only deterministic, source-text-only and IR-structure-only logic (reconciliation.ts's threshold, source-inventory.ts's regex patterns operating on raw operativeSourceText, ir-inventory.ts's walk of the already-compiled IR's own expression tree) - none of it reads compilationResult.overallNotes/sufficiencyReasons/unresolvedIssues or any other compiler-conclusion field forbidden by the Independence Contract at the top of semantic-verification/types.ts.",
+      "prompt.ts (the AI verifier's own instructions) was NOT modified - the fix did not need to, and did not, tell the model what to conclude; it only ensured the model gets INVOKED for this shape, with the same unmodified, source-grounded, adversarial-posture instructions it already had.",
+      "No test in the new adversarial matrix, and no line of the production fix, imports grading.ts, ExpectedRuleShape, or any other benchmark/ground-truth construct into a production code path.",
+      "Re-ran tests/contract-model/semantic-verification-independence.test.ts (the mechanical enforcement test: a static regex-over-import-lines check that nothing under lib/contract-model/compiler/semantic-verification/** imports semantic/compile.ts's compileCovenantToIR or semantic/caller.ts's RealSemanticCaller/getSemanticCaller) after this fix - all 3 tests still PASS, confirming the fixed files introduce no forbidden import."
+    ],
+    "verdict": "PRESERVED"
+  },
+  "filesChanged": [
+    "lib/contract-model/compiler/semantic-verification/reconciliation.ts",
+    "lib/contract-model/compiler/semantic-verification/source-inventory.ts",
+    "lib/contract-model/compiler/semantic-verification/ir-inventory.ts",
+    "tests/contract-model/semantic-verification-condition-remediation.test.ts"
+  ],
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "The certification's own reproduction case (the omitted-condition fault-injection case in tests/foundation-audit/section17-verifier-fault-injection.ts) now flips from MISSED to CAUGHT under real, unmodified default production routing with zero test-only overrides. The root cause was traced to a specific, named layer (reconciliation.ts's aggregate condition/exception threshold, compounded by a related dormant false-positive in ir-inventory.ts's condition detection that the threshold fix exposed and this remediation also fixed) rather than patched at the symptom level or hardcoded to the certification's own example phrase - the fix is verified against a 9-form adversarial condition matrix covering the full class of qualifying-condition phrasing named in the remediation task, plus 3 false-positive guards, all passing (30/30 new tests), all 77 pre-existing verifier tests still passing unchanged, the full 1067-test contract-model suite passing, and the mechanical Independence Contract enforcement test still passing. Per this workstream's own instructions, disposition is REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION, not CERTIFIED - that verdict is reserved for a future, genuinely independent recertification pass, which this document is not."
+}

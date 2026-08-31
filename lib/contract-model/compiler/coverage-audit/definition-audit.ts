@@ -68,6 +68,11 @@ export function auditDefinitionCompleteness(bundle: CovenantContextBundle, index
       semanticPromptVersion: null,
       providerIdentity: null,
       provenance: "definition-audit.ts - comparison stage",
+      // Phase 3F.1.6.R BLOCKER-3 fix - see coverage-audit/types.ts's own
+      // OPERATIVE-STATE DISCLOSURE header; re-tagged post-hoc by
+      // runIndependentCoverageAudit when a real supersessionIndex is supplied.
+      supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+      supersessionReason: "definition-audit.ts does not itself consult amendment/operative-state - real disposition, if any, is applied post-hoc by runIndependentCoverageAudit.",
     });
   }
   return findings;

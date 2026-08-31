@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "THREE_SAFE_TOOL_REGRESSION",
+  "auditorRole": "SECOND, INDEPENDENT recertification auditor - see 13-four-tool-recertification.json for full context.",
+  "pinnedProductionCommit": "b3773adb8643d83cb2c57c029aef7eded59199ec",
+  "scope": "getOperativeProvision, getDefinition, getRelatedAmendments - the 3 tools this fix's own commit message and docs claim were 'unchanged and regression-confirmed'. Confirmed by direct diff read: none of the 3 tools' execute() bodies, nor resolveOperativeDefinitionEvidence (operative-state.ts), were touched by commit b3773ad - only lib/contract-model/compiler/semantic/tools.ts's resolveNodeWithSupersessionAwareness/resolveParentSubstructureEvidence/legacySupersessionDisplay and the 4 execute() bodies that call them changed.",
+  "NO_REGRESSION_CONFIRMED": true,
+  "materialAdditionalFinding": "All 3 previously-safe tools were independently tested against the EXACT fixture that defeats getParentClause/getSiblingClauses/getReferencedProvision in the new STILL_OPEN finding (a provision genuinely OPERATIVE_STATE_REVIEW_REQUIRED via AMENDMENT_SEQUENCE_UNRESOLVED, whose currentText happens to be non-null) - all 3 correctly fail closed, because each derives its own trust verdict from OperativeProvisionView.status directly (isConfirmedCurrentOperativeEvidence(view.status) for getOperativeProvision/getRelatedAmendments; resolveOperativeDefinitionEvidence's own explicit view.status branch table, operative-state.ts lines ~859-864, for getDefinition), never through resolveNodeWithSupersessionAwareness's currentText-gated shortcut. This positively confirms the residual finding in 13-four-tool-recertification.json is scoped exactly to the one shared helper, not a systemic property of the tool registry.",
+  "perTool": [
+    {
+      "tool": "getOperativeProvision",
+      "codeUnchangedSinceB3773ad": true,
+      "freshRegressionCases": [
+        {
+          "case": "7a - raw-fallback branch (no matching view at all) whose physical node is KNOWN_SUPERSEDED via a DIFFERENT, relabeled provision (a real restatement/renumbering shape) - fresh document/instrument/company from the implementer's own matrix case 8.",
+          "expected": "evidenceUnresolved: true",
+          "result": "PASS",
+          "citation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 7, test 7a"
+        },
+        {
+          "case": "7b - CONTROL: never-amended section via the same raw-fallback branch, with a REAL (empty) OperativeContractState computed for the document.",
+          "expected": "evidenceUnresolved: not true",
+          "result": "PASS",
+          "citation": "section 7, test 7b"
+        },
+        {
+          "case": "7b-note - CONTRAST: `operativeState: null` (no computation ever ran for this document at all) correctly fails closed even for a section with no amendment history - confirms fail-closed-by-default is preserved, never fail-open-by-omission.",
+          "expected": "evidenceUnresolved: true",
+          "result": "PASS",
+          "citation": "section 7, test 7b-note"
+        },
+        {
+          "case": "Section 10's cross-tool test - the REVIEW_REQUIRED-via-AMENDMENT_SEQUENCE_UNRESOLVED fixture that defeats getParentClause/getSiblingClauses/getReferencedProvision, checked directly against getOperativeProvision.execute({sectionRef:'66.60'}) in the SAME committed assertion.",
+          "expected": "status: OPERATIVE_STATE_REVIEW_REQUIRED, evidenceUnresolved: true",
+          "result": "PASS",
+          "citation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 10, test 'CONFIRMS the bug is genuinely cross-tool'"
+        }
+      ]
+    },
+    {
+      "tool": "getDefinition",
+      "codeUnchangedSinceB3773ad": true,
+      "freshRegressionCases": [
+        {
+          "case": "7c - prospective-CONFLICTED DEFINITION-kind amendment (two competing MODIFY_DEFINITION effects sharing an identical future effective date) - a fresh shape (definition-kind, not section-kind) not covered by the implementer's own fresh certification file's own definition scenarios.",
+          "expected": "evidenceUnresolved: true",
+          "result": "PASS",
+          "citation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 7, test 7c"
+        },
+        {
+          "case": "7d - CONTROL: never-amended term remains safely current.",
+          "expected": "evidenceUnresolved: not true",
+          "result": "PASS",
+          "citation": "section 7, test 7d"
+        }
+      ]
+    },
+    {
+      "tool": "getRelatedAmendments",
+      "codeUnchangedSinceB3773ad": true,
+      "freshRegressionCases": [
+        {
+          "case": "7e - genuinely AMBIGUOUS-target PARTIAL provision (a real duplicate physical section label - two distinct StructuralNodes sharing legal reference '40.40' - not the implementer's own MODIFY_THRESHOLD-based PARTIAL shape).",
+          "expected": "evidenceUnresolved: true, real chain still disclosed (1 entry)",
+          "result": "PASS",
+          "citation": "section 7, test 7e"
+        },
+        {
+          "case": "7f - CONTROL: a real, cleanly-RESOLVED amendment chain (fresh document/instrument, distinct from the implementer's own control fixture).",
+          "expected": "evidenceUnresolved: not true",
+          "result": "PASS",
+          "citation": "section 7, test 7f"
+        },
+        {
+          "case": "Section 10's cross-tool test - the REVIEW_REQUIRED-via-AMENDMENT_SEQUENCE_UNRESOLVED fixture that defeats getParentClause/getSiblingClauses/getReferencedProvision, checked directly against getRelatedAmendments.execute({ref:'66.60'}) in the SAME committed assertion.",
+          "expected": "evidenceUnresolved: true",
+          "result": "PASS",
+          "citation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 10, test 'CONFIRMS the bug is genuinely cross-tool'"
+        }
+      ]
+    }
+  ],
+  "rootCauseSanityCheck": {
+    "description": "Independently re-verified isConfirmedCurrentOperativeEvidence (the shared boolean primitive getOperativeProvision and getRelatedAmendments both call) against every real enum literal read directly from amendment/types.ts, never assuming the implementer's own string literals were transcribed correctly.",
+    "citation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 8",
+    "result": "PASS - exactly OPERATIVE_STATE_RESOLVED and CURRENT_OPERATIVE are true; OPERATIVE_STATE_PARTIAL/REVIEW_REQUIRED/CONFLICTED, KNOWN_SUPERSEDED, and UNKNOWN_SUPERSESSION_STATUS are all false."
+  },
+  "regressionSuiteResult": "`npx vitest run tests/contract-model tests/foundation-audit tests/certification` - 204 files, 2329 tests, all passing, including every pre-existing test that exercises these 3 tools (tests/certification/open-2-recert-independent-fresh.test.ts section 3/4/5/6, tests/contract-model/open2-terminal-four-tool-matrix.test.ts, tests/contract-model/part-b-recert-blocker2-6-tools-adversarial.test.ts, tests/contract-model/finding-2-3-getDefinition-operative-safety-e2e.test.ts)."
+}

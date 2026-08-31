@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "TEST_ISOLATION_DESIGN",
+  "purpose": "§13-17 design, written before code, per the phase's own required ordering.",
+  "coreDistinction": {
+    "persistentRegressionDatabase": "The one physical `headroom` database at postgresql://localhost:5432/headroom - now explicitly a PROTECTED resource, not a disposable test sandbox. Holds durable customer-shaped fixture data (Coherent, Matthews) and the durable fixture companies FWRG/LSB depend on. Never a destructive-reset target.",
+    "ephemeralTestDatabases": "New, on-demand Postgres DATABASES (not separate server processes - not available/needed in this single-Postgres-instance environment; a same-server CREATE DATABASE gives full, real isolation since Postgres never allows cross-database queries) created per worktree/auditor/parallel-test-process, migrated, optionally seeded, used, then dropped."
+  },
+  "lifecycle": "create (CREATE DATABASE headroom_test_<12-hex-random>) -> migrate (prisma migrate deploy against that DB's own DATABASE_URL - migrate deploy only ever applies already-committed migration files in order, never resets, never creates a shadow DB, so it is safe even run concurrently by multiple processes against DIFFERENT ephemeral databases) -> seed only what that specific test/workstream needs -> test -> destroy (DROP DATABASE, best-effort, safe to skip on failure since ephemeral DBs are cheap and worst case just accumulate).",
+  "namingConventionAsSafetyMarker": {
+    "rule": "A database is destructive-reset-eligible if and only if its own database name (read directly from the active connection, via `SELECT current_database()` - never from an env var alone, which could be stale or spoofed) matches ^headroom_test_[a-f0-9]{8,}$.",
+    "whyNotNodeEnvAlone": "NODE_ENV=test is a process-level flag - it says nothing about which physical database a given DATABASE_URL happens to point at, and is exactly the kind of weak signal §15 explicitly warns against relying on alone. The persistent regression database is legitimately queried BY code running with NODE_ENV=test (ordinary vitest runs against real fixture data) - NODE_ENV cannot be the disposability signal or it would either falsely protect nothing or falsely allow resetting the persistent DB.",
+    "implementation": "lib/testing/disposable-db.ts's assertDisposableDatabase(prismaOrUrl) - queries current_database(), throws DisposableDatabaseAssertionError if it doesn't match the naming convention. Every destructive helper (global reset, truncate-all) calls this FIRST and refuses (throws, does not proceed) otherwise."
+  },
+  "companyCleanupPolicy": "Default test cleanup must delete an EXACT, test-created company id (`deleteMany({ where: { id: <exact fixed string> } })` or `{ companyId: <exact fixed string> }`) - already the dominant existing pattern (308/310 of the deleteMany call sites found in 08 already do this). A global 'delete every Company row' helper is only ever allowed inside the disposable-DB-gated reset helper described above, never as an ordinary test's own beforeEach/afterEach.",
+  "staticGuard": {
+    "tool": "scripts/check-destructive-db-patterns.ts",
+    "catches": [
+      "company.deleteMany() / deleteMany({}) / deleteMany({ where: {} }) with no scoping predicate at all",
+      "the dynamic `const where = cond ? {...} : {}` collapse-to-empty-predicate shape",
+      "any occurrence of `migrate dev`, `migrate reset`, or `db push` outside of scripts/db/ephemeral-db.ts and .github/workflows/initialize-neon.yml's own already-audited comment text",
+      "TRUNCATE/DROP SCHEMA/DROP TABLE raw SQL outside the ephemeral-db helper"
+    ],
+    "notAPerfectAnalyzer": "This is a bounded grep-based static check, explicitly per §17's own instruction NOT to attempt a perfect SQL/AST analyzer - it exists to catch the specific catastrophic shapes already named, not to replace code review."
+  },
+  "adversarialProofPlan": "§18: provision TEST_A/TEST_B/TEST_C ephemeral databases, seed each with a distinctly-named company, run the disposable-DB-gated reset helper against TEST_A only, assert TEST_A's company is gone while TEST_B/TEST_C's companies and the real persistent `headroom` database's own company set are byte-for-byte unchanged, then destroy all three ephemeral databases. See 13-isolation-adversarial-test.json for the executed result."
+}

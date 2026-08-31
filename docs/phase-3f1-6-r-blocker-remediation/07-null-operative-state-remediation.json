@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "BLOCKER_4_NULL_OPERATIVE_STATE_REMEDIATION",
+  "blockerId": "BLOCKER-4",
+  "sourceFinding": "05-supersession-certification.json, finding SUPER-3",
+  "generatedAt": "2026-08-30T05:30:00Z",
+  "rootCause": {
+    "summary": "lib/contract-model/compiler/semantic-coverage/pipeline.ts line 108 read: `input.operativeState ? auditOperativeStateForUnits(units, input.operativeState) : []`. Whenever operativeState was null (a caller that could not resolve operative state at all - amendment-chain resolution itself uncertain), this ternary silently produced ZERO findings, a true fail-OPEN precisely in the case where the risk of crediting stale/superseded text is highest. The null-handling logic lived entirely at the CALL SITE (pipeline.ts), not inside auditOperativeStateForUnits itself (cross-reference-audit.ts), meaning any OTHER future caller could reintroduce the identical bypass simply by copying the same ternary pattern."
+  },
+  "fix": {
+    "filesChanged": [
+      "lib/contract-model/compiler/semantic-coverage/cross-reference-audit.ts",
+      "lib/contract-model/compiler/semantic-coverage/pipeline.ts"
+    ],
+    "description": "auditOperativeStateForUnits's own signature changed from `operativeState: OperativeContractState` to `operativeState: OperativeContractState | null`, and the null-check now lives INSIDE the function, at the root-cause location. When operativeState is null, every unit with a real structural anchor (structuralNodeId) is now flagged with an OPERATIVE_STATE_UNRESOLVED_FOR_UNIT finding - the SAME existing OperativeStateAuditFindingType this module already produces for a specific-provision unresolved case, reused rather than inventing a new taxonomy member, with provisionKey: null and a reasoning string that explicitly distinguishes 'no operative state was available at all' from 'a specific provision's own status is unresolved'. semantic-coverage/pipeline.ts's own call site was simplified to `auditOperativeStateForUnits(units, input.operativeState)` unconditionally, removing the fail-open ternary entirely - no caller (including this one) can bypass the check merely by omitting operativeState, since the function itself now owns the fail-closed guarantee."
+  },
+  "whyThisRouteWasChosen": "The task instructed reusing an existing taxonomy (ClaimReviewReasonCode, CoverageState, or DangerousUnaccountedReason) rather than inventing a new one. OPERATIVE_STATE_UNRESOLVED_FOR_UNIT (an existing OperativeStateAuditFindingType member) already exists specifically for 'this unit's covering provision's operative status is not RESOLVED' - a null operativeState is the most severe instance of exactly that same fact (there is no provision at all to be resolved, which is strictly worse than an unresolved-but-present one), so reusing it (with provisionKey null and a distinguishing reason) is the correct generalization rather than a parallel new enum value. Downstream, applyOperativeStateFindingsToCoverage already unconditionally overrides ANY unit with a finding to coverageState: OPERATIVE_STATE_UNRESOLVED (an existing SemanticCoverageState member) regardless of finding type - no change was needed there, since it was already correctly wired; it simply never received a finding to act on before this fix.",
+  "testEvidence": {
+    "newTests": {
+      "file": "tests/contract-model/semantic-coverage-cross-reference-audit.test.ts",
+      "describeBlock": "BLOCKER-4 fix: null operativeState fails CLOSED, never silently open",
+      "cases": [
+        "flags every unit with a real structural anchor when operativeState is null, rather than emitting zero findings (asserts findingType, null provisionKey, and the distinguishing reasoning text)",
+        "still emits nothing for a raw-source-fallback unit with no structural anchor even when operativeState is null (nothing to check either way - never over-triggers)",
+        "a null operativeState can never let reconciliation.ts reach FULLY_REPRESENTED_VERIFIED for a unit that required operative-state knowledge - constructs a coverage entry already (wrongly, in isolation) at FULLY_REPRESENTED_VERIFIED and proves applyOperativeStateFindingsToCoverage overrides it to OPERATIVE_STATE_UNRESOLVED - this is the literal proof required by the task: 'operativeState = null can never result in FULLY_REPRESENTED_VERIFIED or equivalent trusted-current-state where operative state was actually required for that determination.'"
+      ],
+      "result": "15/15 passed for the whole file (npx vitest run tests/contract-model/semantic-coverage-cross-reference-audit.test.ts), including the 3 new BLOCKER-4 cases."
+    },
+    "regressionFixesRequired": "Changing the fail-open default to fail-closed is a genuine, wide-blast-radius behavioral change: every existing test/fixture that previously passed operativeState: null to runSemanticCoverageAudit as a 'this check does not apply to my scenario' shortcut now correctly gets every one of its units flagged OPERATIVE_STATE_UNRESOLVED. 9 pre-existing tests in 4 files broke on first run for exactly this reason (tests/contract-model/semantic-coverage-fault-injection.test.ts, semantic-coverage-pipeline.test.ts, semantic-coverage-real-fwrg-regression.test.ts, semantic-coverage-real-lsb-regression.test.ts) - each was fixed by replacing operativeState: null with a real, RESOLVED, empty-provisions OperativeContractState (an honest 'this instrument has no known amendments' input, never null 'this was never checked'), restoring their original, unrelated test intent (numeric reconciliation, dangerous-unaccounted detection, real-package regression counts) while now genuinely exercising the fail-closed null case only in the tests specifically designed to.",
+    "regressionSuiteResults": "npx vitest run tests/contract-model/ - 102/102 test files passed, 1054/1054 tests passed after the 4 fixture fixes above. Full suite: 202/204 files passed, 2062/2064 tests passed (2 pre-existing, out-of-scope failures unrelated to this blocker - see BLOCKER-2's artifact for the same disclosure).",
+    "tscBaseline": "6 errors, byte-identical to certified baseline.",
+    "eslintBaseline": "1 error, identical to certified baseline.",
+    "buildResult": "npm run build succeeds, 21 routes."
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+}

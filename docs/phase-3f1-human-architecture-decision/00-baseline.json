@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "startingSha": "a2b00f08fca13f066433b15917378c999d0942e1",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "treeState": "clean",
+  "postgres": "started clean (service was down at container start, standard unclean-shutdown pattern for this sandbox; WAL crash recovery lossless)",
+  "migrationState": "30 migrations found, Database schema is up to date!",
+  "testIsolationState": "lib/testing/disposable-db.ts + ephemeral-db.ts present and unmodified since the incident-hardening phase; not exercised by this phase's scope (no whole-database resets needed)",
+  "knownPackageFixtureState": "FWRG/LSB/CONMED/DSGR persistent fixture companies present, unaffected (read-only regression only)",
+  "snapshotAvailability": "Durable snapshot from the incident-recovery phase remains available; not needed this phase (no destructive operations planned)",
+  "qualityGates": {
+    "tsc": "6 pre-existing errors, identical set to every prior phase's documented baseline",
+    "eslint": "1 pre-existing error, identical to baseline"
+  },
+  "gatewayPreconditionCheck": {
+    "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages), credential injected as a process-local env var for a single command only, never written to .env",
+    "result": "HTTP 402: Team budget exceeded. Current spend: $50.05, limit: $50.00.",
+    "realCostIncurred": "$0.00",
+    "conclusion": "OPEN-4 remains ENVIRONMENT_BLOCKED. Proceeding with OPEN-1/OPEN-2 remediation only, per SS24."
+  },
+  "historicalArtifactImmutability": "Confirmed: all prior docs/phase-3f1-* directories present, git status clean. This phase writes only to a NEW directory docs/phase-3f1-human-architecture-decision/."
+}

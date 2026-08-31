@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PERSISTENCE_RECERTIFICATION",
+  "auditorRole": "SECOND, INDEPENDENT recertification auditor - see 13-four-tool-recertification.json for full context.",
+  "pinnedProductionCommit": "b3773adb8643d83cb2c57c029aef7eded59199ec",
+  "method": "Real Postgres (service postgresql, port 5432) for every chain below - full compile (compileCovenantToIR) -> verify (verifyCompiledCandidate) -> persist (persistSemanticTruthForInstrument) -> a FRESH read (getTrustedSemanticTruth / getAllSemanticTruthForInstrument, plus a raw prisma.semanticTruthRecord.findMany query bypassing the service layer entirely) against a company/instrument this audit created and cleaned up itself (COMPANY_ID='open-2-indep-recert-fresh2', beforeAll/afterAll delete-then-recreate, mirroring the implementer's own established test convention). No `prisma migrate dev/reset/db push` was run.",
+  "chains": [
+    {
+      "id": "9a",
+      "label": "ORIGINAL EXPLOIT SHAPE - fresh reproduction, CLOSED",
+      "description": "The exploit as literally specified in this audit's own assignment: an OperativeProvisionView with status OPERATIVE_STATE_CONFLICTED and currentText null, physical base node NOT yet marked superseded (two real, on-file competing effects sharing an identical future effective date, queried well before either date - appliedChain empty), reached via getSiblingClauses. Built as an entirely fresh fixture (different document text, section numbers, instrument key, and company from every one of the implementer's own tests and this audit's other chains).",
+      "citation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 9, test 9a",
+      "results": {
+        "setupConfirmed": "view.status === OPERATIVE_STATE_CONFLICTED, view.appliedChain.length === 0, view.supersededSourceNodeIds.length === 0 (the exploit precondition: the base node is genuinely NOT physically superseded).",
+        "toolCallLogEvidenceUnresolved": true,
+        "compileFailureReasons": "contains OPERATIVE_STATE_UNRESOLVED",
+        "compileStatus": "REVIEW_REQUIRED",
+        "verifyStatus": "REVIEW_REQUIRED (not VERIFIED_*)",
+        "freshPostgresRead_getAllSemanticTruthForInstrument": "trustStatus === REVIEW_REQUIRED",
+        "freshPostgresRead_getTrustedSemanticTruth": "0 rows (never trusted)",
+        "freshPostgresRead_rawPrismaQuery": "every row's trustStatus !== VERIFIED",
+        "disposition": "CONFIRMED CLOSED for this exact exploit shape."
+      }
+    },
+    {
+      "id": "9b",
+      "label": "Fresh timing variant (mixed applied+prospective conflict) via getParentClause, CLOSED",
+      "description": "This audit's own novel timing combination (section 1 of the same test file): one real, already-applied clean amendment followed by two real, competing, NOT-yet-applied amendments on the same section - hasConflict remains true (and currentText is nulled by the CONFLICTED branch) even though a real predecessor DID apply cleanly and the base node IS independently KNOWN_SUPERSEDED at the node level. Reached via getParentClause (a different tool than 9a).",
+      "citation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 9, test 9b",
+      "results": {
+        "setupConfirmed": "view.status === OPERATIVE_STATE_CONFLICTED, appliedChain has exactly 1 entry (the clean predecessor), supersededSourceNodeIds non-empty (the base node IS physically superseded, unlike 9a) - isolates that a real applied predecessor's own KNOWN_SUPERSEDED node record must never be mistaken for 'the prospective conflict is therefore safe.'",
+        "toolCallLogEvidenceUnresolved": true,
+        "compileFailureReasons": "contains OPERATIVE_STATE_UNRESOLVED",
+        "compileStatus": "REVIEW_REQUIRED",
+        "verifyStatus": "REVIEW_REQUIRED (not VERIFIED_*)",
+        "freshPostgresRead_getAllSemanticTruthForInstrument": "trustStatus === REVIEW_REQUIRED",
+        "freshPostgresRead_getTrustedSemanticTruth": "0 rows",
+        "freshPostgresRead_rawPrismaQuery": "every row's trustStatus !== VERIFIED",
+        "disposition": "CONFIRMED CLOSED for this fresh timing variant."
+      }
+    },
+    {
+      "id": "10c",
+      "label": "NEW FINDING, end to end - STILL OPEN",
+      "description": "The residual defect identified in 13-four-tool-recertification.json, carried all the way through a real compile->verify->persist->fresh-Postgres-read chain: a provision genuinely OPERATIVE_STATE_REVIEW_REQUIRED (a real, signed amendment whose own effective date is genuinely conditional/unresolved - e.g. 'effective upon satisfaction of the Merger Condition, not yet obtained' - the CONDITIONAL_UNRESOLVED EffectiveDateResult shape, chain.ts's own AMENDMENT_SEQUENCE_UNRESOLVED rule), whose currentText is left as the untouched base-document text (non-null, because the sole effect never entered appliedChain). Reached via getSiblingClauses, with the candidate anchored on a wholly separate, genuinely clean section (bundle.hasUnresolvedOperativeEvidence confirmed false, isolating the tool-call path exactly as the implementer's own established convention does).",
+      "citation": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 10, test 'END TO END, REAL POSTGRES'",
+      "results": {
+        "setupConfirmed": "view.status === OPERATIVE_STATE_REVIEW_REQUIRED, view.appliedChain.length === 0, view.currentText !== null (the untouched base text).",
+        "toolCallLogEvidenceUnresolved": "NOT true - THE BUG.",
+        "compileFailureReasons": "does NOT contain OPERATIVE_STATE_UNRESOLVED",
+        "compileStatus": "COMPLETED",
+        "verifyStatus": "matches /^VERIFIED_/ - verify.ts's own lineage check inspects the CANDIDATE's own source section (genuinely clean), which has no visibility into the fact that the rule's real justification came from a tool call into a REVIEW_REQUIRED section, so it cannot independently catch this either.",
+        "freshPostgresRead_getAllSemanticTruthForInstrument": "trustStatus === VERIFIED",
+        "freshPostgresRead_getTrustedSemanticTruth": "1+ rows - a rule whose real justification depended on a genuinely REVIEW_REQUIRED, not-yet-effective amendment persisted as TRUSTED CURRENT TRUTH.",
+        "freshPostgresRead_rawPrismaQuery": "at least one row's trustStatus === VERIFIED, confirmed via a raw prisma query bypassing the service-layer helper entirely.",
+        "disposition": "STILL OPEN - this is the exact end-to-end consequence class (evidence tool bypass -> COMPLETED -> VERIFIED -> persisted trusted truth) OPEN-2 Part A was meant to close in general, reproduced here through a real path (getSiblingClauses/getParentClause/getReferencedProvision against a REVIEW_REQUIRED-with-non-null-currentText provision) the implementer's own fix, 32-cell matrix, and fresh-fixture certification file did not construct or test."
+      }
+    }
+  ],
+  "summary": {
+    "originalExploitShape": "CONFIRMED CLOSED (chain 9a) and remains closed under this audit's own fresh timing variant (chain 9b).",
+    "newResidualFinding": "STILL OPEN end to end, real Postgres confirmed (chain 10c) - reaches a persisted SemanticTruthRecord.trustStatus of VERIFIED via getSiblingClauses (and, per 13-four-tool-recertification.json's cross-tool test, would reproduce identically via getParentClause or getReferencedProvision).",
+    "postgresIndependence": "Every chain's final assertion reads via a RAW prisma.semanticTruthRecord.findMany query, independent of the service-layer getTrustedSemanticTruth/getAllSemanticTruthForInstrument helpers - never trusting the in-memory verification object or a single read path alone."
+  }
+}

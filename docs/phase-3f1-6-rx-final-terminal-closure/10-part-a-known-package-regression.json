@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_KNOWN_PACKAGE_REGRESSION",
+  "generatedAt": "2026-08-30T20:50:00Z",
+  "context": "This artifact was blocked mid-execution by the shared-Postgres Company-table wipe incident, fully documented and resolved in docs/test-infrastructure-incident-2026-08-30/ (verdict HEADROOM_TEST_INFRASTRUCTURE_RECOVERY_AND_ISOLATION_PASSED). This artifact resumes exactly where that blocked, using the now-recovered, independently-verified data.",
+  "script": "scripts/phase-3f1-6-known-package-regression.ts (reused unmodified - no branching/tuning by package identity), run fresh post-recovery.",
+  "results": {
+    "FWRG": { "dataAvailability": "FULL_SEMANTIC_COVERAGE", "materialUnitsWithoutClaimReviewItem": 0, "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE (unchanged from every prior phase)" },
+    "LSB": { "dataAvailability": "FULL_SEMANTIC_COVERAGE", "materialUnitsWithoutClaimReviewItem": 0, "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE (unchanged)" },
+    "CONMED": { "dataAvailability": "STRUCTURAL_AND_AMENDMENT_ONLY", "materialUnitsWithoutClaimReviewItem": null, "note": "No semantic-coverage fixture for CONMED, disclosed, pre-existing, unchanged." },
+    "DSGR": { "dataAvailability": "FULL_SEMANTIC_COVERAGE", "materialUnitsWithoutClaimReviewItem": 215, "note": "Byte-identical to every prior phase's reported figure - the same disclosed, non-regressive, fixture-versioning artifact." }
+  },
+  "dangerousSilentFailureCheck": { "fwrg": 0, "lsb": 0, "dsgr": 215, "conmed": "NOT_APPLICABLE", "allZero": false, "explanation": "Identical to every prior phase - not a new finding." },
+  "frozenCertificationSideEffect": "This script's own known side effect (writing docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json, a FROZEN artifact) was captured and immediately reverted via `git checkout --`, confirmed byte-for-byte restored (git status clean) before this artifact was written.",
+  "importantDistinctionFromTheIncident": "This script's own regression check was NEVER actually broken by the Company-table wipe (it runs entirely against its own scratch company + committed fixture files - see docs/test-infrastructure-incident-2026-08-30/04-package-recovery-state.json). What WAS broken and has now been recovered is a SEPARATE persistent-database dependency used only by tests/certification/section11-source-trace-independent.test.ts (the FWRG/LSB fixture companies' own ContractRule/DefinedTermNode data) - see 11 below for that full-suite confirmation.",
+  "verdict": "NO_REGRESSION"
+}

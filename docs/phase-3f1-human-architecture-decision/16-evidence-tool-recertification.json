@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "EVIDENCE_TOOL_RECERTIFICATION_PART_B",
+  "workstream": "OPEN-2",
+  "auditorRole": "INDEPENDENT_PART_B_RECERTIFICATION_AUDITOR",
+  "pinnedProductionCommit": "a7ee654f4eec1614ef59d47c5f07c597264edc5a",
+  "auditCommitAtTimeOfThisArtifact": "d6e7f2 (sibling OPEN-1 recert, HEAD at audit start) - see commitShas below for this audit's own commit",
+  "disposition": "STILL_OPEN",
+  "filesChanged": {
+    "created": [
+      "tests/certification/open-2-recert-independent-fresh.test.ts",
+      "docs/phase-3f1-human-architecture-decision/16-evidence-tool-recertification.json"
+    ],
+    "modified": [],
+    "productionCodeTouched": false,
+    "note": "No file under lib/, app/, or prisma/ was modified by this audit. No historical docs/phase-3f1-* artifact was modified. Only the two files above were `git add`-ed (never `git add -A`) - the sibling OPEN-1 auditor's own files were left untouched."
+  },
+  "implementerClaimUnderTest": {
+    "source": "docs/phase-3f1-human-architecture-decision/05-universal-evidence-trust-invariant.json, 06-llm-tool-registry-audit.json, 07-operative-provision-fix.json",
+    "claim": "7 of 14 tools in semantic/tools.ts are declared CURRENT_OPERATIVE_EVIDENCE (getOperativeProvision, getDefinition, getParentClause, getChildren, getSiblingClauses, getReferencedProvision, getRelatedAmendments). The identical missing-evidenceUnresolved-derivation gap originally found in getOperativeProvision was independently found and fixed in getParentClause/getSiblingClauses/getReferencedProvision/getChildren/getRelatedAmendments (getDefinition was already correct), all via one shared helper (isConfirmedCurrentOperativeEvidence, amendment/operative-state.ts) every tool's execute() now calls."
+  },
+  "independentVerificationMethodology": [
+    "Read amendment/operative-state.ts in full (987 lines) and semantic/tools.ts in full (842 lines) before trusting any count/claim in the implementer's own report.",
+    "Independently re-derived the CURRENT_OPERATIVE_EVIDENCE tool count directly from buildToolSet's own returned ToolDefinition[] (tests/certification/open-2-recert-independent-fresh.test.ts section 1), not from the report's text.",
+    "For each of the 7 tools, read the exact execute() body line by line and traced which real status value it passes to isConfirmedCurrentOperativeEvidence (or, for getDefinition, resolution.isCurrentTruth) - never assumed 'calls the helper' implies 'derives it from the correct status'.",
+    "Traced buildProvisionChain/buildProvisionView (chain.ts, operative-state.ts) to understand exactly when OperativeProvisionView.currentText is null vs non-null, and when a provision's own base physical node is (or is not) recorded in NodeSupersessionIndex.supersededByNodeId - this is what surfaced the gap below; every hypothesis was probed against the real, unmodified production code via a throwaway tsx harness before being written up as a test assertion.",
+    "Reproduced the ORIGINAL getOperativeProvision exploit against frozen production with a fresh fixture (different instrument/document/section names, different numbers) never used by either the implementer's tests/certification/open-2-fresh-attack-matrix.test.ts or the prior auditor's tests/certification/part-b-final-recert-fix2-independent.test.ts.",
+    "For each of the 7 tools, constructed at least one fresh CURRENT case and attempted at least one fresh UNRESOLVED case, driving several all the way through the real compile -> verify -> persist chain (RealSemanticCaller, compileCovenantToIR, verifyCompiledCandidate, persistSemanticTruthForInstrument, real Postgres), not just execute()-level assertions.",
+    "Ran the full targeted regression suites (tests/contract-model/**, tests/foundation-audit/**, tests/certification/**: 201 files / 2286 tests, all passing) plus tsc --noEmit and eslint to confirm no regression from this audit's own (test-only) additions."
+  ],
+  "registryRecount": {
+    "totalTools": 14,
+    "currentOperativeEvidenceCount": 7,
+    "currentOperativeEvidenceTools": ["getOperativeProvision", "getDefinition", "getParentClause", "getChildren", "getSiblingClauses", "getReferencedProvision", "getRelatedAmendments"],
+    "historicalEvidenceWithStatusCount": 4,
+    "notContractTextEvidenceCount": 3,
+    "verdict": "The implementer's 7/14 count and exact tool list are CONFIRMED correct by independent re-derivation directly against buildToolSet's own returned definitions. No 8th CURRENT_OPERATIVE_EVIDENCE-shaped tool was found misclassified as HISTORICAL_EVIDENCE_WITH_STATUS or NOT_CONTRACT_TEXT_EVIDENCE."
+  },
+  "originalExploitReproduction": {
+    "scenario": "A genuinely, currently-effective OPERATIVE_STATE_CONFLICTED section (two real competing REPLACE_TEXT effects, same past effective date, per chain.ts's own AMENDMENT_CONFLICT rule) reached ONLY via a real getOperativeProvision tool call, never embedded in the context bundle.",
+    "result": "CLOSED, confirmed. toolCallLog[0].evidenceUnresolved=true; failureReasons contains OPERATIVE_STATE_UNRESOLVED; compile.ts status=REVIEW_REQUIRED; verify.ts status=REVIEW_REQUIRED (never VERIFIED_*); persisted SemanticTruthRecord.trustStatus=REVIEW_REQUIRED; getTrustedSemanticTruth (VERIFIED-only) returns 0 rows.",
+    "correctnessReasoning": "REVIEW_REQUIRED is independently confirmed to be the CORRECT safe outcome, not merely a different-but-still-unsafe one: verify.ts's determineStatus checks compilerInput.operativeLineage / hasUnresolvedDefinitionEvidence BEFORE any reconciliation-based finding, so the result is a deliberate human-adjudication halt (the real, disclosed competing candidateTexts remain inspectable on the underlying OperativeProvisionView) - never a silent crash, never a fabricated CONTRADICTED, and never a downstream VERIFIED. This is the intended, designed behavior for genuinely machine-unresolvable evidence, confirmed by reading determineStatus's own priority ordering, not merely observed as a passing assertion."
+  },
+  "freshFalsificationFindings": {
+    "safeTools": {
+      "tools": ["getOperativeProvision", "getDefinition", "getRelatedAmendments"],
+      "verdict": "CONFIRMED SAFE in every scenario tested, including the prospective-conflict shape below. Root cause of their safety: all three derive evidenceUnresolved directly and unconditionally from the provision's own real OperativeProvisionView.status (or, for getDefinition, resolveOperativeDefinitionEvidence's status/isCurrentTruth, which is itself derived from view.status the same way) - regardless of whether the view's currentText happens to be null or non-null, and regardless of whether any effect has yet actually applied as of the analysis date."
+    },
+    "stillOpenGap": {
+      "tools": ["getParentClause", "getChildren", "getSiblingClauses", "getReferencedProvision"],
+      "severity": "HIGH - a genuine, real-world-reachable recurrence of the exact defect class OPEN-2 was chartered to universally close",
+      "rootCause": "resolveNodeWithSupersessionAwareness (semantic/tools.ts, used by getParentClause/getSiblingClauses/getReferencedProvision) gates on `view?.currentText !== null && view?.currentText !== undefined` before it will consult the provision's own real view.status at all. buildProvisionView (operative-state.ts) ALWAYS sets currentText to null for a CONFLICTED provision, and for a PARTIAL provision caused by targetUnresolved or structuralHealthUnsafe - i.e. EXACTLY the statuses this invariant exists to catch. When currentText is null, these three tools fall through to a raw PHYSICAL-NODE-only check (getNodeSupersessionStatus against NodeSupersessionIndex), which has no record of a provision's own CONFLICTED/PARTIAL status unless an effect has actually applied over that exact node as of the query date (buildProvisionView's applied-chain loop is what populates NodeSupersessionIndex.supersededByNodeId, and that loop only runs for effects whose effectiveDate.date is non-null and <= asOfDate). getChildren has the analogous gap even more directly: it never consults the provision's view.status at all, only the raw per-node NodeSupersessionIndex check on the PARENT's own nodeId.",
+      "triggerCondition": "A real, on-file amendment conflict (or ambiguous/unresolved target resolution) whose competing effects have NOT yet been applied as of the analysis date - the ordinary real-world case of a signed-but-not-yet-effective amendment/side letter with a future or otherwise not-yet-satisfied effective date that conflicts with another. (Contrast: an ALREADY-effective, past-dated conflict IS correctly caught by all 4 tools via KNOWN_SUPERSEDED, since the applied-chain loop runs and records the base node - independently confirmed and used as this audit's own aggregation/model-ignores-warning fixtures precisely because that shape is safe.)",
+      "directEvidence": [
+        "getParentClause on a child of a prospectively-CONFLICTED section returns the conflicted section's own text with supersessionStatus=CURRENT_OPERATIVE, evidenceUnresolved=false.",
+        "getChildren on the prospectively-CONFLICTED section's own node returns parentSupersessionStatus=CURRENT_OPERATIVE, evidenceUnresolved=false.",
+        "getSiblingClauses returns the prospectively-CONFLICTED section as a sibling with supersessionStatus=CURRENT_OPERATIVE, evidenceUnresolved=false.",
+        "getReferencedProvision resolving an absolute reference to the prospectively-CONFLICTED section returns supersessionStatus=CURRENT_OPERATIVE, evidenceUnresolved=false."
+      ],
+      "endToEndProof": "tests/certification/open-2-recert-independent-fresh.test.ts, describe block 4, final test: a real getSiblingClauses tool call reaching a genuinely OPERATIVE_STATE_CONFLICTED section (two real competing effects, same future effective date, asOfDate before both) drives compile.ts to status=COMPLETED (failureReasons=[]), verify.ts to status=VERIFIED_NO_MATERIAL_GAP_FOUND, and persistSemanticTruthForInstrument to a real Postgres SemanticTruthRecord with trustStatus=VERIFIED - getTrustedSemanticTruth returns that record as trusted current truth. This is the SAME class of end-to-end consequence tests/certification/part-b-final-recert-fix2-independent.test.ts (scenario 1) proved was CLOSED for getOperativeProvision - it is NOT closed for getSiblingClauses (and, by the same root-cause mechanism, for getParentClause/getChildren/getReferencedProvision).",
+      "isConfirmedCurrentOperativeEvidenceItselfCorrect": "Confirmed directly: isConfirmedCurrentOperativeEvidence('OPERATIVE_STATE_CONFLICTED')===false and isConfirmedCurrentOperativeEvidence('UNKNOWN_SUPERSESSION_STATUS')===false. The shared helper's own logic is not at fault - the defect is that the 4 broken tools' call path silently substitutes a NODE-level supersession status (which defaults to CURRENT_OPERATIVE by omission when nothing is recorded) for the provision's own real status, precisely in the case where currentText being null already signals the provision is NOT confidently current. This is exactly the falsification category the audit charter names: 'calls the helper but on the wrong status object.'"
+    }
+  },
+  "aggregationAndOrderingFindings": {
+    "crossToolOr": "Confirmed genuine OR-across-the-attempt using TWO DIFFERENT tools (not two calls of the same tool) in both call orders, using a shape the fix correctly catches (already-effective conflict) to isolate the aggregation mechanism from the section-4 gap: a safe call (getRelatedAmendments refusal, or getReferencedProvision CURRENT) followed by or preceded by an unsafe call (getOperativeProvision CONFLICTED) always yields failureReasons containing OPERATIVE_STATE_UNRESOLVED and status=REVIEW_REQUIRED, regardless of which tool contributed the signal or its position in the sequence.",
+    "modelIgnoresWarning": "Confirmed with a fresh construction on a different tool (getParentClause, not getOperativeProvision): a scripted model that reads a real evidenceUnresolved=true tool result and submits sufficiency=COMPLETE with an explicit high-confidence justification anyway still yields failureReasons containing OPERATIVE_STATE_UNRESOLVED and status=REVIEW_REQUIRED - the deterministic gate in compile.ts does not depend on model compliance, confirmed independent of the specific tool involved."
+  },
+  "regressionResults": {
+    "newTestsPassing": "16/16 in tests/certification/open-2-recert-independent-fresh.test.ts",
+    "fullSuite": "npx vitest run tests/contract-model tests/foundation-audit tests/certification: 201 files, 2286 tests, all passing.",
+    "typeChecking": "npx tsc --noEmit -p . : exactly the same 6 pre-existing baseline errors (cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3), 0 new errors.",
+    "linting": "npx eslint . : exactly the same 1 pre-existing baseline error (amendment-operative-state-adversarial.test.ts, missing @typescript-eslint/no-var-requires rule definition), 0 new errors."
+  },
+  "summaryForCaller": "The implementer's registry count (7/14 CURRENT_OPERATIVE_EVIDENCE tools, exact names) is independently confirmed correct, and the ORIGINAL getOperativeProvision exploit (a currently-effective conflicted section reached via tool call) is independently confirmed CLOSED end to end through real compile/verify/persist, with REVIEW_REQUIRED reasoned through as the genuinely correct - not merely different - safe outcome. However, this audit could NOT confirm closure of the universal invariant itself: 4 of the 7 tools declared CURRENT_OPERATIVE_EVIDENCE and claimed fixed (getParentClause, getChildren, getSiblingClauses, getReferencedProvision) still bypass evidenceUnresolved for a real, on-file amendment conflict whose competing effects have not yet applied as of the analysis date (the realistic 'signed but not-yet-effective competing amendment' shape) - traced to resolveNodeWithSupersessionAwareness (and getChildren's own parity check) consulting a raw per-physical-node supersession index instead of the provision's own real OperativeProvisionView.status whenever currentText is null, which is precisely the CONFLICTED/PARTIAL case this invariant exists to catch. This was proven not just at the tool-output level but end to end: a real getSiblingClauses call on a genuinely CONFLICTED section reaches compile.ts status COMPLETED, verify.ts VERIFIED_NO_MATERIAL_GAP_FOUND, and a persisted SemanticTruthRecord.trustStatus of VERIFIED in real Postgres. This is the same class of defect OPEN-2 was chartered to close, still open for 4 of the 7 tools via a different (though related) mechanism than getOperativeProvision's original gap. Disposition: STILL_OPEN. A correct fix should make resolveNodeWithSupersessionAwareness (and getChildren's equivalent check) consult view.status directly and unconditionally whenever a real OperativeProvisionView exists for the node's own section - mirroring exactly how getOperativeProvision/getDefinition/getRelatedAmendments already do it - rather than branching on whether view.currentText happens to be non-null.",
+  "commitShas": {
+    "productionFreezeCommitAudited": "a7ee654f4eec1614ef59d47c5f07c597264edc5a",
+    "priorPartBFreezeCommit": "bd72f7d231ac37d62d84fe1cf24cde5dfdd9aed9",
+    "siblingOpen1RecertCommit": "d6e7f23",
+    "thisAuditsOwnCommit": "PENDING - set by the commit this deliverable is checked in with; see git log for tests/certification/open-2-recert-independent-fresh.test.ts and this file"
+  }
+}

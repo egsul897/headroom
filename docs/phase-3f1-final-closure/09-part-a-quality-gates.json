@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_QUALITY_GATES",
+  "gates": {
+    "tsc": "6 pre-existing errors, identical set to baseline (00-baseline.json), 0 new.",
+    "eslint": "1 pre-existing error, identical to baseline, 0 new.",
+    "vitest": "npx vitest run (full repo) - 259 test files, 2751 tests. 2 failures, both confirmed pre-existing/flaky and unrelated to this phase: tests/contract-model/part-b-recert-finding4-independent.test.ts and tests/contract-model/part-b-terminal-recert-open3-independent.test.ts, both timing/wall-clock scaling-ratio assertions in files last touched by the (frozen, untouched) OPEN-3 workstream. Reproduced identically (flaky, non-deterministic pass/fail across repeated runs) at the PRE-this-phase baseline commit 228b6f1 in an isolated git worktree, confirming these are pre-existing machine-load-sensitive tests, not regressions introduced by FIX-1/2/3.",
+    "build": "npm run build - succeeds.",
+    "prismaMigrateStatus": "Database schema is up to date! No new migration needed."
+  },
+  "diffClassification": "git diff 228b6f1 HEAD --name-only -- 'lib/**' 'app/**' 'prisma/**' yields exactly 14 files, each mapping to FIX-1 (stage-structure.ts), FIX-2 (context-retrieval/cross-document-context.ts, definition-graph.ts, pipeline.ts, reference-context.ts, state.ts, structural-context.ts, types.ts; semantic/caller.ts, compile.ts, types.ts; amendment/operative-state.ts; semantic-verification/verify.ts), or FIX-3 (analysis/orchestrator.ts). No forbidden-category change: condition-suspicion-classifier.ts, semantic-coverage/* (N-way claim decomposition), and AnalysisRun/SemanticTruth fencing internals (semantic-truth/service.ts) are all absent from the diff, confirming they were not touched."
+}

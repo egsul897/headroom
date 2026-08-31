@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "FROZEN_CERTIFICATION_BLOCKERS",
+  "generatedAt": "2026-08-30T05:02:00Z",
+  "purpose": "The authoritative, frozen remediation backlog for this phase, copied verbatim from docs/phase-3f1-6-final-foundation-certification/30-certification-findings.json's 11 BLOCKER entries, with tracking fields added. This phase may never mark a disposition CERTIFIED - only REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION, ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION, NOT_REMEDIATED, or ARCHITECTURE_BLOCKED.",
+  "blockers": [
+    {
+      "id": "BLOCKER-1",
+      "certificationFindingId": "BLOCKER-1",
+      "title": "P1-10 rank-stack remediation incomplete - all 7 residual CONMED/DSGR anomalies MATERIAL_STRUCTURAL_ERROR",
+      "workstream": "C",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "03-structural-heading-remediation.json",
+        "04-structural-false-negative-results.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-2",
+      "certificationFindingId": "BLOCKER-2",
+      "title": "Supersession status/reason computed on DeterministicCandidate but lost before DiscoveredCandidate",
+      "workstream": "A",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "05-supersession-propagation-remediation.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-3",
+      "certificationFindingId": "BLOCKER-3",
+      "title": "coverage-audit/source-inventory.ts incorrectly treated as protected by an independence invariant",
+      "workstream": "A",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "06-source-inventory-operative-design.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-4",
+      "certificationFindingId": "BLOCKER-4",
+      "title": "semantic-coverage/cross-reference-audit.ts fails open when operativeState is null",
+      "workstream": "A",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "07-null-operative-state-remediation.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-5",
+      "certificationFindingId": "BLOCKER-5",
+      "title": "5 of 14 LLM-facing semantic evidence tools bypass operative-state handling",
+      "workstream": "A",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "08-semantic-tools-operative-remediation.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-6",
+      "certificationFindingId": "BLOCKER-6",
+      "title": "Ambiguous DEFINITION-kind amendment target can reach confident-but-wrong FULLY_REPRESENTED_VERIFIED",
+      "workstream": "A",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "09-definition-ambiguity-propagation.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-7",
+      "certificationFindingId": "BLOCKER-7",
+      "title": "95 persisted ContractRule rows remain affected by the source-trace/stableKey defect (no backfill)",
+      "workstream": "E",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "10-contract-rule-backfill.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-8",
+      "certificationFindingId": "BLOCKER-8",
+      "title": "Real production sibling-claim identity collision at the discoveryId/semanticUnitId layer",
+      "workstream": "B",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "11-claim-identity-remediation.json",
+        "12-claim-identity-compatibility.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-9",
+      "certificationFindingId": "BLOCKER-9",
+      "title": "Independent verifier misses an omitted qualifying condition, returns VERIFIED_NO_MATERIAL_GAP_FOUND",
+      "workstream": "D",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "13-verifier-condition-remediation.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-10",
+      "certificationFindingId": "BLOCKER-10",
+      "title": "Contract-model compiler / semantic / verification / safe-failure pipeline has zero live application callers",
+      "workstream": "F",
+      "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "14-live-contract-analysis-architecture.json",
+        "15-live-contract-analysis-orchestrator.json",
+        "16-live-analysis-idempotency.json",
+        "17-live-safe-failure-wiring.json",
+        "18-live-e2e-results.json",
+        "19-contract-truth-ownership-map.json"
+      ]
+    },
+    {
+      "id": "BLOCKER-11",
+      "certificationFindingId": "BLOCKER-11",
+      "title": "Architecture Invariant #35 violated - DebtEvent.sourceLedgerEntryId read but never written",
+      "workstream": "G",
+      "disposition": "ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION",
+      "remediationArtifacts": [
+        "20-invariant-35-architecture-decision.json"
+      ]
+    }
+  ],
+  "workstreamAssignment": {
+    "A": "Blockers 2-6 (uncertainty / operative-state / supersession propagation) - dispatched first per the phase's own recommended order.",
+    "B": "Blocker 8 (claim identity) + compatibility.",
+    "C": "Blocker 1 (structural heading / rank-stack root fix) + false-negative guard.",
+    "D": "Blocker 9 (verifier condition omission).",
+    "E": "Blocker 7 (source-trace backfill).",
+    "F": "Blocker 10 (live contract-analysis integration) - critical path, dispatched after A-E land so it can compose their fixes into the live flow.",
+    "G": "Blocker 11 (architecture-scope decision for Invariant #35) - small, dispatched alongside F."
+  },
+  "explicitDispositionTaxonomy": [
+    "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+    "ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION",
+    "NOT_REMEDIATED",
+    "ARCHITECTURE_BLOCKED"
+  ],
+  "neverAllowedDisposition": "CERTIFIED - reserved exclusively for the future independent Phase 3F.1.6.RC recertification."
+}

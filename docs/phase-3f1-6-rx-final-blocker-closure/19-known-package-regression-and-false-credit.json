@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "PART_A_KNOWN_PACKAGE_REGRESSION_AND_FALSE_CREDIT",
+  "generatedAt": "2026-08-30T16:37:00Z",
+  "purpose": "Part A required gate: known-package regression (FWRG/LSB/CONMED/DSGR, no tuning) and the 14 permanent false-credit controls, run against the integrated Part A tree (all 8 commits: Workstreams A, B, C, D, E, G, H, plus this session's own orchestrator supersession/lineage closure).",
+  "commitRange": { "from": "4005687 (phase baseline)", "to": "e3e8ac1 (this artifact's own commit point, before this artifact is added)" },
+
+  "knownPackageRegression": {
+    "script": "scripts/phase-3f1-6-known-package-regression.ts (reused unmodified, same script every prior phase in this lineage has used - no branching/tuning by package identity)",
+    "immutabilityNote": "This script has a known, previously-disclosed side effect (writes to docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json, a FROZEN certification artifact). Per the same discipline established in 3F.1.6.R, this run's raw output was captured before the write and the frozen file was immediately reverted via `git checkout --` and confirmed byte-for-byte restored (`git status --short` clean, zero diff) before this artifact was written.",
+    "results": {
+      "FWRG": { "dataAvailability": "FULL_SEMANTIC_COVERAGE", "materialUnitsWithoutClaimReviewItem": 0, "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE (unchanged from every prior phase - reflects this known package's own known coverage gaps, not a regression)" },
+      "LSB": { "dataAvailability": "FULL_SEMANTIC_COVERAGE", "materialUnitsWithoutClaimReviewItem": 0, "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE (unchanged)" },
+      "CONMED": { "dataAvailability": "STRUCTURAL_AND_AMENDMENT_ONLY", "materialUnitsWithoutClaimReviewItem": null, "note": "No semantic-coverage fixture exists for CONMED (disclosed, pre-existing, unchanged by this phase). amendmentIndependentVerificationAllPassed=true, amendmentDangerousUnflaggedCount=0 - unchanged." },
+      "DSGR": { "dataAvailability": "FULL_SEMANTIC_COVERAGE", "materialUnitsWithoutClaimReviewItem": 215, "note": "UNCHANGED from 3F.1.6.R's own reported count. Root-caused in 3F.1.6.R (docs/phase-3f1-6-r-blocker-remediation/22-known-package-regression.json) to a pre-existing, disclosed fixture-versioning artifact: the certification's own Auditor 6 regenerated then reverted the DSGR fixture, so this number reflects the OLDER (7517-unit) fixture currently committed to the repo, not a live regression. Re-confirmed here via identical totalMaterialSemanticUnits=7517 (matching the disclosed 'before regeneration' count exactly) and zero diff in lib/contract-model/compiler/safe-failure/** and the DSGR fixture file across every commit in this phase's own range." }
+    },
+    "dangerousSilentFailureCheck": { "fwrg": 0, "lsb": 0, "dsgr": 215, "conmed": "NOT_APPLICABLE", "allZero": false, "explanation": "Identical to every prior phase's own reported result for this exact check - the DSGR 215 is the same disclosed, non-regressive, fixture-versioning artifact, not a new finding from this phase's 8 integrated commits." },
+    "verdict": "NO_REGRESSION - every number is either identical to 3F.1.6.R's own last-reported result (FWRG/LSB/CONMED unchanged) or explained by the same already-disclosed, pre-existing, non-code artifact (DSGR)."
+  },
+
+  "falseCreditControls": {
+    "test": "tests/evaluation-v2/atomic-contract.test.ts",
+    "result": "GATE (item 17): all 14 historical false-credit controls resolve creditEligibility=NO_CREDIT under the atomic contract - PASSING (part of the full 219-file / 2297-test vitest run below).",
+    "count": "14/14 unanimous NO_CREDIT, unchanged from every prior phase."
+  },
+
+  "fullQualityGatesAtThisIntegrationPoint": {
+    "tsc": "npx tsc --noEmit -p . - 6 pre-existing errors, byte-identical to baseline, 0 new.",
+    "eslint": "npx eslint . - 1 pre-existing error, byte-identical to baseline, 0 new.",
+    "vitest": "npx vitest run (full repo, no path filter) - 219 test files, 2297 tests: 2296 passing, 1 pre-existing failure (tests/extraction/vercel-ai-gateway-provider.test.ts, an environment-configuration-dependent default-model-id test - confirmed via `git diff bb465fe HEAD -- tests/extraction/vercel-ai-gateway-provider.test.ts lib/extraction/` showing ZERO diff in either the test or the module it tests across this entire phase's range; independently disclosed by Workstream D's own report as one of '3 unrelated env/default-model tests' already failing before any of this phase's work began).",
+    "prismaMigrateStatus": "29 migrations found; database schema up to date."
+  },
+
+  "diffClassification": "Every production file changed across all 8 commits (Workstreams A/B/C/D/E/G/H + this session's orchestrator closure) maps to exactly one of: the 11 frozen blockers, AUDIT-F1 through F7, or the NEW_COUPLED_BLOCKER_DISCOVERED finding Workstream B raised. No forbidden-category change (no UI redesign, no dashboard, no simulation, no financial connectors, no Phase 4 computation, no new unseen package, no evaluator V4, no package-specific tuning, no broad unrelated refactor)."
+}

@@ -413,7 +413,15 @@ function toEntityClassTags(raw: string[], validTags: Set<string>): EntityClassTa
  * is the correct, honest NOT_FOUND-shaped behavior (never fabricated), not
  * a new failure mode.
  */
-function toDefinedTermStableKeys(companyId: string, documentId: string, definedTermRefs: string[]): string[] {
+/**
+ * Exported (Phase 3F.1.6.R, BLOCKER-7) so scripts/backfill-contract-rule-
+ * source-trace.ts can reconstruct each historical ContractRule row's correct
+ * definedTermRefs stableKeys using this EXACT function - never a second,
+ * parallel re-derivation of the formula - keeping "what persistContractRules
+ * computes today" and "what the backfill writes for old rows" structurally
+ * unable to diverge into a third notion of correct.
+ */
+export function toDefinedTermStableKeys(companyId: string, documentId: string, definedTermRefs: string[]): string[] {
   return definedTermRefs.map((name) => computeStableKey("defined-term", companyId, documentId, name.toLowerCase()));
 }
 

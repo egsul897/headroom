@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "ACTIVE_PROCESS_QUIESCE",
+  "purpose": "§0 detail: full account of what was found running and how it was stopped.",
+  "checksPerformed": [
+    "ps aux | grep -E 'tsx|vitest|node .*(scripts|prisma)|next dev|jest'",
+    "TaskOutput(b3fytrp2c, block:false) to check the one background bash task this session had launched",
+    "ps aux | grep -iE 'node|npm|npx' (broad sweep after stopping)",
+    "ps aux | grep -iE 'prisma|migrate'",
+    "jobs -l"
+  ],
+  "found": {
+    "task_b3fytrp2c": {
+      "command": "AI_GATEWAY_API_KEY=*** npx tsx scripts/run-phase-c-compiler.ts fwrg --force",
+      "status_at_discovery": "running",
+      "classification": "ACTIVELY_MUTATING - live paid LLM calls against fixture-fwrg-2021-credit-agreement-co, launched before the user's STOP, resumed briefly this turn before this incident-control phase began",
+      "action": "TaskStop(b3fytrp2c) - tool reported success",
+      "verification": "ps aux immediately after: zero tsx/node/npm-exec processes remained"
+    }
+  },
+  "notFoundRunning": [
+    "no vitest/jest test runner",
+    "no other prisma migrate/db-push/reset process",
+    "no other ingestion or semantic-compiler script",
+    "no background DB cleanup job",
+    "no live Claude subagent (subagents in this harness execute as scoped tool calls within a single turn; none persist as host processes between turns, so none could be 'still executing' across the STOP boundary)"
+  ],
+  "postgresServerItself": {
+    "action": "NOT killed - left running throughout, per §0's explicit instruction not to kill the database server itself unless necessary. It was not necessary: the one process writing to it was already identified and stopped at the client level."
+  },
+  "conclusion": "Quiesce complete before any further inspection or mutation. Exactly one client process required stopping; it was identified first, then stopped safely via the harness's own task-management tool (not a raw kill against Postgres)."
+}

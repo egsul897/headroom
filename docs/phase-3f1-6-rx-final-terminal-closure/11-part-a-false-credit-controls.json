@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_FALSE_CREDIT_CONTROLS",
+  "test": "tests/evaluation-v2/atomic-contract.test.ts > GATE (item 17): all 14 historical false-credit controls resolve creditEligibility=NO_CREDIT under the atomic contract",
+  "result": "14/14 unanimous NO_CREDIT - PASSING, as part of the full 240-file/2515-test green run (see 12).",
+  "noTuning": "git diff c2954d3 HEAD -- 'lib/contract-model/evaluat*' 'lib/contract-model/evaluation-v2' is empty - zero evaluator code changed this phase.",
+  "verdict": "GATE_PASSED"
+}

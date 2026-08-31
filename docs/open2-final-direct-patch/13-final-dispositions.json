@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_DISPOSITIONS",
+  "open2PerTool": [
+    { "tool": "getParentClause", "disposition": "CERTIFIED_CLOSED", "reason": "resolveNodeWithSupersessionAwareness now checks view.status===RESOLVED first; independently confirmed no non-RESOLVED view can reach evidenceCurrent=true through this tool, across 15 fresh attack angles." },
+    { "tool": "getChildren", "disposition": "CERTIFIED_CLOSED", "reason": "Its own dedicated resolveParentSubstructureEvidence already checked status first; re-confirmed with a fresh construction after this patch's shared-type changes." },
+    { "tool": "getSiblingClauses", "disposition": "CERTIFIED_CLOSED", "reason": "Same fix as getParentClause; aggregate-masking (one resolved sibling alongside one non-RESOLVED sibling) independently confirmed to still force evidenceUnresolved=true for the whole call." },
+    { "tool": "getReferencedProvision", "disposition": "CERTIFIED_CLOSED", "reason": "Both the absolute-reference and fromNodeId/relative resolution paths independently confirmed safe." }
+  ],
+  "safeTools": [
+    { "tool": "getOperativeProvision", "disposition": "SAFE", "reason": "Gates directly on isConfirmedCurrentOperativeEvidence(view.status), never reaches the patched helper." },
+    { "tool": "getDefinition", "disposition": "SAFE", "reason": "Routes through resolveOperativeDefinitionEvidence, which dispatches on status before ever reaching isCurrentTruth." },
+    { "tool": "getRelatedAmendments", "disposition": "SAFE", "reason": "Gates directly on isConfirmedCurrentOperativeEvidence(view.status)." }
+  ],
+  "open2Overall": "CERTIFIED_CLOSED",
+  "inheritedNotReopened": [
+    { "id": "OPEN-1", "disposition": "INHERITED_CERTIFIED_CLOSED", "note": "Structural triage/classifier files absent from the production diff since 4ca90f2." },
+    { "id": "OPEN-3", "disposition": "INHERITED_CERTIFIED_CLOSED", "note": "N-way decomposition files absent from the production diff. Its own timing-sensitive tests remain confirmed flaky, unrelated to this phase's single-file change." },
+    { "id": "OPEN-4", "disposition": "ENVIRONMENT_BLOCKED", "note": "Gateway budget still exhausted; production code untouched; frozen 22-case holdout not run since the account remains exhausted." },
+    { "id": "OPEN-5", "disposition": "INHERITED_CERTIFIED_CLOSED", "note": "Fencing files absent from the production diff." },
+    { "id": "OPEN-6", "disposition": "INHERITED_CERTIFIED_CLOSED", "note": "Error-totality files absent from the production diff." }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INFRASTRUCTURE_VERDICT",
+  "verdict": "HEADROOM_TEST_INFRASTRUCTURE_RECOVERY_AND_ISOLATION_PASSED",
+  "basis": [
+    "Root cause CONFIRMED (09): concurrent, unguarded `prisma migrate dev` invocations against one shared, unisolated Postgres database, in direct violation of this repository's own pre-existing documented convention.",
+    "Isolation architecture built (11-12) and adversarially PROVEN with real Postgres (13): a destructive reset against one ephemeral database provably leaves sibling ephemeral databases and the persistent regression database untouched; the persistent database is provably rejected by the same disposability check that gates every destructive helper.",
+    "Static guard (12) built, verified to catch every named catastrophic pattern (7/7 injected violations caught) and verified clean against the real repository.",
+    "The one standing footgun found (package.json's own `prisma:migrate: prisma migrate dev`) fixed to `migrate deploy`, matching this repo's own already-documented convention.",
+    "Recovery executed (15) and independently verified (16): both FWRG and LSB fixture companies fully restored with real, freshly-computed compiler output; the full untargeted test suite (240 files, 2515 tests) passes with zero failures, including the isolation adversarial test itself.",
+    "Migration bookkeeping repaired: `prisma migrate status` now reports 'Database schema is up to date!' rather than the misleading '30 migrations not applied' state found at the start of this response.",
+    "14/14 false-credit controls re-confirmed NO_CREDIT post-recovery (17), with zero evaluator code change.",
+    "Production code proven untouched by the incident throughout (19): zero diff on lib/app/prisma since the pre-incident freeze commit c2954d3, aside from this incident-response's own new, additive lib/testing/ isolation modules.",
+    "A durable (session-scoped, to be handed to the user) recovery snapshot exists (18), avoiding future re-payment for identical LLM work."
+  ],
+  "costAccounting": { "totalPaidThisIncidentResponse": "$1.4814 (FWRG $1.0376 + LSB $0.4438)", "authorizedBy": "User's explicit choice ('I'll provide a credential') after being shown the ~$1.6 estimate; the credential itself was user-supplied." },
+  "permitsContinuation": "PASSED permits continuing the terminal Phase 3F.1.6.RX-FINAL certification (§29-39) in this same session, per this artifact's own governing instruction that only PASSED unlocks that continuation."
+}

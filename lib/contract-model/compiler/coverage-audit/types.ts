@@ -27,8 +27,49 @@
  * Primary outputs are comparison targets, not discovery inputs - this is
  * mechanically enforced by tests/contract-model/coverage-audit-independence.test.ts,
  * which statically inspects this module's own import statements.
+ *
+ * OPERATIVE-STATE DISCLOSURE (Phase 3F.1.6.R BLOCKER-3 fix): the independent
+ * inventory this contract protects (CoverageRegion/AuditFinding below) is,
+ * and remains, a RAW/HISTORICAL scan of every structural node's own text -
+ * `source-inventory.ts` (and the other 3 files named
+ * `INVENTORY_GENERATION_FILES` in the independence test) still import
+ * NOTHING from `amendment/*` and never will; that mechanical guarantee is
+ * unchanged by this fix. What was actually broken (certification finding
+ * SUPER-2/BLOCKER-3) was a DIFFERENT, narrower claim - that this raw
+ * inventory was therefore also safe to read as CURRENT contract truth. It
+ * is not, on its own: a CoverageRegion/AuditFinding/CoverageMapEntry built
+ * from a node whose text has since been superseded by a later amendment
+ * carries no disposition of that fact by construction (a raw scan cannot
+ * know it).
+ *
+ * The fix is an explicit, additive GATE at the one file in this directory
+ * that is NOT independence-protected: `pipeline.ts`'s own
+ * `runIndependentCoverageAudit` accepts an OPTIONAL trailing
+ * `supersessionIndex` (the exact same "optional trailing param at the
+ * orchestration layer, never inside the protected generation file" pattern
+ * `discovery/pipeline.ts` already uses for `DeterministicCandidate`) and,
+ * after the independent inventory is fully built, re-tags every region AND
+ * every finding's own `supersessionStatus`/`supersessionReason` field by
+ * looking up its real `structuralNodeId` against that index. Omitting the
+ * parameter defaults every one of these fields to
+ * `UNKNOWN_SUPERSESSION_STATUS` - NEVER `CURRENT_OPERATIVE` by omission -
+ * so a bare, unguarded read of this inventory can never be mistaken for a
+ * "confirmed current" claim.
+ *
+ * THE GUARANTEE THIS CONTRACT NOW MAKES: a `CoverageRegion`, `AuditFinding`,
+ * or `CoverageMapEntry` whose `supersessionStatus` is anything other than
+ * `CURRENT_OPERATIVE` MUST NOT be treated by any consumer as describing a
+ * presently-governing gap or presently-governing text. A consumer that
+ * needs to assert "this specific finding describes a LIVE contractual risk"
+ * must check `supersessionStatus === "CURRENT_OPERATIVE"` first (or, for a
+ * caller that never supplied a real `supersessionIndex`, must treat the
+ * whole result as historical-only, since every entry will read
+ * `UNKNOWN_SUPERSESSION_STATUS`). See
+ * `tests/contract-model/coverage-audit-supersession-gate.test.ts` for the
+ * permanent enforcement test.
  */
 import type { CovenantFamily } from "@prisma/client";
+import type { NodeSupersessionStatus } from "../amendment/types";
 
 // ---------------------------------------------------------------------------
 // §5/§6 - independent source-side inventory
@@ -75,6 +116,10 @@ export interface CoverageRegion {
   inlineEnumeratedItemCount: number;
   auditAlgorithmVersion: string;
   provenance: string;
+  /** Phase 3F.1.6.R BLOCKER-3 fix - see this file's own OPERATIVE-STATE DISCLOSURE header. Always UNKNOWN_SUPERSESSION_STATUS as constructed by source-inventory.ts itself (a raw scan cannot know this); re-tagged accurately by runIndependentCoverageAudit (pipeline.ts) only when a real supersessionIndex is supplied. Never CURRENT_OPERATIVE by omission. */
+  supersessionStatus: NodeSupersessionStatus;
+  /** Always populated - explains supersessionStatus, mirroring DeterministicCandidate's own disclosure discipline. */
+  supersessionReason: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -165,6 +210,9 @@ export interface AuditFinding {
   semanticPromptVersion: string | null;
   providerIdentity: string | null;
   provenance: string;
+  /** Phase 3F.1.6.R BLOCKER-3 fix - see this file's own OPERATIVE-STATE DISCLOSURE header. Same fail-closed-by-default, pipeline.ts-re-tagged discipline as CoverageRegion.supersessionStatus. */
+  supersessionStatus: NodeSupersessionStatus;
+  supersessionReason: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -215,6 +263,9 @@ export interface CoverageMapEntry {
   auditorCandidate: boolean;
   materialFindingCount: number;
   unresolvedFindingCount: number;
+  /** Phase 3F.1.6.R BLOCKER-3 fix - carried forward from the entry's own source CoverageRegion (see this file's own OPERATIVE-STATE DISCLOSURE header). A consumer must check this is CURRENT_OPERATIVE before treating `state` as describing a presently-governing gap. */
+  supersessionStatus: NodeSupersessionStatus;
+  supersessionReason: string;
 }
 
 // ---------------------------------------------------------------------------

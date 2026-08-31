@@ -85,6 +85,8 @@ function makeCandidate(discoveryId: string, nodeKeys: string[]): DiscoveredCandi
     confidence: 0.9,
     sourceCitation: `doc-1::${nodeKeys[0]}`,
     discoveryRunVersion: "test",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
   };
 }
 

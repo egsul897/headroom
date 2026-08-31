@@ -61,14 +61,31 @@ function rule(overrides: Partial<IRRule>): IRRule {
 
 const emptyFindingsResponse = () => ({ findings: [], overallNotes: [] });
 
+/** Phase 3F.1-terminal Architecture Decision, Part A - a scripted "clean" answer for the second, semantic condition-suspicion gate (condition-suspicion-classifier.ts), for tests that need to exercise the deterministic-skip path in isolation from that gate's own real-model-vs-synthetic-fallback behavior. */
+const noConditionSuspectedResponse = () => ({ status: "NO_MATERIAL_CONDITION_SUSPECTED", evidence: [] });
+
 describe("Phase 3C - top-level verify orchestration", () => {
-  it("a straightforward, fully-reconciled single fixed basket SKIPS semantic review (task §32 conservative routing) and is VERIFIED_NO_MATERIAL_GAP_FOUND", async () => {
+  it("a straightforward, fully-reconciled single fixed basket, with the semantic condition-suspicion classifier ALSO explicitly confirming clean, SKIPS Layer 2 semantic review (task §32 + Architecture Decision's two-gate conservative routing) and is VERIFIED_NO_MATERIAL_GAP_FOUND", async () => {
     const text = "The Company may incur Indebtedness in an amount not to exceed $5,000,000.";
     const r = rule({ capacityExpression: { exprId: "e1", kind: "MONEY", type: "MONEY", amount: 5_000_000, currency: "USD" } });
     const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [r] }) };
-    const result = await verifyCompiledCandidate(input, { reviewCaller: fakeCaller(() => { throw new Error("must not be called"); }) });
+    const result = await verifyCompiledCandidate(input, {
+      reviewCaller: fakeCaller(() => { throw new Error("must not be called"); }),
+      conditionSuspicionCaller: fakeCaller(noConditionSuspectedResponse),
+    });
     expect(result.semanticReviewInvoked).toBe(false);
     expect(result.status).toBe("VERIFIED_NO_MATERIAL_GAP_FOUND");
+    expect(result.conditionSuspicion?.status).toBe("NO_MATERIAL_CONDITION_SUSPECTED");
+  });
+
+  it("the SAME straightforward candidate, but with no explicit condition-suspicion caller injected (production's real getStageCaller() default resolution, which in this test environment has no AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY and so falls back to the synthetic, non-judging stub) is conservatively routed TO Layer 2 rather than silently skipped - the classifier's own failure/no-real-judgment case must never be read as a clean answer", async () => {
+    const text = "The Company may incur Indebtedness in an amount not to exceed $5,000,000.";
+    const r = rule({ capacityExpression: { exprId: "e1", kind: "MONEY", type: "MONEY", amount: 5_000_000, currency: "USD" } });
+    const input: VerificationInput = { compilerInput: testCompilerInput({ operativeSourceText: text }), compilationResult: compilationResult({ rules: [r] }) };
+    const result = await verifyCompiledCandidate(input, { reviewCaller: fakeCaller(emptyFindingsResponse) });
+    expect(result.semanticReviewInvoked).toBe(true);
+    expect(result.conditionSuspicion?.status).toBe("UNCERTAIN");
+    expect(result.conditionSuspicion?.failed).toBe(true);
   });
 
   it("a genuine numeric gap (MATERIAL, COMPLETE rule) routes to semantic review and produces MATERIAL_DISCREPANCY status", async () => {

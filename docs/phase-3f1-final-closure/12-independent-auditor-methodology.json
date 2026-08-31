@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INDEPENDENT_AUDITOR_METHODOLOGY",
+  "assignments": [
+    { "auditor": "A", "scope": "FIX-1 structural heading (OPEN-1)", "artifact": "13-structural-recertification.json" },
+    { "auditor": "B", "scope": "FIX-2 context-evidence trust (OPEN-2)", "artifact": "14-context-evidence-recertification.json" },
+    { "auditor": "F", "scope": "FIX-3 total error classification (OPEN-6)", "artifact": "16-error-totality-recertification.json" }
+  ],
+  "commonRules": [
+    "Pinned to frozen commit b641ebfb9d1e9145470d06823b52c20dcd90e0a1. Forbidden from modifying production code (lib/, app/, prisma/).",
+    "Must write FRESH adversarial tests never seen by the Part A implementer - never rerun Part A's own tests as the sole evidence, and never merely rerun the implementer's own updates to the PRIOR phase's auditor files.",
+    "Never run prisma migrate dev/reset/db push. Exact-scoped test cleanup only.",
+    "Must manually inspect the actual production code, not just trust the Part A deliverable doc's own self-assessment.",
+    "Disposition: CERTIFIED_CLOSED or STILL_OPEN with concrete reproduction evidence."
+  ],
+  "open4RealModelValidation": {
+    "status": "NOT_DISPATCHED - ENVIRONMENT_BLOCKED before dispatch",
+    "reason": "A process-local probe (credential injected via env var for a single one-shot fetch call, never persisted to .env or any committed file) against the Vercel AI Gateway, run immediately before Part B dispatch, returned HTTP 402 'Team budget exceeded. Current spend: $50.05, limit: $50.00' - identical to the account state found by the prior auditor. Real cost incurred: $0.00 (rejected pre-billing). Per governing spec SS26 ('If the account still returns 402/budget exhaustion: final outcome is ENVIRONMENT_BLOCKED. Do not rewrite classifier code.'), no auditor was dispatched for OPEN-4 and condition-suspicion-classifier.ts / verify.ts's two-gate routing were not touched.",
+    "seeArtifact": "15-condition-real-model-validation.json"
+  }
+}

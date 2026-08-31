@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FOUR_TOOL_FIX",
+  "file": "lib/contract-model/compiler/semantic/tools.ts",
+  "perToolChange": [
+    {
+      "tool": "getParentClause",
+      "before": "const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, parent); ... outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus);",
+      "after": "const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, parent); const display = legacySupersessionDisplay(resolved); ... outcome.evidenceUnresolved = !resolved.evidenceCurrent;",
+      "whyChanged": "resolved.supersessionStatus no longer exists as a raw field on the new ResolvedNodeEvidence shape - evidenceCurrent is the single ground-truth boolean; legacySupersessionDisplay derives the wire-compatible supersessionStatus/supersessionReason display strings separately, purely for the JSON payload."
+    },
+    {
+      "tool": "getSiblingClauses",
+      "before": "const rendered = siblings.map(s => { const resolved = resolveNodeWithSupersessionAwareness(...); return {...supersessionStatus: resolved.supersessionStatus...}; }); outcome.evidenceUnresolved = rendered.some(r => !isConfirmedCurrentOperativeEvidence(r.supersessionStatus));",
+      "after": "const rendered = siblings.map(s => { const resolved = resolveNodeWithSupersessionAwareness(...); const display = legacySupersessionDisplay(resolved); return {...supersessionStatus: display.supersessionStatus, evidenceCurrent: resolved.evidenceCurrent}; }); outcome.evidenceUnresolved = rendered.some(r => !r.evidenceCurrent); (the evidenceCurrent field is stripped back out of the JSON payload before returning it, so the wire shape is unchanged)",
+      "whyChanged": "same reasoning as getParentClause; the whole-call fail-closed OR aggregation (any unresolved sibling flips the whole call) is unchanged, now driven by the corrected per-sibling evidenceCurrent."
+    },
+    {
+      "tool": "getReferencedProvision",
+      "before": "two call sites (fromNodeId relative-reference branch; absolute per-document-loop branch), each: const resolved = resolveNodeWithSupersessionAwareness(...); outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(resolved.supersessionStatus);",
+      "after": "both call sites: const resolved = resolveNodeWithSupersessionAwareness(...); const display = legacySupersessionDisplay(resolved); outcome.evidenceUnresolved = !resolved.evidenceCurrent;",
+      "whyChanged": "same reasoning, applied identically to both call sites within the tool."
+    },
+    {
+      "tool": "getChildren",
+      "before": "const parentSupersession = getNodeSupersessionStatus(supersessionIndex, node.documentId, node.nodeId); ... outcome.evidenceUnresolved = !isConfirmedCurrentOperativeEvidence(parentSupersession.status); (a bare physical-node check that NEVER consulted the parent's own OperativeProvisionView.status at all)",
+      "after": "const parentResolved = resolveParentSubstructureEvidence(access, supersessionIndex, node); const parentSupersessionStatus = parentResolved.evidenceCurrent ? 'CURRENT_OPERATIVE' : (parentResolved.nodeSupersessionStatus === 'KNOWN_SUPERSEDED' ? 'KNOWN_SUPERSEDED' : 'UNKNOWN_SUPERSESSION_STATUS'); outcome.evidenceUnresolved = !parentResolved.evidenceCurrent;",
+      "whyChanged": "getChildren's own 'separate, structurally different parentSupersession check' (per the task's own framing, confirmed correct) - it never called resolveNodeWithSupersessionAwareness, so it needed its OWN fix, not a reuse. The new resolveParentSubstructureEvidence requires BOTH nodeSupersessionStatus === CURRENT_OPERATIVE AND (no matching view exists OR the matching view's status is OPERATIVE_STATE_RESOLVED) - see 02-status-separation-design.json's 'whyGetChildrenIsSeparate' section for the full reasoning on why this combined rule (not a bare copy of resolveNodeWithSupersessionAwareness's trust rule) is correct."
+    }
+  ],
+  "newHelpersAdded": [
+    "ResolvedNodeEvidence (interface) - the fix's canonical evidence shape",
+    "resolveNodeWithSupersessionAwareness (rewritten in place, same name/call sites, new return type)",
+    "resolveParentSubstructureEvidence (new, getChildren-only)",
+    "legacySupersessionDisplay (new, wire-format adapter shared by all 4 call sites)"
+  ],
+  "eightCaseByFourToolMatrix": {
+    "description": "32 cells (8 cases x {getParentClause, getChildren, getSiblingClauses, getReferencedProvision}), verified in tests/contract-model/open2-terminal-four-tool-matrix.test.ts (8 tests, each asserting all 4 tools in one case at once = 32 assertions covering the full grid) plus tests/certification/open-2-recert-independent-fresh.test.ts and tests/contract-model/open2-terminal-clean-deletion.test.ts for full end-to-end (compile+verify+persist+fresh-DB-read) coverage of the highest-value cells.",
+    "requiredOutcome": "Cases 1-4 and 7: evidenceUnresolved MUST be true for all 4 tools (never persist as trusted VERIFIED). Cases 5, 6, and 8: evidenceUnresolved must NOT be true for all 4 tools EXCEPT the one deliberate, documented exception below.",
+    "deliberateException": "Case 6 (clean resolved amended-current-text control) x getChildren: evidenceUnresolved IS true, correctly - see 'whyGetChildrenIsSeparate' in 02-status-separation-design.json. This is not a bug; it is getChildren answering a genuinely different question (substructure validity) than the other 3 tools (text trustworthiness) for the one case where those two questions diverge.",
+    "cells": [
+      { "case": "1_already_effective_conflict", "description": "genuinely CONFLICTED, appliedChain non-empty (already past-dated) - already caught pre-fix via node-level KNOWN_SUPERSEDED", "getParentClause": "evidenceUnresolved=true (PASS, no regression)", "getChildren": "evidenceUnresolved=true (PASS, no regression)", "getSiblingClauses": "evidenceUnresolved=true (PASS, no regression)", "getReferencedProvision": "evidenceUnresolved=true (PASS, no regression)" },
+      { "case": "2_prospective_conflict", "description": "genuinely CONFLICTED, appliedChain EMPTY (signed/not-yet-effective) - THE CORE FIX TARGET, pre-fix all 4 tools reported evidenceUnresolved=false", "getParentClause": "evidenceUnresolved=true (FIXED)", "getChildren": "evidenceUnresolved=true (FIXED)", "getSiblingClauses": "evidenceUnresolved=true (FIXED, full E2E in open-2-recert-independent-fresh.test.ts section 4)", "getReferencedProvision": "evidenceUnresolved=true (FIXED)" },
+      { "case": "3_partial", "description": "real, resolved, dated, applied effect with no capturable newText (cause E)", "getParentClause": "evidenceUnresolved=true", "getChildren": "evidenceUnresolved=true", "getSiblingClauses": "evidenceUnresolved=true", "getReferencedProvision": "evidenceUnresolved=true" },
+      { "case": "4_review_required", "description": "effect.status REVIEW_REQUIRED with a real unresolvedReason", "getParentClause": "evidenceUnresolved=true", "getChildren": "evidenceUnresolved=true", "getSiblingClauses": "evidenceUnresolved=true", "getReferencedProvision": "evidenceUnresolved=true" },
+      { "case": "5_clean_current_control", "description": "no amendment activity at all for this section (no matching view) - pure node-supersession path, correctly CURRENT_OPERATIVE", "getParentClause": "evidenceUnresolved=false", "getChildren": "evidenceUnresolved=false", "getSiblingClauses": "evidenceUnresolved=false", "getReferencedProvision": "evidenceUnresolved=false" },
+      { "case": "6_clean_resolved_amended", "description": "single, non-conflicting, applied, past-dated amendment with real newText - view.status RESOLVED, currentText non-null", "getParentClause": "evidenceUnresolved=false", "getChildren": "evidenceUnresolved=TRUE (deliberate exception - see above)", "getSiblingClauses": "evidenceUnresolved=false", "getReferencedProvision": "evidenceUnresolved=false" },
+      { "case": "7_clean_deletion", "description": "real, applied DELETE_TEXT effect - status RESOLVED, currentText null (cause G)", "getParentClause": "evidenceUnresolved=true", "getChildren": "evidenceUnresolved=true", "getSiblingClauses": "evidenceUnresolved=true", "getReferencedProvision": "evidenceUnresolved=true (full dedicated regression in open2-terminal-clean-deletion.test.ts)" },
+      { "case": "8_known_superseded_no_view", "description": "no OperativeProvisionView matches this section at all, but a DIFFERENT (relabeled) provision's real applied effect recorded this physical node as superseded - pure node-supersession path, correctly unsafe", "getParentClause": "evidenceUnresolved=true", "getChildren": "evidenceUnresolved=true", "getSiblingClauses": "evidenceUnresolved=true", "getReferencedProvision": "evidenceUnresolved=true" }
+    ]
+  },
+  "preFixVsPostFixReproduction": {
+    "file": "tests/certification/open-2-recert-independent-fresh.test.ts",
+    "preFix": "Confirmed by running `npx vitest run tests/certification/open-2-recert-independent-fresh.test.ts` against the unmodified pre-fix code: 16/16 tests passed, including 5 FALSIFICATION-labeled assertions proving the exploit (getParentClause/getChildren/getSiblingClauses/getReferencedProvision all reported CURRENT_OPERATIVE/evidenceUnresolved-falsy for a genuinely CONFLICTED not-yet-applied provision, and the full compile->verify->persist->getTrustedSemanticTruth chain produced a persisted SemanticTruthRecord.trustStatus of VERIFIED).",
+    "postFix": "The same 5 assertions were updated in place (never deleted) to certify the fixed behavior: all 4 tools now correctly report evidenceUnresolved=true; compile.ts reaches REVIEW_REQUIRED (not COMPLETED); verify.ts reaches REVIEW_REQUIRED (not VERIFIED_*); persistSemanticTruthForInstrument stores trustStatus REVIEW_REQUIRED; getTrustedSemanticTruth returns zero trusted records for this instrument. Re-run post-fix: 16/16 pass."
+  }
+}

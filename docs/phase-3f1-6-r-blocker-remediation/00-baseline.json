@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "REMEDIATION_BASELINE",
+  "generatedAt": "2026-08-30T05:00:00Z",
+  "startingCommit": {
+    "sha": "77f6e11816b0a7e2b7ecdcb2a9105c325f1da82f",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "workingTreeStatus": "CLEAN at phase start"
+  },
+  "immutableCertificationConfirmation": {
+    "verdict": "PHASE_3F_1_6_FINAL_FOUNDATION_CERTIFICATION_FAILED",
+    "statement": "Not reinterpreted, not rerun. This phase treats the 11 certified BLOCKER findings in docs/phase-3f1-6-final-foundation-certification/30-certification-findings.json as the authoritative, frozen remediation backlog. No file under docs/phase-3f1-6-final-foundation-certification/ is modified by this phase.",
+    "md5ChecksumsAtPhaseStart": {
+      "01-historical-defect-ledger.json": "5a6ac8af0d9c4f46a420022afd7aa9ca",
+      "29-quality-gates.json": "831252b44cca891c96e1dbac59023fba",
+      "30-certification-findings.json": "aeb58d7d4d3f143e051d7c112269f979",
+      "31-final-verdict.json": "3b00ce994835c2eb098361cf5e6945d9"
+    },
+    "verifiedUnchangedAtPhaseClose": "See 26-diff-classification.json"
+  },
+  "schemaMigrationState": {
+    "command": "npx prisma migrate status",
+    "result": "27 migrations found, database schema up to date."
+  },
+  "postgresAvailability": {
+    "initialState": "DOWN at session start (pg_isready: no response).",
+    "action": "Started local Postgres cluster (pg_ctlcluster 16 main start) - local test infrastructure only, not a production code or data change, consistent with precedent from every prior phase.",
+    "resultAfterStart": "UP - pg_isready accepting connections; prisma migrate status confirms schema up to date."
+  },
+  "tscBaseline": {
+    "command": "npx tsc --noEmit -p .",
+    "result": "6 errors, byte-identical to the certified 3F.1.6 baseline: tests/foundation-audit/cascade-and-concurrency.test.ts (2), tests/foundation-audit/discovery-fault-injection.test.ts (1), tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts (3)."
+  },
+  "eslintBaseline": {
+    "command": "npx eslint .",
+    "result": "1 error, identical to the certified 3F.1.6 baseline: tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires."
+  },
+  "vitestBaseline": {
+    "command": "npx vitest run",
+    "result": "Reusing the certified 3F.1.6 close-of-phase result as this phase's own starting reference point (identical commit, no intervening changes): 202 test files (201 passed, 1 failed), 2043 tests (2042 passed, 1 failed) - the 1 failure is tests/extraction/vercel-ai-gateway-provider.test.ts, already fully diagnosed in 29-quality-gates.json as a pre-existing, out-of-certification-scope, environment-dependent anomaly unrelated to any of the 11 blockers this phase remediates. This phase's own 25-test-quality-gates.json records a fresh full re-run at phase close."
+  },
+  "buildBaseline": {
+    "command": "npm run build",
+    "result": "Confirmed succeeding at the certified 3F.1.6 close (21 routes) - re-verified fresh in this phase's own baseline run before any production change was made."
+  },
+  "frozenRemediationBacklogReference": "docs/phase-3f1-6-r-blocker-remediation/01-frozen-certification-blockers.json (verbatim copy of the 11 BLOCKER findings from 30-certification-findings.json, with this phase's own remediation-tracking fields added)."
+}

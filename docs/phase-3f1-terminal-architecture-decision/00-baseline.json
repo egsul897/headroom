@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-terminal-architecture-decision.v1",
+  "artifactId": "BASELINE",
+  "generatedAt": "2026-08-30T22:24:43Z",
+  "startingCommit": { "sha": "88f0b561d8d78049f8a374e52a66323959b4bc6f", "branch": "claude/headroom-scaffold-covenant-engine-jrijk8", "workingTreeStatus": "CLEAN" },
+  "productionFreezeLineage": { "priorRemediationFreezeSha": "f1d14003deeb9668cc0900f41c7aa7406acc4bd2", "note": "This phase's own starting commit (88f0b56) contains only Part B recertification test/artifact commits after f1d1400 - zero production diff, confirmed at the prior phase's own close." },
+  "postgresState": { "initialCheck": "DOWN (pg_isready: no response) - same recurring container-idle unclean-shutdown pattern documented in the prior phase (docs/test-infrastructure-incident-2026-08-30/09). Restarted via `service postgresql start`; WAL crash recovery ran automatically; `npx prisma migrate status` confirms 'Database schema is up to date!' after restart - no data lost." },
+  "isolatedTestInfrastructureState": "lib/testing/{disposable-db,ephemeral-db}.ts and scripts/check-destructive-db-patterns.ts present and unchanged since the prior phase; adversarial proof (tests/infrastructure/db-isolation-adversarial.test.ts) still in the tree.",
+  "regressionDbSnapshotAvailability": "A post-recovery pg_dump was delivered to the user directly at the close of the prior phase (not committed to git, per this project's own standing discipline against binary DB dumps in version control) - available on request, not re-taken here since no destructive event has occurred since.",
+  "immutableHistoricalArtifactsConfirmed": {
+    "docs/phase-3f1-6-final-foundation-certification/": "untouched",
+    "docs/phase-3f1-6-r-blocker-remediation/": "untouched",
+    "docs/phase-3f1-6-rx-final-blocker-closure/": "untouched",
+    "docs/phase-3f1-6-rx-final-terminal-closure/": "untouched (frozen at this phase's own prior close)",
+    "docs/test-infrastructure-incident-2026-08-30/": "untouched (frozen, infrastructure matter is CLOSED per this phase's own §0 instruction - not reopened)"
+  },
+  "priorPhaseVerdictInherited": "PHASE_3F_1_6_RX_FINAL_TERMINAL_CLOSURE_FAILED - 6 of 8 findings still genuinely open (FINDING-1, 2/3, 4, 5, 6, 8), FINDING-7 CERTIFIED_CLOSED. This phase exists to make the condition-verification architecture decision concrete, fix exactly the 6 open defects, and perform one final independent targeted recertification."
+}

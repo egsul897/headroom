@@ -159,7 +159,56 @@ import type { StructuralHealthState } from "../structural-coverage";
 // permanently retain the v1 strings they were sealed with and are never
 // rewritten. The AI Layer C prompt itself (ai-inventory.ts) was not
 // changed by this phase, so SEMANTIC_COVERAGE_PROMPT_VERSION stays v1.
-export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v2";
+// Phase 3F.1.6.R BLOCKER-8 bump (v2 -> v3): unit-hypothesis.ts's
+// hypothesizeUnitsForRegion now also applies findCoordinateClauseSplit
+// (a real detection-algorithm change - two claims fused in one
+// un-enumerated "clauseA and/or clauseB" sentence that independently match
+// different covenant families now split into 2 units instead of 1 - see
+// 11-claim-identity-remediation.json), so any previously-computed
+// semanticUnitId/frozenContentHash is correctly treated as belonging to a
+// different, stale algorithm version rather than silently reused.
+// Phase 3F.1.6.RX Workstream D bump (v3 -> v4, BLOCKER-8 + AUDIT-F4): CLAIM
+// IDENTITY V2 - findCoordinateClauseSplit now ALSO splits a same-family
+// fused sentence when each side states a disjoint, source-grounded numeric
+// value (e.g. two different-amount baskets of the SAME covenant family
+// bundled together) - another real detection-algorithm change, per this
+// constant's own established bump discipline. See
+// docs/phase-3f1-6-rx-final-blocker-closure/06-claim-identity-v2.json.
+// Phase 3F.1.6.RX-FINAL Part A Workstream C bump (v4 -> v5, FINDING-4): the
+// prior Part B recertification (docs/phase-3f1-6-rx-final-blocker-closure/
+// 26-part-b-blocker8-recertification.json) proved findCoordinateClauseSplit
+// performed AT MOST ONE split per region and never recursed, so a sentence
+// fusing THREE OR MORE independently-operative claims (same-family or
+// cross-family, no lettered markers) only partially separated - claims 2
+// and later collapsed into one semanticUnitId despite each carrying its own
+// distinguishing number. hypothesizeUnitsForRegion now calls the new
+// segmentCoordinateClauses (an iterative, N-ary, single-forward-pass
+// generalization over the same value-anchor/family-keyword qualification
+// rule, see unit-hypothesis.ts's own module doc comment) instead of the
+// single-split findCoordinateClauseSplit - a real detection-algorithm
+// change (both the resulting ANCHOR SPANS for any 3+-way fusion, and the
+// detectionSignature label format for every coordinate split, 2-way
+// included, change shape), so any previously-computed semanticUnitId is
+// correctly treated as belonging to a different, stale algorithm version
+// rather than silently reused. See docs/phase-3f1-6-rx-final-terminal-
+// closure/05-fused-claim-recursive-decomposition.json.
+// Phase 3F.1-terminal OPEN-3 bump (v5 -> v6, BLOCKER-8/AUDIT-F4's own
+// FINDING-4 recertification, docs/phase-3f1-6-rx-final-terminal-closure/
+// 16-part-b-finding4-recertification.json): segmentCoordinateClauses now (1)
+// recognizes a bare, non-numeric top-level comma as a candidate enumeration
+// delimiter (Oxford-comma lists like "A, B, C, or D" now decompose to their
+// true claim count instead of collapsing to 2), and (2) narrows the
+// modal-restatement guard to the specific delegated-second-actor
+// construction it was built for, rather than rejecting any right-hand
+// clause that merely starts with a bare modal verb (restated-modal
+// prohibition chains like "shall not X and shall not Y and shall not Z" now
+// decompose instead of collapsing entirely to 1). Both are real
+// detection-algorithm changes - resulting ANCHOR SPANS and unit counts for
+// these two realistic drafting patterns change - so any previously-computed
+// semanticUnitId is correctly treated as belonging to a different, stale
+// algorithm version rather than silently reused. See
+// docs/phase-3f1-terminal-architecture-decision/05-n-way-claim-decomposition.json.
+export const SEMANTIC_COVERAGE_ALGORITHM_VERSION = "phase-3f1-semantic-coverage.v6";
 export const SEMANTIC_COVERAGE_PROMPT_VERSION = "phase-3e-semantic-coverage-prompt.v1";
 export const SEMANTIC_COVERAGE_ROUTING_ALGORITHM_VERSION = "phase-3f1-semantic-coverage-router.v2";
 

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SIX_OPEN_DEFECTS",
+  "sourceOfTruth": "docs/phase-3f1-6-rx-final-terminal-closure/22-final-disposition-table.json (frozen, historical)",
+  "openDefects": [
+    { "id": "OPEN-1", "correspondsTo": "BLOCKER-1", "title": "Residual structural heading false negatives / rank-stack corruption", "productionFile": "lib/contract-model/compiler/stage-structure.ts" },
+    { "id": "OPEN-2", "correspondsTo": "BLOCKER-5/BLOCKER-6", "title": "getDefinition stale/ambiguous amendment safety", "productionFile": "lib/contract-model/compiler/semantic/tools.ts, lib/contract-model/compiler/amendment/pipeline.ts" },
+    { "id": "OPEN-3", "correspondsTo": "BLOCKER-8/AUDIT-F4", "title": "N-way fused claim decomposition incomplete", "productionFile": "lib/contract-model/compiler/semantic-coverage/{types,unit-hypothesis}.ts" },
+    { "id": "OPEN-4", "correspondsTo": "BLOCKER-9", "title": "Condition verification/routing architecture fails novel drafting - fourth consecutive recurrence, requires architecture replacement not another lexical patch", "productionFile": "lib/contract-model/compiler/semantic-verification/**" },
+    { "id": "OPEN-5", "correspondsTo": "AUDIT-F2", "title": "AnalysisRun stale-owner/zombie-writer fencing gap (persistSemanticTruthForInstrument check-then-act)", "productionFile": "lib/contract-model/analysis/{service,semantic-truth/service}.ts" },
+    { "id": "OPEN-6", "correspondsTo": "AUDIT-F7", "title": "Failure-recording path can itself fail unsafely (unwrapped console.error)", "productionFile": "lib/contract-model/analysis/orchestrator.ts" }
+  ],
+  "certifiedClosedNotReopened": ["AUDIT-F6 (product-flow gating)"],
+  "inheritedClosedBoundaries": ["BLOCKER-2", "BLOCKER-3", "BLOCKER-4", "BLOCKER-7", "BLOCKER-11", "AUDIT-F1", "AUDIT-F3", "AUDIT-F5", "durable SemanticTruthRecord architecture", "semantic persistence/reload", "source-trace referential integrity", "partial instrument failure persistence", "orchestrator supersession/lineage propagation", "tenant isolation", "14 permanent false-credit controls", "database/test isolation architecture", "the 2026-08-30 infrastructure incident itself (CLOSED as an infrastructure matter)"]
+}

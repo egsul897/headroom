@@ -11,9 +11,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
+    "prisma:migrate": "prisma migrate deploy",
     "prisma:seed": "tsx prisma/seed.ts",
-    "golden-test": "tsx scripts/golden-test.ts"
+    "golden-test": "tsx scripts/golden-test.ts",
+    "db:check-destructive-patterns": "tsx scripts/check-destructive-db-patterns.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.120.0",

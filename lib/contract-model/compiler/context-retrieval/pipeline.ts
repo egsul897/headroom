@@ -20,7 +20,8 @@
 import type { StructuralIndex } from "../structural-index";
 import type { DiscoveredCandidate } from "../discovery/types";
 import type { PackageGraphResult } from "../package-graph/types";
-import { createRetrievalState, type RetrievalState } from "./state";
+import type { NodeSupersessionIndex, OperativeContractState } from "../amendment/types";
+import { createRetrievalState, resolveDefinitionEvidenceState, type RetrievalState } from "./state";
 import { retrieveOperativeSource, retrieveParentScope, retrieveChildRules, retrieveSiblingContext } from "./structural-context";
 import { retrieveDirectDefinitions } from "./definition-graph";
 import { retrieveCrossReferencesFromNode, retrieveCrossReferencesFromDefinitionText } from "./reference-context";
@@ -55,6 +56,26 @@ export interface PackageAccess {
   packageGraph: PackageGraphResult | null;
   /** documentId -> normalizedTerm -> exactTerm, for every document's own declared definitions - used only for the cross-document/cross-instrument fallback (task §21), never for same-document resolution (definition-graph.ts's own exact index handles that). */
   exactTermsByDocument: Map<string, Map<string, string>>;
+  /**
+   * Phase 3F.1 FIX-2 ("trust metadata belongs to the evidence itself, not to
+   * the retrieval mechanism") - this instrument's own already-computed
+   * OperativeContractState (Phase 2G), and the matching NodeSupersessionIndex
+   * already built from it - passed straight through from the SAME values the
+   * orchestrator already threads into SemanticToolAccess for the model's own
+   * evidence tools (semantic/tools.ts), never re-derived a second time here.
+   * Every DEFINITION/SECTION-shaped item this pipeline retrieves is now
+   * routed through the SAME amendment-aware resolution discipline those
+   * tools already apply, so a CONFLICTED/AMBIGUOUS/superseded provision can
+   * never be silently embedded as current truth in the model's very first
+   * turn, before it has called any tool. Omitting both (undefined) degrades
+   * to the pre-existing behavior for this package: no operative-state check
+   * at all, every item's evidenceState conservatively defaults through the
+   * fail-closed EMPTY_SUPERSESSION_INDEX path (never upgraded to a false
+   * CURRENT claim - see resolveOperativeDefinitionEvidence/
+   * resolveOperativeSectionEvidence's own "never amended" convention).
+   */
+  operativeState?: OperativeContractState | null;
+  supersessionIndex?: NodeSupersessionIndex;
 }
 
 function computeSufficiencyState(state: RetrievalState): SufficiencyState {
@@ -95,7 +116,8 @@ function retrieveCrossDocumentDefinitionFallback(state: RetrievalState, access: 
       const fullText = access.index.getDefinitionFullText(resolved.exactTerm, resolved.documentId) ?? "";
       if (fullText.trim().length === 0) continue;
       if (!withinBudget(state, fullText.length)) return;
-      const item = addItem(state, makeItemInput("DEFINITION", resolved.documentId, null, null, resolved.exactTerm, `Definition of "${resolved.exactTerm}" (${resolved.documentId})`, fullText, `Term used in the covenant's own text but not declared in this document - resolved via ${resolved.resolutionPath}, never a whole-package search (task §21).`, 1, [operativeItemId], "PACKAGE_GRAPH", 0.8));
+      const evidenceState = resolveDefinitionEvidenceState(state, access.index, resolved.documentId, resolved.exactTerm);
+      const item = addItem(state, makeItemInput("DEFINITION", resolved.documentId, null, null, resolved.exactTerm, `Definition of "${resolved.exactTerm}" (${resolved.documentId})`, fullText, `Term used in the covenant's own text but not declared in this document - resolved via ${resolved.resolutionPath}, never a whole-package search (task §21).`, 1, [operativeItemId], "PACKAGE_GRAPH", 0.8, evidenceState));
       addEdge(state, operativeItemId, item.itemId, "DEPENDS_ON_DEFINITION", `Cross-document definition dependency (${resolved.resolutionPath}).`);
     } else {
       // Only surfaced as unresolved if the phrase is not a common non-defined capitalized phrase - a conservative bar (>=2 words, appears at least once) already filters most false positives; still, this is reported as LOW severity since many such phrases are legitimately not defined terms at all (a proper noun, a party name).
@@ -120,7 +142,7 @@ function retrieveCrossDocumentDefinitionFallback(state: RetrievalState, access: 
 export function buildCovenantContextBundle(input: BuildContextBundleInput, access: PackageAccess): CovenantContextBundle {
   const start = Date.now();
   const budget = input.budget ?? DEFAULT_RETRIEVAL_BUDGET;
-  const state = createRetrievalState(budget);
+  const state = createRetrievalState(budget, access.operativeState, access.supersessionIndex);
   const { candidate } = input;
   const documentId = candidate.documentId;
 
@@ -169,9 +191,72 @@ export function buildCovenantContextBundle(input: BuildContextBundleInput, acces
   return finalize(input, state, documentId, start);
 }
 
+/**
+ * Phase 3F.1.6.RX Workstream B (BLOCKER-2 real-consumer remediation).
+ *
+ * ROOT CAUSE (independent runtime trace, not merely re-reading 3F.1.6.R's
+ * own prose): `DiscoveredCandidate.supersessionStatus`/`supersessionReason`
+ * (BLOCKER-2's own fix in discovery/pass-d-reconcile.ts) already arrive
+ * here on `input.candidate` - `BuildContextBundleInput.candidate` IS a
+ * DiscoveredCandidate - but until this fix, `buildCovenantContextBundle`
+ * never read either field: `retrieveOperativeSource` cites the candidate's
+ * own structural node(s) via raw `StructuralIndex.getNodeText` with no
+ * supersession check of any kind, and neither field was ever copied onto
+ * the returned `CovenantContextBundle`. A KNOWN_SUPERSEDED candidate (Pass
+ * A/D already independently confirmed its own governing text no longer
+ * applies) therefore produced a bundle reporting `sufficiencyState:
+ * "SUFFICIENT"` with no disclosure whatsoever - of the 3 real downstream
+ * consumers BLOCKER-2's own certification named (context-retrieval,
+ * coverage-audit's discovery-comparison.ts, semantic-coverage's
+ * reconciliation.ts), NONE actually branches on
+ * `DiscoveredCandidate.supersessionStatus` in production - confirmed by
+ * direct grep, not assumption. This closes that gap for THIS consumer: a
+ * KNOWN_SUPERSEDED candidate now genuinely degrades this bundle's own
+ * sufficiencyState (a real behavioral effect, not decorative metadata),
+ * and every bundle discloses the real status/reason it was already handed.
+ *
+ * Deliberately NOT flagged for UNKNOWN_SUPERSESSION_STATUS (the honest
+ * "discovery itself had no real supersessionIndex" default) - matching
+ * every other layer's own established discipline (source-inventory.ts,
+ * semantic/tools.ts) of never treating "unknown" as an affirmatively
+ * confirmed problem, only ever KNOWN_SUPERSEDED is.
+ *
+ * DISCLOSED COUPLING (see this phase's own 04-operative-supersession-
+ * remediation.json): the ONE real production caller of
+ * buildCovenantContextBundle, lib/contract-model/analysis/orchestrator.ts,
+ * is Workstream H's own exclusive surface (BLOCKER-10/AUDIT-F1-F3/F6/F7) -
+ * this fix makes the consumer itself genuinely supersession-aware (proven
+ * by the new permanent test below), but until that orchestrator is also
+ * updated to read `candidate.supersessionStatus` (it does not need to -
+ * this fix requires no new parameter, since `candidate` is already its own
+ * input) this real capability is exercised by the real function on every
+ * real call, live or test - there is no additional wiring gap.
+ */
+function applySupersessionDisclosure(state: RetrievalState, candidate: BuildContextBundleInput["candidate"]): void {
+  if (candidate.supersessionStatus !== "KNOWN_SUPERSEDED") return;
+  state.unresolved.push({
+    originatingNodeKey: candidate.structuralNodeKeys[0] ?? null,
+    dependencyType: "SUPERSEDED_OPERATIVE_SOURCE",
+    sourceText: candidate.normalizedSourceRef,
+    attemptedResolution: "Read this candidate's own supersessionStatus, already computed by Pass A/D (discovery/pass-d-reconcile.ts) from a real NodeSupersessionIndex.",
+    reason: `This bundle's own originating candidate is KNOWN_SUPERSEDED: ${candidate.supersessionReason}`,
+    candidateTargets: [],
+    citation: candidate.sourceCitation,
+    severity: "HIGH",
+  });
+}
+
 function finalize(input: BuildContextBundleInput, state: RetrievalState, documentId: string, start: number): CovenantContextBundle {
   const { candidate, packageKey, companyId, instrumentKey } = input;
+  applySupersessionDisclosure(state, candidate);
   const sufficiencyState = computeSufficiencyState(state);
+
+  // Phase 3F.1 FIX-2 (§4 of the governing fix spec) - computed from the
+  // bundle's OWN items alone, independent of whether the model ever calls
+  // any evidence tool. semantic/compile.ts and semantic-verification/
+  // verify.ts both read this directly rather than re-scanning `items`
+  // themselves, so there is exactly one place this decision is made.
+  const unresolvedEvidenceItemIds = [...state.items.values()].filter((item) => item.evidenceState != null && !item.evidenceState.isCurrentTruth).map((item) => item.itemId);
   const contentIdentity = computeContentIdentity({
     discoveryId: candidate.discoveryId,
     discoveryRunVersion: candidate.discoveryRunVersion,
@@ -192,6 +277,8 @@ function finalize(input: BuildContextBundleInput, state: RetrievalState, documen
     originatingStructuralNodeIds: candidate.structuralNodeIds,
     normalizedSourceRef: candidate.normalizedSourceRef,
     originatingFamilies: candidate.families,
+    originatingSupersessionStatus: candidate.supersessionStatus,
+    originatingSupersessionReason: candidate.supersessionReason,
     items: [...state.items.values()],
     edges: state.edges,
     unresolvedDependencies: state.unresolved,
@@ -201,6 +288,8 @@ function finalize(input: BuildContextBundleInput, state: RetrievalState, documen
     contentIdentity,
     sufficiencyState,
     stopReasons: [...state.stopReasons],
+    hasUnresolvedOperativeEvidence: unresolvedEvidenceItemIds.length > 0,
+    unresolvedEvidenceItemIds,
     performance: {
       itemsConsidered: state.itemsConsidered,
       itemsRetained: state.items.size,

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FOUR_TOOL_RECERTIFICATION",
+  "auditorRole": "SECOND, INDEPENDENT recertification auditor - not the implementer of commit b3773adb8643d83cb2c57c029aef7eded59199ec (\"OPEN-2 terminal trust correction (Part A): fix resolveNodeWithSupersessionAwareness\"), and not the auditor who wrote tests/certification/open-2-recert-independent-fresh.test.ts.",
+  "pinnedProductionCommit": "b3773adb8643d83cb2c57c029aef7eded59199ec",
+  "auditCommit": "6003fcda3db4f189e0447e3285bc77371cf3463c",
+  "OVERALL_DISPOSITION": "STILL_OPEN",
+  "overallDispositionReason": "3 of the 4 previously-unsafe tools (getParentClause, getSiblingClauses, getReferencedProvision) remain STILL_OPEN against a fresh, independently-discovered exploit variant the implementer's own fix, 32-cell matrix, and fresh-fixture certification file never constructed. getChildren is CERTIFIED_CLOSED and immune to this variant. Per the assignment's own overall-disposition rule (CERTIFIED_CLOSED requires ALL FOUR individually closed), OPEN-2 as a whole is STILL_OPEN.",
+  "independentRootCauseRederivation": {
+    "method": "Read lib/contract-model/compiler/semantic/tools.ts (all 1004 lines) and lib/contract-model/compiler/amendment/operative-state.ts (all 986 lines) / types.ts (all 369 lines) directly, before reading any of the implementer's own docs 01-12.",
+    "confirmedAgainstImplementerClaim": true,
+    "findings": [
+      "resolveNodeWithSupersessionAwareness (tools.ts lines ~293-331) is the shared helper used by getParentClause, getSiblingClauses, getReferencedProvision (both its absolute-ref and fromNodeId/relative-ref resolution branches) - confirmed by direct call-site read, not assumed from the implementer's report.",
+      "getChildren does NOT call resolveNodeWithSupersessionAwareness - confirmed: it has its own dedicated resolveParentSubstructureEvidence (tools.ts lines ~363-379), which answers a genuinely different question (parent substructure validity) and, critically for this audit, NEVER branches on currentText null-ness at all - only on view.status directly (`viewBlocksTrust = view !== undefined && view.status !== \"OPERATIVE_STATE_RESOLVED\"`). This structural difference is exactly why getChildren survives the fresh exploit variant found below while its 3 siblings do not.",
+      "The ORIGINAL OPEN-2 defect (view.currentText null discarding view.status entirely, falling back to raw node-level supersession) is genuinely fixed for the shapes the implementer's own matrix covers: CONFLICTED (already-effective and prospective), PARTIAL-via-ambiguous/unresolved-target, REVIEW_REQUIRED-via-effect.status-field-on-a-dated-effect, and clean deletion. Independently reproduced via 27 fresh, non-duplicated test cases in tests/certification/open2-terminal-independent-recert-fresh2.test.ts sections 1-9 (mixed applied+prospective chains, exact-boundary effective dates, genuinely ambiguous physical targets, the fromNodeId relative-reference code path, 3-sibling aggregate masking, and clean-deletion via getParentClause/getChildren) - all pass, all confirming the fix holds for those shapes.",
+      "STILL-OPEN RESIDUAL FOUND: resolveNodeWithSupersessionAwareness's own `if (view.currentText !== null && view.currentText !== undefined)` branch (tools.ts line ~298) is taken UNCONDITIONALLY whenever currentText is non-null - it never re-checks view.status inside that branch. The function's own header comment (tools.ts lines ~250-252) claims this is safe because 'by buildProvisionView's own invariant this only ever happens when view.status === OPERATIVE_STATE_RESOLVED.' That claim is FALSE. buildProvisionView (operative-state.ts) only explicitly nulls currentText in 3 places: (a) inside the applied-chain loop, for a DELETE/no-newText effect, (b) the hasConflict branch, (c) the targetUnresolved||structuralHealthUnsafe branch. When a provision's status is OPERATIVE_STATE_REVIEW_REQUIRED PURELY because of an AMENDMENT_SEQUENCE_UNRESOLVED conflict (an effect with a genuinely unresolvable EffectiveDateResult - CONDITIONAL_UNRESOLVED or UNKNOWN, e.g. an amendment 'effective upon satisfaction of the Merger Condition, not yet obtained') and hasConflict/targetUnresolved/structuralHealthUnsafe are all false, NONE of the 3 explicit-null sites run for that effect (appliedChain's own filter is `e.effectiveDate.date !== null && ... <= asOfMs`, so an undated effect never enters the loop at all), so currentText is left as whatever it was before - the untouched base-document text (non-null) when this is the provision's only effect, or a real applied predecessor's own newText when a dated effect also applied earlier in the same chain. Either way, view.status is honestly REVIEW_REQUIRED, currentText is honestly non-null, and resolveNodeWithSupersessionAwareness reports evidenceCurrent:true - the exact class of defect (text-selection state silently gating trust-selection) OPEN-2 Part A was supposed to close in general, surviving in one specific, realistic corner it did not construct a test for."
+    ]
+  },
+  "perToolDisposition": [
+    {
+      "tool": "getParentClause",
+      "disposition": "STILL_OPEN",
+      "evidence": {
+        "safeShapesConfirmed": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts sections 1, 2, 6 (mixed-chain, boundary-date, clean-deletion) - all correctly fail closed or safely current as required.",
+        "reproduction": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 10, test 'CONFIRMS the bug is genuinely cross-tool' and section 10's own SETUP - a REVIEW_REQUIRED provision (AMENDMENT_SEQUENCE_UNRESOLVED, sole effect has a CONDITIONAL_UNRESOLVED effective date) reports supersessionStatus CURRENT_OPERATIVE and evidenceUnresolved not true.",
+        "cleanControlCase": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 6, test 'CONTROL: a never-amended sibling...remains safely current for both tools' - passes; the tool is not universally broken, only for this specific status/currentText combination."
+      }
+    },
+    {
+      "tool": "getChildren",
+      "disposition": "CERTIFIED_CLOSED",
+      "evidence": {
+        "safeShapesConfirmed": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts sections 2 (boundary conflict), 6 (clean deletion, queried on the deleted section's own node - a novel construction the implementer's own clean-deletion file never tried) - fails closed correctly in every fresh shape attempted.",
+        "immunityToResidualFinding": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 10's cross-tool test explicitly confirms getChildren correctly reports parentSupersessionStatus NOT CURRENT_OPERATIVE and evidenceUnresolved:true for the SAME REVIEW_REQUIRED-with-non-null-currentText fixture that defeats the other 3 tools - because resolveParentSubstructureEvidence never branches on currentText at all.",
+        "cleanControlCase": "tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 6's control test."
+      }
+    },
+    {
+      "tool": "getSiblingClauses",
+      "disposition": "STILL_OPEN",
+      "evidence": {
+        "safeShapesConfirmed": "sections 2 (boundary control - correctly safe), 3 (ambiguous-target PARTIAL - correctly fails closed), 5 (3-sibling aggregate masking - the one bad apple correctly fails the whole call closed while the 2 clean siblings are not blanket-flagged).",
+        "reproduction": "section 10's cross-tool test and the dedicated end-to-end test (section 10, 'END TO END, REAL POSTGRES') - a getSiblingClauses call reaching the REVIEW_REQUIRED section reports the sibling supersessionStatus CURRENT_OPERATIVE and evidenceUnresolved not true, propagating all the way to a persisted VERIFIED SemanticTruthRecord (see 15-persistence-recertification.json).",
+        "aggregateMaskingConfirmedSafeElsewhere": "section 5's 3-sibling test confirms the OR-aggregation logic ITSELF is correct - the residual defect is entirely in the per-sibling evidenceCurrent computation (shared with getParentClause/getReferencedProvision via resolveNodeWithSupersessionAwareness), not in how getSiblingClauses aggregates across siblings."
+      }
+    },
+    {
+      "tool": "getReferencedProvision",
+      "disposition": "STILL_OPEN",
+      "evidence": {
+        "safeShapesConfirmed": "section 1 (mixed applied+prospective chain, absolute ref) - correctly fails closed.",
+        "reproduction_absoluteRefPath": "section 10's cross-tool test - ref:\"66.60\" against the REVIEW_REQUIRED fixture reports CURRENT_OPERATIVE.",
+        "reproduction_fromNodeIdPath": "section 4's dedicated test (the OTHER code path, never exercised by the implementer's own fresh certification file, which only ever calls this tool with an absolute ref) - a real DetectedReference resolved via findReferencesFrom, targeting the same REVIEW_REQUIRED shape, ALSO reports CURRENT_OPERATIVE with a supersessionReason that literally names 'operative status OPERATIVE_STATE_REVIEW_REQUIRED' in the same sentence as 'resolved... current' - both the absolute and relative resolution branches share the identical underlying resolveNodeWithSupersessionAwareness call and are equally affected.",
+        "cleanControlCase": "section 6's control test (via getReferencedProvision on a never-amended sibling in the same clean-deletion state)."
+      }
+    }
+  ],
+  "checklistResults": {
+    "item1_independentRootCauseRederivation": "DONE - see independentRootCauseRederivation above. Confirms the implementer's stated root cause and fix shape for the ORIGINAL defect, and identifies one additional, still-open residual the implementer's own design comment misstates as impossible.",
+    "item2_originalExploitReproduction": "CONFIRMED CLOSED for the original exploit shape as literally specified (signed-but-not-yet-effective CONFLICTED, currentText null, base node not superseded, via getSiblingClauses) - fresh, independently-constructed reproduction in tests/certification/open2-terminal-independent-recert-fresh2.test.ts section 9a: evidenceUnresolved=true, compile status REVIEW_REQUIRED, verify status REVIEW_REQUIRED (not VERIFIED_*), and a fresh Postgres read confirms trustStatus REVIEW_REQUIRED (never VERIFIED). See 15-persistence-recertification.json.",
+    "item3_freshConflictTimingCombinations": "DONE - sections 1 (mixed applied+prospective chain), 2 (exact analysis-boundary effective date, both conflict and clean-control shapes), 3 (genuinely ambiguous physical target via a real duplicate section label), 4 (fromNodeId relative-reference path against REVIEW_REQUIRED), applied to different tools than the implementer's own primary examples throughout.",
+    "item4_allFourToolsAttacked": "DONE - every one of the 4 tools has at least one fresh unsafe case and one fresh clean-current control case in this file (see perToolDisposition above for citations); 3 of the 4 additionally have a fresh STILL-OPEN reproduction.",
+    "item5_threeSafeToolsNoRegression": "CONFIRMED - see 14-three-safe-tool-regression.json. Additionally and materially: getOperativeProvision, getDefinition, and getRelatedAmendments were independently tested against the SAME REVIEW_REQUIRED-with-non-null-currentText fixture that defeats the other 3 tools, and all 3 correctly fail closed (they derive evidenceUnresolved from view.status directly, never via a currentText-gated shortcut) - confirming the residual finding above is scoped exactly to the shared resolveNodeWithSupersessionAwareness helper, not a systemic issue.",
+    "item6_aggregateSiblingChildrenMasking": "CONFIRMED SAFE - section 5 (3 siblings, only 1 unresolved: the whole getSiblingClauses call correctly fails closed while the 2 clean siblings are not blanket-flagged). getChildren's own 'aggregate' is a single parent-level verdict (it does not evaluate children individually), confirmed correct regardless of child count in section 2's boundary-conflict test (2 children present) and section 6 (1 child present).",
+    "item7_cleanDeletionSpecialCase": "CONFIRMED, with FRESH tool attacks (getParentClause and getChildren - the implementer's own clean-deletion file only used getReferencedProvision/getSiblingClauses) - section 6. Distinguishable from a genuine unresolved conflict via the disclosed reason string ('validly deleted', never 'not confidently resolved') in every case tested, including the new getChildren-on-the-deleted-node's-own-children case (which fails closed for the deletion's own node-level supersession record, not merely inherited PARTIAL/CONFLICTED status).",
+    "item8_persistedTrustEndToEnd_realPostgres": "DONE - see 15-persistence-recertification.json for both the original-exploit-closure confirmation and the new-finding STILL-OPEN confirmation, both read back from a fresh Postgres query after a real compile->verify->persist chain."
+  },
+  "qualityGates": {
+    "tscNewErrors": 0,
+    "tscBaselineUnchanged": "6 pre-existing errors, identical 3 files (tests/foundation-audit/cascade-and-concurrency.test.ts, tests/foundation-audit/discovery-fault-injection.test.ts, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts) - confirmed via `npx tsc --noEmit -p .`.",
+    "eslintNewErrors": 0,
+    "eslintBaselineUnchanged": "1 pre-existing error, tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169 - confirmed via `npx eslint .`; this file's own new test file lints clean individually.",
+    "targetedRegression": "`npx vitest run tests/contract-model tests/foundation-audit tests/certification` - 204 files, 2329 tests, ALL PASSING (includes this audit's own 27 new tests).",
+    "noProductionCodeModified": "Confirmed via `git status`/`git diff` before writing this doc - only new files under tests/certification/ and docs/open2-terminal-trust-correction/ were added; lib/, app/, prisma/ untouched.",
+    "noPrismaMigrateCommandsRun": true
+  },
+  "filesAddedByThisAudit": [
+    "tests/certification/open2-terminal-independent-recert-fresh2.test.ts"
+  ]
+}

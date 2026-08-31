@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_DISPOSITIONS",
+  "open2PerTool": [
+    {
+      "tool": "getChildren",
+      "disposition": "CERTIFIED_CLOSED",
+      "reason": "Uses its own dedicated status-only parent-substructure trust resolver, never the ambiguous currentText!==null branch. Independently confirmed safe against both the original exploit shape and the auditor's fresh REVIEW_REQUIRED/AMENDMENT_SEQUENCE_UNRESOLVED construction."
+    },
+    {
+      "tool": "getParentClause",
+      "disposition": "STILL_OPEN",
+      "reason": "resolveNodeWithSupersessionAwareness's currentText!==null branch is taken unconditionally, without re-checking view.status. Its own header comment claims this only happens when status===RESOLVED - independently proven false: a provision honestly OPERATIVE_STATE_REVIEW_REQUIRED via AMENDMENT_SEQUENCE_UNRESOLVED (a real, signed amendment with a genuinely conditional/unresolved effective date) never enters appliedChain, so currentText remains the untouched, non-null base text. Reaches evidenceUnresolved: false, compile COMPLETED, verify VERIFIED_*, and a real persisted SemanticTruthRecord.trustStatus of VERIFIED."
+    },
+    {
+      "tool": "getSiblingClauses",
+      "disposition": "STILL_OPEN",
+      "reason": "Same root cause as getParentClause - shares the same helper's unconditional currentText!==null branch."
+    },
+    {
+      "tool": "getReferencedProvision",
+      "disposition": "STILL_OPEN",
+      "reason": "Same root cause, confirmed in both its absolute-reference and fromNodeId-scoped resolution paths."
+    }
+  ],
+  "open2Overall": "STILL_OPEN",
+  "inheritedNotReopened": [
+    { "id": "OPEN-1", "disposition": "INHERITED_CERTIFIED_CLOSED", "note": "Structural triage/classifier files absent from the production diff since b3773ad." },
+    { "id": "OPEN-3", "disposition": "INHERITED_CERTIFIED_CLOSED", "note": "N-way decomposition files absent from the production diff. Its own timing-sensitive tests remain confirmed flaky, unrelated to this phase's single-file change." },
+    { "id": "OPEN-4", "disposition": "ENVIRONMENT_BLOCKED", "note": "Gateway budget still exhausted; production code untouched; holdout not run (moot given OPEN-2 result)." },
+    { "id": "OPEN-5", "disposition": "INHERITED_CERTIFIED_CLOSED", "note": "Fencing files absent from the production diff." },
+    { "id": "OPEN-6", "disposition": "INHERITED_CERTIFIED_CLOSED", "note": "Error-totality files absent from the production diff." }
+  ]
+}

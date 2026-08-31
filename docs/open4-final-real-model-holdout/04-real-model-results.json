@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "REAL_MODEL_RESULTS",
+  "status": "NOT_EXECUTED",
+  "reason": "Provider precondition failed (01-provider-precondition.json) before any of the 22 frozen cases could be run. Per governing spec SS1, execution stops at the precondition gate. Zero real calls made this session; zero cases classified.",
+  "priorAttemptsOnRecord": "Every prior phase's attempt to run this exact holdout (docs/phase-3f1-terminal-architecture-decision/19-condition-architecture-recertification.json) hit the identical HTTP 402 budget-exhaustion condition - no case in this holdout has ever reached a real model call in any session."
+}

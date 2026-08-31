@@ -1,0 +1,986 @@
+[
+  {
+    "id": "M1",
+    "isMaterial": true,
+    "category": "temporal trigger",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "Commencing with the fiscal quarter that begins immediately after the second anniversary of the Closing Date",
+        "description": "The dividend permission is temporally gated - it does not commence until the fiscal quarter beginning after the second anniversary of the Closing Date. Omitting this would materially misstate the permission as available immediately/unconditionally.",
+        "category": "TEMPORAL_DEPENDENCY"
+      },
+      {
+        "sourceSpan": "the Company may declare and pay dividends not to exceed $2,150,000 per quarter",
+        "description": "The permission is capped/limited to a specific dollar amount per quarter, a quantitative condition on the scope of the right that must be preserved in any downstream representation.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:28:30.534Z",
+      "inputTokens": 3741,
+      "outputTokens": 292,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 6340,
+      "calculatedCostUsd": 0.010402
+    },
+    "latencyMs": 6341
+  },
+  {
+    "id": "M2",
+    "isMaterial": true,
+    "category": "event trigger (subjunctive, novel modal)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "Were the Company to complete a Qualified Equity Offering, the Company may apply the proceeds thereof to redeem outstanding Notes",
+        "description": "Subjunctive inversion establishing that the permission to apply proceeds to redeem Notes is entirely conditioned on the occurrence of a Qualified Equity Offering; omitting this event dependency would materially misstate the redemption right as unconditional.",
+        "category": "EVENT_DEPENDENCY"
+      },
+      {
+        "sourceSpan": "in an amount not to exceed $10,400,000",
+        "description": "A quantitative cap/proviso limiting the amount of proceeds that may be applied to redemption, which qualifies the scope of the permission granted.",
+        "category": "EXCEPTION_OR_PROVISO"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:28:36.875Z",
+      "inputTokens": 3739,
+      "outputTokens": 293,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 4097,
+      "calculatedCostUsd": 0.010408
+    },
+    "latencyMs": 4097
+  },
+  {
+    "id": "M3",
+    "isMaterial": true,
+    "category": "passive condition",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "is discharged the moment the Company's independent auditor delivers the compliance certificate to the Administrative Agent",
+        "description": "The discharge of the reporting obligation is entirely conditioned on a future event (delivery of the compliance certificate by the auditor to the Administrative Agent). Representing this obligation as unconditionally ongoing or unconditionally discharged, without capturing that it terminates only upon this specific triggering event, would materially misstate the provision.",
+        "category": "EVENT_DEPENDENCY"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:28:40.972Z",
+      "inputTokens": 3725,
+      "outputTokens": 332,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 4681,
+      "calculatedCostUsd": 0.01077
+    },
+    "latencyMs": 4681
+  },
+  {
+    "id": "M4",
+    "isMaterial": true,
+    "category": "no-default requirement (novel phrasing)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "requires the absence, at the time of the borrowing request, of any circumstance described in Article VII",
+        "description": "Drawdown is conditioned on there being no circumstance described in Article VII at the time of the borrowing request - an eligibility/temporal condition on the right to draw under the Incremental Facility.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "any circumstance described in Article VII",
+        "description": "The actual substance of what disqualifies a drawdown is defined elsewhere, in Article VII, incorporated here by cross-reference; omitting this dependency would drop the real limiting content.",
+        "category": "CROSS_REFERENCE_CONDITION"
+      },
+      {
+        "sourceSpan": "at the time of the borrowing request",
+        "description": "The absence-of-circumstance test is measured as of a specific point in time (the borrowing request), making the condition also a temporal dependency.",
+        "category": "TEMPORAL_DEPENDENCY"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:28:45.654Z",
+      "inputTokens": 3722,
+      "outputTokens": 417,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 5387,
+      "calculatedCostUsd": 0.011614
+    },
+    "latencyMs": 5388
+  },
+  {
+    "id": "M5",
+    "isMaterial": true,
+    "category": "ratio / pro-forma compliance (novel phrasing)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "The Company may complete the proposed acquisition only when, measured as though the acquisition had already closed, the Consolidated Leverage Ratio would not exceed 4.25 to 1.00.",
+        "description": "The permission to complete the acquisition is conditioned on a pro forma financial test (leverage ratio not exceeding 4.25:1.00 measured as if the acquisition had closed). Omitting this condition would materially misstate an unconditional permission where one does not exist.",
+        "category": "PRO_FORMA_REQUIREMENT"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:28:51.042Z",
+      "inputTokens": 3739,
+      "outputTokens": 219,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 4130,
+      "calculatedCostUsd": 0.009668
+    },
+    "latencyMs": 4131
+  },
+  {
+    "id": "M6",
+    "isMaterial": true,
+    "category": "after-giving-effect (novel phrasing)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "Once the proposed Investment closes",
+        "description": "The entire EBITDA test and resulting permission are triggered only upon closing of the proposed Investment - a temporal/event trigger that gates when the test applies.",
+        "category": "TEMPORAL_DEPENDENCY"
+      },
+      {
+        "sourceSpan": "treating its full financial impact as already realized",
+        "description": "This is a pro forma calculation instruction requiring the Investment's financial impact to be assumed as already realized when computing Consolidated EBITDA - materially changes how the ratio is computed versus an unconditional actual-basis calculation.",
+        "category": "PRO_FORMA_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "Consolidated EBITDA must remain at least $50,000,000 in order for the Investment to have been permitted",
+        "description": "Permission for the Investment is conditioned on satisfying a minimum EBITDA threshold on a pro forma basis; omitting this eligibility gate would materially misstate the Investment as unconditionally permitted.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:28:55.172Z",
+      "inputTokens": 3739,
+      "outputTokens": 523,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 6526,
+      "calculatedCostUsd": 0.012708
+    },
+    "latencyMs": 6526
+  },
+  {
+    "id": "M7",
+    "isMaterial": true,
+    "category": "before-and-after (novel phrasing)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "The Total Leverage Ratio must satisfy the 4.00 to 1.00 threshold both at the moment just preceding the incurrence and again once the incurrence is complete",
+        "description": "The permission to incur additional Indebtedness is conditioned on a pro forma leverage ratio test that must be satisfied at two distinct points in time (immediately before and immediately after the incurrence). Omitting this dual-point pro forma testing requirement would materially misstate the actual gating condition on the Indebtedness incurrence.",
+        "category": "PRO_FORMA_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "in order for the additional Indebtedness not to exceed $3,600,000 to be permitted",
+        "description": "The permission itself is expressly capped and made contingent on both the dollar limitation and satisfaction of the leverage ratio test described earlier in the sentence - a compound eligibility condition whose omission would let a downstream representation state an unconditional or uncapped incurrence right.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "both at the moment just preceding the incurrence and again once the incurrence is complete",
+        "description": "Temporal dependency: the ratio must be tested at two specific moments in time relative to the incurrence event, not merely once or continuously - a specific temporal gating structure that materially affects compliance testing.",
+        "category": "TEMPORAL_DEPENDENCY"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:01.699Z",
+      "inputTokens": 3765,
+      "outputTokens": 690,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 7762,
+      "calculatedCostUsd": 0.01443
+    },
+    "latencyMs": 7763
+  },
+  {
+    "id": "M8",
+    "isMaterial": true,
+    "category": "satisfaction prerequisite (novel phrasing)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "becomes operative the moment the Required Lenders confirm receipt of the updated collateral schedule",
+        "description": "The Administrative Agent's consent to the Asset Sale is expressly conditioned on a future event - confirmation of receipt of the updated collateral schedule by the Required Lenders. A representation stating the consent as unconditional or immediately effective would materially misstate this dependency.",
+        "category": "EVENT_DEPENDENCY"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:09.461Z",
+      "inputTokens": 3732,
+      "outputTokens": 188,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 3441,
+      "calculatedCostUsd": 0.009344
+    },
+    "latencyMs": 3441
+  },
+  {
+    "id": "M9",
+    "isMaterial": true,
+    "category": "condition inside a defined term",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "with respect to any Note redeemed by the Company at a time when the Company's long-term corporate rating has not been withdrawn or downgraded below Ba3, 101% of the principal amount thereof, and otherwise 103% of the principal amount thereof",
+        "description": "The applicable redemption price (101% vs 103%) is entirely conditioned on whether the Company's long-term corporate rating has been withdrawn or downgraded below Ba3 at the time of redemption. Omitting this rating-status condition would materially misstate which price applies.",
+        "category": "EVENT_DEPENDENCY"
+      },
+      {
+        "sourceSpan": "and otherwise 103% of the principal amount thereof",
+        "description": "This is an exception/fallback clause that only applies when the preceding rating condition is not satisfied, forming a proviso structure that must be preserved to avoid misrepresenting the pricing rule.",
+        "category": "EXCEPTION_OR_PROVISO"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:12.903Z",
+      "inputTokens": 3773,
+      "outputTokens": 381,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 5172,
+      "calculatedCostUsd": 0.011356
+    },
+    "latencyMs": 5174
+  },
+  {
+    "id": "M10",
+    "isMaterial": true,
+    "category": "condition by cross-reference (novel connective)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "The scope of Permitted Liens available to the Company is delineated by Schedule 6.02",
+        "description": "The actual scope of what liens are permitted is defined by reference to an external schedule, not stated in the excerpt itself - omitting this cross-reference would materially misrepresent the actual limiting content.",
+        "category": "CROSS_REFERENCE_CONDITION"
+      },
+      {
+        "sourceSpan": "no Lien outside that Schedule's enumerated categories may be incurred without the prior written consent of the Required Lenders",
+        "description": "The prohibition on incurring liens outside the scheduled categories is qualified by an exception permitting such liens if the Required Lenders give prior written consent - a conditional carve-out whose omission would materially change the scope of the prohibition.",
+        "category": "EXCEPTION_OR_PROVISO"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:18.076Z",
+      "inputTokens": 3748,
+      "outputTokens": 406,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 5335,
+      "calculatedCostUsd": 0.011556
+    },
+    "latencyMs": 5335
+  },
+  {
+    "id": "M11",
+    "isMaterial": true,
+    "category": "nested proviso (archaic connective)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "save that Indebtedness incurred to finance a Permitted Acquisition shall not count toward such cap",
+        "description": "Creates an exception to the $4,000,000 aggregate Indebtedness cap for Indebtedness incurred to finance a Permitted Acquisition, itself dependent on the cross-referenced definition of 'Permitted Acquisition'.",
+        "category": "EXCEPTION_OR_PROVISO"
+      },
+      {
+        "sourceSpan": "save further that such excluded Indebtedness must itself be repaid in full within 180 days of incurrence or it shall thereafter count toward the cap retroactively",
+        "description": "A nested proviso conditioning the continued exclusion of the Permitted Acquisition financing on timely repayment within a 180-day window, with a retroactive event-triggered reversal if that temporal condition is not met.",
+        "category": "TEMPORAL_DEPENDENCY"
+      },
+      {
+        "sourceSpan": "or it shall thereafter count toward the cap retroactively",
+        "description": "The failure to repay within the stated period is an event that retroactively changes whether the Indebtedness counts toward the cap, a material event-dependent outcome.",
+        "category": "EVENT_DEPENDENCY"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:23.411Z",
+      "inputTokens": 3794,
+      "outputTokens": 502,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 6369,
+      "calculatedCostUsd": 0.012608
+    },
+    "latencyMs": 6369
+  },
+  {
+    "id": "M12",
+    "isMaterial": true,
+    "category": "exception conditioned on a separate fact (novel phrasing)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "this prohibition does not apply, however, to a single dividend declared within 60 days of an underwritten primary equity offering that raises gross proceeds of at least $25,000,000",
+        "description": "The general prohibition on Restricted Payments is subject to a carve-out that itself depends on multiple conjunctive conditions: the dividend must be a single dividend, declared within a 60-day window tied to an equity offering event, and that offering must raise gross proceeds meeting a $25,000,000 threshold. Omitting any of these qualifying facts would materially misstate the scope of the exception.",
+        "category": "EXCEPTION_OR_PROVISO"
+      },
+      {
+        "sourceSpan": "declared within 60 days of an underwritten primary equity offering",
+        "description": "A temporal window condition ties the exception's availability to timing relative to the equity offering event.",
+        "category": "TEMPORAL_DEPENDENCY"
+      },
+      {
+        "sourceSpan": "that raises gross proceeds of at least $25,000,000",
+        "description": "An eligibility threshold on the amount of proceeds raised by the offering, which gates whether the exception is available at all.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:29.780Z",
+      "inputTokens": 3747,
+      "outputTokens": 429,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 5615,
+      "calculatedCostUsd": 0.011784
+    },
+    "latencyMs": 5615
+  },
+  {
+    "id": "M13",
+    "isMaterial": true,
+    "category": "inverted syntax, zero conditional connective",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "A Permitted Acquisition consummated using more than 50% Equity Interests as consideration falls outside the definition of Restricted Payment for all purposes of this Agreement.",
+        "description": "The exclusion from the definition of Restricted Payment is entirely conditioned on the factual threshold that more than 50% of the consideration for the Permitted Acquisition consists of Equity Interests. If that consideration mix threshold is not met, the transaction would presumably fall back within the Restricted Payment definition. Omitting this quantitative eligibility gate would materially misstate an otherwise conditional carve-out as an unconditional exclusion.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "A Permitted Acquisition consummated using more than 50% Equity Interests as consideration falls outside the definition of Restricted Payment",
+        "description": "The excerpt relies on the defined terms 'Permitted Acquisition' and 'Restricted Payment,' whose full substantive requirements (and any conditions embedded within those definitions elsewhere in the Agreement) are incorporated by reference rather than restated here. A downstream representation that treats this sentence as self-contained could omit material qualifying content housed in those definitions.",
+        "category": "CROSS_REFERENCE_CONDITION"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:35.396Z",
+      "inputTokens": 3734,
+      "outputTokens": 676,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 8294,
+      "calculatedCostUsd": 0.014228000000000001
+    },
+    "latencyMs": 8294
+  },
+  {
+    "id": "M14",
+    "isMaterial": true,
+    "category": "condition separated by parenthetical language",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "subject, in all cases, to at least 30 days' prior notice to the Trustee",
+        "description": "The redemption right is conditioned on prior notice being given to the Trustee; omitting this would misstate the redemption right as unconditional.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "and to the Company having irrevocably deposited funds sufficient to effect the redemption",
+        "description": "The redemption right is further conditioned on the Company having irrevocably deposited sufficient funds - a factual prerequisite that must be satisfied before redemption can occur.",
+        "category": "EVENT_DEPENDENCY"
+      },
+      {
+        "sourceSpan": "at any time after the fifth anniversary of the Issue Date",
+        "description": "The redemption right is temporally gated - it may only be exercised after a specific date tied to the Issue Date, which is a material temporal condition on the scope of the right.",
+        "category": "TEMPORAL_DEPENDENCY"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:43.691Z",
+      "inputTokens": 3772,
+      "outputTokens": 453,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 5536,
+      "calculatedCostUsd": 0.012074
+    },
+    "latencyMs": 5536
+  },
+  {
+    "id": "M15",
+    "isMaterial": true,
+    "category": "condition in a neighboring sentence",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "This basket is available solely during periods when the Company maintains an investment-grade issuer rating from at least one Rating Agency.",
+        "description": "The $3,750,000 Restricted Payments basket is not unconditional - it is only available while the Company maintains an investment-grade rating from at least one Rating Agency. If this maintenance condition is dropped, a downstream representation would wrongly present the basket as always available.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "solely during periods when the Company maintains an investment-grade issuer rating",
+        "description": "The temporal/status-based scoping ('during periods when') ties availability of the basket to an ongoing state of fact (maintenance of rating), creating a temporal dependency on top of the eligibility requirement.",
+        "category": "TEMPORAL_DEPENDENCY"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:49.227Z",
+      "inputTokens": 3746,
+      "outputTokens": 323,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 5184,
+      "calculatedCostUsd": 0.010721999999999999
+    },
+    "latencyMs": 5184
+  },
+  {
+    "id": "M16",
+    "isMaterial": true,
+    "category": "negative formulation (novel phrasing)",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "No portion of the $8,000,000 Restricted Payment basket may be utilized at any time when the Company's ratio of Total Debt to Consolidated EBITDA last reported stands above 3.50 to 1.00.",
+        "description": "Use of the Restricted Payment basket is conditioned on the Company's leverage ratio not exceeding 3.50 to 1.00 as last reported; this is a financial-ratio eligibility gate whose omission would materially misstate the basket as unconditionally available.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:54.411Z",
+      "inputTokens": 3749,
+      "outputTokens": 230,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 3777,
+      "calculatedCostUsd": 0.009798
+    },
+    "latencyMs": 3777
+  },
+  {
+    "id": "M17",
+    "isMaterial": true,
+    "category": "multi-condition conjunction",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "only where each of the following is true at the time of declaration: the Company's cash balance exceeds $20,000,000",
+        "description": "The right to declare the dividend is expressly gated on a financial eligibility threshold at time of declaration.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "no lender has delivered a notice of default that remains outstanding",
+        "description": "The dividend right is conditioned on the absence of an outstanding default notice from any lender - a no-default requirement.",
+        "category": "NO_DEFAULT_REQUIREMENT"
+      },
+      {
+        "sourceSpan": "the board of directors has adopted a resolution approving the dividend by unanimous written consent",
+        "description": "A procedural approval condition (unanimous written consent resolution) must be satisfied before the dividend may be declared.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:29:58.188Z",
+      "inputTokens": 3781,
+      "outputTokens": 334,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 4356,
+      "calculatedCostUsd": 0.010901999999999998
+    },
+    "latencyMs": 4356
+  },
+  {
+    "id": "B1",
+    "isMaterial": false,
+    "category": "benign control - cross-referencing 'if', non-conditional",
+    "classifierStatus": "NO_MATERIAL_CONDITION_SUSPECTED",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": false,
+    "routesToReview": false,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:30:02.544Z",
+      "inputTokens": 3721,
+      "outputTokens": 140,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 3076,
+      "calculatedCostUsd": 0.008842
+    },
+    "latencyMs": 3076
+  },
+  {
+    "id": "B2",
+    "isMaterial": false,
+    "category": "benign control - definitional boilerplate",
+    "classifierStatus": "NO_MATERIAL_CONDITION_SUSPECTED",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": false,
+    "routesToReview": false,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:30:05.620Z",
+      "inputTokens": 3721,
+      "outputTokens": 622,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 8403,
+      "calculatedCostUsd": 0.013662
+    },
+    "latencyMs": 8403
+  },
+  {
+    "id": "B3",
+    "isMaterial": false,
+    "category": "benign control - unconditional periodic obligation",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "within 45 days following the close of each fiscal quarter",
+        "description": "The delivery obligation is not unconditional as to timing - it is expressly tied to a triggering event (the close of each fiscal quarter) and a fixed deadline measured from that event. Omitting this temporal/event dependency from a downstream representation would materially misstate the obligation as having no deadline or as being due immediately rather than being conditioned on the quarter-end event plus a 45-day window.",
+        "category": "TEMPORAL_DEPENDENCY"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:30:14.023Z",
+      "inputTokens": 3717,
+      "outputTokens": 351,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 4794,
+      "calculatedCostUsd": 0.010943999999999999
+    },
+    "latencyMs": 4794
+  },
+  {
+    "id": "B4",
+    "isMaterial": false,
+    "category": "benign control - lexical false-positive trap ('provided' as a verb, not a connective)",
+    "classifierStatus": "NO_MATERIAL_CONDITION_SUSPECTED",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": false,
+    "routesToReview": false,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:30:18.817Z",
+      "inputTokens": 3710,
+      "outputTokens": 247,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 4146,
+      "calculatedCostUsd": 0.00989
+    },
+    "latencyMs": 4146
+  },
+  {
+    "id": "B5",
+    "isMaterial": false,
+    "category": "benign control - unconditional grant of discretion",
+    "classifierStatus": "MATERIAL_CONDITION_POSSIBLE",
+    "classifierFailed": false,
+    "classifierFailureDetail": null,
+    "isSynthetic": false,
+    "evidence": [
+      {
+        "sourceSpan": "authority to waive minor documentation deficiencies in its reasonable discretion",
+        "description": "The waiver authority is expressly limited in scope to 'minor' documentation deficiencies and is exercised subject to a 'reasonable discretion' standard. A downstream representation that stated the Administrative Agent may waive documentation deficiencies generally, without the 'minor' scope limitation and the discretion qualifier, would materially overstate the authority actually granted.",
+        "category": "ELIGIBILITY_REQUIREMENT"
+      }
+    ],
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+    "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+    "needsReview": true,
+    "routesToReview": true,
+    "dangerousSilentSkip": false,
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-c0.1",
+      "schemaVersion": "phase-c0.1",
+      "stage": "condition_suspicion_classification",
+      "timestamp": "2026-08-31T15:30:22.963Z",
+      "inputTokens": 3715,
+      "outputTokens": 661,
+      "cachedInputTokens": null,
+      "cacheCreationInputTokens": null,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 9542,
+      "calculatedCostUsd": 0.01404
+    },
+    "latencyMs": 9542
+  }
+]

@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "PART_B_BLOCKER1_BLOCKER11_RECERTIFICATION",
+  "auditor": 1,
+  "scope": "BLOCKER-1 (structural heading / rank-stack corruption) + BLOCKER-11 (Architecture Invariant #35 / sourceLedgerEntryId scope mismatch)",
+  "generatedAt": "2026-08-30T17:10:00.000Z",
+  "productionFreezeShaVerifiedAt": "2663271",
+  "productionFreezeShaNote": "22-recertification-baseline.json names d098cb4 as the freeze SHA; this shared worktree's HEAD advanced during this session to f70d103 as sibling Part B auditors (BLOCKER-7/AUDIT-F5, BLOCKER-9, BLOCKER-8/AUDIT-F4) committed their own docs+test-only work directly to this branch. Independently re-verified with `git diff d098cb4 HEAD --stat -- lib app prisma` immediately before writing this artifact: ZERO diff in every production directory across the entire d098cb4..f70d103 range - production remains byte-identical to the frozen SHA. This audit's own two new files were added on top of that same frozen production state and do not themselves touch lib/, app/, prisma/schema.prisma, or prisma/migrations/.",
+  "mandate": "Independently construct fresh adversarial structural-heading edge cases beyond Workstream A's own 31-test suite; re-verify the two claimed RX fixes against real fixture text; re-confirm the 7 originally-certified anomaly sites are still 0; try to find a new false-positive or false-negative. Separately, independently re-run the DebtEvent/sourceLedgerEntryId grep audit across the ENTIRE codebase, re-read the roadmap directly, and verify none of Part A's own new models create a new live dependency.",
+  "productionCodeModified": false,
+  "newTestFiles": [
+    "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts",
+    "tests/contract-model/part-b-recert-blocker11-invariant35.test.ts"
+  ],
+
+  "blocker1": {
+    "title": "Structural heading/rank-stack corruption",
+    "fileUnderTest": "lib/contract-model/compiler/stage-structure.ts",
+    "priorArtifactsRead": [
+      "docs/phase-3f1-6-rx-final-blocker-closure/03-blocker1-structural-remediation.json (Workstream A's own report)",
+      "tests/certification/structural-heading-rx-adversarial-expansion.test.ts (Workstream A's own 31-test suite - read in full, no case reused)",
+      "tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts (3F.1.6.R's own 23-case guard - read in full, no case reused)",
+      "tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts (read in full, no case reused)"
+    ],
+
+    "task_reconfirmClaimedFixes": {
+      "methodology": "Ran the real, unmodified parseDocumentStructure directly (via a scratch tsx script, then formalized into the new test file) against real DSGR/CONMED fixture text and fresh synthetic constructions never appearing in any prior test file.",
+      "findings": [
+        "RX-GAP-1 fix (page-number whitespace preservation) holds under a fresh probing angle: an ALL-CAPS-internally-but-still-'Page'-cased label variant, and a 3-way mixed-numbering-convention document, both behave as claimed.",
+        "RX-GAP-2 fix (unionMatches for SECTION_PATTERNS) holds under a fresh, harder 3-way mixed-convention case ('Section 6.01' + bare '6.02' + '§6.03' co-occurring in ONE document, not just pairs as Workstream A's own suite tested) - all three survive together with zero double-counting confirmed on a keyword-only control.",
+        "Precision re-attack: the widened page-number-artifact shape does not launder a real in-text citation lacking a genuine double-newline break ('Section 6.05 Reserved' immediately after 'at page 42' with only a single newline is still correctly rejected) - confirmed this widening introduces no new false-positive vector; the underlying '2+ real newlines is trusted as evidence regardless of content' behavior is pre-existing 3F.1.6.R architecture, not something RX's own change introduced."
+      ]
+    },
+
+    "task_reconfirm7OriginalAnomalySites": {
+      "methodology": "Independently re-ran scripts/cert-3f1-6-residual-anomaly-inspect.ts (unmodified, read-only script) against the real CONMED/DSGR fixtures at the current frozen HEAD, then independently re-derived all 5 distinct DSGR spans via a fresh scratch script calling parseDocumentStructure directly (not trusting Workstream A's own test file's assertions).",
+      "result": "CONMED: 0 SECTION_NUMBER_SEQUENCE_ANOMALY findings. DSGR: 0 SECTION_NUMBER_SEQUENCE_ANOMALY findings. All 5 distinct real DSGR sites (doc-a 2.05/6.04, doc-b 2.05, doc-d 2.09/6.04) independently re-derived to the EXACT SAME [charStart, charEnd) spans reported by Workstream A - MATCH on all 5."
+    },
+
+    "task_freshAdversarialAttack": {
+      "methodology": "Constructed and directly executed (via scratch tsx probes, then formalized into the new test file) synthetic cases in every category the Part B charter named as an attack vector: nested numbering with inconsistent capitalization, headings immediately following a footnote marker, headings inside a defined-term block, and a multi-column layout collapsed to plain text. Before treating any positive finding as a genuine defect, independently grepped all 4 real fixture packages (fwrg/lsb/conmed/dsgr - both .txt fixtures and the raw CONMED .htm sources) to confirm none of the surfaced shapes occur in real fixture text today (they do not - each finding is a currently-synthetic, forward-looking gap, not a real-fixture regression).",
+      "categoryResult_definedTermBlock": "NO DEFECT FOUND. A heading-shaped label used as a quoted defined-term subject (e.g. '\"Section 6.01 Indebtedness\" shall mean...') is correctly rejected - it never reaches the plausibility gate as a false positive. The gate's signal-based (not phrase-based) design generalizes correctly here.",
+      "categoryResult_inconsistentCapitalization": {
+        "defectFound": true,
+        "description": "A lowercase-keyword heading ('section 6.02 Liens.') that is NOT at a literal line start is completely invisible to the parser, even when genuinely, correctly preceded by real sentence-terminal punctuation. Root cause: SECTION_PATTERNS[0] (the shape-based, non-line-anchored primary pattern) and ARTICLE_PATTERNS[0] both require the LITERAL case 'Section'/'SECTION'/'ARTICLE' (no `i` regex flag) - only the line-anchored fallback patterns (SECTION_PATTERNS[1..3], ARTICLE_PATTERNS[1]) carry the `i` flag. A continuous-prose document with no newlines at all - the module's OWN doc-comment names this exact real style as FWRG's own certified fixture convention - can never fall back to a line-anchored pattern, so a lowercase-keyword heading there would be silently dropped regardless of how much positional evidence surrounds it. This is a direct structural recurrence of the ORIGINAL historical defect ARTICLE_PATTERNS' own doc-comment describes (line-anchored-only patterns going blind on a newline-free document), just triggered by keyword CASE instead of by newline absence.",
+        "reproducedAt": "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts, describe block 1 (3 tests: defect + 2 isolating controls)",
+        "realFixtureCheck": "grep -oP '\\bsection\\s+\\d+\\.\\d+' across all DSGR .txt / FWRG .txt / LSB .txt fixtures and a case-insensitive sweep of the raw CONMED .htm sources: 0 hits of a lowercase 'section' keyword anywhere in any real fixture today."
+      },
+      "categoryResult_footnoteMarker": {
+        "defectFound": true,
+        "description": "A footnote-reference-shaped bare 1-2 digit run glued directly (no surrounding whitespace) onto real sentence-terminal punctuation - the shape a superscript footnote marker collapses to under plain-text PDF extraction - defeats BOTH positional signals when only a single newline separates it from the next heading: signal (B) fails because the glued digit, not the period, is now the real last character; signal (A) fails because only one newline (not two) remains. Reproduces identically for SECTION and ARTICLE candidates. When it drops a real ARTICLE, the consequence is not merely a missing index entry but genuine rank-stack corruption: the ARTICLE's real child SECTION is silently re-parented to parentSectionRef=null instead of the correct ARTICLE ref - directly reproducing BLOCKER-1's own named failure class ('rank-stack corruption'), in the opposite direction from the original certified defect (a real parent silently vanishing, rather than a spurious node being wrongly accepted).",
+        "reproducedAt": "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts, describe block 2 (4 tests: SECTION defect + control, ARTICLE defect-with-misparenting + control)",
+        "realFixtureCheck": "grep -coP '\\.\\d(?=[A-Z\\n])' across all real DSGR/FWRG/LSB .txt fixtures: 0 genuine footnote-marker-shaped hits found in any real fixture today (all incidental '.digit' occurrences inspected are ordinary decimal figures, not footnote markers)."
+      },
+      "categoryResult_multiColumnCollapse": {
+        "defectFound": true,
+        "description": "A two-column PDF layout collapsed line-by-line into a single linear text stream (a real, common PDF-text-extraction failure mode) can land a genuine heading mid-interleaving, separated from unrelated preceding (other-column) text by only a single newline and no terminal punctuation - the same three-signal failure as the already-documented Category 6 residual, but via a distinct, newly-named real-world mechanism the Part B charter explicitly asked to be probed, not the table/list/signature-block shape Workstream A already examined and disclosed. The dropped section's real title text is then silently absorbed into the PRECEDING section's own owned span - a real content-misattribution, not merely an index omission.",
+        "reproducedAt": "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts, describe block 3 (1 test, asserting both the missing node and the absorbed content)"
+      },
+      "categoryResult_pageArtifactAllCaps": {
+        "defectFound": true,
+        "description": "Discovered while re-attacking RX-GAP-1's own fix from a fresh angle (not one of the charter's four named categories, but the same case-sensitivity root cause recurring a third time). RX's own fix claims to recognize 'an optional \"Page \" label' (see the stripTrailingPageNumberArtifact doc-comment and 03-blocker1-structural-remediation.json's own test matrix, which tested 'Page N' and lowercase 'page N'), but the actual regex `(?:[Pp]age\\s+)?` recognizes 'Page '/'page ' only - never the ALL-CAPS 'PAGE ' running-footer/header convention, which is at least as common a real rendering convention as mixed-case 'Page'. An ALL-CAPS-labeled page number between two single newlines is therefore NOT discounted as a decorative artifact at all; the real double-newline signal it should expose never reaches signal (A), and the following real heading is silently dropped - the exact class of failure RX-GAP-1 itself was built to close, recurring via case rather than via whitespace collapse.",
+        "reproducedAt": "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts, describe block 4 (3 tests: defect + 2 isolating controls for the Title-Case and lowercase variants RX's own fix actually tested)"
+      },
+      "sharedRootCause": "Three of the four genuine findings (inconsistent-capitalization SECTION/ARTICLE, and the ALL-CAPS page-artifact label) are ONE systemic gap appearing at three call sites, not three unrelated defects: every shape-based (non-line-anchored) regex in stage-structure.ts is case-sensitive, while only the line-anchored fallback patterns carry the `i` flag. None of the four findings carry the SAME precision trade-off that justified leaving Workstream A's own Category 6 residual unfixed (loosening case-sensitivity or tolerating a short glued footnote digit before the plausibility checks would not reopen any of the 7 certified STRUCT-1 false-positive sites, all of which fail on citation CONTENT/position grounds unrelated to letter case or footnote digits) - these are therefore reported as genuine, currently-unaddressed gaps, not a reasoned, examined boundary."
+    },
+
+    "regressionResults": {
+      "newTestFileOwnRun": {
+        "command": "npx vitest run tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts",
+        "result": "15 tests, all pass (the test file PINS the current, defective behavior with clear documentation rather than asserting a red/failing expectation, per this Part B pass's production-freeze constraint - a future BLOCKER-1 remediation must flip the 4 defect assertions, and the accompanying control assertions in each describe block prove the detector itself is not vacuously passing)."
+      },
+      "existingSuitesReRun": {
+        "command": "npx vitest run tests/certification/structural-heading-rx-adversarial-expansion.test.ts tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts",
+        "result": "3 files, 79 tests, all pass - zero regression from this audit's own read-only investigation."
+      }
+    },
+
+    "disposition": "STILL_OPEN",
+    "dispositionRationale": "The two specific fixes RX Workstream A claimed (page-number-artifact whitespace preservation; SECTION_PATTERNS unionMatches) both independently reconfirmed sound under fresh probing angles including a harder 3-way mixed-convention case and a dedicated precision re-attack. All 7 originally-certified anomaly sites remain independently reconfirmed at 0, with all 5 distinct DSGR spans independently re-derived byte-identical. However, this Part B pass's own fresh adversarial construction - directly in the categories the charter named as attack vectors - found 4 genuine, general, reproducible false-negative defects in stage-structure.ts (lowercase-keyword mid-sentence heading invisibility for SECTION and ARTICLE alike; a footnote-marker-glued single-newline heading drop for SECTION and ARTICLE alike, with demonstrated real parentage corruption - a direct instance of BLOCKER-1's own named 'rank-stack corruption' failure class - on the ARTICLE case; a multi-column-layout-collapse heading drop with demonstrated content misattribution; and an ALL-CAPS 'PAGE' running-footer label not recognized by RX's own widened artifact regex, discovered while re-attacking that very fix). None occur in the real FWRG/LSB/CONMED/DSGR fixtures today (independently confirmed absent by direct grep across every real fixture file), so none constitute a live-fixture regression, and none carry the same precision-vs-recall trade-off that justified Workstream A's own disclosed, deliberately-unaddressed Category 6 residual. Per this phase's own charter ('If you find a genuine defect, disposition STILL_OPEN or NEW_COUPLED_BLOCKER_DISCOVERED... If everything holds, disposition CERTIFIED_CLOSED'), CERTIFIED_CLOSED is not available. STILL_OPEN (not NEW_COUPLED_BLOCKER_DISCOVERED) is the correct disposition because these are not an architecturally distinct new blocker - they are BLOCKER-1's own named failure class (structural heading / rank-stack corruption), still open against attack vectors this remediation round did not test. Per the production-freeze rule, no production code was modified to fix any of this - all 4 findings are reported as evidence only, pinned in the new test file, for a human or a future remediation pass to act on."
+  },
+
+  "blocker11": {
+    "title": "Architecture Invariant #35 / sourceLedgerEntryId scope mismatch",
+    "priorArtifactsRead": [
+      "docs/phase-3f1-6-rx-final-blocker-closure/08-invariant-35-revalidation.json (Workstream G's own report)",
+      "docs/phase-3f1-6-r-blocker-remediation/20-invariant-35-architecture-decision.json (the original architecture decision, cited only, never edited)",
+      "docs/HEADROOM-ROADMAP.md (read directly, full text of the relevant sections - never trusted from any prior workstream's paraphrase)",
+      "docs/HEADROOM-ARCHITECTURE-INVARIANTS.md (invariant #35 and its FUTURE_ENFORCED scope note)"
+    ],
+
+    "task_wholeCodebaseGrepAudit": {
+      "methodology": "Independently re-ran the DebtEvent/sourceLedgerEntryId grep audit across the ENTIRE codebase (not scoped to app/ alone), then formalized it into a durable, mechanical, re-runnable vitest file (tests/contract-model/part-b-recert-blocker11-invariant35.test.ts) that walks the real app/ and lib/ source trees at test-run time via readdirSync/readFileSync - mirroring the exact convention tests/foundation-audit/legacy-phase-c-quarantine.test.ts already established in this codebase for a different quarantine boundary, on the same rationale: a one-off manual grep nobody re-runs is not a guardrail.",
+      "debtEventWriteSites": "grep -rn 'debtEvent\\.(create|createMany|upsert)' across the whole repo (excluding node_modules and .claude/worktrees, which are gitignored, untracked, sibling agent-session worktrees on the same container filesystem, not part of this branch): confirmed EXACTLY the same 3 offline, engineer-run scripts (scripts/populate-coherent-financial-core.ts, scripts/populate-matthews-financial-provenance.ts, scripts/financial-core-acceptance-run.ts) plus test-fixture-only calls under tests/financial-core/*.test.ts. ZERO hits under app/ or lib/ - independently confirmed both by the whole-repo grep and by the new mechanical test's own dedicated app/+lib/-only walk (which scanned 50+ real source files and found zero matches).",
+      "sourceLedgerEntryIdSites": "grep -rn 'sourceLedgerEntryId' across the whole repo: exactly 4 hits total - prisma/schema.prisma's own field declaration, lib/financial-core/types.ts:168 (a TS type field declaration), and lib/financial-core-db/adapter.ts:90 (a DB row interface field declaration) and :194 (the single read-with-`?? undefined`-fallback site). ZERO write sites anywhere in app/ or lib/ - confirmed both by the whole-repo grep and by the new mechanical test's own write-shape classifier, which independently confirmed all 3 non-schema hits are either a bare type/interface field declaration or a read-with-fallback expression, never an assignment into a create/update payload.",
+      "newModelsAudit": "Independently re-read prisma/schema.prisma's own definitions for AnalysisRun, AnalysisRunIssue, AnalysisFailureLog, and SemanticTruthRecord (Part A Workstream H's own additions) in full. Confirmed directly (and via the new mechanical test's own regex extraction of each model body) that none of the four declares any field or relation naming Facility, DebtEvent, or LedgerEntry - AnalysisRun/AnalysisRunIssue/AnalysisFailureLog relate only to Company (and to each other); SemanticTruthRecord relates only to Company and AnalysisRun. Independently re-inspected the 5 orchestrator source files under lib/contract-model/analysis/** (index.ts, service.ts, orchestrator.ts, identity.ts, types.ts) and app/[companyId]/onboarding/documents/actions.ts: zero DebtEvent/LedgerEntry reference of any kind, comment or code, confirmed via a fresh case-insensitive grep."
+    },
+
+    "task_roadmapDirectReread": {
+      "methodology": "Read docs/HEADROOM-ROADMAP.md directly (not trusted from Workstream G's own paraphrase) via grep against the current file text.",
+      "confirmed": [
+        "Line 113 (Phase 6 goal statement): '...This is also where the current `LedgerEntry`/`DebtEvent` fork (§3.3) gets resolved into the real transaction/capacity-truth model.'",
+        "Line 178 (§3.3/§5 fork discussion): '`DebtEvent` is the richer, newer, event-sourced model, explicitly designed with a `sourceLedgerEntryId` link back to `LedgerEntry` that has never actually been populated. **Migration path:** Phase 6 is where these should be reconciled into the real transaction/capacity-truth ledger...'",
+        "Lines 236-237 (status table): `FinancialState`/`Facility`/`DebtEvent` marked ALIGNED as 'the right target shape for Phase 5's canonical ontology'; `LedgerEntry` marked PARTIALLY_ALIGNED, 'narrow and unlinked from `DebtEvent`. Migrate per §5, don't discard.'"
+      ],
+      "result": "The roadmap still explicitly, unambiguously assigns the LedgerEntry/DebtEvent reconciliation to Phase 6, exactly as Workstream G reported - no contradicting or superseding language found anywhere else in the document."
+    },
+
+    "task_partAOwnChangesRisk": {
+      "methodology": "Directly asked whether anything Part A itself changed (the new AnalysisRun/SemanticTruthRecord/AnalysisRunIssue/AnalysisFailureLog models) creates any NEW live path touching sourceLedgerEntryId or DebtEvent, rather than assuming Workstream G's own prior 'no' answer.",
+      "result": "Confirmed independently: no. All four new models' own Prisma definitions were read in full and carry zero relation/field naming Facility, DebtEvent, or LedgerEntry (see task_wholeCodebaseGrepAudit's newModelsAudit above). The live orchestrator these models support (lib/contract-model/analysis/**) is about covenant/definition/rule truth extracted from documents, not the financial ledger, and has zero textual or structural coupling point to the financial-core-db tables."
+    },
+
+    "regressionResults": {
+      "newTestFileOwnRun": {
+        "command": "npx vitest run tests/contract-model/part-b-recert-blocker11-invariant35.test.ts",
+        "result": "10 tests, all pass."
+      }
+    },
+
+    "disposition": "CERTIFIED_SCOPE_RESOLVED",
+    "dispositionRationale": "Every fact underlying the original architecture-scope decision was independently re-verified against the current, frozen production code, using a fresh, mechanical, whole-codebase scan (not scoped to app/ alone) rather than a re-run of any prior workstream's own grep commands: zero live DebtEvent write call sites anywhere in app/ or lib/ (only 3 offline scripts plus test fixtures); zero sourceLedgerEntryId writes anywhere in app/ or lib/ (exactly one read, with a fallback, unchanged); none of Part A's own 4 new Prisma models introduce any coupling to Facility/DebtEvent/LedgerEntry; and docs/HEADROOM-ROADMAP.md, read directly rather than trusted from paraphrase, still explicitly and unambiguously assigns the LedgerEntry/DebtEvent reconciliation to Phase 6. No genuine defect, no real Phase-3-live dependency, and no new coupling introduced by Part A's own work was found under this independent, adversarial re-attack. This disposition uses CERTIFIED_SCOPE_RESOLVED (not merely re-stating ARCHITECTURE_SCOPE_RESOLVED_PENDING_INDEPENDENT_RECERTIFICATION) because this IS the independent Part B recertification pass the prior disposition was pending on."
+  },
+
+  "qualityGates": {
+    "tscNoEmit": {
+      "command": "npx tsc --noEmit -p .",
+      "thisAuditsOwnFiles": "ZERO tsc errors attributable to this audit's own two new files - independently confirmed by grepping the full tsc output for both new file paths (0 matches for either).",
+      "fullWorkspaceContext": "The full-workspace tsc run currently shows 14 errors total in this shared worktree: the documented 6 pre-existing baseline errors (tests/foundation-audit/cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3 - all under tests/foundation-audit/, none touched by this audit) PLUS 8 additional errors in untracked files NOT authored by this audit (tests/contract-model/part-b-recert-auditf1-truth-persistence.test.ts x3, tests/contract-model/part-b-recert-blocker2-6-tools-adversarial.test.ts x2, tests/contract-model/part-b-recert-crosscutting-tenant-isolation.test.ts x3) - these belong to sibling Part B auditors (auditors 2, 6/7, and 8 per 22-recertification-baseline.json's dispatch plan) working concurrently in this same shared worktree/container. Disclosed for completeness; not this audit's defect to own, fix, or disposition."
+    },
+    "eslint": {
+      "command": "npx eslint .",
+      "result": "Exactly the documented 1 pre-existing baseline error (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires) - zero new lint errors, including none from this audit's two new files (independently confirmed by grepping eslint's own output for both new file paths - 0 matches)."
+    }
+  },
+
+  "filesAdded": [
+    "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts",
+    "tests/contract-model/part-b-recert-blocker11-invariant35.test.ts"
+  ],
+  "filesModified": [],
+  "productionFilesTouched": [],
+
+  "overallSummary": "BLOCKER-11: CERTIFIED_SCOPE_RESOLVED - independently re-verified across the entire codebase, zero new dependency found, the Phase 6 architecture-scope decision holds. BLOCKER-1: STILL_OPEN - the two specific fixes Workstream A claimed both hold under fresh, harder re-attack, and all 7 originally-certified real-fixture anomaly sites remain independently reconfirmed at 0, but this pass's own fresh adversarial construction (directly in the categories the charter named) found 4 genuine, general, currently-unaddressed false-negative gaps in stage-structure.ts, none occurring in real fixtures today but all reproducible, general, and free of the precision trade-off that justified the one residual Workstream A itself left open. Per this phase's own disposition rule, a genuine defect bars CERTIFIED_CLOSED for BLOCKER-1; no production code was modified to fix it, consistent with Part B's production freeze."
+}

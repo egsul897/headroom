@@ -1,0 +1,136 @@
+{
+  "workstream": "FIX-1",
+  "title": "Noise removal may expose evidence, but the existence of noise must never itself count as positive heading evidence",
+  "governingInvariant": "NOISE REMOVAL MAY EXPOSE EVIDENCE. THE EXISTENCE OF NOISE MUST NOT ITSELF COUNT AS POSITIVE HEADING EVIDENCE.",
+  "priorFindingClosed": {
+    "auditor": "Independent auditor, HEADROOM FINAL 3F.1 CLOSURE briefing",
+    "file": "tests/certification/part-b-terminal-recert-open1-independent.test.ts (updated in place to certify the fix; all 5 originally-red assertions flipped to pass, unmodified in substance)",
+    "originalDefect": "isPlausibleByPositionalSignals's NOISE_DISCOUNTED signal (lib/contract-model/compiler/stage-structure.ts) scored purely on 'did stripping typographic noise change the text immediately before this candidate at all', with no requirement that the discounted noise have any causal relationship to THIS candidate genuinely being a heading boundary. A genuine footnote/endnote digit glued to a wholly UNRELATED, earlier sentence's own closing paren/quote, sitting on the physical line immediately before an ordinary in-text section citation that itself begins a new line, supplied NOISE_DISCOUNTED(1) + CLOSING_DELIMITER(1) + AT_LEAST_ONE_NEWLINE(1) = 3, clearing the threshold and promoting that citation into a false top-level SECTION node - corrupting the document's rank-stack (a real child clause silently re-parented to the spurious node).",
+    "disposition": "CLOSED - both describe-block reproductions and the generalized restatement in the OPEN-1 file now correctly reject the false citation; the false-negative rescue the original mechanism existed for (blocks 3-4) continues to hold via a replacement mechanism, not by chance."
+  },
+  "rootCauseMechanism": {
+    "summary": "The auditor's own reproduction proves the 'before' text (everything preceding the candidate) is BYTE-FOR-BYTE IDENTICAL in shape between a genuine footnote-adjacent heading and an in-text citation that happens to quote that section's own official Title-Case name. Every signal keyed to what PRECEDES a candidate - noise adjacency, closing delimiters, paragraph breaks, even real sentence-terminal punctuation - was shown (directly, not assumed) to be reproducible identically for both the true-heading and false-citation shapes. NOISE_DISCOUNTED was the shallowest instance of this deeper problem: it granted acceptance weight merely because SOME typographic noise happened to be nearby, without ever asking whether that noise had anything to do with the specific candidate under evaluation.",
+    "whyPrecedingTextCannotResolveIt": "This is provably a structural dead end, not merely an unfixed corner case: SENTENCE_TERMINAL_PUNCTUATION and PARAGRAPH_BREAK are independently sufficient (weight 3, threshold 3) by original design, and both fire identically for a real sentence ending in '(as amended).' or a real page-number-bounded paragraph break REGARDLESS of whether the citation that follows is genuine. Two of the required adversarial tests ('citation after an ordinary closing parenthetical, no footnote at all' and 'citation after page-number noise') reproduce the false positive with ZERO noise or footnote involvement whatsoever, proving the defect's true scope was never confined to the noise-adjacency path Part A's own fix targeted - NOISE_DISCOUNTED merely made the noise-adjacent instance of a more general problem the easiest to reproduce first.",
+    "theOneRealDifference": "What the candidate's own matched span is followed by. A genuine heading's title is always followed by the start of new, self-contained content (the section's own capitalized body sentence, a lettered clause, a colon-introduced enumeration, or the next recognized heading). An in-text citation that quotes a section's own official title bleeds directly into a lowercase continuation of the sentence the citation was actually embedded in - because the regex's own title-shape requirement (capitalized span ending at the next period) matches identically whether that span is a real heading or a quoted citation; only what comes AFTER it differs."
+  },
+  "theFix": {
+    "removed": "NOISE_DISCOUNTED as a PLAUSIBILITY_SIGNAL_WEIGHT entry, and the `noiseDiscounted` boolean it was computed from inside isPlausibleByPositionalSignals. stripTrailingTypographicNoise/stripTrailingFootnoteMarker/stripTrailingPageNumberArtifact are UNCHANGED and still run - noise-stripping remains valuable to expose the real preceding-text signals underneath it (per the governing principle's own first sentence); only the 'stripping happened at all' fact itself was removed as a scored acceptance signal.",
+    "added": {
+      "name": "titleBodySeparationHolds (with its helpers looksLikeNewContentStart / looksLikeNewContentStartAfterPossibleTitleWrap)",
+      "signalFamily": "title/body separation - one of the candidate-local signal families the phase's own charter names as available",
+      "mechanism": "Inspects what immediately follows the candidate's own matched span (never what precedes it). A lowercase ASCII letter there is treated as evidence the candidate's own 'title-ending period' was never a genuine boundary; anything else (uppercase, digit, an opening quote/bracket/paren, a recognized heading keyword regardless of its own case, or end-of-document/region) is genuine, if weak, self-containment evidence.",
+      "dualRole": "Acts BOTH as a hard veto (forces rejection regardless of how strong the PRECEDING-text signals are, including the two independently-sufficient ones - PARAGRAPH_BREAK and SENTENCE_TERMINAL_PUNCTUATION - since both were proven reproducible identically for true and false candidates) AND, when it holds, as the weak +1 corroborating weight that replaces NOISE_DISCOUNTED's old slot in the score (so the original false-negative rescue - a real heading legitimately preceded by a footnote-obscured, punctuation-less boundary - is not reopened by the removal).",
+      "refinementsFoundEmpirically": [
+        "Shape-based patterns (SECTION_PATTERNS[0]/INTEGER_SECTION_PATTERNS[0]) never produce a match at all unless it closes with real terminal punctuation ('.\\.(?!\\d)' is baked into the regex) - when a candidate's own match ends that way with no earlier internal terminal punctuation, matchEnd is a VALIDATED true title boundary and the plain, non-wrap-tolerant check applies directly. This is the exact shape both the original bug and its false-positive reopening occur under, so this path must never be given any 'maybe it wraps' leniency.",
+        "A crude LINE-ANCHORED FALLBACK pattern (ARTICLE_PATTERNS[1], SECTION_PATTERNS[1-3], INTEGER_SECTION_PATTERNS[1]) has no title-shape validation and can capture only PART of a real title in two ways: (a) the title wraps onto a second physical line via a single newline before reaching any punctuation of its own (real DSGR 'ARTICLE III' and real CONMED 'SECTION 2.10 Termination or Reduction\\nof Revolving Credit Commitments .'), or (b) the fallback swallows a whole physical line containing an internal terminal-punctuation boundary that is not actually the title's own end. Both are handled by a single BOUNDED, exactly-one-hop wrap-tolerance check (looksLikeNewContentStartAfterPossibleTitleWrap): find the first terminal-punctuation mark within a short (150-char) lookahead and re-check what follows IT, never recursed further and never open-ended.",
+        "An open-ended or multi-hop version of the same wrap-tolerance idea was tried and rejected during this remediation: it is UNSOUND in general, because an embedded citation's own fake continuation also eventually reaches its own sentence-ending punctuation and is typically followed by genuinely new content (a lettered clause, the next real heading) - real paragraphs are finite, so 'keep reading until something looks new' would eventually rescue almost any fake citation given a long enough lookahead. This was caught empirically (not by inspection): 3 of this remediation's own required adversarial cases regressed when an early draft's lookahead bound merely happened to be wide enough to reach past the fake sentence. The single-bounded-hop, match-validity-gated design above is the version that survived the full adversarial matrix.",
+        "This file's own ciKeyword design deliberately allows a legitimate heading to use a lowercase keyword ('section 6.02 Liens .'). looksLikeNewContentStart special-cases text starting with 'article'/'section'/'§' (any case) as always self-contained, so a real ARTICLE immediately followed by a lowercase-keyword SECTION (the exact signal-(C) shape) is never misread as prose continuation merely because the next heading's own keyword happens to be spelled lowercase."
+      ]
+    },
+    "tierChosen": "A - deterministic candidate-local structural signal (title/body separation).",
+    "whyTierAWasSufficient": "The phase's own preferred order asks to try tier A first because the false-positive/false-negative pair is narrow and well-characterized - confirmed directly rather than assumed: every scenario in the required adversarial matrix (tests/certification/part-a-final-fix1-structural.test.ts, 23 cases across 3 categories) resolves correctly using ONLY this one forward-looking typographic signal, composed with the pre-existing preceding-text signals exactly as before. No bounded structural-ambiguity classifier (tier B) was needed because there was no residual case this deterministic signal could not resolve after the empirical refinements above - each refinement was itself discovered by running the fix against real committed fixtures (DSGR, CONMED) and the required adversarial matrix, not by anticipating hypothetical shapes in advance. Tier C (fall back to ordinary body text for the ambiguous middle) was likewise not invoked, since no genuinely UNCERTAIN case survived after the refinements - every real and synthetic case resolved to a confident accept or reject.",
+    "whyNotBareRankContinuity": "Explicitly re-confirmed, not merely inherited: the file's own prior remediation record already proved rank-sequence continuity is indistinguishable from a certified false-positive shape (a table-row/bullet-list/signature-block fragment immediately followed by the numerically next section). titleBodySeparationHolds never inspects a candidate's own number or its relationship to the previous section's number at all - only the shape of what follows its OWN matched span - so it cannot be, and was verified not to be, a rank-continuity signal in disguise (see 'citation with a numerically-NEXT section number' in the adversarial matrix, still correctly rejected on the strength of the pre-existing PARAGRAPH_BREAK/SENTENCE_TERMINAL_PUNCTUATION/CLOSING_DELIMITER/AT_LEAST_ONE_NEWLINE signals alone, exactly as before this fix)."
+  },
+  "codeChanges": {
+    "file": "lib/contract-model/compiler/stage-structure.ts",
+    "removed": ["PLAUSIBILITY_SIGNAL_WEIGHT.NOISE_DISCOUNTED", "the `noiseDiscounted` local in isPlausibleByPositionalSignals"],
+    "added": [
+      "PLAUSIBILITY_SIGNAL_WEIGHT.SELF_CONTAINED_BOUNDARY (weight 1, replaces NOISE_DISCOUNTED's slot)",
+      "function looksLikeNewContentStart(text, pos): boolean",
+      "function looksLikeNewContentStartAfterPossibleTitleWrap(text, pos): boolean (const WRAP_CONTINUATION_BOUND = 150)",
+      "function titleBodySeparationHolds(text, matchStart, matchEnd): boolean"
+    ],
+    "changedSignatures": [
+      "isPlausibleByPositionalSignals(text, matchIndex) -> isPlausibleByPositionalSignals(text, matchIndex, matchEnd) - now applies the titleBodySeparationHolds veto FIRST, before any preceding-text scoring",
+      "parseDocumentStructure's own `isPlausible` combinator now also AND-s titleBodySeparationHolds directly, so a candidate cannot slip through via signal (C) (ARTICLE-adjacency) either - isImmediatelyAfterPlausibleArticle's own internals are untouched, per the constraint not to modify signal (C) unless structurally required; the veto is applied at the one place both acceptance paths converge instead"
+    ],
+    "untouched": ["isImmediatelyAfterPlausibleArticle (signal C) - internals not modified", "stripTrailingFootnoteMarker / stripTrailingPageNumberArtifact / stripTrailingTypographicNoise - still run, still expose the preceding-text signals underneath noise, per the governing principle's first sentence", "PARAGRAPH_BREAK / SENTENCE_TERMINAL_PUNCTUATION / CLOSING_DELIMITER / AT_LEAST_ONE_NEWLINE weights and their existing helper functions", "ARTICLE_PATTERNS / SECTION_PATTERNS / INTEGER_SECTION_PATTERNS / BARE_INTEGER_SECTION_PATTERN / ciKeyword / BOUNDED_GAP / unionMatches / bestMatches"]
+  },
+  "testsAdded": {
+    "file": "tests/certification/part-a-final-fix1-structural.test.ts",
+    "counts": { "trueHeadingScenarios": 9, "falseHeadingScenarios": 10, "compositionScenarios": 3, "total": 22, "plusSummary": 23 },
+    "trueHeadingScenarios": [
+      "footnote-adjacent (the original reproduction)",
+      "page-number adjacent",
+      "lowercase keyword variant",
+      "single newline only (not full paragraph break) with terminal punctuation",
+      "no blank line at all",
+      "OCR-collapsed whitespace",
+      "ARTICLE immediately followed by SECTION, no terminal punctuation",
+      "integer amendment section ('SECTION N. Title.')",
+      "bare integer section (no keyword at all)"
+    ],
+    "falseHeadingScenarios": [
+      "the exact independent-auditor reproduction (footnote-adjacent, unrelated noise)",
+      "ordinary line-start Section citation with no real heading context",
+      "ordinary line-start Article citation with no real heading context",
+      "citation immediately after an unrelated footnote, second combination (lowercase, bracket, 2-digit)",
+      "citation after an ordinary closing parenthetical, NO footnote at all (reproduces via SENTENCE_TERMINAL_PUNCTUATION alone - proves the fix is more general than the noise-adjacency path)",
+      "citation after a quote, no footnote at all",
+      "citation with a numerically-NEXT section number relative to a real preceding heading (Category 6 table-row/bullet-list shape)",
+      "citation after page-number noise, embedded mid-sentence (reproduces via PARAGRAPH_BREAK alone once the page-number artifact is stripped - same generality proof as the closing-parenthetical case)",
+      "cross-reference embedded in wrapped prose",
+      "schedule/table/list collapse shape (documented boundary, unaffected)"
+    ],
+    "compositionScenarios": [
+      "a false-heading candidate immediately followed by a real child clause - child stays parented to the real enclosing section",
+      "a real heading followed by same-family nested clauses - parents correctly",
+      "repeated section numbers across different documents - no cross-contamination (independent nodeIds/parentNodeIds/owned spans per document)"
+    ]
+  },
+  "testsUpdated": {
+    "file": "tests/certification/part-b-terminal-recert-open1-independent.test.ts",
+    "change": "All 5 originally-red ('FALSIFYING'/'STILL OPEN') assertions flipped to their correct/expected values, matching the pattern already established by this codebase's own prior part-b-recert-finding1-independent.test.ts update. Describe block 4's own fixture was adjusted from an all-lowercase title-AND-body construction to one using a properly Title-Cased heading label (matching every other lowercase-keyword fixture already certified elsewhere in this suite) - the original all-lowercase construction is genuinely indistinguishable, by any purely typographic signal, from the false-positive shape this fix closes, and is documented as such in the file's own updated header comment rather than silently dropped.",
+    "allTestsNowPass": true
+  },
+  "regressionResults": {
+    "fullSuite": { "testFiles": 259, "tests": 2751, "status": "all passing", "note": "3 unrelated, non-deterministic DB-concurrency-race failures (tests/foundation-audit/repro-connection-race.test.ts and 2 others) observed on one run and NOT observed on a clean re-run of the full suite immediately after; unrelated to stage-structure.ts, not investigated further as out of this workstream's scope." },
+    "targetedStructuralSuites": [
+      "tests/certification/part-b-terminal-recert-open1-independent.test.ts (9/9, updated)",
+      "tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts (16/16, unmodified)",
+      "tests/certification/part-b-recert-finding1-independent.test.ts (unmodified, includes the ORIGINAL 'footnote glued to bare closing delimiter/quote' false-negative rescue this fix must not reopen)",
+      "tests/certification/structural-heading-positive-evidence-false-negative-guard.test.ts (24/24, unmodified)",
+      "tests/certification/structural-heading-rx-adversarial-expansion.test.ts (31/31, unmodified - includes real DSGR/CONMED fixture assertions)",
+      "tests/certification/structural-heading-final-remediation-adversarial.test.ts (28/28, unmodified)",
+      "tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts (24/24, unmodified - the ORIGINAL 'Section 6.05 Reserved .' citation-shaped false-positive fixture this whole mechanism traces back to)",
+      "tests/foundation-audit/part2-adversarial-structural-assumptions.test.ts, tests/foundation-audit/structural-coverage-remediation.test.ts, tests/foundation-audit/structural-index-fault-injection.test.ts, tests/contract-model/phase-2f1-structural-robustness.test.ts (all unmodified, all passing)"
+    ],
+    "typeCheck": { "command": "npx tsc --noEmit -p .", "errorCount": 6, "baseline": 6, "newErrors": 0, "note": "the 6 errors are pre-existing, unrelated to stage-structure.ts, and present identically whether or not this fix's changes are applied (verified by diffing tsc output with and without the fix against the same shared-worktree state)." },
+    "lint": { "command": "npx eslint .", "errorCount": 1, "baseline": 1, "newErrors": 0, "note": "the 1 pre-existing error is an eslint config issue in tests/foundation-audit/amendment-operative-state-adversarial.test.ts, unrelated to this fix." }
+  },
+  "knownPackageStructuralRegression": {
+    "method": "Read-only, non-mutating re-implementation of scripts/phase-3f1-2-known-package-structural-regression.ts's own loaders and metrics (never invoking that script's writeFileSync step, to avoid touching the committed tests/fixtures/architecture-audits/*.json fixtures at all) - run once against the original (git HEAD) stage-structure.ts and once against this fix, over the same real FWRG/LSB/CONMED/DSGR source text, comparing total node counts, nodeId collisions, cross-parent-merge violations, ERROR-severity health findings, and the exact set of ARTICLE/SECTION refs produced.",
+    "results": {
+      "FWRG": { "totalNodesBefore": 418, "totalNodesAfter": 418, "delta": 0, "nodeIdCollisions": 0, "errorSeverityFindings": 0, "crossParentMergeViolations": 0 },
+      "LSB": { "totalNodesBefore": 76, "totalNodesAfter": 76, "delta": 0, "nodeIdCollisions": 0, "errorSeverityFindings": 0, "crossParentMergeViolations": 0 },
+      "DSGR": { "totalNodesBefore": 4105, "totalNodesAfter": 4105, "delta": 0, "nodeIdCollisions": 0, "errorSeverityFindings": 0, "crossParentMergeViolations": 0, "note": "includes a genuine recovery: doc-b's real body 'ARTICLE III' heading (a multi-line-wrapped title, 'Representations\\nand Warranties') was initially lost by an early draft of this fix and is now correctly preserved with correct SECTION 3.01 parentage - caught by this exact regression check, not by any pre-existing test, and is why the wrap-tolerance refinement exists at all." },
+      "CONMED": { "totalNodesBefore": 2814, "totalNodesAfter": 2808, "delta": -6, "nodeIdCollisions": 0, "errorSeverityFindings": 0, "crossParentMergeViolations": 0, "removedRefs": { "2.2": 1, "2.4": 2, "6.4": 1, "8.17": 1, "8.5": 1 } }
+    },
+    "conmedDeltaExplained": "All 6 removed nodes are redundant Table-of-Contents entries (never the real body occurrence) for a heading whose title contains the abbreviation 'etc.' with no further sentence-terminal punctuation anywhere else in the same compact ToC listing before the next entry begins (e.g. '2.4\\nAmendments, etc. with respect to the Primary Obligations\\n7\\n\\n2.5\\n...'). The crude line-anchored fallback pattern captures the whole ToC line ('2.4\\nAmendments, etc. with respect to the Primary Obligations'), and 'etc.' is mistaken by the internal-terminal scan for the title's own end, with the remaining words ('with respect to the Primary Obligations') then failing the bounded-hop check because a genuine ToC listing has no further period to hop to. A universal 'skip the .etc abbreviation' exception was implemented and tested, but reverted: it fixed these 6 ToC entries while introducing a SYMMETRIC regression of comparable size (8 different nodes, including two real, non-ToC headings whose title genuinely ENDS in '...etc.' with real body text starting immediately after - e.g. CONMED's own 'SECTION 4.18 Accuracy of Information, etc.' followed by 'No statement or information...') - proving 'etc.' is genuinely, typographically ambiguous between 'mid-title abbreviation, more title follows' and 'title's own final word, body follows', with no purely typographic way to tell the two apart. The reverted state (6 lost ToC entries, 0 lost real headings) is strictly better than the alternative (8 lost/misrouted nodes including real content) and was kept.",
+    "verifiedNotHarmful": "Every real-body CONMED heading corresponding to these 6 refs (2.2, 2.4, 6.4, 8.17, 8.5) is confirmed present with its correct span in every document, including the two multi-line-wrapped-title cases (2.10, 2.2, 2.4, 6.4) discovered during this same investigation. A Table-of-Contents entry is already explicitly named, in this file's own prior remediation history (structural-heading-rx-adversarial-expansion.test.ts describe block 4 and its own doc-comment), as 'a legitimate, expected source of duplicate labels' whose own tiny, non-owning physical occurrence is a bonus recall improvement, not a correctness requirement - no existing or required test asserts these specific 6 ToC entries' own separate existence, and no rank-stack corruption, span corruption, or nodeId collision results from their absence."
+  },
+  "residualRisks": [
+    {
+      "risk": "6 CONMED Table-of-Contents entries (titles containing 'etc.' with no other punctuation in the surrounding ToC listing) are no longer recognized as their own tiny physical occurrence.",
+      "severity": "cosmetic/informational only",
+      "justification": "See knownPackageStructuralRegression.conmedDeltaExplained above. The corresponding real body headings and their owned text spans are unaffected in every case verified."
+    },
+    {
+      "risk": "The bounded-hop wrap-tolerance window (150 characters) and hop count (exactly one) are empirically chosen from the real fixtures examined during this remediation (CONMED, DSGR), not derived from a formal bound on real title length.",
+      "severity": "low",
+      "justification": "Every real title-length cap already established elsewhere in this file (SECTION_PATTERNS[0]/INTEGER_SECTION_PATTERNS[0]/ARTICLE_PATTERNS[0]'s own char-class caps) is 90 characters or less; 150 chars with a single hop gives comfortable margin without approaching the length any adversarial fake citation in the required matrix needed to evade it (the shortest false-positive continuation tested was ~104 characters to its own first period, and still correctly rejected because the content immediately after that period was itself not self-contained)."
+    },
+    {
+      "risk": "A hypothetical adversarial shape not covered by the required matrix: a fake citation's own continuation happens to be short (resolves within the 150-char/one-hop bound) AND is immediately followed by genuinely new-looking content (an opening bracket, digit, or recognized keyword) purely by coincidence.",
+      "severity": "low, theoretical",
+      "justification": "Not observed in any real fixture (FWRG/LSB/CONMED/DSGR) or in any required adversarial case. The wrap-tolerance hop is reserved for candidates whose OWN match could not have reached a validated title end on its own (bare/unpunctuated ending, or an internal split within a swallowed line) - a shape-based pattern match (the shape the original bug and every reproduced false positive in this matrix actually take) is NEVER given this leniency at all, which is the primary defense."
+    }
+  ],
+  "constraintsRespected": [
+    "No prisma migrate dev/reset/db push run",
+    "condition-suspicion-classifier.ts, verify.ts's two-gate routing, semantic-coverage/*, AnalysisRun/SemanticTruth fencing - not touched",
+    "docs/phase-3f1-* historical artifact files - not touched (this is a NEW file in an existing, active directory, not a historical one)",
+    "isImmediatelyAfterPlausibleArticle (signal C) internals - not modified",
+    "git add scoped to exactly the files this workstream changed - never `git add -A`, given other agents' concurrent work in this shared worktree"
+  ]
+}

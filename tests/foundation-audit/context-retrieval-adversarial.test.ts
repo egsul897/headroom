@@ -38,6 +38,8 @@ function candidate(overrides: Partial<DiscoveredCandidate>): DiscoveredCandidate
     confidence: 1,
     sourceCitation: "6.01(a)",
     discoveryRunVersion: "test-v1",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
     ...overrides,
   };
 }
@@ -552,5 +554,128 @@ Section 1.08 of the Credit Agreement is hereby amended and restated in its entir
     // The amendment lead for 1.08 is still surfaced despite the cycle.
     const leadFor108 = bundle.items.find((i) => (i.type === "AMENDMENT_LEAD" || i.type === "SUPPLEMENT_LEAD") && i.normalizedRef === "1.08");
     expect(leadFor108).toBeDefined();
+  });
+});
+
+/**
+ * Phase 3F.1.6.RX Workstream B — BLOCKER-2 independent runtime trace.
+ *
+ * The prior phase's own certification/remediation ("3F.1.6.R") proved
+ * DiscoveredCandidate.supersessionStatus is computed correctly at the
+ * discovery layer, then asserted (via a test whose only real proof was
+ * TypeScript type-compatibility, not behavior) that this "reaches a real
+ * downstream consumer." An independent trace here — grepping every real
+ * production consumer for `.supersessionStatus` reads off a
+ * DiscoveredCandidate — found ZERO: context-retrieval/pipeline.ts,
+ * coverage-audit/discovery-comparison.ts, and semantic-coverage/
+ * reconciliation.ts all receive DiscoveredCandidate[] but none of them
+ * ever branched on this specific field before this fix. This describe
+ * block is the permanent guardrail: it proves buildCovenantContextBundle
+ * (one of the 3 real named consumers) now genuinely reads and ACTS on
+ * candidate.supersessionStatus — a real behavioral difference in
+ * sufficiencyState, not merely a copied-through decorative field.
+ */
+describe("BLOCKER-2 real-consumer remediation — buildCovenantContextBundle reads and acts on DiscoveredCandidate.supersessionStatus", () => {
+  // Deliberately no multi-word Title-Case phrases (e.g. "Loan Party") in the
+  // body text below - this describe block's own assertions isolate THIS
+  // fix's own effect on sufficiencyState, never an unrelated undeclared-term
+  // signal from extractCandidatePhrases (a different, pre-existing, correct
+  // mechanism this fix must not be conflated with).
+  const docs: TestDocument[] = [
+    { documentId: "doc1", label: "Credit Agreement", text: "Section 6.01. No party shall incur debt exceeding $1,000,000 in the aggregate.\n\nSection 6.02. No party shall create a lien.\n" },
+  ];
+
+  it("a KNOWN_SUPERSEDED candidate produces a bundle that discloses the real status/reason AND genuinely degrades sufficiencyState to INCOMPLETE (a real behavioral effect, not decorative metadata)", () => {
+    const access = accessFor(docs);
+    const node = access.index.getNodeByRef("doc1", "6.01")!;
+    const bundle = buildCovenantContextBundle(
+      {
+        candidate: candidate({
+          documentId: "doc1",
+          structuralNodeKeys: [node.nodeKey],
+          structuralNodeIds: [node.nodeId],
+          normalizedSourceRef: "6.01",
+          supersessionStatus: "KNOWN_SUPERSEDED",
+          supersessionReason: "Superseded by amendment effect \"eff-1\" from document \"amend-doc\", effective 2024-06-01.",
+        }),
+        packageKey: "pkg",
+        companyId: "co",
+        instrumentKey: null,
+      },
+      access
+    );
+
+    // Disclosure: the bundle carries the SAME status/reason the candidate
+    // was already handed (copied, never re-derived - this module still has
+    // no amendment/* import).
+    expect(bundle.originatingSupersessionStatus).toBe("KNOWN_SUPERSEDED");
+    expect(bundle.originatingSupersessionReason).toMatch(/eff-1|amend-doc/);
+
+    // Real behavior, not decoration: a HIGH-severity SUPERSEDED_OPERATIVE_SOURCE
+    // unresolved dependency is genuinely present, and it genuinely degrades
+    // sufficiencyState away from SUFFICIENT (computeSufficiencyState's own
+    // real, unmodified logic - never special-cased for this test).
+    const supersededDep = bundle.unresolvedDependencies.find((u) => u.dependencyType === "SUPERSEDED_OPERATIVE_SOURCE");
+    expect(supersededDep).toBeDefined();
+    expect(supersededDep!.severity).toBe("HIGH");
+    expect(bundle.sufficiencyState).toBe("INCOMPLETE");
+  });
+
+  it("a CURRENT_OPERATIVE candidate never triggers the disclosure/degradation - no false positives merely because the mechanism now exists", () => {
+    const access = accessFor(docs);
+    const node = access.index.getNodeByRef("doc1", "6.01")!;
+    const bundle = buildCovenantContextBundle(
+      {
+        candidate: candidate({ documentId: "doc1", structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: "6.01", supersessionStatus: "CURRENT_OPERATIVE", supersessionReason: "not superseded" }),
+        packageKey: "pkg",
+        companyId: "co",
+        instrumentKey: null,
+      },
+      access
+    );
+    expect(bundle.originatingSupersessionStatus).toBe("CURRENT_OPERATIVE");
+    expect(bundle.unresolvedDependencies.some((u) => u.dependencyType === "SUPERSEDED_OPERATIVE_SOURCE")).toBe(false);
+    expect(bundle.sufficiencyState).toBe("SUFFICIENT");
+  });
+
+  it("an UNKNOWN_SUPERSESSION_STATUS candidate (the honest 'discovery had no real supersessionIndex' default) is disclosed but never treated as an affirmatively confirmed problem - matches every other layer's own fail-closed-but-not-over-triggering discipline", () => {
+    const access = accessFor(docs);
+    const node = access.index.getNodeByRef("doc1", "6.01")!;
+    const bundle = buildCovenantContextBundle(
+      {
+        candidate: candidate({ documentId: "doc1", structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: "6.01" }),
+        packageKey: "pkg",
+        companyId: "co",
+        instrumentKey: null,
+      },
+      access
+    );
+    expect(bundle.originatingSupersessionStatus).toBe("UNKNOWN_SUPERSESSION_STATUS");
+    expect(bundle.unresolvedDependencies.some((u) => u.dependencyType === "SUPERSEDED_OPERATIVE_SOURCE")).toBe(false);
+    expect(bundle.sufficiencyState).toBe("SUFFICIENT");
+  });
+
+  it("END-TO-END, with a REAL discovery run: a candidate Pass A/D itself marks KNOWN_SUPERSEDED (never hand-set in the test) still degrades the real buildCovenantContextBundle's own output - proving the full chain Pass A -> pass-d-reconcile -> DiscoveredCandidate -> context-retrieval, not merely a hand-built fixture", async () => {
+    const { runPassADeterministicSignals } = await import("../../lib/contract-model/compiler/discovery/pass-a-signals");
+    const { runPassDReconciliation } = await import("../../lib/contract-model/compiler/discovery/pass-d-reconcile");
+    const access = accessFor(docs);
+    const node = access.index.getNodeByRef("doc1", "6.01")!;
+
+    const supersessionIndex = {
+      coveredDocumentIds: new Set(["doc1"]),
+      supersededByNodeId: new Map([[node.nodeId, { nodeId: node.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01" }]]),
+      ambiguousNodeIds: new Set<string>(),
+    };
+    const deterministic = runPassADeterministicSignals("doc1", access.index, supersessionIndex);
+    const deterministicByNodeId = new Map(deterministic.map((c) => [c.nodeId, c] as const));
+    const expanded = [{ structuralNodeKeys: [node.nodeKey], structuralNodeIds: [node.nodeId], normalizedSourceRef: "6.01", families: ["INDEBTEDNESS"], role: "GENERAL_PROHIBITION", roleRaw: "GENERAL_PROHIBITION", roleNormalizationStatus: "VALID_CANONICAL", familiesRaw: ["INDEBTEDNESS"], familiesNormalizationStatus: "VALID_CANONICAL", description: "test", multipleRulesLikely: false, definedTermDependencyLikely: false, needsReview: false, confidence: 0.9, sourceCitation: "6.01" } as never];
+    const { candidates } = runPassDReconciliation({ documentId: "doc1", discoveryRunVersion: "test-v1", expanded, discoveryId: (c: { structuralNodeIds: string[]; role: string }) => `discovery::${c.structuralNodeIds[0]}::${c.role}`, deterministicByNodeId });
+    const realCandidate = candidates.find((c) => c.structuralNodeIds.includes(node.nodeId))!;
+    expect(realCandidate.supersessionStatus).toBe("KNOWN_SUPERSEDED"); // sanity: Pass A/D really did compute this, not hand-set.
+
+    const bundle = buildCovenantContextBundle({ candidate: realCandidate, packageKey: "pkg", companyId: "co", instrumentKey: null }, access);
+    expect(bundle.originatingSupersessionStatus).toBe("KNOWN_SUPERSEDED");
+    expect(bundle.sufficiencyState).toBe("INCOMPLETE");
+    expect(bundle.unresolvedDependencies.some((u) => u.dependencyType === "SUPERSEDED_OPERATIVE_SOURCE")).toBe(true);
   });
 });

@@ -25,6 +25,7 @@ import { hashParts } from "../hashing";
 import type { SourceInventory, SourceInventoryItem, SourceInventoryItemKind } from "./types";
 import { EMPTY_SUPERSESSION_INDEX, getNodeSupersessionStatus } from "../amendment/operative-state";
 import type { NodeSupersessionIndex } from "../amendment/types";
+import { CONDITION_SUSPICION_PATTERNS } from "./condition-suspicion";
 
 export const SOURCE_INVENTORY_ALGORITHM_VERSION = "phase-3c-source-inventory.v1";
 
@@ -46,8 +47,35 @@ const PATTERNS: PatternDef[] = [
   { kind: "PERCENT", re: /\d+(?:\.\d+)?\s?%/g, parseValue: (m) => Number(m[0].replace("%", "").trim()) / 100 },
   { kind: "RATIO", re: /\d+(?:\.\d+)?\s*(?:to\s*1\.0*\b|:\s*1\.0*\b|x\b)/gi, parseValue: (m) => Number((m[0].match(/^\d+(?:\.\d+)?/) ?? ["0"])[0]) },
   { kind: "COMPARISON_OPERATOR", re: /\b(?:greater of|lesser of|not to exceed|not less than|at least|no more than|not more than|shall not exceed|equal to or greater than|equal to or less than)\b/gi },
-  { kind: "CONDITIONAL_PHRASE", re: /\b(?:so long as|provided(?:,?\s+that)?|unless|except(?:\s+that)?|if and only if|only if|subject to|notwithstanding)\b/gi },
-  { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding)\b/gi },
+  // Phase 3F.1.6.RX-FINAL Terminal Closure, Workstream D (FINDING-5 /
+  // BLOCKER-9's condition-omission defect class, THIRD recurrence - see
+  // docs/phase-3f1-6-rx-final-blocker-closure/27-part-b-blocker9-
+  // recertification.json). Every prior remediation (3F.1.6.R, then
+  // 3F.1.6.RX Part A) fixed this by adding newly-discovered idioms to a
+  // single flat CONDITIONAL_PHRASE alternation - which is exactly why the
+  // exact same defect class kept recurring with different vocabulary. This
+  // pass replaces "keep enumerating exact idioms" with condition-
+  // suspicion.ts's compositional slot-grammar frames (see that file's own
+  // extensive doc comment for the full rationale and honest limits): one
+  // legacy alternation (kept verbatim, below, for non-regression) plus
+  // eight new structural/morphological frames that generalize to drafting
+  // variants none of them individually enumerate.
+  //
+  // Phase 3F.1-terminal Architecture Decision, Part A: this deterministic
+  // pattern set was independently recertified a fourth time and found to
+  // still be a closed-vocabulary architecture one level down - see
+  // condition-suspicion.ts's own updated header. It is kept here UNCHANGED
+  // as the cheap, precise, zero-cost evidence layer it always was; the
+  // architectural fix for genuinely novel phrasing is
+  // condition-suspicion-classifier.ts's real semantic LLM call, invoked as
+  // an independent second routing gate in verify.ts - never by widening the
+  // patterns in this file. Spread across multiple
+  // PatternDef entries (all kind CONDITIONAL_PHRASE) rather than merged
+  // into one regex, because one of the new frames (EVENT_TRIGGER_DEFINED_TERM)
+  // is deliberately CASE-SENSITIVE (its entire signal is capitalization) and
+  // cannot share a `gi` flag with the other, case-insensitive frames.
+  ...CONDITION_SUSPICION_PATTERNS.map((p) => ({ kind: p.kind, re: p.re }) as PatternDef),
+  { kind: "EXCEPTION_MARKER", re: /\b(?:provided,?\s+however|except\s+that|other than|excluding|with\s+the\s+exception\s+of)\b/gi },
   { kind: "PROVISO_MARKER", re: /\bprovided,?\s+further\b/gi },
   { kind: "SHARED_CAP_MARKER", re: /\b(?:combined with|shared\s+(?:capacity|basket)|in the aggregate (?:with|under))\b/gi },
   { kind: "BUILDER_SIGNAL", re: /\b(?:cumulative(?:ly)?|builder|Retained (?:Excess )?Cash Flow|Available Amount)\b/gi },

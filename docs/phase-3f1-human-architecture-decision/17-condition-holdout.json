@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CONDITION_HOLDOUT",
+  "disposition": "ENVIRONMENT_BLOCKED",
+  "preconditionCheck": {
+    "timing": "Rechecked at this phase's start (SS24, before Part A dispatch) via a process-local one-shot probe, credential never persisted.",
+    "result": "HTTP 402: Team budget exceeded. Current spend: $50.05, limit: $50.00 - identical account state to every prior phase's own finding.",
+    "realCostIncurred": "$0.00"
+  },
+  "actionTaken": "Since OPEN-2 (a prerequisite - Part A must otherwise pass, per SS36's own overall-outcome rule) came back STILL_OPEN from Part B, this phase's final outcome does not hinge on OPEN-4's real-model holdout result: the phase fails on OPEN-2 regardless of OPEN-4's state. Per SS30 (\"If unavailable: record ENVIRONMENT_BLOCKED. Do not change production.\"), no re-probe was performed a second time late in this phase - the budget state was already reconfirmed once, and a second probe would not change either the OPEN-4 disposition or the overall phase outcome. condition-suspicion-classifier.ts and its prompt/few-shots/routing/cache/schema remain completely untouched this phase.",
+  "frozenHoldoutStatus": "The 22 fresh adversarial constructions from an earlier phase remain untouched, uncommitted-to, and ready to run once a human restores the Gateway budget - unaffected by anything in this phase.",
+  "note": "OPEN-4's disposition stays ENVIRONMENT_BLOCKED, not STILL_OPEN and not CERTIFIED_CLOSED - it has not been falsified, it has simply never been able to run."
+}

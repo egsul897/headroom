@@ -118,8 +118,28 @@ function submitToolInputSchema(): Record<string, unknown> {
   return z.toJSONSchema(SubmitCompilationSchema) as Record<string, unknown>;
 }
 
+/**
+ * Phase 3F.1 FIX-2 (§3 of the governing fix spec) - every item's own real
+ * evidenceStatus/reason (context-retrieval/state.ts's own
+ * resolveSectionEvidenceState/resolveDefinitionEvidenceState, computed at
+ * BUNDLE-CONSTRUCTION time, before this prompt is ever assembled) is now
+ * rendered explicitly alongside its excerpt, rather than the excerpt being
+ * dumped verbatim with no trust signal at all. This is a COURTESY to the
+ * model - it lets a well-behaved model correctly self-report an honest
+ * sufficiency without spending a tool call - but it is explicitly NOT the
+ * safety mechanism itself: compile.ts's own inputHasUnresolvedOperativeEvidence
+ * gate (derived from the SAME evidenceState, independent of anything the
+ * model reads or writes here) is what actually prevents a false COMPLETED/
+ * VERIFIED result, so a model that ignores this text entirely is still
+ * caught downstream.
+ */
+function formatContextItem(i: SemanticCompilerInput["contextBundle"]["items"][number]): string {
+  const trust = i.evidenceState ? `evidenceStatus: ${i.evidenceState.status}${i.evidenceState.isCurrentTruth ? "" : " [NOT CONFIRMED CURRENT]"}, reason: ${i.evidenceState.reason}` : "evidenceStatus: N/A (not independently-interpretable provision/economic text)";
+  return `- [${i.itemId}] (${i.type}, ${i.sourceCitation}) {${trust}}: ${i.excerptText}`;
+}
+
 function summarizeContextBundle(input: SemanticCompilerInput): string {
-  const items = input.contextBundle.items.map((i) => `- [${i.itemId}] (${i.type}, ${i.sourceCitation}): ${i.excerptText}`).join("\n");
+  const items = input.contextBundle.items.map(formatContextItem).join("\n");
   const unresolved = input.contextBundle.unresolvedDependencies.map((u) => `- ${u.dependencyType} (${u.severity}): ${u.reason}`).join("\n");
   return [
     `Operative source text (${input.sourceSectionRef ?? "no section ref"}):`,
@@ -129,7 +149,7 @@ function summarizeContextBundle(input: SemanticCompilerInput): string {
       ? `Operative-state status: ${input.operativeLineage.operativeStatus} (as of ${input.operativeLineage.asOfDate}). If this is not OPERATIVE_STATE_RESOLVED, your sufficiency must honestly reflect the uncertainty - never treat unresolved/conflicted operative text as authoritative COMPLETE.`
       : "This provision has no recorded amendment history (never amended).",
     "",
-    `Already-gathered context (Phase 2's own bounded retrieval - read this BEFORE requesting tools):\n${items || "(none)"}`,
+    `Already-gathered context (Phase 2's own bounded retrieval - read this BEFORE requesting tools). Each item's own {evidenceStatus, reason} tells you whether ITS excerpt is confirmed current operative text - an item marked anything other than CURRENT (e.g. OPERATIVE_STATE_UNRESOLVED, AMBIGUOUS_TARGET, KNOWN_SUPERSEDED, PARTIAL_AMENDMENT, HISTORICAL_ONLY) must NOT be treated as authoritative current truth even though its excerpt is shown for context - your sufficiency must honestly reflect that uncertainty regardless of how confident the excerpt's own wording reads:\n${items || "(none)"}`,
     unresolved ? `\nAlready-known unresolved dependencies:\n${unresolved}` : "",
   ].join("\n");
 }

@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STRUCTURAL_CLASSIFIER_DESIGN",
+  "workstream": "OPEN-1",
+  "implementationFiles": [
+    "lib/contract-model/compiler/structural-ambiguity-classifier.ts",
+    "lib/contract-model/compiler/structural-classifier-wire-schema.ts",
+    "lib/contract-model/compiler/structural-ambiguity-resolution.ts"
+  ],
+  "referencePatternReused": {
+    "file": "lib/contract-model/compiler/semantic-verification/condition-suspicion-classifier.ts",
+    "reusedArchitecture": ["StageCaller/getStageCaller provider abstraction", "tolerant matchEnum() enum normalization (exact, then upper-snake-case, else conservative fallback)", "tenant/document/span/algorithm-version/prompt-version/provider cache key via hashParts (all tenant fields folded INTO the hash, never a separate per-tenant wrapper)", "three-valued verdict where UNCERTAIN and any failure/synthetic-fallback are treated identically by routing", "failed/isSynthetic/fromCache telemetry envelope", "SyntheticStageCaller schema.parse({}) fail-by-design contract (no zod default on the verdict field, so the no-credential path can never silently produce a false positive)", "few-shot examples teaching REASONING POSTURE on synthetic fact patterns, never a memorized benchmark answer"],
+    "notReused": "condition-suspicion-classifier.ts's own condition-detection logic, prompt content, categories, and cache are completely untouched and unimported - the two classifiers are independent at the type level (own wire schema file, own cache class, own algorithm/prompt version constants, zero shared imports beyond llm-caller.ts/hashing.ts, which are generic infrastructure both were already built to share)."
+  },
+
+  "structuralTriageContract": "conceptually CONFIDENT_HEADING | CONFIDENT_PROSE_REFERENCE | AMBIGUOUS - see 02-structural-triage-design.json for the full deterministic-side contract. This document covers only the classifier invoked for the AMBIGUOUS bucket.",
+
+  "classifierIO": {
+    "soleQuestion": "At this exact source location, is this candidate acting as a structural heading of THIS document, or is it an in-prose reference / ordinary text?",
+    "verdict": "LIKELY_HEADING | LIKELY_PROSE_REFERENCE | UNCERTAIN",
+    "outputFields": ["verdict", "reason (short, free text)", "relatedSourceSpans (real, verbatim substrings the model points at - never fabricated)", "provider", "model", "promptVersion", "algorithmVersion", "telemetry", "failed", "failureDetail", "isSynthetic", "fromCache"],
+    "inputShown": {
+      "candidateType": "ARTICLE | SECTION",
+      "candidateNumber": "the parser's own regex-CAPTURED number/label (e.g. '6.09', 'VI') - real, already-visible-in-the-text information, not a parser JUDGMENT, so disclosing it does not disclose 'what the parser decided'",
+      "candidateText": "the candidate's own matched text verbatim",
+      "precedingWindow": "bounded (300 char) real source text immediately before the candidate",
+      "followingWindow": "bounded (300 char) real source text immediately after the candidate",
+      "nearestConfidentHeadingBefore / nearestConfidentHeadingAfter": "heading TEXT ONLY (e.g. 'Section 6.08 Restricted Payments.') of the nearest already-CONFIDENT structural node on each side - never an id, never IR"
+    },
+    "inputNeverShown": [
+      "the deterministic parser's own accept/reject decision for this exact candidate (never CONFIDENT_HEADING/CONFIDENT_PROSE_REFERENCE/AMBIGUOUS strings, never a boolean)",
+      "any compiled/structural-node representation (nodeId, parentNodeId, StructuralNode)",
+      "the expected/benchmark answer or any indication this is a certification/test case",
+      "covenant economics or any semantic IR - the classifier is never asked to interpret what a covenant means, only whether this candidate is structurally a heading or a reference"
+    ]
+  },
+
+  "independenceDiscipline": {
+    "mechanism": "Type-level: classifyStructuralAmbiguity's content-input type (StructuralAmbiguityClassifierInput) is checked via mutual-assignability against an EXACT expected field-set type in tests/contract-model/structural-ambiguity-classifier-independence.test.ts - a future edit adding an extra field (nodeId, a decision label, an expected answer) fails tsc --noEmit, not merely a test.",
+    "staticCheck": "structural-ambiguity-classifier.ts's own import lines are checked to never reach into stage-structure.ts, lib/contract-model/ir/*, structural-index.ts, or semantic/types|compile - it has no type-level vocabulary for the parser's own decision or compiled output at all.",
+    "callSiteCheck": "structural-ambiguity-resolution.ts's own inline classifier-input object literal is checked (via source inspection of the actual call site, not just doc comments) to never reference the triage decision, a nodeId, or any expected/ground-truth field, while positively confirming it DOES pass every disclosed source-only field.",
+    "runtimeCheck": "tests/contract-model/structural-ambiguity-classifier.test.ts's own 'source-only independence' describe block captures the REAL userContent string a call sends to the model and asserts it never contains the parser's own decision-label vocabulary - the runtime-accurate complement to the static checks (a doc comment may legitimately NAME the triage vocabulary when explaining the architecture; an actual prompt string sent to a model must never contain it)."
+  },
+
+  "caching": {
+    "keyFormula": "hashParts([companyId, instrumentKey, sourceDocumentId, hashParts([candidateType, candidateNumber, candidateText, precedingWindow, followingWindow]), STRUCTURAL_INDEX_VERSION, algorithmVersion, promptVersion, provider::model])",
+    "tenantScoping": "identical pattern to condition-suspicion-classifier.ts's own computeConditionSuspicionCacheKey - every tenant field folded INTO the hash itself, verified by a dedicated cross-tenant test (two companyIds with byte-identical candidate text and instrument/document identity never share a cache entry; a different instrumentKey for the same companyId also misses).",
+    "failedCallsNeverCached": "a transport/schema failure returns UNCERTAIN+failed:true and is deliberately never written to the cache, so a transient failure gets a fresh real attempt next time rather than a permanently-stuck UNCERTAIN - verified by a dedicated retry test."
+  },
+
+  "failSafeBehavior": {
+    "onFailure": "any thrown exception (network error, timeout) is caught inside classifyStructuralAmbiguity and converted to {verdict: UNCERTAIN, failed: true, failureDetail: <message>} - never propagated as an uncaught exception, never silently defaulted to LIKELY_HEADING.",
+    "onMalformedOutput": "a response missing the required 'verdict' field fails zod schema validation, caught the same way (UNCERTAIN, failed:true).",
+    "onOutOfVocabularyVerdict": "a verdict string outside {LIKELY_HEADING, LIKELY_PROSE_REFERENCE, UNCERTAIN} - exact or upper-snake-case-normalized - falls back to the conservative UNCERTAIN, never the most permissive option.",
+    "onNoCredential": "getStageCaller() in this sandbox (no AI_GATEWAY_API_KEY/ANTHROPIC_API_KEY - confirmed live via caller.isSynthetic===true in tests/contract-model/structural-ambiguity-resolution.test.ts, not merely assumed) returns the shared SyntheticStageCaller, whose call() does schema.parse({}) - since 'verdict' has no zod default, this THROWS inside the try block and is caught identically to a real transport failure: UNCERTAIN, failed:true, isSynthetic:true. This is the REAL fail-safe path this environment actually exercises, proven with a live call to the real getStageCaller(), not a mock standing in for it.",
+    "resolutionPolicyInStructuralAmbiguityResolutionTs": "only an UNFAILED, non-synthetic LIKELY_HEADING or LIKELY_PROSE_REFERENCE verdict is ever allowed to set an override entry. UNCERTAIN, failed, or synthetic results add NO override entry at all - applyStructuralAmbiguityOverrides then falls through to its own fail-closed default (excluded, never re-parenting real content). Every unresolved candidate additionally produces a StructuralReviewSignal (documentId, candidateType, candidateKey, sourceEvidence, reason, classifierVerdict, classifierFailed, classifierIsSynthetic) - a bounded, in-memory analogue of the safe-failure/StructuralHealthFinding 'never silently drop, always surface' discipline already established elsewhere in this codebase (lib/contract-model/compiler/safe-failure/*, structural-index.ts's own StructuralHealthFinding), kept in-memory rather than a new persisted table since this workstream's scope is the parsing mechanism, not a new persistence surface - a caller wanting persistence maps these onto ClaimReviewItemInput/StructuralHealthFinding exactly as those existing consumers already do for their own domains."
+  },
+
+  "costDiscipline": {
+    "callSite": "structural-ambiguity-resolution.ts's resolveStructuralAmbiguity() is the ONLY call site - invoked exactly once per AMBIGUOUS candidate from parseDocumentStructureWithTriage's own ambiguousCandidates array, subject to the shared cache. Never called for a CONFIDENT_HEADING or CONFIDENT_PROSE_REFERENCE candidate (they never appear in that array to begin with).",
+    "verifiedByTest": "tests/contract-model/structural-ambiguity-resolution.test.ts's 'cost discipline' describe block passes a caller that throws if invoked at all, against a fully deterministic (zero-ambiguous) document, and confirms zero calls; a separate test confirms a shared cache serves the second identical resolution entirely from cache."
+  }
+}

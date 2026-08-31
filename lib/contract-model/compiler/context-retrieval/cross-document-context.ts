@@ -8,6 +8,7 @@
 import type { StructuralIndex } from "../structural-index";
 import type { InstrumentGroupingResult, ModificationCandidate, PackageGraphResult, RelationshipCandidate } from "../package-graph/types";
 import { addEdge, addItem, makeItemInput, withinBudget, type RetrievalState } from "./state";
+import type { ContextItemEvidenceState } from "./types";
 
 export interface PackageDocumentAccess {
   index: StructuralIndex;
@@ -63,12 +64,15 @@ export function retrieveAmendmentLeadsForDefinition(state: RetrievalState, packa
   }
 }
 
+/** Phase 3F.1 FIX-2 - already self-labeled by this item's own excerpt prefix ("[AMENDMENT_RESOLUTION_REQUIRED]") and reason text; explicitly disclosed as OPERATIVE_STATE_UNRESOLVED (never CURRENT) rather than left null, since a modification CANDIDATE targeting this provision - by definition - means this provision's own operative precedence is not yet determined (task §19). */
+const AMENDMENT_LEAD_EVIDENCE_STATE: ContextItemEvidenceState = { status: "OPERATIVE_STATE_UNRESOLVED", isCurrentTruth: false, reason: "This is an unresolved amendment/supplement lead, not confirmed-current text - operative precedence for this modification candidate is not determined at context-retrieval time (task §19)." };
+
 function addAmendmentLeadItem(state: RetrievalState, packageGraph: PackageGraphResult, mc: ModificationCandidate, parentItemId: string): void {
   const sourceRel = packageGraph.relationshipCandidates.find((r) => r.sourceDocumentId === mc.sourceDocumentId && r.targetDocumentId === mc.targetDocumentId);
   const itemType = sourceRel?.relationshipType === "SUPPLEMENTS" ? "SUPPLEMENT_LEAD" : "AMENDMENT_LEAD";
   const excerpt = `[AMENDMENT_RESOLUTION_REQUIRED] ${mc.sourceNodeCitation}: ${mc.sourceText}`;
   if (!withinBudget(state, excerpt.length)) return;
-  const item = addItem(state, makeItemInput(itemType, mc.sourceDocumentId, null, null, mc.targetSectionRef ?? mc.targetDefinedTermRef ?? "document-level", mc.sourceNodeCitation, excerpt, `A modification candidate from ${mc.sourceNodeCitation} appears to target this provision/definition - operative precedence is NOT determined here (task §19); flagged for the later amendment-precedence phase.`, 1, [parentItemId], "PACKAGE_GRAPH", mc.confidence));
+  const item = addItem(state, makeItemInput(itemType, mc.sourceDocumentId, null, null, mc.targetSectionRef ?? mc.targetDefinedTermRef ?? "document-level", mc.sourceNodeCitation, excerpt, `A modification candidate from ${mc.sourceNodeCitation} appears to target this provision/definition - operative precedence is NOT determined here (task §19); flagged for the later amendment-precedence phase.`, 1, [parentItemId], "PACKAGE_GRAPH", mc.confidence, AMENDMENT_LEAD_EVIDENCE_STATE));
   addEdge(state, item.itemId, parentItemId, "AMENDMENT_CANDIDATE", "Candidate amendment target - resolution required before treating as operative.");
   state.crossDocumentLeads++;
 }
@@ -93,7 +97,12 @@ export function retrieveCrossDocumentReferenceLeads(state: RetrievalState, packa
     const itemType = /intercreditor/i.test(lead.namedAgreementHint) ? "INTERCREDITOR_LEAD" : "CROSS_DOCUMENT_REFERENCE";
     const excerpt = `Reference to "${lead.namedAgreementHint}": ${lead.referenceText}`;
     if (!withinBudget(state, excerpt.length)) return;
-    const item = addItem(state, makeItemInput(itemType, documentId, null, null, lead.namedAgreementHint, lead.referenceText, excerpt, `This document's own text references another agreement in the package (resolution status: ${lead.status}).`, 1, [parentItemId], "PACKAGE_GRAPH", lead.status === "RESOLVED" ? 0.9 : 0.5));
+    // Phase 3F.1 FIX-2 (§16 audit: NON_CONTRACT_TEXT) - this item names
+    // ANOTHER agreement's existence/topology (mirrors getInstrumentDocuments'
+    // own NOT_CONTRACT_TEXT_EVIDENCE tool classification), never independently
+    // interpretable provision/economic text of its own - no operative-truth
+    // claim is being made here for evidenceState to police.
+    const item = addItem(state, makeItemInput(itemType, documentId, null, null, lead.namedAgreementHint, lead.referenceText, excerpt, `This document's own text references another agreement in the package (resolution status: ${lead.status}).`, 1, [parentItemId], "PACKAGE_GRAPH", lead.status === "RESOLVED" ? 0.9 : 0.5, null));
     addEdge(state, parentItemId, item.itemId, "CROSS_DOCUMENT_LEAD", `"${lead.referenceText}"`);
     state.crossDocumentLeads++;
   }

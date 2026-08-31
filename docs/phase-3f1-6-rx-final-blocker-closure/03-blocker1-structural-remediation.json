@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "BLOCKER1_STRUCTURAL_REMEDIATION_RX",
+  "workstream": "A",
+  "blockerId": "BLOCKER-1",
+  "generatedAt": "2026-08-30T16:05:00Z",
+  "startingCommit": "4005687",
+  "affectedFiles": [
+    "lib/contract-model/compiler/stage-structure.ts",
+    "tests/certification/structural-heading-rx-adversarial-expansion.test.ts"
+  ],
+
+  "charter": "Independently re-attack Phase 3F.1.6.R's BLOCKER-1 fix (the positive-evidence heading-plausibility gate in stage-structure.ts) with NEW adversarial cases never used by the prior workstream's own 23-case guard, testing both precision and recall. Redesign generally if a genuine gap is found; never reintroduce a phrase list; never patch around a specific case with a special exception; report an honest 'no defect found' outcome if the heuristic is sound. Never self-certify CERTIFIED_CLOSED.",
+
+  "priorFixSummary": "Phase 3F.1.6.R replaced a 14-phrase citation-signal denylist with a positive-evidence gate requiring ONE of three purely typographic signals before accepting an ARTICLE/SECTION heading candidate: (A) a real 2+-newline paragraph break before the candidate (after discounting one page-number artifact), (B) sentence-terminal punctuation immediately before the candidate, or (C) a SECTION-shaped candidate sitting immediately after an already-plausible ARTICLE match. This closed all 7 certified STRUCT-1 false-positive sites (CONMED 1, DSGR 6) and passed a dedicated 23-case false-negative guard before being marked REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION.",
+
+  "methodology": "Built and ran a fresh adversarial matrix using ONLY new cases (never reused from the prior workstream's own 23-case guard or its 24-case precision suite), covering every category the RX charter names: ARTICLE headings in multiple conventions, SECTION headings, bare numbered headings, mixed numbering conventions ('6.01' bare / 'Section 6.01' / '§6.01' / roman-numeral ARTICLEs co-occurring in one document), headings after 10 brand-new inline-citation phrasings never enumerated by the original 14-phrase list or the 5 STRUCT-1 gap phrasings, headings after 3 different page-number-artifact shapes (bare digit, 'Page N' label, '-N-' dash-wrapped), headings with only a single newline before them (tested directly against all 4 real FWRG/LSB/CONMED/DSGR fixtures for a real single-newline heading convention, and synthetically against table/bullet-list/signature-block shapes), OCR-irregular constructs, colon/semicolon/non-period terminal punctuation, headings after tables/bullet lists/signature blocks, SCHEDULE/EXHIBIT boundary headings, repeated section labels across different articles (including a REAL fixture case, not only synthetic), and deeply nested sub-clause headings. Real FWRG/LSB/CONMED/DSGR fixture text was used wherever a matching real example existed (tests/fixtures/unseen-packages/); synthetic constructions were used only for shapes absent from all four real packages. Every finding was independently reproduced by diffing the FULL parseDocumentStructure output before vs. after each change (via git stash / git stash pop on the exact same fixture text), never assumed from a single test's pass/fail alone.",
+
+  "redesignNeeded": true,
+  "redesignRationale": "The heuristic was NOT retained unchanged. Two genuine, general, root-cause gaps were found by this adversarial attack and fixed in lib/contract-model/compiler/stage-structure.ts. Neither fix is package-specific, neither reintroduces a phrase list, and neither is a special-cased patch around one observed instance - both are general typographic/structural corrections applying uniformly to every document.",
+
+  "gapsFound": [
+    {
+      "id": "RX-GAP-1",
+      "title": "Page-number-artifact whitespace collapse lost a real paragraph break when the artifact was bounded by only single newlines",
+      "category": "recall - headings immediately after page numbers",
+      "discoveryMethod": "Synthetic adversarial construction: a heading following '...text\\n42\\nSection X...' (bare digit page number, ONE newline on each side - a real, common PDF-text-extraction convention, distinct from the blank-line-bounded page numbers already covered by the prior workstream's own real DSGR/FWRG test cases). Also tested 'Page 42' (labeled) and '-42-' (dash-wrapped) variants, since the task explicitly named these as distinct adversarial shapes to try.",
+      "rootCause": "`stripTrailingPageNumberArtifact` matched the whitespace-bounded digit run and collapsed the ENTIRE match (both surrounding whitespace runs, not just the digit token) down to a SINGLE preserved character via `.replace(/(^|\\s)\\d{1,4}\\s*$/, \"$1\")`. This only happened to preserve the real 2+-newline paragraph-break signal when the source text already had MORE newlines than the single-character replacement kept - true for every real CONMED/DSGR fixture example the prior workstream tested (all blank-line-bounded, e.g. '.\\n\\n69\\n\\nSECTION 2.09'), but false for a page number bounded by exactly one newline on each side, where the collapse destroyed one of the two real newlines and left only one - failing signal (A) and, since the real preceding sentence terminal punctuation sits further back (before the page-number line, not immediately adjacent), also failing signal (B).",
+      "realWorldConfirmation": "This exact single-newline-bounded shape was independently confirmed to occur in REAL CONMED/DSGR fixture text - specifically, every Table-of-Contents entry in both packages ('SECTION 1.1 Defined Terms\\n1\\n\\nSECTION 1.2 Other Definitional Provisions\\n43\\n\\n...'). Diffing the full structural parse before/after the fix (via git stash) showed CONMED gained 459 and DSGR gained 151 real ARTICLE/SECTION nodes, essentially all of them real Table-of-Contents entries the old collapse logic was silently suppressing.",
+      "fix": "Rewrote `stripTrailingPageNumberArtifact` to preserve the FULL whitespace run on both sides of the artifact (`.replace(/(^|\\s+)(?:[Pp]age\\s+)?-?\\d{1,4}-?(\\s*)$/, \"$1$2\")`), stripping only the decorative token itself and never manufacturing newlines that were not really there, so a single-newline-bounded page number and a blank-line-bounded one are both handled identically and correctly. Widened the artifact's own SHAPE to also recognize an optional 'Page ' label and optional wrapping dashes - a closed, universally standard typographic decoration class, never an open-ended citation-preposition list, so this stays within the 'purely positional/typographic evidence' contract the prior fix established.",
+      "safetyVerification": "The boundary-requirement half of the original regex (the token must be preceded by whitespace or document start, never glued directly to non-whitespace text) is unchanged, so a citation's own attached section number (e.g. '6.05' inside 'Section 6.05') still can never be mistaken for a page-number artifact. The fix never CREATES a newline that was not already in the source text - it only avoids LOSING real ones during the digit-token removal - so it cannot launder a genuinely single-newline-bounded citation into a false heading acceptance; verified directly by re-confirming all 7 certified STRUCT-1 sites and the 10 brand-new citation phrasings (see RX-PRECISION-CHECK below) remain correctly rejected after the fix."
+    },
+    {
+      "id": "RX-GAP-2",
+      "title": "SECTION_PATTERNS' winner-take-all pattern selection silently dropped an entire minority numbering convention when two conventions legitimately co-occurred in one document",
+      "category": "recall - mixed numbering conventions",
+      "discoveryMethod": "Synthetic construction of a single document mixing 'Section 6.02 Liens.' (keyword style) with a bare '6.01 Indebtedness.' (no keyword) heading, and separately with a '§6.01 Indebtedness.' (section-symbol) heading - directly testing the RX charter's own named category ('mixed numbering conventions (e.g. \"6.01\", \"Section 6.01\", \"6.01(a)\", roman numerals for articles)').",
+      "rootCause": "`bestMatches` (the pre-existing Phase C-era pattern-selection mechanism) is winner-take-all across an entire pattern array: it returns only the single pattern whose own match count is highest FOR THE WHOLE DOCUMENT, never a union. This is safe for ARTICLE_PATTERNS (its two entries are mostly redundant alternate captures of the same convention - independently re-tested here with a mixed roman/numeric-ARTICLE-in-one-document case and a multi-line-broken-title case, both of which already pass). It is NOT safe for SECTION_PATTERNS, which bundles four GENUINELY DIFFERENT, independently-occurring real conventions ('Section 6.01 Title .', '§6.01 Title', two line-anchored fallbacks including a bare '6.01 Title' with no keyword at all) into one winner-take-all contest. A document using the keyword style for most sections and a bare or '§'-prefixed style for a minority had the ENTIRE minority style silently and completely dropped - never even reaching the plausibility gate, regardless of how strong that minority style's own positional evidence was.",
+      "realWorldConfirmation": "Confirmed on REAL DSGR fixture text, not only synthetic: DSGR doc-a and doc-d each contain a real attached 'Assignment and Acceptance' exhibit form using its own independent bare-decimal numbering restarting at '1.1 Assignor .' / '1.2 Assignee .', co-existing with the main credit agreement body's keyword-style 'SECTION 6.04. Investments...' etc. Under the pre-fix winner-take-all selection, these exhibit-form headings were silently absent from the structural index entirely.",
+      "fix": "Replaced `bestMatches(doc.text, SECTION_PATTERNS)` with a new `unionMatches` function for this one call site: an additive, overlap-deduplicated union across all four SECTION_PATTERNS shapes, in the array's own declared priority order, using the exact same `overlapsAny` mechanism the codebase already used to combine decimalSectionMatches/integerSectionMatches/bareIntegerMatches into one final set. A document where one shape already wins every real occurrence is completely unaffected (every lower-priority pattern's own matches on that document are the SAME real headings, already claimed, and are discarded as overlaps - never double-counted); a document mixing conventions now gets every genuinely distinct real heading from every shape.",
+      "scopeNote": "ARTICLE_PATTERNS was deliberately left on `bestMatches` (unchanged) - directly tested for the analogous mixed-convention risk (roman + numeric ARTICLE in one document; a multi-line-broken ARTICLE title) and found sound with no gap, so no change was made there per the charter's 'do not force a change if the heuristic is already sound' instruction."
+    }
+  ],
+
+  "realWorldMagnitudeAndSafetyOfFix": {
+    "observedNodeCountChange": {
+      "fwrg": { "before": 418, "after": 418, "note": "byte-identical structureOutputHash - FWRG's continuous-prose style never exercises either gap." },
+      "lsb": { "before": 76, "after": 76, "note": "byte-identical structureOutputHash - LSB never exercises either gap." },
+      "conmed": { "before": 2348, "after": 2814, "note": "totalNodes rises because real Table-of-Contents entries (RX-GAP-1) and real exhibit-form bare-decimal headings are now correctly captured as their own distinct physical occurrences - both previously silently dropped, neither a new false positive." },
+      "dsgr": { "before": 3897, "after": 4105, "note": "Same mechanism as CONMED." }
+    },
+    "importantContext": "3F.1.6.R's own CONMED before/after figures (2695 -> 2348) already noted a totalNodes DROP explained as 'the fix correctly UNDOING the artificial double-counting the original defect caused.' This RX workstream's own investigation found that drop ALSO silently absorbed an UNDOCUMENTED recall regression: the ORIGINAL pre-3F.1.6.R phrase-list gate was default-PERMISSIVE (reject only a known-bad phrase), so it already accepted real Table-of-Contents entries as legitimate physical occurrences - exactly the 'a table-of-contents entry' case Phase 3F.1.2's own physical-occurrence-identity architecture names by name as a legitimate, expected source of duplicate labels. The new default-REJECTIVE positive-evidence gate requires explicit typographic evidence, and RX-GAP-1's page-number-collapse bug meant real, single-newline-bounded ToC entries failed to supply it. This RX fix restores that recall - CONMED's post-RX-fix totalNodes (2814) is now HIGHER than even the original pre-3F.1.6.R baseline (2695), for a documented, correct reason in both directions (the real STRUCT-1 defect stays fixed AND the ToC-entry recall regression is now also fixed), not a reversion of the original fix.",
+    "safetyInvariantsReverified": [
+      "0 nodeId collisions across the full CONMED document after the fix (1086 total ARTICLE/SECTION/SUBSECTION/CLAUSE/SUBCLAUSE nodes checked directly for doc-a alone).",
+      "0 SECTION_NUMBER_SEQUENCE_ANOMALY findings for both CONMED and DSGR (scripts/cert-3f1-6-residual-anomaly-inspect.ts, re-run after the fix) - unchanged from the certified state.",
+      "Every one of the 5 distinct real DSGR sites BLOCKER-1 originally corrected (doc-a Section 2.05 and 6.04, doc-b Section 2.05, doc-d Section 2.09 and 6.04) resolves to the EXACT SAME correct [charStart, charEnd) span after this workstream's fixes as it did after 3F.1.6.R's own fix - directly re-verified by slicing the real document text at each boundary.",
+      "The newly-captured Table-of-Contents entries have tiny, self-contained owned-text spans (29-46 characters observed directly for CONMED doc-a's ToC 'SECTION 1.1'/'SECTION 1.2' entries) that never stretch into or truncate any real body section's own span - directly verified: the real body 'SECTION 1.1 Defined Terms .' occurrence's span (charStart=9046, charEnd=157707, correctly reaching the real body Section 1.2) is byte-identical before and after this fix."
+    ]
+  },
+
+  "precisionCheck": {
+    "novelCitationPhrasings": {
+      "count": 10,
+      "phrasings": [
+        "without limiting the generality of",
+        "as more particularly described in",
+        "notwithstanding anything to the contrary contained in",
+        "except as otherwise expressly provided in",
+        "as qualified by the provisions of",
+        "in the manner contemplated by",
+        "together with the covenants set forth in",
+        "as such term is used in",
+        "for purposes of",
+        "unless otherwise waived pursuant to"
+      ],
+      "result": "All 10 correctly REJECTED as citations, 0 false positives - none of these phrasings were enumerated by the original 14-phrase denylist or the 5 STRUCT-1 gap phrasings this whole redesign was built against. This directly confirms the design's own core claim: the gate never inspects WHAT WORD precedes a candidate, only WHERE the nearest sentence/paragraph boundary sits, so it generalizes to phrasing its own author never anticipated without needing a phrase list."
+    },
+    "scheduleExhibitBoundaries": "SCHEDULE/EXHIBIT boundary headings ('SCHEDULE 1', 'EXHIBIT A') were confirmed to never be mistaken for an ARTICLE or SECTION node (they are simply outside this grammar's targeted node types), and correctly do not disrupt the real SECTION headings before/after them.",
+    "tableBulletSignatureBlockBoundary": {
+      "tested": "A numeric table row, a bullet-list item, and a signature block, each ending with NO terminal punctuation, followed by only a SINGLE newline, then a real heading.",
+      "result": "NOT accepted in any of the three cases - and this is confirmed to be the CORRECT, intentional boundary, not an oversight. All 7 certified STRUCT-1 false-positive sites are separated from their own preceding in-text-citation prose by exactly this same shape (one newline, no terminal punctuation). Loosening this specific boundary to accept these synthetic cases would necessarily also reopen the exact false-positive class BLOCKER-1 exists to close.",
+      "realFixtureCheck": "Directly searched all 4 real FWRG/LSB/CONMED/DSGR fixtures for any genuine single-newline-preceded, non-terminal-punctuation heading in a table/list/signature-block context - found ZERO such real cases; every real single-newline candidate found in any of the four packages is a correctly-rejected in-text citation, never a suppressed real heading. This category is documented here as a synthetic-only residual risk, the same treatment the prior workstream gave its own analogous synthetic-only category (04-structural-false-negative-results.json's cat4b, prior to its own resolution as a side effect of the paragraph-break fix)."
+    }
+  },
+
+  "mixedNumberingConventions": {
+    "casesRun": [
+      "bare-decimal-only document (no 'Section' keyword anywhere) - sanity, unaffected by the fix",
+      "'Section' keyword + bare decimal co-occurring in one document - both now survive (previously the bare style was silently dropped)",
+      "'§' symbol + 'Section' keyword co-occurring in one document - both now survive",
+      "a numerically dominant bare-decimal style alongside a numerically minor keyword-style section - both now survive",
+      "real: DSGR doc-a/doc-d's own attached Assignment and Acceptance exhibit ('1.1 Assignor .', '1.2 Assignee .') alongside the main body's keyword style ('SECTION 6.04. Investments...') - both now survive",
+      "roman-numeral ARTICLE + numeric 'ARTICLE 2' co-occurring in one document - already sound, no gap (ARTICLE_PATTERNS unchanged)",
+      "an ARTICLE title broken across multiple lines ('ARTICLE\\nIII\\nCOVENANTS') - already sound, no gap"
+    ]
+  },
+
+  "realFixtureRegressionReconfirmation": {
+    "script": "scripts/cert-3f1-6-residual-anomaly-inspect.ts",
+    "result": "CONMED: 0 SECTION_NUMBER_SEQUENCE_ANOMALY finding(s). DSGR: 0 SECTION_NUMBER_SEQUENCE_ANOMALY finding(s). Both re-run identically before writing this disposition, confirming all 7 originally-certified anomalies (CONMED 1, DSGR 6) remain eliminated after this workstream's own two additional general fixes.",
+    "fiveDistinctSitesReverified": "doc-a Section 2.05 [222571,229695), doc-a Section 6.04 [455225,463076), doc-b Section 2.05 [267852,274976), doc-d Section 2.09 [280652,293979), doc-d Section 6.04 [474787,484376) - all five byte-identical to the spans 3F.1.6.R's own fix originally produced.",
+    "knownPackageReplayScript": "scripts/foundation-audit-known-package-replay.ts re-run after the fix: FWRG/LSB structureOutputHash byte-identical to the certified baseline; CONMED/DSGR structureOutputHash changed (expected and explained above - real recall improvement, not corruption); the script's own DSGR reconciliation assertion (expects totalNodes=4149, an already pre-existing stale figure per 3F.1.6.R's own docs/phase-3f1-6-r-blocker-remediation/03-structural-heading-remediation.json) continues to legitimately print matchesHistoricalRecord=false both before and after this workstream's changes - not a regression this workstream introduces."
+  },
+
+  "newTestFile": {
+    "path": "tests/certification/structural-heading-rx-adversarial-expansion.test.ts",
+    "description": "Permanent expansion of adversarial coverage, added as a new sibling file per the charter's instruction (never modifying or reusing the prior workstream's own 23-case guard file). 31 tests across 7 categories: page-number-artifact recall (4), mixed numbering conventions (5, including one real-fixture case), novel citation phrasing precision (10), real CONMED ToC-entry-and-real-body coexistence safety (2), real DSGR anomaly-site span reconfirmation (5), documented table/bullet/signature-block boundary (3), SCHEDULE/EXHIBIT precision safety (1), plus a summary case.",
+    "result": "31/31 passed."
+  },
+
+  "qualityGates": {
+    "tscNoEmit": "6 errors, byte-identical to the documented baseline (tests/foundation-audit/cascade-and-concurrency.test.ts x2, tests/foundation-audit/discovery-fault-injection.test.ts x1, tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts x3) - none in lib/contract-model/compiler/stage-structure.ts or this workstream's new test file. Zero new errors.",
+    "eslint": "1 error, identical to the documented baseline (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169, @typescript-eslint/no-var-requires). Zero new errors.",
+    "vitestFullRun": "2148 tests, 2145 passed, 3 failed (tests/certification/section11-source-trace-independent.test.ts x2 - documented, pre-existing, BLOCKER-7/live-Postgres-scoped, unrelated to BLOCKER-1; tests/extraction/vercel-ai-gateway-provider.test.ts x1 - documented, pre-existing, environment-dependent, unrelated to any blocker). 0 tests newly failing as a result of this workstream's changes. 31 new tests added and passing."
+  },
+
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "This workstream did NOT merely retain the prior fix because the known 7 errors stayed gone. A fresh, independent adversarial attack using entirely new cases (novel citation phrasings, mixed numbering conventions, page-number-artifact shapes, single-newline boundary probes across all 4 real packages) found and general-fixed two genuine, root-cause gaps in stage-structure.ts, neither package-specific, neither a phrase list, neither a special-cased patch. Both fixes were independently reverified against: (1) all 7 originally-certified real anomaly sites (0 anomalies, byte-identical spans), (2) 10 brand-new citation phrasings never seen by any prior phrase list or the original fix's own design process (0 false positives), (3) the full existing regression suite (0 new failures), and (4) direct text-level inspection of every newly-added real node (Table-of-Contents entries and exhibit-form headings, both explicitly anticipated by the system's own physical-occurrence-identity architecture, neither corrupting any real body section's span). One category (single-newline heading after a table/bullet-list/signature-block with no terminal punctuation) was deliberately left unaddressed after confirming: (a) it does not occur in any real FWRG/LSB/CONMED/DSGR fixture, and (b) loosening it would directly reopen the real, certified STRUCT-1 false-positive class - this is a reasoned, evidence-based boundary, not an unexamined gap. Per the phase charter, this disposition remains pending an independent, production-frozen recertification pass by Part B - it is never self-certified as CERTIFIED_CLOSED by the workstream that performed the fix."
+}

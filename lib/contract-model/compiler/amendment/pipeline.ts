@@ -25,6 +25,7 @@ import { interpretAmendmentClause, AMENDMENT_INTERPRETATION_PROMPT_VERSION } fro
 import { validateSemanticAmendmentCandidate } from "./validation";
 import { groupEffectsByProvision, buildProvisionChain } from "./chain";
 import { verifyAmendmentEffectsIndependently } from "./independent-verification";
+import { resolveOperativeDefinitionEvidence } from "./operative-state";
 import type { AmendmentEffectCandidate, AmendmentPipelineSummary, AmendmentTarget } from "./types";
 
 /**
@@ -175,7 +176,49 @@ function getTargetCurrentText(index: StructuralIndex, target: AmendmentTarget): 
     // specifically-resolved target (see runDeterministicPass's own
     // resolvedTargetDocumentIds/disambiguateMultiTargetSection above), so a
     // miss within it is a genuine NOT_FOUND, never a reason to widen scope.
-    return index.getDefinitionFullText(target.targetDefinedTermRef, target.targetDocumentId) ?? null;
+    //
+    // Phase 3F.1.6.RX-FINAL Workstream B (FINDING-2/3 audit of OTHER
+    // definition-access paths with the same gap) - this call used to be
+    // `index.getDefinitionFullText(target.targetDefinedTermRef,
+    // target.targetDocumentId)` directly, which silently returns the FIRST
+    // match (`.find()`) whenever `target.targetDocumentId` genuinely has
+    // 2+ colliding physical definitions of the same term - the exact same
+    // silent-guess-among-ambiguous-candidates gap fixed in
+    // semantic/tools.ts's getDefinition, here feeding
+    // interpretAmendmentClause's own real LLM call with a possibly-WRONG
+    // definition's text as this amendment's authoritative "current text,"
+    // never disclosed as a guess. Fixed the same way, with the SAME
+    // primitive (never a second, parallel check): resolveUniqueDefinitionByRef
+    // resolves the collision explicitly; an AMBIGUOUS result returns null
+    // here (this function's own existing, established "no confident current
+    // text" contract - the SECTION branch above already does the identical
+    // thing for a colliding section reference via resolveUniqueNodeByRef),
+    // never guessed. `target.targetDefinedTermRef` is unaffected when the
+    // term is genuinely unique or genuinely absent (NOT_FOUND) in this
+    // already-resolved target document.
+    //
+    // Phase 3F.1.6-terminal Part A (OPEN-2) - now routed through the same
+    // canonical resolveOperativeDefinitionEvidence primitive semantic/
+    // tools.ts's getDefinition uses, rather than a second, hand-rolled
+    // resolveUniqueDefinitionByRef+getDefinitionFullText pair maintained in
+    // parallel here - one temporal/definition-access discipline, not two.
+    // No OperativeContractState exists yet at this pipeline stage (this
+    // function runs WHILE amendment effects are still being discovered, in
+    // order to feed one specific effect's own semantic interpretation -
+    // operative state is computed only afterward, from the full effect
+    // list this function is itself helping produce), so `operativeState:
+    // null` is passed deliberately, never a chicken-and-egg workaround:
+    // resolveOperativeDefinitionEvidence's own Branch 2 (base-document
+    // fallback, AMBIGUOUS/UNIQUE/NOT_FOUND) is exactly, and only, what this
+    // call site needs and previously implemented by hand. Behavior for
+    // AMBIGUOUS/NOT_FOUND is unchanged (both yield null here, as before);
+    // a UNIQUE match now also earns definition-supersession awareness (see
+    // resolveOperativeDefinitionEvidence's own header) automatically,
+    // though no NodeSupersessionIndex exists at this stage either, so this
+    // call site is unaffected in practice today - it will benefit for free
+    // if a future caller here ever gains one.
+    const resolution = resolveOperativeDefinitionEvidence({ index, operativeState: null, term: target.targetDefinedTermRef, searchDocumentIds: [target.targetDocumentId] });
+    return resolution.outcome === "FOUND" ? resolution.text : null;
   }
   return null;
 }

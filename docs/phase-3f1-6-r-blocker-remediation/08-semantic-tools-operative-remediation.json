@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "BLOCKER_5_SEMANTIC_TOOLS_OPERATIVE_REMEDIATION",
+  "blockerId": "BLOCKER-5",
+  "sourceFinding": "05-supersession-certification.json, finding SUPER-5",
+  "generatedAt": "2026-08-30T05:30:00Z",
+  "rootCause": {
+    "summary": "Of the 14 LLM-facing evidence tools in lib/contract-model/compiler/semantic/tools.ts, getOperativeProvision, getDefinition, getRelatedAmendments, and getPriorVersion all called findProvisionView(access.operativeState?.provisions, ...) before returning text - genuinely supersession-aware. getReferencedProvision, getParentClause, getChildren, getSiblingClauses, and getSourceSpan called access.structuralIndex.getNode(...)/getNodeText(...) directly with no operativeState reference anywhere in their bodies. getReferencedProvision was the sharpest case: its own tool description told the model to trust it for 'the covenant's actual economics', yet it silently returned stale/superseded text whenever a cross-reference resolved to a base-document node that had since been amended."
+  },
+  "auditOfAll14Tools": {
+    "methodology": "Every tool's own execute() function was read directly; each was classified into exactly one of three disciplines (a third, NOT_CONTRACT_TEXT_EVIDENCE, was added beyond the task's own two named categories for tools that return no independently-interpretable provision/economic text at all - topology, graph metadata, or an already-vetted echo of a Phase 2D context-bundle item - since operative-state re-verification does not meaningfully apply to them; this narrow addition is disclosed here rather than silently forced into one of the two text-bearing categories).",
+    "classifications": [
+      { "tool": "getOperativeProvision", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "status": "Already safe - unchanged." },
+      { "tool": "getDefinition", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "status": "Already safe - unchanged." },
+      { "tool": "getDefinitionDependencies", "discipline": "NOT_CONTRACT_TEXT_EVIDENCE", "status": "Returns only a list of OTHER defined-term NAMES, never provision text - unchanged." },
+      { "tool": "getParentClause", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "status": "FIXED - was RAW_EVIDENCE_BY_DESIGN (SUPER-5)." },
+      { "tool": "getChildren", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "status": "FIXED - was RAW_EVIDENCE_BY_DESIGN (SUPER-5); now discloses parentSupersessionStatus." },
+      { "tool": "getSiblingClauses", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "status": "FIXED - was RAW_EVIDENCE_BY_DESIGN (SUPER-5)." },
+      { "tool": "getReferencedProvision", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "status": "FIXED - was RAW_EVIDENCE_BY_DESIGN (SUPER-5), the sharpest named case." },
+      { "tool": "getRelatedAmendments", "discipline": "CURRENT_OPERATIVE_EVIDENCE", "status": "Already safe - unchanged." },
+      { "tool": "getPriorVersion", "discipline": "HISTORICAL_EVIDENCE_WITH_STATUS", "status": "Already safe by design (deliberately historical, own description + supersededBy field disclose it) - unchanged." },
+      { "tool": "getInstrumentDocuments", "discipline": "NOT_CONTRACT_TEXT_EVIDENCE", "status": "Topology only (documentId list) - unchanged." },
+      { "tool": "getContextBundleComponent", "discipline": "NOT_CONTRACT_TEXT_EVIDENCE", "status": "Echoes an already-vetted Phase 2D context-bundle item - unchanged." },
+      { "tool": "getSharedCapContext", "discipline": "NOT_CONTRACT_TEXT_EVIDENCE", "status": "Echoes already-vetted Phase 2D context-bundle items - unchanged." },
+      { "tool": "getSourceSpan", "discipline": "HISTORICAL_EVIDENCE_WITH_STATUS", "status": "FIXED - was RAW_EVIDENCE_BY_DESIGN (SUPER-5); kept intentionally raw/non-substituting (its whole purpose is the literal as-drafted text of one exact physical occurrence, including deliberately reading a known-historical node), but now discloses a real supersessionStatus/supersessionReason and its description now explicitly says so." },
+      { "tool": "getRuleDependency", "discipline": "NOT_CONTRACT_TEXT_EVIDENCE", "status": "Returns only context-bundle graph edges, never text - unchanged." }
+    ],
+    "countRemediated": 5,
+    "countAlreadySafe": 9
+  },
+  "fix": {
+    "filesChanged": ["lib/contract-model/compiler/semantic/tools.ts"],
+    "description": "Added a shared resolveNodeWithSupersessionAwareness(access, supersessionIndex, node) helper that generalizes the EXACT pattern getOperativeProvision already used (findProvisionView(access.operativeState?.provisions, node.sectionRef) first; only when no tracked provision view covers this section does it fall back to raw structural text, but even then tags the result with a real supersessionStatus/supersessionReason via getNodeSupersessionStatus). getReferencedProvision, getParentClause, and getSiblingClauses now call this helper for every node whose text they return, instead of navigating access.structuralIndex directly and unconditionally. getChildren (which never returns child TEXT, only nodeId/sectionRef/heading metadata) now additionally computes and discloses the PARENT node's own supersessionStatus, since a superseded parent's child listing may not reflect the section's current sub-structure. getSourceSpan (the one tool legitimately meant to expose raw/historical text without substitution) was left substitution-free but now attaches a real supersessionStatus/supersessionReason to every response and its own description explicitly discloses this. A single NodeSupersessionIndex is built once per buildToolSet call (never per tool call) via buildNodeSupersessionIndex, reusing homeDocumentId as the index's own baseDocumentId - the same anchor concept every other cross-instrument check in this file already uses.",
+    "permanentEnforcementMechanism": {
+      "description": "Added a new, MANDATORY (non-optional) field to the ToolDefinition interface itself: operativeStateDiscipline: 'CURRENT_OPERATIVE_EVIDENCE' | 'HISTORICAL_EVIDENCE_WITH_STATUS' | 'NOT_CONTRACT_TEXT_EVIDENCE'. Because this field is required, TypeScript refuses to compile any future tool object literal in buildToolSet that omits it - a structural, compile-time guardrail stronger than a runtime-only check. Every one of the 14 current tool definitions was updated to declare its own real classification.",
+      "runtimeTest": "tests/contract-model/semantic-tools-operative-state-discipline.test.ts iterates every tool actually returned by buildToolSet (never a hardcoded name list) and asserts each declares one of the 3 known-safe disciplines, that the originally-affected 5 tools are no longer RAW_EVIDENCE_BY_DESIGN, and spot-checks real runtime behavior (a live execute() call) against the declared label for getReferencedProvision/getSiblingClauses/getChildren/getSourceSpan."
+    }
+  },
+  "testEvidence": {
+    "certificationReproductionTest": {
+      "file": "tests/certification/semantic-tools-supersession-blind-navigation.test.ts",
+      "note": "Extended in place per the task's own instruction. The original test (which proved getReferencedProvision leaked stale $10,000,000 text with no disclosure) was rewritten to prove the fix: the SAME scenario now returns the CURRENT $25,000,000 text with an explicit supersessionStatus: CURRENT_OPERATIVE disclosure. A new regression-guard test proves the fix does not simply always prefer amended text unconditionally - a node with no covering provision (never amended) still returns its own raw text, correctly tagged CURRENT_OPERATIVE via the supersession-index fallback path, not merely masked."
+    },
+    "newEnforcementTest": {
+      "file": "tests/contract-model/semantic-tools-operative-state-discipline.test.ts",
+      "result": "4/4 passed"
+    },
+    "regressionSuiteResults": {
+      "existingToolTests": "tests/contract-model/semantic-compiler/ - 8/8 test files passed, 78/78 tests passed, unmodified.",
+      "fullSuite": "202/204 files passed, 2062/2064 tests passed (2 pre-existing, out-of-scope failures - see BLOCKER-2's artifact)."
+    },
+    "tscBaseline": "6 errors, byte-identical to certified baseline.",
+    "eslintBaseline": "1 error, identical to certified baseline.",
+    "buildResult": "npm run build succeeds, 21 routes."
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+}

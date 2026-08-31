@@ -223,6 +223,14 @@ export function buildRawSourceFallbackFindings(input: {
     semanticPromptVersion: null,
     providerIdentity: null,
     resolutionStatus: "OPEN" as const,
+    // Phase 3F.1.6.R BLOCKER-3 fix - see coverage-audit/types.ts's own
+    // OPERATIVE-STATE DISCLOSURE header. These findings have no
+    // structuralNodeId at all (raw, structurally-unanchored spans), so a
+    // real supersessionIndex lookup at runIndependentCoverageAudit's own
+    // post-hoc tagging pass will itself resolve to UNKNOWN (no node
+    // identity to check) - the same fail-closed outcome as this default.
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS" as const,
+    supersessionReason: "raw-source-fallback.ts findings are not anchored to a real structural node - supersession status cannot be determined for unanchored raw text.",
   };
 
   if (input.includeDocumentLevelFinding) {

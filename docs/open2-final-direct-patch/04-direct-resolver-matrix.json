@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "DIRECT_RESOLVER_MATRIX",
+  "testFile": "tests/certification/open2-final-direct-patch-matrix.test.ts",
+  "targetFunction": "resolveNodeWithSupersessionAwareness, called DIRECTLY (now exported), not only through the wrapping tools",
+  "part1_realProducerFixtures": {
+    "description": "Status x text-presence combinations naturally reachable via the real computeOperativeContractState/buildProvisionView producer.",
+    "results": [
+      { "status": "OPERATIVE_STATE_RESOLVED", "currentText": "non-null", "case": "B", "evidenceCurrent": true, "textSource": "AMENDED_CURRENT_TEXT", "pass": true },
+      { "status": "OPERATIVE_STATE_RESOLVED", "currentText": "null (clean deletion)", "case": "C", "evidenceCurrent": false, "textSource": "HISTORICAL_BASE_TEXT", "pass": true },
+      { "status": "OPERATIVE_STATE_REVIEW_REQUIRED", "currentText": "non-null (THE EXPLOIT SHAPE - undated effect excluded from appliedChain)", "case": "A", "evidenceCurrent": false, "textSource": "UNRESOLVED_AMENDED_TEXT", "pass": true },
+      { "status": "OPERATIVE_STATE_REVIEW_REQUIRED", "currentText": "null (dated effect applied, no capturable text)", "case": "A", "evidenceCurrent": false, "textSource": "BASE_DOCUMENT_TEXT", "pass": true },
+      { "status": "OPERATIVE_STATE_CONFLICTED", "currentText": "null (two effects sharing a future date)", "case": "A", "evidenceCurrent": false, "textSource": "BASE_DOCUMENT_TEXT", "pass": true },
+      { "status": "OPERATIVE_STATE_PARTIAL", "currentText": "null (genuinely ambiguous physical target)", "case": "A", "evidenceCurrent": false, "textSource": "BASE_DOCUMENT_TEXT", "pass": true },
+      { "status": null, "note": "CASE D - no view at all, node CURRENT_OPERATIVE", "evidenceCurrent": true, "textSource": "BASE_DOCUMENT_TEXT", "pass": true },
+      { "status": null, "note": "CASE D - no view at all, node KNOWN_SUPERSEDED (via a different provision's supersession record)", "evidenceCurrent": false, "pass": true }
+    ],
+    "note": "CONFLICTED and PARTIAL with non-null currentText are NOT naturally reachable via the real producer today (buildProvisionView explicitly nulls currentText for both branches) - covered instead in part2 below via defensive hand-built fixtures, per the mandate's own instruction not to encode 'this state can never happen' into the consumer."
+  },
+  "part2_defensiveHandBuiltFixtures": {
+    "description": "Status/currentText combinations the real producer does not construct today, built directly as OperativeProvisionView object literals to confirm the consumer stays safe even if future producer behavior changes.",
+    "results": [
+      { "status": "OPERATIVE_STATE_CONFLICTED", "currentText": "non-null (hand-built)", "evidenceCurrent": false, "textSource": "UNRESOLVED_AMENDED_TEXT", "pass": true },
+      { "status": "OPERATIVE_STATE_PARTIAL", "currentText": "non-null (hand-built)", "evidenceCurrent": false, "textSource": "UNRESOLVED_AMENDED_TEXT", "pass": true },
+      { "status": "OPERATIVE_STATE_CONFLICTED", "currentText": "non-null (hand-built)", "nodeSupersessionStatus": "CURRENT_OPERATIVE (deliberately made to look node-level-safe)", "evidenceCurrent": false, "note": "confirms view.status dominates even when the node-level signal alone would say safe", "pass": true }
+    ]
+  },
+  "part3_permanentInvariant": {
+    "description": "Property-style test: for ANY OperativeProvisionView with status !== OPERATIVE_STATE_RESOLVED, evidenceCurrent === false regardless of currentText null/non-null, node supersession status, or base text availability.",
+    "dimensions": {
+      "statuses": ["OPERATIVE_STATE_CONFLICTED", "OPERATIVE_STATE_PARTIAL", "OPERATIVE_STATE_REVIEW_REQUIRED"],
+      "currentTextShapes": ["null", "non-null"],
+      "nodeSupersessionShapes": ["UNKNOWN (empty index)", "COVERED_CLEAN (covers the doc, nothing recorded superseded)", "KNOWN_SUPERSEDED (recorded superseded via an unrelated provision)"]
+    },
+    "totalCombinations": 18,
+    "allPassed": true,
+    "assertion": "expect(resolved.evidenceCurrent).toBe(false) for all 18 combinations"
+  },
+  "part4_cleanControls": {
+    "description": "Required clean controls confirming no over-blocking.",
+    "results": [
+      { "control": "never-amended current base section (CASE D)", "expected": "current", "actual": "evidenceCurrent=true", "pass": true },
+      { "control": "resolved amended section with replacement currentText (CASE B)", "expected": "current (must not regress)", "actual": "evidenceCurrent=true, textSource=AMENDED_CURRENT_TEXT", "pass": true },
+      { "control": "known-superseded old base node, no view at all (CASE D)", "expected": "unresolved/historical, unchanged", "actual": "evidenceCurrent=false, nodeSupersessionStatus=KNOWN_SUPERSEDED", "pass": true },
+      { "control": "clean deletion (CASE C)", "expected": "old text historical, never current", "actual": "evidenceCurrent=false, textSource=HISTORICAL_BASE_TEXT", "pass": true },
+      { "control": "resolved provision, no relevant uncertainty", "expected": "remains usable", "actual": "evidenceCurrent=true, unresolvedReasons=[]", "pass": true }
+    ]
+  },
+  "testRunResult": "34 tests, 34 passed (0 failed) - `npx vitest run tests/certification/open2-final-direct-patch-matrix.test.ts`"
+}

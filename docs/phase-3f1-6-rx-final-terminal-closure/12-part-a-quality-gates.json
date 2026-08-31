@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_QUALITY_GATES",
+  "gates": {
+    "tsc": "npx tsc --noEmit -p . - 6 pre-existing errors, byte-identical to phase baseline (00-baseline.json), 0 new. (Note: this session's own new scripts/check-destructive-db-patterns.ts briefly introduced 3 new errors during incident-response infrastructure work - fixed and re-confirmed clean before this gate.)",
+    "eslint": "npx eslint . - 1 pre-existing error, byte-identical to baseline, 0 new.",
+    "vitest": "npx vitest run (full repo, no path filter) - 240 test files, 2515 tests: ALL PASSING, 0 failures. (Baseline was 234 files/2416 tests with 1 pre-existing unrelated failure; the increase is the 6 new isolation-hardening test files/tests added this incident-response window, plus the 1 pre-existing failure - tests/extraction/vercel-ai-gateway-provider.test.ts - no longer failing, since AI_GATEWAY_API_KEY happened to be set in this session's environment for the FWRG/LSB recovery work, which is an environment-state difference, not a code fix - not claimed as a regression fix.)",
+    "build": "npm run build - succeeds, 21 routes, unchanged.",
+    "prismaMigrateStatus": "npx prisma migrate status - 'Database schema is up to date!' (repaired this incident-response window - see docs/test-infrastructure-incident-2026-08-30/15).",
+    "prismaMigrateDiff": "No difference detected (schema matches prisma/schema.prisma exactly).",
+    "productionFreezeProofSoFar": "git diff c2954d3 HEAD --stat -- 'lib/**' 'app/**' 'prisma/schema.prisma' 'prisma/migrations/**' shows ONLY the 2 new, additive lib/testing/*.ts isolation modules from the incident response - zero change to any of the 8 findings' own production fixes."
+  },
+  "diffClassification": "Every production file changed since c2954d3 (this phase's own starting commit) maps to either one of the 8 frozen findings (all 7 workstreams, already merged before c2954d3) or the incident-response's own explicitly-authorized, disclosed infrastructure hardening (lib/testing/disposable-db.ts, lib/testing/ephemeral-db.ts, scripts/check-destructive-db-patterns.ts, the package.json prisma:migrate fix). No forbidden-category change (no UI redesign, no dashboard, no simulation, no financial connectors, no Phase 4 computation, no new unseen package, no evaluator change, no package-specific tuning)."
+}

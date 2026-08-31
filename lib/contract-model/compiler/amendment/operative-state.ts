@@ -38,7 +38,7 @@
 import type { StructuralIndex } from "../structural-index";
 import type { DetectedDefinition } from "../structural-definitions";
 import { groupEffectsByProvision, buildProvisionChain, normalizeDefinedTermRef, type ProvisionGroup } from "./chain";
-import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
+import type { AmendmentEffectCandidate, NodeSupersessionIndex, NodeSupersessionRecord, NodeSupersessionResult, NodeSupersessionStatus, OperativeContractState, OperativeProvisionView, OperativeStateStatus, ProvisionStructuralHealthStatus, ProvisionTargetResolutionStatus } from "./types";
 
 /**
  * Phase 3F.1.5.R (sub-task 3) - the fail-closed composition point named by
@@ -116,10 +116,22 @@ export interface OperativeStateInput {
  * Scoped strictly to one documentId, exactly like resolveUniqueNodeByRef,
  * so a same-named definition living in a genuinely different document
  * never counts toward this document's own ambiguity/uniqueness verdict.
+ *
+ * Phase 3F.1.6.RX-FINAL Workstream B (FINDING-2/FINDING-3) - exported (was
+ * module-private) so semantic/tools.ts's getDefinition can reuse this SAME
+ * primitive for its own no-recorded-amendment fallback path, rather than
+ * inventing a second, parallel "is this term ambiguous" check. This is the
+ * definition-side counterpart to `StructuralIndex.resolveUniqueNodeByRef`,
+ * which getOperativeProvision (semantic/tools.ts) already calls directly
+ * for the SECTION case - getDefinition previously had no equivalent at all
+ * for a term with 2+ colliding, never-amended physical definitions in the
+ * same document (`index.getDefinition`'s own `.find()` silently returns
+ * the first match on such a collision - see this function's own header
+ * comment above).
  */
-type DefinitionResolution = { status: "UNIQUE"; definition: DetectedDefinition } | { status: "AMBIGUOUS"; candidates: DetectedDefinition[] } | { status: "NOT_FOUND" };
+export type DefinitionResolution = { status: "UNIQUE"; definition: DetectedDefinition } | { status: "AMBIGUOUS"; candidates: DetectedDefinition[] } | { status: "NOT_FOUND" };
 
-function resolveUniqueDefinitionByRef(index: StructuralIndex, documentId: string, term: string): DefinitionResolution {
+export function resolveUniqueDefinitionByRef(index: StructuralIndex, documentId: string, term: string): DefinitionResolution {
   const normalized = normalizeDefinedTermRef(term);
   const matches = index.allDefinitions().filter((d) => d.documentId === documentId && d.normalizedTerm === normalized);
   if (matches.length === 0) return { status: "NOT_FOUND" };
@@ -611,4 +623,364 @@ export function getNodeSupersessionStatus(index: NodeSupersessionIndex, document
     return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: `No operative-state computation covers document "${documentId}" - amendment/supersession status for this node was never checked, so it must not be assumed current.` };
   }
   return { status: "CURRENT_OPERATIVE", record: null, reason: "No recorded amendment effect supersedes this physical occurrence as of the analysis date the supplied operative state was computed for." };
+}
+
+// ---------------------------------------------------------------------------
+// HEADROOM OPEN-2 (universal evidence-trust invariant, root-cause fix for the
+// getOperativeProvision/getDefinition asymmetry - see semantic/tools.ts's own
+// ToolExecutionOutcome.evidenceUnresolved header comment for the incident).
+//
+// ROOT CAUSE: getDefinition correctly derives ToolExecutionOutcome.
+// evidenceUnresolved from its OWN resolution's `isCurrentTruth` boolean
+// (resolveOperativeDefinitionEvidence, above). getOperativeProvision computes
+// a real, equally-informative status (`OperativeProvisionView.status`) but
+// its execute() body never translated that into evidenceUnresolved at all -
+// not because the underlying signal didn't exist, but because each tool's
+// execute() was independently deciding, in its own body, whether/how to set
+// the flag. Two near-identical tools computing the same KIND of status
+// object independently is exactly how one of them silently skipped the
+// translation.
+//
+// FIX: one shared boolean primitive every CURRENT_OPERATIVE_EVIDENCE tool in
+// semantic/tools.ts that resolves either vocabulary below calls - never a
+// second copy of "which status values count as safe" per tool. Accepts BOTH
+// status vocabularies a CURRENT_OPERATIVE_EVIDENCE tool in this codebase can
+// produce:
+//   - OperativeStateStatus - an OperativeProvisionView's own aggregate
+//     status (getOperativeProvision's "a real view was found" branch,
+//     getRelatedAmendments).
+//   - NodeSupersessionStatus - a single physical node's own supersession
+//     verdict (resolveNodeWithSupersessionAwareness's return value, already
+//     used by getParentClause/getSiblingClauses/getReferencedProvision, and
+//     getOperativeProvision's OWN raw base-document fallback branch, which
+//     - independently found during this audit - never consulted
+//     supersessionIndex at all, unlike its getDefinition sibling's
+//     equivalent base-document fallback branch).
+// Exactly one literal value per vocabulary is ever treated as positively
+// confirmed current; every other value (OPERATIVE_STATE_CONFLICTED/PARTIAL/
+// REVIEW_REQUIRED, KNOWN_SUPERSEDED, UNKNOWN_SUPERSESSION_STATUS) fails
+// closed - `!isConfirmedCurrentOperativeEvidence(status)` is the ONE
+// expression every one of those tools' execute() bodies assigns to
+// `evidenceUnresolved`, so a future new CURRENT_OPERATIVE_EVIDENCE tool that
+// forgets to set it produces `undefined`/falsy (fail-open) only if it also
+// forgets to call this helper at all - the registry-iterating test in
+// tests/contract-model/semantic-tools-operative-state-discipline.test.ts is
+// the mechanical backstop for that remaining human-discipline step (a
+// runner-level, fully-generic derivation was evaluated and rejected: each
+// tool's result payload shape differs too much - some via a provision
+// view's own `status`, some via a per-node `supersessionStatus`, some via
+// neither field name at all - for ToolRunner.run to locate "the status"
+// generically without per-tool knowledge of its own result shape; see
+// docs/phase-3f1-human-architecture-decision/05-universal-evidence-trust-
+// invariant.json for the full mechanism writeup).
+// ---------------------------------------------------------------------------
+
+export type CurrentOperativeEvidenceStatus = OperativeStateStatus | NodeSupersessionStatus;
+
+/**
+ * The SINGLE shared "is this positively confirmed current operative truth"
+ * boolean every CURRENT_OPERATIVE_EVIDENCE-declared tool in semantic/tools.ts
+ * derives its own ToolExecutionOutcome.evidenceUnresolved from. See the
+ * header comment immediately above for the full rationale.
+ */
+export function isConfirmedCurrentOperativeEvidence(status: CurrentOperativeEvidenceStatus): boolean {
+  return status === "OPERATIVE_STATE_RESOLVED" || status === "CURRENT_OPERATIVE";
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1.6-terminal Part A (OPEN-2 / BLOCKER-5 / BLOCKER-6 remediation) -
+// the canonical, single definition-access primitive both semantic/tools.ts's
+// getDefinition AND amendment/pipeline.ts's getTargetCurrentText now share,
+// so a definition's operative status is answered with ONE temporal
+// discipline rather than two independently-maintained ones. See
+// docs/phase-3f1-terminal-architecture-decision/04-definition-operative-fix.json
+// for the full reproduction/fix writeup - the short version: getDefinition's
+// own findProvisionView-based lookup used to compare the queried term with
+// only `.trim().toLowerCase()` (leading/trailing whitespace only), unlike
+// its SECTION-side sibling on the same line (full `.replace(/\s+/g, "")`)
+// and unlike normalizeDefinedTermRef itself (the exact function already
+// used to STORE OperativeProvisionView.definedTermRef in the first place).
+// A term queried with irregular internal whitespace silently missed the
+// stored view, fell through to a base-document fallback, and re-served
+// stale pre-amendment text labeled OPERATIVE_STATE_RESOLVED even when a
+// real, on-file CONFLICTED or PARTIAL amendment existed. Routing getDefinition
+// through getOperativeDefinition (which already normalizes both sides via
+// normalizeDefinedTermRef) closes that gap at the root rather than patching
+// around the one reproduction.
+// ---------------------------------------------------------------------------
+
+/**
+ * The unified status a definition's evidence carries - deliberately a
+ * richer, distinct vocabulary from OperativeStateStatus (which describes a
+ * PROVISION's aggregate amendment-chain health) because this function must
+ * also describe definitions that were NEVER targeted by any amendment
+ * effect at all (the base-document fallback), where no OperativeStateStatus
+ * value applies:
+ *   - CURRENT: confidently current, safe to treat as settled fact - either
+ *     a fully-resolved amendment chain, or a genuinely never-amended,
+ *     uniquely-resolved base-document definition with no known supersession.
+ *   - KNOWN_SUPERSEDED: a real, disclosed record (via NodeSupersessionIndex)
+ *     shows this exact physical base-document occurrence no longer governs,
+ *     even though no DEFINITION-kind amendment effect targeted the TERM
+ *     itself (e.g. its enclosing section was independently superseded).
+ *   - OPERATIVE_STATE_UNRESOLVED: a real, on-file amendment conflict
+ *     (OPERATIVE_STATE_CONFLICTED) or an otherwise-review-required chain
+ *     state - no confident current text exists and none is fabricated.
+ *   - AMBIGUOUS_TARGET: 2+ real, colliding physical definitions/candidates
+ *     and no way to pick one without guessing - never guessed.
+ *   - PARTIAL_AMENDMENT: a real, resolved, dated effect governs this exact
+ *     term but supplied no capturable replacement text.
+ *   - HISTORICAL_ONLY: a real amendment references this term but its own
+ *     base-document target could not be confirmed to exist at all
+ *     (targetResolutionStatus NOT_FOUND) - what the amendment SAYS
+ *     (attemptedText) is disclosed for context, explicitly labeled
+ *     historical/unconfirmed, never presented as current.
+ *
+ * Only `isCurrentTruth === true` (equivalently, `status === "CURRENT"`) may
+ * ever be treated by a caller as settled, verified current fact - every
+ * other status may still return `text` for context, but a caller MUST
+ * label it as historical/unresolved and must not let it alone justify a
+ * VERIFIED/current-truth downstream determination (see
+ * ToolExecutionOutcome.evidenceUnresolved in semantic/tools.ts and
+ * SemanticVerificationResult's own determineStatus in
+ * semantic-verification/verify.ts for where this is enforced downstream).
+ */
+export type DefinitionEvidenceStatus = "CURRENT" | "KNOWN_SUPERSEDED" | "OPERATIVE_STATE_UNRESOLVED" | "AMBIGUOUS_TARGET" | "PARTIAL_AMENDMENT" | "HISTORICAL_ONLY";
+
+export interface DefinitionEvidenceFound {
+  outcome: "FOUND";
+  status: DefinitionEvidenceStatus;
+  /** Null whenever status !== "CURRENT" and no safe historical/attempted text exists either (CONFLICTED, PARTIAL_AMENDMENT, AMBIGUOUS never reaches this shape at all - see DefinitionEvidenceAmbiguous). */
+  text: string | null;
+  documentId: string;
+  source: "amended" | "base-document";
+  /** True iff status === "CURRENT" - the single field a caller should gate on rather than string-matching every status value. */
+  isCurrentTruth: boolean;
+  unresolvedIssues: string[];
+  /**
+   * Backward-compatible OperativeStateStatus-vocabulary echo, for callers
+   * (getOperativeProvision's own sibling response shape, and every existing
+   * test asserting on it) that already key off exactly
+   * OPERATIVE_STATE_RESOLVED/PARTIAL/CONFLICTED/REVIEW_REQUIRED - the
+   * SAME `view.status` this function derived `status` above from, never
+   * re-derived or collapsed a second way. For the base-document fallback
+   * (no view at all - Branch 2), there is no real OperativeProvisionView to
+   * echo: CURRENT maps to the pre-existing "never amended" convention
+   * (OPERATIVE_STATE_RESOLVED) and KNOWN_SUPERSEDED maps to
+   * OPERATIVE_STATE_PARTIAL (the closest existing meaning - text exists but
+   * is not confidently current), both newly-introduced by this fix and not
+   * constrained by any pre-existing caller.
+   */
+  legacyStatus: OperativeStateStatus;
+}
+
+export interface DefinitionEvidenceAmbiguous {
+  outcome: "AMBIGUOUS";
+  status: "AMBIGUOUS_TARGET";
+  reason: string;
+  candidateCount: number;
+  documentId: string;
+}
+
+export interface DefinitionEvidenceNotFound {
+  outcome: "NOT_FOUND";
+  reason: string;
+}
+
+export type DefinitionEvidenceResolution = DefinitionEvidenceFound | DefinitionEvidenceAmbiguous | DefinitionEvidenceNotFound;
+
+export interface ResolveOperativeDefinitionEvidenceInput {
+  index: StructuralIndex;
+  /** Null/undefined - no amendment pipeline run exists for this instrument at all, a legitimate state (never amended is not an error) - resolution proceeds straight to the base-document fallback below. */
+  operativeState: OperativeContractState | null | undefined;
+  term: string;
+  /** Documents to search, in order, ONLY when no OperativeProvisionView exists for this term (home document first, then real same-instrument siblings) - mirrors semantic/tools.ts's own getScopedDefinitionFullText ordering convention. Never widened beyond what the caller has already scoped (cross-instrument isolation is the caller's responsibility, unchanged by this function). */
+  searchDocumentIds: string[];
+  /** Optional - when supplied, a UNIQUE base-document (never individually amended) definition whose own physical occurrence this index independently knows to be superseded is labeled KNOWN_SUPERSEDED rather than CURRENT. Omitting this (or passing EMPTY_SUPERSESSION_INDEX) degrades to the pre-existing "never amended, never checked against wider supersession evidence" default of CURRENT - the same fail-open-for-genuinely-unchecked-cases discipline every other caller of getNodeSupersessionStatus already accepts when it has no index to consult. */
+  supersessionIndex?: NodeSupersessionIndex;
+}
+
+/**
+ * The single canonical primitive for "what is this defined term's real
+ * operative evidence, right now" - reused verbatim by semantic/tools.ts's
+ * getDefinition and amendment/pipeline.ts's getTargetCurrentText rather than
+ * each maintaining its own parallel notion of "resolved enough to serve."
+ * Pure function of already-computed state (never a new detection pass) -
+ * exactly like every other primitive in this file.
+ */
+export function resolveOperativeDefinitionEvidence(input: ResolveOperativeDefinitionEvidenceInput): DefinitionEvidenceResolution {
+  const { index, operativeState, term, searchDocumentIds } = input;
+
+  // Branch 1: this term has real, on-file recorded amendment activity.
+  // Deliberately normalizes BOTH sides with normalizeDefinedTermRef here
+  // (never a bare `getOperativeDefinition`-style `p.definedTermRef ===
+  // normalizeDefinedTermRef(term)` comparison that trusts definedTermRef
+  // was already stored fully normalized) - production's own
+  // buildProvisionView always stores it pre-normalized via chain.ts's
+  // provisionKeyFor, but this is the exact SAME defensive discipline
+  // findProvisionView's own SECTION-branch neighbor already applies (never
+  // assume a field was stored in the exact shape you expect; normalize at
+  // the comparison site too), and it costs nothing since normalizing an
+  // already-normalized string is a no-op.
+  const queryNormalized = normalizeDefinedTermRef(term);
+  const view = operativeState?.provisions.find((p) => p.kind === "DEFINITION" && normalizeDefinedTermRef(p.definedTermRef ?? "") === queryNormalized) ?? null;
+  if (view) {
+    // A real, on-file OperativeProvisionView for this exact term is ALWAYS
+    // disclosed (outcome FOUND, never a refusal) regardless of its own
+    // targetResolutionStatus - mirroring getOperativeProvision's own
+    // established "found" branch, which never refuses either once a view
+    // exists (only its OWN separate raw-fallback branch, for a query with
+    // NO view at all, ever refuses on ambiguity). A refusal here would
+    // regress tests/contract-model/part-b-recert-blocker2-6-tools-
+    // adversarial.test.ts's own frozen AMBIGUOUS-view fixture, which
+    // expects `ok:true` with status/unresolvedIssues disclosed - exactly
+    // like the SECTION-kind analog one test above it in that same file.
+    if (view.targetResolutionStatus === "AMBIGUOUS") {
+      return {
+        outcome: "FOUND",
+        status: "AMBIGUOUS_TARGET",
+        text: null,
+        documentId: view.documentId,
+        source: "amended",
+        isCurrentTruth: false,
+        unresolvedIssues: view.unresolvedIssues,
+        legacyStatus: view.status,
+      };
+    }
+    if (view.targetResolutionStatus === "NOT_FOUND") {
+      // A real amendment claims new text for this term, but the term's own
+      // base-document target could not be confirmed to exist at all - this
+      // is exactly the "useful amendment text is never discarded merely
+      // because target attachment is unresolved" case buildProvisionView's
+      // own header comment describes (attemptedText). Disclosed as
+      // explicitly historical/unconfirmed - never as current.
+      return { outcome: "FOUND", status: "HISTORICAL_ONLY", text: view.attemptedText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
+    }
+    let status: DefinitionEvidenceStatus;
+    if (view.status === "OPERATIVE_STATE_CONFLICTED") status = "OPERATIVE_STATE_UNRESOLVED";
+    else if (view.status === "OPERATIVE_STATE_PARTIAL") status = "PARTIAL_AMENDMENT";
+    else if (view.status === "OPERATIVE_STATE_REVIEW_REQUIRED") status = "OPERATIVE_STATE_UNRESOLVED";
+    else status = "CURRENT";
+    return { outcome: "FOUND", status, text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: status === "CURRENT", unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
+  }
+
+  // Branch 2: no recorded amendment activity for this term at all - resolve
+  // directly against the base document(s), never guessing among multiple
+  // colliding physical definitions of the same term within one document
+  // (resolveUniqueDefinitionByRef's own AMBIGUOUS/UNIQUE/NOT_FOUND axis).
+  for (const docId of searchDocumentIds) {
+    const resolution = resolveUniqueDefinitionByRef(index, docId, term);
+    if (resolution.status === "AMBIGUOUS") {
+      return {
+        outcome: "AMBIGUOUS",
+        status: "AMBIGUOUS_TARGET",
+        reason: `term "${term}" matches ${resolution.candidates.length} distinct physical definitions in document "${docId}", and it has no recorded amendment history to disambiguate it`,
+        candidateCount: resolution.candidates.length,
+        documentId: docId,
+      };
+    }
+    if (resolution.status === "UNIQUE") {
+      const fullText = index.getDefinitionFullText(resolution.definition.exactTerm, docId);
+      if (!fullText) continue;
+      // Phase 3F.1.6-terminal Part A - a UNIQUE, never-individually-amended
+      // definition can still have its own physical occurrence independently
+      // known-superseded (e.g. its enclosing section was itself replaced by
+      // a SECTION-kind amendment effect, or a document-level restatement
+      // recorded it) - checked here for the first time in getDefinition's
+      // own base-document fallback, mirroring the SAME discipline every
+      // other section-reading tool in semantic/tools.ts already applies via
+      // resolveNodeWithSupersessionAwareness.
+      const supersession = input.supersessionIndex ? getNodeSupersessionStatus(input.supersessionIndex, docId, resolution.definition.sourceNodeId) : null;
+      if (supersession?.status === "KNOWN_SUPERSEDED") {
+        return { outcome: "FOUND", status: "KNOWN_SUPERSEDED", text: fullText, documentId: docId, source: "base-document", isCurrentTruth: false, unresolvedIssues: [supersession.reason], legacyStatus: "OPERATIVE_STATE_PARTIAL" };
+      }
+      return { outcome: "FOUND", status: "CURRENT", text: fullText, documentId: docId, source: "base-document", isCurrentTruth: true, unresolvedIssues: [], legacyStatus: "OPERATIVE_STATE_RESOLVED" };
+    }
+  }
+  return { outcome: "NOT_FOUND", reason: `no defined term matching "${term}" found in this instrument's documents` };
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3F.1 FIX-2 (trust-metadata-belongs-to-the-evidence-itself remediation)
+// - the SECTION-kind counterpart to resolveOperativeDefinitionEvidence above,
+// added so context-retrieval (Phase 2D) can route a SECTION/PROVISO/
+// EXCEPTION/CONDITION/SHARED_CAP/CROSS_REFERENCE context item through the
+// exact same amendment-aware resolution discipline semantic/tools.ts's own
+// resolveNodeWithSupersessionAwareness already applies for the model's
+// evidence tools - reusing the SAME DefinitionEvidenceResolution/
+// DefinitionEvidenceStatus union (never a second, parallel vocabulary; see
+// this module's own header note on "do not over-normalize if existing types
+// already carry most of what's needed"). Deliberately NODE-based rather than
+// ref-string-based: every context-retrieval call site that needs this
+// already holds a real, previously-resolved StructuralNode (the candidate's
+// own primary node, an ancestor, a child, a sibling, a cross-reference
+// target) - re-resolving a bare ref string via resolveUniqueNodeByRef here
+// would just redundantly repeat a uniqueness check the caller's own
+// traversal already performed, and would risk a DIFFERENT answer than the
+// one physical occurrence the caller actually has in hand.
+// ---------------------------------------------------------------------------
+
+export interface ResolveOperativeSectionEvidenceInput {
+  /** Null/undefined - no amendment pipeline run exists for this instrument at all (never amended is not an error) - resolution proceeds straight to the supersession-only check below. */
+  operativeState: OperativeContractState | null | undefined;
+  /** The document this node's own OperativeProvisionView (if any) is anchored under - matches OperativeStateInput.baseDocumentId's own convention (every provision view in one instrument's OperativeContractState shares the same baseDocumentId, regardless of which real document a section physically lives in - see buildProvisionView's own `documentId: baseDocumentId`). */
+  documentId: string;
+  /** The already-resolved, real physical occurrence - never re-resolved from a bare ref string here (see this function's own header comment). */
+  node: { nodeId: string; sectionRef: string };
+  /** Optional - when supplied, a section with no recorded amendment activity of its own whose physical occurrence this index independently knows to be superseded (e.g. its enclosing section was independently replaced) is labeled KNOWN_SUPERSEDED rather than CURRENT. Omitting this (or passing EMPTY_SUPERSESSION_INDEX) degrades to the pre-existing "never amended, never checked against wider supersession evidence" default of CURRENT. */
+  supersessionIndex?: NodeSupersessionIndex;
+}
+
+/**
+ * The single canonical primitive for "what is this SECTION's real operative
+ * evidence, right now" - mirrors resolveOperativeDefinitionEvidence's own
+ * two-branch structure exactly (a real, on-file OperativeProvisionView for
+ * this section takes priority; otherwise a supersession-only check against
+ * the base-document occurrence the caller already resolved), reusing
+ * OperativeProvisionView fields already computed by buildProvisionView above
+ * rather than deriving anything new.
+ */
+export function resolveOperativeSectionEvidence(input: ResolveOperativeSectionEvidenceInput): DefinitionEvidenceResolution {
+  const { operativeState, documentId, node, supersessionIndex } = input;
+  const normalizedSection = node.sectionRef.replace(/\s+/g, "");
+  const view = operativeState?.provisions.find((p) => p.kind === "SECTION" && (p.sectionRef ?? "").replace(/\s+/g, "") === normalizedSection) ?? null;
+
+  if (view) {
+    // A real, on-file OperativeProvisionView for this exact section is
+    // ALWAYS disclosed (outcome FOUND, never a refusal) regardless of its
+    // own targetResolutionStatus - mirroring resolveOperativeDefinitionEvidence's
+    // own Branch 1 discipline above.
+    if (view.targetResolutionStatus === "AMBIGUOUS") {
+      return { outcome: "AMBIGUOUS", status: "AMBIGUOUS_TARGET", reason: view.targetResolutionReason ?? `Section "${node.sectionRef}" has an ambiguous amendment target.`, candidateCount: view.candidateSourceNodeIds.length, documentId: view.documentId };
+    }
+    if (view.targetResolutionStatus === "NOT_FOUND") {
+      // A real amendment claims new text for this section, but the section's
+      // own base-document target could not be confirmed to exist - disclosed
+      // as explicitly historical/unconfirmed (attemptedText), never as
+      // current, exactly mirroring the DEFINITION-side HISTORICAL_ONLY branch.
+      return { outcome: "FOUND", status: "HISTORICAL_ONLY", text: view.attemptedText, documentId: view.documentId, source: "amended", isCurrentTruth: false, unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
+    }
+    let status: DefinitionEvidenceStatus;
+    if (view.status === "OPERATIVE_STATE_CONFLICTED") status = "OPERATIVE_STATE_UNRESOLVED";
+    else if (view.status === "OPERATIVE_STATE_PARTIAL") status = "PARTIAL_AMENDMENT";
+    else if (view.status === "OPERATIVE_STATE_REVIEW_REQUIRED") status = "OPERATIVE_STATE_UNRESOLVED";
+    else status = "CURRENT";
+    return { outcome: "FOUND", status, text: view.currentText, documentId: view.documentId, source: "amended", isCurrentTruth: status === "CURRENT", unresolvedIssues: view.unresolvedIssues, legacyStatus: view.status };
+  }
+
+  // No recorded amendment activity for this section at all - the caller
+  // already holds a real, uniquely-resolved physical node (no ambiguity
+  // check to repeat here); the only remaining question is whether that
+  // SAME physical occurrence is independently known-superseded (e.g. its
+  // enclosing section was itself replaced by a SECTION-kind amendment
+  // effect elsewhere, or a document-level restatement recorded it) - the
+  // exact same discipline getDefinition's own base-document fallback
+  // already applies (Phase 3F.1.6-terminal Part A).
+  if (supersessionIndex) {
+    const supersession = getNodeSupersessionStatus(supersessionIndex, documentId, node.nodeId);
+    if (supersession.status === "KNOWN_SUPERSEDED") {
+      return { outcome: "FOUND", status: "KNOWN_SUPERSEDED", text: null, documentId, source: "base-document", isCurrentTruth: false, unresolvedIssues: [supersession.reason], legacyStatus: "OPERATIVE_STATE_PARTIAL" };
+    }
+  }
+  return { outcome: "FOUND", status: "CURRENT", text: null, documentId, source: "base-document", isCurrentTruth: true, unresolvedIssues: [], legacyStatus: "OPERATIVE_STATE_RESOLVED" };
 }

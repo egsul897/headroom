@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { withExpressionId, computeRuleId } from "../../lib/contract-model/ir/identity";
 import type { IRRule } from "../../lib/contract-model/ir/types";
 import type { OperativeContractState, OperativeProvisionView } from "../../lib/contract-model/compiler/amendment/types";
-import { auditCrossSectionRelationships, auditOperativeStateForUnits } from "../../lib/contract-model/compiler/semantic-coverage/cross-reference-audit";
+import { applyOperativeStateFindingsToCoverage, auditCrossSectionRelationships, auditOperativeStateForUnits } from "../../lib/contract-model/compiler/semantic-coverage/cross-reference-audit";
 import type { MaterialSemanticUnit } from "../../lib/contract-model/compiler/semantic-coverage/types";
 
 const companyId = "test-co";
@@ -176,5 +176,164 @@ describe("Phase 3E operative-state audit for units", () => {
     const unit = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: null, structuralNodeId: null, sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "doc-1::raw[0-10]" }] });
     const findings = auditOperativeStateForUnits([unit], makeOperativeState([makeProvision()]));
     expect(findings).toHaveLength(0);
+  });
+
+  // Phase 3F.1.6.R BLOCKER-4 fix: a null operativeState used to be handled
+  // entirely by the CALLER (semantic-coverage/pipeline.ts's own
+  // `input.operativeState ? auditOperativeStateForUnits(...) : []`), which
+  // silently produced ZERO findings - a fail-OPEN precisely when the
+  // caller could not resolve operative state at all. The fix moved this
+  // fail-CLOSED handling INTO auditOperativeStateForUnits itself.
+  describe("BLOCKER-4 fix: null operativeState fails CLOSED, never silently open", () => {
+    it("flags every unit with a real structural anchor when operativeState is null, rather than emitting zero findings", () => {
+      const unit = makeUnit();
+      const findings = auditOperativeStateForUnits([unit], null);
+      expect(findings).toHaveLength(1);
+      expect(findings[0]!.findingType).toBe("OPERATIVE_STATE_UNRESOLVED_FOR_UNIT");
+      expect(findings[0]!.provisionKey).toBeNull();
+      expect(findings[0]!.reasoning).toMatch(/no OperativeContractState was available/);
+    });
+
+    it("still emits nothing for a raw-source-fallback unit with no structural anchor even when operativeState is null (nothing to check either way)", () => {
+      const unit = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: null, structuralNodeId: null, sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "doc-1::raw[0-10]" }] });
+      expect(auditOperativeStateForUnits([unit], null)).toHaveLength(0);
+    });
+
+    it("a null operativeState can never let reconciliation.ts reach FULLY_REPRESENTED_VERIFIED for a unit that required operative-state knowledge - applyOperativeStateFindingsToCoverage overrides it to OPERATIVE_STATE_UNRESOLVED", () => {
+      const unit = makeUnit();
+      // Simulate reconciliation.ts having already (wrongly, in isolation)
+      // reached FULLY_REPRESENTED_VERIFIED for this unit - exactly the
+      // "confident but wrong" state Architecture Invariant #13 forbids.
+      const priorEntry = { semanticUnitId: unit.semanticUnitId, coverageState: "FULLY_REPRESENTED_VERIFIED" as const, matchedIrIds: ["rule-1"], missingEconomicElement: null, reasoning: "reconciled without operative-state knowledge", materiality: unit.materiality, coverageAlgorithmVersion: "test" };
+      const findings = auditOperativeStateForUnits([unit], null);
+      expect(findings).toHaveLength(1);
+      const { entries } = applyOperativeStateFindingsToCoverage([priorEntry], [], findings, [unit]);
+      expect(entries[0]!.coverageState).toBe("OPERATIVE_STATE_UNRESOLVED");
+      expect(entries[0]!.coverageState).not.toBe("FULLY_REPRESENTED_VERIFIED");
+    });
+  });
+
+  // Phase 3F.1.6.R BLOCKER-6 fix (certification finding SP-1 / Chain 2):
+  // the coveringProvision lookup previously matched ONLY on
+  // currentSourceNodeId (null for AMBIGUOUS) or a bare sectionRef string
+  // (never populated for DEFINITION-kind provisions at all) - so an
+  // AMBIGUOUS DEFINITION-kind provision's real candidateSourceNodeIds were
+  // never consulted, and a unit anchored to one of the real ambiguous
+  // occurrences was invisible to this audit.
+  describe("BLOCKER-6 fix: AMBIGUOUS DEFINITION-kind provisions are now matched via candidateSourceNodeIds", () => {
+    it("flags OPERATIVE_STATE_UNRESOLVED_FOR_UNIT for a unit anchored to one of an AMBIGUOUS DEFINITION-kind provision's real candidateSourceNodeIds, even though currentSourceNodeId and sectionRef are both null", () => {
+      const unit = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::def-a", structuralNodeId: "id-doc-1-def-a", sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "doc-1::def-a" }] });
+      const provision = makeProvision({
+        kind: "DEFINITION",
+        sectionRef: null, // DEFINITION-kind provisions never populate sectionRef, even when AMBIGUOUS.
+        currentSourceNodeId: null, // AMBIGUOUS -> no single occurrence resolved.
+        currentSourceNodeKey: null,
+        targetResolutionStatus: "AMBIGUOUS",
+        targetResolutionReason: "2 real physical definitions of this term collide",
+        candidateSourceNodeIds: ["id-doc-1-def-a", "id-doc-1-def-b"],
+        status: "OPERATIVE_STATE_PARTIAL",
+      });
+      const findings = auditOperativeStateForUnits([unit], makeOperativeState([provision]));
+      expect(findings).toHaveLength(1);
+      expect(findings[0]!.findingType).toBe("OPERATIVE_STATE_UNRESOLVED_FOR_UNIT");
+      expect(findings[0]!.provisionKey).toBe(provision.provisionKey);
+      expect(findings[0]!.reasoning).toMatch(/candidateSourceNodeIds/);
+    });
+
+    it("the OTHER real ambiguous candidate node is flagged too - never only the first one checked", () => {
+      const unitB = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::def-b", structuralNodeId: "id-doc-1-def-b", sectionRef: null, charStart: 500, charEnd: 560, sourceCitation: "doc-1::def-b" }] });
+      const provision = makeProvision({ kind: "DEFINITION", sectionRef: null, currentSourceNodeId: null, currentSourceNodeKey: null, targetResolutionStatus: "AMBIGUOUS", targetResolutionReason: "ambiguous", candidateSourceNodeIds: ["id-doc-1-def-a", "id-doc-1-def-b"], status: "OPERATIVE_STATE_PARTIAL" });
+      const findings = auditOperativeStateForUnits([unitB], makeOperativeState([provision]));
+      expect(findings).toHaveLength(1);
+      expect(findings[0]!.findingType).toBe("OPERATIVE_STATE_UNRESOLVED_FOR_UNIT");
+    });
+
+    it("never widens matching for an already-RESOLVED provision - candidateSourceNodeIds is empty whenever targetResolutionStatus is UNIQUE, so this fix cannot manufacture a false match", () => {
+      const unit = makeUnit();
+      const provision = makeProvision(); // UNIQUE/RESOLVED, candidateSourceNodeIds: [] by default.
+      const findings = auditOperativeStateForUnits([unit], makeOperativeState([provision]));
+      expect(findings).toHaveLength(0);
+    });
+  });
+
+  /**
+   * Phase 3F.1.6.RX Workstream B - BLOCKER-6 independent runtime trace with
+   * a NEW adversarial construction (task's own explicit invitation to
+   * "invent" a different one), distinct from Chain 2 in
+   * tests/foundation-audit/cross-module-propagation-chains.test.ts (which
+   * covers exactly 2 candidate occurrences for one term, in isolation).
+   * This construction adds two dimensions Chain 2 does not exercise:
+   *   1. THREE-way ambiguity (not two) - a drafting collision spanning 3
+   *      real physical definition occurrences, confirming the fix does not
+   *      merely happen to work for the 2-element case.
+   *   2. MULTI-TERM ISOLATION - a SECOND, entirely unrelated, genuinely
+   *      RESOLVED (non-ambiguous) DEFINITION provision for a DIFFERENT
+   *      term coexists in the same operative state, confirming a unit
+   *      anchored to the resolved term's own node is never accidentally
+   *      caught by the ambiguous term's candidateSourceNodeIds (no cross-
+   *      term contamination), and a unit anchored to any of the 3 real
+   *      ambiguous occurrences is still correctly flagged regardless of
+   *      which one it lands on.
+   */
+  describe("BLOCKER-6 independent trace (NEW construction): 3-way ambiguous DEFINITION, isolated from a coexisting RESOLVED DEFINITION for a different term", () => {
+    const ambiguousProvision = makeProvision({
+      provisionKey: "prov-ambiguous-term",
+      kind: "DEFINITION",
+      definedTermRef: "permitted investments",
+      sectionRef: null,
+      currentSourceNodeId: null,
+      currentSourceNodeKey: null,
+      targetResolutionStatus: "AMBIGUOUS",
+      targetResolutionReason: "3 real physical definitions of this term collide across a base document and 2 restated exhibits",
+      candidateSourceNodeIds: ["id-doc-1-def-pi-a", "id-doc-1-def-pi-b", "id-doc-1-def-pi-c"],
+      status: "OPERATIVE_STATE_PARTIAL",
+    });
+    const resolvedOtherTermProvision = makeProvision({
+      provisionKey: "prov-resolved-other-term",
+      kind: "DEFINITION",
+      definedTermRef: "permitted liens",
+      sectionRef: null,
+      currentSourceNodeId: "id-doc-1-def-liens",
+      currentSourceNodeKey: "doc-1::def-liens",
+      targetResolutionStatus: "UNIQUE",
+      targetResolutionReason: null,
+      candidateSourceNodeIds: [],
+      status: "OPERATIVE_STATE_RESOLVED",
+    });
+    const state = makeOperativeState([ambiguousProvision, resolvedOtherTermProvision]);
+
+    it.each(["id-doc-1-def-pi-a", "id-doc-1-def-pi-b", "id-doc-1-def-pi-c"])("flags a unit anchored to real ambiguous occurrence %s (all 3, not just the first 2)", (nodeId) => {
+      const unit = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: `doc-1::${nodeId}`, structuralNodeId: nodeId, sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: `doc-1::${nodeId}` }] });
+      const findings = auditOperativeStateForUnits([unit], state);
+      expect(findings).toHaveLength(1);
+      expect(findings[0]!.findingType).toBe("OPERATIVE_STATE_UNRESOLVED_FOR_UNIT");
+      expect(findings[0]!.provisionKey).toBe("prov-ambiguous-term");
+      expect(findings[0]!.reasoning).toMatch(/candidateSourceNodeIds/);
+    });
+
+    it("a unit anchored to the coexisting RESOLVED, unrelated term's own node is NOT flagged - no cross-term contamination from the ambiguous provision's own candidateSourceNodeIds", () => {
+      const unit = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::def-liens", structuralNodeId: "id-doc-1-def-liens", sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "doc-1::def-liens" }] });
+      const findings = auditOperativeStateForUnits([unit], state);
+      expect(findings).toHaveLength(0);
+    });
+
+    it("a unit anchored to a node that is NEITHER a candidate for the ambiguous term NOR the resolved term's own node is not flagged either (true negative - the fix does not over-trigger on unrelated nodes)", () => {
+      const unit = makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::9.05", structuralNodeId: "id-doc-1-9-05-unrelated", sectionRef: "9.05", charStart: 0, charEnd: 10, sourceCitation: "doc-1::9.05" }] });
+      const findings = auditOperativeStateForUnits([unit], state);
+      expect(findings).toHaveLength(0);
+    });
+
+    it("all 3 ambiguous occurrences AND the coexisting resolved term, checked together in one real batch call, produce exactly 3 findings (one per ambiguous unit) - never fewer (a missed occurrence) and never more (cross-contamination)", () => {
+      const units = [
+        makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::id-doc-1-def-pi-a", structuralNodeId: "id-doc-1-def-pi-a", sectionRef: null, charStart: 0, charEnd: 10, sourceCitation: "doc-1::a" }] }),
+        makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::id-doc-1-def-pi-b", structuralNodeId: "id-doc-1-def-pi-b", sectionRef: null, charStart: 500, charEnd: 510, sourceCitation: "doc-1::b" }] }),
+        makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::id-doc-1-def-pi-c", structuralNodeId: "id-doc-1-def-pi-c", sectionRef: null, charStart: 1000, charEnd: 1010, sourceCitation: "doc-1::c" }] }),
+        makeUnit({ anchors: [{ documentId: "doc-1", structuralNodeKey: "doc-1::def-liens", structuralNodeId: "id-doc-1-def-liens", sectionRef: null, charStart: 2000, charEnd: 2010, sourceCitation: "doc-1::liens" }] }),
+      ];
+      const findings = auditOperativeStateForUnits(units, state);
+      expect(findings).toHaveLength(3);
+      expect(new Set(findings.map((f) => f.semanticUnitId))).toEqual(new Set([units[0]!.semanticUnitId, units[1]!.semanticUnitId, units[2]!.semanticUnitId]));
+      expect(findings.every((f) => f.provisionKey === "prov-ambiguous-term")).toBe(true);
+    });
   });
 });

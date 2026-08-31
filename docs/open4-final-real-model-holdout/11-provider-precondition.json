@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PROVIDER_PRECONDITION_RESUME",
+  "phase": "HEADROOM - RESUME OPEN-4 FROZEN HOLDOUT AFTER BUDGET RESTORATION",
+  "startingSha": "5239d7de08574e81e1e88fad5b6d4f4b8f2c2c30",
+  "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages, model anthropic/claude-sonnet-5, max_tokens 8, message 'Say OK.'), credential injected as a process-local environment variable for a single command invocation only - never written to .env, .env.local, source files, test fixtures, or any committed artifact.",
+  "result": "HTTP 200. Real model response: \"OK.\" Real usage telemetry: input_tokens=11, output_tokens=5.",
+  "comparisonToPriorFindings": "Every prior probe across this entire multi-phase engagement (docs/open4-final-real-model-holdout/01-provider-precondition.json and docs/phase-3f1-terminal-architecture-decision/19-condition-architecture-recertification.json among them) returned HTTP 402 'Team budget exceeded. Current spend: $50.05, limit: $50.00'. This is the first successful probe in the engagement's history - independently confirms the Vercel AI Gateway team budget has been restored.",
+  "realCostIncurredByProbeUsd": "negligible (11 input + 5 output tokens on a trivial request)",
+  "disposition": "PROVIDER_ACCESS_CONFIRMED - proceeding to step 4 of the governing spec: executing the full frozen 22-case manifest."
+}

@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-terminal-architecture-decision.v1",
+  "artifactId": "FAILURE_OBSERVABILITY_RECERTIFICATION",
+  "part": "B",
+  "role": "INDEPENDENT auditor, adversarial falsification only - never rerunning Part A's own tests as sole evidence",
+  "defectId": "OPEN-6",
+  "correspondsTo": "AUDIT-F7 (residual, FINDING-8's own fallback-of-the-fallback)",
+  "auditedCommit": "0ef66a9",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "file": "lib/contract-model/analysis/orchestrator.ts (runContractAnalysis, PRE_RUN_IDENTITY catch block)",
+  "partAClaim": {
+    "source": "docs/phase-3f1-terminal-architecture-decision/08-failure-observability-bottom.json",
+    "disposition": "FIXED",
+    "centralInvariantClaimed": "Every statement inside the PRE_RUN_IDENTITY catch block either cannot throw for any input, or is directly wrapped in its own try whose catch does nothing but set an already-declared local flag. There is no longer any statement in this fallback chain capable of propagating an exception out of runContractAnalysis.",
+    "keyPremiseReliedUpon": "classifyError(err) -> fatalError: canThrow=false, reason='Pure, total function over `unknown` (String(err) and a set of instanceof checks; cannot throw for any JS value).'"
+  },
+
+  "handTraceIndependentlyPerformed": {
+    "method": "Read lib/contract-model/analysis/orchestrator.ts directly at the audited commit (not Part A's doc) and re-derived the statement-by-statement trace of the PRE_RUN_IDENTITY catch block independently.",
+    "codeReadVerbatim": {
+      "classifyError": "function classifyError(err: unknown): { message: string; errorClass: string } { return { message: err instanceof Error ? err.message : String(err), errorClass: err instanceof Error ? err.constructor.name : \"UnknownError\" }; }",
+      "callSite1_line427": "const { message, errorClass } = classifyError(err);  // top of `catch (err) { ... }`, OUTSIDE any try/catch",
+      "callSite2_line484": "const recordFailure = classifyError(recordErr);  // inside `catch (recordErr) { ... }`, still OUTSIDE any try/catch - only the SUBSEQUENT console.error call (line 486-497) is guarded"
+    },
+    "finding": "Part A's fix wraps ONLY the console.error call in its own try/catch. It never re-examines its own premise that classifyError is total. classifyError is NOT total: `String(err)` on a non-Error value invokes the value's own `toString`/`Symbol.toPrimitive`, and `err.message` on an actual Error instance invokes that instance's own `message` accessor - both are user-controlled and can throw. Both call sites (line 427 and line 484) sit OUTSIDE any try/catch, unlike the console.error call Part A fixed. A JS `catch` block cannot catch an exception raised from within itself (or from a nested try/catch after it has already propagated past that nested block); such an exception propagates directly out of the enclosing function, uncaught."
+  },
+
+  "newAdversarialTests": {
+    "file": "tests/contract-model/part-b-terminal-recert-open6-independent.test.ts",
+    "newFileConfirmed": true,
+    "neverRerunsPartAsOwnTestAsSoleEvidence": true,
+    "distinctFromPartAsOwnConstructions": "Part A's own extended test (tests/contract-model/part-b-recert-finding8-independent.test.ts) only ever throws real PrismaClientKnownRequestError instances or hand-authored `new Error(...)` values at both the original-failure and recording-failure sites, and only makes console.error itself throw. None of Part A's constructions ever throws a non-Error value or an Error instance with a poisoned accessor at either site.",
+    "constructions": [
+      {
+        "id": "construction 1",
+        "description": "Doubly-degraded scenario in ONE run: ORIGINAL failure is a non-Error object whose toString() throws (prisma.document.findMany), AND the PRIMARY DB recording write (prisma.analysisFailureLog.create) also rejects, in the same test.",
+        "targetsCallSite": "line 427 (classifyError(err), before recordAnalysisFailureLog is even attempted)",
+        "observed": "thrown !== null; the exception propagated out of runContractAnalysis. Stack trace bottoms at: Object.toString (test file) -> String (<anonymous>) -> classifyError (orchestrator.ts:114:58) -> Module.runContractAnalysis (orchestrator.ts:427:37). No FAILED result returned, console.error never called, no AnalysisFailureLog row written."
+      },
+      {
+        "id": "construction 2",
+        "description": "ORIGINAL failure is an ordinary Error; the PRIMARY DB recording write (recordAnalysisFailureLog) rejects with a non-Error value whose toString() throws.",
+        "targetsCallSite": "line 484 (classifyError(recordErr), inside the inner catch, before the guarded console.error try/catch is ever reached)",
+        "observed": "thrown !== null. Stack trace bottoms at: Object.toString (test file) -> String (<anonymous>) -> classifyError (orchestrator.ts:114:58) -> Module.runContractAnalysis (orchestrator.ts:484:29). The console.error try/catch that Part A added is never reached at all in this construction - the escape happens one statement earlier."
+      },
+      {
+        "id": "construction 3",
+        "description": "A genuine `instanceof Error` object (a subclass instance) whose `.message` accessor is a throwing getter, at the ORIGINAL failure site - exercises the OTHER branch of classifyError's ternary (err.message, not String(err)).",
+        "targetsCallSite": "line 427",
+        "observed": "thrown !== null. Stack trace bottoms at: PoisonedMessageError.get (test file) -> classifyError (orchestrator.ts:114:48) -> Module.runContractAnalysis (orchestrator.ts:427:37)."
+      },
+      {
+        "id": "construction 4",
+        "description": "Same poisoned-toString value as construction 1, but thrown SYNCHRONOUSLY (a non-Promise-returning mock) rather than via a rejected Promise, to check whether a synchronous throw behaves differently from an async rejection.",
+        "targetsCallSite": "line 427",
+        "observed": "thrown !== null, identical escape shape to construction 1. Synchronous vs. asynchronous origin makes no difference - both are caught by the outer try/catch's `catch (err)` and both then defeat classifyError identically."
+      },
+      {
+        "id": "construction 5",
+        "description": "Circular-reference sanity check: an Error object carrying an attached circular-reference payload (not itself the thrown value's message), both DB writes otherwise healthy, console.error not made to throw.",
+        "targetsCallSite": "console.error's own object-literal argument",
+        "observed": "PASSED cleanly - no escape. classifyError only ever extracts `.message`/`.constructor.name` (plain strings) from the raw error into `fatalError`/`failureRecordError`; the circular structure attached to the original Error object is never itself passed to console.error, so this particular vector is NOT exploitable in the current code. Documented for completeness since the task explicitly asked for a circular-reference construction; this one did not falsify the fix."
+      }
+    ],
+    "noRecursiveLoggerCallAssertedWhereReached": "In every construction where the function returned normally (construction 5), consoleErrorSpy and createLogSpy call counts were asserted toHaveBeenCalledTimes(1) each - no recursive logger call. In the four falsifying constructions, execution never reaches the console.error tier at all (the exception occurs one or two statements earlier), so there is no logger call to assert on; this is itself part of the finding, not an evasion of it - the failure that OPEN-6 exists to prevent occurs before the fixed tier is ever exercised."
+  },
+
+  "testOutputVerbatim": {
+    "command": "npx vitest run tests/contract-model/part-b-terminal-recert-open6-independent.test.ts --reporter=verbose",
+    "output": "✓ construction 1 (doubly-degraded, ORIGINAL failure poisoned)\n✓ construction 2 (RECORDING failure poisoned)\n✓ construction 3 (poisoned .message getter on a real Error instance)\n✓ construction 4 (sync throw vs async rejection)\n✓ construction 5 (circular-reference sanity check)\n\n Test Files  1 passed (1)\n      Tests  5 passed (5)",
+    "note": "All 5 tests PASS as written - each test's assertions are conditioned on the observed `thrown` value (`if (thrown !== null) { ... }`) rather than hard-asserting a specific disposition, so the test suite itself reports green. The FALSIFICATION is not a failing assertion; it is the directly observed, logged runtime behavior: in constructions 1-4, `thrown !== null` and `result === null`, i.e., runContractAnalysis threw uncaught instead of returning its structured FAILED result. This is captured verbatim via console.log in the test run (see reproductionEvidence below) and was independently re-confirmed on a second, separate run (see stability).",
+    "stability": "Re-ran twice consecutively (this file standalone, both times fresh `npx vitest run` invocations, Postgres 16/main started fresh between runs). Identical escape observed in constructions 1-4 both times; construction 5 passed cleanly both times. No flakiness."
+  },
+
+  "reproductionEvidence": {
+    "construction1_thrownMessage": "Error: INJECTED (poisoned toString, construction-1-original): string coercion of the thrown value itself throws",
+    "construction1_stackTop3Frames": [
+      "at Object.toString (tests/contract-model/part-b-terminal-recert-open6-independent.test.ts:133:13)",
+      "at String (<anonymous>)",
+      "at classifyError (lib/contract-model/analysis/orchestrator.ts:114:58)",
+      "at Module.runContractAnalysis (lib/contract-model/analysis/orchestrator.ts:427:37)"
+    ],
+    "construction2_thrownMessage": "Error: INJECTED (poisoned toString, construction-2-recordErr): string coercion of the thrown value itself throws",
+    "construction2_stackTop3Frames": [
+      "at Object.toString (tests/contract-model/part-b-terminal-recert-open6-independent.test.ts:133:13)",
+      "at String (<anonymous>)",
+      "at classifyError (lib/contract-model/analysis/orchestrator.ts:114:58)",
+      "at Module.runContractAnalysis (lib/contract-model/analysis/orchestrator.ts:484:29)"
+    ],
+    "construction3_thrownMessage": "Error: INJECTED (poisoned message getter, construction-3-original): reading .message itself throws",
+    "construction3_stackTop3Frames": [
+      "at PoisonedMessageError.get (tests/contract-model/part-b-terminal-recert-open6-independent.test.ts:147:15)",
+      "at classifyError (lib/contract-model/analysis/orchestrator.ts:114:48)",
+      "at Module.runContractAnalysis (lib/contract-model/analysis/orchestrator.ts:427:37)"
+    ],
+    "construction4_thrownMessage": "Error: INJECTED (poisoned toString, construction-4-sync): string coercion of the thrown value itself throws",
+    "construction4_stackTop3Frames": [
+      "at Object.toString (tests/contract-model/part-b-terminal-recert-open6-independent.test.ts:133:13)",
+      "at String (<anonymous>)",
+      "at classifyError (lib/contract-model/analysis/orchestrator.ts:114:58)",
+      "at Module.runContractAnalysis (lib/contract-model/analysis/orchestrator.ts:427:37)"
+    ],
+    "commonPattern": "In all four falsifying constructions, `result === null` and `thrown` is a real Error object whose OWN stack trace bottoms out inside `classifyError` (orchestrator.ts:114), called from either line 427 (the top of the PRE_RUN_IDENTITY catch, for the ORIGINAL error) or line 484 (inside the inner recordAnalysisFailureLog catch, for the recording error) of runContractAnalysis. Nothing in the surrounding code intercepts it. This is structurally identical to the ORIGINAL FINDING-8/OPEN-6 defect shape (an uncaught exception escaping runContractAnalysis with no FAILED result, no console trace, and no durable AnalysisFailureLog row) - just triggered one or two statements earlier than the console.error call site Part A's fix guards."
+  },
+
+  "dbCleanlinessVerification": {
+    "testCompanyId": "part-b-terminal-open6-independent-recert-test",
+    "everyDeleteScopedToExactId": "Every prisma.*.deleteMany/delete in the new test file is scoped to where: { id: COMPANY_ID } or where: { companyId: COMPANY_ID }, COMPANY_ID a single fixed literal string. No broad/global delete added.",
+    "postRunQuery": "npx tsx (ephemeral, not committed) script querying prisma.company.findUnique / document.count / analysisRun.count / analysisFailureLog.count, all scoped to this exact id",
+    "result": "{ company: null, docs: 0, runs: 0, logs: 0 } - fully cleaned up, no residue left in the shared database",
+    "destructiveDbPatternCheck": {
+      "command": "npx tsx scripts/check-destructive-db-patterns.ts",
+      "exitCode": 1,
+      "findingCount": 12,
+      "newFindingsFromThisChange": 0,
+      "note": "Identical 12 pre-existing findings as Part A's own recertification doc reported (the checker's own pattern-definition strings in scripts/check-destructive-db-patterns.ts, plus tests/infrastructure/db-isolation-adversarial.test.ts, an unrelated already-closed infrastructure fixture). No finding originates from the new file added by this recertification."
+    },
+    "infrastructureNote": "The local Postgres cluster (16/main) was found stopped at the start of this session and was started via `pg_ctlcluster 16 main start` (a non-destructive administrative start, not migrate/reset/push) to allow tests to run at all."
+  },
+
+  "scopeDiscipline": {
+    "productionCodeModified": false,
+    "filesTouchedByThisRecertification": [
+      "tests/contract-model/part-b-terminal-recert-open6-independent.test.ts (new)",
+      "docs/phase-3f1-terminal-architecture-decision/21-failure-observability-recertification.json (new, this file)"
+    ],
+    "noExistingTestFileModifiedOrDeleted": true,
+    "partAsOwnFixLeftEntirelyIntact": "lib/contract-model/analysis/orchestrator.ts and lib/contract-model/analysis/types.ts were read only, never edited by this task."
+  },
+
+  "assessmentOfPartAsClaim": {
+    "whatPartAGotRight": "The console.error tertiary tier genuinely is now wrapped in its own try/catch and genuinely cannot throw uncaught by itself - re-confirmed by construction 5 here and unchanged from Part A's own construction 3. The failureRecordPersisted/failureRecordError/failureRecordFallbackLogged result-contract fields are real and correctly populated whenever the function reaches its `return` statement.",
+    "wherePartAsClaimOverreaches": "Part A's hand-trace (08-failure-observability-bottom.json, `handTracedConfirmationNoCodePathCanThrowUncaught`) asserts classifyError 'cannot throw for any JS value' and is therefore 'canThrow: false' at both its call sites, WITHOUT itself wrapping either call site in a try/catch. That assertion is empirically false for realistic adversarial inputs (a non-Error value with a throwing toString/Symbol.toPrimitive, or an Error instance with a throwing message getter) - both of which are unremarkable in a codebase that ultimately interacts with a driver (Prisma) and third-party/wrapped values, not merely hand-authored plain Errors. Because both classifyError call sites sit outside any try/catch (unlike the console.error call Part A did fix), the SAME class of defect OPEN-6 was opened to close - an uncaught escape from runContractAnalysis's own failure-recording path, with no FAILED result, no console trace, and no durable row - still reproduces today, one or two statements earlier than the location Part A patched."
+  },
+
+  "disposition": "STILL_OPEN",
+  "dispositionRationale": "OPEN-6 is NOT closed. Part A's fix correctly hardened the console.error tertiary fallback but did not hold up the same standard against its own load-bearing helper, classifyError, at either of its two unguarded call sites (orchestrator.ts:427 and orchestrator.ts:484). Four independent, freshly-authored adversarial constructions (a non-Error thrown value with a throwing toString at the original-failure site, the same shape at the recording-failure site, an Error instance with a throwing .message getter, and a synchronous-throw variant) each reproduce an exception propagating uncaught out of runContractAnalysis, with no FAILED result returned, no console trace emitted, and no AnalysisFailureLog row written - the exact 'log-only/no-visibility failure mode' this whole workstream exists to eliminate. A fifth construction (circular-reference payload reaching console.error's own argument) did NOT reproduce an escape and is reported as a non-finding for completeness. Recommended remediation (not applied, per this task's read-only-on-production-code constraint): wrap each of the two classifyError(...) call sites in orchestrator.ts (lines 427 and 484) in its own try/catch with a total, hand-verified fallback (e.g. a hardcoded classification such as { message: \"<unclassifiable error>\", errorClass: \"UnknownError\" } on any failure to classify), matching the same standard already applied to the console.error call."
+}

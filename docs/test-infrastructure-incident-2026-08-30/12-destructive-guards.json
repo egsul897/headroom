@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "DESTRUCTIVE_GUARDS",
+  "purpose": "§13-17 implementation record.",
+  "filesAdded": [
+    {
+      "path": "lib/testing/disposable-db.ts",
+      "role": "assertDisposableDatabase(prisma) / assertDisposableDatabaseUrl(url) - throws DisposableDatabaseAssertionError unless the LIVE current_database() (never an env var alone) matches /^headroom_test_[a-f0-9]{8,}$/. Verified live in the adversarial test to correctly ACCEPT ephemeral databases and REJECT the real persistent `headroom` database by name."
+    },
+    {
+      "path": "lib/testing/ephemeral-db.ts",
+      "role": "createEphemeralDatabase(baseUrl) / destroyEphemeralDatabase(db) - full create->migrate(deploy)->use->destroy lifecycle for a per-worktree/per-process disposable Postgres database on the same server. Uses `prisma migrate deploy` exclusively (never `migrate dev`/`db push`, the tools responsible for the incident per 09)."
+    },
+    {
+      "path": "scripts/check-destructive-db-patterns.ts",
+      "role": "Bounded static guard (per §17, deliberately not a full analyzer). Scans git-tracked tests/scripts/lib/app/prisma for the catastrophic empty-predicate deleteMany shapes, the ternary-collapses-to-empty-object shape, `migrate dev`/`migrate reset`/`db push` outside the one sanctioned ephemeral-db helper, and raw TRUNCATE/DROP SQL. Wired as `npm run db:check-destructive-patterns`.",
+      "verification": "Run clean against the real repository: 0 findings. Independently verified it actually fires by git-add -N'ing a deliberately-violating scratch file (7/7 injected violations across every check category correctly caught), then removing it (git reset + rm, tree left clean)."
+    },
+    {
+      "path": "package.json",
+      "role": "Fixed the pre-existing footgun `\"prisma:migrate\": \"prisma migrate dev\"` to `\"prisma:migrate\": \"prisma migrate deploy\"`, matching this repository's own already-documented convention (docs/CODEX-HANDOFF.md:139-141) that this incident's own root cause (09) shows was violated. Added `\"db:check-destructive-patterns\": \"tsx scripts/check-destructive-db-patterns.ts\"`."
+    }
+  ],
+  "companyCleanupPolicyStatus": "No code change needed here beyond the guard itself - 08's own inventory found 308/310 existing deleteMany call sites already scope to an exact company id/prefix; the 2 non-conforming shapes checked were both zero-hit catastrophic-pattern searches, not real violations. The static guard now enforces this going forward without relying on the one-time audit staying complete."
+}

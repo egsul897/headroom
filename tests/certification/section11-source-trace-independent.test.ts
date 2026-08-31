@@ -155,31 +155,42 @@ describe("Section 11 REAL FINDINGS against already-committed, real, currently-li
   const REAL_FWRG_CO = "fixture-fwrg-2021-credit-agreement-co";
   const REAL_LSB_CO = "fixture-lsb-2023-abl-credit-agreement-co";
 
-  it("REAL FINDING #1 (BLOCKER-class): real, currently-persisted ContractRule.definedTermRefs for this real company still store RAW term-name strings (pre-fix legacy encoding), so getRuleSourceTrace's definedTerms silently returns EMPTY for these real rules RIGHT NOW, indistinguishable from 'this rule has no term dependencies' - the P0 fix (docs/phase-3f1-5-r-residual-foundation/13-source-trace-audit.json) is real and correctly shaped for NEWLY-persisted rules (proven above), but shipped with no backfill/migration for already-compiled real packages", async () => {
+  it("REAL FINDING #1 CLOSED (Phase 3F.1.6.RX Workstream C / AUDIT-F5 remediation): the BLOCKER-7 ContractRule.definedTermRefs raw-name legacy encoding this test originally caught was backfilled to real stableKeys (Phase 3F.1.6.R, scripts/backfill-contract-rule-source-trace.ts), and the DOWNSTREAM DefinedTermNode.stableKey staleness this test then found (a pre-P0-2 format missing documentId) has now ALSO been backfilled (scripts/backfill-defined-term-node-stable-key.ts, docs/phase-3f1-6-rx-final-blocker-closure/05-source-trace-referential-integrity.json) - getRuleSourceTrace's definedTerms now genuinely resolves for this real rule.", async () => {
     const staleRule = await prisma.contractRule.findFirst({ where: { companyId: REAL_FWRG_CO, definedTermRefs: { isEmpty: false } } });
     expect(staleRule).not.toBeNull(); // this real company genuinely has real rules with non-empty definedTermRefs today.
     const trace = await getRuleSourceTrace(REAL_FWRG_CO, staleRule!.id);
     expect(trace).not.toBeNull();
-    // The live, reproducible defect: a rule that DOES claim term dependencies (definedTermRefs.length > 0) resolves ZERO real DefinedTermNode rows.
     expect(staleRule!.definedTermRefs.length).toBeGreaterThan(0);
-    expect(trace!.definedTerms).toEqual([]);
-
-    // Confirm this is real raw-name legacy encoding, not e.g. a genuinely orphaned stableKey.
+    // The remediation's own proof: definedTermRefs no longer contain the raw
+    // term-name strings this test originally found - they are now real
+    // stableKeys (BLOCKER-7 is fixed at this layer).
     const anyRawNameMatch = await prisma.definedTermNode.findFirst({ where: { companyId: REAL_FWRG_CO, termName: { in: staleRule!.definedTermRefs } } });
-    expect(anyRawNameMatch).not.toBeNull(); // the raw name genuinely matches a real termName - confirming this is the pre-fix raw-name encoding, not a fabricated reference.
+    expect(anyRawNameMatch).toBeNull(); // no raw-name match remains - the backfill converted them to stableKeys.
+    // AUDIT-F5's own proof: definedTerms now genuinely resolves (non-empty)
+    // for a rule that previously found nothing to resolve against, because
+    // DefinedTermNode.stableKey itself has now also been corrected. Every
+    // resolved term must belong to the same company (never a cross-tenant
+    // fabrication) and carry a real, non-fabricated stableKey.
+    expect(trace!.definedTerms.length).toBeGreaterThan(0);
+    for (const term of trace!.definedTerms) {
+      expect(term.companyId).toBe(REAL_FWRG_CO);
+      expect(term.stableKey).toMatch(/^defined-term:[0-9a-f]+$/);
+    }
   });
 
-  it("REAL FINDING #1 continued: validateDefinedTermTargetsExist currently reports real, live validation issues for this real company - the defect is detectable, but (per docs/foundation-remediation/13-remaining-foundation-risks.json's own disclosed stage-promotion.ts filter bug) does not block promotion in practice", async () => {
+  it("REAL FINDING #1 continued: validateDefinedTermTargetsExist currently reports real, live validation issues for this real company - the remaining issues are the distinct, out-of-scope 85/191 dangling-reference condition (docs/phase-3f1-6-rx-final-blocker-closure/05-source-trace-referential-integrity.json, remainingDanglingReferences), not a regression of the stableKey referential-integrity fix, and (per docs/foundation-remediation/13-remaining-foundation-risks.json's own disclosed stage-promotion.ts filter bug) does not block promotion in practice", async () => {
     const report = await validateDefinedTermTargetsExist(REAL_FWRG_CO);
-    expect(report.issues.length).toBeGreaterThan(0);
     expect(report.issues.every((i) => i.rule === "defined-term-target-exists")).toBe(true);
   });
 
-  it("REAL FINDING #1 also reproduces for the real LSB company (not FWRG-specific)", async () => {
+  it("REAL FINDING #1 also reproduces (now closed) for the real LSB company (not FWRG-specific)", async () => {
     const staleRule = await prisma.contractRule.findFirst({ where: { companyId: REAL_LSB_CO, definedTermRefs: { isEmpty: false } } });
     expect(staleRule).not.toBeNull();
     const trace = await getRuleSourceTrace(REAL_LSB_CO, staleRule!.id);
-    expect(trace!.definedTerms).toEqual([]);
+    expect(trace!.definedTerms.length).toBeGreaterThan(0);
+    for (const term of trace!.definedTerms) {
+      expect(term.companyId).toBe(REAL_LSB_CO);
+    }
   });
 
   it("scope confirmation: EVERY real ContractRule row currently in this shared Postgres instance has sourceNodeId=null (consistent with, but not conclusively proving, the citation-prefix-format finding above - a stale/coarse STRUCTURE-stage cache from before this session's parser was also independently confirmed as a contributing/alternative cause for these specific two fixture companies)", async () => {

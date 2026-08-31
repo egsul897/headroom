@@ -20,6 +20,7 @@ import { computeSemanticVerificationFindingId } from "./identity";
 import { SubmitVerificationFindingsSchema, type WireVerificationFinding } from "./wire-schema";
 import { SEMANTIC_VERIFIER_ALGORITHM_VERSION, SEMANTIC_VERIFIER_PROMPT_VERSION } from "./types";
 import type { ReconciliationResult, SemanticVerificationFinding, SemanticVerificationFindingType, SemanticVerificationSeverity, VerificationInput } from "./types";
+import type { ConditionSuspicionResult } from "./condition-suspicion-classifier";
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 
 const VALID_FINDING_TYPES: SemanticVerificationFindingType[] = [
@@ -67,7 +68,25 @@ function summarizeReconciliationForPrompt(reconciliation: ReconciliationResult):
   return relevant.map((i) => `- [${i.classification}] ${i.reason}`).join("\n");
 }
 
-function buildUserContent(input: VerificationInput, reconciliation: ReconciliationResult): string {
+/**
+ * Phase 3F.1-terminal Architecture Decision, Part A - when the source-only
+ * condition-suspicion classifier (condition-suspicion-classifier.ts) is why
+ * this review was invoked at all (deterministic evidence alone would have
+ * allowed a skip), surface its own evidence here as an ADDITIONAL
+ * investigative lead, exactly like the deterministic signals above - never
+ * as a conclusion this reviewer should defer to. This reviewer still forms
+ * its own independent judgment from the real source text; the classifier's
+ * routing signal only tells it what a separate, independent pass flagged as
+ * worth a closer look.
+ */
+function summarizeConditionSuspicionForPrompt(conditionSuspicion: ConditionSuspicionResult | null): string {
+  if (!conditionSuspicion) return "(not applicable - a deterministic signal alone already required this review)";
+  if (conditionSuspicion.failed) return `(the source-only condition-suspicion classifier call failed: ${conditionSuspicion.failureDetail ?? "unknown error"} - treat this as an unresolved signal in itself, not as evidence either way)`;
+  if (conditionSuspicion.evidence.length === 0) return `status: ${conditionSuspicion.status} (no specific evidence spans reported)`;
+  return [`status: ${conditionSuspicion.status}`, ...conditionSuspicion.evidence.map((e) => `- [${e.category}] "${e.sourceSpan}" - ${e.description}`)].join("\n");
+}
+
+function buildUserContent(input: VerificationInput, reconciliation: ReconciliationResult, conditionSuspicion: ConditionSuspicionResult | null): string {
   const { compilerInput, compilationResult } = input;
   const contextItemsSummary = compilerInput.contextBundle.items.map((i) => `- [${i.itemId}] (${i.type}, ${i.sourceCitation}): ${i.excerptText}`).join("\n") || "(none)";
   const unresolvedSummary = compilerInput.contextBundle.unresolvedDependencies.map((u) => `- ${u.dependencyType} (${u.severity}): ${u.reason}`).join("\n") || "(none)";
@@ -95,6 +114,9 @@ function buildUserContent(input: VerificationInput, reconciliation: Reconciliati
     "",
     "Deterministic discrepancy signals from an independent, non-AI pass (investigate each, do not merely rubber-stamp):",
     summarizeReconciliationForPrompt(reconciliation),
+    "",
+    "A separate, independent, source-only semantic condition-suspicion classifier (reads only the raw source text above, never this proposed IR) additionally reported (investigate this too, do not merely rubber-stamp it - it is a routing signal from another pass, not a conclusion):",
+    summarizeConditionSuspicionForPrompt(conditionSuspicion),
   ].join("\n");
 }
 
@@ -106,6 +128,17 @@ export interface SemanticReviewResult {
   telemetry: AnalyzerCallTelemetry | null;
   failed: boolean;
   failureDetail: string | null;
+  /**
+   * Phase 3F.1.6.RX Workstream E precision fix. True when this result came
+   * from the no-credential SyntheticStageCaller fallback (llm-caller.ts) -
+   * a Zod-defaults stub with no genuine reading of the source text at all -
+   * rather than a real (or a test's scripted stand-in for a real) reviewer.
+   * verify.ts uses this to make sure a stub's inevitable empty findings
+   * array is never mistaken for an independent adversarial confirmation
+   * that nothing is wrong; only a genuine review's silence carries that
+   * weight.
+   */
+  isSynthetic: boolean;
 }
 
 function normalizeWireFinding(wire: WireVerificationFinding, input: VerificationInput, provider: string, model: string): SemanticVerificationFinding {
@@ -139,15 +172,15 @@ function normalizeWireFinding(wire: WireVerificationFinding, input: Verification
   };
 }
 
-export async function runAdversarialSemanticReview(input: VerificationInput, reconciliation: ReconciliationResult, caller: StageCaller = getStageCaller()): Promise<SemanticReviewResult> {
+export async function runAdversarialSemanticReview(input: VerificationInput, reconciliation: ReconciliationResult, caller: StageCaller = getStageCaller(), conditionSuspicion: ConditionSuspicionResult | null = null): Promise<SemanticReviewResult> {
   const systemPrompt = buildVerifierSystemPrompt({ verifierAlgorithmVersion: SEMANTIC_VERIFIER_ALGORITHM_VERSION, verifierPromptVersion: SEMANTIC_VERIFIER_PROMPT_VERSION }) + "\n\n" + buildVerifierFewShotExamplesBlock();
-  const userContent = buildUserContent(input, reconciliation);
+  const userContent = buildUserContent(input, reconciliation, conditionSuspicion);
 
   try {
     const wireResult = await caller.call(SubmitVerificationFindingsSchema, "semantic_verification", systemPrompt, userContent);
     const findings = wireResult.findings.map((f) => normalizeWireFinding(f, input, caller.providerName, caller.model));
-    return { findings, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: false, failureDetail: null };
+    return { findings, overallNotes: wireResult.overallNotes, provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: false, failureDetail: null, isSynthetic: caller.isSynthetic };
   } catch (err) {
-    return { findings: [], overallNotes: [], provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: true, failureDetail: err instanceof Error ? err.message : String(err) };
+    return { findings: [], overallNotes: [], provider: caller.providerName, model: caller.model, telemetry: caller.lastTelemetry(), failed: true, failureDetail: err instanceof Error ? err.message : String(err), isSynthetic: caller.isSynthetic };
   }
 }

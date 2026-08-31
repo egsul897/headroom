@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CONDITION_STATUS",
+  "disposition": "ENVIRONMENT_BLOCKED",
+  "preconditionCheck": {
+    "method": "One-shot raw HTTPS probe (POST https://ai-gateway.vercel.sh/v1/messages), credential injected as a process-local environment variable for a single command invocation only, never written to .env or any committed file.",
+    "result": "HTTP 402: Team budget exceeded. Current spend: $50.05, limit: $50.00 - identical account state to every prior probe across this entire multi-phase session.",
+    "realCostIncurred": "$0.00"
+  },
+  "actionTaken": "Production code (condition-suspicion-classifier.ts and all related files) was NOT modified this phase, per SS20. The frozen 22-case OPEN-4 holdout was not run since the account budget remains exhausted.",
+  "resultingFinalState": "OPEN-2 is CERTIFIED_CLOSED (this phase) and OPEN-4 remains ENVIRONMENT_BLOCKED, so per SS20 the final state is PHASE_3F_1_CODE_FOUNDATION_CLOSED_CONDITION_VALIDATION_ENVIRONMENT_BLOCKED."
+}

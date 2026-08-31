@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "HALF_WRITTEN_STATE",
+  "purpose": "§4: explicit search for half-written state left by the interrupted recovery.",
+  "checksPerformed": [
+    "SELECT * FROM analysis_runs WHERE status = 'RUNNING' (across ALL companies, not just fixtures)",
+    "Direct inspection of ContractCompilerRun + ContractCompilerStage rows for fixture-fwrg-2021-credit-agreement-co",
+    "Row counts for DocumentNode/DefinedTermNode/ContractRule/ClaimReviewItem cross-checked against expected referential shape (a completed compiler run should have PROMOTION-stage output driving ContractRule creation; a stage marked COMPLETED with 0 downstream rows is a red flag, not assumed fine)"
+  ],
+  "findings": [
+    {
+      "item": "RUNNING AnalysisRuns with no active owner",
+      "result": "NONE FOUND - `analysis_runs` table has zero rows with status=RUNNING company-wide. AUDIT-F2's own fencing fix (executionGeneration) was never exercised by this incident at all - not a concern here.",
+      "classification": "SAFE_COMPLETE (nothing to fix)"
+    },
+    {
+      "item": "fixture-fwrg-2021-credit-agreement-co ContractCompilerRun (id cmtg576dl00011848dm1712en)",
+      "result": "Contains a MIX of two incompatible generations in one row-set: (a) leftover COMPLETED-status AMENDMENTS/VALIDATION/COVERAGE/PROMOTION/VERIFICATION stage rows from the FIRST, credential-less, SyntheticExtractionProvider run (provider=synthetic or null, worthless output); (b) genuinely-new COMPLETED INVENTORY/DEFINITIONS/RULE_EXTRACTION stage rows from the SECOND, real, credentialed run (provider=VERCEL_AI_GATEWAY, model=anthropic/claude-sonnet-5); (c) a RELATIONSHIPS stage stuck at status=RUNNING, provider=synthetic - the exact point where TaskStop interrupted the process.",
+      "classification": "INCOMPLETE_REQUIRES_CLEAN_RETRY - explicitly NOT safe to resume from this mixed state. Stitching a real RULE_EXTRACTION result on top of a stale synthetic VERIFICATION/COVERAGE/PROMOTION result would violate §21's own rule against mixing incompatible analysis generations - the downstream stages must be recomputed against the real upstream output, not reused from the synthetic run."
+    },
+    {
+      "item": "fixture-fwrg-2021-credit-agreement-co ContractRule count vs. RULE_EXTRACTION stage status",
+      "result": "RULE_EXTRACTION shows status=COMPLETED with a real paid Gateway call recorded, yet ContractRule count is 0. This means the real call's output was consumed by a later stage (persistence happens downstream of extraction in this orchestrator, not at RULE_EXTRACTION itself) that never ran to completion before the interrupt - the extracted rules, if the call succeeded, exist only in the Gateway/model's response, not durably in this repository.",
+      "classification": "INCOMPLETE_REQUIRES_CLEAN_RETRY - this is exactly the 'paid for, but not durably captured' risk §5/§22 exist to prevent going forward, and the reason this artifact records it explicitly rather than silently treating 41 DefinedTermNode rows as a completed defnitions stage."
+    },
+    {
+      "item": "ClaimReviewItems without corresponding analysis state",
+      "result": "0 ClaimReviewItem rows exist for fixture-fwrg-2021-credit-agreement-co - none to check.",
+      "classification": "SAFE_COMPLETE (nothing to fix)"
+    },
+    {
+      "item": "Package relationships missing one side / structural nodes with missing parent",
+      "result": "Not checked at fine grain for this fixture company because RELATIONSHIPS never completed (relationshipsPersisted=0 in every run) - there is no relationship data to be one-sided. The 418 DocumentNode rows were produced by the SAME deterministic parseDocumentStructure/persistStructuralNodes code path in both the synthetic and real runs (this code never touches an LLM), so they are internally consistent regardless of which run created them and do not need to be discarded.",
+      "classification": "SAFE_COMPLETE for structural nodes specifically; PACKAGE_GRAPH itself is simply MISSING, not corrupt."
+    },
+    {
+      "item": "Duplicate state from restart attempts",
+      "result": "No duplicate Company/Document rows found (Company/Document ids are fixed, deterministic, upserted - `prisma.company.upsert`/`prisma.document.upsert` in run-phase-c-compiler.ts - so re-running never creates a second copy, only overwrites in place). No duplication risk from the two attempts.",
+      "classification": "SAFE_COMPLETE"
+    },
+    {
+      "item": "Documents present but analysis absent / analysis marked completed while dependent rows missing",
+      "result": "The stale COVERAGE/PROMOTION/VALIDATION rows ARE exactly this pattern (marked COMPLETED while the ContractRule rows they should depend on are absent) - already captured above as part of the mixed-generation finding.",
+      "classification": "INCOMPLETE_REQUIRES_CLEAN_RETRY (same item as above, not double-counted)"
+    }
+  ],
+  "decision": "fixture-fwrg-2021-credit-agreement-co's ContractCompilerRun/Stage rows for this company must be cleanly reset (not resumed piecemeal) before any further compiler execution, and the run must complete in ONE uninterrupted, isolated, foreground execution this time - see 14-package-recovery-plan.json. The DocumentNode rows (deterministic, real, uncontaminated) may be kept as-is since --force causes the STRUCTURE stage to be recomputed from source text identically regardless."
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "LIVE_CONTRACT_ANALYSIS_ARCHITECTURE",
+  "workstream": "F",
+  "blockerId": "BLOCKER-10",
+  "generatedAt": "2026-08-30T06:20:00.000Z",
+  "baseCommit": "75ffb5592719dc7a995e47870fc562aff1c18667",
+  "purpose": "Step 1 of BLOCKER-10 remediation: design, BEFORE writing code, the ONE live application-triggered orchestration boundary that composes the already-fixed lib/contract-model/compiler/** modules (Workstreams A-E) into a real, callable sequence - closing the gap docs/phase-3f1-6-final-foundation-certification/17-safe-failure-wiring-certification.json found (zero import relationship, direct or transitive, between app/ and lib/contract-model/compiler/**).",
+  "namingDecision": {
+    "chosenName": "runContractAnalysis (lib/contract-model/analysis/orchestrator.ts), barrel-exported from lib/contract-model/analysis/index.ts",
+    "rationale": "Surveyed this repo's own house style before naming anything. lib/contract-model/compiler/** uses run<Noun>Pipeline / run<Noun>Stage / run<Noun>Audit for its own top-level entry points (runDiscoveryPipeline, runAmendmentPipeline, runSemanticCoverageAudit, runIndependentCoverageAudit, runStructureStage). lib/onboarding/** uses verb-first names for its own top-level orchestration too (uploadAndChunkDocument, runExtractionForDocument). 'runContractAnalysis' matches both conventions directly and reads unambiguously as 'the one thing that analyzes a contract package', distinct in name and directory from the quarantined lib/contract-model/compiler/orchestrator.ts's own runContractCompiler (a different compiler generation - see that file's own QUARANTINE NOTICE). A brand-new lib/contract-model/analysis/ directory (sibling to compiler/, analyzer/, ir/) was chosen over adding this file inside compiler/ itself, so the import-boundary test (tests/foundation-audit/legacy-phase-c-quarantine.test.ts) and any future reader can see at a glance that this is the NEW live composition boundary, never confusable with the quarantined generation one directory over."
+  },
+  "dependencyOrderVerification": {
+    "taskExpectedOrder": [
+      "document ingestion",
+      "document/package identity",
+      "structural analysis",
+      "persistence",
+      "package relationships",
+      "amendment/operative state",
+      "material covenant discovery",
+      "recursive context retrieval",
+      "semantic compilation",
+      "independent semantic verification",
+      "whole-document semantic coverage",
+      "explicit ClaimReviewItem persistence",
+      "completed analysis state"
+    ],
+    "adoptedOrder": "IDENTICAL to the task's own expected shape - every real callee signature was read before writing any code (not assumed), and every dependency the task's own ordering implies was independently confirmed against the real, current function signatures below. No reordering was needed.",
+    "perEdgeDependencyCheck": [
+      { "edge": "structural analysis -> package relationships", "realDependency": "buildPackageGraph(companyId, packageKey, PackageDocumentInput[]) needs only raw document text/labels, not the StructuralIndex - independent, but structural analysis is still computed first because EVERY later stage needs the StructuralIndex, and it is the cheapest, zero-LLM-cost stage to run first.", "confirmedBy": "lib/contract-model/compiler/package-graph/pipeline.ts:39 buildPackageGraph signature." },
+      { "edge": "package relationships -> amendment/operative state", "realDependency": "runAmendmentPipeline(caller, {documents, packageGraph, index}) takes packageGraph as a REQUIRED input (used to identify amendment-shaped documents and their base-document targets) - package relationships MUST run first.", "confirmedBy": "lib/contract-model/compiler/amendment/pipeline.ts:58-62 AmendmentPipelineInput." },
+      { "edge": "package relationships -> material covenant discovery", "realDependency": "runDiscoveryPipeline(caller, documentId, index, supersessionIndex?) does NOT take packageGraph at all - discovery has no real dependency on package relationships. The task's own ordering still places package relationships before discovery; this is harmless (no wrong dependency is forced) and was kept for narrative match to the task's own expected shape, since context retrieval (the very next stage) DOES need packageGraph.", "confirmedBy": "lib/contract-model/compiler/discovery/pipeline.ts:70 runDiscoveryPipeline signature." },
+      { "edge": "package relationships + material covenant discovery -> recursive context retrieval", "realDependency": "buildCovenantContextBundle(input, access) requires access.packageGraph (for cross-document relationship lookups) and input.candidate (a real DiscoveredCandidate) - both prior stages are hard prerequisites.", "confirmedBy": "lib/contract-model/compiler/context-retrieval/pipeline.ts:52-120 PackageAccess/buildCovenantContextBundle." },
+      { "edge": "amendment/operative state + recursive context retrieval -> semantic compilation", "realDependency": "SemanticCompilerInput requires contextBundle (Phase 2D output) and toolAccess.operativeState (Phase 2G output, nullable) - both hard prerequisites for a well-formed compiler call, even though operativeState may legitimately be null for a never-amended instrument.", "confirmedBy": "lib/contract-model/compiler/semantic/types.ts:79-115 SemanticToolAccess/SemanticCompilerInput." },
+      { "edge": "semantic compilation -> independent semantic verification", "realDependency": "VerificationInput = {compilerInput, compilationResult} - verification literally cannot run without a compilation result to check.", "confirmedBy": "lib/contract-model/compiler/semantic-verification/types.ts:128-133 VerificationInput." },
+      { "edge": "material covenant discovery + semantic compilation + independent semantic verification -> whole-document semantic coverage", "realDependency": "SemanticCoverageAuditInput requires discoveredCandidates, compiledResults, and verifiedCandidateRefs (derived from verification's own VERIFIED_* statuses) as real inputs - all three prior stages are hard prerequisites. Internally this stage ALSO independently re-derives its own MaterialSemanticUnit inventory from the StructuralIndex alone (Layers A/B), deliberately BEFORE it ever reads compiledResults/verifiedCandidateRefs/operativeState (the freeze-before-load Independence Contract) - this internal ordering is enforced by runSemanticCoverageAudit itself, not by this orchestrator.", "confirmedBy": "lib/contract-model/compiler/semantic-coverage/pipeline.ts:37-52,69-117 SemanticCoverageAuditInput + runSemanticCoverageAudit's own freeze-before-load comment." },
+      { "edge": "whole-document semantic coverage -> explicit ClaimReviewItem persistence", "realDependency": "recordClaimReviewsFromPackageCoverage(result: PackageCoverageResult) takes the coverage audit's own output directly - hard prerequisite, and this IS the one existing wired safe-failure emission point (Workstream/Phase 3F.1.5.R), reused verbatim, never duplicated.", "confirmedBy": "lib/contract-model/compiler/safe-failure/integrate.ts:88-94 recordClaimReviewsFromPackageCoverage." }
+    ],
+    "notIncluded": {
+      "module": "lib/contract-model/compiler/coverage-audit/pipeline.ts (Phase 2E's runIndependentCoverageAudit)",
+      "reason": "Deliberately excluded from this orchestrator's composed sequence. This is a SEPARATE, deterministic-only source-vs-discovery/context coverage audit (Phase 2E), distinct from semantic-coverage's own Phase 3E audit (which IS the one wired to safe-failure via recordClaimReviewsFromPackageCoverage). Neither the certification's own reference pipeline (scripts/phase-3f-first-blind-run.ts) nor the task's own stated expected pipeline shape names it, and it has no connection to the ClaimReviewItem emission point at all - grep-confirmed (no caller of runIndependentCoverageAudit anywhere touches safe-failure/**). Wiring it in would be adding a NEW analytical capability to the live path beyond what BLOCKER-10 asks for ('compose the existing modules', never 'add a new analysis layer to the live boundary'), so it remains available as a separate, standalone audit tool exactly as it is today, unchanged."
+    }
+  },
+  "singleDocumentBoundaryDecision": {
+    "question": "Should the live orchestrator analyze one uploaded document at a time, or a company's whole document set together?",
+    "decision": "The whole company's current contract-document set, re-analyzed together, every time (see CONTRACT_DOCUMENT_TYPE_SET in lib/contract-model/analysis/types.ts for the exact Document.type scope - excludes OTHER and COMPLIANCE_CERTIFICATE).",
+    "rationale": "Package-graph, amendment/operative-state, and context-retrieval are all inherently multi-document concerns (an amendment only makes sense relative to its base agreement; a covenant's true operative text can depend on a LATER document). Analyzing one document in isolation on every upload would either (a) never see amendment relationships at all, or (b) require a second, separate re-analysis pass anyway once a related document arrives - re-analyzing the whole set is simpler, and is made safe/cheap by construction: every downstream write in this pipeline (structural persistence, package-graph persistence, ClaimReviewItem recording) is independently idempotent (see 16-live-analysis-idempotency.json), so re-running over a stable document set is a real no-op at the persistence layer, not wasted duplicate work.",
+    "disclosedScopeBoundary": "This intentionally does NOT yet implement per-DebtInstrument analysis boundaries (multiple genuinely unrelated credit facilities for the same company would all be re-analyzed together as one 'package' today). The orchestrator internally partitions work by package-graph's own real InstrumentGroupingResult where one was confidently identified (falling back to a standalone per-document instrument otherwise - see lib/contract-model/analysis/identity.ts's standaloneInstrumentKey), so a company with cleanly-distinguishable instruments already gets correctly-scoped semantic-coverage/verification/discovery runs per instrument; what remains coarse is the outer AnalysisRun/packageKey identity, which is company-wide. This is a disclosed, bounded simplification appropriate to this workstream's charter (compose, do not re-architect); a future phase adding real per-instrument AnalysisRun boundaries is a natural, small follow-on, not a blocker to closing BLOCKER-10 itself."
+  },
+  "houseConventionsFollowed": [
+    "One directory per concern, barrel-exported index.ts (matches compiler/safe-failure/, compiler/semantic-verification/).",
+    "identity.ts for stable, content-derived identity computation (matches compiler/safe-failure/identity.ts's own pattern and its own documented rationale for content-derived, never-random identity).",
+    "service.ts for the one Prisma persistence lifecycle module (matches compiler/safe-failure/service.ts naming and its own dedup/lifecycle discipline).",
+    "orchestrator.ts for the composition entry point itself, deliberately reusing this exact filename compiler/orchestrator.ts already used for the PRIOR generation - same name, different directory, on purpose, so a reader searching for 'orchestrator.ts' across the repo sees both the quarantined and the live one side by side and cannot miss the QUARANTINE NOTICE in the other file."
+  ],
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "The architecture design itself is complete and was validated against the real, current callee signatures before implementation began (not assumed) - see 15-live-contract-analysis-orchestrator.json for the implementation this design produced, and 18-live-e2e-results.json for end-to-end proof it composes correctly. Reserved CERTIFIED status for a future, independent recertification phase, per this phase's own charter."
+}

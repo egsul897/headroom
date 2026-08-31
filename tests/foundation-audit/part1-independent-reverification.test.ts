@@ -192,12 +192,28 @@ describe("Part 1 / new angle 5 - the ADR's own I9/I10 negative-space claim: can 
 
 describe("Part 1 / new angle 6 - I15 with THREE-way ambiguity (existing test only proves 2-way)", () => {
   it("resolveUniqueNodeByRef reports AMBIGUOUS with all 3 candidates, in document order, when three real physical occurrences share one legal reference", () => {
+    // Phase 3F.1.6.R note: the middle occurrence here used to be constructed
+    // as an in-text citation ("As referenced in Section 6.04 ... above") -
+    // deliberately exploiting the fact that the OLD (Phase 3F.1.5.R)
+    // phrase-list gate's 14 tracked citation-signal phrases happened not to
+    // include "referenced in" (only the differently-worded "referred to
+    // in"), so that specific citation slipped through as a raw node by
+    // accident. Phase 3F.1.6.R's positive-evidence gate closes exactly that
+    // class of gap (see docs/phase-3f1-6-r-blocker-remediation/03-
+    // structural-heading-remediation.json) and correctly rejects it - it is
+    // preceded only by "in " with no sentence/paragraph break, exactly the
+    // shape a genuine in-text citation has. The middle occurrence below is
+    // now a genuinely duplicate, paragraph-separated physical heading
+    // instead (the "legitimate duplicate numbering" shape, e.g. a
+    // TOC-style or drafting-error repeat) - a real ambiguity source this
+    // fix must never suppress, and still fully exercises the 3-way
+    // AMBIGUOUS resolution this test is actually about.
     const text = `
 ARTICLE VI COVENANTS
 
 Section 6.04 Limitation on Distributions . First real physical occurrence.
 
-Section 6.10 Cross-Reference . As referenced in Section 6.04 Limitation on Distributions . above (a second occurrence via an in-text citation matching the same heading shape).
+Section 6.04 Limitation on Distributions . Second real physical occurrence (a genuine duplicate, its own paragraph).
 
 Section 6.20 Amendments . Section 6.04 of this Agreement is hereby amended and restated to read: Section 6.04 Limitation on Distributions . Third, amended physical occurrence.
 `.trim();

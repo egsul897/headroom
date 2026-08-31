@@ -42,7 +42,22 @@ export interface StageRunResult<TOutput> {
  * identity semantics change, rather than silently serving pre-remediation
  * structure under new-looking output.
  */
-export const STRUCTURAL_INDEX_VERSION = "phase-3f1-2-structural-identity.v1";
+/**
+ * Phase 3F.1 Human Architecture Decision (Workstream OPEN-1 wiring fix) -
+ * bumped from "phase-3f1-2-structural-identity.v1" to
+ * "phase-3f1-open1-wiring-structural-ambiguity.v1" the moment
+ * orchestrator.ts's STRUCTURE stage started calling
+ * `runStructureStageWithAmbiguityResolution` (structural-ambiguity-resolution.ts)
+ * instead of the old synchronous `runStructureStage`. This is exactly the
+ * "structural-parsing ALGORITHM change over unchanged document text" this
+ * constant's own doc comment (below) warns must always bump the version: the
+ * same document text can now produce a genuinely DIFFERENT node set than
+ * before (an AMBIGUOUS candidate the old heuristic silently accepted may now
+ * be fail-closed EXCLUDED, or LIKELY_HEADING-confirmed by the classifier,
+ * where the old code had no such third path at all). Proven forced-recompute
+ * in tests/foundation-audit/cache-invalidation-audit.test.ts.
+ */
+export const STRUCTURAL_INDEX_VERSION = "phase-3f1-open1-wiring-structural-ambiguity.v1";
 
 /**
  * Structural node the STRUCTURE stage produces (task §8/§9; widened in

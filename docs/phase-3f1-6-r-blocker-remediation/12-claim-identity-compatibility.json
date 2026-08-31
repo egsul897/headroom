@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "CLAIM_IDENTITY_COMPATIBILITY",
+  "workstream": "B",
+  "blockerId": "BLOCKER-8",
+  "generatedAt": "2026-08-30T05:20:00Z",
+  "purpose": "Explicit compatibility/migration disposition for 11-claim-identity-remediation.json's identity-formula changes, per this phase's own requirement to never silently orphan already-persisted state keyed by the old identity scheme.",
+
+  "whatChanged": {
+    "discoveryId": "lib/contract-model/compiler/discovery/pass-c-neighborhood.ts's discoveryId formula gained a new hashed component (computeCandidateContentFingerprint, derived from sorted CovenantFamily[]). DISCOVERY_PIPELINE_VERSION bumped v2 -> v3 as part of the same change.",
+    "semanticUnitId_formula": "computeSemanticUnitId itself (lib/contract-model/compiler/semantic-coverage/identity.ts) was NOT changed - its formula (hash of sorted anchor keys + detectionSignature + algorithm version) is unchanged.",
+    "semanticUnitId_inputs": "What changed is which/how many anchors get PRODUCED for a given region by hypothesizeUnitsForRegion (a new findCoordinateClauseSplit path can now yield 2 anchors/units where the pre-fix code always yielded 1 for an un-enumerated fused sentence). SEMANTIC_COVERAGE_ALGORITHM_VERSION bumped v2 -> v3 as part of the same change, per this file's own pre-existing convention (see the v1->v2 bump's own documented rationale in types.ts)."
+  },
+
+  "conclusion": "NO_PERSISTED_STATE_AFFECTED",
+  "conclusionRationale": [
+    "The ONLY database table that persists any value derived from discoveryId/candidateRef or semanticUnitId is ClaimReviewItem.claimKey (prisma/schema.prisma, `cr:<candidateRef>` or `su:<semanticUnitId>`, @@unique([companyId, claimKey])). Directly queried the live Postgres instance this workstream ran against (pg_isready confirmed up) via a one-off Prisma script: `prisma.claimReviewItem.count()` = 0, and counts filtered on claimKey startsWith 'cr:' and 'su:' are both 0. There is not one persisted ClaimReviewItem row of any kind, in any encoding, old or new.",
+    "No other Prisma model persists a discoveryId, candidateRef, or semanticUnitId value as a column - confirmed via `grep -n \"candidateRef\\|discoveryId\" prisma/schema.prisma` (one doc-comment mention, zero actual columns) and `grep -n \"semanticUnitId\" prisma/schema.prisma` (two doc-comment mentions, zero actual columns). DiscoveredCandidate and MaterialSemanticUnit are pure in-memory pipeline objects - discovery/pipeline.ts's own header comment documents this explicitly ('This module does not itself touch persistence ... available as a library, not yet wired into the live orchestrator').",
+    "Independently reconfirmed BLOCKER-10's own finding (zero live application callers for the entire contract-model compiler/safe-failure pipeline) as of THIS commit, not merely cited from the frozen certification: `grep -rln \"contract-model/compiler\" app/ lib/onboarding lib/extraction` returns zero files. No customer-facing flow has ever invoked runDiscoveryPipeline, hypothesizeUnitsForDocument, or recordClaimReview against real production documents - only scripts and tests exercise this code today.",
+    "Even the identity-VALUE-adjacent version constants (DISCOVERY_RUN_VERSION, which folds in DISCOVERY_PIPELINE_VERSION, and SEMANTIC_COVERAGE_ALGORITHM_VERSION) are themselves already-established cache/staleness gates per this codebase's own pre-existing convention (see pipeline.ts's own header comment: 'a changed discovery algorithm or prompt never silently resumes stale discovery state', and types.ts's own v1->v2 bump comment making the identical argument for FrozenSourceInventory/frozenContentHash). Bumping both to v3 as part of this fix is not a new mechanism invented for this blocker - it is this codebase's own existing, already-relied-upon mechanism for signaling exactly this kind of change, applied consistently."
+  ],
+
+  "whatWouldHappenIfStateExistedLater": {
+    "scenario": "A future phase wires this pipeline into the live application (BLOCKER-10's own remediation) BEFORE this identity fix, accumulates real ClaimReviewItem rows keyed by the pre-fix (v2) discoveryId formula, and only later picks up this fix.",
+    "behavior": "DISCOVERY_RUN_VERSION (which embeds DISCOVERY_PIPELINE_VERSION) and SEMANTIC_COVERAGE_ALGORITHM_VERSION are both already-bumped (v3) in this commit. Any caller computing computeDiscoveryInputHash or re-running the coverage pipeline over the SAME document text after this fix lands will compute a DIFFERENT input hash than a pre-fix run, and any cache/persistence layer gated on that hash (per this codebase's own documented convention) will correctly treat the old run as stale and recompute fresh - never silently reusing a v2-identity-scheme candidate set as if it were unchanged.",
+    "oldRowDisposition": "An old ClaimReviewItem row keyed by a pre-fix `cr:<v2-discoveryId>` claimKey would NOT be automatically re-keyed or deleted by this change alone - it would simply stop being touched by future v3 pipeline runs (which compute different claimKeys for the same underlying document) and would need either: (a) a one-time recomputation script that re-derives discoveryId/claimKey for existing rows and re-keys them via prisma, or (b) to be left as historical record and naturally superseded/resolved through the existing review workflow as the corresponding v3-identity claim is freshly detected. Given there is zero such state today (see conclusionRationale above), NEITHER is needed now.",
+    "recommendationForThatFutureScenario": "When BLOCKER-10's live-wiring work lands, whichever workstream does it should re-run this exact compatibility check (query ClaimReviewItem row counts filtered by claimKey prefix and by which DISCOVERY_PIPELINE_VERSION/SEMANTIC_COVERAGE_ALGORITHM_VERSION produced them, if that provenance is tracked) BEFORE assuming no migration is needed - this artifact's NO_PERSISTED_STATE_AFFECTED conclusion is proven true as of this commit's live database state, not asserted as permanently true regardless of what ships later."
+  },
+
+  "migrationDecision": {
+    "migrationNeeded": false,
+    "aliasOrMappingTableNeeded": false,
+    "versionedIdentitySchemeNeeded": "Already exists and was used exactly as designed (DISCOVERY_PIPELINE_VERSION / DISCOVERY_RUN_VERSION / SEMANTIC_COVERAGE_ALGORITHM_VERSION bumps) - no NEW versioning mechanism was needed; the pre-existing one was applied.",
+    "recomputationScriptNeeded": false,
+    "explicitStatement": "This is an explicit decision, not an omission: no migration, alias table, or backfill script is being written as part of this blocker, because independent verification (a live database query, not an assumption) confirms zero rows of any kind exist in the one table (ClaimReviewItem) that could have been affected. Should that premise ever change (see whatWouldHappenIfStateExistedLater above), a recomputation/re-keying script would be the appropriate remedy, gated on the version bump already in place to detect which rows need it."
+  },
+
+  "verificationEvidence": {
+    "dbQuery": "npx tsx -e \"...prisma.claimReviewItem.count() / count({where:{claimKey:{startsWith:'cr:'}}}) / count({where:{claimKey:{startsWith:'su:'}}})...\" against the live Postgres instance (pg_isready confirmed accepting connections) -> {\"total\": 0, \"crPrefixed\": 0, \"suPrefixed\": 0, \"other\": 0}",
+    "schemaGrep": "grep -n \"candidateRef\\|discoveryId\" prisma/schema.prisma -> 1 doc-comment line, 0 columns. grep -n \"semanticUnitId\" prisma/schema.prisma -> 2 doc-comment lines, 0 columns.",
+    "liveCallerGrep": "grep -rln \"contract-model/compiler\" app/ lib/onboarding lib/extraction -> 0 files."
+  },
+
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "The compatibility question required by this phase's charter has an explicit, evidence-backed answer (NO_PERSISTED_STATE_AFFECTED, independently verified against the live database rather than assumed), and the existing version-bump mechanism already used elsewhere in this codebase for exactly this class of change was applied. Nothing was left implicit."
+}

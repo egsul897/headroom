@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INDEPENDENT_SOURCE_ONLY_CONFIRMATION",
+  "confirmedFromCode": true,
+  "evidence": [
+    "lib/contract-model/compiler/semantic-verification/condition-suspicion-classifier.ts line 297: export async function classifyConditionSuspicion(sourceText: string, identity: ConditionSuspicionCacheIdentity, caller: StageCaller = getStageCaller(), cache: ConditionSuspicionCache = defaultConditionSuspicionCache) - the classifier's public entry point takes sourceText typed exactly `string`, enforcing independence at the type level (no IR/compiler-answer type can be passed).",
+    "Line 305: const userContent = buildConditionSuspicionUserContent(sourceText); - the model's user-turn content is built purely from this string.",
+    "Line 240-241: function buildConditionSuspicionUserContent(sourceText: string) { return [\"Source text excerpt to classify (read it on its own terms - you are given no other context and should not assume any):\", \"\", sourceText, \"\", buildConditionSuspicionFewShotBlock()].join(\"\\n\"); } - the ONLY dynamic content is the raw source text plus a static, hardcoded few-shot block (fixed example sourceText strings visible at lines 213-233, none of which reference compiled IR, compiler decisions, expected labels, or test/certification framing).",
+    "Doc-comment at line 36 explicitly states: 'classifyConditionSuspicion's ONLY content input is sourceText: string'."
+  ],
+  "codeModified": false,
+  "conclusion": "CONFIRMED: the classifier receives source text only, with zero compiled IR or compiler answer, enforced at the TypeScript type level (not merely by convention). No code was changed to make or verify this determination."
+}

@@ -33,7 +33,22 @@ import type { DiscoveredCandidate, DiscoveryHealthState, DiscoveryRunSummary, Di
 // is an algorithm-level behavior change, so any cache keyed on
 // DISCOVERY_RUN_VERSION correctly treats prior runs as stale rather than
 // silently resuming a pre-fault-isolation result as if it were equivalent.
-export const DISCOVERY_PIPELINE_VERSION = "phase-2b-discovery-pipeline.v2";
+//
+// Phase 3F.1.6.R BLOCKER-8 bump (v2 -> v3): pass-c-neighborhood.ts's
+// discoveryId formula and pass-d-reconcile.ts's mergeKey both now fold in
+// computeCandidateContentFingerprint (families-derived) - a real identity
+// formula change (see 11-claim-identity-remediation.json), so any
+// previously-persisted discoveryId/candidateRef computed under v2 is
+// correctly treated as a different, stale identity space rather than
+// silently reused as if unchanged.
+//
+// Phase 3F.1.6.RX Workstream D bump (v3 -> v4, BLOCKER-8 + AUDIT-F4): CLAIM
+// IDENTITY V2 - computeCandidateContentFingerprint now also folds in
+// source-grounded valueAnchors and verifiedQuoteFingerprint (see
+// pass-c-neighborhood.ts and value-anchors.ts). Another real identity
+// formula change, per this constant's own established bump discipline -
+// see docs/phase-3f1-6-rx-final-blocker-closure/06-claim-identity-v2.json.
+export const DISCOVERY_PIPELINE_VERSION = "phase-2b-discovery-pipeline.v4";
 export const DISCOVERY_RUN_VERSION = `${DISCOVERY_PIPELINE_VERSION}+${DISCOVERY_PROMPT_VERSION}`;
 
 /**

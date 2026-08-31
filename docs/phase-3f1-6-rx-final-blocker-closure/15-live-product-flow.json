@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "LIVE_PRODUCT_FLOW_INEVITABILITY",
+  "workstream": "H",
+  "auditFinding": "AUDIT-F6",
+  "generatedAt": "2026-08-30T16:40:00Z",
+  "baseCommit": "4005687",
+  "purpose": "Independently trace the REAL application UX (not just the server action in isolation) to answer: does a user uploading a document necessarily trigger contract analysis before the product considers that document 'analyzed', or can the flow end without analysis ever running, with the product unable to tell the difference?",
+  "methodology": "Read every file under app/[companyId]/onboarding/documents/** (actions.ts, page.tsx) and app/[companyId]/onboarding/review/page.tsx directly - the real component tree a user's browser actually renders and the real forms/links a click actually invokes - not merely the server action functions in isolation.",
+  "realBypassFound": {
+    "trace": "app/[companyId]/onboarding/documents/page.tsx renders: (1) an upload form whose action is uploadDocumentAction (store+chunk only, never calls runContractAnalysis); (2) per-document, a 'Run extraction'/'Re-run pending/failed stages' button whose action is runExtractionAction (which DOES call runContractAnalysis, per the prior BLOCKER-10 phase's own fix); (3) a plain `<Link>` labeled 'Continue to Review' pointing at `/${companyId}/onboarding/review`, rendered UNCONDITIONALLY regardless of whether ANY document's extraction has ever been run.",
+    "confirmedBypass": "A user can: upload document(s) via (1), then click the Link in (3) directly, WITHOUT ever clicking the button in (2) for any document. Nothing in the component tree, the routing, or the review page itself (app/[companyId]/onboarding/review/page.tsx) blocks or warns against this - the review page's own `progress.total === 0` branch renders a generic 'No extraction candidates yet - upload a document and run extraction first' message, which is about the SEPARATE, older lib/extraction/** candidate-review workflow, and says nothing at all about contract-model analysis, AnalysisRun status, or ClaimReviewItem findings.",
+    "empiricalProof": "tests/onboarding/live-product-flow-visibility.test.ts's own 'BYPASS CONFIRMED' test: calling ONLY uploadDocumentAction (the real, unmodified production function) and then querying getLatestAnalysisRunForCompany directly confirms a real company with a real, persisted Document row has ZERO AnalysisRun rows - the bypass is real, not hypothetical."
+  },
+  "designJudgment": {
+    "question": "Is this a bug to eliminate by moving analysis into the synchronous upload request, or a legitimate two-step design the charter permits?",
+    "answer": "A legitimate two-step design, per this workstream's own charter: 'do NOT blindly move the heavy AI pipeline synchronously into the upload HTTP request if the current UX intentionally separates upload from extraction as a deliberate two-step flow... AS LONG AS the product's own status model makes the uploaded-vs-analyzed distinction real and visible, not silently ambiguous.'",
+    "rationale": "uploadDocumentAction's own job is a fast, synchronous store-and-chunk operation (confirmed by reading it - no precedent anywhere in this codebase for a multi-stage AI pipeline running inline on file upload); runExtractionAction is this codebase's own existing, established precedent for 'the button a user clicks to kick off real analysis of an uploaded document' (this is unchanged from the prior BLOCKER-10 phase's own documented reasoning, independently re-verified here, not merely inherited on faith). Moving contract analysis into the upload request would be a genuine, unbounded UX/latency change (a real credit agreement's structural+discovery+compile+verify+coverage pipeline is not instant) well outside a workstream whose charter is to close disclosed gaps, not redesign the upload flow.",
+    "theRealGapWasVisibility_notInevitability": "The charter's own conditional clause is the operative test here: the two-step design is fine PROVIDED the distinction is visible. Before this fix, it was NOT - the documents page had literally zero UI surface for AnalysisRun/ClaimReviewItem state (only the separate, older ExtractionRun/ExtractionStage chips), so a company with uploaded-but-never-analyzed documents was visually indistinguishable from one that was fully analyzed and found clean. THIS is the actual, fixable gap."
+  },
+  "fixImplemented": {
+    "file": "app/[companyId]/onboarding/documents/page.tsx",
+    "change": "A new 'Contract analysis' card, rendered whenever any documents exist, reading the SAME real data functions the orchestrator itself writes through (getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailureLogsForCompany - all newly exported from lib/contract-model/analysis's own barrel). Shows: 'Not yet analyzed - click Run extraction...' when no AnalysisRun row exists at all (the real, now-visible 'uploaded but not analyzed' state); otherwise the real AnalysisRun.status (COMPLETED/COMPLETED_WITH_REVIEW/PARTIAL/FAILED, color-coded), the real open-review-item count with a link to the Review page, any real per-instrument AnalysisRunIssue rows (AUDIT-F3's own new durable state), and any real pre-identity AnalysisFailureLog rows (AUDIT-F7's own new durable state) - so a genuine failure anywhere in the pipeline is now visible in the product UI itself, not only in Postgres for an engineer to query.",
+    "noNewUiSurfaceOrWorkflow": "This is read-only visibility added to an EXISTING page - no new route, no new user action, no change to the upload-then-extract-then-review flow itself, consistent with this workstream's own bounded charter ('no UI work' in the prior BLOCKER-10 phase was about NOT building a new review workflow for DiscoveredCandidate/ClaimReviewItem; a status-visibility addition to an existing page is a materially smaller, targeted fix directly required by THIS phase's own explicit AUDIT-F6 conditional clause)."
+  },
+  "testEvidence": {
+    "testFile": "tests/onboarding/live-product-flow-visibility.test.ts",
+    "runCommand": "npx vitest run tests/onboarding/live-product-flow-visibility.test.ts",
+    "result": "2/2 passing",
+    "cases": [
+      "BYPASS CONFIRMED: uploadDocumentAction alone produces zero AnalysisRun rows for a real company/document - the 'not yet analyzed' state is real and independently queryable, not fabricated for this test.",
+      "VISIBILITY FIX: after the SAME document is analyzed via the real, unmodified runExtractionAction (the same action live-contract-analysis-app-action.test.ts already proves reaches the real compiler pipeline), the SAME data functions the fixed page reads return real, distinguishable analysis state - a real AnalysisRunStatus, a reviewItemCount matching the real persisted ClaimReviewItem count, and correctly-empty issue/failure-log lookups for this healthy run."
+    ]
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "The real bypass was independently traced and confirmed (not merely assumed), the two-step upload/analyze design was deliberately preserved as legitimate per this workstream's own charter, and the actual required fix (visible, real, non-ambiguous uploaded-vs-analyzed status) was implemented and proven with real data through the real production action functions. Reserved CERTIFIED status for this phase's own separate, later, independent Part B."
+}

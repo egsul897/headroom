@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "STATUS_FIRST_DESIGN",
+  "function": "resolveNodeWithSupersessionAwareness (lib/contract-model/compiler/semantic/tools.ts) - now exported so it can be tested directly.",
+  "restructuredDecisionTable": {
+    "entry": "if (view) { ... } else { CASE D }",
+    "firstQuestion": "view.status === 'OPERATIVE_STATE_RESOLVED' ? -- checked BEFORE currentText is ever consulted, matching the mandated shape exactly (not an if(currentText){}else{} structure).",
+    "CASE_A": {
+      "condition": "view exists AND view.status !== 'OPERATIVE_STATE_RESOLVED' (covers CONFLICTED, PARTIAL, REVIEW_REQUIRED)",
+      "evidenceCurrent": "false, unconditionally - regardless of currentText null/non-null, node supersession status, or base text availability",
+      "textServed": "currentText if present (the exploit shape - an amendment's own proposed text exists on file but is not confirmed to govern), else the raw base/historical text via structuralIndex.getNodeText(node.nodeId, 'OWN')",
+      "textSource": "'UNRESOLVED_AMENDED_TEXT' when currentText present (NEW enum value, never AMENDED_CURRENT_TEXT), else 'BASE_DOCUMENT_TEXT'",
+      "unresolvedReasons": "always includes an explicit reason string naming the real operative status, plus view.unresolvedIssues verbatim"
+    },
+    "CASE_B": {
+      "condition": "view exists AND view.status === 'OPERATIVE_STATE_RESOLVED' AND currentText present",
+      "evidenceCurrent": "true - genuine resolved amended replacement",
+      "textSource": "'AMENDED_CURRENT_TEXT'",
+      "note": "base node's own nodeSupersessionStatus (likely KNOWN_SUPERSEDED) is expected/irrelevant here - unchanged from the prior (correct) behavior for this case"
+    },
+    "CASE_C": {
+      "condition": "view exists AND view.status === 'OPERATIVE_STATE_RESOLVED' AND currentText null",
+      "evidenceCurrent": "false",
+      "textSource": "'HISTORICAL_BASE_TEXT'",
+      "note": "by buildProvisionView's own status ladder (proven in the header comment above resolveNodeWithSupersessionAwareness), this combination can ONLY be a valid, resolved clean deletion - every other null-currentText cause (CONFLICTED, targetUnresolved, structuralHealthUnsafe, textMissingDespiteAppliedEffect) forces a non-RESOLVED status, which CASE A already handles. isCleanDeletion is therefore trivially true inside this branch and the redundant view.status check from the prior implementation was removed (the earlier if/else already established it).",
+      "reasonWording": "'validly deleted by a resolved amendment' - never conflated with CASE A's 'not confidently resolved' wording"
+    },
+    "CASE_D": {
+      "condition": "no matching OperativeProvisionView exists at all",
+      "evidenceCurrent": "nodeSupersessionStatus === 'CURRENT_OPERATIVE'",
+      "textSource": "'BASE_DOCUMENT_TEXT'",
+      "note": "unchanged from before this fix - the pure node-supersession case"
+    }
+  },
+  "deviationFromMandatedShape": "None material. One addition beyond the literal template: a new textSource literal 'UNRESOLVED_AMENDED_TEXT' was added to ResolvedNodeEvidence.textSource (previously 'AMENDED_CURRENT_TEXT' | 'BASE_DOCUMENT_TEXT' | 'HISTORICAL_BASE_TEXT') so CASE A's non-null-currentText sub-case is never labeled identically to CASE B's genuine current text, satisfying the mandate's own instruction that CASE A text 'must still be labeled unresolved/non-authoritative (NOT AMENDED_CURRENT_TEXT)'. Confirmed safe: textSource is not switched on by any consumer in this file (only .text, .evidenceCurrent, .provisionOperativeStatus, .nodeSupersessionStatus, .unresolvedReasons are read by getParentClause/getSiblingClauses/getReferencedProvision via legacySupersessionDisplay), and no test in the repo asserts a textSource literal, confirmed via `grep -rn textSource tests/`.",
+  "alsoChanged": "resolveNodeWithSupersessionAwareness was changed from module-private to exported, with no behavior change, so this phase's own required direct-resolver tests (docs/open2-final-direct-patch/04-direct-resolver-matrix.json) can call it directly rather than only through the wrapping tools, per the task's explicit instruction to test the resolver directly.",
+  "notChanged": [
+    "buildProvisionView (lib/contract-model/compiler/amendment/operative-state.ts) - producer semantics untouched, confirmed via git diff showing zero changes to that file.",
+    "resolveParentSubstructureEvidence (getChildren's own dedicated check) - untouched; it already gated on view.status directly and never shared this defect.",
+    "getOperativeProvision, getDefinition, getRelatedAmendments - untouched; they already derived evidenceUnresolved from view.status/isConfirmedCurrentOperativeEvidence directly, confirmed unaffected by regression tests."
+  ]
+}

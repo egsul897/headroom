@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "ORCHESTRATOR_SUPERSESSION_LINEAGE_CLOSURE",
+  "generatedAt": "2026-08-30T16:35:00Z",
+  "author": "orchestrating session (integration-time fix, not a dispatched workstream)",
+  "purpose": "Closes the NEW_COUPLED_BLOCKER_DISCOVERED finding Workstream B raised while revalidating BLOCKER-2 (docs/phase-3f1-6-rx-final-blocker-closure/04-operative-supersession-remediation.json): lib/contract-model/analysis/orchestrator.ts built operativeSourceText from raw text with zero supersession check and hardcoded operativeLineage to null, defeating the safety checks Workstreams A/B/C/D/E just hardened. This fell in the gap between Workstream B's remit (BLOCKERS 2-6, forbidden from touching orchestrator.ts) and Workstream H's remit (BLOCKER-10 + AUDIT-F1/F2/F3/F6/F7 - none of which explicitly named this file's own supersession wiring); Workstream H's completed deliverable did not address it (confirmed by diff and by grep for operativeSourceText/operativeLineage in its own commits).",
+
+  "rootCauseFoundBeyondWhatWorkstreamBDocumented": {
+    "whatWorkstreamBReported": "operativeSourceText built with zero supersession check; operativeLineage hardcoded null.",
+    "deeperRootCauseFoundDuringThisClosure": "The orchestrator computes operativeState per instrument but NEVER used it to build a NodeSupersessionIndex, and NEVER passed one to runDiscoveryPipeline (which defaults to EMPTY_SUPERSESSION_INDEX per discovery/pipeline.ts's own signature). This means every real DiscoveredCandidate.supersessionStatus silently resolved UNKNOWN_SUPERSESSION_STATUS in live production regardless of real amendment data - which ALSO made Workstream B's own context-retrieval fix (buildCovenantContextBundle reading candidate.supersessionStatus to degrade sufficiencyState) inert end-to-end in the one place that actually runs live, since a candidate could never legitimately resolve KNOWN_SUPERSEDED there either. Fixing the index-wiring gap at its single source closes the whole live chain in one place, rather than patching each downstream symptom separately."
+  },
+
+  "fix": {
+    "file": "lib/contract-model/analysis/orchestrator.ts",
+    "change1_supersessionIndexWiring": "After computing operativeState (per instrument), build a real NodeSupersessionIndex via buildNodeSupersessionIndex (reused from lib/contract-model/compiler/amendment/operative-state.ts, never re-implemented) when unit.baseDocumentId and operativeState are both present, else EMPTY_SUPERSESSION_INDEX (the codebase's own documented fail-closed default). Pass this index into runDiscoveryPipeline's own existing (previously always-omitted) 4th parameter.",
+    "change2_operativeLineageDerivation": "New deriveOperativeLineage(candidate, supersessionIndex, instrumentKey, asOfDate) helper: for each of a candidate's structuralNodeIds, calls the existing getNodeSupersessionStatus primitive and combines results worst-first (mirroring discovery/pass-d-reconcile.ts's own combineSupersessionForNodes convention, reused rather than re-derived), then maps the resolved NodeSupersessionStatus to a real OperativeLineageRef: KNOWN_SUPERSEDED -> OPERATIVE_STATE_CONFLICTED (forces semantic/normalize.ts's enforceSufficiencyConsistency to downgrade sufficiency regardless of what the compiler itself concluded), UNKNOWN_SUPERSESSION_STATUS -> OPERATIVE_STATE_REVIEW_REQUIRED (downgrades COMPLETE), CURRENT_OPERATIVE -> OPERATIVE_STATE_RESOLVED (no forced downgrade). Replaces the previous hardcoded operativeLineage: null."
+  },
+
+  "whyThisIsRootCauseNotSymptomPatching": "No compensating check was added at the operativeSourceText call site itself (e.g. blanking the text when superseded) - that would only mask the symptom for one field. Instead, the actual missing wiring (a real supersession index that discovery, context-retrieval, and now operativeLineage all correctly assume exists) was supplied at its one true origin point. Every consumer downstream of discovery (Workstream B's context-retrieval fix included) now receives a genuinely computed supersessionStatus in live production, not merely in its own isolated unit tests.",
+
+  "verification": {
+    "tsc": "npx tsc --noEmit -p . - 6 pre-existing errors, byte-identical to baseline, 0 new.",
+    "eslint": "npx eslint . - 1 pre-existing error, byte-identical to baseline, 0 new.",
+    "vitest": "npx vitest run tests/contract-model tests/onboarding tests/foundation-audit tests/certification - 161 test files, 1702 tests, ALL PASSING (includes tests/contract-model/live-contract-analysis-orchestrator.test.ts, semantic-truth-persistence.test.ts, analysis-run-concurrency.test.ts, partial-instrument-failure.test.ts, no-log-only-failure.test.ts, live-product-flow-visibility.test.ts - i.e. every test Workstream H itself added, confirming this fix composes cleanly with Workstream H's own work rather than merely not breaking it).",
+    "prismaMigrateStatus": "29 migrations found; database schema up to date - no drift introduced by this fix (no schema change was needed)."
+  },
+
+  "scopeDiscipline": "Touches only lib/contract-model/analysis/orchestrator.ts. No test file was modified to accommodate this fix (all 1702 relevant tests already pass unmodified against it) - the fix is additive wiring, not a behavior change any existing test asserted against. No package-specific logic; reuses only already-certified-scope-general primitives (buildNodeSupersessionIndex, getNodeSupersessionStatus, EMPTY_SUPERSESSION_INDEX) that Workstreams A-E of Phase 3F.1.5.R/3F.1.6.R already built and this codebase already exercises elsewhere.",
+
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionRationale": "Closes the NEW_COUPLED_BLOCKER_DISCOVERED gap Workstream B raised for BLOCKER-2 at its actual root (a missing supersession-index wiring in the one live orchestration boundary), verified against the full relevant test suite including every test Workstream H's own AUDIT-F1/F2/F3/F6/F7/BLOCKER-10 work added. Per this phase's own charter, this closure does not self-certify - independent verification of this specific fix (a fresh adversarial KNOWN_SUPERSEDED candidate reaching the live orchestrator end-to-end, confirming operativeLineage.operativeStatus is genuinely OPERATIVE_STATE_CONFLICTED and the compiler's own sufficiency is downgraded accordingly) is explicitly named as required evidence for Part B's BLOCKER-2 recertification section."
+}

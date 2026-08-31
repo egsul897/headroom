@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PRODUCTION_FREEZE_PROOF_RESUME",
+  "startingSha": "5239d7de08574e81e1e88fad5b6d4f4b8f2c2c30",
+  "commands": [
+    "git diff 5239d7d HEAD --stat -- 'lib/**' 'app/**' 'prisma/**'",
+    "git diff 5239d7d HEAD --name-only -- 'lib/**' 'app/**' 'prisma/**'"
+  ],
+  "result": "Both commands returned empty output. condition-suspicion-classifier.ts, its prompt/few-shot block, categories, cache, and verify.ts's two-gate routing were NOT modified. The 22 frozen holdout cases (docs/phase-3f1-terminal-architecture-decision/19-condition-architecture-recertification.json) were not rewritten, removed, added, reordered, or relabeled. Only new files this session are under docs/open4-final-real-model-holdout/ (11 new artifacts: 11-16 plus 12-real-model-results.json) - no lib/app/prisma file was touched.",
+  "callerScript": "The ad-hoc script used to run this resume's 22 real-call attempts (open4-resume-run.mts) lived outside the repository, in the session scratchpad - it imported classifyConditionSuspicion and getStageCaller from lib/ read-only and made outbound HTTPS calls only via the real production call path; it was not committed and no repository file was modified by running it.",
+  "verdict": "PRODUCTION_FREEZE_HELD"
+}

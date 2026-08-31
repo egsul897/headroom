@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RECOVERY_SNAPSHOT",
+  "purpose": "§26: durable post-recovery snapshot, so a future loss is recoverable without paid LLM reconstruction.",
+  "snapshot": {
+    "tool": "pg_dump -F c (custom format, full schema+data)",
+    "location": "/tmp/claude-0/.../scratchpad/incident-2026-08-30/post-recovery-snapshot.dump (this session's own scratchpad)",
+    "sizeBytes": 442734,
+    "takenAfter": "Both the FWRG and LSB real compiler runs, the full 2515/2515 green vitest run, and the `_prisma_migrations` bookkeeping repair.",
+    "restorationProcedure": "createdb <target-db> && pg_restore -h <host> -U postgres -d <target-db> --clean --if-exists post-recovery-snapshot.dump"
+  },
+  "honestDurabilityCaveat": "This sandboxed session's own filesystem (including its scratchpad) does NOT survive container teardown - 'durable' within this environment realistically means only two things: (1) the git repository itself, which must NEVER hold a binary Postgres dump (this project's own standing discipline, correctly upheld throughout this incident response), or (2) handing the actual dump file to the user via the file-delivery mechanism available in this session, so THEY hold a copy outside this container. This artifact records that option (2) is the one being exercised - see this session's own final message to the user, which offers the dump file directly.",
+  "whatThisActuallyPrevents": "It does not prevent a future concurrent-migration-tooling incident by itself (that is what 11-13's isolation architecture is for). It prevents a future incident of this exact shape from AGAIN requiring a ~$1.5 paid re-run of the FWRG/LSB compiler - restoring from this dump reproduces the exact recovered state without any new LLM calls, as long as the restore happens before schema drift makes the dump incompatible with a later prisma/schema.prisma."
+}

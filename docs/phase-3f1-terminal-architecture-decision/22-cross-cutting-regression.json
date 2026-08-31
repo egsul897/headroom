@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CROSS_CUTTING_REGRESSION",
+  "productionFreezeProof": {
+    "freezeSha": "0ef66a94bfe51d4c5652749ae1b57033d1c0e72f",
+    "check": "git diff 0ef66a9 HEAD --stat -- 'lib/**' 'app/**' 'prisma/schema.prisma' 'prisma/migrations/**'",
+    "result": "EMPTY - zero production files touched by any Part B auditor",
+    "verdict": "PRODUCTION_FREEZE_HELD"
+  },
+  "qualityGates": {
+    "tsc": "6 pre-existing errors, identical set to Part A baseline (cascade-and-concurrency.test.ts x2, discovery-fault-injection.test.ts x1, real-db-duplicate-physical-occurrence.test.ts x3). 0 new.",
+    "eslint": "1 pre-existing error (part-b-recert-blocker9's require() rule-def gap), identical to Part A baseline. 0 new.",
+    "vitest": "255 test files, 2686 tests, ALL PASSING, 0 failures - AFTER the AI_GATEWAY_API_KEY credential-state fix below.",
+    "destructivePatternCheck": "npm run db:check-destructive-patterns - same findings as Part A baseline (self-referential matches inside the checker script and the adversarial infra test that intentionally exercises deleteMany({})), zero new."
+  },
+  "regressionFoundAndFixed": {
+    "title": "AI_GATEWAY_API_KEY presence in .env broke 7 test files (9 tests) via real-provider routing into an exhausted account budget",
+    "discoveredDuring": "Final untargeted `npx vitest run` for this Part B synthesis (not by any Part B auditor - production/env state, not lib/app/prisma code)",
+    "mechanism": "The credential was persisted to .env earlier in this phase, per user authorization, specifically so auditor D (OPEN-4) could attempt real classifyConditionSuspicion() calls. With the key present, lib/contract-model/compiler/semantic/getStageCaller() selects the real VERCEL_AI_GATEWAY provider instead of the credential-less SyntheticExtractionProvider fallback for any test that does not explicitly override the caller. The account-level Gateway budget was already exhausted ($50.05/$50.00, confirmed by auditor D's own real-call attempt returning HTTP 402) before this run, so those real calls failed outright instead of degrading gracefully - causing 7 files / 9 tests to fail that were assumed-synthetic-fallback and had been green at the Part A freeze (250 files/2639 tests, 0 failures).",
+    "notARegressionInProductionCode": "Confirmed by the production-freeze-proof above: zero lib/app/prisma changes exist between the Part A freeze and this check. This was purely a local, gitignored .env credential-state side effect, orthogonal to any of the 6 defect fixes.",
+    "resolution": "Commented out (not deleted) AI_GATEWAY_API_KEY in .env with an explanatory note, since the budget exhaustion makes the key non-functional for any purpose until a human increases the account budget - leaving it live provided zero benefit and cost test-suite accuracy. Re-ran the full untargeted suite afterward: 255 files / 2686 tests, ALL PASSING, 0 failures - full reversion to the Part A-documented healthy baseline (file/test counts differ from Part A's 250/2639 only because Part B auditors added their own fresh test files, all of which pass).",
+    "humanActionNeeded": "To ever complete OPEN-4's blocked real-model recertification, a human must increase the Vercel AI Gateway team budget above $50.00, then uncomment the key in .env before re-dispatching auditor D's 22 pre-authored fresh adversarial constructions (already committed, ready to run, in the OPEN-4 workstream)."
+  },
+  "verdict": "CROSS_CUTTING_CHECKS_PASS_AFTER_ENV_FIX"
+}

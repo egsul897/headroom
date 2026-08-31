@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PART_A_KNOWN_PACKAGE_REGRESSION",
+  "script": "scripts/phase-3f1-6-known-package-regression.ts (reused unmodified)",
+  "results": { "fwrg": 0, "lsb": 0, "dsgr": 215, "conmed": "NOT_APPLICABLE" },
+  "comparisonToBaseline": "Byte-identical to every prior phase's reported figures (docs/phase-3f1-6-rx-final-terminal-closure/10-part-a-known-package-regression.json) - NO_REGRESSION.",
+  "frozenCertificationSideEffect": "Captured and reverted via git checkout --, confirmed byte-for-byte restored before this artifact was written.",
+  "readOnlyDiscipline": "This script creates and tears down its own scratch company - never mutates the persistent FWRG/LSB fixture companies or Coherent/Matthews. No cloning was required for this check.",
+  "verdict": "NO_REGRESSION"
+}

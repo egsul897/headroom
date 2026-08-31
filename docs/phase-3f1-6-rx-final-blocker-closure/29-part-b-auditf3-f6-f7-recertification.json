@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "PART_B_AUDITF3_F6_F7_RECERTIFICATION",
+  "part": "B",
+  "auditFindings": ["AUDIT-F3", "AUDIT-F6", "AUDIT-F7"],
+  "generatedAt": "2026-08-30T16:56:00Z",
+  "frozenBaseCommit": "d098cb4",
+  "partBOpeningCommit": "2663271",
+  "recertificationCommit": "PENDING_SELF_REFERENCE - see final commit SHA reported alongside this artifact; no production file (lib/**, prisma/**, app/** other than this doc/test addition) was modified.",
+  "productionFreezeConfirmed": "git diff --stat d098cb4..HEAD -- lib/ prisma/ app/ is empty (checked immediately before writing this artifact) - every Part B commit so far (including this one) has touched only docs/** and tests/**. No production code, schema, or migration file was modified to produce this recertification.",
+  "methodology": "Read the Part A design/results docs (13-16) and the CURRENT, real code (orchestrator.ts, service.ts, types.ts, the documents/review/activate/facilities page+action files) directly, then wrote THREE NEW adversarial test files exercising different injection points, different fixtures, and different assertions than Workstream H's own tests - never merely re-running the existing suite. All three new files pass against the real, unmodified, frozen production code and real Postgres.",
+  "newTestFiles": [
+    "tests/contract-model/part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts",
+    "tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts",
+    "tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts"
+  ],
+
+  "AUDIT_F3": {
+    "title": "Partial instrument failure durability",
+    "disposition": "CERTIFIED_CLOSED",
+    "task1_multiInstrumentPartialFailure": {
+      "construction": "Two fresh, unrelated single-section credit agreements (Restricted Payments $12M / Asset Sales $9.5M - deliberately different covenant families/amounts than Workstream H's own Indebtedness/Liens fixtures) that package-graph genuinely resolves into two SEPARATE standalone instruments (confirmed empirically in the test, not assumed).",
+      "injectionMethodDifference": "Workstream H's own test injects the failure via lib/contract-model/analysis/semantic-truth/service.ts's persistSemanticTruthForInstrument. This recertification deliberately injects at a DIFFERENT, LATER stage instead - lib/contract-model/compiler/semantic-coverage/pipeline.ts's runSemanticCoverageAudit, which has no internal per-instrument fault isolation of its own - to independently test whether the fix's durability boundary is a genuine wrap around the WHOLE analyzeInstrument call (as orchestrator.ts's own code shows) or was narrowly coupled to the one function Workstream H's own test happened to mock.",
+      "resultA_failingIssueDurable": "CONFIRMED - reload from Postgres shows exactly 1 AnalysisRunIssue row for the failing instrument, documentIds correct, errorClass 'Error', message containing the real injected marker, failedStage 'PER_INSTRUMENT_ANALYSIS'.",
+      "resultB_succeedingInstrumentPreserved": "CONFIRMED, and additionally strengthened: because this recertification's injection point is LATER in the per-instrument sequence than persistence, it also independently proves that instrument B's OWN already-computed semantic-truth rows (persisted before the injected coverage-audit failure) are NOT rolled back or discarded even though B's own outcome never reaches instrumentOutcomes - a stronger, more adversarial proof of 'already-computed valid claims are never discarded' than testing at the persistence stage alone, since it shows partial-within-instrument work survives, not just whole-other-instrument work.",
+      "resultC_statusGenuinelyPartial": "CONFIRMED - result.status and the RELOADED persistedRun.status are both exactly 'PARTIAL', never 'COMPLETED' or 'COMPLETED_WITH_REVIEW'."
+    },
+    "task2_totalFailureAllInstrumentsRecorded": {
+      "construction": "Same two-instrument package, coverage-audit stage forced to fail unconditionally for both.",
+      "result": "CONFIRMED - result.status/persistedRun.status both 'FAILED' (never 'PARTIAL', preserving the genuinely-fatal-whole-run semantics). Exactly 2 AnalysisRunIssue rows exist (one per document/instrument), both containing the injected marker - i.e. the pre-AUDIT-F3 bug (only the FIRST error's message folded into fatalError, the rest silently discarded) does not reappear at this alternate injection point either."
+    },
+    "additionalConfirmation": "Re-ran the pre-existing tests/contract-model/partial-instrument-failure.test.ts (2/2 passing) against the frozen commit as a sanity check that this recertification's own findings are consistent with, not contradicting, Workstream H's own evidence.",
+    "genuineDefectsFound": "None. The fix generalizes correctly to a materially different failure-injection point than the one originally tested.",
+    "evidenceFiles": ["tests/contract-model/part-b-recert-auditf3-f6-f7-auditf3-alt-injection.test.ts"]
+  },
+
+  "AUDIT_F6": {
+    "title": "Live product-flow inevitability",
+    "disposition": "STILL_OPEN",
+    "task1_realClickPathTrace": {
+      "traceMethod": "Read app/[companyId]/onboarding/documents/page.tsx, app/[companyId]/onboarding/documents/actions.ts, app/[companyId]/onboarding/review/page.tsx, lib/onboarding/review.ts, app/[companyId]/onboarding/activate/page.tsx, app/[companyId]/onboarding/facilities/page.tsx, and docs/phase-3f1-6-r-blocker-remediation/19-contract-truth-ownership-map.json directly (not merely trusting 15-live-product-flow.json's own prose).",
+      "bypassStillOpen": true,
+      "finding": "The 'confirmedBypass' 15-live-product-flow.json itself found was NOT eliminated - only made visible. app/[companyId]/onboarding/documents/page.tsx still renders an UNCONDITIONAL `<Link href={`/${companyId}/onboarding/review`}>Continue to Review</Link>` with no gate, disabled state, confirmation step, or reference to AnalysisRun/analysis status anywhere near it (statically confirmed by a fresh test that parses the real, current file and checks the ~400 characters immediately preceding the href for any such guard token - none exists). A functional re-trace with a fresh company/document fixture (different from Workstream H's own fixture) reproduces the exact same result 15-live-product-flow.json reported: uploadDocumentAction alone leaves the company with a real Document row and ZERO AnalysisRun rows, and nothing in the component tree or routing prevents proceeding past that state.",
+      "designJudgmentReassessed": "15-live-product-flow.json's own 'designJudgment' reclassifies this from a bug into an accepted two-step design 'AS LONG AS the product's own status model makes the uploaded-vs-analyzed distinction real and visible' - and then implements ONLY the visibility half, leaving the actual bypass the audit finding's own requiredOutcome names ('a real user cannot reach the product's analyzed state without the authoritative contract-analysis path having run') genuinely unresolved. The finding's own requiredOutcome asks for 'proof (or fix)' of non-reachability; what was delivered is neither - it is proof that the bypass IS reachable, paired with a visibility affordance, not a fix that closes it and not a proof it was already closed.",
+      "mitigatingContextDisclosedForFairness": "Reaching /onboarding/review or /onboarding/activate without running contract-model analysis does NOT, on its own, cause any OTHER page in the live application to present a false 'analyzed and clean' signal: (a) the new Contract analysis card on the documents page itself correctly and honestly shows 'Not yet analyzed' in this state (verified genuine per task 2 below); (b) per docs/phase-3f1-6-r-blocker-remediation/19-contract-truth-ownership-map.json (independently re-read here, not merely cited), NOTHING downstream in this codebase - the review page, the activate/promotion flow, the dashboard, or lib/covenant-engine.ts - reads AnalysisRun/ClaimReviewItem state at all today, so skipping contract-model analysis cannot itself produce a false-positive covenant result anywhere live; (c) the review page's own progress.total===0 branch and the activate page's disabled-when-0 Promote button both honestly reflect 'nothing has been extracted/approved yet' if the OLDER lib/extraction/** pipeline was also never run. This context does not change the disposition (the audit finding's own stated requiredOutcome is about the contract-model path specifically, and that path remains bypassable exactly as found), but is disclosed so the STILL_OPEN verdict is not read as 'a user can silently get a false-clean covenant report' - that specific worse outcome is not corroborated by this trace."
+    },
+    "task2_statusCardRealDataConfirmed": {
+      "claim": "Confirm the new 'Contract analysis' status card genuinely reflects REAL AnalysisRun state, not a hardcoded placeholder.",
+      "result": "CONFIRMED GENUINE. app/[companyId]/onboarding/documents/page.tsx's ContractAnalysisStatusCard calls getLatestAnalysisRunForCompany, getAnalysisRunIssues, getAnalysisFailureLogsForCompany - all imported from the real lib/contract-model/analysis barrel (index.ts), which re-exports them from lib/contract-model/analysis/service.ts, where each is a real, unmodified Prisma query (prisma.analysisRun.findFirst / prisma.analysisRunIssue.findMany / prisma.analysisFailureLog.findMany) against real tables. No hardcoded/placeholder value exists anywhere in this path - traced end to end.",
+      "compoundingDefectFound": "The card's own 'view findings' link (rendered when run.reviewItemCount > 0) points to `/${companyId}/onboarding/review` - but that page's ENTIRE data layer (lib/onboarding/review.ts's getReviewProgress/getCandidatesForReview) has ZERO awareness of ClaimReviewItem (grep-confirmed: the string 'ClaimReviewItem' does not appear anywhere in lib/onboarding/review.ts). A NEW adversarial test inserted a real, persisted ClaimReviewItem row (OPEN_REVIEW) for a test company and confirmed getReviewProgress's totals and getCandidatesForReview's output are completely unchanged by its existence. A user who clicks 'N open review item(s) - view findings' lands on a page that cannot display any of those N items - the one piece of the AUDIT-F6 fix meant to make a real finding actionable is itself non-functional, compounding rather than mitigating the open bypass."
+    },
+    "genuineDefectsFound": [
+      "The real bypass 15-live-product-flow.json itself found (upload -> Continue to Review, without ever running contract-model analysis) remains fully reachable; only visibility, not gating, was added.",
+      "The visibility fix's own 'view findings' link is broken: it points to a review page structurally blind to the ClaimReviewItem rows it claims to surface."
+    ],
+    "evidenceFiles": ["tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts"]
+  },
+
+  "AUDIT_F7": {
+    "title": "No log-only failure",
+    "disposition": "STILL_OPEN",
+    "task1_prePreIdentityFailureDurable": {
+      "construction": "A DIFFERENT branch than Workstream H's own test (which mocks prisma.document.findMany and prisma.analysisRun.create - the plain-INSERT/brand-new-row path). This recertification instead forces a REAL prior AnalysisRun row to exist for the identity first (a genuine earlier call to runContractAnalysis), so the second call is mechanically forced down startOrResumeAnalysisRun's OTHER branch - the P2002 fallback / prisma.analysisRun.updateMany RECLAIM path - and mocks THAT call to throw.",
+      "result": "CONFIRMED durable and non-throwing, exactly like the create-branch case: runContractAnalysis never threw (thrown===null), returned a structured {outcome:'FAILED', fatalError:{stage:'PRE_RUN_IDENTITY', ...}} result, and a real AnalysisFailureLog row exists with the injected message. The pre-existing AnalysisRun row from the first call was left untouched (no phantom partial mutation). This closes the gap that the existing suite only exercised one of the two branches inside startOrResumeAnalysisRun."
+    },
+    "task2_grepForRemainingLogOnlyPaths": {
+      "command": "grep -rn 'console\\.(log|error|warn)' lib/contract-model/analysis/ (including the semantic-truth/ subdirectory)",
+      "result": "Zero actual console.* CALLS anywhere in lib/contract-model/analysis/**. The only 3 hits are inside COMMENTS in orchestrator.ts and service.ts describing app/'s own runExtractionAction console.error as legitimate, disclosed, unchanged defense-in-depth OUTSIDE this tree - not a log-only path inside the tree under audit. No remaining bare console-only error path exists inside lib/contract-model/analysis/**."
+    },
+    "task3_cheaperThanTotalOutageGap": {
+      "question": "Is there anything cheaper than a full Postgres outage that could also silently lose a failure record?",
+      "answer": "YES - a REAL, newly-discovered, previously-undisclosed gap.",
+      "mechanism": "lib/contract-model/analysis/orchestrator.ts's own pre-identity catch block (runContractAnalysis, approx. lines 398-402) is: `catch (err) { ...; await recordAnalysisFailureLog({...}); return {outcome:'FAILED', ...}; }`. This `await recordAnalysisFailureLog(...)` call has NO try/catch of its own. If THIS SECOND write fails for ANY reason short of a total outage - a single transient statement failure, a serialization/deadlock error, momentary connection-pool exhaustion for that one query, or (concretely) a foreign-key violation if the companyId passed to runContractAnalysis does not correspond to a real Company row - the resulting exception propagates UNCAUGHT out of runContractAnalysis entirely, past every durability mechanism this fix built. It is caught only by app/'s own runExtractionAction try/catch, which does nothing but console.error it - i.e. the ORIGINAL failure this whole fix exists to durably record is lost with NO Postgres trace anywhere, reproducing exactly the log-only failure mode AUDIT-F7 was chartered to eliminate.",
+      "whyThisIsCheaperThanTheDisclosedResidual": "16-no-log-only-failure.json's own disclosed residual requires Postgres to be so unreachable that even the AnalysisFailureLog write fails - i.e. total outage, affecting every query in the process. This recertification's finding requires only ONE specific write (the recording write itself) to fail even once, while every other query against the SAME live Postgres instance in the SAME test run succeeds normally (proven directly: the sibling reclaim-path test in the same file, and every other Part B test file, complete real Postgres reads/writes in the same process without issue). A single bad write is a materially cheaper, more plausible failure mode than a full outage, and is not covered by the disclosed residual's own framing.",
+      "empiricalProof": "A new test mocks prisma.document.findMany to throw (the ORIGINAL, real failure) AND separately mocks prisma.analysisFailureLog.create to throw once (the RECORDING write's own failure) with Postgres otherwise fully healthy. Result: runContractAnalysis throws an UNCAUGHT exception (contradicting AUDIT-F7's own 'never throws uncaught' guarantee), and getAnalysisFailureLogsForCompany confirms zero AnalysisFailureLog rows exist afterward - the original failure is completely unrecorded anywhere."
+    },
+    "genuineDefectsFound": [
+      "recordAnalysisFailureLog's own call site inside runContractAnalysis's pre-identity catch block has no fallback/try-catch of its own - its own failure (a single bad write, not a full outage) both (a) causes runContractAnalysis to throw uncaught, contradicting its own documented 'never throws' contract, and (b) leaves the ORIGINAL failure with zero durable trace, reproducing the exact log-only failure mode this audit finding exists to close, via a materially cheaper trigger than the disclosed 'total Postgres outage' residual."
+    ],
+    "evidenceFiles": ["tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts"]
+  },
+
+  "qualityGates": {
+    "tscNoEmit": {
+      "command": "npx tsc --noEmit -p .",
+      "totalErrorsObservedThisRun": 11,
+      "errorsAttributableToThisRecertificationsThreeNewFiles": 0,
+      "documentedFrozenBaseline": 6,
+      "baselineReconfirmed": "Filtering out every untracked 'part-b-recert-*' file (both this recertification's own 3 files and OTHER, concurrently-in-progress Part B workstreams' own untracked test files sharing this worktree) leaves exactly 6 pre-existing tsc errors, all in tests/foundation-audit/** (cascade-and-concurrency.test.ts, discovery-fault-injection.test.ts, real-db-duplicate-physical-occurrence.test.ts) - matching the documented baseline exactly. The additional 5 errors observed above the baseline in this run's raw count belong to OTHER Part B workstreams' own in-progress, not-yet-committed test files (auditf1-truth-persistence, blocker2-6-tools-adversarial) sharing this worktree concurrently - not to this recertification's own work, and out of this workstream's scope to fix.",
+      "thisRecertificationOwnFilesClean": true
+    },
+    "eslint": {
+      "command": "npx eslint . / npx eslint <this recertification's 3 new files individually>",
+      "fullRepoErrorCount": 1,
+      "fullRepoErrorLocation": "tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169 (@typescript-eslint/no-var-requires rule-definition-not-found) - pre-existing, unrelated, matches documented baseline exactly.",
+      "thisRecertificationOwnFilesErrorCount": 0
+    }
+  },
+
+  "finalDispositions": {
+    "AUDIT-F3": "CERTIFIED_CLOSED",
+    "AUDIT-F6": "STILL_OPEN",
+    "AUDIT-F7": "STILL_OPEN"
+  },
+
+  "summaryForCaller": "AUDIT-F3 (partial instrument failure) holds under an independently-chosen, materially different failure-injection point (semantic-coverage-audit instead of semantic-truth persistence): partial success is genuinely preserved, every individual failure is durably recorded even in the total-failure case, and status correctly reads PARTIAL rather than a clean COMPLETED*/FAILED. AUDIT-F6 (live product-flow inevitability) does NOT hold as CERTIFIED - the real bypass the prior report itself found and named 'confirmedBypass' (uploading a document and clicking straight through to Review/Activate without contract-model analysis ever running) remains fully open in the current, frozen code; only a visibility card was added, and that card's own 'view findings' link is itself broken (points to a page blind to ClaimReviewItem). The mitigating fact is that nothing downstream currently reads AnalysisRun/ClaimReviewItem state, so no OTHER page presents a false 'analyzed and clean' signal as a result - but the audit finding's own stated requirement ('a real user cannot reach the analyzed state without the authoritative path having run') is not met. AUDIT-F7 (no log-only failure) does NOT hold as fully CERTIFIED either - both documented failure branches are genuinely durable (including a second branch, the reclaim-path updateMany failure, that this recertification tested independently), and no bare console-only error path remains anywhere in lib/contract-model/analysis/**, but a real, previously-undisclosed, and materially CHEAPER-than-the-disclosed-residual gap was found: the fix's own failure-recording write (recordAnalysisFailureLog) has no fallback of its own, so a single failed write there - not a total Postgres outage - both throws uncaught (breaking the 'never throws' contract) and silently loses the original failure with zero durable trace, reproducing exactly the failure mode this audit finding was chartered to close."
+}

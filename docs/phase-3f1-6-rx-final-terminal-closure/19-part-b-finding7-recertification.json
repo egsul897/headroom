@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-terminal-closure.v1",
+  "artifactId": "PART_B_FINDING7_RECERTIFICATION",
+  "part": "B",
+  "findingId": "FINDING-7",
+  "correspondsTo": "AUDIT-F6",
+  "generatedAt": "2026-08-30T21:55:00Z",
+  "author": "Independent Part B recertification auditor (not Workstream F, no reuse of Workstream F's own test file or of tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts)",
+
+  "mandate": "Independently try to FALSIFY Workstream F's fix in docs/phase-3f1-6-rx-final-terminal-closure/08-product-flow-gating.json - the getAnalysisReadinessForCompany gate on app/[companyId]/onboarding/review/page.tsx, and the getClaimReviewItemsForCompany 'view findings' fix - using FRESH adversarial routes/DB states never exercised by Workstream F's own test (tests/onboarding/product-flow-gating.test.ts) or by the prior recertification (tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts).",
+
+  "codeReviewed": [
+    "app/[companyId]/onboarding/review/page.tsx (full file) - confirmed getAnalysisReadinessForCompany is called first, before any candidate/progress/claim-review query, and redirect() fires whenever !readiness.ready",
+    "lib/contract-model/analysis/service.ts:432-445 (getAnalysisReadinessForCompany) - full logic read: NO_DOCUMENTS carve-out, NEVER_ANALYZED, RUN_IN_PROGRESS (PENDING|RUNNING), RUN_NOT_READY (anything not COMPLETED/COMPLETED_WITH_REVIEW, including PARTIAL and FAILED), STALE_DOCUMENTS_SINCE_LAST_RUN (current Document id set vs. latest run's own documentIds)",
+    "lib/contract-model/analysis/service.ts:284-286 (getLatestAnalysisRunForCompany) - orderBy createdAt desc, no status filter at the query level (the status branching lives entirely in getAnalysisReadinessForCompany)",
+    "lib/contract-model/compiler/safe-failure/service.ts:209-215 (getClaimReviewItemsForCompany) and :127-153 (resolveClaimReview) - full logic read",
+    "app/[companyId]/onboarding/documents/page.tsx (full file) - confirmed the 'Continue to Review' link is unconditional (byte-identical to the pre-fix version per Workstream F's own disclosure) and the 'Contract analysis' status card / 'view findings' link render off AnalysisRun.reviewItemCount, a value set once at run-completion time and never recomputed",
+    "app/[companyId]/onboarding/review/chunk/[chunkId]/page.tsx (full file) - confirmed it imports only getChunkContext (a bare prisma.documentChunk.findUniqueOrThrow) and never imports getAnalysisReadinessForCompany or any ClaimReviewItem/ExtractionCandidate query",
+    "app/[companyId]/onboarding/activate/page.tsx (full file) and app/[companyId]/onboarding/review/actions.ts (full file) - confirmed these operate exclusively on the separate ExtractionCandidate model (getReviewProgress/reviewCandidate) and never touch AnalysisRun/ClaimReviewItem/getAnalysisReadinessForCompany, matching the documented, deliberately-unchanged two-pipeline design",
+    "grep across app/ and lib/ for ClaimReviewItem and getAnalysisReadinessForCompany usage - confirmed the review page is the ONLY app-layer consumer of either"
+  ],
+
+  "routeInventory": [
+    {
+      "route": "/{companyId}/onboarding/review (direct URL or 'Continue to Review'/'view findings' links)",
+      "findingsConsuming": true,
+      "gated": true,
+      "evidence": "Calls getAnalysisReadinessForCompany first and redirect()s on any non-ready reason. Verified for every reason value: NEVER_ANALYZED, RUN_IN_PROGRESS (both PENDING and RUNNING, manufactured directly in Postgres, not just via the orchestrator), RUN_NOT_READY via a manufactured FAILED-only run, RUN_NOT_READY via a manufactured PARTIAL run (AUDIT-F3's own status), STALE_DOCUMENTS_SINCE_LAST_RUN via a document inserted with a bare prisma.document.create (not through uploadDocumentAction), and a same-tick 'second tab' race where a document is inserted between two back-to-back ReviewPage() calls with no caching layer to smooth it over."
+    },
+    {
+      "route": "/{companyId}/onboarding/review/chunk/{chunkId} (the 'view in context' link from a candidate card, or direct URL)",
+      "findingsConsuming": false,
+      "gated": false,
+      "evidence": "Does not import or call getAnalysisReadinessForCompany. Dynamically confirmed: for a NEVER_ANALYZED company, this route renders successfully (no redirect, no notFound) where /onboarding/review itself would refuse to serve. However its data layer (getChunkContext) is a bare DocumentChunk lookup with zero awareness of ExtractionCandidate or ClaimReviewItem - it renders only raw source text the user's own upload already contains, never an analysis conclusion, a candidate value, a review status, or a ClaimReviewItem. It is a real, ungated route, but not a findings-consuming one, and not the same bypass shape AUDIT-F6 described (presenting analysis as settled). Recorded here so a future reader does not have to re-derive this."
+    },
+    {
+      "route": "/{companyId}/onboarding/activate (direct URL, or via the review page's own 'Continue to Activate' link)",
+      "findingsConsuming": false,
+      "gated": false,
+      "evidence": "Confirmed by full-file read: uses only getReviewProgress/getCoverageSnapshot/GoldenTest, all scoped to the separate, pre-existing ExtractionCandidate promotion pipeline. Never queries AnalysisRun or ClaimReviewItem, and is reachable directly without ever passing through the review-page gate. This is the documented, deliberately-unchanged two-pipeline design (lib/onboarding/review.ts's ExtractionCandidate lifecycle vs. contract-model's AnalysisRun/ClaimReviewItem lifecycle per 08-product-flow-gating.json's own 'whyNotInLibOnboardingReview'), not a bypass of contract-model analysis specifically, since candidate promotion was never claimed to require a completed AnalysisRun. Reviewed and recorded as an intentional, pre-existing scope boundary, not a reopening of AUDIT-F6."
+    },
+    {
+      "route": "app/[companyId]/onboarding/review/actions.ts (approve/reject/edit/markReviewRequired server actions, reachable by direct POST once on the review page)",
+      "findingsConsuming": false,
+      "gated": "n/a",
+      "evidence": "Operate exclusively on lib/onboarding/review.ts's reviewCandidate (ExtractionCandidate), never on AnalysisRun/ClaimReviewItem - consistent with the documented, unchanged domain separation. No gate applicable or needed here."
+    },
+    {
+      "route": "documents/page.tsx 'Continue to Review' link and 'Contract analysis' status card",
+      "findingsConsuming": "partially (badge/count only, not full content)",
+      "gated": "n/a (unchanged by design; the gate lives downstream)",
+      "evidence": "Confirmed byte-identical unconditional link, per Workstream F's own disclosure. The status card's 'view findings' link and its 'N open review item(s)' badge read AnalysisRun.reviewItemCount, a value set once at completion time (lib/contract-model/analysis/service.ts) and never recomputed by resolveClaimReview - see residualObservations below for a reproduced staleness case."
+    }
+  ],
+
+  "viewFindingsLinkVerification": {
+    "goldenPathReproducedIndependently": "A manufactured COMPLETED_WITH_REVIEW run + a manufactured ClaimReviewItem (never produced via runContractAnalysis/the real pipeline, to test the rendering path independently of pipeline mechanics) is genuinely visible in ReviewPage's real rendered HTML output via renderToStaticMarkup, including its own rationale and sourceEvidence text - confirms getClaimReviewItemsForCompany's output is real, non-empty, ClaimReviewItem-aware content end to end, not merely 'does not crash'.",
+    "residualObservationFound": {
+      "description": "AnalysisRun.reviewItemCount is a denormalized snapshot taken once at run-completion time and is never recomputed when resolveClaimReview later resolves the items it counted. After resolving the single open ClaimReviewItem for a completed run (via the real resolveClaimReview function, action ACCEPT), the AnalysisRun row's reviewItemCount remains 1, the real documents-page 'Contract analysis' status card (its exact async ContractAnalysisStatusCard component, invoked directly from the real page's own returned element tree) still renders '1 open review item(s)' and a 'view findings' link, but the real /onboarding/review page it links to now renders zero items in its 'Contract analysis findings' card (correct with respect to the resolved item's new status, since getClaimReviewItemsForCompany defaults to OPEN_REVIEW only).",
+      "isThisTheSameDefectAUDIT-F6Described": false,
+      "rationale": "AUDIT-F6's own defect was the link's DESTINATION being structurally blind to ClaimReviewItem (a persisted OPEN_REVIEW row was provably invisible there). That is genuinely fixed - the destination now correctly reflects real ClaimReviewItem status, including correctly excluding resolved items. The residual gap found here is different and narrower: the BADGE that invites the click can overstate the current open-item count once items have been resolved after the run completed. This does not let anyone treat unanalyzed or stale content as analysis-complete (the direction of the original AUDIT-F6 risk) - if anything it errs toward over-caution (implying more outstanding review work than actually remains), and it never produces a crash, an empty destination masquerading as full, or a false 'nothing to review' state. Reported for completeness per this recertification's explicit mandate to verify the link end-to-end, but not treated as reopening FINDING-7's core bypass concern."
+    }
+  },
+
+  "testFile": {
+    "path": "tests/onboarding/part-b-recert-finding7-independent.test.ts",
+    "description": "8 fresh adversarial cases, independently authored, disjoint from tests/onboarding/product-flow-gating.test.ts and tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts: (1) zero documents + zero AnalysisRuns trivial-ready case with an assertion that no fabricated findings/candidates render, (2) manufactured FAILED-only run, (3) manufactured PENDING then RUNNING run, (4) manufactured PARTIAL run, (5) a document inserted via bare prisma.document.create (not uploadDocumentAction) after a COMPLETED run still trips staleness, (6) direct navigation to review/chunk/[chunkId] for a NEVER_ANALYZED company - confirmed ungated but confirmed to expose no findings-derived content, (7) a same-tick two-tab race between two ReviewPage() calls, (8) reviewItemCount staleness after resolving the only open ClaimReviewItem via the real resolveClaimReview function, checked against the real ContractAnalysisStatusCard component (resolved out of the real page's own returned element tree, since react-dom/server cannot render an async component directly) and the real ReviewPage.",
+    "realOutputCapturedVerbatim": {
+      "command": "npx vitest run tests/onboarding/part-b-recert-finding7-independent.test.ts",
+      "result": "Test Files 1 passed (1); Tests 8 passed (8); Duration ~2.0s",
+      "note": "Every case in this file asserts the SAFE/CORRECT behavior (the gate blocks when it should, renders when it should, and the residual reviewItemCount-staleness case documents the actual observed behavior explicitly rather than asserting a false expectation). All 8 pass against the current code - the gate mechanism itself could not be falsified by any of these fresh routes/states."
+    },
+    "eslint": "npx eslint tests/onboarding/part-b-recert-finding7-independent.test.ts - zero errors/warnings",
+    "tscScopedCheck": "npx tsc --noEmit -p . 2>&1 | grep part-b-recert-finding7-independent - no output (zero type errors attributable to this new file)",
+    "destructiveDbPatternCheck": "npx tsx scripts/check-destructive-db-patterns.ts - 12 pre-existing findings, all inside scripts/check-destructive-db-patterns.ts's own pattern-definition source and tests/infrastructure/db-isolation-adversarial.test.ts (unrelated, pre-existing, itself testing the guard-rail); zero findings attributable to this new test file.",
+    "dbHygiene": "Uses a single fixed, unique test company id (part-b-recert-finding7-independent-test) never reused elsewhere in the repo (verified via grep). All AnalysisRun/ClaimReviewItem/Document/DocumentChunk/Company rows created by this file are scoped-deleted in per-test cleanup and in beforeAll/afterAll teardown(); a post-run query confirmed zero residual rows for this company id in Company/Document/AnalysisRun/ClaimReviewItem after the suite completed. No deleteMany() call in this file omits a where clause and none targets any id other than the fixed test company id or rows explicitly scoped to documents/runs this file itself created."
+  },
+
+  "scopeCompliance": {
+    "productionCodeModified": "NONE - only the new test file and this JSON artifact were added. lib/, app/, prisma/schema.prisma, and prisma/migrations/ were read but never edited.",
+    "databaseUsage": "Real Postgres, via the existing prisma client, scoped entirely to the fixed unique test company id. No prisma migrate dev/reset, no db push, no unscoped deleteMany."
+  },
+
+  "disposition": "CERTIFIED_CLOSED",
+  "dispositionRationale": "The core AUDIT-F6 concern - 'the actual product flow can still bypass authoritative contract analysis entirely' - could not be falsified despite deliberately adversarial, fresh routes and manufactured DB states that neither Workstream F's own test nor the prior recertification exercised: a company with zero documents and zero runs, a FAILED-only run, PENDING and RUNNING runs, a PARTIAL run (AUDIT-F3's own status), a document inserted through a path other than uploadDocumentAction, and a same-tick two-tab race all correctly block on the real, unmodified /onboarding/review route via the real getAnalysisReadinessForCompany predicate, with no caching or memoization gap found. The one genuinely ungated route discovered (review/chunk/[chunkId]) exposes no analysis-derived or findings content and is not the bypass shape this finding describes. The 'view findings' link's destination genuinely renders real, non-empty, ClaimReviewItem-aware content end to end (confirmed independently, not merely via Workstream F's own fixture) - the one residual gap found (a denormalized reviewItemCount badge that can go stale after resolution) is a distinct, narrower, non-safety-direction issue (over-caution, never a false 'analysis complete/nothing to review' signal) that does not recreate or resemble the original structural-blindness defect, and is disclosed for completeness rather than treated as grounds to reopen this finding.",
+  "reproductionEvidence": "N/A for reopening - disposition is CERTIFIED_CLOSED. See testFile.realOutputCapturedVerbatim above and tests/onboarding/part-b-recert-finding7-independent.test.ts for the full runnable adversarial suite (8/8 passing), and viewFindingsLinkVerification.residualObservationFound above for the one non-blocking residual gap disclosed for the record.",
+  "recommendationForAnyFutureWork": "Not authorized or attempted by this recertification (production code is frozen for this task) - noted for the record only: AnalysisRun.reviewItemCount could be made a live COUNT(*) query (or resolveClaimReview could decrement it transactionally) instead of a write-once snapshot, so the documents-page badge never drifts from the review page's own real-time OPEN_REVIEW count."
+}

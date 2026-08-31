@@ -185,6 +185,8 @@ export function buildCompilerInputForCase(c: Case, index: ReturnType<typeof buil
     confidence: 1,
     sourceCitation: `§${c.sectionRef ?? c.termName}`,
     discoveryRunVersion: "phase-3b-real-regression-seed.v1",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "phase-3b-real-regression-seed script does not compute a real supersession index for this synthetic candidate",
   };
 
   const contextBundle = buildCovenantContextBundle({ candidate, packageKey: `${c.pkg}-pkg`, companyId, instrumentKey, budget: undefined }, { index, packageGraph: null, exactTermsByDocument });

@@ -33,6 +33,8 @@ export function makeCandidate(overrides: Partial<DiscoveredCandidate> & { docume
     confidence: 0.9,
     sourceCitation: `${overrides.documentId}::${overrides.normalizedSourceRef}`,
     discoveryRunVersion: "test",
+    supersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    supersessionReason: "test fixture - no real supersession index applied",
     ...overrides,
   };
 }
@@ -61,6 +63,8 @@ export function makeBundle(overrides: Partial<CovenantContextBundle> & { origina
     instrumentKey: null,
     originatingDiscoveryId: `discovery-candidate:${overrides.normalizedSourceRef}`,
     originatingFamilies: ["INDEBTEDNESS"] as CovenantFamily[],
+    originatingSupersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    originatingSupersessionReason: "test fixture - no real supersession index applied",
     items: [],
     edges: [],
     unresolvedDependencies: [],

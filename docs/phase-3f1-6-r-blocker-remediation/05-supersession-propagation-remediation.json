@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-r-blocker-remediation.v1",
+  "artifactId": "BLOCKER_2_SUPERSESSION_PROPAGATION_REMEDIATION",
+  "blockerId": "BLOCKER-2",
+  "sourceFinding": "05-supersession-certification.json, finding SUPER-1",
+  "generatedAt": "2026-08-30T05:30:00Z",
+  "rootCause": {
+    "summary": "DeterministicCandidate (discovery/types.ts) carried supersessionStatus/supersessionReason (the P1-11 fix), but DiscoveredCandidate - the type every real downstream consumer of the discovery pipeline actually receives - had no such field. runPassDReconciliation (pass-d-reconcile.ts) read deterministicByNodeId ONLY to merge discoveryMethods/evidenceSignals; supersessionStatus/supersessionReason were never read, never mapped, never merged into the final DiscoveredCandidate object literal.",
+    "whyThisMatteredMoreThanAnIsolatedTypeGap": "Every real consumer of the discovery pipeline's output (context-retrieval's buildCovenantContextBundle, coverage-audit's discovery-comparison.ts, semantic-coverage's reconciliation.ts) receives DiscoveredCandidate, never DeterministicCandidate. The correct Pass-A fix was architecturally inert for its own stated purpose: the disclosure it computed had no field to travel in past Pass D."
+  },
+  "fix": {
+    "filesChanged": [
+      "lib/contract-model/compiler/discovery/types.ts",
+      "lib/contract-model/compiler/discovery/pass-d-reconcile.ts"
+    ],
+    "description": "Added supersessionStatus: NodeSupersessionStatus and supersessionReason: string to DiscoveredCandidate (types.ts), documented with the same fail-closed-by-default discipline as DeterministicCandidate. runPassDReconciliation now computes these fields via a new combineSupersessionForNodes helper that looks up EVERY one of a discovery's structuralNodeIds (not only the primary node) against deterministicByNodeId and reports the WORST-case status, worst-first (KNOWN_SUPERSEDED > UNKNOWN_SUPERSESSION_STATUS > CURRENT_OPERATIVE) - so a discovery spanning multiple structural nodes (Pass C neighborhood expansion, or a Pass D merge of two candidates sharing a mergeKey) can never report itself safely current merely because ONE of its spanned nodes happens to be. A structural node with no deterministic Pass A record at all (e.g. added only via neighborhood expansion, never itself firing a Pass A signal) resolves UNKNOWN_SUPERSESSION_STATUS, never silently treated as current.",
+    "functionLevel": {
+      "combineSupersessionForNodes": "New private helper in pass-d-reconcile.ts. Takes the full list of a discovery's structuralNodeIds and the deterministicByNodeId map; returns the worst-case {status, reason} pair across all of them.",
+      "runPassDReconciliation": "Both the new-candidate branch and the merge branch now call combineSupersessionForNodes (the merge branch re-derives it over the UNION of merged structuralNodeIds, so a merge can only ever make the reported status more conservative, never less)."
+    },
+    "designNote": "No change was needed to pass-a-signals.ts itself (already correct per the prior P1-11 fix) or to any call site that constructs a NodeSupersessionIndex - this fix is entirely additive at the type and reconciliation layer, matching the codebase's own 'generalize an existing correct primitive, do not re-derive it' discipline."
+  },
+  "testEvidence": {
+    "primaryReproductionTest": {
+      "file": "tests/certification/discovery-supersession-signal-lost-in-pipeline.test.ts",
+      "note": "This is the certification's own reproduction test, extended in place (not replaced) per the task's own instruction that it is safe to build on. Its original assertions (which proved the field was ABSENT) were flipped to prove the field is now present and correct; the type-level 'declaredKeys must not contain supersessionStatus' assertions were flipped to 'must contain'.",
+      "newTestsAdded": [
+        "a candidate whose primary node is KNOWN_SUPERSEDED at Pass A produces a final DiscoveredCandidate that accurately carries that fact (rewritten from the original defect-proving test)",
+        "a discovery spanning MULTIPLE structural nodes (Pass C neighborhood expansion) reports the WORST-case status across all of them - one current node never masks a superseded sibling",
+        "a node with no deterministic Pass A record at all defaults to UNKNOWN, never silently CURRENT_OPERATIVE",
+        "END-TO-END: the field survives all the way to a REAL downstream consumer of the discovery pipeline (coverage-audit's auditDiscoveryCoverage) - not merely to the DiscoveredCandidate type in isolation, proving the exact chain Pass A -> reconciliation -> DiscoveredCandidate -> a real consumer"
+      ],
+      "result": "4/4 passed (npx vitest run tests/certification/discovery-supersession-signal-lost-in-pipeline.test.ts)"
+    },
+    "regressionSuiteResults": {
+      "fullSuite": "npx vitest run - 202/204 test files passed, 2062/2064 tests passed. Both remaining failures are pre-existing and out of this blocker's scope (tests/extraction/vercel-ai-gateway-provider.test.ts, the disclosed environment-dependent baseline failure; tests/certification/section11-source-trace-independent.test.ts, a BLOCKER-7 real-Postgres-seed-data finding, independently confirmed to fail identically at the unmodified baseline commit via git stash/pop before touching any code).",
+      "typeFixturesUpdated": "Every test/script constructing a DiscoveredCandidate object literal now supplies supersessionStatus/supersessionReason (TypeScript itself enforced finding every call site, since the two fields are non-optional) - scripts/phase-3b-real-regression.ts, tests/contract-model/context-retrieval-pipeline.test.ts, tests/contract-model/coverage-audit-test-utils.ts, tests/contract-model/phase-3f1-failure-observability.test.ts, tests/contract-model/semantic-compiler/compile-and-package.test.ts, tests/contract-model/semantic-coverage-fault-injection.test.ts, tests/contract-model/semantic-coverage-pipeline.test.ts, tests/contract-model/semantic-coverage-reconciliation.test.ts, tests/foundation-audit/context-retrieval-adversarial.test.ts, tests/foundation-audit/cross-module-propagation-chains.test.ts, tests/foundation-audit/provenance-chain-backward-trace.test.ts."
+    },
+    "tscBaseline": "6 errors, byte-identical to the certified baseline (tests/foundation-audit/{cascade-and-concurrency,discovery-fault-injection,real-db-duplicate-physical-occurrence}.test.ts) - no new errors introduced.",
+    "eslintBaseline": "1 error, identical to the certified baseline (tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169).",
+    "buildResult": "npm run build succeeds, 21 routes - unchanged from baseline."
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION"
+}

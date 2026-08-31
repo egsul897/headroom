@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "ANALYSIS_RUN_CONCURRENCY_RESULTS",
+  "workstream": "H",
+  "auditFinding": "AUDIT-F2",
+  "generatedAt": "2026-08-30T16:32:00Z",
+  "baseCommit": "4005687",
+  "purpose": "Test evidence for the atomic AnalysisRun concurrency fix designed in 11-analysis-run-concurrency-design.json.",
+  "testEvidence": {
+    "testFile": "tests/contract-model/analysis-run-concurrency.test.ts",
+    "runCommand": "npx vitest run tests/contract-model/analysis-run-concurrency.test.ts",
+    "result": "5/5 passing",
+    "cases": [
+      {
+        "name": "service-level: N genuinely simultaneous callers (Promise.all, real Postgres)",
+        "method": "Promise.all(Array.from({length: 12}, () => startOrResumeAnalysisRun(identity))) for the IDENTICAL (companyId, packageKey, analysisAlgorithmVersion) identity - genuine concurrent racing via real, independent async Postgres round trips within one Node process (not one pre-created RUNNING row before a single call, which the phase's own charter explicitly rules out as insufficient).",
+        "result": "Exactly 1 STARTED, exactly 11 ALREADY_RUNNING, exactly 1 AnalysisRun row created for the identity, every ALREADY_RUNNING outcome's own `run.id` matches the one STARTED caller's row."
+      },
+      {
+        "name": "orchestrator-level: N genuinely simultaneous runContractAnalysis calls",
+        "method": "Promise.all(Array.from({length: 6}, () => runContractAnalysis({companyId}, {callers: scriptedCallers()}))) for the SAME company/document set.",
+        "result": "Exactly 1 STARTED_TO_COMPLETION (the real pipeline actually executed once), exactly 5 SKIPPED_ALREADY_RUNNING, exactly 1 AnalysisRun row, and the final AnalysisRun.reviewItemCount exactly matches the real persisted ClaimReviewItem count - proving downstream review state was never double-written by a second concurrent execution."
+      },
+      {
+        "name": "stale RUNNING row reclaim",
+        "method": "A RUNNING row's updatedAt backdated 60 minutes via `$executeRaw` (past the documented 30-minute threshold).",
+        "result": "startOrResumeAnalysisRun returns STARTED, reclaiming the SAME row (same id) rather than creating a duplicate."
+      },
+      {
+        "name": "fresh RUNNING row is NOT reclaimed",
+        "method": "A RUNNING row created just now (within the threshold).",
+        "result": "startOrResumeAnalysisRun correctly returns ALREADY_RUNNING - proving the threshold check itself still works under the new atomic mechanism, not just the atomicity itself."
+      },
+      {
+        "name": "re-entering a non-RUNNING row clears stale AnalysisRunIssue rows",
+        "method": "A PARTIAL row with a pre-existing AnalysisRunIssue row from a simulated prior attempt.",
+        "result": "startOrResumeAnalysisRun returns STARTED (reclaiming the same row) and the prior AnalysisRunIssue row is gone - confirms the AUDIT-F3 interaction point designed in 11-analysis-run-concurrency-design.json actually fires."
+      }
+    ]
+  },
+  "empiricalDefectReproductionAgainstPreFixCode": {
+    "method": "The pre-fix service.ts (git-original, findUnique->upsert) was temporarily restored in the working tree and exercised with the IDENTICAL Promise.all(12) harness used in the real test above, via a throwaway tsx script (not committed).",
+    "result": "{\"started\":12,\"already\":0,\"rowCount\":1}} - all 12 concurrent callers reported STARTED for the SAME single row under the pre-fix code, empirically confirming the defect this fix closes, and confirming this test suite is NOT vacuously passing (it genuinely fails against the buggy implementation and genuinely passes against the fixed one).",
+    "note": "The pre-fix code was restored from `git show HEAD:...` immediately after this check and the fixed implementation was restored before any further work - `git diff` was used to confirm zero net change from this verification step."
+  },
+  "regressionEvidence": {
+    "fullRelevantSuite": "npx vitest run tests/contract-model tests/onboarding tests/foundation-audit tests/certification",
+    "result": "156/157 test files passing (1568/1570 tests) across 3 consecutive runs - the sole failures (tests/certification/section11-source-trace-independent.test.ts, 2 tests) independently confirmed pre-existing and unrelated (fails identically against the pristine pre-Workstream-H commit)."
+  },
+  "disposition": "REMEDIATED_PENDING_INDEPENDENT_RECERTIFICATION",
+  "dispositionNote": "The concurrency fix is proven atomic under genuine Promise.all racing at both the service and orchestrator levels, the stale-reclaim and fresh-non-reclaim behaviors are both proven, and the fix's own necessity was empirically (not merely theoretically) confirmed by reproducing the original defect against the pre-fix code with the identical test harness. Reserved CERTIFIED status for this phase's own separate, later, independent Part B."
+}

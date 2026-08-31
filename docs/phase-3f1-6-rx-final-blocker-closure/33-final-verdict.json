@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "1.0",
+  "phaseVersion": "phase-3f1-6-rx-final-blocker-closure.v1",
+  "artifactId": "FINAL_VERDICT",
+  "generatedAt": "2026-08-30T17:20:00Z",
+  "purpose": "Phase 3F.1.6.RX's own required final output: exactly one of PHASE_3F_1_6_RX_FINAL_FOUNDATION_CLOSURE_PASSED / _FAILED / _ENVIRONMENT_BLOCKED.",
+
+  "exactShas": {
+    "startingSha": "4005687 (Phase 3F.1.6.RX baseline, inheriting 3F.1.6.R's own final commit bb465fe)",
+    "partARemediationFreezeSha": "d098cb4 (Part A's own verdict commit - production frozen from here forward)",
+    "finalSha": "57610a8 (Part B's own final commit - all 8 independent recertification auditors integrated)"
+  },
+
+  "productionFilesChangedInPartA": [
+    "lib/contract-model/compiler/stage-structure.ts (BLOCKER-1)",
+    "lib/contract-model/compiler/context-retrieval/{types,pipeline}.ts (BLOCKER-2/5)",
+    "lib/contract-model/compiler/semantic/tools.ts (BLOCKER-5)",
+    "scripts/backfill-defined-term-node-stable-key.ts (BLOCKER-7/AUDIT-F5, new)",
+    "lib/contract-model/compiler/value-anchors.ts (BLOCKER-8/AUDIT-F4, new)",
+    "lib/contract-model/compiler/discovery/{pass-b-semantic,pass-c-neighborhood,pass-d-reconcile,pipeline,types}.ts (BLOCKER-8/AUDIT-F4)",
+    "lib/contract-model/compiler/semantic-coverage/{types,unit-hypothesis}.ts (BLOCKER-8/AUDIT-F4)",
+    "lib/contract-model/compiler/semantic-verification/{reviewer,source-inventory,verify}.ts (BLOCKER-9)",
+    "prisma/schema.prisma + new migration (AUDIT-F1/F2/F3, new SemanticTruthRecord/AnalysisRunIssue/AnalysisFailureLog models, PARTIAL status)",
+    "lib/contract-model/analysis/semantic-truth/{index,mapping,service,types}.ts (AUDIT-F1, new)",
+    "lib/contract-model/analysis/{orchestrator,service,types,index}.ts (AUDIT-F2/F3/F6/F7/BLOCKER-2 coupled-gap closure)",
+    "app/[companyId]/onboarding/documents/page.tsx (AUDIT-F6)"
+  ],
+
+  "blockerByBlockerFinalDisposition": "See docs/phase-3f1-6-rx-final-blocker-closure/32-final-disposition-table.json for the complete table with evidence citations.",
+  "auditF1ThroughF7FinalDisposition": "See same artifact.",
+
+  "stillOpenAndNewCoupledBlockerFindings": [
+    {
+      "id": "BLOCKER-1-RESIDUAL",
+      "reproduction": "4 new adversarial fixtures in tests/certification/part-b-recert-blocker1-independent-adversarial.test.ts, all reproducible deterministically (no LLM call involved).",
+      "evidence": "docs/phase-3f1-6-rx-final-blocker-closure/23-part-b-blocker1-blocker11-recertification.json",
+      "blastRadius": "A lowercase 'section'/'article' keyword not at line start, or a footnote-marker-adjacent heading, is silently dropped from the structural index - the second case demonstrably re-parents a real child SECTION to a null parent (a form of rank-stack corruption the original certification's own P0 finding was specifically about). Not observed in any of the 4 current real fixtures, but general and reproducible against constructed text of the same real-world shape."
+    },
+    {
+      "id": "BLOCKER-5-DEFECT",
+      "reproduction": "Direct test in tests/contract-model/part-b-recert-blocker2-6-tools-adversarial.test.ts calling the real, unmodified getDefinition tool against a term with a real on-file AMBIGUOUS amendment record.",
+      "evidence": "docs/phase-3f1-6-rx-final-blocker-closure/24-part-b-blocker2-6-orchestrator-recertification.json",
+      "blastRadius": "getDefinition is live-wired into the real semantic compiler's own tool access. A semantic compilation for a term whose definition is genuinely ambiguous post-amendment receives the stale base text with no disclosure, risking a false-confident IR rule built on text the amendment resolver itself has already flagged as unresolved."
+    },
+    {
+      "id": "BLOCKER-6-NEW-COUPLED",
+      "reproduction": "Same as BLOCKER-5-DEFECT - BLOCKER-6's own cross-reference-audit correctly detects ambiguous DEFINITION amendments in its own surface, but getDefinition provides an unguarded bypass around it.",
+      "evidence": "same",
+      "blastRadius": "Same underlying code path as BLOCKER-5; the coupling means fixing BLOCKER-5's getDefinition disclosure gap likely closes this too, but it must be verified as its own item since BLOCKER-6's own mechanism was never itself defective."
+    },
+    {
+      "id": "BLOCKER-8-AUDIT-F4-RECURSION-GAP",
+      "reproduction": "3-claim fused sentence with distinct numbers on each of 3 independently-operative claims, constructed in tests/contract-model/part-b-recert-blocker8-adversarial.test.ts.",
+      "evidence": "docs/phase-3f1-6-rx-final-blocker-closure/26-part-b-blocker8-recertification.json",
+      "blastRadius": "findCoordinateClauseSplit performs at most one split per region; claims 2 and 3 of a 3-way fusion collapse into one semanticUnitId despite each having its own distinguishing number. Affects both the cross-family and same-family branches. Not observed in any current real fixture at N=3, but the N=2 case this same function correctly handles is common in real credit agreements, making N=3 a plausible real occurrence."
+    },
+    {
+      "id": "BLOCKER-9-RECALL-GAP",
+      "reproduction": "8 of 12 new condition-phrasing constructions in tests/contract-model/part-b-recert-blocker9-independent-attack.test.ts, each run through the real, unmodified verifyCompiledCandidate with no test overrides.",
+      "evidence": "docs/phase-3f1-6-rx-final-blocker-closure/27-part-b-blocker9-recertification.json",
+      "blastRadius": "A rule with a real, material qualifying condition expressed in one of these 8 common real-world idioms silently reaches VERIFIED_NO_MATERIAL_GAP_FOUND with zero scrutiny from either the deterministic or AI verification layer - the exact BLOCKER-9 failure mode, now confirmed to recur a third time with new vocabulary after two prior remediation attempts (3F.1.6.R, then this same phase's own Part A)."
+    },
+    {
+      "id": "AUDIT-F2-ZOMBIE-WRITER",
+      "reproduction": "A 'ZOMBIE WRITER' test in tests/contract-model/part-b-recert-auditf2-concurrency.test.ts against the real, unmodified service.ts/orchestrator.ts: reclaim a stale RUNNING row as a new owner, then have the presumed-dead old owner call completeAnalysisRun with the same runId.",
+      "evidence": "docs/phase-3f1-6-rx-final-blocker-closure/28-part-b-auditf1-f2-recertification.json",
+      "blastRadius": "A prior worker that was merely slow (not actually dead) - realistic given PER_INSTRUMENT_ANALYSIS is one unsubdivided stage spanning an entire per-instrument loop - can silently overwrite a new owner's live AnalysisRun state (status, currentStage, reviewItemCount) with zero coordination, after its own row has already been legitimately reclaimed. This is the exact class of uncoordinated double-write AUDIT-F2's fix claims to have eliminated, reappearing via the reclaim path rather than the initial-claim path."
+    },
+    {
+      "id": "AUDIT-F6-LIVE-BYPASS-STILL-REACHABLE",
+      "reproduction": "Direct source-trace of app/[companyId]/onboarding/documents/{page,actions}.tsx and review/page.tsx, plus a real ClaimReviewItem insertion proving the review page's own data layer cannot see it - in tests/onboarding/part-b-recert-auditf3-f6-f7-liveflow-bypass.test.ts.",
+      "evidence": "docs/phase-3f1-6-rx-final-blocker-closure/29-part-b-auditf3-f6-f7-recertification.json",
+      "blastRadius": "A real user can still reach the product's 'ready to proceed' state without contract-analysis ever having run, exactly as the original AUDIT-F6 finding described. The new status card is honest about AnalysisRun state but does not gate the flow, and its own 'view findings' link is broken (points to a page with zero ClaimReviewItem awareness) - so even a user who checks the card cannot see real findings."
+    },
+    {
+      "id": "AUDIT-F7-UNGUARDED-LOG-CALL",
+      "reproduction": "A forced-throw on the recordAnalysisFailureLog call itself, inside the pre-identity catch block, in tests/contract-model/part-b-recert-auditf3-f6-f7-nolog-onlyfailure.test.ts.",
+      "evidence": "same as AUDIT-F6",
+      "blastRadius": "Cheaper than the disclosed 'total Postgres outage' residual: a single failed write to AnalysisFailureLog specifically (DB otherwise healthy) causes the whole pre-identity failure path to throw uncaught, losing the ORIGINAL failure with zero durable trace - reproducing exactly the log-only failure mode AUDIT-F7's own fix was built to eliminate, just one layer deeper."
+    }
+  ],
+
+  "positiveFindingsWorthPreserving": {
+    "orchestratorSupersessionLineageClosure": "HOLDS end-to-end with real Postgres evidence, including the worst-first multi-node attack - the single most consequential fix in this phase's own Part A integration work is independently confirmed correct.",
+    "dsgrKnownPackageRegressionReinterpretation": "Part A's own reported '215 materialUnitsWithoutClaimReviewItem' for DSGR is a measurement artifact of the regression script's own tally (excludes ALREADY_RECORDED outcomes), not 215 genuinely-missing review items - Part B's direct DB query found 0 actually missing. A stronger, not weaker, safety result than previously believed.",
+    "certifiedClosedItems": "BLOCKER-2, BLOCKER-3, BLOCKER-4, BLOCKER-7, BLOCKER-11 (scope-resolved), AUDIT-F1, AUDIT-F3, AUDIT-F5, plus all cross-cutting checks (known-package regression, false-credit controls, tenant isolation, database/migration integrity, production-freeze-proof, diff classification) are genuinely, independently recertified and do not need to be revisited in any future remediation pass."
+  },
+
+  "fullQualityGatesAtPartBClose": "docs/phase-3f1-6-rx-final-blocker-closure/31-part-b-quality-gates.json - all gates pass (tsc/eslint at baseline, vitest 2415/2416 with the one pre-existing unrelated failure, build succeeds, zero schema drift).",
+
+  "productionFreezeProof": "git diff d098cb4 HEAD --stat -- 'lib/**' 'app/**' 'prisma/schema.prisma' 'prisma/migrations/**' is EMPTY at the final commit (57610a8) - confirmed no production file was modified anywhere in Part B's 8 auditor commits, satisfying the phase's own charter that Part B may only find defects, never fix them.",
+
+  "verdict": "PHASE_3F_1_6_RX_FINAL_FOUNDATION_CLOSURE_FAILED",
+
+  "explicitStatement": "Part B's own independent, production-frozen, adversarial recertification found 8 genuine, reproduced, evidence-backed defects across 5 blockers (BLOCKER-1, 5, 6 [new coupled], 8, 9) and 3 audit findings (AUDIT-F2, F6, F7), out of 11 blockers and 7 audit findings examined. Per this phase's own charter, a real defect found during Part B requires the verdict FAILED, not a silent fix - production remains frozen at the exact SHA where each defect was found, and no production code has been touched since Part A's own close (d098cb4). This is not a failure of the recertification PROCESS - to the contrary, 4 of the 8 dispatched Part B auditors independently found genuine, previously-uncaught defects using fresh adversarial constructions against real Postgres/source evidence, exactly as the phase's own charter demanded ('never merely rerun Part A's own tests'). Several items (BLOCKER-2/3/4, BLOCKER-7, BLOCKER-11, AUDIT-F1, AUDIT-F3, AUDIT-F5, and all cross-cutting checks) are genuinely closed and do not need revisiting. The 8 confirmed open items are narrowly scoped, each with a concrete reproduction and a clear root cause already identified by its own discovering auditor - none requires new architecture, only targeted fixes to already-understood code paths.",
+
+  "explicitlyNotClaimed": "This verdict does not claim the foundation is unfixable or that this phase's overall architecture is unsound - every STILL_OPEN item is a scoped defect in an already-correct architecture (a missing recursion step, a missing phrase in an enumerated list, a missing lease token, a missing UI gate, a missing try/catch), not a design flaw. It also does not claim BLOCKER-10 as a whole failed for a NEW reason - it remains open exactly because 3 of its own 5 constituent AUDIT-F items are open.",
+
+  "requiredNextStep": "STOP for human decision, per this phase's own charter. Do NOT fix anything post-freeze under this phase's own authority. A future phase (3F.1.6.RX.1 or similar) should be scoped narrowly to fix exactly these 8 findings (with root causes already identified) and re-run only Part B's own targeted recertification for the items that changed - not a full re-certification of everything already CERTIFIED_CLOSED here. Do not proceed to Phase 3F.2, do not begin new unseen-package work, do not touch financial/dashboard/simulation/evaluator work, per the phase's own standing prohibition."
+}

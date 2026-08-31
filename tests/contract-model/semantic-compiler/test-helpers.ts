@@ -21,6 +21,8 @@ export function emptyContextBundle(overrides: Partial<CovenantContextBundle> = {
     originatingStructuralNodeIds: [],
     normalizedSourceRef: "9.01",
     originatingFamilies: [],
+    originatingSupersessionStatus: "UNKNOWN_SUPERSESSION_STATUS",
+    originatingSupersessionReason: "test fixture - no real supersession index applied",
     items: [],
     edges: [],
     unresolvedDependencies: [],

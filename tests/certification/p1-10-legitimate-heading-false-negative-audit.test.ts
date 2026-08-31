@@ -129,32 +129,34 @@ describe("(B) synthetic adversarial categories - legitimate headings must surviv
     expect(refs).toContain("6.02");
   });
 
-  it("4b. ADVERSARIAL: page-break-like whitespace directly after a citation-signal phrase (period dropped by the page-break) DOES still suppress a real heading - documents the real residual risk found independently in Section 5's CONMED/DSGR anomaly inspection (e.g. 'partly defined in\\n\\nSection 1.1, to the\\n\\n44\\n\\nextent...')", () => {
+  it("4b. FIXED by Phase 3F.1.6.R's positive-evidence rewrite: page-break-like whitespace directly after a citation-signal phrase (period dropped by the page-break) no longer suppresses a real heading - the OLD phrase-list gate's own documented residual risk (found independently in Section 5's CONMED/DSGR anomaly inspection, e.g. 'partly defined in\\n\\nSection 1.1, to the\\n\\n44\\n\\nextent...') is now correctly resolved as a side effect of testing for a genuine paragraph break rather than the absence of a known-bad phrase", () => {
     // This mirrors the exact shape independently discovered while inspecting
     // CONMED's real residual SECTION_NUMBER_SEQUENCE_ANOMALY finding: a
     // signal phrase, then a page break (no terminal period - the page break
     // swallowed it), then what LOOKS like a citation but is here constructed
-    // to actually BE the real next heading of the document (an intentionally
-    // adversarial, worst-case construction - not observed to occur in the 4
-    // known real packages per the Section 6 real-data track above, but
-    // proven possible here).
-    // NOTE (independently discovered while building this case): a page
-    // break carrying a page NUMBER (e.g. "...set forth in\n\n12\n\nSection
-    // 8.01...") does NOT trigger this failure - the page number itself
-    // becomes the last non-whitespace token before the heading, and it does
-    // not match the signal-phrase regex, so the heading survives. The real
-    // risk is narrower than "any page break": it requires a PURE
-    // whitespace-only break (no injected page number/running-header text)
-    // directly between the signal phrase and the heading - confirmed here.
+    // to actually BE the real next heading of the document.
+    //
+    // Under the OLD (Phase 3F.1.5.R) phrase-list gate this heading was
+    // wrongly suppressed: `rejectByPrecedingContext` trimmed the blank
+    // lines and found "set forth in" as the literal last thing before the
+    // match, with no sentence-break signal it understood in between.
+    //
+    // Under the Phase 3F.1.6.R positive-evidence gate this is CORRECTLY
+    // accepted: the candidate is preceded by four real newlines (a genuine
+    // paragraph break, signal (A)) - the gate never inspects WHAT WORD
+    // precedes it, only WHETHER a real typographic break exists, so this
+    // is no longer a special case at all, just an ordinary application of
+    // signal (A). Note the CONMED real-data anomaly this mirrors had only
+    // ONE newline (a single line-wrap, not a real paragraph break) between
+    // the signal phrase and the spurious match - that distinction is
+    // exactly what signal (A) uses to keep rejecting the CONMED case (see
+    // tests/foundation-audit/p1-10-rank-stack-plausibility-gate.test.ts)
+    // while now correctly accepting this one.
     const text =
-      "This Agreement incorporates the defined terms set forth in\n\n\n\n" + // signal phrase, no period, pure blank-line break (no page number)
+      "This Agreement incorporates the defined terms set forth in\n\n\n\n" + // signal phrase, no period, but a real 4-newline paragraph break
       "Section 8.01 Miscellaneous. This Section governs all matters not addressed elsewhere.\n\n(a) Notices. (b) Amendments.";
     const refs = sectionRefs(text, "cat4b-adversarial-page-break-after-signal-phrase");
-    // DOCUMENTS THE DEFECT: the real "Section 8.01 Miscellaneous" heading IS
-    // wrongly suppressed here (rejectByPrecedingContext trims the blank
-        // lines/page number and finds "set forth in" as the literal last
-    // thing before the match, with no sentence-break in between).
-    expect(refs, "known residual risk: a genuine heading directly preceded (across a page-break, no terminal period) by a citation-signal phrase IS wrongly rejected by the current gate").not.toContain("8.01");
+    expect(refs, "the Phase 3F.1.6.R positive-evidence gate must retain a real heading separated from a citation-signal phrase by a genuine paragraph break").toContain("8.01");
   });
 
   it("5. OCR-like whitespace artifacts (doubled spaces, stray tabs, non-breaking spaces) around a real heading do not suppress it when a real sentence break is present", () => {
@@ -194,7 +196,7 @@ describe("(C) summary", () => {
       { name: "cat1", text: "Section 4.01 Representations. Each representation herein is made as of the Closing Date. The covenants described in Section 6.01 and the negative pledges required by Section 6.02 remain in full force and effect. Section 4.02 Additional Representations. Each Loan Party further represents that no Default has occurred. (a) No litigation is pending.", expectPresentRef: "4.02", expectSuppressed: false },
       { name: "cat3", text: "Section 5.01 Financial Statements. The Company shall deliver annual audited financial statements (prepared in accordance with GAAP, consistently applied).\n\nSection 5.02 Compliance Certificates. Together with each delivery under Section 5.01, the Company shall deliver a compliance certificate.\n\n(a) Signed by a Financial Officer.", expectPresentRef: "5.02", expectSuppressed: false },
       { name: "cat4", text: "Section 6.01 Indebtedness. No Loan Party shall incur Indebtedness except Permitted Indebtedness\n\n42\n\nSection 6.02 Liens. No Loan Party shall grant Liens except Permitted Liens.\n\n(a) Liens existing on the Closing Date.", expectPresentRef: "6.02", expectSuppressed: false },
-      { name: "cat4b-adversarial", text: "This Agreement incorporates the defined terms set forth in\n\n\n\nSection 8.01 Miscellaneous. This Section governs all matters not addressed elsewhere.\n\n(a) Notices.", expectPresentRef: "8.01", expectSuppressed: true },
+      { name: "cat4b-adversarial", text: "This Agreement incorporates the defined terms set forth in\n\n\n\nSection 8.01 Miscellaneous. This Section governs all matters not addressed elsewhere.\n\n(a) Notices.", expectPresentRef: "8.01", expectSuppressed: false },
       { name: "cat5", text: "Section 7.01  Events  of  Default .   Each of the following constitutes an Event  of Default.  \n\n  Section  7.02\tRemedies .\tUpon the occurrence of any Event of Default, the Administrative Agent may accelerate.\n\n(a) Acceleration.", expectPresentRef: "7.02", expectSuppressed: false },
       { name: "cat6", text: "Section 2.01 is subject to customary conditions precedent. Section 2.02 Advances. The Lenders shall make Advances ratably in accordance with their Commitments.\n\n(a) Notice required.", expectPresentRef: "2.02", expectSuppressed: false },
     ];
@@ -207,8 +209,8 @@ describe("(C) summary", () => {
       expect(suppressed, `${c.name}: expected suppressed=${c.expectSuppressed}, got suppressed=${suppressed}`).toBe(c.expectSuppressed);
     }
     // eslint-disable-next-line no-console
-    console.log(`Section 6 synthetic track: ${cases.length} legitimate-heading cases tested, ${suppressedCount} wrongly suppressed (the one known/documented adversarial case, cat4b, which was NOT observed in any real document per the (A) real-data track).`);
+    console.log(`Section 6 synthetic track: ${cases.length} legitimate-heading cases tested, ${suppressedCount} wrongly suppressed (Phase 3F.1.6.R's positive-evidence gate resolves the one previously-documented adversarial case, cat4b, as a side effect of testing for a genuine paragraph break instead of the absence of a known-bad phrase).`);
     expect(cases.length).toBe(6);
-    expect(suppressedCount).toBe(1);
+    expect(suppressedCount).toBe(0);
   });
 });
