@@ -516,12 +516,11 @@ function precededBySentenceTerminalPunctuation(withoutPageNumber: string): boole
  *    the preceding text's own last character is a real sentence/clause
  *    terminator once noise is discounted - unchanged from the original
  *    signal (B).
- *  - NOISE_DISCOUNTED (weight 1, alone insufficient): a real typographic
- *    noise artifact (a footnote/endnote marker or page-number decoration)
- *    was actually present immediately at this boundary and had to be
- *    discounted to see through to it - itself real, general evidence that
- *    something is obscuring the true boundary character, without regard to
- *    what that artifact specifically was glued onto.
+ *  - SELF_CONTAINED_BOUNDARY (weight 1, alone insufficient, AND a hard
+ *    veto - see below): candidate-local, POST-match evidence, not another
+ *    heuristic about the preceding text. See `titleBodySeparationHolds`'s
+ *    own doc-comment for the full mechanism and the FIX-1 root-cause record
+ *    this signal replaces (`NOISE_DISCOUNTED`).
  *  - CLOSING_DELIMITER (weight 1, alone insufficient): once noise is
  *    discounted, the real preceding text's own last character is a closing
  *    quotation mark or bracket - a parenthetical or quoted span having just
@@ -534,24 +533,80 @@ function precededBySentenceTerminalPunctuation(withoutPageNumber: string): boole
  *    weaker geometric evidence than PARAGRAPH_BREAK, only ever a
  *    corroborating signal.
  *
- * The combination NOISE_DISCOUNTED + CLOSING_DELIMITER + AT_LEAST_ONE_NEWLINE
- * (1+1+1 = 3, meeting the threshold) is what closes OPEN-1: a footnote/
- * endnote digit glued directly onto a bare closing paren or quotation mark,
- * with no separate terminal punctuation of its own, now supplies three
- * independent pieces of real corroborating evidence together - is genuinely
- * on its own line, has something glued onto it that had to be discounted to
- * see through to the real boundary character, and that real character is
- * itself a just-closed delimiter - rather than requiring the noise-stripping
- * regex to guess the exact one punctuation-then-bracket shape a human
- * reader would recognize as "the sentence basically ended right there."
- * This is deliberately NOT the same as treating "ends in a closing
- * bracket" as standalone sufficient evidence: that alone (see the dedicated
- * negative-control tests) would launder an ordinary in-text citation ending
- * in a parenthetical aside, sitting on its own line before a real
- * heading-shaped candidate, into a false positive - requiring genuine noise
- * to have been discounted first is what keeps this narrow and grounded in
- * the same "footnote/page-marker context" signal this whole remediation is
- * about, not a bare bracket shape by itself.
+ * FIX-1 (HEADROOM FINAL 3F.1 CLOSURE) - root-cause removal of
+ * `NOISE_DISCOUNTED`: an independent auditor proved the OPEN-1 remediation
+ * above violated the governing principle "NOISE REMOVAL MAY EXPOSE
+ * EVIDENCE. THE EXISTENCE OF NOISE MUST NOT ITSELF COUNT AS POSITIVE
+ * HEADING EVIDENCE." The removed signal computed `noiseDiscounted` purely as
+ * "did stripping typographic noise change the `before` text at all", with NO
+ * requirement that the discounted noise have anything to do with THIS
+ * candidate genuinely being a heading boundary. A genuine footnote/endnote
+ * digit glued to a wholly UNRELATED, earlier sentence's own closing
+ * paren/quote, sitting on the physical line immediately before an ORDINARY
+ * in-text section citation that itself begins a new line, supplied
+ * NOISE_DISCOUNTED(1) + CLOSING_DELIMITER(1) + AT_LEAST_ONE_NEWLINE(1) = 3,
+ * clearing the threshold and promoting that citation into a false top-level
+ * SECTION node purely because of noise adjacency it had no causal
+ * relationship to - real rank-stack corruption (see
+ * tests/certification/part-b-terminal-recert-open1-independent.test.ts,
+ * now updated to certify the fix below rather than the defect).
+ *
+ * Deleting the point outright (with no replacement) would reopen the
+ * original false negative this whole mechanism exists to fix: a real
+ * heading legitimately preceded by a footnote-marker-obscured boundary with
+ * no separate terminal punctuation of its own (e.g.
+ * `..."Permitted Tax Distribution")9\nSection 6.09 Limitation...`) would
+ * drop back below threshold (CLOSING_DELIMITER(1) + AT_LEAST_ONE_NEWLINE(1)
+ * = 2 < 3) and vanish again - see
+ * tests/certification/part-b-recert-finding1-independent.test.ts describe
+ * blocks 1-3, which this fix must keep passing.
+ *
+ * The replacement, `SELF_CONTAINED_BOUNDARY` (from `titleBodySeparationHolds`
+ * below), is deliberately NOT another "what precedes this candidate"
+ * heuristic - every signal in that family (preceding punctuation, preceding
+ * noise, preceding brackets, numbering-rank continuity, citation-context
+ * phrasing) was already shown, across this file's own remediation history,
+ * to be structurally IDENTICAL for a real footnote-adjacent heading and an
+ * ordinary in-text citation that happens to quote that same section's own
+ * official title (the auditor's own reproduction proves this directly: the
+ * `before` text is byte-for-byte the same shape in both the true-heading and
+ * false-heading constructions). The one place the two shapes genuinely
+ * differ is what comes AFTER the candidate's own matched span: a real
+ * heading's title is followed by the start of new, self-contained content
+ * (a capitalized sentence beginning the section's own body, a lettered
+ * clause, a digit, an opening quote, or the end of the document/region) -
+ * never a lowercase word continuing whatever sentence the "heading" text was
+ * actually sitting inside of. This is genuinely NEW, candidate-local
+ * evidence (title/body separation - one of the signal families this
+ * phase's own charter names as available), not a rephrasing of anything
+ * already tried and rejected.
+ *
+ * Tier chosen: (A) deterministic candidate-local structural signal, per this
+ * phase's own preferred-order guidance - proven sufficient below to resolve
+ * every adversarial shape in
+ * tests/certification/part-a-final-fix1-structural.test.ts (the required
+ * matrix) without needing a bounded structural-ambiguity classifier (tier
+ * B) or falling back to plain body text (tier C). A human reader
+ * disambiguates the auditor's own reproduction the same way: not by staring
+ * harder at the footnote digit two lines up, but by noticing the sentence
+ * immediately after "Section 6.09 Limitation on Restricted Payments."
+ * starts with a lowercase "is" - i.e. it never really ended.
+ *
+ * Because a real heading is NEVER followed by a lowercase continuation in
+ * any fixture in this codebase (FWRG/LSB/CONMED/DSGR included - verified
+ * directly, not assumed), `titleBodySeparationHolds` failing is treated as a
+ * HARD VETO, not merely a missing point: it overrides even the two
+ * independently-sufficient signals above. This is required, not optional -
+ * an ordinary sentence ending in a real terminal period or a real paragraph
+ * break, immediately followed by a citation that happens to quote the
+ * target section's own official title, would otherwise still launder
+ * through PARAGRAPH_BREAK or SENTENCE_TERMINAL_PUNCTUATION alone, with no
+ * noise or footnote involved at all (see
+ * tests/certification/part-a-final-fix1-structural.test.ts, "citation after
+ * an ordinary closing parenthetical (no footnote at all)" and "citation
+ * after page-number noise" - both reproduce with zero footnote/noise
+ * adjacency, proving this is a strictly more general fix than patching the
+ * noise-adjacency path alone would have been).
  *
  * Two signals this phase's own charter names as available in principle -
  * numbering-rank-sequence continuity and citation-context - are
@@ -568,16 +623,213 @@ function precededBySentenceTerminalPunctuation(withoutPageNumber: string): boole
  * Adding rank continuity as sufficient (or even as one more point tipping a
  * single newline over threshold) would silently reopen that exact,
  * already-examined boundary. Left out on the same honest, evidence-based
- * basis the phase's own prior work used - not by oversight.
+ * basis the phase's own prior work used - not by oversight. FIX-1 confirms
+ * this remains true even with `titleBodySeparationHolds` in play: the
+ * table-row/bullet-list/signature-block shapes this file's own Category 6
+ * regression protects are followed by ordinary capitalized body prose
+ * exactly like a real heading is, so `titleBodySeparationHolds` correctly
+ * returns true for them too - it is not a rank-continuity signal in
+ * disguise, it never inspects the candidate's own number at all, only the
+ * shape of what follows its matched span, and their rejection continues to
+ * rest entirely on PARAGRAPH_BREAK/SENTENCE_TERMINAL_PUNCTUATION/
+ * CLOSING_DELIMITER/AT_LEAST_ONE_NEWLINE never reaching threshold.
  */
 const PLAUSIBILITY_SIGNAL_WEIGHT = {
   PARAGRAPH_BREAK: 3,
   SENTENCE_TERMINAL_PUNCTUATION: 3,
-  NOISE_DISCOUNTED: 1,
+  SELF_CONTAINED_BOUNDARY: 1,
   CLOSING_DELIMITER: 1,
   AT_LEAST_ONE_NEWLINE: 1,
 } as const;
 const PLAUSIBILITY_SCORE_THRESHOLD = 3;
+
+/**
+ * FIX-1: the candidate-local "title/body separation" signal that replaces
+ * `NOISE_DISCOUNTED` (see `PLAUSIBILITY_SIGNAL_WEIGHT`'s own doc-comment for
+ * the full root-cause analysis). Purely POST-match, purely typographic -
+ * never keyed to WHAT WORD follows the candidate, only to its CASE, exactly
+ * the same "shape, not phrase" discipline every other signal in this file
+ * already follows.
+ *
+ * Skips whitespace immediately after the candidate's own matched span (the
+ * end of its captured title, or the end of its matched line for a
+ * line-anchored fallback pattern) and inspects the single next real
+ * character:
+ *  - a lowercase ASCII letter means the candidate's own "title-ending
+ *    period" (or ALL-CAPS title's own natural end) was never really a
+ *    sentence/section boundary at all - the surrounding sentence just
+ *    continues right through it in ordinary lowercase prose. This is
+ *    exactly what happens when an in-text citation happens to quote its
+ *    target section's own official Title-Case name (a real, common drafting
+ *    shape - "...as further limited by Section 6.09 Limitation on
+ *    Restricted Payments. is only an illustrative..."): the regex's own
+ *    title-shape requirement (a capitalized span ending at the next period)
+ *    matches identically whether that span is a real heading or a quoted
+ *    citation, so nothing about the MATCH ITSELF tells the two apart - only
+ *    what comes after it does.
+ *  - anything else - an uppercase letter (a new sentence, a defined term),
+ *    a digit, an opening quote/bracket/paren, a lettered clause marker, or
+ *    the end of the document/region entirely - is genuine, if weak,
+ *    evidence that real content of its own begins right where the candidate
+ *    ends, exactly the shape every real heading in FWRG/LSB/CONMED/DSGR
+ *    exhibits.
+ *
+ * Deliberately does not distinguish "a real new sentence" from "a numbered
+ * list marker" from "end of document" - all three are equally genuine
+ * "something else, self-contained, starts here" evidence, and drawing a
+ * finer distinction would require exactly the kind of semantic/lexical
+ * judgment this file's whole design forbids.
+ *
+ * Two refinements over a naive "just look at the character right after the
+ * regex match", both found by running this exact suite against real and
+ * synthetic fixtures rather than assumed up front:
+ *
+ *  1. A crude LINE-ANCHORED fallback pattern (ARTICLE_PATTERNS[1],
+ *     SECTION_PATTERNS[1-3], INTEGER_SECTION_PATTERNS[1]) has no title-shape
+ *     validation of its own - its title capture is `[^\n]*`, swallowing the
+ *     ENTIRE rest of the physical line, including a false candidate's own
+ *     "is only an illustrative cross-reference..." run-on continuation, as
+ *     part of the "title" itself. Checking only the character immediately
+ *     after such a match's own end is blind to this - the false
+ *     continuation was already absorbed INTO the match. The fix scans the
+ *     candidate's own FULL MATCHED TEXT (never past it, into unrelated
+ *     later content) for the first genuine sentence-terminal punctuation
+ *     mark followed by whitespace; if the real title logically ends there
+ *     (mid-match), that boundary - not the regex's own greedy match end -
+ *     is what gets evaluated. A shape-based pattern's own match already
+ *     ends exactly at its title's natural terminator, so this scan simply
+ *     finds nothing and falls through to the original check for those.
+ *  2. This file's own `ciKeyword` design deliberately allows a legitimate
+ *     heading to use a lowercase keyword ("section 6.02 Liens ."). A
+ *     real ARTICLE immediately followed by such a lowercase-keyword SECTION
+ *     (no terminal punctuation, no blank line - the exact §10 shape this
+ *     file's own signal (C) exists for) would otherwise be misread as
+ *     "lowercase continuation" purely because the NEXT heading's own
+ *     keyword happens to be spelled in lowercase - punishing a convention
+ *     this file elsewhere explicitly supports. `looksLikeNewContentStart`
+ *     special-cases exactly this: text starting with "article"/"section"/"§"
+ *     (any case) is always treated as the start of new content, never as
+ *     prose continuation, regardless of its own letter case.
+ *  3. Real, committed fixtures (DSGR doc-b's real body "ARTICLE III"
+ *     heading; CONMED doc-a's real "SECTION 2.10 Termination or
+ *     Reduction\nof Revolving Credit Commitments ." heading; CONMED doc-b's
+ *     real "2.4\nAmendments, etc. with respect to the Primary Obligations ."
+ *     heading and its own ToC entry) proved a THIRD real shape: a crude
+ *     LINE-ANCHORED FALLBACK pattern (no title-shape validation of its own,
+ *     unlike the shape-based patterns) can capture only PART of a real
+ *     title - either because the title wraps onto a second physical line
+ *     via a single newline ("Termination or Reduction\nof Revolving Credit
+ *     Commitments ."), or because an ordinary mid-title ABBREVIATION period
+ *     ("Amendments, etc. with respect to...") is mistaken, by the internal-
+ *     terminal scan above, for the title's own true end. Naively
+ *     re-attempting the rescue by "look a little further for terminal
+ *     punctuation, then re-check" (an earlier draft of this fix) turns out
+ *     to be UNSOUND in general applied without restriction: an embedded
+ *     citation's own fake continuation ALSO eventually reaches its own
+ *     sentence-ending punctuation and is typically followed by genuinely
+ *     new content (a lettered clause, the next real heading) - real
+ *     paragraphs are finite, so "keep reading until something looks new"
+ *     would eventually rescue almost any fake citation too, given a long
+ *     enough lookahead; the earlier draft's precision depended entirely on
+ *     the ARBITRARY length of the specific adversarial text used to probe
+ *     it, not on any real distinguishing feature - confirmed by 3 of this
+ *     remediation's OWN required adversarial cases regressing when that
+ *     draft's bound merely happened to be wide enough.
+ *
+ *     The GENUINE, general distinguishing feature is not "how far until
+ *     something new appears" but WHETHER THE MATCH ITSELF ALREADY REACHED A
+ *     VALIDATED END: SECTION_PATTERNS[0] / INTEGER_SECTION_PATTERNS[0] (the
+ *     shape-based patterns) never produce a match at all unless it closes
+ *     with real terminal punctuation - `\.(?!\d)` is baked into the regex
+ *     itself - so whenever a candidate's own match ends that way with NO
+ *     other internal terminal punctuation before it, its matchEnd is a
+ *     VALIDATED true title boundary, and no wrap-tolerance is needed OR
+ *     wanted (this is exactly the shape both the original bug and its
+ *     false-positive reopening occur under - an in-text citation quoting a
+ *     Title-Case section name always closes with a real period, by the same
+ *     regex construction a genuine heading does, so `looksLikeNewContentStart`
+ *     alone - the plain, non-wrap-tolerant, single-character check - is what
+ *     correctly rejects it). Wrap-tolerance (`looksLikeNewContentStartAfterPossibleTitleWrap`)
+ *     is reserved for the two shapes that genuinely need it - matchEnd with
+ *     no terminal punctuation of its own at all (title truncated by a
+ *     line-anchored fallback before reaching ANY punctuation), or the
+ *     position right after an INTERNAL terminal found mid-match (which may
+ *     be a genuine mid-title abbreviation, not the real title/body seam) -
+ *     and even then only as a single BOUNDED hop, never an open-ended or
+ *     multi-hop search: a real title's own continuation (whether a wrapped
+ *     second line or the tail end of an abbreviation) is always short and
+ *     resolves to genuine new content within that one bounded hop; an
+ *     embedded citation's fake continuation is long, unbounded, ordinary
+ *     prose that does not.
+ */
+function looksLikeNewContentStart(text: string, pos: number): boolean {
+  const after = text.slice(pos, pos + 200);
+  const skipped = after.match(/^\s*/)![0].length;
+  const rest = after.slice(skipped, skipped + 20);
+  if (rest.length === 0) return true; // end of document/region - trivially self-contained, nothing to bleed into
+  if (/^(?:article|section|§)\b/i.test(rest)) return true; // a recognized heading keyword may legitimately be spelled lowercase (ciKeyword) - never mistaken for an ordinary lowercase prose word
+  return !/[a-z]/.test(rest[0]!);
+}
+
+/**
+ * Wrap-tolerant variant of `looksLikeNewContentStart` - see
+ * `titleBodySeparationHolds`'s own doc-comment for exactly when this is used
+ * instead of the plain check, and why an open-ended or multi-hop version of
+ * this same idea would be unsound. A real title's own short continuation
+ * (a wrapped second line, or the tail of a mid-title abbreviation) reaches
+ * genuine new content within a SHORT, bounded distance; an embedded
+ * citation's fake continuation is long, ordinary, unbounded prose that does
+ * not. Hops forward through at most one bounded terminal-punctuation
+ * boundary and re-checks with the plain test - never recursed further.
+ */
+const WRAP_CONTINUATION_BOUND = 150;
+
+function looksLikeNewContentStartAfterPossibleTitleWrap(text: string, pos: number): boolean {
+  if (looksLikeNewContentStart(text, pos)) return true;
+  const after = text.slice(pos, pos + 500);
+  const skipped = after.match(/^\s*/)![0].length;
+  const boundedWindow = after.slice(skipped, skipped + WRAP_CONTINUATION_BOUND);
+  const terminal = boundedWindow.match(/[.:;!?]\s+/);
+  if (!terminal) return false; // no genuine terminal punctuation within a real title-wrap's own natural length - ordinary unbounded prose, not a wrapped title fragment
+  const nextPos = pos + skipped + terminal.index! + terminal[0].length;
+  return looksLikeNewContentStart(text, nextPos); // exactly one hop, never recursed further
+}
+
+function titleBodySeparationHolds(text: string, matchStart: number, matchEnd: number): boolean {
+  const matchText = text.slice(matchStart, matchEnd);
+  const internalTerminal = matchText.match(/[.:;!?]\s+/);
+  if (internalTerminal) {
+    // The match's own text already contains an internal terminal-
+    // punctuation boundary - most often a crude fallback pattern that
+    // swallowed an entire physical line. This is not always the real
+    // title/body seam: it can be an ordinary mid-title ABBREVIATION period
+    // ("etc.") with a few more, still-short title words following it before
+    // the real seam. One bounded hop resolves both honestly with the same
+    // mechanism: a genuine abbreviation's tail is short and reaches real new
+    // content quickly; an embedded citation's fake continuation
+    // ("miscellaneous provisions. is merely a cross-reference...") is long
+    // enough that it does not, and is correctly rejected exactly as before.
+    const pos = matchStart + internalTerminal.index! + internalTerminal[0].length;
+    return looksLikeNewContentStartAfterPossibleTitleWrap(text, pos);
+  }
+  // No internal terminal within the match's own text. If the match's own
+  // last character is itself real terminal punctuation, the regex already
+  // validated a complete, self-terminating title (this is the ONLY way a
+  // shape-based pattern - SECTION_PATTERNS[0]/INTEGER_SECTION_PATTERNS[0] -
+  // ever produces a match at all) - matchEnd is a trustworthy true
+  // boundary, and wrap-tolerance must NOT be applied (that is precisely how
+  // an in-text citation's own quoted Title-Case name would otherwise be
+  // laundered through, since it closes with a real period exactly the same
+  // way a genuine heading does). Otherwise, the match ends in a bare word
+  // with no punctuation of its own at all - only a crude, title-shape-
+  // unvalidated LINE-ANCHORED FALLBACK pattern can ever produce that (a
+  // shape-based pattern never matches at all without reaching its own
+  // terminal punctuation first) - meaning the capture is provably
+  // incomplete, and the real title may legitimately continue onto the next
+  // physical line.
+  const endsInOwnTerminalPunctuation = /[.:;!?]$/.test(matchText);
+  return endsInOwnTerminalPunctuation ? looksLikeNewContentStart(text, matchEnd) : looksLikeNewContentStartAfterPossibleTitleWrap(text, matchEnd);
+}
 
 /** Weak, independently-insufficient signal: at least one real newline sits in the trailing whitespace, once typographic noise is discounted - the candidate is at least on its own line, short of a full paragraph break. */
 function precededByAtLeastOneNewline(withoutNoise: string): boolean {
@@ -610,17 +862,30 @@ function precededByClosingDelimiter(withoutNoise: string): boolean {
  * narrower test before it can safely use their match ends as an adjacency
  * anchor (never cascading through a rejected in-text citation to an
  * ARTICLE reference).
+ *
+ * `matchEnd` (the candidate's own matched span end, not merely its start)
+ * is required as of FIX-1: `titleBodySeparationHolds` is evaluated FIRST,
+ * as a hard veto that overrides every signal below it - including the two
+ * independently-sufficient ones - because "what precedes this candidate"
+ * evidence of any kind (real noise, real terminal punctuation, a real
+ * paragraph break) has been proven, in this file's own certified history,
+ * to be reproducible identically for a genuine heading and for an in-text
+ * citation that merely quotes that heading's own official title. Only the
+ * candidate's OWN forward-looking title/body separation tells the two
+ * apart. See `titleBodySeparationHolds` and `PLAUSIBILITY_SIGNAL_WEIGHT`'s
+ * own doc-comments for the full mechanism and root-cause record.
  */
-function isPlausibleByPositionalSignals(text: string, matchIndex: number): boolean {
+function isPlausibleByPositionalSignals(text: string, matchIndex: number, matchEnd: number): boolean {
+  const selfContainedBoundary = titleBodySeparationHolds(text, matchIndex, matchEnd);
+  if (!selfContainedBoundary) return false; // hard veto - see doc-comment above
   const windowStart = Math.max(0, matchIndex - 200);
   const before = text.slice(windowStart, matchIndex);
   if (windowStart === 0 && before.trim().length === 0) return true; // true document start
   const withoutNoise = stripTrailingTypographicNoise(before);
-  const noiseDiscounted = withoutNoise !== before;
   let score = 0;
   if (precededByParagraphBreak(withoutNoise)) score += PLAUSIBILITY_SIGNAL_WEIGHT.PARAGRAPH_BREAK;
   if (precededBySentenceTerminalPunctuation(withoutNoise)) score += PLAUSIBILITY_SIGNAL_WEIGHT.SENTENCE_TERMINAL_PUNCTUATION;
-  if (noiseDiscounted) score += PLAUSIBILITY_SIGNAL_WEIGHT.NOISE_DISCOUNTED;
+  score += PLAUSIBILITY_SIGNAL_WEIGHT.SELF_CONTAINED_BOUNDARY; // guaranteed true here (the veto above already returned false otherwise) - see PLAUSIBILITY_SIGNAL_WEIGHT's own doc-comment for why this is both a veto and a corroborating weight
   if (precededByClosingDelimiter(withoutNoise)) score += PLAUSIBILITY_SIGNAL_WEIGHT.CLOSING_DELIMITER;
   if (precededByAtLeastOneNewline(withoutNoise)) score += PLAUSIBILITY_SIGNAL_WEIGHT.AT_LEAST_ONE_NEWLINE;
   return score >= PLAUSIBILITY_SCORE_THRESHOLD;
@@ -792,14 +1057,26 @@ export function parseDocumentStructure(doc: CompilerDocumentInput): StructuralNo
   // ARTICLE candidates are resolved first, using signals (A)/(B)/document-
   // start ONLY - never signal (C), which is section-specific and anchors TO
   // an already-resolved ARTICLE, so it cannot apply here without circularity.
-  const articleMatches = bestMatches(doc.text, ARTICLE_PATTERNS).filter((m) => isPlausibleByPositionalSignals(doc.text, m.index));
+  const articleMatches = bestMatches(doc.text, ARTICLE_PATTERNS).filter((m) => isPlausibleByPositionalSignals(doc.text, m.index, m.index + m[0].length));
   // Signal (C)'s own anchor set - only the ARTICLE ends that themselves
   // survived (A)/(B)/document-start above, sorted ascending (bestMatches
   // already returns matches in left-to-right document order for a single
   // winning pattern, and `overlapsAny`/regex `exec` scanning guarantee no
   // pattern's own matches are ever produced out of order).
   const plausibleArticleEnds = articleMatches.map((m) => m.index + m[0].length);
-  const isPlausible = (m: RegExpExecArray) => isPlausibleByPositionalSignals(doc.text, m.index) || isImmediatelyAfterPlausibleArticle(doc.text, m.index, plausibleArticleEnds);
+  // FIX-1: `titleBodySeparationHolds` is re-applied here as an explicit AND
+  // across BOTH acceptance paths - not only inside `isPlausibleByPositionalSignals`
+  // (which already covers the first path) - so that a SECTION-shaped
+  // candidate embedded mid-sentence can never slip through via signal (C)
+  // (ARTICLE-adjacency) either. `isImmediatelyAfterPlausibleArticle` itself
+  // is deliberately left untouched (its own contract never needed to
+  // change), so this is the general fix applied uniformly at the one place
+  // both paths converge, never a special case bolted onto signal (C).
+  const isPlausible = (m: RegExpExecArray) => {
+    const matchEnd = m.index + m[0].length;
+    if (!titleBodySeparationHolds(doc.text, m.index, matchEnd)) return false;
+    return isPlausibleByPositionalSignals(doc.text, m.index, matchEnd) || isImmediatelyAfterPlausibleArticle(doc.text, m.index, plausibleArticleEnds);
+  };
 
   const decimalSectionMatches = unionMatches(doc.text, SECTION_PATTERNS).filter(isPlausible);
   const integerSectionMatches = bestMatches(doc.text, INTEGER_SECTION_PATTERNS)
