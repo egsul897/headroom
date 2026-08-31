@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INDEPENDENT_METHODOLOGY",
+  "assignments": [
+    { "auditor": "A", "scope": "OPEN-1 structural triage/classifier - can ambiguous formatting cause a confidently-invented incorrect structural boundary reaching the real live pipeline?", "artifact": "15-structural-recertification.json" },
+    { "auditor": "B", "scope": "OPEN-2 universal evidence-tool trust invariant - can any registered tool's unresolved current-operative evidence still reach COMPLETED+VERIFIED+persisted-VERIFIED?", "artifact": "16-evidence-tool-recertification.json" }
+  ],
+  "commonRules": [
+    "Pinned to frozen commit a7ee654f4eec1614ef59d47c5f07c597264edc5a. Forbidden from modifying production code (lib/, app/, prisma/).",
+    "Must write FRESH adversarial tests never seen by the Part A implementers - never rerun Part A's own tests as the sole evidence.",
+    "Never run prisma migrate dev/reset/db push. Exact-scoped test cleanup only.",
+    "Must manually inspect the actual production code, not just trust the Part A deliverable docs' own self-assessment.",
+    "Disposition: CERTIFIED_CLOSED or STILL_OPEN with concrete reproduction evidence."
+  ],
+  "auditorASpecificRules": "Per governing spec SS28: the certification question is 'Can ambiguous source formatting cause Headroom to confidently invent an incorrect structural boundary that materially reparents content?' Required answer: NO. If ambiguity is routed UNCERTAIN/review, that is SAFE, not a failure. Also verify obvious headings still parse without unnecessary AI dependency (near-zero classifier invocation on clean documents). Auditor must trace the fix all the way to the REAL live orchestrator (lib/contract-model/analysis/orchestrator.ts's runContractAnalysis) - not merely the isolated new modules or the quarantined legacy orchestrator - since that distinction was the whole point of this phase's own internal correction.",
+  "auditorBSpecificRules": "Per governing spec SS29: auditor must reproduce the OLD getOperativeProvision exploit against frozen production (confirm it is now closed), then create fresh auxiliary-section/tool-only variants covering OTHER tools in the registry (not just getOperativeProvision) to confirm the universal invariant genuinely holds registry-wide, not just for the one originally-reported tool. Required: no unresolved current-operative evidence from ANY registered tool can lead to COMPLETED trusted compilation + VERIFIED verification + VERIFIED persisted SemanticTruthRecord."
+}
