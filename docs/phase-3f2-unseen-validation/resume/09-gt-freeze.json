@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "GT_FREEZE",
+  "reconciledGroundTruthFreezeSha": "a3cbd4e49eb6e2e4b0ed305b87e0525099f7d385",
+  "canonicalClaimCount": 117,
+  "materialityBreakdown": { "CRITICAL": 54, "MATERIAL": 59, "BENIGN": 4 },
+  "sameClaimDecisionBreakdown": { "MATCHED_SAME_CLAIM": 75, "A_ONLY": 27, "B_ONLY": 15 },
+  "orderingProof": "This commit (a3cbd4e) contains 07-gt-reconciliation-methodology.json and 08-reconciled-ground-truth.json and precedes, in Git history, every commit that inspects or compares against the resumed semantic execution's compiled/verified output (10-claim-level-comparison.json onward). The reconciliation adjudicator agent had no access to any file under phase-3f2-riot-unseen-run/, phase-3f2-riot-resume-run/, or any compilation/verification-named artifact - confirmed in its own completion report.",
+  "rule": "From this commit forward, NO modifications are made to 08-reconciled-ground-truth.json. Any correction found necessary during claim-level comparison is recorded as a disagreement/finding, never as a silent edit to the frozen list."
+}
