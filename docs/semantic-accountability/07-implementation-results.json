@@ -230,6 +230,16 @@
       "command": "npx next lint",
       "result": "No ESLint warnings or errors"
     },
-    "vitest": "PENDING - patched below once the full run completes"
+    "vitest": {
+      "command": "npx vitest run",
+      "testFiles": "287 passed / 2 failed (289)",
+      "tests": "3335 passed / 2 failed (3337)",
+      "failures": [
+        "tests/contract-model/architecture-proposal-node-identity.test.ts > no new directory under tests/fixtures/unseen-packages/",
+        "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts > no new package directory under tests/fixtures/unseen-packages/"
+      ],
+      "baselineDebt": "both failures are the pre-existing fixture-directory allowlist checks (they enumerate allowed prefixes conmed-/dsgr-/fwrg-/lsb-/phase-*) that the Mission-4 final-* evidence directories already violated at the starting SHA; this mission added no directory under tests/fixtures/unseen-packages/ (validation output goes to tests/fixtures/semantic-accountability-validation/), so the debt is exactly unchanged: 2 failing tests before, 2 after",
+      "newFailures": 0
+    }
   }
 }
