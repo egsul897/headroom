@@ -1,0 +1,1382 @@
+[
+  {
+    "candidateRef": "discovery-candidate:38b229b984193e98fa1586dc",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:38b229b984193e98fa1586dc",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:38b229b984193e98fa1586dc",
+      "items": [
+        {
+          "itemId": "b09dbd185365b089c84c3434f2e5b97d040990abed9aa9d1f1defad05cbcec70",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:36a4598ca33a122c47bd2f18",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "The Credit Extensions made by each Lender shall be evidenced by one or more accounts or records maintained by such Lender and evidenced by one or more entries in the Register maintained by the Administrative Agent... The accounts or records maintained by the Administrative Agent and each Lender shall be prima facie evidence absent manifest error of the amount of the Credit Extensions made by the Lenders to the Borrower and the interest and payments thereon."
+        },
+        {
+          "itemId": "20bfca148043a3a75bd4806ad85fc250f246184dbe8251c6962867aebd03b4a2",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:36a4598ca33a122c47bd2f18",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "The Credit Extensions made by each Lender shall be evidenced by one or more accounts or records maintained by such Lender and evidenced by one or more entries in the Register maintained by the Administrative Agent... The accounts or records maintained by the Administrative Agent and each Lender shall be prima facie evidence absent manifest error of the amount of the Credit Extensions made by the Lenders to the Borrower and the interest and payments thereon."
+        },
+        {
+          "itemId": "424288f3040c5a08af8b60ff3a1bb98d199188721c459e5d35813c1b3f47d6b3",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:36a4598ca33a122c47bd2f18",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "The evidentiary effect applies only absent manifest error.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "shall be prima facie evidence absent manifest error"
+        },
+        {
+          "itemId": "32fa7bf09b7ad186469fe1c1204bd3b6dc13095a0599798f40e8e4c98cee3aa6",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:ad10638f2b93ee1659bde18f",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Any failure to so record or any error in doing so shall not, however, limit or otherwise affect the obligation of the Borrower hereunder to pay any amount owing with respect to the Obligations."
+        },
+        {
+          "itemId": "24fba6a9d3a5b56a366234224d8adf5f90aa844e5ea534b9a68533081adf4622",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:ad10638f2b93ee1659bde18f",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Any failure to so record or any error in doing so shall not, however, limit or otherwise affect the obligation of the Borrower hereunder to pay any amount owing with respect to the Obligations."
+        },
+        {
+          "itemId": "c623ddca77bf85f5e4e67bf23c913613f3103345605ccf6a0e6bddb74786e4f8",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:ad10638f2b93ee1659bde18f",
+          "irPath": "rules[1].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Any failure to so record or any error in doing so shall not, however, limit or otherwise affect the obligation of the Borrower hereunder to pay any amount owing with respect to the Obligations."
+        },
+        {
+          "itemId": "d938fc8d1e27f0c4edff43bd777689c772ee1fac29f7d80e10b11186b0c0a66c",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:c3798a6c20743490785273de",
+          "irPath": "rules[2].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "In the event of any conflict between the accounts and records maintained by any Lender and the accounts and records of the Administrative Agent, as set forth in the Register, in respect of such matters, the accounts and records of the Administrative Agent shall control in the absence of manifest error."
+        },
+        {
+          "itemId": "c4d1df73e7a757c55d89f25dd6e83d9a6884021bc8ba2e6afafaf481b53b9976",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:c3798a6c20743490785273de",
+          "irPath": "rules[2].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "In the event of any conflict between the accounts and records maintained by any Lender and the accounts and records of the Administrative Agent, as set forth in the Register, in respect of such matters, the accounts and records of the Administrative Agent shall control in the absence of manifest error."
+        },
+        {
+          "itemId": "93503854ce78c2ca5837f40805023586318bbd4e7892dec7400e071b01a80448",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:c3798a6c20743490785273de",
+          "irPath": "rules[2].conditions[0]",
+          "numericValue": null,
+          "textValue": "The Register controls in a conflict only in the absence of manifest error.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "shall control in the absence of manifest error"
+        },
+        {
+          "itemId": "63b40151d7c84588aa863dab8cb5c3c9c5667f3bec9bac2278cb9bba587bf300",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:9a455a96cb07ca916f0e5e58",
+          "irPath": "rules[3].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Upon the request of any Lender made through the Administrative Agent, the Borrower shall execute and deliver to such Lender (through the Administrative Agent) a Note payable to such Lender, which shall evidence such Lender's Loans in addition to such accounts or records."
+        },
+        {
+          "itemId": "cbec91fb085a86ea14ffbbfcfc38a6914e07cfbe64f9da472d4fb0fffafc95db",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:9a455a96cb07ca916f0e5e58",
+          "irPath": "rules[3].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Upon the request of any Lender made through the Administrative Agent, the Borrower shall execute and deliver to such Lender (through the Administrative Agent) a Note payable to such Lender, which shall evidence such Lender's Loans in addition to such accounts or records."
+        },
+        {
+          "itemId": "259eeea70e09a8285618caf8218541e9395c822b4f397dc1574ac1364c8c696f",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:9a455a96cb07ca916f0e5e58",
+          "irPath": "rules[3].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Upon the request of any Lender made through the Administrative Agent, the Borrower shall execute and deliver to such Lender (through the Administrative Agent) a Note payable to such Lender, which shall evidence such Lender's Loans in addition to such accounts or records."
+        },
+        {
+          "itemId": "faf21a369df9fb7c630c1814cbc49c338c1418d2fa66e72ff6b2aa49786a74f7",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:9a455a96cb07ca916f0e5e58",
+          "irPath": "rules[3].conditions[0]",
+          "numericValue": null,
+          "textValue": "Triggered only upon the request of any Lender, made through the Administrative Agent.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Upon the request of any Lender made through the Administrative Agent"
+        },
+        {
+          "itemId": "47721014412d8ccb0a17f4bb08d1bfd2d0a6d70f75a495788f16d8f8043371d9",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:d827b7ae946e798d896aa057",
+          "irPath": "rules[4].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Each Lender may attach schedules to its Note and endorse thereon the date, Type (if applicable), amount and maturity of its Loans and payments with respect thereto."
+        },
+        {
+          "itemId": "3ec6c786e657a07d9d1f9dbdd1cba02721ebc730f38dc320a7e42dc4b6fb5bfd",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:d827b7ae946e798d896aa057",
+          "irPath": "rules[4].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.11",
+          "sourceExcerpt": "Each Lender may attach schedules to its Note and endorse thereon the date, Type (if applicable), amount and maturity of its Loans and payments with respect thereto."
+        }
+      ],
+      "ruleCount": 5,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:38b229b984193e98fa1586dc",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:57.665Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:ce8d54268d99fdbfdeb3da55",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:ce8d54268d99fdbfdeb3da55",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:ce8d54268d99fdbfdeb3da55",
+      "items": [
+        {
+          "itemId": "c7da0d4f8339e7d5c30c003241368a25d58d19a21306129640423b71ec2bee4a",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:f60f6d49365dfcffd84aca32",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.08",
+          "sourceExcerpt": "SECTION 5.08\n\nOwnership of Property; Liens"
+        },
+        {
+          "itemId": "31425554fb9cabef9cd4ad3d14cc7540af54efb3a9256a1649278fd2d44f550b",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:f60f6d49365dfcffd84aca32",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 5.08 ('Ownership of Property; Liens') operative body text could not be retrieved: getOperativeProvision reports that the reference '5.08' matches two distinct physical locations in the document and refuses to guess between them (consistent with the flagged AMBIGUOUS_RELATIVE_REFERENCE dependency). The only confirmed-current text available is the section header itself ('SECTION 5.08 / Ownership of Property; Liens'), with no substantive covenant language. Related context items purporting to be cross-document leads from this section (references to an 'Investment Agreement', to 'terms of this Agreement', and to 'terms hereof as a Lender hereunder') point to documents (Investment Agreement, Security Agreement, Guarantee, Indenture, Intercreditor Agreement) that are confirmed absent from this instrument's package via getInstrumentDocuments (only doc-a exists), and in any event read as generic assignment/lender-joinder boilerplate inconsistent with an Ownership of Property/Liens covenant heading - suggesting these leads may belong to the OTHER, ambiguous physical location rather than to the real substantive text of this covenant.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.08",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:ce8d54268d99fdbfdeb3da55",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:58.060Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:53ee3a057e898eb40f0afda7",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:53ee3a057e898eb40f0afda7",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:53ee3a057e898eb40f0afda7",
+      "items": [
+        {
+          "itemId": "8cd9f278ac444f3942fddea058d9c497dd9dc6c92aca36b67c3fc04d93c5940b",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(1)",
+          "sourceExcerpt": "Subject to the occurrence of the Closing Date Refinancing, all Equity Interests that constitute Collateral owned by the Borrower or any Guarantor in any of their respective Subsidiaries are owned free and clear of all Liens of any person except (a) those Liens created under the Collateral Documents and (b) any nonconsensual Lien that is permitted under Section 7.01."
+        },
+        {
+          "itemId": "e6eaa27788db5239ca2ea85c3179c0c4950ce234ff33f0b69af0ead5fee8e5d5",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(1)",
+          "sourceExcerpt": "Subject to the occurrence of the Closing Date Refinancing, all Equity Interests that constitute Collateral owned by the Borrower or any Guarantor in any of their respective Subsidiaries are owned free and clear of all Liens of any person except (a) those Liens created under the Collateral Documents and (b) any nonconsensual Lien that is permitted under Section 7.01."
+        },
+        {
+          "itemId": "d87fe23bd1ec22d85823e2c29d208ed4b8a884440e13439e421b3b22106925de",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(1)",
+          "sourceExcerpt": "Subject to the occurrence of the Closing Date Refinancing, all Equity Interests that constitute Collateral owned by the Borrower or any Guarantor in any of their respective Subsidiaries are owned free and clear of all Liens of any person except (a) those Liens created under the Collateral Documents and (b) any nonconsensual Lien that is permitted under Section 7.01."
+        },
+        {
+          "itemId": "813f911726a5cc7ae8511aaab1df2d151e3cf7bb685f11e0506002d1f273fadb",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "This representation as to lien-free ownership is expressly subject to the occurrence of the Closing Date Refinancing.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(1)",
+          "sourceExcerpt": "Subject to the occurrence of the Closing Date Refinancing"
+        },
+        {
+          "itemId": "330005bb0a9f7f704221495e1eb7d7d29469146e68f13eda056a206d8abf529c",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+          "irPath": "rules[0].exceptions[0]",
+          "numericValue": null,
+          "textValue": "Liens created under the Collateral Documents",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(1)(a)",
+          "sourceExcerpt": "those Liens created under the Collateral Documents"
+        },
+        {
+          "itemId": "c42c8c8caa5899fad1d58bc8205ce811a0de40c786a53f53ec7e54e0aeb22757",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+          "irPath": "rules[0].exceptions[1]",
+          "numericValue": null,
+          "textValue": "Any nonconsensual Lien that is permitted under Section 7.01 (the Liens negative covenant)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(1)(b)",
+          "sourceExcerpt": "any nonconsensual Lien that is permitted under Section 7.01"
+        },
+        {
+          "itemId": "93af04a608b80182c12b8af8c56d56586d2ba8160f87ea261799ea87887c3038",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+          "irPath": "rules[0].exceptions[1].conditions[0]",
+          "numericValue": null,
+          "textValue": "The Lien must be nonconsensual in nature and must independently qualify as a Lien permitted under Section 7.01; Section 7.01 itself is a separately-modeled Liens covenant not expanded here.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "e5b4b2402d3d2fd52f0a7b3299a877f0febd9d6d5a51fb3aa78e2a875e2a0835",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:78fe69ce65b48ab5a5f09d60",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(2)",
+          "sourceExcerpt": "As of the Closing Date, Schedule 5.12 sets forth: (a) the name and jurisdiction of organization of each Subsidiary, and (b) the ownership interests of the Borrower and any Subsidiary of the Borrower in each Subsidiary, including the percentage of such ownership."
+        },
+        {
+          "itemId": "a2b5546eb91c3dfbea0232dd1ee6c299749e0b5d8c5f1142a7b42ea092c52691",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:78fe69ce65b48ab5a5f09d60",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(2)",
+          "sourceExcerpt": "As of the Closing Date, Schedule 5.12 sets forth: (a) the name and jurisdiction of organization of each Subsidiary, and (b) the ownership interests of the Borrower and any Subsidiary of the Borrower in each Subsidiary, including the percentage of such ownership."
+        },
+        {
+          "itemId": "9e20986ccf8f806cc4a11b7d222a1ff365d181a6b87489db0dfc95912d278a21",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:78fe69ce65b48ab5a5f09d60",
+          "irPath": "rules[1].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(2)",
+          "sourceExcerpt": "As of the Closing Date, Schedule 5.12 sets forth: (a) the name and jurisdiction of organization of each Subsidiary, and (b) the ownership interests of the Borrower and any Subsidiary of the Borrower in each Subsidiary, including the percentage of such ownership."
+        },
+        {
+          "itemId": "a521db50948edf84c78a163b1e0204584e228a8ae5df16d6892be1d776f2e8fa",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:78fe69ce65b48ab5a5f09d60",
+          "irPath": "rules[1].conditions[0]",
+          "numericValue": null,
+          "textValue": "Disclosure is measured as of the Closing Date.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.12(2)",
+          "sourceExcerpt": "As of the Closing Date"
+        },
+        {
+          "itemId": "43566c18c364b1326a5f5b9271545bc32450fda9b46d8f77011d03ba30ed531b",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:cec0cbee44fa76f5b35f9a27",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "412b82868462cc7972f27ccc6d606dc2258f622bb176385c0f0d1a266559e522",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:cec0cbee44fa76f5b35f9a27",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Existing Credit Agreement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 2,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:53ee3a057e898eb40f0afda7",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:58.426Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:6bfcc7110ac4eb803b70ac3c",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:6bfcc7110ac4eb803b70ac3c",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:6bfcc7110ac4eb803b70ac3c",
+      "items": [
+        {
+          "itemId": "8b452b2e54eb665a1c0d9d4c51c24948f9c0f0439644ccd4fa529affd6ddb8ca",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:444ee7dbc878b2a41b12b7b8",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.13",
+          "sourceExcerpt": "SECTION 5.13\n\nMargin Regulations; Investment Company Act\n\n113"
+        },
+        {
+          "itemId": "ecd7859434079d54e8fb2a45a3aa1b31cdd1bbe1796c56e5ec9240fc1ff799e7",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:444ee7dbc878b2a41b12b7b8",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 5.13, titled 'Margin Regulations; Investment Company Act', is a covenant candidate whose substantive operative body text was not captured in the available evidence - only the section header and a page number ('SECTION 5.13 / Margin Regulations; Investment Company Act / 113') were provided.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.13",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:6bfcc7110ac4eb803b70ac3c",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:58.683Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:f0d5a91266c56a784cd44ed1",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:f0d5a91266c56a784cd44ed1",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:f0d5a91266c56a784cd44ed1",
+      "items": [
+        {
+          "itemId": "ae2c85ccfb41b549f1c8f1183084caa164dceab55c05d55048d5cb0a399da171",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:d1cae856b0e810a209765add",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.11",
+          "sourceExcerpt": "SECTION 6.11\n\nCovenant to Guarantee Obligations and Give Security\n\n119"
+        },
+        {
+          "itemId": "794c8992023f5d8ae704cc8100c0bfab9e6da7b0f0258f726c3db86b9be905e6",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:d1cae856b0e810a209765add",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 6.11, titled 'Covenant to Guarantee Obligations and Give Security', evidently imposes an affirmative covenant requiring certain Persons (likely new/acquired Subsidiaries) to become Guarantors of the Obligations and/or grant security (Collateral) within some period, subject to conditions/exceptions and probably referencing a Guarantee and/or Security Agreement, an Investment Agreement, and other Loan Documents. The actual substantive operative text (the scope of covered entities, timing, thresholds, exceptions, and the security/guarantee mechanics) was never supplied to this compiler - the only retrievable content for this section was its header and page number ('SECTION 6.11 / Covenant to Guarantee Obligations and Give Security / 119').",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.11",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:f0d5a91266c56a784cd44ed1",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:58.957Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:bac6e2c3b37f99ac7fc7db21",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:bac6e2c3b37f99ac7fc7db21",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:bac6e2c3b37f99ac7fc7db21",
+      "items": [
+        {
+          "itemId": "cd0a47a2bfcc8f583327d9f63edb7ffc660a22245446ebcd1aad984f34311276",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:e9474f45e1f9c9246567c54a",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.01",
+          "sourceExcerpt": "SECTION 7.01 Liens 123"
+        },
+        {
+          "itemId": "3dd993999cb6be128c28b370b96a57b076987c783b62bddb8c16f6bffe28c4f9",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:e9474f45e1f9c9246567c54a",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 7.01 (Liens) operative covenant text - the actual negative-covenant prohibition and its exceptions/permitted-lien baskets",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.01",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:bac6e2c3b37f99ac7fc7db21",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:59.144Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:87eb9076ed8c82b0e025d147",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:87eb9076ed8c82b0e025d147",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:87eb9076ed8c82b0e025d147",
+      "items": [
+        {
+          "itemId": "e4e4dfbd9b357108bd22864b376069073c1a62cd6a3bc1d096676e675efabb69",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:436a57212e8cab9aa1602a05",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.02",
+          "sourceExcerpt": "SECTION 7.02\n\nIndebtedness\n\n124"
+        },
+        {
+          "itemId": "6dc1f41ba96851c69417cf61b7a57c62268e5ca7ec6d1ee315d30656caf906d0",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:436a57212e8cab9aa1602a05",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 7.02, titled 'Indebtedness', is the negative covenant governing incurrence of Indebtedness (the prohibition and its enumerated permitted-debt baskets/exceptions), but no substantive body text for this section was obtainable.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.02",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "60d0962ff2be92f7658a5df457bbf2a369a0c36560d91629e38677339e402e6e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:be12534435889b49bc5a3fb9",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Contingent Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "3396ecb1b20aa69ef6b3b9205c785ae3ea2d00f0d4e9c248f3bfc94376fc23cd",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:be12534435889b49bc5a3fb9",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Qualified Securitization Facility",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2492c56836ff6f20a10d86f40ebe93393fc39b094ca6ba70e658caf204c7e3c9",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:be12534435889b49bc5a3fb9",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Hedging Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9848d7f334788feca81c3b5149a71bf03b52099a1056d8377f9f6d5a88379bcb",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:be12534435889b49bc5a3fb9",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Capitalized Lease Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "e0f0de446ee3b8b50661b161929e1ded789ddfe998b180a4c62a95d0f3334a12",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:be12534435889b49bc5a3fb9",
+          "irPath": "definitions[0].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Total Net Leverage Ratio",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "04d44fd2ba164dff1e286aff30c01687ef9c6c9a08424f42823818ca9dcd9319",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:be12534435889b49bc5a3fb9",
+          "irPath": "definitions[0].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Lien",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "176543440a5d82f5eab3ecc5f11ba16b33ce0a22514cce2dbfb13ae2bedb87c8",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:be12534435889b49bc5a3fb9",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "textValue": "A multi-clause categorical inclusion/exclusion test for what constitutes 'Indebtedness' of a Person: (1) borrowed money, instruments/LCs/bankers' acceptances, deferred purchase price >12 months (with sub-exceptions for trade payables, earn-outs until balance-sheet-recognized and unpaid 60+ days, and ordinary-course payroll accruals), and net Hedging Obligations, in each case (other than LC/Hedging obligations) only if it would appear as a GAAP balance-sheet liability; (2) guarantee-type obligations of a third Person's clause-(1) Indebtedness; and (3) third-party clause-(1) Indebtedness secured by a Lien on the first Person's asset (valued at the lesser of asset FMV and the amount of such Indebtedness) - all subject to a further proviso excluding Contingent Obligations, LC reimbursement obligations (with a 3-Business-Day grace period before counting as Indebtedness), Qualified Securitization Facility obligations (except, for Total Net Leverage Ratio purposes only, amounts over $125.0 million), accrued expenses, deferred/prepaid revenue, and asset retirement/reclamation/workers-compensation obligations, and calculated without giving effect to ASC 815 embedded-derivative accounting effects.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.02",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:87eb9076ed8c82b0e025d147",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:59.448Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:2a671279e2a1d97e131dbed6",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:2a671279e2a1d97e131dbed6",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:2a671279e2a1d97e131dbed6",
+      "items": [
+        {
+          "itemId": "84b317477625dd1ebfff0415bd97365733a6a615197e09a4943c0c6d38d7ded6",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:ca243f1c33fc3917a75a3445",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.03",
+          "sourceExcerpt": "SECTION 7.03\n\nFundamental Changes\n\n131"
+        },
+        {
+          "itemId": "a16723c13c1bc39a5b8fdc5c40bad7b89c2ea64be53acec61f7588887fc54c55",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:ca243f1c33fc3917a75a3445",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 7.03 ('Fundamental Changes') operative covenant text (typically governing mergers, consolidations, liquidations, dissolutions and/or sales of substantially all assets) could not be retrieved",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.03",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:2a671279e2a1d97e131dbed6",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:59.700Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:ad9c95a240d03f25b0220acd",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:ad9c95a240d03f25b0220acd",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:ad9c95a240d03f25b0220acd",
+      "items": [
+        {
+          "itemId": "07efab763f43f8f2791f853b7e1b4d5b606b79bcd1cdaa8ba4ebda34a3209b4a",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:ee2b6109dc4eabbc95db6eb6",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.04",
+          "sourceExcerpt": "SECTION 7.04\n\nAsset Sales\n\n133"
+        },
+        {
+          "itemId": "a76b30c449907b1f57a5f98e09e60924a92f4822ead074ed2e4b9578952613f3",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:ee2b6109dc4eabbc95db6eb6",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 7.04, captioned 'Asset Sales', is the intended covenant provision, but the only text supplied in context is the section heading and a page number ('SECTION 7.04 / Asset Sales / 133') with no substantive operative body text.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.04",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:ad9c95a240d03f25b0220acd",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:17:59.896Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:e6c089ca3e4b2840a61562bc",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:e6c089ca3e4b2840a61562bc",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:e6c089ca3e4b2840a61562bc",
+      "items": [
+        {
+          "itemId": "77c69e572f80ea0f03fc6bfc200a7cac7c19f59b7632234e1d9abfff092edd1a",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:40ed2689faab8c4314383f3c",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.05",
+          "sourceExcerpt": "SECTION 7.05 Restricted Payments"
+        },
+        {
+          "itemId": "17aa03db0e3e4b1b616e8dad02f3c88b89c18d60c9d061ea8e5016d0b9996ddf",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:40ed2689faab8c4314383f3c",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "The Restricted Payments covenant at Section 7.05 - its substantive operative body text (the actual prohibition/permission language, baskets, thresholds and conditions governing Restricted Payments)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.05",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:e6c089ca3e4b2840a61562bc",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:18:00.095Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:09bef4bd987ba27c1454bdee",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:09bef4bd987ba27c1454bdee",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:09bef4bd987ba27c1454bdee",
+      "items": [
+        {
+          "itemId": "d3e8a8d21f525565373af07d266a396a86aada3250fd8f88207ad33d46635fab",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:6b190370e9f676dac0c3e1cd",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.06",
+          "sourceExcerpt": "SECTION 7.06 Change in Nature of Business. The Borrower shall not, nor shall the Borrower permit any of its Subsidiaries to, engage in any material line of business substantially different from those lines of business conducted by the Borrower and any of its Subsidiaries on the Closing Date or any business(es) or any other activities that are reasonably similar, ancillary, incidental, complementary or related to, or a reasonable extension, development or expansion of, the business conducted or proposed to be conducted by the Borrower and its Subsidiaries on the Closing Date."
+        },
+        {
+          "itemId": "4760f7b416baf27567df4732b888415c57b48a9e5d5710e3f8bd1e3e94d1b1f1",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:6b190370e9f676dac0c3e1cd",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.06",
+          "sourceExcerpt": "SECTION 7.06 Change in Nature of Business. The Borrower shall not, nor shall the Borrower permit any of its Subsidiaries to, engage in any material line of business substantially different from those lines of business conducted by the Borrower and any of its Subsidiaries on the Closing Date or any business(es) or any other activities that are reasonably similar, ancillary, incidental, complementary or related to, or a reasonable extension, development or expansion of, the business conducted or proposed to be conducted by the Borrower and its Subsidiaries on the Closing Date."
+        },
+        {
+          "itemId": "ec68f0bad6897a5fa00254aebc3e5b970a09e63290437ba3ad5e8aa1e17a0772",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:6b190370e9f676dac0c3e1cd",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.06",
+          "sourceExcerpt": "SECTION 7.06 Change in Nature of Business. The Borrower shall not, nor shall the Borrower permit any of its Subsidiaries to, engage in any material line of business substantially different from those lines of business conducted by the Borrower and any of its Subsidiaries on the Closing Date or any business(es) or any other activities that are reasonably similar, ancillary, incidental, complementary or related to, or a reasonable extension, development or expansion of, the business conducted or proposed to be conducted by the Borrower and its Subsidiaries on the Closing Date."
+        },
+        {
+          "itemId": "a78e7bbd1fdd453605d9d8ec04060e8650e1ca054c56b9a5f0fd1252c99f49c3",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:6b190370e9f676dac0c3e1cd",
+          "irPath": "rules[0].exceptions[0]",
+          "numericValue": null,
+          "textValue": "The prohibition does not extend to (and the Borrower and its Subsidiaries may continue to engage in) any business(es) or activities that are reasonably similar, ancillary, incidental, complementary or related to, or a reasonable extension, development or expansion of, the business conducted or proposed to be conducted by the Borrower and its Subsidiaries on the Closing Date - i.e., this functions as a qualitative safe-harbor defining the outer boundary of what counts as a prohibited 'material line of business substantially different' from the Closing Date business, rather than a separately quantifiable permission.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.06",
+          "sourceExcerpt": "or any business(es) or any other activities that are reasonably similar, ancillary, incidental, complementary or related to, or a reasonable extension, development or expansion of, the business conducted or proposed to be conducted by the Borrower and its Subsidiaries on the Closing Date."
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:09bef4bd987ba27c1454bdee",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": {
+      "status": "UNCERTAIN",
+      "evidence": [],
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-terminal-condition-suspicion-classifier-prompt.v1",
+      "algorithmVersion": "phase-3f1-terminal-condition-suspicion-classifier.v1",
+      "telemetry": {
+        "provider": "vercel-ai-gateway",
+        "model": "anthropic/claude-sonnet-5",
+        "promptVersion": "phase-c0.1",
+        "schemaVersion": "phase-c0.1",
+        "stage": "condition_suspicion_classification",
+        "timestamp": "2026-09-01T11:18:00.096Z",
+        "inputTokens": null,
+        "outputTokens": null,
+        "cachedInputTokens": null,
+        "cacheCreationInputTokens": null,
+        "attemptCount": 1,
+        "retryCount": 0,
+        "rateLimitFailures": 0,
+        "latencyMs": 237,
+        "calculatedCostUsd": null,
+        "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+      },
+      "failed": true,
+      "failureDetail": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}",
+      "isSynthetic": false,
+      "fromCache": false
+    },
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:18:00.546Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:b1e6755db02c39d2cad689f6",
+    "status": "VERIFICATION_FAILED",
+    "findings": [
+      {
+        "findingId": "5242ca945933a6b51502a4e82212f960b21653134d2aab53a042d5665e873073",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "discovery-candidate:b1e6755db02c39d2cad689f6",
+        "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+        "irPath": "rules[0].conditions[0].expression.right",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "7.10",
+        "proposedIrEvidence": "rules[0].conditions[0].expression.right=20000000",
+        "verifierReasoning": "compiled IR AMOUNT value 20000000 at rules[0].conditions[0].expression.right has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 20000000 at rules[0].conditions[0].expression.right has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T11:18:00.547Z"
+      },
+      {
+        "findingId": "5b9139df41ee45f607e090de97dfa3ae5ddef41e5ab8fc7a9ab7aafe6f9996bc",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "discovery-candidate:b1e6755db02c39d2cad689f6",
+        "ruleOrDefinitionId": "ir-definition:50a0f4a49f586e347d824eb3",
+        "irPath": "definitions[0].calculationExpression",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "7.10",
+        "proposedIrEvidence": "definitions[0].calculationExpression=20000000",
+        "verifierReasoning": "compiled IR AMOUNT value 20000000 at definitions[0].calculationExpression has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 20000000 at definitions[0].calculationExpression has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T11:18:00.547Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:b1e6755db02c39d2cad689f6",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:b1e6755db02c39d2cad689f6",
+      "items": [
+        {
+          "itemId": "8a4a15761c2feab3cb6aca6ce91d46713b414751a712ef9836a84aaf9691af9c",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": "The Borrower shall not, nor shall the Borrower permit any Subsidiary to, amend, modify or change in any manner materially adverse to the interests of the Lenders, as determined in good faith by the Borrower, any term or condition of any Subordinated Indebtedness having an aggregate outstanding principal amount greater than the Threshold Amount (other than as a result of any Refinancing Indebtedness in respect thereof) without the consent of the Administrative Agent (which consent shall not be unreasonably withheld or delayed)."
+        },
+        {
+          "itemId": "99247acdf0439f75a67db96dbfbf0d440138338f7e1d7408c66b3d6956a5d0c2",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": "The Borrower shall not, nor shall the Borrower permit any Subsidiary to, amend, modify or change in any manner materially adverse to the interests of the Lenders, as determined in good faith by the Borrower, any term or condition of any Subordinated Indebtedness having an aggregate outstanding principal amount greater than the Threshold Amount (other than as a result of any Refinancing Indebtedness in respect thereof) without the consent of the Administrative Agent (which consent shall not be unreasonably withheld or delayed)."
+        },
+        {
+          "itemId": "7855f2634cb03949679ec239291a4be9d52e13e8ee7ea935f25757dbd1db7dc0",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": "The Borrower shall not, nor shall the Borrower permit any Subsidiary to, amend, modify or change in any manner materially adverse to the interests of the Lenders, as determined in good faith by the Borrower, any term or condition of any Subordinated Indebtedness having an aggregate outstanding principal amount greater than the Threshold Amount (other than as a result of any Refinancing Indebtedness in respect thereof) without the consent of the Administrative Agent (which consent shall not be unreasonably withheld or delayed)."
+        },
+        {
+          "itemId": "9cf07bb29d5dffaa1ac42f6c468949bd56c0ae1abd9bd7f6e47047510b45723e",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "The prohibition applies only to Subordinated Indebtedness having an aggregate outstanding principal amount greater than the Threshold Amount ($20.0 million).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": "any term or condition of any Subordinated Indebtedness having an aggregate outstanding principal amount greater than the Threshold Amount"
+        },
+        {
+          "itemId": "b9a7ba5109bf0ebd09271d7f5abfccb9a83694629fb04be9e8c4bd3f2cf478b0",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "textValue": "COMPARE:GT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1887e6a4ff452c88cd609c18bb3010a64a898dcc050d1dd27c429bb941031549",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].conditions[0].expression.left",
+          "numericValue": null,
+          "textValue": "Aggregate outstanding principal amount of the relevant Subordinated Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "357b8bb4ae89a6d390ceefc9e7f7c6220f06de15b5da4920c5591d09c55a6eb4",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].conditions[0].expression.right",
+          "numericValue": 20000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "Definition of \"Threshold Amount\"",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1ec6ca94fb4e73f4b370452635e079bdfeb498532547c034c845935554007ec5",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "textValue": "The relevant amendment, modification or change must be 'in any manner materially adverse to the interests of the Lenders,' with materiality determined in good faith by the Borrower - a qualitative, discretionary standard rather than a formal test.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": "amend, modify or change in any manner materially adverse to the interests of the Lenders, as determined in good faith by the Borrower"
+        },
+        {
+          "itemId": "c6dad5905d685699e7a46c537ff33f29308f5d1c0a6e227c73d1efb879fe77c9",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].exceptions[0]",
+          "numericValue": null,
+          "textValue": "Refinancing carve-out: a change in the terms of Subordinated Indebtedness that occurs as a result of any Refinancing Indebtedness in respect thereof is excluded from this prohibition entirely (i.e. it is not a restricted modification at all).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": "(other than as a result of any Refinancing Indebtedness in respect thereof)"
+        },
+        {
+          "itemId": "5989a35956d3d703af9b1e99f92d63065b259308f76253330d4d6a3a0a340079",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].exceptions[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "The relevant change must result from Refinancing Indebtedness (as defined) in respect of the applicable Subordinated Indebtedness.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": "(other than as a result of any Refinancing Indebtedness in respect thereof)"
+        },
+        {
+          "itemId": "72df4795685906329dda18fa60312125a3da32d871a57e14859f122ad4c386c0",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].exceptions[0].conditions[0].expression",
+          "numericValue": null,
+          "textValue": "Refinancing Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a803426c9df845e6b9fc5a74a62a311a1400911867d2586ad07fb18b1c893fd6",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+          "irPath": "rules[0].exceptions[1]",
+          "numericValue": null,
+          "textValue": "Administrative Agent consent override: the otherwise-prohibited modification is permitted with the prior consent of the Administrative Agent, which consent may not be unreasonably withheld or delayed.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": "without the consent of the Administrative Agent (which consent shall not be unreasonably withheld or delayed)"
+        },
+        {
+          "itemId": "b03183e40843d2b4b1175b81fe9c90cf4ba353413c8e3d0b50e462e748cfe7fd",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-definition:50a0f4a49f586e347d824eb3",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": 20000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "Definition of \"Threshold Amount\"",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7c2d00484de994eda6d9fced9954d84652b84db7b204272016e0c1a1c705b718",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ac219d2d660370b80ccc4d09",
+          "irPath": "definitions[1].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "daca9784f6321f1950600054508c7cb87fb2c31a4b442ff2962ccfd177076c2e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ac219d2d660370b80ccc4d09",
+          "irPath": "definitions[1].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8c4694c647d1175d363a4434b23abe1e32783f490acfa19a0c988db678e04af9",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:b4c4ad756f6d0d575cacb639",
+          "irPath": "definitions[2].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "77c7046c4facb6da004520a42caba29a7b096ea511b4399d78d4346e172ff3e5",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:b4c4ad756f6d0d575cacb639",
+          "irPath": "definitions[2].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Disqualified Stock",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ca52b1bdbd606f7baea45cd55f14ffdc4f9941e89ce7de22f3dbffcc67aacafd",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:b4c4ad756f6d0d575cacb639",
+          "irPath": "definitions[2].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Preferred Stock",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b3d454fc7e080d6af2a815b157fd58eb02a567a04d9b0260fe771dbbc1089bef",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:b4c4ad756f6d0d575cacb639",
+          "irPath": "definitions[2].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Subordinated Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ecebeb11f19a3a531cae553d975f08be53dd15493c99c1eff171c03d350e337c",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:b4c4ad756f6d0d575cacb639",
+          "irPath": "definitions[2].calculationExpression",
+          "numericValue": null,
+          "textValue": "Refinancing Indebtedness is defined by a multi-part test (principal-amount cap, weighted-average-life and maturity requirements, subordination/lien-ranking preservation, guarantor/collateral-scope limits, and several provisos) rather than a single computable value.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.10",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 3,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:b1e6755db02c39d2cad689f6",
+      "items": [
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "357b8bb4ae89a6d390ceefc9e7f7c6220f06de15b5da4920c5591d09c55a6eb4",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:f6ab7130e3c29fe387c183f5",
+              "irPath": "rules[0].conditions[0].expression.right",
+              "numericValue": 20000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "Definition of \"Threshold Amount\"",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 20000000 at rules[0].conditions[0].expression.right has no matching source-side figure"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "b03183e40843d2b4b1175b81fe9c90cf4ba353413c8e3d0b50e462e748cfe7fd",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-definition:50a0f4a49f586e347d824eb3",
+              "irPath": "definitions[0].calculationExpression",
+              "numericValue": 20000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "Definition of \"Threshold Amount\"",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 20000000 at definitions[0].calculationExpression has no matching source-side figure"
+        }
+      ],
+      "materialUnresolvedCount": 2
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:18:00.831Z"
+  },
+  {
+    "candidateRef": "discovery-candidate:f17912b03e1ad85eabefc441",
+    "status": "VERIFICATION_FAILED",
+    "findings": [],
+    "sourceInventory": {
+      "candidateRef": "discovery-candidate:f17912b03e1ad85eabefc441",
+      "items": [],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "discovery-candidate:f17912b03e1ad85eabefc441",
+      "items": [
+        {
+          "itemId": "9e9a4c56d4ddce07ae976b464be87a784659dc594cb15d69634fb850092f1210",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:330fbebf19f2024d409ff926",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.11",
+          "sourceExcerpt": "SECTION 7.11\n\nNegative Pledge\n\n143"
+        },
+        {
+          "itemId": "0fc93e53789b65c4926b7b25f75eebabc6a9e4b78699a8ca4764638ed7c224ba",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:330fbebf19f2024d409ff926",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": "Section 7.11 is captioned 'Negative Pledge' but the bounded evidence supplied for this compilation contains only the section heading/page marker ('SECTION 7.11 / Negative Pledge / 143') and a handful of unrelated cross-document reference snippets (to an 'Investment Agreement', to 'the terms of this Agreement', and to 'the terms hereof as a Lender hereunder') that do not themselves state the negative pledge's substantive prohibition, carve-outs, or any dollar/percentage thresholds. Attempting to retrieve the section's confirmed current operative text directly (getOperativeProvision / getReferencedProvision, both by absolute reference '7.11' and 'Section 7.11') returned an unresolved ambiguity: the reference '7.11' matches more than one physical location in the instrument, and no fromNodeId scoping evidence was available in the supplied context bundle to disambiguate (getContextBundleComponent did not recognize the supplied context-item ids as retrievable, and no nodeId was exposed by any successful tool call). The task's own known-dependency list separately flags this exact condition as an unresolved AMBIGUOUS_RELATIVE_REFERENCE, plus numerous REFERENCED_DOCUMENT_ABSENT flags for Security Agreement / Guarantee / Guarantee and Security Agreement / Indenture / Intercreditor Agreement document types that are typically the subject of a negative pledge's permitted-lien carve-outs but are absent from this document package.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§7.11",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 1,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "discovery-candidate:f17912b03e1ad85eabefc441",
+      "items": [],
+      "materialUnresolvedCount": 0
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T11:18:01.023Z"
+  }
+]
