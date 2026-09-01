@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PACKAGE_MANIFEST",
+  "issuer": "Superior Industries International, Inc.",
+  "cik": "0000095552",
+  "sourceAuthority": "SEC EDGAR (www.sec.gov), public filings, no authentication required",
+  "documents": [
+    {
+      "documentId": "doc-a",
+      "role": "BASE (original agreement)",
+      "title": "Term Loan Credit Agreement",
+      "dated": "2022-12-15",
+      "parties": "Superior Industries International, Inc. (Borrower); Oaktree Fund Administration, LLC (Administrative Agent); JPMorgan Chase Bank, N.A. (Collateral Agent); other lenders",
+      "principalAmount": "$400,000,000",
+      "maturity": "2028-12-15",
+      "secFiling": { "form": "8-K", "accessionNumber": "0001193125-22-307852", "filingDate": "2022-12-19", "exhibit": "EX-10.1" },
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/95552/000119312522307852/d403666dex101.htm",
+      "rawFile": { "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/raw/doc-a-2022-12-15-term-loan-credit-agreement.htm", "bytes": 1255366, "sha256": "3008eadbe6c32f0fc342ceb513d0005340dab67e0593bc24bb5eebe5a6351dde" },
+      "extractedTextFile": { "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-a-2022-12-15-term-loan-credit-agreement.txt", "chars": 782909, "words": 123000, "sha256": "b21f89259b164ecdc687a5d7cb7fa37e0d6bb968d81313e356a924cf54c8491a", "estimatedPages": 245 }
+    },
+    {
+      "documentId": "doc-b",
+      "role": "RESTATEMENT",
+      "title": "Amended and Restated Term Loan Credit Agreement",
+      "dated": "2024-08-14",
+      "parties": "Superior Industries International, Inc. (Borrower); Oaktree Fund Administration, LLC (Administrative Agent); JPMorgan Chase Bank, N.A. (Collateral Agent); other lenders",
+      "principalAmount": "$520,000,000 (new term loan, per the 8-K's own cover disclosure)",
+      "maturity": "2028-12-15",
+      "restatesDocumentId": "doc-a",
+      "secFiling": { "form": "8-K", "accessionNumber": "0001193125-24-201017", "filingDate": "2024-08-15", "exhibit": "EX-10.1" },
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/95552/000119312524201017/d819822dex101.htm",
+      "rawFile": { "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/raw/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.htm", "bytes": 1208962, "sha256": "b64904766ffc2a6c454aac81c2ca4e728f498c165c8cfb056c002b5f0b733568" },
+      "extractedTextFile": { "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-b-2024-08-14-amended-restated-term-loan-credit-agreement.txt", "chars": 795785, "words": 125028, "sha256": "722a6c55d5066c004627e03334b3c365c270aaee959f39825b76152549debf8c", "estimatedPages": 249 }
+    },
+    {
+      "documentId": "doc-c",
+      "role": "AMENDMENT",
+      "title": "First Amendment to Amended and Restated Term Loan Credit Agreement",
+      "dated": "2025-03-31",
+      "parties": "Superior Industries International, Inc.; Oaktree Fund Administration, LLC (Administrative Agent); JPMorgan Chase Bank, N.A. (Collateral Agent); other lenders",
+      "amendsDocumentId": "doc-b",
+      "secFiling": { "form": "8-K", "accessionNumber": "0001193125-25-071386", "filingDate": "2025-04-02", "exhibit": "EX-10.1" },
+      "sourceUrl": "https://www.sec.gov/Archives/edgar/data/95552/000119312525071386/d946981dex101.htm",
+      "rawFile": { "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/raw/doc-c-2025-03-31-first-amendment.htm", "bytes": 108629, "sha256": "c4ec5d532a35fc143adf89dee40fe991c68938ffca4a4a584ea5cf1a138bc325" },
+      "extractedTextFile": { "path": "tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/doc-c-2025-03-31-first-amendment.txt", "chars": 28291, "words": 4349, "sha256": "88031784c0f7404ec6508a6944e5b9ea42daea5c99d21e68a67d1b5c3850fe86", "estimatedPages": 9 }
+    }
+  ],
+  "extractionMethod": "HTML fetched verbatim from the public SEC URLs above via curl. Plain text derived via a simple, generic HTML-to-text conversion (strip <script>/<style> blocks, convert block-level closing tags to newlines, strip remaining tags, decode HTML entities, normalize whitespace) - never any LLM/AI involvement in extraction; deterministic and reproducible from the preserved raw .htm files. No content was deleted, reordered, or summarized - table of contents, section numbering, and exhibit/schedule text are preserved in full.",
+  "totalPackageSize": { "totalDocuments": 3, "totalChars": 1606985, "totalWords": 252377, "totalEstimatedPages": 503 },
+  "honestSizeDisclosure": "This materially EXCEEDS the mission's own Section 4 guidance of 'approximately 2-4 core documents and roughly 75-250 pages total' - by roughly 2x on the page dimension. This is disclosed transparently, not hidden: the issuer was selected by a pre-committed deterministic formula (02-selection.json) before any document text was opened, and Superior Industries' real Term Loan Credit Agreement (a $400M-then-$520M syndicated facility) is genuinely this long - real financing documents of this type routinely run 200+ pages. Re-selecting a different, smaller candidate after observing this size would itself violate the mission's own 'no human hand-picking after seeing document contents' discipline (character/page count is content-derived, not pool metadata). The mission's own explicit, enumerated hard-stop conditions are the $8 AI-cost ceiling (Section 9) and source validity (Section 6) - not a page-count ceiling - so this validation proceeds, relying on the REAL production pipeline's own existing deterministic discovery/routing and cost-bounded semantic-compilation scoping (the same mechanism that kept prior real large-document runs, e.g. Phase 3F/post-3F2's own Riot/known-package runs, within single-digit-dollar cost despite comparably large source documents) to keep actual incremental AI spend low regardless of total page count. The cost forecast in 06-cost-forecast.json will independently confirm this before any substantive spend, and the validation will stop per Section 9 if it does not.",
+  "immutabilityCommitment": "No document will be added to or removed from this 3-document set after this point, regardless of how the pipeline or scoring subsequently performs on it (Section 6's own explicit rule)."
+}
