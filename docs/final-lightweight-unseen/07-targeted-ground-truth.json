@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "TARGETED_GROUND_TRUTH",
+  "methodology": "Authored entirely from direct reading of the raw, frozen extracted-text source files (tests/fixtures/unseen-packages/final-lightweight-unseen-sup/extracted-text/*.txt) - source-first, per this mission's own Section 11 requirement. NO part of the production pipeline (structural index, discovery, package graph, semantic compilation, verification) has been run against this package before this artifact was written and committed. Region selection targeted source characteristics directly visible in the raw text (multi-definition clusters, cross-referencing quantitative definitions, provisos/caps/cure mechanisms, document captions, restatement/amendment recitals) - never 'where might Headroom fail.'",
+  "totalClaims": 16,
+  "categoryBreakdown": { "multiDefinitionExhaustiveness": 6, "qualifiersConditionsFormulaBranches": 4, "documentClassificationIdentity": 3, "amendmentRestatementOperativeDocument": 3 },
+  "claims": [
+    {
+      "claimId": "A1", "category": "MULTI_DEFINITION_EXHAUSTIVENESS", "materiality": "CRITICAL",
+      "document": "doc-a", "sourceSpan": "SECTION 1.01, \"Consolidated EBITDA\" (extracted-text lines 1639-1723)",
+      "proposition": "Consolidated EBITDA is defined as Consolidated Net Income for the period, increased by 16 lettered addback clauses (a)-(p) - interest expense, taxes, D&A, non-cash charges, minority interest, board fees, [reserved], cash receipts, equity-plan costs, pension costs, Transaction Expenses, run-rate cost savings, extraordinary items, board-member compensation, software development costs, discontinued-operations losses - and decreased by 4 lettered subtraction clauses (a)-(d).",
+      "quantitativeTerms": "16 addback clauses, 4 subtraction clauses",
+      "conditionsQualifiers": "Clause (l) run-rate synergies capped at 15% of Acquired EBITDA per Test Period (with Section 1.07(3) aggregation); clauses (f)/(m)/(n) combined addbacks capped at 10% of Consolidated EBITDA per Test Period (see B3 below, same underlying text, scored separately as a qualifier claim).",
+      "expectedVersionState": "N/A - present in both doc-a and doc-b (base definition set), not itself touched by doc-c's amendment."
+    },
+    {
+      "claimId": "A2", "category": "MULTI_DEFINITION_EXHAUSTIVENESS", "materiality": "MATERIAL",
+      "document": "doc-a", "sourceSpan": "SECTION 1.01, \"Consolidated Net Income\" (line 1936)",
+      "proposition": "Consolidated Net Income is the base sibling definition Consolidated EBITDA's own text is explicitly built from ('the Consolidated Net Income of such Person and its Subsidiaries for such period') - a real cross-reference dependency between two definitions in the same cluster.",
+      "expectedVersionState": "N/A - base definition set."
+    },
+    {
+      "claimId": "A3", "category": "MULTI_DEFINITION_EXHAUSTIVENESS", "materiality": "MATERIAL",
+      "document": "doc-a", "sourceSpan": "SECTION 1.01, \"Consolidated Interest Expense\" (line 1729)",
+      "proposition": "Consolidated Interest Expense is a second sibling definition explicitly cross-referenced from within Consolidated EBITDA's own clause (a) ('together with items excluded from the definition of \"Consolidated Interest Expense\" pursuant to the definition thereof').",
+      "expectedVersionState": "N/A - base definition set."
+    },
+    {
+      "claimId": "A4", "category": "MULTI_DEFINITION_EXHAUSTIVENESS", "materiality": "MATERIAL",
+      "document": "doc-a", "sourceSpan": "SECTION 1.01, \"Consolidated First Lien Secured Debt\" (line 1724)",
+      "proposition": "Consolidated First Lien Secured Debt is the aggregate principal amount of first-lien-secured Indebtedness, excluding Non-Recourse Indebtedness, undrawn revolver amounts, and most letter-of-credit/bank-guarantee/hedging obligations - the numerator feeding the Secured Net Leverage Ratio (A5).",
+      "expectedVersionState": "N/A - base definition set."
+    },
+    {
+      "claimId": "A5", "category": "MULTI_DEFINITION_EXHAUSTIVENESS", "materiality": "CRITICAL",
+      "document": "doc-a", "sourceSpan": "SECTION 1.01, \"Secured Net Leverage Ratio\" (line 3618)",
+      "proposition": "Secured Net Leverage Ratio is the ratio of (a) Consolidated First Lien Secured Debt to (b) Consolidated EBITDA for the applicable Test Period - a definition whose own text is entirely constructed from two OTHER cross-referenced definitions (A4 and A1), the exact multi-hop cross-reference shape this mechanism must generalize across.",
+      "expectedVersionState": "N/A - base definition set; this ratio also drives the Applicable Rate pricing grid (B2)."
+    },
+    {
+      "claimId": "A6", "category": "MULTI_DEFINITION_EXHAUSTIVENESS", "materiality": "MATERIAL",
+      "document": "doc-c", "sourceSpan": "SECTION 2(a) (extracted-text lines 34-45)",
+      "proposition": "The First Amendment adds THREE new sibling definitions to Section 1.01 in one clause: \"Invoice Restrictions\" (cross-referencing the Monthly Factoring Report), \"Maintenance Liquidity\" (a real multi-part formula: revolving-commitment headroom plus an Adjustment to Liquidity plus unrestricted cash), and \"Monthly Factoring Report\" (cross-referencing new Exhibit E). This directly mirrors the exact failure shape the post-3F.2 remediation's own RGT-C-030 finding described (\"doc-c §1.01 (3 linked definitions) - Only 1 of 3 interlinked terms extracted\") - all three must be captured, not merely one.",
+      "quantitativeTerms": "Maintenance Liquidity is a 3-term additive formula (commitment headroom + Adjustment to Liquidity + unrestricted cash/Cash Equivalents)",
+      "expectedVersionState": "ADD_DEFINITION operation via doc-c; these terms did not exist in doc-a or doc-b."
+    },
+    {
+      "claimId": "B1", "category": "QUALIFIERS_CONDITIONS_FORMULA", "materiality": "MATERIAL",
+      "document": "doc-a", "sourceSpan": "SECTION 1.01, \"Applicable Liquidity Threshold\" (line 1082)",
+      "proposition": "Applicable Liquidity Threshold is $37.5 million; PROVIDED that if the Super-Senior Revolving Facility's maximum committed amount (or refinancing thereof) is increased above $62.0 million (the excess, the \"RCF Increase Amount\"), the Threshold increases by 26.0% of the RCF Increase Amount, up to a maximum Applicable Liquidity Threshold of $50.0 million.",
+      "quantitativeTerms": "$37.5M base; $62.0M trigger; 26.0% step-up rate; $50.0M cap",
+      "conditionsQualifiers": "Conditional step-up triggered only by a specific revolver-increase event; hard cap on the increased threshold."
+    },
+    {
+      "claimId": "B2", "category": "QUALIFIERS_CONDITIONS_FORMULA", "materiality": "MATERIAL",
+      "document": "doc-a", "sourceSpan": "SECTION 1.01, \"Applicable Rate\" (line 1086)",
+      "proposition": "Applicable Rate is (i) until delivery of financial statements for the first full fiscal quarter after the Closing Date under Section 6.01, a flat 8.00% (Term Benchmark) / 7.00% (Base Rate); and (ii) thereafter, a tiered percentage keyed to the most recently reported Secured Net Leverage Ratio (a pricing grid with multiple levels).",
+      "conditionsQualifiers": "A temporal/reporting-triggered condition switches the definition from a flat rate to a grid-based rate; the grid itself is keyed to another cross-referenced definition (A5).",
+      "expectedVersionState": "N/A - base definition set."
+    },
+    {
+      "claimId": "B3", "category": "QUALIFIERS_CONDITIONS_FORMULA", "materiality": "MATERIAL",
+      "document": "doc-a", "sourceSpan": "SECTION 1.01, \"Consolidated EBITDA\" internal proviso (line 1705)",
+      "proposition": "Within the Consolidated EBITDA definition itself: \"the aggregate amount of any amounts added back to Consolidated EBITDA pursuant to clauses (f), (m) and (n) above shall not exceed 10% of Consolidated EBITDA (calculated without giving effect to any such addbacks) in any Test Period.\"",
+      "quantitativeTerms": "10% cap, computed on a base that excludes the very addbacks being capped",
+      "conditionsQualifiers": "An internal, cross-clause cap embedded inside a much larger definition - the specific kind of qualifier a truncated or partial extraction of Consolidated EBITDA (A1) would most plausibly drop."
+    },
+    {
+      "claimId": "B4", "category": "QUALIFIERS_CONDITIONS_FORMULA", "materiality": "CRITICAL",
+      "document": "doc-c", "sourceSpan": "SECTION 2(b), amending Section 2.05(2)(c) (extracted-text lines 46-60)",
+      "proposition": "Mandatory cash-sweep prepayment: (i) if month-end unrestricted cash exceeds $50 million, prepay Super-Priority Revolving Loans down to $50 million within 5 Business Days; (ii) after that, if Maintenance Liquidity exceeds $115 million, prepay Term Loans to bring Maintenance Liquidity down to $115 million; PROVIDED a cure/safe-harbor: if a Maintenance Liquidity miscalculation causes a shortfall (\"Deficiency Amount\") under $1,300,000 discovered within 30 days, no Default/Event of Default occurs so long as the Deficiency Amount is cured within 5 Business Days of discovery.",
+      "quantitativeTerms": "$50M and $115M dual thresholds; $1,300,000 cure-eligibility ceiling; 30-day discovery window; 5-Business-Day cure window",
+      "conditionsQualifiers": "A genuine multi-branch conditional structure (two independent threshold tests plus a bounded cure mechanism) - the kind of qualifier-heavy provision most at risk of a dropped branch or a silently-lost cure carve-out.",
+      "expectedVersionState": "REPLACE_TEXT via doc-c on a section that existed in doc-b (Section 2.05(2)(c)) - the amended text is what should read as current after doc-c's effective date."
+    },
+    {
+      "claimId": "C1", "category": "DOCUMENT_CLASSIFICATION_IDENTITY", "materiality": "CRITICAL",
+      "document": "doc-a", "sourceSpan": "Caption (extracted-text lines 1-15)",
+      "proposition": "doc-a's own caption reads \"$400,000,000 CREDIT AGREEMENT Dated as of December 15, 2022 among SUPERIOR INDUSTRIES INTERNATIONAL, INC., as the Borrower...\" - a standard, unambiguous base-agreement caption.",
+      "expectedDocumentType": "CREDIT_AGREEMENT, high confidence."
+    },
+    {
+      "claimId": "C2", "category": "DOCUMENT_CLASSIFICATION_IDENTITY", "materiality": "CRITICAL",
+      "document": "doc-b", "sourceSpan": "Caption (extracted-text lines 1-15) plus its own recital at line 761 (\"amend and restate that certain Credit Agreement, dated as of December 15, 2022\")",
+      "proposition": "doc-b's own caption reads \"$520,000,000 AMENDED AND RESTATED CREDIT AGREEMENT Dated as of August 14, 2024\" - its own recital separately, and later in the text, mentions the plain type \"Credit Agreement\" when referring to doc-a. The earlier, self-referential caption must win; the later mention of the referenced predecessor's type must never hijack doc-b's own identity.",
+      "expectedDocumentType": "AMENDED_AND_RESTATED_AGREEMENT, high confidence - the caption's own earliest position must be selected over the later recital mention of a different (base) document type."
+    },
+    {
+      "claimId": "C3", "category": "DOCUMENT_CLASSIFICATION_IDENTITY", "materiality": "MATERIAL",
+      "document": "doc-c", "sourceSpan": "Caption (extracted-text lines 1-11)",
+      "proposition": "doc-c's own caption/title reads \"FIRST AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT\" - the phrase \"AMENDED AND RESTATED\" appears WITHIN doc-c's own title as a reference to the base document it amends, not as doc-c's own identity.",
+      "expectedDocumentType": "AMENDMENT, high confidence - never AMENDED_AND_RESTATED_AGREEMENT despite that exact phrase appearing in doc-c's own caption text (an adversarial classification case directly analogous to the prior pre-unseen-classifier-remediation session's own C4 test scenario, on genuinely different real evidence)."
+    },
+    {
+      "claimId": "D1", "category": "AMENDMENT_RESTATEMENT_OPERATIVE_DOCUMENT", "materiality": "CRITICAL",
+      "document": "doc-b", "sourceSpan": "PRELIMINARY STATEMENTS, line 761: \"amend and restate that certain Credit Agreement, dated as of December 15, 2022 (the 'Original Credit Agreement')\"",
+      "proposition": "doc-b's own recital directly names doc-a's real type (Credit Agreement) and real execution date (December 15, 2022) - a direct caption-style date match, the same evidentiary shape as the repo's own DETERMINISTIC_TITLE_DATE_MATCH resolution path.",
+      "expectedRelationship": "doc-b RESTATES doc-a, status RESOLVED, high confidence via direct type+date match."
+    },
+    {
+      "claimId": "D2", "category": "AMENDMENT_RESTATEMENT_OPERATIVE_DOCUMENT", "materiality": "CRITICAL",
+      "document": "doc-c", "sourceSpan": "RECITALS, line 21: \"parties to that certain Amended and Restated Credit Agreement, dated as of August 14, 2024\"",
+      "proposition": "doc-c's own recital directly names doc-b's real type (Amended and Restated Credit Agreement) and real execution date (August 14, 2024) - again a direct caption-style date match.",
+      "expectedRelationship": "doc-c AMENDS doc-b, status RESOLVED, high confidence via direct type+date match."
+    },
+    {
+      "claimId": "D3", "category": "AMENDMENT_RESTATEMENT_OPERATIVE_DOCUMENT", "materiality": "MATERIAL",
+      "document": "doc-b", "sourceSpan": "SECTION 1.01, \"Consolidated EBITDA\" (same provision as A1) - confirmed NOT among the sections doc-c's own SECTION 2 amendment clauses (a)-(e) touch (doc-c only adds 3 new §1.01 definitions, amends §2.05(2)(c), §6.01(3), §6.02, and replaces Exhibit E)",
+      "proposition": "ORDINARY-AMENDMENT CONTROL CLAIM: doc-b's own Consolidated EBITDA definition is genuinely untouched by doc-c's amendment. doc-b as a WHOLE must remain the current operative agreement (doc-a is historical relative to doc-b; doc-b is NOT historical relative to doc-c merely because doc-c amends other, specific provisions of it) - this is the 'ordinary amendment never makes the whole base document historical' invariant this mission's own Section 19 requires.",
+      "expectedVersionState": "doc-b's own Consolidated EBITDA text remains CURRENT_OPERATIVE / governs after doc-c's amendment - doc-c's amendment operates on top of doc-b (V-as-amended), never supersedes doc-b as a whole document."
+    }
+  ]
+}
