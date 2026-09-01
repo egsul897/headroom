@@ -1,0 +1,2023 @@
+{
+  "generatedAt": "2026-09-01T19:52:32.290Z",
+  "method": "zero-cost deterministic re-derivation (no model call) of the SOURCE/CONTEXT/INDEX layers for the two real DSGR regions sharing one 15%-of-EBITDA cap, plus a read of the preserved Mission 4 composition output",
+  "structuralIndexResolution": {
+    "Section 6.01(b)(iii)": {
+      "status": "NOT_FOUND",
+      "uniqueNode": null,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    "6.01(b)(iii)": {
+      "status": "NOT_FOUND",
+      "uniqueNode": null,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    "Section 6.01(c)(iii)": {
+      "status": "NOT_FOUND",
+      "uniqueNode": null,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    "6.01(c)(iii)": {
+      "status": "NOT_FOUND",
+      "uniqueNode": null,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    "Section 6.04(b)": {
+      "status": "NOT_FOUND",
+      "uniqueNode": null,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    "6.04(b)": {
+      "status": "UNIQUE",
+      "uniqueNode": {
+        "nodeId": "structural-node:8c365553a3484d15c3475ff2",
+        "sectionRef": "6.04(b)",
+        "charStart": 456158,
+        "charEnd": 456841,
+        "textHead": "(b) investments by the Loan Parties in Equity Interests in their respective Restricted Subsidiaries that are Loan Partie"
+      },
+      "candidateCount": 1,
+      "candidates": [
+        {
+          "nodeId": "structural-node:8c365553a3484d15c3475ff2",
+          "sectionRef": "6.04(b)",
+          "charStart": 456158,
+          "textHead": "(b) investments by the Loan Parties in Equity Interests in their respective Rest"
+        }
+      ]
+    },
+    "6.01(b)": {
+      "status": "UNIQUE",
+      "uniqueNode": {
+        "nodeId": "structural-node:2cf556d70cbb729dd2a8996b",
+        "sectionRef": "6.01(b)",
+        "charStart": 436374,
+        "charEnd": 437466,
+        "textHead": "(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted\nSubsidiary owing to any Borrow"
+      },
+      "candidateCount": 1,
+      "candidates": [
+        {
+          "nodeId": "structural-node:2cf556d70cbb729dd2a8996b",
+          "sectionRef": "6.01(b)",
+          "charStart": 436374,
+          "textHead": "(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any R"
+        }
+      ]
+    },
+    "6.04": {
+      "status": "AMBIGUOUS",
+      "uniqueNode": null,
+      "candidateCount": 2,
+      "candidates": [
+        {
+          "nodeId": "structural-node:e74a76da8e565b0100ce40ee",
+          "sectionRef": "6.04",
+          "charStart": 4474,
+          "textHead": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions\n\n111\n\nSE"
+        },
+        {
+          "nodeId": "structural-node:9701a9f7b9b2f32310575d9d",
+          "sectionRef": "6.04",
+          "charStart": 455225,
+          "textHead": "SECTION 6.04. Investments, Loans, Advances, Guarantees and Acquisitions . No Loa"
+        }
+      ]
+    }
+  },
+  "regions": {
+    "debt-dsgr": {
+      "sourceLayer": {
+        "anchorNode": {
+          "nodeKey": "dsgr-a::6.01",
+          "sectionRef": "6.01",
+          "charStart": 436142,
+          "charEnd": 444932
+        },
+        "sharedCapLanguagePresentInWindow": true,
+        "sharedCapSentences": [
+          "Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under Section 6.01(c)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA",
+          "Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA"
+        ]
+      },
+      "contextLayerAsRunInMission4_emptyStructuralNodeIds": {
+        "sufficiencyState": "INCOMPLETE",
+        "stopReasons": [],
+        "itemCount": 0,
+        "itemsByType": {},
+        "crossReferenceItems": [],
+        "itemsMentioningSiblingSection": [],
+        "unresolvedDependencies": [
+          {
+            "type": "OTHER",
+            "severity": "HIGH",
+            "sourceText": "6.01",
+            "reason": "Cannot retrieve context for a candidate with no anchoring structural node."
+          }
+        ]
+      },
+      "contextLayerWithRealNodeId": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+        ],
+        "itemCount": 48,
+        "itemsByType": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 17,
+          "EXCEPTION": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 27
+        },
+        "crossReferenceItems": [],
+        "itemsMentioningSiblingSection": [
+          {
+            "type": "OPERATIVE_SOURCE",
+            "normalizedRef": "6.01"
+          }
+        ],
+        "unresolvedDependencies": [
+          {
+            "type": "DEFINITION_CYCLE",
+            "severity": "MEDIUM",
+            "sourceText": "Restricted Subsidiary",
+            "reason": "Following this definition dependency further would re-enter a definition already open in the current traversal path - stopped safely rather than looping."
+          },
+          {
+            "type": "DEFINITION_CYCLE",
+            "severity": "MEDIUM",
+            "sourceText": "EBITDA",
+            "reason": "Following this definition dependency further would re-enter a definition already open in the current traversal path - stopped safely rather than looping."
+          },
+          {
+            "type": "DEFINITION_CYCLE",
+            "severity": "MEDIUM",
+            "sourceText": "EBITDA",
+            "reason": "Following this definition dependency further would re-enter a definition already open in the current traversal path - stopped safely rather than looping."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "SECTION 6.01",
+            "reason": "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.04",
+            "reason": "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.01(c)(iii)",
+            "reason": "no SECTION node with ref \"6.01(c)(iii)\" exists among this document's own structural nodes"
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Loan Party",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Secured Obligations and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Indebtedness of",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Restricted Subsidiary and of",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Indebtedness of Restricted Subsidiaries",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Restricted Subsidiaries",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Borrower of Indebtedness of",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Restricted Subsidiary and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Restricted Subsidiary of Indebtedness of",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Loan Party of Indebtedness of",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Refinance Indebtedness",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Original Indebtedness",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Original Indebtedness and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Administrative Agent and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Banking Services and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "United States",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Permitted Acquisition and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Permitted Supply Chain Financings",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Capital Lease Obligations and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Asset Sales",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Dispose of",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Equity Interest",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "MEDIUM",
+            "sourceText": "Section 4.01",
+            "reason": "Ambiguous - 2 physical occurrences share this reference; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "MEDIUM",
+            "sourceText": "Section 9.02",
+            "reason": "Ambiguous - 2 physical occurrences share this reference; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "MEDIUM",
+            "sourceText": "Section 6.05",
+            "reason": "Ambiguous - 2 physical occurrences share this reference; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "MEDIUM",
+            "sourceText": "Section 6.05",
+            "reason": "Ambiguous - 2 physical occurrences share this reference; never guessed."
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the TestEquity Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Gexpro Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the TestEquity Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the Gexpro Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms of this Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the TestEquity Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms of this Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the\nExisting Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the applicable Security Agreement",
+            "reason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "subject to the Lien under the applicable Security Agreement",
+            "reason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the applicable Security Agreement",
+            "reason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the applicable Security Agreement",
+            "reason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the guaranty",
+            "reason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms of the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\n\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the guaranty",
+            "reason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the guaranty",
+            "reason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms of the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          }
+        ]
+      },
+      "compositionLayerFromPreservedOutput": {
+        "rules": [
+          {
+            "ruleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "sourceSectionRef": "6.01",
+            "capacityKind": null,
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "PARTIAL",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:a09db13fc89bc396d6915b29",
+            "sourceSectionRef": "6.01(a)",
+            "capacityKind": "ADD",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+            "sourceSectionRef": "6.01(b)",
+            "capacityKind": "UNLIMITED_CAPACITY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": [
+              "dependsOn[0].targetRef \"6.04\" did not resolve - dependency dropped rather than left dangling"
+            ]
+          },
+          {
+            "ruleId": "ir-rule:a035f853009fc313d1c8d471",
+            "sourceSectionRef": "6.01(b)(iii)",
+            "capacityKind": "MULTIPLY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": [
+              "dependsOn[0].targetRef \"sc1\" did not resolve - dependency dropped rather than left dangling"
+            ]
+          },
+          {
+            "ruleId": "ir-rule:e2a81c8fafa700436ae0e21b",
+            "sourceSectionRef": "6.01(c)",
+            "capacityKind": "UNLIMITED_CAPACITY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": [
+              "dependsOn[0].targetRef \"6.04\" did not resolve - dependency dropped rather than left dangling"
+            ]
+          },
+          {
+            "ruleId": "ir-rule:b3a78761d2c8ecf85c0af551",
+            "sourceSectionRef": "6.01(c)(iii)",
+            "capacityKind": "MULTIPLY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": [
+              "dependsOn[0].targetRef \"sc1\" did not resolve - dependency dropped rather than left dangling"
+            ]
+          },
+          {
+            "ruleId": "ir-rule:ca20af7202bc823cd28ed453",
+            "sourceSectionRef": "6.01(d)",
+            "capacityKind": "UNLIMITED_CAPACITY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:fa875860bed1ef5df8e46838",
+            "sourceSectionRef": "6.01(e)",
+            "capacityKind": "UNLIMITED_CAPACITY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:31b5153679c910028d86b26e",
+            "sourceSectionRef": "6.01(f)",
+            "capacityKind": "UNSUPPORTED",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "MISSING_CONTEXT",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:b6f9ecd3957107e922c50ad2",
+            "sourceSectionRef": "6.01(g)",
+            "capacityKind": "UNSUPPORTED",
+            "sharedCapId": null,
+            "dependsOnCount": 1,
+            "sufficiency": "PARTIAL",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:a6ff83cd541990a44a5e1a58",
+            "sourceSectionRef": "6.01(h)",
+            "capacityKind": "UNSUPPORTED",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "MISSING_CONTEXT",
+            "droppedDependencyReasons": []
+          }
+        ],
+        "anyLedgerUsageReference": false,
+        "preservedFieldsAvailable": [
+          "status",
+          "rules",
+          "definitions",
+          "failureReasons",
+          "telemetry"
+        ],
+        "sharedCapacitiesFieldPreserved": false
+      }
+    },
+    "investments-dsgr": {
+      "sourceLayer": {
+        "anchorNode": {
+          "nodeKey": "dsgr-a::6.04",
+          "sectionRef": "6.04",
+          "charStart": 455225,
+          "charEnd": 463076
+        },
+        "sharedCapLanguagePresentInWindow": true,
+        "sharedCapSentences": [
+          "Loan Parties made after the Effective Date, together with the aggregate principal amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of Guarantees permitted under Section 6.01(c)(iii), shall not at any time exceed an amount equal to 15% of EBITDA. (c) loans or advances made by any Loan Party to any other Loan Party or Restricted Subsidiary and made by any Restricted Subsidiary that is not a Loan Party to a Loan Party or any other Restricted Subsidiary, provided that (i) any such loans and advances made by a Loan Party shall be evidenced by a promissory note pledged pursuant to the applicable Security Agreement, and (ii) loans and advances by U.S. Loan Parties to Restricted Subsidiaries that are not Loan Parties shall be subject to the terms of Section 6.01(b)(iii), determined without regard to any write-downs or write-offs. (d) Guarantees permitted under Section 6.01"
+        ]
+      },
+      "contextLayerAsRunInMission4_emptyStructuralNodeIds": {
+        "sufficiencyState": "INCOMPLETE",
+        "stopReasons": [],
+        "itemCount": 0,
+        "itemsByType": {},
+        "crossReferenceItems": [],
+        "itemsMentioningSiblingSection": [],
+        "unresolvedDependencies": [
+          {
+            "type": "OTHER",
+            "severity": "HIGH",
+            "sourceText": "6.04",
+            "reason": "Cannot retrieve context for a candidate with no anchoring structural node."
+          }
+        ]
+      },
+      "contextLayerWithRealNodeId": {
+        "sufficiencyState": "BUDGET_EXCEEDED",
+        "stopReasons": [
+          "CONTEXT_BUDGET_EXCEEDED: maxDefinitionDepth (5) reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxTextBudgetChars reached",
+          "CONTEXT_BUDGET_EXCEEDED: maxCrossReferenceDepth (3) reached"
+        ],
+        "itemCount": 47,
+        "itemsByType": {
+          "OPERATIVE_SOURCE": 1,
+          "CHILD_RULE": 18,
+          "EXCEPTION": 1,
+          "DEFINITION": 2,
+          "DEFINITION_DEPENDENCY": 25
+        },
+        "crossReferenceItems": [],
+        "itemsMentioningSiblingSection": [
+          {
+            "type": "OPERATIVE_SOURCE",
+            "normalizedRef": "6.04"
+          },
+          {
+            "type": "CHILD_RULE",
+            "normalizedRef": "6.04(b)"
+          }
+        ],
+        "unresolvedDependencies": [
+          {
+            "type": "DEFINITION_CYCLE",
+            "severity": "MEDIUM",
+            "sourceText": "Restricted Subsidiary",
+            "reason": "Following this definition dependency further would re-enter a definition already open in the current traversal path - stopped safely rather than looping."
+          },
+          {
+            "type": "DEFINITION_CYCLE",
+            "severity": "MEDIUM",
+            "sourceText": "EBITDA",
+            "reason": "Following this definition dependency further would re-enter a definition already open in the current traversal path - stopped safely rather than looping."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "SECTION 6.04",
+            "reason": "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.01(b)(iii)",
+            "reason": "no SECTION node with ref \"6.01(b)(iii)\" exists among this document's own structural nodes"
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.01(c)(iii)",
+            "reason": "no SECTION node with ref \"6.01(c)(iii)\" exists among this document's own structural nodes"
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.01(b)(iii)",
+            "reason": "no SECTION node with ref \"6.01(b)(iii)\" exists among this document's own structural nodes"
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.01",
+            "reason": "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.07",
+            "reason": "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed."
+          },
+          {
+            "type": "MISSING_SCHEDULE",
+            "severity": "MEDIUM",
+            "sourceText": "Schedule 6.04",
+            "reason": "no SCHEDULE node with ref \"6.04\" exists among this document's own structural nodes"
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.12",
+            "reason": "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 5.15",
+            "reason": "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "HIGH",
+            "sourceText": "Section 6.04",
+            "reason": "Ambiguous target - more than one physical location shares this reference's normalized target; never guessed."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Guarantees and Acquisitions",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Loan Party",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Loan Party and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Restricted Subsidiaries",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Security Agreement",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Restricted Subsidiary and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Swap Agreements",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Permitted Acquisitions",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Closing Date Acquisitions",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Taxes and",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Asset Sales",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Dispose of",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "UNRESOLVED_DEFINED_TERM",
+            "severity": "LOW",
+            "sourceText": "Equity Interest",
+            "reason": "Not declared in this document, and no related document in the package declares it either."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "MEDIUM",
+            "sourceText": "Section 4.01",
+            "reason": "Ambiguous - 2 physical occurrences share this reference; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "MEDIUM",
+            "sourceText": "Section 9.02",
+            "reason": "Ambiguous - 2 physical occurrences share this reference; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "MEDIUM",
+            "sourceText": "Section 6.05",
+            "reason": "Ambiguous - 2 physical occurrences share this reference; never guessed."
+          },
+          {
+            "type": "AMBIGUOUS_RELATIVE_REFERENCE",
+            "severity": "MEDIUM",
+            "sourceText": "Section 6.05",
+            "reason": "Ambiguous - 2 physical occurrences share this reference; never guessed."
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the TestEquity Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Gexpro Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the TestEquity Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the Gexpro Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms of this Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the TestEquity Acquisition Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms of this Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the\nExisting Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Existing Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the applicable Security Agreement",
+            "reason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "subject to the Lien under the applicable Security Agreement",
+            "reason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the applicable Security Agreement",
+            "reason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the applicable Security Agreement",
+            "reason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the guaranty",
+            "reason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms of the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\n\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the\nCredit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the guaranty",
+            "reason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the guaranty",
+            "reason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "pursuant to the terms of the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "as defined in the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          },
+          {
+            "type": "REFERENCED_DOCUMENT_ABSENT",
+            "severity": "MEDIUM",
+            "sourceText": "the Credit Agreement",
+            "reason": "no document of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exists in this package"
+          }
+        ]
+      },
+      "compositionLayerFromPreservedOutput": {
+        "rules": [
+          {
+            "ruleId": "ir-rule:48b878e487d5117859568987",
+            "sourceSectionRef": "6.04",
+            "capacityKind": null,
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:e29e7d3bbb44d9e79448ee50",
+            "sourceSectionRef": "6.04(a)",
+            "capacityKind": "DEFINED_TERM_REFERENCE",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:20ad432a18a97fb1d561fdb6",
+            "sourceSectionRef": "6.04(b)",
+            "capacityKind": "UNLIMITED_CAPACITY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:b4ebe266e44457d0a6af2fda",
+            "sourceSectionRef": "6.04(b)",
+            "capacityKind": "LEDGER_USAGE_REFERENCE",
+            "sharedCapId": "ir-sharedcap:949e9cac6b34481de254e8c3",
+            "dependsOnCount": 0,
+            "sufficiency": "PARTIAL",
+            "droppedDependencyReasons": [
+              "dependsOn[0].targetRef \"Section 6.01(b)(iii)\" did not resolve - dependency dropped rather than left dangling",
+              "dependsOn[1].targetRef \"Section 6.01(c)(iii)\" did not resolve - dependency dropped rather than left dangling"
+            ]
+          },
+          {
+            "ruleId": "ir-rule:bbe76f7c07626454c74a9de1",
+            "sourceSectionRef": "6.04(c)",
+            "capacityKind": "UNLIMITED_CAPACITY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "PARTIAL",
+            "droppedDependencyReasons": [
+              "dependsOn[0].targetRef \"Section 6.01(b)(iii)\" did not resolve - dependency dropped rather than left dangling"
+            ]
+          },
+          {
+            "ruleId": "ir-rule:293e58600bc15531263714dd",
+            "sourceSectionRef": "6.04(d)",
+            "capacityKind": "UNSUPPORTED",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "MISSING_CONTEXT",
+            "droppedDependencyReasons": [
+              "dependsOn[0].targetRef \"Section 6.01\" did not resolve - dependency dropped rather than left dangling"
+            ]
+          },
+          {
+            "ruleId": "ir-rule:c2abaa21a74f03eaea5ceaa7",
+            "sourceSectionRef": "6.04(e)",
+            "capacityKind": "UNLIMITED_CAPACITY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:04f0de45036a388d23ebb3c9",
+            "sourceSectionRef": "6.04(f)",
+            "capacityKind": "UNSUPPORTED",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "MISSING_CONTEXT",
+            "droppedDependencyReasons": [
+              "dependsOn[0].targetRef \"Section 6.07\" did not resolve - dependency dropped rather than left dangling"
+            ]
+          },
+          {
+            "ruleId": "ir-rule:1b8e2cd76cb80220b7c3c506",
+            "sourceSectionRef": "6.04(g)",
+            "capacityKind": "DEFINED_TERM_REFERENCE",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:142e6b059ade55ffefb0e001",
+            "sourceSectionRef": "6.04(h)",
+            "capacityKind": "DEFINED_TERM_REFERENCE",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:1e589bc5e23936e2246405e9",
+            "sourceSectionRef": "6.04(i)",
+            "capacityKind": "UNLIMITED_CAPACITY",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:37e19cf42184d2db2e626240",
+            "sourceSectionRef": "6.04(j)",
+            "capacityKind": "DEFINED_TERM_REFERENCE",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "COMPLETE",
+            "droppedDependencyReasons": []
+          },
+          {
+            "ruleId": "ir-rule:d885cec61e78bba7c138d972",
+            "sourceSectionRef": "6.04(k)",
+            "capacityKind": "UNSUPPORTED",
+            "sharedCapId": null,
+            "dependsOnCount": 0,
+            "sufficiency": "PARTIAL",
+            "droppedDependencyReasons": []
+          }
+        ],
+        "anyLedgerUsageReference": true,
+        "preservedFieldsAvailable": [
+          "status",
+          "rules",
+          "definitions",
+          "failureReasons",
+          "telemetry"
+        ],
+        "sharedCapacitiesFieldPreserved": false
+      }
+    }
+  }
+}
