@@ -1,0 +1,6 @@
+{
+  "message": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $100.03, limit: $100.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+  "stack": "Error: 402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $100.03, limit: $100.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}\n    at Function.generate (/home/user/headroom/node_modules/@anthropic-ai/sdk/src/core/error.ts:108:12)\n    at Anthropic.makeStatusError (/home/user/headroom/node_modules/@anthropic-ai/sdk/src/client.ts:968:28)\n    at Anthropic.makeRequest (/home/user/headroom/node_modules/@anthropic-ai/sdk/src/client.ts:1276:24)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)",
+  "runningCostUsdAtFailure": 0.04983,
+  "timestamp": "2026-09-01T09:27:20.853Z"
+}
