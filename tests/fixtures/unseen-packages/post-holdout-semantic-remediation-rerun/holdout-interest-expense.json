@@ -1,0 +1,975 @@
+{
+  "region": {
+    "id": "interest-expense",
+    "claimIds": [
+      "A3"
+    ],
+    "documentId": "doc-a",
+    "sourceSectionRef": "1.01 (Consolidated Interest Expense)",
+    "charStart": 84614,
+    "chars": 3600,
+    "structuralNodeKeys": [
+      "doc-a::1.01(4)(1)(ii)(6)(iii)"
+    ]
+  },
+  "operativeSourceText": "“Consolidated\nInterest Expense” means, with respect to any Person for any period, without duplication, the sum of:\n(a) cash\ninterest expense (including that attributable to Capitalized Lease Obligations), net of cash interest income, with respect to Indebtedness of such Person and its Subsidiaries for such period, other than\nNon-Recourse Indebtedness, including commissions, discounts and other fees and charges owed with respect to letters of credit and bankers’ acceptance financing and net cash costs under hedging agreements\n(other than in connection with the early termination thereof); plus\n(b)\nnon-cash interest expense resulting solely from (i) the amortization of original issue discount from the issuance of Indebtedness of such Person and its Subsidiaries at less than par (excluding any\nIndebtedness borrowed under the Facilities in connection with the Transactions and any Non-Recourse Indebtedness), plus\n(ii) pay-in-kind interest expense of such Person and its Subsidiaries payable pursuant to the terms of the agreements governing Indebtedness for borrowed money;\n\nexcluding, in each case:\n\n(i) amortization of deferred financing costs, debt issuance costs, commissions, fees and expenses and any other amounts of non-cash interest other than referred to in clauses (b)(i) and (b)(ii) above (including as a result of the effects of acquisition method accounting or pushdown accounting),\n\n(ii) interest expense attributable to the movement of the\nmark-to-market valuation of obligations under Hedging Obligations and any other derivative instruments, including pursuant to FASB Accounting Standards Codification\nTopic 815, Derivatives and Hedging,\n(iii) costs associated with incurring or terminating Hedging Obligations and\ncash costs associated with breakage in respect of hedging agreements for interest rates,\n(iv) commissions, discounts,\nyield, make-whole premium and other fees and charges (including any interest expense) incurred in connection with any Non-Recourse Indebtedness,\n\n(v) “additional interest” owing pursuant to a registration rights agreement with respect to any securities,\n\n(vi) any payments with respect to make-whole premiums or other breakage costs of any Indebtedness, including any Indebtedness\nissued in connection with the Transactions,\n\n20\n\n(vii) penalties and interest relating to taxes,\n\n(viii) accretion or accrual of discounted liabilities not constituting Indebtedness,\n\n(ix) [reserved],\n\n(x) any expense resulting from the discounting of Indebtedness in connection with the application of recapitalization or\npurchase accounting,\n(xi) any interest expense attributable to the exercise of appraisal rights and the settlement of any\nclaims or actions (whether actual, contingent or potential) with respect thereto in connection with the Transactions, any acquisition or Investment and\n\n(xii) annual agency fees paid to any administrative agents and collateral agents with respect to any secured or unsecured\nloans, debt facilities, debentures, bonds, commercial paper facilities or other forms of Indebtedness (including any security or collateral trust arrangements related thereto), including the Facilities and the Super-Priority Revolving Credit\nAgreement.\nFor purposes of this definition, interest on a Capitalized Lease Obligation will be deemed to accrue at an interest rate reasonably determined\nby such Person to be the rate of interest implicit in such Capitalized Lease Obligation in accordance with GAAP.\n“Consolidated\nMaintenance EBITDA” means, with respect to any Person for any period, the Consolidated Maintenance Net Income of suc",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Consolidated Interest Expense",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+          "reason": "SUBTRACT operands do not type-check together",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "attemptedStructure": {
+            "kind": "SUBTRACT",
+            "type": "NUMBER",
+            "exprId": "ir-expr:94f6a05c1265f94d22ea07d9",
+            "left": {
+              "kind": "ADD",
+              "type": "MONEY",
+              "exprId": "ir-expr:83d13f9e0e5b9db74199021a",
+              "operands": [
+                {
+                  "kind": "METRIC_REFERENCE",
+                  "type": "MONEY",
+                  "metricName": "Cash interest expense (net of cash interest income) on Indebtedness other than Non-Recourse Indebtedness, including LC/bankers' acceptance fees and net cash hedging costs (excluding early termination costs)",
+                  "companyId": "final-phase3-closure-holdout-sup",
+                  "instrumentKey": "sup-term-loan-instrument",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:116e123aeaf8d32250650c18"
+                },
+                {
+                  "kind": "ADD",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:8f700bbd224703c883526ec6",
+                  "operands": [
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Non-cash amortization of original issue discount on Indebtedness issued at less than par (excluding Transactions-related Facilities Indebtedness and Non-Recourse Indebtedness)",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:5dac11d1b7620535c29a0c07"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Pay-in-kind interest expense",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:a42efbc6099f1e4a7f78ed99"
+                    }
+                  ],
+                  "provenance": {
+                    "documentId": "doc-a",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§1.01(b)",
+                    "excerpt": null
+                  }
+                }
+              ],
+              "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01",
+                "excerpt": null
+              }
+            },
+            "right": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§1.01, clauses (i) through (xii) of the exclusions paragraph",
+              "semanticDescription": "Twelve enumerated categorical exclusions from Consolidated Interest Expense: (i) amortization of deferred financing/debt issuance costs and other non-cash interest not covered by (b)(i)/(b)(ii); (ii) mark-to-market movement on Hedging Obligations/derivatives; (iii) hedging termination/breakage costs; (iv) charges attributable to Non-Recourse Indebtedness; (v) registration-rights 'additional interest'; (vi) make-whole premiums/other breakage costs; (vii) tax penalties and interest; (viii) accretion/accrual of discounted liabilities not constituting Indebtedness; (ix) [reserved]; (x) discounting of Indebtedness from recapitalization/purchase accounting; (xi) interest attributable to appraisal rights/claim settlements re: Transactions or an acquisition/Investment; (xii) annual agency fees to administrative/collateral agents.",
+              "reason": "These are categorical, qualitative carve-outs describing cost types that do not count toward the metric, not quantifiable amounts or a computable sub-formula that can be expressed as a numeric SUBTRACT operand using the available IR primitives.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:e829b6aa6caf80794b7750cc"
+            },
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01",
+              "excerpt": null
+            }
+          },
+          "exprId": "ir-expr:2776f8469444199e18ecaa92"
+        },
+        "dependsOnTerms": [
+          "Non-Recourse Indebtedness",
+          "Capitalized Lease Obligations",
+          "Indebtedness",
+          "Hedging Obligations",
+          "Transactions",
+          "Facilities",
+          "Super-Priority Revolving Credit Agreement"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The additive core of the definition (clause (a) cash interest expense plus clause (b)(i) OID amortization and (b)(ii) PIK interest) is fully and faithfully represented as an ADD structure.",
+          "The twelve-item 'excluding, in each case' list (clauses (i)-(xii)) materially narrows the metric but consists of categorical/qualitative carve-outs rather than quantifiable amounts, so it is represented as a single UNSUPPORTED operand of a top-level SUBTRACT rather than individually modeled arithmetic.",
+          "Dependent defined terms (e.g., Non-Recourse Indebtedness, Facilities, Transactions, Hedging Obligations) are referenced by name within metric descriptions/citations but their own definitions were not separately retrieved because they only affect scope/eligibility, not the arithmetic shape of this definition.",
+          "These are categorical, qualitative carve-outs describing cost types that do not count toward the metric, not quantifiable amounts or a computable sub-formula that can be expressed as a numeric SUBTRACT operand using the available IR primitives.",
+          "SUBTRACT operands do not type-check together"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "\"Consolidated Interest Expense\" means, with respect to any Person for any period, without duplication, the sum of: (a) cash interest expense ... plus (b) non-cash interest expense resulting solely from (i) the amortization of original issue discount ... plus (ii) pay-in-kind interest expense ...; excluding, in each case: (i) amortization of deferred financing costs ... through (xii) annual agency fees ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "DEFINITION_COMPLETENESS_SUSPECT"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T15:35:34.210Z",
+      "inputTokens": 15652,
+      "outputTokens": 8113,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 77937,
+      "calculatedCostUsd": 0.112434
+    }
+  },
+  "verify": {
+    "candidateRef": "holdout-candidate:interest-expense",
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [
+      {
+        "findingId": "2f061d235ae510e0f02712654662cd3a074e0a659fa790b5af207c628a7b38b0",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:interest-expense",
+        "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+        "irPath": "definitions[0].calculationExpression.attemptedStructure.left.operands[0].instrumentKey; definitions[0].calculationExpression.attemptedStructure.left.operands[1].operands[*].instrumentKey",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "\"Consolidated Interest Expense\" means, with respect to any Person for any period, without duplication, the sum of: (a) cash interest expense ... with respect to Indebtedness of such Person and its Subsidiaries for such period, other than Non-Recourse Indebtedness ...",
+        "sourceCitation": "§1.01 (Consolidated Interest Expense), lead-in and clause (a)",
+        "proposedIrEvidence": "Each METRIC_REFERENCE node (cash interest expense, OID amortization, PIK interest) is bound to \"instrumentKey\": \"sup-term-loan-instrument\", tying the underlying data source for these components to a single named term loan instrument.",
+        "verifierReasoning": "The source definition computes Consolidated Interest Expense with respect to 'Indebtedness of such Person and its Subsidiaries' as a whole (excluding only Non-Recourse Indebtedness) - i.e., across all debt instruments of the Person and its Subsidiaries, not any single facility. Binding every component METRIC_REFERENCE to a single 'sup-term-loan-instrument' key would, if this key actually scopes data retrieval to only that one instrument's cash flows, systematically exclude interest expense attributable to any other Indebtedness (e.g., a revolving facility, other term loans, capitalized leases, or intercompany debt) that the source text plainly intends to be aggregated. A hypothetical company with interest expense on both a term loan and a separate revolving facility would have its Consolidated Interest Expense understated under this scoping versus what the source requires. I cannot fully confirm from the evidence given whether this key is a narrowing production-data binding or an artifact of company-specific instrumentation with no narrowing effect, so I flag this as uncertain rather than definitively material, but it is not supported anywhere in the quoted source text, which contains no reference to any single instrument.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:36:36.196Z"
+      },
+      {
+        "findingId": "326126643f0112c6e7c72aebcfa9226724a96d87edea3721fe052d2fc180efdb",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:interest-expense",
+        "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+        "irPath": "definitions[0]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "For purposes of this definition, interest on a Capitalized Lease Obligation will be deemed to accrue at an interest rate reasonably determined by such Person to be the rate of interest implicit in such Capitalized Lease Obligation in accordance with GAAP.",
+        "sourceCitation": "§1.01 (Consolidated Interest Expense), closing sentence",
+        "proposedIrEvidence": "No node in the definition's calculationExpression, dependsOnTerms, or semanticDescription references this deemed-accrual-rate rule for Capitalized Lease Obligations.",
+        "verifierReasoning": "This closing sentence is an independently stated interpretive rule governing how the interest component of a Capitalized Lease Obligation (already included in clause (a)) is to be measured. It is omitted entirely from the proposed IR. However, since clause (a)'s inclusion of Capitalized Lease Obligation interest is otherwise captured, and this sentence only clarifies a GAAP-consistent measurement convention rather than adding or removing a basket, threshold, or condition, a reviewer's capacity/compliance conclusion is unlikely to change based on this omission alone, so I mark it non-material rather than material.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:36:36.196Z"
+      },
+      {
+        "findingId": "0af1460e565573d6f18714fefec34f70debb6920a540ca05b2c1bc5949beff2b",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:interest-expense",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Consolidated Interest Expense)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 13 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (iv), (v), (vi), (vii), (viii), (x), (xi), (xii)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 13 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (iv), (v), (vi), (vii), (viii), (x), (xi), (xii)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:35:34.212Z"
+      },
+      {
+        "findingId": "2c474f1053ed46a6e809fb256cba69e41d963acb0ef8f686e034e584133fb3cf",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:interest-expense",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_CONDITION",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Consolidated Interest Expense)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 6 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 6 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:35:34.212Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "holdout-candidate:interest-expense",
+      "items": [
+        {
+          "itemId": "6aaf5e26d636082ded439aa26073176c3a1a47bbaae4501313920a0380643a03",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "will be deemed",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 3290,
+          "charEnd": 3304
+        },
+        {
+          "itemId": "200ddf7cf1d64f5ac6c22e31b62545237061f4f8f5e323e528b9328171686312",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 316,
+          "charEnd": 326
+        },
+        {
+          "itemId": "62eab7f8415ed28b05b796d996bd620ed294e3a082f6b4b1dab93f3715ca6960",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 532,
+          "charEnd": 542
+        },
+        {
+          "itemId": "3faa262c0a628a89641a2beca4aa38b0a90bd47d7d821fc5d057dad224f1f830",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "excluding",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 787,
+          "charEnd": 796
+        },
+        {
+          "itemId": "fd8fcb41b73a3f4e06f325166e15b80630a7be28b8f3b1cbe7f20aa6aa715d45",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "excluding",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 1083,
+          "charEnd": 1092
+        },
+        {
+          "itemId": "d018a62f8080961a84b9190770ab82f2e33c487b8a29b062cded0e0c7f3ef2bb",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 1250,
+          "charEnd": 1260
+        },
+        {
+          "itemId": "048dd7881cb8cbea2949436bbd060d5c620ff06c318fd7b8c53e48628fe381f9",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated\nInterest Expense",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 1,
+          "charEnd": 30
+        },
+        {
+          "itemId": "395baaacae0419accc803da927e60590bcf97f30308b2c8a75db91b5b78bacb0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capitalized Lease Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 173,
+          "charEnd": 202
+        },
+        {
+          "itemId": "b35f7ad7b95e43b7d4301ab3907676912d1fec4488c3907b9397d8e0d359ca65",
+          "kind": "METRIC_MENTION",
+          "rawText": "Recourse Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 331,
+          "charEnd": 352
+        },
+        {
+          "itemId": "74859721331c809608cf5e753387133614b1dab9a6c7a4978f2115a288bce6ec",
+          "kind": "METRIC_MENTION",
+          "rawText": "Recourse Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 892,
+          "charEnd": 913
+        },
+        {
+          "itemId": "cd0ee5833b4f4f7da75b76bcb381134826c1e8a9ed67760cea72d6f0c89ebae3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Hedging Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 1510,
+          "charEnd": 1529
+        },
+        {
+          "itemId": "e98da4ec628cf562f1c18685d23cb6da4c5b4f62551a4248229759724cc22a08",
+          "kind": "METRIC_MENTION",
+          "rawText": "FASB Accounting Standards Codification",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 1590,
+          "charEnd": 1628
+        },
+        {
+          "itemId": "750cfd35e0da457cb6a792c4ee7ef4e248665cb821ecf0238a47ed0abb8b0107",
+          "kind": "METRIC_MENTION",
+          "rawText": "Hedging Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 1718,
+          "charEnd": 1737
+        },
+        {
+          "itemId": "0d971452bbd98c7475b9b0c6bbb1309d087eb6511f919ed5d80d174e7d59ff63",
+          "kind": "METRIC_MENTION",
+          "rawText": "Recourse Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 1982,
+          "charEnd": 2003
+        },
+        {
+          "itemId": "3d19ef25bc2625131ce597248b31e4fca35ee813af3a4498f9d142d9083d957a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Priority Revolving Credit\nAgreement",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 3177,
+          "charEnd": 3212
+        },
+        {
+          "itemId": "0d1f259fc04e38791cd5766dd5502adad98430da3693c9360ada4a476344269c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capitalized Lease Obligation",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 3261,
+          "charEnd": 3289
+        },
+        {
+          "itemId": "5c8dbca4b7072c4cd01a955a9ff171343e65faf19e625db970ff85f8095b7dba",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capitalized Lease Obligation",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 3416,
+          "charEnd": 3444
+        },
+        {
+          "itemId": "ad124d62729b5d0cb10ad5d8b9c969ddb6ef4b31e6ec8518abe0ddd1ea9e9b06",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated\nMaintenance EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 3471,
+          "charEnd": 3502
+        },
+        {
+          "itemId": "18efa8bc4fb7e79624cf2c385ca323717b523d1dfd3a843f1ac63dd7adbb1c55",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Maintenance Net Income",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": 3558,
+          "charEnd": 3593
+        },
+        {
+          "itemId": "a7bb019bb83027fd4fcaa6b19fbab701a5d79654c741d8ece58c496b75c3fba5",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "71bde3ced9bd0e0050ba3363e831eabff5bd7d87d66bea7060e541376250a4bc",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7910e166dcf7b8f145cacbf3c805f08d4f9f2fa577b9baa0a4f22bb8591f6e3b",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "df5649ba463feda2d19586a2d59b8582a1f97a45e7245623133e648c7ef1f049",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "098978fab3b7773f8c94e298852ac2f66efdce410954a11e63641232e8670105",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "95a9960b31c2be974f4089a676187ec137a3c26175e9d5a25aae74dda54dfa10",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iv)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "546a98edc159a37d5aff35863c1a6d92a0b16394cd6fec9e0d0c256071b96ea8",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(v)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "07a78dbfaa92389ee94d128bf49e3be0634315bf7fed8e167b003986fd6c38bd",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(vi)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "646ed0c06eb18521260c37a0c6b825a906d36c32d71af5c178c0d166cc38a258",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(vii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "efc17ea0bf93018ae22c0fffe2a9ec6ea4bb12874518b1bbb41f00177dcd2161",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(viii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "bc8345ee8e9ec21e67cb940a60ec9a673358ef61f6c6c14e81b103a2e1b9b767",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "b4fef4412ed3037351d848d4f0a42523fc5d3f51dd3b207c299c0eeb49f9652e",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(xi)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "f38493dc963df40d5d937a01d21d11fa8871937eb7b101c4d92f5258a06d81fd",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(xii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated Interest Expense)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 13,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(b)",
+        "(i)",
+        "(ii)",
+        "(iii)",
+        "(iv)",
+        "(v)",
+        "(vi)",
+        "(vii)",
+        "(viii)",
+        "(x)",
+        "(xi)",
+        "(xii)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "holdout-candidate:interest-expense",
+      "items": [
+        {
+          "itemId": "647359e31eb5aaec82692804408fa58b108f17ec7cdc1496de917da0f38a91d4",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Non-Recourse Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "4b730c309af21be5dabac5041335c36d08300a39e58cbd3187acb79a8126bf9b",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Capitalized Lease Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "0edd571aa1e76b083306e73cdf7152bf26e084e9a97abd4a0b75a934d14a4aa7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ba26958c8f9b2fdca8d86b99113f6790e59e84002d76aefd2e1aa0639fabd77b",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Hedging Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a024670f94bd76014cdfa1d8919bcf07f21e91573ec2f1fb7cd72fbfd3d2defe",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[0].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Transactions",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b88a1ccf39e0e52c8ec9f05d90a573290bb0824339a531e23154ce55d7089ce4",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[0].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Facilities",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9adf85de571a56edc4e0047c59612147ef1219ccb95bcf5ec296fe9a166637dd",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[0].dependsOnTerms[6]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Super-Priority Revolving Credit Agreement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b00470eaa77cd15aa334a0993a8b09ed4dc63e84facb7c7b35e1853d7822280a",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 0,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "holdout-candidate:interest-expense",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "048dd7881cb8cbea2949436bbd060d5c620ff06c318fd7b8c53e48628fe381f9",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated\nInterest Expense",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 1,
+            "charEnd": 30
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated\nInterest Expense\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "395baaacae0419accc803da927e60590bcf97f30308b2c8a75db91b5b78bacb0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capitalized Lease Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 173,
+            "charEnd": 202
+          },
+          "irItems": [],
+          "reason": "source mention \"Capitalized Lease Obligations\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b35f7ad7b95e43b7d4301ab3907676912d1fec4488c3907b9397d8e0d359ca65",
+            "kind": "METRIC_MENTION",
+            "rawText": "Recourse Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 331,
+            "charEnd": 352
+          },
+          "irItems": [],
+          "reason": "source mention \"Recourse Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "74859721331c809608cf5e753387133614b1dab9a6c7a4978f2115a288bce6ec",
+            "kind": "METRIC_MENTION",
+            "rawText": "Recourse Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 892,
+            "charEnd": 913
+          },
+          "irItems": [],
+          "reason": "source mention \"Recourse Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "cd0ee5833b4f4f7da75b76bcb381134826c1e8a9ed67760cea72d6f0c89ebae3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Hedging Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 1510,
+            "charEnd": 1529
+          },
+          "irItems": [],
+          "reason": "source mention \"Hedging Obligations\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e98da4ec628cf562f1c18685d23cb6da4c5b4f62551a4248229759724cc22a08",
+            "kind": "METRIC_MENTION",
+            "rawText": "FASB Accounting Standards Codification",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 1590,
+            "charEnd": 1628
+          },
+          "irItems": [],
+          "reason": "source mention \"FASB Accounting Standards Codification\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "750cfd35e0da457cb6a792c4ee7ef4e248665cb821ecf0238a47ed0abb8b0107",
+            "kind": "METRIC_MENTION",
+            "rawText": "Hedging Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 1718,
+            "charEnd": 1737
+          },
+          "irItems": [],
+          "reason": "source mention \"Hedging Obligations\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0d971452bbd98c7475b9b0c6bbb1309d087eb6511f919ed5d80d174e7d59ff63",
+            "kind": "METRIC_MENTION",
+            "rawText": "Recourse Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 1982,
+            "charEnd": 2003
+          },
+          "irItems": [],
+          "reason": "source mention \"Recourse Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3d19ef25bc2625131ce597248b31e4fca35ee813af3a4498f9d142d9083d957a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Priority Revolving Credit\nAgreement",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 3177,
+            "charEnd": 3212
+          },
+          "irItems": [],
+          "reason": "source mention \"Priority Revolving Credit\nAgreement\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0d1f259fc04e38791cd5766dd5502adad98430da3693c9360ada4a476344269c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capitalized Lease Obligation",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 3261,
+            "charEnd": 3289
+          },
+          "irItems": [],
+          "reason": "source mention \"Capitalized Lease Obligation\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5c8dbca4b7072c4cd01a955a9ff171343e65faf19e625db970ff85f8095b7dba",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capitalized Lease Obligation",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 3416,
+            "charEnd": 3444
+          },
+          "irItems": [],
+          "reason": "source mention \"Capitalized Lease Obligation\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ad124d62729b5d0cb10ad5d8b9c969ddb6ef4b31e6ec8518abe0ddd1ea9e9b06",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated\nMaintenance EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 3471,
+            "charEnd": 3502
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated\nMaintenance EBITDA\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "18efa8bc4fb7e79624cf2c385ca323717b523d1dfd3a843f1ac63dd7adbb1c55",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Maintenance Net Income",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated Interest Expense)",
+            "structuralNodeKey": null,
+            "charStart": 3558,
+            "charEnd": 3593
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Maintenance Net Income\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 13 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (iv), (v), (vi), (vii), (viii), (x), (xi), (xii)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 6 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        }
+      ],
+      "materialUnresolvedCount": 2
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T15:36:36.196Z"
+  }
+}

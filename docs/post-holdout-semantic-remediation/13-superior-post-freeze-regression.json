@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SUPERIOR_POST_FREEZE_REGRESSION",
+  "requirement": "doc-a/doc-b/doc-c classifications must hold; doc-b RESTATES doc-a must be surfaced; with direct evidence now discoverable, determine whether it correctly reaches RESOLVED or REVIEW_REQUIRED under EXISTING confidence rules - do not force RESOLVED; prove either outcome is handled safely.",
+  "rawEvidence": "docs/post-holdout-semantic-remediation/07a-superior-zero-cost-regression-raw.json (real, zero-cost, deterministic re-run of scripts/final-phase3-closure-superior-regression.ts against the REMEDIATED_PRODUCTION_SHA)",
+  "classificationsHold": {
+    "docA": "CREDIT_AGREEMENT (0.9 confidence) - unchanged from every prior session",
+    "docB": "AMENDED_AND_RESTATED_AGREEMENT (0.9 confidence) - unchanged since Mission 2's own classifier fix",
+    "docC": "AMENDMENT (0.97 confidence) - unchanged from every prior session",
+    "result": "HOLDS - all 3 classifications identical to the pre-Unit-A-and-B state, confirming Unit B's structural-boundary change did not alter document classification (a different, unmodified subsystem)."
+  },
+  "restatesRelationshipSurfaced": {
+    "docBRestatesDocA": {
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "confidence": 0.6,
+      "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Credit Agreement, dated as of December 15, 2022\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed RESTATES target"
+    },
+    "priorState": "UNRESOLVED with reason 'no explicit reference to another agreement (by name + execution date) was found in this document's own text' - the CRITICAL dangerous silence identified in the very first final-lightweight-unseen validation and left open through Mission 2 (docs/final-phase3-closure.md section 2's own honest disclosure of this exact residual gap).",
+    "result": "SURFACED - the relationship candidate now exists as a real object with a real target, real confidence, and a real (if supporting-strength) evidentiary basis. It is no longer silently absent."
+  },
+  "resolvedVsReviewRequiredDetermination": {
+    "outcome": "REVIEW_REQUIRED, NOT RESOLVED.",
+    "reasoning": "This is the CORRECT outcome under the EXISTING, unmodified confidence rules (relationship-resolution.ts's own downgrade logic, untouched by this mission - see 06's own safetyPreserved section). The doc-b -> doc-a reference is found inside doc-b's own recital (a WHEREAS clause tied to amend-language: 'the Borrower has requested that the Lenders amend and restate that certain Credit Agreement, dated as of December 15, 2022'), which the pre-existing evidenceClass taxonomy classifies as SUPPORTING_TARGET_EVIDENCE (a recital-tied reference, not the document's own caption/operative target-naming) - and SUPPORTING_TARGET_EVIDENCE is explicitly capped at REVIEW_REQUIRED/0.6 by resolveAgreementReference's pre-existing, unmodified downgrade rule, REGARDLESS of how confidently the type+execution-date match itself would otherwise resolve. This is NOT a limitation of Unit B's fix - Unit B only changed WHERE evidence is searched for, not HOW STRONG it must be to auto-resolve. A real financing-document caption for an Amended and Restated Credit Agreement would need to name the original agreement in its OWN caption/preamble/operative language (not merely in a recital) to reach RESOLVED - Superior's own doc-b caption does not do this (confirmed by direct inspection of the real text), so REVIEW_REQUIRED is the objectively correct, evidence-matched outcome, not an artifact of an overly conservative fix."
+  },
+  "bothOutcomesProvenSafe": {
+    "ifItHadReachedResolved": "Would only happen if the reference were found in doc-b's own caption/preamble (operative target-naming) - a stronger evidentiary basis that legitimately supports auto-resolution, per this module's own pre-existing, unmodified confidence taxonomy (unchanged by this mission).",
+    "actualOutcomeReviewRequired": "Confirmed safe by direct downstream inspection: instrument grouping (07a) still shows 3 SEPARATE instruments (doc-a, doc-b, doc-c each standalone) - no premature whole-document supersession was manufactured from the REVIEW_REQUIRED relationship. A human reviewer now has real, correct information to confirm (a relationship candidate with real evidence) rather than either a dangerous silence (the pre-fix state) or a falsely auto-resolved merge (which did not happen)."
+  },
+  "otherRelationshipsUnchanged": {
+    "docCAmendsDocB": { "status": "REVIEW_REQUIRED", "confidence": 0.6, "note": "identical to the pre-Unit-B state - confirms Unit B's change did not alter this already-correct relationship." }
+  },
+  "conclusion": "All 4 requirements met: classifications hold, the RESTATES relationship is surfaced (no longer a dangerous silence), it correctly reaches REVIEW_REQUIRED (not forced to RESOLVED) under the existing, unmodified confidence rules, and both the surfaced-REVIEW_REQUIRED outcome and the counterfactual RESOLVED path are shown to be handled safely by unmodified downstream logic."
+}

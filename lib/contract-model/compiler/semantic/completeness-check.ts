@@ -111,3 +111,114 @@ export function checkDefinitionCompleteness(sourceText: string, compiledDefiniti
     reason: `Deterministic completeness check found ${missing.length} quoted defined-term citation(s) in the supplied source (matching the '"Term" means'/'"Term" shall mean' pattern) that do not appear among the ${compiledLabels.length} compiled definition(s): ${missing.map((d) => `"${d.rawLabel}"`).join(", ")}. This is a structural detection only - it does not assert what these terms mean or why they were omitted.`,
   };
 }
+
+// ---------------------------------------------------------------------------
+// POST-HOLDOUT-SEMANTIC-REMEDIATION Unit A secondary fix (docs/post-holdout-
+// semantic-remediation/04-semantic-architecture-decision.json). The sibling
+// check above answers "is a whole defined TERM missing from the output" -
+// this section answers a different, narrower question: for a SINGLE
+// definition whose calculationExpression collapsed to UNSUPPORTED, how much
+// of its own internal structure was actually captured before that collapse?
+// Purely structural (walks the closed IRExpression node-kind union, never a
+// financial-term dictionary) and purely additive - it introduces a new,
+// separate diagnostic, it does not alter checkDefinitionCompleteness above
+// or any existing pass/fail verdict.
+
+import type { IRExpression } from "../../ir/types";
+
+/** Generic structural children of a composite IR node, by node kind - never term-specific, mirrors the same closed switch normalize.ts itself uses to build these nodes. */
+function childExpressions(expr: IRExpression): IRExpression[] {
+  switch (expr.kind) {
+    case "ADD":
+    case "SUM":
+    case "MULTIPLY":
+    case "MAX":
+    case "MIN":
+    case "AND":
+    case "OR":
+      return expr.operands;
+    case "SUBTRACT":
+      return [expr.left, expr.right];
+    case "DIVIDE":
+      return [expr.numerator, expr.denominator];
+    case "COMPARE":
+      return [expr.left, expr.right];
+    case "NOT":
+      return [expr.operand];
+    case "IF":
+      return expr.else ? [expr.condition, expr.then, expr.else] : [expr.condition, expr.then];
+    case "AS_OF":
+    case "DURING_PERIOD":
+      return [expr.value];
+    case "SCHEDULE":
+      return expr.defaultValue ? [...expr.cases.map((c) => c.value), expr.defaultValue] : expr.cases.map((c) => c.value);
+    case "EVENT_ACTIVE":
+      return expr.triggerCondition ? [expr.triggerCondition] : [];
+    default:
+      return [];
+  }
+}
+
+export interface IntraDefinitionComponentCompletenessResult {
+  /** True only when calculationExpression is an UNSUPPORTED node carrying an attemptedStructure sidecar (i.e. a composite that WAS assembled but failed its own top-level type-check) - false for every other case, including "already fully compiled" and "genuinely atomic/model-emitted UNSUPPORTED with nothing to walk." */
+  applicable: boolean;
+  /** Total nodes in the attempted structure's tree (root plus every descendant reachable via childExpressions), including the root itself. */
+  totalComponentCount: number;
+  /** Of totalComponentCount, how many are NOT themselves kind="UNSUPPORTED" - i.e. successfully normalized/type-checked structure that would otherwise have been silently discarded. */
+  wellTypedComponentCount: number;
+  /** Of totalComponentCount, how many ARE kind="UNSUPPORTED" - the genuinely-failed component(s) that poisoned the parent composite's own type. */
+  unsupportedComponentCount: number;
+  /** Each unsupported component's own `reason` string, for direct citation - never a re-interpretation of what the component means. */
+  unsupportedComponentReasons: string[];
+  reason: string | null;
+}
+
+/**
+ * Walks a definition's calculationExpression tree. When it is an UNSUPPORTED
+ * node produced by buildComposite's poison-propagation discard (normalize.ts)
+ * - i.e. it carries an attemptedStructure sidecar - this reports how many of
+ * the attempted structure's own components DID successfully normalize versus
+ * how many were genuinely unsupported, instead of the current all-or-nothing
+ * "calculationExpression.kind === UNSUPPORTED" binary. Never fires (never
+ * reports applicable=true) for an expression that is not this specific
+ * shape - a plain COMPLETE calculationExpression, or a genuinely atomic
+ * UNSUPPORTED leaf with no attempted structure, both correctly report
+ * applicable=false.
+ */
+export function checkIntraDefinitionComponentCompleteness(calculationExpression: IRExpression | null | undefined): IntraDefinitionComponentCompletenessResult {
+  const notApplicable: IntraDefinitionComponentCompletenessResult = {
+    applicable: false,
+    totalComponentCount: 0,
+    wellTypedComponentCount: 0,
+    unsupportedComponentCount: 0,
+    unsupportedComponentReasons: [],
+    reason: null,
+  };
+  if (!calculationExpression || calculationExpression.kind !== "UNSUPPORTED" || !calculationExpression.attemptedStructure) return notApplicable;
+
+  let total = 0;
+  let wellTyped = 0;
+  let unsupported = 0;
+  const unsupportedReasons: string[] = [];
+
+  function walk(expr: IRExpression): void {
+    total++;
+    if (expr.kind === "UNSUPPORTED") {
+      unsupported++;
+      unsupportedReasons.push(expr.reason);
+    } else {
+      wellTyped++;
+    }
+    for (const child of childExpressions(expr)) walk(child);
+  }
+  walk(calculationExpression.attemptedStructure);
+
+  return {
+    applicable: true,
+    totalComponentCount: total,
+    wellTypedComponentCount: wellTyped,
+    unsupportedComponentCount: unsupported,
+    unsupportedComponentReasons: unsupportedReasons,
+    reason: `This definition's calculationExpression is UNSUPPORTED at its own top level, but its preserved attempted structure contains ${total} total component node(s): ${wellTyped} successfully normalized/type-checked and ${unsupported} genuinely unsupported (poisoning the parent's own top-level type). This is a structural component count only - it does not assert legal correctness of the captured components.`,
+  };
+}

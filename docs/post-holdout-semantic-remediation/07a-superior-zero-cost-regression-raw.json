@@ -1,0 +1,1077 @@
+{
+  "companyId": "final-lightweight-unseen-sup-968ccc2b",
+  "packageKey": "sup-term-loan-2022-2025",
+  "classifications": [
+    {
+      "documentId": "doc-a",
+      "type": "CREDIT_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "doc-b",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED\nCREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    {
+      "documentId": "doc-c",
+      "type": "AMENDMENT",
+      "confidence": 0.97,
+      "evidence": [
+        "(this “Amendment”)"
+      ],
+      "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE"
+    }
+  ],
+  "identities": [
+    {
+      "documentId": "doc-a",
+      "title": "CREDIT AGREEMENT",
+      "agreementTypeLabel": "CREDIT AGREEMENT",
+      "executionDate": "December 15, 2022",
+      "effectiveDate": "December 15, 2022",
+      "parties": [
+        "SUPERIOR INDUSTRIES INTERNATIONAL, INC."
+      ],
+      "borrowerOrIssuer": "SUPERIOR INDUSTRIES INTERNATIONAL, INC.",
+      "administrativeAgentOrTrustee": "ADMINISTRATION, LLC",
+      "facilityOrInstrumentName": "CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nCREDIT AGREEMENT",
+          "charStart": 92
+        },
+        "executionDate": {
+          "text": "Dated as of\nDecember 15, 2022",
+          "charStart": 110
+        },
+        "borrowerOrIssuer": {
+          "text": "SUPERIOR INDUSTRIES INTERNATIONAL, INC.,\n\nas the Borrower",
+          "charStart": 147
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "ADMINISTRATION, LLC,\nas Administrative Agent",
+          "charStart": 219
+        }
+      }
+    },
+    {
+      "documentId": "doc-b",
+      "title": "CREDIT AGREEMENT",
+      "agreementTypeLabel": "CREDIT AGREEMENT",
+      "executionDate": "August 14, 2024",
+      "effectiveDate": "August 14, 2024",
+      "parties": [
+        "INTERNATIONAL, INC."
+      ],
+      "borrowerOrIssuer": "INTERNATIONAL, INC.",
+      "administrativeAgentOrTrustee": "OAKTREE FUND ADMINISTRATION, LLC",
+      "facilityOrInstrumentName": "CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "CREDIT AGREEMENT",
+          "charStart": 113
+        },
+        "executionDate": {
+          "text": "Dated as of August 14, 2024",
+          "charStart": 130
+        },
+        "borrowerOrIssuer": {
+          "text": "INTERNATIONAL, INC.,\nas the Borrower",
+          "charStart": 186
+        },
+        "administrativeAgentOrTrustee": {
+          "text": "OAKTREE FUND ADMINISTRATION, LLC,\n\nas Administrative Agent",
+          "charStart": 225
+        }
+      }
+    },
+    {
+      "documentId": "doc-c",
+      "title": "FIRST AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "agreementTypeLabel": "FIRST AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "executionDate": "March 31, 2025",
+      "effectiveDate": "March 31, 2025",
+      "parties": [],
+      "borrowerOrIssuer": null,
+      "administrativeAgentOrTrustee": null,
+      "facilityOrInstrumentName": "FIRST AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "originalAgreementReferenceHint": null,
+      "amendmentNumber": null,
+      "supplementNumber": null,
+      "evidenceByField": {
+        "title": {
+          "text": "\nFIRST AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+          "charStart": 78
+        },
+        "executionDate": {
+          "text": "dated as of March 31, 2025",
+          "charStart": 200
+        }
+      }
+    }
+  ],
+  "relationshipCandidates": [
+    {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": "doc-a",
+      "targetHint": "that certain Credit Agreement, dated as of December 15, 2022",
+      "relationshipType": "RESTATES",
+      "sourceCitation": "that certain Credit Agreement, dated as of December 15, 2022",
+      "confidence": 0.6,
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Credit Agreement, dated as of December 15, 2022\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed RESTATES target",
+      "resolutionMethod": "DETERMINISTIC_SUPPORTING_EVIDENCE_ONLY",
+      "evidenceClass": "SUPPORTING_TARGET_EVIDENCE"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "targetDocumentId": "doc-b",
+      "targetHint": "that certain Amended and Restated Credit Agreement, dated as of August 14, 2024",
+      "relationshipType": "AMENDS",
+      "sourceCitation": "that certain Amended and Restated Credit Agreement, dated as of August 14, 2024",
+      "confidence": 0.6,
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Amended and Restated Credit Agreement, dated as of August 14, 2024\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed AMENDS target",
+      "resolutionMethod": "DETERMINISTIC_SUPPORTING_EVIDENCE_ONLY",
+      "evidenceClass": "SUPPORTING_TARGET_EVIDENCE"
+    }
+  ],
+  "modificationCandidates": [
+    {
+      "sourceDocumentId": "doc-c",
+      "sourceNodeCitation": "Superior Industries International, Inc. First Amendment to Amended and Restated Term Loan Credit Agreement (2025-03-31)",
+      "sourceText": "such supplementation or amendment; (d) Section 6.02 is hereby amended by deleting “and” from the end of clause (4), by replacing “.” at the end of cl",
+      "operation": "MODIFY",
+      "targetDocumentId": "doc-b",
+      "targetHint": "that certain Amended and Restated Credit Agreement, dated as of August 14, 2024",
+      "targetSectionRef": "6.02",
+      "targetDefinedTermRef": null,
+      "status": "RESOLVED",
+      "unresolvedReason": null,
+      "confidence": 0.7
+    }
+  ],
+  "crossDocumentReferenceLeads": [
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the Security Agreement",
+      "charStart": 61021,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 61033,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 61105,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 62030,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 62581,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 63328,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 68584,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the indenture",
+      "charStart": 118295,
+      "namedAgreementHint": "indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INDENTURE exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the Investment Agreement",
+      "charStart": 121096,
+      "namedAgreementHint": "Investment Agreement",
+      "targetDocumentId": "doc-b",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 156297,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 157421,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 175399,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 176157,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 182699,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 198549,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 218511,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "subject to the applicable Intercreditor Agreement",
+      "charStart": 242385,
+      "namedAgreementHint": "applicable Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 255048,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the\nGuaranty",
+      "charStart": 265969,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 266207,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 285507,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 331089,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": "doc-b",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 454504,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 454567,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms of any indenture",
+      "charStart": 496141,
+      "namedAgreementHint": "terms of any indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INDENTURE exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 513041,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 513222,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 513764,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 514064,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 538118,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the Investment Agreement",
+      "charStart": 553353,
+      "namedAgreementHint": "Investment Agreement",
+      "targetDocumentId": "doc-b",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 567900,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Security Agreement",
+      "charStart": 568223,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the indenture",
+      "charStart": 601858,
+      "namedAgreementHint": "indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INDENTURE exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the Closing Date Intercreditor Agreement",
+      "charStart": 665133,
+      "namedAgreementHint": "Closing Date Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 667511,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 686602,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 695927,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 696500,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "charStart": 726774,
+      "namedAgreementHint": "terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "targetDocumentId": "doc-b",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-a",
+      "referenceText": "the Guaranty",
+      "charStart": 768398,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "subject to the conditions set forth in this Agreement",
+      "charStart": 9057,
+      "namedAgreementHint": "conditions set forth in this Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the Security Agreement",
+      "charStart": 59814,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 59826,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 59898,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 60872,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 61423,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 62167,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 67483,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the indenture",
+      "charStart": 117144,
+      "namedAgreementHint": "indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INDENTURE exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the Investment Agreement",
+      "charStart": 119945,
+      "namedAgreementHint": "Investment Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 153180,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 154301,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 172255,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 173014,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 179617,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 195644,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "subject to the applicable Intercreditor Agreement",
+      "charStart": 239119,
+      "namedAgreementHint": "applicable Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 251940,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the\nGuaranty",
+      "charStart": 262936,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 263174,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 283940,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the terms of this Agreement",
+      "charStart": 331391,
+      "namedAgreementHint": "terms of this Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 458383,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 513194,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 513375,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 513917,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 514217,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 538164,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the Investment Agreement",
+      "charStart": 554387,
+      "namedAgreementHint": "Investment Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 569730,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Security Agreement",
+      "charStart": 570053,
+      "namedAgreementHint": "Security Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the indenture",
+      "charStart": 606313,
+      "namedAgreementHint": "indenture",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INDENTURE exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the Closing Date Intercreditor Agreement",
+      "charStart": 671337,
+      "namedAgreementHint": "Closing Date Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 673777,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 693260,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 709740,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 710313,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "charStart": 740617,
+      "namedAgreementHint": "terms hereof as a Lender hereunder for all purposes of this Agreement",
+      "targetDocumentId": "doc-a",
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved by unique type match alone (no execution date in a bare named-agreement mention) - needs confirmation"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 783852,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-b",
+      "referenceText": "the Guaranty",
+      "charStart": 788083,
+      "namedAgreementHint": "Guaranty",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "as defined in the Closing Date Intercreditor Agreement",
+      "charStart": 596,
+      "namedAgreementHint": "Closing Date Intercreditor Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "no document of type INTERCREDITOR_AGREEMENT exists in this package"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1153,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1362,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1552,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 1654,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 2154,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 2240,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 2282,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 3565,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 7823,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 10608,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 12355,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 12684,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 16154,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "referenceText": "the Credit Agreement",
+      "charStart": 16798,
+      "namedAgreementHint": "Credit Agreement",
+      "targetDocumentId": null,
+      "status": "UNRESOLVED",
+      "unresolvedReason": "2 candidate documents of type CREDIT_AGREEMENT/AMENDED_AND_RESTATED_AGREEMENT exist - never resolved from a bare named mention alone"
+    }
+  ],
+  "instruments": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "name": "CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-a"
+      ],
+      "baseDocumentId": "doc-a",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "name": "CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-b"
+      ],
+      "baseDocumentId": "doc-b",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-c",
+      "name": "FIRST AMENDMENT TO AMENDED AND RESTATED CREDIT AGREEMENT",
+      "documentIds": [
+        "doc-c"
+      ],
+      "baseDocumentId": "doc-c",
+      "confidence": 0.5,
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "performance": {
+    "documentCount": 3,
+    "totalCharsScanned": 1606985,
+    "relationshipCandidatesGenerated": 2,
+    "relationshipsResolved": 0,
+    "relationshipsUnresolved": 0,
+    "modificationCandidatesGenerated": 1,
+    "crossDocumentReferenceLeadsGenerated": 96,
+    "wallClockMs": 41,
+    "semanticCallsUsed": 0
+  }
+}

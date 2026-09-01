@@ -35,8 +35,8 @@ export function extractDocumentIdentity(doc: PackageDocumentInput): DocumentIden
   const title = titleMatch ? titleMatch[1]!.trim() : null;
   if (titleMatch) evidenceByField.title = { text: titleMatch[0], charStart: titleMatch.index };
 
-  const executionDateMatch = firstMatch(preamble, new RegExp(`dated (?:as of )?(${DATE_RE.source})`, "i"));
-  const executionDate = executionDateMatch ? executionDateMatch.text.replace(/^dated (?:as of )?/i, "") : null;
+  const executionDateMatch = firstMatch(preamble, new RegExp(`dated\\s+(?:as\\s+of\\s+)?(${DATE_RE.source})`, "i"));
+  const executionDate = executionDateMatch ? executionDateMatch.text.replace(/^dated\s+(?:as\s+of\s+)?/i, "") : null;
   if (executionDateMatch) evidenceByField.executionDate = executionDateMatch;
 
   const amendmentNumMatch = firstMatch(preamble, /Amendment\s+(?:No\.?\s*(\d+)|(First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth))/i);

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "HOLDOUT_RERUN_QUALIFIER_COMPLETENESS_GATE",
+  "requirement": "B1-B4 qualifier gates: 0 silent material qualifier omissions (hard) + 4/4 preferred (3/4 acceptable only if the 4th explicitly safe-fails and is non-systemic). B4 must preserve its dual thresholds and cure mechanics if source supports them.",
+  "perClaimResults": [
+    {
+      "claimId": "B1",
+      "region": "applicable-liquidity-rate",
+      "expectedQualifier": "Applicable Liquidity Threshold - the specific dollar-threshold formula.",
+      "compiled": "calculationExpression.kind=IF, sufficiency self-reported COMPLETE (unchanged from pre-fix run) - BUT the verifier now finds 5 real MATERIAL-severity UNSUPPORTED_IR_ADDITION findings citing specific paths WITHIN this definition's own IF tree (definitions[0].calculationExpression.then/else/condition sub-paths) - a genuine internal-completeness overclaim the verifier caught, the same class of positive trust-architecture signal Mission 2 first observed for EBITDA's own sufficiency=PARTIAL/UNSUPPORTED mismatch.",
+      "outcome": "NOT a clean pass - the definition's own self-reported COMPLETE sufficiency does not survive independent verification. Hard safety held: the verifier caught this, nothing was silently trusted."
+    },
+    {
+      "claimId": "B2",
+      "region": "applicable-liquidity-rate",
+      "expectedQualifier": "Applicable Rate - the multi-tier pricing-grid thresholds.",
+      "compiled": "calculationExpression.kind=UNSUPPORTED, attemptedStructure: 4 total, 2 well-typed, 2 unsupported.",
+      "verifierResult": "The region shows 24 MATERIAL findings in total (shared verify call across B1+B2+3 other definitions) - the majority are MISSING_BASKET findings on specific real percentage/basis-point figures from the source, the same class of itemized real-number disclosure seen in the pre-fix run.",
+      "outcome": "NOT a clean pass - the pricing grid remains substantively uncaptured, consistent with the pre-fix run."
+    },
+    {
+      "claimId": "B3",
+      "region": "ebitda",
+      "expectedQualifier": "Consolidated EBITDA's internal 10%/15% caps.",
+      "compiled": "Confirmed by direct inspection: the compiled attemptedStructure (18 components) contains NO mention of a 10%/15%/synergy cap anywhere - the supplied operative source text still truncates after clause (1)(l), before clause (2)'s cap language, the SAME SOURCE_CONTEXT limitation identified pre-fix (01/02) and explicitly out of Unit A's remediation scope (a discovery/region-selection concern, not a semantic-computation-architecture concern).",
+      "outcome": "NOT a clean pass, unchanged from the pre-fix run, for the same already-disclosed, out-of-scope reason. Hard safety held: the verifier's own MATERIAL finding for this region (clause (1)(d)'s clawback) independently confirms the definition is not being falsely presented as complete."
+    },
+    {
+      "claimId": "B4",
+      "region": "cash-sweep-cure",
+      "expectedQualifier": "Section 2.05(2)(c)'s dual-threshold cash-sweep-with-cure structure ($50 million / $115 million Maintenance Liquidity thresholds and the Deficiency Amount cure mechanism).",
+      "compiled": "BOTH real dollar thresholds are now present as real MONEY literals inside real rule structure, each with a real source citation: rule ir-rule:1e2208...'s capacityExpression is MIN(METRIC_REFERENCE, SUBTRACT(METRIC_REFERENCE, MONEY(50000000, citation='§2.05(2)(c)(i)'))); rule ir-rule:8561c2...'s capacityExpression is SUBTRACT(METRIC_REFERENCE('Maintenance Liquidity'), MONEY(115000000, citation='§2.05(2)(c)(ii)')). Deficiency Amount's own calculationExpression is now a real RULE_REFERENCE to the $115M rule (a structural improvement over the pre-fix run's own separate, unlinked definition). 4 rules total (up from 2 pre-fix), including 2 additional rules for the cure-recalculation/no-refund-obligation mechanic.",
+      "verifierResult": "9 MATERIAL findings, but on direct inspection (docs/post-holdout-semantic-remediation - this artifact) 4 of the 9 are MISSING_BASKET/UNSUPPORTED_IR_ADDITION findings asserting 'source AMOUNT 50/115 does not appear... in compiled IR', which appears to be a comparison-methodology false positive: the source text states the figures in '$X million' shorthand (e.g. '50', '115') while the compiled IR correctly stores the full-value raw-dollar amount (50000000, 115000000) - the SAME dollar figure at a different numeric scale, which this specific verifier check does not appear to normalize. This is DISCLOSED, not silently worked around or used to override the verifier's own MATERIAL_DISCREPANCY status.",
+      "outcome": "NOT counted as a clean pass, per this mission's own conservative discipline of never overriding the verifier's own safety judgment - but a real, substantial, honestly-reported improvement: both dollar thresholds are now genuinely captured (a previously-missing qualifier, per the pre-fix run's own 4 MISSING_BASKET findings quoting exactly these two figures as absent), and the cure mechanism gained 2 additional rules. The remaining 5 non-scale-related MATERIAL findings (the recalculation/no-refund-obligation clause) are a real, still-open, safely-surfaced gap."
+    }
+  ],
+  "hardSafetyRequirement": {
+    "result": "MET - 0/4 claims show a silently trusted material qualifier omission. Every gap (real or possibly-false-positive) was explicitly flagged by the independent verifier with specific, itemized findings."
+  },
+  "qualifierPreservationRate": {
+    "cleanPassCount": 0,
+    "rate": "0/4 (0%), unchanged from the pre-fix run's own 0/4",
+    "hardRequirementMet": false,
+    "priorRunRate": "0/4 (0%) - see docs/final-phase3-closure/13-qualifier-completeness-gate.json",
+    "delta": "No claim crosses the 'clean pass' line in this rerun, matching the pre-fix result numerically - but B1's internal-completeness overclaim being caught, and B4's real dual-threshold capture (now genuinely present in the IR, versus genuinely absent pre-fix), are both real, substantive, honestly-disclosed improvements that the strict pass/fail count alone does not show. B2/B3 show no material change, consistent with their own already-disclosed root causes (a still-uncaptured pricing grid; a still-truncated source region) being outside this mission's fix scope."
+  },
+  "possibleVerifierComparisonLimitation": "The 'source AMOUNT does not appear in compiled IR' pattern observed for B4's two dollar thresholds (comparing '50'/'115' against '50000000'/'115000000') looks like a magnitude/unit-scale normalization gap in the verifier's own deterministic AMOUNT-matching signal, not a real compiler defect - disclosed here as an observation for a future, separately-scoped session, per this mission's own scope discipline (Unit A/Unit B do not touch semantic-verification/ code, and this mission does not investigate or fix verifier-internal comparison logic)."
+}
