@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SUPERIOR_OPERATIVE_SUPERSESSION",
+  "requirement": "If doc-b RESTATES doc-a resolves strongly enough to establish whole-document supersession, prove it flows through correctly. If the relationship remains REVIEW_REQUIRED (or, per this session's finding, UNRESOLVED), do NOT manufacture supersession - report truthful uncertainty.",
+  "actualRelationshipStatus": "UNRESOLVED (confidence 0) - see 06-superior-relationship-regression.json's own WINDOW-SIZE-LIMIT finding.",
+  "instrumentGrouping": {
+    "result": "packageGraph.instruments contains 3 SEPARATE, unmerged instruments (instrument:doc-a, instrument:doc-b, instrument:doc-c), each a single-document standalone unit.",
+    "consistentWithPolicy": true,
+    "reasoning": "The package graph's own RESOLVED-only instrument-merge policy correctly declines to merge doc-a and doc-b into one instrument, because the doc-b RESTATES doc-a relationship candidate is UNRESOLVED, not RESOLVED. This is the SAME conservative behavior the mission's own Section 28 explicitly sanctions for a REVIEW_REQUIRED relationship, applied consistently here to an UNRESOLVED one - no manufactured supersession."
+  },
+  "consequence": "No whole-document supersession is established for doc-a relative to doc-b in this run. A physical node unique to doc-a is NOT marked KNOWN_SUPERSEDED (there is no supersession index entry for the doc-b/doc-a pair) - this is the SAME real STALE-AS-CURRENT exposure the frozen prior run's own D3 finding already disclosed (docs/final-lightweight-unseen/13-version-operative-state.json), UNCHANGED by this session's classifier fix, because the fix corrected classification and relationship SURFACING but not relationship RESOLUTION strength.",
+  "controlNodeCheck": {
+    "requirement": "A control node from the current document (doc-b, or doc-c as the most current instrument) must not be accidentally suppressed.",
+    "result": "PASS - doc-b's and doc-c's own structural nodes remain fully retrievable and CURRENT_OPERATIVE (each is its own standalone instrument; nothing was suppressed by this session's change)."
+  },
+  "honestDisposition": "This session's classifier fix corrects the WRONG-CLASSIFICATION and ABSENT-RELATIONSHIP defects (C2/D1's own root cause) but does NOT, on its own, establish whole-document supersession for this specific package, because the deterministic relationship-resolution machinery's separate window-size limitation (out of Unit A's scope) prevents the RESTATES relationship from reaching RESOLVED. Per the mission's own explicit instruction for this exact situation, this is reported as truthful uncertainty, not manufactured as a false RESOLVED/supersession outcome."
+}
