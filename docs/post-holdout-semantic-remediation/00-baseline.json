@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "missionName": "HEADROOM — POST-HOLDOUT SEMANTIC COMPUTATION ARCHITECTURE REMEDIATION",
+  "startedAt": "2026-09-01T00:00:00Z",
+  "startingSha": "902e5d741e49afe2c314d08be586279d1d358eab",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "gitStatusAtStart": "clean working tree, HEAD == starting SHA, no uncommitted changes",
+  "priorMissionOutcome": {
+    "verdict": "SEMANTIC_HOLDOUT_GENERALIZATION_FAILED",
+    "phase4Readiness": "NO_GENERALIZATION_NOT_YET_SUFFICIENT",
+    "recommendedNextStep": "docs/final-phase3-closure.md section 7: a bounded remediation session targeting semantic-compiler capability for complex, multi-clause Article I financial definitions specifically, followed by re-running the exact same frozen A1-A6/B1-B4 holdout to confirm the fix."
+  },
+  "governingDocsRead": [
+    "docs/final-phase3-closure.md",
+    "docs/final-phase3-closure/00-baseline.json",
+    "docs/final-phase3-closure/10-semantic-freeze-proof.json",
+    "docs/final-phase3-closure/11-frozen-semantic-holdout-results.json",
+    "docs/final-phase3-closure/12-definition-exhaustiveness-gate.json",
+    "docs/final-phase3-closure/13-qualifier-completeness-gate.json",
+    "docs/final-phase3-closure/14-verifier-holdout-results.json",
+    "docs/final-phase3-closure/17-full-regression.json",
+    "docs/final-phase3-closure/18-independent-audit.json",
+    "docs/final-phase3-closure/19-phase3-release-gate.json",
+    "docs/final-phase3-closure/20-final-verdict.json",
+    "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-summary.json",
+    "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-ebitda.json",
+    "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-applicable-liquidity-rate.json",
+    "tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/holdout-cash-sweep-cure.json"
+  ],
+  "productionCodeReadThisMission": [
+    "lib/contract-model/ir/types.ts",
+    "lib/contract-model/ir/type-check.ts",
+    "lib/contract-model/compiler/semantic/compile.ts",
+    "lib/contract-model/compiler/semantic/types.ts",
+    "lib/contract-model/compiler/semantic/wire-schema.ts",
+    "lib/contract-model/compiler/semantic/normalize.ts",
+    "lib/contract-model/compiler/semantic/tools.ts",
+    "lib/contract-model/compiler/semantic/caller.ts",
+    "lib/contract-model/compiler/semantic/prompt.ts",
+    "lib/contract-model/compiler/semantic/completeness-check.ts",
+    "lib/contract-model/compiler/package-graph/relationship-resolution.ts",
+    "lib/contract-model/compiler/structural-index.ts",
+    "lib/contract-model/compiler/structural-references.ts",
+    "lib/contract-model/compiler/structural-definitions.ts",
+    "lib/contract-model/compiler/package-graph/types.ts",
+    "lib/contract-model/compiler/package-graph/document-classifier.ts",
+    "lib/contract-model/compiler/package-graph/instrument-grouping.ts",
+    "lib/contract-model/compiler/package-graph/document-identity.ts"
+  ],
+  "researchMethod": "Two independent read-only Explore agents were dispatched: one covering the semantic compiler / IR / type-check / normalize / completeness-check subsystem (Unit A scope), one covering relationship-resolution / structural-index / document-identity (Unit B scope). Both returned full findings with exact file:line citations, code quotes, and (for Unit B) a live reproduction against the real, unmodified production code run against the real Superior doc-a/doc-b text. No production code was modified during this research phase.",
+  "testBaselineAtStart": {
+    "typescript": { "errorCount": 6, "note": "unchanged from docs/final-phase3-closure/17-full-regression.json baseline" },
+    "lint": { "errorCount": 1, "note": "unchanged from prior baseline" },
+    "vitest": { "totalTests": 3132, "passed": 3128, "failed": 4, "note": "unchanged from prior session's end state; the 4 known failures are pre-existing benchmark-contamination guard tests tripped by legitimate new fixture directories, not functional regressions (see docs/final-phase3-closure/17-full-regression.json)" }
+  },
+  "scopeStatement": "This mission has two independent units (semantic computation architecture for dense multi-clause financial definitions; relationship-evidence retrieval beyond a fixed character window) that must not have their logic combined. Per Section 0/13 of the mission, this commit (artifacts 00-06) is architecture analysis only — zero production code changes. Implementation begins only in a subsequent commit, after this analysis is committed.",
+  "note": "The frozen holdout JSON fixtures under tests/fixtures/unseen-packages/final-phase3-closure-holdout-run/ preserve only { region, operativeSourceText, compile: {status, rules, definitions, failureReasons, telemetry}, verify }. rawModelOutput and toolCallLog were NOT preserved to disk during the prior session's run. This is disclosed honestly in 01-holdout-failure-ledger.json as a scope limitation — the ledger substitutes the structured post-normalization compile output (including calculationExpression.reason diagnostic strings), the verifier's own findings (which independently quote and analyze real source text), and direct comparison against the real, unmodified operativeSourceText already present in each holdout JSON file."
+}
