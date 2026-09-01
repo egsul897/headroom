@@ -7,7 +7,10 @@
     "2": "3868ad7 Pass A semantic inventory + quantitative scanner + source-context sufficiency + reference resolver + independence test",
     "3": "f7846b2 Pass B composition lineage (inventoryItemIds + inventoryDispositions) + Pass C deterministic reconciliation + agreement rollup",
     "4": "d9fc8ba shared-cap / cross-reference dependency remediation (unresolvedDependencies preserved, tool resolution via generic resolver, prompt guidance)",
-    "5": "(this commit) generic synthetic corpus I1-I45, injected-omission gates, IRRuleDependency lineage, definition-span truncation fix, ratio-as-percent correspondence, section-inference guard"
+    "5": "80ef420 generic synthetic corpus I1-I45, injected-omission gates, IRRuleDependency lineage, definition-span truncation fix, ratio-as-percent correspondence, section-inference guard",
+    "5b": "0e3d49b compilation-unit extension (mission section 13): window extended to its real unit boundary with provenance; compile.ts composes against the resolved unit; CompileOptions.sourceContextBudget",
+    "5c": "78c9fb1 section-bounded definition spans + growth-only unit extension (two real-text defects found by the zero-cost dry run over the frozen regions)",
+    "6": "(this commit) production freeze record (SEMANTIC_ACCOUNTABILITY_PRODUCTION_SHA=78c9fb1), provider health + cost plan, fixed validation harness, stability comparator - no production changes"
   },
   "architectureImplemented": {
     "passA": "lib/contract-model/compiler/semantic-accountability/{inventory,quantitative,prompt,wire-schema,source-context,reference-resolver}.ts - source-only, frozen (content-hashed) before Pass B",
@@ -45,8 +48,13 @@
       "tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts"
     ],
     "scripts": [
+      "scripts/lib/semantic-accountability-regions.ts",
+      "scripts/semantic-accountability-cost-plan.ts",
+      "scripts/semantic-accountability-freeze.ts",
       "scripts/semantic-accountability-shared-cap-trace.ts",
-      "scripts/semantic-accountability-synthetic-report.ts"
+      "scripts/semantic-accountability-stability.ts",
+      "scripts/semantic-accountability-synthetic-report.ts",
+      "scripts/semantic-accountability-validation.ts"
     ],
     "docs": [
       "docs/semantic-accountability/00-baseline.json",
@@ -57,10 +65,13 @@
       "docs/semantic-accountability/05-reconciliation-design.json",
       "docs/semantic-accountability/06-shared-cap-root-cause-trace.json",
       "docs/semantic-accountability/06-shared-cap-root-cause.json",
+      "docs/semantic-accountability/07-implementation-results.json",
       "docs/semantic-accountability/08-generic-inventory-tests.json",
-      "docs/semantic-accountability/09-generic-reconciliation-tests.json"
+      "docs/semantic-accountability/09-generic-reconciliation-tests.json",
+      "docs/semantic-accountability/10-production-freeze.json",
+      "docs/semantic-accountability/11-provider-cost-plan.json"
     ],
-    "count": 36
+    "count": 44
   },
   "syntheticGates": {
     "passA": {
@@ -158,7 +169,7 @@
       }
     },
     "testFiles": [
-      "tests/contract-model/semantic-accountability/pass-a-inventory.test.ts (66 tests)",
+      "tests/contract-model/semantic-accountability/pass-a-inventory.test.ts (69 tests)",
       "tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts (64 tests)",
       "tests/contract-model/semantic-accountability-independence.test.ts (5 tests)"
     ],
@@ -188,8 +199,37 @@
       "layer": "normalize/IR",
       "finding": "resolved within-unit dependsOn edges carried no lineage, so an in-unit DEPENDENCY item could only be accounted by term inference",
       "fix": "IRRuleDependency.inventoryItemIds (additive) + Pass C walks dependsOn lineage"
+    },
+    {
+      "id": "SD-5",
+      "layer": "source-context",
+      "finding": "(real-text dry run) an inline definition detected ~250k chars earlier in the agreement captured every covenant window as its 'definition span', so 10 of 12 real regions reported TRUNCATED_SOURCE",
+      "fix": "a definition span is used only when it lives inside the anchor's SECTION-level unit and is clamped to it; a window at the head of a definitions section starts its own span"
+    },
+    {
+      "id": "SD-6",
+      "layer": "source-context",
+      "finding": "(real-text dry run) a definition span could end inside the supplied window, shrinking the resolved unit below what was supplied (2,900 chars -> 377 chars)",
+      "fix": "the resolved unit always contains the supplied window - extension only ever grows"
     }
   ],
   "antiEnumeration": "No accountability logic is keyed to any agreement, metric name, section number, basket name or ground-truth amount; enforced by the benchmark-identifier scan in the independence test and demonstrated by I36-I38 (identical outcomes across arbitrary metric names, section numbering and clause order).",
-  "notYetMeasured": "Real-model inventory recall, composition disposition and stability (mission \u00a721-\u00a727) - measured only by the frozen real validations after the production freeze."
+  "notYetMeasured": "Real-model inventory recall, composition disposition and stability (mission \u00a721-\u00a727) - measured only by the frozen real validations after the production freeze.",
+  "productionFreeze": {
+    "SEMANTIC_ACCOUNTABILITY_PRODUCTION_SHA": "78c9fb10f1973c2b73c899741aa23cb2acfc0a20",
+    "record": "docs/semantic-accountability/10-production-freeze.json",
+    "enforcement": "scripts/semantic-accountability-validation.ts re-hashes lib/app/prisma at start and refuses to run on drift"
+  },
+  "qualityGatesAtFreeze": {
+    "typescript": {
+      "command": "npx tsc --noEmit -p tsconfig.json",
+      "newErrors": 0,
+      "baselineDebt": "6 pre-existing errors, all in tests/foundation-audit/ (identical to the starting SHA)"
+    },
+    "lint": {
+      "command": "npx next lint",
+      "result": "No ESLint warnings or errors"
+    },
+    "vitest": "PENDING - patched below once the full run completes"
+  }
 }

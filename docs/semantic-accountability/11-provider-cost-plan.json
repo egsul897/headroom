@@ -1,0 +1,1329 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "11-provider-cost-plan",
+  "generatedAt": "2026-09-01T20:57:14.332Z",
+  "productionFreeze": {
+    "sha": "78c9fb10f1973c2b73c899741aa23cb2acfc0a20",
+    "treeHash": "900d8fc2cdb6687747c4cfae39497d25a49a0da90756efd580b7fe98978bb637"
+  },
+  "providerHealth": {
+    "credentialPresent": true,
+    "credentialSource": "AI_GATEWAY_API_KEY",
+    "compiler": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "synthetic": false
+    },
+    "inventoryAndVerifier": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5",
+      "synthetic": false
+    },
+    "ping": {
+      "performed": true,
+      "ok": true,
+      "echo": "HEALTHY",
+      "latencyMs": 3180,
+      "costUsd": 0.000802,
+      "inputTokens": 291,
+      "outputTokens": 22,
+      "model": "anthropic/claude-sonnet-5"
+    }
+  },
+  "method": "Zero-cost deterministic dry run: each frozen region's real source context (anchor, compilation-unit extension, cross-reference expansions) is resolved exactly as compile.ts will resolve it, so unit sizes are the true Pass A/Pass B inputs. Pass A cost = list pricing on the real prompt size; compile cost = Mission-4 observed per-region cost x sqrt(unit growth) x 1.15; verify = Mission-4 observed x 1.1.",
+  "plan": {
+    "executions": [
+      "holdout run-1",
+      "holdout run-2",
+      "whole-agreement run-1",
+      "whole-agreement run-2"
+    ],
+    "holdout": {
+      "mode": "holdout",
+      "regions": [
+        {
+          "id": "ebitda",
+          "family": "DEFINITIONS",
+          "claimIds": [
+            "A1",
+            "B3"
+          ],
+          "window": {
+            "charStart": 75142,
+            "charEnd": 80342,
+            "chars": 5200
+          },
+          "anchor": {
+            "nodeId": "structural-node:48483ad3fd4d06823f920aa2",
+            "sectionRef": "1.01(4)(1)(ii)(6)(iii)(A)",
+            "charStart": 73709,
+            "charEnd": 78602
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 8583,
+            "unitExtension": {
+              "boundary": "DEFINITION_SPAN",
+              "from": [
+                75142,
+                80342
+              ],
+              "to": [
+                75142,
+                83725
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "1.07",
+                "chars": 6000,
+                "for": "Section 1.07",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "1.07(3)",
+                "chars": 2852,
+                "for": "Section 1.07(3)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 17435,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 7605,
+            "passAOutputTokens": 2906,
+            "passACostUsd": 0.066,
+            "priorCompileCostUsd": 0.316,
+            "unitGrowth": 1.65,
+            "compileCostUsd": 0.467
+          }
+        },
+        {
+          "id": "net-income",
+          "family": "DEFINITIONS",
+          "claimIds": [
+            "A2"
+          ],
+          "window": {
+            "charStart": 105105,
+            "charEnd": 112629,
+            "chars": 7524
+          },
+          "anchor": {
+            "nodeId": "structural-node:8d5f392ad4c80e9d3797523d",
+            "sectionRef": "1.01(4)(3)(r)(d)(19)",
+            "charStart": 104348,
+            "charEnd": 105378
+          },
+          "sourceContext": {
+            "state": "COMPLETE_LOCAL_SOURCE",
+            "unitChars": 7524,
+            "unitExtension": null,
+            "expansions": [],
+            "unresolvedReferences": [],
+            "totalChars": 7524,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 4740,
+            "passAOutputTokens": 1500,
+            "passACostUsd": 0.037,
+            "priorCompileCostUsd": 0.262,
+            "unitGrowth": 1,
+            "compileCostUsd": 0.301
+          }
+        },
+        {
+          "id": "interest-expense",
+          "family": "DEFINITIONS",
+          "claimIds": [
+            "A3"
+          ],
+          "window": {
+            "charStart": 84614,
+            "charEnd": 88214,
+            "chars": 3600
+          },
+          "anchor": {
+            "nodeId": "structural-node:4871852531a55f35bdd83450",
+            "sectionRef": "1.01(4)(3)",
+            "charStart": 84567,
+            "charEnd": 117293
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 9007,
+            "unitExtension": {
+              "boundary": "DEFINITION_SPAN",
+              "from": [
+                84614,
+                88214
+              ],
+              "to": [
+                84614,
+                93621
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "1.01(4)(2)",
+                "chars": 5965,
+                "for": "clause (2)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "1.07",
+                "chars": 6000,
+                "for": "Section 1.07",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "1.07(3)",
+                "chars": 2852,
+                "for": "Section 1.07(3)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "1.01(2)(k)",
+                "chars": 176,
+                "for": "clause (2)(k)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": true
+              }
+            ],
+            "unresolvedReferences": [
+              "Section 2.16(6):OUT_OF_SCOPE",
+              "§ 252.82(b):NOT_FOUND",
+              "§ 47.3(b):NOT_FOUND",
+              "§\n382.2(b):NOT_FOUND",
+              "Section 10.27:OUT_OF_SCOPE",
+              "Section 8.04(1):OUT_OF_SCOPE",
+              "Section 8.04(1)(a):OUT_OF_SCOPE"
+            ],
+            "totalChars": 24000,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 9806,
+            "passAOutputTokens": 4000,
+            "passACostUsd": 0.089,
+            "priorCompileCostUsd": 0.182,
+            "unitGrowth": 2.5,
+            "compileCostUsd": 0.331
+          }
+        },
+        {
+          "id": "first-lien-debt",
+          "family": "DEFINITIONS",
+          "claimIds": [
+            "A4"
+          ],
+          "window": {
+            "charStart": 83725,
+            "charEnd": 84675,
+            "chars": 950
+          },
+          "anchor": {
+            "nodeId": "structural-node:561c6f4268c7db72d445e47e",
+            "sectionRef": "1.01(4)(2)(i)(ii)(d)",
+            "charStart": 83534,
+            "charEnd": 84369
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 4359,
+            "unitExtension": {
+              "boundary": "DEFINITION_SPAN",
+              "from": [
+                83725,
+                84675
+              ],
+              "to": [
+                83725,
+                88084
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "1.07",
+                "chars": 6000,
+                "for": "Section 1.07",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 10359,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 5595,
+            "passAOutputTokens": 1727,
+            "passACostUsd": 0.043,
+            "priorCompileCostUsd": 0.229,
+            "unitGrowth": 4.59,
+            "compileCostUsd": 0.564
+          }
+        },
+        {
+          "id": "secured-net-leverage",
+          "family": "DEFINITIONS",
+          "claimIds": [
+            "A5"
+          ],
+          "window": {
+            "charStart": 277303,
+            "charEnd": 278403,
+            "chars": 1100
+          },
+          "anchor": {
+            "nodeId": "structural-node:25c27930f425ef6c4d35e91c",
+            "sectionRef": "1.01(48)(5)(d)",
+            "charStart": 276962,
+            "charEnd": 277385
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 1309,
+            "unitExtension": {
+              "boundary": "DEFINITION_SPAN",
+              "from": [
+                277303,
+                278403
+              ],
+              "to": [
+                277303,
+                278612
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "5.17",
+                "chars": 1665,
+                "for": "Section 5.17",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "1.07",
+                "chars": 6000,
+                "for": "Section 1.07",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "9.01(2)",
+                "chars": 1914,
+                "for": "Section 9.01(2)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 10888,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 5833,
+            "passAOutputTokens": 1815,
+            "passACostUsd": 0.045,
+            "priorCompileCostUsd": 0.211,
+            "unitGrowth": 1.19,
+            "compileCostUsd": 0.265
+          }
+        },
+        {
+          "id": "applicable-liquidity-rate",
+          "family": "DEFINITIONS",
+          "claimIds": [
+            "B1",
+            "B2"
+          ],
+          "window": {
+            "charStart": 19183,
+            "charEnd": 24383,
+            "chars": 5200
+          },
+          "anchor": {
+            "nodeId": "structural-node:49699d2529857f6e40d9b9ec",
+            "sectionRef": "1.01(2)(a)(c)",
+            "charStart": 14705,
+            "charEnd": 19756
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 8656,
+            "unitExtension": {
+              "boundary": "DEFINITION_SPAN",
+              "from": [
+                19183,
+                24383
+              ],
+              "to": [
+                19183,
+                27839
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "10.07",
+                "chars": 6000,
+                "for": "Section 10.07(g)(vi)",
+                "resolution": "RESOLVED_VIA_ENCLOSING_NODE",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "10.02(4)",
+                "chars": 1521,
+                "for": "Section 10.02(4)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.01",
+                "chars": 6000,
+                "for": "Section 6.01",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "6.02(1)",
+                "chars": 115,
+                "for": "Section 6.02(1)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "8.01(1)",
+                "chars": 1077,
+                "for": "Section 8.01(1)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "7.02",
+                "chars": 631,
+                "for": "Section 7.02",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              }
+            ],
+            "unresolvedReferences": [
+              "Section 7.03:OUT_OF_SCOPE",
+              "Section 7.03(6):OUT_OF_SCOPE",
+              "Section 7.03(7):OUT_OF_SCOPE",
+              "Section 7.05:OUT_OF_SCOPE",
+              "Section 7.01:OUT_OF_SCOPE"
+            ],
+            "totalChars": 24000,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 9872,
+            "passAOutputTokens": 4000,
+            "passACostUsd": 0.09,
+            "priorCompileCostUsd": 0.393,
+            "unitGrowth": 1.66,
+            "compileCostUsd": 0.583
+          }
+        },
+        {
+          "id": "new-definitions",
+          "family": "AMENDMENT",
+          "claimIds": [
+            "A6"
+          ],
+          "window": {
+            "charStart": 2266,
+            "charEnd": 3539,
+            "chars": 1273
+          },
+          "anchor": {
+            "nodeId": "structural-node:8b2e32a9dc4994a1b47fe161",
+            "sectionRef": "2(a)",
+            "charStart": 2262,
+            "charEnd": 3212
+          },
+          "sourceContext": {
+            "state": "COMPLETE_LOCAL_SOURCE",
+            "unitChars": 1513,
+            "unitExtension": {
+              "boundary": "DEFINITION_SPAN",
+              "from": [
+                2266,
+                3539
+              ],
+              "to": [
+                2266,
+                3779
+              ]
+            },
+            "expansions": [],
+            "unresolvedReferences": [
+              "Section 1.01:NOT_FOUND",
+              "Section 2.05(2)(c):NOT_FOUND",
+              "Sections 2.05(2)(a):NOT_FOUND"
+            ],
+            "totalChars": 1513,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 3211,
+            "passAOutputTokens": 1500,
+            "passACostUsd": 0.032,
+            "priorCompileCostUsd": 0.207,
+            "unitGrowth": 1.19,
+            "compileCostUsd": 0.26
+          }
+        },
+        {
+          "id": "cash-sweep-cure",
+          "family": "AMENDMENT",
+          "claimIds": [
+            "B4"
+          ],
+          "window": {
+            "charStart": 3539,
+            "charEnd": 6439,
+            "chars": 2900
+          },
+          "anchor": {
+            "nodeId": "structural-node:1254f4a885f7f486715778cf",
+            "sectionRef": "2(c)",
+            "charStart": 3320,
+            "charEnd": 3779
+          },
+          "sourceContext": {
+            "state": "COMPLETE_LOCAL_SOURCE",
+            "unitChars": 3037,
+            "unitExtension": {
+              "boundary": "DEFINITION_SPAN",
+              "from": [
+                3539,
+                6439
+              ],
+              "to": [
+                3402,
+                6439
+              ]
+            },
+            "expansions": [],
+            "unresolvedReferences": [
+              "Section 2.05(2)(c):NOT_FOUND",
+              "Sections 2.05(2)(a):NOT_FOUND",
+              "Section 2.05(2)(c)(ii):NOT_FOUND"
+            ],
+            "totalChars": 3037,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 3640,
+            "passAOutputTokens": 1500,
+            "passACostUsd": 0.033,
+            "priorCompileCostUsd": 0.234,
+            "unitGrowth": 1.05,
+            "compileCostUsd": 0.275
+          }
+        }
+      ],
+      "perRun": {
+        "passA": 0.44,
+        "compile": 3.05,
+        "verify": 1.12,
+        "total": 4.6
+      },
+      "priorRunObservedUsd": 3.0554,
+      "twoRuns": 9.21
+    },
+    "wholeAgreement": {
+      "mode": "whole-agreement",
+      "regions": [
+        {
+          "id": "definitions-lsb",
+          "family": "DEFINITIONS",
+          "claimIds": [],
+          "window": {
+            "charStart": 0,
+            "charEnd": 8065,
+            "chars": 8065
+          },
+          "anchor": null,
+          "sourceContext": {
+            "state": "COMPLETE_LOCAL_SOURCE",
+            "unitChars": 8065,
+            "unitExtension": null,
+            "expansions": [],
+            "unresolvedReferences": [
+              "Section  2.01(b):NOT_FOUND",
+              "Section  6.11(c):NOT_FOUND",
+              "Section  5.03(a)(ii):NOT_FOUND",
+              "Section  5.03(b):NOT_FOUND",
+              "Section  5.03(a):NOT_FOUND",
+              "Section  6.01(l):NOT_FOUND"
+            ],
+            "totalChars": 8065,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 5124,
+            "passAOutputTokens": 1500,
+            "passACostUsd": 0.038,
+            "priorCompileCostUsd": 0.343,
+            "unitGrowth": 1,
+            "compileCostUsd": 0.394
+          }
+        },
+        {
+          "id": "definitions-dsgr",
+          "family": "DEFINITIONS",
+          "claimIds": [],
+          "window": {
+            "charStart": 12620,
+            "charEnd": 16620,
+            "chars": 4000
+          },
+          "anchor": {
+            "nodeId": "structural-node:983ce10d2655f3c391b948d1",
+            "sectionRef": "1.01",
+            "charStart": 12620,
+            "charEnd": 188174
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 5586,
+            "unitExtension": {
+              "boundary": "DEFINITION_SPAN",
+              "from": [
+                12620,
+                16620
+              ],
+              "to": [
+                12620,
+                18206
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "9.04",
+                "chars": 6000,
+                "for": "Section 9.04(f)",
+                "resolution": "RESOLVED_VIA_ENCLOSING_NODE",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "9.03(c)",
+                "chars": 2128,
+                "for": "Section 9.03(c)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "2.14",
+                "chars": 6000,
+                "for": "Section 2.14",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "2.14(b)",
+                "chars": 4286,
+                "for": "Section 2.14(b)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": true
+              }
+            ],
+            "unresolvedReferences": [
+              "clause (c):OUT_OF_SCOPE",
+              "Section 9.06(b):OUT_OF_SCOPE",
+              "Section 5.01(a):OUT_OF_SCOPE",
+              "Section 3.04(a):OUT_OF_SCOPE",
+              "Section 8.03(c):OUT_OF_SCOPE",
+              "Section 2.20:OUT_OF_SCOPE",
+              "clause (c):OUT_OF_SCOPE",
+              "Section 5.01:OUT_OF_SCOPE",
+              "Section 8.03(a):OUT_OF_SCOPE",
+              "Section 9.04(b):OUT_OF_SCOPE",
+              "Section 2.11(c)(i):OUT_OF_SCOPE",
+              "Section 6.04(q):OUT_OF_SCOPE",
+              "Section 6.08(a)(iv):OUT_OF_SCOPE",
+              "clause (viii):OUT_OF_SCOPE",
+              "Section 2.14(e):OUT_OF_SCOPE",
+              "Article 55:NOT_FOUND",
+              "clause (1):OUT_OF_SCOPE",
+              "clause (1):OUT_OF_SCOPE",
+              "clause (3):OUT_OF_SCOPE",
+              "clause (3):OUT_OF_SCOPE",
+              "clause (1):OUT_OF_SCOPE",
+              "§ 1010.230:NOT_FOUND",
+              "Section 11.01:OUT_OF_SCOPE",
+              "Section 2.03:OUT_OF_SCOPE",
+              "Section 6.10:OUT_OF_SCOPE",
+              "Article XII:AMBIGUOUS",
+              "Section 7.01(h):OUT_OF_SCOPE",
+              "Section 7.02:OUT_OF_SCOPE",
+              "Section 10.01(b):OUT_OF_SCOPE",
+              "clause (a):OUT_OF_SCOPE",
+              "clause (b):OUT_OF_SCOPE",
+              "Section 2.15(b):OUT_OF_SCOPE",
+              "Section 9.17:OUT_OF_SCOPE",
+              "Section 2.09:OUT_OF_SCOPE",
+              "Section 7.03:OUT_OF_SCOPE",
+              "clause (i):OUT_OF_SCOPE",
+              "clause (c):OUT_OF_SCOPE",
+              "Section 2.01(c):OUT_OF_SCOPE",
+              "Article 9:NOT_FOUND",
+              "clause (a)(i):OUT_OF_SCOPE",
+              "clause (B)(I):OUT_OF_SCOPE",
+              "Section 9.01:OUT_OF_SCOPE",
+              "clause (c):OUT_OF_SCOPE",
+              "Section 6.05:OUT_OF_SCOPE",
+              "clause (A):OUT_OF_SCOPE",
+              "clause (a)(xvii):OUT_OF_SCOPE",
+              "clause (a):OUT_OF_SCOPE",
+              "Section 4.01:OUT_OF_SCOPE",
+              "Section 9.02:OUT_OF_SCOPE",
+              "Section 7.01:OUT_OF_SCOPE",
+              "clause (b):OUT_OF_SCOPE",
+              "Section 2.19(b):OUT_OF_SCOPE",
+              "Section 2.17:OUT_OF_SCOPE",
+              "Section 2.17(f):OUT_OF_SCOPE",
+              "Section 8.10:OUT_OF_SCOPE",
+              "Section 4.01(g):OUT_OF_SCOPE",
+              "clause (a):OUT_OF_SCOPE",
+              "Section 9.03(b):OUT_OF_SCOPE",
+              "Section 9.12:OUT_OF_SCOPE",
+              "Section 2.01(b):OUT_OF_SCOPE",
+              "Section 2.08:OUT_OF_SCOPE",
+              "Section 2.06(i):OUT_OF_SCOPE",
+              "Section 2.06:OUT_OF_SCOPE",
+              "Section 2.06(j):OUT_OF_SCOPE",
+              "Section 2.06(b):OUT_OF_SCOPE",
+              "Article X:AMBIGUOUS",
+              "Section 9.02(d):OUT_OF_SCOPE",
+              "Section 10.02:OUT_OF_SCOPE",
+              "Section 2.19:OUT_OF_SCOPE",
+              "Section 9.04(c):OUT_OF_SCOPE",
+              "Section 8.06(c):OUT_OF_SCOPE",
+              "Section 6.12:OUT_OF_SCOPE",
+              "Section 6.12(b):OUT_OF_SCOPE",
+              "Section 5.13:OUT_OF_SCOPE",
+              "clause (h):OUT_OF_SCOPE",
+              "Section 5.04:OUT_OF_SCOPE",
+              "Section 7.01(k):OUT_OF_SCOPE",
+              "clause (a):OUT_OF_SCOPE",
+              "clause (c):OUT_OF_SCOPE",
+              "§ 2510.3:NOT_FOUND",
+              "Section 6.05(k):OUT_OF_SCOPE",
+              "Section 6.01:OUT_OF_SCOPE",
+              "Section 5.01(d):OUT_OF_SCOPE",
+              "Section 9.04(b)(ii)(C):OUT_OF_SCOPE",
+              "Section 2.01(a):OUT_OF_SCOPE",
+              "Section 6.06:OUT_OF_SCOPE",
+              "Section 2.18(f):OUT_OF_SCOPE",
+              "Section 2.05:OUT_OF_SCOPE",
+              "Section 5.15:OUT_OF_SCOPE",
+              "Section 10.01(a):OUT_OF_SCOPE",
+              "Section 2.17(f)(ii)(B)(3):OUT_OF_SCOPE"
+            ],
+            "totalChars": 24000,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 12642,
+            "passAOutputTokens": 4000,
+            "passACostUsd": 0.098,
+            "priorCompileCostUsd": 0.479,
+            "unitGrowth": 1.4,
+            "compileCostUsd": 0.651
+          }
+        },
+        {
+          "id": "debt-dsgr",
+          "family": "DEBT",
+          "claimIds": [],
+          "window": {
+            "charStart": 436142,
+            "charEnd": 440642,
+            "chars": 4500
+          },
+          "anchor": {
+            "nodeId": "structural-node:0ed7b844fc4eba6d04f7d065",
+            "sectionRef": "6.01",
+            "charStart": 436142,
+            "charEnd": 444932
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 8790,
+            "unitExtension": {
+              "boundary": "ANCHOR_NODE",
+              "from": [
+                436142,
+                440642
+              ],
+              "to": [
+                436142,
+                444932
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "6.04",
+                "chars": 6000,
+                "for": "Section 6.04",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "6.04(b)",
+                "chars": 683,
+                "for": "Section 6.04(b)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.05",
+                "chars": 4249,
+                "for": "Section 6.05",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 19722,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 8285,
+            "passAOutputTokens": 3287,
+            "passACostUsd": 0.074,
+            "priorCompileCostUsd": 0.477,
+            "unitGrowth": 1.95,
+            "compileCostUsd": 0.767
+          }
+        },
+        {
+          "id": "debt-lsb",
+          "family": "DEBT",
+          "claimIds": [],
+          "window": {
+            "charStart": 0,
+            "charEnd": 16826,
+            "chars": 16826
+          },
+          "anchor": {
+            "nodeId": "structural-node:ce359678bc1844dd525afb70",
+            "sectionRef": "VI",
+            "charStart": 0,
+            "charEnd": 16826
+          },
+          "sourceContext": {
+            "state": "COMPLETE_LOCAL_SOURCE",
+            "unitChars": 16826,
+            "unitExtension": null,
+            "expansions": [],
+            "unresolvedReferences": [
+              "Article VII:NOT_FOUND",
+              "Section  2.01(a):NOT_FOUND",
+              "Section  5.02:NOT_FOUND",
+              "Section  2.01(b)(i):NOT_FOUND"
+            ],
+            "totalChars": 16826,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 7490,
+            "passAOutputTokens": 2805,
+            "passACostUsd": 0.065,
+            "priorCompileCostUsd": 0.635,
+            "unitGrowth": 1,
+            "compileCostUsd": 0.73
+          }
+        },
+        {
+          "id": "liens-dsgr-a",
+          "family": "LIENS",
+          "claimIds": [],
+          "window": {
+            "charStart": 444932,
+            "charEnd": 448432,
+            "chars": 3500
+          },
+          "anchor": {
+            "nodeId": "structural-node:7281b00fd8d72fbc83606c4f",
+            "sectionRef": "6.02",
+            "charStart": 444932,
+            "charEnd": 451413
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 6481,
+            "unitExtension": {
+              "boundary": "ANCHOR_NODE",
+              "from": [
+                444932,
+                448432
+              ],
+              "to": [
+                444932,
+                451413
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "6.06",
+                "chars": 880,
+                "for": "Section 6.06",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.01(p)",
+                "chars": 939,
+                "for": "Section 6.01(p)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 8300,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 5045,
+            "passAOutputTokens": 1500,
+            "passACostUsd": 0.038,
+            "priorCompileCostUsd": 0.551,
+            "unitGrowth": 1.85,
+            "compileCostUsd": 0.862
+          }
+        },
+        {
+          "id": "liens-dsgr-d",
+          "family": "LIENS",
+          "claimIds": [],
+          "window": {
+            "charStart": 464193,
+            "charEnd": 467693,
+            "chars": 3500
+          },
+          "anchor": {
+            "nodeId": "structural-node:4ba4818dbb0bd022b4647f25",
+            "sectionRef": "6.02",
+            "charStart": 464193,
+            "charEnd": 470976
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 6783,
+            "unitExtension": {
+              "boundary": "ANCHOR_NODE",
+              "from": [
+                464193,
+                467693
+              ],
+              "to": [
+                464193,
+                470976
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "6.06",
+                "chars": 1055,
+                "for": "Section 6.06",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.01(p)",
+                "chars": 930,
+                "for": "Section 6.01(p)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.01(q)(i)(A)",
+                "chars": 707,
+                "for": "Section 6.01(q)(i)(A)",
+                "resolution": "UNIQUE",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 9475,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 5418,
+            "passAOutputTokens": 1580,
+            "passACostUsd": 0.04,
+            "priorCompileCostUsd": 0.519,
+            "unitGrowth": 1.94,
+            "compileCostUsd": 0.831
+          }
+        },
+        {
+          "id": "investments-dsgr",
+          "family": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "claimIds": [],
+          "window": {
+            "charStart": 455225,
+            "charEnd": 459225,
+            "chars": 4000
+          },
+          "anchor": {
+            "nodeId": "structural-node:9701a9f7b9b2f32310575d9d",
+            "sectionRef": "6.04",
+            "charStart": 455225,
+            "charEnd": 463076
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 7851,
+            "unitExtension": {
+              "boundary": "ANCHOR_NODE",
+              "from": [
+                455225,
+                459225
+              ],
+              "to": [
+                455225,
+                463076
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "6.01(b)",
+                "chars": 1092,
+                "for": "Section 6.01(b)(iii)",
+                "resolution": "RESOLVED_VIA_ENCLOSING_NODE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.01(c)",
+                "chars": 960,
+                "for": "Section 6.01(c)(iii)",
+                "resolution": "RESOLVED_VIA_ENCLOSING_NODE",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.01",
+                "chars": 6000,
+                "for": "Section 6.01",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "6.07",
+                "chars": 673,
+                "for": "Section 6.07",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.12",
+                "chars": 2074,
+                "for": "Section 6.12",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "5.15",
+                "chars": 2389,
+                "for": "Section 5.15",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 21039,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 8807,
+            "passAOutputTokens": 3507,
+            "passACostUsd": 0.079,
+            "priorCompileCostUsd": 0.46,
+            "unitGrowth": 1.96,
+            "compileCostUsd": 0.741
+          }
+        },
+        {
+          "id": "restricted-payments-dsgr",
+          "family": "RESTRICTED_PAYMENTS_INVESTMENTS",
+          "claimIds": [],
+          "window": {
+            "charStart": 468878,
+            "charEnd": 472878,
+            "chars": 4000
+          },
+          "anchor": {
+            "nodeId": "structural-node:73ad0a7d946bf963ed5992e3",
+            "sectionRef": "6.08",
+            "charStart": 468878,
+            "charEnd": 472699
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 4000,
+            "unitExtension": null,
+            "expansions": [
+              {
+                "sectionRef": "6.12",
+                "chars": 2074,
+                "for": "Section 6.12",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.01",
+                "chars": 6000,
+                "for": "Section 6.01",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "6.05",
+                "chars": 4249,
+                "for": "Section 6.05",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 16323,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 7347,
+            "passAOutputTokens": 2721,
+            "passACostUsd": 0.063,
+            "priorCompileCostUsd": 0.564,
+            "unitGrowth": 1,
+            "compileCostUsd": 0.649
+          }
+        },
+        {
+          "id": "asset-sales-dsgr",
+          "family": "ASSET_SALES_PREPAYMENT",
+          "claimIds": [],
+          "window": {
+            "charStart": 463076,
+            "charEnd": 466576,
+            "chars": 3500
+          },
+          "anchor": {
+            "nodeId": "structural-node:dc1d305b46838f7a68ea6adf",
+            "sectionRef": "6.05",
+            "charStart": 463076,
+            "charEnd": 467325
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 4249,
+            "unitExtension": {
+              "boundary": "ANCHOR_NODE",
+              "from": [
+                463076,
+                466576
+              ],
+              "to": [
+                463076,
+                467325
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "6.04",
+                "chars": 6000,
+                "for": "Section 6.04",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "6.09",
+                "chars": 1599,
+                "for": "Section 6.09",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.02",
+                "chars": 6000,
+                "for": "Section 6.02",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": true
+              },
+              {
+                "sectionRef": "6.08",
+                "chars": 3821,
+                "for": "Section 6.08",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              },
+              {
+                "sectionRef": "6.06",
+                "chars": 880,
+                "for": "Section 6.06",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 22549,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 9193,
+            "passAOutputTokens": 3759,
+            "passACostUsd": 0.084,
+            "priorCompileCostUsd": 0.306,
+            "unitGrowth": 1.21,
+            "compileCostUsd": 0.388
+          }
+        },
+        {
+          "id": "financial-covenant-dsgr",
+          "family": "FINANCIAL_COVENANT",
+          "claimIds": [],
+          "window": {
+            "charStart": 476724,
+            "charEnd": 480224,
+            "chars": 3500
+          },
+          "anchor": {
+            "nodeId": "structural-node:9d65f46ccd0c4023ca905660",
+            "sectionRef": "6.12",
+            "charStart": 476724,
+            "charEnd": 478798
+          },
+          "sourceContext": {
+            "state": "COMPLETE_LOCAL_SOURCE",
+            "unitChars": 3500,
+            "unitExtension": null,
+            "expansions": [],
+            "unresolvedReferences": [],
+            "totalChars": 3500,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 3618,
+            "passAOutputTokens": 1500,
+            "passACostUsd": 0.033,
+            "priorCompileCostUsd": 0.184,
+            "unitGrowth": 1,
+            "compileCostUsd": 0.212
+          }
+        },
+        {
+          "id": "reporting-dsgr",
+          "family": "REPORTING_AFFIRMATIVE",
+          "claimIds": [],
+          "window": {
+            "charStart": 404706,
+            "charEnd": 408206,
+            "chars": 3500
+          },
+          "anchor": {
+            "nodeId": "structural-node:b46e816aaeefcbb6001182e8",
+            "sectionRef": "5.01",
+            "charStart": 404706,
+            "charEnd": 414527
+          },
+          "sourceContext": {
+            "state": "DEPENDENCY_EXPANDED_SOURCE",
+            "unitChars": 9821,
+            "unitExtension": {
+              "boundary": "ANCHOR_NODE",
+              "from": [
+                404706,
+                408206
+              ],
+              "to": [
+                404706,
+                414527
+              ]
+            },
+            "expansions": [
+              {
+                "sectionRef": "6.12",
+                "chars": 2074,
+                "for": "Section 6.12",
+                "resolution": "UNIQUE_AFTER_DEGENERATE_EXCLUSION",
+                "truncatedAtBudget": false
+              }
+            ],
+            "unresolvedReferences": [],
+            "totalChars": 11895,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 6000,
+            "passAOutputTokens": 1983,
+            "passACostUsd": 0.048,
+            "priorCompileCostUsd": 0.438,
+            "unitGrowth": 2.81,
+            "compileCostUsd": 0.844
+          }
+        },
+        {
+          "id": "cross-reference-dsgr",
+          "family": "CROSS_REFERENCE_SHARED_CAP_CONDITION",
+          "claimIds": [],
+          "window": {
+            "charStart": 474298,
+            "charEnd": 477098,
+            "chars": 2800
+          },
+          "anchor": {
+            "nodeId": "structural-node:c443d5615caa85415e0c27c4",
+            "sectionRef": "6.10",
+            "charStart": 474298,
+            "charEnd": 476154
+          },
+          "sourceContext": {
+            "state": "COMPLETE_LOCAL_SOURCE",
+            "unitChars": 2800,
+            "unitExtension": null,
+            "expansions": [],
+            "unresolvedReferences": [],
+            "totalChars": 2800,
+            "reasons": []
+          },
+          "projection": {
+            "passAInputTokens": 3424,
+            "passAOutputTokens": 1500,
+            "passACostUsd": 0.033,
+            "priorCompileCostUsd": 0.177,
+            "unitGrowth": 1,
+            "compileCostUsd": 0.204
+          }
+        }
+      ],
+      "perRun": {
+        "passA": 0.69,
+        "compile": 7.27,
+        "verify": 2.19,
+        "total": 10.15
+      },
+      "priorRunObservedUsd": 7.122662,
+      "twoRuns": 20.3
+    },
+    "projectedTotalUsd": 29.51,
+    "recommendedCeilings": {
+      "holdoutPerRun": 7,
+      "wholeAgreementPerRun": 15
+    },
+    "authorizationRequiredAbove": 12,
+    "authorizationRequired": true,
+    "stopRule": "Mission section 29: no paid call is made until the user authorizes the projected total; each run stops at its ceiling and preserves what it has; a partial run is reported as partial, never rewritten."
+  }
+}
