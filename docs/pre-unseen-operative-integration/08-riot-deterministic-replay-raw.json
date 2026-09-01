@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-09-01T00:58:03.184Z",
+  "instrumentGrouping": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "baseDocumentId": "doc-a",
+      "documentIds": [
+        "doc-a",
+        "doc-b"
+      ],
+      "reviewStatus": "RESOLVED"
+    },
+    {
+      "instrumentKey": "instrument:doc-c",
+      "baseDocumentId": "doc-c",
+      "documentIds": [
+        "doc-c"
+      ],
+      "reviewStatus": "RESOLVED"
+    }
+  ],
+  "classifications": {
+    "doc-a": {
+      "type": "CREDIT_AGREEMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    "doc-b": {
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    "doc-c": {
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    }
+  },
+  "restatesEdges": [
+    {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": "doc-a",
+      "status": "RESOLVED",
+      "confidence": 0.95,
+      "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "targetDocumentId": "doc-b",
+      "status": "REVIEW_REQUIRED",
+      "confidence": 0.7,
+      "resolutionMethod": "DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR"
+    }
+  ],
+  "perInstrumentOperativeDocumentResults": {
+    "instrument:doc-a": {
+      "documentIds": [
+        "doc-a",
+        "doc-b"
+      ],
+      "baseDocumentId": "doc-a",
+      "operativeDocument": {
+        "status": "RESOLVED",
+        "operativeDocumentId": "doc-b",
+        "predecessorDocumentIds": [
+          "doc-a"
+        ],
+        "relationshipChain": [
+          {
+            "documentId": "doc-b",
+            "restatesDocumentId": "doc-a",
+            "effectId": "07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641",
+            "confidence": 0.95,
+            "effectiveDate": "May 19, 2025"
+          }
+        ],
+        "reviewReason": null
+      },
+      "provisionCount": 0,
+      "status": "OPERATIVE_STATE_REVIEW_REQUIRED"
+    },
+    "instrument:doc-c": {
+      "documentIds": [
+        "doc-c"
+      ],
+      "baseDocumentId": "doc-c",
+      "operativeDocument": {
+        "status": "RESOLVED",
+        "operativeDocumentId": "doc-c",
+        "predecessorDocumentIds": [
+          "doc-b"
+        ],
+        "relationshipChain": [
+          {
+            "documentId": "doc-c",
+            "restatesDocumentId": "doc-b",
+            "effectId": "fd02e25fbf5d56dfb0b1fa6e079b241ce4fd3669b77eea2b23b3042517763e64",
+            "confidence": 0.7,
+            "effectiveDate": "April 21, 2026"
+          }
+        ],
+        "reviewReason": null
+      },
+      "provisionCount": 0,
+      "status": "OPERATIVE_STATE_RESOLVED"
+    }
+  },
+  "docA601dCarveOutCheck": {
+    "nodeKey": "doc-a::6.01(d)",
+    "nodeId": "structural-node:c8fdcb81cb5080aa7f5911c1",
+    "supersessionResult": {
+      "status": "KNOWN_SUPERSEDED",
+      "record": {
+        "nodeId": "structural-node:c8fdcb81cb5080aa7f5911c1",
+        "instrumentKey": "instrument:doc-a",
+        "provisionKey": "doc-a::WHOLE_DOCUMENT",
+        "supersededByEffectId": "07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641",
+        "supersededByAmendmentDocumentId": "doc-b",
+        "supersededEffectiveDate": "May 19, 2025",
+        "supersessionKind": "DOCUMENT_LEVEL",
+        "supersedingOperativeDocumentId": "doc-b"
+      },
+      "reason": "This physical occurrence's own containing document (\"doc-a\") was affirmatively established as a historical predecessor of the resolved operative document \"doc-b\" (restated by \"doc-b\" via effect \"07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641\", effective May 19, 2025) - whole-document currentness places an upper bound on this node's own currentness, regardless of whether any section/definition-level amendment effect separately targets it."
+    },
+    "physicalTextStillRetrievable": "(d)\n\n(i)The Borrower shall fail to perform or observe any term, covenant or agreement contained in Section 2.06, Section 5.01(b) (with respect to its legal existence of the Borrower), or Section 5.02, or in any Collateral Document; or\n\n(ii)the Borrower shall fail to perform or observe any other term",
+    "trustedTruthCheck": {
+      "outcome": "FOUND",
+      "status": "KNOWN_SUPERSEDED",
+      "text": null,
+      "documentId": "doc-a",
+      "source": "base-document",
+      "isCurrentTruth": false,
+      "unresolvedIssues": [
+        "This physical occurrence's own containing document (\"doc-a\") was affirmatively established as a historical predecessor of the resolved operative document \"doc-b\" (restated by \"doc-b\" via effect \"07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641\", effective May 19, 2025) - whole-document currentness places an upper bound on this node's own currentness, regardless of whether any section/definition-level amendment effect separately targets it."
+      ],
+      "legacyStatus": "OPERATIVE_STATE_PARTIAL"
+    }
+  }
+}
