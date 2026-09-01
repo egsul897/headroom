@@ -47,11 +47,28 @@ interface ClassificationRule {
   patterns: RegExp[];
 }
 
+/**
+ * Every rule below matches against the RAW, unnormalized document text
+ * (never a whitespace-collapsed copy) so that match indices keep meaning
+ * real text positions for the position-aware Tier 2 logic below. Ordinary
+ * PDF/HTML line-wrapping means any two words in a real caption can be
+ * separated by a newline, multiple spaces, or a tab rather than a single
+ * literal space (a real, observed extraction artifact - a source PDF's own
+ * visual two-line caption rendering as a literal newline in the extracted
+ * text), which an earlier literal-space "amended and restated (credit
+ * agreement|...)" pattern silently failed to match, falling through to the
+ * generic CREDIT_AGREEMENT rule. Every multi-word phrase below therefore
+ * joins its words with `\s+` (one-or-more whitespace of any kind) instead
+ * of a literal space; this is layout-whitespace tolerance, not text
+ * normalization - the underlying text and match positions are never
+ * altered. See docs/final-phase3-closure/02-classifier-whitespace-audit.json
+ * for the per-pattern audit that produced this rewrite.
+ */
 const RULES: ClassificationRule[] = [
-  { type: "AMENDED_AND_RESTATED_AGREEMENT", patterns: [/amended and restated (credit agreement|indenture|loan agreement)/i, /(credit agreement|indenture),?\s+as amended and restated/i] },
-  { type: "SUPPLEMENTAL_INDENTURE", patterns: [/(first|second|third|fourth|fifth|\d+(?:st|nd|rd|th))\s+supplemental indenture/i, /\bsupplemental indenture\b/i] },
-  { type: "JOINDER", patterns: [/\bjoinder agreement\b/i, /\bjoinder\b/i] },
-  { type: "INTERCREDITOR_AGREEMENT", patterns: [/\bintercreditor agreement\b/i] },
+  { type: "AMENDED_AND_RESTATED_AGREEMENT", patterns: [/amended\s+and\s+restated\s+(credit\s+agreement|indenture|loan\s+agreement)/i, /(credit\s+agreement|indenture),?\s+as\s+amended\s+and\s+restated/i] },
+  { type: "SUPPLEMENTAL_INDENTURE", patterns: [/(first|second|third|fourth|fifth|\d+(?:st|nd|rd|th))\s+supplemental\s+indenture/i, /\bsupplemental\s+indenture\b/i] },
+  { type: "JOINDER", patterns: [/\bjoinder\s+agreement\b/i, /\bjoinder\b/i] },
+  { type: "INTERCREDITOR_AGREEMENT", patterns: [/\bintercreditor\s+agreement\b/i] },
   // Composite guarantee-and-collateral/security document (task §5/§12) -
   // checked before the plain GUARANTEE and SECURITY_AGREEMENT rules below
   // so a real combined agreement (a standard, generalizable leveraged-
@@ -59,20 +76,20 @@ const RULES: ClassificationRule[] = [
   // Collateral Agreement") is never force-fit into only one half of its
   // real identity.
   { type: "GUARANTEE_AND_SECURITY_AGREEMENT", patterns: [/\bguarant(?:y|ee)\s+and\s+(?:collateral|security)\s+agreement\b/i, /\bpledge,?\s+guarant(?:y|ee)\s+and\s+security\s+agreement\b/i] },
-  { type: "SECURITY_AGREEMENT", patterns: [/\bsecurity agreement\b/i, /\bpledge and security agreement\b/i, /\bcollateral agreement\b/i] },
-  { type: "GUARANTEE", patterns: [/\bguaranty(?: and collateral)? agreement\b/i, /\bguarantee agreement\b/i, /^\s*guaranty\b/im] },
-  { type: "COMPLIANCE_CERTIFICATE", patterns: [/\bcompliance certificate\b/i, /\bofficer'?s certificate\b/i] },
-  { type: "SIDE_LETTER", patterns: [/\bside letter\b/i] },
-  { type: "FEE_LETTER", patterns: [/\bfee letter\b/i] },
+  { type: "SECURITY_AGREEMENT", patterns: [/\bsecurity\s+agreement\b/i, /\bpledge\s+and\s+security\s+agreement\b/i, /\bcollateral\s+agreement\b/i] },
+  { type: "GUARANTEE", patterns: [/\bguaranty(?:\s+and\s+collateral)?\s+agreement\b/i, /\bguarantee\s+agreement\b/i, /^\s*guaranty\b/im] },
+  { type: "COMPLIANCE_CERTIFICATE", patterns: [/\bcompliance\s+certificate\b/i, /\bofficer'?s\s+certificate\b/i] },
+  { type: "SIDE_LETTER", patterns: [/\bside\s+letter\b/i] },
+  { type: "FEE_LETTER", patterns: [/\bfee\s+letter\b/i] },
   // AMENDMENT checked before base CREDIT_AGREEMENT/INDENTURE so "Amendment
   // No. 3 to the Credit Agreement" is never misread as a fresh agreement.
   // The ordinal-word variant ("First Amendment", "Second Amendment" with
   // no "No. N") mirrors the same ordinal convention SUPPLEMENTAL_INDENTURE
   // already recognizes above - a generalized drafting-style variant, not
   // evidence-specific.
-  { type: "AMENDMENT", patterns: [/\bamendment\s+(no\.?|number)\s*\d+/i, /^\s*amendment\b/im, /\bthis amendment\b/i, /^\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\s+amendment\b/im, /^\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\s+omnibus amendment\b/im] },
+  { type: "AMENDMENT", patterns: [/\bamendment\s+(no\.?|number)\s*\d+/i, /^\s*amendment\b/im, /\bthis\s+amendment\b/i, /^\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\s+amendment\b/im, /^\s*(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)\s+omnibus\s+amendment\b/im] },
   { type: "INDENTURE", patterns: [/\bindenture\b/i] },
-  { type: "CREDIT_AGREEMENT", patterns: [/\bcredit agreement\b/i, /\bloan agreement\b/i] },
+  { type: "CREDIT_AGREEMENT", patterns: [/\bcredit\s+agreement\b/i, /\bloan\s+agreement\b/i] },
 ];
 
 function findEvidence(patterns: RegExp[], text: string): string | null {

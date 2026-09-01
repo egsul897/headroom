@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "startingEvidenceHead": "4331cf8fb2e19b2ab13133a23e7c6aaa8e011807",
+  "frozenProductionBaseline": "2044f1c7de01d24f6bc8179aa477da801f07d79d",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "mergeBaseWithFrozenProduction": "2044f1c7de01d24f6bc8179aa477da801f07d79d",
+  "mergeBaseNote": "The frozen production SHA is itself the merge base - i.e. it is a direct ancestor of the evidence HEAD, confirming a clean, non-diverged lineage.",
+  "commitsAheadOfFrozenProduction": 18,
+  "commitsAheadNote": "git rev-list --count 2044f1c..HEAD reports 18, matching this mission's own note (not 17).",
+  "gitStatusAtStart": "clean (no untracked or modified files)",
+  "productionDiffAtStart": {
+    "command": "git diff 2044f1c7de01d24f6bc8179aa477da801f07d79d HEAD -- lib app prisma",
+    "result": "EMPTY",
+    "note": "Confirms zero production changes were made during the entire prior final-lightweight-unseen validation - the TRUST_BOUNDARY_FAILED verdict was reached with zero remediation, exactly per that mission's own Section 29."
+  },
+  "testBaselineAtStart": {
+    "typescript": { "command": "npx tsc --noEmit", "errorCount": 6, "note": "6 pre-existing errors, all in tests/foundation-audit/*.test.ts (duplicate object keys) - unrelated to this session's scope, carried forward unchanged from docs/final-lightweight-unseen/00-validation-contract.json's own testBaseline." },
+    "lint": { "command": "npx eslint .", "errorCount": 1, "note": "1 pre-existing error in tests/foundation-audit/amendment-operative-state-adversarial.test.ts (@typescript-eslint/no-var-requires rule not found) - unrelated, carried forward unchanged." },
+    "vitest": { "command": "npx vitest run", "passed": 3115, "failed": 2, "total": 3117, "note": "Both failures pre-existing and expected: tests/contract-model/phase-3f1-1-forensic-machinery.test.ts's own allowlist test flags the final-lightweight-unseen-sup fixture directory added by the prior session (a stale phase-3F.1.1-era allowlist guard, not a defect this closure session's scope covers)." }
+  },
+  "dbIsolation": {
+    "status": "Postgres was down at session start (recurring environment quirk observed throughout this multi-session work) - restarted via pg_ctlcluster 16 main start, confirmed accepting connections via pg_isready.",
+    "isolatedCompanyIdFromPriorRun": "final-lightweight-unseen-sup-968ccc2b",
+    "note": "This closure session does not create a new isolated tenant - Units B/C reuse read-only regression against preserved fixtures and, if real model calls are authorized, a wholly synthetic verifier-health probe with no persistence requirement."
+  },
+  "providerState": {
+    "resolutionOrder": "AI_GATEWAY_API_KEY (Vercel AI Gateway) checked first by getStageCaller()/getSemanticCaller()",
+    "credentialPresent": true,
+    "priorSessionOutcome": "The prior final-lightweight-unseen run's shared Gateway account hit a real $100 budget cap mid-run; the user raised it to $150 and the run completed. That headroom is presumed still available at the start of this session but will be re-probed before any real spend in Units B/C."
+  },
+  "governingDocsRead": [
+    "docs/final-lightweight-unseen.md",
+    "docs/final-lightweight-unseen/00-validation-contract.json",
+    "docs/final-lightweight-unseen/07-targeted-ground-truth.json",
+    "docs/final-lightweight-unseen/08-pipeline-run.json",
+    "docs/final-lightweight-unseen/09-claim-comparison.json",
+    "docs/final-lightweight-unseen/10-semantic-exhaustiveness.json",
+    "docs/final-lightweight-unseen/11-qualifier-completeness.json",
+    "docs/final-lightweight-unseen/12-document-classification.json",
+    "docs/final-lightweight-unseen/13-version-operative-state.json",
+    "docs/final-lightweight-unseen/14-node-source-currentness.json",
+    "docs/final-lightweight-unseen/15-safety-gates.json",
+    "docs/final-lightweight-unseen/16-generalization-gates.json",
+    "docs/final-lightweight-unseen/19-independent-audit.json",
+    "docs/final-lightweight-unseen/20-production-freeze-proof.json",
+    "docs/final-lightweight-unseen/21-phase3-release-decision.json",
+    "docs/final-lightweight-unseen/22-final-verdict.json"
+  ]
+}
