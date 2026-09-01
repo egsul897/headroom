@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "DETERMINISTIC_SELECTION",
+  "mechanism": "SHA256(seed) where seed = 'HEADROOM-FINAL-LIGHTWEIGHT-UNSEEN-CONFIRMATION|2044f1c7de01d24f6bc8179aa477da801f07d79d' (the mission's own fixed name plus the frozen production HEAD SHA recorded in 00-validation-contract.json, committed BEFORE this computation). Index = (first 8 hex chars of the digest, interpreted as an unsigned integer) mod poolSize(9), applied to the CIK-ascending-ordered pool in 01-candidate-pool.json.",
+  "computation": {
+    "seed": "HEADROOM-FINAL-LIGHTWEIGHT-UNSEEN-CONFIRMATION|2044f1c7de01d24f6bc8179aa477da801f07d79d",
+    "sha256": "6c79dac6323cb9ecf49c41cb09f320b687e723a4d4c89066a9fde15f54f19759",
+    "first8HexChars": "6c79dac6",
+    "asUnsignedInteger": 1819925190,
+    "poolSize": 9,
+    "indexModPoolSize": 0
+  },
+  "selectedCandidate": { "index": 0, "issuer": "Superior Industries International, Inc.", "cik": "0000095552" },
+  "noHumanHandPicking": "The formula and seed were fixed and computed before any document text (as opposed to 8-K cover/index metadata) was opened for any candidate, including the selected one. No candidate's substantive contract text was read before this computation ran.",
+  "documentSubsetCurationNote": {
+    "whatWasDoneAfterIssuerSelection": "Superior Industries International has TWO parallel real credit facilities (a Term Loan thread with Oaktree Fund Administration as agent, and a separate Revolving Credit thread with JPMorgan Chase as agent), each independently amended/restated multiple times 2022-2025. Determining WHICH thread and WHICH specific filings constitute a bounded, modest (2-4 document, ~75-250 page) package per this mission's own Section 4 guidance required reading each relevant 8-K's own short Item 1.01/1.02/2.03 cover-page disclosure (a 1-3 paragraph SEC summary identifying which exhibit is which agreement, its parties, type, and what prior agreement it amends/restates/replaces) - NOT the underlying credit agreement/amendment CONTRACT TEXT itself, which was never opened until after this curation step.",
+    "whyThisIsNotHandPicking": "This is the same category of metadata-only activity Section 4/5 already contemplates ('estimated document count/pages if derivable without substantive reading', 'file/document metadata') - an 8-K's own brief disclosure narrative is itself filing metadata describing what the attached exhibits are, structurally analogous to a table of contents, not the substantive covenant/financial terms of the underlying financing agreement. No comparison of expected system performance occurred at this step, and no alternative document subset was tried and discarded after seeing how well the system might perform on it.",
+    "chosenPackage": {
+      "thread": "Term Loan Credit Agreement (Oaktree Fund Administration, LLC as administrative agent; JPMorgan Chase Bank, N.A. as collateral agent) - chosen over the parallel Revolving Credit thread because it independently exercises BOTH a whole-document RESTATEMENT event (2022 original -> 2024 Amended & Restated) AND a subsequent ORDINARY AMENDMENT on top of the restated document (2025 First Amendment) - directly matching this mission's own Section 17/19 requirement to test both mechanisms in one bounded package.",
+      "documents": [
+        { "role": "BASE (original)", "title": "Term Loan Credit Agreement", "dated": "2022-12-15", "accession": "0001193125-22-307852", "exhibit": "EX-10.1", "url": "https://www.sec.gov/Archives/edgar/data/95552/000119312522307852/d403666dex101.htm" },
+        { "role": "RESTATEMENT", "title": "Amended and Restated Term Loan Credit Agreement", "dated": "2024-08-14", "accession": "0001193125-24-201017", "exhibit": "EX-10.1", "url": "https://www.sec.gov/Archives/edgar/data/95552/000119312524201017/d819822dex101.htm" },
+        { "role": "AMENDMENT", "title": "First Amendment to Amended and Restated Term Loan Credit Agreement", "dated": "2025-03-31", "accession": "0001193125-25-071386", "exhibit": "EX-10.1", "url": "https://www.sec.gov/Archives/edgar/data/95552/000119312525071386/d946981dex101.htm" }
+      ],
+      "notIncluded": "The parallel Revolving Credit Agreement thread (JPMorgan-agented, same three dates) and the June 2025 Second Amendment to both facilities are excluded to keep the package bounded (2-4 documents, modest size) per Section 4's own explicit preference against over-scoping - not because either was opened and found unfavorable."
+    }
+  }
+}
