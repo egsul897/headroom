@@ -1,0 +1,2648 @@
+{
+  "region": {
+    "id": "cash-sweep-cure",
+    "claimIds": [
+      "B4"
+    ],
+    "documentId": "doc-c",
+    "sourceSectionRef": "2(b)",
+    "charStart": 3539,
+    "chars": 2900,
+    "structuralNodeKeys": [
+      "doc-c::2(c)"
+    ]
+  },
+  "operativeSourceText": "(b) Section 2.05(2)(c) of the Credit Agreement is hereby\namended and restated in its entirety with the following:\n(c) If, after giving effect to all mandatory prepayments of Term\nLoans to the extent required by Sections 2.05(2)(a), (b) and (d), the Borrower and its Subsidiaries has (i) unrestricted cash on hand as of the last day of any calendar month in an amount that is greater than $50 million, the Borrower\nshall, as soon as is reasonably practicable, but in any event no later than five (5) Business Days after the last day of such calendar month, prepay, or cause to be prepaid, an aggregate principal amount of Super-Priority Revolving Loans equal\nto the lesser of (x) the aggregate principal amount of Super-Priority Revolving Loans then-outstanding and (y) the amount necessary to cause the amount of unrestricted cash on hand of the Borrower and its Subsidiaries as of the last day of\nsuch recently ended calendar month to be less than or equal to $50 million and (ii) after giving effect to any mandatory prepayment pursuant to clause (i) above, Maintenance Liquidity as of the last day of any calendar month that is\ngreater than $115 million, the Borrower shall, as soon as is reasonably practicable, but in any event no later than five (5) Business Days after the last day of such calendar month, prepay, or cause to be prepaid, an aggregate principal\namount of Term Loans of any Class or Classes (in each case, as directed by the Borrower) to the extent necessary to cause Maintenance Liquidity as calculated as of the last day of such recently ended calendar month to be less than or equal to\n$115 million; provided, however, if, on or prior to the date that is thirty days after the last day of the calendar month most recently ended, the Borrower obtains knowledge that Maintenance Liquidity was miscalculated for the last day of such\ncalendar month, and as a result, an amount that was otherwise required to be prepaid under this Section 2.05(2)(c)(ii) was not prepaid (such amount, the “Deficiency Amount”), no Default or Event of Default shall occur (or be\ndeemed to have occurred and be continuing) as a result of the Borrower’s failure to prepay the Deficiency Amount pursuant to this Section 2.05(2)(c)(ii) (or give notice thereof) so long as (x) the Deficiency Amount is less than\n$1,300,000, and (y) within 5 Business Days of obtaining knowledge of such Deficiency Amount the Borrower makes a prepayment of such Deficiency Amount in accordance with this Section 2.05(2)(c)(ii). For the avoidance of doubt, if after any\nrecalculation of Maintenance Liquidity, the calculation of Maintenance Liquidity is lower than the amount most recently reported to the Administrative Agent, and therefore the mandatory prepayment that was made was higher than would have been\nrequired at such time, the Administrative Agent shall be under no obligation to refund any overpayment amounts",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:1e2208ffa041372568a63144",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "sourceSectionRef": "2.05(2)(c)(i)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "PREPAY_DEBT",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MIN",
+          "type": "MONEY",
+          "exprId": "ir-expr:a524d67de6e31005a4666d68",
+          "operands": [
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "aggregate principal amount of Super-Priority Revolving Loans then outstanding",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:fc479e3600e2402aa4a405a1"
+            },
+            {
+              "kind": "SUBTRACT",
+              "type": "MONEY",
+              "exprId": "ir-expr:19e0f124ad7cae680b06f5fc",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "unrestricted cash on hand of the Borrower and its Subsidiaries as of the last day of the applicable calendar month",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:7a96f4b5ae9c3d955a38139e"
+              },
+              "right": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 50000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2.05(2)(c)(i)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:d1b3fdc44f4f398ca68a7d58"
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§2.05(2)(c)(i)",
+                "excerpt": null
+              }
+            }
+          ],
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2.05(2)(c)(i)",
+            "excerpt": "prepay ... an aggregate principal amount of Super-Priority Revolving Loans equal to the lesser of (x) the aggregate principal amount of Super-Priority Revolving Loans then-outstanding and (y) the amount necessary to cause the amount of unrestricted cash on hand ... to be less than or equal to $50 million"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:268a4232f84781fefde48776",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "unrestricted cash on hand of the Borrower and its Subsidiaries as of the last day of the applicable calendar month",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:7a96f4b5ae9c3d955a38139e"
+              },
+              "operator": "GT",
+              "right": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 50000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2(b)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:de663917ddcbcadf2e7daa58"
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§2(b)",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": null,
+            "description": "Unrestricted cash on hand of the Borrower and its Subsidiaries, as of the last day of any calendar month, exceeds $50,000,000",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.05(2)(c)(i)",
+              "excerpt": null
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Threshold, measurement point, and lesser-of prepayment formula are all stated explicitly in the source text.",
+          "covenantFamily \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"THRESHOLD_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"2.05(2)(a)\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[1].targetRef \"2.05(2)(b)\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[2].targetRef \"2.05(2)(d)\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.05(2)(c)(i)",
+          "excerpt": "If ... the Borrower and its Subsidiaries has (i) unrestricted cash on hand as of the last day of any calendar month in an amount that is greater than $50 million, the Borrower shall ... prepay ... Super-Priority Revolving Loans equal to the lesser of (x) ... and (y) ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "sourceSectionRef": "2.05(2)(c)(ii)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "PREPAY_DEBT",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "SUBTRACT",
+          "type": "MONEY",
+          "exprId": "ir-expr:52ca2e5eebd672092576d3f6",
+          "left": {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "Maintenance Liquidity",
+            "companyId": "final-phase3-closure-holdout-sup",
+            "instrumentKey": "sup-term-loan-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:e6d843819fd86237450ac77b"
+          },
+          "right": {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 115000000,
+            "currency": "USD",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.05(2)(c)(ii)",
+              "excerpt": null
+            },
+            "exprId": "ir-expr:a27864598cb03af5ad67afde"
+          },
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2.05(2)(c)(ii)",
+            "excerpt": "prepay ... an aggregate principal amount of Term Loans ... to the extent necessary to cause Maintenance Liquidity ... to be less than or equal to $115 million"
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r2].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:17e3d4fd50b21e5a10b7b2ca",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Maintenance Liquidity",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:e6d843819fd86237450ac77b"
+              },
+              "operator": "GT",
+              "right": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 115000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2(b)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:b49217f568240eebc21941f4"
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§2(b)",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": null,
+            "description": "After giving effect to any mandatory prepayment under clause (i) (Section 2.05(2)(c)(i)), Maintenance Liquidity as of the last day of any calendar month exceeds $115,000,000",
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.05(2)(c)(ii)",
+              "excerpt": null
+            }
+          }
+        ],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r2].exception[0]",
+            "appliesToRuleId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+            "description": "No Default or Event of Default occurs (or is deemed to occur and be continuing) as a result of the Borrower's failure to prepay a 'Deficiency Amount' (an amount otherwise required to be prepaid under this clause (ii) that was not prepaid because Maintenance Liquidity was miscalculated), or to give notice thereof, provided the safe-harbor conditions below are met.",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r2].condition[0]",
+                "conditionType": "UNSUPPORTED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Borrower obtains knowledge of the Maintenance Liquidity miscalculation on or prior to the date that is 30 days after the last day of the calendar month most recently ended",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2.05(2)(c) (proviso)",
+                  "excerpt": null
+                }
+              },
+              {
+                "conditionId": "rule[r2].condition[1]",
+                "conditionType": "UNSUPPORTED",
+                "expression": {
+                  "kind": "COMPARE",
+                  "type": "BOOLEAN",
+                  "exprId": "ir-expr:408a7e74dcf17002f430fc74",
+                  "left": {
+                    "kind": "DEFINED_TERM_REFERENCE",
+                    "type": "MONEY",
+                    "termName": "Deficiency Amount",
+                    "companyId": "final-phase3-closure-holdout-sup",
+                    "instrumentKey": "sup-term-loan-instrument",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:73ecea36388df4f3d97e5f6b"
+                  },
+                  "operator": "LT",
+                  "right": {
+                    "kind": "MONEY",
+                    "type": "MONEY",
+                    "amount": 1300000,
+                    "currency": "USD",
+                    "provenance": {
+                      "documentId": "doc-c",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§2(b)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:c09caac63cf3ae961995e6c1"
+                  },
+                  "provenance": {
+                    "documentId": "doc-c",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§2(b)",
+                    "excerpt": null
+                  }
+                },
+                "referencesDefinitionId": null,
+                "description": "The Deficiency Amount is less than $1,300,000",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2.05(2)(c) (proviso)",
+                  "excerpt": null
+                }
+              },
+              {
+                "conditionId": "rule[r2].condition[2]",
+                "conditionType": "UNSUPPORTED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "The Borrower prepays the Deficiency Amount within 5 Business Days of obtaining knowledge thereof, in accordance with this Section 2.05(2)(c)(ii)",
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§2.05(2)(c) (proviso)",
+                  "excerpt": null
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.05(2)(c) (proviso)",
+              "excerpt": "provided, however, if, on or prior to the date that is thirty days after the last day of the calendar month most recently ended, the Borrower obtains knowledge that Maintenance Liquidity was miscalculated ... no Default or Event of Default shall occur ... so long as (x) the Deficiency Amount is less than $1,300,000, and (y) within 5 Business Days of obtaining knowledge ... the Borrower makes a prepayment of such Deficiency Amount"
+            }
+          }
+        ],
+        "dependsOn": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRuleId": "ir-rule:1e2208ffa041372568a63144",
+            "description": "Maintenance Liquidity is tested after giving effect to any mandatory prepayment made pursuant to clause (i) (Section 2.05(2)(c)(i))"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Threshold, measurement point, and prepayment formula are stated explicitly; note that unlike clause (i), the source text does not itself impose an express 'lesser of outstanding balance' cap on this prepayment amount, so none has been added.",
+          "covenantFamily \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[0].conditionType \"THRESHOLD_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+          "condition[0].conditionType \"DISCOVERY_WINDOW\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"THRESHOLD_NOT_EXCEEDED\" not recognized - normalized to UNSUPPORTED",
+          "condition[2].conditionType \"CURE_PERIOD\" not recognized - normalized to UNSUPPORTED"
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.05(2)(c)(ii)",
+          "excerpt": "(ii) after giving effect to any mandatory prepayment pursuant to clause (i) above, Maintenance Liquidity as of the last day of any calendar month that is greater than $115 million, the Borrower shall ... prepay ... Term Loans of any Class or Classes ... to the extent necessary to cause Maintenance Liquidity ... to be less than or equal to $115 million"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:a2cd0a24cd0e9625e8ff5d1a",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "sourceSectionRef": "2.05(2)(c)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRuleId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+            "description": "Applies where a mandatory prepayment was made under clause (ii) based on a Maintenance Liquidity calculation that is later revised downward"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Stated as a clear, self-contained disclaimer with no numeric or conditional components requiring further decomposition.",
+          "covenantFamily \"MANDATORY_PREPAYMENT\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.05(2)(c)",
+          "excerpt": "For the avoidance of doubt, if after any recalculation of Maintenance Liquidity, the calculation of Maintenance Liquidity is lower than the amount most recently reported to the Administrative Agent, and therefore the mandatory prepayment that was made was higher than would have been required at such time, the Administrative Agent shall be under no obligation to refund any overpayment amounts"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "termName": "Maintenance Liquidity",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "ADD",
+          "type": "MONEY",
+          "exprId": "ir-expr:18a97457183f8ade57d01dc1",
+          "operands": [
+            {
+              "kind": "SUBTRACT",
+              "type": "MONEY",
+              "exprId": "ir-expr:5eee0d88b9d27e330ea36a2e",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "aggregate commitments under the Super-Priority Revolving Credit Facility (including commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:d267f6e1d4744fb0878cffbf"
+              },
+              "right": {
+                "kind": "ADD",
+                "type": "MONEY",
+                "exprId": "ir-expr:675c7500816f28c27085ef3b",
+                "operands": [
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof)",
+                    "companyId": "final-phase3-closure-holdout-sup",
+                    "instrumentKey": "sup-term-loan-instrument",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:bca4def4009dc905ae6bef4d"
+                  },
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "face amount of letters of credit issued under the Super-Priority Revolving Credit Facility, less any reimbursed amounts",
+                    "companyId": "final-phase3-closure-holdout-sup",
+                    "instrumentKey": "sup-term-loan-instrument",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:f2de89a2fbd49f163c3d39ae"
+                  }
+                ],
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "definition of \"Maintenance Liquidity\", clause (a)",
+                  "excerpt": null
+                }
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "definition of \"Maintenance Liquidity\", clause (a)",
+                "excerpt": null
+              }
+            },
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "\"Adjustment to Liquidity\" as set forth in the most recently delivered Monthly Factoring Report",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:fe3a158ec630c436490eaa94"
+            },
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:c27fe437e7478f92d0b88285"
+            }
+          ],
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2(b)",
+            "excerpt": null
+          }
+        },
+        "dependsOnTerms": [
+          "Super-Priority Revolving Credit Facility",
+          "Permitted Euro Revolving Indebtedness",
+          "Refinancing Indebtedness",
+          "Adjustment to Liquidity",
+          "Monthly Factoring Report",
+          "Cash Equivalents"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Formula fully captured using arithmetic composition; constituent quantities represented as METRIC_REFERENCE nodes rather than recursively expanded, consistent with treatment of arbitrary named metrics."
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2(b)",
+          "excerpt": "\"Maintenance Liquidity\" means, as of any date of determination, (a) the sum as of such date of (x) the aggregate amount of the commitments under the Super-Priority Revolving Credit Facility ... minus (y) the aggregate principal amount of the outstanding revolving loans ... plus (b) the \"Adjustment to Liquidity\" as set forth in the most recently delivered Monthly Factoring Report plus (c) unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:3e01409d96ff978c24e82d38",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "termName": "Deficiency Amount",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+          "reason": "SUBTRACT operands do not type-check together",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2.05(2)(c) (proviso)",
+            "excerpt": null
+          },
+          "attemptedStructure": {
+            "kind": "SUBTRACT",
+            "type": "NUMBER",
+            "exprId": "ir-expr:41e900a7a9b0276dc9342324",
+            "left": {
+              "kind": "RULE_REFERENCE",
+              "type": "CAPACITY",
+              "ruleId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "exprId": "ir-expr:4f73fc255d2553aeff481b92"
+            },
+            "right": {
+              "kind": "TRANSACTION_INPUT_REFERENCE",
+              "type": "MONEY",
+              "inputName": "aggregate principal amount of Term Loans actually prepaid under Section 2.05(2)(c)(ii) for the applicable calendar month",
+              "exprId": "ir-expr:e06d8547fb6ff1e6ef7a51ae"
+            },
+            "provenance": {
+              "documentId": "doc-c",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.05(2)(c) (proviso)",
+              "excerpt": null
+            }
+          },
+          "exprId": "ir-expr:6275fd78c81f2344ee983350"
+        },
+        "dependsOnTerms": [],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Defined inline as the shortfall between the amount otherwise required to be prepaid under clause (ii) and the amount actually prepaid, due to a later-discovered miscalculation of Maintenance Liquidity.",
+          "deterministic post-processing: at least one subexpression is UNSUPPORTED or fails to type-check, so COMPLETE was downgraded to PARTIAL (task §27)",
+          "SUBTRACT operands do not type-check together"
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.05(2)(c) (proviso)",
+          "excerpt": "an amount that was otherwise required to be prepaid under this Section 2.05(2)(c)(ii) was not prepaid (such amount, the \"Deficiency Amount\")"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T17:54:03.091Z",
+      "inputTokens": 31993,
+      "outputTokens": 16975,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 147860,
+      "calculatedCostUsd": 0.233736
+    }
+  },
+  "verify": {
+    "candidateRef": "holdout-candidate:cash-sweep-cure",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "83d6e7415babde064ee74b4754ce13dd000473965ef8236a6bf1b3bc89a1d492",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+        "irPath": "definitions[0] (termName='Maintenance Liquidity').calculationExpression",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(ii) ... Maintenance Liquidity as of the last day of any calendar month that is greater than $115 million, the Borrower shall ... prepay ... an aggregate principal amount of Term Loans ... to the extent necessary to cause Maintenance Liquidity as calculated as of the last day of such recently ended calendar month to be less than or equal to $115 million",
+        "sourceCitation": "§2.05(2)(c)(ii); see also flagged unresolved dependency: 'Cannot retrieve context for a candidate with no anchoring structural node.' (HIGH, OTHER); Retrieved context items: (none)",
+        "proposedIrEvidence": "definitions[0] 'Maintenance Liquidity' with a fully-specified calculationExpression (Super-Priority RCF commitments minus (outstanding revolving loans + LC face amounts), plus 'Adjustment to Liquidity' from the most recently delivered Monthly Factoring Report, plus unrestricted cash/Cash Equivalents), citing sourceCitation '§2(b)' throughout, with sufficiency marked 'COMPLETE'",
+        "verifierReasoning": "The operative source text given for §2(b) only USES the term 'Maintenance Liquidity' (as a pre-existing defined term) in clause (ii); it never defines it. No retrieved context items were supplied, and Phase 2 already flagged a HIGH-severity unresolved dependency stating context could not be retrieved for an anchoring structural node - which corresponds exactly to this missing definition. Despite this, the proposed IR presents a detailed, specific multi-component formula for 'Maintenance Liquidity' (referencing 'Adjustment to Liquidity,' 'Monthly Factoring Report,' Super-Priority RCF commitments, etc.) and cites it to '§2(b)' - a citation that does not actually support this content, since the real §2(b) text supplied contains no such definition. The definition is marked sufficiency 'COMPLETE,' which is a confident claim that cannot be verified against any source text actually provided, and if the formula is wrong or incomplete, the entire capacity calculation for the Term Loan mandatory prepayment obligation (rule ir-rule:8561c2c4a1c83fdac5a1e033, which subtracts $115,000,000 from this exact metric) would be wrong. This is precisely the 'confident-but-wrong' risk pattern that deserves the highest scrutiny.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:55:59.539Z"
+      },
+      {
+        "findingId": "b2d9f05c452c6292898f32322320f6b6659b98993041d2fbe675a5738c84bfcd",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": "ir-rule:a2cd0a24cd0e9625e8ff5d1a",
+        "irPath": "rules[2]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "For the avoidance of doubt, if after any recalculation of Maintenance Liquidity, the calculation of Maintenance Liquidity is lower than the amount most recently reported to the Administrative Agent, and therefore the mandatory prepayment that was made was higher than would have been required at such time, the Administrative Agent shall be under no obligation to refund any overpayment amounts",
+        "sourceCitation": "§2.05(2)(c), final sentence",
+        "proposedIrEvidence": "rules[2]: action=null, posture='N_A', capacityExpression=null, conditions=[], exceptions=[], with only a 'dependsOn' description noting the clause applies where a prior clause-(ii) prepayment was based on a Maintenance Liquidity figure later revised downward; sufficiency marked 'COMPLETE'",
+        "verifierReasoning": "The source's final sentence is a substantive risk-allocation term: it affirmatively relieves the Administrative Agent of any obligation to refund overpaid prepayment amounts caused by a later-discovered downward recalculation of Maintenance Liquidity. The proposed IR's corresponding rule carries no action, no posture value that encodes a right/permission/relief, and no capacity or comparison logic - it is effectively an empty placeholder annotated only with a description of when it 'applies.' Marking this rule's sufficiency as 'COMPLETE' overstates what has actually been captured: a future reader of the IR alone would not learn that the Administrative Agent has no refund obligation in this scenario. Materiality is uncertain because this term does not change any borrower-side capacity/basket calculation, but it is a real, independently-operative contractual protection that a competent reviewer analyzing post-closing remedies/no-recourse issues could care about, and its substance is not actually represented despite the COMPLETE claim.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:55:59.539Z"
+      },
+      {
+        "findingId": "ae2d501f88e8aa9b273a327a4ce542ffe50f47489764f28daf9dfe6f7c59c7f4",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$50 million",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 50 (from \"$50 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 50 (from \"$50 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      },
+      {
+        "findingId": "ae2d501f88e8aa9b273a327a4ce542ffe50f47489764f28daf9dfe6f7c59c7f4",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$50 million",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 50 (from \"$50 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 50 (from \"$50 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      },
+      {
+        "findingId": "ae2d501f88e8aa9b273a327a4ce542ffe50f47489764f28daf9dfe6f7c59c7f4",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$115 million",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 115 (from \"$115 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 115 (from \"$115 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      },
+      {
+        "findingId": "ae2d501f88e8aa9b273a327a4ce542ffe50f47489764f28daf9dfe6f7c59c7f4",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$115 million",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 115 (from \"$115 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 115 (from \"$115 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      },
+      {
+        "findingId": "ce3ecf61d95b94bcf79ad1d33617b0ff1cee7cb1e00d1835a054c0b3ca9fad62",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+        "irPath": "rules[0].conditions[0].expression.right",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "rules[0].conditions[0].expression.right=50000000",
+        "verifierReasoning": "compiled IR AMOUNT value 50000000 at rules[0].conditions[0].expression.right has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 50000000 at rules[0].conditions[0].expression.right has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      },
+      {
+        "findingId": "5cf2bbe82e491ab31957dee309f00e2208e5f684692e6f4e3630fb52a2123ff7",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+        "irPath": "rules[0].capacityExpression.operands[1].right",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "rules[0].capacityExpression.operands[1].right=50000000",
+        "verifierReasoning": "compiled IR AMOUNT value 50000000 at rules[0].capacityExpression.operands[1].right has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 50000000 at rules[0].capacityExpression.operands[1].right has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      },
+      {
+        "findingId": "f29981299a2f00d3788f0f3fa40e3d1271918454d764b2d67bbc7569957bd5db",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+        "irPath": "rules[1].conditions[0].expression.right",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "rules[1].conditions[0].expression.right=115000000",
+        "verifierReasoning": "compiled IR AMOUNT value 115000000 at rules[1].conditions[0].expression.right has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 115000000 at rules[1].conditions[0].expression.right has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      },
+      {
+        "findingId": "3a6b5ce54582462fecd9568ba604c2e4431e6897fbf05bd49836fa6e7ac61347",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+        "irPath": "rules[1].capacityExpression.right",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "rules[1].capacityExpression.right=115000000",
+        "verifierReasoning": "compiled IR AMOUNT value 115000000 at rules[1].capacityExpression.right has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 115000000 at rules[1].capacityExpression.right has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      },
+      {
+        "findingId": "6b229a5f5fe9743d7f68ac52c68ae5769823e00d07232ca149291c56904b9f33",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:cash-sweep-cure",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "2(b)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 7 apparent independent enumerated unit(s) ((b), (c), (d), (i), (x), (y), (ii)) but only 3 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 7 apparent independent enumerated unit(s) ((b), (c), (d), (i), (x), (y), (ii)) but only 3 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:54:03.096Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "holdout-candidate:cash-sweep-cure",
+      "items": [
+        {
+          "itemId": "0a0835604f67436478188833b604cb21ee9aa1d46c310146a74822b348501350",
+          "kind": "AMOUNT",
+          "rawText": "$50 million",
+          "numericValue": 50,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 388,
+          "charEnd": 399
+        },
+        {
+          "itemId": "b97a127637c426bab3a78b6b5bb557e3c96b16ef64cbb0b91d89388cb8815760",
+          "kind": "AMOUNT",
+          "rawText": "$50 million",
+          "numericValue": 50,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 961,
+          "charEnd": 972
+        },
+        {
+          "itemId": "e3b182c1dcf3bd581997dc95c708b002bdf4f1329a57ba6b1fc55a34a5f58aff",
+          "kind": "AMOUNT",
+          "rawText": "$115 million",
+          "numericValue": 115,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1144,
+          "charEnd": 1156
+        },
+        {
+          "itemId": "8c2a75ce4ba246e434e73d892346da240682ba48cb9ea009dd6f19a0087e2ff2",
+          "kind": "AMOUNT",
+          "rawText": "$115 million",
+          "numericValue": 115,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1611,
+          "charEnd": 1623
+        },
+        {
+          "itemId": "fcfead4782d4b5be25cfdab6f39412639d4ce281ee429ecb46ce2a4f1a0ce3b5",
+          "kind": "AMOUNT",
+          "rawText": "$1,300,000,",
+          "numericValue": 1300000,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2308,
+          "charEnd": 2319
+        },
+        {
+          "itemId": "267138b5d9eb8e1277795cdb94547649aa7a21f74f281b8d288093655a2ce8f7",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "lesser of",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 665,
+          "charEnd": 674
+        },
+        {
+          "itemId": "2ffde3b9da96f15bb70564fd545d35556fc123a948acea71714a351f084f5d21",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1625,
+          "charEnd": 1633
+        },
+        {
+          "itemId": "25b392eb427d1530ae91d64841174b3480a95eb90e82cc48b728653b1f31ea4b",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "no Default",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2030,
+          "charEnd": 2040
+        },
+        {
+          "itemId": "3129db7b73778a0eb6b7218f6a5fedf8abfc5847304c8da5d34ca2f37c17dbec",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "so long as",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2258,
+          "charEnd": 2268
+        },
+        {
+          "itemId": "e9d004a677df2388b9947974242757cbc08229cf9094ad325009fe12f0cc721c",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "have occurred",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2090,
+          "charEnd": 2103
+        },
+        {
+          "itemId": "d8e1eab5ba5da6b48620d6722d5227c46bf018d38ce5429e6a595942a6151e5f",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pursuant to this Section 2",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2193,
+          "charEnd": 2219
+        },
+        {
+          "itemId": "11ad7ab9d63b53ac85149a1d429c8fca65b30138ad64d9540d901074cd8d7359",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "in accordance with this Section 2",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2458,
+          "charEnd": 2491
+        },
+        {
+          "itemId": "a476ad95ea17c8c4b6d0477644ecac6dcc45e49a9aeca6bf363853edf9d59cfc",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "giving effect to",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 128,
+          "charEnd": 144
+        },
+        {
+          "itemId": "f42794009d4e930c03861bc9c46548a07d829c75be40a93742e6134503b010a4",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "giving effect to",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 988,
+          "charEnd": 1004
+        },
+        {
+          "itemId": "6062ce1e14e3874c1714f044d10848de4c2fa7522540197f64a6046e2bdba0f4",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "provided, however",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1625,
+          "charEnd": 1642
+        },
+        {
+          "itemId": "8e27a3ec58a95b4c0e952bd35124972cff37b207141ea593f40936fc88d8cff4",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 249,
+          "charEnd": 257
+        },
+        {
+          "itemId": "45d2eb4fc7483e01701a2c3f175d428e837230e203129a063d77fe053fcb26b5",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 405,
+          "charEnd": 413
+        },
+        {
+          "itemId": "647b3da7ce02788ab3b42bb569003526ed881c199e6796f1a75bdc5fa5965ef4",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 846,
+          "charEnd": 854
+        },
+        {
+          "itemId": "b2f02f425abc25890b787f5692efc191bd67c4133bd8ca772ba619d1924883f3",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1162,
+          "charEnd": 1170
+        },
+        {
+          "itemId": "ea294822164597465c4f83b43adc943df4eaa15845cc7bc48bf002292f7d5acf",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1447,
+          "charEnd": 1455
+        },
+        {
+          "itemId": "c1932f3d5796135d9923215501a006feb7b1280091c7bdb3a2a07c867032d174",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1758,
+          "charEnd": 1766
+        },
+        {
+          "itemId": "2063338245eda15eceef3c4cb9753f2b3d2c9e96955eed81b1e897c3fae53552",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2142,
+          "charEnd": 2150
+        },
+        {
+          "itemId": "bc548fe112555c2faea9d0a8861be7622f0f1c8150b4dec267b3ebeb17c700cf",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2404,
+          "charEnd": 2412
+        },
+        {
+          "itemId": "f6dd2db6b207969d16df13123f35ec781f16cc01f7d77471ca370dd398f4f013",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "prepay",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 556,
+          "charEnd": 562
+        },
+        {
+          "itemId": "7104a027e780b2abc41162ffb1f1f245a4c9a2ffbd65097753913db72b5be16a",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "prepay",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1313,
+          "charEnd": 1319
+        },
+        {
+          "itemId": "15fbad89c0a90d888b7c672a2f4179cb25fb83b9b2b45560e021fbfd83e480ed",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "prepay",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2164,
+          "charEnd": 2170
+        },
+        {
+          "itemId": "4c1269b8fd23545bfb0f487baee073dda14dee4a83d2f979481ab2d01b699f97",
+          "kind": "METRIC_MENTION",
+          "rawText": "Credit Agreement",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 30,
+          "charEnd": 46
+        },
+        {
+          "itemId": "15919c081d1056341a442c42a7bd6d1c209f7ff7c5039b8cf919d6372eba9de2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Term\nLoans",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 174,
+          "charEnd": 184
+        },
+        {
+          "itemId": "7165d78a6494a2244915ae96b3bb4dd2a8201cbdba0a053f7e6bcd2d44e5a950",
+          "kind": "METRIC_MENTION",
+          "rawText": "Business Days",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 499,
+          "charEnd": 512
+        },
+        {
+          "itemId": "23d4a90c18b1e59f28f85ef473178cb19c7cdc47d2eef6f6fddb1c332900a7f3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Priority Revolving Loans",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 627,
+          "charEnd": 651
+        },
+        {
+          "itemId": "3d143f03d64a0932874c1829422ae51cce10d20c956ccbeac1e0dca4c38f88c0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Priority Revolving Loans",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 719,
+          "charEnd": 743
+        },
+        {
+          "itemId": "0aee8e4b4251b526488737758f7ee0c9ac60df9208b4aba6231d83c75958ba83",
+          "kind": "METRIC_MENTION",
+          "rawText": "Maintenance Liquidity",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1060,
+          "charEnd": 1081
+        },
+        {
+          "itemId": "5620059909958b84cfb44ac37c7fe9b8f3f9ff2d0331458ea128d6506a153159",
+          "kind": "METRIC_MENTION",
+          "rawText": "Business Days",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1256,
+          "charEnd": 1269
+        },
+        {
+          "itemId": "da63db4c80bad4c20e55f2a2108c2edd04aeffb450ae05a041c3677af0b8b479",
+          "kind": "METRIC_MENTION",
+          "rawText": "Term Loans",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1378,
+          "charEnd": 1388
+        },
+        {
+          "itemId": "8a317a132f06f641f18262edba7f1e6fd9c5a3f6b8aaea64cec59f86fec96c83",
+          "kind": "METRIC_MENTION",
+          "rawText": "Maintenance Liquidity",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1490,
+          "charEnd": 1511
+        },
+        {
+          "itemId": "e3572e7742f48aa2f8c7fcfffbe0a9d959383b329a843abde30b80a4bae46e75",
+          "kind": "METRIC_MENTION",
+          "rawText": "Maintenance Liquidity",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 1790,
+          "charEnd": 1811
+        },
+        {
+          "itemId": "aa61311a040f388dd51bd7bffdffd73c4653d0f0a21f14f43c753c29a8e19bc1",
+          "kind": "METRIC_MENTION",
+          "rawText": "Deficiency Amount",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2009,
+          "charEnd": 2026
+        },
+        {
+          "itemId": "37362161c4db99fdba6778e3076e18873233973053ba275bdeab987a80b80116",
+          "kind": "METRIC_MENTION",
+          "rawText": "Deficiency Amount",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2175,
+          "charEnd": 2192
+        },
+        {
+          "itemId": "185c541bee3b504ac82db10bd427cac84430debfae615c877c9f82e3e61c636a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Deficiency Amount",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2277,
+          "charEnd": 2294
+        },
+        {
+          "itemId": "4c85f5150a15a534755dc8d8ddc4b7a9a4c491b3067adc271c4f37e10038ab1f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Business Days",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2337,
+          "charEnd": 2350
+        },
+        {
+          "itemId": "aabe55d385d1d02ae67137921cd60929a80be010d47f3564976f77cb77157e06",
+          "kind": "METRIC_MENTION",
+          "rawText": "Deficiency Amount",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2382,
+          "charEnd": 2399
+        },
+        {
+          "itemId": "68279a10870aa79e15dec3071d2114258d826540dc3922d9c0b0951f4fd78729",
+          "kind": "METRIC_MENTION",
+          "rawText": "Deficiency Amount",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2440,
+          "charEnd": 2457
+        },
+        {
+          "itemId": "ad30b89dd80bc8df94c9f2c1e0e9cd03c6f0d9a641739ec6669a066867b65537",
+          "kind": "METRIC_MENTION",
+          "rawText": "Maintenance Liquidity",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2564,
+          "charEnd": 2585
+        },
+        {
+          "itemId": "8135eebc1dc150d9781f5173f27f8aa2c5dd22a71972ff493092e113ba68ced6",
+          "kind": "METRIC_MENTION",
+          "rawText": "Maintenance Liquidity",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2606,
+          "charEnd": 2627
+        },
+        {
+          "itemId": "20645afe5d7a02aff212b4883b40bb39b2723f5e1a3efbb8c3664a927c9356ef",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2683,
+          "charEnd": 2703
+        },
+        {
+          "itemId": "c0cebe5e6f7a690421efec100f78d7277d82dea4417cee82be0000d6b0752eb6",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": 2817,
+          "charEnd": 2837
+        },
+        {
+          "itemId": "7b92502aa1b96f1394fe23d8449cba2758fecce50c4b853c682f6e0d1090e13f",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "9aee3720a7844b4b33e94828352b6d6b75f450c1b59bfbe6123f73d0a76ce8bd",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "89e5a123b43faa2b00a9fc462814a678989b4269f2aa70f6e9b4f42f83b99ac8",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "93bd0875f609e8aa5a6eb13dd5358c5e108e0590268514594acbda326c432d0b",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7d91eb09584c61879fac68cf1cc4207290e5ef0ae10396630ab9339b30473982",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "b97634bc506512048d03058fb1654e7a679227684c4ff62b18b0a5f66f24cb96",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(y)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "0b786ef647d9539682aa7d604f9a561f0bc183c2848888ef6327487ddbdc0602",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(b)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 7,
+      "apparentIndependentUnitEvidence": [
+        "(b)",
+        "(c)",
+        "(d)",
+        "(i)",
+        "(x)",
+        "(y)",
+        "(ii)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current."
+    },
+    "irInventory": {
+      "candidateRef": "holdout-candidate:cash-sweep-cure",
+      "items": [
+        {
+          "itemId": "4602ab2a2fa290d9a4c48eca6ae7ec27c1c17d7631ee466e8eab2bd0bcf17cc5",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "PREPAY_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(i)",
+          "sourceExcerpt": "If ... the Borrower and its Subsidiaries has (i) unrestricted cash on hand as of the last day of any calendar month in an amount that is greater than $50 million, the Borrower shall ... prepay ... Super-Priority Revolving Loans equal to the lesser of (x) ... and (y) ..."
+        },
+        {
+          "itemId": "8689819d0e97243498e464728f88003da2f50a787dfa91e215ad2518aa784d9d",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(i)",
+          "sourceExcerpt": "If ... the Borrower and its Subsidiaries has (i) unrestricted cash on hand as of the last day of any calendar month in an amount that is greater than $50 million, the Borrower shall ... prepay ... Super-Priority Revolving Loans equal to the lesser of (x) ... and (y) ..."
+        },
+        {
+          "itemId": "b844b53511055433da2caf60da6163db7dff5fd6e3035b8f47b3f9ed478e021a",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(i)",
+          "sourceExcerpt": "If ... the Borrower and its Subsidiaries has (i) unrestricted cash on hand as of the last day of any calendar month in an amount that is greater than $50 million, the Borrower shall ... prepay ... Super-Priority Revolving Loans equal to the lesser of (x) ... and (y) ..."
+        },
+        {
+          "itemId": "a8f18781bc4d7cf7c208038c84aae6cdebaa6f87b2825717ad7a981e9b174a6f",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "Unrestricted cash on hand of the Borrower and its Subsidiaries, as of the last day of any calendar month, exceeds $50,000,000",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(i)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "174c9ad41f91e30bc0eba4130be12eaac1c8e0606ce9d2cc89de69235d4adf12",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].conditions[0].expression",
+          "numericValue": null,
+          "textValue": "COMPARE:GT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "22e9a47005f34079b84d7cbc42f096c92c55292129342e553885b7b127e7db50",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].conditions[0].expression.left",
+          "numericValue": null,
+          "textValue": "unrestricted cash on hand of the Borrower and its Subsidiaries as of the last day of the applicable calendar month",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ca9beddbbe062e515cd702d3956a44328ebe08a105884c35ca0347e80ea08535",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].conditions[0].expression.right",
+          "numericValue": 50000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7b15884d72d973d6431e4431198318a6bfaf2118f159142cc8c8285f3aefd9c7",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].capacityExpression.operands[0]",
+          "numericValue": null,
+          "textValue": "aggregate principal amount of Super-Priority Revolving Loans then outstanding",
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "adcf19a5c64103a44b018fe0246f87ba007d48d9e9fdfc6e2d73cbcd4da72fe8",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].capacityExpression.operands[1].left",
+          "numericValue": null,
+          "textValue": "unrestricted cash on hand of the Borrower and its Subsidiaries as of the last day of the applicable calendar month",
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a53aa7876ef91326e12c205f6485216c9c90fec24eb4895aad4ae7fadf2ff7de",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+          "irPath": "rules[0].capacityExpression.operands[1].right",
+          "numericValue": 50000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§2.05(2)(c)(i)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c13df78135059529a165dba062ed75682c513bda1a5783e2e794e6e5a7003505",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "PREPAY_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(ii)",
+          "sourceExcerpt": "(ii) after giving effect to any mandatory prepayment pursuant to clause (i) above, Maintenance Liquidity as of the last day of any calendar month that is greater than $115 million, the Borrower shall ... prepay ... Term Loans of any Class or Classes ... to the extent necessary to cause Maintenance Liquidity ... to be less than or equal to $115 million"
+        },
+        {
+          "itemId": "d26b46866458f6442a8a6b7f9229c1b64a82c946b835f410605bb21d626d4f0c",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(ii)",
+          "sourceExcerpt": "(ii) after giving effect to any mandatory prepayment pursuant to clause (i) above, Maintenance Liquidity as of the last day of any calendar month that is greater than $115 million, the Borrower shall ... prepay ... Term Loans of any Class or Classes ... to the extent necessary to cause Maintenance Liquidity ... to be less than or equal to $115 million"
+        },
+        {
+          "itemId": "cb3777ae018396d6dc3c687c3a616eb47dcb8bad15ce85162b736aa1b12860a0",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(ii)",
+          "sourceExcerpt": "(ii) after giving effect to any mandatory prepayment pursuant to clause (i) above, Maintenance Liquidity as of the last day of any calendar month that is greater than $115 million, the Borrower shall ... prepay ... Term Loans of any Class or Classes ... to the extent necessary to cause Maintenance Liquidity ... to be less than or equal to $115 million"
+        },
+        {
+          "itemId": "b8475fe8c8026436d59e19973281877d5ae93145c213714579c7c669aa362a37",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].conditions[0]",
+          "numericValue": null,
+          "textValue": "After giving effect to any mandatory prepayment under clause (i) (Section 2.05(2)(c)(i)), Maintenance Liquidity as of the last day of any calendar month exceeds $115,000,000",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(ii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7e465a59723583254f42c0bfb52cc8ea63a709d62dd99f5d548d4b7886356a2a",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].conditions[0].expression",
+          "numericValue": null,
+          "textValue": "COMPARE:GT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c3aff9ab652f4d3233834527dc2beec53a206fb40235adeb93843eca2c8e3e9b",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].conditions[0].expression.left",
+          "numericValue": null,
+          "textValue": "Maintenance Liquidity",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "18415a75e481d131d8f9e0ef4e6afb680ef219bfaf21664091dd271a9e884997",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].conditions[0].expression.right",
+          "numericValue": 115000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "d0849023b28a92484fa738fc14fbae9734a7dcf41cca78f22bbc0302e3a6aea2",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].exceptions[0]",
+          "numericValue": null,
+          "textValue": "No Default or Event of Default occurs (or is deemed to occur and be continuing) as a result of the Borrower's failure to prepay a 'Deficiency Amount' (an amount otherwise required to be prepaid under this clause (ii) that was not prepaid because Maintenance Liquidity was miscalculated), or to give notice thereof, provided the safe-harbor conditions below are met.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c) (proviso)",
+          "sourceExcerpt": "provided, however, if, on or prior to the date that is thirty days after the last day of the calendar month most recently ended, the Borrower obtains knowledge that Maintenance Liquidity was miscalculated ... no Default or Event of Default shall occur ... so long as (x) the Deficiency Amount is less than $1,300,000, and (y) within 5 Business Days of obtaining knowledge ... the Borrower makes a prepayment of such Deficiency Amount"
+        },
+        {
+          "itemId": "0bb9d41a854c021badea287b9734ec2650b3fc3de9a4d5eb4a8a38b2cafa1f22",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].exceptions[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "Borrower obtains knowledge of the Maintenance Liquidity miscalculation on or prior to the date that is 30 days after the last day of the calendar month most recently ended",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c) (proviso)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "33c16cbaac1827670a88c3220d44f5c3626748d4ff0e0d69ef0a0cf449a24fac",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].exceptions[0].conditions[1]",
+          "numericValue": null,
+          "textValue": "The Deficiency Amount is less than $1,300,000",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c) (proviso)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "34c04b370d22df2f703a218e69aac5cb88aea9d1424d95e8839ff45d53118431",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].exceptions[0].conditions[1].expression",
+          "numericValue": null,
+          "textValue": "COMPARE:LT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "318245e899084408a5bb855eb43b8991127c4b92bf3c5e862812e8e5678d9072",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].exceptions[0].conditions[1].expression.left",
+          "numericValue": null,
+          "textValue": "Deficiency Amount",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c122ef0dff2c2c97d69a4df14ff935ac38bf2c148dd82d8491b7e0559432932d",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].exceptions[0].conditions[1].expression.right",
+          "numericValue": 1300000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "027c8961a3b22244193fa657b4d7952ba33cfa7d5a863f30d6e56e358b88b747",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].exceptions[0].conditions[2]",
+          "numericValue": null,
+          "textValue": "The Borrower prepays the Deficiency Amount within 5 Business Days of obtaining knowledge thereof, in accordance with this Section 2.05(2)(c)(ii)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c) (proviso)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f44a10fdbece5adcef580e15c1794253254bf366b8f3cb2727eb5fb9d50c706f",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].dependsOn[0]",
+          "numericValue": null,
+          "textValue": "REQUIRES:ir-rule:1e2208ffa041372568a63144",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "103f1bd236ecc4a1142a6c9caac34c4a4191cc252d7178756834ab1ed2864b9d",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].capacityExpression.left",
+          "numericValue": null,
+          "textValue": "Maintenance Liquidity",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "d055b61c29b66280956452c9ef318753331ca59f3f854c841b461d359e07275c",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+          "irPath": "rules[1].capacityExpression.right",
+          "numericValue": 115000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)(ii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "5caed3cd4c177c6416e9e458bb996dcd3d8c2e5bfbe86a1900ebce9276d5e61c",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:a2cd0a24cd0e9625e8ff5d1a",
+          "irPath": "rules[2].posture",
+          "numericValue": null,
+          "textValue": "N_A",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c)",
+          "sourceExcerpt": "For the avoidance of doubt, if after any recalculation of Maintenance Liquidity, the calculation of Maintenance Liquidity is lower than the amount most recently reported to the Administrative Agent, and therefore the mandatory prepayment that was made was higher than would have been required at such time, the Administrative Agent shall be under no obligation to refund any overpayment amounts"
+        },
+        {
+          "itemId": "a82d802877e978aa3a3097650e8085d42df37ba12584dc8d6ff34b0b02dee3d3",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:a2cd0a24cd0e9625e8ff5d1a",
+          "irPath": "rules[2].dependsOn[0]",
+          "numericValue": null,
+          "textValue": "REQUIRES:ir-rule:8561c2c4a1c83fdac5a1e033",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c051748b1d499c6fc410bbeb96ab229d79889495115d883a7d60157d533ed61e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Super-Priority Revolving Credit Facility",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7afc75a4980aa5b145141cd19b35cc02816b80d8a64a6d25fadeee6590245654",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Permitted Euro Revolving Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "16310a6481119bba663003ab30299b03275f28d8771a5191e365ef7e2dead08a",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Refinancing Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b05df5546cdac23aa3a1c88faadfa9c6769c620425779858bc211a441a7bae2c",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Adjustment to Liquidity",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "e0e7cf3b32bce8ca2a6e808f52ed46566074fe8954505f5ed76cad015df59a0a",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Monthly Factoring Report",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "45f5f2a30e26dc9410ba3310a7833ddd0cb4bbecb0b1b254c0491dc179e2c196",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Cash Equivalents",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2fa806c8754b7c0e635056c203e8436e2ee3272e5517aa412a3fdf658153987b",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].calculationExpression.operands[0].left",
+          "numericValue": null,
+          "textValue": "aggregate commitments under the Super-Priority Revolving Credit Facility (including commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b0a19fcb492344e6c3c7ae9e7d24834621eeaa38d55347968823078741489a5a",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].calculationExpression.operands[0].right.operands[0]",
+          "numericValue": null,
+          "textValue": "aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "491b66363586c2891968c1a2c139fd1a7ea0ad80868b7d2f914ca0f86247b762",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].calculationExpression.operands[0].right.operands[1]",
+          "numericValue": null,
+          "textValue": "face amount of letters of credit issued under the Super-Priority Revolving Credit Facility, less any reimbursed amounts",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "99d2ec16a41e19f659fbc6970f55454427002d798c41c90aa28ad7b5ac86b4e1",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].calculationExpression.operands[1]",
+          "numericValue": null,
+          "textValue": "\"Adjustment to Liquidity\" as set forth in the most recently delivered Monthly Factoring Report",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2549404e020f7692a94a62e0e525a76d62c484777aa05cf97f54d58e33d905e1",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[0].calculationExpression.operands[2]",
+          "numericValue": null,
+          "textValue": "unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c12fe94cf066a605301f615620566c2237897b15b8f1f621f7bdc30029335d85",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:3e01409d96ff978c24e82d38",
+          "irPath": "definitions[1].calculationExpression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2.05(2)(c) (proviso)",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 3,
+      "definitionCount": 2,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "holdout-candidate:cash-sweep-cure",
+      "items": [
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0a0835604f67436478188833b604cb21ee9aa1d46c310146a74822b348501350",
+            "kind": "AMOUNT",
+            "rawText": "$50 million",
+            "numericValue": 50,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 388,
+            "charEnd": 399
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 50 (from \"$50 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b97a127637c426bab3a78b6b5bb557e3c96b16ef64cbb0b91d89388cb8815760",
+            "kind": "AMOUNT",
+            "rawText": "$50 million",
+            "numericValue": 50,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 961,
+            "charEnd": 972
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 50 (from \"$50 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e3b182c1dcf3bd581997dc95c708b002bdf4f1329a57ba6b1fc55a34a5f58aff",
+            "kind": "AMOUNT",
+            "rawText": "$115 million",
+            "numericValue": 115,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 1144,
+            "charEnd": 1156
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 115 (from \"$115 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8c2a75ce4ba246e434e73d892346da240682ba48cb9ea009dd6f19a0087e2ff2",
+            "kind": "AMOUNT",
+            "rawText": "$115 million",
+            "numericValue": 115,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 1611,
+            "charEnd": 1623
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 115 (from \"$115 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fcfead4782d4b5be25cfdab6f39412639d4ce281ee429ecb46ce2a4f1a0ce3b5",
+            "kind": "AMOUNT",
+            "rawText": "$1,300,000,",
+            "numericValue": 1300000,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2308,
+            "charEnd": 2319
+          },
+          "irItems": [
+            {
+              "itemId": "c122ef0dff2c2c97d69a4df14ff935ac38bf2c148dd82d8491b7e0559432932d",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].exceptions[0].conditions[1].expression.right",
+              "numericValue": 1300000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§2(b)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source AMOUNT 1300000 matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "ca9beddbbe062e515cd702d3956a44328ebe08a105884c35ca0347e80ea08535",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+              "irPath": "rules[0].conditions[0].expression.right",
+              "numericValue": 50000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§2(b)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 50000000 at rules[0].conditions[0].expression.right has no matching source-side figure"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "a53aa7876ef91326e12c205f6485216c9c90fec24eb4895aad4ae7fadf2ff7de",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+              "irPath": "rules[0].capacityExpression.operands[1].right",
+              "numericValue": 50000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§2.05(2)(c)(i)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 50000000 at rules[0].capacityExpression.operands[1].right has no matching source-side figure"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "18415a75e481d131d8f9e0ef4e6afb680ef219bfaf21664091dd271a9e884997",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].conditions[0].expression.right",
+              "numericValue": 115000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§2(b)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 115000000 at rules[1].conditions[0].expression.right has no matching source-side figure"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "d055b61c29b66280956452c9ef318753331ca59f3f854c841b461d359e07275c",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].capacityExpression.right",
+              "numericValue": 115000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§2.05(2)(c)(ii)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 115000000 at rules[1].capacityExpression.right has no matching source-side figure"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4c1269b8fd23545bfb0f487baee073dda14dee4a83d2f979481ab2d01b699f97",
+            "kind": "METRIC_MENTION",
+            "rawText": "Credit Agreement",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 30,
+            "charEnd": 46
+          },
+          "irItems": [],
+          "reason": "source mention \"Credit Agreement\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "15919c081d1056341a442c42a7bd6d1c209f7ff7c5039b8cf919d6372eba9de2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Term\nLoans",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 174,
+            "charEnd": 184
+          },
+          "irItems": [],
+          "reason": "source mention \"Term\nLoans\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7165d78a6494a2244915ae96b3bb4dd2a8201cbdba0a053f7e6bcd2d44e5a950",
+            "kind": "METRIC_MENTION",
+            "rawText": "Business Days",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 499,
+            "charEnd": 512
+          },
+          "irItems": [],
+          "reason": "source mention \"Business Days\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "23d4a90c18b1e59f28f85ef473178cb19c7cdc47d2eef6f6fddb1c332900a7f3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Priority Revolving Loans",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 627,
+            "charEnd": 651
+          },
+          "irItems": [
+            {
+              "itemId": "7b15884d72d973d6431e4431198318a6bfaf2118f159142cc8c8285f3aefd9c7",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+              "irPath": "rules[0].capacityExpression.operands[0]",
+              "numericValue": null,
+              "textValue": "aggregate principal amount of Super-Priority Revolving Loans then outstanding",
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Priority Revolving Loans\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3d143f03d64a0932874c1829422ae51cce10d20c956ccbeac1e0dca4c38f88c0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Priority Revolving Loans",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 719,
+            "charEnd": 743
+          },
+          "irItems": [
+            {
+              "itemId": "7b15884d72d973d6431e4431198318a6bfaf2118f159142cc8c8285f3aefd9c7",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:1e2208ffa041372568a63144",
+              "irPath": "rules[0].capacityExpression.operands[0]",
+              "numericValue": null,
+              "textValue": "aggregate principal amount of Super-Priority Revolving Loans then outstanding",
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Priority Revolving Loans\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0aee8e4b4251b526488737758f7ee0c9ac60df9208b4aba6231d83c75958ba83",
+            "kind": "METRIC_MENTION",
+            "rawText": "Maintenance Liquidity",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 1060,
+            "charEnd": 1081
+          },
+          "irItems": [
+            {
+              "itemId": "c3aff9ab652f4d3233834527dc2beec53a206fb40235adeb93843eca2c8e3e9b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].conditions[0].expression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "103f1bd236ecc4a1142a6c9caac34c4a4191cc252d7178756834ab1ed2864b9d",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].capacityExpression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Maintenance Liquidity\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5620059909958b84cfb44ac37c7fe9b8f3f9ff2d0331458ea128d6506a153159",
+            "kind": "METRIC_MENTION",
+            "rawText": "Business Days",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 1256,
+            "charEnd": 1269
+          },
+          "irItems": [],
+          "reason": "source mention \"Business Days\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "da63db4c80bad4c20e55f2a2108c2edd04aeffb450ae05a041c3677af0b8b479",
+            "kind": "METRIC_MENTION",
+            "rawText": "Term Loans",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 1378,
+            "charEnd": 1388
+          },
+          "irItems": [],
+          "reason": "source mention \"Term Loans\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8a317a132f06f641f18262edba7f1e6fd9c5a3f6b8aaea64cec59f86fec96c83",
+            "kind": "METRIC_MENTION",
+            "rawText": "Maintenance Liquidity",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 1490,
+            "charEnd": 1511
+          },
+          "irItems": [
+            {
+              "itemId": "c3aff9ab652f4d3233834527dc2beec53a206fb40235adeb93843eca2c8e3e9b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].conditions[0].expression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "103f1bd236ecc4a1142a6c9caac34c4a4191cc252d7178756834ab1ed2864b9d",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].capacityExpression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Maintenance Liquidity\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e3572e7742f48aa2f8c7fcfffbe0a9d959383b329a843abde30b80a4bae46e75",
+            "kind": "METRIC_MENTION",
+            "rawText": "Maintenance Liquidity",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 1790,
+            "charEnd": 1811
+          },
+          "irItems": [
+            {
+              "itemId": "c3aff9ab652f4d3233834527dc2beec53a206fb40235adeb93843eca2c8e3e9b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].conditions[0].expression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "103f1bd236ecc4a1142a6c9caac34c4a4191cc252d7178756834ab1ed2864b9d",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].capacityExpression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Maintenance Liquidity\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aa61311a040f388dd51bd7bffdffd73c4653d0f0a21f14f43c753c29a8e19bc1",
+            "kind": "METRIC_MENTION",
+            "rawText": "Deficiency Amount",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2009,
+            "charEnd": 2026
+          },
+          "irItems": [
+            {
+              "itemId": "318245e899084408a5bb855eb43b8991127c4b92bf3c5e862812e8e5678d9072",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].exceptions[0].conditions[1].expression.left",
+              "numericValue": null,
+              "textValue": "Deficiency Amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Deficiency Amount\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "37362161c4db99fdba6778e3076e18873233973053ba275bdeab987a80b80116",
+            "kind": "METRIC_MENTION",
+            "rawText": "Deficiency Amount",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2175,
+            "charEnd": 2192
+          },
+          "irItems": [
+            {
+              "itemId": "318245e899084408a5bb855eb43b8991127c4b92bf3c5e862812e8e5678d9072",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].exceptions[0].conditions[1].expression.left",
+              "numericValue": null,
+              "textValue": "Deficiency Amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Deficiency Amount\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "185c541bee3b504ac82db10bd427cac84430debfae615c877c9f82e3e61c636a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Deficiency Amount",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2277,
+            "charEnd": 2294
+          },
+          "irItems": [
+            {
+              "itemId": "318245e899084408a5bb855eb43b8991127c4b92bf3c5e862812e8e5678d9072",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].exceptions[0].conditions[1].expression.left",
+              "numericValue": null,
+              "textValue": "Deficiency Amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Deficiency Amount\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4c85f5150a15a534755dc8d8ddc4b7a9a4c491b3067adc271c4f37e10038ab1f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Business Days",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2337,
+            "charEnd": 2350
+          },
+          "irItems": [],
+          "reason": "source mention \"Business Days\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aabe55d385d1d02ae67137921cd60929a80be010d47f3564976f77cb77157e06",
+            "kind": "METRIC_MENTION",
+            "rawText": "Deficiency Amount",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2382,
+            "charEnd": 2399
+          },
+          "irItems": [
+            {
+              "itemId": "318245e899084408a5bb855eb43b8991127c4b92bf3c5e862812e8e5678d9072",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].exceptions[0].conditions[1].expression.left",
+              "numericValue": null,
+              "textValue": "Deficiency Amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Deficiency Amount\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "68279a10870aa79e15dec3071d2114258d826540dc3922d9c0b0951f4fd78729",
+            "kind": "METRIC_MENTION",
+            "rawText": "Deficiency Amount",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2440,
+            "charEnd": 2457
+          },
+          "irItems": [
+            {
+              "itemId": "318245e899084408a5bb855eb43b8991127c4b92bf3c5e862812e8e5678d9072",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].exceptions[0].conditions[1].expression.left",
+              "numericValue": null,
+              "textValue": "Deficiency Amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Deficiency Amount\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ad30b89dd80bc8df94c9f2c1e0e9cd03c6f0d9a641739ec6669a066867b65537",
+            "kind": "METRIC_MENTION",
+            "rawText": "Maintenance Liquidity",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2564,
+            "charEnd": 2585
+          },
+          "irItems": [
+            {
+              "itemId": "c3aff9ab652f4d3233834527dc2beec53a206fb40235adeb93843eca2c8e3e9b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].conditions[0].expression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "103f1bd236ecc4a1142a6c9caac34c4a4191cc252d7178756834ab1ed2864b9d",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].capacityExpression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Maintenance Liquidity\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8135eebc1dc150d9781f5173f27f8aa2c5dd22a71972ff493092e113ba68ced6",
+            "kind": "METRIC_MENTION",
+            "rawText": "Maintenance Liquidity",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2606,
+            "charEnd": 2627
+          },
+          "irItems": [
+            {
+              "itemId": "c3aff9ab652f4d3233834527dc2beec53a206fb40235adeb93843eca2c8e3e9b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].conditions[0].expression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "103f1bd236ecc4a1142a6c9caac34c4a4191cc252d7178756834ab1ed2864b9d",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8561c2c4a1c83fdac5a1e033",
+              "irPath": "rules[1].capacityExpression.left",
+              "numericValue": null,
+              "textValue": "Maintenance Liquidity",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Maintenance Liquidity\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "20645afe5d7a02aff212b4883b40bb39b2723f5e1a3efbb8c3664a927c9356ef",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2683,
+            "charEnd": 2703
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c0cebe5e6f7a690421efec100f78d7277d82dea4417cee82be0000d6b0752eb6",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(b)",
+            "structuralNodeKey": null,
+            "charStart": 2817,
+            "charEnd": 2837
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 7 apparent independent enumerated unit(s) ((b), (c), (d), (i), (x), (y), (ii)) but only 3 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        }
+      ],
+      "materialUnresolvedCount": 9
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T17:55:59.539Z"
+  }
+}

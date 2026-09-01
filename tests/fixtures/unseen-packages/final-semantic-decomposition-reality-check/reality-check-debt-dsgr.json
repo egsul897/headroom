@@ -1,0 +1,4305 @@
+{
+  "region": {
+    "id": "debt-dsgr",
+    "family": "DEBT",
+    "documentId": "dsgr-a",
+    "sourceSectionRef": "6.01",
+    "charStart": 436142,
+    "chars": 4500,
+    "structuralNodeKeys": [
+      "dsgr-a::6.01"
+    ]
+  },
+  "operativeSourceText": "SECTION 6.01. Indebtedness . No Loan Party\nwill, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:\n\n(a) the Secured\nObligations and the Guaranteed Obligations;\n\n106\n\n(b) Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted\nSubsidiary owing to any Borrower or any other Restricted Subsidiary, provided that (i) Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party shall be subject to the limitations\nset forth in Section 6.04, (ii) Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party shall be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent, and\n(iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under\nSection 6.01(c)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed\nan amount equal to 15% of Applicable EBITDA;\n\n(c) Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any\nRestricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary, provided that (i) the Indebtedness so Guaranteed is permitted by this Section 6.01, (ii) Guarantees by any Borrower or other Loan Party of\nIndebtedness of any Restricted Subsidiary that is not a Loan Party shall be subject to Section 6.04, (iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties that is Guaranteed by U.S. Loan\nParties at any time outstanding, together with the aggregate amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries\nthat are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA;\n\n(d) Indebtedness owed to any Person providing workers’ compensation, health, disability or other employee benefits or property, casualty\nor liability insurance, pursuant to reimbursement or indemnification obligations to such Person, in each case incurred in the ordinary course of business;\n\n(e) Indebtedness of any Loan Party in respect of performance bonds, bid bonds, appeal bonds, surety bonds and similar obligations, in each case\nprovided in the ordinary course of business;\n\n(f) Indebtedness existing on the date hereof and listed on Schedule 6.01 and any Refinance\nIndebtedness in respect thereof;\n\n(g) Indebtedness which represents extensions, renewals, refinancing or replacements (such Indebtedness\nbeing so extended, renewed, refinanced or replaced being referred to herein as the “ Refinance Indebtedness ”) of any of the Indebtedness described in clause (f) hereof (such Indebtedness being referred to herein as the\n“ Original Indebtedness ”); provided that (i) such Refinance Indebtedness does not increase the principal amount thereof (other than by the amount of any unused commitments thereunder, accrued interest, fees, defeasance\ncosts and premium (including call and tender premiums), if any, underwriting discounts, fees, commissions and expenses (including original issue discount, upfront fees and similar items), in each case, in connection with the refinancing of such\nOriginal Indebtedness and the incurrence or issuance of such Refinance Indebtedness), (ii) any Liens securing such Refinance Indebtedness are not extended to any additional property of any Loan Party or any Restricted Subsidiary (other than any\naccessions, improvements or additions to the property securing the Original Indebtedness and after acquired property to the extent applicable), (iii) no Loan Party or any Restricted Subsidiary that is not originally obligated with respect to\nrepayment of such Original Indebtedness is required to become obligated with respect to such Refinance Indebtedness, (iv) such Refinance Indebtedness does not result in a shortening of the average weighted maturity of such Original\nIndebtedness, (v) the terms of such Refinance Indebtedness are not less favorable to the obligor ther",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:f6649d7a96df6f63e0111169",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r0].exception[0]",
+            "appliesToRuleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "description": "Secured Obligations and Guaranteed Obligations",
+            "permissionRuleId": "ir-rule:a09db13fc89bc396d6915b29",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(a)",
+              "excerpt": "the Secured Obligations and the Guaranteed Obligations"
+            }
+          },
+          {
+            "exceptionId": "rule[r0].exception[1]",
+            "appliesToRuleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "description": "Intercompany Indebtedness among Borrowers and Restricted Subsidiaries",
+            "permissionRuleId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(b)",
+              "excerpt": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary"
+            }
+          },
+          {
+            "exceptionId": "rule[r0].exception[2]",
+            "appliesToRuleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "description": "Guarantees of intercompany Indebtedness",
+            "permissionRuleId": "ir-rule:e2a81c8fafa700436ae0e21b",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(c)",
+              "excerpt": "Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary"
+            }
+          },
+          {
+            "exceptionId": "rule[r0].exception[3]",
+            "appliesToRuleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "description": "Indebtedness to employee-benefit/insurance providers under reimbursement/indemnification obligations, ordinary course",
+            "permissionRuleId": "ir-rule:ca20af7202bc823cd28ed453",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(d)",
+              "excerpt": null
+            }
+          },
+          {
+            "exceptionId": "rule[r0].exception[4]",
+            "appliesToRuleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "description": "Indebtedness for performance/bid/appeal/surety bonds, ordinary course",
+            "permissionRuleId": "ir-rule:fa875860bed1ef5df8e46838",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(e)",
+              "excerpt": null
+            }
+          },
+          {
+            "exceptionId": "rule[r0].exception[5]",
+            "appliesToRuleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "description": "Existing scheduled Indebtedness and its Refinance Indebtedness",
+            "permissionRuleId": "ir-rule:31b5153679c910028d86b26e",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(f)",
+              "excerpt": null
+            }
+          },
+          {
+            "exceptionId": "rule[r0].exception[6]",
+            "appliesToRuleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "description": "Refinance Indebtedness of clause (f) debt, subject to provisos",
+            "permissionRuleId": "ir-rule:b6f9ecd3957107e922c50ad2",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)",
+              "excerpt": null
+            }
+          },
+          {
+            "exceptionId": "rule[r0].exception[7]",
+            "appliesToRuleId": "ir-rule:f6649d7a96df6f63e0111169",
+            "description": "Indebtedness of Persons designated as Restricted Subsidiary after the date hereof",
+            "permissionRuleId": "ir-rule:a6ff83cd541990a44a5e1a58",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(h)",
+              "excerpt": null
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Section 6.01 lists exceptions (a) through at least (h); tool budget was exhausted before confirming whether additional lettered exceptions exist beyond (h), and clause (h)'s own proviso text was cut off before retrieval could complete."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01",
+          "excerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:a09db13fc89bc396d6915b29",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(a)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "ADD",
+          "type": "MONEY",
+          "exprId": "ir-expr:28732ba4e1c7ccd27abf8d46",
+          "operands": [
+            {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "type": "MONEY",
+              "termName": "Secured Obligations",
+              "companyId": "final-semantic-decomposition-reality-check",
+              "instrumentKey": "reality-check-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:4cbc93059c27289b552af1bb"
+            },
+            {
+              "kind": "DEFINED_TERM_REFERENCE",
+              "type": "MONEY",
+              "termName": "Guaranteed Obligations",
+              "companyId": "final-semantic-decomposition-reality-check",
+              "instrumentKey": "reality-check-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:bdf7d43f9c5b5b93fc21b4f7"
+            }
+          ],
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(a)",
+            "excerpt": null
+          }
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(a)",
+          "excerpt": "the Secured Obligations and the Guaranteed Obligations"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(b)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r2].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party is subject to the limitations set forth in Section 6.04",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(b)(i)",
+              "excerpt": null
+            }
+          },
+          {
+            "conditionId": "rule[r2].condition[1]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party must be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(b)(ii)",
+              "excerpt": null
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "dependsOn[0].targetRef \"6.04\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(b)",
+          "excerpt": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:a035f853009fc313d1c8d471",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(b)(iii)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:08d3e237ce19f25ab43e7153",
+          "operands": [
+            {
+              "kind": "PERCENT",
+              "type": "PERCENT",
+              "value": 0.15,
+              "provenance": {
+                "documentId": "dsgr-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(b)(iii)",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:d786ecf1acf45296a0a33d1e"
+            },
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Applicable EBITDA",
+              "companyId": "final-semantic-decomposition-reality-check",
+              "instrumentKey": "reality-check-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:3204756a97f56a986ebf61ea"
+            }
+          ],
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(b)(iii)",
+            "excerpt": null
+          }
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "dependsOn[0].relationshipType \"SHARES_CAP_WITH\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"sc1\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(b)(iii)",
+          "excerpt": "the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under Section 6.01(c)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:e2a81c8fafa700436ae0e21b",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(c)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "GUARANTEE_DEBT",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(c)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r3].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the Indebtedness so Guaranteed must itself be permitted by Section 6.01",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(c)(i)",
+              "excerpt": null
+            }
+          },
+          {
+            "conditionId": "rule[r3].condition[1]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Guarantees by any Borrower or other Loan Party of Indebtedness of any Restricted Subsidiary that is not a Loan Party are subject to Section 6.04",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(c)(ii)",
+              "excerpt": null
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "dependsOn[0].targetRef \"6.04\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(c)",
+          "excerpt": "Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:b3a78761d2c8ecf85c0af551",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(c)(iii)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "GUARANTEE_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MULTIPLY",
+          "type": "MONEY",
+          "exprId": "ir-expr:b423a6e68cf42633b6a35d90",
+          "operands": [
+            {
+              "kind": "PERCENT",
+              "type": "PERCENT",
+              "value": 0.15,
+              "provenance": {
+                "documentId": "dsgr-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.01(c)(iii)",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:e74d52a8ae5a166aaf2122a0"
+            },
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Applicable EBITDA",
+              "companyId": "final-semantic-decomposition-reality-check",
+              "instrumentKey": "reality-check-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:3204756a97f56a986ebf61ea"
+            }
+          ],
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(c)(iii)",
+            "excerpt": null
+          }
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "dependsOn[0].relationshipType \"SHARES_CAP_WITH\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"sc1\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(c)(iii)",
+          "excerpt": "the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties that is Guaranteed by U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:ca20af7202bc823cd28ed453",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(d)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(d)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r4].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "must be incurred in the ordinary course of business as reimbursement/indemnification obligations to a provider of workers' compensation, health, disability or other employee benefits or property/casualty/liability insurance",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(d)",
+              "excerpt": null
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(d)",
+          "excerpt": "Indebtedness owed to any Person providing workers' compensation, health, disability or other employee benefits or property, casualty or liability insurance, pursuant to reimbursement or indemnification obligations to such Person, in each case incurred in the ordinary course of business"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:fa875860bed1ef5df8e46838",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(e)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(e)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r5].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "must be provided in the ordinary course of business",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(e)",
+              "excerpt": null
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(e)",
+          "excerpt": "Indebtedness of any Loan Party in respect of performance bonds, bid bonds, appeal bonds, surety bonds and similar obligations, in each case provided in the ordinary course of business"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:31b5153679c910028d86b26e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(f)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§6.01(f)",
+          "semanticDescription": "the actual dollar amount of Indebtedness existing on the Effective Date and listed on Schedule 6.01",
+          "reason": "Schedule 6.01 is an exhibit whose contents were not included in the supplied evidence and no digitized schedule content is retrievable with the available tools",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:fe1c76e58e65176b0f40c2ac"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Amount permitted is defined solely by reference to Schedule 6.01, which is not available in evidence or via any provided tool.",
+          "Schedule 6.01 is an exhibit whose contents were not included in the supplied evidence and no digitized schedule content is retrievable with the available tools"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(f)",
+          "excerpt": "Indebtedness existing on the date hereof and listed on Schedule 6.01 and any Refinance Indebtedness in respect thereof"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:b6f9ecd3957107e922c50ad2",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(g)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+          "reason": "ADD operands do not type-check together under the IR's own composition rules",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01(g)(i)",
+            "excerpt": null
+          },
+          "attemptedStructure": {
+            "kind": "ADD",
+            "type": "NUMBER",
+            "exprId": "ir-expr:69d5ef342eedc00c9930136a",
+            "operands": [
+              {
+                "kind": "RULE_REFERENCE",
+                "type": "CAPACITY",
+                "ruleId": "ir-rule:31b5153679c910028d86b26e",
+                "companyId": "final-semantic-decomposition-reality-check",
+                "instrumentKey": "reality-check-instrument",
+                "exprId": "ir-expr:1ff36935afd2469e93029ef6"
+              },
+              {
+                "kind": "UNSUPPORTED",
+                "type": null,
+                "sourceEvidence": "§6.01(g)(i)",
+                "semanticDescription": "additive carve-outs to principal permitted on refinancing: unused commitments, accrued interest, fees, defeasance costs and premium (including call/tender premiums), underwriting discounts, fees, commissions and expenses (including OID, upfront fees and similar items) incurred in connection with the refinancing",
+                "reason": "these are enumerated qualitative carve-out categories without a stated formula or cap amount, not reducible to a single numeric expression",
+                "requiredReview": true,
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.01(g)(i)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:67efa25fd429c3784e0fdea9"
+              }
+            ],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)(i)",
+              "excerpt": null
+            }
+          },
+          "exprId": "ir-expr:3d9ee2ad19c864a0ddc357c7"
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r7].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Refinance Indebtedness does not increase the principal amount of the Original Indebtedness (other than by permitted fee/interest/premium/OID add-ons)",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)(i)",
+              "excerpt": null
+            }
+          },
+          {
+            "conditionId": "rule[r7].condition[1]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "any Liens securing the Refinance Indebtedness are not extended to additional property (other than accessions/improvements/after-acquired property)",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)(i) [clause (ii)]",
+              "excerpt": null
+            }
+          },
+          {
+            "conditionId": "rule[r7].condition[2]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "no Loan Party or Restricted Subsidiary not originally obligated on the Original Indebtedness is required to become obligated on the Refinance Indebtedness",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)(i) [clause (iii)]",
+              "excerpt": null
+            }
+          },
+          {
+            "conditionId": "rule[r7].condition[3]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the Refinance Indebtedness does not shorten the weighted average maturity of the Original Indebtedness",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)(i) [clause (iv)]",
+              "excerpt": null
+            }
+          },
+          {
+            "conditionId": "rule[r7].condition[4]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "the terms of the Refinance Indebtedness are not less favorable to the obligor than the Original Indebtedness's terms",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)(i) [clause (v)]",
+              "excerpt": null
+            }
+          },
+          {
+            "conditionId": "rule[r7].condition[5]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "if the Original Indebtedness was subordinated to the Secured Obligations, the Refinance Indebtedness must include subordination terms at least as favorable to the Administrative Agent and Lenders",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.01(g)(i) [clause (vi)]",
+              "excerpt": null
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRuleId": "ir-rule:31b5153679c910028d86b26e",
+            "description": "Refinance Indebtedness is defined and capped by reference to the Original Indebtedness permitted under §6.01(f)"
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Core no-increase/qualitative conditions are fully captured; the enumerated fee/premium/OID add-on categories are not reducible to a numeric formula and the base amount itself (r6) is MISSING_CONTEXT due to the unavailable Schedule 6.01.",
+          "these are enumerated qualitative carve-out categories without a stated formula or cap amount, not reducible to a single numeric expression",
+          "ADD operands do not type-check together under the IR's own composition rules"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(g)",
+          "excerpt": "Indebtedness which represents extensions, renewals, refinancing or replacements ... of any of the Indebtedness described in clause (f) hereof ... provided that (i) such Refinance Indebtedness does not increase the principal amount thereof ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:a6ff83cd541990a44a5e1a58",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.01(h)",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "INCUR_DEBT",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§6.01(h)",
+          "semanticDescription": "Indebtedness of a Person designated as a Restricted Subsidiary after the date hereof, subject to a proviso whose conditions were cut off in the retrieved text",
+          "reason": "the proviso text following 'provided that' in §6.01(h) was truncated in every retrieval attempt and the tool-call budget was exhausted before it could be obtained",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:bcd5ff6001d5ee7821bec4ce"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "The operative proviso conditions attached to this basket were not retrievable within the tool budget.",
+          "the proviso text following 'provided that' in §6.01(h) was truncated in every retrieval attempt and the tool-call budget was exhausted before it could be obtained"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(h)",
+          "excerpt": "Indebtedness of any Person that is designated as a Restricted Subsidiary after the date hereof; provided that "
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:3d53845ad058bbd48e278f1e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Refinance Indebtedness",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Original Indebtedness"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(g)",
+          "excerpt": "Indebtedness which represents extensions, renewals, refinancing or replacements (such Indebtedness being so extended, renewed, refinanced or replaced being referred to herein as the \"Refinance Indebtedness\") of any of the Indebtedness described in clause (f) hereof"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:4e87cc9b48c06ded2575792f",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Original Indebtedness",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.01(g)",
+          "excerpt": "any of the Indebtedness described in clause (f) hereof (such Indebtedness being referred to herein as the \"Original Indebtedness\")"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "MISSING_CONTEXT",
+      "OPERATIVE_STATE_UNRESOLVED"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T18:16:00.092Z",
+      "inputTokens": 125241,
+      "outputTokens": 22628,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 7,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 206917,
+      "calculatedCostUsd": 0.476762
+    }
+  },
+  "verify": {
+    "candidateRef": "reality-check-candidate:debt-dsgr",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "a697b2ae77255c6bb4502020865397269daf86104ae7ddb0f34bbcf68c3556ab",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:debt-dsgr",
+        "ruleOrDefinitionId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f; ir-rule:e2a81c8fafa700436ae0e21b; ir-rule:a035f853009fc313d1c8d471; ir-rule:b3a78761d2c8ecf85c0af551",
+        "irPath": "$.rules[?(@.ruleId=='ir-rule:ea1a7f9cef4cd9e550bb2e4f')], $.rules[?(@.ruleId=='ir-rule:e2a81c8fafa700436ae0e21b')], $.rules[?(@.ruleId=='ir-rule:a035f853009fc313d1c8d471')], $.rules[?(@.ruleId=='ir-rule:b3a78761d2c8ecf85c0af551')]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "'(iii) the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under Section 6.01(c)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA' (and the near-identical mirrored proviso in clause (c)(iii))",
+        "sourceCitation": "§6.01(b)(iii); §6.01(c)(iii)",
+        "proposedIrEvidence": "Rule ea1a7f9c (§6.01(b) general permission) has conditions only for (b)(i) and (b)(ii), omits (b)(iii) entirely, and sets capacityExpression to UNLIMITED_CAPACITY with gatedBy:null. Rule e2a81c8f (§6.01(c) general permission) likewise omits (c)(iii) and is UNLIMITED_CAPACITY/gatedBy:null. The 15% cap is instead spun off into two freestanding, unconnected rules (a035f853... and b3a78761...), each independently stating capacity = 15% * Applicable EBITDA, with dependsOn:[] and entityScope:[], and no cross-reference to each other or to the §6.04(b) investment basket that shares the same 15% ceiling.",
+        "verifierReasoning": "The source ties three distinct activities (intercompany debt owed by non-U.S.-Loan-Party Restricted Subsidiaries to U.S. Loan Parties, guarantees of such subsidiaries' debt by U.S. Loan Parties, and post-Effective-Date investments by U.S. Loan Parties in such subsidiaries under 6.04(b)) into a single shared 15%-of-Applicable-EBITDA basket - the aggregate of all three together cannot exceed 15%. The proposed IR instead (a) fails to gate the general (b) and (c) permissions by this cap at all, presenting them as unconditionally UNLIMITED_CAPACITY subject only to two of the three provisos, and (b) creates two disconnected rules each asserting an independent, unshared 15% cap. A reviewer relying on this IR could conclude that up to 15% of EBITDA is available for the intercompany debt AND another 15% for the guarantees (30% combined), or could conclude clause (b)/(c) permissions are unlimited outright, when the real economics is a single combined 15% ceiling across all three components. This directly changes the capacity/compliance conclusion and is a wrong formula shape plus a missing shared-capacity dependency.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:18:13.365Z"
+      },
+      {
+        "findingId": "dcec32faacc2733feb27dccb327c06b91113157a881e414485350efa5186c709",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:debt-dsgr",
+        "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169; ir-rule:ea1a7f9cef4cd9e550bb2e4f; ir-rule:e2a81c8fafa700436ae0e21b; ir-rule:ca20af7202bc823cd28ed453",
+        "irPath": "$.rules[?(@.ruleId=='ir-rule:f6649d7a96df6f63e0111169')].entityScope, $.rules[?(@.ruleId=='ir-rule:ea1a7f9cef4cd9e550bb2e4f')].entityScope, $.rules[?(@.ruleId=='ir-rule:e2a81c8fafa700436ae0e21b')].entityScope, $.rules[?(@.ruleId=='ir-rule:ca20af7202bc823cd28ed453')].entityScope",
+        "findingType": "WRONG_ENTITY_SCOPE",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "'No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:' ... (b) 'Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary' ... (c) 'Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary'",
+        "sourceCitation": "§6.01 (chapeau); §6.01(b); §6.01(c)",
+        "proposedIrEvidence": "Top-level prohibition rule f6649d7a is scoped entityScope:['LOAN_PARTY'] only. The (b) permission rule ea1a7f9c and (c) permission rule e2a81c8f are each scoped entityScope:['BORROWER'] only, and the (d) permission rule ca20af72 is scoped ['LOAN_PARTY'] only.",
+        "verifierReasoning": "The chapeau prohibits both Loan Parties from incurring debt AND Loan Parties from permitting any Restricted Subsidiary to incur debt - so Restricted Subsidiaries are squarely within the scope of what is being restricted/permitted, not just Loan Parties. Clauses (b) and (c) explicitly contemplate Restricted Subsidiaries (not just Borrowers) as obligors/guarantors ('of any Restricted Subsidiary owing to...', 'by any Restricted Subsidiary of Indebtedness of...'). By scoping these rules to LOAN_PARTY/BORROWER only, the IR risks a reader concluding Restricted Subsidiary-incurred intercompany debt or guarantees fall outside these permissions/exceptions entirely, which is not correct per the source. I mark this UNCERTAIN rather than firmly MATERIAL because entityScope may be a coarse classification field not dispositive of the operative logic (which is otherwise captured in the textual description/excerpt), but a reviewer relying on entityScope alone could reach a wrong scope conclusion.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:18:13.365Z"
+      },
+      {
+        "findingId": "75b195332c1da5c423af7face71a766c7cb25ddcd55ad35d26edb9ee7e731920",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:debt-dsgr",
+        "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+        "irPath": "$.rules[?(@.ruleId=='ir-rule:b6f9ecd3957107e922c50ad2')].conditions[5]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "'(v) the terms of such Refinance Indebtedness are not less favorable to the obligor ther...' [source text provided to this verifier is truncated at this point; no clause (vi) text is present in the supplied source]",
+        "sourceCitation": "§6.01(g)(v) [source cuts off here]",
+        "proposedIrEvidence": "condition[5] (rule[r7].condition[5]): 'if the Original Indebtedness was subordinated to the Secured Obligations, the Refinance Indebtedness must include subordination terms at least as favorable to the Administrative Agent and Lenders' cited to '§6.01(g)(i) [clause (vi)]'",
+        "verifierReasoning": "The operative source text given to this verifier ends mid-sentence within clause (v) and never reaches a clause (vi). The proposed IR nonetheless asserts specific substantive content for a clause (vi) subordination proviso. This may reflect real contract language beyond what was supplied, but it is not verifiable against the source text and context actually provided (no retrieved context items were given either). Given the instruction to treat unverifiable additions with scrutiny, this is flagged as uncertain rather than confirmed fabrication, since it is plausible boilerplate but cannot be confirmed from the evidence in hand.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:18:13.365Z"
+      },
+      {
+        "findingId": "d7c899b8bfb62b0efc2a36236d51028abe3588d7c9a3ce1aeca06c3dba854ac0",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:debt-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "6.01",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 12 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c), (d), (e), (f), (g), (iv), (v)) but only 11 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 12 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c), (d), (e), (f), (g), (iv), (v)) but only 11 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:16:00.098Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "reality-check-candidate:debt-dsgr",
+      "items": [
+        {
+          "itemId": "4f87ca5fcad51f91247fd381ccca62e004d0444d2ff2b52140fded83a1faa849",
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "numericValue": 0.15,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1297,
+          "charEnd": 1300
+        },
+        {
+          "itemId": "5adb21c3c3dcc1c99032dce5d51e3bdf0f8983c17abf0e51dc7eb9889d5f77b2",
+          "kind": "PERCENT",
+          "rawText": "15%",
+          "numericValue": 0.15,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2257,
+          "charEnd": 2260
+        },
+        {
+          "itemId": "f2933c730c105ac1a74bc74c7ffe9283c529089bdbaa0e3f5636d193ac9de156",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "except",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 157,
+          "charEnd": 163
+        },
+        {
+          "itemId": "80707789c96c41fb341d62c8ad7c0dadb2d6140783195660b0df0240f8e38d0c",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 391,
+          "charEnd": 404
+        },
+        {
+          "itemId": "7cfa4847ff2f3fe02b56671f445328a5bc4ee2a7ea2054b00d4c21f2637c29bd",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "subject to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 531,
+          "charEnd": 541
+        },
+        {
+          "itemId": "3431ed14a34e435adcd2dc7133a83c2c803ed131d2b72f77477eea3b60e4c2f7",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1501,
+          "charEnd": 1514
+        },
+        {
+          "itemId": "0854163c5b1684de73bbb72e9bc9b6effc32ff08ec759ac91afa0f9a4b492f9a",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "subject to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1716,
+          "charEnd": 1726
+        },
+        {
+          "itemId": "a6d7f2c9374b807f7b8ffeb9fb021182c54bda6faf8ababc6328698eb3bb3ba4",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2721,
+          "charEnd": 2729
+        },
+        {
+          "itemId": "f23259907b3774478f5f287503c4f415389d74aa1be24e12c73f75c270794ae6",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3243,
+          "charEnd": 3256
+        },
+        {
+          "itemId": "287cf65375faaf8bbb999171343d95b8bfa7ced3b8a33b4020691ec45ba934d3",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "after the Effective Date",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1201,
+          "charEnd": 1225
+        },
+        {
+          "itemId": "19310d9a68e9be60cb0e01e00b98ed84d6beae10b6631403777c3325b1e3778b",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "after the Effective Date",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2161,
+          "charEnd": 2185
+        },
+        {
+          "itemId": "8308b1dfce7bf9a1b9cc345ac0941a54eeb9ef0046946b3fff10fc1def5db07d",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "set forth in Section 6",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 558,
+          "charEnd": 580
+        },
+        {
+          "itemId": "61af6eec89388fd1929962958344a794e34bc909d72db7e2d6fe1803db4a4eaa",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3337,
+          "charEnd": 3347
+        },
+        {
+          "itemId": "e94b24ba593f600d693a82159621cd0895fe6f6c07c386edffb661fbaaf446da",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3910,
+          "charEnd": 3920
+        },
+        {
+          "itemId": "1bcf226fa6e19ddd28daa5b895c6db9c6e6ca9556fd86b5ccc0040e63742babc",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 32,
+          "charEnd": 42
+        },
+        {
+          "itemId": "11b1628321e973ed0e39aa3bba83d7e84db60435dffc68d6599e008829293919",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 72,
+          "charEnd": 93
+        },
+        {
+          "itemId": "6a6d0e2af34d526c01af33b7dacd43f014b36628317fa0386d6daadc23bf8a5b",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 256,
+          "charEnd": 264
+        },
+        {
+          "itemId": "a49bdeabf2a24895f5c8d05074c3db081a37a7d6ccf378e06ffce41c09607996",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 278,
+          "charEnd": 299
+        },
+        {
+          "itemId": "235de92e683a82c2d0d10584704ec488adc644e527b16b7b15ef6ab41ac28622",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 346,
+          "charEnd": 354
+        },
+        {
+          "itemId": "f4b587fe8fd6e46df3c75a6df0e27c64e499c00fc25c21c7807bd8fedca11ae8",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 368,
+          "charEnd": 389
+        },
+        {
+          "itemId": "f19498802e4bb8c6c9df002b45994e2e8fd51aba2740576d8f0b30a20b049bc6",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 429,
+          "charEnd": 450
+        },
+        {
+          "itemId": "910b54ad9ce8a64d23efacac547946e31cd2a9f74f627c6d995bc33edf1dfa16",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 465,
+          "charEnd": 475
+        },
+        {
+          "itemId": "9eff9465636be578580b9e83ead4f61cfbdd2fc9e0ac80a9eb55c2cc82d3953b",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 489,
+          "charEnd": 497
+        },
+        {
+          "itemId": "1629d04f1730a61f92ab44b9c13aafcae2533e4b1486297e579433e10a0a236c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 511,
+          "charEnd": 521
+        },
+        {
+          "itemId": "d2abac7660b531281d32f0e2b9fc268446e3961b0cf7e0b34c66d34a52dea58e",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 610,
+          "charEnd": 620
+        },
+        {
+          "itemId": "ad530c38bc1053800e29aa947099172a91695d97f2ff9d2cb79834b52b75839c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 634,
+          "charEnd": 655
+        },
+        {
+          "itemId": "8426ee4e5dc56cebc71bafcc4504195a828c640bde888d7525cc9803b2b62d57",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 670,
+          "charEnd": 680
+        },
+        {
+          "itemId": "1262c19354a49d18e016835fb4ee4ab31eb288dd45079182bc1676b12e90e360",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 852,
+          "charEnd": 875
+        },
+        {
+          "itemId": "6852264fb282cdf6ed315eae81aad2b9d348aa56640513fa16db5e642e82d7b5",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 894,
+          "charEnd": 906
+        },
+        {
+          "itemId": "e0e50a1baad7f3d53852e3bedc7a9fcdc5a811b0699177c6ab3463dcf9124ff4",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 921,
+          "charEnd": 933
+        },
+        {
+          "itemId": "99a8ebb7304337c9c31252bd953bd8df3e968f650b84cafc12c7fc22c6f23f24",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1125,
+          "charEnd": 1137
+        },
+        {
+          "itemId": "c7daa56d6f6ebe962eb6e15685a7a97f23f98478bf8c2c84397b2865633562b3",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1141,
+          "charEnd": 1164
+        },
+        {
+          "itemId": "e6fb06fc9cd6c888168a07fb050f8b32beaf634b1397184954420adf5ade05e5",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1183,
+          "charEnd": 1195
+        },
+        {
+          "itemId": "358e4e3c8ba4c04e9433bad1f50a39630868e1b185ef5a96973fea65dae888e1",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1346,
+          "charEnd": 1354
+        },
+        {
+          "itemId": "eee79cc258b6864320af874edd3bbf3283952b65d1be5d9b8e01fc8f392cc739",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1378,
+          "charEnd": 1399
+        },
+        {
+          "itemId": "a39be09abe11d1eb6b05cf7f0f27d039d8ebc61e6180c0600512c50e22be10ca",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1411,
+          "charEnd": 1432
+        },
+        {
+          "itemId": "1a28e99e9f1b7c82ddcae2f9e010a4b62ffd4c2905bb4d8eca1b244f5956ddad",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1456,
+          "charEnd": 1464
+        },
+        {
+          "itemId": "e6e57a8653850192866ee6b9dea91d4f60737a0e5b62b52e48c632e43f557b93",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1478,
+          "charEnd": 1499
+        },
+        {
+          "itemId": "ba782953c5645b551b7ddc4ee48d9b4e3337b62fbd95dcf334a8ac88fc45c80c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1608,
+          "charEnd": 1616
+        },
+        {
+          "itemId": "77acd11b4cf03c0dd06bdc4420577fceaa1797b1de6595ae68ff25fa3c15323b",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1626,
+          "charEnd": 1636
+        },
+        {
+          "itemId": "8e8b16a09d1fcb4a392c91535560128814b7fa0d4f9daed1cafdad367939365c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1660,
+          "charEnd": 1681
+        },
+        {
+          "itemId": "58102a68bfc38f032c9b35dbfcca1a0b8e2bff7c974b7d026dc49f710298b724",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1696,
+          "charEnd": 1706
+        },
+        {
+          "itemId": "35c0faeaf5ee2e07bfe47cd0bbd551dd042eea53d8549d057f50f2617815e17d",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1797,
+          "charEnd": 1820
+        },
+        {
+          "itemId": "2d670cc5226634dc6dded602c337138978c554780aadb78d966d1e0c57831f0c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1839,
+          "charEnd": 1851
+        },
+        {
+          "itemId": "a4749a46be018246bcc45c30df211b59193f8bdba782b42e30b4318094c096a0",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2085,
+          "charEnd": 2097
+        },
+        {
+          "itemId": "4f9908a089029f91d38c70c011abc2ae8d2f4524b0ddbfc9291446e3c5e5e1a2",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2101,
+          "charEnd": 2124
+        },
+        {
+          "itemId": "7774131372d9c634aeafb04921ddf49c33579c6630084298db90d8df5751273e",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2143,
+          "charEnd": 2155
+        },
+        {
+          "itemId": "10ecdadc79b7b2ab018a2578ad3bbfeae2df13c76d6691d368eaeea84bb5d9c4",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2601,
+          "charEnd": 2611
+        },
+        {
+          "itemId": "2f453e604ddf1bf49fcdf335e7883a3d99d7ebdd73c5fb373e9aed29ef2274fa",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3869,
+          "charEnd": 3879
+        },
+        {
+          "itemId": "50e960c2eb4d283cd0baa1b21419ecc94c4a1ed504bff2f01df0ae289d1c7f55",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3887,
+          "charEnd": 3908
+        },
+        {
+          "itemId": "900a7ba988b0e2662fe42f4d15e68db15e163331fcb42fc6091195e3d91d924d",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4078,
+          "charEnd": 4088
+        },
+        {
+          "itemId": "27f089748e0f457402ad485a70216223f6ab0e5f1bad62176c37b709c8620365",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4096,
+          "charEnd": 4117
+        },
+        {
+          "itemId": "43656a55523212797ee9a2a53dec27b6df14eadd11cc999afe4846fd81334a36",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "incur",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 106,
+          "charEnd": 111
+        },
+        {
+          "itemId": "c5430df1e382b6350e50061b374a6165bc9ade83cb2fe573dc91e3dccb5fd8b6",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Guaranteed",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 202,
+          "charEnd": 212
+        },
+        {
+          "itemId": "426535cbce66be4417cf5fa5e8382c8bbb7db97ef25072cf7a1271b4a1662c33",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Guaranteed",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1539,
+          "charEnd": 1549
+        },
+        {
+          "itemId": "14c5f05e74ac0130c563ac5c869f5fcf4665fc923990d944343883e471bbb83c",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Guaranteed",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1860,
+          "charEnd": 1870
+        },
+        {
+          "itemId": "01e9c3668fc6082372fea2800e447fe03d4fa4208cfea5818178e97720b51c73",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinance",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2848,
+          "charEnd": 2857
+        },
+        {
+          "itemId": "177af826654a5927e6441192453e8ae653cd9eb0ac12e7c53e1e2662e89d54ce",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "refinancing",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2948,
+          "charEnd": 2959
+        },
+        {
+          "itemId": "58f929583b7725381e29b56ff63ce98cf0bdaec463d75f4f818e0c0c1200be2e",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinance",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3080,
+          "charEnd": 3089
+        },
+        {
+          "itemId": "77c1fed9521190ef7bc39e8f788bab22e6f09e033eef7d6d969001cb6f2a785a",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinance",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3266,
+          "charEnd": 3275
+        },
+        {
+          "itemId": "78e039ef29939a1368e02d5ed57a27bf8ac6f36eee04617e515c9eb2355f98f2",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "refinancing",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3660,
+          "charEnd": 3671
+        },
+        {
+          "itemId": "33bc87121c84c94e2caccd1df559f377499f0c39a9c8a3c5d38c88bc8501f7ce",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "incurrence",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3710,
+          "charEnd": 3720
+        },
+        {
+          "itemId": "1932ef3fddea83d341e8a88908c0a8a4eb18d530d8bea3cb322fce8a0518fcb9",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinance",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3741,
+          "charEnd": 3750
+        },
+        {
+          "itemId": "9eb7eb07841c88772e4b26c6ca04d30a1a1c897edec5f637b788db8c845d8b13",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinance",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3795,
+          "charEnd": 3804
+        },
+        {
+          "itemId": "7829c92d17e06477b01b7b3976c89af9d9b078ee7a8ef47be58f1eb09004b084",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinance",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4260,
+          "charEnd": 4269
+        },
+        {
+          "itemId": "659d9ae55001934751dffdbb0e9f81f13fc139b1e42323cef49c54b0a170bc4d",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinance",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4294,
+          "charEnd": 4303
+        },
+        {
+          "itemId": "0fdcd1b1ee50f497122012a0753292c8eb9f9c67047adacef9d4f4275844f58a",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinance",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4435,
+          "charEnd": 4444
+        },
+        {
+          "itemId": "0c92de8d54a2156b9eaeae51f145c0331a84f80117c304d24010c5f832cc7746",
+          "kind": "METRIC_MENTION",
+          "rawText": "No Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 29,
+          "charEnd": 42
+        },
+        {
+          "itemId": "283abad8d94c778c027bd7b295cc830a9646247978af40b34e47ceec6df1cc29",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 72,
+          "charEnd": 93
+        },
+        {
+          "itemId": "879a98059f505a52fb072983c88d04104c9d5dc59e1acd73f6bc40800d836b50",
+          "kind": "METRIC_MENTION",
+          "rawText": "Secured\nObligations",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 174,
+          "charEnd": 193
+        },
+        {
+          "itemId": "c2f27adc5c332b6448931218e749ec6ad917dc4cd7659c5b325a76de95cd6425",
+          "kind": "METRIC_MENTION",
+          "rawText": "Guaranteed Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 202,
+          "charEnd": 224
+        },
+        {
+          "itemId": "1c01e087ad8f23430e606262e051096231add3725f0bb790dcbf0a529e77865f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 278,
+          "charEnd": 299
+        },
+        {
+          "itemId": "c7890ccee8a78ee6822fb45b7ffd2dcacd059be0fcb1d14d9aa9107e2ae237e8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted\nSubsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 311,
+          "charEnd": 332
+        },
+        {
+          "itemId": "68916fa3fa360e140a5f72561d28aa27f62086d3f3a577a510ad7dc521b47861",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 368,
+          "charEnd": 389
+        },
+        {
+          "itemId": "93a794ca4ad766cedc7c13dcdb8812dbf3acda7cd354ce8eac17e7ef49ed1e36",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 429,
+          "charEnd": 450
+        },
+        {
+          "itemId": "2c9fc49c5d1fa4158bd4a9b893d3994d67b0db97fee259d89d83197cc8aaa18e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 465,
+          "charEnd": 475
+        },
+        {
+          "itemId": "63547fdd6a020e15a489d9aba7590c60386d9d89c407588921b001ad0573e77b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 511,
+          "charEnd": 521
+        },
+        {
+          "itemId": "fd6d00adc01a9045b8746c1f49532e9946dec750ae28db13599abf316f364a0d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 610,
+          "charEnd": 620
+        },
+        {
+          "itemId": "ab63ad04a57307d01c0a27bd91cafe46d743693b45141c058280d1c89854bea1",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 634,
+          "charEnd": 655
+        },
+        {
+          "itemId": "4b90e12140864276a27e236f8cfd43032933cbacaca09ccd9d5859618c868ae1",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 670,
+          "charEnd": 680
+        },
+        {
+          "itemId": "61237db84c33e28b5e02265e59c9bfbff6fd8370eab5cc97d0b7339a46da1b2b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Secured Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 710,
+          "charEnd": 729
+        },
+        {
+          "itemId": "ad7ce3f22d7a67b29cf01c8cde51ef52adcf5d7588b5cb99bdef2bf1bfc3103a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 770,
+          "charEnd": 790
+        },
+        {
+          "itemId": "529c9f8567f4689af70dd4d9abe60979d4a5a4404e9ac295c903dbc7925410ce",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 852,
+          "charEnd": 875
+        },
+        {
+          "itemId": "024a7ca71799501dec8e6a8d469ad381eebcdd1435428933b818e77815982a83",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 894,
+          "charEnd": 906
+        },
+        {
+          "itemId": "92e65c0b92f622b3b395517697aae949e4448b7fbc0ebfa41d85843d984aa600",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 921,
+          "charEnd": 933
+        },
+        {
+          "itemId": "5a983d29bb819e912f179558c1327b7a3a65735bc27fe32bda846c3c71a11498",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1125,
+          "charEnd": 1137
+        },
+        {
+          "itemId": "5d1e4dbdcb8134491319420c43b954c02677a06ae919da519a3f652bc714277e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1141,
+          "charEnd": 1164
+        },
+        {
+          "itemId": "1aab0b4636aee29f1ef12e4978393c6ed324729bc97f164bfd75ebfe5a1eee98",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1183,
+          "charEnd": 1195
+        },
+        {
+          "itemId": "2feced0ef303f542b749abfb1e37d8de84bd84b6179d9429b5ad9f93da37c1bd",
+          "kind": "METRIC_MENTION",
+          "rawText": "Effective Date",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1211,
+          "charEnd": 1225
+        },
+        {
+          "itemId": "a008e884385046b97b273d13290625cd4d73ebf659310b737e7258ee8ceb9c03",
+          "kind": "METRIC_MENTION",
+          "rawText": "Applicable EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1304,
+          "charEnd": 1321
+        },
+        {
+          "itemId": "329af42d64285dc8562e066bf31715bb7d555b79309dcd3c6355ea88b073fc1b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1378,
+          "charEnd": 1399
+        },
+        {
+          "itemId": "d1b3c68a288e0edf5170dc5d703159083e21de548733704bc7264a18bbcd5a9c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1411,
+          "charEnd": 1432
+        },
+        {
+          "itemId": "108669688632de7af2d749c5d61442629bddabfc8e2c828265d1c4d0002da2bd",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1478,
+          "charEnd": 1499
+        },
+        {
+          "itemId": "2179afaeefb08b612816c7928f0029f060e35195bf0b36653566b24d01d66a20",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1626,
+          "charEnd": 1636
+        },
+        {
+          "itemId": "5b127c27ca55f0d291c3d01d90138f2ab8c8c233c9da01667bd858d4e684b0e7",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1660,
+          "charEnd": 1681
+        },
+        {
+          "itemId": "b41c0075ba277afd33ca6794b4d32b5adab9bcec7ca9ac75f473512d9a990c69",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1696,
+          "charEnd": 1706
+        },
+        {
+          "itemId": "861e2b52a45927eac4fb97fe4961df407c1a20bc3f077c0cab98f8ec498cf018",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1797,
+          "charEnd": 1820
+        },
+        {
+          "itemId": "cb071f4c6b2fa683bc756d6c35f6e0286488345df4148a6e41db604cf11d31a2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1839,
+          "charEnd": 1851
+        },
+        {
+          "itemId": "5fa7bcf30a614d7213a6aada642fa0620de819b010d6467bf75c6207c6fb189a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan\nParties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 1879,
+          "charEnd": 1891
+        },
+        {
+          "itemId": "e3e1fbd2d3aae6debc5f0fa8b858ae5cc71d6f16d9e4f8deb2c899c488f832d0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2085,
+          "charEnd": 2097
+        },
+        {
+          "itemId": "be588f965bfaa6b37ec790f70dd511cce193ecaf1643d661ae1b17ed8ce81131",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2101,
+          "charEnd": 2124
+        },
+        {
+          "itemId": "f69ef3a54aa34d009e1df4c8123ee2c159a4588827498dbba1d29f2c0466ff5f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2143,
+          "charEnd": 2155
+        },
+        {
+          "itemId": "7445defd65aa2bd80a1c513622fcf8b2ea18acd8f55fde443c97be619121cafc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Effective Date",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2171,
+          "charEnd": 2185
+        },
+        {
+          "itemId": "eb69c5677309945ee2142ad814bd29692cabe8c69d023d82b8862aac595ee3f8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Applicable EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2264,
+          "charEnd": 2281
+        },
+        {
+          "itemId": "864f5fcfd4ef3119b14538143cfabc5df77da3daea23f367ff5d32e8ecf59771",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2601,
+          "charEnd": 2611
+        },
+        {
+          "itemId": "2d64f1bab44cd1442eb9ebb5ecb34d5c6c29b92c2d50ee799b920887cbe8e4b2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinance\nIndebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 2848,
+          "charEnd": 2870
+        },
+        {
+          "itemId": "6633f25a3b1142bcebad55836e19c922122c71b14eaa4ced6b698f4f5bcf007a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinance Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3080,
+          "charEnd": 3102
+        },
+        {
+          "itemId": "e1d0a392020f5959f5338a3331ca1b95b3f3cbf28a5b4717024de29630cf5fb5",
+          "kind": "METRIC_MENTION",
+          "rawText": "Original Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3217,
+          "charEnd": 3238
+        },
+        {
+          "itemId": "5eb5df5018a30af5f0bdeb0a987403fc5e29a7103bd58663c2f59cf4e95a8ca7",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinance Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3266,
+          "charEnd": 3288
+        },
+        {
+          "itemId": "9388a3a2d3f7105547b8f39cc456ddbd4d6079b204c92fac53554b70d4d55a91",
+          "kind": "METRIC_MENTION",
+          "rawText": "Original Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3680,
+          "charEnd": 3701
+        },
+        {
+          "itemId": "22c643cec137cbfd4cb95608951e320c220bc524fcd0e3a05ed14d17c4640014",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinance Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3741,
+          "charEnd": 3763
+        },
+        {
+          "itemId": "b7f7a9d4d0bc8717830d0268858e2d2ac3fb07e0d4b9877f66c92af66fbe9fc3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinance Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3795,
+          "charEnd": 3817
+        },
+        {
+          "itemId": "6e333502b7b7f72d53859088e903b5bff5729a0dc8e1f3633c7ae8ef8525e711",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3869,
+          "charEnd": 3879
+        },
+        {
+          "itemId": "e98f5da00381aca4f33081de20b8f8ece1ba826d6d08afbea95eaee06b3806c8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3887,
+          "charEnd": 3908
+        },
+        {
+          "itemId": "8acbcf2a2d70115ece27b46c674d643d16db2798048347d02482bf963e8ee5b5",
+          "kind": "METRIC_MENTION",
+          "rawText": "Original Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 3992,
+          "charEnd": 4013
+        },
+        {
+          "itemId": "95507a6f823dc1460ca22e05149306376e90be5793ba400b5a1ed942923a6e1e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4078,
+          "charEnd": 4088
+        },
+        {
+          "itemId": "d21904539b6e820d487baea86decfa06f61c64fe109b170bfd3c518aac4f2fcd",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4096,
+          "charEnd": 4117
+        },
+        {
+          "itemId": "21fbc538904cd285b24ebd3863f857f8a62c26840746c47085a3d24d805db9bf",
+          "kind": "METRIC_MENTION",
+          "rawText": "Original Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4185,
+          "charEnd": 4206
+        },
+        {
+          "itemId": "890ceb88651536fb6b705932a23b699cf6fcb615a690b766a52f6bb3d5e88dfd",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinance Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4260,
+          "charEnd": 4282
+        },
+        {
+          "itemId": "90cae66f6d3afb08dc53c31b864cca00eeda8e38dc84d158794323a68af58e2f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinance Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4294,
+          "charEnd": 4316
+        },
+        {
+          "itemId": "c494cb56571d2432940d4b451a5d176ac63eea81250447dbce7876bf8b0a33fc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Original\nIndebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4390,
+          "charEnd": 4411
+        },
+        {
+          "itemId": "664fd778d78e8aef79792e1053eaec8a5e7f444cb0c3e27da04cbf50b52d1dbc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinance Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": 4435,
+          "charEnd": 4457
+        },
+        {
+          "itemId": "0e82578cb87bd98e30c7e963ec7a6bd54bd3ad52653965b4ec6dc1c64b3ee36d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "71e288d20c06695cf2fd841be8341c2a67fd9bf8786b4431b8bd8f317368f18d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "18947ac2f7fb74da569b56d01b70438911f038146d31ab337d83753a4cb032e0",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "61463ccf9ae08c3114f9704ba8141fbc32968ced58a44f201224761689c53d25",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "a0bc2f0640c4c10bf3d9dd943a9e241113e38c29de4c4aa3646728a89bfbc3ae",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "9e0c8af896968e9fe7beafdc3742a6c4493aa890589c3d98a58b86ea8d10f306",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "3a45279aeb9964315c3a678080d3ce2d4a2b0633bffada50cebc7d47e8d70525",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "2405c07fda9daa7c95c416f454773f3d77e0c3c34e3b29830c0785fee3b8f865",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(e)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "ee5e2cdbb65476e67db2aeb37c7e4f775ae91e245ad44ce045c750e1e967cda0",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(f)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "772c00cf7de29545058b5811369bc337349f94c2116162cbbaad1c08f54eeffb",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(g)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "192e425ea54be4cef56241f082eda2f47c6781546364096f4fbbcdd9f97239c9",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iv)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "74f7d87ca9fed0b4c67b9cd5c0de0e8b42c81675a023acbea8749919a2e32d5d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(v)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 12,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(b)",
+        "(i)",
+        "(ii)",
+        "(iii)",
+        "(c)",
+        "(d)",
+        "(e)",
+        "(f)",
+        "(g)",
+        "(iv)",
+        "(v)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "reality-check-candidate:debt-dsgr",
+      "items": [
+        {
+          "itemId": "0cbd650b7711778c3c9a9c0609fc839fe475f966affbe9e6d43523ab39d5919a",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01",
+          "sourceExcerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:"
+        },
+        {
+          "itemId": "782abf33b27ac8a537e6efa71a0fc5a55f3124bea8617ef2694f2e496c370e45",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01",
+          "sourceExcerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:"
+        },
+        {
+          "itemId": "e0be4829f924f5d159427a585d02d87eaef2d751cb22a7720caed912fa97f5b4",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01",
+          "sourceExcerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, create, incur, assume or suffer to exist any Indebtedness, except:"
+        },
+        {
+          "itemId": "aa94ce9cc897613217412c4166056593b5935a72e5be9d49851a591545e31bcf",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].exceptions[0]",
+          "numericValue": null,
+          "textValue": "Secured Obligations and Guaranteed Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(a)",
+          "sourceExcerpt": "the Secured Obligations and the Guaranteed Obligations"
+        },
+        {
+          "itemId": "ff81ac9478850b057a47d42b32450ef6b1cb932fb75de88c2341bed06c32ecd4",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].exceptions[1]",
+          "numericValue": null,
+          "textValue": "Intercompany Indebtedness among Borrowers and Restricted Subsidiaries",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)",
+          "sourceExcerpt": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "c1f84951892c1f925bce5a4b3144c63a8c3c757a57dc45379ec24ceb5ef20477",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].exceptions[2]",
+          "numericValue": null,
+          "textValue": "Guarantees of intercompany Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)",
+          "sourceExcerpt": "Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "cbdaf214afff1ff66cdaa8c005824ec5bca2a06be49c47e9513868ae2b0f539e",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].exceptions[3]",
+          "numericValue": null,
+          "textValue": "Indebtedness to employee-benefit/insurance providers under reimbursement/indemnification obligations, ordinary course",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(d)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "87e0494365e572f4eefaf6aab4dedb7bd749b72157c13c72aea05406d51c8b67",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].exceptions[4]",
+          "numericValue": null,
+          "textValue": "Indebtedness for performance/bid/appeal/surety bonds, ordinary course",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(e)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "473ed4fde1e1981b16099d17c58f299c7c9c9e18f1cd43ad6cd3d7b1caeed21e",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].exceptions[5]",
+          "numericValue": null,
+          "textValue": "Existing scheduled Indebtedness and its Refinance Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(f)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c780b9157dad80453cee8aa3e2c63cb06ada4aebcd23e74d0b4d2bb35c92aa35",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].exceptions[6]",
+          "numericValue": null,
+          "textValue": "Refinance Indebtedness of clause (f) debt, subject to provisos",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "fec27db2c2a5675b598d2326e7e2a83dd6fe55bf400bf6e3d66594b510fed50b",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:f6649d7a96df6f63e0111169",
+          "irPath": "rules[0].exceptions[7]",
+          "numericValue": null,
+          "textValue": "Indebtedness of Persons designated as Restricted Subsidiary after the date hereof",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(h)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "d81e745cfbe08baaa99c11d69b30ecc32f83ed61d01eaef6edee0c701c033464",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:a09db13fc89bc396d6915b29",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(a)",
+          "sourceExcerpt": "the Secured Obligations and the Guaranteed Obligations"
+        },
+        {
+          "itemId": "975b5e334b4e5eb5355ab758a01f3b2223d329c36ceac9f9af1c81e1760b41b0",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:a09db13fc89bc396d6915b29",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(a)",
+          "sourceExcerpt": "the Secured Obligations and the Guaranteed Obligations"
+        },
+        {
+          "itemId": "209b557b8185bb2207d10447cd9a599f66e44c0568f89c48f0eff651dc7e4e19",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:a09db13fc89bc396d6915b29",
+          "irPath": "rules[1].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(a)",
+          "sourceExcerpt": "the Secured Obligations and the Guaranteed Obligations"
+        },
+        {
+          "itemId": "41a4d7cae94a49cbb6d859b1aa3db165dae6fe861e6479bb3224cabce40b89e5",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:a09db13fc89bc396d6915b29",
+          "irPath": "rules[1].capacityExpression.operands[0]",
+          "numericValue": null,
+          "textValue": "Secured Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1c08f2c6403dd317b1de6e977d5e8cb49ff5d796f5c68d50d6e59677aad72cfe",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:a09db13fc89bc396d6915b29",
+          "irPath": "rules[1].capacityExpression.operands[1]",
+          "numericValue": null,
+          "textValue": "Guaranteed Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "33bd2534074c3a0f4ef2c0ab05863ffa2df528aab99dc5a33420bdc5de13184b",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+          "irPath": "rules[2].action",
+          "numericValue": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)",
+          "sourceExcerpt": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "d6cd13dc7053a289c99799208acdeee94ab31da15173a537ea902abc3c20b2aa",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+          "irPath": "rules[2].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)",
+          "sourceExcerpt": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "40a05d1bd4850208a1315a3dc751c6ef31cfa59cd4cf9b19762f0bcfd189f495",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+          "irPath": "rules[2].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)",
+          "sourceExcerpt": "Indebtedness of any Borrower owing to any Restricted Subsidiary and of any Restricted Subsidiary owing to any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "44db8f5a850c88adaa9bbfa6ebb96b21c86a8ed114f886ed1d944c37ce306d4e",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+          "irPath": "rules[2].conditions[0]",
+          "numericValue": null,
+          "textValue": "Indebtedness of any Restricted Subsidiary that is not a Loan Party owing to any Borrower or any other Loan Party is subject to the limitations set forth in Section 6.04",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)(i)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "dfd629ec7b769a94c7af828f4f4e6037e168ab4f87e654e4d6b406b64b54da44",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+          "irPath": "rules[2].conditions[1]",
+          "numericValue": null,
+          "textValue": "Indebtedness of any Loan Party owing to any Restricted Subsidiary that is not a Loan Party must be subordinated to the Secured Obligations on terms reasonably satisfactory to the Administrative Agent",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)(ii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "cbb3b03e38b600268b60bddcd2fafd49f8203116319724b04b172cea66627202",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:ea1a7f9cef4cd9e550bb2e4f",
+          "irPath": "rules[2].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "5404f626670ccde68cc2d8f4aabb1ccee9803e563f8c70e79231dd11aeade6d4",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:a035f853009fc313d1c8d471",
+          "irPath": "rules[3].action",
+          "numericValue": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)(iii)",
+          "sourceExcerpt": "the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under Section 6.01(c)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA"
+        },
+        {
+          "itemId": "f42688af559b9729ca7e7e9c836d90da46ffc20c07058a14b32d9649061b5e38",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:a035f853009fc313d1c8d471",
+          "irPath": "rules[3].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)(iii)",
+          "sourceExcerpt": "the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties owing to U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Guarantees permitted under Section 6.01(c)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA"
+        },
+        {
+          "itemId": "93f424a8e9fb271acde506a662ad2d6d8228538b2cf29e159b52702d9a3834ed",
+          "kind": "PERCENT",
+          "ruleOrDefinitionId": "ir-rule:a035f853009fc313d1c8d471",
+          "irPath": "rules[3].capacityExpression.operands[0]",
+          "numericValue": 0.15,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(b)(iii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "99af6e0d7abcda1c08e3ae36a454d6214021dafd2967160dc020c2dc56307b1f",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:a035f853009fc313d1c8d471",
+          "irPath": "rules[3].capacityExpression.operands[1]",
+          "numericValue": null,
+          "textValue": "Applicable EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "0d73c2eebd33b425dadaa163934a88d8cd3d93b9627fe1fb756da625e6fcbe4a",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:e2a81c8fafa700436ae0e21b",
+          "irPath": "rules[4].action",
+          "numericValue": null,
+          "textValue": "GUARANTEE_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)",
+          "sourceExcerpt": "Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "1ee66a8708088a0d7f07ddccb319f0c1d62c9eaf6d81ac2c585750326c75454a",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:e2a81c8fafa700436ae0e21b",
+          "irPath": "rules[4].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)",
+          "sourceExcerpt": "Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "f292644f0d97600bfea3d8bfab9413108bd5989365060b2137d779c9129cb140",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:e2a81c8fafa700436ae0e21b",
+          "irPath": "rules[4].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"BORROWER\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)",
+          "sourceExcerpt": "Guarantees by any Borrower of Indebtedness of any Restricted Subsidiary and by any Restricted Subsidiary of Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "e997644a156e277f511175bc17b14e1cec79c5718aef4ee72a13f6dd3138cab2",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:e2a81c8fafa700436ae0e21b",
+          "irPath": "rules[4].conditions[0]",
+          "numericValue": null,
+          "textValue": "the Indebtedness so Guaranteed must itself be permitted by Section 6.01",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)(i)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c9dc801d75458c4814a0deb2c68cc2703825e64c4955e3566f9c4c98a011492c",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:e2a81c8fafa700436ae0e21b",
+          "irPath": "rules[4].conditions[1]",
+          "numericValue": null,
+          "textValue": "Guarantees by any Borrower or other Loan Party of Indebtedness of any Restricted Subsidiary that is not a Loan Party are subject to Section 6.04",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)(ii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c07cbbf8acd70330953ff73a040455571a3eed4c3bbf6eb8f520b3d6ff3d5b4e",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:e2a81c8fafa700436ae0e21b",
+          "irPath": "rules[4].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b0ca1b0721a6c2647ad087c6a9f83271a976b51580a6659246469f5b6672dbf2",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:b3a78761d2c8ecf85c0af551",
+          "irPath": "rules[5].action",
+          "numericValue": null,
+          "textValue": "GUARANTEE_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)(iii)",
+          "sourceExcerpt": "the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties that is Guaranteed by U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA"
+        },
+        {
+          "itemId": "cde7c5ad11382c880afed6f0cb70f352640eb4513c36136ec55c6a6ce6a7ff87",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:b3a78761d2c8ecf85c0af551",
+          "irPath": "rules[5].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)(iii)",
+          "sourceExcerpt": "the aggregate principal amount of Indebtedness of Restricted Subsidiaries that are not U.S. Loan Parties that is Guaranteed by U.S. Loan Parties at any time outstanding, together with the aggregate amount of all outstanding Indebtedness permitted under Section 6.01(b)(iii) and the aggregate amount of all outstanding investments by U.S. Loan Parties in Restricted Subsidiaries that are not U.S. Loan Parties made after the Effective Date under Section 6.04(b), shall not at any time exceed an amount equal to 15% of Applicable EBITDA"
+        },
+        {
+          "itemId": "087b62ce990e51181723917b123826975ddd4ed0aa4a2b57b0a0c048d31358e9",
+          "kind": "PERCENT",
+          "ruleOrDefinitionId": "ir-rule:b3a78761d2c8ecf85c0af551",
+          "irPath": "rules[5].capacityExpression.operands[0]",
+          "numericValue": 0.15,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(c)(iii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9901e022cda517284fff22de3c2f9a74958eb4a62d3c9cae958ede8b4fe1c65e",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:b3a78761d2c8ecf85c0af551",
+          "irPath": "rules[5].capacityExpression.operands[1]",
+          "numericValue": null,
+          "textValue": "Applicable EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "72a22ddb07e162249e012cf31cae70d43da8c86b4d050d734f0155f79258abf2",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:ca20af7202bc823cd28ed453",
+          "irPath": "rules[6].action",
+          "numericValue": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(d)",
+          "sourceExcerpt": "Indebtedness owed to any Person providing workers' compensation, health, disability or other employee benefits or property, casualty or liability insurance, pursuant to reimbursement or indemnification obligations to such Person, in each case incurred in the ordinary course of business"
+        },
+        {
+          "itemId": "290e6c832d739224321b37279f10f45951d17cb8616732136b11879d4788ecb1",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:ca20af7202bc823cd28ed453",
+          "irPath": "rules[6].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(d)",
+          "sourceExcerpt": "Indebtedness owed to any Person providing workers' compensation, health, disability or other employee benefits or property, casualty or liability insurance, pursuant to reimbursement or indemnification obligations to such Person, in each case incurred in the ordinary course of business"
+        },
+        {
+          "itemId": "13efd2c126d7297b836e01d89ef5c0af3b56635e1c7a2ad7fc9fdf0587c00613",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:ca20af7202bc823cd28ed453",
+          "irPath": "rules[6].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(d)",
+          "sourceExcerpt": "Indebtedness owed to any Person providing workers' compensation, health, disability or other employee benefits or property, casualty or liability insurance, pursuant to reimbursement or indemnification obligations to such Person, in each case incurred in the ordinary course of business"
+        },
+        {
+          "itemId": "1ced230fe56209772a657c11fb48a8727b7fc001467d62e0e2c285c91c724648",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:ca20af7202bc823cd28ed453",
+          "irPath": "rules[6].conditions[0]",
+          "numericValue": null,
+          "textValue": "must be incurred in the ordinary course of business as reimbursement/indemnification obligations to a provider of workers' compensation, health, disability or other employee benefits or property/casualty/liability insurance",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(d)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8c4db2b7aec993c49c5385a313e85b6824062c5fd1fc18acdf002d044e74d987",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:ca20af7202bc823cd28ed453",
+          "irPath": "rules[6].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(d)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7fd51e0450bda9e1e858c8620055da5e20d38834b05163ef83481c848b9f041e",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:fa875860bed1ef5df8e46838",
+          "irPath": "rules[7].action",
+          "numericValue": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(e)",
+          "sourceExcerpt": "Indebtedness of any Loan Party in respect of performance bonds, bid bonds, appeal bonds, surety bonds and similar obligations, in each case provided in the ordinary course of business"
+        },
+        {
+          "itemId": "499526db7ffc74a3cf975def8a0291d06b2a65fbc75724cd4c8376fd3b73f922",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:fa875860bed1ef5df8e46838",
+          "irPath": "rules[7].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(e)",
+          "sourceExcerpt": "Indebtedness of any Loan Party in respect of performance bonds, bid bonds, appeal bonds, surety bonds and similar obligations, in each case provided in the ordinary course of business"
+        },
+        {
+          "itemId": "ff360bf376c42b9a5f0d8f07f74e0290d6a18cf474ce35b4729c9c6bd742fe0a",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:fa875860bed1ef5df8e46838",
+          "irPath": "rules[7].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(e)",
+          "sourceExcerpt": "Indebtedness of any Loan Party in respect of performance bonds, bid bonds, appeal bonds, surety bonds and similar obligations, in each case provided in the ordinary course of business"
+        },
+        {
+          "itemId": "68599edae599eba17c483430e4b457360099925aae646b49b96710591c648856",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:fa875860bed1ef5df8e46838",
+          "irPath": "rules[7].conditions[0]",
+          "numericValue": null,
+          "textValue": "must be provided in the ordinary course of business",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(e)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "0ad0af831337fc90d1f4ff89896525b70090ecd9979a494892f0bd72eb8a1174",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:fa875860bed1ef5df8e46838",
+          "irPath": "rules[7].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(e)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ce9514f14df4bad79b906d30c5932c0a9864d667fcfcae8058d91dbf41da331a",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:31b5153679c910028d86b26e",
+          "irPath": "rules[8].action",
+          "numericValue": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(f)",
+          "sourceExcerpt": "Indebtedness existing on the date hereof and listed on Schedule 6.01 and any Refinance Indebtedness in respect thereof"
+        },
+        {
+          "itemId": "90ec125546a33fd277ed085dd4e9ee9a55f94ca958e25aec98a22d4c983d5c8f",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:31b5153679c910028d86b26e",
+          "irPath": "rules[8].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(f)",
+          "sourceExcerpt": "Indebtedness existing on the date hereof and listed on Schedule 6.01 and any Refinance Indebtedness in respect thereof"
+        },
+        {
+          "itemId": "43e5d8070edd9f1e1bf9f7c017e6004a7570f90251c77b8e2a6d76624419ee41",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:31b5153679c910028d86b26e",
+          "irPath": "rules[8].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(f)",
+          "sourceExcerpt": "Indebtedness existing on the date hereof and listed on Schedule 6.01 and any Refinance Indebtedness in respect thereof"
+        },
+        {
+          "itemId": "82e23d58cf7ae9dfad18b19a80e17ab0d7d3a37f0f1f8a2f4557c618c415e5a6",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:31b5153679c910028d86b26e",
+          "irPath": "rules[8].capacityExpression",
+          "numericValue": null,
+          "textValue": "the actual dollar amount of Indebtedness existing on the Effective Date and listed on Schedule 6.01",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "e6f7ce5144520859837afe02da0a2988323088df7143d0d3ad580ddd79daad96",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)",
+          "sourceExcerpt": "Indebtedness which represents extensions, renewals, refinancing or replacements ... of any of the Indebtedness described in clause (f) hereof ... provided that (i) such Refinance Indebtedness does not increase the principal amount thereof ..."
+        },
+        {
+          "itemId": "ecaed52d0f5f8c47014f73d8b13e608abcab98e247659e407fc6ca17c8fb6cbd",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)",
+          "sourceExcerpt": "Indebtedness which represents extensions, renewals, refinancing or replacements ... of any of the Indebtedness described in clause (f) hereof ... provided that (i) such Refinance Indebtedness does not increase the principal amount thereof ..."
+        },
+        {
+          "itemId": "9864428351822d67980ccdd06b625c7877cc6122209dae9c05c5f1cdcf777326",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)",
+          "sourceExcerpt": "Indebtedness which represents extensions, renewals, refinancing or replacements ... of any of the Indebtedness described in clause (f) hereof ... provided that (i) such Refinance Indebtedness does not increase the principal amount thereof ..."
+        },
+        {
+          "itemId": "23638418ab0262c41aa14b196b94cd9db61b3636f14c75d73a6220f285a1ac58",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].conditions[0]",
+          "numericValue": null,
+          "textValue": "Refinance Indebtedness does not increase the principal amount of the Original Indebtedness (other than by permitted fee/interest/premium/OID add-ons)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)(i)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "92db90ce4a19c09025047c71780fe902086daab49b4cfb521238bfd7a8f1f13b",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].conditions[1]",
+          "numericValue": null,
+          "textValue": "any Liens securing the Refinance Indebtedness are not extended to additional property (other than accessions/improvements/after-acquired property)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)(i) [clause (ii)]",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ea06df12c11756139f3f369f39ca51707dcac3c07e92f9956be8d7afd456e330",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].conditions[2]",
+          "numericValue": null,
+          "textValue": "no Loan Party or Restricted Subsidiary not originally obligated on the Original Indebtedness is required to become obligated on the Refinance Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)(i) [clause (iii)]",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7daee0312d73ec42f9724d7cb516d02583f35ea5971b9e1e25513096e07b1516",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].conditions[3]",
+          "numericValue": null,
+          "textValue": "the Refinance Indebtedness does not shorten the weighted average maturity of the Original Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)(i) [clause (iv)]",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "4335095bd3c00e925bb9c8b656c52e01480d0a3f7e815213fc0db50426f1c03a",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].conditions[4]",
+          "numericValue": null,
+          "textValue": "the terms of the Refinance Indebtedness are not less favorable to the obligor than the Original Indebtedness's terms",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)(i) [clause (v)]",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "e9c35075f3368aaaf4d3b2fd2df439c3786fe4e3b686dff5807890364bd1f635",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].conditions[5]",
+          "numericValue": null,
+          "textValue": "if the Original Indebtedness was subordinated to the Secured Obligations, the Refinance Indebtedness must include subordination terms at least as favorable to the Administrative Agent and Lenders",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)(i) [clause (vi)]",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "5968c5378f0290eefb96ed151195f28b9a41a16aed720224d03f92b6726c709d",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].dependsOn[0]",
+          "numericValue": null,
+          "textValue": "REQUIRES:ir-rule:31b5153679c910028d86b26e",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1ab75bf582589efe9986bd7e25263a252eed27845dcf31f57f1d673a68dc20ef",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:b6f9ecd3957107e922c50ad2",
+          "irPath": "rules[9].capacityExpression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"ADD\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(g)(i)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "86e6b82c1473702e2a072f0a8c0e1937d9a36c24c90316b7c5298c8199ca12aa",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:a6ff83cd541990a44a5e1a58",
+          "irPath": "rules[10].action",
+          "numericValue": null,
+          "textValue": "INCUR_DEBT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(h)",
+          "sourceExcerpt": "Indebtedness of any Person that is designated as a Restricted Subsidiary after the date hereof; provided that "
+        },
+        {
+          "itemId": "738fd17da0ea2cc3cfd85a5f563fe46da540c58a63c34183991bd8f498822d84",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:a6ff83cd541990a44a5e1a58",
+          "irPath": "rules[10].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01(h)",
+          "sourceExcerpt": "Indebtedness of any Person that is designated as a Restricted Subsidiary after the date hereof; provided that "
+        },
+        {
+          "itemId": "08fd9e3bbbc033deed2a434121d11b1bcf34e9ea7c6477612db0b7a42428a52c",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:a6ff83cd541990a44a5e1a58",
+          "irPath": "rules[10].capacityExpression",
+          "numericValue": null,
+          "textValue": "Indebtedness of a Person designated as a Restricted Subsidiary after the date hereof, subject to a proviso whose conditions were cut off in the retrieved text",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "3d9ec497c4e9444f5352921ad63cd9edb003878e1617eedb384630fcb524a47f",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:3d53845ad058bbd48e278f1e",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Original Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 11,
+      "definitionCount": 2,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "reality-check-candidate:debt-dsgr",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4f87ca5fcad51f91247fd381ccca62e004d0444d2ff2b52140fded83a1faa849",
+            "kind": "PERCENT",
+            "rawText": "15%",
+            "numericValue": 0.15,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1297,
+            "charEnd": 1300
+          },
+          "irItems": [
+            {
+              "itemId": "93f424a8e9fb271acde506a662ad2d6d8228538b2cf29e159b52702d9a3834ed",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:a035f853009fc313d1c8d471",
+              "irPath": "rules[3].capacityExpression.operands[0]",
+              "numericValue": 0.15,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§6.01(b)(iii)",
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "087b62ce990e51181723917b123826975ddd4ed0aa4a2b57b0a0c048d31358e9",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:b3a78761d2c8ecf85c0af551",
+              "irPath": "rules[5].capacityExpression.operands[0]",
+              "numericValue": 0.15,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§6.01(c)(iii)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source PERCENT 0.15 matches 2 compiled IR PERCENT node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5adb21c3c3dcc1c99032dce5d51e3bdf0f8983c17abf0e51dc7eb9889d5f77b2",
+            "kind": "PERCENT",
+            "rawText": "15%",
+            "numericValue": 0.15,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 2257,
+            "charEnd": 2260
+          },
+          "irItems": [
+            {
+              "itemId": "93f424a8e9fb271acde506a662ad2d6d8228538b2cf29e159b52702d9a3834ed",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:a035f853009fc313d1c8d471",
+              "irPath": "rules[3].capacityExpression.operands[0]",
+              "numericValue": 0.15,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§6.01(b)(iii)",
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "087b62ce990e51181723917b123826975ddd4ed0aa4a2b57b0a0c048d31358e9",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-rule:b3a78761d2c8ecf85c0af551",
+              "irPath": "rules[5].capacityExpression.operands[0]",
+              "numericValue": 0.15,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§6.01(c)(iii)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source PERCENT 0.15 matches 2 compiled IR PERCENT node(s)"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0c92de8d54a2156b9eaeae51f145c0331a84f80117c304d24010c5f832cc7746",
+            "kind": "METRIC_MENTION",
+            "rawText": "No Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 29,
+            "charEnd": 42
+          },
+          "irItems": [],
+          "reason": "source mention \"No Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "283abad8d94c778c027bd7b295cc830a9646247978af40b34e47ceec6df1cc29",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 72,
+            "charEnd": 93
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "879a98059f505a52fb072983c88d04104c9d5dc59e1acd73f6bc40800d836b50",
+            "kind": "METRIC_MENTION",
+            "rawText": "Secured\nObligations",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 174,
+            "charEnd": 193
+          },
+          "irItems": [],
+          "reason": "source mention \"Secured\nObligations\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c2f27adc5c332b6448931218e749ec6ad917dc4cd7659c5b325a76de95cd6425",
+            "kind": "METRIC_MENTION",
+            "rawText": "Guaranteed Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 202,
+            "charEnd": 224
+          },
+          "irItems": [
+            {
+              "itemId": "1c08f2c6403dd317b1de6e977d5e8cb49ff5d796f5c68d50d6e59677aad72cfe",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:a09db13fc89bc396d6915b29",
+              "irPath": "rules[1].capacityExpression.operands[1]",
+              "numericValue": null,
+              "textValue": "Guaranteed Obligations",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Guaranteed Obligations\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1c01e087ad8f23430e606262e051096231add3725f0bb790dcbf0a529e77865f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 278,
+            "charEnd": 299
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c7890ccee8a78ee6822fb45b7ffd2dcacd059be0fcb1d14d9aa9107e2ae237e8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted\nSubsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 311,
+            "charEnd": 332
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted\nSubsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "68916fa3fa360e140a5f72561d28aa27f62086d3f3a577a510ad7dc521b47861",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 368,
+            "charEnd": 389
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "93a794ca4ad766cedc7c13dcdb8812dbf3acda7cd354ce8eac17e7ef49ed1e36",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 429,
+            "charEnd": 450
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2c9fc49c5d1fa4158bd4a9b893d3994d67b0db97fee259d89d83197cc8aaa18e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 465,
+            "charEnd": 475
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "63547fdd6a020e15a489d9aba7590c60386d9d89c407588921b001ad0573e77b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 511,
+            "charEnd": 521
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fd6d00adc01a9045b8746c1f49532e9946dec750ae28db13599abf316f364a0d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 610,
+            "charEnd": 620
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ab63ad04a57307d01c0a27bd91cafe46d743693b45141c058280d1c89854bea1",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 634,
+            "charEnd": 655
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4b90e12140864276a27e236f8cfd43032933cbacaca09ccd9d5859618c868ae1",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 670,
+            "charEnd": 680
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "61237db84c33e28b5e02265e59c9bfbff6fd8370eab5cc97d0b7339a46da1b2b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Secured Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 710,
+            "charEnd": 729
+          },
+          "irItems": [
+            {
+              "itemId": "41a4d7cae94a49cbb6d859b1aa3db165dae6fe861e6479bb3224cabce40b89e5",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:a09db13fc89bc396d6915b29",
+              "irPath": "rules[1].capacityExpression.operands[0]",
+              "numericValue": null,
+              "textValue": "Secured Obligations",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Secured Obligations\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ad7ce3f22d7a67b29cf01c8cde51ef52adcf5d7588b5cb99bdef2bf1bfc3103a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 770,
+            "charEnd": 790
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "529c9f8567f4689af70dd4d9abe60979d4a5a4404e9ac295c903dbc7925410ce",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiaries",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 852,
+            "charEnd": 875
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiaries\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "024a7ca71799501dec8e6a8d469ad381eebcdd1435428933b818e77815982a83",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 894,
+            "charEnd": 906
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "92e65c0b92f622b3b395517697aae949e4448b7fbc0ebfa41d85843d984aa600",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 921,
+            "charEnd": 933
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5a983d29bb819e912f179558c1327b7a3a65735bc27fe32bda846c3c71a11498",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1125,
+            "charEnd": 1137
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5d1e4dbdcb8134491319420c43b954c02677a06ae919da519a3f652bc714277e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiaries",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1141,
+            "charEnd": 1164
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiaries\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1aab0b4636aee29f1ef12e4978393c6ed324729bc97f164bfd75ebfe5a1eee98",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1183,
+            "charEnd": 1195
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2feced0ef303f542b749abfb1e37d8de84bd84b6179d9429b5ad9f93da37c1bd",
+            "kind": "METRIC_MENTION",
+            "rawText": "Effective Date",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1211,
+            "charEnd": 1225
+          },
+          "irItems": [],
+          "reason": "source mention \"Effective Date\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a008e884385046b97b273d13290625cd4d73ebf659310b737e7258ee8ceb9c03",
+            "kind": "METRIC_MENTION",
+            "rawText": "Applicable EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1304,
+            "charEnd": 1321
+          },
+          "irItems": [
+            {
+              "itemId": "99af6e0d7abcda1c08e3ae36a454d6214021dafd2967160dc020c2dc56307b1f",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:a035f853009fc313d1c8d471",
+              "irPath": "rules[3].capacityExpression.operands[1]",
+              "numericValue": null,
+              "textValue": "Applicable EBITDA",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "9901e022cda517284fff22de3c2f9a74958eb4a62d3c9cae958ede8b4fe1c65e",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:b3a78761d2c8ecf85c0af551",
+              "irPath": "rules[5].capacityExpression.operands[1]",
+              "numericValue": null,
+              "textValue": "Applicable EBITDA",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Applicable EBITDA\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "329af42d64285dc8562e066bf31715bb7d555b79309dcd3c6355ea88b073fc1b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1378,
+            "charEnd": 1399
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d1b3c68a288e0edf5170dc5d703159083e21de548733704bc7264a18bbcd5a9c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1411,
+            "charEnd": 1432
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "108669688632de7af2d749c5d61442629bddabfc8e2c828265d1c4d0002da2bd",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1478,
+            "charEnd": 1499
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2179afaeefb08b612816c7928f0029f060e35195bf0b36653566b24d01d66a20",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1626,
+            "charEnd": 1636
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5b127c27ca55f0d291c3d01d90138f2ab8c8c233c9da01667bd858d4e684b0e7",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1660,
+            "charEnd": 1681
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b41c0075ba277afd33ca6794b4d32b5adab9bcec7ca9ac75f473512d9a990c69",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1696,
+            "charEnd": 1706
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "861e2b52a45927eac4fb97fe4961df407c1a20bc3f077c0cab98f8ec498cf018",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiaries",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1797,
+            "charEnd": 1820
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiaries\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "cb071f4c6b2fa683bc756d6c35f6e0286488345df4148a6e41db604cf11d31a2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1839,
+            "charEnd": 1851
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5fa7bcf30a614d7213a6aada642fa0620de819b010d6467bf75c6207c6fb189a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan\nParties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 1879,
+            "charEnd": 1891
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan\nParties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e3e1fbd2d3aae6debc5f0fa8b858ae5cc71d6f16d9e4f8deb2c899c488f832d0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 2085,
+            "charEnd": 2097
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "be588f965bfaa6b37ec790f70dd511cce193ecaf1643d661ae1b17ed8ce81131",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiaries",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 2101,
+            "charEnd": 2124
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiaries\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f69ef3a54aa34d009e1df4c8123ee2c159a4588827498dbba1d29f2c0466ff5f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 2143,
+            "charEnd": 2155
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7445defd65aa2bd80a1c513622fcf8b2ea18acd8f55fde443c97be619121cafc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Effective Date",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 2171,
+            "charEnd": 2185
+          },
+          "irItems": [],
+          "reason": "source mention \"Effective Date\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "eb69c5677309945ee2142ad814bd29692cabe8c69d023d82b8862aac595ee3f8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Applicable EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 2264,
+            "charEnd": 2281
+          },
+          "irItems": [
+            {
+              "itemId": "99af6e0d7abcda1c08e3ae36a454d6214021dafd2967160dc020c2dc56307b1f",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:a035f853009fc313d1c8d471",
+              "irPath": "rules[3].capacityExpression.operands[1]",
+              "numericValue": null,
+              "textValue": "Applicable EBITDA",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "9901e022cda517284fff22de3c2f9a74958eb4a62d3c9cae958ede8b4fe1c65e",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:b3a78761d2c8ecf85c0af551",
+              "irPath": "rules[5].capacityExpression.operands[1]",
+              "numericValue": null,
+              "textValue": "Applicable EBITDA",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Applicable EBITDA\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "864f5fcfd4ef3119b14538143cfabc5df77da3daea23f367ff5d32e8ecf59771",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 2601,
+            "charEnd": 2611
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2d64f1bab44cd1442eb9ebb5ecb34d5c6c29b92c2d50ee799b920887cbe8e4b2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinance\nIndebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 2848,
+            "charEnd": 2870
+          },
+          "irItems": [],
+          "reason": "source mention \"Refinance\nIndebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6633f25a3b1142bcebad55836e19c922122c71b14eaa4ced6b698f4f5bcf007a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinance Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3080,
+            "charEnd": 3102
+          },
+          "irItems": [],
+          "reason": "source mention \"Refinance Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e1d0a392020f5959f5338a3331ca1b95b3f3cbf28a5b4717024de29630cf5fb5",
+            "kind": "METRIC_MENTION",
+            "rawText": "Original Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3217,
+            "charEnd": 3238
+          },
+          "irItems": [],
+          "reason": "source mention \"Original Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5eb5df5018a30af5f0bdeb0a987403fc5e29a7103bd58663c2f59cf4e95a8ca7",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinance Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3266,
+            "charEnd": 3288
+          },
+          "irItems": [],
+          "reason": "source mention \"Refinance Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9388a3a2d3f7105547b8f39cc456ddbd4d6079b204c92fac53554b70d4d55a91",
+            "kind": "METRIC_MENTION",
+            "rawText": "Original Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3680,
+            "charEnd": 3701
+          },
+          "irItems": [],
+          "reason": "source mention \"Original Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "22c643cec137cbfd4cb95608951e320c220bc524fcd0e3a05ed14d17c4640014",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinance Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3741,
+            "charEnd": 3763
+          },
+          "irItems": [],
+          "reason": "source mention \"Refinance Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b7f7a9d4d0bc8717830d0268858e2d2ac3fb07e0d4b9877f66c92af66fbe9fc3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinance Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3795,
+            "charEnd": 3817
+          },
+          "irItems": [],
+          "reason": "source mention \"Refinance Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6e333502b7b7f72d53859088e903b5bff5729a0dc8e1f3633c7ae8ef8525e711",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3869,
+            "charEnd": 3879
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e98f5da00381aca4f33081de20b8f8ece1ba826d6d08afbea95eaee06b3806c8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3887,
+            "charEnd": 3908
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8acbcf2a2d70115ece27b46c674d643d16db2798048347d02482bf963e8ee5b5",
+            "kind": "METRIC_MENTION",
+            "rawText": "Original Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 3992,
+            "charEnd": 4013
+          },
+          "irItems": [],
+          "reason": "source mention \"Original Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "95507a6f823dc1460ca22e05149306376e90be5793ba400b5a1ed942923a6e1e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 4078,
+            "charEnd": 4088
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d21904539b6e820d487baea86decfa06f61c64fe109b170bfd3c518aac4f2fcd",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 4096,
+            "charEnd": 4117
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "21fbc538904cd285b24ebd3863f857f8a62c26840746c47085a3d24d805db9bf",
+            "kind": "METRIC_MENTION",
+            "rawText": "Original Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 4185,
+            "charEnd": 4206
+          },
+          "irItems": [],
+          "reason": "source mention \"Original Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "890ceb88651536fb6b705932a23b699cf6fcb615a690b766a52f6bb3d5e88dfd",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinance Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 4260,
+            "charEnd": 4282
+          },
+          "irItems": [],
+          "reason": "source mention \"Refinance Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "90cae66f6d3afb08dc53c31b864cca00eeda8e38dc84d158794323a68af58e2f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinance Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 4294,
+            "charEnd": 4316
+          },
+          "irItems": [],
+          "reason": "source mention \"Refinance Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c494cb56571d2432940d4b451a5d176ac63eea81250447dbce7876bf8b0a33fc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Original\nIndebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 4390,
+            "charEnd": 4411
+          },
+          "irItems": [],
+          "reason": "source mention \"Original\nIndebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "664fd778d78e8aef79792e1053eaec8a5e7f444cb0c3e27da04cbf50b52d1dbc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinance Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.01",
+            "structuralNodeKey": null,
+            "charStart": 4435,
+            "charEnd": 4457
+          },
+          "irItems": [],
+          "reason": "source mention \"Refinance Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 12 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c), (d), (e), (f), (g), (iv), (v)) but only 11 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T18:18:13.365Z"
+  }
+}

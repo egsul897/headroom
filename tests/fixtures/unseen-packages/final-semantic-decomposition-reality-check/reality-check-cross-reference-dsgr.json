@@ -1,0 +1,1610 @@
+{
+  "region": {
+    "id": "cross-reference-dsgr",
+    "family": "CROSS_REFERENCE_SHARED_CAP_CONDITION",
+    "documentId": "dsgr-a",
+    "sourceSectionRef": "6.10",
+    "charStart": 474298,
+    "chars": 2800,
+    "structuralNodeKeys": [
+      "dsgr-a::6.09(a)(ii)(ii)"
+    ]
+  },
+  "operativeSourceText": "SECTION 6.10. Restrictive Agreements . No Loan Party will, nor will it permit any Restricted Subsidiary to, directly or indirectly\nenter into, incur or permit to exist any agreement or other arrangement that prohibits, restricts or imposes any condition upon (a) the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon\nany of its property or assets, or (b) the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interests or to make or repay loans or advances to any Borrower or any other Restricted Subsidiary\nor to Guarantee Indebtedness of any Borrower or any other Restricted Subsidiary; provided that (i) the foregoing shall not apply to restrictions and conditions imposed by any applicable law or by any Loan Document, (ii) the foregoing shall\nnot apply to restrictions and conditions existing on the date hereof identified on Schedule 6.10 (but shall apply to any extension or renewal of, or any amendment or modification expanding the scope of, any such restriction or condition), (iii) the\nforegoing shall not apply to customary restrictions and conditions contained in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale, provided such restrictions and conditions apply only to such assets or the\nRestricted Subsidiary that is to be sold and, in each case, such sale is permitted hereunder, (iv) clause (a) of the foregoing shall not apply to restrictions or conditions imposed by any agreement relating to secured Indebtedness permitted by\nthis Agreement if such restrictions or conditions apply only to the property or assets securing such Indebtedness and (v) clause (a) of the foregoing shall not apply to customary provisions in leases and other contracts restricting the\nassignment thereof.\n\n116\n\nSECTION 6.11. Amendment of Material Documents . No Loan Party will, nor will it\npermit any Restricted Subsidiary to, amend, modify or waive any of its rights under (a) any agreement relating to any Subordinated Indebtedness, (b) any Closing Date Acquisition Document or (c) its charter, articles or certificate of\norganization or incorporation and bylaws or operating, management or partnership agreement, or other organizational or governing documents, in each case, to the extent any such amendment, modification or waiver would be materially adverse to the\nLenders.\n\nSECTION 6.12. Financial Covenants .\n\n(a) Interest Coverage Ratio . The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters\nof the Company ending on the last day of any fiscal quarter of the Company (commencing with the fiscal quarter ending June 30, 2022), to be less than 3.00 to 1.00.\n\n(b) Total Net Leverage Ratio . The",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:e8eb809ae82937dd9eff6216",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.10(a)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r1].exception[0]",
+            "appliesToRuleId": "ir-rule:e8eb809ae82937dd9eff6216",
+            "description": "Does not apply to restrictions and conditions imposed by any applicable law or by any Loan Document.",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(i)",
+              "excerpt": "the foregoing shall not apply to restrictions and conditions imposed by any applicable law or by any Loan Document"
+            }
+          },
+          {
+            "exceptionId": "rule[r1].exception[1]",
+            "appliesToRuleId": "ir-rule:e8eb809ae82937dd9eff6216",
+            "description": "Does not apply to restrictions and conditions existing on the date hereof and identified on Schedule 6.10.",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r1].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Carve-out does not extend to any extension or renewal of, or any amendment or modification expanding the scope of, such existing restriction or condition.",
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(ii)",
+                  "excerpt": "but shall apply to any extension or renewal of, or any amendment or modification expanding the scope of, any such restriction or condition"
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(ii)",
+              "excerpt": "the foregoing shall not apply to restrictions and conditions existing on the date hereof identified on Schedule 6.10"
+            }
+          },
+          {
+            "exceptionId": "rule[r1].exception[2]",
+            "appliesToRuleId": "ir-rule:e8eb809ae82937dd9eff6216",
+            "description": "Does not apply to customary restrictions and conditions in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale.",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r1].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Such restrictions and conditions apply only to the assets, or the Restricted Subsidiary, that is to be sold.",
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(iii)",
+                  "excerpt": "provided such restrictions and conditions apply only to such assets or the Restricted Subsidiary that is to be sold"
+                }
+              },
+              {
+                "conditionId": "rule[r1].condition[1]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "The underlying sale is itself permitted under the Agreement.",
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(iii)",
+                  "excerpt": "such sale is permitted hereunder"
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(iii)",
+              "excerpt": "the foregoing shall not apply to customary restrictions and conditions contained in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale"
+            }
+          },
+          {
+            "exceptionId": "rule[r1].exception[3]",
+            "appliesToRuleId": "ir-rule:e8eb809ae82937dd9eff6216",
+            "description": "Clause (a) does not apply to restrictions or conditions imposed by any agreement relating to secured Indebtedness permitted by the Agreement, if such restrictions or conditions apply only to the property or assets securing such Indebtedness.",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r1].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Restrictions apply only to the property or assets securing the permitted secured Indebtedness.",
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(iv)",
+                  "excerpt": "if such restrictions or conditions apply only to the property or assets securing such Indebtedness"
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(iv)",
+              "excerpt": "clause (a) of the foregoing shall not apply to restrictions or conditions imposed by any agreement relating to secured Indebtedness permitted by this Agreement"
+            }
+          },
+          {
+            "exceptionId": "rule[r1].exception[4]",
+            "appliesToRuleId": "ir-rule:e8eb809ae82937dd9eff6216",
+            "description": "Clause (a) does not apply to customary provisions in leases and other contracts restricting the assignment thereof.",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(v)",
+              "excerpt": "clause (a) of the foregoing shall not apply to customary provisions in leases and other contracts restricting the assignment thereof"
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full text of clause (a) and all five provisos (i)-(v) applicable to it is present in the supplied source.",
+          "Schedule 6.10's specific itemized list is not digitized/available via any tool, but the exception's operative legal test (restrictions existing on the date hereof identified on that schedule, excluding later expansions) is fully stated in the text and does not require the schedule's contents to be represented structurally.",
+          "covenantFamily \"RESTRICTIVE_AGREEMENTS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.10(a)",
+          "excerpt": "the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon any of its property or assets"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:d059f37748ce6c764a4358f6",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.10(b)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r2].exception[0]",
+            "appliesToRuleId": "ir-rule:d059f37748ce6c764a4358f6",
+            "description": "Does not apply to restrictions and conditions imposed by any applicable law or by any Loan Document.",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(i)",
+              "excerpt": "the foregoing shall not apply to restrictions and conditions imposed by any applicable law or by any Loan Document"
+            }
+          },
+          {
+            "exceptionId": "rule[r2].exception[1]",
+            "appliesToRuleId": "ir-rule:d059f37748ce6c764a4358f6",
+            "description": "Does not apply to restrictions and conditions existing on the date hereof and identified on Schedule 6.10.",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r2].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Carve-out does not extend to any extension or renewal of, or any amendment or modification expanding the scope of, such existing restriction or condition.",
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(ii)",
+                  "excerpt": "but shall apply to any extension or renewal of, or any amendment or modification expanding the scope of, any such restriction or condition"
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(ii)",
+              "excerpt": "the foregoing shall not apply to restrictions and conditions existing on the date hereof identified on Schedule 6.10"
+            }
+          },
+          {
+            "exceptionId": "rule[r2].exception[2]",
+            "appliesToRuleId": "ir-rule:d059f37748ce6c764a4358f6",
+            "description": "Does not apply to customary restrictions and conditions in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale.",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r2].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "Such restrictions and conditions apply only to the assets, or the Restricted Subsidiary, that is to be sold.",
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(iii)",
+                  "excerpt": "provided such restrictions and conditions apply only to such assets or the Restricted Subsidiary that is to be sold"
+                }
+              },
+              {
+                "conditionId": "rule[r2].condition[1]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "The underlying sale is itself permitted under the Agreement.",
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.10(iii)",
+                  "excerpt": "such sale is permitted hereunder"
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.10(iii)",
+              "excerpt": "the foregoing shall not apply to customary restrictions and conditions contained in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale"
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full text of clause (b) and the three provisos (i)-(iii) applicable to it (clauses (iv) and (v) are expressly limited to clause (a) only and correctly excluded here) is present in the supplied source.",
+          "Schedule 6.10's specific itemized list is not digitized/available via any tool, but the exception's operative legal test is fully stated in the text.",
+          "covenantFamily \"RESTRICTIVE_AGREEMENTS\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.10(b)",
+          "excerpt": "the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interests or to make or repay loans or advances to any Borrower or any other Restricted Subsidiary or to Guarantee Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "failureReasons": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T19:05:26.800Z",
+      "inputTokens": 34151,
+      "outputTokens": 10843,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 99344,
+      "calculatedCostUsd": 0.176732
+    }
+  },
+  "verify": {
+    "candidateRef": "reality-check-candidate:cross-reference-dsgr",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "21523d9d39a6d94f50bb30cccf8d42f74ea90952b7d00e84d277e092171792b4",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:cross-reference-dsgr",
+        "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+        "irPath": "rules[0].entityScope",
+        "findingType": "WRONG_ENTITY_SCOPE",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon any of its property or assets",
+        "sourceCitation": "§6.10(a)",
+        "proposedIrEvidence": "\"entityScope\": [\"LOAN_PARTY\"]",
+        "verifierReasoning": "Clause (a) explicitly protects the ability of 'such Loan Party or any Restricted Subsidiary' to create/incur/permit Liens on their own property. The proposed IR's entityScope for this rule lists only LOAN_PARTY, omitting RESTRICTED_SUBSIDIARY even though the source text expressly extends the same protection (and, by extension, the practical restriction on entering into agreements that impair it) to Restricted Subsidiaries. If entityScope is meant to represent which entities' agreements/ability are governed by this rule, this is an incomplete scope that could lead a reviewer to wrongly conclude that agreements restricting a non-guarantor Restricted Subsidiary's ability to grant Liens fall outside this covenant. I flag this as uncertain rather than definitively material because I cannot fully confirm from the IR schema alone whether 'entityScope' is intended to capture the covenanting obligor (arguably just the Loan Party, who is the grammatical subject of 'No Loan Party will... nor will it permit...') versus the entities whose contractual ability is protected (which clearly includes Restricted Subsidiaries) - but under either reading a competent reviewer should be alerted to the discrepancy.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:07:04.429Z"
+      },
+      {
+        "findingId": "cada43c054671be52a786c921af21bee7d25adc23724efb9bb1e9fc62346e2fa",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:cross-reference-dsgr",
+        "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+        "irPath": "rules[1].entityScope",
+        "findingType": "WRONG_ENTITY_SCOPE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interests or to make or repay loans or advances to any Borrower or any other Restricted Subsidiary or to Guarantee Indebtedness of any Borrower or any other Restricted Subsidiary",
+        "sourceCitation": "§6.10(b)",
+        "proposedIrEvidence": "\"entityScope\": [\"LOAN_PARTY\"]",
+        "verifierReasoning": "Clause (b), unlike clause (a), speaks exclusively about the ability of 'any Restricted Subsidiary' - not any Loan Party generally - to pay dividends, make/repay loans, or guarantee indebtedness. Nowhere in clause (b) is a Loan Party's own dividend-paying, loan-making, or guaranteeing ability the protected activity; that activity is governed by other covenants (e.g., restricted payments/indebtedness sections), not §6.10(b). By labeling this rule's entityScope as LOAN_PARTY (with no RESTRICTED_SUBSIDIARY entry at all), the proposed IR risks being read as protecting or scoping to Loan Parties' own dividend/loan/guarantee ability under this specific rule, when the source text confines clause (b) entirely to Restricted Subsidiaries. A reviewer relying on this IR could reach a different, incorrect conclusion about which entity's restrictive-agreement exposure this specific rule addresses.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:07:04.429Z"
+      },
+      {
+        "findingId": "fac5e6dd55f69cf8becd506cbd27d7b3284c1552ceee1c450a081c7e91bd2359",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:cross-reference-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "3.00 to 1.00",
+        "sourceCitation": "6.10",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source RATIO 3 (from \"3.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source RATIO 3 (from \"3.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:05:26.801Z"
+      },
+      {
+        "findingId": "fac5e6dd55f69cf8becd506cbd27d7b3284c1552ceee1c450a081c7e91bd2359",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:cross-reference-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "6.10",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 6 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c)) but only 2 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 6 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c)) but only 2 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:05:26.801Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "reality-check-candidate:cross-reference-dsgr",
+      "items": [
+        {
+          "itemId": "7f15bfddc4619a6bae63b234dda0fbd17694deabf0cf0227a5b579564db7a1d7",
+          "kind": "RATIO",
+          "rawText": "3.00 to 1.00",
+          "numericValue": 3,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 2751,
+          "charEnd": 2763
+        },
+        {
+          "itemId": "08372ffadddbc54e553481a4b3b38115b6ae2633d5c17e5e52e9a1e8eaea33dd",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 699,
+          "charEnd": 712
+        },
+        {
+          "itemId": "622b3bf94ff8b7b9ad5837eb31e896cf30451720f897f678e02b74afb048c8a8",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1275,
+          "charEnd": 1283
+        },
+        {
+          "itemId": "04e33a62c42a39a7ef7eccdae9334e840c98fb909f7fd04ba79816eb03194d9a",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 42,
+          "charEnd": 52
+        },
+        {
+          "itemId": "1a9607c885dfb391a59b89a4d3771ffd392b492abe1101a3c383ca3d1212896c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 82,
+          "charEnd": 103
+        },
+        {
+          "itemId": "237c89107b7f5437019eeee33336f96de819da029593c6038af38e709c5af0b5",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 283,
+          "charEnd": 293
+        },
+        {
+          "itemId": "c78527b76b6dea80db4462dcf18ab600b2c2865ed1afceae2f4e83cf7c09734e",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 301,
+          "charEnd": 322
+        },
+        {
+          "itemId": "93378199d97a8776882abf8c9d52e439942d9a4008dac5e7e941890780c6d3ce",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 430,
+          "charEnd": 451
+        },
+        {
+          "itemId": "6e2197bea6fd513509bf6ca883d330eb9870c58d49235d31548385f6ac21df26",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 574,
+          "charEnd": 582
+        },
+        {
+          "itemId": "db973bed0b11a328d1cf72b92cf7134b69e2b9561eddc1acc03ada5c2fa0cb32",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 596,
+          "charEnd": 617
+        },
+        {
+          "itemId": "f69ffd923c1814eb2195fca33e2f1380be76c4d8fbe24e927d33868d944a527a",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 654,
+          "charEnd": 662
+        },
+        {
+          "itemId": "6e83f3c90e5d9fd73fde444f29e3eacc6142c247ef3b4618dad6a9d0671f2094",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 676,
+          "charEnd": 697
+        },
+        {
+          "itemId": "0643d9934eb184f2d7a0c37433128f00570f1b405d8978d9ae362f51c842a2ef",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1234,
+          "charEnd": 1255
+        },
+        {
+          "itemId": "1e40733490ad465ff62bd2523803fffbaf4c94eaf8e27c0a9c4c17ef99bfcc9b",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1350,
+          "charEnd": 1371
+        },
+        {
+          "itemId": "f1afa33731c4d2198f0ea5dac70e616aa59d5a1b97b1aa2c79ecd148e5d20f93",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1907,
+          "charEnd": 1917
+        },
+        {
+          "itemId": "8f8207702b2f511efd835d7128ee70ef147ef8b6847efa8cb606dcc0684fdfa1",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1947,
+          "charEnd": 1968
+        },
+        {
+          "itemId": "3e652b87048dfa08bd2b230e9ae2ef0f2e59a24c18479aab6dc8329ec2024d10",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "incur",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 143,
+          "charEnd": 148
+        },
+        {
+          "itemId": "1d3df729d032addd5207298fc70e3b0a49e134bf644683ded834b88571ac92ff",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "incur",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 334,
+          "charEnd": 339
+        },
+        {
+          "itemId": "e984dd8a8f14fbec597c0440ef344c810990d04f6db1e9555393e2a30fae2740",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "pay dividends",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 455,
+          "charEnd": 468
+        },
+        {
+          "itemId": "1e1fedc888394382cf343b0b8b0ae8af710769ff34bd7344728a3b18952de5fc",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Guarantee",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 624,
+          "charEnd": 633
+        },
+        {
+          "itemId": "8492b133491f089c91b0b8503348be564aad8c015e50169b6372b07ab3bbf39c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restrictive Agreements",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 14,
+          "charEnd": 36
+        },
+        {
+          "itemId": "dd4e9ece4377eb39509181f3379df6acfdd6b8d527285c0107ef9d6409422987",
+          "kind": "METRIC_MENTION",
+          "rawText": "No Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 39,
+          "charEnd": 52
+        },
+        {
+          "itemId": "3e24eec4ad9178a81244747c3fdd85e806a99831291a57429baf25332be966b2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 82,
+          "charEnd": 103
+        },
+        {
+          "itemId": "6afabfa724c14e69848847e8a536a3b10887141a6e3b8c4e5646dfd801c65583",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 283,
+          "charEnd": 293
+        },
+        {
+          "itemId": "f2cfc041dbfad534e071da521bdcd9ee32ae63a5171e045040559d99bb8f92a0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 301,
+          "charEnd": 322
+        },
+        {
+          "itemId": "63e229ae44b26d52be54f9dca723b8e03011df804b0428694731ebcce53f1ee0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 430,
+          "charEnd": 451
+        },
+        {
+          "itemId": "3bb0cedb67f26c64fe071ce1a3bdcd7d91e7a76bb9f64f57ccd009845e77070e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Equity Interests",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 512,
+          "charEnd": 528
+        },
+        {
+          "itemId": "8795d0e229c6decee9c7fc0405464f4be10bdf9cf0a3143d2fd73b84813abba9",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 596,
+          "charEnd": 617
+        },
+        {
+          "itemId": "0720ba07cd1e22e1fdd4e7bba8e00c318ce194688465f094f0ce1d7e59d8a10f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Guarantee Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 624,
+          "charEnd": 646
+        },
+        {
+          "itemId": "f1d17ed88136093f9a2e82be1a52398931d081b0f8df05651ccd66c3b4be22a8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 676,
+          "charEnd": 697
+        },
+        {
+          "itemId": "9b9903d29f042dcac52b0c15892be08299c8bea7a3d60be91fba60f3694398d2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Document",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 818,
+          "charEnd": 831
+        },
+        {
+          "itemId": "2173ee17205129c906c8b6402f83ff920ef1bb7ba2999990ab280137474cd2f1",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1234,
+          "charEnd": 1255
+        },
+        {
+          "itemId": "58db6c2fc30462215cdb72011c0481aae711888ded30075a440ae26081847f93",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1350,
+          "charEnd": 1371
+        },
+        {
+          "itemId": "18941551c2625872786af1f95a74aaddc6d0da3619f060b67e6a369e80fa3f95",
+          "kind": "METRIC_MENTION",
+          "rawText": "Material Documents",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1883,
+          "charEnd": 1901
+        },
+        {
+          "itemId": "2003d14a959ded5cb473ee4735c568af0ac20482e001629b187a9ff1fa0130f2",
+          "kind": "METRIC_MENTION",
+          "rawText": "No Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1904,
+          "charEnd": 1917
+        },
+        {
+          "itemId": "b6e525c1a0066ed91f1a42a3d90965087a02e5d9964506934629db23d300fa9b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 1947,
+          "charEnd": 1968
+        },
+        {
+          "itemId": "17561cccdfabe58d79fb1c46d12a1af0fe512efa70432274ef9b306152115309",
+          "kind": "METRIC_MENTION",
+          "rawText": "Subordinated Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 2054,
+          "charEnd": 2079
+        },
+        {
+          "itemId": "bfde2f06e2625efcd462b729ddfd7c8fd6234627461451efd2352b25ca06691a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Closing Date Acquisition Document",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 2089,
+          "charEnd": 2122
+        },
+        {
+          "itemId": "aade806f2356b943b224bc28fa752f8583d7a86d9c4f07aff1e694b6dbcae1b8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Financial Covenants",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 2440,
+          "charEnd": 2459
+        },
+        {
+          "itemId": "8df0cd132d63a5754f3c6702e4c5779c249f253e23c796b8d577d4d4b58fe3b7",
+          "kind": "METRIC_MENTION",
+          "rawText": "Interest Coverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 2467,
+          "charEnd": 2490
+        },
+        {
+          "itemId": "beb201e86e9257519ae8417919b50ea2985c0d8e0d4162ee1aa1ccc514f4c526",
+          "kind": "METRIC_MENTION",
+          "rawText": "The Company",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 2493,
+          "charEnd": 2504
+        },
+        {
+          "itemId": "d8e61d2871f297aceabb9a5cfb5abbf51e11ffb5fe1a63c69833a352204d6245",
+          "kind": "METRIC_MENTION",
+          "rawText": "Interest Coverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 2525,
+          "charEnd": 2548
+        },
+        {
+          "itemId": "84d60a689a060b0e2348879c7a0701fc4ea93770dd6d9c2da4f6e682d31cf6bd",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": 2770,
+          "charEnd": 2794
+        },
+        {
+          "itemId": "851d0bbf41db25cebaa95003b35134a4b19aee35d9a40a860b02e5b4fd26c20b",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7613f2d69da81bf3604d2e4b63d397fafeb6ebe5ad44bb221fe9162d0b22c016",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "51c6f31dd84c53278660adda7030d4b994bee2adc9408a52138a49486b1dae18",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "9158d0c7216f3bfa3add928467e734757a8317936c16b50707b813fd14222414",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "3f7eba4d602c8e6cd8a518ffb3f658558e0d3f99c28ff80a1fca2ff997bcfc0c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "e4456656188ee019ee201b0d8b2051a608d76396890b86a8339e1aa176fdf92e",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.10",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 6,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(b)",
+        "(i)",
+        "(ii)",
+        "(iii)",
+        "(c)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "reality-check-candidate:cross-reference-dsgr",
+      "items": [
+        {
+          "itemId": "74520c4e2782d491665ed10031b02f3c78c8994ed2467beb0a4a854178035303",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(a)",
+          "sourceExcerpt": "the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon any of its property or assets"
+        },
+        {
+          "itemId": "0b318a156809b181b4e549bbef49daaa5d6ce57326c86972cf1bd968cbdcd951",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(a)",
+          "sourceExcerpt": "the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon any of its property or assets"
+        },
+        {
+          "itemId": "4098ec83691f5899521b4a71f2ab940eda053fe3e755b554172eadc7c67ebe4e",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(a)",
+          "sourceExcerpt": "the ability of such Loan Party or any Restricted Subsidiary to create, incur or permit to exist any Lien upon any of its property or assets"
+        },
+        {
+          "itemId": "6e0d178a475b02560dd8b1ba528ca27f32f18105b3869ca71c428a6b0e0e1336",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[0]",
+          "numericValue": null,
+          "textValue": "Does not apply to restrictions and conditions imposed by any applicable law or by any Loan Document.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(i)",
+          "sourceExcerpt": "the foregoing shall not apply to restrictions and conditions imposed by any applicable law or by any Loan Document"
+        },
+        {
+          "itemId": "e98610cfa22d60547012912de702ce1f18a73e65d65ba3445a40798c58b0861d",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[1]",
+          "numericValue": null,
+          "textValue": "Does not apply to restrictions and conditions existing on the date hereof and identified on Schedule 6.10.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(ii)",
+          "sourceExcerpt": "the foregoing shall not apply to restrictions and conditions existing on the date hereof identified on Schedule 6.10"
+        },
+        {
+          "itemId": "d16c8b9905e5baa2417e566edd228423bcd04fdeff41643d6691fb34dcf3d870",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[1].conditions[0]",
+          "numericValue": null,
+          "textValue": "Carve-out does not extend to any extension or renewal of, or any amendment or modification expanding the scope of, such existing restriction or condition.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(ii)",
+          "sourceExcerpt": "but shall apply to any extension or renewal of, or any amendment or modification expanding the scope of, any such restriction or condition"
+        },
+        {
+          "itemId": "304b5fecf4826854252782f8c61b4163887d70e64f95c5897ea289721593b2b2",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[2]",
+          "numericValue": null,
+          "textValue": "Does not apply to customary restrictions and conditions in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(iii)",
+          "sourceExcerpt": "the foregoing shall not apply to customary restrictions and conditions contained in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale"
+        },
+        {
+          "itemId": "4a765567dd96483d19cfecb0264348ae84a91075d2c3c3379e3dca03d8b011e7",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[2].conditions[0]",
+          "numericValue": null,
+          "textValue": "Such restrictions and conditions apply only to the assets, or the Restricted Subsidiary, that is to be sold.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(iii)",
+          "sourceExcerpt": "provided such restrictions and conditions apply only to such assets or the Restricted Subsidiary that is to be sold"
+        },
+        {
+          "itemId": "03561a07f0410cc673f11b121fa1a73715171eb4f7e8c5bce7811a533ed007ae",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[2].conditions[1]",
+          "numericValue": null,
+          "textValue": "The underlying sale is itself permitted under the Agreement.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(iii)",
+          "sourceExcerpt": "such sale is permitted hereunder"
+        },
+        {
+          "itemId": "371907e39a3926ddb01faec0c5bd64bb8e78c87ea42115ace2b2284a4b9cc210",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[3]",
+          "numericValue": null,
+          "textValue": "Clause (a) does not apply to restrictions or conditions imposed by any agreement relating to secured Indebtedness permitted by the Agreement, if such restrictions or conditions apply only to the property or assets securing such Indebtedness.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(iv)",
+          "sourceExcerpt": "clause (a) of the foregoing shall not apply to restrictions or conditions imposed by any agreement relating to secured Indebtedness permitted by this Agreement"
+        },
+        {
+          "itemId": "97fade9b9f2bfe367d46770a9ba4c2b31839460a383fa8d5e3689db87d81a815",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[3].conditions[0]",
+          "numericValue": null,
+          "textValue": "Restrictions apply only to the property or assets securing the permitted secured Indebtedness.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(iv)",
+          "sourceExcerpt": "if such restrictions or conditions apply only to the property or assets securing such Indebtedness"
+        },
+        {
+          "itemId": "f0b2a2540e4ccbf7c07cea448ce0410ef24908a52fa1b3a1cc6ba8ed485ad289",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:e8eb809ae82937dd9eff6216",
+          "irPath": "rules[0].exceptions[4]",
+          "numericValue": null,
+          "textValue": "Clause (a) does not apply to customary provisions in leases and other contracts restricting the assignment thereof.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(v)",
+          "sourceExcerpt": "clause (a) of the foregoing shall not apply to customary provisions in leases and other contracts restricting the assignment thereof"
+        },
+        {
+          "itemId": "eb9bde08c3b70c6497a92455d468c312fd2091310b0b07359760aa0130d27096",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(b)",
+          "sourceExcerpt": "the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interests or to make or repay loans or advances to any Borrower or any other Restricted Subsidiary or to Guarantee Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "d4c5e8ee71c04a0cb7fc042d214b9fea54441fb73e0af5fa118345b3a7034352",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(b)",
+          "sourceExcerpt": "the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interests or to make or repay loans or advances to any Borrower or any other Restricted Subsidiary or to Guarantee Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "cd02d8a1821fc661f763cec94a00fb702dad292b90c15daf8655442b0a66ef19",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(b)",
+          "sourceExcerpt": "the ability of any Restricted Subsidiary to pay dividends or other distributions with respect to any Equity Interests or to make or repay loans or advances to any Borrower or any other Restricted Subsidiary or to Guarantee Indebtedness of any Borrower or any other Restricted Subsidiary"
+        },
+        {
+          "itemId": "ee07b8279c5864fbbf23b9ba3b067f89c3363731e04259432f2e1cffc1de4b4f",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].exceptions[0]",
+          "numericValue": null,
+          "textValue": "Does not apply to restrictions and conditions imposed by any applicable law or by any Loan Document.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(i)",
+          "sourceExcerpt": "the foregoing shall not apply to restrictions and conditions imposed by any applicable law or by any Loan Document"
+        },
+        {
+          "itemId": "1cab04f2466a70f0c3387000ad5b836a72b32ac57421b4ceaf478c454b5fef9a",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].exceptions[1]",
+          "numericValue": null,
+          "textValue": "Does not apply to restrictions and conditions existing on the date hereof and identified on Schedule 6.10.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(ii)",
+          "sourceExcerpt": "the foregoing shall not apply to restrictions and conditions existing on the date hereof identified on Schedule 6.10"
+        },
+        {
+          "itemId": "0975055fba9728dcbac309b53ed8578d6898554800063c32dc389400e835e83a",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].exceptions[1].conditions[0]",
+          "numericValue": null,
+          "textValue": "Carve-out does not extend to any extension or renewal of, or any amendment or modification expanding the scope of, such existing restriction or condition.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(ii)",
+          "sourceExcerpt": "but shall apply to any extension or renewal of, or any amendment or modification expanding the scope of, any such restriction or condition"
+        },
+        {
+          "itemId": "23537ce34534dbaf2a9d0eeb16a469a4925f348bb35b168a979eb181ca2428ba",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].exceptions[2]",
+          "numericValue": null,
+          "textValue": "Does not apply to customary restrictions and conditions in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(iii)",
+          "sourceExcerpt": "the foregoing shall not apply to customary restrictions and conditions contained in agreements relating to the sale of assets or a Restricted Subsidiary pending such sale"
+        },
+        {
+          "itemId": "632b234feb1b41bbf7754a3eadc80901d1761abe1c7a3a9acb7f6cefd792a5d8",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].exceptions[2].conditions[0]",
+          "numericValue": null,
+          "textValue": "Such restrictions and conditions apply only to the assets, or the Restricted Subsidiary, that is to be sold.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(iii)",
+          "sourceExcerpt": "provided such restrictions and conditions apply only to such assets or the Restricted Subsidiary that is to be sold"
+        },
+        {
+          "itemId": "c04a26e01fc5612e5a52b6983b8dcfc3a723040746a4c08312d008b51a828f02",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:d059f37748ce6c764a4358f6",
+          "irPath": "rules[1].exceptions[2].conditions[1]",
+          "numericValue": null,
+          "textValue": "The underlying sale is itself permitted under the Agreement.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.10(iii)",
+          "sourceExcerpt": "such sale is permitted hereunder"
+        }
+      ],
+      "ruleCount": 2,
+      "definitionCount": 0,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "reality-check-candidate:cross-reference-dsgr",
+      "items": [
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7f15bfddc4619a6bae63b234dda0fbd17694deabf0cf0227a5b579564db7a1d7",
+            "kind": "RATIO",
+            "rawText": "3.00 to 1.00",
+            "numericValue": 3,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 2751,
+            "charEnd": 2763
+          },
+          "irItems": [],
+          "reason": "source RATIO 3 (from \"3.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8492b133491f089c91b0b8503348be564aad8c015e50169b6372b07ab3bbf39c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restrictive Agreements",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 14,
+            "charEnd": 36
+          },
+          "irItems": [],
+          "reason": "source mention \"Restrictive Agreements\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "dd4e9ece4377eb39509181f3379df6acfdd6b8d527285c0107ef9d6409422987",
+            "kind": "METRIC_MENTION",
+            "rawText": "No Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 39,
+            "charEnd": 52
+          },
+          "irItems": [],
+          "reason": "source mention \"No Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3e24eec4ad9178a81244747c3fdd85e806a99831291a57429baf25332be966b2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 82,
+            "charEnd": 103
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6afabfa724c14e69848847e8a536a3b10887141a6e3b8c4e5646dfd801c65583",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 283,
+            "charEnd": 293
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f2cfc041dbfad534e071da521bdcd9ee32ae63a5171e045040559d99bb8f92a0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 301,
+            "charEnd": 322
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "63e229ae44b26d52be54f9dca723b8e03011df804b0428694731ebcce53f1ee0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 430,
+            "charEnd": 451
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3bb0cedb67f26c64fe071ce1a3bdcd7d91e7a76bb9f64f57ccd009845e77070e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Equity Interests",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 512,
+            "charEnd": 528
+          },
+          "irItems": [],
+          "reason": "source mention \"Equity Interests\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8795d0e229c6decee9c7fc0405464f4be10bdf9cf0a3143d2fd73b84813abba9",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 596,
+            "charEnd": 617
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0720ba07cd1e22e1fdd4e7bba8e00c318ce194688465f094f0ce1d7e59d8a10f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Guarantee Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 624,
+            "charEnd": 646
+          },
+          "irItems": [],
+          "reason": "source mention \"Guarantee Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f1d17ed88136093f9a2e82be1a52398931d081b0f8df05651ccd66c3b4be22a8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 676,
+            "charEnd": 697
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9b9903d29f042dcac52b0c15892be08299c8bea7a3d60be91fba60f3694398d2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Document",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 818,
+            "charEnd": 831
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Document\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2173ee17205129c906c8b6402f83ff920ef1bb7ba2999990ab280137474cd2f1",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 1234,
+            "charEnd": 1255
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "58db6c2fc30462215cdb72011c0481aae711888ded30075a440ae26081847f93",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 1350,
+            "charEnd": 1371
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "18941551c2625872786af1f95a74aaddc6d0da3619f060b67e6a369e80fa3f95",
+            "kind": "METRIC_MENTION",
+            "rawText": "Material Documents",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 1883,
+            "charEnd": 1901
+          },
+          "irItems": [],
+          "reason": "source mention \"Material Documents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2003d14a959ded5cb473ee4735c568af0ac20482e001629b187a9ff1fa0130f2",
+            "kind": "METRIC_MENTION",
+            "rawText": "No Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 1904,
+            "charEnd": 1917
+          },
+          "irItems": [],
+          "reason": "source mention \"No Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b6e525c1a0066ed91f1a42a3d90965087a02e5d9964506934629db23d300fa9b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 1947,
+            "charEnd": 1968
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "17561cccdfabe58d79fb1c46d12a1af0fe512efa70432274ef9b306152115309",
+            "kind": "METRIC_MENTION",
+            "rawText": "Subordinated Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 2054,
+            "charEnd": 2079
+          },
+          "irItems": [],
+          "reason": "source mention \"Subordinated Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "bfde2f06e2625efcd462b729ddfd7c8fd6234627461451efd2352b25ca06691a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Closing Date Acquisition Document",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 2089,
+            "charEnd": 2122
+          },
+          "irItems": [],
+          "reason": "source mention \"Closing Date Acquisition Document\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aade806f2356b943b224bc28fa752f8583d7a86d9c4f07aff1e694b6dbcae1b8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Financial Covenants",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 2440,
+            "charEnd": 2459
+          },
+          "irItems": [],
+          "reason": "source mention \"Financial Covenants\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8df0cd132d63a5754f3c6702e4c5779c249f253e23c796b8d577d4d4b58fe3b7",
+            "kind": "METRIC_MENTION",
+            "rawText": "Interest Coverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 2467,
+            "charEnd": 2490
+          },
+          "irItems": [],
+          "reason": "source mention \"Interest Coverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "beb201e86e9257519ae8417919b50ea2985c0d8e0d4162ee1aa1ccc514f4c526",
+            "kind": "METRIC_MENTION",
+            "rawText": "The Company",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 2493,
+            "charEnd": 2504
+          },
+          "irItems": [],
+          "reason": "source mention \"The Company\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d8e61d2871f297aceabb9a5cfb5abbf51e11ffb5fe1a63c69833a352204d6245",
+            "kind": "METRIC_MENTION",
+            "rawText": "Interest Coverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 2525,
+            "charEnd": 2548
+          },
+          "irItems": [],
+          "reason": "source mention \"Interest Coverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "84d60a689a060b0e2348879c7a0701fc4ea93770dd6d9c2da4f6e682d31cf6bd",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.10",
+            "structuralNodeKey": null,
+            "charStart": 2770,
+            "charEnd": 2794
+          },
+          "irItems": [],
+          "reason": "source mention \"Total Net Leverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 6 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c)) but only 2 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        }
+      ],
+      "materialUnresolvedCount": 2
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T19:07:04.429Z"
+  }
+}

@@ -167,15 +167,15 @@ describe("Unit A (S1-S20) - dense multi-clause synthetic definition matrix", () 
     expect(result.totalComponentCount).toBe(result.wellTypedComponentCount + result.unsupportedComponentCount);
   });
 
-  it("S13 (deeply nested poison, two levels): a poisoned MULTIPLY nested inside a well-typed ADD is itself preserved as a single unsupported sub-component, distinct from its 9 well-typed siblings - the nested collapse does not cascade back up and destroy the 9 siblings", () => {
+  it("S13 (deeply nested poison, two levels): a poisoned MULTIPLY nested inside a well-typed ADD is itself descended into (not treated as one opaque leaf), distinct from its 9 well-typed siblings - the nested collapse does not cascade back up and destroy the 9 siblings", () => {
     const operands: WireExpression[] = [];
     for (let i = 1; i <= 9; i++) operands.push(metric(`Clause ${i}`));
     operands.push({ kind: "MULTIPLY", operands: [{ kind: "PERCENT", value: 0.1 }, unsupported("nested base metric unresolved")] });
     const expr = compile({ kind: "ADD", operands });
     expect(expr.kind).toBe("UNSUPPORTED");
     const result = checkIntraDefinitionComponentCompleteness(expr);
-    // the nested MULTIPLY collapses to ONE unsupported leaf at this level (its own inner attempt is not expanded further by this diagnostic) - exactly 1, not 2, proving the nested failure does not fan out and swallow its siblings.
-    expect(result.unsupportedComponentCount).toBe(1);
+    // The diagnostic recurses into a nested UNSUPPORTED node's own attemptedStructure (docs/final-semantic-decomposition/03's own fix) rather than treating it as one opaque leaf - so the poisoned MULTIPLY itself (1) plus its own genuinely-unsupported leaf child (1) both count, while its OWN well-typed PERCENT operand also surfaces as visible structure. Exactly 2 unsupported (the wrapper + the true leaf cause), never fanning out to swallow the 9 well-typed siblings.
+    expect(result.unsupportedComponentCount).toBe(2);
     expect(result.wellTypedComponentCount).toBeGreaterThanOrEqual(9); // the 9 sibling clauses all survive
     expect(result.totalComponentCount).toBe(result.wellTypedComponentCount + result.unsupportedComponentCount);
   });

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "IMPLEMENTATION_RESULTS",
+  "requirement": "Implement the smallest evidence-supported semantic decomposition improvement: domain general, whole-agreement capable, no financial-term/provision-name dictionary, no package-specific logic, explicit material-component accounting, provenance preserved, deterministic completeness comparison, no weakening of independent verification/unsupported semantics/executability.",
+  "productionFilesChanged": ["lib/contract-model/compiler/semantic/completeness-check.ts"],
+  "change": "checkIntraDefinitionComponentCompleteness's internal walk() function now recurses into a nested UNSUPPORTED node's own attemptedStructure sidecar (when present) instead of treating every nested UNSUPPORTED wrapper as one opaque, unexplored leaf. A defensive MAX_WALK_DEPTH=200 bound was added (content-derived trees are always finite; this is a fail-safe only, never expected to trigger on real data).",
+  "verifiedEffect": {
+    "targetCase": "B2's Applicable Rate (tests/fixtures/unseen-packages/post-holdout-semantic-remediation-rerun/holdout-applicable-liquidity-rate.json, already-paid real holdout data, re-scored at zero marginal cost)",
+    "before": "applicable=true, total=4, wellTyped=2, unsupported=2 (50% visibility)",
+    "after": "applicable=true, total=55, wellTyped=43, unsupported=12 (78% visibility, and the true depth/breadth of the 8-level nested pricing-grid chain is now fully exposed for the first time)",
+    "genericityConfirmed": "No IF-chain-specific, pricing-grid-specific, or EBITDA/Applicable-Rate-specific code was added - the fix is a single, generic change to how ANY nested UNSUPPORTED wrapper is walked, verified against the real B2 data purely as a before/after measurement, never as a tuning target."
+  },
+  "genericSyntheticTestsAdded": {
+    "files": ["tests/contract-model/final-semantic-decomposition-whole-agreement.test.ts (36 tests, S1-S35 plus S6b)", "tests/contract-model/post-holdout-semantic-remediation-unit-a.test.ts (S13 updated to reflect the new, more accurate recursive-descent counts)"],
+    "result": "36/36 new whole-agreement tests pass; all 20 pre-existing S1-S20 Unit-A tests pass (1 updated assertion, S13, to match the corrected/more-accurate recursive count; the underlying safety property it tests - siblings survive a nested failure - is unchanged and still verified)."
+  },
+  "additionalDisclosedFinding": {
+    "finding": "RULE_REFERENCE's own IR type is CAPACITY (types.ts), which is NOT a member of MONEY_NUMBER_RATIO - so RULE_REFERENCE cannot compose arithmetically inside an ADD/SUM/SUBTRACT alongside MONEY-typed operands (S6's own original test design attempted this and correctly failed at the type-check layer, revealing the real, narrow rule rather than a test bug in the production sense). RULE_REFERENCE is designed to stand ALONE as an entire capacityExpression (referencing another rule's whole capacity, e.g. a refinancing basket capped at exactly a prior rule's own remaining room), not to participate as one addend among several MONEY-typed figures. The corrected S6 uses METRIC_REFERENCE (a real dollar figure, e.g. 'principal amount refinanced') for that shape instead, which is the domain-correct construct and composes cleanly (S6b separately confirms RULE_REFERENCE's own real, standalone use case still works). Not fixed as a production change - genuinely narrow, not disruptive to any real holdout claim, and consistent with the mission's own 'do not introduce schema migration unless truly unavoidable' discipline - disclosed here as a real, honest finding from the whole-agreement audit rather than silently worked around in the test."
+  },
+  "notImplemented": {
+    "inventorySchemaPassA": "see 04 - not built, OPTION 1 selected",
+    "compositionPassB": "see 05 - not built, OPTION 1 selected",
+    "reconciliationPassC": "see 06 - not built, OPTION 1 selected; its underlying requirement is served by this session's actual change"
+  }
+}

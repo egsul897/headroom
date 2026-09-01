@@ -1,0 +1,2203 @@
+{
+  "region": {
+    "id": "financial-covenant-dsgr",
+    "family": "FINANCIAL_COVENANT",
+    "documentId": "dsgr-a",
+    "sourceSectionRef": "6.12",
+    "charStart": 476724,
+    "chars": 3500,
+    "structuralNodeKeys": [
+      "dsgr-a::6.11(a)"
+    ]
+  },
+  "operativeSourceText": "SECTION 6.12. Financial Covenants .\n\n(a) Interest Coverage Ratio . The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters\nof the Company ending on the last day of any fiscal quarter of the Company (commencing with the fiscal quarter ending June 30, 2022), to be less than 3.00 to 1.00.\n\n(b) Total Net Leverage Ratio . The Company will not permit the Total Net Leverage Ratio, on the last day of any fiscal quarter of the\nCompany ending on or after June 30, 2022, to be greater than (i) 4.00 to 1.00 as of the end of each fiscal quarter of the Company ending on or after June 30, 2022 but prior to March 31, 2024, (ii) 3.75 to 1.00 as of the\nend of each fiscal quarter of the Company ending on or after March 31, 2024 but prior to March 31, 2026 and (iii) 3.50 to 1.00 as of the end of each fiscal quarter of the Company ending on or after March 31, 2026; provided\nthat, upon the written request of the Borrower Representative delivered to the Administrative Agent in connection with any Material Acquisition, the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as\napplicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00 (any such period of four consecutive fiscal quarters being referred to\nas a “ Total Net Leverage Ratio Adjustment ”); provided further, however, that such Total Net Leverage Ratio Adjustment shall occur (i) only twice during the term of this Agreement, and (ii) only to the extent that no\nEvent of Default has then occurred and is continuing. Promptly following receipt of notice from the Borrower Representative of its election to give effect to a Total Net Leverage Ratio Adjustment, the Administrative Agent shall give written notice\nof the Total Net Leverage Ratio Adjustment to the Lenders, and this Agreement shall be automatically amended, without any further action by any party, to reflect such Total Net Leverage Ratio Adjustment.\n\nARTICLE VII\n\nEvents of Default\n\nSECTION 7.01. Events of Default . Any of the following events shall constitute an “Event of Default”:\n\n(a) the Borrowers shall fail to pay any principal of any Loan or any reimbursement obligation in respect of any LC Disbursement when and as the\nsame shall become due and payable, whether at the due date thereof or at a date fixed for prepayment thereof or otherwise;\n\n(b) the\nBorrowers shall fail to pay any interest on any Loan or any fee or any other amount (other than an amount referred to in Section 7.01(a)) payable under this Agreement or any other Loan Document, when and as the same shall become due and\npayable, and such failure shall continue unremedied for a period of three (3) Business Days;\n\n117\n\n(c) any representation or warranty made or deemed made by or on behalf of any Loan Party or\nany Restricted Subsidiary in, or in connection with, this Agreement or any other Loan Document or any amendment or modification hereof or thereof or waiver hereunder or thereunder, or in any report, certificate, financial statement or other document\nfurnished pursuant to or in connection with this Agreement or any other Loan Document or any amendment or modification hereof or thereof or waiver hereunder or thereunder, shall prove to have been incorrect in any material respect when made or\ndeemed made;\n\n(d) any Loan Party shall fail to observe or perform any covenant, condition or ",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:8304c82294ebb5408d509a42",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.12(a)",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "RATIO_TEST",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "COMPARE",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:520001e7694914f917be2af5",
+            "left": {
+              "kind": "METRIC_REFERENCE",
+              "type": "RATIO",
+              "metricName": "Interest Coverage Ratio",
+              "companyId": "final-semantic-decomposition-reality-check",
+              "instrumentKey": "reality-check-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:9b42bea6f9d7a2f4bc6c2c66"
+            },
+            "operator": "GTE",
+            "right": {
+              "kind": "RATIO",
+              "type": "RATIO",
+              "value": 3,
+              "provenance": {
+                "documentId": "dsgr-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.12(a)",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:b73854b374adb2ebf4ec10db"
+            },
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.12(a)",
+              "excerpt": null
+            }
+          },
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.12",
+            "excerpt": null
+          }
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Threshold and testing period are stated explicitly in the operative text; no amendment history."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.12(a)",
+          "excerpt": "The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters ... to be less than 3.00 to 1.00."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:5ceff754e02b7ea72594ba99",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.12(b)",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "RATIO_TEST",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "COMPARE",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:1f85f336ef61a5c938864799",
+            "left": {
+              "kind": "METRIC_REFERENCE",
+              "type": "RATIO",
+              "metricName": "Total Net Leverage Ratio",
+              "companyId": "final-semantic-decomposition-reality-check",
+              "instrumentKey": "reality-check-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:5c48b9d488d5eb7ab9b8bfdc"
+            },
+            "operator": "LTE",
+            "right": {
+              "kind": "SCHEDULE",
+              "type": "RATIO",
+              "exprId": "ir-expr:6ba65b1cab94df45a1375309",
+              "cases": [
+                {
+                  "from": "2022-06-30",
+                  "to": "2024-03-30",
+                  "description": "fiscal quarters ending on or after June 30, 2022 but prior to March 31, 2024",
+                  "value": {
+                    "kind": "RATIO",
+                    "type": "RATIO",
+                    "value": 4,
+                    "provenance": {
+                      "documentId": "dsgr-a",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§6.12(b)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:4a72e0bd4454e1c6ef62c5f9"
+                  }
+                },
+                {
+                  "from": "2024-03-31",
+                  "to": "2026-03-30",
+                  "description": "fiscal quarters ending on or after March 31, 2024 but prior to March 31, 2026",
+                  "value": {
+                    "kind": "RATIO",
+                    "type": "RATIO",
+                    "value": 3.75,
+                    "provenance": {
+                      "documentId": "dsgr-a",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§6.12(b)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:0b65acd9a468ae10859a5ebc"
+                  }
+                }
+              ],
+              "defaultValue": {
+                "kind": "RATIO",
+                "type": "RATIO",
+                "value": 3.5,
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.12(b)",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:7d206ae4bc66409d69d31aea"
+              },
+              "provenance": {
+                "documentId": "dsgr-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.12(b)",
+                "excerpt": null
+              }
+            },
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.12(b)",
+              "excerpt": null
+            }
+          },
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.12",
+            "excerpt": null
+          }
+        },
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r2].exception[0]",
+            "appliesToRuleId": "ir-rule:5ceff754e02b7ea72594ba99",
+            "description": "Upon written election by the Borrower Representative in connection with a Material Acquisition, the applicable maximum ratio for the following four fiscal quarters is increased by 0.50 to 1.00 (the 'Total Net Leverage Ratio Adjustment'), subject to conditions in the referenced permission rule.",
+            "permissionRuleId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.12(b)",
+              "excerpt": null
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Stepped thresholds and effective date ranges are stated explicitly in the operative text; no amendment history."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.12(b)",
+          "excerpt": "...not to be greater than (i) 4.00 to 1.00 ... (ii) 3.75 to 1.00 ... and (iii) 3.50 to 1.00 as of the end of each fiscal quarter ... ending on or after March 31, 2026."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.12(b)",
+        "covenantFamily": "FINANCIAL_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "EVENT_ACTIVE",
+          "type": "BOOLEAN",
+          "exprId": "ir-expr:e961901635e9f83242724d05",
+          "eventDescription": "Consummation of a Material Acquisition, upon written request of the Borrower Representative delivered to the Administrative Agent",
+          "triggerCondition": null,
+          "activeDuration": "the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition",
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.12(b)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r3].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": "d1",
+            "description": "Written request delivered by the Borrower Representative to the Administrative Agent in connection with a Material Acquisition",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.12(b)",
+              "excerpt": "upon the written request of the Borrower Representative delivered to the Administrative Agent in connection with any Material Acquisition"
+            }
+          },
+          {
+            "conditionId": "rule[r3].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Such Total Net Leverage Ratio Adjustment shall occur only twice during the term of the Agreement",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.12(b)",
+              "excerpt": "such Total Net Leverage Ratio Adjustment shall occur (i) only twice during the term of this Agreement"
+            }
+          },
+          {
+            "conditionId": "rule[r3].condition[2]",
+            "conditionType": "NO_DEFAULT",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The adjustment applies only to the extent no Event of Default has occurred and is continuing",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.12(b)",
+              "excerpt": "(ii) only to the extent that no Event of Default has then occurred and is continuing"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRuleId": "ir-rule:5ceff754e02b7ea72594ba99",
+            "description": "Temporarily increases the applicable maximum Total Net Leverage Ratio under §6.12(b)(i), (ii) or (iii) by 0.50 to 1.00 for the specified four-quarter window."
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The adjustment mechanics, amount, frequency cap, and default-gate are all stated explicitly in the operative text.",
+          "ruleType \"COVENANT_THRESHOLD_ADJUSTMENT\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "condition[1].conditionType \"FREQUENCY_LIMIT\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].relationshipType \"MODIFIES\" not recognized - defaulted to REQUIRES"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.12(b)",
+          "excerpt": "the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as applicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:673959475f579ccb88b5ed72",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Material Acquisition",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"OR\")",
+          "reason": "OR operands do not type-check together under the IR's own composition rules",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "Material Acquisition definition",
+            "excerpt": null
+          },
+          "attemptedStructure": {
+            "kind": "OR",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:4a19e4cfcaeb9558695d7208",
+            "operands": [
+              {
+                "kind": "DEFINED_TERM_REFERENCE",
+                "type": "MONEY",
+                "termName": "TEquipment Acquisition",
+                "companyId": "final-semantic-decomposition-reality-check",
+                "instrumentKey": "reality-check-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:16321d587832755c99b5bd3f"
+              },
+              {
+                "kind": "COMPARE",
+                "type": "BOOLEAN",
+                "exprId": "ir-expr:7c56d73f19e2e32316c5e6d2",
+                "left": {
+                  "kind": "TRANSACTION_INPUT_REFERENCE",
+                  "type": "MONEY",
+                  "inputName": "aggregate total consideration of the acquisition",
+                  "exprId": "ir-expr:769f225e8ade0e51e69884a0"
+                },
+                "operator": "GT",
+                "right": {
+                  "kind": "MONEY",
+                  "type": "MONEY",
+                  "amount": 75000000,
+                  "currency": "USD",
+                  "provenance": {
+                    "documentId": "dsgr-a",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "Material Acquisition definition",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:9f1c4188deb6873eb0a94c8c"
+                },
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "Material Acquisition definition",
+                  "excerpt": null
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "Material Acquisition definition",
+              "excerpt": null
+            }
+          },
+          "exprId": "ir-expr:e414f0b380981a31f67658d3"
+        },
+        "dependsOnTerms": [
+          "TEquipment Acquisition",
+          "TestEquity Acquisition Agreement"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Prong (a) refers to the 'TEquipment Acquisition' as described in the Company Disclosure Schedule to the TestEquity Acquisition Agreement, neither of which was included in the supplied evidence; represented only as an unresolved DEFINED_TERM_REFERENCE.",
+          "Prong (b), the $75,000,000 aggregate consideration threshold, is fully represented.",
+          "OR operands do not type-check together under the IR's own composition rules"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.12",
+          "excerpt": "\"Material Acquisition\" means (a) the TEquipment Acquisition (as described in the Company Disclosure Schedule described in the TestEquity Acquisition Agreement) and (b) any acquisition with an aggregate total consideration in excess of $75,000,000."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T18:56:45.591Z",
+      "inputTokens": 32097,
+      "outputTokens": 12005,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 107194,
+      "calculatedCostUsd": 0.18424400000000002
+    }
+  },
+  "verify": {
+    "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "1f5a962c4056e4170d02dae63519a6389c4a0ca88584e4185ae93816453e213d",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+        "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+        "irPath": "rules[2] (ir-rule:9b7acf5fb4d7bbddce84f90f).capacityExpression / rules[1].exceptions[0]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as applicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00",
+        "sourceCitation": "§6.12(b)",
+        "proposedIrEvidence": "r3's capacityExpression is kind=EVENT_ACTIVE (a boolean 'is the adjustment window active' flag) with no numeric ratio field; the +0.50 magnitude appears only as free-text in dependsOn.description ('increases... by 0.50 to 1.00') and in the exception.description on r2, never as a structured RATIO value used to actually modify the SCHEDULE thresholds (4.00/3.75/3.50) in r2.",
+        "verifierReasoning": "The source ties a concrete, operative numeric adjustment (0.50x) to the Material Acquisition election. The proposed IR never encodes this number as a computable value anywhere - only as prose in description fields, which a compliance engine cannot execute. This means the IR, as structured, cannot actually compute the adjusted covenant threshold during an active Total Net Leverage Ratio Adjustment window, even though both the exception-bearing rule (r2) and the permission rule (r3) are marked sufficiency COMPLETE. This directly confirms the deterministic signal that RATIO 0.5 never appears in the compiled IR, and is a real, operative gap, not a mere citation nuance.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:58:42.297Z"
+      },
+      {
+        "findingId": "f27a33997c0b603a07a140b0417a24b61b8d23094dc33141666155f8c3d25bc1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+        "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+        "irPath": "rules[2].conditions[1] / rules[2].sufficiency",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "such Total Net Leverage Ratio Adjustment shall occur (i) only twice during the term of this Agreement, and (ii) only to the extent that no Event of Default has then occurred and is continuing",
+        "sourceCitation": "§6.12(b)",
+        "proposedIrEvidence": "conditions[1] has conditionType 'UNSUPPORTED' with description 'Such Total Net Leverage Ratio Adjustment shall occur only twice during the term of the Agreement', yet the parent rule's top-level 'sufficiency' field is 'COMPLETE'.",
+        "verifierReasoning": "The IR itself internally flags that it could not formally represent the 'only twice during the term of this Agreement' cap - a real, independently operative restriction that limits how many times the 0.50 adjustment can be invoked over the life of the facility. Marking the enclosing rule COMPLETE while one of its own conditions is tagged UNSUPPORTED is an internally inconsistent and overconfident sufficiency claim; a downstream consumer trusting COMPLETE could allow a third or later invocation of the adjustment in violation of the source's twice-only limit.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:58:42.297Z"
+      },
+      {
+        "findingId": "c1965d311be462f9657cd38138e29bb6b7a45b389b7ef64b70de7c63173ffd8e",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+        "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+        "irPath": "rules[2].conditions[0].referencesDefinitionId",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "upon the written request of the Borrower Representative delivered to the Administrative Agent in connection with any Material Acquisition",
+        "sourceCitation": "§6.12(b)",
+        "proposedIrEvidence": "conditions[0].referencesDefinitionId is the literal string 'd1', but the only definition object present in the IR's definitions array has definitionId 'ir-definition:673959475f579ccb88b5ed72' (termName 'Material Acquisition'). No definition with id 'd1' exists anywhere in the proposed IR.",
+        "verifierReasoning": "The condition is plainly intended to depend on the 'Material Acquisition' definition (its own description names 'Material Acquisition'), but the reference id used does not resolve to any actual definition object in the document. This breaks the structural link between the adjustment condition and the (already troubled/PARTIAL) Material Acquisition definition, so a consuming system cannot programmatically confirm what counts as a qualifying acquisition for purposes of triggering the adjustment.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:58:42.297Z"
+      },
+      {
+        "findingId": "7c726580891b9e4afbdec24d30f48e1bc73e16e031a288837b0f643554bfe4a4",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+        "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+        "irPath": "rules[0].capacityExpression.gatedBy",
+        "findingType": "MISSING_CONDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "for any period of four consecutive fiscal quarters of the Company ending on the last day of any fiscal quarter of the Company (commencing with the fiscal quarter ending June 30, 2022), to be less than 3.00 to 1.00",
+        "sourceCitation": "§6.12(a)",
+        "proposedIrEvidence": "rules[0].capacityExpression.gatedBy is a bare, time-unbounded COMPARE (ICR GTE 3) with no date/period restriction anywhere in the rule, unlike rules[1] (the Total Net Leverage Ratio rule) which explicitly encodes date boundaries via a SCHEDULE structure.",
+        "verifierReasoning": "The source expressly scopes the Interest Coverage Ratio test to fiscal quarters commencing with the quarter ending June 30, 2022 - an operative temporal boundary on when the covenant is even tested. The proposed IR for §6.12(a) omits this boundary entirely and is marked sufficiency COMPLETE, creating an inconsistency with how the sibling rule (§6.12(b)) meticulously captures its own date tiers. A reviewer relying on the IR could not tell that the covenant is inapplicable to periods ending before June 30, 2022.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:58:42.297Z"
+      },
+      {
+        "findingId": "aef1e6b9f45640b9614500935b5a4ea4e7263b9ddf84159451481cda09c8005e",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+        "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42;ir-rule:5ceff754e02b7ea72594ba99",
+        "irPath": "rules[0].capacityExpression.gatedBy.left.resolvedDefinitionId; rules[1].capacityExpression.gatedBy.left.resolvedDefinitionId",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "the Interest Coverage Ratio ... / the Total Net Leverage Ratio",
+        "sourceCitation": "§6.12(a); §6.12(b)",
+        "proposedIrEvidence": "Both METRIC_REFERENCE nodes carry 'resolvedDefinitionId': null, meaning the actual calculation definitions of 'Interest Coverage Ratio' and 'Total Net Leverage Ratio' (presumably defined elsewhere, e.g. a definitions article not included in this excerpt) are not linked, yet both enclosing rules are marked sufficiency 'COMPLETE'.",
+        "verifierReasoning": "Without a resolved link to how these ratios are actually calculated (numerator/denominator components, add-backs, etc.), the covenant's true operative meaning cannot be fully verified from what was provided, and Phase 2 already flagged an unresolved-context issue elsewhere in this same provision. Marking these rules COMPLETE while the metric definitions remain unresolved is a claim I cannot fully validate one way or the other from the evidence given, so I flag it as uncertain rather than a confirmed defect - it may be an expected artifact of how metric definitions are resolved in a later pass, or it may mask a real gap.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:58:42.297Z"
+      },
+      {
+        "findingId": "271fba470ed18c73ffd3da570d94622c858d27c97039bd0c7b6c82d5c420a5c7",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "0.50 to 1.00",
+        "sourceCitation": "6.12",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:56:45.593Z"
+      },
+      {
+        "findingId": "271fba470ed18c73ffd3da570d94622c858d27c97039bd0c7b6c82d5c420a5c7",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "6.12",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 7 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c), (d)) but only 3 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 7 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c), (d)) but only 3 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:56:45.593Z"
+      },
+      {
+        "findingId": "d767268aaf4866a7351e65e81078e35800dd6fd118c36b6b7445cdbb2d3e7747",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "WRONG_ENTITY_SCOPE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "6.12",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text distinguishes 3 distinct entity-scope term(s) (borrower, loan party, restricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text distinguishes 3 distinct entity-scope term(s) (borrower, loan party, restricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:56:45.593Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+      "items": [
+        {
+          "itemId": "0a93ecf558d842533278f143bbb95ab71faca3c54b57404938b93d0aabb19516",
+          "kind": "RATIO",
+          "rawText": "3.00 to 1.00",
+          "numericValue": 3,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 325,
+          "charEnd": 337
+        },
+        {
+          "itemId": "706551d01910434136932dfe03c34e821b0d240784794981f826a6e67967cf00",
+          "kind": "RATIO",
+          "rawText": "4.00 to 1.00",
+          "numericValue": 4,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 539,
+          "charEnd": 551
+        },
+        {
+          "itemId": "cd75ba0b79d7d1a75ae0c1c673a9908473d80abd90e256e49d11de930d99022e",
+          "kind": "RATIO",
+          "rawText": "3.75 to 1.00",
+          "numericValue": 3.75,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 671,
+          "charEnd": 683
+        },
+        {
+          "itemId": "a1f852d7685019b6c98d91baab0ecf818d3142bde02c640fa8b5989b73ffbac7",
+          "kind": "RATIO",
+          "rawText": "3.50 to 1.00",
+          "numericValue": 3.5,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 808,
+          "charEnd": 820
+        },
+        {
+          "itemId": "4d90b0b4e6035b0aa79f7b5203bd5eeeabf4db832998867fbcffd2206449c8e5",
+          "kind": "RATIO",
+          "rawText": "0.50 to 1.00",
+          "numericValue": 0.5,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1319,
+          "charEnd": 1331
+        },
+        {
+          "itemId": "4bbfeee3b009139a50542f83e5e7555a2c2dd3a39f8efdd98d14b6f67a0687c3",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided\nthat",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 908,
+          "charEnd": 921
+        },
+        {
+          "itemId": "97288d732c155800142428a14f32213e0ec94973d9d7b220341ca914a6596fe4",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1450,
+          "charEnd": 1458
+        },
+        {
+          "itemId": "923c59486ae230ca83fcf9c6c41e2793e1a4e7cf6f38ef12a3b11d17b6b2301a",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "no\nEvent of Default",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1618,
+          "charEnd": 1637
+        },
+        {
+          "itemId": "7d995e8960e20438674813e08921ce0d6a79bd1475e406089e3809584032fc86",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "to the extent that",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1599,
+          "charEnd": 1617
+        },
+        {
+          "itemId": "bd2acf43210440e2b800b0fb26bac37883a92305621138318491db514d275582",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2570,
+          "charEnd": 2580
+        },
+        {
+          "itemId": "90b99fe2d6c6c743c4d4406cb8808813cf2a9a47b9365349e72424ecc73d9091",
+          "kind": "PROVISO_MARKER",
+          "rawText": "provided further",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1450,
+          "charEnd": 1466
+        },
+        {
+          "itemId": "3ccbddaa414827d5f3653c47e2f16e828e4977a3013a603cb060a1a5e8476cc1",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 955,
+          "charEnd": 963
+        },
+        {
+          "itemId": "cbaa4ab68475453c980302979dc3ad154bc3f84b920e0054d53b21f70e9d7201",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1721,
+          "charEnd": 1729
+        },
+        {
+          "itemId": "0615a3646a1ab90fcadfca47d62f455b6f426c7f31ab6e1d0c27c975cb737c1d",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2899,
+          "charEnd": 2909
+        },
+        {
+          "itemId": "2f2f5524e31096a0f09bca0289e63bf5c122a2d5288bc45bec5b290e3bb8af56",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2917,
+          "charEnd": 2938
+        },
+        {
+          "itemId": "d99e9e2297aa04473e435c8c226cc25ea70d665dc5acb0bc787306c8b1050b62",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 3429,
+          "charEnd": 3439
+        },
+        {
+          "itemId": "41479e265bee40a30a5345dd38a48268863dc686f5074d3f271c2663e3156b23",
+          "kind": "METRIC_MENTION",
+          "rawText": "Financial Covenants",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 14,
+          "charEnd": 33
+        },
+        {
+          "itemId": "c75ceea682d8b7579d772cf54d62072b58194301f81eb455890ac88ef6be7895",
+          "kind": "METRIC_MENTION",
+          "rawText": "Interest Coverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 41,
+          "charEnd": 64
+        },
+        {
+          "itemId": "e58685c2449cba6362e27246c8ae2709f20498adc28cd398a6d5597c7ff6884f",
+          "kind": "METRIC_MENTION",
+          "rawText": "The Company",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 67,
+          "charEnd": 78
+        },
+        {
+          "itemId": "d8eba0a476580501a9ee156732d52cd542aec48410a48328a28c59a423ac1d69",
+          "kind": "METRIC_MENTION",
+          "rawText": "Interest Coverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 99,
+          "charEnd": 122
+        },
+        {
+          "itemId": "89f83e6277cb0933c87f5c4774501f96de191bf5f9d5e20676428212b98354d2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 344,
+          "charEnd": 368
+        },
+        {
+          "itemId": "a4bfd219672276c2710ebefdf23ae627f5eeb582a42fec3d6c7ea1ea1b935721",
+          "kind": "METRIC_MENTION",
+          "rawText": "The Company",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 371,
+          "charEnd": 382
+        },
+        {
+          "itemId": "4cdf4197fd67b5285a08621ac399f1e7aaeb061d77103b9f81d4cd0550432a1f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 403,
+          "charEnd": 427
+        },
+        {
+          "itemId": "244ff14d832957cea967ffcd202e71b44665c46b9afd166bcafca7c5eed3dd1b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Borrower Representative",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 955,
+          "charEnd": 978
+        },
+        {
+          "itemId": "7c41355ee59fad3d471843dd1126a147089a43afa155abd76a7f0dcc82ad2930",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 996,
+          "charEnd": 1016
+        },
+        {
+          "itemId": "e57adcbf0eb6dba4dcdc76ee0810761cf92b5991b753b72d82da44cc7ca8ea84",
+          "kind": "METRIC_MENTION",
+          "rawText": "Material Acquisition",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1040,
+          "charEnd": 1060
+        },
+        {
+          "itemId": "a07a990039a651da356b8cded33702ef9813cac8a6ed64d1f9b843ca6c5f98f3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1074,
+          "charEnd": 1098
+        },
+        {
+          "itemId": "ed44c699fed76c72bf9dfeaea94780c6a66a6ed77e37bdee63a22e628ba80933",
+          "kind": "METRIC_MENTION",
+          "rawText": "Material Acquisition",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1276,
+          "charEnd": 1296
+        },
+        {
+          "itemId": "9f52c2733ad75c82ec1d419910a6b3f0fd2418b2c42bec39509d191e5b2afa96",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1410,
+          "charEnd": 1434
+        },
+        {
+          "itemId": "54daf84f93e3e4d97aa8473dcf2103f4efb12fed2015d34a4f4110049554e1ac",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1487,
+          "charEnd": 1511
+        },
+        {
+          "itemId": "5ddda6a433c0d23c91089350c9416460c77ef24813762f5719750f2e6abecf43",
+          "kind": "METRIC_MENTION",
+          "rawText": "Borrower Representative",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1721,
+          "charEnd": 1744
+        },
+        {
+          "itemId": "54c2bd72f1eb0c4ec2941849294515346e79dec8a5bc4c834940b19e65adf44a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1781,
+          "charEnd": 1805
+        },
+        {
+          "itemId": "ebc93d5d57cd2abc859204eb9968c587fc7cda83da580197a015f54dd3c492a1",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1822,
+          "charEnd": 1842
+        },
+        {
+          "itemId": "df0eb48cfc5338ea2f832bb693e4115892813164dbcee28cb3ea7fc86e44eccb",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 1876,
+          "charEnd": 1900
+        },
+        {
+          "itemId": "94c9040c0ef679419d22a34e379de6dbedb31b322e9ff1597c9ffd61f5435055",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2036,
+          "charEnd": 2060
+        },
+        {
+          "itemId": "ab8fd3bceccad067025295e29bae7630961e397e3bd43f35d8ede983acb8dbf0",
+          "kind": "METRIC_MENTION",
+          "rawText": "ARTICLE VII",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2074,
+          "charEnd": 2085
+        },
+        {
+          "itemId": "2d1ec441f3c755f38f48ed784c1d91d6598f162a1191121552d10d73fe5996d5",
+          "kind": "METRIC_MENTION",
+          "rawText": "LC Disbursement",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2321,
+          "charEnd": 2336
+        },
+        {
+          "itemId": "eea195b5a13747c8b854b8adbe7b4f9272344c37904c09880db6a69a1450d453",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Document",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2665,
+          "charEnd": 2678
+        },
+        {
+          "itemId": "dde9c26c7c57c42a130debae9fa4b3e1501d4fc384836a304a922dc7c33b14b2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Business Days",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2800,
+          "charEnd": 2813
+        },
+        {
+          "itemId": "cfa4d053f5872174745d18321cdf2d28d5f2bbe3e26d08f4313d583df1f0d8cd",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2899,
+          "charEnd": 2909
+        },
+        {
+          "itemId": "5506bab5ffc4376867e25401101180577fc9c10b2bd005e9ac8242e42c839082",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2917,
+          "charEnd": 2938
+        },
+        {
+          "itemId": "30d973d5ccb342bebb9674cbe49cd5d1e73f9d4ac9420ed963e0d9c8dfbe858e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Document",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 2994,
+          "charEnd": 3007
+        },
+        {
+          "itemId": "5c4f06c8ab2e8acd0ab3e1e8fcf90cf056562d4130edf4c2c364cf08a88f485f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Document",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 3235,
+          "charEnd": 3248
+        },
+        {
+          "itemId": "336870ad776de664f24e9aa99c38a794f0d4615cc06ede36cecd6427e020275a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": 3429,
+          "charEnd": 3439
+        },
+        {
+          "itemId": "d4530fd3a8999b98c60c9d187d59017a40adc2e39fa6afb78bd339ae739a0057",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "314260feb0860919ab866063b31e083be2a878b6180de8c8c61d0b68d1aba85d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "412b13469ed44d248cf90ff16fb872a057d14c0d4afe3411d5b0005a78ef2b90",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "6f2e86db3a05141fc5dd5ed6054fba96a4d865b3ae207482ce002e9eab43d70d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "65c3aa7a1395ba3462ec9d23757d192e7f26c616358612a97591ac27be622470",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "3660e416bd9ff63dff84603580c2cc877162cf3fff22636d8b6f1badffb03cc2",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "933153a98d779cea67ec9465c48ada6d5cf73bb16dd5c734ef995ef5752ef09d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.12",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 7,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(b)",
+        "(i)",
+        "(ii)",
+        "(iii)",
+        "(c)",
+        "(d)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+      "items": [
+        {
+          "itemId": "7fb691fab9cf8651536b9aad67a70558f624a38cb7eb3dac5dfeb5daffd94312",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(a)",
+          "sourceExcerpt": "The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters ... to be less than 3.00 to 1.00."
+        },
+        {
+          "itemId": "1e9a01a833b39d6f734d853db9938214a71d3bf177ef77be8b14ac45dfba3b34",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(a)",
+          "sourceExcerpt": "The Company will not permit the Interest Coverage Ratio, for any period of four consecutive fiscal quarters ... to be less than 3.00 to 1.00."
+        },
+        {
+          "itemId": "ed5f9ce49b7fead9788c2e19af871bb00494e6a5713c08d7ba3356abf394b14a",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "505e31d8178415ed17c1aa13aef01ebd02a417369cf2e11a4bcadf7ccf56717d",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+          "irPath": "rules[0].capacityExpression.gatedBy",
+          "numericValue": null,
+          "textValue": "COMPARE:GTE",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(a)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "01d2edf7dfaaa52bb309f7166b0f8a983f42002528da0f634df2fbb73c4b602b",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+          "irPath": "rules[0].capacityExpression.gatedBy.left",
+          "numericValue": null,
+          "textValue": "Interest Coverage Ratio",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8bf4cb219b25a76d13528a36ff79d856745e58e61a7db20997b13a0358eca0e6",
+          "kind": "RATIO",
+          "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+          "irPath": "rules[0].capacityExpression.gatedBy.right",
+          "numericValue": 3,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(a)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6d0f0b4e4d5f53460111dd452698f1eff3af0ecd99f90eb3cc008ddad7683330",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": "...not to be greater than (i) 4.00 to 1.00 ... (ii) 3.75 to 1.00 ... and (iii) 3.50 to 1.00 as of the end of each fiscal quarter ... ending on or after March 31, 2026."
+        },
+        {
+          "itemId": "e82bd06b8b49a94d78aa47c368311ed3fa455ffde51b672e0d0c8a8c9a809cfa",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": "...not to be greater than (i) 4.00 to 1.00 ... (ii) 3.75 to 1.00 ... and (iii) 3.50 to 1.00 as of the end of each fiscal quarter ... ending on or after March 31, 2026."
+        },
+        {
+          "itemId": "196af67fb50e4e154dacd154d61c3621046d3c9c14194da57a0e0a3e3de7e0d1",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].exceptions[0]",
+          "numericValue": null,
+          "textValue": "Upon written election by the Borrower Representative in connection with a Material Acquisition, the applicable maximum ratio for the following four fiscal quarters is increased by 0.50 to 1.00 (the 'Total Net Leverage Ratio Adjustment'), subject to conditions in the referenced permission rule.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "97dbfec9d47c8e73d38e60316e766eeecde4d665653cc57e2af17e3b10f883a4",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ba6d6579bf9e09daf90c34df71e37a35bdd9f195008fd7db911c452d5517dbfd",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].capacityExpression.gatedBy",
+          "numericValue": null,
+          "textValue": "COMPARE:LTE",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].capacityExpression.gatedBy.left",
+          "numericValue": null,
+          "textValue": "Total Net Leverage Ratio",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9e6d8cee44834e6df646bb1535db9a40647b8de7aa09811cd5b05f936845b30f",
+          "kind": "RATIO",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].capacityExpression.gatedBy.right.cases[0].value",
+          "numericValue": 4,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2c11076912c840dd2d5e4e999f52f7652baf58496641b100522262b58d03992b",
+          "kind": "RATIO",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].capacityExpression.gatedBy.right.cases[1].value",
+          "numericValue": 3.75,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "853c9c9acf2402fb7bada92f76194dbc6920e1aa1c1f1221a67900252b2366af",
+          "kind": "RATIO",
+          "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+          "irPath": "rules[1].capacityExpression.gatedBy.right.defaultValue",
+          "numericValue": 3.5,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "e879899f962334b5bb9ebc32fba723d11b1b6710fefbfc285c29529ecedbacab",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+          "irPath": "rules[2].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": "the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as applicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00"
+        },
+        {
+          "itemId": "7160876af095435f8e83dc014e7f5b23d26bcdbdc02b5f4c6bf1f35c82be0a3f",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+          "irPath": "rules[2].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": "the maximum Total Net Leverage Ratio permitted under Section 6.12(b)(i), (ii) or (iii), as applicable, for each of the four fiscal quarters of the Company ending immediately following the consummation date of such Material Acquisition shall be increased by 0.50 to 1.00"
+        },
+        {
+          "itemId": "1f56b597444de8554899eecd73553e2b51990bfff6ec67463404f6709c890606",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+          "irPath": "rules[2].conditions[0]",
+          "numericValue": null,
+          "textValue": "Written request delivered by the Borrower Representative to the Administrative Agent in connection with a Material Acquisition",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": "upon the written request of the Borrower Representative delivered to the Administrative Agent in connection with any Material Acquisition"
+        },
+        {
+          "itemId": "65d94baec1ad98a0ba72b2e371057d65af459a5776a054b55ccf2d2602c66c65",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+          "irPath": "rules[2].conditions[1]",
+          "numericValue": null,
+          "textValue": "Such Total Net Leverage Ratio Adjustment shall occur only twice during the term of the Agreement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": "such Total Net Leverage Ratio Adjustment shall occur (i) only twice during the term of this Agreement"
+        },
+        {
+          "itemId": "704dc06f07201c1c3eb50752a053acfba7a6dc9e7256146d013b6212db7faf53",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+          "irPath": "rules[2].conditions[2]",
+          "numericValue": null,
+          "textValue": "The adjustment applies only to the extent no Event of Default has occurred and is continuing",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.12(b)",
+          "sourceExcerpt": "(ii) only to the extent that no Event of Default has then occurred and is continuing"
+        },
+        {
+          "itemId": "88bf6a4fa8d50a5b7074d4c13e83a21725ec12d156c5cd9d9906e81199f1c27b",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:9b7acf5fb4d7bbddce84f90f",
+          "irPath": "rules[2].dependsOn[0]",
+          "numericValue": null,
+          "textValue": "REQUIRES:ir-rule:5ceff754e02b7ea72594ba99",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "3e351d75427909ef2bd1785c55374b002749d263da2a4d201299edb171dea3f4",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:673959475f579ccb88b5ed72",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:TEquipment Acquisition",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1659ba9fbb2e85e67bc3e37031c995b3350d1e307ee1ee6de6d8b3fc0afeb1ae",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:673959475f579ccb88b5ed72",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:TestEquity Acquisition Agreement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "87191137d03630695c6f3fa280ef92087f66f004a8306314a344571d19883d82",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:673959475f579ccb88b5ed72",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"OR\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "Material Acquisition definition",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 3,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "reality-check-candidate:financial-covenant-dsgr",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0a93ecf558d842533278f143bbb95ab71faca3c54b57404938b93d0aabb19516",
+            "kind": "RATIO",
+            "rawText": "3.00 to 1.00",
+            "numericValue": 3,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 325,
+            "charEnd": 337
+          },
+          "irItems": [
+            {
+              "itemId": "8bf4cb219b25a76d13528a36ff79d856745e58e61a7db20997b13a0358eca0e6",
+              "kind": "RATIO",
+              "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+              "irPath": "rules[0].capacityExpression.gatedBy.right",
+              "numericValue": 3,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§6.12(a)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source RATIO 3 matches 1 compiled IR RATIO node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "706551d01910434136932dfe03c34e821b0d240784794981f826a6e67967cf00",
+            "kind": "RATIO",
+            "rawText": "4.00 to 1.00",
+            "numericValue": 4,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 539,
+            "charEnd": 551
+          },
+          "irItems": [
+            {
+              "itemId": "9e6d8cee44834e6df646bb1535db9a40647b8de7aa09811cd5b05f936845b30f",
+              "kind": "RATIO",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.right.cases[0].value",
+              "numericValue": 4,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§6.12(b)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source RATIO 4 matches 1 compiled IR RATIO node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "cd75ba0b79d7d1a75ae0c1c673a9908473d80abd90e256e49d11de930d99022e",
+            "kind": "RATIO",
+            "rawText": "3.75 to 1.00",
+            "numericValue": 3.75,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 671,
+            "charEnd": 683
+          },
+          "irItems": [
+            {
+              "itemId": "2c11076912c840dd2d5e4e999f52f7652baf58496641b100522262b58d03992b",
+              "kind": "RATIO",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.right.cases[1].value",
+              "numericValue": 3.75,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§6.12(b)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source RATIO 3.75 matches 1 compiled IR RATIO node(s)"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a1f852d7685019b6c98d91baab0ecf818d3142bde02c640fa8b5989b73ffbac7",
+            "kind": "RATIO",
+            "rawText": "3.50 to 1.00",
+            "numericValue": 3.5,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 808,
+            "charEnd": 820
+          },
+          "irItems": [
+            {
+              "itemId": "853c9c9acf2402fb7bada92f76194dbc6920e1aa1c1f1221a67900252b2366af",
+              "kind": "RATIO",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.right.defaultValue",
+              "numericValue": 3.5,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§6.12(b)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source RATIO 3.5 matches 1 compiled IR RATIO node(s)"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4d90b0b4e6035b0aa79f7b5203bd5eeeabf4db832998867fbcffd2206449c8e5",
+            "kind": "RATIO",
+            "rawText": "0.50 to 1.00",
+            "numericValue": 0.5,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1319,
+            "charEnd": 1331
+          },
+          "irItems": [],
+          "reason": "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "41479e265bee40a30a5345dd38a48268863dc686f5074d3f271c2663e3156b23",
+            "kind": "METRIC_MENTION",
+            "rawText": "Financial Covenants",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 14,
+            "charEnd": 33
+          },
+          "irItems": [],
+          "reason": "source mention \"Financial Covenants\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c75ceea682d8b7579d772cf54d62072b58194301f81eb455890ac88ef6be7895",
+            "kind": "METRIC_MENTION",
+            "rawText": "Interest Coverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 41,
+            "charEnd": 64
+          },
+          "irItems": [
+            {
+              "itemId": "01d2edf7dfaaa52bb309f7166b0f8a983f42002528da0f634df2fbb73c4b602b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+              "irPath": "rules[0].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Interest Coverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Interest Coverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e58685c2449cba6362e27246c8ae2709f20498adc28cd398a6d5597c7ff6884f",
+            "kind": "METRIC_MENTION",
+            "rawText": "The Company",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 67,
+            "charEnd": 78
+          },
+          "irItems": [],
+          "reason": "source mention \"The Company\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d8eba0a476580501a9ee156732d52cd542aec48410a48328a28c59a423ac1d69",
+            "kind": "METRIC_MENTION",
+            "rawText": "Interest Coverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 99,
+            "charEnd": 122
+          },
+          "irItems": [
+            {
+              "itemId": "01d2edf7dfaaa52bb309f7166b0f8a983f42002528da0f634df2fbb73c4b602b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:8304c82294ebb5408d509a42",
+              "irPath": "rules[0].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Interest Coverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Interest Coverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "89f83e6277cb0933c87f5c4774501f96de191bf5f9d5e20676428212b98354d2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 344,
+            "charEnd": 368
+          },
+          "irItems": [
+            {
+              "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Total Net Leverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Total Net Leverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a4bfd219672276c2710ebefdf23ae627f5eeb582a42fec3d6c7ea1ea1b935721",
+            "kind": "METRIC_MENTION",
+            "rawText": "The Company",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 371,
+            "charEnd": 382
+          },
+          "irItems": [],
+          "reason": "source mention \"The Company\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4cdf4197fd67b5285a08621ac399f1e7aaeb061d77103b9f81d4cd0550432a1f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 403,
+            "charEnd": 427
+          },
+          "irItems": [
+            {
+              "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Total Net Leverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Total Net Leverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "244ff14d832957cea967ffcd202e71b44665c46b9afd166bcafca7c5eed3dd1b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Borrower Representative",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 955,
+            "charEnd": 978
+          },
+          "irItems": [],
+          "reason": "source mention \"Borrower Representative\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7c41355ee59fad3d471843dd1126a147089a43afa155abd76a7f0dcc82ad2930",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 996,
+            "charEnd": 1016
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e57adcbf0eb6dba4dcdc76ee0810761cf92b5991b753b72d82da44cc7ca8ea84",
+            "kind": "METRIC_MENTION",
+            "rawText": "Material Acquisition",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1040,
+            "charEnd": 1060
+          },
+          "irItems": [],
+          "reason": "source mention \"Material Acquisition\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a07a990039a651da356b8cded33702ef9813cac8a6ed64d1f9b843ca6c5f98f3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1074,
+            "charEnd": 1098
+          },
+          "irItems": [
+            {
+              "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Total Net Leverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Total Net Leverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ed44c699fed76c72bf9dfeaea94780c6a66a6ed77e37bdee63a22e628ba80933",
+            "kind": "METRIC_MENTION",
+            "rawText": "Material Acquisition",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1276,
+            "charEnd": 1296
+          },
+          "irItems": [],
+          "reason": "source mention \"Material Acquisition\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9f52c2733ad75c82ec1d419910a6b3f0fd2418b2c42bec39509d191e5b2afa96",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1410,
+            "charEnd": 1434
+          },
+          "irItems": [
+            {
+              "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Total Net Leverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Total Net Leverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "54daf84f93e3e4d97aa8473dcf2103f4efb12fed2015d34a4f4110049554e1ac",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1487,
+            "charEnd": 1511
+          },
+          "irItems": [
+            {
+              "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Total Net Leverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Total Net Leverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5ddda6a433c0d23c91089350c9416460c77ef24813762f5719750f2e6abecf43",
+            "kind": "METRIC_MENTION",
+            "rawText": "Borrower Representative",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1721,
+            "charEnd": 1744
+          },
+          "irItems": [],
+          "reason": "source mention \"Borrower Representative\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "54c2bd72f1eb0c4ec2941849294515346e79dec8a5bc4c834940b19e65adf44a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1781,
+            "charEnd": 1805
+          },
+          "irItems": [
+            {
+              "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Total Net Leverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Total Net Leverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ebc93d5d57cd2abc859204eb9968c587fc7cda83da580197a015f54dd3c492a1",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1822,
+            "charEnd": 1842
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "df0eb48cfc5338ea2f832bb693e4115892813164dbcee28cb3ea7fc86e44eccb",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 1876,
+            "charEnd": 1900
+          },
+          "irItems": [
+            {
+              "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Total Net Leverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Total Net Leverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "94c9040c0ef679419d22a34e379de6dbedb31b322e9ff1597c9ffd61f5435055",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 2036,
+            "charEnd": 2060
+          },
+          "irItems": [
+            {
+              "itemId": "8de367ac7af87151a54a780b7896d383e9200b74a6c47e0798821f38de3a1f03",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:5ceff754e02b7ea72594ba99",
+              "irPath": "rules[1].capacityExpression.gatedBy.left",
+              "numericValue": null,
+              "textValue": "Total Net Leverage Ratio",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Total Net Leverage Ratio\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ab8fd3bceccad067025295e29bae7630961e397e3bd43f35d8ede983acb8dbf0",
+            "kind": "METRIC_MENTION",
+            "rawText": "ARTICLE VII",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 2074,
+            "charEnd": 2085
+          },
+          "irItems": [],
+          "reason": "source mention \"ARTICLE VII\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2d1ec441f3c755f38f48ed784c1d91d6598f162a1191121552d10d73fe5996d5",
+            "kind": "METRIC_MENTION",
+            "rawText": "LC Disbursement",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 2321,
+            "charEnd": 2336
+          },
+          "irItems": [],
+          "reason": "source mention \"LC Disbursement\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "eea195b5a13747c8b854b8adbe7b4f9272344c37904c09880db6a69a1450d453",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Document",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 2665,
+            "charEnd": 2678
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Document\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "dde9c26c7c57c42a130debae9fa4b3e1501d4fc384836a304a922dc7c33b14b2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Business Days",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 2800,
+            "charEnd": 2813
+          },
+          "irItems": [],
+          "reason": "source mention \"Business Days\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "cfa4d053f5872174745d18321cdf2d28d5f2bbe3e26d08f4313d583df1f0d8cd",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 2899,
+            "charEnd": 2909
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5506bab5ffc4376867e25401101180577fc9c10b2bd005e9ac8242e42c839082",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 2917,
+            "charEnd": 2938
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "30d973d5ccb342bebb9674cbe49cd5d1e73f9d4ac9420ed963e0d9c8dfbe858e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Document",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 2994,
+            "charEnd": 3007
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Document\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5c4f06c8ab2e8acd0ab3e1e8fcf90cf056562d4130edf4c2c364cf08a88f485f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Document",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 3235,
+            "charEnd": 3248
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Document\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "336870ad776de664f24e9aa99c38a794f0d4615cc06ede36cecd6427e020275a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.12",
+            "structuralNodeKey": null,
+            "charStart": 3429,
+            "charEnd": 3439
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 7 apparent independent enumerated unit(s) ((a), (b), (i), (ii), (iii), (c), (d)) but only 3 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text distinguishes 3 distinct entity-scope term(s) (borrower, loan party, restricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope"
+        }
+      ],
+      "materialUnresolvedCount": 3
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T18:58:42.297Z"
+  }
+}

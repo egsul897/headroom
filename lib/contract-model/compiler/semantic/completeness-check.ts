@@ -201,17 +201,32 @@ export function checkIntraDefinitionComponentCompleteness(calculationExpression:
   let unsupported = 0;
   const unsupportedReasons: string[] = [];
 
-  function walk(expr: IRExpression): void {
+  // MAX_WALK_DEPTH is a defensive bound only (content-derived trees are
+  // always finite) - it exists so a future, unforeseen malformed tree fails
+  // safe (undercounts) rather than recursing unboundedly.
+  const MAX_WALK_DEPTH = 200;
+  function walk(expr: IRExpression, depth: number): void {
+    if (depth > MAX_WALK_DEPTH) return;
     total++;
     if (expr.kind === "UNSUPPORTED") {
       unsupported++;
       unsupportedReasons.push(expr.reason);
+      // Cascading poison propagation (a genuinely-unsupported leaf deep
+      // inside a chain of composites, e.g. a multi-level nested IF pricing
+      // grid, poisons every ancestor's own top-level type per type-check.ts
+      // - correctly, and unchanged here) means a nested UNSUPPORTED node
+      // frequently carries its OWN attemptedStructure sidecar (from a
+      // deeper buildComposite call). Descending into it is what lets this
+      // diagnostic report the true well-typed/unsupported split for a
+      // deeply-nested tree instead of treating every nested UNSUPPORTED
+      // wrapper as one opaque, unexplored leaf.
+      if (expr.attemptedStructure) walk(expr.attemptedStructure, depth + 1);
     } else {
       wellTyped++;
     }
-    for (const child of childExpressions(expr)) walk(child);
+    for (const child of childExpressions(expr)) walk(child, depth + 1);
   }
-  walk(calculationExpression.attemptedStructure);
+  walk(calculationExpression.attemptedStructure, 0);
 
   return {
     applicable: true,

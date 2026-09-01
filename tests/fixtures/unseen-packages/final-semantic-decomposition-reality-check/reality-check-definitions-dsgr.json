@@ -1,0 +1,2916 @@
+{
+  "region": {
+    "id": "definitions-dsgr",
+    "family": "DEFINITIONS",
+    "documentId": "dsgr-a",
+    "sourceSectionRef": "1.01",
+    "charStart": 12620,
+    "chars": 4000,
+    "structuralNodeKeys": [
+      "dsgr-a::1.01"
+    ]
+  },
+  "operativeSourceText": "SECTION 1.01. Defined Terms . As used in this Agreement, the following terms have the meanings specified below:\n\n“ ABR ”, when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing,\nis bearing interest at a rate determined by reference to the Alternate Base Rate. All ABR Loans shall be denominated in Dollars.\n\n“ Account ” has the meaning assigned to such term in the Security Agreements.\n\n“ Account Debtor ” means any Person obligated on an Account.\n\n“ Acquired EBITDA ” means, with respect to any Acquired Entity or Business for any period, the amount for such period of EBITDA\nof such Acquired Entity or Business, all as determined on a consolidated basis for such Acquired Entity or Business and as if references to the Company and its Restricted Subsidiaries in the definition of “EBITDA” (and in the component\ndefinitions used therein) were references to such Acquired Entity or Business and its subsidiaries.\n\n“ Acquired Entity or\nBusiness ” has the meaning assigned to such term in the definition of “EBITDA”.\n\n“ Acquisition ” means\nany transaction, or any series of related transactions, consummated on or after the Effective Date, by which any Loan Party or Restricted Subsidiary (a) acquires any going business or all or substantially all of the assets of any Person,\nwhether through purchase of assets, merger or otherwise or (b) directly or indirectly acquires (in one transaction or as the most recent transaction in a series of transactions) at least a majority (in number of votes) of the Equity Interests\nof a Person which has ordinary voting power for the election of directors or other similar management personnel of a Person (other than Equity Interests having such power only by reason of the happening of a contingency) or a majority of the\noutstanding Equity Interests of a Person.\n\n“ Adjusted Daily Simple SOFR ” means, with respect to any RFR Borrowing, an\ninterest rate per annum equal to (a) Daily Simple SOFR, plus (b) 0.10%; provided that if the Adjusted Daily Simple SOFR as so determined would be less than the Floor, such rate shall be deemed to be equal to the Floor for the purposes of this\nAgreement.\n\n“ Adjusted Term SOFR Rate ” means, with respect to any Term Benchmark Borrowing for any Interest Period or for\nany ABR Borrowing based on the Adjusted Term SOFR Rate, an interest rate per annum equal to (a) the Term SOFR Rate for such Interest Period, plus (b) 0.10%; provided that if the Adjusted Term SOFR Rate as so determined would be less than the\nFloor, such rate shall be deemed to be equal to the Floor for the purposes of this Agreement.\n\n“ Administrative Agent ”\nmeans JPMorgan Chase Bank, N.A. (or any of its designated branch offices or affiliates), in its capacity as administrative agent for the Lenders hereunder.\n\n“ Administrative Questionnaire ” means an Administrative Questionnaire in a form supplied by the Administrative Agent.\n\n“ Affected Financial Institution ” means (a) any EEA Financial Institution or (b) any UK Financial Institution.\n\n“ Affiliate ” means, with respect to a specified Person, another Person that directly, or indirectly through one or more\nintermediaries, Controls or is Controlled by or is under common Control with the specified Person.\n\n“ Affiliate Lender\nCap ” has the meaning assigned to it in Section 9.04(f).\n\n2\n\n“ Affiliate Lenders ” means, collectively, LKCM Headwater Investments III,\nL.P. and its respective Affiliates (other than the Company and its Subsidiaries and any natural person).\n\n“ Agent\nIndemnitee ” has the meaning assigned to it in Section 9.03(c).\n\n“ Aggregate Credit Exposure ” means, at any\ntime, the aggregate Credit Exposure of all the Lenders at such time.\n\n“ Aggregate Revolving Exposure ” means, at any time,\nthe aggregate Revolving Exposure of all the Lenders at such time.\n\n“ Agreed Currency ” means (a) dollars or\n(b) any Alternative Currency.\n\n“ Alternate Base Rate ” means, for any day, a rate per annum equal to the great",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:4267fcae7229728557546d9e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "ABR",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Alternate Base Rate"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Descriptive (non-quantitative) definition fully captured verbatim; identifies interest-rate basis, not a formula."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "refers to whether such Loan, or the Loans comprising such Borrowing, is bearing interest at a rate determined by reference to the Alternate Base Rate. All ABR Loans shall be denominated in Dollars."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:f16f6b6fc54c4c837374c762",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Account",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01",
+          "semanticDescription": "Term defined entirely by cross-reference to the Security Agreements, a separate ancillary document",
+          "reason": "getDefinition('Account') returned no matching term within this instrument's indexed documents; the Security Agreements are not among the instrument's documents available to this tool.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:499bea3bf9cf5c61c35986a7"
+        },
+        "dependsOnTerms": [],
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Attempted getDefinition('Account'); no result. The Security Agreements referenced are not part of the retrievable instrument document set.",
+          "getDefinition('Account') returned no matching term within this instrument's indexed documents; the Security Agreements are not among the instrument's documents available to this tool."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "has the meaning assigned to such term in the Security Agreements."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:1248e7b7f7004558f0a0ebcc",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Account Debtor",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Account",
+          "Person"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Fully qualitative definition captured verbatim; underlying meaning of the dependent term 'Account' is separately tracked (d2) and is not needed to represent this term's own drafted meaning."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means any Person obligated on an Account."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:f8b8e0e37f8b87d211246393",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Acquired EBITDA",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01",
+          "semanticDescription": "EBITDA of an Acquired Entity or Business for a period, computed by taking the full multi-clause 'EBITDA' definition and substituting references to the Company/Restricted Subsidiaries with references to the acquired entity and its subsidiaries",
+          "reason": "This is a term-substitution operation over an entire other definition, not a simple arithmetic composition expressible with ADD/SUBTRACT/MULTIPLY/MAX/MIN over literals and metric references; it also depends on 'Acquired Entity or Business', which could not itself be resolved.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:55d0bf22f8b422155d1af72d"
+        },
+        "dependsOnTerms": [
+          "EBITDA",
+          "Acquired Entity or Business",
+          "Company",
+          "Restricted Subsidiaries"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Full definitional text captured verbatim; the substitution mechanic and the unresolved dependency 'Acquired Entity or Business' prevent a computable expression, but the definition's existence and structure are preserved.",
+          "This is a term-substitution operation over an entire other definition, not a simple arithmetic composition expressible with ADD/SUBTRACT/MULTIPLY/MAX/MIN over literals and metric references; it also depends on 'Acquired Entity or Business', which could not itself be resolved."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means, with respect to any Acquired Entity or Business for any period, the amount for such period of EBITDA of such Acquired Entity or Business, all as determined on a consolidated basis for such Acquired Entity or Business and as if references to the Company and its Restricted Subsidiaries in the definition of \"EBITDA\" ... were references to such Acquired Entity or Business and its subsidiaries."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:48a2386f1c1ad38864ca090f",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Acquired Entity or Business",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01; EBITDA definition (truncated tool response)",
+          "semanticDescription": "Cross-reference into a specific clause within the body of the 'EBITDA' definition",
+          "reason": "getDefinition('EBITDA') was retrieved but the response was truncated before reaching the clause defining 'Acquired Entity or Business', and a direct getDefinition('Acquired Entity or Business') lookup found no standalone entry.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:011918894d9d57f7b7b5390c"
+        },
+        "dependsOnTerms": [
+          "EBITDA"
+        ],
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Attempted getDefinition('EBITDA') and getDefinition('Acquired Entity or Business'); the operative clause was not reachable and no separate definition exists in the instrument's indexed documents.",
+          "getDefinition('EBITDA') was retrieved but the response was truncated before reaching the clause defining 'Acquired Entity or Business', and a direct getDefinition('Acquired Entity or Business') lookup found no standalone entry."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "has the meaning assigned to such term in the definition of \"EBITDA\"."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:66daf84fb8bd908805c81ee7",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Acquisition",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Loan Party",
+          "Restricted Subsidiary",
+          "Equity Interests",
+          "Effective Date"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Fully descriptive/qualitative two-limb definition captured verbatim; no numeric threshold or formula to express."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means any transaction, or any series of related transactions, consummated on or after the Effective Date, by which any Loan Party or Restricted Subsidiary (a) acquires any going business or all or substantially all of the assets of any Person... or (b) directly or indirectly acquires ... at least a majority (in number of votes) of the Equity Interests of a Person..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:51682cad8a661d5c8b891328",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Adjusted Daily Simple SOFR",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01",
+          "semanticDescription": "Daily Simple SOFR plus a 0.10% spread, floored at the Floor if the sum would otherwise be lower",
+          "reason": "The IR's ADD primitive only combines MONEY/NUMBER/RATIO operands, and PERCENT is usable only as a MULTIPLY scaling factor, not as an addend to a rate metric. A rate-plus-basis-point-spread formula (rate metric + PERCENT) therefore cannot be type-checked with the available node kinds.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:b6cdc8eb9f68a190ba56d7f7"
+        },
+        "dependsOnTerms": [
+          "Daily Simple SOFR",
+          "Floor"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Full formula text captured verbatim; arithmetic composition not representable due to IR type constraints on adding a percentage spread to a rate metric, not due to missing source evidence.",
+          "The IR's ADD primitive only combines MONEY/NUMBER/RATIO operands, and PERCENT is usable only as a MULTIPLY scaling factor, not as an addend to a rate metric. A rate-plus-basis-point-spread formula (rate metric + PERCENT) therefore cannot be type-checked with the available node kinds."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means, with respect to any RFR Borrowing, an interest rate per annum equal to (a) Daily Simple SOFR, plus (b) 0.10%; provided that if the Adjusted Daily Simple SOFR as so determined would be less than the Floor, such rate shall be deemed to be equal to the Floor..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:f0d699237bcc497f315e309e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Adjusted Term SOFR Rate",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01",
+          "semanticDescription": "Term SOFR Rate for the applicable Interest Period plus a 0.10% spread, floored at the Floor if the sum would otherwise be lower",
+          "reason": "Same rate-plus-spread type limitation as Adjusted Daily Simple SOFR: PERCENT cannot be added (only used as a MULTIPLY scaling factor) to a rate metric under the IR's arithmetic rules.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:53a0f2f0c31af0942d423cd8"
+        },
+        "dependsOnTerms": [
+          "Term SOFR Rate",
+          "Floor"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Full formula text captured verbatim; arithmetic composition not representable due to IR type constraints on adding a percentage spread to a rate metric.",
+          "Same rate-plus-spread type limitation as Adjusted Daily Simple SOFR: PERCENT cannot be added (only used as a MULTIPLY scaling factor) to a rate metric under the IR's arithmetic rules."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means, with respect to any Term Benchmark Borrowing for any Interest Period or for any ABR Borrowing based on the Adjusted Term SOFR Rate, an interest rate per annum equal to (a) the Term SOFR Rate for such Interest Period, plus (b) 0.10%; provided that if the Adjusted Term SOFR Rate as so determined would be less than the Floor, such rate shall be deemed to be equal to the Floor..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:a0c74f144ea1d29051a58d5b",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Administrative Agent",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Lenders"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Purely nominal/identity definition fully captured verbatim."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means JPMorgan Chase Bank, N.A. (or any of its designated branch offices or affiliates), in its capacity as administrative agent for the Lenders hereunder."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:466df351af640fdbc2ab035e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Administrative Questionnaire",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Descriptive definition fully captured verbatim; no quantitative content."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means an Administrative Questionnaire in a form supplied by the Administrative Agent."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:6b5412f5ed037bed96095618",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Affected Financial Institution",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "EEA Financial Institution",
+          "UK Financial Institution"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Categorical (either/or) definition fully captured verbatim; resolving the two dependent category terms is not needed to represent this term's own drafted structure."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means (a) any EEA Financial Institution or (b) any UK Financial Institution."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:d2ad5df716540d968a96e613",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Affiliate",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Control",
+          "Controls",
+          "Controlled"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Standard qualitative control-based definition fully captured verbatim."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means, with respect to a specified Person, another Person that directly, or indirectly through one or more intermediaries, Controls or is Controlled by or is under common Control with the specified Person."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:5691ed6b18b93b88408d5942",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Affiliate Lender Cap",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01",
+          "semanticDescription": "A numeric cap on Affiliate Lender participation, the substance of which is defined in Section 9.04(f)",
+          "reason": "getReferencedProvision was attempted for both 'Section 9.04(f)' and '9.04(f)'; both failed to resolve to any section within this instrument's indexed documents.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:d2817453d5c05107ecaff7fb"
+        },
+        "dependsOnTerms": [],
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Cross-reference to Section 9.04(f) could not be resolved via getReferencedProvision; the substantive cap language is unavailable in the supplied evidence.",
+          "getReferencedProvision was attempted for both 'Section 9.04(f)' and '9.04(f)'; both failed to resolve to any section within this instrument's indexed documents."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "has the meaning assigned to it in Section 9.04(f)."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:8a39821beb285518159b4e52",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Affiliate Lenders",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Affiliate",
+          "Company",
+          "Subsidiaries"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Named-entity definition with express carve-outs fully captured verbatim."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means, collectively, LKCM Headwater Investments III, L.P. and its respective Affiliates (other than the Company and its Subsidiaries and any natural person)."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:62ceffe569be8829d88c8063",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Agent Indemnitee",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01",
+          "semanticDescription": "Class of indemnified persons, the substance of which is defined in Section 9.03(c)",
+          "reason": "getReferencedProvision('Section 9.03(c)') failed to resolve to any section within this instrument's indexed documents.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:04b11046b605baccaf71758d"
+        },
+        "dependsOnTerms": [],
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Cross-reference to Section 9.03(c) could not be resolved via getReferencedProvision; the substantive definition is unavailable in the supplied evidence.",
+          "getReferencedProvision('Section 9.03(c)') failed to resolve to any section within this instrument's indexed documents."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "has the meaning assigned to it in Section 9.03(c)."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:09cb55ac572c81f2748b8d49",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Aggregate Credit Exposure",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Credit Exposure",
+          "Lenders"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Aggregation definition fully captured verbatim; resolving the underlying 'Credit Exposure' metric is not required to represent this term's own drafted (aggregative) structure."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means, at any time, the aggregate Credit Exposure of all the Lenders at such time."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:635dc292b63ee4518337a79d",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Aggregate Revolving Exposure",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Revolving Exposure",
+          "Lenders"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Aggregation definition fully captured verbatim."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means, at any time, the aggregate Revolving Exposure of all the Lenders at such time."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:1a83c1cc6ec78503f68102d5",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Agreed Currency",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Alternative Currency"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Simple either/or categorical definition fully captured verbatim."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means (a) dollars or (b) any Alternative Currency."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Alternate Base Rate",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01 (full current text obtained via getDefinition, since the excerpt supplied in the source text was cut off mid-definition)",
+          "semanticDescription": "The greatest of (a) the Prime Rate, (b) the NYFRB Rate plus 0.50%, and (c) the one-month Adjusted Term SOFR Rate plus 1.00%, subject to a 1.00% per annum floor, with clause (c) disapplied during certain Section 2.14 benchmark-replacement interim periods",
+          "reason": "As with the SOFR-spread definitions, the IR's ADD primitive cannot combine a rate metric with a PERCENT spread (PERCENT is only a MULTIPLY scaling factor under the type rules), so the MAX-of-(rate+spread)-with-floor structure cannot be fully type-checked with current node kinds, even though the full text is available and unambiguous.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:3022e49a55e39d5f0bfd9a79"
+        },
+        "dependsOnTerms": [
+          "Prime Rate",
+          "NYFRB Rate",
+          "Adjusted Term SOFR Rate",
+          "Term SOFR Reference Rate",
+          "Benchmark Replacement"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Full current operative definition retrieved and captured verbatim (the in-context excerpt was truncated mid-sentence); the arithmetic composition of the greater-of/spread/floor formula is not representable solely due to IR type constraints on adding a percentage spread to a rate metric, not due to any evidentiary gap.",
+          "As with the SOFR-spread definitions, the IR's ADD primitive cannot combine a rate metric with a PERCENT spread (PERCENT is only a MULTIPLY scaling factor under the type rules), so the MAX-of-(rate+spread)-with-floor structure cannot be fully type-checked with current node kinds, even though the full text is available and unambiguous."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "means, for any day, a rate per annum equal to the greatest of (a) the Prime Rate in effect on such day, (b) the NYFRB Rate in effect on such day plus 1/2 of 1%, and (c) the Adjusted Term SOFR Rate for a one-month Interest Period as published two U.S. Government Securities Business Days prior to such day ... plus 1%; ... if the Alternate Base Rate as determined pursuant to the foregoing would be less than 1.00% per annum, such rate shall be deemed to be 1.00% per annum for purposes of this Agreement."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "MISSING_CONTEXT",
+      "OPERATIVE_STATE_UNRESOLVED",
+      "TRUNCATED_EVIDENCE_USED"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T18:10:59.435Z",
+      "inputTokens": 136720,
+      "outputTokens": 20599,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 6,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 188021,
+      "calculatedCostUsd": 0.47942999999999997
+    }
+  },
+  "verify": {
+    "candidateRef": "reality-check-candidate:definitions-dsgr",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "93e571bb91c5b5d0d8dd388fbfb3f9a60ea616f941e87a6df7ef47727bc5ac43",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:definitions-dsgr",
+        "ruleOrDefinitionId": "ir-definition:4267fcae7229728557546d9e",
+        "irPath": "definitions[termName=ABR]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "\"ABR\", when used in reference to any Loan or Borrowing, refers to whether such Loan, or the Loans comprising such Borrowing, is bearing interest at a rate determined by reference to the Alternate Base Rate. All ABR Loans shall be denominated in Dollars.",
+        "sourceCitation": "§1.01, definition of \"ABR\"",
+        "proposedIrEvidence": "{\"termName\":\"ABR\",\"calculationExpression\":null,\"dependsOnTerms\":[\"Alternate Base Rate\"],\"sufficiency\":\"COMPLETE\"}",
+        "verifierReasoning": "The source text contains a second, independently operative sentence within the ABR definition - a mandatory currency restriction ('All ABR Loans shall be denominated in Dollars') - that is not merely descriptive of the ABR rate mechanism but imposes an affirmative requirement on the currency of ABR Loans. The proposed IR's dependsOnTerms captures only the rate-reference relationship ('Alternate Base Rate') and is silent on the Dollars restriction entirely, yet marks this definition's sufficiency as COMPLETE. A reviewer analyzing whether an ABR Loan could be funded in an Alternative Currency, or cross-checking currency-scope rules elsewhere in the agreement (e.g., Agreed Currency, Borrowing mechanics), would get an incomplete picture from this IR because the categorical Dollars-only restriction is dropped without any disclosure of the gap.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:12:33.171Z"
+      },
+      {
+        "findingId": "e6cf476a6e8fae7cdec1a8a7f36bad6080fa948bd9fccf257eb8781a651098f0",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:definitions-dsgr",
+        "ruleOrDefinitionId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+        "irPath": "definitions[termName=Alternate Base Rate].calculationExpression",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "\"Alternate Base Rate\" means, for any day, a rate per annum equal to the great [text truncated in source excerpt supplied]",
+        "sourceCitation": "§1.01, definition of \"Alternate Base Rate\" (as excerpted); context bundle states 'Retrieved context items: (none)' and Phase 2 flagged 'Cannot retrieve context for a candidate with no anchoring structural node.'",
+        "proposedIrEvidence": "{\"sourceEvidence\":\"§1.01 (full current text obtained via getDefinition, since the excerpt supplied in the source text was cut off mid-definition)\",\"semanticDescription\":\"The greatest of (a) the Prime Rate, (b) the NYFRB Rate plus 0.50%, and (c) the one-month Adjusted Term SOFR Rate plus 1.00%, subject to a 1.00% per annum floor, with clause (c) disapplied during certain Section 2.14 benchmark-replacement interim periods\"}",
+        "verifierReasoning": "The only source text I was given for this definition is truncated exactly at the point where the specific formula components (Prime Rate, NYFRB Rate spread, Adjusted Term SOFR spread, floor percentage, Section 2.14 carve-out) would appear, and the context bundle explicitly states no context items were retrieved for this candidate and that context retrieval failed for lack of an anchoring structural node. Yet the proposed IR asserts precise figures (0.50%, 1.00% spread, 1.00% floor) and a specific cross-referenced carve-out (Section 2.14 benchmark-replacement interim periods) as though independently verified via a successful 'getDefinition' retrieval, directly contradicting the 'Retrieved context items: (none)' status I was given. Because I cannot verify these specific numbers and the cross-reference against any source text or context actually provided, and because the stated provenance conflicts with the disclosed retrieval failure, this content should be treated as an unsupported/unverifiable addition rather than a confirmed representation of the source, even though the overall PARTIAL sufficiency label is otherwise appropriately used for the separate ADD/PERCENT type-checking issue.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:12:33.171Z"
+      },
+      {
+        "findingId": "c94a83daa3abd78bcc64aacb8bf95a214681c1d7534199ff700f455958926f1f",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:definitions-dsgr",
+        "ruleOrDefinitionId": "ir-definition:466df351af640fdbc2ab035e",
+        "irPath": "definitions[termName=Administrative Questionnaire].dependsOnTerms",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "\"Administrative Questionnaire\" means an Administrative Questionnaire in a form supplied by the Administrative Agent.",
+        "sourceCitation": "§1.01, definition of \"Administrative Questionnaire\"",
+        "proposedIrEvidence": "{\"termName\":\"Administrative Questionnaire\",\"dependsOnTerms\":[],\"sufficiency\":\"COMPLETE\"}",
+        "verifierReasoning": "The definition text explicitly ties the form of the Administrative Questionnaire to the Administrative Agent ('supplied by the Administrative Agent'), but the proposed IR lists no dependsOnTerms at all, omitting the 'Administrative Agent' cross-reference. This is a minor dependency-graph inaccuracy; it does not affect any capacity, threshold, permission, or compliance conclusion, so it is unlikely to be material, but is noted as a completeness gap in the dependency tracking.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:12:33.171Z"
+      },
+      {
+        "findingId": "7ab93671a5b0646904fd5f2424bc527e580412230dc6c7608d014262d1953c81",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:definitions-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "0.10%",
+        "sourceCitation": "1.01",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.001 (from \"0.10%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.001 (from \"0.10%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:10:59.438Z"
+      },
+      {
+        "findingId": "7ab93671a5b0646904fd5f2424bc527e580412230dc6c7608d014262d1953c81",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:definitions-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "0.10%",
+        "sourceCitation": "1.01",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.001 (from \"0.10%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.001 (from \"0.10%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:10:59.438Z"
+      },
+      {
+        "findingId": "41aa2f500001a75c6a0a259170e285ba315bb0fde879139f177ed9f27caee035",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:definitions-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 4 apparent independent enumerated unit(s) ((a), (b), (f), (c)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 4 apparent independent enumerated unit(s) ((a), (b), (f), (c)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:10:59.438Z"
+      },
+      {
+        "findingId": "482915432ada2a3ae5fa0a330ef52cec3c7e10f5f096d24ee9d205120b5b94c6",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:definitions-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_CONDITION",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 7 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 7 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:10:59.438Z"
+      },
+      {
+        "findingId": "45ed05a0ac5a76751cd2885bfd81ee92dbd323244a4b19bc0fab48579ecddc50",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:definitions-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "WRONG_ENTITY_SCOPE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text distinguishes 3 distinct entity-scope term(s) (restricted subsidiaries, loan party, restricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text distinguishes 3 distinct entity-scope term(s) (restricted subsidiaries, loan party, restricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:10:59.438Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "reality-check-candidate:definitions-dsgr",
+      "items": [
+        {
+          "itemId": "86e12d2e5194a8b6339bc7fe136be3341dcfd6145d4e7aff9460676ec2daf866",
+          "kind": "PERCENT",
+          "rawText": "0.10%",
+          "numericValue": 0.001,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2007,
+          "charEnd": 2012
+        },
+        {
+          "itemId": "8c0231d019ee0c97d929fa93bdf16a785e5a2dd842f777fbdc54cfbb773932ff",
+          "kind": "PERCENT",
+          "rawText": "0.10%",
+          "numericValue": 0.001,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2458,
+          "charEnd": 2463
+        },
+        {
+          "itemId": "0b57d847cd521ef3c2770c673886dda17d375fc14a126e9e612b909c03010dd9",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "at least",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1516,
+          "charEnd": 1524
+        },
+        {
+          "itemId": "f2b4880ec403f7c7e16ebd49a7a95aa08a48399de61f361a3f2904b00d36ecd6",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2014,
+          "charEnd": 2027
+        },
+        {
+          "itemId": "2f135cb46a7d14717d340393c2ae7779e113220145774c12cfc18eccac8c5400",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2465,
+          "charEnd": 2478
+        },
+        {
+          "itemId": "ecd04ceee90aaaf5a150f3ba1fc73093ae32e094544c7e060d6aecf7cd4aa84d",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "after the Effective Date",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1174,
+          "charEnd": 1198
+        },
+        {
+          "itemId": "b971de854b26af434877dca1464c25bf63934dbc7d6b809f79174cf0c8edcf32",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "shall be deemed",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2119,
+          "charEnd": 2134
+        },
+        {
+          "itemId": "21ca0adb60d19a88db858e9a66ac1a5d4f1c5f59036490364bf575db0a0f2ed6",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "shall be deemed",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2567,
+          "charEnd": 2582
+        },
+        {
+          "itemId": "883259891b6b3e8d9cf21456afa8650fc9d1ab5499af1b588037dfa68ab1e4f4",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1706,
+          "charEnd": 1716
+        },
+        {
+          "itemId": "9e8d30b0f966389680c3aaf9e36240ddfd4b8ac8b852bafe0c20273933541ffc",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3472,
+          "charEnd": 3482
+        },
+        {
+          "itemId": "ec2c3c1c64aaaa6d6581d2c91f25f82e94fc0041e9f0ee07200ba21aa5f91989",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 799,
+          "charEnd": 822
+        },
+        {
+          "itemId": "0999fc9003616954771b2b9d3dc484ef51de97e7723d9666bc2b9760db2b47f6",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1213,
+          "charEnd": 1223
+        },
+        {
+          "itemId": "39932486ff6013dd55236dbddce4bdf0d7f72252c9eaeaaacd3bca0d06a455ee",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1227,
+          "charEnd": 1248
+        },
+        {
+          "itemId": "18eca34aacb3f66a2e3115d5ed60a5cf7bfc56886df807e5565cc016ae5ceb6f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Defined Terms",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 14,
+          "charEnd": 27
+        },
+        {
+          "itemId": "03038d4904293fabd5944cd4e87f75e869a9e059c61ad2e31cbeff65c6517238",
+          "kind": "METRIC_MENTION",
+          "rawText": "Alternate Base Rate",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 301,
+          "charEnd": 320
+        },
+        {
+          "itemId": "7e733bc2e717028eba9dfcc4029279d34394104a31178596884bb47c299e354a",
+          "kind": "METRIC_MENTION",
+          "rawText": "All ABR Loans",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 322,
+          "charEnd": 335
+        },
+        {
+          "itemId": "c04d27dabf83e1531debbb6ab1dbf4063f35cdf579c252db95349dbc2da27911",
+          "kind": "METRIC_MENTION",
+          "rawText": "Security Agreements",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 427,
+          "charEnd": 446
+        },
+        {
+          "itemId": "fcfd19a460e222b736e7d20aa505cbaadb0cd06dd0c635bd32562df749c3a369",
+          "kind": "METRIC_MENTION",
+          "rawText": "Account Debtor",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 451,
+          "charEnd": 465
+        },
+        {
+          "itemId": "b554484b1089b68d054202d2c308da53924a202d1cd4cdd12a81138670ba1485",
+          "kind": "METRIC_MENTION",
+          "rawText": "Acquired EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 513,
+          "charEnd": 528
+        },
+        {
+          "itemId": "2531180d3d9e9976477a3fb2e07cbd249521279a107f6d1fe229ea677680a045",
+          "kind": "METRIC_MENTION",
+          "rawText": "Acquired Entity",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 558,
+          "charEnd": 573
+        },
+        {
+          "itemId": "5b462a1e546ac5bd8b285bec6df6a2003d67ea9bb7aac920fbede6f6b053fc3e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Acquired Entity",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 647,
+          "charEnd": 662
+        },
+        {
+          "itemId": "c15c2a9a0dbc2201e456552566a3c099ef4dc8fe465a985c4013b3e60565c539",
+          "kind": "METRIC_MENTION",
+          "rawText": "Acquired Entity",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 727,
+          "charEnd": 742
+        },
+        {
+          "itemId": "46d2b5a14ef31944fc13e5c9914f1456ca27d6e87620c92a2ba9fc1bb0222306",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 799,
+          "charEnd": 822
+        },
+        {
+          "itemId": "a093f051f84c10fc4c5e2c159cbef2666df563fdf37118bc4d4f228ad556f5dd",
+          "kind": "METRIC_MENTION",
+          "rawText": "Acquired Entity",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 925,
+          "charEnd": 940
+        },
+        {
+          "itemId": "3e6645ff6793aaaf238ad30cc4390ddcc752d85b401eeab9ce87d858ac5440c0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Acquired Entity",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 978,
+          "charEnd": 993
+        },
+        {
+          "itemId": "3ca2aa7cd639f602ca7b56c90fe1c04cca5daf1277af08bb1ca230f96bfb22f5",
+          "kind": "METRIC_MENTION",
+          "rawText": "Effective Date",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1184,
+          "charEnd": 1198
+        },
+        {
+          "itemId": "75062823310458f4fdd4fef049f3a15bcaacc18c71fbc535f97cd15ad3e1e477",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1213,
+          "charEnd": 1223
+        },
+        {
+          "itemId": "404fe3bc21cc587fffb6f203da8e4660574ddf0d613c07b03756144471d9a850",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1227,
+          "charEnd": 1248
+        },
+        {
+          "itemId": "e5556eb287c6b4ea3bd45fd3b781301f70cfe502a1e10cc822f4942c24413a73",
+          "kind": "METRIC_MENTION",
+          "rawText": "Equity Interests",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1564,
+          "charEnd": 1580
+        },
+        {
+          "itemId": "b22eddc97729b498af372f1754ef9d9a97c392dad3c9c969b99f839a512986d0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Equity Interests",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1717,
+          "charEnd": 1733
+        },
+        {
+          "itemId": "049afaaf9af798a175d775251e4e67c4d29feaf563a3175ae3dca1c267b093d9",
+          "kind": "METRIC_MENTION",
+          "rawText": "Equity Interests",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1835,
+          "charEnd": 1851
+        },
+        {
+          "itemId": "561f68a4893900130e1d22d8c14a9bea336f988f238689c26ba0d41869137462",
+          "kind": "METRIC_MENTION",
+          "rawText": "Adjusted Daily Simple SOFR",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1868,
+          "charEnd": 1894
+        },
+        {
+          "itemId": "061932da904f6bb6ea503c9f8993f6aa52a612fc179a31aeb6ec71197313cd2c",
+          "kind": "METRIC_MENTION",
+          "rawText": "RFR Borrowing",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1924,
+          "charEnd": 1937
+        },
+        {
+          "itemId": "48669192494a3ce534dfb5571a51b6438f216d27ac4f051248e0c85d88794ab3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Daily Simple SOFR",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 1979,
+          "charEnd": 1996
+        },
+        {
+          "itemId": "07dc1c93f0e0d351b9a843d584cad6490112066cf6a3dcac58a19d094c486971",
+          "kind": "METRIC_MENTION",
+          "rawText": "Adjusted Daily Simple SOFR",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2035,
+          "charEnd": 2061
+        },
+        {
+          "itemId": "39bbafe7c502d2e4b85762734bfab04043fe1530c730b583b468e7cce758c17b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Adjusted Term SOFR Rate",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2199,
+          "charEnd": 2222
+        },
+        {
+          "itemId": "a070ceb291cf9ee4b4fe32f96a64d98d6d7c44dde5eb4884ca404566cd4010dc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Term Benchmark Borrowing",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2252,
+          "charEnd": 2276
+        },
+        {
+          "itemId": "31d76765532a6d67df0a74dc4d83505cad611c2d7923a1f25707a62e198d1139",
+          "kind": "METRIC_MENTION",
+          "rawText": "Interest Period",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2285,
+          "charEnd": 2300
+        },
+        {
+          "itemId": "70393a6c04a59a7ec7ff0167d3e546683f4c8a9b1462b6ae489fe60b13eea99e",
+          "kind": "METRIC_MENTION",
+          "rawText": "ABR Borrowing",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2312,
+          "charEnd": 2325
+        },
+        {
+          "itemId": "e6ac2ca78d55db00a67a362c2f68b18044c02e9d6a652b143f61ce346484502b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Adjusted Term SOFR Rate",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2339,
+          "charEnd": 2362
+        },
+        {
+          "itemId": "6229ff3a16b96eed50603a887d73d64cd4a709fdd48fba59836a7080dcc54204",
+          "kind": "METRIC_MENTION",
+          "rawText": "Term SOFR Rate",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2408,
+          "charEnd": 2422
+        },
+        {
+          "itemId": "c589401e2383bdf3a94dbe81be374cc37ab7cfedfb022deb6b5ef8814095ba2c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Interest Period",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2432,
+          "charEnd": 2447
+        },
+        {
+          "itemId": "7950741f50c2ae5948162a46193e52ec6b9f0df8ddb7617a194279a7db333a96",
+          "kind": "METRIC_MENTION",
+          "rawText": "Adjusted Term SOFR Rate",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2486,
+          "charEnd": 2509
+        },
+        {
+          "itemId": "23beb88a1bdc85977ef2f60744cc727ae1643ab1ad7ebfdb52bd0254de2bf83d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2647,
+          "charEnd": 2667
+        },
+        {
+          "itemId": "bf444003fc00ba77f333803979438f5d70113bac455f25f567eb32bec47bdfff",
+          "kind": "METRIC_MENTION",
+          "rawText": "JPMorgan Chase Bank",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2676,
+          "charEnd": 2695
+        },
+        {
+          "itemId": "f5d943e7b5fdb4cc9d6e0e418deb4d9076d78fc9cea06866c96b030d2518db8b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Questionnaire",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2829,
+          "charEnd": 2857
+        },
+        {
+          "itemId": "905f208cab5dcebe0b4b6f4198c547595018d90d989cefdfa11a93616e6ad156",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Questionnaire",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2869,
+          "charEnd": 2897
+        },
+        {
+          "itemId": "1a4d4401781e9e4b3c47fa6017190e2219680b064e511fc224c09e1e28fddece",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2924,
+          "charEnd": 2944
+        },
+        {
+          "itemId": "78f7f343524fd291b270f0f41862e33263eaf086807bf182b7df6cc1fcf7d42c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Affected Financial Institution",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2949,
+          "charEnd": 2979
+        },
+        {
+          "itemId": "a5aff85d9e4f79089f55125a9d52ffe1b3e6e4c296526c129a912823a6402950",
+          "kind": "METRIC_MENTION",
+          "rawText": "EEA Financial Institution",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 2996,
+          "charEnd": 3021
+        },
+        {
+          "itemId": "0269d12dd890414ed70fae3fd43d3e2c34abfb7db8983ceeef66861c4b93e849",
+          "kind": "METRIC_MENTION",
+          "rawText": "UK Financial Institution",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3033,
+          "charEnd": 3057
+        },
+        {
+          "itemId": "0440bf4dcaeecd4aeb0f1a60e34af3b0e05abb59046cf76e3f32cd0ceb916c2e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Affiliate Lender\nCap",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3283,
+          "charEnd": 3303
+        },
+        {
+          "itemId": "c864a1615978134d8b083f1b228331d7981e9f0f01d0eec0737d7d8784b665c1",
+          "kind": "METRIC_MENTION",
+          "rawText": "Affiliate Lenders",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3363,
+          "charEnd": 3380
+        },
+        {
+          "itemId": "d2c0848d9763851a0cf62150a6b0cfa733f229e0f715872c5db5677f6addf9b0",
+          "kind": "METRIC_MENTION",
+          "rawText": "LKCM Headwater Investments III",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3404,
+          "charEnd": 3434
+        },
+        {
+          "itemId": "bc2822c63d075ffe24c075b79df750dd3a0139bc3d3db110953a2560354707b9",
+          "kind": "METRIC_MENTION",
+          "rawText": "Agent\nIndemnitee",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3544,
+          "charEnd": 3560
+        },
+        {
+          "itemId": "cff1f07b7e8144977d11f055edf0c68a3ed7d5abe01df91daf33e6de52755742",
+          "kind": "METRIC_MENTION",
+          "rawText": "Aggregate Credit Exposure",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3617,
+          "charEnd": 3642
+        },
+        {
+          "itemId": "3e72f0a470cef2b641383a3b942a94d52464a71ba120964e98975a1f017c64b1",
+          "kind": "METRIC_MENTION",
+          "rawText": "Credit Exposure",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3679,
+          "charEnd": 3694
+        },
+        {
+          "itemId": "8b4c60718ca0eb42a3965f8dade3fc94fc58e502cdea06a54d72062f48555c44",
+          "kind": "METRIC_MENTION",
+          "rawText": "Aggregate Revolving Exposure",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3731,
+          "charEnd": 3759
+        },
+        {
+          "itemId": "d6a62626129b76df3ee1f9fd20e82fbdb9c3adb88793a5da3a2818470a9a6f7f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Revolving Exposure",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3796,
+          "charEnd": 3814
+        },
+        {
+          "itemId": "91c3fc76e78aefd7b72c6baced050e9e1b5c3e6c8796143e3b9f63720d9e7a5e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Agreed Currency",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3851,
+          "charEnd": 3866
+        },
+        {
+          "itemId": "9d79dd1029860497420ebf72fbb838cfe90651a0efb029ef9c3aa242d62340f0",
+          "kind": "METRIC_MENTION",
+          "rawText": "Alternative Currency",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3898,
+          "charEnd": 3918
+        },
+        {
+          "itemId": "0efb40af2e16b1fdff642d2310f9522998def44a60248a7e8290bbe1dba3d7df",
+          "kind": "METRIC_MENTION",
+          "rawText": "Alternate Base Rate",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": 3923,
+          "charEnd": 3942
+        },
+        {
+          "itemId": "5f97b2587be75e76fa5499aeba69a1e739946df5ddc7e9bd47350d603319afa0",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "f8489312cc49ccdfadad27b0664531c14becf18990c28df306d760a02d53df42",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "406086ab88bb0174aaf2d8b90e267570a9c93722abbacc8acbbfb191b2c7b59b",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(f)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7680f34b6dabc3f397caec4f3e7ad0ba038ad58f1736897e860b788d6cd9bb87",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "1.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 4,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(b)",
+        "(f)",
+        "(c)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "reality-check-candidate:definitions-dsgr",
+      "items": [
+        {
+          "itemId": "e624fc32eef4982331b6d675926fc6d32a3c8b57dfa50ee9b182d8eea67b7462",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:4267fcae7229728557546d9e",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Alternate Base Rate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "beff80e9d54f156752f73199b6cb2e49c5770db58a0a8203b275648d1857c22e",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:f16f6b6fc54c4c837374c762",
+          "irPath": "definitions[1].calculationExpression",
+          "numericValue": null,
+          "textValue": "Term defined entirely by cross-reference to the Security Agreements, a separate ancillary document",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "5bdd86153aea3957710043988d7ea8f2a494dee7656ce72d43e76c1cd146851a",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1248e7b7f7004558f0a0ebcc",
+          "irPath": "definitions[2].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Account",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6eec7620efa9e6425d6983f5bb36bd6b9cbb7896952c161bee2bc0077788192c",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1248e7b7f7004558f0a0ebcc",
+          "irPath": "definitions[2].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Person",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "623ab476fd369aa5ea025dead4816137784ee346c161c5a69f65b88641ea6817",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8b8e0e37f8b87d211246393",
+          "irPath": "definitions[3].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "01c102255b687e2a9e9898d0b3f1954e9043e619f9ae0c8dd33395b88ebd7ee2",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8b8e0e37f8b87d211246393",
+          "irPath": "definitions[3].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Acquired Entity or Business",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a850c26f5e805c5498e57ea128b3511185c7dda515936f64b3df823dfa6b3907",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8b8e0e37f8b87d211246393",
+          "irPath": "definitions[3].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Company",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "d75710b255e5a4fc2428a58af0a7e12f39b15ca53c6ab710f032984211a581e4",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8b8e0e37f8b87d211246393",
+          "irPath": "definitions[3].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Restricted Subsidiaries",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f9932f7781e18f6a428b1a913720525fab6d045f755bbb90ffb6597d16959fa3",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:f8b8e0e37f8b87d211246393",
+          "irPath": "definitions[3].calculationExpression",
+          "numericValue": null,
+          "textValue": "EBITDA of an Acquired Entity or Business for a period, computed by taking the full multi-clause 'EBITDA' definition and substituting references to the Company/Restricted Subsidiaries with references to the acquired entity and its subsidiaries",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "cbd9d04d55387a2d5c6f53aa54ffb552a0cfe4591527f06fcadd939818ad54e6",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:48a2386f1c1ad38864ca090f",
+          "irPath": "definitions[4].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "5b38396db3aaeabacaee24fecf3684839a00c0f5f7cdb14af50c0c5cf29b6e9e",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:48a2386f1c1ad38864ca090f",
+          "irPath": "definitions[4].calculationExpression",
+          "numericValue": null,
+          "textValue": "Cross-reference into a specific clause within the body of the 'EBITDA' definition",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b14c67e91913a902e33b86a6fdc752de188b639d473dc81565f5698b0fdeae29",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:66daf84fb8bd908805c81ee7",
+          "irPath": "definitions[5].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Loan Party",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ffa01f1e2cc9e3207326858a90647491a00b0732c3bc35f2eda0693c20c64b72",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:66daf84fb8bd908805c81ee7",
+          "irPath": "definitions[5].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Restricted Subsidiary",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "24f9a801e9940a33b81283900c6b6821552086abca06d67a0e6e49dce4a56d6b",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:66daf84fb8bd908805c81ee7",
+          "irPath": "definitions[5].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Equity Interests",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f570c13bdae9d4bdff89e0e0aee802499023736ebf619e780008d684af599e08",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:66daf84fb8bd908805c81ee7",
+          "irPath": "definitions[5].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Effective Date",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "be6434f73f79e1daea200480e6f101613c2ea96cbe14b8584cb764c27d567a9e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:51682cad8a661d5c8b891328",
+          "irPath": "definitions[6].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Daily Simple SOFR",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "4bb3ea44aa188df5bc8bf73e7bfc8ff4734a1006d85711643773a5fe6cac8e17",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:51682cad8a661d5c8b891328",
+          "irPath": "definitions[6].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Floor",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "14294abfa16d8fdbbe5e9d2b62abded9bb2371ba2e1a77b28716b17bf21f63e8",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:51682cad8a661d5c8b891328",
+          "irPath": "definitions[6].calculationExpression",
+          "numericValue": null,
+          "textValue": "Daily Simple SOFR plus a 0.10% spread, floored at the Floor if the sum would otherwise be lower",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a67792854ff99768d3d6d42de5da59dbbecc6f59631d84ecb44b16579049102c",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f0d699237bcc497f315e309e",
+          "irPath": "definitions[7].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Term SOFR Rate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "92330f0599ce95566648e53afa55ddf015f3d9cf32e7b13794cc54e76cd527f2",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f0d699237bcc497f315e309e",
+          "irPath": "definitions[7].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Floor",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ce9ad3463b93e1667e3299d91dfebc7a3a1de442697c9e7b1648bb86ad7f5566",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:f0d699237bcc497f315e309e",
+          "irPath": "definitions[7].calculationExpression",
+          "numericValue": null,
+          "textValue": "Term SOFR Rate for the applicable Interest Period plus a 0.10% spread, floored at the Floor if the sum would otherwise be lower",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7b8dcb1c81249d658f46f64c8b13f80ad885b2388d50bd42b297d8b557412dc4",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:a0c74f144ea1d29051a58d5b",
+          "irPath": "definitions[8].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Lenders",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "44c27109ab8e2a3fe211b28f87e08f42e11508c3b1e7c009e124b6473edae83e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:6b5412f5ed037bed96095618",
+          "irPath": "definitions[10].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:EEA Financial Institution",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2bdf60a04630e0beb1cca3cbd99809bdde88124e41d769c71df850006d47e97d",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:6b5412f5ed037bed96095618",
+          "irPath": "definitions[10].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:UK Financial Institution",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "737f0e4a4e606421d53716eb406a0e2cb3df6405c240ee84d7b1031dd2fc55ed",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:d2ad5df716540d968a96e613",
+          "irPath": "definitions[11].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Control",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a3b136aa2d66a79d429ac2a9a389bc2422c5c4bdfcabc9e467914d6da46dcad5",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:d2ad5df716540d968a96e613",
+          "irPath": "definitions[11].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Controls",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f4ac750a36ae19632ff21750f96990db0c10822ece523c9e6854d85a2a5cfeea",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:d2ad5df716540d968a96e613",
+          "irPath": "definitions[11].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Controlled",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a01bf40e3f0c15a367e2e74f48a19a8c2a8fef0d0f6b9380d06dc01d51434aa2",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:5691ed6b18b93b88408d5942",
+          "irPath": "definitions[12].calculationExpression",
+          "numericValue": null,
+          "textValue": "A numeric cap on Affiliate Lender participation, the substance of which is defined in Section 9.04(f)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6fe0cdb51c8a4a55a715fff1dbd09cc6ee43812348be427396f570e0ced7eaa2",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:8a39821beb285518159b4e52",
+          "irPath": "definitions[13].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Affiliate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8c315d8eb3a6aa81cb1719d1058ee3d74f2f6beefa4a464cbca260b5a1b664dd",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:8a39821beb285518159b4e52",
+          "irPath": "definitions[13].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Company",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "88d873223d267d617daafcb9e1101ba6daa205f2b1808e945e238437fe4ea1e7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:8a39821beb285518159b4e52",
+          "irPath": "definitions[13].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Subsidiaries",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c4e9308ad1a9cf8955bea20f324db9d59add0f8ec6e1653adc19428877bab538",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:62ceffe569be8829d88c8063",
+          "irPath": "definitions[14].calculationExpression",
+          "numericValue": null,
+          "textValue": "Class of indemnified persons, the substance of which is defined in Section 9.03(c)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6a1d909455bdca6b08a1b64f853997dc97ee071c147574259adfbe1d4f8ceaee",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:09cb55ac572c81f2748b8d49",
+          "irPath": "definitions[15].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Credit Exposure",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "79dc60dc26ecdc5a128c1b76085c192aba76d7726815fb600b67a4835aaf78bb",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:09cb55ac572c81f2748b8d49",
+          "irPath": "definitions[15].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Lenders",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "0d4958c9f8206113d56d91cd1e9f36c5566de452ce3338cd21a66ba9b20a3c0f",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:635dc292b63ee4518337a79d",
+          "irPath": "definitions[16].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Revolving Exposure",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "0d60af92fbe1786b08102b0c7db0cc0339264711ed6f0507f93ef75545b3bef1",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:635dc292b63ee4518337a79d",
+          "irPath": "definitions[16].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Lenders",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "14e8e382410e9d9a0973a3256e4a9731ca220adc46fcf5a2aaedb65e124b230a",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1a83c1cc6ec78503f68102d5",
+          "irPath": "definitions[17].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Alternative Currency",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "53e5d914ba763d6c74c2d5cf53f8a21ce288b2b46641df8f495d8850f816fd1c",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+          "irPath": "definitions[18].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Prime Rate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2570f0d401460089d1c48f50691f4b9213ae869e1b7e1f9ede10631df777ffaf",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+          "irPath": "definitions[18].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:NYFRB Rate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2eb02c2e24d09118391962cfdf2dc3db167f151fb7bf4a1c3ee10ad9ddd8a6b3",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+          "irPath": "definitions[18].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Adjusted Term SOFR Rate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f1d46ead661b363f71efa88746b24e68bb2b11843f2b74362ea9d6ba73ba437d",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+          "irPath": "definitions[18].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Term SOFR Reference Rate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "3e652ef380b1e411238a4a453714a72db86959b3d98974074d0c01f0ba45e484",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+          "irPath": "definitions[18].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Benchmark Replacement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6be888d5a2e2e308ff781ecdb9912f3208ce06ab7e2df9f887acd9b13f1e3b69",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:f8e6898ed5cbbb147fa3ba5a",
+          "irPath": "definitions[18].calculationExpression",
+          "numericValue": null,
+          "textValue": "The greatest of (a) the Prime Rate, (b) the NYFRB Rate plus 0.50%, and (c) the one-month Adjusted Term SOFR Rate plus 1.00%, subject to a 1.00% per annum floor, with clause (c) disapplied during certain Section 2.14 benchmark-replacement interim periods",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 0,
+      "definitionCount": 19,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "reality-check-candidate:definitions-dsgr",
+      "items": [
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "86e12d2e5194a8b6339bc7fe136be3341dcfd6145d4e7aff9460676ec2daf866",
+            "kind": "PERCENT",
+            "rawText": "0.10%",
+            "numericValue": 0.001,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2007,
+            "charEnd": 2012
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.001 (from \"0.10%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8c0231d019ee0c97d929fa93bdf16a785e5a2dd842f777fbdc54cfbb773932ff",
+            "kind": "PERCENT",
+            "rawText": "0.10%",
+            "numericValue": 0.001,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2458,
+            "charEnd": 2463
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.001 (from \"0.10%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "18eca34aacb3f66a2e3115d5ed60a5cf7bfc56886df807e5565cc016ae5ceb6f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Defined Terms",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 14,
+            "charEnd": 27
+          },
+          "irItems": [],
+          "reason": "source mention \"Defined Terms\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "03038d4904293fabd5944cd4e87f75e869a9e059c61ad2e31cbeff65c6517238",
+            "kind": "METRIC_MENTION",
+            "rawText": "Alternate Base Rate",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 301,
+            "charEnd": 320
+          },
+          "irItems": [],
+          "reason": "source mention \"Alternate Base Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7e733bc2e717028eba9dfcc4029279d34394104a31178596884bb47c299e354a",
+            "kind": "METRIC_MENTION",
+            "rawText": "All ABR Loans",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 322,
+            "charEnd": 335
+          },
+          "irItems": [],
+          "reason": "source mention \"All ABR Loans\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c04d27dabf83e1531debbb6ab1dbf4063f35cdf579c252db95349dbc2da27911",
+            "kind": "METRIC_MENTION",
+            "rawText": "Security Agreements",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 427,
+            "charEnd": 446
+          },
+          "irItems": [],
+          "reason": "source mention \"Security Agreements\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fcfd19a460e222b736e7d20aa505cbaadb0cd06dd0c635bd32562df749c3a369",
+            "kind": "METRIC_MENTION",
+            "rawText": "Account Debtor",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 451,
+            "charEnd": 465
+          },
+          "irItems": [],
+          "reason": "source mention \"Account Debtor\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b554484b1089b68d054202d2c308da53924a202d1cd4cdd12a81138670ba1485",
+            "kind": "METRIC_MENTION",
+            "rawText": "Acquired EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 513,
+            "charEnd": 528
+          },
+          "irItems": [],
+          "reason": "source mention \"Acquired EBITDA\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2531180d3d9e9976477a3fb2e07cbd249521279a107f6d1fe229ea677680a045",
+            "kind": "METRIC_MENTION",
+            "rawText": "Acquired Entity",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 558,
+            "charEnd": 573
+          },
+          "irItems": [],
+          "reason": "source mention \"Acquired Entity\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5b462a1e546ac5bd8b285bec6df6a2003d67ea9bb7aac920fbede6f6b053fc3e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Acquired Entity",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 647,
+            "charEnd": 662
+          },
+          "irItems": [],
+          "reason": "source mention \"Acquired Entity\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c15c2a9a0dbc2201e456552566a3c099ef4dc8fe465a985c4013b3e60565c539",
+            "kind": "METRIC_MENTION",
+            "rawText": "Acquired Entity",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 727,
+            "charEnd": 742
+          },
+          "irItems": [],
+          "reason": "source mention \"Acquired Entity\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "46d2b5a14ef31944fc13e5c9914f1456ca27d6e87620c92a2ba9fc1bb0222306",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiaries",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 799,
+            "charEnd": 822
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiaries\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a093f051f84c10fc4c5e2c159cbef2666df563fdf37118bc4d4f228ad556f5dd",
+            "kind": "METRIC_MENTION",
+            "rawText": "Acquired Entity",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 925,
+            "charEnd": 940
+          },
+          "irItems": [],
+          "reason": "source mention \"Acquired Entity\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3e6645ff6793aaaf238ad30cc4390ddcc752d85b401eeab9ce87d858ac5440c0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Acquired Entity",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 978,
+            "charEnd": 993
+          },
+          "irItems": [],
+          "reason": "source mention \"Acquired Entity\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3ca2aa7cd639f602ca7b56c90fe1c04cca5daf1277af08bb1ca230f96bfb22f5",
+            "kind": "METRIC_MENTION",
+            "rawText": "Effective Date",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1184,
+            "charEnd": 1198
+          },
+          "irItems": [],
+          "reason": "source mention \"Effective Date\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "75062823310458f4fdd4fef049f3a15bcaacc18c71fbc535f97cd15ad3e1e477",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1213,
+            "charEnd": 1223
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "404fe3bc21cc587fffb6f203da8e4660574ddf0d613c07b03756144471d9a850",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1227,
+            "charEnd": 1248
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e5556eb287c6b4ea3bd45fd3b781301f70cfe502a1e10cc822f4942c24413a73",
+            "kind": "METRIC_MENTION",
+            "rawText": "Equity Interests",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1564,
+            "charEnd": 1580
+          },
+          "irItems": [],
+          "reason": "source mention \"Equity Interests\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b22eddc97729b498af372f1754ef9d9a97c392dad3c9c969b99f839a512986d0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Equity Interests",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1717,
+            "charEnd": 1733
+          },
+          "irItems": [],
+          "reason": "source mention \"Equity Interests\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "049afaaf9af798a175d775251e4e67c4d29feaf563a3175ae3dca1c267b093d9",
+            "kind": "METRIC_MENTION",
+            "rawText": "Equity Interests",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1835,
+            "charEnd": 1851
+          },
+          "irItems": [],
+          "reason": "source mention \"Equity Interests\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "561f68a4893900130e1d22d8c14a9bea336f988f238689c26ba0d41869137462",
+            "kind": "METRIC_MENTION",
+            "rawText": "Adjusted Daily Simple SOFR",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1868,
+            "charEnd": 1894
+          },
+          "irItems": [],
+          "reason": "source mention \"Adjusted Daily Simple SOFR\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "061932da904f6bb6ea503c9f8993f6aa52a612fc179a31aeb6ec71197313cd2c",
+            "kind": "METRIC_MENTION",
+            "rawText": "RFR Borrowing",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1924,
+            "charEnd": 1937
+          },
+          "irItems": [],
+          "reason": "source mention \"RFR Borrowing\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "48669192494a3ce534dfb5571a51b6438f216d27ac4f051248e0c85d88794ab3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Daily Simple SOFR",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 1979,
+            "charEnd": 1996
+          },
+          "irItems": [],
+          "reason": "source mention \"Daily Simple SOFR\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "07dc1c93f0e0d351b9a843d584cad6490112066cf6a3dcac58a19d094c486971",
+            "kind": "METRIC_MENTION",
+            "rawText": "Adjusted Daily Simple SOFR",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2035,
+            "charEnd": 2061
+          },
+          "irItems": [],
+          "reason": "source mention \"Adjusted Daily Simple SOFR\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "39bbafe7c502d2e4b85762734bfab04043fe1530c730b583b468e7cce758c17b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Adjusted Term SOFR Rate",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2199,
+            "charEnd": 2222
+          },
+          "irItems": [],
+          "reason": "source mention \"Adjusted Term SOFR Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a070ceb291cf9ee4b4fe32f96a64d98d6d7c44dde5eb4884ca404566cd4010dc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Term Benchmark Borrowing",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2252,
+            "charEnd": 2276
+          },
+          "irItems": [],
+          "reason": "source mention \"Term Benchmark Borrowing\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "31d76765532a6d67df0a74dc4d83505cad611c2d7923a1f25707a62e198d1139",
+            "kind": "METRIC_MENTION",
+            "rawText": "Interest Period",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2285,
+            "charEnd": 2300
+          },
+          "irItems": [],
+          "reason": "source mention \"Interest Period\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "70393a6c04a59a7ec7ff0167d3e546683f4c8a9b1462b6ae489fe60b13eea99e",
+            "kind": "METRIC_MENTION",
+            "rawText": "ABR Borrowing",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2312,
+            "charEnd": 2325
+          },
+          "irItems": [],
+          "reason": "source mention \"ABR Borrowing\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e6ac2ca78d55db00a67a362c2f68b18044c02e9d6a652b143f61ce346484502b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Adjusted Term SOFR Rate",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2339,
+            "charEnd": 2362
+          },
+          "irItems": [],
+          "reason": "source mention \"Adjusted Term SOFR Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6229ff3a16b96eed50603a887d73d64cd4a709fdd48fba59836a7080dcc54204",
+            "kind": "METRIC_MENTION",
+            "rawText": "Term SOFR Rate",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2408,
+            "charEnd": 2422
+          },
+          "irItems": [],
+          "reason": "source mention \"Term SOFR Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c589401e2383bdf3a94dbe81be374cc37ab7cfedfb022deb6b5ef8814095ba2c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Interest Period",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2432,
+            "charEnd": 2447
+          },
+          "irItems": [],
+          "reason": "source mention \"Interest Period\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7950741f50c2ae5948162a46193e52ec6b9f0df8ddb7617a194279a7db333a96",
+            "kind": "METRIC_MENTION",
+            "rawText": "Adjusted Term SOFR Rate",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2486,
+            "charEnd": 2509
+          },
+          "irItems": [],
+          "reason": "source mention \"Adjusted Term SOFR Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "23beb88a1bdc85977ef2f60744cc727ae1643ab1ad7ebfdb52bd0254de2bf83d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2647,
+            "charEnd": 2667
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "bf444003fc00ba77f333803979438f5d70113bac455f25f567eb32bec47bdfff",
+            "kind": "METRIC_MENTION",
+            "rawText": "JPMorgan Chase Bank",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2676,
+            "charEnd": 2695
+          },
+          "irItems": [],
+          "reason": "source mention \"JPMorgan Chase Bank\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f5d943e7b5fdb4cc9d6e0e418deb4d9076d78fc9cea06866c96b030d2518db8b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Questionnaire",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2829,
+            "charEnd": 2857
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Questionnaire\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "905f208cab5dcebe0b4b6f4198c547595018d90d989cefdfa11a93616e6ad156",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Questionnaire",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2869,
+            "charEnd": 2897
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Questionnaire\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1a4d4401781e9e4b3c47fa6017190e2219680b064e511fc224c09e1e28fddece",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2924,
+            "charEnd": 2944
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "78f7f343524fd291b270f0f41862e33263eaf086807bf182b7df6cc1fcf7d42c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Affected Financial Institution",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2949,
+            "charEnd": 2979
+          },
+          "irItems": [],
+          "reason": "source mention \"Affected Financial Institution\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a5aff85d9e4f79089f55125a9d52ffe1b3e6e4c296526c129a912823a6402950",
+            "kind": "METRIC_MENTION",
+            "rawText": "EEA Financial Institution",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 2996,
+            "charEnd": 3021
+          },
+          "irItems": [],
+          "reason": "source mention \"EEA Financial Institution\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0269d12dd890414ed70fae3fd43d3e2c34abfb7db8983ceeef66861c4b93e849",
+            "kind": "METRIC_MENTION",
+            "rawText": "UK Financial Institution",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3033,
+            "charEnd": 3057
+          },
+          "irItems": [],
+          "reason": "source mention \"UK Financial Institution\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0440bf4dcaeecd4aeb0f1a60e34af3b0e05abb59046cf76e3f32cd0ceb916c2e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Affiliate Lender\nCap",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3283,
+            "charEnd": 3303
+          },
+          "irItems": [],
+          "reason": "source mention \"Affiliate Lender\nCap\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c864a1615978134d8b083f1b228331d7981e9f0f01d0eec0737d7d8784b665c1",
+            "kind": "METRIC_MENTION",
+            "rawText": "Affiliate Lenders",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3363,
+            "charEnd": 3380
+          },
+          "irItems": [],
+          "reason": "source mention \"Affiliate Lenders\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d2c0848d9763851a0cf62150a6b0cfa733f229e0f715872c5db5677f6addf9b0",
+            "kind": "METRIC_MENTION",
+            "rawText": "LKCM Headwater Investments III",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3404,
+            "charEnd": 3434
+          },
+          "irItems": [],
+          "reason": "source mention \"LKCM Headwater Investments III\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "bc2822c63d075ffe24c075b79df750dd3a0139bc3d3db110953a2560354707b9",
+            "kind": "METRIC_MENTION",
+            "rawText": "Agent\nIndemnitee",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3544,
+            "charEnd": 3560
+          },
+          "irItems": [],
+          "reason": "source mention \"Agent\nIndemnitee\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "cff1f07b7e8144977d11f055edf0c68a3ed7d5abe01df91daf33e6de52755742",
+            "kind": "METRIC_MENTION",
+            "rawText": "Aggregate Credit Exposure",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3617,
+            "charEnd": 3642
+          },
+          "irItems": [],
+          "reason": "source mention \"Aggregate Credit Exposure\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3e72f0a470cef2b641383a3b942a94d52464a71ba120964e98975a1f017c64b1",
+            "kind": "METRIC_MENTION",
+            "rawText": "Credit Exposure",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3679,
+            "charEnd": 3694
+          },
+          "irItems": [],
+          "reason": "source mention \"Credit Exposure\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8b4c60718ca0eb42a3965f8dade3fc94fc58e502cdea06a54d72062f48555c44",
+            "kind": "METRIC_MENTION",
+            "rawText": "Aggregate Revolving Exposure",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3731,
+            "charEnd": 3759
+          },
+          "irItems": [],
+          "reason": "source mention \"Aggregate Revolving Exposure\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d6a62626129b76df3ee1f9fd20e82fbdb9c3adb88793a5da3a2818470a9a6f7f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Revolving Exposure",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3796,
+            "charEnd": 3814
+          },
+          "irItems": [],
+          "reason": "source mention \"Revolving Exposure\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "91c3fc76e78aefd7b72c6baced050e9e1b5c3e6c8796143e3b9f63720d9e7a5e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Agreed Currency",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3851,
+            "charEnd": 3866
+          },
+          "irItems": [],
+          "reason": "source mention \"Agreed Currency\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9d79dd1029860497420ebf72fbb838cfe90651a0efb029ef9c3aa242d62340f0",
+            "kind": "METRIC_MENTION",
+            "rawText": "Alternative Currency",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3898,
+            "charEnd": 3918
+          },
+          "irItems": [],
+          "reason": "source mention \"Alternative Currency\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0efb40af2e16b1fdff642d2310f9522998def44a60248a7e8290bbe1dba3d7df",
+            "kind": "METRIC_MENTION",
+            "rawText": "Alternate Base Rate",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "1.01",
+            "structuralNodeKey": null,
+            "charStart": 3923,
+            "charEnd": 3942
+          },
+          "irItems": [],
+          "reason": "source mention \"Alternate Base Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 4 apparent independent enumerated unit(s) ((a), (b), (f), (c)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 7 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text distinguishes 3 distinct entity-scope term(s) (restricted subsidiaries, loan party, restricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope"
+        }
+      ],
+      "materialUnresolvedCount": 5
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T18:12:33.171Z"
+  }
+}
