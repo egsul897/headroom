@@ -2,27 +2,130 @@
   "schemaVersion": "1.0",
   "artifactId": "SHARED_CAP_ROOT_CAUSE",
   "requirement": "Section 14: investigate before implementation; trace SOURCE -> discovery -> context -> semantic inventory -> composition -> IRRuleDependency/SharedCapacity; determine earliest loss; do NOT hardcode DSGR.",
-  "realRegionTraced": "DSGR doc-a §6.01(b)(iii) / §6.01(c)(iii) / §6.04(b): one 15%-of-Applicable-EBITDA aggregate cap shared by (i) intercompany Indebtedness of non-U.S.-Loan-Party Restricted Subsidiaries owed to U.S. Loan Parties, (ii) U.S. Loan Party Guarantees of such subsidiaries' debt, and (iii) post-Effective-Date investments by U.S. Loan Parties in such subsidiaries - each of the three provisos restates the shared cap and cross-references the other two sections.",
+  "realRegionTraced": "DSGR doc-a \u00a76.01(b)(iii) / \u00a76.01(c)(iii) / \u00a76.04(b): one 15%-of-Applicable-EBITDA aggregate cap shared by (i) intercompany Indebtedness of non-U.S.-Loan-Party Restricted Subsidiaries owed to U.S. Loan Parties, (ii) U.S. Loan Party Guarantees of such subsidiaries' debt, and (iii) post-Effective-Date investments by U.S. Loan Parties in such subsidiaries - each of the three provisos restates the shared cap and cross-references the other two sections.",
   "method": "Zero-cost deterministic re-derivation (scripts/semantic-accountability-shared-cap-trace.ts, output 06-shared-cap-root-cause-trace.json): the same real source text, the same real structure/definition/reference/index/package-graph/context-retrieval pipeline, run twice - once EXACTLY as Mission 4's scripts ran it (structuralNodeIds empty) and once with the real physical nodeId - plus a read of the preserved Mission 4 composition output. No model call.",
   "layerByLayer": [
-    { "layer": "SOURCE", "status": "INTACT", "evidence": "Shared-cap language ('together with the aggregate amount of ... shall not at any time exceed an amount equal to 15% of Applicable EBITDA') is physically present in the debt-dsgr window (2 sentences) and the investments-dsgr window (1 sentence). Each proviso names the other two sections explicitly." },
-    { "layer": "DISCOVERY", "status": "NOT EXERCISED BY THE HARNESS", "evidence": "Mission 4's regions were located by source-first char offset and wrapped in an ad-hoc DiscoveredCandidate; the real discovery pipeline (which populates structuralNodeIds) was not run. The ad-hoc candidate left structuralNodeIds empty (BF-1) and, for the investments region, anchored to the preceding clause 6.03(g) via a closed-interval bug (BF-6)." },
-    { "layer": "CONTEXT (Phase 2D bundle) - EARLIEST LOSS", "status": "LOST", "evidence": "As run: sufficiencyState INCOMPLETE, 0 items, for BOTH regions ('Cannot retrieve context for a candidate with no anchoring structural node'). With the real nodeId: 48/47 items but ZERO CROSS_REFERENCE items - the bundle is filled by 17-18 CHILD_RULE items and 25-27 DEFINITION_DEPENDENCY items and stops on maxTextBudgetChars/maxDefinitionDepth before reference expansion delivers §6.04(b) (whose reference from §6.01(b)(i)/(c)(i) DOES resolve uniquely in detectStructuralReferences). Bare 'Section 6.04'/'SECTION 6.01' references are AMBIGUOUS_RELATIVE_REFERENCE (HIGH) because the table-of-contents entry is indexed as a second, degenerate SECTION occurrence sharing the label; 'Section 6.01(b)(iii)'/'(c)(iii)' are unresolved because an inline roman-numeral proviso is not a node." },
-    { "layer": "INDEX / TOOL RESOLUTION", "status": "LOST for the exact strings the model used", "evidence": "resolveUniqueNodeByRef: 'Section 6.04(b)' NOT_FOUND (prefix not normalized on the query side - '6.04(b)' alone is UNIQUE), 'Section 6.01(b)(iii)' and '6.01(b)(iii)' NOT_FOUND (inline sub-clause), '6.04' AMBIGUOUS (TOC duplicate). getReferencedProvision therefore refused every cross-reference the model attempted; the model's own sufficiencyReasons record 'cross-reference resolution attempted for both and failed, then tool budget was exhausted'." },
-    { "layer": "SEMANTIC INVENTORY (Pass A)", "status": "DID NOT EXIST", "evidence": "No source-derived inventory of the SHARED_CAP / DEPENDENCY / REFERENCE components existed, so nothing could hold composition accountable for representing the cap once, as one shared resource, referenced from three places." },
-    { "layer": "COMPOSITION (Pass B / model)", "status": "PARTIAL", "evidence": "investments-dsgr: the model DID emit a WireSharedCapacity for §6.04(b) (rule b4ebe266's capacityExpression is LEDGER_USAGE_REFERENCE -> ir-sharedcap:949e9cac) and DID emit dependsOn edges to 'Section 6.01(b)(iii)' and 'Section 6.01(c)(iii)'. debt-dsgr: the model represented §6.01(b)(iii) and §6.01(c)(iii) as TWO freestanding MULTIPLY(15%, Applicable EBITDA) rules with no SharedCapacity and no dependsOn, even though both were in the SAME batch and could have shared one WireSharedCapacity. The compiler prompt (semantic/prompt.ts) contains no instruction and no example for when to emit a SharedCapacity; sharedCapacities is present only in the submit schema." },
-    { "layer": "NORMALIZATION (normalize.ts)", "status": "LOST", "evidence": "Every cross-unit dependsOn the model emitted was dropped: resolveRuleRef only accepts a same-batch localRef or a literal 'ir-rule:' id; the drop is disclosed only as a sufficiencyReasons string. IRRuleDependency.targetRuleId is non-nullable, so an unresolved external target has no IR representation." },
-    { "layer": "IRRuleDependency / SharedCapacity (final IR)", "status": "PARTIALLY PRESENT, then LOST AT PRESERVATION", "evidence": "The §6.04(b) SharedCapacity existed in memory (the verifier's ir-inventory saw the LEDGER_USAGE_REFERENCE) but the scripts never wrote compilationResult.sharedCapacities, toolCallLog or rawModelOutput to disk, so Mission 4's post-hoc count found zero." }
+    {
+      "layer": "SOURCE",
+      "status": "INTACT",
+      "evidence": "Shared-cap language ('together with the aggregate amount of ... shall not at any time exceed an amount equal to 15% of Applicable EBITDA') is physically present in the debt-dsgr window (2 sentences) and the investments-dsgr window (1 sentence). Each proviso names the other two sections explicitly."
+    },
+    {
+      "layer": "DISCOVERY",
+      "status": "NOT EXERCISED BY THE HARNESS",
+      "evidence": "Mission 4's regions were located by source-first char offset and wrapped in an ad-hoc DiscoveredCandidate; the real discovery pipeline (which populates structuralNodeIds) was not run. The ad-hoc candidate left structuralNodeIds empty (BF-1) and, for the investments region, anchored to the preceding clause 6.03(g) via a closed-interval bug (BF-6)."
+    },
+    {
+      "layer": "CONTEXT (Phase 2D bundle) - EARLIEST LOSS",
+      "status": "LOST",
+      "evidence": "As run: sufficiencyState INCOMPLETE, 0 items, for BOTH regions ('Cannot retrieve context for a candidate with no anchoring structural node'). With the real nodeId: 48/47 items but ZERO CROSS_REFERENCE items - the bundle is filled by 17-18 CHILD_RULE items and 25-27 DEFINITION_DEPENDENCY items and stops on maxTextBudgetChars/maxDefinitionDepth before reference expansion delivers \u00a76.04(b) (whose reference from \u00a76.01(b)(i)/(c)(i) DOES resolve uniquely in detectStructuralReferences). Bare 'Section 6.04'/'SECTION 6.01' references are AMBIGUOUS_RELATIVE_REFERENCE (HIGH) because the table-of-contents entry is indexed as a second, degenerate SECTION occurrence sharing the label; 'Section 6.01(b)(iii)'/'(c)(iii)' are unresolved because an inline roman-numeral proviso is not a node."
+    },
+    {
+      "layer": "INDEX / TOOL RESOLUTION",
+      "status": "LOST for the exact strings the model used",
+      "evidence": "resolveUniqueNodeByRef: 'Section 6.04(b)' NOT_FOUND (prefix not normalized on the query side - '6.04(b)' alone is UNIQUE), 'Section 6.01(b)(iii)' and '6.01(b)(iii)' NOT_FOUND (inline sub-clause), '6.04' AMBIGUOUS (TOC duplicate). getReferencedProvision therefore refused every cross-reference the model attempted; the model's own sufficiencyReasons record 'cross-reference resolution attempted for both and failed, then tool budget was exhausted'."
+    },
+    {
+      "layer": "SEMANTIC INVENTORY (Pass A)",
+      "status": "DID NOT EXIST",
+      "evidence": "No source-derived inventory of the SHARED_CAP / DEPENDENCY / REFERENCE components existed, so nothing could hold composition accountable for representing the cap once, as one shared resource, referenced from three places."
+    },
+    {
+      "layer": "COMPOSITION (Pass B / model)",
+      "status": "PARTIAL",
+      "evidence": "investments-dsgr: the model DID emit a WireSharedCapacity for \u00a76.04(b) (rule b4ebe266's capacityExpression is LEDGER_USAGE_REFERENCE -> ir-sharedcap:949e9cac) and DID emit dependsOn edges to 'Section 6.01(b)(iii)' and 'Section 6.01(c)(iii)'. debt-dsgr: the model represented \u00a76.01(b)(iii) and \u00a76.01(c)(iii) as TWO freestanding MULTIPLY(15%, Applicable EBITDA) rules with no SharedCapacity and no dependsOn, even though both were in the SAME batch and could have shared one WireSharedCapacity. The compiler prompt (semantic/prompt.ts) contains no instruction and no example for when to emit a SharedCapacity; sharedCapacities is present only in the submit schema."
+    },
+    {
+      "layer": "NORMALIZATION (normalize.ts)",
+      "status": "LOST",
+      "evidence": "Every cross-unit dependsOn the model emitted was dropped: resolveRuleRef only accepts a same-batch localRef or a literal 'ir-rule:' id; the drop is disclosed only as a sufficiencyReasons string. IRRuleDependency.targetRuleId is non-nullable, so an unresolved external target has no IR representation."
+    },
+    {
+      "layer": "IRRuleDependency / SharedCapacity (final IR)",
+      "status": "PARTIALLY PRESENT, then LOST AT PRESERVATION",
+      "evidence": "The \u00a76.04(b) SharedCapacity existed in memory (the verifier's ir-inventory saw the LEDGER_USAGE_REFERENCE) but the scripts never wrote compilationResult.sharedCapacities, toolCallLog or rawModelOutput to disk, so Mission 4's post-hoc count found zero."
+    }
   ],
   "earliestLossLayer": "CONTEXT_RETRIEVAL (with an INDEX/TOOL resolution loss immediately behind it and a validation-harness anchoring defect in front of it)",
   "classification": "MULTI_FACTOR - CONTEXT_RETRIEVAL_LIMIT (bundle anchoring in the harness; cross-reference starvation by definition-chain budget; TOC-induced label ambiguity; inline sub-clause references) + DEPENDENCY_ARCHITECTURE_LIMIT (no IR form for an unresolved cross-unit dependency; dropped at normalization) + COMPOSITION guidance gap (no shared-cap instruction/example) + MEASUREMENT (sharedCapacities never preserved). NOT a model-capability limit: the model produced the SharedCapacity and the cross-unit edges when the same-batch evidence allowed it.",
   "genericRemediationJustifiedByThisTrace": [
-    { "id": "R-1", "layer": "harness", "change": "Validation scripts populate the real structuralNodeId (as the real discovery pipeline always does), use a half-open anchor interval, and preserve sharedCapacities/toolCallLog/rawModelOutput/inventory/reconciliation. Not a production change." },
-    { "id": "R-2", "layer": "source context (new module)", "change": "A deterministic source-context sufficiency layer (Section 12/13) builds the semantic compilation unit as operative text + EXPLICIT cross-referenced provisions (resolved with provenance, bounded), independent of Phase 2D's definition-first budget order, and records COMPLETE_LOCAL_SOURCE / DEPENDENCY_EXPANDED_SOURCE / TRUNCATED_SOURCE / STRUCTURALLY_INCOMPLETE_SOURCE / UNKNOWN_SOURCE_COMPLETENESS per unit." },
-    { "id": "R-3", "layer": "reference resolution", "change": "Generic query normalization (strip a leading 'Section'/'§'/'Article' prefix), inline-sub-clause fallback to the nearest enclosing node WITH DISCLOSURE (resolvedViaEnclosingNode: '6.01(b)' for '6.01(b)(iii)'), and degenerate-occurrence exclusion when a label is shared by a heading-only occurrence (0 children, tiny own text) and a real body occurrence - reported as UNIQUE_AFTER_DEGENERATE_EXCLUSION with the excluded candidates listed, never a silent pick. Genuine ambiguity (two substantive occurrences) stays AMBIGUOUS -> REVIEW_REQUIRED (Section 15: never guess)." },
-    { "id": "R-4", "layer": "normalization/IR (additive)", "change": "An unresolved cross-unit dependsOn is preserved as IRRule.unresolvedDependencies[] (relationshipType, targetRef, description, reason) instead of being dropped; Pass C dispositions the corresponding DEPENDENCY/REFERENCE inventory item as AMBIGUOUS (review), never REPRESENTED and never silently absent." },
-    { "id": "R-5", "layer": "composition prompt", "change": "Generic shared-cap instruction + one synthetic example: when two or more independently operative permissions in the SAME submission draw on ONE aggregate ceiling, emit one WireSharedCapacity and reference it from each member via LEDGER_USAGE_REFERENCE; when the sharing partner lives in another section, emit the dependency with the section reference (kept per R-4)." },
-    { "id": "R-6", "layer": "Pass A inventory", "change": "SHARED_CAP, DEPENDENCY and REFERENCE are first-class inventory roles; Pass C requires each material one to be REPRESENTED (SharedCapacity/LEDGER_USAGE_REFERENCE/dependsOn/unresolvedDependencies lineage) or explicitly dispositioned." }
+    {
+      "id": "R-1",
+      "layer": "harness",
+      "change": "Validation scripts populate the real structuralNodeId (as the real discovery pipeline always does), use a half-open anchor interval, and preserve sharedCapacities/toolCallLog/rawModelOutput/inventory/reconciliation. Not a production change."
+    },
+    {
+      "id": "R-2",
+      "layer": "source context (new module)",
+      "change": "A deterministic source-context sufficiency layer (Section 12/13) builds the semantic compilation unit as operative text + EXPLICIT cross-referenced provisions (resolved with provenance, bounded), independent of Phase 2D's definition-first budget order, and records COMPLETE_LOCAL_SOURCE / DEPENDENCY_EXPANDED_SOURCE / TRUNCATED_SOURCE / STRUCTURALLY_INCOMPLETE_SOURCE / UNKNOWN_SOURCE_COMPLETENESS per unit."
+    },
+    {
+      "id": "R-3",
+      "layer": "reference resolution",
+      "change": "Generic query normalization (strip a leading 'Section'/'\u00a7'/'Article' prefix), inline-sub-clause fallback to the nearest enclosing node WITH DISCLOSURE (resolvedViaEnclosingNode: '6.01(b)' for '6.01(b)(iii)'), and degenerate-occurrence exclusion when a label is shared by a heading-only occurrence (0 children, tiny own text) and a real body occurrence - reported as UNIQUE_AFTER_DEGENERATE_EXCLUSION with the excluded candidates listed, never a silent pick. Genuine ambiguity (two substantive occurrences) stays AMBIGUOUS -> REVIEW_REQUIRED (Section 15: never guess)."
+    },
+    {
+      "id": "R-4",
+      "layer": "normalization/IR (additive)",
+      "change": "An unresolved cross-unit dependsOn is preserved as IRRule.unresolvedDependencies[] (relationshipType, targetRef, description, reason) instead of being dropped; Pass C dispositions the corresponding DEPENDENCY/REFERENCE inventory item as AMBIGUOUS (review), never REPRESENTED and never silently absent."
+    },
+    {
+      "id": "R-5",
+      "layer": "composition prompt",
+      "change": "Generic shared-cap instruction + one synthetic example: when two or more independently operative permissions in the SAME submission draw on ONE aggregate ceiling, emit one WireSharedCapacity and reference it from each member via LEDGER_USAGE_REFERENCE; when the sharing partner lives in another section, emit the dependency with the section reference (kept per R-4)."
+    },
+    {
+      "id": "R-6",
+      "layer": "Pass A inventory",
+      "change": "SHARED_CAP, DEPENDENCY and REFERENCE are first-class inventory roles; Pass C requires each material one to be REPRESENTED (SharedCapacity/LEDGER_USAGE_REFERENCE/dependsOn/unresolvedDependencies lineage) or explicitly dispositioned."
+    }
   ],
-  "whatWouldNotFixIt": "Raising maxTextBudgetChars globally (Section 12 forbids solving this by window size), or a DSGR-specific section map (Section 19)."
+  "whatWouldNotFixIt": "Raising maxTextBudgetChars globally (Section 12 forbids solving this by window size), or a DSGR-specific section map (Section 19).",
+  "remediationImplemented": {
+    "commit": "semantic accountability commit 4 (shared-cap / cross-reference dependency remediation)",
+    "status": "R-2, R-3, R-4, R-5, R-6 implemented in production code; R-1 implemented in the validation harness (commit 6)",
+    "items": [
+      {
+        "id": "R-2",
+        "files": [
+          "lib/contract-model/compiler/semantic-accountability/source-context.ts",
+          "lib/contract-model/compiler/semantic/compile.ts"
+        ],
+        "note": "Landed in commits 2-3; compile.ts resolves the source context before Pass A and records SOURCE_CONTEXT_TRUNCATED as a failure reason."
+      },
+      {
+        "id": "R-3",
+        "files": [
+          "lib/contract-model/compiler/semantic-accountability/reference-resolver.ts",
+          "lib/contract-model/compiler/semantic/tools.ts"
+        ],
+        "note": "getReferencedProvision now resolves absolute references through resolveReferenceTarget (prefix normalization, enclosing-node fallback with disclosure, degenerate-occurrence exclusion with the excluded candidates listed); a genuinely AMBIGUOUS reference is refused with the candidate list so the model must disambiguate deliberately via getSourceSpan instead of guessing."
+      },
+      {
+        "id": "R-4",
+        "files": [
+          "lib/contract-model/ir/types.ts",
+          "lib/contract-model/compiler/semantic/normalize.ts",
+          "lib/contract-model/compiler/semantic/wire-schema.ts"
+        ],
+        "note": "normalizeDependency returns {resolved}|{unresolved}; an unresolvable targetRef becomes IRRule.unresolvedDependencies[] (with lineage) instead of being dropped. Pass C treats unresolved-dependency lineage as AMBIGUOUS (review), never REPRESENTED and never silently absent."
+      },
+      {
+        "id": "R-5",
+        "files": [
+          "lib/contract-model/compiler/semantic/prompt.ts"
+        ],
+        "note": "Generic 'SHARED CAPS AND CROSS-UNIT DEPENDENCIES' guidance plus one synthetic few-shot example (fictional Section 9.06 Zeta Loans/Guarantees, one WireSharedCapacity with two LEDGER_USAGE_REFERENCE members and a cross-section dependsOn). No real benchmark identifiers."
+      },
+      {
+        "id": "R-6",
+        "files": [
+          "lib/contract-model/compiler/semantic-accountability/types.ts",
+          "lib/contract-model/compiler/semantic-accountability/reconciliation.ts"
+        ],
+        "note": "SHARED_CAP / DEPENDENCY / REFERENCE roles are inventoried in Pass A and reconciled in Pass C via SharedCapacity, LEDGER_USAGE_REFERENCE, dependsOn and unresolvedDependencies lineage."
+      }
+    ],
+    "antiEnumeration": "None of the remediation logic is keyed to a specific agreement, section number, defined term, basket name or ground-truth amount (enforced by tests/contract-model/semantic-accountability-independence.test.ts)."
+  }
 }

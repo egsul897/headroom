@@ -19,6 +19,7 @@ import type { NodeSupersessionIndex, NodeSupersessionStatus, OperativeProvisionV
 import type { StructuralNode } from "../types";
 import { buildNodeSupersessionIndex, getNodeSupersessionStatus, isConfirmedCurrentOperativeEvidence, normalizeDefinedTermRef, resolveOperativeDefinitionEvidence } from "../amendment/operative-state";
 import type { ContextItem } from "../context-retrieval/types";
+import { resolveReferenceTarget } from "../semantic-accountability/reference-resolver";
 import type { SemanticToolAccess, ToolBudget, ToolCallLogEntry } from "./types";
 
 export interface ToolExecutionOutcome {
@@ -841,31 +842,49 @@ export function buildToolSet(access: SemanticToolAccess, homeDocumentId: string,
         // cardinality, never silently taking whichever document in
         // allowedDocs' iteration order happens to produce a hit first when
         // that hit is itself ambiguous within its own document.
-        let anyAmbiguous = false;
+        //
+        // SEMANTIC ACCOUNTABILITY (docs/semantic-accountability/06-shared-cap-
+        // root-cause.json, R-3): resolution now goes through the generic
+        // reference resolver, which (1) strips a leading "Section"/"§"/
+        // "Article" label the model naturally includes ("Section 6.04(b)"
+        // previously NOT_FOUND while "6.04(b)" was UNIQUE), (2) falls back to
+        // the nearest ENCLOSING node for an inline sub-clause that is not its
+        // own structural node ("6.01(b)(iii)" -> "6.01(b)", disclosed as
+        // RESOLVED_VIA_ENCLOSING_NODE), and (3) excludes a heading-only
+        // table-of-contents occurrence that shares a body section's label
+        // (disclosed as UNIQUE_AFTER_DEGENERATE_EXCLUSION with the excluded
+        // nodeIds). Two substantive occurrences stay AMBIGUOUS and are
+        // refused - but the refusal now LISTS the candidate occurrences so
+        // the model can disambiguate deliberately via getSourceSpan(nodeId)
+        // on real evidence, instead of this code ever guessing (mission §15).
+        const ambiguousCandidates: { documentId: string; nodeId: string; sectionRef: string; charStart: number; heading: string }[] = [];
         for (const documentId of allowedDocs) {
-          const resolution = access.structuralIndex.resolveUniqueNodeByRef(documentId, ref);
+          const resolution = resolveReferenceTarget(access.structuralIndex, documentId, ref);
           if (resolution.status === "AMBIGUOUS") {
-            anyAmbiguous = true;
+            for (const nodeId of resolution.candidateNodeIds) {
+              const n = access.structuralIndex.getNodeById(nodeId);
+              if (n) ambiguousCandidates.push({ documentId, nodeId, sectionRef: n.sectionRef, charStart: n.charStart, heading: n.heading.slice(0, 80) });
+            }
             continue;
           }
-          if (resolution.status === "UNIQUE") {
+          if (resolution.node) {
             const node = resolution.node;
             const resolved = resolveNodeWithSupersessionAwareness(access, supersessionIndex, node);
             const display = legacySupersessionDisplay(resolved);
             const { text, truncated } = truncate(resolved.text);
             charsUsedRef.current += text.length;
             const outcome = ok(
-              { ref, resolvedSectionRef: node.sectionRef, nodeId: node.nodeId, documentId, text, truncated, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason },
+              { ref, resolvedSectionRef: node.sectionRef, nodeId: node.nodeId, documentId, text, truncated, supersessionStatus: display.supersessionStatus, supersessionReason: display.supersessionReason, resolution: resolution.status, resolutionNote: resolution.note, excludedDegenerateNodeIds: resolution.excludedDegenerateNodeIds },
               text,
-              `resolved reference "${ref}" -> ${node.sectionRef} (${display.supersessionStatus})`
+              `resolved reference "${ref}" -> ${node.sectionRef} [${resolution.status}] (${display.supersessionStatus})`
             );
             outcome.evidenceUnresolved = !resolved.evidenceCurrent;
             outcome.evidenceTruncated = truncated;
             return outcome;
           }
         }
-        if (anyAmbiguous) return refuse(`reference "${ref}" matches more than one physical location within this instrument's documents - ambiguous, not resolved. Provide a fromNodeId for context-scoped resolution, or narrow the reference.`);
-        return refuse(`reference "${ref}" did not resolve to any section within this instrument's documents`);
+        if (ambiguousCandidates.length > 0) return refuse(`reference "${ref}" matches ${ambiguousCandidates.length} substantive physical locations within this instrument's documents - ambiguous, not resolved (never guessed). Candidates: ${JSON.stringify(ambiguousCandidates)}. Provide a fromNodeId for context-scoped resolution, or call getSourceSpan on the specific candidate nodeId your evidence supports.`);
+        return refuse(`reference "${ref}" did not resolve to any section (or any enclosing section) within this instrument's documents`);
       },
     },
     {

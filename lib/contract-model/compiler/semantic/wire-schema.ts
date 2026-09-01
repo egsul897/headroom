@@ -151,6 +151,7 @@ export const WireDependencySchema = z.object({
   /** A localRef within this same call, OR a real, already-existing IR ruleId string the model learned via a getRuleDependency/getSharedCapContext tool call - normalize.ts tries localRef resolution first, then accepts the string verbatim as an external ruleId. */
   targetRef: z.string(),
   description: z.string().default(""),
+  inventoryItemIds: z.array(z.string()).optional(),
 });
 export type WireDependency = z.infer<typeof WireDependencySchema>;
 

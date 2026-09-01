@@ -20,7 +20,7 @@ import { CovenantFamily, ContractRuleType, ContractRulePosture, ContractRuleRela
 import { CONTRACT_ACTIONS, CONTRACT_CONDITION_TYPES } from "../../types";
 import { withExpressionId, computeRuleId, computeDefinitionId, computeSharedCapId } from "../../ir/identity";
 import { inferType } from "../../ir/type-check";
-import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRDefinition, type IRException, type IRExpression, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
+import { UNSUPPORTED_TYPE, type IRCapacityExpression, type IRCondition, type IRDefinition, type IRException, type IRExpression, type IRRule, type IRRuleDependency, type IRSharedCapacity, type IRUnresolvedDependency, type IRValueType, type OperativeLineageRef, type RepresentationSufficiency, type SourceProvenance, type UnlimitedCapacity } from "../../ir/types";
 import type { SubmitCompilationInput, WireCondition, WireDefinition, WireException, WireExpression, WireRule, WireSharedCapacity } from "./wire-schema";
 import type { IRExtensionCandidate, SemanticCompilerInput } from "./types";
 
@@ -303,16 +303,28 @@ function normalizeException(wire: WireException, ctx: NormCtx, index: number, ap
   );
 }
 
-function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, index: number): IRRuleDependency | null {
+/**
+ * SEMANTIC ACCOUNTABILITY (docs/semantic-accountability/06-shared-cap-root-
+ * cause.json, R-4): a dependsOn whose targetRef is neither a same-batch
+ * localRef nor a real ir-rule: id used to be DROPPED here with only a
+ * warning string left behind - which is exactly how the real, model-emitted
+ * §6.04(b) -> §6.01(b)(iii)/(c)(iii) shared-cap linkage vanished. It is now
+ * preserved as an explicit IRUnresolvedDependency (no fake targetRuleId, so
+ * validate.ts's dangling-reference rule is untouched); Pass C dispositions
+ * the corresponding DEPENDENCY/REFERENCE inventory item AMBIGUOUS (review),
+ * never REPRESENTED and never silently absent. The target is never guessed.
+ */
+function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, index: number): { resolved: IRRuleDependency } | { unresolved: IRUnresolvedDependency } {
   const relationshipType = matchEnum(wire.relationshipType, Object.values(ContractRuleRelationshipType));
   const finalType = relationshipType ?? "REQUIRES";
   if (!relationshipType) warn(ctx, `dependsOn[${index}].relationshipType "${wire.relationshipType}" not recognized - defaulted to REQUIRES`);
   const targetRuleId = ctx.resolveRuleRef(wire.targetRef);
   if (!targetRuleId) {
-    warn(ctx, `dependsOn[${index}].targetRef "${wire.targetRef}" did not resolve - dependency dropped rather than left dangling`);
-    return null;
+    const reason = `dependsOn[${index}].targetRef "${wire.targetRef}" is not a rule in this compilation unit - preserved as an unresolved cross-unit dependency (review required), never guessed or dropped`;
+    warn(ctx, reason);
+    return { unresolved: withLineage({ relationshipType: finalType, targetRef: wire.targetRef, description: wire.description, reason }, wire.inventoryItemIds) };
   }
-  return { relationshipType: finalType, targetRuleId, description: wire.description };
+  return { resolved: { relationshipType: finalType, targetRuleId, description: wire.description } };
 }
 
 /** Deterministic sufficiency-consistency enforcement (task §27) - applied to every rule/definition AFTER normalization, independent of what the model itself claimed. */
@@ -390,7 +402,9 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
     const capacityExpression = normalizeCapacityExpression(wireRule.capacityExpression, ctx);
     const conditions = wireRule.conditions.map((c, i) => normalizeCondition(c, ctx, i));
     const exceptions = wireRule.exceptions.map((e, i) => normalizeException(e, ctx, i, ruleId));
-    const dependsOn = wireRule.dependsOn.map((d, i) => normalizeDependency(d, ctx, i)).filter((d): d is IRRuleDependency => d !== null);
+    const normalizedDependencies = wireRule.dependsOn.map((d, i) => normalizeDependency(d, ctx, i));
+    const dependsOn = normalizedDependencies.flatMap((d) => ("resolved" in d ? [d.resolved] : []));
+    const unresolvedDependencies = normalizedDependencies.flatMap((d) => ("unresolved" in d ? [d.unresolved] : []));
 
     const rawSufficiency = matchEnum(wireRule.sufficiency, SUFFICIENCY_VALUES) ?? "AMBIGUOUS";
     const consistent = enforceSufficiencyConsistency(rawSufficiency, wireRule.sufficiencyReasons, capacityExpression, input.operativeLineage);
@@ -413,6 +427,7 @@ export function normalizeSubmission(submission: SubmitCompilationInput, input: S
       conditions,
       exceptions,
       dependsOn,
+      ...(unresolvedDependencies.length > 0 ? { unresolvedDependencies } : {}),
       operativeLineage: input.operativeLineage,
       sufficiency: consistent.sufficiency,
       sufficiencyReasons: [...consistent.reasons, ...(warnings.filter((w) => w.scope.startsWith(ctx.scopePath)).map((w) => w.message))],
