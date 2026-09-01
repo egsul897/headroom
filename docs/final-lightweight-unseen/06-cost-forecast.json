@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "COST_FORECAST",
+  "methodology": "Forecast anchored on recent ACTUAL telemetry from this exact repository's own prior real, paid runs of the identical production pipeline (structural index -> discovery -> package graph -> amendment/operative-state -> semantic compilation -> verification), against comparably-shaped real credit-facility packages, per this mission's own Section 9 requirement.",
+  "historicalAnchors": [
+    { "run": "Riot Platforms unseen run (phase-3f2-riot-unseen-run)", "documents": 3, "totalRawChars": 548104, "totalStructuralNodes": 1372, "totalDiscoveredCandidates": 887, "candidatesCompiled": 15, "totalCostUsd": 0.820356 },
+    { "run": "FWRG first-blind run (phase-3f-first-blind-run)", "documents": 4, "totalCostUsd": 9.344626 }
+  ],
+  "thisPackageComparison": {
+    "documents": 3,
+    "totalRawChars": 1606985,
+    "ratioVsRiot": 2.93,
+    "note": "This package's raw text is ~2.93x Riot's own 3-document package. Discovery-stage cost is expected to scale roughly with per-document token count (one real LLM call per document processing its full text); compilation-stage cost is expected to scale much less with total document size, since it is capped at a FIXED number of compiled candidates (COMPILE_CAP=15, mirroring the Riot script's own precedent) regardless of how many candidates are discovered/eligible - each compiled call's own cost depends on that specific candidate's local context size, not the whole document."
+  },
+  "pointForecast": {
+    "low": 0.9,
+    "expected": 2.5,
+    "high": 9.0,
+    "reasoning": "Historical anchors span a wide $0.82-$9.34 range depending on run configuration and document count/size, which does not by itself bound this package's own run below $8 with confidence. Rather than relying on the forecast's own accuracy, the actual run script (scripts/final-lightweight-unseen-run.ts) enforces a HARD, code-level budget ceiling of $7.50 (a 50-cent margin under this mission's own $8.00 ceiling), checked before every semantic-compilation and verification call, mirroring the exact enforcement pattern scripts/phase-3f2-riot-unseen-run.ts already uses in production evidence. This makes the $8 ceiling a structural guarantee, not merely a probabilistic forecast."
+  },
+  "verdict": "PROCEED - forecast is uncertain but bounded by a hard, code-enforced $7.50 ceiling (with margin under the mission's own $8.00 hard stop). The run will stop compiling/verifying further candidates the instant cumulative real cost reaches $7.50, regardless of remaining eligible candidates - never exceeding the mission's own ceiling."
+}
