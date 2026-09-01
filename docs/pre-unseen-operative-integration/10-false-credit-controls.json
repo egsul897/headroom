@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FALSE_CREDIT_CONTROLS",
+  "testFiles": ["tests/evaluation-v2/dsgr-false-credit-gate.test.ts", "tests/evaluation-v2/false-credit-prohibitions.test.ts"],
+  "command": "npx vitest run tests/evaluation-v2/dsgr-false-credit-gate.test.ts tests/evaluation-v2/false-credit-prohibitions.test.ts",
+  "result": "4/4 passed in dsgr-false-credit-gate.test.ts + 10/10 passed in false-credit-prohibitions.test.ts",
+  "verdict": "14/14 REQUIRED - MET, unchanged from baseline (this test file and the production evaluator/false-credit logic it exercises were not touched by this session's fix)."
+}
