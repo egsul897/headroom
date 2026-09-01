@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CONSUMER_INVENTORY",
+  "classificationLegend": "A = already authoritative (reuses getNodeSupersessionStatus/buildNodeSupersessionIndex output directly, positive-only CURRENT_OPERATIVE check or positive KNOWN_SUPERSEDED check - automatically inherits the fix with zero code change). B = indirectly authoritative via a candidate/finding field already derived from A's own output upstream. C = bypasses buildNodeSupersessionIndex/getNodeSupersessionStatus but independently checks an equivalent state (e.g. reads operativeState.provisions directly). D = unsafe bypass that would need a fix in scope.",
+  "consumers": [
+    {
+      "file": "lib/contract-model/analysis/orchestrator.ts",
+      "function": "deriveOperativeLineage (line 301) + analyzeInstrument's own supersessionIndex build (line 377)",
+      "classification": "A",
+      "reasoning": "Calls getNodeSupersessionStatus per structural node, uses SUPERSESSION_SEVERITY (a Record<NodeSupersessionStatus, number> giving KNOWN_SUPERSEDED the highest severity) to pick the worst status across a candidate's nodes, then maps KNOWN_SUPERSEDED -> OPERATIVE_STATE_CONFLICTED. Reusing the KNOWN_SUPERSEDED status literal for document-level supersession (this session's chosen design, see 03-integration-design.json) means this consumer requires ZERO code change and automatically treats a document-level-historical node as the most severe case, exactly as required."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic/tools.ts",
+      "function": "resolveNodeWithSupersessionAwareness (line 328), resolveParentSubstructureEvidence (line 411), legacySupersessionDisplay (line 441), plus every getRawNodeText/getReferencedProvision/getSiblingClauses/getParentClause call site (lines 199, 330, 413, 542, 989)",
+      "classification": "A",
+      "reasoning": "Every one of these positively gates trust on `nodeSupersession.status === \"CURRENT_OPERATIVE\"` (fail-closed on any other value) or, in legacySupersessionDisplay, explicitly checks for KNOWN_SUPERSEDED to preserve that literal in the tool's own wire-format display. No code change needed; a document-level KNOWN_SUPERSEDED record is displayed and gated identically to a provision-level one, and the record's own richer reason string (naming the resolved operative document) is what a caller sees."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic/compile.ts",
+      "function": "hasStaleReferencedDefinition path via buildNodeSupersessionIndex (line 84) -> resolveOperativeDefinitionEvidence",
+      "classification": "A",
+      "reasoning": "resolveOperativeDefinitionEvidence's own base-document fallback branch (operative-state.ts:910-913) checks `supersession?.status === \"KNOWN_SUPERSEDED\"` and returns DefinitionEvidenceStatus KNOWN_SUPERSEDED/isCurrentTruth:false. Zero code change - a definition physically declared in a now-historical predecessor document is correctly demoted."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-verification/verify.ts",
+      "function": "determineStatus (line 286) via buildNodeSupersessionIndex (line 311) -> source-inventory.ts's buildSourceInventory",
+      "classification": "A",
+      "reasoning": "`if (sourceInventory.supersessionStatus === \"KNOWN_SUPERSEDED\") return \"REVIEW_REQUIRED\"` (verify.ts:286) is a POSITIVE check for exactly the reused status literal. This is the independent semantic verifier the mission's Section 13 targets - it already fails closed the moment a node's supersessionStatus is KNOWN_SUPERSEDED, so text-match/citation-validity/node-existence can never independently promote historical evidence to VERIFIED, satisfying the mission requirement with zero code change."
+    },
+    {
+      "file": "lib/contract-model/compiler/semantic-verification/source-inventory.ts",
+      "function": "buildSourceInventory (line 167) via getNodeSupersessionStatus",
+      "classification": "A",
+      "reasoning": "Passes the NodeSupersessionResult.status straight through onto SourceInventoryEntry.supersessionStatus, which verify.ts (above) already gates on. No independent trust decision of its own."
+    },
+    {
+      "file": "lib/contract-model/compiler/coverage-audit/pipeline.ts",
+      "function": "runIndependentCoverageAudit (lines 123, 158) via getNodeSupersessionStatus",
+      "classification": "A",
+      "reasoning": "coverage-audit/types.ts's own header comment (independently confirmed by reading it) requires every consumer to check supersessionStatus === CURRENT_OPERATIVE before treating a coverage gap as describing a presently-governing state - positive-only check, automatically fails closed for the new DOCUMENT_LEVEL KNOWN_SUPERSEDED record."
+    },
+    {
+      "file": "lib/contract-model/compiler/discovery/pass-a-signals.ts",
+      "function": "supersession-aware signal detection (line 84) via getNodeSupersessionStatus",
+      "classification": "A",
+      "reasoning": "Sets DiscoveredCandidate.supersessionStatus directly from the NodeSupersessionResult; discovery/pass-d-reconcile.ts's own SEVERITY_RANK (KNOWN_SUPERSEDED=2 > UNKNOWN=1 > CURRENT_OPERATIVE=0) combines multi-node candidates worst-first - identical pattern to orchestrator.ts's own SUPERSESSION_SEVERITY, zero code change needed."
+    },
+    {
+      "file": "lib/contract-model/compiler/discovery/pass-d-reconcile.ts",
+      "function": "combineSupersessionForNodes (SEVERITY_RANK, line 24)",
+      "classification": "A",
+      "reasoning": "Same worst-first Record<NodeSupersessionStatus, number> pattern as orchestrator.ts - reusing the existing KNOWN_SUPERSEDED literal (rather than adding a new NodeSupersessionStatus value) means this exhaustive Record type does NOT need a new key added, avoiding a TypeScript compile break this session would otherwise have to fix in two separate files."
+    },
+    {
+      "file": "lib/contract-model/compiler/context-retrieval/pipeline.ts",
+      "function": "applySupersessionDisclosure (line 235)",
+      "classification": "B",
+      "reasoning": "Reads candidate.supersessionStatus (already computed upstream by discovery pass-a/pass-d, classification A above) - never calls buildNodeSupersessionIndex/getNodeSupersessionStatus itself. Inherits the fix transitively with zero code change."
+    },
+    {
+      "file": "lib/contract-model/analysis/semantic-truth/service.ts",
+      "function": "persistSemanticTruthForInstrument and friends",
+      "classification": "B",
+      "reasoning": "Grepped directly for supersession/CURRENT_OPERATIVE/isCurrentTruth - zero matches. This module persists whatever SemanticCompilationResult.status compile.ts/verify.ts already computed (classification A above) - it never independently re-derives or re-checks currentness, so a historical predecessor's evidence cannot reach persisted SemanticTruthRecord as trusted-current without first passing through compile.ts's determineStatus, which already fails closed."
+    },
+    {
+      "file": "lib/contract-model/compiler/safe-failure/* (integrate.ts, derive.ts, identity.ts)",
+      "function": "ClaimReviewEvent construction",
+      "classification": "B",
+      "reasoning": "Grepped for supersession-related logic - none found. Safe-failure events are derived from upstream REVIEW_REQUIRED/unresolved statuses that classification-A consumers already produce; no independent currentness decision of its own to fix."
+    }
+  ],
+  "unsafeBypassesFound": [],
+  "dClassificationConsumers": "NONE FOUND. Every real production consumer of node/source currentness in this codebase already routes through getNodeSupersessionStatus (directly, A) or through a field an A-classified module already derived (B). This is a materially favorable finding for this mission's own risk profile: because every consumer already treats KNOWN_SUPERSEDED as the fail-closed, non-current signal, choosing to REUSE that exact status literal for document-level supersession (rather than adding a new NodeSupersessionStatus value) means the ENTIRE consumer graph inherits the fix automatically, with the single point of change being buildNodeSupersessionIndex/getNodeSupersessionStatus themselves in operative-state.ts plus one additive field on NodeSupersessionRecord in types.ts. No consumer file listed above required its own code change.",
+  "exhaustiveRecordTypesRequiringCareIfANewStatusLiteralHadBeenAdded": [
+    "lib/contract-model/analysis/orchestrator.ts:290 - SUPERSESSION_SEVERITY: Record<NodeSupersessionStatus, number>",
+    "lib/contract-model/compiler/discovery/pass-d-reconcile.ts:24 - SEVERITY_RANK: Record<NodeSupersessionStatus, number>"
+  ],
+  "designImplication": "These two exhaustive Record<NodeSupersessionStatus, number> maps are the concrete, mechanical reason this session's design (03-integration-design.json) reuses the existing KNOWN_SUPERSEDED status literal with an additive NodeSupersessionRecord.supersessionKind field, rather than adding a new NodeSupersessionStatus union member as the mission's own prose suggested as one option - adding a new literal would require editing both Records (and passing a TypeScript compile check that would otherwise correctly flag them as non-exhaustive), for no behavioral benefit over the additive-record-field approach, which every consumer already handles correctly today."
+}
