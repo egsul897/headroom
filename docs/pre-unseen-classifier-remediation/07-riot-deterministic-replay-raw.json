@@ -1,0 +1,165 @@
+{
+  "generatedAt": "2026-09-01T00:06:57.606Z",
+  "classifications": {
+    "doc-a": {
+      "documentId": "doc-a",
+      "type": "CREDIT_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    "doc-b": {
+      "documentId": "doc-b",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    },
+    "doc-c": {
+      "documentId": "doc-c",
+      "type": "AMENDED_AND_RESTATED_AGREEMENT",
+      "confidence": 0.9,
+      "evidence": [
+        "AMENDED AND RESTATED CREDIT AGREEMENT"
+      ],
+      "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+    }
+  },
+  "restatesEdges": [
+    {
+      "sourceDocumentId": "doc-b",
+      "targetDocumentId": "doc-a",
+      "targetHint": "a Credit Agreement dated as of April 22, 2025",
+      "relationshipType": "RESTATES",
+      "sourceCitation": "a Credit Agreement dated as of April 22, 2025",
+      "confidence": 0.95,
+      "status": "RESOLVED",
+      "unresolvedReason": null,
+      "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH",
+      "evidenceClass": "STRONG_TARGET_EVIDENCE"
+    },
+    {
+      "sourceDocumentId": "doc-c",
+      "targetDocumentId": "doc-b",
+      "targetHint": "a Credit Agreement dated as of April 22, 2025",
+      "relationshipType": "RESTATES",
+      "sourceCitation": "a Credit Agreement dated as of April 22, 2025",
+      "confidence": 0.7,
+      "status": "REVIEW_REQUIRED",
+      "unresolvedReason": "resolved as the most recent same-type document dated before this one (chronological-predecessor inference, since this reference's own text indicates the quoted date belongs to an already-further-restated agreement rather than this document's true immediate predecessor) - needs human confirmation",
+      "resolutionMethod": "DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR",
+      "evidenceClass": "STRONG_TARGET_EVIDENCE"
+    }
+  ],
+  "operativeDocumentResults": {
+    "doc-a": {
+      "status": "RESOLVED",
+      "operativeDocumentId": "doc-c",
+      "predecessorDocumentIds": [
+        "doc-b",
+        "doc-a"
+      ],
+      "relationshipChain": [
+        {
+          "documentId": "doc-b",
+          "restatesDocumentId": "doc-a",
+          "effectId": "07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641",
+          "confidence": 0.95,
+          "effectiveDate": "May 19, 2025"
+        },
+        {
+          "documentId": "doc-c",
+          "restatesDocumentId": "doc-b",
+          "effectId": "fd02e25fbf5d56dfb0b1fa6e079b241ce4fd3669b77eea2b23b3042517763e64",
+          "confidence": 0.7,
+          "effectiveDate": "April 21, 2026"
+        }
+      ],
+      "reviewReason": null
+    },
+    "doc-b": {
+      "status": "RESOLVED",
+      "operativeDocumentId": "doc-c",
+      "predecessorDocumentIds": [
+        "doc-b",
+        "doc-a"
+      ],
+      "relationshipChain": [
+        {
+          "documentId": "doc-b",
+          "restatesDocumentId": "doc-a",
+          "effectId": "07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641",
+          "confidence": 0.95,
+          "effectiveDate": "May 19, 2025"
+        },
+        {
+          "documentId": "doc-c",
+          "restatesDocumentId": "doc-b",
+          "effectId": "fd02e25fbf5d56dfb0b1fa6e079b241ce4fd3669b77eea2b23b3042517763e64",
+          "confidence": 0.7,
+          "effectiveDate": "April 21, 2026"
+        }
+      ],
+      "reviewReason": null
+    },
+    "doc-c": {
+      "status": "RESOLVED",
+      "operativeDocumentId": "doc-c",
+      "predecessorDocumentIds": [
+        "doc-b",
+        "doc-a"
+      ],
+      "relationshipChain": [
+        {
+          "documentId": "doc-b",
+          "restatesDocumentId": "doc-a",
+          "effectId": "07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641",
+          "confidence": 0.95,
+          "effectiveDate": "May 19, 2025"
+        },
+        {
+          "documentId": "doc-c",
+          "restatesDocumentId": "doc-b",
+          "effectId": "fd02e25fbf5d56dfb0b1fa6e079b241ce4fd3669b77eea2b23b3042517763e64",
+          "confidence": 0.7,
+          "effectiveDate": "April 21, 2026"
+        }
+      ],
+      "reviewReason": null
+    }
+  },
+  "operativeStateForDocA": {
+    "status": "OPERATIVE_STATE_REVIEW_REQUIRED",
+    "operativeDocument": {
+      "status": "RESOLVED",
+      "operativeDocumentId": "doc-c",
+      "predecessorDocumentIds": [
+        "doc-b",
+        "doc-a"
+      ],
+      "relationshipChain": [
+        {
+          "documentId": "doc-b",
+          "restatesDocumentId": "doc-a",
+          "effectId": "07fc928cdd542bb89759d2ac3e3c4628384ad5a003c3afe4a3c4a46ea501c641",
+          "confidence": 0.95,
+          "effectiveDate": "May 19, 2025"
+        },
+        {
+          "documentId": "doc-c",
+          "restatesDocumentId": "doc-b",
+          "effectId": "fd02e25fbf5d56dfb0b1fa6e079b241ce4fd3669b77eea2b23b3042517763e64",
+          "confidence": 0.7,
+          "effectiveDate": "April 21, 2026"
+        }
+      ],
+      "reviewReason": null
+    },
+    "provisionCount": 0,
+    "unattachedEffectsCount": 2
+  }
+}
