@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INVENTORY_SCHEMA",
+  "requirement": "Section 3-6: a tolerant AI-facing inventory representation with stable inventoryItemId, source span/citation/excerpt, a compact semantic-role taxonomy, quantitative values with rawText/normalizedValue/unit/span, referenced terms/sections, parent/related links, materiality and ambiguity; source-only; whole-agreement scope; not a second covenant model.",
+  "implementation": {
+    "types": "lib/contract-model/compiler/semantic-accountability/types.ts (SemanticInventoryItem, QuantitativeValue, InventorySourceSpan, FrozenSemanticInventory)",
+    "wire": "lib/contract-model/compiler/semantic-accountability/wire-schema.ts (SubmitSemanticInventorySchema - one flat item shape, every enum-shaped field a tolerant string, excerpt + regionId + localRef/parentRef/relatedRefs)",
+    "prompt": "lib/contract-model/compiler/semantic-accountability/prompt.ts (11 semantic obligations; one wholly synthetic worked example - invented 'Zeta' names, invented Section 12.7/12.9(c), invented amounts)",
+    "runner": "lib/contract-model/compiler/semantic-accountability/inventory.ts (runSemanticInventory + exported normalizeInventorySubmission for model-free testing)",
+    "quantitativeScanner": "lib/contract-model/compiler/semantic-accountability/quantitative.ts (MONEY/PERCENT/RATIO/DAYS/PERIOD/DATE/MULTIPLIER by generic unit shape; precedence-ordered so one source figure yields one value)"
+  },
+  "semanticRoles": ["VALUE", "FORMULA_COMPONENT", "THRESHOLD", "CONDITION", "EXCEPTION", "PERMISSION", "PROHIBITION", "REQUIREMENT", "ALTERNATIVE", "TRIGGER", "TIME_PERIOD", "DEPENDENCY", "REFERENCE", "RECLASSIFICATION", "SHARED_CAP", "CURE", "OTHER"],
+  "itemFields": {
+    "inventoryItemId": "computeStableKey('inv-item', candidateRef, role, regionId, charStart, charEnd, sorted normalized-value signature, algorithmVersion) - content-derived from the VERIFIED span, never from the model's free-text proposition or array position, so an identical component inventoried in two independent runs gets an identical id when anchored to the same span (mission §27).",
+    "sourceSpan": "regionId (operative | xref-N), documentId, sourceNodeId, sectionRef, charStart/charEnd into the region text, sourceCitation, verbatim excerpt (re-sliced from the region text after location, never the model's own string).",
+    "semanticRole": "tolerant string -> closed union, fallback OTHER (never a crash, never a silent drop).",
+    "proposition": "free text, informational only - never part of identity, never parsed.",
+    "quantitativeValues[]": "kind/rawText/normalizedValue/unit/charStart/charEnd. The deterministic scanner's normalization wins over the model's when the scanner recognizes the raw text; scanner values inside the item's span that the model omitted are attached automatically.",
+    "referencedTerms[] / referencedSections[]": "the dependency record (mission §15) - resolution is NOT done by Pass A.",
+    "parentItemId / relatedItemIds": "resolved from localRef/parentRef/relatedRefs to real ids; dangling refs become null/dropped, never invented.",
+    "materiality": "CRITICAL | MATERIAL | INFORMATIONAL | REVIEW_UNCERTAIN (fallback REVIEW_UNCERTAIN - never silently MATERIAL, never silently INFORMATIONAL).",
+    "ambiguity": "NONE | AMBIGUOUS_DRAFTING | AMBIGUOUS_REFERENCE | UNCERTAIN_MATERIALITY + ambiguityReason.",
+    "operative": "OPERATIVE | DEFINITIONAL | UNKNOWN.",
+    "detectionMethod": "MODEL (every accepted item) - deterministic scanner values that no item covers are NOT promoted to items; they are surfaced as FrozenSemanticInventory.uninventoriedValues so materiality stays the inventory model's decision (mission §6) while nothing is invisible."
+  },
+  "gates": {
+    "antiHallucination": "excerpt must locate in exactly one supplied region (exact substring, else whitespace-tolerant regex that still maps to real offsets); otherwise rejected and counted in rejectedUnverifiableItems.",
+    "deduplication": "identical role + verified span => duplicate dropped (rejectedDuplicateItems).",
+    "emptyInventorySuspicion": "0 accepted items over source carrying any quantitative value or operative language => INVENTORY_EMPTY_SUSPECT (never treated as 'nothing material').",
+    "noProvider": "synthetic StageCaller => INVENTORY_SKIPPED_NO_PROVIDER, items empty, uninventoriedValues still computed; Pass C treats this as accountability UNKNOWN (never complete).",
+    "freeze": "frozenContentHash = hash(algorithmVersion + sorted per-item identity/role/materiality/span/value signature + uninventoried values), computed before Pass B."
+  },
+  "wholeAgreementScope": "No family-specific implementation: definitions (FORMULA_COMPONENT/VALUE/DEPENDENCY), debt/liens/RP/investments (PERMISSION/PROHIBITION/EXCEPTION/CONDITION/ALTERNATIVE/SHARED_CAP), asset sales/prepayments (PERMISSION/CONDITION/TIME_PERIOD/TRIGGER/REQUIREMENT), financial covenants (THRESHOLD/TIME_PERIOD/TRIGGER), reporting (REQUIREMENT/TIME_PERIOD/TRIGGER), cures (CURE/VALUE/TIME_PERIOD), shared caps/cross references (SHARED_CAP/REFERENCE/DEPENDENCY) all use the same 17 primitives and the same runner.",
+  "notASecondCovenantModel": "The item carries no expression tree, no rule/definition/condition/exception/shared-capacity object, no posture/action/family enum, and no computation. Composition (Pass B) consumes it; the IR remains the only composed representation."
+}
