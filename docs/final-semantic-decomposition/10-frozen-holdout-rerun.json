@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FROZEN_HOLDOUT_RERUN",
+  "requirement": "Run the exact existing A1-A6/B1-B4 holdout again - same source, regions, GT, provider, model, verifier, scoring, thresholds, no changes. Required: A1-A6 >=5/6 substantive clean captures. Hard: 0 silent material omissions.",
+  "runIdentity": {
+    "sourceScript": "scripts/final-semantic-decomposition-holdout-replay.ts (byte-identical REGIONS/DOCS/SRC_DIR/GT/thresholds to both prior executions of this same holdout)",
+    "productionShaAtRunTime": "502242b (FINAL_SEMANTIC_REMEDIATION_SHA)",
+    "totalCostUsd": 3.0554,
+    "budgetCeilingUsd": 6,
+    "outputDir": "tests/fixtures/unseen-packages/final-semantic-decomposition-holdout-replay/",
+    "thisIsTheThirdRealExecutionOfThisExactHoldout": "1st: docs/final-phase3-closure (pre-Unit-A/B fix). 2nd: docs/post-holdout-semantic-remediation (post-Unit-A/B fix). 3rd (this artifact): post-completeness-check-recursive-descent-fix."
+  },
+  "perClaimResults": [
+    { "claimId": "A1", "region": "ebitda", "verifyStatus": "MATERIAL_DISCREPANCY", "materialFindings": 1, "outcome": "MISS (safely surfaced)", "priorRunOutcome": "MISS (safely surfaced) - consistent across both runs." },
+    { "claimId": "A2", "region": "net-income", "verifyStatus": "VERIFICATION_INCOMPLETE", "materialFindings": 0, "outcome": "BORDERLINE, conservatively not counted clean (same conservative standard applied both runs)", "priorRunOutcome": "Same borderline classification." },
+    { "claimId": "A3", "region": "interest-expense", "verifyStatus": "MATERIAL_DISCREPANCY", "materialFindings": 1, "outcome": "MISS - CHANGED from the prior run's clean pass (0 material findings previously)", "priorRunOutcome": "CLEAN PASS (0 material findings)." },
+    { "claimId": "A4", "region": "first-lien-debt", "verifyStatus": "MATERIAL_DISCREPANCY", "materialFindings": 1, "outcome": "MISS at the region level - CHANGED from the prior run's clean pass, though the PRIMARY GT term (Consolidated First Lien Secured Debt) again compiled fully and cleanly as SUBTRACT/COMPLETE in BOTH runs, reproducibly - the region's 1 material finding this run concerns the region's own adjacent Consolidated Interest Expense definition (UNSUPPORTED, same class of poison as A1/A2), not the primary term itself.", "priorRunOutcome": "CLEAN PASS (0 material findings), primary term also SUBTRACT/COMPLETE." },
+    { "claimId": "A5", "region": "secured-net-leverage", "verifyStatus": "VERIFICATION_INCOMPLETE", "materialFindings": 0, "outcome": "CLEAN PASS - CHANGED from the prior run's miss (1 material finding previously, a DIVIDE poison)", "priorRunOutcome": "MISS (1 material finding)." },
+    { "claimId": "A6", "region": "new-definitions", "verifyStatus": "VERIFICATION_INCOMPLETE", "materialFindings": 0, "outcome": "CLEAN PASS - consistent with the prior run (Maintenance Liquidity again compiled fully as ADD/COMPLETE, matching GT count/identity again)", "priorRunOutcome": "CLEAN PASS." }
+  ],
+  "cleanPassCountThisRun": 2,
+  "cleanPassClaimsThisRun": ["A5", "A6"],
+  "cleanPassCountPriorRun": 3,
+  "cleanPassClaimsPriorRun": ["A3", "A4", "A6"],
+  "runToRunVarianceFinding": "CRITICAL, HONEST FINDING: the A1-A6 substantive-capture outcome is NOT stable across repeated real executions of the exact same frozen code against the exact same source. Of the 6 claims, only A1 (miss, both runs) and A6 (clean, both runs) are STABLE - A3, A4, and A5 each flipped between a clean pass and a miss across the two post-fix runs, purely from real model sampling variance on these specific, hardest decomposition tasks (A2 stayed borderline both times). This means neither run's own single numeric pass rate (3/6 first run, 2/6 this run) should be read as a precise, stable measurement of this architecture's own true capability - both are noisy point estimates of a real but variable underlying capability. What IS stable and reproducible across both runs: (1) 0/6 silently trusted material omissions in EITHER run (the hard safety gate held perfectly, twice); (2) A4's primary term (Consolidated First Lien Secured Debt) and A6's full definition set both compiled cleanly in BOTH runs, real, reproducible wins directly attributable to this session's own and the prior session's own architecture fixes; (3) A1's EBITDA truncation-driven miss is stable both times, consistent with 01's own diagnosis that this is a SOURCE_CONTEXT limitation, not a decomposition-architecture one.",
+  "hardSafetyRequirement": {
+    "result": "MET, both runs - 0/6 claims show a silently trusted material omission in either the second or this third execution."
+  },
+  "targetGateResult": {
+    "thisRun": "2/6, below the >=5/6 target",
+    "priorRun": "3/6, below the >=5/6 target",
+    "hardRequirementMet": false,
+    "conclusion": "NOT MET in either post-fix run. Given the demonstrated run-to-run variance, a conservative, honest reading is that this architecture's true underlying substantive-capture rate for A1-A6 sits somewhere in the 2-4/6 range on repeated real sampling - materially better than the pre-fix run's stable 0/6, but not yet reliably at or near the mission's own >=5/6 bar in any single execution observed so far."
+  }
+}

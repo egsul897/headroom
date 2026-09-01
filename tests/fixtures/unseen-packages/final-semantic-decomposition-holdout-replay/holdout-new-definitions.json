@@ -1,0 +1,1225 @@
+{
+  "region": {
+    "id": "new-definitions",
+    "claimIds": [
+      "A6"
+    ],
+    "documentId": "doc-c",
+    "sourceSectionRef": "2(a)",
+    "charStart": 2266,
+    "chars": 1273,
+    "structuralNodeKeys": [
+      "doc-c::2(a)"
+    ]
+  },
+  "operativeSourceText": "Section 1.01 of the Credit Agreement is\nhereby amended by adding the following definitions in the appropriate alphabetical order:\n“Invoice\nRestrictions” has the meaning set forth in the Monthly Factoring Report.\n“Maintenance Liquidity”\nmeans, as of any date of determination, (a) the sum as of such date of (x) the aggregate amount of the commitments under the Super-Priority Revolving Credit Facility (including the aggregate revolving commitments with respect to any\nPermitted Euro Revolving Indebtedness) (or any Refinancing Indebtedness in respect thereof) minus (y) the aggregate principal amount of the outstanding revolving loans under the Super-Priority Revolving Credit Facility and any\noutstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof) and, in each case, the face amount of any letters of credit issued thereunder (less any reimbursed amounts)\nplus (b) the “Adjustment to Liquidity” as set forth in the most recently delivered Monthly Factoring Report plus (c) unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries.\n\n“Monthly Factoring Report” means a report substantially in\nthe form of Exhibit E or any other form approved by the Administrative Agent.\n",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:983a978297d0da9452f5da36",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "termName": "Invoice Restrictions",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "“Invoice Restrictions” has the meaning set forth in the Monthly Factoring Report.",
+          "semanticDescription": "\"Invoice Restrictions\" is defined entirely by cross-reference to the Monthly Factoring Report (a form of Exhibit E or other Administrative-Agent-approved form), not by any text within the Credit Agreement itself.",
+          "reason": "The substantive meaning resides in Exhibit E / the Monthly Factoring Report, an external document/exhibit not included in the supplied evidence; getDefinition and getReferencedProvision were attempted and both confirmed no in-instrument text resolves this term's actual content.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§2(a)",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:0e94e600409fb07c9f941772"
+        },
+        "dependsOnTerms": [
+          "Monthly Factoring Report"
+        ],
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Term's meaning is defined only by reference to an external exhibit/report (Exhibit E / Monthly Factoring Report) not provided in the evidence bundle.",
+          "Confirmed via getDefinition (no matching term found elsewhere in instrument) and getReferencedProvision (Exhibit E does not resolve to any section in the instrument) that no further in-instrument resolution is possible.",
+          "The substantive meaning resides in Exhibit E / the Monthly Factoring Report, an external document/exhibit not included in the supplied evidence; getDefinition and getReferencedProvision were attempted and both confirmed no in-instrument text resolves this term's actual content."
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (as added by Amendment §2(a))",
+          "excerpt": "“Invoice Restrictions” has the meaning set forth in the Monthly Factoring Report."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "termName": "Maintenance Liquidity",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "ADD",
+          "type": "MONEY",
+          "exprId": "ir-expr:f76054b61226a6da9a6c30ae",
+          "operands": [
+            {
+              "kind": "SUBTRACT",
+              "type": "MONEY",
+              "exprId": "ir-expr:9199762d7533e1a4e8cead60",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Aggregate amount of commitments under the Super-Priority Revolving Credit Facility (including aggregate revolving commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+                "companyId": "final-phase3-closure-holdout-sup",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:a12dd5520e74f8e55c7e90b9"
+              },
+              "right": {
+                "kind": "ADD",
+                "type": "MONEY",
+                "exprId": "ir-expr:724862f81b157d503384cf5a",
+                "operands": [
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)",
+                    "companyId": "final-phase3-closure-holdout-sup",
+                    "instrumentKey": "sup-term-loan-instrument",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:2054fbf10921524b09e54644"
+                  },
+                  {
+                    "kind": "METRIC_REFERENCE",
+                    "type": "MONEY",
+                    "metricName": "Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts",
+                    "companyId": "final-phase3-closure-holdout-sup",
+                    "instrumentKey": "sup-term-loan-instrument",
+                    "resolvedDefinitionId": null,
+                    "exprId": "ir-expr:e9ea0d503fc787c56b7504c6"
+                  }
+                ],
+                "provenance": {
+                  "documentId": "doc-c",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§1.01, def. of “Maintenance Liquidity”, clause (a)(y)",
+                  "excerpt": null
+                }
+              },
+              "provenance": {
+                "documentId": "doc-c",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01, def. of “Maintenance Liquidity”, clause (a)",
+                "excerpt": null
+              }
+            },
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Adjustment to Liquidity (as set forth in the most recently delivered Monthly Factoring Report)",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:0a649f5080e8a88b36005955"
+            },
+            {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:619c2d75e115de8e08e4e391"
+            }
+          ],
+          "provenance": {
+            "documentId": "doc-c",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01, def. of “Maintenance Liquidity”",
+            "excerpt": null
+          }
+        },
+        "dependsOnTerms": [
+          "Super-Priority Revolving Credit Facility",
+          "Permitted Euro Revolving Indebtedness",
+          "Refinancing Indebtedness",
+          "Cash Equivalents",
+          "Monthly Factoring Report",
+          "Borrower"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The full three-part additive formula (a)+(b)+(c), including the internal (x)-(y) subtraction within part (a), is stated explicitly in the amendment text and is fully represented structurally.",
+          "Nested defined terms (e.g. Super-Priority Revolving Credit Facility, Permitted Euro Revolving Indebtedness, Refinancing Indebtedness, Cash Equivalents) are referenced by name within descriptive METRIC_REFERENCE nodes; their own internal definitions are not required to faithfully represent Maintenance Liquidity's own calculation structure, only to compute a numeric value, which is outside this compiler's role."
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (as added by Amendment §2(a))",
+          "excerpt": "“Maintenance Liquidity” means, as of any date of determination, (a) the sum as of such date of (x) the aggregate amount of the commitments under the Super-Priority Revolving Credit Facility ... minus (y) the aggregate principal amount of the outstanding revolving loans ... and, in each case, the face amount of any letters of credit issued thereunder (less any reimbursed amounts) plus (b) the “Adjustment to Liquidity” as set forth in the most recently delivered Monthly Factoring Report plus (c) unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:bd3691079b5fcc4e60dbf071",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "termName": "Monthly Factoring Report",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "This is a form/document definition rather than a calculable financial expression; its full descriptive text (a report substantially in the form of Exhibit E or any other Administrative-Agent-approved form) is fully captured verbatim, so no calculationExpression node applies."
+        ],
+        "provenance": {
+          "documentId": "doc-c",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (as added by Amendment §2(a))",
+          "excerpt": "“Monthly Factoring Report” means a report substantially in the form of Exhibit E or any other form approved by the Administrative Agent."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "MISSING_CONTEXT",
+      "OPERATIVE_STATE_UNRESOLVED"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T17:49:51.410Z",
+      "inputTokens": 55279,
+      "outputTokens": 9600,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 3,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 85314,
+      "calculatedCostUsd": 0.206558
+    }
+  },
+  "verify": {
+    "candidateRef": "holdout-candidate:new-definitions",
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [
+      {
+        "findingId": "628224cedbbe4feb0b96b25964b2b7482201d208e085263b1cb5d4b61d1c074a",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:new-definitions",
+        "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+        "irPath": "definitions[1].calculationExpression.operands[0].left... (SUBTRACT right operand, third-level ADD operand: 'Face amount of letters of credit issued... less any reimbursed amounts')",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "\"and, in each case, the face amount of any letters of credit issued thereunder (less any reimbursed amounts)\"",
+        "sourceCitation": "§1.01, def. of \"Maintenance Liquidity\", clause (a)(y)",
+        "proposedIrEvidence": "{\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts\"}",
+        "verifierReasoning": "The source expresses a genuine subtraction: the LC face amount is reduced by any reimbursed amounts before being combined with outstanding loans to form component (y). The proposed IR does not model this as a computable SUBTRACT node; instead it folds 'less any reimbursed amounts' into descriptive prose inside a single METRIC_REFERENCE node's metricName. If the downstream metric-resolution system does not itself already net out reimbursements when resolving this named metric, the formula tree as structured provides no mechanism to perform that subtraction, which could cause Maintenance Liquidity to be overstated (LC face amount not reduced for reimbursements). This is a plausible, though not certain, loss of operative formula structure - I cannot confirm from the evidence given whether the metric-resolution layer independently guarantees the netting, so I mark this UNCERTAIN rather than definitively MATERIAL.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:51:35.227Z"
+      },
+      {
+        "findingId": "4e02b3be0a4ec63122444c89348db27579b1792aaf7413804c140f24faa73c16",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:new-definitions",
+        "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+        "irPath": "definitions[1].calculationExpression (multiple METRIC_REFERENCE nodes, field 'instrumentKey')",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "\"the aggregate amount of the commitments under the Super-Priority Revolving Credit Facility (including the aggregate revolving commitments with respect to any Permitted Euro Revolving Indebtedness) ... minus (y) the aggregate principal amount of the outstanding revolving loans under the Super-Priority Revolving Credit Facility...\"",
+        "sourceCitation": "§1.01, def. of \"Maintenance Liquidity\", clause (a)",
+        "proposedIrEvidence": "\"instrumentKey\": \"sup-term-loan-instrument\" (used on every METRIC_REFERENCE node in this definition, including the commitments, outstanding revolving loans, LC face amount, Adjustment to Liquidity, and unrestricted cash metrics)",
+        "verifierReasoning": "Every metric in this definition is explicitly tied by the source text to the Super-Priority Revolving Credit Facility (a revolving facility) or to unencumbered borrower/subsidiary cash - none of it concerns a term loan. Yet every METRIC_REFERENCE node in the proposed IR carries instrumentKey 'sup-term-loan-instrument', which by its name suggests a term-loan instrument rather than the revolving facility described in the source. If this key is used by the downstream system to resolve which instrument's outstanding balances/commitments to pull at evaluation time, using a term-loan instrument key here could cause Maintenance Liquidity to be computed from the wrong facility's data entirely, materially distorting the liquidity figure. I cannot rule out that this is simply an internal deal-level identifier unrelated to facility type (in which case it would be immaterial), so I mark this UNCERTAIN rather than confirmed MATERIAL, but it is a real naming inconsistency worth review.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:51:35.227Z"
+      },
+      {
+        "findingId": "4dc42d8c090a1124f869dcc5397bd88a259b1eb6548c8df4c30f6b374cc30482",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-c",
+        "candidateRef": "holdout-candidate:new-definitions",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "2(a)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 5 apparent independent enumerated unit(s) ((a), (x), (y), (b), (c)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 5 apparent independent enumerated unit(s) ((a), (x), (y), (b), (c)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T17:49:51.412Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "holdout-candidate:new-definitions",
+      "items": [
+        {
+          "itemId": "f889b986e14b70045c335ff938d5bb0fc6bb9af4610474c3364089c306c1d312",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 1104,
+          "charEnd": 1112
+        },
+        {
+          "itemId": "5646549ea20267c4149472c657c76543dede7c25d0bea1c500f754aa9bebf0a6",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinancing",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 516,
+          "charEnd": 527
+        },
+        {
+          "itemId": "fbe645afa6bb452bda4b2cac8a5d8533c0831432b0361c7bfb44d254f36a96f1",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinancing",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 788,
+          "charEnd": 799
+        },
+        {
+          "itemId": "83ce178f0ff7f4bf0d340dc410b4ea919c86b56c4c58c2a98809354c10c32d4e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Credit Agreement",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 20,
+          "charEnd": 36
+        },
+        {
+          "itemId": "3fb2e9894f705dcd4d6db0fe016e3c7f7ef614ca61ebccd7b2a08591178f004b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Invoice\nRestrictions",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 131,
+          "charEnd": 151
+        },
+        {
+          "itemId": "b00608a1e2c92a7c0d15ea2745508ab1aee522893a02bf14be7f77956998698d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Monthly Factoring Report",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 186,
+          "charEnd": 210
+        },
+        {
+          "itemId": "c2999f40b190d329ed625e8cd3c39766c4a8737b7e3c22146c131ecd6845ed5f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Maintenance Liquidity",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 213,
+          "charEnd": 234
+        },
+        {
+          "itemId": "6a435c634a72db641a1f766d0c8d8af5607eb56e313f4fb86c3dc183cd59bb0f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Priority Revolving Credit Facility",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 367,
+          "charEnd": 401
+        },
+        {
+          "itemId": "8b1266048cfdfbb4555d8e4e91aeb069e83d1e59031ffa843e80c1ce239f5f10",
+          "kind": "METRIC_MENTION",
+          "rawText": "Permitted Euro Revolving Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 469,
+          "charEnd": 506
+        },
+        {
+          "itemId": "265443a330418be1a8e37e81e92541870f35b5adb0731c7e58b3f852a36c4f6b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinancing Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 516,
+          "charEnd": 540
+        },
+        {
+          "itemId": "aba7b56515fee05be765ed54353f7cd9a07289be97b06c6e7ae4a9023f30c5ec",
+          "kind": "METRIC_MENTION",
+          "rawText": "Priority Revolving Credit Facility",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 653,
+          "charEnd": 687
+        },
+        {
+          "itemId": "2f5ea0ff90aff10ace09860c6062098a83cfe0bd3ee4b27a430b20ae42a82668",
+          "kind": "METRIC_MENTION",
+          "rawText": "Permitted Euro Revolving Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 742,
+          "charEnd": 779
+        },
+        {
+          "itemId": "1751097db1a1a5c3c33c3d9978f81f9051e72457d6af953e3c754d7ebba1667e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinancing Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 788,
+          "charEnd": 812
+        },
+        {
+          "itemId": "ed3534135dd8eb357d0836c4303c57b32b5f09cadf4e1d61158ee414b1856d0d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Monthly Factoring Report",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 1024,
+          "charEnd": 1048
+        },
+        {
+          "itemId": "7d7000845a70ada882b8fde642699fd027bfff6088dcd053f427f77b80eb36ed",
+          "kind": "METRIC_MENTION",
+          "rawText": "Cash Equivalents",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 1080,
+          "charEnd": 1096
+        },
+        {
+          "itemId": "f31018248c892c4a50d857a5ac7c676f6555996cf2188ff06a06c1ca8f278e77",
+          "kind": "METRIC_MENTION",
+          "rawText": "Monthly Factoring Report",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 1137,
+          "charEnd": 1161
+        },
+        {
+          "itemId": "b340b09e1b974517e6edb52cdcef45c2dd0d469d1bbdf08be9af43de67036989",
+          "kind": "METRIC_MENTION",
+          "rawText": "Exhibit E",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 1207,
+          "charEnd": 1216
+        },
+        {
+          "itemId": "97cf447fdb3ad82da13e0f6cc74ffb8756ca2caa64226ef2b84482a5f55c15de",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": 1251,
+          "charEnd": 1271
+        },
+        {
+          "itemId": "5b0398ea5bfb6227fcc68e95c9e3959ec8dab00cd934cbc866b8777e19e5fba1",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "0edeeaa7088e2bf5b5648e5743cc53a263be2c515952f475317f7681e83b39e6",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "329e03595a07059be459c92caa482f8f5d9a17f3f0342931e935cefcda17355e",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(y)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "db0147fd9d0b32df27d9c5f140b2c517bb321e2192b9a8b028ec44ca80696be5",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "5e8f98b05b9eb42cd49ca05e1d08e8498d8e514729f0086f6570f552b6be9d46",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-c",
+          "sourceCitation": "2(a)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 5,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(x)",
+        "(y)",
+        "(b)",
+        "(c)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current."
+    },
+    "irInventory": {
+      "candidateRef": "holdout-candidate:new-definitions",
+      "items": [
+        {
+          "itemId": "4585ad5d4ed6c69f26dc8af82d425b17b96b48e7610d25785cba23a5ace16761",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:983a978297d0da9452f5da36",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Monthly Factoring Report",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a1dc93a7a78a50f568b93cbf1c0ad9f58fea389a42a036b1d43861911dacd070",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:983a978297d0da9452f5da36",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "textValue": "\"Invoice Restrictions\" is defined entirely by cross-reference to the Monthly Factoring Report (a form of Exhibit E or other Administrative-Agent-approved form), not by any text within the Credit Agreement itself.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§2(a)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "49314a005787dd68eb916281b3b8a1a461e5fe1e8c5eb7cb4c65f11a18f97765",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Super-Priority Revolving Credit Facility",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "3f5126750646accd6a2f5c060cd0ac21b7b8d736d4fb6bc18a4c618fa697dddf",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Permitted Euro Revolving Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9b9e3d70b6f2fb3f8560e6110c7682a0782eb61403c232d5f2cd4b1457b5acbd",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Refinancing Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "cf513623fd0fdcf80609d28bb8daebab91ed483cb97217c2e00cfaeec999a7b7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Cash Equivalents",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ae92ac86867ca3df56cba5480707b6797ae6b6a316a93b53f07bdfc544583ed2",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Monthly Factoring Report",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a8f8a74697e7cb506f5bd47cb0cef503324f083bcfe65496211de9ef4bcca793",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Borrower",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "caa4297be6257bec4fccb9c70a628fb645e1bb9273c1b8033fd1253662ed60ab",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].calculationExpression.operands[0].left",
+          "numericValue": null,
+          "textValue": "Aggregate amount of commitments under the Super-Priority Revolving Credit Facility (including aggregate revolving commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "d19ec020ca8f3d116a93119f80a721b1e9f023fa8f610dbb45b5bcb1937f998b",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].calculationExpression.operands[0].right.operands[0]",
+          "numericValue": null,
+          "textValue": "Aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "04f993b1eed0797c1d5da98797a2b5aeec6ac93d63f727d572ea314516e94129",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].calculationExpression.operands[0].right.operands[1]",
+          "numericValue": null,
+          "textValue": "Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f6db6b9b7d9dc7d240e0db77039994e32c28f43446516b88e1abce728ade6d76",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].calculationExpression.operands[1]",
+          "numericValue": null,
+          "textValue": "Adjustment to Liquidity (as set forth in the most recently delivered Monthly Factoring Report)",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "77416a2882770e4e2b847f74546a498b48ec0be1bae95c28a0839d530616ba58",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+          "irPath": "definitions[1].calculationExpression.operands[2]",
+          "numericValue": null,
+          "textValue": "Unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 0,
+      "definitionCount": 3,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "holdout-candidate:new-definitions",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "83ce178f0ff7f4bf0d340dc410b4ea919c86b56c4c58c2a98809354c10c32d4e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Credit Agreement",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 20,
+            "charEnd": 36
+          },
+          "irItems": [],
+          "reason": "source mention \"Credit Agreement\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3fb2e9894f705dcd4d6db0fe016e3c7f7ef614ca61ebccd7b2a08591178f004b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Invoice\nRestrictions",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 131,
+            "charEnd": 151
+          },
+          "irItems": [],
+          "reason": "source mention \"Invoice\nRestrictions\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b00608a1e2c92a7c0d15ea2745508ab1aee522893a02bf14be7f77956998698d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Monthly Factoring Report",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 186,
+            "charEnd": 210
+          },
+          "irItems": [
+            {
+              "itemId": "f6db6b9b7d9dc7d240e0db77039994e32c28f43446516b88e1abce728ade6d76",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[1]",
+              "numericValue": null,
+              "textValue": "Adjustment to Liquidity (as set forth in the most recently delivered Monthly Factoring Report)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Monthly Factoring Report\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c2999f40b190d329ed625e8cd3c39766c4a8737b7e3c22146c131ecd6845ed5f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Maintenance Liquidity",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 213,
+            "charEnd": 234
+          },
+          "irItems": [],
+          "reason": "source mention \"Maintenance Liquidity\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6a435c634a72db641a1f766d0c8d8af5607eb56e313f4fb86c3dc183cd59bb0f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Priority Revolving Credit Facility",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 367,
+            "charEnd": 401
+          },
+          "irItems": [
+            {
+              "itemId": "caa4297be6257bec4fccb9c70a628fb645e1bb9273c1b8033fd1253662ed60ab",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].left",
+              "numericValue": null,
+              "textValue": "Aggregate amount of commitments under the Super-Priority Revolving Credit Facility (including aggregate revolving commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "d19ec020ca8f3d116a93119f80a721b1e9f023fa8f610dbb45b5bcb1937f998b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[0]",
+              "numericValue": null,
+              "textValue": "Aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "04f993b1eed0797c1d5da98797a2b5aeec6ac93d63f727d572ea314516e94129",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[1]",
+              "numericValue": null,
+              "textValue": "Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Priority Revolving Credit Facility\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "8b1266048cfdfbb4555d8e4e91aeb069e83d1e59031ffa843e80c1ce239f5f10",
+            "kind": "METRIC_MENTION",
+            "rawText": "Permitted Euro Revolving Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 469,
+            "charEnd": 506
+          },
+          "irItems": [
+            {
+              "itemId": "caa4297be6257bec4fccb9c70a628fb645e1bb9273c1b8033fd1253662ed60ab",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].left",
+              "numericValue": null,
+              "textValue": "Aggregate amount of commitments under the Super-Priority Revolving Credit Facility (including aggregate revolving commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "d19ec020ca8f3d116a93119f80a721b1e9f023fa8f610dbb45b5bcb1937f998b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[0]",
+              "numericValue": null,
+              "textValue": "Aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "04f993b1eed0797c1d5da98797a2b5aeec6ac93d63f727d572ea314516e94129",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[1]",
+              "numericValue": null,
+              "textValue": "Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Permitted Euro Revolving Indebtedness\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "265443a330418be1a8e37e81e92541870f35b5adb0731c7e58b3f852a36c4f6b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinancing Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 516,
+            "charEnd": 540
+          },
+          "irItems": [
+            {
+              "itemId": "caa4297be6257bec4fccb9c70a628fb645e1bb9273c1b8033fd1253662ed60ab",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].left",
+              "numericValue": null,
+              "textValue": "Aggregate amount of commitments under the Super-Priority Revolving Credit Facility (including aggregate revolving commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "d19ec020ca8f3d116a93119f80a721b1e9f023fa8f610dbb45b5bcb1937f998b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[0]",
+              "numericValue": null,
+              "textValue": "Aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "04f993b1eed0797c1d5da98797a2b5aeec6ac93d63f727d572ea314516e94129",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[1]",
+              "numericValue": null,
+              "textValue": "Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Refinancing Indebtedness\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aba7b56515fee05be765ed54353f7cd9a07289be97b06c6e7ae4a9023f30c5ec",
+            "kind": "METRIC_MENTION",
+            "rawText": "Priority Revolving Credit Facility",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 653,
+            "charEnd": 687
+          },
+          "irItems": [
+            {
+              "itemId": "caa4297be6257bec4fccb9c70a628fb645e1bb9273c1b8033fd1253662ed60ab",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].left",
+              "numericValue": null,
+              "textValue": "Aggregate amount of commitments under the Super-Priority Revolving Credit Facility (including aggregate revolving commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "d19ec020ca8f3d116a93119f80a721b1e9f023fa8f610dbb45b5bcb1937f998b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[0]",
+              "numericValue": null,
+              "textValue": "Aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "04f993b1eed0797c1d5da98797a2b5aeec6ac93d63f727d572ea314516e94129",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[1]",
+              "numericValue": null,
+              "textValue": "Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Priority Revolving Credit Facility\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "2f5ea0ff90aff10ace09860c6062098a83cfe0bd3ee4b27a430b20ae42a82668",
+            "kind": "METRIC_MENTION",
+            "rawText": "Permitted Euro Revolving Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 742,
+            "charEnd": 779
+          },
+          "irItems": [
+            {
+              "itemId": "caa4297be6257bec4fccb9c70a628fb645e1bb9273c1b8033fd1253662ed60ab",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].left",
+              "numericValue": null,
+              "textValue": "Aggregate amount of commitments under the Super-Priority Revolving Credit Facility (including aggregate revolving commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "d19ec020ca8f3d116a93119f80a721b1e9f023fa8f610dbb45b5bcb1937f998b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[0]",
+              "numericValue": null,
+              "textValue": "Aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "04f993b1eed0797c1d5da98797a2b5aeec6ac93d63f727d572ea314516e94129",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[1]",
+              "numericValue": null,
+              "textValue": "Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Permitted Euro Revolving Indebtedness\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1751097db1a1a5c3c33c3d9978f81f9051e72457d6af953e3c754d7ebba1667e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinancing Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 788,
+            "charEnd": 812
+          },
+          "irItems": [
+            {
+              "itemId": "caa4297be6257bec4fccb9c70a628fb645e1bb9273c1b8033fd1253662ed60ab",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].left",
+              "numericValue": null,
+              "textValue": "Aggregate amount of commitments under the Super-Priority Revolving Credit Facility (including aggregate revolving commitments in respect of any Permitted Euro Revolving Indebtedness, or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "d19ec020ca8f3d116a93119f80a721b1e9f023fa8f610dbb45b5bcb1937f998b",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[0]",
+              "numericValue": null,
+              "textValue": "Aggregate principal amount of outstanding revolving loans under the Super-Priority Revolving Credit Facility and any outstanding revolving loans in respect of any Permitted Euro Revolving Indebtedness (or any Refinancing Indebtedness in respect thereof)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "04f993b1eed0797c1d5da98797a2b5aeec6ac93d63f727d572ea314516e94129",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[0].right.operands[1]",
+              "numericValue": null,
+              "textValue": "Face amount of letters of credit issued under the Super-Priority Revolving Credit Facility and any Permitted Euro Revolving Indebtedness (or Refinancing Indebtedness in respect thereof), less any reimbursed amounts",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Refinancing Indebtedness\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ed3534135dd8eb357d0836c4303c57b32b5f09cadf4e1d61158ee414b1856d0d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Monthly Factoring Report",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 1024,
+            "charEnd": 1048
+          },
+          "irItems": [
+            {
+              "itemId": "f6db6b9b7d9dc7d240e0db77039994e32c28f43446516b88e1abce728ade6d76",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[1]",
+              "numericValue": null,
+              "textValue": "Adjustment to Liquidity (as set forth in the most recently delivered Monthly Factoring Report)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Monthly Factoring Report\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7d7000845a70ada882b8fde642699fd027bfff6088dcd053f427f77b80eb36ed",
+            "kind": "METRIC_MENTION",
+            "rawText": "Cash Equivalents",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 1080,
+            "charEnd": 1096
+          },
+          "irItems": [
+            {
+              "itemId": "77416a2882770e4e2b847f74546a498b48ec0be1bae95c28a0839d530616ba58",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[2]",
+              "numericValue": null,
+              "textValue": "Unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Cash Equivalents\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f31018248c892c4a50d857a5ac7c676f6555996cf2188ff06a06c1ca8f278e77",
+            "kind": "METRIC_MENTION",
+            "rawText": "Monthly Factoring Report",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 1137,
+            "charEnd": 1161
+          },
+          "irItems": [
+            {
+              "itemId": "f6db6b9b7d9dc7d240e0db77039994e32c28f43446516b88e1abce728ade6d76",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:1daf6a33d1606f0a04f9621e",
+              "irPath": "definitions[1].calculationExpression.operands[1]",
+              "numericValue": null,
+              "textValue": "Adjustment to Liquidity (as set forth in the most recently delivered Monthly Factoring Report)",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Monthly Factoring Report\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b340b09e1b974517e6edb52cdcef45c2dd0d469d1bbdf08be9af43de67036989",
+            "kind": "METRIC_MENTION",
+            "rawText": "Exhibit E",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 1207,
+            "charEnd": 1216
+          },
+          "irItems": [],
+          "reason": "source mention \"Exhibit E\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "97cf447fdb3ad82da13e0f6cc74ffb8756ca2caa64226ef2b84482a5f55c15de",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-c",
+            "sourceCitation": "2(a)",
+            "structuralNodeKey": null,
+            "charStart": 1251,
+            "charEnd": 1271
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 5 apparent independent enumerated unit(s) ((a), (x), (y), (b), (c)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T17:51:35.227Z"
+  }
+}
