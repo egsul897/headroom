@@ -1,0 +1,1408 @@
+{
+  "region": {
+    "id": "reporting-dsgr",
+    "family": "REPORTING_AFFIRMATIVE",
+    "documentId": "dsgr-a",
+    "sourceSectionRef": "5.01",
+    "charStart": 404706,
+    "chars": 3500,
+    "structuralNodeKeys": [
+      "dsgr-a::5.01"
+    ]
+  },
+  "operativeSourceText": "SECTION 5.01. Financial Statements and\nOther Information . The Borrowers will furnish to the Administrative Agent and each Lender:\n\n(a) within ninety (90) days after the\nend of each fiscal year of the Company (or, if earlier, by the date that the Annual Report on Form 10-K of the Company for such fiscal year would be required to be filed under the rules and regulations of the\nSEC, giving effect to any automatic extension available thereunder for the filing of such form) (commencing with the fiscal year ending December 31, 2022), its audited consolidated balance sheet and related statements of operations,\nstockholders’ equity and cash flows as of the end of and for such year, setting forth in each case in comparative form the figures for the previous fiscal year, all reported on by independent public accountants of recognized national standing\n(without a “going concern” or like qualification, commentary or exception, and without any qualification or exception as to the scope of such audit) to the effect that such consolidated financial statements present fairly in all material\nrespects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a consolidated basis in accordance with GAAP consistently applied;\n\n(b) within forty-five (45) days after the end of each of the first three fiscal quarters of each fiscal year of the Company (or, if\nearlier, by the date that the Quarterly Report on Form 10 Q of the Company for such fiscal quarter would be required to be filed under the rules and regulations of the SEC, giving effect to any automatic extension available thereunder for the filing\nof such form) (commencing with\n\n99\n\nthe fiscal quarter ending March 31, 2022), its consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows as of the end of and for such fiscal\nquarter and the then elapsed portion of such fiscal year, setting forth in each case in comparative form the figures for the corresponding period or periods of (or, in the case of the balance sheet, as of the end of) the previous fiscal year, all\ncertified by a Financial Officer of the Company as presenting fairly in all material respects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a consolidated basis in accordance with GAAP\nconsistently applied, subject to normal year-end audit adjustments and the absence of footnotes;\n\n(c) concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate\n(i) certifying, in the case of the financial statements delivered under clause (b) above, as presenting fairly in all material respects the financial condition and results of operations of the Company and its consolidated Subsidiaries on a\nconsolidated basis in accordance with GAAP consistently applied, subject to normal year-end audit adjustments and the absence of footnotes, (ii) certifying as to whether a Default has occurred and, if a\nDefault has occurred, specifying the details thereof and any action taken or proposed to be taken with respect thereto, (iii) setting forth reasonably detailed calculations demonstrating compliance with Section 6.12 and (iv) to the\nextent there were any Unrestricted Subsidiaries during the applicable reporting period, setting forth a list of each Subsidiary that identifies as a Restricted Subsidiary or an Unrestricted Subsidiary as of the date of delivery of such certificate\n(",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:1689ab0ecacf9c3d28b7ab99",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "5.01(a)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "REPORTING_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r_a].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Within 90 days after each fiscal year end of the Company, or if earlier, the date the Form 10-K for such year would be required to be filed with the SEC (giving effect to any automatic filing extension), commencing with FY ending December 31, 2022.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(a)",
+              "excerpt": "within ninety (90) days after the end of each fiscal year ... (or, if earlier, by the date that the Annual Report on Form 10-K ... would be required to be filed ...)"
+            }
+          },
+          {
+            "conditionId": "rule[r_a].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Audited consolidated balance sheet and related statements of operations, stockholders' equity and cash flows, comparative to prior fiscal year, reported on by independent public accountants of recognized national standing without a going-concern or scope qualification, opining the statements present fairly the consolidated financial condition/results in accordance with GAAP.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(a)",
+              "excerpt": "all reported on by independent public accountants of recognized national standing (without a ‘going concern’ or like qualification ...)"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full clause text confirmed current via getOperativeProvision and matches the supplied source; this is a non-quantitative reporting obligation with no capacity/economics component, so the descriptive conditions fully capture its operative content.",
+          "covenantFamily \"REPORTING\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "condition[0].conditionType \"DELIVERY_DEADLINE\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"AUDIT_OPINION_REQUIREMENT\" not recognized - normalized to UNSUPPORTED"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.01(a)",
+          "excerpt": "within ninety (90) days after the end of each fiscal year of the Company ... its audited consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:af5a73aff939dde2ec0d2a66",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "5.01(b)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "REPORTING_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r_b].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Within 45 days after the end of each of the first three fiscal quarters of each fiscal year, or if earlier, the date the Form 10-Q for such quarter would be required to be filed with the SEC (giving effect to any automatic filing extension), commencing with the fiscal quarter ending March 31, 2022.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(b)",
+              "excerpt": "within forty-five (45) days after the end of each of the first three fiscal quarters ... (or, if earlier, by the date that the Quarterly Report on Form 10-Q ... would be required to be filed ...)"
+            }
+          },
+          {
+            "conditionId": "rule[r_b].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Consolidated balance sheet and related statements of operations, stockholders' equity and cash flows for the quarter and elapsed fiscal year portion, comparative to the prior year, certified by a Financial Officer as presenting fairly the consolidated financial condition/results in accordance with GAAP, subject to normal year-end audit adjustments and absence of footnotes.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(b)",
+              "excerpt": "all certified by a Financial Officer of the Company as presenting fairly in all material respects the financial condition and results of operations ..."
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full clause text confirmed current via getOperativeProvision and matches the supplied source; non-quantitative reporting obligation fully captured descriptively.",
+          "covenantFamily \"REPORTING\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "condition[0].conditionType \"DELIVERY_DEADLINE\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"OFFICER_CERTIFICATION_REQUIREMENT\" not recognized - normalized to UNSUPPORTED"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.01(b)",
+          "excerpt": "within forty-five (45) days after the end of each of the first three fiscal quarters of each fiscal year of the Company ... its consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:36d0e82c520ef8dd00208fec",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "5.01(c)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "REPORTING_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "DELIVER_COMPLIANCE_CERTIFICATE",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r_c].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Delivered concurrently with any delivery of financial statements under clause (a) (annual) or clause (b) (quarterly).",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(c)",
+              "excerpt": "concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate"
+            }
+          },
+          {
+            "conditionId": "rule[r_c].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "(i) For quarterly (clause (b)) statements, certifies fair presentation in accordance with GAAP, subject to normal year-end audit adjustments and absence of footnotes.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(c)(i)",
+              "excerpt": "certifying, in the case of the financial statements delivered under clause (b) above, as presenting fairly in all material respects the financial condition and results of operations ..."
+            }
+          },
+          {
+            "conditionId": "rule[r_c].condition[2]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "(ii) Certifies whether a Default has occurred and, if so, specifies details and any remedial action taken or proposed.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(c)(ii)",
+              "excerpt": "certifying as to whether a Default has occurred and, if a Default has occurred, specifying the details thereof ..."
+            }
+          },
+          {
+            "conditionId": "rule[r_c].condition[3]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "(iii) Sets forth reasonably detailed calculations demonstrating compliance with Section 6.12.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(c)(iii)",
+              "excerpt": "setting forth reasonably detailed calculations demonstrating compliance with Section 6.12"
+            }
+          },
+          {
+            "conditionId": "rule[r_c].condition[4]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "(iv) To the extent there were any Unrestricted Subsidiaries during the applicable reporting period, sets forth a list of each Subsidiary identifying it as a Restricted Subsidiary or Unrestricted Subsidiary as of the certificate delivery date. NOTE: the supplied source text for this sub-item is cut off mid-sentence (ends on an open parenthesis) and any remaining qualifying language, and any further sub-items/proviso in clause (c), are not available in the evidence obtained.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(c)(iv)",
+              "excerpt": "to the extent there were any Unrestricted Subsidiaries during the applicable reporting period, setting forth a list of each Subsidiary that identifies as a Restricted Subsidiary or an Unrestricted Subsidiary as of the date of delivery of such certificate ("
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRuleId": "ir-rule:1689ab0ecacf9c3d28b7ab99",
+            "description": "Compliance Certificate is delivered concurrently with annual financial statements under clause (a)."
+          },
+          {
+            "relationshipType": "REQUIRES",
+            "targetRuleId": "ir-rule:af5a73aff939dde2ec0d2a66",
+            "description": "Compliance Certificate is delivered concurrently with quarterly financial statements under clause (b)."
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Clause (c) chapeau and sub-items (i)-(iii) are fully evidenced and confirmed via getOperativeProvision.",
+          "Sub-item (iv) is textually cut off in the available evidence (ends on an open, unclosed parenthesis) and any remaining qualifying language, and any further sub-items or trailing proviso to clause (c), could not be confirmed.",
+          "A repeat retrieval attempt for the full clause (c) text returned an inconsistent truncated fragment, and subsequent retrieval was blocked by tool-call budget exhaustion before the gap could be resolved.",
+          "covenantFamily \"REPORTING\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "condition[0].conditionType \"DELIVERY_TRIGGER\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"GAAP_FAIR_PRESENTATION_CERTIFICATION\" not recognized - normalized to UNSUPPORTED",
+          "condition[2].conditionType \"DEFAULT_CERTIFICATION\" not recognized - normalized to UNSUPPORTED",
+          "condition[3].conditionType \"RATIO_CALCULATION_DISCLOSURE\" not recognized - normalized to UNSUPPORTED",
+          "condition[4].conditionType \"SUBSIDIARY_CLASSIFICATION_DISCLOSURE\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[2].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+          "dependsOn[2].targetRef \"6.12\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.01(c)",
+          "excerpt": "concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate (i) certifying ... (ii) certifying as to whether a Default has occurred ... (iii) setting forth reasonably detailed calculations demonstrating compliance with Section 6.12 and (iv) ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:1efa76ec29a69b5b04670269",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "5.01(d)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "REPORTING_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r_d].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": "d_projections",
+            "description": "As soon as available, but no later than 45 days following the end of each fiscal year, deliver the Projections (projected consolidated balance sheet, income statement and cash flow statement) for each fiscal quarter of the upcoming fiscal year, in form reasonably satisfactory to the Administrative Agent.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(d)",
+              "excerpt": "as soon as available, but in any event no later than forty-five (45) days following the end of each fiscal year of the Company, a copy of the plan ... (the ‘Projections’) in form reasonably satisfactory to the Administrative Agent"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full clause text confirmed current via getOperativeProvision and matches the supplied source.",
+          "covenantFamily \"REPORTING\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "condition[0].conditionType \"DELIVERY_DEADLINE\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"d_projections\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.01(d)",
+          "excerpt": "as soon as available, but in any event no later than forty-five (45) days following the end of each fiscal year of the Company, a copy of the plan ... (the ‘Projections’) ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:3469133ef9c241eb2c0f839a",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "5.01(e)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "REPORTING_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r_e].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Promptly after the same become publicly available, deliver copies of all periodic and other reports, proxy statements and other materials filed by any Loan Party or Subsidiary with the SEC (or successor Governmental Authority) or any national securities exchange, or distributed by the Company to its shareholders generally.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(e)",
+              "excerpt": "promptly after the same become publicly available, copies of all periodic and other reports, proxy statements and other materials filed by any Loan Party or any Subsidiary with the SEC ..."
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full clause text confirmed current via getOperativeProvision and matches the supplied source.",
+          "covenantFamily \"REPORTING\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "condition[0].conditionType \"DELIVERY_TRIGGER\" not recognized - normalized to UNSUPPORTED"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.01(e)",
+          "excerpt": "promptly after the same become publicly available, copies of all periodic and other reports, proxy statements and other materials filed by any Loan Party or any Subsidiary with the SEC ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:bb1b6389d2b37da6c4e51da8",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "5.01(f)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "REPORTING_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r_f].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Promptly after receipt, deliver copies of each notice or other correspondence received from the SEC (or comparable non-U.S. agency) concerning any investigation or possible investigation or other inquiry regarding financial or other operational results of the Company or any Subsidiary.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.01(f)",
+              "excerpt": "promptly after receipt thereof by the Company or any Subsidiary, copies of each notice or other correspondence received from the SEC ... concerning any investigation or possible investigation ..."
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full clause text confirmed current via getOperativeProvision and matches the supplied source.",
+          "covenantFamily \"REPORTING\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "condition[0].conditionType \"DELIVERY_TRIGGER\" not recognized - normalized to UNSUPPORTED"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.01(f)",
+          "excerpt": "promptly after receipt thereof by the Company or any Subsidiary, copies of each notice or other correspondence received from the SEC ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:06f30cb6145decf521b350a5",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Projections",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Term is defined inline within §5.01(d) by parenthetical, and the full defining text was confirmed current via getOperativeProvision."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.01(d)",
+          "excerpt": "a copy of the plan (including a projected consolidated balance sheet, income statement and cash flow statement) of the Borrowers for each fiscal quarter of the upcoming fiscal year (the ‘Projections’)"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "OPERATIVE_STATE_UNRESOLVED"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T19:01:26.224Z",
+      "inputTokens": 134047,
+      "outputTokens": 16962,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 7,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 163923,
+      "calculatedCostUsd": 0.43771400000000005
+    }
+  },
+  "verify": {
+    "candidateRef": "reality-check-candidate:reporting-dsgr",
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [
+      {
+        "findingId": "fd04280dffa1d8ccb983ec0fecefe88415b2a9d4f3d6cbe35e85156c2fb9b80c",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:reporting-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": "rules[3] (5.01(d)), rules[4] (5.01(e)), rules[5] (5.01(f)), definitions[0] (Projections)",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "...to the extent there were any Unrestricted Subsidiaries during the applicable reporting period, setting forth a list of each Subsidiary that identifies as a Restricted Subsidiary or an Unrestricted Subsidiary as of the date of delivery of such certificate (",
+        "sourceCitation": "§5.01(c)(iv) - this is where the operative source text provided to me for verification ends, mid-sentence, on an open parenthesis",
+        "proposedIrEvidence": "Rule ir-rule:1efa76ec29a69b5b04670269 (5.01(d)) excerpt: 'as soon as available, but in any event no later than forty-five (45) days following the end of each fiscal year of the Company, a copy of the plan ... (the \"Projections\") in form reasonably satisfactory to the Administrative Agent'; Rule ir-rule:3469133ef9c241eb2c0f839a (5.01(e)) excerpt about SEC/exchange filings; Rule ir-rule:bb1b6389d2b37da6c4e51da8 (5.01(f)) excerpt about SEC correspondence; all marked sufficiency: COMPLETE, plus a 'Projections' definition marked sufficiency: COMPLETE.",
+        "verifierReasoning": "The operative source text I was given for Section 5.01 stops abruptly mid-sentence within clause (c)(iv) ('...as of the date of delivery of such certificate ('). No text corresponding to clauses (d), (e), or (f), and no text defining 'Projections,' was included anywhere in the source material or retrieved context provided to me. Yet the proposed IR confidently asserts three additional rules (5.01(d), (e), (f)) and a 'Projections' definition, each with detailed quoted excerpts and each marked sufficiency COMPLETE. I have no way to independently confirm that these excerpts are accurate quotations of the real contract, that they appear in the section the IR cites, or that no further provisos/exceptions attach to them (the same way a genuine proviso was dropped in the worked example). Because sufficiency is asserted as COMPLETE for content I cannot corroborate at all, this is exactly the kind of confident-but-unverifiable claim that deserves heightened scrutiny. I cannot resolve from the evidence given whether this is a faithful representation of real contract text I simply wasn't shown, or an unsupported/fabricated addition - hence UNCERTAIN rather than a hard MATERIAL or NON_MATERIAL call.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:03:47.453Z"
+      },
+      {
+        "findingId": "d2a91347ca843fb6d24f6e070db38d7909ff8c911261f089370ae386b2fce230",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:reporting-dsgr",
+        "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+        "irPath": "rules[2].dependsOn",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate",
+        "sourceCitation": "§5.01(c)",
+        "proposedIrEvidence": "dependsOn: [{relationshipType: REQUIRES, targetRuleId: ir-rule:1689ab0ecacf9c3d28b7ab99 (clause (a)), description: 'Compliance Certificate is delivered concurrently with annual financial statements under clause (a).'}, {relationshipType: REQUIRES, targetRuleId: ir-rule:af5a73aff939dde2ec0d2a66 (clause (b)), description: 'Compliance Certificate is delivered concurrently with quarterly financial statements under clause (b).'}]",
+        "verifierReasoning": "The source text uses a disjunctive trigger - the Compliance Certificate must accompany 'any delivery of financial statements under clause (a) or (b)' - meaning each delivery event under either (a) or (b) independently triggers a corresponding certificate delivery (an annual CC concurrent with annual statements, and a separate quarterly CC concurrent with quarterly statements). The proposed IR represents this as two separate REQUIRES dependency edges to both the (a)-rule and the (b)-rule. If a downstream consumer of this IR treats multiple REQUIRES entries under dependsOn as a conjunctive precondition (i.e., that a Compliance Certificate delivery requires both an (a) delivery AND a (b) delivery to have occurred), that would misrepresent the source, which requires a certificate concurrently with each type of delivery independently, not only when both occur together. I cannot tell from the IR schema alone how a downstream engine will resolve multiple dependsOn entries, so I cannot confirm this is actually being misread as AND, but the structure is genuinely ambiguous relative to the source's clearly disjunctive ('or') phrasing.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:03:47.453Z"
+      },
+      {
+        "findingId": "a4e519f6b1c06966ef0ec4411b915d0c38bfe53c66bcb8acb36f9ceea8108a83",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:reporting-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": "rules[*].entityScope",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "SECTION 5.01. Financial Statements and Other Information. The Borrowers will furnish to the Administrative Agent and each Lender: ...",
+        "sourceCitation": "§5.01, preamble",
+        "proposedIrEvidence": "entityScope: [] and entityScopeExcluded: [] for every one of the 6 compiled rules (ir-rule:1689ab0ecacf9c3d28b7ab99, af5a73aff939dde2ec0d2a66, 36d0e82c520ef8dd00208fec, 1efa76ec29a69b5b04670269, 3469133ef9c241eb2c0f839a, bb1b6389d2b37da6c4e51da8)",
+        "verifierReasoning": "The deterministic pass flagged that the source distinguishes multiple entity-scope terms (Restricted/Unrestricted Subsidiary) while the IR records no entity-scope restriction anywhere. Investigating this: the Restricted/Unrestricted Subsidiary language in (c)(iv) describes content the Compliance Certificate must list (a categorization requirement), not a restriction on who owes the underlying reporting obligation, and it is already captured as a condition (rule[r_c].condition[4]), so that specific signal does not appear to reflect a missing rule. However, independently of that signal, I note the operative preamble explicitly identifies 'The Borrowers' as the obligated party for the entire Section 5.01 furnishing obligation, and this obligor identification is not captured in entityScope for any of the 6 rules - it is empty across the board. Whether this is a real semantic gap depends on how entityScope is meant to be populated/used for affirmative (obligation) covenants versus negative (basket/restriction) covenants elsewhere in this IR schema, which I cannot fully determine from the material given. I flag this as an open, unresolved point rather than a confirmed defect.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:03:47.453Z"
+      },
+      {
+        "findingId": "bf72fd87079b5fd8297bc6a25a738bf8f256f59dcf3617b7abe207cb49814195",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:reporting-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "5.01",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 7 apparent independent enumerated unit(s) ((a), (b), (c), (i), (ii), (iii), (iv)) but only 6 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 7 apparent independent enumerated unit(s) ((a), (b), (c), (i), (ii), (iii), (iv)) but only 6 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:01:26.226Z"
+      },
+      {
+        "findingId": "fb723636754fdf76a55bddfd2ea5f62c80e339ab8656577e176b8a844b07b6f9",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:reporting-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "WRONG_ENTITY_SCOPE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "5.01",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text distinguishes 3 distinct entity-scope term(s) (unrestricted subsidiaries, restricted subsidiary, unrestricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text distinguishes 3 distinct entity-scope term(s) (unrestricted subsidiaries, restricted subsidiary, unrestricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T19:01:26.226Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "reality-check-candidate:reporting-dsgr",
+      "items": [
+        {
+          "itemId": "42dcee108e334aec2d3af5a6cf08fc3d2990902f6315b23a0a666860a92fe65c",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "subject to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 2385,
+          "charEnd": 2395
+        },
+        {
+          "itemId": "28888a85fffd3d9e4cda57858b3b09475afc1c62f6c55454b6322cd5db4bd147",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "subject to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 2881,
+          "charEnd": 2891
+        },
+        {
+          "itemId": "c60c36a8baf367f8f41a120af77f44d38fc248bbc4ae90f22167ecebcd13a805",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "in the case of",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 2040,
+          "charEnd": 2054
+        },
+        {
+          "itemId": "02f18937a1dd0699c2bf003d2652b8134e8595b0ab0fb2fd0b40056e7b39138d",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "in the case of",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 2592,
+          "charEnd": 2606
+        },
+        {
+          "itemId": "94d2ec2854c28ef1ac26d889fd2de9f76206855512a5709c1d2990e0bade5cf2",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "has occurred",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 2996,
+          "charEnd": 3008
+        },
+        {
+          "itemId": "b18535348f71b88174fbe316a5bfb2f9f0de595c5d892d7789f359538360f553",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "has occurred",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 3027,
+          "charEnd": 3039
+        },
+        {
+          "itemId": "68d5da3658c1d9069518b80877794e457972c7919327fb3585aa8875d05aec72",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "giving effect to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 384,
+          "charEnd": 400
+        },
+        {
+          "itemId": "f2c70575f2651e31a8d080527e95639b3275ab2f00cee00289fa9cdd8ccdfe01",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "giving effect to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 1577,
+          "charEnd": 1593
+        },
+        {
+          "itemId": "784a2732da625810e0c87eb494a35a5dfa63a706cc71deae8e02de632fda8fec",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Unrestricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 3273,
+          "charEnd": 3298
+        },
+        {
+          "itemId": "bf7a62edcdb372a782f712a0c6cc22f98ab11c803455d5a3a76de70f7fa471f7",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 3400,
+          "charEnd": 3421
+        },
+        {
+          "itemId": "b982c671d8daa989dbd61456115812a09962e0f863b4479496ede0e0683b9077",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Unrestricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 3428,
+          "charEnd": 3451
+        },
+        {
+          "itemId": "0ac3d2c5eb15314182209e17c9512b641c3614d1c54121a4a237d140c2047c4d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Financial Statements",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 14,
+          "charEnd": 34
+        },
+        {
+          "itemId": "c7d8ebeacc0f61ae9333a0e93e0240d2ed0724806db528e7d207b3343f54bbab",
+          "kind": "METRIC_MENTION",
+          "rawText": "Other Information",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 39,
+          "charEnd": 56
+        },
+        {
+          "itemId": "0bb42e6ce9bd17a9459eb66fa287615f9175b9b29d3fec9940f3c5de8c401bd0",
+          "kind": "METRIC_MENTION",
+          "rawText": "The Borrowers",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 59,
+          "charEnd": 72
+        },
+        {
+          "itemId": "56b3bd5e2c3f980d06182a008b3e45c468875cbea556ba0e09a377fe5976943b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 93,
+          "charEnd": 113
+        },
+        {
+          "itemId": "fc8ea9622956184eeae7c07bf14312e74d175d40d5324ca1e4c8d3d8c08066ac",
+          "kind": "METRIC_MENTION",
+          "rawText": "Annual Report",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 247,
+          "charEnd": 260
+        },
+        {
+          "itemId": "e4d186d0195dfb4504ec853ed5c0101abc6e16d7b455fcdb192eec070d61ad0d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Quarterly Report",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 1434,
+          "charEnd": 1450
+        },
+        {
+          "itemId": "1f8e2c15dbad1aaaec53172f274f0f5ba6d194441d9390ac9d129451b980aec3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Financial Officer",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 2137,
+          "charEnd": 2154
+        },
+        {
+          "itemId": "25a87fb419a558583ca6242b226d41ac1a917379eff06f3806433687acdc6d0f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Compliance Certificate",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 2553,
+          "charEnd": 2575
+        },
+        {
+          "itemId": "288f9c99c6a13a1ec3e0a784a1c8d938100ab2598bc8dced3b547e392dfda4ff",
+          "kind": "METRIC_MENTION",
+          "rawText": "Unrestricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 3273,
+          "charEnd": 3298
+        },
+        {
+          "itemId": "fa8bd0c77402be6fa1a42c2a44453e260576e0c1d6643c9ffb34a0648fd51731",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 3400,
+          "charEnd": 3421
+        },
+        {
+          "itemId": "aa4ce06397a19e10593b4ae8ac8a7456562adb723f6705eb2d146c80e575bb56",
+          "kind": "METRIC_MENTION",
+          "rawText": "Unrestricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": 3428,
+          "charEnd": 3451
+        },
+        {
+          "itemId": "89e7aacc7be6e7f5aa61f7dc53c0c33c61013abd2b34825b7e4d25a88384e26b",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "5b5e881f3c9c85c7957bb4ea2cbb1b646b9b74481b92495ed0bdb37e71cee24b",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "00e26c885230c8119dca5d8119bb6c2bff10a9d4d7d94e5b398578acb624aefd",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7980bc0e2a8e63dfe351484b0e69857495c1e2958c77c0c16b0fd109b502ceb8",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "513bae8b85444d29524b844f65782d06fb636f6e843da2c9dec9aad87f1e1c71",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "10e894fba3635bca17b7cf860c9199880a3c95f689574fdc9cd38228e5a0dc18",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "e88764af74a7f34c94c217348ba38d17d929215b69aeb638fb98c4a20b0c51c4",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iv)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "5.01",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 7,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(b)",
+        "(c)",
+        "(i)",
+        "(ii)",
+        "(iii)",
+        "(iv)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "reality-check-candidate:reporting-dsgr",
+      "items": [
+        {
+          "itemId": "d391d3f99ba94765aa1be25738ad4033b09c90d09f4f0c6d6e81fe66425a22d1",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:1689ab0ecacf9c3d28b7ab99",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(a)",
+          "sourceExcerpt": "within ninety (90) days after the end of each fiscal year of the Company ... its audited consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows ..."
+        },
+        {
+          "itemId": "fe5dc75192fa4157eda71bc3050fd25f34b80a4bd9862dc837116c9233b74950",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:1689ab0ecacf9c3d28b7ab99",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(a)",
+          "sourceExcerpt": "within ninety (90) days after the end of each fiscal year of the Company ... its audited consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows ..."
+        },
+        {
+          "itemId": "6b3a504e67a1a1e8829ba64229dd135603bd50ac870e3fd41e603ce94d5b0a4b",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:1689ab0ecacf9c3d28b7ab99",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "Within 90 days after each fiscal year end of the Company, or if earlier, the date the Form 10-K for such year would be required to be filed with the SEC (giving effect to any automatic filing extension), commencing with FY ending December 31, 2022.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(a)",
+          "sourceExcerpt": "within ninety (90) days after the end of each fiscal year ... (or, if earlier, by the date that the Annual Report on Form 10-K ... would be required to be filed ...)"
+        },
+        {
+          "itemId": "af620fb401c5e1d30d4c2074b24568ee0041bb6a028d178f9dbead47b08a1fae",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:1689ab0ecacf9c3d28b7ab99",
+          "irPath": "rules[0].conditions[1]",
+          "numericValue": null,
+          "textValue": "Audited consolidated balance sheet and related statements of operations, stockholders' equity and cash flows, comparative to prior fiscal year, reported on by independent public accountants of recognized national standing without a going-concern or scope qualification, opining the statements present fairly the consolidated financial condition/results in accordance with GAAP.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(a)",
+          "sourceExcerpt": "all reported on by independent public accountants of recognized national standing (without a ‘going concern’ or like qualification ...)"
+        },
+        {
+          "itemId": "afa59ff8792907ce667eee902bb13cce203d34bce2cfced784eaae29968db82e",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:af5a73aff939dde2ec0d2a66",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(b)",
+          "sourceExcerpt": "within forty-five (45) days after the end of each of the first three fiscal quarters of each fiscal year of the Company ... its consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows ..."
+        },
+        {
+          "itemId": "79b0ff076ddd839c4bbb256854a2eddcd836170f3169f1311f32c157f51c6ca3",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:af5a73aff939dde2ec0d2a66",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(b)",
+          "sourceExcerpt": "within forty-five (45) days after the end of each of the first three fiscal quarters of each fiscal year of the Company ... its consolidated balance sheet and related statements of operations, stockholders’ equity and cash flows ..."
+        },
+        {
+          "itemId": "308a65ddacffffaf7d2df015a7e290be1984b82b26b7cb3e2ac0e42bc72d2e1a",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:af5a73aff939dde2ec0d2a66",
+          "irPath": "rules[1].conditions[0]",
+          "numericValue": null,
+          "textValue": "Within 45 days after the end of each of the first three fiscal quarters of each fiscal year, or if earlier, the date the Form 10-Q for such quarter would be required to be filed with the SEC (giving effect to any automatic filing extension), commencing with the fiscal quarter ending March 31, 2022.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(b)",
+          "sourceExcerpt": "within forty-five (45) days after the end of each of the first three fiscal quarters ... (or, if earlier, by the date that the Quarterly Report on Form 10-Q ... would be required to be filed ...)"
+        },
+        {
+          "itemId": "7a9e68d5010cfa6c62239dee58bb551402ff241ef5caa9d6d015967a6098aa69",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:af5a73aff939dde2ec0d2a66",
+          "irPath": "rules[1].conditions[1]",
+          "numericValue": null,
+          "textValue": "Consolidated balance sheet and related statements of operations, stockholders' equity and cash flows for the quarter and elapsed fiscal year portion, comparative to the prior year, certified by a Financial Officer as presenting fairly the consolidated financial condition/results in accordance with GAAP, subject to normal year-end audit adjustments and absence of footnotes.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(b)",
+          "sourceExcerpt": "all certified by a Financial Officer of the Company as presenting fairly in all material respects the financial condition and results of operations ..."
+        },
+        {
+          "itemId": "2276c9081476c41e48f194ca0f15785cb8846fcdb7afe1d077ee801f12705b2d",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].action",
+          "numericValue": null,
+          "textValue": "DELIVER_COMPLIANCE_CERTIFICATE",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(c)",
+          "sourceExcerpt": "concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate (i) certifying ... (ii) certifying as to whether a Default has occurred ... (iii) setting forth reasonably detailed calculations demonstrating compliance with Section 6.12 and (iv) ..."
+        },
+        {
+          "itemId": "b0c5174da81f806e1fda9b55df88f320b472ec4fdef55ad1a8227c92ff32f054",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(c)",
+          "sourceExcerpt": "concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate (i) certifying ... (ii) certifying as to whether a Default has occurred ... (iii) setting forth reasonably detailed calculations demonstrating compliance with Section 6.12 and (iv) ..."
+        },
+        {
+          "itemId": "77c774fa51e455b14dd25c639a660d0ad9eedff6b98bd1bc7c236f81260d7998",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].conditions[0]",
+          "numericValue": null,
+          "textValue": "Delivered concurrently with any delivery of financial statements under clause (a) (annual) or clause (b) (quarterly).",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(c)",
+          "sourceExcerpt": "concurrently with any delivery of financial statements under clause (a) or (b) above, a Compliance Certificate"
+        },
+        {
+          "itemId": "2336e74ee42e66d5769e39c9a5fc5bf3807924747847618ef865977a8b40b8e8",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].conditions[1]",
+          "numericValue": null,
+          "textValue": "(i) For quarterly (clause (b)) statements, certifies fair presentation in accordance with GAAP, subject to normal year-end audit adjustments and absence of footnotes.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(c)(i)",
+          "sourceExcerpt": "certifying, in the case of the financial statements delivered under clause (b) above, as presenting fairly in all material respects the financial condition and results of operations ..."
+        },
+        {
+          "itemId": "59b3193f9ce3f5bbff6f6bb390a1712d5754192a531861d06216954dcbdc7fb5",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].conditions[2]",
+          "numericValue": null,
+          "textValue": "(ii) Certifies whether a Default has occurred and, if so, specifies details and any remedial action taken or proposed.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(c)(ii)",
+          "sourceExcerpt": "certifying as to whether a Default has occurred and, if a Default has occurred, specifying the details thereof ..."
+        },
+        {
+          "itemId": "3083dddd2667e338d6176e620c14033f6c0e0045adb5e98875bda8243d292fa4",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].conditions[3]",
+          "numericValue": null,
+          "textValue": "(iii) Sets forth reasonably detailed calculations demonstrating compliance with Section 6.12.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(c)(iii)",
+          "sourceExcerpt": "setting forth reasonably detailed calculations demonstrating compliance with Section 6.12"
+        },
+        {
+          "itemId": "7f86eb8ef1cca9b262a32c008c1b81bc7fd4be92d031d8a0b35c7faa9333aa9f",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].conditions[4]",
+          "numericValue": null,
+          "textValue": "(iv) To the extent there were any Unrestricted Subsidiaries during the applicable reporting period, sets forth a list of each Subsidiary identifying it as a Restricted Subsidiary or Unrestricted Subsidiary as of the certificate delivery date. NOTE: the supplied source text for this sub-item is cut off mid-sentence (ends on an open parenthesis) and any remaining qualifying language, and any further sub-items/proviso in clause (c), are not available in the evidence obtained.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(c)(iv)",
+          "sourceExcerpt": "to the extent there were any Unrestricted Subsidiaries during the applicable reporting period, setting forth a list of each Subsidiary that identifies as a Restricted Subsidiary or an Unrestricted Subsidiary as of the date of delivery of such certificate ("
+        },
+        {
+          "itemId": "04795c077b60f0b14e342454ebe49c786c620cfa296ba2ab0467a30eb68faaca",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].dependsOn[0]",
+          "numericValue": null,
+          "textValue": "REQUIRES:ir-rule:1689ab0ecacf9c3d28b7ab99",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "fdcde5e4efc7acd6c32635204b80082febf03d61b28afd86a7bef41f102493c5",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:36d0e82c520ef8dd00208fec",
+          "irPath": "rules[2].dependsOn[1]",
+          "numericValue": null,
+          "textValue": "REQUIRES:ir-rule:af5a73aff939dde2ec0d2a66",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "de0a7c335fa2fa34738430476ec4bbcc72d2fce36379cf5d1f0b4955352dc679",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:1efa76ec29a69b5b04670269",
+          "irPath": "rules[3].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(d)",
+          "sourceExcerpt": "as soon as available, but in any event no later than forty-five (45) days following the end of each fiscal year of the Company, a copy of the plan ... (the ‘Projections’) ..."
+        },
+        {
+          "itemId": "bfd859303dfd463c92d58fa3484e5332718ae12a19c002a5d1e7bc999a8503a5",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:1efa76ec29a69b5b04670269",
+          "irPath": "rules[3].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(d)",
+          "sourceExcerpt": "as soon as available, but in any event no later than forty-five (45) days following the end of each fiscal year of the Company, a copy of the plan ... (the ‘Projections’) ..."
+        },
+        {
+          "itemId": "279c9a52f7488a36f8268e551b5a63e35ac341335839fd9114d1c8d3b1ccb17a",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:1efa76ec29a69b5b04670269",
+          "irPath": "rules[3].conditions[0]",
+          "numericValue": null,
+          "textValue": "As soon as available, but no later than 45 days following the end of each fiscal year, deliver the Projections (projected consolidated balance sheet, income statement and cash flow statement) for each fiscal quarter of the upcoming fiscal year, in form reasonably satisfactory to the Administrative Agent.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(d)",
+          "sourceExcerpt": "as soon as available, but in any event no later than forty-five (45) days following the end of each fiscal year of the Company, a copy of the plan ... (the ‘Projections’) in form reasonably satisfactory to the Administrative Agent"
+        },
+        {
+          "itemId": "2b046b5d0dfbc01171b7e41adca8d0b94a08c2be1932c4bafdae52930a26246e",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:3469133ef9c241eb2c0f839a",
+          "irPath": "rules[4].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(e)",
+          "sourceExcerpt": "promptly after the same become publicly available, copies of all periodic and other reports, proxy statements and other materials filed by any Loan Party or any Subsidiary with the SEC ..."
+        },
+        {
+          "itemId": "f5638475ea0f1e126a0ac6ba0032d43034adb4919902ef1779b76e1d981d99b5",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:3469133ef9c241eb2c0f839a",
+          "irPath": "rules[4].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(e)",
+          "sourceExcerpt": "promptly after the same become publicly available, copies of all periodic and other reports, proxy statements and other materials filed by any Loan Party or any Subsidiary with the SEC ..."
+        },
+        {
+          "itemId": "6e2c40c97d9f1cdad935af7ed128d01f7f4dc13ac4079fb202191bdcf4f5ad11",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:3469133ef9c241eb2c0f839a",
+          "irPath": "rules[4].conditions[0]",
+          "numericValue": null,
+          "textValue": "Promptly after the same become publicly available, deliver copies of all periodic and other reports, proxy statements and other materials filed by any Loan Party or Subsidiary with the SEC (or successor Governmental Authority) or any national securities exchange, or distributed by the Company to its shareholders generally.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(e)",
+          "sourceExcerpt": "promptly after the same become publicly available, copies of all periodic and other reports, proxy statements and other materials filed by any Loan Party or any Subsidiary with the SEC ..."
+        },
+        {
+          "itemId": "5fffafbdd6cadce4183329e5eba7a2b1f1cc73c70b9c716730002fbbe61f778b",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:bb1b6389d2b37da6c4e51da8",
+          "irPath": "rules[5].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(f)",
+          "sourceExcerpt": "promptly after receipt thereof by the Company or any Subsidiary, copies of each notice or other correspondence received from the SEC ..."
+        },
+        {
+          "itemId": "b153b4150a0cb6ccff71bc130067329136ab72543522bd7742e2cd6abb60cda1",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:bb1b6389d2b37da6c4e51da8",
+          "irPath": "rules[5].posture",
+          "numericValue": null,
+          "textValue": "OBLIGATION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(f)",
+          "sourceExcerpt": "promptly after receipt thereof by the Company or any Subsidiary, copies of each notice or other correspondence received from the SEC ..."
+        },
+        {
+          "itemId": "6eb7807167e9b28106ce907ac54975b08e1a29e6acd37b65c88144c7ab2c43d1",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:bb1b6389d2b37da6c4e51da8",
+          "irPath": "rules[5].conditions[0]",
+          "numericValue": null,
+          "textValue": "Promptly after receipt, deliver copies of each notice or other correspondence received from the SEC (or comparable non-U.S. agency) concerning any investigation or possible investigation or other inquiry regarding financial or other operational results of the Company or any Subsidiary.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§5.01(f)",
+          "sourceExcerpt": "promptly after receipt thereof by the Company or any Subsidiary, copies of each notice or other correspondence received from the SEC ... concerning any investigation or possible investigation ..."
+        }
+      ],
+      "ruleCount": 6,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "reality-check-candidate:reporting-dsgr",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0ac3d2c5eb15314182209e17c9512b641c3614d1c54121a4a237d140c2047c4d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Financial Statements",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 14,
+            "charEnd": 34
+          },
+          "irItems": [],
+          "reason": "source mention \"Financial Statements\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c7d8ebeacc0f61ae9333a0e93e0240d2ed0724806db528e7d207b3343f54bbab",
+            "kind": "METRIC_MENTION",
+            "rawText": "Other Information",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 39,
+            "charEnd": 56
+          },
+          "irItems": [],
+          "reason": "source mention \"Other Information\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0bb42e6ce9bd17a9459eb66fa287615f9175b9b29d3fec9940f3c5de8c401bd0",
+            "kind": "METRIC_MENTION",
+            "rawText": "The Borrowers",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 59,
+            "charEnd": 72
+          },
+          "irItems": [],
+          "reason": "source mention \"The Borrowers\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "56b3bd5e2c3f980d06182a008b3e45c468875cbea556ba0e09a377fe5976943b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 93,
+            "charEnd": 113
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fc8ea9622956184eeae7c07bf14312e74d175d40d5324ca1e4c8d3d8c08066ac",
+            "kind": "METRIC_MENTION",
+            "rawText": "Annual Report",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 247,
+            "charEnd": 260
+          },
+          "irItems": [],
+          "reason": "source mention \"Annual Report\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e4d186d0195dfb4504ec853ed5c0101abc6e16d7b455fcdb192eec070d61ad0d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Quarterly Report",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 1434,
+            "charEnd": 1450
+          },
+          "irItems": [],
+          "reason": "source mention \"Quarterly Report\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1f8e2c15dbad1aaaec53172f274f0f5ba6d194441d9390ac9d129451b980aec3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Financial Officer",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 2137,
+            "charEnd": 2154
+          },
+          "irItems": [],
+          "reason": "source mention \"Financial Officer\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "25a87fb419a558583ca6242b226d41ac1a917379eff06f3806433687acdc6d0f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Compliance Certificate",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 2553,
+            "charEnd": 2575
+          },
+          "irItems": [],
+          "reason": "source mention \"Compliance Certificate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "288f9c99c6a13a1ec3e0a784a1c8d938100ab2598bc8dced3b547e392dfda4ff",
+            "kind": "METRIC_MENTION",
+            "rawText": "Unrestricted Subsidiaries",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 3273,
+            "charEnd": 3298
+          },
+          "irItems": [],
+          "reason": "source mention \"Unrestricted Subsidiaries\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fa8bd0c77402be6fa1a42c2a44453e260576e0c1d6643c9ffb34a0648fd51731",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 3400,
+            "charEnd": 3421
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aa4ce06397a19e10593b4ae8ac8a7456562adb723f6705eb2d146c80e575bb56",
+            "kind": "METRIC_MENTION",
+            "rawText": "Unrestricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "5.01",
+            "structuralNodeKey": null,
+            "charStart": 3428,
+            "charEnd": 3451
+          },
+          "irItems": [],
+          "reason": "source mention \"Unrestricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 7 apparent independent enumerated unit(s) ((a), (b), (c), (i), (ii), (iii), (iv)) but only 6 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text distinguishes 3 distinct entity-scope term(s) (unrestricted subsidiaries, restricted subsidiary, unrestricted subsidiary) but the compiled IR records no entity-scope restriction - possible missing/wrong entity scope"
+        }
+      ],
+      "materialUnresolvedCount": 2
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T19:03:47.453Z"
+  }
+}

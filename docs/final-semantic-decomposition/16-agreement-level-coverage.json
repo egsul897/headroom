@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "AGREEMENT_LEVEL_COMPLETENESS_CONCEPT",
+  "requirement": "Section 24: demonstrate how individual semantic units roll up into agreement-level status (not simply 'compiled'/'not compiled') - produce aggregate state such as SEMANTICALLY_COMPLETE / SEMANTICALLY_INCOMPLETE / REVIEW_REQUIRED based on material source units discovered, inventory coverage, composition coverage, verification, unresolved cross-references, operative-state uncertainty. Do not change product semantics unnecessarily if equivalent state already exists.",
+  "existingEquivalentState": {
+    "found": true,
+    "location": "lib/contract-model/compiler/package-safety.ts and the ContractCompilerRun/Stage state machine (Phase C, lib/contract-model/compiler/orchestrator).",
+    "detail": "Headroom already computes a rollup status per rule/definition (VERIFIED / MATERIAL_DISCREPANCY / VERIFICATION_INCOMPLETE / REVIEW_REQUIRED / UNSUPPORTED) and a package-level DiscoveryHealth / structural-health status (from 3F.1 F1/F2/F6 and 3F.1.2's structural-index V2) that already aggregates section-level compile/verify/discovery outcomes into a package-wide safety signal consumed by package-safety.ts. This reality check's own per-region compile.status (REVIEW_REQUIRED/PARTIAL) and verify.status (MATERIAL_DISCREPANCY/VERIFICATION_INCOMPLETE) are themselves instances of that existing per-unit status vocabulary - no new per-unit status enum was invented this mission.",
+    "conclusion": "Per Section 24's own instruction not to change product semantics unnecessarily, this mission does NOT introduce a new persisted SEMANTICALLY_COMPLETE/SEMANTICALLY_INCOMPLETE/REVIEW_REQUIRED field or migration. What follows is a rollup CONCEPT, demonstrated by direct computation over this reality check's own 12 real regions, showing how the existing per-unit statuses already compose into an agreement-level judgment without new schema."
+  },
+  "proposedRollupConcept": {
+    "inputs": ["per-unit compile.status (COMPLETE / PARTIAL / REVIEW_REQUIRED / FAILED)", "per-unit verify.status (VERIFIED / MATERIAL_DISCREPANCY / VERIFICATION_INCOMPLETE)", "count of unresolved dependsOn/dependsOnTerms references (a dependency target not found among the package's own compiled rules/definitions)", "count of MATERIAL findings"],
+    "rollupRule": "AGREEMENT_STATUS = SEMANTICALLY_COMPLETE only if every material unit's compile.status is COMPLETE AND verify.status is VERIFIED AND there are 0 unresolved dependency references. AGREEMENT_STATUS = REVIEW_REQUIRED if at least one unit has verify.status VERIFICATION_INCOMPLETE (ambiguous, not yet a confirmed defect) and none has a confirmed MATERIAL_DISCREPANCY that also carries 0 material findings elsewhere unresolved. AGREEMENT_STATUS = SEMANTICALLY_INCOMPLETE if any material unit has verify.status MATERIAL_DISCREPANCY with materialFindings > 0, or has an unresolved dependency reference.",
+    "computedOverThisReality Check_note": "field name intentionally literal to this artifact's own worked example below"
+  },
+  "workedExample": {
+    "scope": "The 12 real reality-check regions treated as one hypothetical 'agreement slice' (they span 2 real packages, so this is a rollup DEMONSTRATION, not a real single-agreement status).",
+    "materialUnitsConsidered": 12,
+    "compileStatusDistribution": { "REVIEW_REQUIRED": 9, "PARTIAL": 3 },
+    "verifyStatusDistribution": { "MATERIAL_DISCREPANCY": 11, "VERIFICATION_INCOMPLETE": 1 },
+    "unresolvedDependencyReferences": "cross-reference-dsgr produced 0 populated dependsOn/sharedCapacities despite depending, by its own real source text, on baskets defined elsewhere in the same agreement (Section 21 finding, 15-dependency-graph-check.json) - counted here as 1 unresolved cross-reference at the family level.",
+    "rollupResult": "SEMANTICALLY_INCOMPLETE (11 of 12 units carry a MATERIAL_DISCREPANCY with materialFindings > 0; the rollup rule requires ALL material units clean for SEMANTICALLY_COMPLETE, and that bar is not met).",
+    "interpretation": "This is the expected, honest result for a set of regions chosen specifically because 8 of 12 were pre-registered around provision families the mission calls out as historically hardest (debt/liens/RP baskets, shared caps, cross-references) - it is not evidence the architecture is broken, but it is direct, worked evidence that an agreement-level rollup using the existing per-unit status vocabulary produces a conservative, non-overclaiming aggregate: it would correctly refuse to tell a user 'this agreement is fully understood' when 11 of 12 sampled regions have live, disclosed material findings."
+  },
+  "designNote": "This concept deliberately reuses the existing per-unit status fields rather than inventing a new schema, consistent with Section 24's own 'do not change product semantics unnecessarily' instruction. Implementing the rollup as a real, queryable field (e.g. a computed view over ContractCompilerRun stages) is a Phase 4-adjacent, additive, low-risk next step - NOT implemented this session, consistent with the Option-1 minimal-footprint decision and with Section 33's own instruction that Phase 4 implementation does not begin this session."
+}

@@ -1,0 +1,3511 @@
+{
+  "region": {
+    "id": "restricted-payments-dsgr",
+    "family": "RESTRICTED_PAYMENTS_INVESTMENTS",
+    "documentId": "dsgr-a",
+    "sourceSectionRef": "6.08",
+    "charStart": 468878,
+    "chars": 4000,
+    "structuralNodeKeys": [
+      "dsgr-a::6.07(b)"
+    ]
+  },
+  "operativeSourceText": "SECTION 6.08. Restricted Payments; Certain Payments of Indebtedness .\n\n(a) No Loan Party will, nor will it permit any Restricted Subsidiary to, declare or make, or agree to declare or make, directly or indirectly,\nany Restricted Payment, or incur any obligation (contingent or otherwise) to do so, except (i) each of the Borrowers may declare and pay dividends with respect to its common stock payable solely in additional shares of its common stock, and,\nwith respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock, (ii) Restricted Subsidiaries may declare and pay dividends\nratably with respect to their Equity Interests, (iii) the Loan Parties may make Restricted Payments, pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their\nRestricted Subsidiaries, (iv) other Restricted Payments in an amount not to exceed the Available Amount immediately prior to the time of the making of such Restricted Payment, so long as at the time of making such Restricted Payment and\nimmediately after giving effect (including giving effect on a pro forma basis) thereto, (x) no Event of Default then exists or would result therefrom and (y) the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00\nlower than the maximum Total Net Leverage Ratio permitted under Section 6.12, and (v) the Company may make distributions and pay dividends to its equityholders, in each case, not otherwise permitted to be made by this Section 6.08 in\nan aggregate amount not to exceed $10,000,000 during any fiscal year of the Company so long as, in each case, all of the following conditions are satisfied: (x) no Default shall exist immediately prior to or immediately after giving effect to\nthe distribution or dividend, and (y) after giving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith, on a pro forma basis, the Company is in compliance with the covenants set forth in\nSection 6.12 (without giving effect to any applicable Total Net Leverage Ratio Adjustment); provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if, after\ngiving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith (including on a pro forma basis), the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total\nNet Leverage Ratio permitted under Section 6.12.\n\n115\n\n(b) No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to\npay or make, directly or indirectly, any payment or other distribution (whether in cash, securities or other property) of or in respect of principal of or interest on any Indebtedness, or any payment or other distribution (whether in cash,\nsecurities or other property), including any sinking fund or similar deposit, on account of the purchase, redemption, retirement, acquisition, cancellation or termination of any Indebtedness, except:\n\n(i) payment of Indebtedness created under the Loan Documents;\n\n(ii) payment of regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted\nunder Section 6.01, other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof;\n\n(iii) refinancings of Indebtedness to the extent permitted by Section 6.01; and\n\n(iv) payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets\nsecuring such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05.\n\nSECTION 6.09.\nTransactions with Affiliates . No Loan Party will, nor will it permit any Restricted Subsidiary to, sell, lease or otherwise transfer any property or assets to, or p",
+  "compile": {
+    "status": "PARTIAL",
+    "rules": [
+      {
+        "ruleId": "ir-rule:e485e4f3a2d4a26f7d1a84a9",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(a)(i)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "PAY_DIVIDEND",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(a)(i)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Common stock dividends payable solely in additional shares of common stock; preferred stock dividends payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in common stock - i.e. in-kind only, no cash component.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(i)",
+              "excerpt": "payable solely in additional shares of its common stock, and, with respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "In-kind stock dividend permission with no dollar ceiling; text is unambiguous.",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(a)(i)",
+          "excerpt": "each of the Borrowers may declare and pay dividends with respect to its common stock payable solely in additional shares of its common stock, and, with respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:036737c9c1f8c6280ff41e4f",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(a)(ii)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "PAY_DIVIDEND",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(a)(ii)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r2].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Dividends must be paid ratably with respect to Equity Interests.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(ii)",
+              "excerpt": "Restricted Subsidiaries may declare and pay dividends ratably with respect to their Equity Interests"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Ratable dividend permission with no dollar ceiling; text is unambiguous.",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(a)(ii)",
+          "excerpt": "Restricted Subsidiaries may declare and pay dividends ratably with respect to their Equity Interests"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:6c25ded99788768d9c3fadcd",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(a)(iii)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(a)(iii)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r3].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Payments must be made pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their Restricted Subsidiaries.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(iii)",
+              "excerpt": "pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their Restricted Subsidiaries"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "No dollar ceiling is stated for this category in the text.",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(a)(iii)",
+          "excerpt": "the Loan Parties may make Restricted Payments, pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their Restricted Subsidiaries"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:4194826764240b0f44a6b546",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(a)(iv)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "DEFINED_TERM_REFERENCE",
+          "type": "MONEY",
+          "termName": "Available Amount",
+          "companyId": "final-semantic-decomposition-reality-check",
+          "instrumentKey": "reality-check-instrument",
+          "resolvedDefinitionId": null,
+          "exprId": "ir-expr:c2f3eaaf474ef46e1cfde8b5"
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r4].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "No Event of Default exists at the time of, or would result (including on a pro forma basis) from, the Restricted Payment.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(iv)",
+              "excerpt": "no Event of Default then exists or would result therefrom"
+            }
+          },
+          {
+            "conditionId": "rule[r4].condition[1]",
+            "conditionType": "RATIO_SATISFIED",
+            "expression": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "(no evidence captured)",
+              "semanticDescription": "unrecognized or malformed expression (kind=\"COMPARE\")",
+              "reason": "COMPARE operands are not the same type",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "dsgr-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.08",
+                "excerpt": null
+              },
+              "attemptedStructure": {
+                "kind": "COMPARE",
+                "type": "BOOLEAN",
+                "exprId": "ir-expr:4ec875d4c3f2ac2bb2171bc1",
+                "left": {
+                  "kind": "METRIC_REFERENCE",
+                  "type": "RATIO",
+                  "metricName": "Total Net Leverage Ratio",
+                  "companyId": "final-semantic-decomposition-reality-check",
+                  "instrumentKey": "reality-check-instrument",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:5c48b9d488d5eb7ab9b8bfdc"
+                },
+                "operator": "LTE",
+                "right": {
+                  "kind": "UNSUPPORTED",
+                  "type": null,
+                  "sourceEvidence": "(no evidence captured)",
+                  "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+                  "reason": "SUBTRACT operands do not type-check together",
+                  "requiredReview": true,
+                  "provenance": {
+                    "documentId": "dsgr-a",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§6.08",
+                    "excerpt": null
+                  },
+                  "attemptedStructure": {
+                    "kind": "SUBTRACT",
+                    "type": "NUMBER",
+                    "exprId": "ir-expr:b0489edd05102be364ef9ce0",
+                    "left": {
+                      "kind": "UNSUPPORTED",
+                      "type": null,
+                      "sourceEvidence": "§6.12(b): \"The Company will not permit the Total Net Leverage Ratio ... to be greater than [text truncated]\"",
+                      "semanticDescription": "the maximum Total Net Leverage Ratio permitted under Section 6.12(b)",
+                      "reason": "Section 6.12(b)'s operative text was returned truncated immediately before the numeric ratio, and re-querying was not possible because the tool-call budget was exhausted; §6.12(a)/(b) also carry an UNKNOWN_SUPERSESSION_STATUS flag so even a partial figure could not be trusted as current.",
+                      "requiredReview": true,
+                      "provenance": {
+                        "documentId": "dsgr-a",
+                        "sourceNodeKey": null,
+                        "sourceCitation": "§6.08",
+                        "excerpt": null
+                      },
+                      "exprId": "ir-expr:488e9c631a3ef6a054e16125"
+                    },
+                    "right": {
+                      "kind": "RATIO",
+                      "type": "RATIO",
+                      "value": 0.5,
+                      "provenance": {
+                        "documentId": "dsgr-a",
+                        "sourceNodeKey": null,
+                        "sourceCitation": "§6.08",
+                        "excerpt": null
+                      },
+                      "exprId": "ir-expr:9cb48825d9b1686b3d9254ef"
+                    },
+                    "provenance": {
+                      "documentId": "dsgr-a",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§6.08",
+                      "excerpt": null
+                    }
+                  },
+                  "exprId": "ir-expr:faba4f3e7dad001a8acbd1f2"
+                },
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.08",
+                  "excerpt": null
+                }
+              },
+              "exprId": "ir-expr:d7b9aeb347a6d3cb49fec9ca"
+            },
+            "referencesDefinitionId": null,
+            "description": "Immediately after giving effect (including pro forma) to the payment, the Total Net Leverage Ratio must not exceed the ratio that is 0.5 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12. The exact numeric maximum currently permitted under Section 6.12(b) could not be retrieved (the operative provision text returned by the system was truncated immediately before stating the figure, and tool budget was exhausted before a workaround could be found), so only the 0.5x differential (stated directly in this section, which has no amendment history) is represented with confidence.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(iv)",
+              "excerpt": "the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Capacity basis (Available Amount) and the no-Default-of-Event-of-Default condition are fully supported; the ratio gate's absolute threshold depends on Section 6.12(b)'s maximum Total Net Leverage Ratio, which could not be retrieved in full (truncated response) and whose current operative status is itself unresolved.",
+          "condition[0].conditionType \"NO_DEFAULT_CONTINUING\" not recognized - normalized to UNSUPPORTED",
+          "Section 6.12(b)'s operative text was returned truncated immediately before the numeric ratio, and re-querying was not possible because the tool-call budget was exhausted; §6.12(a)/(b) also carry an UNKNOWN_SUPERSESSION_STATUS flag so even a partial figure could not be trusted as current.",
+          "SUBTRACT operands do not type-check together",
+          "COMPARE operands are not the same type",
+          "dependsOn[0].targetRef \"Available Amount\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[1].targetRef \"Section 6.12(b)\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(a)(iv)",
+          "excerpt": "other Restricted Payments in an amount not to exceed the Available Amount immediately prior to the time of the making of such Restricted Payment, so long as ... (x) no Event of Default then exists or would result therefrom and (y) the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:6dc4a0d75417a91ce41d5675",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(a)(v)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "PAY_DIVIDEND",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 10000000,
+          "currency": "USD",
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(a)(v)",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:16cd0a9c5ca7a2a83f259c3e"
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r5].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Only distributions/dividends not otherwise permitted to be made under Section 6.08 count against this basket, capped at $10,000,000 per fiscal year of the Company.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(v)",
+              "excerpt": "not otherwise permitted to be made by this Section 6.08 in an aggregate amount not to exceed $10,000,000 during any fiscal year of the Company"
+            }
+          },
+          {
+            "conditionId": "rule[r5].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "No Default shall exist immediately prior to or immediately after giving effect to the distribution or dividend.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(v)",
+              "excerpt": "no Default shall exist immediately prior to or immediately after giving effect to the distribution or dividend"
+            }
+          },
+          {
+            "conditionId": "rule[r5].condition[2]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "After giving pro forma effect to the payment and any Indebtedness incurred/assumed in connection with it, the Company must be in compliance with the covenants in Section 6.12 (without giving effect to any Total Net Leverage Ratio Adjustment). Exact current Section 6.12 covenant levels are not fully confirmed as current (see r4) so this condition is not reduced to a numeric expression.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(v)",
+              "excerpt": "the Company is in compliance with the covenants set forth in Section 6.12 (without giving effect to any applicable Total Net Leverage Ratio Adjustment)"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The $10,000,000/fiscal-year cap and the no-Default condition are fully supported; the 'compliance with Section 6.12' condition could not be reduced to confirmed current numeric thresholds.",
+          "condition[1].conditionType \"NO_DEFAULT_CONTINUING\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"Section 6.12\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(a)(v)",
+          "excerpt": "the Company may make distributions and pay dividends to its equityholders, in each case, not otherwise permitted to be made by this Section 6.08 in an aggregate amount not to exceed $10,000,000 during any fiscal year of the Company so long as ... (x) no Default shall exist ... and (y) ... the Company is in compliance with the covenants set forth in Section 6.12 (without giving effect to any applicable Total Net Leverage Ratio Adjustment)"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:51de67c5055548ffb8f90dac",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(a)(v) proviso",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUANTITATIVE_PERMISSION",
+        "posture": "PERMISSION",
+        "action": "PAY_DIVIDEND",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": {
+            "kind": "UNSUPPORTED",
+            "type": null,
+            "sourceEvidence": "(no evidence captured)",
+            "semanticDescription": "unrecognized or malformed expression (kind=\"COMPARE\")",
+            "reason": "COMPARE operands are not the same type",
+            "requiredReview": true,
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(v)",
+              "excerpt": null
+            },
+            "attemptedStructure": {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:9a3bf57085ac7d4809e546f8",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "RATIO",
+                "metricName": "Total Net Leverage Ratio",
+                "companyId": "final-semantic-decomposition-reality-check",
+                "instrumentKey": "reality-check-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:5c48b9d488d5eb7ab9b8bfdc"
+              },
+              "operator": "LTE",
+              "right": {
+                "kind": "UNSUPPORTED",
+                "type": null,
+                "sourceEvidence": "(no evidence captured)",
+                "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+                "reason": "SUBTRACT operands do not type-check together",
+                "requiredReview": true,
+                "provenance": {
+                  "documentId": "dsgr-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§6.08(a)(v)",
+                  "excerpt": null
+                },
+                "attemptedStructure": {
+                  "kind": "SUBTRACT",
+                  "type": "NUMBER",
+                  "exprId": "ir-expr:4f2b71f25e4ea432dcac1f19",
+                  "left": {
+                    "kind": "UNSUPPORTED",
+                    "type": null,
+                    "sourceEvidence": "§6.12(b) (truncated)",
+                    "semanticDescription": "the maximum Total Net Leverage Ratio permitted under Section 6.12(b)",
+                    "reason": "Section 6.12(b)'s operative numeric threshold could not be retrieved (truncated tool response; budget exhausted before retry).",
+                    "requiredReview": true,
+                    "provenance": {
+                      "documentId": "dsgr-a",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§6.08(a)(v)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:3fea51a6d201247b75c0b55a"
+                  },
+                  "right": {
+                    "kind": "RATIO",
+                    "type": "RATIO",
+                    "value": 0.5,
+                    "provenance": {
+                      "documentId": "dsgr-a",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§6.08(a)(v)",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:05887317f5df950450cb55b7"
+                  },
+                  "provenance": {
+                    "documentId": "dsgr-a",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§6.08(a)(v)",
+                    "excerpt": null
+                  }
+                },
+                "exprId": "ir-expr:700b78757e11adec89a8eac3"
+              },
+              "provenance": {
+                "documentId": "dsgr-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§6.08(a)(v)",
+                "excerpt": null
+              }
+            },
+            "exprId": "ir-expr:8ea4fa29a1b2f971718f2380"
+          },
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(a)(v)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r6].condition[0]",
+            "conditionType": "RATIO_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Payments made in reliance on clause (v) are excluded from (i.e., do not count toward) the $10,000,000 annual dollar limitation if, after giving pro forma effect to the Restricted Payment and any Indebtedness incurred/assumed in connection with it, the Total Net Leverage Ratio is not greater than the ratio 0.5 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(a)(v)",
+              "excerpt": "provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if, after giving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith (including on a pro forma basis), the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [
+          {
+            "relationshipType": "REQUIRES",
+            "targetRuleId": "ir-rule:6dc4a0d75417a91ce41d5675",
+            "description": "This is the carve-out from r5's $10,000,000 aggregate dollar cap: satisfying the stated ratio test removes the payment from that cap entirely, effectively making it uncapped under this clause."
+          }
+        ],
+        "operativeLineage": null,
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The uncapped/carve-out structure itself is clearly stated; the absolute ratio threshold depends on Section 6.12(b)'s maximum Total Net Leverage Ratio, which could not be retrieved in full.",
+          "Section 6.12(b)'s operative numeric threshold could not be retrieved (truncated tool response; budget exhausted before retry).",
+          "SUBTRACT operands do not type-check together",
+          "COMPARE operands are not the same type",
+          "dependsOn[1].targetRef \"Section 6.12(b)\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(a)(v)",
+          "excerpt": "provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if ... the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:d40c974c85b83963692a76ef",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(b)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r7].exception[0]",
+            "appliesToRuleId": "ir-rule:d40c974c85b83963692a76ef",
+            "description": "Payment of Indebtedness created under the Loan Documents.",
+            "permissionRuleId": "ir-rule:4f754763b38bddef4ecaaa2b",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(b)(i)",
+              "excerpt": "payment of Indebtedness created under the Loan Documents"
+            }
+          },
+          {
+            "exceptionId": "rule[r7].exception[1]",
+            "appliesToRuleId": "ir-rule:d40c974c85b83963692a76ef",
+            "description": "Regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted under Section 6.01, other than payments in respect of Subordinated Indebtedness prohibited by the subordination provisions thereof.",
+            "permissionRuleId": "ir-rule:2f5e10595a6a4fe8dfd7f90d",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(b)(ii)",
+              "excerpt": "payment of regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted under Section 6.01, other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof"
+            }
+          },
+          {
+            "exceptionId": "rule[r7].exception[2]",
+            "appliesToRuleId": "ir-rule:d40c974c85b83963692a76ef",
+            "description": "Refinancings of Indebtedness to the extent permitted by Section 6.01.",
+            "permissionRuleId": "ir-rule:3b23b140cedac1cfd49f04fe",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(b)(iii)",
+              "excerpt": "refinancings of Indebtedness to the extent permitted by Section 6.01"
+            }
+          },
+          {
+            "exceptionId": "rule[r7].exception[3]",
+            "appliesToRuleId": "ir-rule:d40c974c85b83963692a76ef",
+            "description": "Payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness, to the extent such sale or transfer is permitted by the terms of Section 6.05.",
+            "permissionRuleId": "ir-rule:f8199c767194cb7519f75729",
+            "conditions": [],
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(b)(iv)",
+              "excerpt": "payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05"
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The prohibition and its four enumerated exceptions are fully stated in the text; the exceptions' own scope is fixed by cross-referenced sections which are separately modeled as their own permission categories rather than re-derived here.",
+          "dependsOn[0].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+          "dependsOn[0].targetRef \"Section 6.01\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[1].relationshipType \"REFERENCES\" not recognized - defaulted to REQUIRES",
+          "dependsOn[1].targetRef \"Section 6.05\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(b)",
+          "excerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to pay or make, directly or indirectly, any payment or other distribution ... of or in respect of principal of or interest on any Indebtedness ... except: (i) ...; (ii) ...; (iii) ...; and (iv) ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:4f754763b38bddef4ecaaa2b",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(b)(i)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(b)(i)",
+            "excerpt": null
+          }
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Unconditional, unlimited permission for payment of Indebtedness under the Loan Documents themselves.",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(b)(i)",
+          "excerpt": "payment of Indebtedness created under the Loan Documents"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:2f5e10595a6a4fe8dfd7f90d",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(b)(ii)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(b)(ii)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r9].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Applies only to Indebtedness permitted under Section 6.01, and excludes payments in respect of Subordinated Indebtedness prohibited by that Indebtedness's own subordination provisions.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(b)(ii)",
+              "excerpt": "other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Scope and carve-back are both stated in the text; Section 6.01's own permission scope is a separate covenant not required to compute this rule's own conditional logic.",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].targetRef \"Section 6.01\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(b)(ii)",
+          "excerpt": "payment of regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted under Section 6.01, other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:3b23b140cedac1cfd49f04fe",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(b)(iii)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(b)(iii)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r10].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Refinancing must be permitted by Section 6.01.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(b)(iii)",
+              "excerpt": "refinancings of Indebtedness to the extent permitted by Section 6.01"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Scope is stated in the text by cross-reference; the referenced section's own economics are a distinct covenant.",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].targetRef \"Section 6.01\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(b)(iii)",
+          "excerpt": "refinancings of Indebtedness to the extent permitted by Section 6.01"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:f8199c767194cb7519f75729",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "sourceSectionRef": "6.08(b)(iv)",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [
+          "LOAN_PARTY"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNLIMITED_CAPACITY",
+          "type": "CAPACITY",
+          "gatedBy": null,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08(b)(iv)",
+            "excerpt": null
+          }
+        },
+        "conditions": [
+          {
+            "conditionId": "rule[r11].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Applies only to secured Indebtedness becoming due as a result of a voluntary sale or transfer of the collateral securing it, where such sale or transfer is itself permitted under Section 6.05.",
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§6.08(b)(iv)",
+              "excerpt": "payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Scope is stated in the text by cross-reference; the referenced section's own economics are a distinct covenant.",
+          "ruleType \"QUALITATIVE_PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].targetRef \"Section 6.05\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.08(b)(iv)",
+          "excerpt": "payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:061019cbb339526208fed9c4",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Total Net Leverage Ratio",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "DIVIDE",
+          "type": "NUMBER",
+          "exprId": "ir-expr:b9ca97b5d03b6a50bf0c33b6",
+          "numerator": {
+            "kind": "SUBTRACT",
+            "type": "MONEY",
+            "exprId": "ir-expr:526de49948e26add457c5115",
+            "left": {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Total Indebtedness",
+              "companyId": "final-semantic-decomposition-reality-check",
+              "instrumentKey": "reality-check-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:097a48aa347b49b512e7b70a"
+            },
+            "right": {
+              "kind": "MIN",
+              "type": "MONEY",
+              "exprId": "ir-expr:8680512321ee1cced18aea95",
+              "operands": [
+                {
+                  "kind": "METRIC_REFERENCE",
+                  "type": "MONEY",
+                  "metricName": "Unrestricted Cash",
+                  "companyId": "final-semantic-decomposition-reality-check",
+                  "instrumentKey": "reality-check-instrument",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:05180735707fef32ef340740"
+                },
+                {
+                  "kind": "MONEY",
+                  "type": "MONEY",
+                  "amount": 25000000,
+                  "currency": "USD",
+                  "provenance": {
+                    "documentId": "dsgr-a",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "Definitions - Total Net Leverage Ratio",
+                    "excerpt": null
+                  },
+                  "exprId": "ir-expr:545454d9b93e05f044e32dc5"
+                }
+              ],
+              "provenance": {
+                "documentId": "dsgr-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "Definitions - Total Net Leverage Ratio",
+                "excerpt": null
+              }
+            },
+            "provenance": {
+              "documentId": "dsgr-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "Definitions - Total Net Leverage Ratio",
+              "excerpt": null
+            }
+          },
+          "denominator": {
+            "kind": "METRIC_REFERENCE",
+            "type": "MONEY",
+            "metricName": "EBITDA",
+            "companyId": "final-semantic-decomposition-reality-check",
+            "instrumentKey": "reality-check-instrument",
+            "resolvedDefinitionId": null,
+            "exprId": "ir-expr:257a8f4e625c717b7d18968a"
+          },
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "Definitions - Total Net Leverage Ratio",
+            "excerpt": null
+          }
+        },
+        "dependsOnTerms": [
+          "Total Indebtedness",
+          "Unrestricted Cash",
+          "EBITDA",
+          "Total Net Leverage Ratio Adjustment"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full definition text was retrieved and is a straightforward ratio formula not marked as amended or ambiguous."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definitions - Total Net Leverage Ratio",
+          "excerpt": "\"Total Net Leverage Ratio\" means, on any date, the ratio of (a) Total Indebtedness on such date minus Unrestricted Cash as of such date in an amount not to exceed $25,000,000 to (b) EBITDA for the period of four consecutive fiscal quarters of the Company most recently ended on or prior to such date. Operating leases that are reflected on the consolidated balance sheet of the Company shall be excluded for purposes of calculating the Total Net Leverage Ratio."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "termName": "Available Amount",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "\"Available Amount\" means, at any time..., the sum (without duplication) of: (i) 25% of Applicable EBITDA...; plus (ii) net cash proceeds of Qualified Stock issuances...; plus (iii)-(vii) various add-backs; minus (viii) amounts already used under Section 6.04(q) or Section 6.08(a)(iv)...",
+          "semanticDescription": "A multi-component 'builder basket' sum (25% of Applicable EBITDA, plus various equity-issuance and return-of-investment add-backs, plus Borrower Retained Prepayment Amounts, minus amounts already used under Section 6.04(q) and Section 6.08(a)(iv)), several of whose sub-components (e.g. 'Specified Equity Contribution', 'Qualified Stock', 'Returns', 'Borrower Retained Prepayment Amounts') are themselves separately defined terms not resolved here, and the retrieved definition text was truncated before its final clauses.",
+          "reason": "Definition is materially long, cross-references several other undefined terms, and the tool response was truncated ('truncated: true') before the full text could be captured; decomposing it fully was not attempted here because it is only needed as a capacity reference (DEFINED_TERM_REFERENCE) for §6.08(a)(iv), not as this compilation's primary subject.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "dsgr-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.08",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:4c0f0492d9d462b009b9db6b"
+        },
+        "dependsOnTerms": [
+          "Applicable EBITDA",
+          "Qualified Stock",
+          "Specified Equity Contribution",
+          "Returns",
+          "Unrestricted Subsidiary",
+          "Borrower Retained Prepayment Amounts",
+          "Permitted Investments"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The overall additive/subtractive shape of the basket is understood, but several sub-components are undefined in the evidence obtained and the source text itself was returned truncated, so a full faithful numeric decomposition is not attempted.",
+          "Definition is materially long, cross-references several other undefined terms, and the tool response was truncated ('truncated: true') before the full text could be captured; decomposing it fully was not attempted here because it is only needed as a capacity reference (DEFINED_TERM_REFERENCE) for §6.08(a)(iv), not as this compilation's primary subject."
+        ],
+        "provenance": {
+          "documentId": "dsgr-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definitions - Available Amount",
+          "excerpt": "\"Available Amount\" means, at any time (the \"Reference Date\"), the sum (without duplication) of: (i) 25% of Applicable EBITDA (calculated on a pro forma basis)...; plus (ii) ... net cash proceeds of any issuance of Qualified Stock...; plus (iii)-(vii) ...; plus (vii) Borrower Retained Prepayment Amounts; minus (viii) any investments made pursuant to Section 6.04(q) or any Restricted Payment made pursuant to Section 6.08(a)(iv)..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "IR_VALIDATION_FAILURE",
+      "OPERATIVE_STATE_UNRESOLVED",
+      "TRUNCATED_EVIDENCE_USED"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T18:46:55.803Z",
+      "inputTokens": 165244,
+      "outputTokens": 23336,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 8,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 211630,
+      "calculatedCostUsd": 0.563848
+    }
+  },
+  "verify": {
+    "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "63bb29bcf7f6bdf6625c1fdfde822208f2eaf1061ff93b80b49268ba39bbc68b",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+        "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+        "irPath": "definitions[0].calculationExpression.numerator.right.operands[1]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no source text for the 'Total Net Leverage Ratio' definition appears anywhere in the operative 6.08 text provided, and the retrieved-context bundle for this verification is explicitly empty: 'Retrieved context items: (none)')",
+        "sourceCitation": "Retrieved context items: (none); the only in-scope operative text provided is Section 6.08",
+        "proposedIrEvidence": "definitions[0] ('Total Net Leverage Ratio') numerator.right = MIN(Unrestricted Cash, MONEY 25,000,000 USD), with that $25,000,000 operand's provenance excerpt field set to null and sourceNodeKey null, yet the definition's overall sufficiency is marked 'COMPLETE'",
+        "verifierReasoning": "The proposed IR asserts a fully-specified formula for Total Net Leverage Ratio - including a specific $25,000,000 cap on the amount of Unrestricted Cash that may be netted against Total Indebtedness - and marks this definition COMPLETE, i.e. asserts full confidence. But no source text for this definition was ever retrieved (context bundle is empty) and the provenance for the $25,000,000 figure itself has no excerpt at all. The deterministic pass independently flagged this exact figure as IR_ONLY with no matching source-side figure. This ratio (Total Net Leverage Ratio) is the operative gate for the Available Amount basket (r4) and the uncapped-carve-out proviso (r6) in 6.08(a); if the true cash-netting cap differs from $25,000,000 (or does not exist at all), the leverage-ratio comparisons used to determine whether those baskets are available would be computed incorrectly, which could change a real compliance conclusion. Marking this COMPLETE despite having no retrievable source support is exactly the confident-but-unverifiable pattern that warrants the highest scrutiny.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:50:09.223Z"
+      },
+      {
+        "findingId": "d3daf58285240304e2a1871c1d035d112f2078c5fd6e4535a6048dab7fa5959d",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": "rules (6.08(a) section as a whole)",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "\"No Loan Party will, nor will it permit any Restricted Subsidiary to, declare or make, or agree to declare or make, directly or indirectly, any Restricted Payment, or incur any obligation (contingent or otherwise) to do so, except (i) ... (v) ...\"",
+        "sourceCitation": "§6.08(a) opening clause",
+        "proposedIrEvidence": "Rules r1-r6 (sourceSectionRef 6.08(a)(i) through (a)(v) proviso) are all encoded as standalone PERMISSION rules with sufficiency COMPLETE; no rule in the proposed IR carries posture PROHIBITION for the 6.08(a) default-deny clause, in contrast to 6.08(b) which is explicitly represented as rule ir-rule:d40c974c85b83963692a76ef (posture PROHIBITION) with exceptions (i)-(iv) attached to it.",
+        "verifierReasoning": "Section 6.08(a) is structured as a default prohibition on all Restricted Payments, with clauses (i)-(v) being the exhaustive list of carve-outs from that default prohibition. The proposed IR faithfully mirrors this structure for 6.08(b) (an explicit PROHIBITION rule r7 with four attached PERMISSION exceptions), but for 6.08(a) it only encodes the exceptions themselves as freestanding PERMISSION rules and never represents the governing prohibition. A Restricted Payment that does not fit any of (i)-(v) is, per the source, prohibited - but nothing in the proposed IR captures that default-deny posture for 6.08(a), so a downstream consumer relying on this IR could fail to recognize that any Restricted Payment outside r1-r6 is forbidden, rather than merely unaddressed.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:50:09.223Z"
+      },
+      {
+        "findingId": "45258c9f3c0733618741629f09835cf05a084ff09cbc3f3147b03ee03b94f993",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+        "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+        "irPath": "rules[3].entityScope; also rules[6],[7],[8],[9],[10].entityScope",
+        "findingType": "WRONG_ENTITY_SCOPE",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "\"No Loan Party will, nor will it permit any Restricted Subsidiary to, declare or make... any Restricted Payment... except... (iv) other Restricted Payments in an amount not to exceed the Available Amount...\" (6.08(a) chapeau + (iv)); \"No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to pay or make... any payment... except: (i) payment of Indebtedness created under the Loan Documents...\" (6.08(b) chapeau + (i)-(iv))",
+        "sourceCitation": "§6.08(a) chapeau and (a)(iv); §6.08(b) chapeau and (b)(i)-(iv)",
+        "proposedIrEvidence": "ir-rule:4194826764240b0f44a6b546 (6.08(a)(iv)) and ir-rule:d40c974c85b83963692a76ef / 4f754763b38bddef4ecaaa2b / 2f5e10595a6a4fe8dfd7f90d / 3b23b140cedac1cfd49f04fe / f8199c767194cb7519f75729 (all under 6.08(b)) each set entityScope to only [\"LOAN_PARTY\"], with entityScopeExcluded empty.",
+        "verifierReasoning": "Both the 6.08(a) and 6.08(b) chapeaus bind Restricted Subsidiaries directly (via the 'nor will it permit any Restricted Subsidiary to' construction, which in standard drafting means the Restricted Subsidiary itself is restricted from performing the act, not merely that the Loan Party is restricted from permitting it), yet clause (iv) of (a) never names an entity (unlike (i)-(iii) and (v), which explicitly say 'the Borrowers', 'Restricted Subsidiaries', or 'the Loan Parties'), and none of clauses (b)(i)-(iv) name an entity either. Scoping all of these exceptions/prohibitions to LOAN_PARTY only, and omitting RESTRICTED_SUBSIDIARY from entityScope, could understate which entities are bound by the 6.08(b) prohibition and which entities may rely on the (a)(iv) Available Amount basket or the 6.08(b) exceptions, potentially producing a wrong permission/prohibition conclusion for a transaction undertaken by a Restricted Subsidiary rather than a Loan Party. I flag this as uncertain rather than definitively wrong because the source's silence on entity for these specific clauses is itself ambiguous.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:50:09.223Z"
+      },
+      {
+        "findingId": "6e9aeba00f877bee1519b5000d8037628d1af6018f60166001bcdcf798e2e4ee",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+        "ruleOrDefinitionId": "ir-rule:51de67c5055548ffb8f90dac",
+        "irPath": "rules[5].dependsOn[0]",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "\"...so long as, in each case, all of the following conditions are satisfied: (x) no Default shall exist immediately prior to or immediately after giving effect to the distribution or dividend, and (y) ...; provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if...\"",
+        "sourceCitation": "§6.08(a)(v) and (a)(v) proviso",
+        "proposedIrEvidence": "ir-rule:51de67c5055548ffb8f90dac (the proviso) lists only one condition (the leverage-ratio test) and relates to r5 solely via a dependsOn entry of relationshipType 'REQUIRES' with a free-text description characterizing the relationship as a cap-exclusion, rather than explicitly carrying forward r5's condition[1] ('no Default shall exist...').",
+        "verifierReasoning": "The source proviso only removes the $10,000,000 dollar limitation when its own ratio test is met; it does not, on its face, waive condition (x) (no Default) which independently governs all clause (v) payments. The proposed IR's r6 does not explicitly restate the no-Default condition, instead relying on an ambiguous 'REQUIRES' dependency pointing at r5. Depending on how a downstream system interprets that dependency, it could either correctly treat no-Default as still required, or incorrectly treat r6 as available even when a Default exists (since r6's own conditions array only contains the ratio test). This is not clearly wrong, but the encoding does not unambiguously preserve the source's surviving condition.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:50:09.223Z"
+      },
+      {
+        "findingId": "094069bebdd12077710ee82468678217d0b7860a809b1ac450116b75e5de72a5",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+        "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+        "irPath": "rules[3].conditions[1].expression (and rules[5].capacityExpression.gatedBy)",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "\"the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12\"",
+        "sourceCitation": "§6.08(a)(iv) and §6.08(a)(v) proviso",
+        "proposedIrEvidence": "The deterministic pass reported '0.5 RATIO does not appear as a RATIO value anywhere in the compiled IR' (twice); however, the value is in fact present at ir-expr:9cb48825d9b1686b3d9254ef (kind RATIO, value 0.5) and ir-expr:05887317f5df950450cb55b7, nested inside SUBTRACT/COMPARE 'attemptedStructure' nodes that the IR itself marks UNSUPPORTED/requiredReview because the Section 6.12(b) numeric ceiling could not be retrieved.",
+        "verifierReasoning": "On independent inspection, the 0.5 differential from the source is actually captured in the IR (twice), just nested inside a malformed/unresolved expression tree rather than as a clean top-level RATIO node, which appears to be why the deterministic scanner missed it. The genuinely missing piece - the numeric maximum Total Net Leverage Ratio under Section 6.12(b) - is already honestly disclosed by the IR itself (sufficiency PARTIAL, requiredReview true, explicit narrative explaining the truncated retrieval). I therefore do not think this deterministic signal points to an additional hidden omission beyond what is already transparently flagged, so I rate it non-material.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:50:09.223Z"
+      },
+      {
+        "findingId": "15995d03f0a992a797e2997970db62a831d8a46f0dbdad317674c3b197831ee5",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "0.5 to 1.00",
+        "sourceCitation": "6.08",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source RATIO 0.5 (from \"0.5 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source RATIO 0.5 (from \"0.5 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:46:55.807Z"
+      },
+      {
+        "findingId": "15995d03f0a992a797e2997970db62a831d8a46f0dbdad317674c3b197831ee5",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "0.5 to 1.00",
+        "sourceCitation": "6.08",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source RATIO 0.5 (from \"0.5 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source RATIO 0.5 (from \"0.5 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:46:55.807Z"
+      },
+      {
+        "findingId": "6ed4fe133918cb63513d6ce6dc3f90bedfa4906454b623fc2f7892e4f6f1f8a9",
+        "companyId": "final-semantic-decomposition-reality-check",
+        "instrumentKey": "reality-check-instrument",
+        "sourceDocumentId": "dsgr-a",
+        "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+        "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+        "irPath": "definitions[0].calculationExpression.numerator.right.operands[1]",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "6.08",
+        "proposedIrEvidence": "definitions[0].calculationExpression.numerator.right.operands[1]=25000000",
+        "verifierReasoning": "compiled IR AMOUNT value 25000000 at definitions[0].calculationExpression.numerator.right.operands[1] has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 25000000 at definitions[0].calculationExpression.numerator.right.operands[1] has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T18:46:55.807Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+      "items": [
+        {
+          "itemId": "9a1d4bed7d242c955c609bb8acbb83ad63cbbdae21284234830e19eeaabee7fd",
+          "kind": "AMOUNT",
+          "rawText": "$10,000,000",
+          "numericValue": 10000000,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1673,
+          "charEnd": 1684
+        },
+        {
+          "itemId": "3e4ae442b698b851b3e04fb2aa90bf441aa39314f8aaf3d385c6a17bd6b8f044",
+          "kind": "RATIO",
+          "rawText": "0.5 to 1.00",
+          "numericValue": 0.5,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1393,
+          "charEnd": 1404
+        },
+        {
+          "itemId": "be207318f561b090eb412d9212dcc4437d730cdda5aa574becca3f4ed2fceb5b",
+          "kind": "RATIO",
+          "rawText": "0.5 to 1.00",
+          "numericValue": 0.5,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2555,
+          "charEnd": 2566
+        },
+        {
+          "itemId": "e0826dce80ae5db995f9c683ac67e4c4e37d902c2f820f50b5edadf419d891ce",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1000,
+          "charEnd": 1013
+        },
+        {
+          "itemId": "14cc32e359d18e1e5d33e4168ee54ec21e7efb7430a623f946d97eee3ba6d1ef",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1659,
+          "charEnd": 1672
+        },
+        {
+          "itemId": "c23f058a7087298dea9dddfc6b7ebb4ea1d92ba5733e648f403085871af3555b",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "except",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 298,
+          "charEnd": 304
+        },
+        {
+          "itemId": "fa560fee8668c8b6597f8c71f29d3b871798f8e7b47d5fe5d99ccf6dd8b5b6e7",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "so long as",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1107,
+          "charEnd": 1117
+        },
+        {
+          "itemId": "c832e045213dc7202a0e8418da565fe9895de8f08ff76caecaba4596ee9a645a",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "no Event of Default",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1260,
+          "charEnd": 1279
+        },
+        {
+          "itemId": "cf64440a6b1b0c6d839fd4b8bad1e9e466dc924b3ec1f8b4e2b8ac302b4b36fa",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "so long as",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1723,
+          "charEnd": 1733
+        },
+        {
+          "itemId": "272d39f57a30d431f4315ea21128d2fa16ffe6af691b2f9693bbb2c5e4f85169",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "no Default",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1800,
+          "charEnd": 1810
+        },
+        {
+          "itemId": "90f68206e064adb95a60014d8c692db80dc724c80ea2872609439779f44a36b8",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2208,
+          "charEnd": 2221
+        },
+        {
+          "itemId": "0d16c74f36ec8371aa44aca1e293af8a0efd48db9f8a46896a89a953a2845c6e",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "except",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 3173,
+          "charEnd": 3179
+        },
+        {
+          "itemId": "d614d2784de0e2040d72f952ec3a059892b2a1ca43b00f1131b4b28aee2583d1",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "are satisfied",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1781,
+          "charEnd": 1794
+        },
+        {
+          "itemId": "c7a9ac8dfa15c6c4859e08f2d3b1714c083a19b175d2c58e2fb1b6f93a8a28a8",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "set forth in\nSection 6",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2103,
+          "charEnd": 2125
+        },
+        {
+          "itemId": "93e35d5da958e78d458c54a8d38ca90d75fbc77c21d3621afa61a1e938920928",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pro forma basis",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1230,
+          "charEnd": 1245
+        },
+        {
+          "itemId": "cf7aa416346efd9a5fd443030f9afa6dc216e7ca08b31d4caef2d5682d52aeed",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "giving effect to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1865,
+          "charEnd": 1881
+        },
+        {
+          "itemId": "c827b7fac6f267eaa90afe635f10697ebb4bd251b924dfa5e5249428e7ab4716",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "giving effect to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1926,
+          "charEnd": 1942
+        },
+        {
+          "itemId": "22d0843f7f57648a1f97dbc9beb647039b11c5cf6ecaf1dc85db8ddcf88ce900",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pro forma basis",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2038,
+          "charEnd": 2053
+        },
+        {
+          "itemId": "7aa67b51d9c63d384d4be265d593d88a38a80404a9e75c06f5c329f68ce82433",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "giving effect to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2138,
+          "charEnd": 2154
+        },
+        {
+          "itemId": "8827061e71abed2fd980a268f05d10ecdf49ef21464489bec2c5f5084e447c82",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "giving effect to",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2348,
+          "charEnd": 2364
+        },
+        {
+          "itemId": "f659ac4ef6d4f981212a98aaaea5b48c86bc9792b2ec6477d7954140b91ae634",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pro forma basis",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2470,
+          "charEnd": 2485
+        },
+        {
+          "itemId": "375ef6025b79cdf22cb0f51079cb1ab50e2c56959dc30d0885d991fce0d2d241",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 3390,
+          "charEnd": 3400
+        },
+        {
+          "itemId": "99a118fa50e4147f58d3bfe8c01698c62658cf13fbe7c9ee0270bc86c9effec3",
+          "kind": "BUILDER_SIGNAL",
+          "rawText": "Available Amount",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1018,
+          "charEnd": 1034
+        },
+        {
+          "itemId": "7bd5a053c87d59d8ca33a7422959d67e1a6b204fedc12ccf68a50233bca49fa2",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 78,
+          "charEnd": 88
+        },
+        {
+          "itemId": "ef74da099e4964f11291f2ed0318931011484d2a62138c5d8dcc4c1b5e974a14",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 118,
+          "charEnd": 139
+        },
+        {
+          "itemId": "988011da0a1399ab482c138c1d431548743b7e5da30ef878d5ee255622b66123",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 641,
+          "charEnd": 664
+        },
+        {
+          "itemId": "db6d8b5eb3a5f7da7678560822bf7ac81967fe6e0662ae7addc8058fb342b0c8",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 753,
+          "charEnd": 765
+        },
+        {
+          "itemId": "6c45658e08591867fc1d3dcc4e9f973debfee4dd830d0d32b1e54f0ae358af7a",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 908,
+          "charEnd": 920
+        },
+        {
+          "itemId": "318181b8991d291b68d973cb77a400609f2daf6fe75ae502b609ded13141d012",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 931,
+          "charEnd": 954
+        },
+        {
+          "itemId": "65656adf6760b23641dfecc16bcdc172e8bd9f1ecac5560974c7b0fee2900ff0",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2658,
+          "charEnd": 2668
+        },
+        {
+          "itemId": "fda4dd44803cee570339b4e5c17db940fc0d8778de8cfb0bc5bdf0bba7844bbe",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2698,
+          "charEnd": 2719
+        },
+        {
+          "itemId": "fdb02d81b2b2ec8dbca7c0678f00c690145e0b2a256206ff8369e4e4a8e5b91f",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 3869,
+          "charEnd": 3879
+        },
+        {
+          "itemId": "4d93ffaf155d699144e874e0c1b1adcfff2598cb0eefb2de81c4ef00ffbd483d",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 3909,
+          "charEnd": 3930
+        },
+        {
+          "itemId": "924f2375312f2430a39fdb65b38792d5fa12be3bd54c25a6d56adae858c4896a",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "incur",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 241,
+          "charEnd": 246
+        },
+        {
+          "itemId": "0ad853906ed76976b56f6bd9c14e8a52f13cc2d881dc263fd3777553107ce1d9",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "pay dividends",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 347,
+          "charEnd": 360
+        },
+        {
+          "itemId": "919bb24a9b7a8be74ef9c712603394bd2884b93ed1019482addf275fab297d7d",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "pay dividends",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 681,
+          "charEnd": 694
+        },
+        {
+          "itemId": "cddfa4148a57732be8f698b250419e9386c9a8c218c1fca597c616d6c482b580",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "pay dividends",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1530,
+          "charEnd": 1543
+        },
+        {
+          "itemId": "7e200e4394a59385320eea07547dd365f298aa9ed269f49daecdcd859337daff",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payments",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 14,
+          "charEnd": 33
+        },
+        {
+          "itemId": "4311357afab511fd05b047a35c3250a5d49178d5016a1fbd80ed978f0ad1ec29",
+          "kind": "METRIC_MENTION",
+          "rawText": "Certain Payments",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 35,
+          "charEnd": 51
+        },
+        {
+          "itemId": "fe3ebcfbf85083fce22e2b2e0da59b1f096dde9a1fee50ee4158c05ea62e8bc1",
+          "kind": "METRIC_MENTION",
+          "rawText": "No Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 75,
+          "charEnd": 88
+        },
+        {
+          "itemId": "6b58bbc1f82d7f98915c60d13253d9cebeb7b6ffdb507303dbc630e4a9ff9246",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 118,
+          "charEnd": 139
+        },
+        {
+          "itemId": "18e9a6582e57538fc0853e85179cd560844349ac70c4220ff2d912da32805216",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payment",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 218,
+          "charEnd": 236
+        },
+        {
+          "itemId": "e633e1da7d0762b9422b32a750fc097d62a89d559910a3986a73a44816c5716b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 641,
+          "charEnd": 664
+        },
+        {
+          "itemId": "1dd823a3a0cdcb0646c86947529ada92cba1df6201c04da57545654856c7082f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Equity Interests",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 725,
+          "charEnd": 741
+        },
+        {
+          "itemId": "bd9852cab5d9c8b399a9468a56ff71a04b5a1296ff69d5c54f2e29898a5000d3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 753,
+          "charEnd": 765
+        },
+        {
+          "itemId": "0de021089ed245862fc774ad7a46cd00d212f42489591c5a67d98f0f9172574e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payments",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 775,
+          "charEnd": 794
+        },
+        {
+          "itemId": "c357ccbd83e67c722c665ee0dcb8f48856d3aa172aacf5ab1373253f80084597",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Parties",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 908,
+          "charEnd": 920
+        },
+        {
+          "itemId": "7ca9649f829d04f3e5b72e4d961f320554f53d56e72c8bec3aa8f4056c091f6f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiaries",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 931,
+          "charEnd": 954
+        },
+        {
+          "itemId": "c2aab952e62fc2adbd96bcb4759f29c84acc1de16887ad6930bbfdaf4ab693ca",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payments",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 967,
+          "charEnd": 986
+        },
+        {
+          "itemId": "b555f39dc89505cc2c8129463d247b75f0b497c6765fe345996b6738c3425f7b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Available Amount",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1018,
+          "charEnd": 1034
+        },
+        {
+          "itemId": "9b2771ce646413d9cff781251114f5735fb22297325b1aa9bd9c439306260c7a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payment",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1087,
+          "charEnd": 1105
+        },
+        {
+          "itemId": "e01f848759e654adb98efbd471e3ea5e18a8a4b5b41dbeceeee16a89df54c9e3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payment",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1145,
+          "charEnd": 1163
+        },
+        {
+          "itemId": "dc2503b22569b567b21319d7e81201293c885835c657689797208f686070f849",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1330,
+          "charEnd": 1354
+        },
+        {
+          "itemId": "0e4c1706fffdb2986c29ec3adbe6c1d2f49214d2578505f75fdcb75f7955b875",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1428,
+          "charEnd": 1452
+        },
+        {
+          "itemId": "941bc0bd815159818b547e11ea6492f7b34224bcd6b12e096f8115a0594db4ed",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payment",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 1948,
+          "charEnd": 1966
+        },
+        {
+          "itemId": "eb5ed9392bfdd623aac6fc48f61f7c49c5c9177b128338f3d8076d6091c21c01",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2170,
+          "charEnd": 2194
+        },
+        {
+          "itemId": "c5a8ea9046a3a8397138122eeca43d6a2950ae41f5edb3496ccfbdca7d3d72d2",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payment",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2226,
+          "charEnd": 2244
+        },
+        {
+          "itemId": "caac99bb7e2eaf9c30c6239ad7596c8eafa3820298dad2268d177e6288815153",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payment",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2370,
+          "charEnd": 2388
+        },
+        {
+          "itemId": "aea2fca246b05430649da0986d9a178b0ebb3985e22df9f31feddeb6a484ea27",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2492,
+          "charEnd": 2516
+        },
+        {
+          "itemId": "1106190b4a6191744ff09818e15918d307a6f1760a63ab11b4ad8e76d5115df6",
+          "kind": "METRIC_MENTION",
+          "rawText": "Total\nNet Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2590,
+          "charEnd": 2614
+        },
+        {
+          "itemId": "428f97664fa66383301c56f07208d8028ffdc55559be2edc03a0e6a1af710018",
+          "kind": "METRIC_MENTION",
+          "rawText": "No Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2655,
+          "charEnd": 2668
+        },
+        {
+          "itemId": "7e6aef62aead7b2b98bbc82dbc94ff1ba66bc31e19ad0932b864b7bd83136304",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 2698,
+          "charEnd": 2719
+        },
+        {
+          "itemId": "652bb5b881e295a32609b24fd2b947aade82764edae6bfc0cf9e82e6cfec73dc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Loan Documents",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 3228,
+          "charEnd": 3242
+        },
+        {
+          "itemId": "78ad114629e44851c551045f6a0ffbd7663b6faa4bfb32c14e10abb1c942e341",
+          "kind": "METRIC_MENTION",
+          "rawText": "Subordinated Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 3428,
+          "charEnd": 3453
+        },
+        {
+          "itemId": "44048ec4689d720aa708d6bc00a4369c9f11afffe91a8961a68051cadbacedc9",
+          "kind": "METRIC_MENTION",
+          "rawText": "No Loan Party",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 3866,
+          "charEnd": 3879
+        },
+        {
+          "itemId": "3e4290874ffab19508aa53a802433a9149effc0770a0d729e5cb1b8127a32041",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Subsidiary",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": 3909,
+          "charEnd": 3930
+        },
+        {
+          "itemId": "b201300d1001a8c2fa7326000e1cc6a257a37dfdc107907a172e2ff86e257425",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "da3d1b73968fd535fdb5092facd5bcb1a92eb35827e933dc6cadeeff77bf20d2",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "b04fc879c5fd224f1f726f6bff53b53e363e8da59916ddce8b24297e255136a2",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "1d149ed4f762132e72c434646b79337a1ca30d0b265f8271fd62fec6dba7c58d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iii)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "3a5954c0a016032ccb943366c6df7ce0cb329c7fe4e77ea9f4577b4065c10230",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iv)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "c0527af6a5651d93e3269e06fda7bc293462afeb869f08671163fcf4df9bc813",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "c2753057ebbd5908d9c3e69bb65a1c45a41b7aa35a5f593c196ddcec0e15f60c",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(y)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "d15400a304d363a6be7567b9388164463d16160498aa58ee06705aee234906ee",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(v)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "aed55710247b37ec84166b61f1b400066ba3ee2ea4bad675906fe52ce82fab95",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "dsgr-a",
+          "sourceCitation": "6.08",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 9,
+      "apparentIndependentUnitEvidence": [
+        "(a)",
+        "(i)",
+        "(ii)",
+        "(iii)",
+        "(iv)",
+        "(x)",
+        "(y)",
+        "(v)",
+        "(b)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+      "items": [
+        {
+          "itemId": "9aa1b8f90ccbaae014ddd5301a4984876c38a08fcc22f4c9a9c26ec2f2864bc3",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:e485e4f3a2d4a26f7d1a84a9",
+          "irPath": "rules[0].action",
+          "numericValue": null,
+          "textValue": "PAY_DIVIDEND",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(i)",
+          "sourceExcerpt": "each of the Borrowers may declare and pay dividends with respect to its common stock payable solely in additional shares of its common stock, and, with respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock"
+        },
+        {
+          "itemId": "c764ed9e4e34c14561fc25662258566cc21002a58c658d5ab97d03beb4bf2b95",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:e485e4f3a2d4a26f7d1a84a9",
+          "irPath": "rules[0].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(i)",
+          "sourceExcerpt": "each of the Borrowers may declare and pay dividends with respect to its common stock payable solely in additional shares of its common stock, and, with respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock"
+        },
+        {
+          "itemId": "3d1a9ccb1c0e871b4aefd39fea2aa96741a0d4da69c06193fd45a16ac7d4d78d",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:e485e4f3a2d4a26f7d1a84a9",
+          "irPath": "rules[0].conditions[0]",
+          "numericValue": null,
+          "textValue": "Common stock dividends payable solely in additional shares of common stock; preferred stock dividends payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in common stock - i.e. in-kind only, no cash component.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(i)",
+          "sourceExcerpt": "payable solely in additional shares of its common stock, and, with respect to its preferred stock, payable solely in additional shares of such preferred stock (to the extent permitted to be issued hereunder) or in shares of its common stock"
+        },
+        {
+          "itemId": "3f8c5480fdc8f0acfd4a14655424e743c0924761a064580ef8e8084d86532d6e",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:e485e4f3a2d4a26f7d1a84a9",
+          "irPath": "rules[0].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(i)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ba9928ed1b2460b55f804d1dab06dd95b7eee8306bf14513681e518c61c062d6",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:036737c9c1f8c6280ff41e4f",
+          "irPath": "rules[1].action",
+          "numericValue": null,
+          "textValue": "PAY_DIVIDEND",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(ii)",
+          "sourceExcerpt": "Restricted Subsidiaries may declare and pay dividends ratably with respect to their Equity Interests"
+        },
+        {
+          "itemId": "db39344787c10ba0b3c939a40674a12ee64b475efc1f271f0b9d1dc5fb5dfac7",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:036737c9c1f8c6280ff41e4f",
+          "irPath": "rules[1].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(ii)",
+          "sourceExcerpt": "Restricted Subsidiaries may declare and pay dividends ratably with respect to their Equity Interests"
+        },
+        {
+          "itemId": "32f19c12f6c82f0f0b830b004aa1ba3e97baec7b25d2d6cc8a5a7cf946b43ac6",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:036737c9c1f8c6280ff41e4f",
+          "irPath": "rules[1].conditions[0]",
+          "numericValue": null,
+          "textValue": "Dividends must be paid ratably with respect to Equity Interests.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(ii)",
+          "sourceExcerpt": "Restricted Subsidiaries may declare and pay dividends ratably with respect to their Equity Interests"
+        },
+        {
+          "itemId": "f694fd904715f6b5cb085006dce8078a158f4ee04d9bf8e2eebd1f03570e4773",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:036737c9c1f8c6280ff41e4f",
+          "irPath": "rules[1].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(ii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9cd8f21c9906145fdd7f3f64161e3aac2997a38a49682e641f970021d2afb858",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:6c25ded99788768d9c3fadcd",
+          "irPath": "rules[2].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iii)",
+          "sourceExcerpt": "the Loan Parties may make Restricted Payments, pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their Restricted Subsidiaries"
+        },
+        {
+          "itemId": "b90716bd53ee0e823630c43cb8ba061b4d3ca29c98b2c41674927200d2e16ad7",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:6c25ded99788768d9c3fadcd",
+          "irPath": "rules[2].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iii)",
+          "sourceExcerpt": "the Loan Parties may make Restricted Payments, pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their Restricted Subsidiaries"
+        },
+        {
+          "itemId": "e78b4495c9b73c382d84862ff04ddbb6fdca7138fc508aeae1b618943b41a304",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:6c25ded99788768d9c3fadcd",
+          "irPath": "rules[2].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iii)",
+          "sourceExcerpt": "the Loan Parties may make Restricted Payments, pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their Restricted Subsidiaries"
+        },
+        {
+          "itemId": "452d9a92f7957a09d2069e9c4ff1df803221b0bb16c42da79f3dfb0966460a1e",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:6c25ded99788768d9c3fadcd",
+          "irPath": "rules[2].conditions[0]",
+          "numericValue": null,
+          "textValue": "Payments must be made pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their Restricted Subsidiaries.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iii)",
+          "sourceExcerpt": "pursuant to and in accordance with stock option plans or other benefit plans for management or employees of the Loan Parties and their Restricted Subsidiaries"
+        },
+        {
+          "itemId": "4ab4e78d449ca039b7891df8b238e28e744a7bbbe430c20794f9ebff35501cda",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:6c25ded99788768d9c3fadcd",
+          "irPath": "rules[2].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "57b09d888876d7b51e2964c149f734914d7552206a06bc51a385015ff075c3ca",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+          "irPath": "rules[3].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iv)",
+          "sourceExcerpt": "other Restricted Payments in an amount not to exceed the Available Amount immediately prior to the time of the making of such Restricted Payment, so long as ... (x) no Event of Default then exists or would result therefrom and (y) the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        {
+          "itemId": "72c84b0da6b341314e178530715354d3e265a19d5bcf24015b1dce3ca70404d1",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+          "irPath": "rules[3].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iv)",
+          "sourceExcerpt": "other Restricted Payments in an amount not to exceed the Available Amount immediately prior to the time of the making of such Restricted Payment, so long as ... (x) no Event of Default then exists or would result therefrom and (y) the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        {
+          "itemId": "934923fe48a5d71869071230fc15a90c0d676b5ca69be021c47eddc5cb03ef7e",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+          "irPath": "rules[3].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iv)",
+          "sourceExcerpt": "other Restricted Payments in an amount not to exceed the Available Amount immediately prior to the time of the making of such Restricted Payment, so long as ... (x) no Event of Default then exists or would result therefrom and (y) the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        {
+          "itemId": "f76b39559baf83eb3816375ce6185847b54dd5abf50c303b8a02f4e1c1a088b6",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+          "irPath": "rules[3].conditions[0]",
+          "numericValue": null,
+          "textValue": "No Event of Default exists at the time of, or would result (including on a pro forma basis) from, the Restricted Payment.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iv)",
+          "sourceExcerpt": "no Event of Default then exists or would result therefrom"
+        },
+        {
+          "itemId": "00f44e361d4a6261cbd544a3ed0ce4a11cdf73936b1a88317a1b3b729c1ab30c",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+          "irPath": "rules[3].conditions[1]",
+          "numericValue": null,
+          "textValue": "Immediately after giving effect (including pro forma) to the payment, the Total Net Leverage Ratio must not exceed the ratio that is 0.5 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12. The exact numeric maximum currently permitted under Section 6.12(b) could not be retrieved (the operative provision text returned by the system was truncated immediately before stating the figure, and tool budget was exhausted before a workaround could be found), so only the 0.5x differential (stated directly in this section, which has no amendment history) is represented with confidence.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(iv)",
+          "sourceExcerpt": "the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        {
+          "itemId": "ad2c468ad3b27f1dfef947ad1357750968f436c0385f6606544e8ba4785f4536",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+          "irPath": "rules[3].conditions[1].expression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"COMPARE\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7f7451c3f5ff6f499c895544de0bdbbc5122905e46ced1620897ee2e9f7f43c6",
+          "kind": "DEFINED_TERM_REFERENCE",
+          "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+          "irPath": "rules[3].capacityExpression",
+          "numericValue": null,
+          "textValue": "Available Amount",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7368525036babcbc6d4fd7ab3dbbdb8e8bf7bbf7fdda8c69346cee7eb546ecac",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:6dc4a0d75417a91ce41d5675",
+          "irPath": "rules[4].action",
+          "numericValue": null,
+          "textValue": "PAY_DIVIDEND",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": "the Company may make distributions and pay dividends to its equityholders, in each case, not otherwise permitted to be made by this Section 6.08 in an aggregate amount not to exceed $10,000,000 during any fiscal year of the Company so long as ... (x) no Default shall exist ... and (y) ... the Company is in compliance with the covenants set forth in Section 6.12 (without giving effect to any applicable Total Net Leverage Ratio Adjustment)"
+        },
+        {
+          "itemId": "1be50442856ca4de50e62a8778a0e643987d38499b8c663de027a81a62155e4e",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:6dc4a0d75417a91ce41d5675",
+          "irPath": "rules[4].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": "the Company may make distributions and pay dividends to its equityholders, in each case, not otherwise permitted to be made by this Section 6.08 in an aggregate amount not to exceed $10,000,000 during any fiscal year of the Company so long as ... (x) no Default shall exist ... and (y) ... the Company is in compliance with the covenants set forth in Section 6.12 (without giving effect to any applicable Total Net Leverage Ratio Adjustment)"
+        },
+        {
+          "itemId": "d8d12f1f33fa8b59a34e5583a780ea832e7da2ae1614e61ab2efa00e20a8e252",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:6dc4a0d75417a91ce41d5675",
+          "irPath": "rules[4].conditions[0]",
+          "numericValue": null,
+          "textValue": "Only distributions/dividends not otherwise permitted to be made under Section 6.08 count against this basket, capped at $10,000,000 per fiscal year of the Company.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": "not otherwise permitted to be made by this Section 6.08 in an aggregate amount not to exceed $10,000,000 during any fiscal year of the Company"
+        },
+        {
+          "itemId": "8cd33c0a6ab19401db1c054a41fec5e5a34f54c787a2a4e5acc2a77f1572c9f3",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:6dc4a0d75417a91ce41d5675",
+          "irPath": "rules[4].conditions[1]",
+          "numericValue": null,
+          "textValue": "No Default shall exist immediately prior to or immediately after giving effect to the distribution or dividend.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": "no Default shall exist immediately prior to or immediately after giving effect to the distribution or dividend"
+        },
+        {
+          "itemId": "6cb5407447dd8d73d2847393a96debb5a9be240fe1c5de2d5e73721714148173",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:6dc4a0d75417a91ce41d5675",
+          "irPath": "rules[4].conditions[2]",
+          "numericValue": null,
+          "textValue": "After giving pro forma effect to the payment and any Indebtedness incurred/assumed in connection with it, the Company must be in compliance with the covenants in Section 6.12 (without giving effect to any Total Net Leverage Ratio Adjustment). Exact current Section 6.12 covenant levels are not fully confirmed as current (see r4) so this condition is not reduced to a numeric expression.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": "the Company is in compliance with the covenants set forth in Section 6.12 (without giving effect to any applicable Total Net Leverage Ratio Adjustment)"
+        },
+        {
+          "itemId": "dadf6636a21f2c0bb60284f57d03dfd58c417e7999b216e546eaee458436255e",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-rule:6dc4a0d75417a91ce41d5675",
+          "irPath": "rules[4].capacityExpression",
+          "numericValue": 10000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1817a60bc19e8bddd78de457b652d846bd6256953a0571a1c0d9947f377dc45b",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:51de67c5055548ffb8f90dac",
+          "irPath": "rules[5].action",
+          "numericValue": null,
+          "textValue": "PAY_DIVIDEND",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": "provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if ... the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        {
+          "itemId": "ede780ca002241bc06784d6c159b3b8daa597684b232432965e3f37e4affb6ca",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:51de67c5055548ffb8f90dac",
+          "irPath": "rules[5].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": "provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if ... the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        {
+          "itemId": "1e318151e19d2e9b4ad58111968bda9b9c66d6c36fa808113d4dcd6b2d525933",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:51de67c5055548ffb8f90dac",
+          "irPath": "rules[5].conditions[0]",
+          "numericValue": null,
+          "textValue": "Payments made in reliance on clause (v) are excluded from (i.e., do not count toward) the $10,000,000 annual dollar limitation if, after giving pro forma effect to the Restricted Payment and any Indebtedness incurred/assumed in connection with it, the Total Net Leverage Ratio is not greater than the ratio 0.5 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": "provided that any Restricted Payment made in reliance on this clause (v) shall not be included in the foregoing dollar limitation if, after giving effect to such Restricted Payment and any Indebtedness incurred or assumed in connection therewith (including on a pro forma basis), the Total Net Leverage Ratio is not greater than the ratio that is 0.5 to 1.00 lower than the maximum Total Net Leverage Ratio permitted under Section 6.12"
+        },
+        {
+          "itemId": "8a821bb36dd0650876e2b5b6f09c9006241661c14d47d321d798f43437b1f60d",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-rule:51de67c5055548ffb8f90dac",
+          "irPath": "rules[5].dependsOn[0]",
+          "numericValue": null,
+          "textValue": "REQUIRES:ir-rule:6dc4a0d75417a91ce41d5675",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "625101c73f22367c7807c88fbbbbee50435eccbb9e36b7f674d83eac4c428265",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:51de67c5055548ffb8f90dac",
+          "irPath": "rules[5].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "018d69df400e1f46ae12f571f3c33e02828a1762ebdade5fd1d8d0d6a693ac46",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-rule:51de67c5055548ffb8f90dac",
+          "irPath": "rules[5].capacityExpression.gatedBy",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"COMPARE\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(a)(v)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "668d95f5fd7f6db7217252df8d28b54d15d3a81358ac265b434117e633042df5",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:d40c974c85b83963692a76ef",
+          "irPath": "rules[6].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)",
+          "sourceExcerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to pay or make, directly or indirectly, any payment or other distribution ... of or in respect of principal of or interest on any Indebtedness ... except: (i) ...; (ii) ...; (iii) ...; and (iv) ..."
+        },
+        {
+          "itemId": "55532c3b7431f32f6ae61c1fe2b99d76491cd2344dce785e13d80e04508db8aa",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:d40c974c85b83963692a76ef",
+          "irPath": "rules[6].posture",
+          "numericValue": null,
+          "textValue": "PROHIBITION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)",
+          "sourceExcerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to pay or make, directly or indirectly, any payment or other distribution ... of or in respect of principal of or interest on any Indebtedness ... except: (i) ...; (ii) ...; (iii) ...; and (iv) ..."
+        },
+        {
+          "itemId": "45b747ff9ee07b8bdcbb03e33d031f702b68734eb80e8f5d7335dfa9bea085d8",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:d40c974c85b83963692a76ef",
+          "irPath": "rules[6].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)",
+          "sourceExcerpt": "No Loan Party will, nor will it permit any Restricted Subsidiary to, make or agree to pay or make, directly or indirectly, any payment or other distribution ... of or in respect of principal of or interest on any Indebtedness ... except: (i) ...; (ii) ...; (iii) ...; and (iv) ..."
+        },
+        {
+          "itemId": "895a6d5dd0bb0f3355f318d4fff1c20ba4078df824358046955a034f0f1c5476",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:d40c974c85b83963692a76ef",
+          "irPath": "rules[6].exceptions[0]",
+          "numericValue": null,
+          "textValue": "Payment of Indebtedness created under the Loan Documents.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(i)",
+          "sourceExcerpt": "payment of Indebtedness created under the Loan Documents"
+        },
+        {
+          "itemId": "9aa6eae6476226f196da74231a3de82e76dd59f164cdde96ec0ae0cba79524b9",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:d40c974c85b83963692a76ef",
+          "irPath": "rules[6].exceptions[1]",
+          "numericValue": null,
+          "textValue": "Regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted under Section 6.01, other than payments in respect of Subordinated Indebtedness prohibited by the subordination provisions thereof.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(ii)",
+          "sourceExcerpt": "payment of regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted under Section 6.01, other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof"
+        },
+        {
+          "itemId": "21c45271457dfd421355289fcee06f76833308f8ffaf3cb83e15bd43a04d8fc8",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:d40c974c85b83963692a76ef",
+          "irPath": "rules[6].exceptions[2]",
+          "numericValue": null,
+          "textValue": "Refinancings of Indebtedness to the extent permitted by Section 6.01.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iii)",
+          "sourceExcerpt": "refinancings of Indebtedness to the extent permitted by Section 6.01"
+        },
+        {
+          "itemId": "53d7bedc99e50cae637a4dd7ac563839e8f006ef1a76af7dca4197efd56f0c1c",
+          "kind": "EXCEPTION",
+          "ruleOrDefinitionId": "ir-rule:d40c974c85b83963692a76ef",
+          "irPath": "rules[6].exceptions[3]",
+          "numericValue": null,
+          "textValue": "Payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness, to the extent such sale or transfer is permitted by the terms of Section 6.05.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iv)",
+          "sourceExcerpt": "payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05"
+        },
+        {
+          "itemId": "848a58a2a2eb23e510d002a0f49a4153d8f18b39ff782164f088d7c9bb047b4b",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:4f754763b38bddef4ecaaa2b",
+          "irPath": "rules[7].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(i)",
+          "sourceExcerpt": "payment of Indebtedness created under the Loan Documents"
+        },
+        {
+          "itemId": "7153f4e0a26a15f8c9eecddcf49ccaade6c68223ec353207fc1744604addaf70",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:4f754763b38bddef4ecaaa2b",
+          "irPath": "rules[7].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(i)",
+          "sourceExcerpt": "payment of Indebtedness created under the Loan Documents"
+        },
+        {
+          "itemId": "e39628dbdd41ab532474bf43342ef6039e1f3f30102f513bb8f81dd19a668f88",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:4f754763b38bddef4ecaaa2b",
+          "irPath": "rules[7].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(i)",
+          "sourceExcerpt": "payment of Indebtedness created under the Loan Documents"
+        },
+        {
+          "itemId": "a5fa4e10809fe625cf39ce69fd8b793beead7115c814a67f9c42c7addb65c46b",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:4f754763b38bddef4ecaaa2b",
+          "irPath": "rules[7].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(i)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "4fa2418fcb4c4431b0420cd036f50356877b95861903d227aa4f6355391b6018",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:2f5e10595a6a4fe8dfd7f90d",
+          "irPath": "rules[8].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(ii)",
+          "sourceExcerpt": "payment of regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted under Section 6.01, other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof"
+        },
+        {
+          "itemId": "949c87309a5bf3eda2c0bcf3cbcd17c77d10033a317fb22b221c716ebe61f3c7",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:2f5e10595a6a4fe8dfd7f90d",
+          "irPath": "rules[8].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(ii)",
+          "sourceExcerpt": "payment of regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted under Section 6.01, other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof"
+        },
+        {
+          "itemId": "6e5d848cdf61d020e45bf1c71d1f330f4e8a45a0b54742b0d0ae6b1bcf5b31c0",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:2f5e10595a6a4fe8dfd7f90d",
+          "irPath": "rules[8].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(ii)",
+          "sourceExcerpt": "payment of regularly scheduled interest and principal payments as and when due in respect of any Indebtedness permitted under Section 6.01, other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof"
+        },
+        {
+          "itemId": "ac1dfd8c2d45ecfd2f99e5f34074fb6d7900ea53523e50e28a8b5144d886697a",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:2f5e10595a6a4fe8dfd7f90d",
+          "irPath": "rules[8].conditions[0]",
+          "numericValue": null,
+          "textValue": "Applies only to Indebtedness permitted under Section 6.01, and excludes payments in respect of Subordinated Indebtedness prohibited by that Indebtedness's own subordination provisions.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(ii)",
+          "sourceExcerpt": "other than payments in respect of the Subordinated Indebtedness prohibited by the subordination provisions thereof"
+        },
+        {
+          "itemId": "44b0c9efed9116ab7413a9a2db44f94aed53de84c07bfa73123e774ba29d8a06",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:2f5e10595a6a4fe8dfd7f90d",
+          "irPath": "rules[8].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(ii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a2ce631bdb3ac4a8099f941ace1b8d40fcc4cf94b5eaca928ff7ac8105aca929",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:3b23b140cedac1cfd49f04fe",
+          "irPath": "rules[9].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iii)",
+          "sourceExcerpt": "refinancings of Indebtedness to the extent permitted by Section 6.01"
+        },
+        {
+          "itemId": "1cf5c67f969e087b9c6c6b72ab9e92121b4b166b5c165ac3bffc609c89e9b37d",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:3b23b140cedac1cfd49f04fe",
+          "irPath": "rules[9].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iii)",
+          "sourceExcerpt": "refinancings of Indebtedness to the extent permitted by Section 6.01"
+        },
+        {
+          "itemId": "6be115ccbf7bc2f9196c6aad2b2efe1cae2e0e48fcba0757ab3888e7e708d5f8",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:3b23b140cedac1cfd49f04fe",
+          "irPath": "rules[9].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iii)",
+          "sourceExcerpt": "refinancings of Indebtedness to the extent permitted by Section 6.01"
+        },
+        {
+          "itemId": "b86ce434e57569e435b76f87ff0055a3883112299db76b770271508168054534",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:3b23b140cedac1cfd49f04fe",
+          "irPath": "rules[9].conditions[0]",
+          "numericValue": null,
+          "textValue": "Refinancing must be permitted by Section 6.01.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iii)",
+          "sourceExcerpt": "refinancings of Indebtedness to the extent permitted by Section 6.01"
+        },
+        {
+          "itemId": "fa0fd81abb83c7cac6681fcc960e348c9aacd7be86382db062d983fe014a6488",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:3b23b140cedac1cfd49f04fe",
+          "irPath": "rules[9].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iii)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "bc40e19c2aa1baba664a61e677d0000bde07bc25dfce99c3acefd8cb8d7a955c",
+          "kind": "ACTION",
+          "ruleOrDefinitionId": "ir-rule:f8199c767194cb7519f75729",
+          "irPath": "rules[10].action",
+          "numericValue": null,
+          "textValue": "OTHER",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iv)",
+          "sourceExcerpt": "payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05"
+        },
+        {
+          "itemId": "dd5bce15b528964cb97d2dbaf7480a4fc26986b273f999586921cea3d8b9b8da",
+          "kind": "POSTURE",
+          "ruleOrDefinitionId": "ir-rule:f8199c767194cb7519f75729",
+          "irPath": "rules[10].posture",
+          "numericValue": null,
+          "textValue": "PERMISSION",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iv)",
+          "sourceExcerpt": "payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05"
+        },
+        {
+          "itemId": "9a7b3b9f2c21a3ab3c3838a68f5422aed20f75281bc8f595b78c22f798efdf7c",
+          "kind": "ENTITY_SCOPE",
+          "ruleOrDefinitionId": "ir-rule:f8199c767194cb7519f75729",
+          "irPath": "rules[10].entityScope",
+          "numericValue": null,
+          "textValue": "{\"include\":[\"LOAN_PARTY\"],\"exclude\":[]}",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iv)",
+          "sourceExcerpt": "payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05"
+        },
+        {
+          "itemId": "56eaf5350332b272a5efd6d1920fe1a103c9c6f39969c464323aca3577841f58",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-rule:f8199c767194cb7519f75729",
+          "irPath": "rules[10].conditions[0]",
+          "numericValue": null,
+          "textValue": "Applies only to secured Indebtedness becoming due as a result of a voluntary sale or transfer of the collateral securing it, where such sale or transfer is itself permitted under Section 6.05.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iv)",
+          "sourceExcerpt": "payment of secured Indebtedness that becomes due as a result of the voluntary sale or transfer of the property or assets securing such Indebtedness to the extent such sale or transfer is permitted by the terms of Section 6.05"
+        },
+        {
+          "itemId": "fac6908439cf2c5fa2df6fcfebefd2375da9d843bb87f58cca7d6005074b7b02",
+          "kind": "UNLIMITED_CAPACITY_MARKER",
+          "ruleOrDefinitionId": "ir-rule:f8199c767194cb7519f75729",
+          "irPath": "rules[10].capacityExpression",
+          "numericValue": null,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08(b)(iv)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9fdda83529bc883a1fccedf9c123c12249f04a6b3f6610d675ef20692e32d175",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Total Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2f1c34dde3a12c1ebe13c34516ba36041a67d174ecb1a10ff106cfe101857143",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Unrestricted Cash",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f3b57343a4ebee26abe68b30556fa4d15f422bd192015233a496daaa60196048",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7fcafb926f4e2dc03b035e5abc3034e0b475c2e12eed1378a2ded35d1cd4ba0c",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Total Net Leverage Ratio Adjustment",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "5acf1025fa57d02e9104af431a69f29a27f8f3ca68989443dbf36a3ba80a10d0",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+          "irPath": "definitions[0].calculationExpression.numerator.left",
+          "numericValue": null,
+          "textValue": "Total Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c8a01eab49cd50e0ed9bf7bbf941d07a99d13a377bb67e0f5115a0687f6a646e",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+          "irPath": "definitions[0].calculationExpression.numerator.right.operands[0]",
+          "numericValue": null,
+          "textValue": "Unrestricted Cash",
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "0550bf5684fab6de50cc5e0c806a6d9e0aa442aa286ddd47fe04d8854212ea67",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+          "irPath": "definitions[0].calculationExpression.numerator.right.operands[1]",
+          "numericValue": 25000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "Definitions - Total Net Leverage Ratio",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1f23a6b233d7c39e6fdcaa047dca0a3d67919b0ec0574fbb77155fbc409680e7",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+          "irPath": "definitions[0].calculationExpression.denominator",
+          "numericValue": null,
+          "textValue": "EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "fb8f32e5eb67b0e7efb5652f5e7defcfa7da328e52c6143c4cc3d9df33168561",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+          "irPath": "definitions[1].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Applicable EBITDA",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "dc3dd047e03600bbd45f5d905b12e06a4d03b00e1b0c76df8f4b978e294f0560",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+          "irPath": "definitions[1].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Qualified Stock",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "3eb7a8f117dc59a833060874f9ca4958e34803f67ca0ab95d8a2d4bec993664d",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+          "irPath": "definitions[1].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Specified Equity Contribution",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "743dfadd513e3788b1d65bed6172feec388f4ef4f182940ef03798b4bc0aa3f6",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+          "irPath": "definitions[1].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Returns",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "28aa5e32448effab57807e9de1b0422575751dbb7eb4844bd891dc2d6cc1ca59",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+          "irPath": "definitions[1].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Unrestricted Subsidiary",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1477c36a686d97143d0aee2c554e86a0d4a161b2293248f0ff4b486961da9afc",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+          "irPath": "definitions[1].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Borrower Retained Prepayment Amounts",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "888fd5cd8aef5938b9189a8b74ab597ca140376f663cec0683c026b007e5235e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+          "irPath": "definitions[1].dependsOnTerms[6]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Permitted Investments",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "04a7e857e5a6da7a2dce7f03cab955af151c497c6b224ea68459ebbdf5b6e850",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:aaa8914787bc83b64f34bcc7",
+          "irPath": "definitions[1].calculationExpression",
+          "numericValue": null,
+          "textValue": "A multi-component 'builder basket' sum (25% of Applicable EBITDA, plus various equity-issuance and return-of-investment add-backs, plus Borrower Retained Prepayment Amounts, minus amounts already used under Section 6.04(q) and Section 6.08(a)(iv)), several of whose sub-components (e.g. 'Specified Equity Contribution', 'Qualified Stock', 'Returns', 'Borrower Retained Prepayment Amounts') are themselves separately defined terms not resolved here, and the retrieved definition text was truncated before its final clauses.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§6.08",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 11,
+      "definitionCount": 2,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "reality-check-candidate:restricted-payments-dsgr",
+      "items": [
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9a1d4bed7d242c955c609bb8acbb83ad63cbbdae21284234830e19eeaabee7fd",
+            "kind": "AMOUNT",
+            "rawText": "$10,000,000",
+            "numericValue": 10000000,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 1673,
+            "charEnd": 1684
+          },
+          "irItems": [
+            {
+              "itemId": "dadf6636a21f2c0bb60284f57d03dfd58c417e7999b216e546eaee458436255e",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-rule:6dc4a0d75417a91ce41d5675",
+              "irPath": "rules[4].capacityExpression",
+              "numericValue": 10000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§6.08(a)(v)",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source AMOUNT 10000000 matches 1 compiled IR AMOUNT node(s)"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3e4ae442b698b851b3e04fb2aa90bf441aa39314f8aaf3d385c6a17bd6b8f044",
+            "kind": "RATIO",
+            "rawText": "0.5 to 1.00",
+            "numericValue": 0.5,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 1393,
+            "charEnd": 1404
+          },
+          "irItems": [],
+          "reason": "source RATIO 0.5 (from \"0.5 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "be207318f561b090eb412d9212dcc4437d730cdda5aa574becca3f4ed2fceb5b",
+            "kind": "RATIO",
+            "rawText": "0.5 to 1.00",
+            "numericValue": 0.5,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 2555,
+            "charEnd": 2566
+          },
+          "irItems": [],
+          "reason": "source RATIO 0.5 (from \"0.5 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "0550bf5684fab6de50cc5e0c806a6d9e0aa442aa286ddd47fe04d8854212ea67",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-definition:061019cbb339526208fed9c4",
+              "irPath": "definitions[0].calculationExpression.numerator.right.operands[1]",
+              "numericValue": 25000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "Definitions - Total Net Leverage Ratio",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 25000000 at definitions[0].calculationExpression.numerator.right.operands[1] has no matching source-side figure"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7e200e4394a59385320eea07547dd365f298aa9ed269f49daecdcd859337daff",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payments",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 14,
+            "charEnd": 33
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payments\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4311357afab511fd05b047a35c3250a5d49178d5016a1fbd80ed978f0ad1ec29",
+            "kind": "METRIC_MENTION",
+            "rawText": "Certain Payments",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 35,
+            "charEnd": 51
+          },
+          "irItems": [],
+          "reason": "source mention \"Certain Payments\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "fe3ebcfbf85083fce22e2b2e0da59b1f096dde9a1fee50ee4158c05ea62e8bc1",
+            "kind": "METRIC_MENTION",
+            "rawText": "No Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 75,
+            "charEnd": 88
+          },
+          "irItems": [],
+          "reason": "source mention \"No Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6b58bbc1f82d7f98915c60d13253d9cebeb7b6ffdb507303dbc630e4a9ff9246",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 118,
+            "charEnd": 139
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "18e9a6582e57538fc0853e85179cd560844349ac70c4220ff2d912da32805216",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payment",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 218,
+            "charEnd": 236
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payment\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e633e1da7d0762b9422b32a750fc097d62a89d559910a3986a73a44816c5716b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiaries",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 641,
+            "charEnd": 664
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiaries\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1dd823a3a0cdcb0646c86947529ada92cba1df6201c04da57545654856c7082f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Equity Interests",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 725,
+            "charEnd": 741
+          },
+          "irItems": [],
+          "reason": "source mention \"Equity Interests\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "bd9852cab5d9c8b399a9468a56ff71a04b5a1296ff69d5c54f2e29898a5000d3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 753,
+            "charEnd": 765
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0de021089ed245862fc774ad7a46cd00d212f42489591c5a67d98f0f9172574e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payments",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 775,
+            "charEnd": 794
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payments\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c357ccbd83e67c722c665ee0dcb8f48856d3aa172aacf5ab1373253f80084597",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Parties",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 908,
+            "charEnd": 920
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Parties\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7ca9649f829d04f3e5b72e4d961f320554f53d56e72c8bec3aa8f4056c091f6f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiaries",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 931,
+            "charEnd": 954
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiaries\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c2aab952e62fc2adbd96bcb4759f29c84acc1de16887ad6930bbfdaf4ab693ca",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payments",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 967,
+            "charEnd": 986
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payments\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b555f39dc89505cc2c8129463d247b75f0b497c6765fe345996b6738c3425f7b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Available Amount",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 1018,
+            "charEnd": 1034
+          },
+          "irItems": [
+            {
+              "itemId": "7f7451c3f5ff6f499c895544de0bdbbc5122905e46ced1620897ee2e9f7f43c6",
+              "kind": "DEFINED_TERM_REFERENCE",
+              "ruleOrDefinitionId": "ir-rule:4194826764240b0f44a6b546",
+              "irPath": "rules[3].capacityExpression",
+              "numericValue": null,
+              "textValue": "Available Amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Available Amount\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9b2771ce646413d9cff781251114f5735fb22297325b1aa9bd9c439306260c7a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payment",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 1087,
+            "charEnd": 1105
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payment\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e01f848759e654adb98efbd471e3ea5e18a8a4b5b41dbeceeee16a89df54c9e3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payment",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 1145,
+            "charEnd": 1163
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payment\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "dc2503b22569b567b21319d7e81201293c885835c657689797208f686070f849",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 1330,
+            "charEnd": 1354
+          },
+          "irItems": [],
+          "reason": "source mention \"Total Net Leverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0e4c1706fffdb2986c29ec3adbe6c1d2f49214d2578505f75fdcb75f7955b875",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 1428,
+            "charEnd": 1452
+          },
+          "irItems": [],
+          "reason": "source mention \"Total Net Leverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "941bc0bd815159818b547e11ea6492f7b34224bcd6b12e096f8115a0594db4ed",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payment",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 1948,
+            "charEnd": 1966
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payment\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "eb5ed9392bfdd623aac6fc48f61f7c49c5c9177b128338f3d8076d6091c21c01",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 2170,
+            "charEnd": 2194
+          },
+          "irItems": [],
+          "reason": "source mention \"Total Net Leverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "c5a8ea9046a3a8397138122eeca43d6a2950ae41f5edb3496ccfbdca7d3d72d2",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payment",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 2226,
+            "charEnd": 2244
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payment\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "caac99bb7e2eaf9c30c6239ad7596c8eafa3820298dad2268d177e6288815153",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payment",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 2370,
+            "charEnd": 2388
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payment\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "aea2fca246b05430649da0986d9a178b0ebb3985e22df9f31feddeb6a484ea27",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 2492,
+            "charEnd": 2516
+          },
+          "irItems": [],
+          "reason": "source mention \"Total Net Leverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1106190b4a6191744ff09818e15918d307a6f1760a63ab11b4ad8e76d5115df6",
+            "kind": "METRIC_MENTION",
+            "rawText": "Total\nNet Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 2590,
+            "charEnd": 2614
+          },
+          "irItems": [],
+          "reason": "source mention \"Total\nNet Leverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "428f97664fa66383301c56f07208d8028ffdc55559be2edc03a0e6a1af710018",
+            "kind": "METRIC_MENTION",
+            "rawText": "No Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 2655,
+            "charEnd": 2668
+          },
+          "irItems": [],
+          "reason": "source mention \"No Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7e6aef62aead7b2b98bbc82dbc94ff1ba66bc31e19ad0932b864b7bd83136304",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 2698,
+            "charEnd": 2719
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "652bb5b881e295a32609b24fd2b947aade82764edae6bfc0cf9e82e6cfec73dc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Loan Documents",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 3228,
+            "charEnd": 3242
+          },
+          "irItems": [],
+          "reason": "source mention \"Loan Documents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "78ad114629e44851c551045f6a0ffbd7663b6faa4bfb32c14e10abb1c942e341",
+            "kind": "METRIC_MENTION",
+            "rawText": "Subordinated Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 3428,
+            "charEnd": 3453
+          },
+          "irItems": [],
+          "reason": "source mention \"Subordinated Indebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "44048ec4689d720aa708d6bc00a4369c9f11afffe91a8961a68051cadbacedc9",
+            "kind": "METRIC_MENTION",
+            "rawText": "No Loan Party",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 3866,
+            "charEnd": 3879
+          },
+          "irItems": [],
+          "reason": "source mention \"No Loan Party\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3e4290874ffab19508aa53a802433a9149effc0770a0d729e5cb1b8127a32041",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Subsidiary",
+            "numericValue": null,
+            "sourceDocumentId": "dsgr-a",
+            "sourceCitation": "6.08",
+            "structuralNodeKey": null,
+            "charStart": 3909,
+            "charEnd": 3930
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Subsidiary\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        }
+      ],
+      "materialUnresolvedCount": 3
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T18:50:09.223Z"
+  }
+}
