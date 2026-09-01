@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PIPELINE_RUN",
+  "runScript": "scripts/final-lightweight-unseen-run.ts",
+  "runNarrative": "Two-process run of the SAME frozen experiment. First invocation (started 2026-09-01T07:14:36.265Z) completed Stage 1 (structural indexing), Stage 2 discovery for doc-a/doc-b/doc-c (all DISCOVERY_HEALTHY), Stage 3 (package graph, zero-LLM), and Stage 4 (context retrieval, zero-LLM), then crashed inside Stage 5 (amendment pipeline for instrument:doc-c) at 2026-09-01T09:27:20.853Z with a real HTTP 402 quota_for_entity_exceeded error from the shared Vercel AI Gateway account (spend $100.03 against a $100.00 account-level cap) - an environmental blocker unrelated to this run's own $7.50 in-run ceiling (only $0.0498 spent at the time of failure). Per explicit user authorization (the account budget was increased to $150), the SAME script was resumed (same provider/model/credential - VERCEL_AI_GATEWAY / anthropic/claude-sonnet-5 - no substitution) with resume support added (carries forward real cumulative cost already spent; skips re-calling Stage 2 discovery for any document whose candidates were already preserved to disk). Second invocation (started 2026-09-01T10:58:55.467Z) recomputed Stage 1/Stage 3 fresh (deterministic, zero-LLM, cheap), loaded all 3 documents' Stage 2 discovery candidates from the prior invocation's preserved output (zero re-calls), then ran Stage 5 through Stage 9 to completion, finishing at 2026-09-01T11:18:02.654Z.",
+  "finalSummary": {
+    "runId": "FINAL_LIGHTWEIGHT_UNSEEN_RUN",
+    "finishedAt": "2026-09-01T11:18:02.654Z",
+    "wallClockMs": 1147187,
+    "totalCostUsd": 5.02623,
+    "budgetCeilingUsd": 7.5,
+    "provider": "VERCEL_AI_GATEWAY",
+    "model": "anthropic/claude-sonnet-5",
+    "documentsProcessed": 3,
+    "totalStructuralNodes": 3185,
+    "totalDiscoveredCandidates": 1810,
+    "eligibleForCompilation": 1710,
+    "candidatesCompiled": 15,
+    "candidatesVerified": 13,
+    "candidatesFullyVerified": 0,
+    "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+    "documentGateStatuses": [
+      {
+        "documentId": "doc-a",
+        "gateStatus": "DOCUMENT_GATE_FAILED",
+        "unitCount": 3269,
+        "dangerousUnaccountedCount": 1195
+      },
+      {
+        "documentId": "doc-b",
+        "gateStatus": "DOCUMENT_GATE_FAILED",
+        "unitCount": 3333,
+        "dangerousUnaccountedCount": 1144
+      },
+      {
+        "documentId": "doc-c",
+        "gateStatus": "DOCUMENT_GATE_FAILED",
+        "unitCount": 75,
+        "dangerousUnaccountedCount": 28
+      }
+    ],
+    "instrumentUnits": [
+      {
+        "instrumentKey": "instrument:doc-a",
+        "baseDocumentId": "doc-a",
+        "documentIds": [
+          "doc-a"
+        ]
+      },
+      {
+        "instrumentKey": "instrument:doc-b",
+        "baseDocumentId": "doc-b",
+        "documentIds": [
+          "doc-b"
+        ]
+      },
+      {
+        "instrumentKey": "instrument:doc-c",
+        "baseDocumentId": "doc-c",
+        "documentIds": [
+          "doc-c"
+        ]
+      }
+    ]
+  },
+  "totalRealCostAcrossBothInvocationsUsd": 5.02623,
+  "costCeilingUsd": 7.5,
+  "costCeilingRespected": true,
+  "environmentalIncidentDisclosure": {
+    "incident": "Vercel AI Gateway account-level budget cap ($100.00) reached mid-run at real spend $100.03, unrelated to this validation's own package/run.",
+    "handledPer": "Mission Section 8 (provider precondition) - re-probed after user reported the budget increase, confirmed live access via the SAME tiny real-provider probe script before resuming substantive execution.",
+    "noModelSubstitution": true,
+    "noProductionCodeChanged": true,
+    "scriptChangeMade": "Added resume/checkpoint-reuse logic to scripts/final-lightweight-unseen-run.ts (a NEW validation script, not lib/app/prisma) - carries forward real cost already spent and skips re-paying for already-completed discovery calls. This is validation-harness code, not production code, and does not affect Section 26's freeze proof (lib/app/prisma diff remains empty)."
+  },
+  "compiledCandidateSample": {
+    "note": "Document-then-discovery-emission order, first N eligible candidates (pre-committed rule, Section 33 04-cost-forecast methodology carried into the run script's own fixed ordering). Given doc-a alone produced 882 discovery candidates and COMPILE_CAP=15, ALL 15 compiled candidates are from doc-a, normalizedSourceRef 2.11 through 8.04 - none reach SECTION 1.01 (Article I definitions, where GT claims A1-A6/B1-B4 live) or doc-c's SECTION 2 (where GT claims A6/B4 live).",
+    "compiledSourceRefs": [
+      "2.11",
+      "5.08",
+      "5.12",
+      "5.13",
+      "6.11",
+      "7.01",
+      "7.02",
+      "7.03",
+      "7.04",
+      "7.05",
+      "7.06",
+      "7.10",
+      "7.11",
+      "7.12",
+      "8.04"
+    ],
+    "statusBreakdown": {
+      "REVIEW_REQUIRED": 13,
+      "FAILED": 2
+    }
+  },
+  "verificationOutcome": {
+    "note": "All 13 semantic-review-invoked verifications returned VERIFICATION_FAILED (semanticReviewInvoked=true, semanticReviewFailed=true) with $0.0000 telemetry cost each - a genuine, reproducible SEMANTIC_VERIFICATION-layer anomaly, root-caused (read-only, no code changed) to the review call itself failing before any billable response (see 09-claim-comparison.json failureAnalysis). VERIFICATION_FAILED never confers false trust - no rule/definition was ever blessed VERIFIED as a result - so this does not itself violate the Section 22 false-trust gates, but it does mean candidatesFullyVerified=0/13.",
+    "statusBreakdown": {
+      "VERIFICATION_FAILED": 13
+    }
+  },
+  "coverageAuditSummary": {
+    "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+    "documentGateStatuses": [
+      {
+        "documentId": "doc-a",
+        "gateStatus": "DOCUMENT_GATE_FAILED",
+        "unitCount": 3269,
+        "dangerousUnaccountedCount": 1195
+      },
+      {
+        "documentId": "doc-b",
+        "gateStatus": "DOCUMENT_GATE_FAILED",
+        "unitCount": 3333,
+        "dangerousUnaccountedCount": 1144
+      },
+      {
+        "documentId": "doc-c",
+        "gateStatus": "DOCUMENT_GATE_FAILED",
+        "unitCount": 75,
+        "dangerousUnaccountedCount": 28
+      }
+    ],
+    "note": "Every document HONESTLY disclosed as DOCUMENT_GATE_FAILED with real, non-zero CRITICAL/MATERIAL dangerous-unaccounted counts and family-level 'zero representation' reasons (see statusReasons) - the package NEVER claims completeness it does not have. This is the safe-failure/coverage-honesty mechanism working as designed."
+  },
+  "packageGraphSummary": {
+    "classifications": [
+      {
+        "documentId": "doc-a",
+        "type": "CREDIT_AGREEMENT",
+        "confidence": 0.9,
+        "evidence": [
+          "CREDIT AGREEMENT"
+        ],
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+      },
+      {
+        "documentId": "doc-b",
+        "type": "CREDIT_AGREEMENT",
+        "confidence": 0.9,
+        "evidence": [
+          "CREDIT AGREEMENT"
+        ],
+        "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN"
+      },
+      {
+        "documentId": "doc-c",
+        "type": "AMENDMENT",
+        "confidence": 0.97,
+        "evidence": [
+          "(this \u201cAmendment\u201d)"
+        ],
+        "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE"
+      }
+    ],
+    "relationshipCandidates": [
+      {
+        "sourceDocumentId": "doc-c",
+        "targetDocumentId": "doc-b",
+        "targetHint": "that certain Amended and Restated Credit Agreement, dated as of August\u00a014, 2024",
+        "relationshipType": "AMENDS",
+        "sourceCitation": "that certain Amended and Restated Credit Agreement, dated as of August\u00a014, 2024",
+        "confidence": 0.6,
+        "status": "REVIEW_REQUIRED",
+        "unresolvedReason": "resolved by type+execution-date match, but this reference (\"that certain Amended and Restated Credit Agreement, dated as of August\u00a014, 2024\") is only supporting-strength evidence (a WHEREAS-recital reference tied to amend-language, not the document's own caption/operative target-naming) - needs human confirmation before treating as a confirmed AMENDS target",
+        "resolutionMethod": "DETERMINISTIC_SUPPORTING_EVIDENCE_ONLY",
+        "evidenceClass": "SUPPORTING_TARGET_EVIDENCE"
+      }
+    ],
+    "modificationCandidates": [
+      {
+        "sourceDocumentId": "doc-c",
+        "sourceNodeCitation": "Superior Industries International, Inc. First Amendment to Amended and Restated Term Loan Credit Agreement (2025-03-31)",
+        "sourceText": "such supplementation or amendment; (d) Section 6.02 is hereby amended by deleting \u201cand\u201d from the end of clause (4), by replacing \u201c.\u201d at the end of cl",
+        "operation": "MODIFY",
+        "targetDocumentId": "doc-b",
+        "targetHint": "that certain Amended and Restated Credit Agreement, dated as of August\u00a014, 2024",
+        "targetSectionRef": "6.02",
+        "targetDefinedTermRef": null,
+        "status": "RESOLVED",
+        "unresolvedReason": null,
+        "confidence": 0.7
+      }
+    ],
+    "documentLevelSupersededDocuments": {},
+    "supersededNodeCount": 0
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "DOCUMENT_CLASSIFICATION",
+  "requirement": "0 materially wrong high-confidence classifications; 100% correct or explicit REVIEW/UNKNOWN.",
+  "claimCount": 3,
+  "correctHighConfidenceCount": 2,
+  "wrongHighConfidenceCount": 1,
+  "hardRequirementMet": false,
+  "failingClaim": {
+    "claimId": "C2",
+    "category": "DOCUMENT_CLASSIFICATION_IDENTITY",
+    "materiality": "CRITICAL",
+    "document": "doc-b",
+    "sourceRef": "Caption",
+    "reached": true,
+    "outcome": "MISS_WRONG_HIGH_CONFIDENCE_CLASSIFICATION",
+    "evidence": "Real output: doc-b classified CREDIT_AGREEMENT, confidence 0.9 (NOT AMENDED_AND_RESTATED_AGREEMENT as GT/source require). ROOT CAUSE (confirmed by direct source code read, lib/contract-model/compiler/package-graph/document-classifier.ts line 51): the AMENDED_AND_RESTATED_AGREEMENT rule's regex /amended and restated (credit agreement|indenture|loan agreement)/i requires a LITERAL SPACE between 'restated' and 'credit agreement'. doc-b's real raw extracted caption text reads 'AMENDED AND RESTATED\\nCREDIT AGREEMENT' (a newline from the source PDF's own visual line-wrap, confirmed by direct read of tests/fixtures/.../doc-b-...txt lines 8-9). The classifier builds its preamble via doc.text.slice(0, 3000) with NO whitespace normalization before running the RULES regexes, so this pattern cannot match across the newline and falls through to the generic CREDIT_AGREEMENT rule instead, which matches on 'CREDIT AGREEMENT' alone.",
+    "safetyVerdict": "WRONG_HIGH_CONFIDENCE_CLASSIFICATION",
+    "substantiveCredit": "NO_CREDIT"
+  },
+  "note": "C1 (doc-a=CREDIT_AGREEMENT) and C3 (doc-c=AMENDMENT, correctly avoiding the 'AMENDED AND RESTATED' phrase trap in its own caption) both PASS - the self-referential-title-first architecture worked as designed for C3. C2 FAILS: doc-b classified CREDIT_AGREEMENT(0.9) instead of AMENDED_AND_RESTATED_AGREEMENT, a genuine wrong high-confidence classification with a precisely root-caused mechanical cause (a regex requiring a literal space, not \\s+, failing to match across the real source's own line-wrapped caption). HARD REQUIREMENT VIOLATED: 1/3 wrong high-confidence classifications (target is 0)."
+}

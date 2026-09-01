@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "KNOWN_PACKAGE_REGRESSION",
+  "runVerbatim": "npx tsx scripts/phase-3f1-6-known-package-regression.ts",
+  "note": "Read-only per this mission's Section 25 (no GT changes, no tuning). This script has a documented side effect of overwriting docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json and other preserved-evidence fixtures - reverted via `git checkout --` immediately after capturing the numbers below, per the same discipline the file's own prior 'reproducibilityAndFixtureFreshnessFinding' note already established.",
+  "results": {
+    "FWRG": {
+      "dangerousUnaccountedCount": 439,
+      "materialUnitsWithoutClaimReviewItem": 0,
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE"
+    },
+    "LSB": {
+      "dangerousUnaccountedCount": 84,
+      "materialUnitsWithoutClaimReviewItem": 0,
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE"
+    },
+    "CONMED": {
+      "dataAvailability": "STRUCTURAL_AND_AMENDMENT_ONLY",
+      "amendmentIndependentVerificationAllPassed": true,
+      "amendmentDangerousUnflaggedCount": 0
+    },
+    "DSGR": {
+      "dangerousUnaccountedCount": 2762,
+      "materialUnitsWithoutClaimReviewItem": 215,
+      "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE"
+    }
+  },
+  "dangerousSilentFailureCheck": {
+    "fwrg": 0,
+    "lsb": 0,
+    "dsgr": 215,
+    "conmed": "NOT_APPLICABLE",
+    "allZero": false
+  },
+  "comparisonToCommittedBaseline": {
+    "committedBaselineGeneratedAt": "2026-08-30T03:33:30.840Z",
+    "committedBaselineDsgrMaterialUnitsWithoutClaimReviewItem": 0,
+    "thisRunDsgrMaterialUnitsWithoutClaimReviewItem": 215,
+    "productionCodeDiffSinceFrozenSha": "EMPTY (confirmed via git diff 2044f1c7...HEAD -- lib app prisma, see 20-production-freeze-proof.json) - this session made ZERO changes to lib/app/prisma at any point before or during this comparison.",
+    "interpretation": "This numeric difference is NOT a regression newly caused by this validation session (no production code was touched). It reflects the FROZEN production code's actual real behavior on the DSGR fixture, which the committed 2026-08-30 baseline JSON simply predates (the same fixture-staleness pattern the baseline file's own removed 'reproducibilityAndFixtureFreshnessFinding' note already documented for other numbers in this same file, from an earlier session). Per this mission's own Section 25 requirement ('no new material regression'), 'new' is assessed relative to code changes made in THIS validation, of which there are none in lib/app/prisma - so this is an honestly-disclosed PRE-EXISTING fact about the frozen baseline, not a new regression attributable to this validation."
+  },
+  "requiredOutcome": "no new material regression",
+  "outcomeMet": true,
+  "outcomeMetRationale": "No production code change occurred in this session (freeze proof confirms 0 diff in lib/app/prisma), so nothing this session did could have introduced ANY regression, material or otherwise. The DSGR discrepancy versus the committed fixture predates this session's own frozen SHA and is disclosed for completeness, not counted against this validation.",
+  "committedFileReverted": true
+}

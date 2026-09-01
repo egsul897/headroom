@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FINAL_VERDICT",
+  "finalVerdict": "LIGHTWEIGHT_UNSEEN_TRUST_BOUNDARY_FAILED",
+  "verdictRationale": "On a genuinely unseen, deterministically-selected package (Superior Industries International Term Loan Credit Agreement thread), the real, frozen production pipeline produced a confirmed, high-confidence WRONG document classification (doc-b, the Amended and Restated Credit Agreement, classified CREDIT_AGREEMENT at 0.9 confidence instead of AMENDED_AND_RESTATED_AGREEMENT - Section 22's WRONG HIGH-CONFIDENCE CLASSIFICATION hard gate, GT claim C2) which directly caused a CRITICAL dangerous silence (the doc-b RESTATES doc-a relationship was never surfaced anywhere in the real output, not even as REVIEW_REQUIRED - Section 21's primary safety metric, GT claim D1). Both failures trace to a single, precisely root-caused mechanical defect: a regex in lib/contract-model/compiler/package-graph/document-classifier.ts requiring a literal space (not whitespace-tolerant matching) between 'restated' and 'credit agreement', which cannot match across the real, line-wrapped caption text a PDF-derived source document genuinely contains, cascading through lib/contract-model/compiler/package-graph/relationship-resolution.ts's classification-gated relationship scan. Per this mission's own Section 22 ('any one failing fails the validation'), this is dispositive: the final verdict is LIGHTWEIGHT_UNSEEN_TRUST_BOUNDARY_FAILED, not PHASE_3_CONTRACT_INTELLIGENCE_CLOSED_PHASE_4_READY.",
+  "phase4ReadinessValue": "NO_TRUST_BOUNDARY_BLOCKER",
+  "phase3ContractIntelligenceCloses": false,
+  "controllingEvidence": {
+    "wrongHighConfidenceClassification": "GT claim C2 (docs/final-lightweight-unseen/09-claim-comparison.json)",
+    "criticalDangerousSilence": "GT claim D1 (docs/final-lightweight-unseen/09-claim-comparison.json)",
+    "rootCause": "Single mechanical regex-whitespace defect, precisely located and read from primary source (lib/contract-model/compiler/package-graph/document-classifier.ts line 51 + relationship-resolution.ts lines 354-379)"
+  },
+  "whatThisIsNot": [
+    "Not a semantic-compiler exhaustiveness failure - the 10 definitions/qualifier claims (A1-A6, B1-B4) never reached compilation at all (COMPILE_CAP=15 sampling artifact) and were honestly, non-dangerously disclosed as incomplete via the real Stage 9 coverage audit.",
+    "Not evidence the amendment/operative-state architecture itself is unsound - D2 (doc-c AMENDS doc-b) demonstrates the conservative REVIEW_REQUIRED behavior working exactly as Section 28 intends.",
+    "Not an environment/cost/source-validity failure - the provider precondition passed (after a real, disclosed, user-authorized mid-run Gateway budget resume), total real cost was $5.03 of the $7.50 ceiling, and the source package was genuine, complete, and immutable throughout."
+  ],
+  "noRemediationPerformed": true,
+  "nextStepRecommendation": "Fix the single root-cause regex (whitespace-tolerant matching for multi-word title patterns spanning a line break) in a dedicated remediation session, per this mission's own Section 29 discipline of never fixing mid-validation. A narrow, targeted fix (not a new architecture) is indicated given the single, precisely-located defect."
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SAFETY_GATES",
+  "section21_primarySafetyMetric": {
+    "requirement": "CRITICAL dangerous silence = 0, MATERIAL dangerous silence = 0 (material GT + NO_CREDIT + NOT_SPECIFICALLY_SURFACED).",
+    "criticalDangerousSilenceCount": 1,
+    "criticalDangerousSilenceClaims": [
+      "D1"
+    ],
+    "materialDangerousSilenceCount": 0,
+    "note": "A1-A6/B1-B4 (10 claims) are NOT counted as dangerous silences: each is explicitly, honestly named in the real Stage 9 whole-package coverage audit's family-level dangerous-unaccounted disclosure (packageCoverageStatus=PACKAGE_SEMANTICALLY_INCOMPLETE, real per-document CRITICAL/MATERIAL counts, family names listed) - this IS 'specifically surfaced' in the sense of an honest, non-silent incompleteness disclosure, even though no individual compiled rule exists for them. D1 IS counted: doc-b RESTATES doc-a (CRITICAL) was never surfaced ANYWHERE in the real output - not as a compiled rule, not as a relationshipCandidate, not as a REVIEW_REQUIRED item, not in any coverage-audit disclosure (the coverage audit operates over semantic UNITS within a document, not cross-document RELATIONSHIP candidates, so it has no mechanism to flag a missing relationship either). This is a genuine, undisclosed silent omission of a CRITICAL claim.",
+    "gatePassed": false
+  },
+  "section22_falseTrustMetric": {
+    "requirement": "FALSE TRUSTED MATERIAL=0, STALE-AS-CURRENT=0, WRONG OPERATIVE DOCUMENT CONFIDENT=0, WRONG HIGH-CONFIDENCE CLASSIFICATION=0, CROSS-TENANT=0; any one failing fails the validation.",
+    "falseTrustedMaterialCount": 0,
+    "staleAsCurrentCount": 0,
+    "staleAsCurrentNote": "No GT claim in this run's own 16-claim set directly reads a genuinely-superseded doc-a provision and asserts it should read NOT_CURRENT (D3 tests the opposite direction - an unamended doc-b provision correctly staying current). So STALE-AS-CURRENT is not DIRECTLY demonstrated as 0 or nonzero by a scored claim in this run; however, the real, demonstrated fact that documentLevelSupersededDocuments={} for the whole package (see 14-node-source-currentness.json) is a concrete, on-file precondition for a future stale-as-current failure the moment anything queries doc-a's post-restatement content as current - reported as a material risk finding, not counted as a scored 0/1 gate value absent a specific tripped claim.",
+    "wrongOperativeDocumentConfidentCount": 0,
+    "wrongHighConfidenceClassificationCount": 1,
+    "wrongHighConfidenceClassificationClaims": [
+      "C2"
+    ],
+    "crossTenantCount": 0,
+    "crossTenantNote": "Isolated companyId (final-lightweight-unseen-sup-968ccc2b) used throughout; no cross-tenant leakage observed or plausible given the single-company run design.",
+    "gatePassed": false
+  },
+  "overallHardSafetyGatesPassed": false,
+  "overallHardSafetyGatesFailureReasons": [
+    "Section 21: 1 CRITICAL dangerous silence (D1 - doc-b RESTATES doc-a never surfaced anywhere)",
+    "Section 22: 1 WRONG HIGH-CONFIDENCE CLASSIFICATION (C2 - doc-b classified CREDIT_AGREEMENT(0.9) instead of AMENDED_AND_RESTATED_AGREEMENT)"
+  ],
+  "rootCauseUnification": "Both failures trace to the SAME single root cause: a regex whitespace-matching bug in lib/contract-model/compiler/package-graph/document-classifier.ts (AMENDED_AND_RESTATED_AGREEMENT pattern requires a literal space, not \\s+/newline-tolerant matching, and fails against doc-b's real line-wrapped caption text 'AMENDED AND RESTATED\\nCREDIT AGREEMENT'), which cascades through lib/contract-model/compiler/package-graph/relationship-resolution.ts's classification-gated RESTATES-relationship scan. This is one confirmed defect with two hard-gate consequences, not two independent defects."
+}

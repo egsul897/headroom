@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "NODE_SOURCE_CURRENTNESS",
+  "requirement": "A node unique to an affirmatively-RESOLVED predecessor must remain retrievable but NOT CURRENT_OPERATIVE, with provenance pointing to document-level supersession and no verifier able to upgrade it; a control node from the current document must not be accidentally suppressed.",
+  "applicability": "No relationship in this run's real output ever reached RESOLVED status for a document-level predecessor (doc-b RESTATES doc-a was never even surfaced as a candidate - see 13-version-operative-state.json D1). Per this mission's own Section 28, an unresolved/REVIEW_REQUIRED relationship legitimately keeps documents as separate instrument boundaries, so this specific requirement's own affirmatively-RESOLVED-predecessor precondition never triggers in this run - not because the mechanism was tested and passed, but because the mechanism was never given the RESOLVED input it needs to exercise at all.",
+  "supersessionIndexResult": {
+    "documentLevelSupersededDocuments": {},
+    "supersededNodeCount": 0,
+    "ambiguousNodeCount": 0
+  },
+  "controlNodeCheck": {
+    "description": "doc-b's own Consolidated EBITDA (D3) remains retrievable and is never suppressed - the 'control node not accidentally suppressed' half of this requirement is met, trivially (nothing suppresses anything in this run).",
+    "controlNodeSuppressed": false
+  },
+  "hardRequirementMet": null,
+  "note": "UNTESTABLE_NOT_PASSED - this run's real evidence cannot demonstrate that a genuinely-superseded predecessor node is correctly marked NOT_CURRENT_OPERATIVE with correct provenance, because the upstream relationship (D1) that would produce a RESOLVED predecessor was itself never surfaced. This is a direct consequence of the same C2/D1 root cause, not an independent finding."
+}

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "INDEPENDENT_AUDIT",
+  "checklist": {
+    "noBenchmarkSpecificCode": {
+      "result": "PASS",
+      "evidence": "scripts/final-lightweight-unseen-run.ts and scripts/final-lightweight-unseen-provider-probe.ts are the only new scripts; neither contains any Superior-Industries-specific branching, hand-tuned thresholds, or package-identity conditionals. The production code path (lib/contract-model/compiler/**) they call is 100% unmodified (see 20-production-freeze-proof.json)."
+    },
+    "noPostSelectionProductionChanges": {
+      "result": "PASS",
+      "evidence": "git diff 2044f1c7...HEAD -- lib app prisma is empty. The only code written after package selection (02-selection.json, committed before any document was substantively read) is validation-harness code under scripts/, never production code."
+    },
+    "noHiddenPackageSpecificSuccessManufacturing": {
+      "result": "PASS",
+      "evidence": "The run script's own compile ordering (document-then-discovery-emission, first COMPILE_CAP=15 eligible candidates) is the SAME fixed, content-blind rule scripts/phase-3f2-riot-unseen-run.ts already used against Riot - not tuned for this package. No candidate was hand-selected, skipped, or reordered based on its content."
+    },
+    "noGtModificationAfterSeeingOutput": {
+      "result": "PASS",
+      "evidence": "07-targeted-ground-truth.json was committed (commit f202a7f) before the real pipeline run (scripts/final-lightweight-unseen-run.ts) was ever executed against this package. Verified via git log: the GT commit precedes the run's first execution timestamp."
+    },
+    "noScoringBasedSolelyOnProximityOrStructuralOverlap": {
+      "result": "PASS",
+      "evidence": "Every claim in 09-claim-comparison.json was scored by reading the real, specific field values in the pipeline's own output (classification type+confidence+resolutionMethod, relationshipCandidates array membership, supersession index contents) against the source text's own real facts - never a fuzzy text-similarity heuristic."
+    },
+    "noFalseCurrentHistoricalNode": {
+      "result": "OBSERVED_RISK_NOT_A_SCORED_VIOLATION",
+      "evidence": "documentLevelSupersededDocuments={} means no node was EVER marked historical in this run (doc-a's own genuinely-superseded content stays formally unflagged) - see 14-node-source-currentness.json. This is a real capability gap (nothing can be marked non-current when the relationship that would trigger it was never surfaced), not an instance of the scorer itself crediting a stale node as current."
+    },
+    "noSilentQualifierOmission": {
+      "result": "PASS_TRIVIALLY",
+      "evidence": "0 candidates from the qualifier-bearing region (B1-B4) were ever compiled, so no qualifier was ever both extracted AND silently dropped - the failure mode this check targets never had an opportunity to occur in this run. See 11-qualifier-completeness.json."
+    },
+    "noFalseResolvedVersionState": {
+      "result": "PASS",
+      "evidence": "Every relationship in the real output that WAS surfaced (doc-c AMENDS doc-b) was correctly left at REVIEW_REQUIRED/0.6 confidence rather than force-resolved - see 13-version-operative-state.json D2. No instrument was force-merged across an unresolved boundary."
+    }
+  },
+  "overallAuditVerdict": "PASS_WITH_ONE_SUBSTANTIVE_FINDING_CARRIED_FORWARD",
+  "auditNote": "This audit confirms the VALIDATION METHODOLOGY was not contaminated or gamed. It does NOT clear the pipeline's own substantive defect (C2/D1, the document-classifier regex bug) - that finding stands on its own real evidence, independently re-derived here from primary source (production code + raw document text), not inferred from Headroom's own confidence scores."
+}

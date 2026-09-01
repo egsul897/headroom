@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "VERSION_OPERATIVE_STATE",
+  "requirement": "Don't force RESOLVED; a conservative REVIEW_REQUIRED can be correct; but a clearly-evidenced direct predecessor relationship should not be missed without being surfaced.",
+  "claimCount": 3,
+  "results": {
+    "D1": {
+      "outcome": "MISS_CRITICAL_DANGEROUS_SILENCE",
+      "safetyVerdict": "CRITICAL_DANGEROUS_SILENCE"
+    },
+    "D2": {
+      "outcome": "CONSERVATIVE_REVIEW_REQUIRED_SANCTIONED_BY_SECTION_28",
+      "safetyVerdict": "SAFE_CONSERVATIVE_UNCERTAINTY"
+    },
+    "D3": {
+      "outcome": "AMBIGUOUS_PASS_BY_OMISSION_WITH_REAL_STALE_RISK",
+      "safetyVerdict": "PASSES_LITERAL_CLAIM_BUT_MASKS_UPSTREAM_STALE_RISK"
+    }
+  },
+  "note": "D2 (doc-c AMENDS doc-b) is a CORRECT, SANCTIONED outcome per Section 28 - surfaced as a real candidate at REVIEW_REQUIRED/0.6 confidence rather than forced to RESOLVED; this is exactly the safe, truthful-uncertainty behavior Section 28 protects. D1 (doc-b RESTATES doc-a) FAILS this requirement outright: a clearly-evidenced direct predecessor relationship (doc-b's own recital names doc-a's exact type and execution date) was MISSED WITHOUT BEING SURFACED AT ALL - not even as a REVIEW_REQUIRED candidate. Zero relationshipCandidates exist for doc-b->doc-a anywhere in the real output. Root cause: relationship-candidate generation for a RESTATES relationship is gated entirely on the SOURCE document's own classification type (AMENDED_AND_RESTATED_AGREEMENT); because doc-b was misclassified CREDIT_AGREEMENT (the C2 defect), the RESTATES scan for doc-b never runs. D3 (ordinary-amendment control) technically passes its own literal claim (doc-b's EBITDA definition is never marked historical) but only because NOTHING in the package was ever marked historical (documentLevelSupersededDocuments={} - empty) - the same D1/C2 root cause means doc-a's own genuinely-superseded content is also never flagged non-current, a real STALE-AS-CURRENT exposure this run's own package happened not to test directly (no GT claim reads doc-a's post-restatement content and asserts it should be marked NOT_CURRENT), but which the empty supersession index makes concretely demonstrated, not hypothetical.",
+  "hardRequirementMet": false,
+  "failingClaim": {
+    "claimId": "D1",
+    "category": "AMENDMENT_RESTATEMENT_OPERATIVE_DOCUMENT",
+    "materiality": "CRITICAL",
+    "document": "doc-b",
+    "sourceRef": "PRELIMINARY STATEMENTS line 761",
+    "reached": true,
+    "outcome": "MISS_CRITICAL_DANGEROUS_SILENCE",
+    "evidence": "Real output: pkg_graph.relationshipCandidates contains EXACTLY ONE entry (doc-c AMENDS doc-b) - NOTHING for doc-b RESTATES doc-a, not RESOLVED, not REVIEW_REQUIRED, not any candidate at all despite doc-b's own recital directly naming doc-a's type+date ('amend and restate that certain Credit Agreement, dated as of December 15, 2022'). ROOT CAUSE (confirmed by direct source code read, lib/contract-model/compiler/package-graph/relationship-resolution.ts lines 354-379): relationship-candidate generation is gated by RELATIONSHIP_TYPES_BY_SOURCE_CLASSIFICATION[classification.type] - only a document classified AMENDED_AND_RESTATED_AGREEMENT is ever scanned for a RESTATES relationship. Because doc-b was misclassified CREDIT_AGREEMENT (the SAME C2 root cause), the RESTATES-relationship scan for doc-b never runs at all - a direct downstream cascade of the C2 classification bug, not an independent second defect.",
+    "safetyVerdict": "CRITICAL_DANGEROUS_SILENCE",
+    "substantiveCredit": "NO_CREDIT"
+  }
+}
