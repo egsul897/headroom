@@ -1,0 +1,907 @@
+[
+  {
+    "discoveryId": "discovery-candidate:12d6bada40309acc1607d669",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2(a)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:8b2e32a9dc4994a1b47fe161"
+    ],
+    "normalizedSourceRef": "2(a)",
+    "families": [],
+    "otherFamilyDescription": "Definitional amendment adding new defined terms (Invoice Restrictions, Maintenance Liquidity, Monthly Factoring Report) used later in mandatory prepayment and reporting provisions; not itself a restriction.",
+    "role": "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+    "roleRaw": "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Adds three new definitions to Section 1.01, including 'Maintenance Liquidity' which underlies the mandatory prepayment test in clause (b).",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permitted_construct",
+      "shared_cap"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.6,
+    "sourceCitation": "(a) Section 1.01 of the Credit Agreement is\nhereby amended by adding the following definitions in the appropriate alphabetical order:\n“Invoice\nRestrictions” has the meaning set forth in the Monthly Factoring Report.\n“Maintenance Liquidity”\nmeans, as of any date of determination, (a) the sum as of su",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:3350d5d98398168dbf8ff541",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2"
+    ],
+    "structuralNodeIds": [
+      "structural-node:ad80419ed7ca4844d7b6cfa0"
+    ],
+    "normalizedSourceRef": "2",
+    "families": [],
+    "otherFamilyDescription": "Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Prepayments, Liquidity",
+    "role": "TRIGGER",
+    "roleRaw": "TRIGGER",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Prepayments",
+      "Liquidity"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Requires mandatory prepayment of Super-Priority Revolving Loans within 5 Business Days if unrestricted cash on hand exceeds $50 million as of month-end, down to $50 million.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 2. Amendments. Effective as of the First Amendment Effective Date (as defined below), the Credit Agreement is\nhereby amended as follows in accordance with Section 10.01 of the Credit Agreement:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:ad80419ed7ca4844d7b6cfa0\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:9e8369165f00812e135542cd",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2"
+    ],
+    "structuralNodeIds": [
+      "structural-node:ad80419ed7ca4844d7b6cfa0"
+    ],
+    "normalizedSourceRef": "2",
+    "families": [],
+    "otherFamilyDescription": "Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Prepayments, Liquidity",
+    "role": "CURE",
+    "roleRaw": "CURE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Prepayments",
+      "Liquidity"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Provides that a Default/Event of Default will not occur for failure to make the Maintenance Liquidity prepayment if the shortfall (Deficiency Amount) is less than $1,300,000 and is cured by prepayment within 5 Business Days of discovery.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "SECTION 2. Amendments. Effective as of the First Amendment Effective Date (as defined below), the Credit Agreement is\nhereby amended as follows in accordance with Section 10.01 of the Credit Agreement:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:ad80419ed7ca4844d7b6cfa0\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:c5e2b4fcaf56aa48738b942e",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2"
+    ],
+    "structuralNodeIds": [
+      "structural-node:ad80419ed7ca4844d7b6cfa0"
+    ],
+    "normalizedSourceRef": "2",
+    "families": [],
+    "otherFamilyDescription": "Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Prepayments",
+    "role": "PROVISO",
+    "roleRaw": "PROVISO",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Prepayments"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Clarifies that if a recalculation shows Maintenance Liquidity was lower (i.e., a prepayment was larger than required), the Administrative Agent has no obligation to refund any overpayment.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.75,
+    "sourceCitation": "SECTION 2. Amendments. Effective as of the First Amendment Effective Date (as defined below), the Credit Agreement is\nhereby amended as follows in accordance with Section 10.01 of the Credit Agreement:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:ad80419ed7ca4844d7b6cfa0\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:5925aacb37cd1dee2089c7c1",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2(c)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:1254f4a885f7f486715778cf"
+    ],
+    "normalizedSourceRef": "2(c)",
+    "families": [
+      "REPORTING_INFORMATION"
+    ],
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Reporting"
+    ],
+    "familiesNormalizationStatus": "NORMALIZED_CANONICAL",
+    "description": "Amends Section 6.01(3) to require delivery within 5 Business Days after each month-end of a Monthly Factoring Report accompanied by a certificate as to invoice inclusion and accuracy of prior reports.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.7,
+    "sourceCitation": "(c) unrestricted cash and Cash Equivalents of the Borrower and its Subsidiaries.\n\n“Monthly Factoring Report” means a report substantially in\nthe form of Exhibit E or any other form approved by the Administrative Agent.\n(b) Section 2.05(2)(c) of the Credit Agreement is hereby\namended and restated in ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:1254f4a885f7f486715778cf\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:404d3bd5be0f1803f787f9e7",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2(d)(i)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:0c56e7741ce96541b6ce4ad7"
+    ],
+    "normalizedSourceRef": "2(d)(i)",
+    "families": [],
+    "otherFamilyDescription": "Purely conforming/technical amendment (deleting 'and') to Section 6.02 list punctuation; not independently operative.",
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Technical amendment deleting the word 'and' at the end of clause (4) of Section 6.02 to accommodate a new clause.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "dollar_value",
+      "greater_lesser_of"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.4,
+    "sourceCitation": "(i) unrestricted cash on hand as of the last day of any calendar month in an amount that is greater than $50 million, the Borrower\nshall, as soon as is reasonably practicable, but in any event no later than five (5) Business Days after the last day of such calendar month, prepay, or cause to be prep",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:88888088dc3188bce693b233",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2(d)(ii)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:5bf338cae606e344bded0399"
+    ],
+    "normalizedSourceRef": "2(d)(ii)",
+    "families": [],
+    "otherFamilyDescription": "Purely conforming/technical amendment (punctuation replacement) to Section 6.02; not independently operative.",
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Technical amendment replacing the period at the end of clause (5) of Section 6.02 with '; and' to accommodate a new clause.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.4,
+    "sourceCitation": "(ii) after giving effect to any mandatory prepayment pursuant to clause ",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:5bf338cae606e344bded0399\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:6e160b9284d5a439542ea164",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2"
+    ],
+    "structuralNodeIds": [
+      "structural-node:ad80419ed7ca4844d7b6cfa0"
+    ],
+    "normalizedSourceRef": "2",
+    "families": [
+      "REPORTING_INFORMATION"
+    ],
+    "otherFamilyDescription": "Unmapped raw family value(s) (normalization phase-2f2-discovery-normalization.v1): Securitization",
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [
+      "Reporting",
+      "Securitization"
+    ],
+    "familiesNormalizationStatus": "FALLBACK_REVIEW_REQUIRED",
+    "description": "Adds new reporting covenant requiring prompt (within 5 Business Days) delivery of a copy of any amendment, restatement, or refinancing document for agreements governing Loan Parties' Qualified Securitization Facilities.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.75,
+    "sourceCitation": "SECTION 2. Amendments. Effective as of the First Amendment Effective Date (as defined below), the Credit Agreement is\nhereby amended as follows in accordance with Section 10.01 of the Credit Agreement:\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:ad80419ed7ca4844d7b6cfa0\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:f3965295157424d452edef18",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::2(e)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:e279b7f7b1a0e756c06aa793"
+    ],
+    "normalizedSourceRef": "2(e)",
+    "families": [],
+    "otherFamilyDescription": "Purely administrative replacement of a form exhibit (Monthly Factoring Report template); not a substantive covenant.",
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Replaces Exhibit E to the Credit Agreement in its entirety with a new form.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.3,
+    "sourceCitation": "(e) Exhibit E to the Credit Agreement is\nhereby replaced in its entirety with Exhibit E attached hereto.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:e279b7f7b1a0e756c06aa793\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:24fb3995f669c1e9ed6df0b5",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(a)",
+      "doc-c::3"
+    ],
+    "structuralNodeIds": [
+      "structural-node:2032eafb33643f1013617eab",
+      "structural-node:f54d268e1aacbc2c65911851"
+    ],
+    "normalizedSourceRef": "3(a)",
+    "families": [],
+    "otherFamilyDescription": "Procedural condition requiring delivery of executed counterparts; not a substantive covenant family",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Requires the Administrative Agent to receive executed counterparts of the Amendment from the Borrower, other Loan Parties, Required Lenders, and the First-Out Representative before effectiveness.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(a) The Administrative Agent (or its counsel) shall have received from the Borrower, each other Loan Party, the Required Lenders, and the First-Out Representative an executed counterpart of this Amendment (or photocopies thereof sent by fax, .pdf or other electronic means, each of which shall be enf",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "2 structural nodes span this discovery; worst-case supersession status reported. No Pass A deterministic-signal record exists for structural node \"structural-node:2032eafb33643f1013617eab\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:f8994b60736bcb913ad8f6c6",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(b)",
+      "doc-c::3"
+    ],
+    "structuralNodeIds": [
+      "structural-node:fd16fe3e189eeccea04f02ca",
+      "structural-node:f54d268e1aacbc2c65911851"
+    ],
+    "normalizedSourceRef": "3(b)",
+    "families": [],
+    "otherFamilyDescription": "Condition regarding accuracy of representations and warranties, not itself a covenant restriction",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Conditions effectiveness on the truth and correctness of representations and warranties in the Loan Documents, subject to existing materiality qualifiers, as of the effective date or earlier specified dates.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(b) After giving effect to this Amendment, the representations and warranties contained in each of the Loan Documents are true and\ncorrect in all material respects (except that such materiality qualifier shall not be applicable to any representations and warranties that already are qualified or modi",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "2 structural nodes span this discovery; worst-case supersession status reported. No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:1a6bdeb803c1fc7672d5d403",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(c)",
+      "doc-c::3"
+    ],
+    "structuralNodeIds": [
+      "structural-node:71d7108b636b261e47e971e3",
+      "structural-node:f54d268e1aacbc2c65911851"
+    ],
+    "normalizedSourceRef": "3(c)",
+    "families": [],
+    "otherFamilyDescription": "Condition precedent tied to absence of default; not a covenant family per se",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Requires that no Default or Event of Default has occurred and is continuing after giving effect to the Amendment.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "(c) No Default or Event of Default shall have occurred and be continuing after giving\neffect to this Amendment.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "2 structural nodes span this discovery; worst-case supersession status reported. No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:af1ebe7f09b3067ef59c3b7f",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(d)",
+      "doc-c::3"
+    ],
+    "structuralNodeIds": [
+      "structural-node:3e6ca11709f9fc94a5dbaedc",
+      "structural-node:f54d268e1aacbc2c65911851"
+    ],
+    "normalizedSourceRef": "3(d)",
+    "families": [],
+    "otherFamilyDescription": "Payment/reimbursement condition for fees and expenses, not a substantive covenant",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Conditions effectiveness on the Administrative Agent having received payment or reimbursement of specified fees and expenses, including counsel fees, invoiced within a set timeframe.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "permission_construction"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(d) The Administrative Agent shall have received reimbursement or payment of all fees and expenses required to\nbe reimbursed or paid hereunder or under any other Loan Document or otherwise agreed to in writing to be paid (including the reasonable and documented fees, charges and disbursements of Pro",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "2 structural nodes span this discovery; worst-case supersession status reported. No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:f324ce93d78bb35915d43a25",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3(e)",
+      "doc-c::3"
+    ],
+    "structuralNodeIds": [
+      "structural-node:1787595b577116b4a9780f43",
+      "structural-node:f54d268e1aacbc2c65911851"
+    ],
+    "normalizedSourceRef": "3(e)",
+    "families": [],
+    "otherFamilyDescription": "Condition requiring delivery of third-party securitization agreements; related to Qualified Securitization Facilities defined term",
+    "role": "CONDITION",
+    "roleRaw": "CONDITION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Requires the Administrative Agent to receive copies of agreements between the Loan Parties and Deutsche Bank/Postbank concerning the Loan Parties' Qualified Securitization Facilities.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.8,
+    "sourceCitation": "(e) The Administrative Agent shall have received copies of the agreements among the relevant Loan Parties and each of Deutsche Bank and\nPostbank with respect to the Loan Parties’ Qualified Securitization Facilities with each such financial institution.\n\n3\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "2 structural nodes span this discovery; worst-case supersession status reported. No Pass A deterministic-signal record exists for structural node \"structural-node:1787595b577116b4a9780f43\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:a4817bd2fa6286b050ba6014",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::3"
+    ],
+    "structuralNodeIds": [
+      "structural-node:f54d268e1aacbc2c65911851"
+    ],
+    "normalizedSourceRef": "3",
+    "families": [],
+    "role": "GENERAL_PROHIBITION",
+    "roleRaw": "",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Section-level container for 3 (Conditions to Effectiveness) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.5,
+    "sourceCitation": "SECTION 3. Conditions to Effectiveness. This Amendment shall\nbecome effective upon satisfaction (or effective waiver) of the following conditions precedent (such date, the “First Amendment Effective Date”):\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:f54d268e1aacbc2c65911851\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:14efc5a9b3b111656e024df6",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4"
+    ],
+    "structuralNodeIds": [
+      "structural-node:9e9c4e7417d6de82a66920e8"
+    ],
+    "normalizedSourceRef": "4",
+    "families": [],
+    "otherFamilyDescription": "No-default representation, not tied to a specific covenant family (default/event of default status)",
+    "role": "REPRESENTATION",
+    "roleRaw": "REPRESENTATION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Represents that no Default or Event of Default has occurred and is continuing or would result from giving effect to the Amendment.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.9,
+    "sourceCitation": "SECTION 4. No Default; Representations and Warranties. In order to induce the\nRequired Lenders and the Administrative Agent to enter into this Amendment, the Borrower and each other Loan Party hereto represent and warrant to the Lenders and the Administrative Agent that:\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:9e9c4e7417d6de82a66920e8\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:f26176c84714d5bce9c44094",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4(b)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:b2cc5fc4873f93b2d229cbff"
+    ],
+    "normalizedSourceRef": "4(b)",
+    "families": [],
+    "otherFamilyDescription": "Corporate authority representation regarding execution of the Amendment, not tied to a specific covenant family",
+    "role": "REPRESENTATION",
+    "roleRaw": "REPRESENTATION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Represents that execution, delivery and performance of the Amendment by each Loan Party have been duly authorized by all necessary corporate, limited liability company or other similar action.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.85,
+    "sourceCitation": "(b) the execution, delivery and performance by each Loan Party party hereto of its\nrespective obligations under this Amendment have been duly authorized by all necessary corporate, limited liability company or other similar action of such Loan Party. This Amendment has been duly executed and deliver",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:577e11e2fe9638146789489d",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4(b)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:b2cc5fc4873f93b2d229cbff"
+    ],
+    "normalizedSourceRef": "4(b)",
+    "families": [],
+    "otherFamilyDescription": "Due execution and delivery representation, fused with surrounding sentences under the same lettered clause",
+    "role": "REPRESENTATION",
+    "roleRaw": "REPRESENTATION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Represents that the Amendment has been duly executed and delivered by each Loan Party party thereto.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(b) the execution, delivery and performance by each Loan Party party hereto of its\nrespective obligations under this Amendment have been duly authorized by all necessary corporate, limited liability company or other similar action of such Loan Party. This Amendment has been duly executed and deliver",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": [],
+    "verifiedQuoteFingerprint": "this amendment has been duly executed and delivered by each loan party party hereto."
+  },
+  {
+    "discoveryId": "discovery-candidate:aa9e850519549e7ee5dbfef0",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::4(b)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:b2cc5fc4873f93b2d229cbff"
+    ],
+    "normalizedSourceRef": "4(b)",
+    "families": [],
+    "otherFamilyDescription": "Enforceability representation regarding the Amendment as a legal, valid and binding obligation, subject to enumerated qualifications",
+    "role": "REPRESENTATION",
+    "roleRaw": "REPRESENTATION",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Represents that the Amendment constitutes a legal, valid and binding obligation of each Loan Party enforceable in accordance with its terms, subject to Debtor Relief Laws, the German StaRUG, the Relevant EU Directive and general equitable principles.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "permission_construction",
+      "exception_marker"
+    ],
+    "reviewStatus": "AUTO_ACCEPTED",
+    "confidence": 0.8,
+    "sourceCitation": "(b) the execution, delivery and performance by each Loan Party party hereto of its\nrespective obligations under this Amendment have been duly authorized by all necessary corporate, limited liability company or other similar action of such Loan Party. This Amendment has been duly executed and deliver",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": [],
+    "verifiedQuoteFingerprint": "this amendment constitutes a legal, valid and binding obligation of each loan party, enforceable against each such loan party in accordance with its terms"
+  },
+  {
+    "discoveryId": "discovery-candidate:79a5c1436e85f7e88bf2c6eb",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::5(b)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:79809cbfc708d918cbf121fb"
+    ],
+    "normalizedSourceRef": "5(b)",
+    "families": [],
+    "otherFamilyDescription": "General reaffirmation of all covenants and obligations under existing Loan Documents; not tied to a specific covenant family such as debt, liens, or restricted payments.",
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Each Loan Party ratifies and reaffirms all terms, conditions, obligations, covenants and agreements under the Credit Agreement and other Loan Documents, confirming continued applicability to the Amended Credit Agreement.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.55,
+    "sourceCitation": "(b) Except as expressly set forth herein, each and every term, condition, obligation, covenant and agreement contained in the Credit Agreement\nor any other provision of either such agreement or any other Loan Document is hereby ratified and re-affirmed in all respects and shall continue in full forc",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:fffff26ed076a5dfd40c1425",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::5(c)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:da1493aec1eabaca1b65991f"
+    ],
+    "normalizedSourceRef": "5(c)",
+    "families": [],
+    "otherFamilyDescription": "General continuation/ratification of all Loan Documents as amended; not specific to any covenant family.",
+    "role": "OTHER_RELEVANT_RULE",
+    "roleRaw": "OTHER_RELEVANT_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Except as expressly amended, all Loan Documents remain in full force and effect and are ratified and confirmed.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL"
+    ],
+    "evidenceSignals": [
+      "exception_marker"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.5,
+    "sourceCitation": "(c) Except as expressly amended hereby, all Loan Documents shall continue to be in full force and effect and are hereby in all respects\nratified and confirmed.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:b1c0073359e4c91d0a7dff2b",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::5(d)",
+      "doc-c::5"
+    ],
+    "structuralNodeIds": [
+      "structural-node:488fbcb0dce600fc86ff4884",
+      "structural-node:7d05b243306999d53dd4fbb5"
+    ],
+    "normalizedSourceRef": "5(d)",
+    "families": [],
+    "otherFamilyDescription": "Preservation of lender/agent rights and remedies; not tied to a specific covenant family like debt or liens.",
+    "role": "PROVISO",
+    "roleRaw": "PROVISO",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Execution and effectiveness of the Amendment does not waive, limit, or impair any right, power or remedy of the Lenders, Administrative Agent, or other Secured Parties under the Loan Documents.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION",
+      "DETERMINISTIC_SIGNAL",
+      "NEIGHBORHOOD_EXPANSION"
+    ],
+    "evidenceSignals": [
+      "prohibitive_construction",
+      "cure_or_trigger"
+    ],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.6,
+    "sourceCitation": "(d) The execution, delivery and effectiveness of this Amendment shall not operate as a waiver of any right, power\nor remedy of any Lender, the Administrative Agent or any other Secured Party under any of the Loan Documents, nor constitute a waiver of any provision of the Loan Documents or in any way",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "2 structural nodes span this discovery; worst-case supersession status reported. No operative-state computation covers document \"doc-c\" - amendment/supersession status for this node was never checked, so it must not be assumed current.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:cd57a0e7e438df2dddd9622c",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::5(e)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:0a8ec3017211e0fd33907a56"
+    ],
+    "normalizedSourceRef": "5(e)",
+    "families": [],
+    "otherFamilyDescription": "Designates the Amendment itself as a Loan Document for purposes of the Amended Credit Agreement; a definitional/status designation rather than a substantive covenant restriction.",
+    "role": "DESIGNATION_RULE",
+    "roleRaw": "DESIGNATION_RULE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "The parties agree that, from the First Amendment Effective Date, this Amendment constitutes a Loan Document for all purposes of the Amended Credit Agreement.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "UNCERTAIN",
+    "confidence": 0.6,
+    "sourceCitation": "(e) The other parties hereto hereby\nacknowledge and agree that, from and after the First Amendment Effective Date, this Amendment shall constitute a Loan Document for all purposes of the Amended Credit Agreement.\n\n4\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:0a8ec3017211e0fd33907a56\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:8f1c4849ddb43b737e814d83",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::5"
+    ],
+    "structuralNodeIds": [
+      "structural-node:7d05b243306999d53dd4fbb5"
+    ],
+    "normalizedSourceRef": "5",
+    "families": [],
+    "role": "GENERAL_PROHIBITION",
+    "roleRaw": "",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Section-level container for 5 (Effects on Loan Documents) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.5,
+    "sourceCitation": "SECTION 5. Effects on Loan Documents.\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:7d05b243306999d53dd4fbb5\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:9591caadaa29d67702463939",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::6(d)"
+    ],
+    "structuralNodeIds": [
+      "structural-node:ea8c460b9aea1e841d1d79c3"
+    ],
+    "normalizedSourceRef": "6(d)",
+    "families": [],
+    "otherFamilyDescription": "Incorporation by reference of unspecified Credit Agreement provisions (Sections 10.16 and 10.17), which may impose substantive obligations (e.g., waivers, notices) not covered by any covenant family",
+    "role": "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+    "roleRaw": "DEFINITIONAL_DEPENDENCY_CANDIDATE",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Incorporates Sections 10.16 and 10.17 of the Credit Agreement by reference as if fully set forth in this Amendment, applying them mutatis mutandis.",
+    "multipleRulesLikely": true,
+    "definedTermDependencyLikely": true,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.35,
+    "sourceCitation": "(d) Each of the parties hereto hereby agrees that Sections 10.16 and 10.17 of the Credit Agreement are incorporated by reference herein,\nmutatis mutandis, and shall have the same force and effect with respect to this Amendment as if originally set forth herein.\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:ea8c460b9aea1e841d1d79c3\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  },
+  {
+    "discoveryId": "discovery-candidate:6e28d385393147a728a6481d",
+    "documentId": "doc-c",
+    "structuralNodeKeys": [
+      "doc-c::6"
+    ],
+    "structuralNodeIds": [
+      "structural-node:9ecea96c0f2cd3e39cadd5b0"
+    ],
+    "normalizedSourceRef": "6",
+    "families": [],
+    "role": "GENERAL_PROHIBITION",
+    "roleRaw": "",
+    "roleNormalizationStatus": "VALID_CANONICAL",
+    "familiesRaw": [],
+    "familiesNormalizationStatus": "VALID_CANONICAL",
+    "description": "Section-level container for 6 (Miscellaneous) - synthesized to guarantee the section's own general/chapeau language is represented alongside its discovered sub-rules.",
+    "multipleRulesLikely": false,
+    "definedTermDependencyLikely": false,
+    "discoveryMethods": [
+      "SEMANTIC_CLASSIFICATION"
+    ],
+    "evidenceSignals": [],
+    "reviewStatus": "NEEDS_REVIEW",
+    "confidence": 0.5,
+    "sourceCitation": "SECTION 6. Miscellaneous.\n\n",
+    "discoveryRunVersion": "phase-2b-discovery-pipeline.v4+phase-2b-discovery.v3",
+    "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+    "supersessionReason": "No Pass A deterministic-signal record exists for structural node \"structural-node:9ecea96c0f2cd3e39cadd5b0\" (likely added via Pass C neighborhood expansion) - its own supersession status was never independently checked.",
+    "valueAnchors": []
+  }
+]
