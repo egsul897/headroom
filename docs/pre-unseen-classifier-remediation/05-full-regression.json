@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FULL_REGRESSION",
+  "fullRepositorySuite": {
+    "command": "npx vitest run",
+    "result": "2 test files failed | 279 passed (281 total); 2 tests failed | 3094 passed (3096 total)",
+    "failures": [
+      "tests/contract-model/architecture-proposal-node-identity.test.ts - PRE_EXISTING_UNRELATED_FAILURE, identical to docs/post-3f2-remediation/00-baseline.json and 06-full-test-results.json (stale fixture-directory assertion, predates this session)",
+      "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts - PRE_EXISTING_UNRELATED_FAILURE, same root cause as above"
+    ],
+    "netAssessment": "Zero new failures. Test count increased from 3078 (post-3f2-remediation baseline) to 3096 (+18, the new pre-unseen-classifier-remediation.test.ts generic adversarial suite)."
+  },
+  "typeScript": { "command": "npx tsc --noEmit -p tsconfig.json", "result": "6 errors, identical set to the documented baseline (same files/lines/messages) - zero new." },
+  "lint": { "command": "npx eslint .", "result": "1 error, identical to the documented baseline - zero new." }
+}
