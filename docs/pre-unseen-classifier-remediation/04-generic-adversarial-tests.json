@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "GENERIC_ADVERSARIAL_TESTS",
+  "testFile": "tests/contract-model/pre-unseen-classifier-remediation.test.ts",
+  "command": "npx vitest run tests/contract-model/pre-unseen-classifier-remediation.test.ts",
+  "result": "18/18 tests passed on first run after the design iteration recorded in 03-implementation-results.json",
+  "coverageMap": {
+    "C1_TOCContainsComplianceCertificateForm": "PASS - CREDIT_AGREEMENT",
+    "C2_FullComplianceCertificateFormAttached": "PASS - CREDIT_AGREEMENT",
+    "C3_ActualComplianceCertificateReferencingCreditAgreement": "PASS - COMPLIANCE_CERTIFICATE",
+    "C4_AmendmentContainingOriginalTitle": "PASS - AMENDMENT (2 variants: simple caption, and the real-shape omnibus amendment naming both a Credit Agreement and a Security Agreement)",
+    "C5_SecurityAgreementReferencingCreditAgreement": "PASS - SECURITY_AGREEMENT",
+    "C6_GuaranteeReferencingCreditAgreement": "PASS - GUARANTEE",
+    "C7_IntercreditorReferencingSeveralCreditAgreements": "PASS - INTERCREDITOR_AGREEMENT",
+    "C8_ConflictingHighQualityTitleEvidence": "PASS - 2 sub-tests: (a) a fused 'CREDIT AGREEMENT AND SECURITY AGREEMENT' caption returns UNKNOWN/0 confidence/DETERMINISTIC_CAPTION_AMBIGUOUS; (b) a regression guard confirming a normal base document's own preamble mentioning another type FAR from its caption never falsely triggers ambiguity",
+    "C9_MisleadingTOCTitleBeforeActualBodyTitle": "PASS - INDENTURE (the real, demonstrated case for every SEC-filed document this codebase has encountered - the genuine caption precedes the later TOC/exhibit mention)",
+    "C10_MultipleExhibitFormNamesInsideBaseAgreement": "PASS - CREDIT_AGREEMENT remains stable against 7 distinct exhibit/form name mentions"
+  },
+  "additionalRegressionGuardTests": [
+    "a Guarantee's own caption naming the Credit Agreement it guarantees is never ambiguous - PASS",
+    "a Joinder's own caption naming the Intercreditor Agreement it joins is never ambiguous - PASS",
+    "an Amended and Restated Credit Agreement's own composite match is never treated as ambiguous against its nested base-type substring - PASS",
+    "a Supplemental Indenture's own composite match is never treated as ambiguous against its nested base-type substring - PASS",
+    "a composite Guarantee and Security Agreement's own match is never treated as ambiguous against its nested SECURITY_AGREEMENT substring - PASS",
+    "no benchmark-specific strings (Riot/Coinbase/Platforms) anywhere in document-classifier.ts - PASS (automated grep test)"
+  ],
+  "syntheticNamingDiscipline": "Every fixture uses invented entities (Meridian Fabrication Inc., Solaris Bank N.A., Northbridge Trust Co.) - zero Riot, Coinbase, or known-package (FWRG/LSB/CONMED/DSGR) content anywhere in this test file."
+}

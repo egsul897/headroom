@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CLASSIFIER_REMEDIATION_BASELINE",
+  "startingHead": "e1f47a4753d29926d26eb63143d154ea267331c3",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "gitStatusAtBaseline": "clean (no uncommitted changes)",
+  "relevantBaselineTests": {
+    "command": "npx vitest run tests/contract-model/phase-2f3-package-graph-robustness.test.ts tests/contract-model/package-graph-pipeline.test.ts tests/foundation-audit/package-graph-adversarial.test.ts tests/certification/section8-package-relationship-independent.test.ts tests/contract-model/post-3f2-package-graph-restatement.test.ts",
+    "result": "5 test files, 103 tests, 0 failures"
+  },
+  "typeScriptAndLintBaseline": "Unchanged from docs/post-3f2-remediation/00-baseline.json and 06-full-test-results.json: 6 pre-existing TypeScript errors (unrelated test files), 1 pre-existing lint error (unrelated test file) - both re-confirmed identical at this SHA since no code has changed since e1f47a4.",
+  "dbIsolationState": "Local Postgres instance (service postgresql), single shared dev database per this session's own established convention - no new database created, no destructive migration workflow used. This session's own work (classification is fully deterministic, no DB writes) does not require DB access at all except where existing test files already use it (unchanged).",
+  "governingDocsRead": [
+    "docs/post-3f2-remediation.md",
+    "docs/post-3f2-remediation/08b-riot-package-graph-replay.json",
+    "docs/post-3f2-remediation/10-independent-code-audit.json",
+    "docs/post-3f2-remediation/11-remediation-gate.json",
+    "docs/post-3f2-remediation/12-next-readiness.json",
+    "lib/contract-model/compiler/package-graph/document-classifier.ts (full)",
+    "lib/contract-model/compiler/package-graph/document-identity.ts (full)",
+    "tests/contract-model/phase-2f3-package-graph-robustness.test.ts (existing classifier/package-graph test conventions)"
+  ]
+}

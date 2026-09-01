@@ -83,6 +83,61 @@ function findEvidence(patterns: RegExp[], text: string): string | null {
   return null;
 }
 
+/**
+ * POST-3F.2 classifier remediation - a document's own caption/self-
+ * description always appears at or near the very top of its own text;
+ * any mention of an OTHER document type it references, requires, or
+ * attaches (a table-of-contents/exhibit-list entry, a cross-reference, a
+ * required-delivery clause) necessarily appears LATER. Text position is
+ * therefore a general, structural proxy for "is this evidence about the
+ * document itself, or about something the document merely mentions" -
+ * unlike RULES array order, which has no relationship to the document's
+ * own text at all. Finds the EARLIEST match across ALL of a rule's own
+ * alternative patterns (not just the first pattern-array-order match),
+ * since a rule's patterns are alternative phrasings of the same signal,
+ * not a priority list.
+ */
+function earliestRuleMatch(patterns: RegExp[], text: string): { index: number; evidence: string } | null {
+  let best: { index: number; evidence: string } | null = null;
+  for (const re of patterns) {
+    const m = re.exec(text);
+    if (m && (!best || m.index < best.index)) best = { index: m.index, evidence: m[0] };
+  }
+  return best;
+}
+
+/** Two matches "overlap" when their text spans intersect - used to recognize that a composite/specific rule's own match (e.g. AMENDED_AND_RESTATED_AGREEMENT matching "amended and restated credit agreement") textually CONTAINS its generic parent's own match (CREDIT_AGREEMENT matching "credit agreement" as a nested substring) - the SAME evidence, never two competing candidates, so no false ambiguity is ever raised for an amended-and-restated agreement, a supplemental indenture, or a composite guarantee-and-security agreement. */
+function matchesOverlap(a: { index: number; evidence: string }, b: { index: number; evidence: string }): boolean {
+  const aEnd = a.index + a.evidence.length;
+  const bEnd = b.index + b.evidence.length;
+  return a.index < bEnd && b.index < aEnd;
+}
+
+/** How close to the document's own start a match must be to count as "caption zone" evidence for the ambiguity guard - generous enough for a real caption + party block, never large enough to reach deep into a table of contents. */
+const CAPTION_ZONE_CHARS = 500;
+/** How close two DIFFERENT, non-overlapping matches' positions must be to count as genuinely competing (rather than one clearly preceding the other as a later, weaker mention). */
+const AMBIGUITY_GAP_CHARS = 150;
+/**
+ * Every RULES type EXCEPT the two base facility types (Credit Agreement/
+ * Indenture) is, by this whole package-graph system's own design
+ * (relationship-resolution.ts's RELATIONSHIP_TYPES_BY_SOURCE_CLASSIFICATION),
+ * a document whose entire purpose is to reference, modify, guarantee,
+ * secure, join, or otherwise relate to ANOTHER agreement - an amendment
+ * names what it amends, a guarantee names what it guarantees, a joinder
+ * names what it joins, an intercreditor agreement names the several
+ * facilities it governs, and (real, disclosed) an omnibus amendment
+ * routinely names MULTIPLE such related agreements (a base facility AND
+ * a security/guarantee document) within its own caption sentence. That is
+ * ordinary financing-document drafting convention industry-wide, not a
+ * package-specific pattern - so the ambiguity guard below only ever
+ * applies when the WINNING match is itself one of the two base facility
+ * types, never when it is one of these inherently-referencing types
+ * (which would otherwise false-positive on virtually every real
+ * amendment/joinder/guarantee/security/intercreditor document this
+ * codebase has ever encountered).
+ */
+const BASE_REFERENCEABLE_TYPES = new Set<DocumentType>(["CREDIT_AGREEMENT", "INDENTURE"]);
+
 /** Matches the classic financing-document self-reference: "..., dated as of [DATE] (this "[Term]"), to/among ...". Straight and curly quotes both real (raw SEC-filing text extraction commonly renders curly quotes as spaced straight quotes - "(this " Amendment ")" - so surrounding whitespace inside the quotes is tolerated and trimmed). */
 const SELF_REFERENCE_RE = /\(this\s+["'“”]\s*([^"'“”]{2,80}?)\s*["'“”]\)/i;
 
@@ -116,23 +171,51 @@ export function classifyDocument(doc: PackageDocumentInput): DocumentClassificat
     }
   }
 
-  // Tier 2 (fallback, original behavior): broad preamble scan.
-  for (const rule of RULES) {
-    const evidence = findEvidence(rule.patterns, preamble);
-    if (evidence) {
-      // A declared type that agrees with the deterministic evidence is
-      // reported as a CONFIRMED classification (both signals agree) rather
-      // than just DETERMINISTIC_TITLE_PATTERN - stronger confidence, still
-      // never forced past what the text shows.
-      const confirmed = doc.declaredType === rule.type;
+  // Tier 2 (fallback, position-aware preamble scan) - the rule whose
+  // evidence appears EARLIEST in the document's own text wins, not the
+  // rule checked first in RULES array order (see earliestRuleMatch's own
+  // doc comment for the rationale). RULES array order is used only as a
+  // final tiebreaker when two rules' earliest matches sit at the exact
+  // same position (in practice never observed - two distinct literal
+  // phrases cannot both start at the same character index).
+  const allMatches: { ruleIndex: number; type: DocumentType; index: number; evidence: string }[] = [];
+  for (let i = 0; i < RULES.length; i++) {
+    const m = earliestRuleMatch(RULES[i]!.patterns, preamble);
+    if (m) allMatches.push({ ruleIndex: i, type: RULES[i]!.type, index: m.index, evidence: m.evidence });
+  }
+  if (allMatches.length > 0) {
+    let winner = allMatches[0]!;
+    for (const m of allMatches) {
+      if (m.index < winner.index || (m.index === winner.index && m.ruleIndex < winner.ruleIndex)) winner = m;
+    }
+    // Ambiguity guard: a genuinely DIFFERENT, non-overlapping type's
+    // evidence sits comparably early and comparably close to the winner -
+    // two disjoint, comparably-prominent signals with no clear single
+    // winner, never resolved by an arbitrary confident pick (mission §7).
+    const conflict = BASE_REFERENCEABLE_TYPES.has(winner.type)
+      ? allMatches.find((m) => m.type !== winner.type && winner.index <= CAPTION_ZONE_CHARS && m.index <= CAPTION_ZONE_CHARS && Math.abs(m.index - winner.index) <= AMBIGUITY_GAP_CHARS && !matchesOverlap(winner, m))
+      : undefined;
+    if (conflict) {
       return {
         documentId: doc.documentId,
-        type: rule.type,
-        confidence: confirmed ? 0.98 : 0.9,
-        evidence: [evidence],
-        resolutionMethod: confirmed ? "DETERMINISTIC_DECLARED_TYPE_CONFIRMED" : "DETERMINISTIC_TITLE_PATTERN",
+        type: doc.declaredType ?? "UNKNOWN",
+        confidence: doc.declaredType ? 0.3 : 0,
+        evidence: [winner.evidence, conflict.evidence],
+        resolutionMethod: "DETERMINISTIC_CAPTION_AMBIGUOUS",
       };
     }
+    // A declared type that agrees with the deterministic evidence is
+    // reported as a CONFIRMED classification (both signals agree) rather
+    // than just DETERMINISTIC_TITLE_PATTERN - stronger confidence, still
+    // never forced past what the text shows.
+    const confirmed = doc.declaredType === winner.type;
+    return {
+      documentId: doc.documentId,
+      type: winner.type,
+      confidence: confirmed ? 0.98 : 0.9,
+      evidence: [winner.evidence],
+      resolutionMethod: confirmed ? "DETERMINISTIC_DECLARED_TYPE_CONFIRMED" : "DETERMINISTIC_TITLE_PATTERN",
+    };
   }
 
   // No deterministic title signal at all - honest UNKNOWN (or OTHER_DEBT_DOCUMENT
