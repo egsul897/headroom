@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PHASE3_RELEASE_GATE",
+  "requirement": "Section 29: Phase 3 closes only if ALL A-N are true.",
+  "checklist": [
+    { "id": "A", "text": "architecture remains domain-general", "status": true, "evidence": "03-decomposition-architecture-decision.json (Option 1 selected); 20-independent-audit.json finds 0 provision-family-dictionary or benchmark-specific-logic blockers." },
+    { "id": "B", "text": "semantic inventory (if introduced) achieves >=98% material component recall on generic tests", "status": "N/A", "evidence": "No Pass-A inventory was introduced (Option 1). The 36 generic synthetic whole-agreement tests (08-generic-whole-agreement-tests.json) pass 100%, demonstrating the existing IR/completeness mechanism works generically, but this is not literally an 'inventory recall' figure." },
+    { "id": "C", "text": "composition coverage >=98% on generic tests", "status": "N/A", "evidence": "Same architectural note as B - no separate composition stage exists to measure in isolation; the 36/36 synthetic pass rate is the closest available proxy and is satisfied." },
+    { "id": "D", "text": "A1-A6 >=5/6 clean substantive capture", "status": false, "evidence": "10-frozen-holdout-rerun.json: 2/6 this run (A5, A6), 3/6 prior post-fix run. NOT MET in either observed post-fix execution." },
+    { "id": "E", "text": "B1-B4 qualifier gate passes (4/4 preferred, 3/4 safe-failed acceptable)", "status": false, "evidence": "11-definition-and-qualifier-gates.json: 0/4 clean, reproducible across all 3 real executions of this holdout to date." },
+    { "id": "F", "text": "0 silent material omissions in frozen holdout", "status": true, "evidence": "10-frozen-holdout-rerun.json hardSafetyRequirement: MET both post-fix runs." },
+    { "id": "G", "text": "diversified whole-agreement reality check >=95% material semantic recall", "status": false, "evidence": "14-whole-agreement-reality-check-results.json materialRecallEstimate: NOT MET - qualitative evidence (8 of 36 material findings are literal absent-value misses) places first-pass recall well below 95% on genuinely unseen content." },
+    { "id": "H", "text": "every tested covenant family demonstrates substantive semantic capture", "status": true, "evidence": "14-whole-agreement-reality-check-results.json substantiveCaptureByFamily: MET for all 8 tested families." },
+    { "id": "I", "text": "agreement-level dependencies are preserved", "status": "PARTIAL", "evidence": "15-dependency-graph-check.json: 3 real provisions (exceeding the Section 23 minimum) show genuine RULE->DEFINITION/RULE->RULE wiring, but the region purpose-built for cross-covenant/shared-cap wiring produced none, and no SharedCapacity object was produced anywhere despite a confirmed real shared cap in source. The letter of Section 23 is met; full agreement-level dependency preservation is not yet uniformly demonstrated." },
+    { "id": "J", "text": "no false trusted semantics", "status": true, "evidence": "14-whole-agreement-reality-check-results.json falseTrustedSemantics: 0 observed across all 12 real regions; 10's hard safety requirement also MET." },
+    { "id": "K", "text": "14/14 false-credit controls pass", "status": true, "evidence": "17-false-credit-controls.json: 14/14 PASS." },
+    { "id": "L", "text": "known-package regression clean", "status": true, "evidence": "18-known-package-regression.json: FWRG/LSB/DSGR/Riot/CONMED/Superior all clean or accounted for, 0 GT modified." },
+    { "id": "M", "text": "full test gate has no new material regression", "status": true, "evidence": "19-full-regression.json: 0 net-new failures attributable to this mission (3 vitest failures and 6 tsc errors all confirmed pre-existing)." },
+    { "id": "N", "text": "independent audit finds no blocker", "status": true, "evidence": "20-independent-audit.json: 0 blockers found across all 15 named anti-patterns; 1 disclosed, non-blocking concern (shared-cap dependency wiring)." }
+  ],
+  "allTrueRequired": true,
+  "actualResult": "NOT ALL TRUE - D, E, G are false; I is partial. 10 of 14 applicable gates (excluding the 2 N/A items) are met; the 3 numeric target gates most central to Phase 3 closure (A1-A6 exhaustiveness, B1-B4 qualifiers, whole-agreement recall) are not met, alongside one partial (agreement-level dependency uniformity).",
+  "closureDetermination": "Phase 3 does NOT close this mission. The gate is a conjunction (ALL A-N), and D/E/G/I do not clear it despite the substantial, real, honestly-measured progress documented in this mission's own artifacts (a genuine defect found and fixed; every provision family demonstrating substantive real capture; perfect safety-gate performance across F/J/K/L/M/N)."
+}
