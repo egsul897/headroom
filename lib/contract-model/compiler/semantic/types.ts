@@ -27,6 +27,7 @@ import type { PackageGraphResult } from "../package-graph/types";
 import type { IRDefinition, IRRule, IRSharedCapacity, OperativeLineageRef } from "../../ir/types";
 import type { AnalyzerCallTelemetry } from "../../analyzer/telemetry";
 import type { DefinitionCompletenessCheckResult } from "./completeness-check";
+import type { FrozenSemanticInventory, SemanticAccountabilityResult, SourceContextResult } from "../semantic-accountability/types";
 
 /**
  * Phase 3B.1 (task §35) - any change to output orchestration, tool-use
@@ -48,8 +49,15 @@ import type { DefinitionCompletenessCheckResult } from "./completeness-check";
 // change alone requires a version bump per this module's own header
 // comment; a cached Phase 3B/3B.1-era compilation (produced under the old
 // prompt, with no such gating) must never be silently served as-is.
-export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "phase-3f1-fix2-semantic-compiler.v3";
-export const SEMANTIC_COMPILER_PROMPT_VERSION = "phase-3f1-fix2-semantic-compiler-prompt.v3";
+// SEMANTIC ACCOUNTABILITY bump (v3 -> v4): compile.ts now runs source-context
+// sufficiency + Pass A inventory before the model call (output orchestration
+// change), the first-turn prompt renders the frozen inventory and expanded
+// source regions (prompt-wording change), the submit schema carries lineage
+// and inventoryDispositions, and Pass C reconciliation feeds failureReasons.
+// A v3-era cached compilation carries no accountability at all and must
+// never be served as-is.
+export const SEMANTIC_COMPILER_ALGORITHM_VERSION = "semantic-accountability-compiler.v4";
+export const SEMANTIC_COMPILER_PROMPT_VERSION = "semantic-accountability-compiler-prompt.v4";
 export const SEMANTIC_COMPILER_TOOL_POLICY_VERSION = "phase-3b1-tool-policy.v2";
 
 // ---------------------------------------------------------------------------
@@ -131,6 +139,17 @@ export interface SemanticCompilerInput {
   compilerAlgorithmVersion: string;
   compilerPromptVersion: string;
   toolPolicyVersion: string;
+  /**
+   * SEMANTIC ACCOUNTABILITY (optional): absolute char offset of
+   * operativeSourceText within sourceDocumentId's text. When supplied,
+   * source-context sufficiency can prove whether the window is the complete
+   * unit or a truncation (mission §12). Null/undefined = unknown offset.
+   */
+  operativeCharStart?: number | null;
+  /** SEMANTIC ACCOUNTABILITY: populated by compileCovenantToIR before the model call - the resolved source-context (regions + state) handed to Pass A and Pass B. Never set by external callers. */
+  sourceContext?: SourceContextResult | null;
+  /** SEMANTIC ACCOUNTABILITY: the FROZEN Pass A inventory handed read-only to Pass B. Never set by external callers. */
+  frozenInventory?: FrozenSemanticInventory | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -155,7 +174,13 @@ export type SemanticCompilerFailureReason =
   /** POST-3F.2 remediation (Unit A2) - checkDefinitionCompleteness (./completeness-check.ts) found strong, quoted-citation evidence that the supplied source declares a defined term this attempt's compiled definitions[] does not represent. Never asserts what the missing term means; routes the attempt to at least REVIEW_REQUIRED via determineStatus below, exactly like every other failureReason. */
   | "DEFINITION_COMPLETENESS_SUSPECT"
   /** POST-3F.2 remediation (Unit A3) - at least one evidence tool call this attempt made returned text truncated at semantic/tools.ts's MAX_TEXT_RESULT_CHARS ceiling (ToolCallLogEntry.evidenceTruncated). Truncated evidence must never be silently treated as complete - this failureReason makes that explicit rather than leaving it to the model's own judgment of a JSON `truncated` flag it could ignore. */
-  | "TRUNCATED_EVIDENCE_USED";
+  | "TRUNCATED_EVIDENCE_USED"
+  /** SEMANTIC ACCOUNTABILITY (mission §12): source-context sufficiency proved the operative window is TRUNCATED_SOURCE or STRUCTURALLY_INCOMPLETE_SOURCE against its own unit boundary - inventory cannot inventory source it never received, so this attempt can never be COMPLETED. */
+  | "SOURCE_CONTEXT_TRUNCATED"
+  /** SEMANTIC ACCOUNTABILITY (mission §9/§10): Pass C found at least one CRITICAL/MATERIAL frozen-inventory item (or material quantitative value) with NO lineage in the composed IR and NO explicit disposition - a first-class safety signal; never COMPLETED. */
+  | "INVENTORY_ITEM_MISSING_FROM_COMPOSITION"
+  /** SEMANTIC ACCOUNTABILITY: Pass A failed or returned an empty inventory over source that carries quantitative values/operative language (INVENTORY_FAILED / INVENTORY_EMPTY_SUSPECT) - accountability cannot be established, so this attempt can never be COMPLETED. Not raised for INVENTORY_SKIPPED_NO_PROVIDER (no real provider configured), which is disclosed on the result instead. */
+  | "SEMANTIC_INVENTORY_UNAVAILABLE";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {
@@ -230,6 +255,12 @@ export interface SemanticCompilationResult {
    * compileCovenantToIR call that reaches normalization sets a real value.
    */
   definitionCompletenessCheck?: DefinitionCompletenessCheckResult | null;
+  /** SEMANTIC ACCOUNTABILITY: the source-context sufficiency result this attempt ran under (regions with provenance + state). Null when accountability was disabled for this call; undefined on results built by pre-existing fixtures. */
+  sourceContext?: SourceContextResult | null;
+  /** SEMANTIC ACCOUNTABILITY: the FROZEN Pass A inventory (hashed before Pass B ran). Null when accountability was disabled. */
+  frozenInventory?: FrozenSemanticInventory | null;
+  /** SEMANTIC ACCOUNTABILITY: Pass C's deterministic reconciliation of the frozen inventory against the composed IR. Null when accountability was disabled or no submission was produced. Never consumed by the independent verifier. */
+  accountability?: SemanticAccountabilityResult | null;
   /** The raw, unnormalized wire object the model actually submitted - preserved for audit/debugging, never treated as authoritative (task §9). */
   rawModelOutput: unknown;
   provider: string;

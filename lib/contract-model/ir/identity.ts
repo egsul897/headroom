@@ -48,6 +48,12 @@ function sortKeysDeep(value: unknown): unknown {
 export function computeExpressionId(expr: IRExpression): string {
   const { provenance, ...content } = expr as unknown as Record<string, unknown>;
   delete content.exprId;
+  // SEMANTIC ACCOUNTABILITY: lineage is metadata about accountability (which
+  // inventory items this node consumes), not computational content - excluded
+  // from identity exactly as provenance is, so attaching lineage never changes
+  // an exprId and a lineage-free fixture and a lineage-bearing compile of the
+  // same expression share one identity.
+  delete content.inventoryItemIds;
   const anchor = provenance && typeof provenance === "object" ? (provenance as { documentId?: string; sourceCitation?: string }) : null;
   const parts = [canonicalStringify(content)];
   if (anchor?.documentId) parts.push(anchor.documentId);
@@ -69,6 +75,7 @@ export function computeCapacityExpressionId(capacity: IRCapacityExpression): str
   if (capacity.kind === "UNLIMITED_CAPACITY") {
     const { provenance, ...content } = capacity as unknown as Record<string, unknown>;
     void provenance;
+    delete content.inventoryItemIds;
     return computeStableKey("ir-expr", canonicalStringify(content));
   }
   return computeExpressionId(capacity);

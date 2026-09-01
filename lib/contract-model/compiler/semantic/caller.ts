@@ -138,13 +138,54 @@ function formatContextItem(i: SemanticCompilerInput["contextBundle"]["items"][nu
   return `- [${i.itemId}] (${i.type}, ${i.sourceCitation}) {${trust}}: ${i.excerptText}`;
 }
 
+/**
+ * SEMANTIC ACCOUNTABILITY (mission §7/§8): renders the FROZEN Pass A
+ * inventory and the source-context expansion regions into the first user
+ * turn. The inventory is read-only evidence of what the source contains;
+ * Pass B must consume every MATERIAL/CRITICAL item into lineage
+ * (inventoryItemIds on the node/rule/definition/condition/exception/shared
+ * capacity that represents it) or disposition it explicitly - Pass C
+ * (compile.ts) checks this deterministically afterwards, so this text is
+ * guidance, never the enforcement mechanism.
+ */
+function summarizeAccountability(input: SemanticCompilerInput): string {
+  const parts: string[] = [];
+  const sc = input.sourceContext;
+  if (sc) {
+    const expansions = sc.regions.filter((r) => r.kind !== "OPERATIVE");
+    parts.push(`SOURCE CONTEXT STATE: ${sc.state}${sc.reasons.length > 0 ? ` (${sc.reasons.join("; ")})` : ""}. ${sc.state === "TRUNCATED_SOURCE" || sc.state === "STRUCTURALLY_INCOMPLETE_SOURCE" ? "The operative text you were given is KNOWN to be incomplete against its own unit boundary - your sufficiency for anything that could depend on the missing text must be PARTIAL/MISSING_CONTEXT, never COMPLETE." : ""}`);
+    if (expansions.length > 0) {
+      parts.push("ADDITIONAL SOURCE REGIONS (explicitly cross-referenced by the operative text; retrieved deterministically with provenance - use them to resolve what the operative text's references mean, cite them by their own section ref, and never treat them as the provision you are compiling):");
+      for (const r of expansions) parts.push(`--- REGION ${r.regionId}: ${r.documentId}::${r.sectionRef ?? "(no ref)"} chars ${r.charStart}-${r.charEnd}${r.truncatedAtBudget ? " [TRUNCATED AT BUDGET]" : ""} (included because the operative text references "${r.expandedFor?.referenceText}" [${r.expandedFor?.resolution}]: ${r.expandedFor?.note}) ---\n${r.text}`);
+    }
+    if (sc.unresolvedReferences.length > 0) parts.push(`CROSS-REFERENCES THAT COULD NOT BE RESOLVED TO A REGION (record each as a dependsOn with the exact reference text, or as MISSING_CONTEXT; never guess their content):\n${sc.unresolvedReferences.map((u) => `- "${u.referenceText}" -> ${u.status}: ${u.reason}`).join("\n")}`);
+  }
+  const inv = input.frozenInventory;
+  if (inv) {
+    if (inv.items.length > 0) {
+      parts.push(`FROZEN SEMANTIC INVENTORY (Pass A, ${inv.items.length} item(s), content hash ${inv.frozenContentHash.slice(0, 16)}). ACCOUNTABILITY OBLIGATION: every item marked CRITICAL or MATERIAL below MUST end up either (a) CONSUMED - list its inventoryItemId in the inventoryItemIds array of the rule, definition, sharedCapacity, condition, exception, or expression node that represents it (a node may consume several items; a definition's calculationExpression consumes its FORMULA_COMPONENT items on the operand nodes themselves), or (b) DISPOSITIONED - listed in inventoryDispositions with INTENTIONALLY_NON_COMPUTATIONAL (real but not a computable mechanic - e.g. a purely descriptive statement), UNSUPPORTED (you could not represent it faithfully; prefer an UNSUPPORTED node that consumes it), or AMBIGUOUS (the source supports more than one reading; say why). A material item you neither consume nor disposition is reported as MISSING_FROM_COMPOSITION by a deterministic check - never silently omit one, and never list an item's id on a node that does not actually carry that item's value or meaning.`);
+      for (const it of inv.items) {
+        const values = it.quantitativeValues.length > 0 ? ` values={${it.quantitativeValues.map((v) => `${v.kind} ${v.rawText}`).join("; ")}}` : "";
+        const refs = [...it.referencedTerms.map((t) => `term:${t}`), ...it.referencedSections.map((s) => `ref:${s}`)];
+        parts.push(`- ${it.inventoryItemId} [${it.semanticRole}/${it.materiality}${it.ambiguity !== "NONE" ? `/${it.ambiguity}` : ""}] ${it.proposition}${values}${refs.length > 0 ? ` {${refs.join(", ")}}` : ""} (${it.sourceSpan.sourceCitation}: "${it.sourceSpan.excerpt.slice(0, 160).replace(/\s+/g, " ")}")`);
+      }
+    } else {
+      parts.push(`FROZEN SEMANTIC INVENTORY: ${inv.inventoryStatus} - ${inv.inventoryStatusReason}`);
+    }
+    if (inv.uninventoriedValues.length > 0) parts.push(`QUANTITATIVE VALUES DETECTED DETERMINISTICALLY THAT NO INVENTORY ITEM COVERS (account for each that participates in a material proposition; a value that is genuinely non-operative may be left un-consumed): ${inv.uninventoriedValues.map((v) => `${v.kind} ${v.rawText} [${v.regionId}]`).join("; ")}`);
+  }
+  return parts.join("\n\n");
+}
+
 function summarizeContextBundle(input: SemanticCompilerInput): string {
   const items = input.contextBundle.items.map(formatContextItem).join("\n");
   const unresolved = input.contextBundle.unresolvedDependencies.map((u) => `- ${u.dependencyType} (${u.severity}): ${u.reason}`).join("\n");
+  const accountability = summarizeAccountability(input);
   return [
     `Operative source text (${input.sourceSectionRef ?? "no section ref"}):`,
     input.operativeSourceText,
     "",
+    ...(accountability ? [accountability, ""] : []),
     input.operativeLineage
       ? `Operative-state status: ${input.operativeLineage.operativeStatus} (as of ${input.operativeLineage.asOfDate}). If this is not OPERATIVE_STATE_RESOLVED, your sufficiency must honestly reflect the uncertainty - never treat unresolved/conflicted operative text as authoritative COMPLETE.`
       : "This provision has no recorded amendment history (never amended).",
@@ -204,6 +245,7 @@ function recoverPartialSubmission(rawInput: unknown): { recovered: SubmitCompila
       definitions: validDefinitions,
       sharedCapacities: [],
       irExtensionCandidates: [],
+      inventoryDispositions: [],
       overallNotes: [`Phase 3B.1 partial-output recovery: response was truncated at the provider's output-token ceiling. Recovered ${validRules.length}/${rawRules.length} rule(s) and ${validDefinitions.length}/${rawDefinitions.length} definition(s) as a validated prefix; anything after the first malformed element was dropped, never guessed. sharedCapacities/irExtensionCandidates were dropped entirely on this truncated response since they may depend on the truncated portion.`],
     },
     rulesRecovered: validRules.length,
