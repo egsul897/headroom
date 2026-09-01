@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CLASSIFIER_IMPLEMENTATION_RESULTS",
+  "productionFilesChanged": [
+    "lib/contract-model/compiler/package-graph/document-classifier.ts (Tier 2 rewritten from array-order-first to earliest-text-position-first, plus a bounded, overlap-aware ambiguity guard)",
+    "lib/contract-model/compiler/package-graph/types.ts (additive: DocumentClassification.resolutionMethod union gains one new literal, DETERMINISTIC_CAPTION_AMBIGUOUS)"
+  ],
+  "schemaChange": false,
+  "testFileChanged": [
+    "tests/certification/section8-package-relationship-independent.test.ts - updated ONE pre-existing test that explicitly documented the now-fixed defect as a disclosed boundary ('REAL FINDING (disclosed-boundary, not a regression)'); the test's own comments already stated this was a known V1 gap, not a required/protected behavior. Renamed the describe block to 'FIXED by...' and updated the assertion from the old buggy SECURITY_AGREEMENT/SECURES outcome to the new correct AMENDMENT/AMENDS outcome, on the exact same fixture text."
+  ],
+  "realRiotVerification": {
+    "method": "Ran classifyDocument directly against the real, frozen doc-a source text (tests/fixtures/unseen-packages/riot-2025-2026-credit-facility/extracted-text/doc-a-2025-04-22-credit-agreement.txt) with the fixed code.",
+    "result": "{ type: 'CREDIT_AGREEMENT', confidence: 0.9, evidence: ['CREDIT AGREEMENT'], resolutionMethod: 'DETERMINISTIC_TITLE_PATTERN' } - the defect (COMPLIANCE_CERTIFICATE) is closed on the exact real evidence that exposed it."
+  },
+  "designIterationLog": [
+    "Initial implementation (earliest-position-wins + a proximity-based ambiguity guard with no type-awareness) broke 19 previously-passing tests: every case where a legitimately-drafted amendment/joinder/guarantee/security/intercreditor document's own caption naturally names the base facility (or another related document) it acts upon within the same short sentence - exactly the ordinary, universal financing-document convention of an ancillary document identifying what it relates to.",
+    "Root cause of the false positives: real financing-document captions routinely and legitimately mention MULTIPLE document types in close proximity ('AMENDMENT... to the Credit Agreement... and to the Security Agreement...', 'GUARANTEE... guaranteeing obligations under the Credit Agreement...') - proximity alone cannot distinguish this from genuine conflicting-identity ambiguity.",
+    "Fix: scoped the ambiguity guard to fire ONLY when the WINNING match is itself one of the two base facility types (CREDIT_AGREEMENT, INDENTURE) - every OTHER RULES type is, by this whole package-graph system's own design (relationship-resolution.ts's RELATIONSHIP_TYPES_BY_SOURCE_CLASSIFICATION), inherently a document whose purpose is to reference/modify/relate-to another agreement, so a base-type mention near its own caption is never itself surprising. This closed all 19 regressions while preserving the ability to flag a genuinely fused/ambiguous caption naming two non-base types with no established composite RULES entry (verified via the C8 generic test).",
+    "One pre-existing test (section8-package-relationship-independent.test.ts) explicitly asserted the OLD buggy behavior as a disclosed, accepted V1 boundary - updated to assert the new, correct behavior once confirmed the fix genuinely closes that exact gap, per the same root-cause class as Riot's own defect."
+  ],
+  "noKeywordArmsRaceConfirmation": "RULES array patterns and their relative order were not modified. BASE_REFERENCEABLE_TYPES contains exactly the two structurally-general 'base facility' DocumentType values already defined in the Prisma schema (CREDIT_AGREEMENT, INDENTURE) - no Riot, Coinbase, or known-package string anywhere in the diff (confirmed via the generic test file's own grep test)."
+}

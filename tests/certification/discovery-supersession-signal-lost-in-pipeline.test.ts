@@ -164,8 +164,9 @@ describe("discovery pipeline: supersessionStatus computed at Pass A now survives
     // A real NodeSupersessionIndex marking this exact physical node superseded.
     const supersessionIndex = {
       coveredDocumentIds: new Set([documentId]),
-      supersededByNodeId: new Map([[node.nodeId, { nodeId: node.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01" }]]),
+      supersededByNodeId: new Map([[node.nodeId, { nodeId: node.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01", supersessionKind: "PROVISION_LEVEL" as const, supersedingOperativeDocumentId: null }]]),
       ambiguousNodeIds: new Set<string>(),
+      documentLevelSupersededDocuments: new Map(),
     };
 
     const deterministic = runPassADeterministicSignals(documentId, index, supersessionIndex);

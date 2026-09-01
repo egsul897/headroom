@@ -246,7 +246,7 @@ describe("resolveNodeWithSupersessionAwareness - defensive hand-built fixtures (
     const node = index.getNodeByRef(DOC, "5.05")!;
     // A supersession index that covers this document but records NOTHING
     // superseded - the node-level check alone would report CURRENT_OPERATIVE.
-    const coveringButCleanIndex: NodeSupersessionIndex = { coveredDocumentIds: new Set([DOC]), supersededByNodeId: new Map(), ambiguousNodeIds: new Set() };
+    const coveringButCleanIndex: NodeSupersessionIndex = { coveredDocumentIds: new Set([DOC]), supersededByNodeId: new Map(), ambiguousNodeIds: new Set(), documentLevelSupersededDocuments: new Map() };
     const resolved = resolveNodeWithSupersessionAwareness(access(index, opState), coveringButCleanIndex, node);
     expect(resolved.nodeSupersessionStatus).toBe("CURRENT_OPERATIVE"); // the node-level signal alone WOULD say safe...
     expect(resolved.evidenceCurrent).toBe(false); // ...but the real view's own CONFLICTED status still gates it correctly.
@@ -292,12 +292,13 @@ describe("PERMANENT INVARIANT: resolveNodeWithSupersessionAwareness never report
           if (nodeShape === "UNKNOWN") {
             supersessionIndex = EMPTY_SUPERSESSION_INDEX;
           } else if (nodeShape === "COVERED_CLEAN") {
-            supersessionIndex = { coveredDocumentIds: new Set([DOC]), supersededByNodeId: new Map(), ambiguousNodeIds: new Set() };
+            supersessionIndex = { coveredDocumentIds: new Set([DOC]), supersededByNodeId: new Map(), ambiguousNodeIds: new Set(), documentLevelSupersededDocuments: new Map() };
           } else {
             supersessionIndex = {
               coveredDocumentIds: new Set([DOC]),
-              supersededByNodeId: new Map([[node.nodeId, { nodeId: node.nodeId, instrumentKey: INSTRUMENT, provisionKey: "other", supersededByEffectId: "other-effect", supersededByAmendmentDocumentId: "amd-other", supersededEffectiveDate: "2020-01-01" }]]),
+              supersededByNodeId: new Map([[node.nodeId, { nodeId: node.nodeId, instrumentKey: INSTRUMENT, provisionKey: "other", supersededByEffectId: "other-effect", supersededByAmendmentDocumentId: "amd-other", supersededEffectiveDate: "2020-01-01", supersessionKind: "PROVISION_LEVEL" as const, supersedingOperativeDocumentId: null }]]),
               ambiguousNodeIds: new Set(),
+              documentLevelSupersededDocuments: new Map(),
             };
           }
           const resolved = resolveNodeWithSupersessionAwareness(access(index, opState), supersessionIndex, node);

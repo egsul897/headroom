@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FALSE_CREDIT_CONTROLS",
+  "testFiles": ["tests/evaluation-v2/dsgr-false-credit-gate.test.ts", "tests/evaluation-v2/false-credit-prohibitions.test.ts"],
+  "command": "npx vitest run tests/evaluation-v2/dsgr-false-credit-gate.test.ts tests/evaluation-v2/false-credit-prohibitions.test.ts",
+  "result": "4/4 tests passed in dsgr-false-credit-gate.test.ts (including the gate test asserting every one of the 14 previously-confirmed false credits is rejected or flagged, none silently upheld) + 10/10 passed in false-credit-prohibitions.test.ts",
+  "verdict": "14/14 REQUIRED - MET, unchanged from the pre-fix baseline (this test file and the production evaluator/false-credit logic it exercises were not touched by the classifier fix)."
+}

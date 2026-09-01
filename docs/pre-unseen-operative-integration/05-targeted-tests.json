@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "TARGETED_TESTS",
+  "testFile": "tests/contract-model/pre-unseen-operative-integration.test.ts",
+  "evidenceCategory": "GENERIC_ADVERSARIAL_EVIDENCE",
+  "fixtureDiscipline": "Every fact pattern wholly invented (Cedarview Materials, Inc. / Anchorline Capital, LLC / Fenwick Distribution, Inc. / Union Point Lender, LLC) - never Riot/Coinbase or any real known-package (FWRG/LSB/CONMED/DSGR) name, section number, or date. Uses the REAL, unmodified-except-by-this-session production functions end to end (buildPackageGraph, runAmendmentPipeline, computeOperativeDocument, computeOperativeContractState, buildNodeSupersessionIndex, getNodeSupersessionStatus, resolveOperativeSectionEvidence, buildSourceInventory) - never a mock of any of them. A final test mechanically greps this file's own fixture text for banned strings.",
+  "results": "21/21 passed",
+  "requiredScenarios": {
+    "S1_simpleRestatement": "PASS - V1's node KNOWN_SUPERSEDED (DOCUMENT_LEVEL, supersedingOperativeDocumentId=cv2) once a real 2-document RESOLVED restatement chain resolves; V2's own node stays CURRENT_OPERATIVE.",
+    "S2_threeDocChain": "PASS - both V1 and V2 report KNOWN_SUPERSEDED within their own instrument's supersession index once V3 resolves operative; V3 stays current. Also exercises S11 (control) in the same fixture.",
+    "S3_ordinaryAmendment_unchangedNodeStaysCurrent": "PASS - an ordinary (non-restatement) amendment leaves operativeDocument NOT_APPLICABLE, documentLevelSupersededDocuments empty, and the base document's own untouched node CURRENT_OPERATIVE.",
+    "S4_ordinaryAmendmentSpecificProvision_existingLogicPreserved": "PASS - the SPECIFIC amended section is KNOWN_SUPERSEDED with supersessionKind PROVISION_LEVEL (not DOCUMENT_LEVEL) and supersedingOperativeDocumentId null - the pre-existing mechanism is untouched, not replaced.",
+    "S5_unresolvedRestatementTarget_neverAffirmativelyHistorical": "PASS - a malformed/unresolvable restatement target yields a non-RESOLVED operativeDocument; documentLevelSupersededDocuments stays empty; the predecessor's node stays CURRENT_OPERATIVE.",
+    "S6_fork_neverManufactureCurrentness": "PASS - two documents claiming to restate the same predecessor yields REVIEW_REQUIRED; no document-level record is ever created for either.",
+    "S7_cycle_safeUncertainty": "PASS - a hand-built two-document restatement cycle yields REVIEW_REQUIRED with reviewReason containing \"cycle\"; no document-level record created.",
+    "S8_historicalProvenance_retrievableByStableId": "PASS - after DOCUMENT_LEVEL supersession, the node's own physical text remains fully, byte-identically retrievable via the structural index.",
+    "S9_historicalSourceTrust_neverTrustedCurrentEvidence": "PASS - resolveOperativeSectionEvidence's no-provision-view branch reports isCurrentTruth=false / status KNOWN_SUPERSEDED for a document-level-historical node.",
+    "S10_verifier_historicalTextMatchNotVerifiedCurrent": "PASS - buildSourceInventory reports supersessionStatus KNOWN_SUPERSEDED for a document-level-historical node despite an exact, valid citation/quote match.",
+    "S11_currentSourceControl_equivalentClaimProceedsNormally": "PASS (in S2's own fixture) - the real current operative document's own node resolves isCurrentTruth=true / CURRENT_OPERATIVE, confirming the fix does not over-trigger.",
+    "S12_tenantIsolation": "PASS - two unrelated document families' states combined into one buildNodeSupersessionIndex call never cross-contaminate documentLevelSupersededDocuments membership.",
+    "S13_unrelatedDocumentFamilyIsolation": "PASS - an unrelated Security Agreement co-occurring in the same index build with a real restatement chain is never swept into DOCUMENT_LEVEL supersession merely by co-occurrence.",
+    "S14_notApplicableUnchangedBehavior": "PASS - a package with zero restatement activity behaves identically to pre-fix baseline (CURRENT_OPERATIVE default, empty documentLevelSupersededDocuments).",
+    "S15_multipleHistoricalPredecessorsAllConsistentlyNonCurrent": "PASS (in S2's own fixture) - both V1 and V2 consistently report KNOWN_SUPERSEDED, never a partial/inconsistent result across predecessors."
+  },
+  "requiredAdversarialScenarios": {
+    "A_noProvisionEffectRecorded": "PASS - zero provisions attached for the fixture (confirmed via state.provisions.length===0); node still correctly KNOWN_SUPERSEDED via the whole-document rule alone.",
+    "B_identicalTextToCurrentDoc": "PASS - a section byte-identical between the historical predecessor and the current operative document (never touched by the restatement's own economic changes) still reports KNOWN_SUPERSEDED for the historical copy - text equality never implies currentness.",
+    "C_exactHighQualityCitation": "PASS - buildSourceInventory with a real, exact, verbatim citation/quote still reports KNOWN_SUPERSEDED, never upgraded by citation quality.",
+    "D_verifierSemanticAgreement": "PASS - the no-provision-view (CASE D-equivalent) path fails closed to isCurrentTruth=false regardless of any downstream semantic agreement, since no OperativeProvisionView exists to independently 'agree' with in this shape.",
+    "E_preResolutionPersistedNode": "PASS - a node considered CURRENT_OPERATIVE by an earlier, narrower index (built before the chain's own restatement effects were known) is proven non-sticky: a freshly-built index from the real, current state correctly reports KNOWN_SUPERSEDED, and the earlier index is shown unmutated (still reporting its own original verdict) - proving each index build is a pure function of its own input, never cached/reused across states.",
+    "F_chainResolvedAfterEarlierUncertainty": "PASS - a chain that starts REVIEW_REQUIRED (malformed date) and is later corrected to RESOLVED (in a wholly separate, fresh pipeline run) correctly flips to KNOWN_SUPERSEDED - no earlier uncertainty leaves a stale CURRENT verdict cached anywhere; the original REVIEW_REQUIRED-era index remains provably unmutated."
+  },
+  "regressionGuardsInSameFile": ["Benchmark-contamination guard - mechanical grep of this file's own fixture text for Riot/Coinbase/known-package strings, all absent."]
+}

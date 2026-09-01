@@ -597,16 +597,57 @@ export function buildNodeSupersessionIndex(entries: OperativeStateForDocument[])
           supersededByEffectId: supersedingEffect?.effectId ?? "(unknown-superseding-effect)",
           supersededByAmendmentDocumentId: supersedingEffect?.amendmentDocumentId ?? provision.currentSourceDocumentId,
           supersededEffectiveDate: supersedingEffect?.effectiveDate.date ?? null,
+          supersessionKind: "PROVISION_LEVEL",
+          supersedingOperativeDocumentId: null,
         });
       }
     }
   }
 
-  return { coveredDocumentIds, supersededByNodeId, ambiguousNodeIds };
+  // -------------------------------------------------------------------------
+  // PRE-UNSEEN OPERATIVE-STATE INTEGRATION - whole-document currentness places
+  // an upper bound on node/source currentness (docs/pre-unseen-operative-
+  // integration/03-integration-design.json). Composes the ALREADY-COMPUTED,
+  // authoritative computeOperativeDocument result (chain.ts) each entry's own
+  // OperativeContractState already carries as `state.operativeDocument` -
+  // never a second, independent version-chain computation. Gated strictly on
+  // status === "RESOLVED": REVIEW_REQUIRED/NOT_APPLICABLE (forks, cycles,
+  // unresolved restatement targets, ordinary amendments with no
+  // RESTATE_AGREEMENT effect at all) leave this untouched, so uncertainty is
+  // never converted into supersession and an ordinary amendment's own base
+  // document never becomes historical merely because SOME section of it was
+  // amended (computeOperativeDocument only ever resolves RESOLVED when a real
+  // RESTATE_AGREEMENT effect exists - see chain.ts).
+  // -------------------------------------------------------------------------
+  const documentLevelSupersededDocuments = new Map<string, NodeSupersessionRecord>();
+  for (const { baseDocumentId, state } of entries) {
+    const opDoc = state.operativeDocument;
+    if (!opDoc || opDoc.status !== "RESOLVED" || !opDoc.operativeDocumentId) continue;
+    if (baseDocumentId === opDoc.operativeDocumentId) continue; // the operative document itself is never its own predecessor.
+    if (!opDoc.predecessorDocumentIds.includes(baseDocumentId)) continue;
+    if (documentLevelSupersededDocuments.has(baseDocumentId)) continue; // first-writer-wins, mirroring supersededByNodeId's own convention.
+    // The direct successor edge for this document (never the transitive
+    // ultimate operative document alone) - the real, disclosable provenance
+    // for "why," mirroring supersededByNodeId's own "earliest applied effect"
+    // provenance discipline above.
+    const directEdge = opDoc.relationshipChain.find((e) => e.restatesDocumentId === baseDocumentId) ?? null;
+    documentLevelSupersededDocuments.set(baseDocumentId, {
+      nodeId: "", // filled in per-query with the real queried nodeId by getNodeSupersessionStatus - this template applies uniformly to every node in the document.
+      instrumentKey: state.instrumentKey,
+      provisionKey: `${baseDocumentId}::WHOLE_DOCUMENT`,
+      supersededByEffectId: directEdge?.effectId ?? "(unknown-superseding-restatement-effect)",
+      supersededByAmendmentDocumentId: directEdge?.documentId ?? opDoc.operativeDocumentId,
+      supersededEffectiveDate: directEdge?.effectiveDate ?? null,
+      supersessionKind: "DOCUMENT_LEVEL",
+      supersedingOperativeDocumentId: opDoc.operativeDocumentId,
+    });
+  }
+
+  return { coveredDocumentIds, supersededByNodeId, ambiguousNodeIds, documentLevelSupersededDocuments };
 }
 
 /** The honest default for a consumer that has not (yet, or ever) been wired to any real amendment/operative-state computation - every lookup against this resolves UNKNOWN_SUPERSESSION_STATUS, never CURRENT_OPERATIVE, since `coveredDocumentIds` is empty. This is what makes "no supersession index was supplied" fail closed rather than silently behaving exactly as the pre-fix code did (implicitly certifying every node current). */
-export const EMPTY_SUPERSESSION_INDEX: NodeSupersessionIndex = { coveredDocumentIds: new Set(), supersededByNodeId: new Map(), ambiguousNodeIds: new Set() };
+export const EMPTY_SUPERSESSION_INDEX: NodeSupersessionIndex = { coveredDocumentIds: new Set(), supersededByNodeId: new Map(), ambiguousNodeIds: new Set(), documentLevelSupersededDocuments: new Map() };
 
 /**
  * The single query primitive every bypass-prone StructuralNode consumer
@@ -628,6 +669,25 @@ export const EMPTY_SUPERSESSION_INDEX: NodeSupersessionIndex = { coveredDocument
 export function getNodeSupersessionStatus(index: NodeSupersessionIndex, documentId: string, nodeId: string | null): NodeSupersessionResult {
   if (!nodeId) {
     return { status: "UNKNOWN_SUPERSESSION_STATUS", record: null, reason: "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label." };
+  }
+  // PRE-UNSEEN OPERATIVE-STATE INTEGRATION - RULE 1 (governing invariant:
+  // whole-document currentness places an upper bound on node/source
+  // currentness). Checked BEFORE the pre-existing per-node record below: a
+  // node whose own containing document was affirmatively established as a
+  // RESOLVED historical predecessor cannot be trusted current regardless of
+  // whether a specific provision-level effect also happens to target it.
+  // Both branches return the same KNOWN_SUPERSEDED status (see types.ts's
+  // own NodeSupersessionKind doc comment for why no new status literal was
+  // added) - this ordering only affects which provenance a caller sees when
+  // both could apply, never the trust outcome itself.
+  const docLevelRecord = index.documentLevelSupersededDocuments.get(documentId);
+  if (docLevelRecord) {
+    const record: NodeSupersessionRecord = { ...docLevelRecord, nodeId };
+    return {
+      status: "KNOWN_SUPERSEDED",
+      record,
+      reason: `This physical occurrence's own containing document ("${documentId}") was affirmatively established as a historical predecessor of the resolved operative document "${record.supersedingOperativeDocumentId}" (restated by "${record.supersededByAmendmentDocumentId}" via effect "${record.supersededByEffectId}"${record.supersededEffectiveDate ? `, effective ${record.supersededEffectiveDate}` : ""}) - whole-document currentness places an upper bound on this node's own currentness, regardless of whether any section/definition-level amendment effect separately targets it.`,
+    };
   }
   const record = index.supersededByNodeId.get(nodeId);
   if (record) {

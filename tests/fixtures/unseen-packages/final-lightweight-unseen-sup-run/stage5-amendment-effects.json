@@ -1,0 +1,45 @@
+[
+  {
+    "effectId": "a6936dd89749799a248a237459027556636602cd10c83a2e2aec2d0696d5d49f",
+    "amendmentDocumentId": "doc-c",
+    "target": {
+      "kind": "SECTION",
+      "targetDocumentId": "doc-b",
+      "targetInstrumentKey": "instrument:doc-b",
+      "targetStructuralNodeKey": null,
+      "targetSectionRef": "6.02",
+      "targetDefinedTermRef": null,
+      "targetHint": "that certain Amended and Restated Credit Agreement, dated as of August 14, 2024"
+    },
+    "operation": "MODIFY_PROVISION",
+    "effectiveDate": {
+      "date": "March 31, 2025",
+      "status": "INFERRED_FROM_EXECUTION_DATE",
+      "evidence": null,
+      "reason": "No explicit or conditional effective-date statement was found in the amendment's own text; the document's own execution date is used as the best-available inference, not asserted as certain."
+    },
+    "newText": null,
+    "oldText": null,
+    "sourceCitation": "Superior Industries International, Inc. First Amendment to Amended and Restated Term Loan Credit Agreement (2025-03-31)",
+    "sourceExcerpt": "such supplementation or amendment; (d) Section 6.02 is hereby amended by deleting “and” from the end of clause (4), by replacing “.” at the end of cl",
+    "confidence": 0.3,
+    "status": "REVIEW_REQUIRED",
+    "unresolvedReason": "low model confidence (0.3); The amendment clause text is truncated mid-sentence ('...replacing \".\" at the end of cl...'), so it is unclear what the period is being replaced with and whether a new clause (e.g., clause (5) or (6)) is being added to Section 6.02.; Full resulting text of Section 6.02 after the amendment cannot be determined from the truncated clause provided.; Target's current text for Section 6.02 was not provided, preventing verification of clause numbering (4) referenced in the amendment.",
+    "resolutionMethod": "SEMANTIC_INTERPRETATION",
+    "rawModelOutput": {
+      "operation": "MODIFY_PROVISION",
+      "proposedNewText": null,
+      "targetConfirmed": true,
+      "effectiveDateEvidence": null,
+      "sourceCitations": [
+        "Section 6.02"
+      ],
+      "confidence": 0.3,
+      "unresolvedQuestions": [
+        "The amendment clause text is truncated mid-sentence ('...replacing \".\" at the end of cl...'), so it is unclear what the period is being replaced with and whether a new clause (e.g., clause (5) or (6)) is being added to Section 6.02.",
+        "Full resulting text of Section 6.02 after the amendment cannot be determined from the truncated clause provided.",
+        "Target's current text for Section 6.02 was not provided, preventing verification of clause numbering (4) referenced in the amendment."
+      ]
+    }
+  }
+]

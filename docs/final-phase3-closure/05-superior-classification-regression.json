@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SUPERIOR_CLASSIFICATION_REGRESSION",
+  "methodology": "buildPackageGraph run fresh against the frozen Superior fixture (tests/fixtures/unseen-packages/final-lightweight-unseen-sup/) using the just-fixed, now-frozen production classifier. Zero LLM calls (fully deterministic).",
+  "results": [
+    { "documentId": "doc-a", "type": "CREDIT_AGREEMENT", "confidence": 0.9, "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN", "required": "CREDIT_AGREEMENT", "pass": true },
+    { "documentId": "doc-b", "type": "AMENDED_AND_RESTATED_AGREEMENT", "confidence": 0.9, "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN", "required": "AMENDED_AND_RESTATED_AGREEMENT", "pass": true, "note": "PREVIOUSLY (frozen prior run, docs/final-lightweight-unseen/12-document-classification.json): CREDIT_AGREEMENT(0.9) - the C2 wrong-high-confidence-classification defect. NOW FIXED - the classifier correctly matches the real line-wrapped caption 'AMENDED AND RESTATED\\nCREDIT AGREEMENT' via the \\s+ tolerance fix." },
+    { "documentId": "doc-c", "type": "AMENDMENT", "confidence": 0.97, "resolutionMethod": "DETERMINISTIC_SELF_REFERENTIAL_TITLE", "required": "AMENDMENT", "pass": true, "note": "unchanged from the prior run - correctly avoids the 'AMENDED AND RESTATED' phrase trap embedded in its own caption." }
+  ],
+  "hardRequirementMet": true,
+  "summary": "doc-b is no longer a wrong high-confidence CREDIT_AGREEMENT classification. C2 (docs/final-lightweight-unseen/12-document-classification.json's own failing claim) is now CORRECTED. 3/3 classifications correct, 0 wrong high-confidence classifications (down from 1/3 in the frozen prior run)."
+}

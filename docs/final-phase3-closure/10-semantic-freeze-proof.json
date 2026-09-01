@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SEMANTIC_FREEZE_PROOF",
+  "requirement": "Byte-identical diff for semantic/verifier code versus the frozen production baseline (2044f1c7de01d24f6bc8179aa477da801f07d79d), so the Unit C frozen holdout is not contaminated by any semantic-side tuning during or before this session.",
+  "checks": [
+    { "path": "lib/contract-model/compiler/semantic/", "diffLines": 0, "identical": true },
+    { "path": "lib/contract-model/compiler/semantic-verification/", "diffLines": 0, "identical": true },
+    { "path": "lib/contract-model/ir/", "diffLines": 0, "identical": true }
+  ],
+  "fullProductionDiffVsFrozenSha": {
+    "command": "git diff 2044f1c7de01d24f6bc8179aa477da801f07d79d HEAD -- lib app prisma --stat",
+    "result": "Exactly ONE file changed: lib/contract-model/compiler/package-graph/document-classifier.ts (Unit A's own remediation).",
+    "note": "No condition-routing code, IR normalization/completeness code, or prompts/config outside document-classifier.ts were touched anywhere in lib/app/prisma."
+  },
+  "verdict": "SEMANTIC_FREEZE_INTACT - the Unit C frozen holdout, if run, would exercise the SAME semantic compiler and verifier code the frozen prior run itself used. No semantic tuning occurred before or during this session."
+}

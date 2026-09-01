@@ -1,0 +1,672 @@
+{
+  "region": {
+    "id": "first-lien-debt",
+    "claimIds": [
+      "A4"
+    ],
+    "documentId": "doc-a",
+    "sourceSectionRef": "1.01 (Consolidated First Lien Secured Debt)",
+    "charStart": 83725,
+    "chars": 950,
+    "structuralNodeKeys": [
+      "doc-a::1.01(4)(2)(i)(ii)(d)"
+    ]
+  },
+  "operativeSourceText": "“Consolidated First Lien Secured Debt” means, as of any date of determination, the aggregate\nprincipal amount of Indebtedness of the Borrower and its Subsidiaries outstanding on such date, determined on a consolidated basis in accordance with GAAP, consisting only of Indebtedness for borrowed money, Capitalized Lease Obligations and\npurchase money Indebtedness, in each case secured by a first priority lien on the assets of the Borrower or any of its Subsidiaries; provided, Consolidated First Lien Secured Debt will not include Non-Recourse\nIndebtedness, undrawn amounts under revolving credit facilities and Indebtedness in respect of any (1) letter of credit, bank guarantees and performance or similar bonds, except to the extent of obligations in respect of drawn standby letters\nof credit which have not been reimbursed within three (3) Business Days and (2) Hedging Obligations.\n“Consolidated\nInterest Expense” means, with respect to any Pe",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Consolidated First Lien Secured Debt",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§1.01, definition of \"Consolidated First Lien Secured Debt\"",
+          "semanticDescription": "Aggregate principal amount of Indebtedness of the Borrower and its Subsidiaries (consolidated, GAAP), limited to Indebtedness for borrowed money, Capitalized Lease Obligations, and purchase money Indebtedness, in each case secured by a first priority lien on assets of the Borrower or any Subsidiary; excluding Non-Recourse Indebtedness, undrawn revolving credit amounts, and Indebtedness in respect of (1) letters of credit/bank guarantees/performance or similar bonds (except drawn standby LCs unreimbursed for more than 3 Business Days, which ARE counted back in) and (2) Hedging Obligations.",
+          "reason": "This is a categorical inclusion/exclusion filter applied to a stock variable (outstanding Indebtedness), including a nested carve-back exception (unreimbursed drawn standby letters of credit are re-included despite the general LC exclusion). There is no FILTER/categorical-set primitive in the available node kinds to express 'aggregate of X meeting criteria A/B/C, minus categories D/E/F, except sub-case G is added back' - forcing this into ADD/SUBTRACT/SUM over METRIC_REFERENCE nodes would fabricate a false arithmetic decomposition of what is really a scope/eligibility test, not a formula over known numeric metrics.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01 (Consolidated First Lien Secured Debt)",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:7898a31e68546a8daab098e3"
+        },
+        "dependsOnTerms": [
+          "Indebtedness",
+          "Capitalized Lease Obligation",
+          "Non-Recourse Indebtedness",
+          "Hedging Obligations",
+          "Lien",
+          "Business Day",
+          "GAAP",
+          "Borrower",
+          "Obligations"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Full operative text is captured verbatim in the excerpt and the inclusion/exclusion logic (including the nested standby-LC carve-back exception) is fully described.",
+          "The calculationExpression itself cannot be faithfully represented with the arithmetic/aggregation primitives available because the definition is a categorical eligibility/scope filter over a stock of Indebtedness, not a computable formula over other defined numeric metrics.",
+          "This provision has no recorded amendment history, so there is no versioning ambiguity - the PARTIAL rating reflects only the representational gap, not any uncertainty about current operative status.",
+          "This is a categorical inclusion/exclusion filter applied to a stock variable (outstanding Indebtedness), including a nested carve-back exception (unreimbursed drawn standby letters of credit are re-included despite the general LC exclusion). There is no FILTER/categorical-set primitive in the available node kinds to express 'aggregate of X meeting criteria A/B/C, minus categories D/E/F, except sub-case G is added back' - forcing this into ADD/SUBTRACT/SUM over METRIC_REFERENCE nodes would fabricate a false arithmetic decomposition of what is really a scope/eligibility test, not a formula over known numeric metrics."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "\"Consolidated First Lien Secured Debt\" means, as of any date of determination, the aggregate principal amount of Indebtedness of the Borrower and its Subsidiaries outstanding on such date, determined on a consolidated basis in accordance with GAAP, consisting only of Indebtedness for borrowed money, Capitalized Lease Obligations and purchase money Indebtedness, in each case secured by a first priority lien on the assets of the Borrower or any of its Subsidiaries; provided, Consolidated First Lien Secured Debt will not include Non-Recourse Indebtedness, undrawn amounts under revolving credit facilities and Indebtedness in respect of any (1) letter of credit, bank guarantees and performance or similar bonds, except to the extent of obligations in respect of drawn standby letters of credit which have not been reimbursed within three (3) Business Days and (2) Hedging Obligations."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Consolidated Interest Expense",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"ADD\")",
+          "reason": "ADD operands do not type-check together under the IR's own composition rules",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:22842bcf74f74481f96f8362"
+        },
+        "dependsOnTerms": [
+          "Capitalized Lease Obligation",
+          "Indebtedness",
+          "Non-Recourse Indebtedness",
+          "Hedging Obligations",
+          "GAAP",
+          "Facilities",
+          "Transactions",
+          "Super-Priority Revolving Credit Agreement"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The top-level 'sum of (a) plus (b)' structure is explicit in the text and is represented with ADD.",
+          "Each of components (a) and (b), and the twelve numbered exclusions (i)-(xii) applicable to both, are categorical scope/eligibility carve-outs (e.g. exclude mark-to-market movement on Hedging Obligations, exclude Non-Recourse Indebtedness costs, exclude registration-rights 'additional interest', etc.) rather than a computable arithmetic formula over other defined numeric metrics, so they are represented as UNSUPPORTED rather than forced into a false SUBTRACT/SUM decomposition.",
+          "This term was recovered in full via getDefinition after the initially supplied source text was truncated mid-definition; the retrieved text is marked CURRENT/base-document with no amendment ambiguity.",
+          "categorical inclusion/exclusion scope over an interest-expense flow, not a formula over other known numeric metrics available as primitives",
+          "categorical inclusion/exclusion scope, not a formula over other known numeric metrics available as primitives",
+          "ADD operands do not type-check together under the IR's own composition rules"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "\"Consolidated Interest Expense\" means, with respect to any Person for any period, without duplication, the sum of: (a) cash interest expense (including that attributable to Capitalized Lease Obligations), net of cash interest income... plus (b) non-cash interest expense resulting solely from (i) the amortization of original issue discount... plus (ii) pay-in-kind interest expense...; excluding, in each case: (i)-(xii) [enumerated exclusions including deferred financing cost amortization, hedging mark-to-market movement, Non-Recourse Indebtedness costs, registration rights additional interest, make-whole premiums, tax penalties/interest, discounted-liability accretion, recapitalization/purchase-accounting discounting, appraisal-rights interest, and annual agency fees]."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T13:18:19.973Z",
+      "inputTokens": 34024,
+      "outputTokens": 10613,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 104999,
+      "calculatedCostUsd": 0.174178
+    }
+  },
+  "verify": {
+    "candidateRef": "holdout-candidate:first-lien-debt",
+    "status": "VERIFICATION_INCOMPLETE",
+    "findings": [
+      {
+        "findingId": "b0a8b8f72bb65ca5387e4ca54b075cb598787ac9801e2d017d6fc741123a4032",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:first-lien-debt",
+        "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+        "irPath": "definitions[1].dependsOnTerms",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "“Consolidated Interest Expense” means, with respect to any Pe",
+        "sourceCitation": "§1.01, definition of \"Consolidated Interest Expense\" (truncated in source excerpt provided)",
+        "proposedIrEvidence": "dependsOnTerms: [\"Capitalized Lease Obligation\",\"Indebtedness\",\"Non-Recourse Indebtedness\",\"Hedging Obligations\",\"GAAP\",\"Facilities\",\"Transactions\",\"Super-Priority Revolving Credit Agreement\"]; calculationExpression.sourceEvidence: \"(no evidence captured)\"",
+        "verifierReasoning": "The source text available for 'Consolidated Interest Expense' is cut off after only the opening clause ('with respect to any Pe...'), and the proposed IR's own calculationExpression node explicitly states sourceEvidence as '(no evidence captured)', acknowledging it has no operative text to work from. Yet the definition's dependsOnTerms array asserts specific, substantive defined-term dependencies - including 'Facilities', 'Transactions', and 'Super-Priority Revolving Credit Agreement' - none of which appear anywhere in the source text actually supplied for verification. There is an internal inconsistency: the IR simultaneously claims to have no evidentiary basis for the expression while asserting concrete relational dependencies that would only be knowable from evidence it says it does not have. This could be a legitimate carryover from fuller document context the compiler had access to elsewhere, or it could be a fabricated/hallucinated dependency list. Given the explicit 'no evidence captured' admission sitting alongside specific unverified term names, a competent reviewer could reasonably question whether these dependencies are grounded in the actual contract, which affects trust in what this metric (used presumably in ratio/covenant calculations) actually depends on.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:19:35.637Z"
+      },
+      {
+        "findingId": "36b6c392904b03222e175e2bcaaa32c96c055247527cf9d1b4a4c739bdca660d",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:first-lien-debt",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_CONDITION",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 2 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 2 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:18:19.974Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "holdout-candidate:first-lien-debt",
+      "items": [
+        {
+          "itemId": "b4c00b82403856ae9462ac52529f4b628ce743978dbdf5654e170d3064338f75",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 468,
+          "charEnd": 476
+        },
+        {
+          "itemId": "85c7fa924e538fa8813b852c89ad430cff8e2bcc2d809933fa864bd52eeb9dbb",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "except",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 716,
+          "charEnd": 722
+        },
+        {
+          "itemId": "6ea83411f81cc83ea448aaf1147b8c5d72a2775e788168d0d248cea75957fb02",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 133,
+          "charEnd": 141
+        },
+        {
+          "itemId": "619b89d97c7b2a434993857632877844ef55778d13906981153a0208357a9a5c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 431,
+          "charEnd": 439
+        },
+        {
+          "itemId": "1c879fb1c080bdc1f1c11ffdddcdbd7087f6b5fc3f5f442d42e3a3fff0885ce4",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated First Lien Secured",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 1,
+          "charEnd": 32
+        },
+        {
+          "itemId": "b909ce92fab3f206dcf6a0233c3901e0d84708aa96b543d4f54672c3ba5b64d6",
+          "kind": "METRIC_MENTION",
+          "rawText": "Capitalized Lease Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 301,
+          "charEnd": 330
+        },
+        {
+          "itemId": "748ada54c36358437bd5fff7873807c752275afe785ed7d21bfbb23a607b5c02",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated First Lien Secured",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 478,
+          "charEnd": 509
+        },
+        {
+          "itemId": "210025cd4daca5751902d9263742f2c63950eaf4a565062f18b3c212e25c18bb",
+          "kind": "METRIC_MENTION",
+          "rawText": "Recourse\nIndebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 536,
+          "charEnd": 557
+        },
+        {
+          "itemId": "1b86aff086ecb10d7f3837630147b8eb42649720bfba4d734aecf816d34ea28b",
+          "kind": "METRIC_MENTION",
+          "rawText": "Business Days",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 846,
+          "charEnd": 859
+        },
+        {
+          "itemId": "6ecbd1c0256e813e68a97be31e9ade162fa9123335ef5862d26ab9eb8656584a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Hedging Obligations",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 868,
+          "charEnd": 887
+        },
+        {
+          "itemId": "74f656fa484d0a7e410b5d46ce8b963c5a158903d3df75b0a7087cfab65efdb4",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated\nInterest Expense",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+          "structuralNodeKey": null,
+          "charStart": 890,
+          "charEnd": 919
+        }
+      ],
+      "apparentIndependentUnitCount": 0,
+      "apparentIndependentUnitEvidence": [],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "holdout-candidate:first-lien-debt",
+      "items": [
+        {
+          "itemId": "5e4e24922f6827ffba84b505e299e7b05c67a9f1e0bd01e57129b7242024ca3b",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "285bd08e21753f55339df95f77a6d816355e573843b555481698f4ce2d6da3f0",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Capitalized Lease Obligation",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "dd084e053573f29a9a0aeaffe7f5d619f77168fee2451849b3d706c8dff66ae3",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Non-Recourse Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "de04e795fc3256b22381e10e18fc9ff11242b99baed50b6e14b30ad285babba9",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Hedging Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9b979743eda87fc4fd5329bf0bae0b7afbe3a2ea31d487223d6fb549c30d9bd7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Lien",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f97b35a094d9bb911438fa2ef6408ef0b314ee9a23f3bb17a470d9fea78bdfdd",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Business Day",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2b323fe409dbd9e29cd8825edb46a519cdb8cb27a667648f4b72c5d3a3a3f5bf",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[6]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:GAAP",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "3b05c6d4015bf2004c268980e16cecf9957fc65fba043b5abd2895f852bdcd8f",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[7]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Borrower",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "cf21ea8751537fbcd9cb484e34d3714816bf42ae0bf1fe09c8fb59292c0fc4d8",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].dependsOnTerms[8]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "54f2725cfe7e9fc46b5ad345aa5fd72b9bc99873bfafaa83640b31215bf78310",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:ba2e7266c4d464a807ae8716",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "textValue": "Aggregate principal amount of Indebtedness of the Borrower and its Subsidiaries (consolidated, GAAP), limited to Indebtedness for borrowed money, Capitalized Lease Obligations, and purchase money Indebtedness, in each case secured by a first priority lien on assets of the Borrower or any Subsidiary; excluding Non-Recourse Indebtedness, undrawn revolving credit amounts, and Indebtedness in respect of (1) letters of credit/bank guarantees/performance or similar bonds (except drawn standby LCs unreimbursed for more than 3 Business Days, which ARE counted back in) and (2) Hedging Obligations.",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01 (Consolidated First Lien Secured Debt)",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "4353123415198bb645d5925f0a44e027a107e10c82720064e93901ffa04f8f46",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Capitalized Lease Obligation",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8985e2fddc9060617b8cb637873a5ace08ea40a8e001246d9c983d7887ca1d50",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1bc3b24f330873767573b09f728cb1d0686de5b05cfab2be491ec35d964556a6",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Non-Recourse Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "cfbfead85cdb738fe093ab949990b9d63b42b233e9ef581bb718c1c15891ae11",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Hedging Obligations",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a0bd81788fc7f1b919f6501d76fbbfb86d98d08508a8cd0775b5892015e498a8",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:GAAP",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "568be62a2af7abd7e82e10ba39ee393108687f25788848a34a44e168ecc90895",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Facilities",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "824103862e3780a8a9d50c5ce9e525a04888d31cb879e1ec935a3073a9aa19f5",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].dependsOnTerms[6]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Transactions",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1bd83b6f6b8af60dc9bcfe2667e16a0642344beb9a67be0a085a8f7273b03904",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].dependsOnTerms[7]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Super-Priority Revolving Credit Agreement",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7e811c1caf76584f5eddfe0e1c892564a303e498a60144d39881cfa062e67cf9",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:96c5e6a5ddcf1ce248740731",
+          "irPath": "definitions[1].calculationExpression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"ADD\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 0,
+      "definitionCount": 2,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "holdout-candidate:first-lien-debt",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1c879fb1c080bdc1f1c11ffdddcdbd7087f6b5fc3f5f442d42e3a3fff0885ce4",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated First Lien Secured",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+            "structuralNodeKey": null,
+            "charStart": 1,
+            "charEnd": 32
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated First Lien Secured\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b909ce92fab3f206dcf6a0233c3901e0d84708aa96b543d4f54672c3ba5b64d6",
+            "kind": "METRIC_MENTION",
+            "rawText": "Capitalized Lease Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+            "structuralNodeKey": null,
+            "charStart": 301,
+            "charEnd": 330
+          },
+          "irItems": [],
+          "reason": "source mention \"Capitalized Lease Obligations\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "748ada54c36358437bd5fff7873807c752275afe785ed7d21bfbb23a607b5c02",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated First Lien Secured",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+            "structuralNodeKey": null,
+            "charStart": 478,
+            "charEnd": 509
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated First Lien Secured\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "210025cd4daca5751902d9263742f2c63950eaf4a565062f18b3c212e25c18bb",
+            "kind": "METRIC_MENTION",
+            "rawText": "Recourse\nIndebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+            "structuralNodeKey": null,
+            "charStart": 536,
+            "charEnd": 557
+          },
+          "irItems": [],
+          "reason": "source mention \"Recourse\nIndebtedness\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1b86aff086ecb10d7f3837630147b8eb42649720bfba4d734aecf816d34ea28b",
+            "kind": "METRIC_MENTION",
+            "rawText": "Business Days",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+            "structuralNodeKey": null,
+            "charStart": 846,
+            "charEnd": 859
+          },
+          "irItems": [],
+          "reason": "source mention \"Business Days\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6ecbd1c0256e813e68a97be31e9ade162fa9123335ef5862d26ab9eb8656584a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Hedging Obligations",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+            "structuralNodeKey": null,
+            "charStart": 868,
+            "charEnd": 887
+          },
+          "irItems": [],
+          "reason": "source mention \"Hedging Obligations\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "74f656fa484d0a7e410b5d46ce8b963c5a158903d3df75b0a7087cfab65efdb4",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated\nInterest Expense",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated First Lien Secured Debt)",
+            "structuralNodeKey": null,
+            "charStart": 890,
+            "charEnd": 919
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated\nInterest Expense\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 2 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        }
+      ],
+      "materialUnresolvedCount": 1
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T13:19:35.637Z"
+  }
+}

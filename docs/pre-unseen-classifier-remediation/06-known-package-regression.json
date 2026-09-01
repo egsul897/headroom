@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "KNOWN_PACKAGE_REGRESSION",
+  "method": "scripts/phase-3f1-6-known-package-regression.ts run at two points: (1) a temporary git worktree checked out at e1f47a4 (the pre-classifier-fix commit, before this session's work) with node_modules symlinked from the main checkout; (2) the current post-classifier-fix HEAD (a75cf30) in the main working tree. Both runs' generated docs/phase-3f1-6-final-foundation-certification/26-known-package-regression.json output was captured, field-by-field compared for FWRG/LSB/CONMED/DSGR, and the side-effect fixture file reverted via `git checkout --` afterward per this repo's own established discipline (never leave the regenerated fixture committed as an incidental side effect of a read-only regression check).",
+  "comparisonResult": {
+    "FWRG": "IDENTICAL - packageCoverageStatus, totalMaterialSemanticUnits, materialTierUnits, dangerousUnaccountedCount, operativeStateStatus, documentGateStatuses all byte-for-byte identical before and after the classifier fix.",
+    "LSB": "IDENTICAL - same fields, same result.",
+    "CONMED": "IDENTICAL - same fields, same result (CONMED's own classifications are unaffected since none of its 4 documents exercise the specific TOC/exhibit-mention-vs-caption collision this fix addresses).",
+    "DSGR": "IDENTICAL - same fields, same result."
+  },
+  "verdict": "NO_NEW_MATERIAL_REGRESSION - all four known packages produce identical known-package-regression numbers before and after the document-classifier.ts fix. This is expected: none of FWRG/LSB/CONMED/DSGR's own real documents exhibit the specific pattern (a base-facility caption appearing earlier in text than a later, array-order-privileged rule match) that the fix changes the outcome for - the fix is confirmed additive/non-disruptive to all previously-established, correct classifications in this codebase's own known-package evidence."
+}

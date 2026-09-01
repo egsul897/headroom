@@ -132,23 +132,23 @@ describe("Section 8 independent construction #3: isTrustedGroupingEdge defense-i
   });
 });
 
-describe("Section 8 REAL FINDING (disclosed-boundary, not a regression): document-classifier.ts's self-referential-title priority fix only protects documents that actually USE that drafting convention", () => {
-  // document-classifier.ts's own header comment states plainly: "Only when
-  // no such self-term is found... does classification fall back to the
-  // ORIGINAL broad preamble scan - UNCHANGED" (emphasis on unchanged - this
-  // is a disclosed V1 boundary, not a silent gap). This test independently
-  // demonstrates the boundary is real: an amendment that (a) has no early
-  // self-referential parenthetical like '(this "Amendment")' AND (b)
-  // mentions a different real agreement TYPE (here, "Security Agreement")
-  // in its own caption BEFORE its own "Amendment" self-identifying
-  // language is reached by the RULES array's fixed priority order (Security
-  // Agreement is checked before Amendment in document-classifier.ts's own
-  // RULES list) is misclassified as a SECURITY_AGREEMENT, not an AMENDMENT -
-  // the exact "reference matched before self-identity" failure shape the
-  // original CONMED-derived fix targeted, reproduced here via a different
-  // trigger phrase for a document that lacks the self-referential-title
-  // convention the fix's own coverage depends on.
-  it("an amendment referencing a Security Agreement in its own caption, with NO self-referential '(this \"Amendment\")' convention, is misclassified as SECURITY_AGREEMENT - downstream relationship typing for this document is then wrong (SECURES, not AMENDS)", () => {
+describe("Section 8 REAL FINDING - FIXED by the pre-unseen-classifier-remediation position-aware Tier 2 (docs/pre-unseen-classifier-remediation): document-classifier.ts's self-referential-title priority fix used to only protect documents that actually USE that drafting convention", () => {
+  // This test originally documented a disclosed V1 boundary: an amendment
+  // that (a) has no early self-referential parenthetical like
+  // '(this "Amendment")' AND (b) mentions a different real agreement TYPE
+  // (here, "Security Agreement") in its own caption was misclassified as
+  // that OTHER type, not AMENDMENT - because Tier 2's fallback scan picked
+  // whichever RULE was checked FIRST in RULES array order, not whichever
+  // evidence appeared EARLIEST in the document's own text. The
+  // pre-unseen-classifier-remediation session (docs/pre-unseen-classifier-
+  // remediation.md) replaced that array-order scan with a position-aware
+  // one for exactly this failure class (the same root cause that produced
+  // Riot's real "Credit Agreement classified as Compliance Certificate"
+  // defect) - this document's own "FOURTH AMENDMENT" self-identifying
+  // language now correctly wins over its own later "to the Security
+  // Agreement..." reference, with no self-referential-title convention
+  // needed at all.
+  it("an amendment referencing a Security Agreement in its own caption, with NO self-referential '(this \"Amendment\")' convention, now correctly classifies as AMENDMENT - downstream relationship typing is AMENDS, not SECURES", () => {
     const noSelfRefAmendment = doc(
       "adv8-doc-nosr",
       "Fourth Amendment (no self-reference convention)",
@@ -158,23 +158,18 @@ describe("Section 8 REAL FINDING (disclosed-boundary, not a regression): documen
     const ca = doc("adv8-doc-ca-nosr", "Credit Agreement", `CREDIT AGREEMENT dated as of March 3, 2019, among Acme Corp. and the lenders party thereto.\n\nSection 6.05 Investments. $20,000,000.`);
     const graph = buildPackageGraph("adv8-co-nosr", "adv8-pkg-nosr", [noSelfRefAmendment, ca]);
     const classification = graph.classifications.find((c) => c.documentId === noSelfRefAmendment.documentId)!;
-    // REAL FINDING: this document's own true nature (an AMENDMENT) is not
-    // what gets classified - it lands as SECURITY_AGREEMENT because that
-    // rule is checked earlier in RULES' fixed priority order and the
-    // self-referential-title defense never activates (no early
-    // '(this "Amendment")' parenthetical is present in this document's own
-    // drafting). Downstream, its relationship candidates against the real
-    // Credit Agreement are typed SECURES (from RELATIONSHIP_TYPES_BY_SOURCE_CLASSIFICATION[SECURITY_AGREEMENT])
-    // rather than the semantically-correct AMENDS - a real, generalizable
-    // document-classification gap, disclosed here as MINOR (the module's
-    // own header comment already discloses the fallback is "unchanged" -
-    // this test quantifies exactly which real drafting shape still trips
-    // it, for a document that never adopts the self-referential-title
-    // convention CONMED's own real documents happen to use).
-    expect(classification.type).toBe("SECURITY_AGREEMENT");
-    const edgeToCredit = graph.relationshipCandidates.find((r) => r.sourceDocumentId === noSelfRefAmendment.documentId && r.targetDocumentId === ca.documentId);
-    expect(edgeToCredit!.relationshipType).toBe("SECURES");
-    expect(graph.relationshipCandidates.some((r) => r.sourceDocumentId === noSelfRefAmendment.documentId && r.relationshipType === "AMENDS")).toBe(false);
+    // FIXED: this document's own true nature (an AMENDMENT) is now what
+    // gets classified - "FOURTH AMENDMENT" is the earliest text-position
+    // evidence in the preamble (position 0), beating the later "Security
+    // Agreement" mention (a base-facility-type reference within an
+    // amendment's own caption is expected/normal drafting, not ambiguous -
+    // see document-classifier.ts's own BASE_REFERENCEABLE_TYPES comment).
+    // Downstream, its relationship candidate against the real Credit
+    // Agreement is now correctly typed AMENDS.
+    expect(classification.type).toBe("AMENDMENT");
+    const edgeToCredit = graph.relationshipCandidates.find((r) => r.sourceDocumentId === noSelfRefAmendment.documentId && r.targetDocumentId === ca.documentId && r.relationshipType === "AMENDS");
+    expect(edgeToCredit?.status).toBe("RESOLVED");
+    expect(graph.relationshipCandidates.some((r) => r.sourceDocumentId === noSelfRefAmendment.documentId && r.relationshipType === "SECURES")).toBe(false);
   });
 });
 

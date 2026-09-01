@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "READINESS_GATE",
+  "criteria": {
+    "genericClassifierTestsPass": { "met": true, "evidence": "18/18 in pre-unseen-classifier-remediation.test.ts (C1-C10 plus 5 regression guards)" },
+    "structuralEvidenceWeightedArchitecture": { "met": true, "evidence": "Tier 2 rewritten to select by earliest text position across all rules, not RULES array order - a structural, position-based mechanism, not a flat keyword-order patch (confirmed in 10-independent-audit.json's own explicit check against this exact criterion)" },
+    "noBenchmarkSpecificProductionLogic": { "met": true, "evidence": "Zero Riot/Coinbase/known-package strings anywhere in the diff (grep-confirmed independently in 10-independent-audit.json and via the automated test)" },
+    "knownPackageRegressionClean": { "met": true, "evidence": "06-known-package-regression.json - byte-for-byte identical FWRG/LSB/CONMED/DSGR results before and after the fix" },
+    "riotDocAClassifiedCorrectly": { "met": true, "evidence": "CREDIT_AGREEMENT (07-riot-deterministic-replay.json) - the defect this session fixes" },
+    "riotDocBClassifiedCorrectly": { "met": true, "evidence": "AMENDED_AND_RESTATED_AGREEMENT - unchanged, already correct" },
+    "riotDocCClassifiedCorrectly": { "met": true, "evidence": "AMENDED_AND_RESTATED_AGREEMENT - unchanged, already correct" },
+    "docBTargetResolvesCorrectly": { "met": true, "evidence": "RESOLVED to doc-a, confidence 0.95, DETERMINISTIC_TITLE_DATE_MATCH - FIXED (was doc-c before this session)" },
+    "docCTargetResolvesCorrectly": { "met": true, "evidence": "REVIEW_REQUIRED to doc-b, confidence 0.7, DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR - unchanged, already correct" },
+    "operativeDocumentResolvesCorrectlyIfFrozenEvidenceSufficient": { "met": true, "evidence": "RESOLVED, operativeDocumentId doc-c, predecessorDocumentIds [doc-a, doc-b], full relationshipChain doc-a->doc-b->doc-c - the cycle from the prior remediation session's own replay is CLOSED. This directly satisfies mission Section 13's hard requirement: a cycle is no longer acceptable for readiness if its only cause is the classifier defect this session fixes, and it is confirmed no longer present." },
+    "deletedCarveOutRemainsNonCurrent": { "met": true, "evidence": "08-deleted-carveout-check.json - PASS, no new resurrection caused by this session's fix (verified byte-identical to the pre-fix baseline via a temporary worktree comparison); one pre-existing, disclosed limitation (node-supersession not yet wired to the whole-document operativeDocument concept) is flagged for future work, not silently hidden." },
+    "falseCreditControls14of14": { "met": true, "evidence": "09-false-credit-controls.json" },
+    "independentAuditNoBlocker": { "met": true, "evidence": "10-independent-audit.json verdict: NO BLOCKER FOUND" }
+  },
+  "unmetCriteria": [],
+  "overallGateVerdict": "PASS - ALL CRITERIA MET",
+  "verdict": "READY_FOR_LIGHTWEIGHT_UNSEEN_CONFIRMATION",
+  "reasoning": "Every criterion in the mission's own Section 17 readiness gate is met without exception. This is a materially stronger result than the prior remediation session's own gate (docs/post-3f2-remediation/11-remediation-gate.json), whose two unmet items - Unit B's own restatement-chain and operative-document resolution on real Riot evidence - were both explicitly hedged ('IF justified by unchanged evidence') and both traced to the exact document-classifier defect this session fixes. With that defect closed, both previously-unmet items are now MET: doc-b's target correctly resolves to doc-a, and the full three-document chain resolves end-to-end with doc-c correctly identified as the current operative document - exactly the outcome the prior session's own architecture (Unit B1's regex generalization, Unit B2's date-ambiguity safeguard, Unit B4's cycle-detection safeguard) was designed to produce once its input was correct. The one remaining disclosed limitation (node-supersession not yet consuming the whole-document operativeDocument concept) is confirmed unrelated to and unaffected by this session's own change, and does not block readiness per the mission's own explicit distinction between a NEW regression and a pre-existing, disclosed gap.",
+  "notReadyForPhase4": "This verdict does NOT declare Phase 4 ready. Per the mission's own explicit prohibition (and the prior session's own Section 31 requirement, unchanged), a separate, lightweight, genuinely-unseen package confirmation remains REQUIRED before Phase 4 and is explicitly NOT performed in this session.",
+  "recommendedFollowUps": [
+    "Wire the whole-document operativeDocument concept into buildNodeSupersessionIndex/getNodeSupersessionStatus so a predecessor document's own physical nodes are marked superseded once a RESTATE_AGREEMENT effect confidently or inferentially supersedes the whole document, not only when a section/definition-level modification effect targets that specific node - a genuine, disclosed, pre-existing gap discovered as a byproduct of this session's replay (08-deleted-carveout-check.json), not fixed here per this session's own explicit scope boundary (classifier-only, no semantic/package-graph/amendment code changes).",
+    "The Day Count Fraction leap/no-anniversary proviso representation gap (disclosed in the prior remediation session, docs/post-3f2-remediation.md) remains explicit semantic-compiler backlog, out of scope for this session per its own Section 16 prohibition."
+  ]
+}

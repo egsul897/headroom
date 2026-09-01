@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "VALIDATION_CONTRACT",
+  "missionName": "HEADROOM FINAL LIGHTWEIGHT GENUINELY-UNSEEN CONFIRMATION - FROZEN CONTRACT-INTELLIGENCE GENERALIZATION GATE",
+  "committedBeforePackageSelection": true,
+  "frozenProductionBaseline": {
+    "headSha": "2044f1c7de01d24f6bc8179aa477da801f07d79d",
+    "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+    "gitStatus": "clean (no untracked or modified files) at time of freeze",
+    "productionTreeHashes": {
+      "lib": "6f9a8a4e6a5cd81763269b7c98032a14e2fe7421",
+      "app": "7b6172c09878f60235cdebcb5b5addeab1f15c12",
+      "prisma": "2669c503a0ba718cbc4c7d9ad3ebbf795febf4e4"
+    },
+    "note": "These are git tree object hashes for lib/, app/, prisma/ at HEAD 2044f1c - the exact comparison baseline for the required end-of-run production-freeze proof (git diff 2044f1c7de01d24f6bc8179aa477da801f07d79d HEAD -- lib app prisma must be empty)."
+  },
+  "modelProviderConfiguration": {
+    "resolutionOrder": "lib/contract-model/compiler/llm-caller.ts's getStageCaller(): AI_GATEWAY_API_KEY first, then ANTHROPIC_API_KEY, then throw if process.env.VERCEL, else SyntheticStageCaller (no-op).",
+    "credentialFound": "AI_GATEWAY_API_KEY present in .env.local (Vercel AI Gateway) - NOT exported into the ambient shell environment by default (Next.js loads .env.local at its own runtime), so any validation script must explicitly load it (dotenv or an explicit env assignment) rather than relying on ambient `env`.",
+    "resolvedProvider": "VERCEL_AI_GATEWAY",
+    "resolvedModelDefault": "anthropic/claude-sonnet-5 (DEFAULT_GATEWAY_ANALYZER_MODEL, lib/contract-model/analyzer/anthropic-analyzer.ts) unless ANALYZER_MODEL env var overrides it - unset in this environment, so the default applies.",
+    "promptVersion": "ANALYZER_PROMPT_VERSION / relevant semantic-compiler prompt version, read directly from lib/contract-model/compiler/semantic/prompt.ts at HEAD 2044f1c - unchanged by any work in this validation."
+  },
+  "testBaseline": {
+    "tsc": { "command": "npx tsc --noEmit", "errorCount": 6, "note": "Identical to docs/pre-unseen-operative-integration/00-baseline.json's own disclosed baseline - pre-existing, unrelated test-fixture typos." },
+    "lint": { "command": "npx eslint .", "errorCount": 1, "note": "Identical to the same prior baseline - a stale rule reference in one test file." },
+    "vitestFullSuite": "3115 passed / 3117 total (2 pre-existing, unrelated, already-disclosed failures: tests/contract-model/architecture-proposal-node-identity.test.ts, tests/contract-model/phase-3f1-1-forensic-machinery.test.ts) - carried forward from the immediately preceding session's own 06-full-regression.json at this exact HEAD; re-confirmed unchanged by re-running tsc/eslint above at freeze time. Not re-run in full here to avoid unnecessary wall-clock cost before package selection - will be re-run as part of the final regression gate (Section 25 of the mission)."
+  },
+  "dbIsolationConfiguration": {
+    "infrastructure": "Single local Postgres 16 instance (localhost:5432, the same instance used throughout this repository's development and prior validation phases) - no separate physical database server is available in this environment.",
+    "isolationMechanism": "A freshly-generated, never-before-used companyId/packageKey pair, scoped per this validation's own Prisma company-tenant model (the SAME real production data model every other package uses - no schema change). No existing company/document row is read, modified, or deleted by this validation. Chosen company id: to be recorded in 03-package-manifest.json once the package is selected.",
+    "disposability": "This validation's own company and all its documents/runs can be deleted afterward without affecting any other company's data - proven at the end by a scoped query showing only this validation's own companyId in any table it wrote to.",
+    "concurrencyNote": "No other agent/session is known to be writing to this same Postgres instance concurrently during this validation's own write window - confirmed by this session being the sole active session against this environment."
+  },
+  "scopeReaffirmation": {
+    "isNot": ["another remediation session", "Phase 3F.2-scale forensic audit", "Phase 3F.2.1", "Phase 3G", "permission to modify production after selection", "permission to tune against the selected issuer", "a broad whole-document benchmark", "Phase 4 implementation"],
+    "primaryTargets": [
+      "A. semantic multi-definition exhaustiveness",
+      "B. qualifier/completeness handling and truncated-evidence safe failure",
+      "C. document classification resistant to TOC/exhibit/reference contamination",
+      "D. amended-and-restated/restatement target resolution",
+      "E. operative-document/version reasoning",
+      "F. whole-document supersession flowing into node/source currentness",
+      "G. hard-safety behavior: no false trusted material truth"
+    ],
+    "hardCostCeiling": 8.00,
+    "excludedIssuers": ["FWRG", "LSB", "CONMED", "DSGR", "Coherent", "Matthews", "Riot Platforms"],
+    "freezeRule": "No changes to lib/**, app/**, prisma/**, or production prompts/configuration used by the validation pipeline from the moment this contract is committed. Any such change after package selection = FINAL VERDICT FAILED, unless the run is invalid for a purely external/environmental reason."
+  }
+}

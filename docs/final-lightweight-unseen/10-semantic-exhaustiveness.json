@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "SEMANTIC_EXHAUSTIVENESS",
+  "requirement": "Preferred >=90% substantive credit on multi-definition-exhaustiveness claims; hard: 100% of material misses safe-failed or surfaced (never silently dropped with false completeness claimed).",
+  "claimCount": 6,
+  "substantiveCreditCount": 0,
+  "substantiveCreditRate": 0.0,
+  "safelyDisclosedIncompleteCount": 6,
+  "hardRequirementMet": true,
+  "note": "0% preferred-target substantive credit (0/6 - none of A1-A6 were reached by the COMPILE_CAP=15-limited compiled sample; all reached ONLY by the whole-package coverage audit, which honestly reported them as unaccounted-for rather than silently omitted). The hard requirement (100% of material misses safe-failed or surfaced) IS met for A1-A6: every one is explicitly named in the real dangerousUnaccounted family disclosure, never silently claimed complete. This is a SAMPLING_ARTIFACT of the pre-committed cost ceiling, not a semantic-compiler exhaustiveness defect per se - the compiler was never asked to compile these candidates in this run.",
+  "preferredTargetMet": false,
+  "hardSafetyRequirementMet": true
+}

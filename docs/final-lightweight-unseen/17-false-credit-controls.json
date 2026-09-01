@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "FALSE_CREDIT_CONTROLS",
+  "testFiles": [
+    "tests/evaluation-v2/dsgr-false-credit-gate.test.ts",
+    "tests/evaluation-v2/false-credit-prohibitions.test.ts"
+  ],
+  "runVerbatim": "npx vitest run tests/evaluation-v2/dsgr-false-credit-gate.test.ts tests/evaluation-v2/false-credit-prohibitions.test.ts",
+  "result": "14/14 PASSED",
+  "testsPassed": [
+    "false-credit-prohibitions.test.ts > 1. refuses a chapeau matched to an unrelated descendant basket",
+    "false-credit-prohibitions.test.ts > 2. refuses a basket matched to a sibling basket carrying the same dollar amount",
+    "false-credit-prohibitions.test.ts > 3. refuses a qualitative covenant matched solely by section number",
+    "false-credit-prohibitions.test.ts > 4. refuses a clause matched to a higher-materiality descendant with a different subject",
+    "false-credit-prohibitions.test.ts > 5. refuses a ratio test matched to a nearby basket containing the same numeric value",
+    "false-credit-prohibitions.test.ts > 6. refuses a permission matched to a restriction in the same section",
+    "false-credit-prohibitions.test.ts > 7. refuses a secured-debt permission matched to an unsecured-debt permission",
+    "false-credit-prohibitions.test.ts > 8. refuses a dividend permission matched to an investment permission",
+    "false-credit-prohibitions.test.ts > 9. refuses a Canadian-entity-scope provision matched to a US-only-scope provision",
+    "false-credit-prohibitions.test.ts > 10. refuses an amended provision matched to its historical pre-amendment text",
+    "dsgr-false-credit-gate.test.ts > re-judges all 26 scorer-artifact-corrected cases",
+    "dsgr-false-credit-gate.test.ts > GATE: every one of the 14 previously-confirmed false credits is rejected or flagged, none silently upheld",
+    "dsgr-false-credit-gate.test.ts > does not blanket-reject: it re-judges each case on its own evidence",
+    "dsgr-false-credit-gate.test.ts > records, for every case, the ground-truth excerpt and the candidate excerpt(s) that carried the old credit"
+  ],
+  "gatePassed": true,
+  "note": "Run unchanged, read-only, no test/production code modified."
+}

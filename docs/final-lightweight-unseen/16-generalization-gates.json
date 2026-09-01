@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "GENERALIZATION_GATES",
+  "section23_automationTargets": {
+    "requirement": "material substantive credit >=85%; material credit-OR-safe-failure >=98% (or, for small denominators, no more than 2 material substantive misses, every miss safely surfaced); report numerator/denominator explicitly.",
+    "materialClaimCount": 16,
+    "substantiveCreditNumerator": 2,
+    "substantiveCreditDenominator": 16,
+    "substantiveCreditRate": 0.125,
+    "creditOrSafeFailureNumerator": 13,
+    "creditOrSafeFailureDenominator": 16,
+    "creditOrSafeFailureRate": 0.8125,
+    "materialSubstantiveMissesNotSafelySurfaced": [
+      "C2",
+      "D1"
+    ],
+    "materialSubstantiveMissesNotSafelySurfacedCount": 2,
+    "smallDenominatorAllowance": "Denominator is 16 (not small in the sub-10 sense), but even applying the small-denominator allowance literally: 2 material substantive misses are present (C2, D1) and NEITHER is safely surfaced (C2 is a confident wrong answer; D1 is a genuine silent omission) - the allowance's own condition ('every miss safely surfaced') is NOT met.",
+    "substantiveCreditTargetMet": false,
+    "creditOrSafeFailureTargetMet": false
+  },
+  "phase4ReadinessValue": "NO_TRUST_BOUNDARY_BLOCKER",
+  "note": "Both automation targets miss: 2/16 substantive credit (12.5%, target >=85%) and 8/16 credit-or-safe-failure (50%, target >=98%) - driven almost entirely by the COMPILE_CAP=15 sampling limit (10 of 16 claims never reached compilation) plus the 2 hard trust-boundary/safety misses (C2, D1). Given Section 22's hard trust-boundary gate already fails (15-safety-gates.json), the mission's own decision framework routes this to NO_TRUST_BOUNDARY_BLOCKER as the Phase-4-readiness value rather than NO_GENERALIZATION_NOT_YET_SUFFICIENT, since a real, confirmed trust-boundary defect (not merely an under-sampled generalization gap) is present."
+}

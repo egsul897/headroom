@@ -1,0 +1,1613 @@
+[
+  {
+    "candidateRef": "discovery-candidate:38b229b984193e98fa1586dc",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "2.11",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:36a4598ca33a122c47bd2f18",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.11",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The evidentiary effect applies only absent manifest error.",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.11",
+              "excerpt": "shall be prima facie evidence absent manifest error"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full operative text of this evidentiary rule was supplied and is confirmed current with no amendment history.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"EVIDENTIARY_PRESUMPTION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.11",
+          "excerpt": "The Credit Extensions made by each Lender shall be evidenced by one or more accounts or records maintained by such Lender and evidenced by one or more entries in the Register maintained by the Administrative Agent... The accounts or records maintained by the Administrative Agent and each Lender shall be prima facie evidence absent manifest error of the amount of the Credit Extensions made by the Lenders to the Borrower and the interest and payments thereon."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:ad10638f2b93ee1659bde18f",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.11",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Text is self-contained: failure/errors in recordation do not limit or affect Borrower's duty to pay Obligations.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"PAYMENT_OBLIGATION_UNCONDITIONAL\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].targetRef \"Obligations\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.11",
+          "excerpt": "Any failure to so record or any error in doing so shall not, however, limit or otherwise affect the obligation of the Borrower hereunder to pay any amount owing with respect to the Obligations."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:c3798a6c20743490785273de",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.11",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r3].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The Register controls in a conflict only in the absence of manifest error.",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.11",
+              "excerpt": "shall control in the absence of manifest error"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full tie-break rule text supplied and unambiguous; no external document needed to apply it.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"CONFLICT_RESOLUTION_RULE\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.11",
+          "excerpt": "In the event of any conflict between the accounts and records maintained by any Lender and the accounts and records of the Administrative Agent, as set forth in the Register, in respect of such matters, the accounts and records of the Administrative Agent shall control in the absence of manifest error."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:9a455a96cb07ca916f0e5e58",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.11",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r4].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Triggered only upon the request of any Lender, made through the Administrative Agent.",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§2.11",
+              "excerpt": "Upon the request of any Lender made through the Administrative Agent"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Trigger, obligor, and required instrument are all stated in the text; \"Note\" is a resolvable defined term already in context (means a Term Note).",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"AFFIRMATIVE_OBLIGATION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].targetRef \"Note\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.11",
+          "excerpt": "Upon the request of any Lender made through the Administrative Agent, the Borrower shall execute and deliver to such Lender (through the Administrative Agent) a Note payable to such Lender, which shall evidence such Lender's Loans in addition to such accounts or records."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:d827b7ae946e798d896aa057",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "2.11",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PERMISSION",
+        "action": "OTHER",
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Simple, self-contained permissive provision with no external dependency beyond the already-resolved 'Note' term.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"PERMISSION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].targetRef \"Note\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§2.11",
+          "excerpt": "Each Lender may attach schedules to its Note and endorse thereon the date, Type (if applicable), amount and maturity of its Loans and payments with respect thereto."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:00:59.159Z",
+      "inputTokens": 32764,
+      "outputTokens": 10212,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 93315,
+      "calculatedCostUsd": 0.16764800000000002
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:ce8d54268d99fdbfdeb3da55",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "5.08",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:f60f6d49365dfcffd84aca32",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "5.08",
+        "covenantFamily": "LIENS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "context-item:304233dc506050187d479bd3e8f6b9f4cbb5fed2ecdfa62d23b42875b618dd35 (\"SECTION 5.08\\n\\nOwnership of Property; Liens\\n\\n112\")",
+          "semanticDescription": "Section 5.08 ('Ownership of Property; Liens') operative body text could not be retrieved: getOperativeProvision reports that the reference '5.08' matches two distinct physical locations in the document and refuses to guess between them (consistent with the flagged AMBIGUOUS_RELATIVE_REFERENCE dependency). The only confirmed-current text available is the section header itself ('SECTION 5.08 / Ownership of Property; Liens'), with no substantive covenant language. Related context items purporting to be cross-document leads from this section (references to an 'Investment Agreement', to 'terms of this Agreement', and to 'terms hereof as a Lender hereunder') point to documents (Investment Agreement, Security Agreement, Guarantee, Indenture, Intercreditor Agreement) that are confirmed absent from this instrument's package via getInstrumentDocuments (only doc-a exists), and in any event read as generic assignment/lender-joinder boilerplate inconsistent with an Ownership of Property/Liens covenant heading - suggesting these leads may belong to the OTHER, ambiguous physical location rather than to the real substantive text of this covenant.",
+          "reason": "No tool available could disambiguate the two physical locations sharing the '5.08' reference, and the only content resolvable for this exact node is a bare section header with no operative economics; the referenced supporting documents are confirmed absent from the package.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§5.08",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:9a692c5858af24c8fc563177"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Only a bare section header ('Ownership of Property; Liens') was confirmed as current operative text for this node; no substantive covenant body text was retrievable.",
+          "getOperativeProvision('5.08') failed with an explicit ambiguity error: the reference matches two distinct physical locations in the document, and the tool declined to guess.",
+          "The context bundle's own flagged unresolved dependencies include an AMBIGUOUS_RELATIVE_REFERENCE (HIGH severity) plus numerous REFERENCED_DOCUMENT_ABSENT flags for Security Agreement/Guarantee/Indenture/Intercreditor Agreement types that would otherwise be needed to interpret any lien-related carve-outs.",
+          "The cross-document reference excerpts attached to this node ('pursuant to the Investment Agreement', 'pursuant to the terms of this Agreement', 'pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement') read as generic lender-assignment/joinder boilerplate, not Liens/Ownership-of-Property substance, indicating they likely belong to the ambiguous alternate physical location rather than to this covenant's real text.",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "No tool available could disambiguate the two physical locations sharing the '5.08' reference, and the only content resolvable for this exact node is a bare section header with no operative economics; the referenced supporting documents are confirmed absent from the package."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.08",
+          "excerpt": "SECTION 5.08\n\nOwnership of Property; Liens"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:02:02.749Z",
+      "inputTokens": 170855,
+      "outputTokens": 4305,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 9,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 63586,
+      "calculatedCostUsd": 0.38476
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:53ee3a057e898eb40f0afda7",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "5.12",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "5.12(1)",
+        "covenantFamily": "LIENS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": "d1",
+            "description": "This representation as to lien-free ownership is expressly subject to the occurrence of the Closing Date Refinancing.",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.12(1)",
+              "excerpt": "Subject to the occurrence of the Closing Date Refinancing"
+            }
+          }
+        ],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r1].exception[0]",
+            "appliesToRuleId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+            "description": "Liens created under the Collateral Documents",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.12(1)(a)",
+              "excerpt": "those Liens created under the Collateral Documents"
+            }
+          },
+          {
+            "exceptionId": "rule[r1].exception[1]",
+            "appliesToRuleId": "ir-rule:4ae5d14b6ca619e48535a0b5",
+            "description": "Any nonconsensual Lien that is permitted under Section 7.01 (the Liens negative covenant)",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r1].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": null,
+                "referencesDefinitionId": null,
+                "description": "The Lien must be nonconsensual in nature and must independently qualify as a Lien permitted under Section 7.01; Section 7.01 itself is a separately-modeled Liens covenant not expanded here.",
+                "provenance": {
+                  "documentId": "doc-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.01",
+                  "excerpt": null
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.12(1)(b)",
+              "excerpt": "any nonconsensual Lien that is permitted under Section 7.01"
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full operative text of §5.12(1) and both of its lettered exceptions was available and is faithfully represented.",
+          "The cross-reference to 'Section 7.01' was attempted via getReferencedProvision; the tool confirmed the reference target is ambiguous within this instrument's indexed structure (multiple physical '7.01' nodes) and could not be narrowed without a resolvable fromNodeId. This does not affect the fidelity of representing §5.12(1) itself, since the exception's text plainly names Section 7.01 without ambiguity in the source prose - only the tool's own drill-down into 7.01's substantive content is unresolved, and that expansion is outside the scope of compiling §5.12.",
+          "ruleType \"REPRESENTATION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "dependsOn[0].targetRef \"d1\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.12(1)",
+          "excerpt": "Subject to the occurrence of the Closing Date Refinancing, all Equity Interests that constitute Collateral owned by the Borrower or any Guarantor in any of their respective Subsidiaries are owned free and clear of all Liens of any person except (a) those Liens created under the Collateral Documents and (b) any nonconsensual Lien that is permitted under Section 7.01."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "ruleId": "ir-rule:78fe69ce65b48ab5a5f09d60",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "5.12(2)",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "OBLIGATION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r2].condition[0]",
+            "conditionType": "OTHER_RULE_SATISFIED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "Disclosure is measured as of the Closing Date.",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§5.12(2)",
+              "excerpt": "As of the Closing Date"
+            }
+          }
+        ],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The operative text fully specifies the two categories of information Schedule 5.12 must set forth (subsidiary name/jurisdiction; ownership interests and percentages), which is fully captured structurally.",
+          "The actual contents of Schedule 5.12 itself are not part of the digitized package (no SCHEDULE node exists for ref '5.12'), but that underlying data is not required to represent the operative textual obligation of §5.12(2), which is disclosure-category-based rather than a computable capacity/threshold.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"REPRESENTATION\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.12(2)",
+          "excerpt": "As of the Closing Date, Schedule 5.12 sets forth: (a) the name and jurisdiction of organization of each Subsidiary, and (b) the ownership interests of the Borrower and any Subsidiary of the Borrower in each Subsidiary, including the percentage of such ownership."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:cec0cbee44fa76f5b35f9a27",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Closing Date Refinancing",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Indebtedness",
+          "Existing Credit Agreement"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full definition text was supplied in context and is an event description (repayment of Existing Credit Agreement indebtedness and termination of related commitments/guarantees/security), not a numeric calculation, so no calculationExpression node applies.",
+          "Exact clause citation (e.g. §1.01) for this definition was not confirmed in the supplied evidence, only its content; citation is therefore omitted rather than fabricated."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.12",
+          "excerpt": "\"Closing Date Refinancing\" means the repayment of all outstanding Indebtedness under the Existing Credit Agreement (it being understood that letters of credit may remain outstanding to the extent collateralized or backstopped on the Funding Date) and termination of all commitments, guarantees and security interests in respect of such Indebtedness."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:05:19.946Z",
+      "inputTokens": 239605,
+      "outputTokens": 18735,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 6,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 197192,
+      "calculatedCostUsd": 0.66656
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:6bfcc7110ac4eb803b70ac3c",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "5.13",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:444ee7dbc878b2a41b12b7b8",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "5.13",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "Section 5.13 header text: 'SECTION 5.13 / Margin Regulations; Investment Company Act / 113'; related cross-document leads: 'pursuant to the Investment Agreement'; 'pursuant to the terms of this Agreement'; 'pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement'.",
+          "semanticDescription": "Section 5.13, titled 'Margin Regulations; Investment Company Act', is a covenant candidate whose substantive operative body text was not captured in the available evidence - only the section header and a page number ('SECTION 5.13 / Margin Regulations; Investment Company Act / 113') were provided.",
+          "reason": "getOperativeProvision('5.13') returned an error that the reference matches 2 distinct physical locations in the document and cannot be uniquely resolved (AMBIGUOUS_RELATIVE_REFERENCE, flagged HIGH in the known dependencies). getReferencedProvision('Section 5.13') without a scoping fromNodeId could not resolve to any section either, and no fromNodeId to a body-text node was available in the supplied context to retry a scoped lookup. getInstrumentDocuments confirms only a single document (doc-a) exists in this package, so there is no companion/restated document that might hold the missing body text. The three CROSS_DOCUMENT_REFERENCE context items ('pursuant to the Investment Agreement', 'pursuant to the terms of this Agreement', 'pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement') were flagged by Phase 2 as leads from this section's own text, but standing alone they do not disclose any coherent margin-regulation/Investment-Company-Act economics or condition, and each is marked evidenceStatus N/A (not independently-interpretable). No amount, ratio, condition, or exception can be responsibly attributed to this section from what is available.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§5.13",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:81d8238c2deb506fd6316ccd"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "The section's substantive operative text (beyond its title) was never included in the supplied evidence.",
+          "getOperativeProvision('5.13') is ambiguous - it matches two distinct physical locations in the source document and refuses to guess which is authoritative, consistent with the pre-flagged AMBIGUOUS_RELATIVE_REFERENCE dependency.",
+          "getReferencedProvision('Section 5.13') without a body-text nodeId to scope the lookup could not resolve the section.",
+          "Only one document exists in this instrument package (doc-a), so no alternate/restated source could be consulted.",
+          "The only related context items are bare cross-document reference leads with no independently interpretable economic content, each marked evidenceStatus N/A.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "getOperativeProvision('5.13') returned an error that the reference matches 2 distinct physical locations in the document and cannot be uniquely resolved (AMBIGUOUS_RELATIVE_REFERENCE, flagged HIGH in the known dependencies). getReferencedProvision('Section 5.13') without a scoping fromNodeId could not resolve to any section either, and no fromNodeId to a body-text node was available in the supplied context to retry a scoped lookup. getInstrumentDocuments confirms only a single document (doc-a) exists in this package, so there is no companion/restated document that might hold the missing body text. The three CROSS_DOCUMENT_REFERENCE context items ('pursuant to the Investment Agreement', 'pursuant to the terms of this Agreement', 'pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement') were flagged by Phase 2 as leads from this section's own text, but standing alone they do not disclose any coherent margin-regulation/Investment-Company-Act economics or condition, and each is marked evidenceStatus N/A (not independently-interpretable). No amount, ratio, condition, or exception can be responsibly attributed to this section from what is available."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§5.13",
+          "excerpt": "SECTION 5.13\n\nMargin Regulations; Investment Company Act\n\n113"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:06:13.721Z",
+      "inputTokens": 133392,
+      "outputTokens": 4363,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 7,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 53772,
+      "calculatedCostUsd": 0.31041399999999997
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:f0d5a91266c56a784cd44ed1",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "6.11",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:d1cae856b0e810a209765add",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "6.11",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§6.11 header: 'SECTION 6.11 Covenant to Guarantee Obligations and Give Security' (context-item 7d41129c88ea639f095131ef5eaa3a51c1fa9fc0f765fb6b8bdf12d53a576e7b)",
+          "semanticDescription": "Section 6.11, titled 'Covenant to Guarantee Obligations and Give Security', evidently imposes an affirmative covenant requiring certain Persons (likely new/acquired Subsidiaries) to become Guarantors of the Obligations and/or grant security (Collateral) within some period, subject to conditions/exceptions and probably referencing a Guarantee and/or Security Agreement, an Investment Agreement, and other Loan Documents. The actual substantive operative text (the scope of covered entities, timing, thresholds, exceptions, and the security/guarantee mechanics) was never supplied to this compiler - the only retrievable content for this section was its header and page number ('SECTION 6.11 / Covenant to Guarantee Obligations and Give Security / 119').",
+          "reason": "getOperativeProvision for '6.11' returned an ambiguity error (the reference matches 2 distinct physical locations in the document and could not be uniquely resolved), and getReferencedProvision for 'Section 6.11' failed to resolve to any section content. The only context-bundle item tagged as this section's OPERATIVE_SOURCE contains solely the section title/header, not its operative body. Cross-reference leads recorded against this section point to an 'Investment Agreement', 'terms of this Agreement', and 'terms hereof as a Lender' language, and to definitions of 'Guarantee' (itself flagged AMBIGUOUS_TARGET - 2 colliding physical definitions in the document, with no amendment history to disambiguate) and 'Obligations', but none of these resolve the missing operative body text of 6.11 itself. Referenced document types (Security Agreement, Guarantee/Guarantee and Security Agreement, Indenture, Intercreditor Agreement) are also absent from this instrument's document package. Tool budget was exhausted attempting to resolve the ambiguous section reference before further retrieval could be attempted.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§6.11",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:8cfad082a88639ea811065a5"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Only the section's title/header and page number were available as 'operative source text' - the actual covenant body (scope of covered subsidiaries, timing/thresholds, exceptions, and guarantee/security mechanics) was never supplied.",
+          "getOperativeProvision('6.11') returned an ambiguity error (2 distinct physical locations share this section reference) and could not be uniquely resolved.",
+          "getReferencedProvision('Section 6.11') failed to resolve to any section content in this instrument.",
+          "The 'Guarantee' definition this section depends on is itself flagged AMBIGUOUS_TARGET (2 colliding definitions, no amendment history to disambiguate), so even partial reconstruction of the covenant's meaning from its defined-term dependency is unsafe.",
+          "Referenced supporting documents (Security Agreement, Guarantee Agreement, Indenture, Intercreditor Agreement) are absent from the instrument package, precluding cross-check of the covenant's real mechanics.",
+          "Tool-call budget was exhausted before the ambiguity could be further narrowed.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "getOperativeProvision for '6.11' returned an ambiguity error (the reference matches 2 distinct physical locations in the document and could not be uniquely resolved), and getReferencedProvision for 'Section 6.11' failed to resolve to any section content. The only context-bundle item tagged as this section's OPERATIVE_SOURCE contains solely the section title/header, not its operative body. Cross-reference leads recorded against this section point to an 'Investment Agreement', 'terms of this Agreement', and 'terms hereof as a Lender' language, and to definitions of 'Guarantee' (itself flagged AMBIGUOUS_TARGET - 2 colliding physical definitions in the document, with no amendment history to disambiguate) and 'Obligations', but none of these resolve the missing operative body text of 6.11 itself. Referenced document types (Security Agreement, Guarantee/Guarantee and Security Agreement, Indenture, Intercreditor Agreement) are also absent from this instrument's document package. Tool budget was exhausted attempting to resolve the ambiguous section reference before further retrieval could be attempted.",
+          "dependsOn[0].targetRef \"Definition of \"Guarantee\"\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[1].targetRef \"Definition of \"Obligations\"\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§6.11",
+          "excerpt": "SECTION 6.11\n\nCovenant to Guarantee Obligations and Give Security\n\n119"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:07:21.875Z",
+      "inputTokens": 288496,
+      "outputTokens": 5786,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 8,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 68152,
+      "calculatedCostUsd": 0.634852
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:bac6e2c3b37f99ac7fc7db21",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.01",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:e9474f45e1f9c9246567c54a",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.01",
+        "covenantFamily": "LIENS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§7.01 heading only: \"SECTION 7.01 Liens\" (page 123); the three CROSS_DOCUMENT_REFERENCE fragments provided (references to the Investment Agreement, 'terms of this Agreement', and Lender-status language) are stray cross-references not tied to any substantive Liens prohibition or basket text and do not by themselves state operative Liens covenant economics.",
+          "semanticDescription": "Section 7.01 (Liens) operative covenant text - the actual negative-covenant prohibition and its exceptions/permitted-lien baskets",
+          "reason": "The only text supplied for Section 7.01 in the initial context bundle is the section heading itself ('SECTION 7.01 Liens') plus a page number, with no substantive operative language. Attempting to retrieve the real operative text via getOperativeProvision failed because the section reference '7.01' matches 3 distinct physical locations in the document (an already-flagged HIGH-severity AMBIGUOUS_RELATIVE_REFERENCE) and the tool explicitly refuses to guess which one is the real Section 7.01 body. getReferencedProvision for 'Section 7.01' also failed to resolve. No nodeId was available in the supplied context to use getChildren/getParentClause to disambiguate further, and getRelatedAmendments confirmed no amendment history exists that could help identify the correct current text.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.01",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:8989b8acab48762227befd03"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "No substantive operative text was supplied beyond the section heading and page number.",
+          "getOperativeProvision refused to serve the section due to an unresolved ambiguous target (3 distinct physical locations sharing the '7.01' reference).",
+          "getReferencedProvision could not resolve 'Section 7.01' either.",
+          "No nodeId was available to attempt structural disambiguation via getChildren/getParentClause/getSiblingClauses.",
+          "Referenced document types this Liens section would ordinarily depend on (security agreement, guarantee, indenture, intercreditor agreement) are confirmed absent from this instrument package.",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "The only text supplied for Section 7.01 in the initial context bundle is the section heading itself ('SECTION 7.01 Liens') plus a page number, with no substantive operative language. Attempting to retrieve the real operative text via getOperativeProvision failed because the section reference '7.01' matches 3 distinct physical locations in the document (an already-flagged HIGH-severity AMBIGUOUS_RELATIVE_REFERENCE) and the tool explicitly refuses to guess which one is the real Section 7.01 body. getReferencedProvision for 'Section 7.01' also failed to resolve. No nodeId was available in the supplied context to use getChildren/getParentClause to disambiguate further, and getRelatedAmendments confirmed no amendment history exists that could help identify the correct current text.",
+          "dependsOn[0].targetRef \"7.01 (ambiguous - 3 physical locations)\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.01",
+          "excerpt": "SECTION 7.01 Liens 123"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:08:16.014Z",
+      "inputTokens": 92341,
+      "outputTokens": 4202,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 5,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 54137,
+      "calculatedCostUsd": 0.226702
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:87eb9076ed8c82b0e025d147",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.02",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:436a57212e8cab9aa1602a05",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.02",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§7.02: \"SECTION 7.02\\n\\nIndebtedness\\n\\n124\"",
+          "semanticDescription": "Section 7.02, titled 'Indebtedness', is the negative covenant governing incurrence of Indebtedness (the prohibition and its enumerated permitted-debt baskets/exceptions), but no substantive body text for this section was obtainable.",
+          "reason": "The supplied operative source for §7.02 contains only the section heading and a page number ('SECTION 7.02 / Indebtedness / 124') with no prohibition, basket, threshold, or gating condition text. Attempts to retrieve the real operative text failed: getOperativeProvision('7.02') returned an unresolved ambiguity (3 distinct physical locations share this section-number reference, e.g. the real section header versus other in-document mentions of 'Section 7.02', none of which the tool would guess between); getReferencedProvision('Section 7.02') could not resolve to any section in the instrument; no nodeId for the section could be obtained from the context bundle (getContextBundleComponent/getRuleDependency returned only the heading item and generic cross-document leads, none of which are valid nodeIds for getChildren/getSourceSpan); and the tool-call budget was exhausted before further disambiguation could be attempted. This is a genuine evidentiary gap, not a representation-capability gap.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.02",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:50252030023e5d8d013516b5"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Only the section header/title and a page number were present in the supplied operative source for §7.02; no prohibition, basket, threshold, or condition text was available to compile.",
+          "getOperativeProvision('7.02') returned an ambiguity error citing 3 distinct physical locations sharing this reference and could not be resolved to a single current text.",
+          "getReferencedProvision('Section 7.02') could not resolve to any section within this instrument's documents.",
+          "No nodeId for the section was obtainable from the context bundle to attempt further structural retrieval (getChildren/getSourceSpan) before the tool budget was exhausted.",
+          "This section has no recorded amendment history, so the gap is not an amendment-conflict issue - it is a missing base-text extraction issue.",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "The supplied operative source for §7.02 contains only the section heading and a page number ('SECTION 7.02 / Indebtedness / 124') with no prohibition, basket, threshold, or gating condition text. Attempts to retrieve the real operative text failed: getOperativeProvision('7.02') returned an unresolved ambiguity (3 distinct physical locations share this section-number reference, e.g. the real section header versus other in-document mentions of 'Section 7.02', none of which the tool would guess between); getReferencedProvision('Section 7.02') could not resolve to any section in the instrument; no nodeId for the section could be obtained from the context bundle (getContextBundleComponent/getRuleDependency returned only the heading item and generic cross-document leads, none of which are valid nodeIds for getChildren/getSourceSpan); and the tool-call budget was exhausted before further disambiguation could be attempted. This is a genuine evidentiary gap, not a representation-capability gap.",
+          "dependsOn[0].targetRef \"Indebtedness (definition)\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.02",
+          "excerpt": "SECTION 7.02\n\nIndebtedness\n\n124"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:be12534435889b49bc5a3fb9",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Indebtedness",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "Definition of \"Indebtedness\"",
+          "semanticDescription": "A multi-clause categorical inclusion/exclusion test for what constitutes 'Indebtedness' of a Person: (1) borrowed money, instruments/LCs/bankers' acceptances, deferred purchase price >12 months (with sub-exceptions for trade payables, earn-outs until balance-sheet-recognized and unpaid 60+ days, and ordinary-course payroll accruals), and net Hedging Obligations, in each case (other than LC/Hedging obligations) only if it would appear as a GAAP balance-sheet liability; (2) guarantee-type obligations of a third Person's clause-(1) Indebtedness; and (3) third-party clause-(1) Indebtedness secured by a Lien on the first Person's asset (valued at the lesser of asset FMV and the amount of such Indebtedness) - all subject to a further proviso excluding Contingent Obligations, LC reimbursement obligations (with a 3-Business-Day grace period before counting as Indebtedness), Qualified Securitization Facility obligations (except, for Total Net Leverage Ratio purposes only, amounts over $125.0 million), accrued expenses, deferred/prepaid revenue, and asset retirement/reclamation/workers-compensation obligations, and calculated without giving effect to ASC 815 embedded-derivative accounting effects.",
+          "reason": "This is a qualitative/categorical membership definition with an internal valuation sub-mechanic (a MIN-type rule in clause (3)) and several distinct numeric carve-outs applicable only in specific contexts (e.g. the $125.0 million Qualified Securitization Facility threshold applies only for Total Net Leverage Ratio purposes, not generally) - it does not reduce to a single arithmetic/comparison formula representable with the IR's calculation primitives without misrepresenting its categorical, context-dependent structure. Some terms used only in the exclusions (Hedging Obligations, Capitalized Lease Obligations, Total Net Leverage Ratio) were not independently supplied or resolved in this bundle.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.02",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:71b1d91fd49f904576e489cf"
+        },
+        "dependsOnTerms": [
+          "Contingent Obligations",
+          "Qualified Securitization Facility",
+          "Hedging Obligations",
+          "Capitalized Lease Obligations",
+          "Total Net Leverage Ratio",
+          "Lien"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The full text of the definition was supplied and is confirmed current (no unresolved amendment issue), so the categorical structure and its exceptions are preserved faithfully in this description and excerpt.",
+          "The definition's economics cannot be safely compressed into a single calculationExpression using ADD/SUBTRACT/MULTIPLY/MIN/MAX/COMPARE without losing the qualitative gating (what counts as Indebtedness at all) that precedes any numeric mechanic, so the calculation node is marked UNSUPPORTED rather than forced into a misleading formula.",
+          "Two dependency terms referenced in the exclusions/valuation (Hedging Obligations, Capitalized Lease Obligations) and one referenced for the Qualified Securitization Facility carve-out's scope (Total Net Leverage Ratio) were not resolved within the supplied bundle or this session's tool budget.",
+          "This is a qualitative/categorical membership definition with an internal valuation sub-mechanic (a MIN-type rule in clause (3)) and several distinct numeric carve-outs applicable only in specific contexts (e.g. the $125.0 million Qualified Securitization Facility threshold applies only for Total Net Leverage Ratio purposes, not generally) - it does not reduce to a single arithmetic/comparison formula representable with the IR's calculation primitives without misrepresenting its categorical, context-dependent structure. Some terms used only in the exclusions (Hedging Obligations, Capitalized Lease Obligations, Total Net Leverage Ratio) were not independently supplied or resolved in this bundle."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definition of \"Indebtedness\"",
+          "excerpt": "“Indebtedness” means, with respect to any Person, without duplication: (1) any indebtedness ... in respect of borrowed money ... (d) representing the net obligations under any Hedging Obligations; if and to the extent that any of the foregoing Indebtedness ... would appear as a liability upon a balance sheet ...; (2) ... guarantee-type obligations ...; and (3) ... obligations ... secured by a Lien on any asset ... provided that the amount of such Indebtedness will be the lesser of (i) the fair market value of such asset ... and (ii) the amount of such Indebtedness of such other Person; provided that notwithstanding the foregoing, Indebtedness will be deemed not to include: (i) Contingent Obligations ..., (ii) reimbursement obligations under commercial letters of credit ..., (iii) obligations under or in respect of Qualified Securitization Facilities; provided, however, for the purposes of determining the Total Net Leverage Ratio, only amounts outstanding under any Qualified Securitization Facilities in excess of $125.0 million shall constitute Indebtedness, (iv) accrued expenses, (v) deferred or prepaid revenues, and (vi) asset retirement obligations..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:10:46.835Z",
+      "inputTokens": 339658,
+      "outputTokens": 13667,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 9,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 150820,
+      "calculatedCostUsd": 0.8159859999999999
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:2a671279e2a1d97e131dbed6",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.03",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:ca243f1c33fc3917a75a3445",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.03",
+        "covenantFamily": "FUNDAMENTAL_CHANGES",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "§7.03 (heading only: 'SECTION 7.03 Fundamental Changes'); cross-document reference fragments: 'pursuant to the Investment Agreement', 'pursuant to the terms of this Agreement', 'pursuant to the terms hereof as a Lender hereunder for all purposes of this Agreement'",
+          "semanticDescription": "Section 7.03 ('Fundamental Changes') operative covenant text (typically governing mergers, consolidations, liquidations, dissolutions and/or sales of substantially all assets) could not be retrieved",
+          "reason": "The only OPERATIVE_SOURCE evidence supplied for this section is a heading/page-break fragment ('SECTION 7.03 / Fundamental Changes / 131') with no substantive covenant body text. getOperativeProvision('7.03') refused because the reference matches two distinct physical locations in the document and cannot be uniquely resolved; getReferencedProvision('Section 7.03') failed to resolve to any section; getContextBundleComponent confirmed the bundled item is only the heading fragment; and no valid nodeId was available to attempt getChildren/getSourceSpan for descendant body text before the tool-call budget was exhausted. The related cross-document reference fragments in context (to an Investment Agreement, to 'the terms of this Agreement', and to Lender-admission language) read as isolated snippets that do not, on their own, constitute the operative economics of a Fundamental Changes covenant and cannot be safely assembled into a rule without the surrounding operative sentence(s).",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.03",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:ef1fe6a366abbce3050868d8"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Only a section heading/page-break was supplied as the operative source text for §7.03; no substantive prohibition, permission, basket, or condition language was included.",
+          "getOperativeProvision('7.03') could not uniquely resolve the section (matches 2 physical locations) and refused to guess.",
+          "getReferencedProvision('Section 7.03') failed to resolve to any section in the instrument.",
+          "No valid nodeId was obtainable to pull descendant/child clause text via getChildren or getSourceSpan before the tool-call budget was exhausted.",
+          "The listed cross-document reference fragments (Investment Agreement, 'terms of this Agreement', Lender-admission language) and the flagged unresolved dependencies (multiple REFERENCED_DOCUMENT_ABSENT entries for security/guarantee/indenture/intercreditor agreements not in this package, plus an AMBIGUOUS_RELATIVE_REFERENCE and an UNRESOLVED_DEFINED_TERM) indicate the real §7.03 text likely contains material conditions tied to documents/terms outside the supplied evidence, which could not be independently verified or resolved.",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "The only OPERATIVE_SOURCE evidence supplied for this section is a heading/page-break fragment ('SECTION 7.03 / Fundamental Changes / 131') with no substantive covenant body text. getOperativeProvision('7.03') refused because the reference matches two distinct physical locations in the document and cannot be uniquely resolved; getReferencedProvision('Section 7.03') failed to resolve to any section; getContextBundleComponent confirmed the bundled item is only the heading fragment; and no valid nodeId was available to attempt getChildren/getSourceSpan for descendant body text before the tool-call budget was exhausted. The related cross-document reference fragments in context (to an Investment Agreement, to 'the terms of this Agreement', and to Lender-admission language) read as isolated snippets that do not, on their own, constitute the operative economics of a Fundamental Changes covenant and cannot be safely assembled into a rule without the surrounding operative sentence(s)."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.03",
+          "excerpt": "SECTION 7.03\n\nFundamental Changes\n\n131"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:12:11.125Z",
+      "inputTokens": 200628,
+      "outputTokens": 6916,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 10,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 84287,
+      "calculatedCostUsd": 0.470416
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:ad9c95a240d03f25b0220acd",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.04",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:ee2b6109dc4eabbc95db6eb6",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.04",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "Section 7.04 heading text: 'SECTION 7.04 / Asset Sales / 133'",
+          "semanticDescription": "Section 7.04, captioned 'Asset Sales', is the intended covenant provision, but the only text supplied in context is the section heading and a page number ('SECTION 7.04 / Asset Sales / 133') with no substantive operative body text.",
+          "reason": "The section reference '7.04' is flagged as ambiguous (matches two distinct physical locations in the document, e.g. a table-of-contents entry vs. the actual section body), and getOperativeProvision/getReferencedProvision both failed to return a uniquely-resolved, substantive text for this section because no nodeId was available to disambiguate. The only related context items retrieved (references to an 'Investment Agreement', 'terms of this Agreement', and 'terms hereof as a Lender hereunder for all purposes of this Agreement') read as language about Lender status/assignment rather than an asset-sale disposition/prepayment covenant, suggesting they may in fact belong to the OTHER physical location sharing this section number rather than to the real Asset Sales covenant body - so they cannot safely be used to reconstruct this rule's economics either.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.04",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:d16f4d8286220b66d7a87f65"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Only a section heading and page number were supplied as the operative source text for 7.04 - no substantive covenant language is present to compile.",
+          "getOperativeProvision('7.04') returned an ambiguity error: the reference matches 2 distinct physical locations in the document, and no nodeId was available to disambiguate via getReferencedProvision.",
+          "The related context items gathered by Phase 2 (Investment Agreement / Lender hereunder references) appear thematically inconsistent with an 'Asset Sales' covenant and may belong to the other ambiguous physical location, so they were not relied upon.",
+          "This matches the pre-flagged unresolved dependency: AMBIGUOUS_RELATIVE_REFERENCE (HIGH) - ambiguous target with more than one physical location sharing this reference's normalized target.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "The section reference '7.04' is flagged as ambiguous (matches two distinct physical locations in the document, e.g. a table-of-contents entry vs. the actual section body), and getOperativeProvision/getReferencedProvision both failed to return a uniquely-resolved, substantive text for this section because no nodeId was available to disambiguate. The only related context items retrieved (references to an 'Investment Agreement', 'terms of this Agreement', and 'terms hereof as a Lender hereunder for all purposes of this Agreement') read as language about Lender status/assignment rather than an asset-sale disposition/prepayment covenant, suggesting they may in fact belong to the OTHER physical location sharing this section number rather than to the real Asset Sales covenant body - so they cannot safely be used to reconstruct this rule's economics either."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.04",
+          "excerpt": "SECTION 7.04\n\nAsset Sales\n\n133"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:13:02.604Z",
+      "inputTokens": 110366,
+      "outputTokens": 4361,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 6,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 51477,
+      "calculatedCostUsd": 0.26434199999999997
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:e6c089ca3e4b2840a61562bc",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.05",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:40ed2689faab8c4314383f3c",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.05",
+        "covenantFamily": "RESTRICTED_PAYMENTS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "Section 7.05 header only (\"SECTION 7.05 Restricted Payments\", p.133); getOperativeProvision('7.05') ambiguity error; getReferencedProvision('Section 7.05') resolution failure; getRelatedAmendments('7.05') no-amendment confirmation",
+          "semanticDescription": "The Restricted Payments covenant at Section 7.05 - its substantive operative body text (the actual prohibition/permission language, baskets, thresholds and conditions governing Restricted Payments)",
+          "reason": "The only text supplied for this provision is the bare section header ('SECTION 7.05 Restricted Payments') plus a page number; no operative covenant body text was included in the bounded context. An attempt to retrieve the current operative text via getOperativeProvision('7.05') returned an error indicating the reference '7.05' matches 3 distinct physical locations in the document (consistent with the flagged AMBIGUOUS_RELATIVE_REFERENCE dependency) and could not be uniquely resolved without a scoping nodeId that was not available. An absolute cross-reference lookup for 'Section 7.05' also failed to resolve. getRelatedAmendments confirmed no amendment history exists for this section (ruling out an amendment-version explanation for the gap). The three CROSS_DOCUMENT_REFERENCE context items supplied ('pursuant to the Investment Agreement', 'pursuant to the terms of this Agreement', 'pursuant to the terms hereof as a Lender hereunder...') are generic cross-references with N/A evidence status and do not themselves state any Restricted Payments economics (no dollar basket, percentage, ratio test, or condition), so they cannot substitute for the missing operative body text. Fabricating typical Restricted Payments basket economics (e.g. a general/builder basket, ratio-gated unlimited capacity, or a fixed-dollar exception) without any supplied source text for this specific section would be an unsupported guess.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.05",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:96f7380b38b72beb8190d7f2"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "Only the section header/title and page number were provided as 'operative source text' - no substantive covenant body text for Section 7.05 was included in the bounded context.",
+          "getOperativeProvision('7.05') could not uniquely resolve the section because the reference matches 3 distinct physical locations in the instrument (consistent with the flagged AMBIGUOUS_RELATIVE_REFERENCE dependency); no fromNodeId scoping the correct physical location was available.",
+          "getReferencedProvision('Section 7.05') as an absolute reference failed to resolve to any section within the instrument's documents.",
+          "The supplied CROSS_DOCUMENT_REFERENCE context items are generic references (to the Investment Agreement, to 'this Agreement', and to Lender status) that carry no Restricted Payments economics and cannot be used to reconstruct the covenant's actual terms.",
+          "No amendment history exists for this section (confirmed), so the gap is not explained by an unresolved amendment - it is a genuine absence of the underlying operative text in the evidence made available.",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "The only text supplied for this provision is the bare section header ('SECTION 7.05 Restricted Payments') plus a page number; no operative covenant body text was included in the bounded context. An attempt to retrieve the current operative text via getOperativeProvision('7.05') returned an error indicating the reference '7.05' matches 3 distinct physical locations in the document (consistent with the flagged AMBIGUOUS_RELATIVE_REFERENCE dependency) and could not be uniquely resolved without a scoping nodeId that was not available. An absolute cross-reference lookup for 'Section 7.05' also failed to resolve. getRelatedAmendments confirmed no amendment history exists for this section (ruling out an amendment-version explanation for the gap). The three CROSS_DOCUMENT_REFERENCE context items supplied ('pursuant to the Investment Agreement', 'pursuant to the terms of this Agreement', 'pursuant to the terms hereof as a Lender hereunder...') are generic cross-references with N/A evidence status and do not themselves state any Restricted Payments economics (no dollar basket, percentage, ratio test, or condition), so they cannot substitute for the missing operative body text. Fabricating typical Restricted Payments basket economics (e.g. a general/builder basket, ratio-gated unlimited capacity, or a fixed-dollar exception) without any supplied source text for this specific section would be an unsupported guess."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.05",
+          "excerpt": "SECTION 7.05 Restricted Payments"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:13:53.401Z",
+      "inputTokens": 110401,
+      "outputTokens": 3983,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 6,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 50796,
+      "calculatedCostUsd": 0.260632
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:09bef4bd987ba27c1454bdee",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.06",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:6b190370e9f676dac0c3e1cd",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.06",
+        "covenantFamily": "QUALITATIVE_NEGATIVE_COVENANTS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r1].exception[0]",
+            "appliesToRuleId": "ir-rule:6b190370e9f676dac0c3e1cd",
+            "description": "The prohibition does not extend to (and the Borrower and its Subsidiaries may continue to engage in) any business(es) or activities that are reasonably similar, ancillary, incidental, complementary or related to, or a reasonable extension, development or expansion of, the business conducted or proposed to be conducted by the Borrower and its Subsidiaries on the Closing Date - i.e., this functions as a qualitative safe-harbor defining the outer boundary of what counts as a prohibited 'material line of business substantially different' from the Closing Date business, rather than a separately quantifiable permission.",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.06",
+              "excerpt": "or any business(es) or any other activities that are reasonably similar, ancillary, incidental, complementary or related to, or a reasonable extension, development or expansion of, the business conducted or proposed to be conducted by the Borrower and its Subsidiaries on the Closing Date."
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The provision is a self-contained qualitative prohibition on materially different lines of business, with its own qualitative safe-harbor carve-out fully stated in the same sentence; no dollar amount, percentage, ratio, or external cross-reference is needed to state its operative scope.",
+          "The only undefined term referenced ('Closing Date') is a standard date-reference used solely to anchor the qualitative business-line comparison, not a quantitative input to capacity, so its absence from the supplied context does not create a material gap.",
+          "covenantFamily \"OTHER\" not recognized - defaulted to QUALITATIVE_NEGATIVE_COVENANTS (verify manually)"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.06",
+          "excerpt": "SECTION 7.06 Change in Nature of Business. The Borrower shall not, nor shall the Borrower permit any of its Subsidiaries to, engage in any material line of business substantially different from those lines of business conducted by the Borrower and any of its Subsidiaries on the Closing Date or any business(es) or any other activities that are reasonably similar, ancillary, incidental, complementary or related to, or a reasonable extension, development or expansion of, the business conducted or proposed to be conducted by the Borrower and its Subsidiaries on the Closing Date."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:14:36.142Z",
+      "inputTokens": 18846,
+      "outputTokens": 4242,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 1,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 42739,
+      "calculatedCostUsd": 0.080112
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:b1e6755db02c39d2cad689f6",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.10",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:f6ab7130e3c29fe387c183f5",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.10",
+        "covenantFamily": "INDEBTEDNESS",
+        "ruleType": "PROHIBITION",
+        "posture": "PROHIBITION",
+        "action": "OTHER",
+        "entityScope": [
+          "BORROWER"
+        ],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": null,
+        "conditions": [
+          {
+            "conditionId": "rule[r1].condition[0]",
+            "conditionType": "UNSUPPORTED",
+            "expression": {
+              "kind": "COMPARE",
+              "type": "BOOLEAN",
+              "exprId": "ir-expr:104096c61efc7a86885d59dc",
+              "left": {
+                "kind": "METRIC_REFERENCE",
+                "type": "MONEY",
+                "metricName": "Aggregate outstanding principal amount of the relevant Subordinated Indebtedness",
+                "companyId": "final-lightweight-unseen-sup-968ccc2b",
+                "instrumentKey": "sup-term-loan-instrument",
+                "resolvedDefinitionId": null,
+                "exprId": "ir-expr:e17089983c44325c9cc5f0ec"
+              },
+              "operator": "GT",
+              "right": {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 20000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "doc-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "Definition of \"Threshold Amount\"",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:1f4061813a412520c46c6511"
+              },
+              "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§7.10",
+                "excerpt": null
+              }
+            },
+            "referencesDefinitionId": "d1",
+            "description": "The prohibition applies only to Subordinated Indebtedness having an aggregate outstanding principal amount greater than the Threshold Amount ($20.0 million).",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.10",
+              "excerpt": "any term or condition of any Subordinated Indebtedness having an aggregate outstanding principal amount greater than the Threshold Amount"
+            }
+          },
+          {
+            "conditionId": "rule[r1].condition[1]",
+            "conditionType": "UNSUPPORTED",
+            "expression": null,
+            "referencesDefinitionId": null,
+            "description": "The relevant amendment, modification or change must be 'in any manner materially adverse to the interests of the Lenders,' with materiality determined in good faith by the Borrower - a qualitative, discretionary standard rather than a formal test.",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.10",
+              "excerpt": "amend, modify or change in any manner materially adverse to the interests of the Lenders, as determined in good faith by the Borrower"
+            }
+          }
+        ],
+        "exceptions": [
+          {
+            "exceptionId": "rule[r1].exception[0]",
+            "appliesToRuleId": "ir-rule:f6ab7130e3c29fe387c183f5",
+            "description": "Refinancing carve-out: a change in the terms of Subordinated Indebtedness that occurs as a result of any Refinancing Indebtedness in respect thereof is excluded from this prohibition entirely (i.e. it is not a restricted modification at all).",
+            "permissionRuleId": null,
+            "conditions": [
+              {
+                "conditionId": "rule[r1].condition[0]",
+                "conditionType": "OTHER_RULE_SATISFIED",
+                "expression": {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "type": "MONEY",
+                  "termName": "Refinancing Indebtedness",
+                  "companyId": "final-lightweight-unseen-sup-968ccc2b",
+                  "instrumentKey": "sup-term-loan-instrument",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:ee633483bc04a6b19a2adbc6"
+                },
+                "referencesDefinitionId": "d3",
+                "description": "The relevant change must result from Refinancing Indebtedness (as defined) in respect of the applicable Subordinated Indebtedness.",
+                "provenance": {
+                  "documentId": "doc-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§7.10",
+                  "excerpt": "(other than as a result of any Refinancing Indebtedness in respect thereof)"
+                }
+              }
+            ],
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.10",
+              "excerpt": "(other than as a result of any Refinancing Indebtedness in respect thereof)"
+            }
+          },
+          {
+            "exceptionId": "rule[r1].exception[1]",
+            "appliesToRuleId": "ir-rule:f6ab7130e3c29fe387c183f5",
+            "description": "Administrative Agent consent override: the otherwise-prohibited modification is permitted with the prior consent of the Administrative Agent, which consent may not be unreasonably withheld or delayed.",
+            "permissionRuleId": null,
+            "conditions": [],
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§7.10",
+              "excerpt": "without the consent of the Administrative Agent (which consent shall not be unreasonably withheld or delayed)"
+            }
+          }
+        ],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "The operative text of §7.10 has no recorded amendment history and is confirmed current.",
+          "All stated economics - the $20.0 million scope threshold (via the Threshold Amount definition), the materially-adverse standard, the Refinancing Indebtedness carve-out, and the Administrative Agent consent override - are captured directly from the source text and its confirmed-current dependent definitions.",
+          "The 'materially adverse ... as determined in good faith by the Borrower' language is an inherently qualitative discretionary standard rather than a computable expression, so it is represented as a described condition without a formal expression rather than forced into an ill-fitting comparison.",
+          "condition[0].conditionType \"SCOPE_THRESHOLD\" not recognized - normalized to UNSUPPORTED",
+          "condition[1].conditionType \"MATERIALLY_ADVERSE_DETERMINATION\" not recognized - normalized to UNSUPPORTED",
+          "dependsOn[0].targetRef \"Threshold Amount\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[1].targetRef \"Subordinated Indebtedness\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[2].targetRef \"Refinancing Indebtedness\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.10",
+          "excerpt": "The Borrower shall not, nor shall the Borrower permit any Subsidiary to, amend, modify or change in any manner materially adverse to the interests of the Lenders, as determined in good faith by the Borrower, any term or condition of any Subordinated Indebtedness having an aggregate outstanding principal amount greater than the Threshold Amount (other than as a result of any Refinancing Indebtedness in respect thereof) without the consent of the Administrative Agent (which consent shall not be unreasonably withheld or delayed)."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:50a0f4a49f586e347d824eb3",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Threshold Amount",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "MONEY",
+          "type": "MONEY",
+          "amount": 20000000,
+          "currency": "USD",
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "Definition of \"Threshold Amount\"",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:1f4061813a412520c46c6511"
+        },
+        "dependsOnTerms": [],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Simple fixed-dollar definition, confirmed current."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definition of \"Threshold Amount\"",
+          "excerpt": "“Threshold Amount” means $20.0 million."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:ac219d2d660370b80ccc4d09",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Subordinated Indebtedness",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Indebtedness",
+          "Obligations"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Definition is a qualitative categorical definition (not a formula); the full defining text is captured verbatim."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definition of \"Subordinated Indebtedness\"",
+          "excerpt": "“Subordinated Indebtedness” means any Indebtedness of any Loan Party that by its terms is subordinated in right of payment to the Obligations of such Loan Party arising under the Loans or the Guaranty."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:b4c4ad756f6d0d575cacb639",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Refinancing Indebtedness",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "Definition of \"Refinancing Indebtedness\" (tool retrieval, truncated)",
+          "semanticDescription": "Refinancing Indebtedness is defined by a multi-part test (principal-amount cap, weighted-average-life and maturity requirements, subordination/lien-ranking preservation, guarantor/collateral-scope limits, and several provisos) rather than a single computable value.",
+          "reason": "The full definition text returned by the tool was truncated before all clauses and provisos were captured, and even the untruncated portion is a multi-factor qualitative/structural test not reducible to a single IR expression without risking a materially incomplete restatement.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.10",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:23c26ddd17a2ec7ec15de8c8"
+        },
+        "dependsOnTerms": [
+          "Indebtedness",
+          "Disqualified Stock",
+          "Preferred Stock",
+          "Subordinated Indebtedness"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The core concept (debt/stock that extends, replaces, refunds, refinances, renews or defeases existing Indebtedness/Disqualified Stock/Preferred Stock, subject to conditions) is captured and is sufficient for its role as a carve-out reference in §7.10.",
+          "The complete multi-clause economics of the defined term itself were truncated in retrieval and are not fully represented here.",
+          "The full definition text returned by the tool was truncated before all clauses and provisos were captured, and even the untruncated portion is a multi-factor qualitative/structural test not reducible to a single IR expression without risking a materially incomplete restatement."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "Definition of \"Refinancing Indebtedness\"",
+          "excerpt": "“Refinancing Indebtedness” means (x) Indebtedness incurred ... (y) Disqualified Stock issued ... or (z) Preferred Stock issued ... which ... serves to extend, replace, refund, refinance, renew or defease (“Refinance”) any Indebtedness, Disqualified Stock or Preferred Stock ... so long as [conditions (1)-(5) and provisos, text truncated]."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:16:38.726Z",
+      "inputTokens": 73288,
+      "outputTokens": 13281,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 122582,
+      "calculatedCostUsd": 0.279386
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:f17912b03e1ad85eabefc441",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.11",
+    "status": "REVIEW_REQUIRED",
+    "rules": [
+      {
+        "ruleId": "ir-rule:330fbebf19f2024d409ff926",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-lightweight-unseen-sup-968ccc2b",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "sourceSectionRef": "7.11",
+        "covenantFamily": "LIENS",
+        "ruleType": "QUALITATIVE_OBLIGATION",
+        "posture": "N_A",
+        "action": null,
+        "entityScope": [],
+        "entityScopeExcluded": [],
+        "transactionScope": null,
+        "capacityExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "context-item heading text: 'SECTION 7.11 / Negative Pledge / 143'",
+          "semanticDescription": "Section 7.11 is captioned 'Negative Pledge' but the bounded evidence supplied for this compilation contains only the section heading/page marker ('SECTION 7.11 / Negative Pledge / 143') and a handful of unrelated cross-document reference snippets (to an 'Investment Agreement', to 'the terms of this Agreement', and to 'the terms hereof as a Lender hereunder') that do not themselves state the negative pledge's substantive prohibition, carve-outs, or any dollar/percentage thresholds. Attempting to retrieve the section's confirmed current operative text directly (getOperativeProvision / getReferencedProvision, both by absolute reference '7.11' and 'Section 7.11') returned an unresolved ambiguity: the reference '7.11' matches more than one physical location in the instrument, and no fromNodeId scoping evidence was available in the supplied context bundle to disambiguate (getContextBundleComponent did not recognize the supplied context-item ids as retrievable, and no nodeId was exposed by any successful tool call). The task's own known-dependency list separately flags this exact condition as an unresolved AMBIGUOUS_RELATIVE_REFERENCE, plus numerous REFERENCED_DOCUMENT_ABSENT flags for Security Agreement / Guarantee / Guarantee and Security Agreement / Indenture / Intercreditor Agreement document types that are typically the subject of a negative pledge's permitted-lien carve-outs but are absent from this document package.",
+          "reason": "Section reference is genuinely ambiguous (matches 2 physical locations) and could not be disambiguated with available tools/budget; the substantive prohibition and carve-out text of the Negative Pledge covenant was never actually supplied - only a heading - so there is no operative economics to compile.",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§7.11",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:15c74c3c1008deb5b3de3ab8"
+        },
+        "conditions": [],
+        "exceptions": [],
+        "dependsOn": [],
+        "operativeLineage": null,
+        "sufficiency": "MISSING_CONTEXT",
+        "sufficiencyReasons": [
+          "The supplied context bundle for Section 7.11 contains only the section's caption/heading and page marker, not its substantive operative text (the actual prohibition and any carve-outs/thresholds of the Negative Pledge covenant).",
+          "Direct retrieval of the current operative text via getOperativeProvision and getReferencedProvision failed because the section reference '7.11' resolves ambiguously to two distinct physical locations in the single instrument document, and no scoping nodeId was available from the context bundle to disambiguate (getContextBundleComponent did not recognize the given context-item ids).",
+          "Several REFERENCED_DOCUMENT_ABSENT flags (Security Agreement, Guarantee, Indenture, Intercreditor Agreement) indicate this covenant likely cross-references collateral/guarantee documents that are not included in this package, which would independently limit full representation even if the ambiguity were resolved.",
+          "Tool-call budget was exhausted while attempting to resolve the ambiguity, precluding further retrieval attempts (e.g. structural getChildren/getParentClause calls) that might otherwise have helped locate a disambiguating nodeId.",
+          "ruleType \"OTHER\" not recognized - defaulted to QUALITATIVE_OBLIGATION (verify manually)",
+          "Section reference is genuinely ambiguous (matches 2 physical locations) and could not be disambiguated with available tools/budget; the substantive prohibition and carve-out text of the Negative Pledge covenant was never actually supplied - only a heading - so there is no operative economics to compile.",
+          "dependsOn[0].targetRef \"SECURITY_AGREEMENT/GUARANTEE_AND_SECURITY_AGREEMENT (absent from package)\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[1].targetRef \"GUARANTEE/GUARANTEE_AND_SECURITY_AGREEMENT (absent from package)\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[2].targetRef \"INDENTURE (absent from package)\" did not resolve - dependency dropped rather than left dangling",
+          "dependsOn[3].targetRef \"INTERCREDITOR_AGREEMENT (absent from package)\" did not resolve - dependency dropped rather than left dangling"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§7.11",
+          "excerpt": "SECTION 7.11\n\nNegative Pledge\n\n143"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:17:56.327Z",
+      "inputTokens": 172703,
+      "outputTokens": 5968,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 9,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 77598,
+      "calculatedCostUsd": 0.405086
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:8131b1d7c3669a78822de48a",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "7.12",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:17:56.871Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 542,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  },
+  {
+    "candidateRef": "discovery-candidate:862731776993398c2260123a",
+    "sourceDocumentId": "doc-a",
+    "sourceSectionRef": "8.04",
+    "status": "FAILED",
+    "rules": [],
+    "definitions": [],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T11:17:57.156Z",
+      "inputTokens": 0,
+      "outputTokens": 0,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 0,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 284,
+      "calculatedCostUsd": 0,
+      "error": "402 {\"error\":{\"message\":\"A positive credit balance is required for all requests, including BYOK, so fallback providers remain available. Add credits at https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai%3Fmodal%3Dtop-up to continue.\",\"type\":\"insufficient_funds\"}}"
+    }
+  }
+]

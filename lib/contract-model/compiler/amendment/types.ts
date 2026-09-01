@@ -374,6 +374,18 @@ export interface AmendmentPipelineSummary {
 
 export type NodeSupersessionStatus = "CURRENT_OPERATIVE" | "KNOWN_SUPERSEDED" | "UNKNOWN_SUPERSESSION_STATUS";
 
+/**
+ * PRE-UNSEEN OPERATIVE-STATE INTEGRATION - whole-document currentness places
+ * an upper bound on node/source currentness. Distinguishes WHY a node is
+ * KNOWN_SUPERSEDED without adding a new NodeSupersessionStatus literal (see
+ * docs/pre-unseen-operative-integration/03-integration-design.json's own
+ * "explicitlyRejectedAlternative" - every real consumer already treats
+ * KNOWN_SUPERSEDED as the single fail-closed non-current signal; reusing it
+ * means the whole consumer graph inherits this fix with zero code changes,
+ * and never risks a future status-literal-unaware bypass).
+ */
+export type NodeSupersessionKind = "PROVISION_LEVEL" | "DOCUMENT_LEVEL";
+
 /** Provenance for a KNOWN_SUPERSEDED verdict - "why" (which amendment, what date), never a bare boolean. Populated ONLY when status is KNOWN_SUPERSEDED. */
 export interface NodeSupersessionRecord {
   nodeId: string;
@@ -383,6 +395,21 @@ export interface NodeSupersessionRecord {
   supersededByAmendmentDocumentId: string;
   /** The effective date of the amendment effect that superseded this node, ISO date string - null only if the superseding effect's own effective date evidence was itself null (should not occur for an APPLIED effect, but never assumed). */
   supersededEffectiveDate: string | null;
+  /**
+   * PRE-UNSEEN OPERATIVE-STATE INTEGRATION - PROVISION_LEVEL (the pre-existing,
+   * unchanged meaning: a specific SECTION/DEFINITION amendment effect
+   * superseded this exact physical node) vs DOCUMENT_LEVEL (new: this node's
+   * own ENTIRE CONTAINING DOCUMENT was affirmatively established as a
+   * historical predecessor in a RESOLVED whole-document operative/version
+   * chain - computeOperativeDocument's own OperativeDocumentResolution -
+   * regardless of whether any section/definition-level effect ever targeted
+   * this specific node). Every pre-existing record construction site sets
+   * this to PROVISION_LEVEL; only the new whole-document composition in
+   * buildNodeSupersessionIndex ever sets DOCUMENT_LEVEL.
+   */
+  supersessionKind: NodeSupersessionKind;
+  /** Populated only when supersessionKind is DOCUMENT_LEVEL - the ultimate resolved operative document this predecessor was superseded in favor of (OperativeDocumentResolution.operativeDocumentId - may be more than one hop away; see relationshipChain for the full path). Always null for PROVISION_LEVEL. */
+  supersedingOperativeDocumentId: string | null;
 }
 
 export interface NodeSupersessionResult {
@@ -406,4 +433,17 @@ export interface NodeSupersessionIndex {
   supersededByNodeId: Map<string, NodeSupersessionRecord>;
   /** nodeIds that are one of 2+ real physical occurrences an amendment target reference could not be uniquely attached to (ProvisionTargetResolutionStatus === "AMBIGUOUS") - each such occurrence's own individual supersession status is genuinely unknowable without guessing which one the amendment meant, so every one of them resolves UNKNOWN rather than either extreme. */
   ambiguousNodeIds: Set<string>;
+  /**
+   * PRE-UNSEEN OPERATIVE-STATE INTEGRATION - documentId (NOT nodeId) ->
+   * the DOCUMENT_LEVEL record explaining why EVERY node in that document is
+   * superseded, composed directly from a RESOLVED OperativeDocumentResolution
+   * (chain.ts's computeOperativeDocument) rather than a second, independent
+   * version-chain computation. Keyed by documentId (unlike supersededByNodeId)
+   * because whole-document supersession applies uniformly to every physical
+   * node in a historical predecessor document without ever needing to
+   * enumerate them - getNodeSupersessionStatus can therefore answer correctly
+   * for a node it has never individually seen before, exactly like
+   * coveredDocumentIds already does for the CURRENT_OPERATIVE default.
+   */
+  documentLevelSupersededDocuments: Map<string, NodeSupersessionRecord>;
 }

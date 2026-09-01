@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "CLASSIFIER_REMEDIATION_DESIGN",
+  "architectureChosen": "Inline \\s+ substitution within the existing RULES array's own regex literals - no new abstraction, no phrase-builder utility, no text-preprocessing/normalization step.",
+  "alternativesConsidered": [
+    { "option": "Preprocess/normalize the whole document text (collapse all whitespace) before running RULES against it.", "rejected": true, "reason": "Explicitly warned against by the mission's own Section 4 - would destroy the character-position meaning that Tier 2's earliestRuleMatch/CAPTION_ZONE_CHARS/AMBIGUITY_GAP_CHARS logic depends on, and would also require re-deriving SELF_REFERENCE_WINDOW slicing against a different text than doc.text." },
+    { "option": "Build a generalized phrase-to-regex helper function (e.g. wordsToPattern(['amended','and','restated'])) and rewrite RULES to call it.", "rejected": true, "reason": "A larger refactor than this bug's own scope warrants - introduces a new abstraction with its own testing/maintenance surface for a fix that is otherwise a direct, auditable one-line-per-pattern regex edit. Rejected per the general engineering discipline of not adding abstraction beyond what the task requires." },
+    { "option": "Inline \\s+ substitution within existing regex literals (CHOSEN).", "rejected": false, "reason": "Matches the mission's own suggested example (docs/final-phase3-closure/02-classifier-whitespace-audit.json's own fixMechanism) exactly. Zero new abstraction. Every changed line is independently auditable in a plain git diff. Preserves 100% of existing position-aware Tier 2 logic (matches still run against raw text; only the amount of whitespace between words each regex tolerates changed)." }
+  ],
+  "invariantsPreserved": {
+    "positionFirstTier2": "earliestRuleMatch still computes m.index against the SAME raw preamble text - \\s+ never changes what character index a match starts at, only what it is willing to skip over internally before the next literal token.",
+    "selfReferentialTier1": "SELF_REFERENCE_RE and findRuleMatchForType(selfTerm) are unchanged; findRuleMatchForType calls findEvidence(rule.patterns, term) against the SAME (now whitespace-tolerant) RULES patterns, so a self-referential term that itself spans a line-wrap now also correctly resolves - a generalization of the same fix, not a separate code path.",
+    "ambiguityGuard": "BASE_REFERENCEABLE_TYPES/CAPTION_ZONE_CHARS/AMBIGUITY_GAP_CHARS/matchesOverlap logic entirely untouched - operates on the same { index, evidence } shape regardless of how many literal characters a match's evidence string spans.",
+    "tocExhibitResistance": "The self-referential-title-first architecture (Tier 1 before Tier 2, earliest-match-wins within Tier 2) is architecturally independent of the whitespace-tolerance fix - unchanged code paths, verified by the full pre-existing C1-C10 TOC/exhibit adversarial test suite still passing unmodified (see 04-classifier-generic-tests.json)."
+  },
+  "scopeDiscipline": "No Superior-specific text, no issuer/package/document IDs, and no Superior-tuned regex literal was added anywhere in this diff - every changed pattern remains a generic English financing-document phrase (verifiable directly in the diff: only \\s vs literal-space characters changed, no new words/phrases/strings were introduced)."
+}

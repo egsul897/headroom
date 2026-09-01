@@ -32,7 +32,7 @@ export interface DocumentClassification {
   confidence: number;
   /** The literal matched text/signal that produced this classification - never invented, always a real substring or a named deterministic rule. */
   evidence: string[];
-  resolutionMethod: "DETERMINISTIC_SELF_REFERENTIAL_TITLE" | "DETERMINISTIC_TITLE_PATTERN" | "DETERMINISTIC_DECLARED_TYPE_CONFIRMED" | "UNKNOWN_NO_SIGNAL";
+  resolutionMethod: "DETERMINISTIC_SELF_REFERENTIAL_TITLE" | "DETERMINISTIC_TITLE_PATTERN" | "DETERMINISTIC_DECLARED_TYPE_CONFIRMED" | "DETERMINISTIC_CAPTION_AMBIGUOUS" | "UNKNOWN_NO_SIGNAL";
 }
 
 export interface DocumentIdentity {

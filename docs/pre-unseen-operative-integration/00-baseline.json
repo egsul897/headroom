@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "BASELINE",
+  "startingSha": "16a0b062ec240902562fe40e9f9271710047a9d1",
+  "startingShaConfirmed": true,
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "gitStatusAtStart": "clean (no untracked or modified files)",
+  "dbAvailability": {
+    "initialState": "DOWN - postgresql 16/main cluster was not running at session start; the full vitest suite showed 103 failed test files, all PrismaClientInitializationError 'Cant reach database server at localhost:5432'",
+    "remediation": "pg_ctlcluster 16 main start (removed a stale pid file) - a routine environment-startup step, not a code or data change",
+    "finalState": "UP - localhost:5432 accepting connections, confirmed via pg_isready before any regression run counted in this session's artifacts"
+  },
+  "tsBaseline": {
+    "command": "npx tsc --noEmit",
+    "errorCount": 6,
+    "errors": [
+      "tests/foundation-audit/cascade-and-concurrency.test.ts(140,7): TS2783 sectionRef specified more than once",
+      "tests/foundation-audit/cascade-and-concurrency.test.ts(143,7): TS2783 charStart specified more than once",
+      "tests/foundation-audit/discovery-fault-injection.test.ts(58,45): TS2339 Property 'sectionRef' does not exist on type 'DiscoveredCandidate'",
+      "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts(26,5): TS2783 sectionRef specified more than once",
+      "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts(27,5): TS2783 heading specified more than once",
+      "tests/foundation-audit/real-db-duplicate-physical-occurrence.test.ts(30,5): TS2783 charStart specified more than once"
+    ],
+    "note": "Identical set/count to the pre-unseen-classifier-remediation session's own disclosed baseline (docs/pre-unseen-classifier-remediation/04-full-regression.json) - pre-existing, unrelated test-fixture typos, not touched by this session."
+  },
+  "lintBaseline": {
+    "command": "npx eslint .",
+    "errorCount": 1,
+    "errors": ["tests/foundation-audit/amendment-operative-state-adversarial.test.ts:169:5 - Definition for rule '@typescript-eslint/no-var-requires' was not found"],
+    "note": "Identical to the pre-unseen-classifier-remediation session's own disclosed baseline - a stale rule reference in one test file's inline eslint-disable, pre-existing."
+  },
+  "vitestBaselineCommand": "npx vitest run --reporter=dot",
+  "vitestBaselineNote": "Captured in 06-full-regression.json (this session's own gate step) rather than duplicated here, since it required starting the DB first (see dbAvailability above) - the pre-fix baseline run and the post-fix regression run are both recorded there for direct before/after comparison at the same DB state.",
+  "scopeConfirmation": "This session is HEADROOM PRE-UNSEEN OPERATIVE-STATE INTEGRATION CLOSURE - whole-document supersession -> node/source trust consistency. NOT Phase 3F.2.1, NOT Phase 3G, NOT a reopening of 3F.1, NOT another full foundation audit, NOT a classifier/package-graph/semantic-compiler redesign, NOT a new unseen-package validation, NOT Riot-specific tuning, NOT Phase 4.",
+  "governingInvariant": "Whole-document currentness places an upper bound on node/source currentness: a node whose physical occurrence belongs to a document affirmatively established as a superseded predecessor in a RESOLVED operative-document chain cannot independently be trusted as CURRENT_OPERATIVE, while remaining retrievable as historical evidence."
+}

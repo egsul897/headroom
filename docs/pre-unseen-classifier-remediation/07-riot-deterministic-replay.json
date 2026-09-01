@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "RIOT_DETERMINISTIC_REPLAY",
+  "evidenceCategory": "RIOT_REGRESSION_EVIDENCE",
+  "method": "Deterministic, zero-AI-cost replay only (mission Section 11 - no semantic AI compilation rerun). The real, frozen Riot structural nodes/definitions/references (tests/fixtures/unseen-packages/phase-3f2-riot-unseen-run/stage1-*.json) plus the real, frozen source text run through the CURRENT (post-classifier-fix) buildPackageGraph -> classifyPackageDocuments -> resolvePackageRelationships -> runAmendmentPipeline -> computeOperativeDocument -> computeOperativeContractState production functions, unmodified except by this session's own document-classifier.ts fix. No ground truth re-adjudicated, no thresholds altered, no Riot-specific code path added. Script: scripts/pre-unseen-riot-deterministic-replay.ts.",
+  "classifications": {
+    "docA": { "type": "CREDIT_AGREEMENT", "confidence": 0.9, "evidence": "CREDIT AGREEMENT", "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN", "priorClassificationBeforeThisSession": "COMPLIANCE_CERTIFICATE (the defect) - now FIXED" },
+    "docB": { "type": "AMENDED_AND_RESTATED_AGREEMENT", "confidence": 0.9, "evidence": "AMENDED AND RESTATED CREDIT AGREEMENT", "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN", "unchangedFromPriorSession": true },
+    "docC": { "type": "AMENDED_AND_RESTATED_AGREEMENT", "confidence": 0.9, "evidence": "AMENDED AND RESTATED CREDIT AGREEMENT", "resolutionMethod": "DETERMINISTIC_TITLE_PATTERN", "unchangedFromPriorSession": true }
+  },
+  "restatementTargets": {
+    "docBTarget": { "targetDocumentId": "doc-a", "status": "RESOLVED", "confidence": 0.95, "resolutionMethod": "DETERMINISTIC_TITLE_DATE_MATCH", "note": "FIXED - previously resolved (incorrectly) to doc-c because doc-a was excluded from the CREDIT_AGREEMENT type family by the classifier defect. Now that doc-a correctly classifies as CREDIT_AGREEMENT, the pre-existing direct type+date match (Unit B1's own recital-regex generalization from the prior remediation session, which already correctly detected this reference) resolves confidently to the true target, doc-a." },
+    "docCTarget": { "targetDocumentId": "doc-b", "status": "REVIEW_REQUIRED", "confidence": 0.7, "resolutionMethod": "DETERMINISTIC_CHRONOLOGICAL_PREDECESSOR", "note": "UNCHANGED from the prior remediation session's own replay - Unit B2's date-ambiguity safeguard was already correctly resolving doc-c's true immediate predecessor (doc-b) despite doc-c's own recital quoting the chain's original (doc-a) date. Correctly capped at REVIEW_REQUIRED/0.7, never falsely confident." }
+  },
+  "derivedVersionChain": "doc-a -> doc-b -> doc-c (fully resolved, matching the frozen source evidence's own real structure - NOT hardcoded into production; this is the CURRENT, generic computeOperativeDocument algorithm's own output on the real, unmodified evidence).",
+  "operativeDocumentResult": {
+    "status": "RESOLVED",
+    "operativeDocumentId": "doc-c",
+    "predecessorDocumentIds": ["doc-a", "doc-b"],
+    "relationshipChain": [
+      { "documentId": "doc-b", "restatesDocumentId": "doc-a", "confidence": 0.95, "effectiveDate": "May 19, 2025" },
+      { "documentId": "doc-c", "restatesDocumentId": "doc-b", "confidence": 0.7, "effectiveDate": "April 21, 2026" }
+    ],
+    "reviewReason": null,
+    "significance": "The cycle from the prior remediation session's own replay (docs/post-3f2-remediation/08b-riot-package-graph-replay.json) is CLOSED. Per mission Section 13's own hard requirement, a cycle is no longer acceptable for readiness when its only cause is the classifier defect this session fixes - confirmed: fixing document-classifier.ts alone (no package-graph/amendment code touched this session) resolves the cycle, because the cycle's sole cause (doc-a's misclassification removing it from the type family doc-b's reference needed to match) is gone."
+  },
+  "confidenceAndEvidenceSummary": "Every edge in the resolved chain is either RESOLVED at high confidence via a direct type+date match (doc-b->doc-a, 0.95) or REVIEW_REQUIRED via an explicitly-labeled inferential mechanism (doc-c->doc-b, 0.7, chronological-predecessor) - never a guess, never silently promoted past the confidence the underlying evidence supports.",
+  "expectedOutcomeDisclosure": "Mission Section 12 states the expected chain (doc-a -> doc-b -> doc-c, operative doc-c) IF justified by unchanged evidence, while explicitly warning not to encode that expectation into production. This replay's result matches that expectation, but arises purely from the generic, already-implemented computeOperativeDocument/classifyDocument algorithms running against real evidence - no Riot-specific code exists anywhere in the diff (confirmed via 10-independent-audit.json's grep)."
+}

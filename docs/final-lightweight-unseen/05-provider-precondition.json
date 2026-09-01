@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PROVIDER_PRECONDITION",
+  "probeScript": "scripts/final-lightweight-unseen-provider-probe.ts",
+  "provider": "VERCEL_AI_GATEWAY (same resolution path as production getStageCaller() - AI_GATEWAY_API_KEY present in .env.local, checked first)",
+  "model": "anthropic/claude-sonnet-5",
+  "httpSuccess": true,
+  "stopReason": "end_turn",
+  "usage": { "inputTokens": 18, "outputTokens": 4 },
+  "estimatedCostUsd": 0.000076,
+  "elapsedMs": 2047,
+  "note": "Initial probe attempt used baseURL 'https://ai-gateway.vercel.sh/v1' (a guess) and received a 404 on the doubled '/v1/v1/messages' path - corrected to 'https://ai-gateway.vercel.sh' (no /v1 suffix), which exactly matches lib/contract-model/analyzer/anthropic-analyzer.ts's own AI_GATEWAY_BASE_URL constant, confirming this probe now exercises the SAME endpoint/configuration production actually uses, not merely 'a' Gateway endpoint.",
+  "verdict": "PROVIDER_PRECONDITION_PASSED - live model access confirmed before any substantive AI execution."
+}

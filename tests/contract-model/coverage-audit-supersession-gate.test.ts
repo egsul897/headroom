@@ -80,8 +80,8 @@ describe("BLOCKER-3 fix: a real supersessionIndex correctly re-tags the independ
     const index = buildTestIndex([{ documentId, label: "CA", text }]);
     const node = index.getNodeByRef(documentId, "6.01")!;
 
-    const record: NodeSupersessionRecord = { nodeId: node.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01" };
-    const supersessionIndex: NodeSupersessionIndex = { coveredDocumentIds: new Set([documentId]), supersededByNodeId: new Map([[node.nodeId, record]]), ambiguousNodeIds: new Set() };
+    const record: NodeSupersessionRecord = { nodeId: node.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01", supersessionKind: "PROVISION_LEVEL", supersedingOperativeDocumentId: null };
+    const supersessionIndex: NodeSupersessionIndex = { coveredDocumentIds: new Set([documentId]), supersededByNodeId: new Map([[node.nodeId, record]]), ambiguousNodeIds: new Set(), documentLevelSupersededDocuments: new Map() };
 
     const result = runIndependentCoverageAudit({ companyId: "c", packageKey: "p", instrumentKey: null, documentIds: [documentId], index, candidates: [], packageGraph: null, bundles: [], supersessionIndex });
 
@@ -102,7 +102,7 @@ describe("BLOCKER-3 fix: a real supersessionIndex correctly re-tags the independ
     const documentId = "doc-not-covered";
     const text = `SECTION 6.01. Indebtedness . The Borrower shall not incur Indebtedness in excess of $5,000,000.`;
     const index = buildTestIndex([{ documentId, label: "CA", text }]);
-    const supersessionIndex: NodeSupersessionIndex = { coveredDocumentIds: new Set(["some-other-doc"]), supersededByNodeId: new Map(), ambiguousNodeIds: new Set() };
+    const supersessionIndex: NodeSupersessionIndex = { coveredDocumentIds: new Set(["some-other-doc"]), supersededByNodeId: new Map(), ambiguousNodeIds: new Set(), documentLevelSupersededDocuments: new Map() };
     const result = runIndependentCoverageAudit({ companyId: "c", packageKey: "p", instrumentKey: null, documentIds: [documentId], index, candidates: [], packageGraph: null, bundles: [], supersessionIndex });
     expect(result.regions.length).toBeGreaterThan(0);
     expect(result.regions.every((r) => r.supersessionStatus === "UNKNOWN_SUPERSESSION_STATUS")).toBe(true);
@@ -112,7 +112,7 @@ describe("BLOCKER-3 fix: a real supersessionIndex correctly re-tags the independ
     const documentId = "doc";
     const text = `SECTION 6.01. Indebtedness . The Borrower shall not incur Indebtedness in excess of $5,000,000.`;
     const index = buildTestIndex([{ documentId, label: "CA", text }]);
-    const supersessionIndex: NodeSupersessionIndex = { coveredDocumentIds: new Set([documentId]), supersededByNodeId: new Map(), ambiguousNodeIds: new Set() };
+    const supersessionIndex: NodeSupersessionIndex = { coveredDocumentIds: new Set([documentId]), supersededByNodeId: new Map(), ambiguousNodeIds: new Set(), documentLevelSupersededDocuments: new Map() };
     const result = runIndependentCoverageAudit({ companyId: "c", packageKey: "p", instrumentKey: null, documentIds: [documentId], index, candidates: [], packageGraph: null, bundles: [], supersessionIndex });
     expect(result.regions.length).toBeGreaterThan(0);
     expect(result.regions.every((r) => r.supersessionStatus === "CURRENT_OPERATIVE")).toBe(true);
@@ -169,8 +169,9 @@ describe("BLOCKER-3 independent trace: raw mode is genuinely blind to a REAL dif
     const node602 = index.getNodeByRef(documentId, "6.02")!;
     const supersessionIndex: NodeSupersessionIndex = {
       coveredDocumentIds: new Set([documentId]),
-      supersededByNodeId: new Map([[node601.nodeId, { nodeId: node601.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01" }]]),
+      supersededByNodeId: new Map([[node601.nodeId, { nodeId: node601.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01", supersessionKind: "PROVISION_LEVEL" as const, supersedingOperativeDocumentId: null }]]),
       ambiguousNodeIds: new Set(),
+      documentLevelSupersededDocuments: new Map(),
     };
     const result = runIndependentCoverageAudit({ companyId: "c", packageKey: "p", instrumentKey: null, documentIds: [documentId], index, candidates: [], packageGraph: null, bundles: [], supersessionIndex });
     const region601 = result.regions.find((r) => r.structuralNodeId === node601.nodeId)!;

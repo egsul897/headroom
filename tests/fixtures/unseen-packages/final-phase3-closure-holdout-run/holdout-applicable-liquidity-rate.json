@@ -1,0 +1,3782 @@
+{
+  "region": {
+    "id": "applicable-liquidity-rate",
+    "claimIds": [
+      "B1",
+      "B2"
+    ],
+    "documentId": "doc-a",
+    "sourceSectionRef": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+    "charStart": 19183,
+    "chars": 5200,
+    "structuralNodeKeys": [
+      "doc-a::1.01(2)(a)(c)"
+    ]
+  },
+  "operativeSourceText": "“Applicable Liquidity Threshold” means $37.5 million; provided\nthat to the extent that, as of any date of determination, the maximum committed amount of the Super-Senior Revolving Facility (or any Refinancing Indebtedness in respect thereof) is increased in excess of $62.0 million (such excess amount, the\n“RCF Increase Amount”), the Applicable Liquidity Threshold shall be increased by an amount equal to 26.0% of the RCF Increase Amount up to a maximum Applicable Liquidity Threshold not to exceed $50.0 million.\n\n“Applicable Rate” means a percentage per annum equal to (i) until delivery of the financial statements for the first\nfull fiscal quarter ending after the Closing Date pursuant to Section 6.01, (A) 8.00% for Term Benchmark Loans, and (B) 7.00% for Base Rate Loans and (ii) thereafter, the following percentages per annum, based upon the Secured Net Leverage\nRatio as specified in the most recent Compliance Certificate received by the Administrative Agent pursuant to Section 6.02(1):\n\nPricing\nLevel\n\nSecured Net\nLeverage Ratio\n\nTerm Benchmark\n\nBase Rate\n\n1\n\n>1.00 to 1.00\n\n8.00\n%\n\n7.00\n%\n\n2\n\n<1.00 to 1.00 and >0.50 to 1.00\n\n7.75\n%\n\n6.75\n%\n\n3\n\n<0.50 to 1.00\n\n7.50\n%\n\n6.50\n%\n\nAny increase or decrease in the Applicable Rate resulting from a change in the Secured Net Leverage Ratio\nshall become effective as of the first Business Day immediately following the date a Compliance Certificate is delivered pursuant to Section 6.02(1); provided that, at the option of the Required Facility Lenders, “Pricing\nLevel 1” (as set forth above) shall apply as of (x) the first Business Day after the date on which a Compliance Certificate was required to have been delivered but was not delivered, and shall continue to so apply to and including the\ndate on which such Compliance Certificate is so delivered (and thereafter the pricing level otherwise determined in accordance with this definition shall apply) or (y) the first Business Day after an Event of Default under Section 8.01(1)\nshall have occurred and be continuing, and shall continue to so apply to but excluding the date on which such Event of Default is cured or waived (and thereafter the pricing level otherwise determined in accordance with this definition shall apply).\n\n“Appropriate Lender” means, at any time, with respect to Loans of any Class, the Lenders of such Class.\n\n“Approved Fund” means, with respect to any Lender, any Fund that is administered, advised or managed by (a) such Lender,\n(b) an Affiliate of such Lender or (c) an entity or an Affiliate of an entity that administers, advises or manages such Lender.\n\n“Asset Sale” means:\n\n(1) the sale, conveyance, transfer or other disposition, whether in a single transaction or a series of related transactions of\nproperty or assets of the Borrower or any Subsidiary of the Borrower (each referred to in this definition as a “disposition”); or\n\n(2) the issuance or sale of Equity Interests (other than Preferred Stock or Disqualified Stock of Subsidiaries issued in\ncompliance with Section 7.02 and directors’ qualifying shares or shares or interests required to be held by foreign nationals or other third parties to the extent required by applicable Law) of any Subsidiary (other than to the Borrower or\nanother Subsidiary), whether in a single transaction or a series of related transactions;\n\n4\n\nin each case, other than:\n\n(a) any disposition of:\n\n(i) Cash Equivalents or Investment Grade Securities,\n\n(ii) obsolete, damaged or worn out property or assets in the ordinary course of business or consistent with industry practice\nor any disposition of inventory or goods (or other assets) held for sale or no longer used or useful in the ordinary course,\n\n(iii) [reserved],\n\n(iv) improvements made to leased real property to landlords pursuant to customary terms of leases entered into in the ordinary\ncourse of business and\n(v) assets for purposes of charitable contributions or similar gifts to the extent such assets are\nnot material to the ability of the Borrower and its Subsidiaries, taken as a whole, to conduct its business in the ordinary course;\n\n(b) the disposition of all or substantially all of the assets of the Borrower in a manner permitted pursuant to\nSection 7.03 (other than Section 7.03(6) or Section 7.03(7));\n(c) any disposition in connection with the\nmaking of any Restricted Payment that is permitted to be made, and is made, under Section 7.05, any Permitted Investment or any acquisition otherwise permitted under this Agreement;\n\n(d) any disposition of property or assets or issuance or sale of Equity Interests of any Subsidiary with an aggregate fair\nmarket value for any individual transaction or series of related transactions of an amount (i) equal to or greater than $500,000 and less than $5.0 million, but not in excess of $20 million in the aggregate for all such transactions\nor (ii) less than $500,000;\n(e) any disposition of property or assets or issuance of securities by a Subsidiary to\nthe Borrower or by the Borrower or a Subsidiary to a Subsidiary;\n(f) to the extent allowable under Section 1031 of\nthe Code, any exchange of like property (excluding any boot thereon) for use in a Similar Business;\n(g) (i) the lease,\na",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Applicable Liquidity Threshold",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "IF",
+          "type": "MONEY",
+          "exprId": "ir-expr:b122169804ee6798c7f991bd",
+          "condition": {
+            "kind": "COMPARE",
+            "type": "BOOLEAN",
+            "exprId": "ir-expr:48e70246057d0f62abe8895b",
+            "left": {
+              "kind": "METRIC_REFERENCE",
+              "type": "MONEY",
+              "metricName": "Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount",
+              "companyId": "final-phase3-closure-holdout-sup",
+              "instrumentKey": "sup-term-loan-instrument",
+              "resolvedDefinitionId": null,
+              "exprId": "ir-expr:d40a1cc063e5bef06d83335a"
+            },
+            "operator": "GT",
+            "right": {
+              "kind": "MONEY",
+              "type": "MONEY",
+              "amount": 62000000,
+              "currency": "USD",
+              "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:e307cb8637043cfcc9d1e6cd"
+            },
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "excerpt": "to the extent that ... the maximum committed amount of the Super-Senior Revolving Facility (or any Refinancing Indebtedness in respect thereof) is increased in excess of $62.0 million"
+            }
+          },
+          "then": {
+            "kind": "MIN",
+            "type": "MONEY",
+            "exprId": "ir-expr:df8aaf84dccc4b99adea6647",
+            "operands": [
+              {
+                "kind": "ADD",
+                "type": "MONEY",
+                "exprId": "ir-expr:d91816a18d428a5bea757c13",
+                "operands": [
+                  {
+                    "kind": "MONEY",
+                    "type": "MONEY",
+                    "amount": 37500000,
+                    "currency": "USD",
+                    "provenance": {
+                      "documentId": "doc-a",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+                      "excerpt": null
+                    },
+                    "exprId": "ir-expr:1e0d26994a7209edec7d91bb"
+                  },
+                  {
+                    "kind": "MULTIPLY",
+                    "type": "MONEY",
+                    "exprId": "ir-expr:0a987e9cdcf5b75ac7efb3f8",
+                    "operands": [
+                      {
+                        "kind": "PERCENT",
+                        "type": "PERCENT",
+                        "value": 0.26,
+                        "provenance": {
+                          "documentId": "doc-a",
+                          "sourceNodeKey": null,
+                          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+                          "excerpt": null
+                        },
+                        "exprId": "ir-expr:65232c824a412d1fe1176615"
+                      },
+                      {
+                        "kind": "SUBTRACT",
+                        "type": "MONEY",
+                        "exprId": "ir-expr:026a932c8814d0cffdac121a",
+                        "left": {
+                          "kind": "METRIC_REFERENCE",
+                          "type": "MONEY",
+                          "metricName": "Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount",
+                          "companyId": "final-phase3-closure-holdout-sup",
+                          "instrumentKey": "sup-term-loan-instrument",
+                          "resolvedDefinitionId": null,
+                          "exprId": "ir-expr:d40a1cc063e5bef06d83335a"
+                        },
+                        "right": {
+                          "kind": "MONEY",
+                          "type": "MONEY",
+                          "amount": 62000000,
+                          "currency": "USD",
+                          "provenance": {
+                            "documentId": "doc-a",
+                            "sourceNodeKey": null,
+                            "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+                            "excerpt": null
+                          },
+                          "exprId": "ir-expr:e307cb8637043cfcc9d1e6cd"
+                        },
+                        "provenance": {
+                          "documentId": "doc-a",
+                          "sourceNodeKey": null,
+                          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+                          "excerpt": "such excess amount, the \"RCF Increase Amount\""
+                        }
+                      }
+                    ],
+                    "provenance": {
+                      "documentId": "doc-a",
+                      "sourceNodeKey": null,
+                      "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+                      "excerpt": "increased by an amount equal to 26.0% of the RCF Increase Amount"
+                    }
+                  }
+                ],
+                "provenance": {
+                  "documentId": "doc-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+                  "excerpt": null
+                }
+              },
+              {
+                "kind": "MONEY",
+                "type": "MONEY",
+                "amount": 50000000,
+                "currency": "USD",
+                "provenance": {
+                  "documentId": "doc-a",
+                  "sourceNodeKey": null,
+                  "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+                  "excerpt": null
+                },
+                "exprId": "ir-expr:4199604924981f76349bd128"
+              }
+            ],
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "excerpt": "up to a maximum Applicable Liquidity Threshold not to exceed $50.0 million"
+            }
+          },
+          "else": {
+            "kind": "MONEY",
+            "type": "MONEY",
+            "amount": 37500000,
+            "currency": "USD",
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "excerpt": null
+            },
+            "exprId": "ir-expr:1e0d26994a7209edec7d91bb"
+          },
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+            "excerpt": null
+          }
+        },
+        "dependsOnTerms": [
+          "Super-Senior Revolving Facility",
+          "Refinancing Indebtedness",
+          "RCF Increase Amount"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Full numeric formula (base amount, trigger threshold, percentage step-up, and cap) is stated in the supplied text; the only externally-sourced input is the committed facility amount, modeled as a metric reference."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+          "excerpt": "\"Applicable Liquidity Threshold\" means $37.5 million; provided that ... the Applicable Liquidity Threshold shall be increased by an amount equal to 26.0% of the RCF Increase Amount up to a maximum Applicable Liquidity Threshold not to exceed $50.0 million."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:70e33e4f392b3431947089db",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Applicable Rate",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"IF\")",
+          "reason": "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01 (definition of \"Applicable Rate\")",
+            "excerpt": null
+          },
+          "exprId": "ir-expr:26bbc96f83f606f7115836ad"
+        },
+        "dependsOnTerms": [
+          "Secured Net Leverage Ratio",
+          "Term Benchmark Loans",
+          "Base Rate Loans",
+          "Compliance Certificate",
+          "Required Facility Lenders"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "The Term Benchmark vs. Base Rate loan-type dimension is inherently categorical; the IR has no enum/string comparison primitive, so it is modeled as a boolean TRANSACTION_INPUT_REFERENCE rather than a true categorical selector (see irExtensionCandidate).",
+          "The Required Facility Lenders' Pricing-Level-1 override is elective ('at the option of'), not automatically triggered; EVENT_ACTIVE models it as automatically active once triggered, which loses the discretionary/optional nuance (see irExtensionCandidate).",
+          "All numeric thresholds, percentages, and ratio breakpoints themselves are fully and unambiguously stated in the source text.",
+          "NOT operand is not BOOLEAN",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "EVENT_ACTIVE triggerCondition must be BOOLEAN",
+          "EVENT_ACTIVE triggerCondition must be BOOLEAN",
+          "OR operands do not type-check together under the IR's own composition rules",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type",
+          "IF condition must be BOOLEAN and both branches must resolve to the same type"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (definition of \"Applicable Rate\")",
+          "excerpt": "\"Applicable Rate\" means a percentage per annum equal to (i) until delivery of the financial statements ... (A) 8.00% for Term Benchmark Loans, and (B) 7.00% for Base Rate Loans and (ii) thereafter, the following percentages ... based upon the Secured Net Leverage Ratio ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:d8c58d568c07a31a9ca34d95",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Appropriate Lender",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Class",
+          "Lender"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Purely descriptive, non-numeric definition; fully stated in the supplied text."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (definition of \"Appropriate Lender\")",
+          "excerpt": "\"Appropriate Lender\" means, at any time, with respect to Loans of any Class, the Lenders of such Class."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:61d81306e5e27f7374d17ed6",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Approved Fund",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Fund",
+          "Affiliate",
+          "Lender"
+        ],
+        "sufficiency": "COMPLETE",
+        "sufficiencyReasons": [
+          "Purely descriptive, non-numeric definition; fully stated in the supplied text."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (definition of \"Approved Fund\")",
+          "excerpt": "\"Approved Fund\" means, with respect to any Lender, any Fund that is administered, advised or managed by (a) such Lender, (b) an Affiliate of such Lender or (c) an entity or an Affiliate of an entity that administers, advises or manages such Lender."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      },
+      {
+        "definitionId": "ir-definition:e35903e71345464511b06f5b",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Asset Sale",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": null,
+        "dependsOnTerms": [
+          "Equity Interests",
+          "Preferred Stock",
+          "Disqualified Stock",
+          "Cash Equivalents",
+          "Investment Grade Securities",
+          "Restricted Payment",
+          "Permitted Investment",
+          "Similar Business",
+          "Casualty Event",
+          "Qualified Securitization Facility",
+          "Receivables Financing Transactions",
+          "Securitization Assets"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Confirmed via getDefinition that the current operative text continues beyond what was supplied in the initial context and is itself truncated again after clause (l); the full universe of exclusions (a)-through-end could not be confirmed complete.",
+          "Core operative test (dispositions of property/assets by Borrower/Subsidiary, or issuance/sale of Subsidiary Equity Interests, subject to enumerated carve-outs) is captured qualitatively, but is not a numeric formula and is not modeled as a calculationExpression.",
+          "The one quantified carve-out obtained (clause (d): de minimis dispositions of $500,000-$5.0 million per transaction, capped in the aggregate at $20.0 million; and dispositions under $500,000 unconditionally excluded) is preserved in the excerpt but not separately modeled as a standalone calculation since it is a sub-component of a qualitative exclusion list, not an independent operative basket in this section.",
+          "Several carve-outs depend on other defined terms and cross-referenced sections (e.g., Cash Equivalents, Investment Grade Securities, Permitted Investment, Similar Business, Qualified Securitization Facility, Section 7.03, Section 7.05, Section 1031 of the Code) not resolved within this compilation."
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01 (definition of \"Asset Sale\")",
+          "excerpt": "\"Asset Sale\" means: (1) the sale, conveyance, transfer or other disposition ... of property or assets of the Borrower or any Subsidiary; or (2) the issuance or sale of Equity Interests ... of any Subsidiary ...; in each case, other than: (a)-(l) [enumerated carve-outs, including at (d) dispositions with aggregate fair market value of $500,000 to $5.0 million per transaction, capped at $20.0 million in the aggregate, or less than $500,000] ..."
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "TRUNCATED_EVIDENCE_USED"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T13:25:22.632Z",
+      "inputTokens": 41444,
+      "outputTokens": 21229,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 2,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 191100,
+      "calculatedCostUsd": 0.295178
+    }
+  },
+  "verify": {
+    "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "66b45a7bad11726ed41279168ec2ae2156e70b9a94948df2c05c86574e7b7076",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+        "irPath": "definitions[0].calculationExpression.condition.left (and duplicated at .then.operands[0].operands[1].operands[1].left)",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "MATERIAL",
+        "sourceEvidence": "\"to the extent that, as of any date of determination, the maximum committed amount of the Super-Senior Revolving Facility (or any Refinancing Indebtedness in respect thereof) is increased in excess of $62.0 million (such excess amount, the \\\"RCF Increase Amount\\\")\"",
+        "sourceCitation": "§1.01, definition of \"Applicable Liquidity Threshold\"",
+        "proposedIrEvidence": "metricName: \"Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount\", but instrumentKey: \"sup-term-loan-instrument\", resolvedDefinitionId: null, and definitionId sufficiency marked \"COMPLETE\"",
+        "verifierReasoning": "The proposed IR's core input to the entire Applicable Liquidity Threshold formula is a METRIC_REFERENCE whose descriptive metricName correctly tracks the source's 'Super-Senior Revolving Facility' committed amount, but whose actual binding key ('sup-term-loan-instrument') names a term loan instrument, not a revolving facility, and whose resolvedDefinitionId is null (unresolved). Phase 2 independently flagged, at HIGH severity, that this candidate has 'no anchoring structural node' and context could not be retrieved. Despite this unresolved and apparently mismatched binding, the definition's sufficiency is marked COMPLETE. If the metric actually resolves against a term loan facility's committed amount rather than the Super-Senior Revolving Facility's committed amount (or fails to resolve to any real figure at runtime), the entire conditional step-up of the Applicable Liquidity Threshold (whether it is $37.5M, or increased up to $50.0M) could be computed against the wrong number or fail silently, directly changing the compliance conclusion under any liquidity covenant that references this threshold. A confident COMPLETE claim over an unresolved/mismatched reference is exactly the scenario that deserves the most scrutiny, not the least.'",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:27:17.506Z"
+      },
+      {
+        "findingId": "fba93d7343765a65c296836ce059b2b6d47758901e989a02112250478ea5857a",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+        "irPath": "definitions[4].dependsOnTerms",
+        "findingType": "OTHER_MATERIAL_SEMANTIC_DISCREPANCY",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "The provided source text for the 'Asset Sale' definition is cut off mid-clause: \"(g) (i) the lease, a\" — clauses (g) onward are not present in the material given.",
+        "sourceCitation": "§1.01, definition of \"Asset Sale\", clause (g) (text truncated)",
+        "proposedIrEvidence": "dependsOnTerms includes \"Casualty Event\", \"Qualified Securitization Facility\", \"Receivables Financing Transactions\", \"Securitization Assets\" — none of which appear anywhere in the source text actually supplied for verification.",
+        "verifierReasoning": "These four dependency terms may well be grounded in the un-supplied continuation of the Asset Sale definition (such carve-outs are common in credit agreements), but nothing in the source text given to me supports them, and I cannot confirm or refute their accuracy given the truncation. This could be a benign correct dependency capture from text outside my view, or it could be an unsupported addition not actually tied to this definition. I flag this as an honest uncertainty rather than a confirmed defect, since I lack the evidence needed to resolve it either way.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:27:17.506Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$37.5 million",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 37.5 (from \"$37.5 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 37.5 (from \"$37.5 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$62.0 million",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 62 (from \"$62.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 62 (from \"$62.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$50.0 million",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 50 (from \"$50.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 50 (from \"$50.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$500,000",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 500000 (from \"$500,000\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 500000 (from \"$500,000\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$5.0 million",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 5 (from \"$5.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 5 (from \"$5.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$20 million",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 20 (from \"$20 million\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 20 (from \"$20 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "$500,000",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source AMOUNT 500000 (from \"$500,000\") does not appear as a AMOUNT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source AMOUNT 500000 (from \"$500,000\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "8.00%",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.08 (from \"8.00%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.08 (from \"8.00%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "7.00%",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.07 (from \"7.00%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.07 (from \"7.00%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "8.00\n%",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.08 (from \"8.00\n%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.08 (from \"8.00\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "7.00\n%",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.07 (from \"7.00\n%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.07 (from \"7.00\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "7.75\n%",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.0775 (from \"7.75\n%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.0775 (from \"7.75\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "6.75\n%",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.0675 (from \"6.75\n%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.0675 (from \"6.75\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "7.50\n%",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.075 (from \"7.50\n%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.075 (from \"7.50\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "7ed45b46550d7dbcfe47fa40093a4a7c74dd4ccb8fc8cd316bf58538b3e61b97",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_BASKET",
+        "severity": "MATERIAL",
+        "sourceEvidence": "6.50\n%",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source PERCENT 0.065 (from \"6.50\n%\") does not appear as a PERCENT value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source PERCENT 0.065 (from \"6.50\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "bb1ed19744fdaf0ce1ee6197b7b49e757d3f47dc48934cadb4c11ffc1bdade58",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "1.00 to 1.00",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source RATIO 1 (from \"1.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source RATIO 1 (from \"1.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "bb1ed19744fdaf0ce1ee6197b7b49e757d3f47dc48934cadb4c11ffc1bdade58",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "1.00 to 1.00",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source RATIO 1 (from \"1.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source RATIO 1 (from \"1.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "bb1ed19744fdaf0ce1ee6197b7b49e757d3f47dc48934cadb4c11ffc1bdade58",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "0.50 to 1.00",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "bb1ed19744fdaf0ce1ee6197b7b49e757d3f47dc48934cadb4c11ffc1bdade58",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "MATERIAL",
+        "sourceEvidence": "0.50 to 1.00",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR",
+        "deterministicSignals": [
+          "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "00e36b838385504cc11780c0735b61d484ec1ff0d1ab92331398a65004209acd",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+        "irPath": "definitions[0].calculationExpression.condition.right",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "definitions[0].calculationExpression.condition.right=62000000",
+        "verifierReasoning": "compiled IR AMOUNT value 62000000 at definitions[0].calculationExpression.condition.right has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 62000000 at definitions[0].calculationExpression.condition.right has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "d5b8854188192b9bf5a8e27dd4412159e3af517927694c62e564a3d2c6215307",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+        "irPath": "definitions[0].calculationExpression.then.operands[0].operands[0]",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "definitions[0].calculationExpression.then.operands[0].operands[0]=37500000",
+        "verifierReasoning": "compiled IR AMOUNT value 37500000 at definitions[0].calculationExpression.then.operands[0].operands[0] has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 37500000 at definitions[0].calculationExpression.then.operands[0].operands[0] has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "aa727922f21bd1af1025428ceb2abf21734d503da1a1ec9ec8b70cfa76e0ac50",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+        "irPath": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].right",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].right=62000000",
+        "verifierReasoning": "compiled IR AMOUNT value 62000000 at definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].right has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 62000000 at definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].right has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "e15c0fd6f4232338fd34ad2adac1aa59cfa38292add1fdabe5cfc844434fd28e",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+        "irPath": "definitions[0].calculationExpression.then.operands[1]",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "definitions[0].calculationExpression.then.operands[1]=50000000",
+        "verifierReasoning": "compiled IR AMOUNT value 50000000 at definitions[0].calculationExpression.then.operands[1] has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 50000000 at definitions[0].calculationExpression.then.operands[1] has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "b60183f65a6080f29c1fa51e5ddb31372c32b86e15a65ade2677924e14ee7d24",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+        "irPath": "definitions[0].calculationExpression.else",
+        "findingType": "UNSUPPORTED_IR_ADDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "definitions[0].calculationExpression.else=37500000",
+        "verifierReasoning": "compiled IR AMOUNT value 37500000 at definitions[0].calculationExpression.else has no matching source-side figure",
+        "deterministicSignals": [
+          "compiled IR AMOUNT value 37500000 at definitions[0].calculationExpression.else has no matching source-side figure"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      },
+      {
+        "findingId": "bb1ed19744fdaf0ce1ee6197b7b49e757d3f47dc48934cadb4c11ffc1bdade58",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 12 apparent independent enumerated unit(s) ((i), (a), (b), (ii), (x), (y), (c), (iv), (v), (d), (e), (f)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 12 apparent independent enumerated unit(s) ((i), (a), (b), (ii), (x), (y), (c), (iv), (v), (d), (e), (f)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T13:25:22.636Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+      "items": [
+        {
+          "itemId": "ec9db19f50ef23fd95a75394196d1b7a3d7c0af0ce6e10e56758c3c9279b740a",
+          "kind": "AMOUNT",
+          "rawText": "$37.5 million",
+          "numericValue": 37.5,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 39,
+          "charEnd": 52
+        },
+        {
+          "itemId": "d23a847869b5b2ee1766c15f9c75f997c4b1f1a55178337b2d38a1f5c6ca74cf",
+          "kind": "AMOUNT",
+          "rawText": "$62.0 million",
+          "numericValue": 62,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 268,
+          "charEnd": 281
+        },
+        {
+          "itemId": "5875fdadb067895a57b83a2c772ca9a5293c89cfada533f636247b0f03b251d3",
+          "kind": "AMOUNT",
+          "rawText": "$50.0 million",
+          "numericValue": 50,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 501,
+          "charEnd": 514
+        },
+        {
+          "itemId": "3982d31e8b8fc20fa76dea7e2ed8bbf6b5713210846cd8f1ec3fe8874eb9d6bd",
+          "kind": "AMOUNT",
+          "rawText": "$500,000",
+          "numericValue": 500000,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4737,
+          "charEnd": 4745
+        },
+        {
+          "itemId": "e7ac647b7da7920c8c530221ecfaf49176666dcea6fa912d75c44b50a5d20fea",
+          "kind": "AMOUNT",
+          "rawText": "$5.0 million",
+          "numericValue": 5,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4760,
+          "charEnd": 4772
+        },
+        {
+          "itemId": "7f4960f0c3b349987ee13a81bf19e8fa205ec021b3d740db33b11f05968d3caf",
+          "kind": "AMOUNT",
+          "rawText": "$20 million",
+          "numericValue": 20,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4795,
+          "charEnd": 4806
+        },
+        {
+          "itemId": "37bec0d2b9d7ed1402ac9a6a1e0e8e66d5bd9931c29fc724a153b63127ba07f8",
+          "kind": "AMOUNT",
+          "rawText": "$500,000",
+          "numericValue": 500000,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4868,
+          "charEnd": 4876
+        },
+        {
+          "itemId": "f7fb96a5e9beb329d045953fe83e6943d40114df627aefbfd2f770a01d91a64c",
+          "kind": "PERCENT",
+          "rawText": "26.0%",
+          "numericValue": 0.26,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 407,
+          "charEnd": 412
+        },
+        {
+          "itemId": "e40b53a0896c164a9c7c5f8da44e8968df2fcdabeaa64132241bab5a05c6236a",
+          "kind": "PERCENT",
+          "rawText": "8.00%",
+          "numericValue": 0.08,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 714,
+          "charEnd": 719
+        },
+        {
+          "itemId": "d3745ba8a66d9e9db91c90096a2551d503539a011cd609f59fb49a0b8754482d",
+          "kind": "PERCENT",
+          "rawText": "7.00%",
+          "numericValue": 0.07,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 754,
+          "charEnd": 759
+        },
+        {
+          "itemId": "d037272bb11666ff9968fdd3e89fca801b677e16fdabc96684f376b1f38573c2",
+          "kind": "PERCENT",
+          "rawText": "8.00\n%",
+          "numericValue": 0.08,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1090,
+          "charEnd": 1096
+        },
+        {
+          "itemId": "d4dd35370218ee9e73f079465300a733f87186ea209b5cf6459ef1464040ae1e",
+          "kind": "PERCENT",
+          "rawText": "7.00\n%",
+          "numericValue": 0.07,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1098,
+          "charEnd": 1104
+        },
+        {
+          "itemId": "b14ea02c6fdddaa8dc36bcc6c7044b63b250b190832209fe39ea6e0f391d6291",
+          "kind": "PERCENT",
+          "rawText": "7.75\n%",
+          "numericValue": 0.0775,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1142,
+          "charEnd": 1148
+        },
+        {
+          "itemId": "5b2b4b71118b75e061ec4f1343531a37d3932effc33dc1e3be8caee52389492b",
+          "kind": "PERCENT",
+          "rawText": "6.75\n%",
+          "numericValue": 0.0675,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1150,
+          "charEnd": 1156
+        },
+        {
+          "itemId": "3578c64d0a390dd8052ec0195f6fa20ca83c02093adb1d9a1f89d9427812c3a6",
+          "kind": "PERCENT",
+          "rawText": "7.50\n%",
+          "numericValue": 0.075,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1176,
+          "charEnd": 1182
+        },
+        {
+          "itemId": "e53375342fa1acc14ceda77d76b3d9a2dd9fe57d76d86a4248fea70810084891",
+          "kind": "PERCENT",
+          "rawText": "6.50\n%",
+          "numericValue": 0.065,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1184,
+          "charEnd": 1190
+        },
+        {
+          "itemId": "135056437aea9b40b703b922893ac35df8862bb20434dfe50f75adaf50aaf4c9",
+          "kind": "RATIO",
+          "rawText": "1.00 to 1.00",
+          "numericValue": 1,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1076,
+          "charEnd": 1088
+        },
+        {
+          "itemId": "09a1a309d63d8668a1fa8bf64fce529e27eda9f3a42682068339e6a0a44e5a0e",
+          "kind": "RATIO",
+          "rawText": "1.00 to 1.00",
+          "numericValue": 1,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1110,
+          "charEnd": 1122
+        },
+        {
+          "itemId": "f827e879cd11a183ef6dfcef2b655ab3fbfb03d57b8a1dd640a9affdc4de77f1",
+          "kind": "RATIO",
+          "rawText": "0.50 to 1.00",
+          "numericValue": 0.5,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1128,
+          "charEnd": 1140
+        },
+        {
+          "itemId": "a5bd372a6cdcc5caa0859621167110b63382fd96e53de8e8762cf5524eb9ac3e",
+          "kind": "RATIO",
+          "rawText": "0.50 to 1.00",
+          "numericValue": 0.5,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1162,
+          "charEnd": 1174
+        },
+        {
+          "itemId": "459a739f8680c40f0762657a472cc4b106e4b00ee1250fedbcc4ffce741d531a",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "not to exceed",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 487,
+          "charEnd": 500
+        },
+        {
+          "itemId": "ae30416da01e7c618b9aa0e2ad72de69fbeb1f53f72457e6a55867e3138c5951",
+          "kind": "COMPARISON_OPERATOR",
+          "rawText": "equal to or greater than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4712,
+          "charEnd": 4736
+        },
+        {
+          "itemId": "cb769139df5fde85ed19c94098de92503c125a3083b8c2383d4a27df360b8c32",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided\nthat",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 54,
+          "charEnd": 67
+        },
+        {
+          "itemId": "67f8e34443a138092ed47c1000fb91f4312db59f77dea653a1c63697f635fd2e",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1448,
+          "charEnd": 1461
+        },
+        {
+          "itemId": "663a61c7d1c648d9a7ae3d32fee2f909dc46b652c1435983da1452d357e60744",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "to the extent that",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 68,
+          "charEnd": 86
+        },
+        {
+          "itemId": "6b601218746cdef25f2739082f1dee082232daeb18aa2def3c046631894ed29b",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "after the Closing Date",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 661,
+          "charEnd": 683
+        },
+        {
+          "itemId": "f16b02836f41e00873e847037e9a549c7d02a9ae67af21902454ad070c666f74",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "upon the Secured Net Leverage\nRatio",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 844,
+          "charEnd": 879
+        },
+        {
+          "itemId": "8f3fdcd66d4a29ed56201841bd61c494e25bc3eaee265ff64f5ae7a5d28dbfcf",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "after an Event of Default",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1946,
+          "charEnd": 1971
+        },
+        {
+          "itemId": "a5326ce9869f909cdbbfce5afcdb84c8ee7707b530c66e77c107c6a12bfdc778",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "shall have occurred",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1994,
+          "charEnd": 2013
+        },
+        {
+          "itemId": "4a30a6e2c862ffbed6a1c2673ace40bca56cbaef355622fce3441e28cc4d98a8",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pursuant to Section 6",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 684,
+          "charEnd": 705
+        },
+        {
+          "itemId": "99efcfe08c7289055f90e78f0ebdaa71363f747495a212b36db7886a5f28484a",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pursuant to Section 6",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 972,
+          "charEnd": 993
+        },
+        {
+          "itemId": "e596fcc1f11bdb2fcdd680ee45d84c9e93052f92742f4f6067a088d7811cc61a",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pursuant to Section 6",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1419,
+          "charEnd": 1440
+        },
+        {
+          "itemId": "43d148adc37cd2a1f663955e8030f9fe20fd703f5a415fbc0f60aaf608119f6e",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pursuant to\nSection 7",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4194,
+          "charEnd": 4215
+        },
+        {
+          "itemId": "0e5a466a4719507e7132be9129eec1efc78f9ceb2ed45e450b4bae41f7e482cd",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "excluding",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2071,
+          "charEnd": 2080
+        },
+        {
+          "itemId": "135c71f1d8b91e2e3b290465588b487943fb90d190d44c1e7761ed8fd5816f0c",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2926,
+          "charEnd": 2936
+        },
+        {
+          "itemId": "9bd135b8416e6e9a0b0e5ae75cedf167b9dc4061f4cb0b2022085f6f542c400a",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 3211,
+          "charEnd": 3221
+        },
+        {
+          "itemId": "2a52d76513088dd223a8eb242acf7a99560a16a20d876a86a59e56312e5fed43",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 3349,
+          "charEnd": 3359
+        },
+        {
+          "itemId": "9feab4f9d3af0786be4a363ccbb1c9e66bbde76983f6c8529c55bb5cbae04d22",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4220,
+          "charEnd": 4230
+        },
+        {
+          "itemId": "92acf0617b93eb89aaad90303fd6551353113dc8983645aedb333f8e198fa56a",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "excluding",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 5121,
+          "charEnd": 5130
+        },
+        {
+          "itemId": "b110e305e39fdc71cd00c4084cf27bb1b0ec3b241a508522d1e206d6b3beca4b",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2775,
+          "charEnd": 2783
+        },
+        {
+          "itemId": "7c578c73cb2bdfbf509f1ed6f09b793713c218d39d34263b1d8b363e589526de",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2809,
+          "charEnd": 2817
+        },
+        {
+          "itemId": "64883062dd0ed51ca2b90800dad3602673e47ce35608a74db362af56d0679385",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 3229,
+          "charEnd": 3237
+        },
+        {
+          "itemId": "f8b387ca31e16b4e26e3cc00c34b818558bb4bdad3c6cd0b9150326b4348880c",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 3996,
+          "charEnd": 4004
+        },
+        {
+          "itemId": "f8cda37ee2d85e643c5152a12411d7295efd77ee143eb1ce77ff2233f6adccee",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4163,
+          "charEnd": 4171
+        },
+        {
+          "itemId": "5120ed48a0c57f5bc0275410b2971ee2fee677c76e59570a2d0d8515646acdc9",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4969,
+          "charEnd": 4977
+        },
+        {
+          "itemId": "11b67137f0ea839eb434498ed26eb9e37beb6f036cdff7dda9a4e442488bb962",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4988,
+          "charEnd": 4996
+        },
+        {
+          "itemId": "c577c983f9f336b80f3c497e1cfe9f3012b29ae30aa8183968c06e58dbd3481a",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "Refinancing",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 197,
+          "charEnd": 208
+        },
+        {
+          "itemId": "c1f5608e70a4c934f63be810d1c70b0ecb83cc7f0479349eea2e3dda7ab609e8",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2665,
+          "charEnd": 2676
+        },
+        {
+          "itemId": "aeb287a43e8b9443fafecf236bf426db5de01e9a00c64160cc583739c2c8c70a",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2861,
+          "charEnd": 2872
+        },
+        {
+          "itemId": "4d56429d280c362d224850745b7d62ffedf279f74aed853292a7e329d1e74bdd",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 3370,
+          "charEnd": 3381
+        },
+        {
+          "itemId": "b1445a7655bfb040c2fb0e369462e9663fb516d5f29561716bcab7c2cdabb297",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 3574,
+          "charEnd": 3585
+        },
+        {
+          "itemId": "adf5e52e04a5c4c1f9ef3cbce62e009d9d44e748ed7e7b5994612e360eeb6b0a",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4102,
+          "charEnd": 4113
+        },
+        {
+          "itemId": "ed17b7efc9caf19a8bf7ae76ee29d9b2287cd8225d3a3fb137f604957ab979e9",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4276,
+          "charEnd": 4287
+        },
+        {
+          "itemId": "130d489b2a0043d45d19423bfea97e046da65f50fbe4fe26e67940a73aa3123c",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4502,
+          "charEnd": 4513
+        },
+        {
+          "itemId": "8dcd969e90165f94c29a61329439f8655656761bee9ab621115c0d1635d0272f",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "disposition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4886,
+          "charEnd": 4897
+        },
+        {
+          "itemId": "d1b72f7a76965344b827291f9d812b9914a536a6f82c3afa6be93ba7b5627ec7",
+          "kind": "METRIC_MENTION",
+          "rawText": "Applicable Liquidity Threshold",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1,
+          "charEnd": 31
+        },
+        {
+          "itemId": "9f808210ed4d66893f526497d089cf6fccd4fc425d7654a515fb288e96aa5199",
+          "kind": "METRIC_MENTION",
+          "rawText": "Senior Revolving Facility",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 163,
+          "charEnd": 188
+        },
+        {
+          "itemId": "a8f5341f79d14193587dfe832dc369723bf5a5d37093bc4a2122f74409a5f8e3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Refinancing Indebtedness",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 197,
+          "charEnd": 221
+        },
+        {
+          "itemId": "9f1d46e02ee4f38ef1f5378e4b1feac7f7156733446be32bd570b99c56cccf48",
+          "kind": "METRIC_MENTION",
+          "rawText": "RCF Increase Amount",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 308,
+          "charEnd": 327
+        },
+        {
+          "itemId": "b6887d494f1fa98d82c27cebeb44f48689d74ffdff35858337c891687665a3a8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Applicable Liquidity Threshold",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 335,
+          "charEnd": 365
+        },
+        {
+          "itemId": "4598555d28626661e4b6588c6dd7bdadf56dee34dcf31a76dc8373477feb3289",
+          "kind": "METRIC_MENTION",
+          "rawText": "RCF Increase Amount",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 420,
+          "charEnd": 439
+        },
+        {
+          "itemId": "bd25428ff65870bcc1bff13da56eaf97639f0c45a0ea1b7d99aba74d05f4fa10",
+          "kind": "METRIC_MENTION",
+          "rawText": "Applicable Liquidity Threshold",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 456,
+          "charEnd": 486
+        },
+        {
+          "itemId": "33e78bb8fecb66560f9e0314ae5b72c35dbb4225486830dd55b16e67b53f4e64",
+          "kind": "METRIC_MENTION",
+          "rawText": "Applicable Rate",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 518,
+          "charEnd": 533
+        },
+        {
+          "itemId": "edf0aff4d69fa9b146389290ede9ecf8c87f82f5ce890c77fb1ff91e0166226f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Closing Date",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 671,
+          "charEnd": 683
+        },
+        {
+          "itemId": "5b628aeafa80f80b9c2c9983eab27180f66da2709f4b7f9cfc8e04ad23e11f8d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Term Benchmark Loans",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 724,
+          "charEnd": 744
+        },
+        {
+          "itemId": "4197428e51bd6dff280f56b7977ec4d5843aa5bca3727380e857c9daee30cd21",
+          "kind": "METRIC_MENTION",
+          "rawText": "Base Rate Loans",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 764,
+          "charEnd": 779
+        },
+        {
+          "itemId": "113be8d38d141c9446032990d686e172317e1c7ccc65af2ca21a59af7f1b4450",
+          "kind": "METRIC_MENTION",
+          "rawText": "Secured Net Leverage\nRatio",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 853,
+          "charEnd": 879
+        },
+        {
+          "itemId": "a8b7aa5b1c573f9da95864811e2adc3c314a2d0c28bc0402f9d29585a0773ed9",
+          "kind": "METRIC_MENTION",
+          "rawText": "Compliance Certificate",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 912,
+          "charEnd": 934
+        },
+        {
+          "itemId": "3023e8b224fa7b974c1510b4b7e034383efd8994f36ab426f45544bee51734b7",
+          "kind": "METRIC_MENTION",
+          "rawText": "Administrative Agent",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 951,
+          "charEnd": 971
+        },
+        {
+          "itemId": "edea4d68aefdf0af48fee13a7cf6701a1d34c51015a421eb2eb24885fb1053dc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Pricing\nLevel",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1002,
+          "charEnd": 1015
+        },
+        {
+          "itemId": "751b314c7e5cdb267f045a3aaee3abf5d7d014adecb5665f15ad3c42d350f2d4",
+          "kind": "METRIC_MENTION",
+          "rawText": "Secured Net\nLeverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1017,
+          "charEnd": 1043
+        },
+        {
+          "itemId": "3cd4462e6a782334864fcf7d3ae18397d6c254ea612ef36ba6ebe6232568b21a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Term Benchmark",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1045,
+          "charEnd": 1059
+        },
+        {
+          "itemId": "bd7157b530d3d61eb3544889ea2bfe2f6c1c5becb98efeeaec0883c5c6708fac",
+          "kind": "METRIC_MENTION",
+          "rawText": "Base Rate",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1061,
+          "charEnd": 1070
+        },
+        {
+          "itemId": "4fffd2305816117a84951d836764713ef383c43b23c05557516d6e822d294238",
+          "kind": "METRIC_MENTION",
+          "rawText": "Applicable Rate",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1224,
+          "charEnd": 1239
+        },
+        {
+          "itemId": "891e5e8684bf131b7e72b22afe857ee7f48dc1d0dd9e3139138c29027ad39e89",
+          "kind": "METRIC_MENTION",
+          "rawText": "Secured Net Leverage Ratio",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1271,
+          "charEnd": 1297
+        },
+        {
+          "itemId": "a124b19488dbd032629889e11d4f81759c6e4af58593c57956158e116eafb515",
+          "kind": "METRIC_MENTION",
+          "rawText": "Business Day",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1337,
+          "charEnd": 1349
+        },
+        {
+          "itemId": "6738e9b38ee6f147111a5a627eccb0d779fd1337cf6dfa9e884a17d5fe70003f",
+          "kind": "METRIC_MENTION",
+          "rawText": "Compliance Certificate",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1383,
+          "charEnd": 1405
+        },
+        {
+          "itemId": "d0e46fde482404e8ce349053c1c812cd8cd9a5506f3f2bdcd5732443672a1574",
+          "kind": "METRIC_MENTION",
+          "rawText": "Required Facility Lenders",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1484,
+          "charEnd": 1509
+        },
+        {
+          "itemId": "4999b2b5e24665b661b7c0383c25cbb5d9c39ab0627a9234e91e9f0e7de71131",
+          "kind": "METRIC_MENTION",
+          "rawText": "Pricing\nLevel",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1512,
+          "charEnd": 1525
+        },
+        {
+          "itemId": "82f8ed7e23438446e2b75418e904625973bc6dea28332f04f9bc4bbe81ddffdb",
+          "kind": "METRIC_MENTION",
+          "rawText": "Business Day",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1582,
+          "charEnd": 1594
+        },
+        {
+          "itemId": "6ed4a20bd5fecc0a9ccad138a5ebacbcb8747c9a6c2aa1bf1a31f6415c15f561",
+          "kind": "METRIC_MENTION",
+          "rawText": "Compliance Certificate",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1621,
+          "charEnd": 1643
+        },
+        {
+          "itemId": "5cbb1d31a5d1e65504d59188159531aa67f6e6702bfa3df683207531c7793fb8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Compliance Certificate",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1774,
+          "charEnd": 1796
+        },
+        {
+          "itemId": "cb7bd0b1ecd9641c113f06863122e8b2673fc70d5c3bacd120a26e459be58c91",
+          "kind": "METRIC_MENTION",
+          "rawText": "Business Day",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 1933,
+          "charEnd": 1945
+        },
+        {
+          "itemId": "3461adc37d1f1427b3c88e406cf8dbc7f2faf5efa9611ea93cb171c1d0f251bd",
+          "kind": "METRIC_MENTION",
+          "rawText": "Appropriate Lender",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2246,
+          "charEnd": 2264
+        },
+        {
+          "itemId": "43048011e955fdf5fa00bdbd3ce487d0f87ab38821f2e4d0f05fa0ffb80bdf60",
+          "kind": "METRIC_MENTION",
+          "rawText": "Approved Fund",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2351,
+          "charEnd": 2364
+        },
+        {
+          "itemId": "34b206f86aaac61250cc66dfc22104c8464d4a271e07ac02d7d4150a71f25857",
+          "kind": "METRIC_MENTION",
+          "rawText": "Asset Sale",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2601,
+          "charEnd": 2611
+        },
+        {
+          "itemId": "ab9385b8ed3daf54cd573a3e11535936aa2c1e655b88c00df2410c21f8bd2921",
+          "kind": "METRIC_MENTION",
+          "rawText": "Equity Interests",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2908,
+          "charEnd": 2924
+        },
+        {
+          "itemId": "94c62044626783cb8b2fcb38ff000303ef4a860794522f40cd132648903fa030",
+          "kind": "METRIC_MENTION",
+          "rawText": "Preferred Stock",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2937,
+          "charEnd": 2952
+        },
+        {
+          "itemId": "b910ec6c980c380ab6c2af73c2e0c67bb83eac662e586c7e8a879459a738bb24",
+          "kind": "METRIC_MENTION",
+          "rawText": "Disqualified Stock",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 2956,
+          "charEnd": 2974
+        },
+        {
+          "itemId": "272196a80d541688237fdaedc5919d392b4646f4467ad4d30ce2fd1ec548de5c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Cash Equivalents",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 3391,
+          "charEnd": 3407
+        },
+        {
+          "itemId": "79a9369cece200bff9e9190f07f076c2cdf8aded82e65105a99de84f9f1ce27c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Investment Grade Securities",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 3411,
+          "charEnd": 3438
+        },
+        {
+          "itemId": "67223d06c427cade4bdf55eb91c06bd5f38e7cb28a3d951483b75df8dbd65e4e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Restricted Payment",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4325,
+          "charEnd": 4343
+        },
+        {
+          "itemId": "ace5a85c46a54e94fc0a7cfc9b04e71674bc49f65568cf383cfea9c3c743b6c4",
+          "kind": "METRIC_MENTION",
+          "rawText": "Permitted Investment",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4411,
+          "charEnd": 4431
+        },
+        {
+          "itemId": "523a222ec88ca424ca47247b9844d9a027324171b3a7eae26f4bcdd2fd8bd45e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Equity Interests",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 4559,
+          "charEnd": 4575
+        },
+        {
+          "itemId": "1bf61884a8f8aa65795563cdb6404a37d09ee06bbfe36593c4ba3683a01d9458",
+          "kind": "METRIC_MENTION",
+          "rawText": "Similar Business",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": 5162,
+          "charEnd": 5178
+        },
+        {
+          "itemId": "30004461f04ced6c7420b2c59683b35613d07cfeb181a671df0b0cdbe40b6464",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "f5816aae4fcca19c546a703102b6d00506c5cdc674e07b44f27a370d4406b427",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "a1311a690f5ea699ca2f516ed7b15a066572d69e75d3bc1658a686b92bb8ce91",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "310f8adbe1420dbf1e9978f99119f24940ba9e2b8ed9a3b34d8602dc9c15cd12",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "3e9ac6c8cb9f316fa3b51fb18273d3e8fc5d36c40c903d8c550cdf762ffaff51",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(x)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "e07b6a227121b379a5a4733ab3240abee634ff81d892dc34773c8588c2b43dbc",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(y)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "f96ccb10d0cf41269e86b2e879853f2ba8f64259617b9acaaa85c5e6aecc3ba6",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "50d95d3166ec4b1ef2d7045a295dc3d18bce21d3358eb1b2d82617c5a419bd8d",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(iv)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "098d17fba1799cbb4b85849372c4b731f682ec8f72ed493e17da5c091e686162",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(v)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "3206e7d568fa5691a9f451607870192eaee1d6cd7e24c7ca20ead884ec8dbcee",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "20d11a9c916b01a244280ac88fda73c01023133c4318138274dedb5d5c8818c2",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(e)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "81b8abfb855116ee85a287441eaac84777e04e5476e76a46f29c5e108a3e2676",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(f)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 12,
+      "apparentIndependentUnitEvidence": [
+        "(i)",
+        "(a)",
+        "(b)",
+        "(ii)",
+        "(x)",
+        "(y)",
+        "(c)",
+        "(iv)",
+        "(v)",
+        "(d)",
+        "(e)",
+        "(f)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+      "items": [
+        {
+          "itemId": "998477a0e830d2b123720fb968558292f9a55a620e1bd905236390aabcb493ae",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Super-Senior Revolving Facility",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b7ec64b657fab514c020ee548365fdb47e887780e11763c87d37d32ce68d627a",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Refinancing Indebtedness",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6289f5d2841b9362b9855fcdf022fb2a8ab109bc2b4c29715ee99475d47f3145",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:RCF Increase Amount",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9c80f6b465cd243a3fb80613a0c52f801550a7a18376d3d681db1137508d0c0c",
+          "kind": "CONDITION",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.condition",
+          "numericValue": null,
+          "textValue": "COMPARE:GT",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+          "sourceExcerpt": "to the extent that ... the maximum committed amount of the Super-Senior Revolving Facility (or any Refinancing Indebtedness in respect thereof) is increased in excess of $62.0 million"
+        },
+        {
+          "itemId": "7dfe6f6a65da5d967a7f5417644d432cc26a47ae7dbf9f8683e8c7d09058c633",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.condition.left",
+          "numericValue": null,
+          "textValue": "Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8e75ee90518eb3378a060e4b20418f5e3217e11ed53ab2caed573e8b8ae91419",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.condition.right",
+          "numericValue": 62000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "8f47434b49c551a6541e49580e00ae869b49ae7d8006effe48ea941c100ae48a",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.then.operands[0].operands[0]",
+          "numericValue": 37500000,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "91261f12a267d2e543c756334653d36efeb55130e1686d8f3585f4f85acb4ebb",
+          "kind": "PERCENT",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[0]",
+          "numericValue": 0.26,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "727506ac353978064201d52e1f62f0fe9bcb7ad4ad72195842faeb56f8b94209",
+          "kind": "METRIC_REFERENCE",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].left",
+          "numericValue": null,
+          "textValue": "Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount",
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ac9324209ef5b2ca50a6c045303dc9ca528b1afb4efec3a692d81e182bfc5aab",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].right",
+          "numericValue": 62000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "86124eeeac7fb9806e0003520ae5ab5f27d9fb6c3aa3da38cdaf315ca9aa82db",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.then.operands[1]",
+          "numericValue": 50000000,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f2c6561f6cfbaad321408d92263c01e54ea124f7ce6158eeb97201a870981c36",
+          "kind": "AMOUNT",
+          "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+          "irPath": "definitions[0].calculationExpression.else",
+          "numericValue": 37500000,
+          "textValue": null,
+          "isAlternativeWithinSelection": true,
+          "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ea8e223868be788a909b7b2d403ff759d011ee83003cd0ee834995c8357e87fc",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:70e33e4f392b3431947089db",
+          "irPath": "definitions[1].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Secured Net Leverage Ratio",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "cb4454963e95628c96763d4783dc08d467ca28d929c20f4ab1bd46879604ce69",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:70e33e4f392b3431947089db",
+          "irPath": "definitions[1].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Term Benchmark Loans",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "af60966a1a4d0e3727b4a8e213ff3241f924cf58924b53ecfb0246de4662ef7e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:70e33e4f392b3431947089db",
+          "irPath": "definitions[1].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Base Rate Loans",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c46a8fd4539e2e43ad3f27ef8c4d30a36fe22b190e3f3dedd3338e3dfe6784f7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:70e33e4f392b3431947089db",
+          "irPath": "definitions[1].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Compliance Certificate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "7d3a747e61fe258eada34f504617030e8b71695ae9877e7ecc44841a9356f2f4",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:70e33e4f392b3431947089db",
+          "irPath": "definitions[1].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Required Facility Lenders",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "386e26c0a151e9a860e6ff2c5fb0a7a6115403e531a06f3c0f9564b01e6c6298",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:70e33e4f392b3431947089db",
+          "irPath": "definitions[1].calculationExpression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"IF\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01 (definition of \"Applicable Rate\")",
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "40758f5be9c8be1c15734bd602133d54864bfe67302597bcdf42d26de4b415a6",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:d8c58d568c07a31a9ca34d95",
+          "irPath": "definitions[2].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Class",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "784941e620dcaea03fe5005cfbd25c609a82fb68a16bd24e9060b21797d99f78",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:d8c58d568c07a31a9ca34d95",
+          "irPath": "definitions[2].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Lender",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6923ecffaab80b6c8a6e7b6fd939d7461116323b7cdde91ee8fdcd5c145855f7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:61d81306e5e27f7374d17ed6",
+          "irPath": "definitions[3].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Fund",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "82d5185a06b1b2d2cd11485579e5c52443851249ba9be5811ebededb8dd521cf",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:61d81306e5e27f7374d17ed6",
+          "irPath": "definitions[3].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Affiliate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "407b7e281ff82a14e83533d9dff7b3dcb56bbc785ff2f1d42aa02e3a62db3287",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:61d81306e5e27f7374d17ed6",
+          "irPath": "definitions[3].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Lender",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "bae5ab1a85d86b81ab85e219644e90202f1e619b50ba5f00b590fd9f05179074",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Equity Interests",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "318ed18f7e26846ee4113c34a316fc328ddc9b6303b182d8f93323363a6fba03",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Preferred Stock",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "08cd1e2c59f324e40fcf1294da8beb6b98cbd9ff6444e29048de3955c7e652a2",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Disqualified Stock",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6a494ebee4897fd0fc3c00f3039e84fb39d4f15282c750e1b8c6a88d2b919159",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Cash Equivalents",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "bc8136a0906a9ab85b5e96dc1ce1c47b8da77f8c971ddc03317ed6c0314001f7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Investment Grade Securities",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1122b57a1adbd734e8b58661fa7a311a637474838fe5a0f2b0571d5913dbe1d6",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Restricted Payment",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "64deb058a2fb6f4b3e4bd8258e59c3972c99436d2076be540ddfa7619831c80e",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[6]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Permitted Investment",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "01820a91bfa006c77b44aebd2ceaba55a36725d8f1338abec6ca24c7c0087de6",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[7]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Similar Business",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "2cadce4305f857d4efb6b5b680d0ead06b3201712a96c36cda11b4078e4a8f87",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[8]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Casualty Event",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "b320f95bc3d37053f160849dd422c4477a1594490a28de7f3e947b0591a5fb29",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[9]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Qualified Securitization Facility",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "88919c097a3f575f3aedca0042820a1a6b47f341c17c7ab8e9e04c2708793c70",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[10]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Receivables Financing Transactions",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a3400dfa728d28d9da278a95d4037015b3556fffe53e755889b108c2463b67c7",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e35903e71345464511b06f5b",
+          "irPath": "definitions[4].dependsOnTerms[11]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Securitization Assets",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 0,
+      "definitionCount": 5,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "holdout-candidate:applicable-liquidity-rate",
+      "items": [
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ec9db19f50ef23fd95a75394196d1b7a3d7c0af0ce6e10e56758c3c9279b740a",
+            "kind": "AMOUNT",
+            "rawText": "$37.5 million",
+            "numericValue": 37.5,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 39,
+            "charEnd": 52
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 37.5 (from \"$37.5 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d23a847869b5b2ee1766c15f9c75f997c4b1f1a55178337b2d38a1f5c6ca74cf",
+            "kind": "AMOUNT",
+            "rawText": "$62.0 million",
+            "numericValue": 62,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 268,
+            "charEnd": 281
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 62 (from \"$62.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5875fdadb067895a57b83a2c772ca9a5293c89cfada533f636247b0f03b251d3",
+            "kind": "AMOUNT",
+            "rawText": "$50.0 million",
+            "numericValue": 50,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 501,
+            "charEnd": 514
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 50 (from \"$50.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3982d31e8b8fc20fa76dea7e2ed8bbf6b5713210846cd8f1ec3fe8874eb9d6bd",
+            "kind": "AMOUNT",
+            "rawText": "$500,000",
+            "numericValue": 500000,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 4737,
+            "charEnd": 4745
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 500000 (from \"$500,000\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e7ac647b7da7920c8c530221ecfaf49176666dcea6fa912d75c44b50a5d20fea",
+            "kind": "AMOUNT",
+            "rawText": "$5.0 million",
+            "numericValue": 5,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 4760,
+            "charEnd": 4772
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 5 (from \"$5.0 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "7f4960f0c3b349987ee13a81bf19e8fa205ec021b3d740db33b11f05968d3caf",
+            "kind": "AMOUNT",
+            "rawText": "$20 million",
+            "numericValue": 20,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 4795,
+            "charEnd": 4806
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 20 (from \"$20 million\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "37bec0d2b9d7ed1402ac9a6a1e0e8e66d5bd9931c29fc724a153b63127ba07f8",
+            "kind": "AMOUNT",
+            "rawText": "$500,000",
+            "numericValue": 500000,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 4868,
+            "charEnd": 4876
+          },
+          "irItems": [],
+          "reason": "source AMOUNT 500000 (from \"$500,000\") does not appear as a AMOUNT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f7fb96a5e9beb329d045953fe83e6943d40114df627aefbfd2f770a01d91a64c",
+            "kind": "PERCENT",
+            "rawText": "26.0%",
+            "numericValue": 0.26,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 407,
+            "charEnd": 412
+          },
+          "irItems": [
+            {
+              "itemId": "91261f12a267d2e543c756334653d36efeb55130e1686d8f3585f4f85acb4ebb",
+              "kind": "PERCENT",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[0]",
+              "numericValue": 0.26,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source PERCENT 0.26 matches 1 compiled IR PERCENT node(s)"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e40b53a0896c164a9c7c5f8da44e8968df2fcdabeaa64132241bab5a05c6236a",
+            "kind": "PERCENT",
+            "rawText": "8.00%",
+            "numericValue": 0.08,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 714,
+            "charEnd": 719
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.08 (from \"8.00%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d3745ba8a66d9e9db91c90096a2551d503539a011cd609f59fb49a0b8754482d",
+            "kind": "PERCENT",
+            "rawText": "7.00%",
+            "numericValue": 0.07,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 754,
+            "charEnd": 759
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.07 (from \"7.00%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d037272bb11666ff9968fdd3e89fca801b677e16fdabc96684f376b1f38573c2",
+            "kind": "PERCENT",
+            "rawText": "8.00\n%",
+            "numericValue": 0.08,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1090,
+            "charEnd": 1096
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.08 (from \"8.00\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d4dd35370218ee9e73f079465300a733f87186ea209b5cf6459ef1464040ae1e",
+            "kind": "PERCENT",
+            "rawText": "7.00\n%",
+            "numericValue": 0.07,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1098,
+            "charEnd": 1104
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.07 (from \"7.00\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b14ea02c6fdddaa8dc36bcc6c7044b63b250b190832209fe39ea6e0f391d6291",
+            "kind": "PERCENT",
+            "rawText": "7.75\n%",
+            "numericValue": 0.0775,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1142,
+            "charEnd": 1148
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.0775 (from \"7.75\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5b2b4b71118b75e061ec4f1343531a37d3932effc33dc1e3be8caee52389492b",
+            "kind": "PERCENT",
+            "rawText": "6.75\n%",
+            "numericValue": 0.0675,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1150,
+            "charEnd": 1156
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.0675 (from \"6.75\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3578c64d0a390dd8052ec0195f6fa20ca83c02093adb1d9a1f89d9427812c3a6",
+            "kind": "PERCENT",
+            "rawText": "7.50\n%",
+            "numericValue": 0.075,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1176,
+            "charEnd": 1182
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.075 (from \"7.50\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e53375342fa1acc14ceda77d76b3d9a2dd9fe57d76d86a4248fea70810084891",
+            "kind": "PERCENT",
+            "rawText": "6.50\n%",
+            "numericValue": 0.065,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1184,
+            "charEnd": 1190
+          },
+          "irItems": [],
+          "reason": "source PERCENT 0.065 (from \"6.50\n%\") does not appear as a PERCENT value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "135056437aea9b40b703b922893ac35df8862bb20434dfe50f75adaf50aaf4c9",
+            "kind": "RATIO",
+            "rawText": "1.00 to 1.00",
+            "numericValue": 1,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1076,
+            "charEnd": 1088
+          },
+          "irItems": [],
+          "reason": "source RATIO 1 (from \"1.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "09a1a309d63d8668a1fa8bf64fce529e27eda9f3a42682068339e6a0a44e5a0e",
+            "kind": "RATIO",
+            "rawText": "1.00 to 1.00",
+            "numericValue": 1,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1110,
+            "charEnd": 1122
+          },
+          "irItems": [],
+          "reason": "source RATIO 1 (from \"1.00 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "f827e879cd11a183ef6dfcef2b655ab3fbfb03d57b8a1dd640a9affdc4de77f1",
+            "kind": "RATIO",
+            "rawText": "0.50 to 1.00",
+            "numericValue": 0.5,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1128,
+            "charEnd": 1140
+          },
+          "irItems": [],
+          "reason": "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        },
+        {
+          "classification": "NOT_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a5bd372a6cdcc5caa0859621167110b63382fd96e53de8e8762cf5524eb9ac3e",
+            "kind": "RATIO",
+            "rawText": "0.50 to 1.00",
+            "numericValue": 0.5,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1162,
+            "charEnd": 1174
+          },
+          "irItems": [],
+          "reason": "source RATIO 0.5 (from \"0.50 to 1.00\") does not appear as a RATIO value anywhere in the compiled IR"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "8e75ee90518eb3378a060e4b20418f5e3217e11ed53ab2caed573e8b8ae91419",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.condition.right",
+              "numericValue": 62000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 62000000 at definitions[0].calculationExpression.condition.right has no matching source-side figure"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "8f47434b49c551a6541e49580e00ae869b49ae7d8006effe48ea941c100ae48a",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.then.operands[0].operands[0]",
+              "numericValue": 37500000,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 37500000 at definitions[0].calculationExpression.then.operands[0].operands[0] has no matching source-side figure"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "ac9324209ef5b2ca50a6c045303dc9ca528b1afb4efec3a692d81e182bfc5aab",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].right",
+              "numericValue": 62000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 62000000 at definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].right has no matching source-side figure"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "86124eeeac7fb9806e0003520ae5ab5f27d9fb6c3aa3da38cdaf315ca9aa82db",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.then.operands[1]",
+              "numericValue": 50000000,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 50000000 at definitions[0].calculationExpression.then.operands[1] has no matching source-side figure"
+        },
+        {
+          "classification": "IR_ONLY",
+          "sourceItem": null,
+          "irItems": [
+            {
+              "itemId": "f2c6561f6cfbaad321408d92263c01e54ea124f7ce6158eeb97201a870981c36",
+              "kind": "AMOUNT",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.else",
+              "numericValue": 37500000,
+              "textValue": null,
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": "§1.01 (definition of \"Applicable Liquidity Threshold\")",
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "compiled IR AMOUNT value 37500000 at definitions[0].calculationExpression.else has no matching source-side figure"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d1b72f7a76965344b827291f9d812b9914a536a6f82c3afa6be93ba7b5627ec7",
+            "kind": "METRIC_MENTION",
+            "rawText": "Applicable Liquidity Threshold",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1,
+            "charEnd": 31
+          },
+          "irItems": [],
+          "reason": "source mention \"Applicable Liquidity Threshold\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9f808210ed4d66893f526497d089cf6fccd4fc425d7654a515fb288e96aa5199",
+            "kind": "METRIC_MENTION",
+            "rawText": "Senior Revolving Facility",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 163,
+            "charEnd": 188
+          },
+          "irItems": [
+            {
+              "itemId": "7dfe6f6a65da5d967a7f5417644d432cc26a47ae7dbf9f8683e8c7d09058c633",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.condition.left",
+              "numericValue": null,
+              "textValue": "Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "727506ac353978064201d52e1f62f0fe9bcb7ad4ad72195842faeb56f8b94209",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].left",
+              "numericValue": null,
+              "textValue": "Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount",
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Senior Revolving Facility\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a8f5341f79d14193587dfe832dc369723bf5a5d37093bc4a2122f74409a5f8e3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Refinancing Indebtedness",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 197,
+            "charEnd": 221
+          },
+          "irItems": [
+            {
+              "itemId": "7dfe6f6a65da5d967a7f5417644d432cc26a47ae7dbf9f8683e8c7d09058c633",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.condition.left",
+              "numericValue": null,
+              "textValue": "Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount",
+              "isAlternativeWithinSelection": false,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            },
+            {
+              "itemId": "727506ac353978064201d52e1f62f0fe9bcb7ad4ad72195842faeb56f8b94209",
+              "kind": "METRIC_REFERENCE",
+              "ruleOrDefinitionId": "ir-definition:9251a6449740d8c52c49b3ef",
+              "irPath": "definitions[0].calculationExpression.then.operands[0].operands[1].operands[1].left",
+              "numericValue": null,
+              "textValue": "Super-Senior Revolving Facility (or Refinancing Indebtedness thereof) maximum committed amount",
+              "isAlternativeWithinSelection": true,
+              "sourceCitation": null,
+              "sourceExcerpt": null
+            }
+          ],
+          "reason": "source mention \"Refinancing Indebtedness\" matches a compiled metric/defined-term reference"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "9f1d46e02ee4f38ef1f5378e4b1feac7f7156733446be32bd570b99c56cccf48",
+            "kind": "METRIC_MENTION",
+            "rawText": "RCF Increase Amount",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 308,
+            "charEnd": 327
+          },
+          "irItems": [],
+          "reason": "source mention \"RCF Increase Amount\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b6887d494f1fa98d82c27cebeb44f48689d74ffdff35858337c891687665a3a8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Applicable Liquidity Threshold",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 335,
+            "charEnd": 365
+          },
+          "irItems": [],
+          "reason": "source mention \"Applicable Liquidity Threshold\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4598555d28626661e4b6588c6dd7bdadf56dee34dcf31a76dc8373477feb3289",
+            "kind": "METRIC_MENTION",
+            "rawText": "RCF Increase Amount",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 420,
+            "charEnd": 439
+          },
+          "irItems": [],
+          "reason": "source mention \"RCF Increase Amount\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "bd25428ff65870bcc1bff13da56eaf97639f0c45a0ea1b7d99aba74d05f4fa10",
+            "kind": "METRIC_MENTION",
+            "rawText": "Applicable Liquidity Threshold",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 456,
+            "charEnd": 486
+          },
+          "irItems": [],
+          "reason": "source mention \"Applicable Liquidity Threshold\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "33e78bb8fecb66560f9e0314ae5b72c35dbb4225486830dd55b16e67b53f4e64",
+            "kind": "METRIC_MENTION",
+            "rawText": "Applicable Rate",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 518,
+            "charEnd": 533
+          },
+          "irItems": [],
+          "reason": "source mention \"Applicable Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "edf0aff4d69fa9b146389290ede9ecf8c87f82f5ce890c77fb1ff91e0166226f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Closing Date",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 671,
+            "charEnd": 683
+          },
+          "irItems": [],
+          "reason": "source mention \"Closing Date\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5b628aeafa80f80b9c2c9983eab27180f66da2709f4b7f9cfc8e04ad23e11f8d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Term Benchmark Loans",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 724,
+            "charEnd": 744
+          },
+          "irItems": [],
+          "reason": "source mention \"Term Benchmark Loans\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4197428e51bd6dff280f56b7977ec4d5843aa5bca3727380e857c9daee30cd21",
+            "kind": "METRIC_MENTION",
+            "rawText": "Base Rate Loans",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 764,
+            "charEnd": 779
+          },
+          "irItems": [],
+          "reason": "source mention \"Base Rate Loans\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "113be8d38d141c9446032990d686e172317e1c7ccc65af2ca21a59af7f1b4450",
+            "kind": "METRIC_MENTION",
+            "rawText": "Secured Net Leverage\nRatio",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 853,
+            "charEnd": 879
+          },
+          "irItems": [],
+          "reason": "source mention \"Secured Net Leverage\nRatio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a8b7aa5b1c573f9da95864811e2adc3c314a2d0c28bc0402f9d29585a0773ed9",
+            "kind": "METRIC_MENTION",
+            "rawText": "Compliance Certificate",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 912,
+            "charEnd": 934
+          },
+          "irItems": [],
+          "reason": "source mention \"Compliance Certificate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3023e8b224fa7b974c1510b4b7e034383efd8994f36ab426f45544bee51734b7",
+            "kind": "METRIC_MENTION",
+            "rawText": "Administrative Agent",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 951,
+            "charEnd": 971
+          },
+          "irItems": [],
+          "reason": "source mention \"Administrative Agent\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "edea4d68aefdf0af48fee13a7cf6701a1d34c51015a421eb2eb24885fb1053dc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Pricing\nLevel",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1002,
+            "charEnd": 1015
+          },
+          "irItems": [],
+          "reason": "source mention \"Pricing\nLevel\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "751b314c7e5cdb267f045a3aaee3abf5d7d014adecb5665f15ad3c42d350f2d4",
+            "kind": "METRIC_MENTION",
+            "rawText": "Secured Net\nLeverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1017,
+            "charEnd": 1043
+          },
+          "irItems": [],
+          "reason": "source mention \"Secured Net\nLeverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3cd4462e6a782334864fcf7d3ae18397d6c254ea612ef36ba6ebe6232568b21a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Term Benchmark",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1045,
+            "charEnd": 1059
+          },
+          "irItems": [],
+          "reason": "source mention \"Term Benchmark\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "bd7157b530d3d61eb3544889ea2bfe2f6c1c5becb98efeeaec0883c5c6708fac",
+            "kind": "METRIC_MENTION",
+            "rawText": "Base Rate",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1061,
+            "charEnd": 1070
+          },
+          "irItems": [],
+          "reason": "source mention \"Base Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4fffd2305816117a84951d836764713ef383c43b23c05557516d6e822d294238",
+            "kind": "METRIC_MENTION",
+            "rawText": "Applicable Rate",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1224,
+            "charEnd": 1239
+          },
+          "irItems": [],
+          "reason": "source mention \"Applicable Rate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "891e5e8684bf131b7e72b22afe857ee7f48dc1d0dd9e3139138c29027ad39e89",
+            "kind": "METRIC_MENTION",
+            "rawText": "Secured Net Leverage Ratio",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1271,
+            "charEnd": 1297
+          },
+          "irItems": [],
+          "reason": "source mention \"Secured Net Leverage Ratio\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "a124b19488dbd032629889e11d4f81759c6e4af58593c57956158e116eafb515",
+            "kind": "METRIC_MENTION",
+            "rawText": "Business Day",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1337,
+            "charEnd": 1349
+          },
+          "irItems": [],
+          "reason": "source mention \"Business Day\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6738e9b38ee6f147111a5a627eccb0d779fd1337cf6dfa9e884a17d5fe70003f",
+            "kind": "METRIC_MENTION",
+            "rawText": "Compliance Certificate",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1383,
+            "charEnd": 1405
+          },
+          "irItems": [],
+          "reason": "source mention \"Compliance Certificate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d0e46fde482404e8ce349053c1c812cd8cd9a5506f3f2bdcd5732443672a1574",
+            "kind": "METRIC_MENTION",
+            "rawText": "Required Facility Lenders",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1484,
+            "charEnd": 1509
+          },
+          "irItems": [],
+          "reason": "source mention \"Required Facility Lenders\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "4999b2b5e24665b661b7c0383c25cbb5d9c39ab0627a9234e91e9f0e7de71131",
+            "kind": "METRIC_MENTION",
+            "rawText": "Pricing\nLevel",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1512,
+            "charEnd": 1525
+          },
+          "irItems": [],
+          "reason": "source mention \"Pricing\nLevel\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "82f8ed7e23438446e2b75418e904625973bc6dea28332f04f9bc4bbe81ddffdb",
+            "kind": "METRIC_MENTION",
+            "rawText": "Business Day",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1582,
+            "charEnd": 1594
+          },
+          "irItems": [],
+          "reason": "source mention \"Business Day\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "6ed4a20bd5fecc0a9ccad138a5ebacbcb8747c9a6c2aa1bf1a31f6415c15f561",
+            "kind": "METRIC_MENTION",
+            "rawText": "Compliance Certificate",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1621,
+            "charEnd": 1643
+          },
+          "irItems": [],
+          "reason": "source mention \"Compliance Certificate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5cbb1d31a5d1e65504d59188159531aa67f6e6702bfa3df683207531c7793fb8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Compliance Certificate",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1774,
+            "charEnd": 1796
+          },
+          "irItems": [],
+          "reason": "source mention \"Compliance Certificate\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "cb7bd0b1ecd9641c113f06863122e8b2673fc70d5c3bacd120a26e459be58c91",
+            "kind": "METRIC_MENTION",
+            "rawText": "Business Day",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 1933,
+            "charEnd": 1945
+          },
+          "irItems": [],
+          "reason": "source mention \"Business Day\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3461adc37d1f1427b3c88e406cf8dbc7f2faf5efa9611ea93cb171c1d0f251bd",
+            "kind": "METRIC_MENTION",
+            "rawText": "Appropriate Lender",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 2246,
+            "charEnd": 2264
+          },
+          "irItems": [],
+          "reason": "source mention \"Appropriate Lender\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "43048011e955fdf5fa00bdbd3ce487d0f87ab38821f2e4d0f05fa0ffb80bdf60",
+            "kind": "METRIC_MENTION",
+            "rawText": "Approved Fund",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 2351,
+            "charEnd": 2364
+          },
+          "irItems": [],
+          "reason": "source mention \"Approved Fund\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "34b206f86aaac61250cc66dfc22104c8464d4a271e07ac02d7d4150a71f25857",
+            "kind": "METRIC_MENTION",
+            "rawText": "Asset Sale",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 2601,
+            "charEnd": 2611
+          },
+          "irItems": [],
+          "reason": "source mention \"Asset Sale\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ab9385b8ed3daf54cd573a3e11535936aa2c1e655b88c00df2410c21f8bd2921",
+            "kind": "METRIC_MENTION",
+            "rawText": "Equity Interests",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 2908,
+            "charEnd": 2924
+          },
+          "irItems": [],
+          "reason": "source mention \"Equity Interests\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "94c62044626783cb8b2fcb38ff000303ef4a860794522f40cd132648903fa030",
+            "kind": "METRIC_MENTION",
+            "rawText": "Preferred Stock",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 2937,
+            "charEnd": 2952
+          },
+          "irItems": [],
+          "reason": "source mention \"Preferred Stock\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b910ec6c980c380ab6c2af73c2e0c67bb83eac662e586c7e8a879459a738bb24",
+            "kind": "METRIC_MENTION",
+            "rawText": "Disqualified Stock",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 2956,
+            "charEnd": 2974
+          },
+          "irItems": [],
+          "reason": "source mention \"Disqualified Stock\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "272196a80d541688237fdaedc5919d392b4646f4467ad4d30ce2fd1ec548de5c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Cash Equivalents",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 3391,
+            "charEnd": 3407
+          },
+          "irItems": [],
+          "reason": "source mention \"Cash Equivalents\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "79a9369cece200bff9e9190f07f076c2cdf8aded82e65105a99de84f9f1ce27c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Investment Grade Securities",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 3411,
+            "charEnd": 3438
+          },
+          "irItems": [],
+          "reason": "source mention \"Investment Grade Securities\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "67223d06c427cade4bdf55eb91c06bd5f38e7cb28a3d951483b75df8dbd65e4e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Restricted Payment",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 4325,
+            "charEnd": 4343
+          },
+          "irItems": [],
+          "reason": "source mention \"Restricted Payment\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ace5a85c46a54e94fc0a7cfc9b04e71674bc49f65568cf383cfea9c3c743b6c4",
+            "kind": "METRIC_MENTION",
+            "rawText": "Permitted Investment",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 4411,
+            "charEnd": 4431
+          },
+          "irItems": [],
+          "reason": "source mention \"Permitted Investment\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "523a222ec88ca424ca47247b9844d9a027324171b3a7eae26f4bcdd2fd8bd45e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Equity Interests",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 4559,
+            "charEnd": 4575
+          },
+          "irItems": [],
+          "reason": "source mention \"Equity Interests\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1bf61884a8f8aa65795563cdb6404a37d09ee06bbfe36593c4ba3683a01d9458",
+            "kind": "METRIC_MENTION",
+            "rawText": "Similar Business",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Applicable Liquidity Threshold; Applicable Rate)",
+            "structuralNodeKey": null,
+            "charStart": 5162,
+            "charEnd": 5178
+          },
+          "irItems": [],
+          "reason": "source mention \"Similar Business\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 12 apparent independent enumerated unit(s) ((i), (a), (b), (ii), (x), (y), (c), (iv), (v), (d), (e), (f)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        }
+      ],
+      "materialUnresolvedCount": 25
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T13:27:17.506Z"
+  }
+}
