@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "PRODUCTION_FREEZE",
+  "requirement": "After both units + generic tests pass, freeze production. NO further changes based on Superior/holdout replay afterward.",
+  "remediatedProductionSha": "db7f32a1b737e02a251c23989b750ba2fec602b8",
+  "branch": "claude/headroom-scaffold-covenant-engine-jrijk8",
+  "frozenAt": "2026-09-01T15:23:00Z",
+  "commitsThisMission": [
+    { "sha": "83b96de", "description": "Architecture analysis only (docs/post-holdout-semantic-remediation/00-06) - zero production code changes" },
+    { "sha": "db7f32a", "description": "Unit A + Unit B implementation + 31 wholly-synthetic tests (S1-S20, R1-R12)" }
+  ],
+  "productionFilesChanged": [
+    "lib/contract-model/ir/types.ts (additive: IRUnsupportedExpression.attemptedStructure optional field)",
+    "lib/contract-model/compiler/semantic/normalize.ts (buildComposite/unsupportedNode: preserve attemptedStructure on composite discard)",
+    "lib/contract-model/compiler/semantic/completeness-check.ts (additive: checkIntraDefinitionComponentCompleteness)",
+    "lib/contract-model/compiler/package-graph/relationship-resolution.ts (resolvePreambleBoundary replaces fixed windowChars; findRecitalBounds recognizes PRELIMINARY STATEMENTS)",
+    "lib/contract-model/compiler/package-graph/document-identity.ts (whitespace-tolerant execution-date regex)"
+  ],
+  "explicitlyUntouched": [
+    "lib/contract-model/ir/type-check.ts - inferType's poison-propagation logic is byte-identical; the type-checking algorithm itself was never the defect",
+    "lib/contract-model/compiler/semantic/compile.ts - no multi-pass rewrite; the bounded fix was sufficient evidence-wise (see 04)",
+    "lib/contract-model/compiler/semantic/prompt.ts - no prompt changes"
+  ],
+  "preFreezeValidation": {
+    "typescript": { "errorCount": 6, "baselineErrorCount": 6, "delta": 0 },
+    "lint": { "errorCount": 1, "baselineErrorCount": 1, "delta": 0 },
+    "vitest": { "totalTests": 3163, "passed": 3160, "failed": 3, "baselineTotalTests": 3132, "baselinePassed": 3128, "baselineFailed": 4, "newTestsAdded": 31, "note": "3163 = 3132 baseline + 31 new S1-S20/R1-R12 tests (all 31 pass). The 3 failures are the SAME pre-existing benchmark-contamination-guard category documented at baseline (new legitimate fixture directories tripping a 'no new unseen-package directory' guard test) - not a functional regression, not caused by this mission's code changes." },
+    "zeroCostSuperiorRegression": "Real, deterministic (0 LLM calls) re-run of scripts/final-phase3-closure-superior-regression.ts against the real, unmodified Superior doc-a/doc-b/doc-c package confirms: doc-b RESTATES doc-a now surfaces at REVIEW_REQUIRED/0.6 (previously UNRESOLVED with 'no explicit reference... found' - the CRITICAL dangerous silence Mission 2 left open), doc-a/doc-b execution dates now correctly extract, doc-c AMENDS doc-b unchanged (REVIEW_REQUIRED/0.6, same as pre-fix), classifications unchanged (doc-a CREDIT_AGREEMENT, doc-b AMENDED_AND_RESTATED_AGREEMENT, doc-c AMENDMENT), instrument grouping unchanged (3 separate instruments, no premature supersession merge)."
+  },
+  "freezeDeclaration": "Production code (lib/) is now frozen at db7f32a1b737e02a251c23989b750ba2fec602b8. No further lib/ changes will be made based on the Superior package or any holdout replay result for the remainder of this mission - per the mission's own explicit requirement, any real-holdout finding from this point forward is scored against this frozen code, not used to further tune it.",
+  "nextStep": "Real-money authorization request to the user before re-running the exact frozen A1-A6/B1-B4 semantic holdout (same source regions/GT/scoring/provider/model/verifier/thresholds as the prior session's run, no GT modification) - per this mission's own Section 17 requirement and this engagement's established practice of asking before any paid model call."
+}
