@@ -403,6 +403,23 @@ export interface IRUnsupportedExpression extends IRExprBase {
   semanticDescription: string;
   reason: string;
   requiredReview: true;
+  /**
+   * Diagnostic-only sidecar: when this node exists because a COMPOSITE
+   * expression's own top-level type could not be inferred (e.g. one of
+   * several ADD operands was itself unsupported), this carries the fully
+   * assembled composite exactly as it would have been emitted had it
+   * type-checked - preserving every sibling operand that DID successfully
+   * normalize/type-check, rather than discarding the whole attempted
+   * structure. Never read by type-check.ts or by any executability path
+   * (this node's own `type` stays `null` regardless of what this field
+   * holds, so nothing can mistake a partially-typed attempt for a real
+   * value) - it exists purely so completeness-checking/verification/human
+   * review can see WHICH parts of a dense definition were actually
+   * captured instead of one opaque "UNSUPPORTED" blob. Absent when this
+   * node was never a discarded composite (e.g. a genuinely atomic
+   * UNSUPPORTED leaf, or the model itself emitted kind="UNSUPPORTED").
+   */
+  attemptedStructure?: IRExpression;
 }
 
 export type IRExpression =

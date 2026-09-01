@@ -17,7 +17,59 @@
  * signals are applied.
  */
 import type { DocumentType } from "@prisma/client";
+import { parseDocumentStructure } from "../stage-structure";
 import type { CrossDocumentReferenceLead, DocumentClassification, DocumentIdentity, ModificationCandidate, PackageDocumentInput, PackageRelationshipType, RelationshipCandidate, ResolutionStatus, TargetEvidenceClass } from "./types";
+
+/**
+ * Fixed fallback window, kept ONLY for documents where no ARTICLE/SECTION
+ * structural node could be parsed at all (e.g. a malformed or very short
+ * document) - docs/post-holdout-semantic-remediation/06's own decision: a
+ * defensive floor, never the primary mechanism. See resolvePreambleBoundary.
+ */
+const FALLBACK_WINDOW_CHARS = 4000;
+
+/**
+ * Structural preamble boundary (docs/post-holdout-semantic-remediation/05-06):
+ * the earliest ARTICLE/SECTION structural node's own charStart, reusing the
+ * SAME generic, already-battle-tested parser (parseDocumentStructure,
+ * stage-structure.ts) the rest of the compiler relies on to find numbered
+ * body content - no document-type allowlist, no magic character count, no
+ * package/caption-specific logic. Everything before this boundary is real
+ * front matter (caption + recitals + signature-block-of-the-caption-page)
+ * by construction, for ANY document, regardless of how long that front
+ * matter happens to be. Falls back to FALLBACK_WINDOW_CHARS only when the
+ * document has no parseable ARTICLE/SECTION node at all.
+ */
+function resolvePreambleBoundary(doc: PackageDocumentInput): number {
+  // Primary signal: a recital block (WHEREAS or PRELIMINARY STATEMENTS),
+  // searched over the FULL raw text. Unlike a bare ARTICLE/SECTION heading -
+  // which a document's own table of contents lists verbatim near the very
+  // start, producing a false-early "earliest heading" that undercuts a long
+  // real front matter (confirmed by live reproduction against Superior
+  // doc-b's real TOC) - recital language is specific, multi-word, and never
+  // repeated in a TOC listing or ordinary body text, so it is immune to
+  // that contamination and a strictly better preamble-boundary signal
+  // whenever it is present.
+  const recitalBounds = findRecitalBounds(doc.text);
+  if (recitalBounds) {
+    const [recitalStart, recitalEnd] = recitalBounds;
+    if (recitalEnd !== Infinity) return recitalEnd;
+    // A WHEREAS/PRELIMINARY STATEMENTS block with no NOW,THEREFORE close
+    // found - bound the window so a malformed/unusual document cannot grow
+    // it unboundedly, rather than reading to end-of-document.
+    return Math.min(recitalStart + FALLBACK_WINDOW_CHARS, doc.text.length);
+  }
+  // No recital at all - the common case for a plain single-target amendment
+  // (this module's own long-standing documentation: "AMENDMENT ... Section
+  // N is hereby amended", no recitals). Fall back to the earliest
+  // ARTICLE/SECTION structural node, reusing the same generic parser the
+  // rest of the compiler relies on to find numbered body content.
+  const nodes = parseDocumentStructure(doc);
+  const topLevel = nodes.filter((n) => n.nodeType === "ARTICLE" || n.nodeType === "SECTION");
+  if (topLevel.length === 0) return Math.min(FALLBACK_WINDOW_CHARS, doc.text.length);
+  const earliest = topLevel.reduce((min, n) => (n.charStart < min.charStart ? n : min));
+  return earliest.charStart;
+}
 
 const MONTHS = "January|February|March|April|May|June|July|August|September|October|November|December";
 const DATE_RE = new RegExp(`(?:${MONTHS})\\s+\\d{1,2},\\s*\\d{4}`, "i");
@@ -168,15 +220,19 @@ const OPERATIVE_TIE_PATTERNS: RegExp[] = [/hereby\s+amend/i, /amend(?:s|ed|ing)?
 const CONTEXTUAL_MENTION_PATTERNS: RegExp[] = [/\bcross[- ]default\b/i, /\bmay\s+arise\s+under\b/i, /\bfor\s+(?:the\s+)?avoidance\s+of\s+doubt\b/i, /\bhas\s+the\s+meaning\s+assigned\b/i, /\bas\s+defined\s+in\b/i, /\bfor\s+context\b/i, /\bfor\s+informational\s+purposes\s+only\b/i, /\bbackground\b/i, /\bhistorically\b/i];
 
 const WHEREAS_RE = /\bWHEREAS\b/i;
+/** A second, real, generic recital-heading convention (docs/post-holdout-semantic-remediation/06 - live-reproduction evidence against a real financing document whose recital block is headed "PRELIMINARY STATEMENTS" rather than a WHEREAS clause) - not specific to any package/caption, a standard alternative drafting convention for the same structural concept. */
+const PRELIMINARY_STATEMENTS_RE = /\bPRELIMINARY\s+STATEMENTS?\b/i;
 const NOW_THEREFORE_RE = /\bNOW,?\s+THEREFORE\b/i;
 
-/** [recitalStart, recitalEnd) over the given (already-windowed) text - null when the document has no WHEREAS-recital structure at all, which is the common case across this module's own real+synthetic fixtures (a plain "AMENDMENT ... to the X dated as of Y ... Section N is hereby amended" document with no recitals). */
+/** [recitalStart, recitalEnd) over the given (already-windowed) text - null when the document has no recognized recital structure at all, which is the common case across this module's own real+synthetic fixtures (a plain "AMENDMENT ... to the X dated as of Y ... Section N is hereby amended" document with no recitals). Recognizes both the WHEREAS-clause convention and the PRELIMINARY STATEMENTS convention (whichever occurs first, if both happen to appear). */
 function findRecitalBounds(windowedText: string): [number, number] | null {
   const wIdx = windowedText.search(WHEREAS_RE);
-  if (wIdx === -1) return null;
-  const ntMatch = NOW_THEREFORE_RE.exec(windowedText.slice(wIdx));
-  const ntIdx = ntMatch ? wIdx + ntMatch.index : Infinity;
-  return [wIdx, ntIdx];
+  const pIdx = windowedText.search(PRELIMINARY_STATEMENTS_RE);
+  const start = [wIdx, pIdx].filter((i) => i !== -1).sort((a, b) => a - b)[0];
+  if (start === undefined) return null;
+  const ntMatch = NOW_THEREFORE_RE.exec(windowedText.slice(start));
+  const ntIdx = ntMatch ? start + ntMatch.index : Infinity;
+  return [start, ntIdx];
 }
 
 /**
@@ -379,8 +435,7 @@ export function resolvePackageRelationships(documents: PackageDocumentInput[], c
     const relationshipTypes = RELATIONSHIP_TYPES_BY_SOURCE_CLASSIFICATION[classification.type];
     if (!relationshipTypes || relationshipTypes.length === 0) continue;
 
-    const bigWindowTypes: DocumentType[] = ["INTERCREDITOR_AGREEMENT", "GUARANTEE", "SECURITY_AGREEMENT", "GUARANTEE_AND_SECURITY_AGREEMENT"];
-    const windowChars = bigWindowTypes.includes(classification.type) ? 8000 : 4000;
+    const windowChars = resolvePreambleBoundary(doc);
     const references = findAllAgreementReferences(doc.text, windowChars);
     const recitalBounds = findRecitalBounds(doc.text.slice(0, windowChars));
     if (references.length === 0) {
@@ -465,8 +520,9 @@ export function resolvePackageRelationships(documents: PackageDocumentInput[], c
   const referencesByDocument = new Map<string, AgreementReference[]>();
   const recitalBoundsByDocument = new Map<string, [number, number] | null>();
   for (const doc of documents) {
-    referencesByDocument.set(doc.documentId, findAllAgreementReferences(doc.text, 4000));
-    recitalBoundsByDocument.set(doc.documentId, findRecitalBounds(doc.text.slice(0, 4000)));
+    const windowChars = resolvePreambleBoundary(doc);
+    referencesByDocument.set(doc.documentId, findAllAgreementReferences(doc.text, windowChars));
+    recitalBoundsByDocument.set(doc.documentId, findRecitalBounds(doc.text.slice(0, windowChars)));
   }
   const resolvedModificationCandidates = modificationCandidates.map((mc): ModificationCandidate => {
     const allRefs = referencesByDocument.get(mc.sourceDocumentId) ?? [];

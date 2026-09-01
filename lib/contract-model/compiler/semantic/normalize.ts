@@ -67,7 +67,7 @@ function childCtx(ctx: NormCtx, wire: WireExpression, extraScope: string): NormC
   return { ...ctx, inheritedCitation: wire.citation ?? ctx.inheritedCitation, scopePath: `${ctx.scopePath}.${extraScope}` };
 }
 
-function unsupportedNode(ctx: NormCtx, reason: string, wire: WireExpression, prov?: SourceProvenance): IRExpression {
+function unsupportedNode(ctx: NormCtx, reason: string, wire: WireExpression, prov?: SourceProvenance, attemptedStructure?: IRExpression): IRExpression {
   warn(ctx, reason);
   return withExpressionId({
     kind: "UNSUPPORTED",
@@ -77,6 +77,7 @@ function unsupportedNode(ctx: NormCtx, reason: string, wire: WireExpression, pro
     reason,
     requiredReview: true,
     provenance: prov,
+    ...(attemptedStructure ? { attemptedStructure } : {}),
   });
 }
 
@@ -94,7 +95,16 @@ function unsupportedNode(ctx: NormCtx, reason: string, wire: WireExpression, pro
 function buildComposite(ctx: NormCtx, kind: string, fields: Record<string, unknown>, placeholderType: string, wire: WireExpression, prov: SourceProvenance | undefined, unsupportedMessage: string): IRExpression {
   const draft = { kind, type: placeholderType, exprId: "", ...fields, provenance: prov } as unknown as IRExpression;
   const computed = inferType(draft);
-  if (computed === UNSUPPORTED_TYPE) return unsupportedNode(ctx, unsupportedMessage, wire, prov);
+  if (computed === UNSUPPORTED_TYPE) {
+    // Preserve the fully-assembled attempt (every sibling operand that DID
+    // successfully normalize/type-check, exprId'd and all) as a diagnostic
+    // sidecar rather than discarding it - this composite's OWN top-level
+    // value genuinely cannot be typed/executed (that verdict is correct and
+    // unchanged), but completeness-checking and review must still be able
+    // to see which specific operand(s) caused it, not just an opaque blob.
+    const attempted = withExpressionId({ ...(draft as unknown as Record<string, unknown>), type: placeholderType } as unknown as IRExpression);
+    return unsupportedNode(ctx, unsupportedMessage, wire, prov, attempted);
+  }
   return withExpressionId({ ...(draft as unknown as Record<string, unknown>), type: computed } as unknown as IRExpression);
 }
 
