@@ -81,6 +81,21 @@ const DOCS = [
 
 let runningCostUsd = 0;
 
+// Resume support: if a prior invocation of this exact frozen run crashed on
+// a real environmental blocker (e.g. the shared provider account budget was
+// exhausted, unrelated to this run's own BUDGET_CEILING_USD), a human
+// authorized a resume rather than a restart. Carry the REAL cumulative cost
+// already spent forward so the ceiling check stays honest across both
+// process invocations, and never re-call the (already-paid-for, already
+// valid) Stage 2 discovery results for a document that already completed.
+const FATAL_ERROR_PATH = `${OUT_DIR}/fatal-error.json`;
+let resumedFromFatalError: { message: string; runningCostUsdAtFailure: number; timestamp: string } | null = null;
+if (existsSync(FATAL_ERROR_PATH)) {
+  const prior = JSON.parse(readFileSync(FATAL_ERROR_PATH, "utf-8"));
+  resumedFromFatalError = prior;
+  runningCostUsd = prior.runningCostUsdAtFailure ?? 0;
+}
+
 function preserve(name: string, data: unknown) {
   if (!existsSync(OUT_DIR)) mkdirSync(OUT_DIR, { recursive: true });
   writeFileSync(`${OUT_DIR}/${name}.json`, JSON.stringify(data, null, 2));
@@ -99,6 +114,11 @@ async function main() {
   console.log(`Started: ${new Date().toISOString()}`);
   console.log(`Budget ceiling: $${BUDGET_CEILING_USD}`);
   console.log(`Isolated companyId: ${COMPANY_ID}`);
+  if (resumedFromFatalError) {
+    console.log(`  [resume] prior invocation of this SAME frozen run hit a real environmental blocker at ${resumedFromFatalError.timestamp}: ${resumedFromFatalError.message}`);
+    console.log(`  [resume] carrying forward real cumulative cost already spent: $${runningCostUsd.toFixed(4)}`);
+    console.log(`  [resume] a human authorized resuming (same provider/model/credential, no substitution) - see docs/final-lightweight-unseen/08-pipeline-run.json for the full disclosure`);
+  }
 
   console.log("\n=== STAGE 1: Phase 2A structural indexing ===");
   const documents = DOCS.map((d) => ({ documentId: d.documentId, label: d.label, text: readFileSync(`${SRC_DIR}/${d.file}`, "utf-8") }));
@@ -135,6 +155,14 @@ async function main() {
   const allCandidates: DiscoveredCandidate[] = [];
   const discoverySummaries: Record<string, unknown> = {};
   for (const doc of DOCS) {
+    const cachedPath = `${OUT_DIR}/stage2-discovery-candidates-${doc.documentId}.json`;
+    if (resumedFromFatalError && existsSync(cachedPath)) {
+      const cached: DiscoveredCandidate[] = JSON.parse(readFileSync(cachedPath, "utf-8"));
+      console.log(`  [resume] ${doc.documentId} already discovered in the prior invocation (${cached.length} candidates) - loading from ${cachedPath}, no re-call`);
+      allCandidates.push(...cached);
+      discoverySummaries[doc.documentId] = { resumedFromPriorInvocation: true, cachedCandidateCount: cached.length };
+      continue;
+    }
     if (runningCostUsd >= BUDGET_CEILING_USD) {
       console.log(`  [budget] ceiling reached - stopping discovery early, before document ${doc.documentId}`);
       break;
