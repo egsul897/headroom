@@ -324,7 +324,7 @@ function normalizeDependency(wire: WireRule["dependsOn"][number], ctx: NormCtx, 
     warn(ctx, reason);
     return { unresolved: withLineage({ relationshipType: finalType, targetRef: wire.targetRef, description: wire.description, reason }, wire.inventoryItemIds) };
   }
-  return { resolved: { relationshipType: finalType, targetRuleId, description: wire.description } };
+  return { resolved: withLineage({ relationshipType: finalType, targetRuleId, description: wire.description }, wire.inventoryItemIds) };
 }
 
 /** Deterministic sufficiency-consistency enforcement (task §27) - applied to every rule/definition AFTER normalization, independent of what the model itself claimed. */

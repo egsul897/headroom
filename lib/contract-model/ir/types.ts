@@ -521,6 +521,8 @@ export interface IRRuleDependency {
   relationshipType: ContractRuleRelationshipType;
   targetRuleId: string;
   description: string;
+  /** SEMANTIC ACCOUNTABILITY lineage (additive, optional) - the DEPENDENCY/REFERENCE/SHARED_CAP inventory item(s) this edge represents. */
+  inventoryItemIds?: string[];
 }
 
 /**

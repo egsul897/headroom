@@ -106,7 +106,12 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
       const coveringIdx = lastInsideIdx >= 0 ? lastInsideIdx : defs.reduce((acc, d, i) => (d.charStart <= opStart ? i : acc), -1);
       if (coveringIdx >= 0) {
         const next = defs[coveringIdx + 1];
-        const unitEnd = next ? next.charStart : Math.min(input.documentText.length, opEnd);
+        // The unit ends at the next definition, else at the end of the deepest structural node enclosing the window (the definitions section itself), else at the end of the document - never assumed to be the window's own end.
+        const enclosing = index
+          .allNodes()
+          .filter((n) => n.documentId === documentId && n.charStart <= opStart && opStart < n.charEnd)
+          .sort((a, b) => a.charEnd - a.charStart - (b.charEnd - b.charStart))[0];
+        const unitEnd = next ? next.charStart : Math.min(input.documentText.length, enclosing ? enclosing.charEnd : input.documentText.length);
         if (unitEnd > opEnd) {
           const omitted = input.documentText.slice(opEnd, unitEnd);
           if (omitted.trim().length > 0) {

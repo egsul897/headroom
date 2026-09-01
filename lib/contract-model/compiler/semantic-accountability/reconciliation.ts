@@ -209,6 +209,7 @@ function walkComposition(c: CompositionForReconciliation): Walk {
         walkExpression(w, cond.expression, `${p}.exceptions[${j}].conditions[${k}].expression`, false, false);
       });
     });
+    rule.dependsOn.forEach((dep, j) => pushLineage(w, `${p}.dependsOn[${j}]`, dep.inventoryItemIds, "REPRESENTED"));
     (rule.unresolvedDependencies ?? []).forEach((dep, j) => {
       pushLineage(w, `${p}.unresolvedDependencies[${j}]`, dep.inventoryItemIds, "UNRESOLVED_DEPENDENCY");
       w.unresolvedTargetRefs.push(dep.targetRef.replace(/\s+/g, "").toLowerCase());
@@ -260,7 +261,8 @@ function findValue(v: QuantitativeValue, irValues: IrValue[]): { present: string
         break;
       case "RATIO":
       case "MULTIPLIER":
-        consider(iv, (iv.kind === "RATIO" || iv.kind === "NUMBER") && v.normalizedValue !== null && iv.numeric !== null && numbersMatch(iv.numeric, v.normalizedValue));
+        // The IR encodes a multiple ("2.5x EBITDA") as a PERCENT scaling factor (2.5 = 250%) - the same number, so a PERCENT literal also satisfies a ratio/multiplier value.
+        consider(iv, (iv.kind === "RATIO" || iv.kind === "NUMBER" || iv.kind === "PERCENT") && v.normalizedValue !== null && iv.numeric !== null && numbersMatch(iv.numeric, v.normalizedValue));
         break;
       case "DAYS":
       case "PERIOD":
@@ -346,10 +348,10 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
         disposition = "REPRESENTED";
         inferredPaths = quantitative.flatMap((q) => q.irPaths);
         reasons.push(`no lineage declared, but every stated value is present in the composed IR (${inferredPaths.join(", ")}) - inferred by value correspondence`);
-      } else if ((item.semanticRole === "DEPENDENCY" || item.semanticRole === "REFERENCE") && item.referencedTerms.some((t) => walk.termNames.has(t.toLowerCase()))) {
+      } else if (!anyValueMissing && (item.semanticRole === "DEPENDENCY" || item.semanticRole === "REFERENCE") && item.referencedTerms.some((t) => walk.termNames.has(t.toLowerCase()))) {
         disposition = "REPRESENTED";
         reasons.push(`no lineage declared, but the referenced term(s) ${item.referencedTerms.filter((t) => walk.termNames.has(t.toLowerCase())).join(", ")} appear as references/dependencies in the composed IR - inferred by term correspondence`);
-      } else if ((item.semanticRole === "DEPENDENCY" || item.semanticRole === "REFERENCE" || item.semanticRole === "SHARED_CAP") && item.referencedSections.some((s) => walk.unresolvedTargetRefs.some((u) => u.includes(s.replace(/\s+/g, "").toLowerCase().replace(/^(sections?|§)/, ""))))) {
+      } else if (!anyValueMissing && (item.semanticRole === "DEPENDENCY" || item.semanticRole === "REFERENCE" || item.semanticRole === "SHARED_CAP") && item.referencedSections.some((s) => walk.unresolvedTargetRefs.some((u) => u.includes(s.replace(/\s+/g, "").toLowerCase().replace(/^(sections?|§)/, ""))))) {
         disposition = "AMBIGUOUS";
         reasons.push(`the referenced section is carried as an unresolved cross-unit dependency in the composed IR - review required, never guessed`);
       } else if (item.quantitativeValues.length > 0 && quantitative.every((q) => q.disposition !== "VALUE_MISSING_FROM_COMPOSITION")) {
