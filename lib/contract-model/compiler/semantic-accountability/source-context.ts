@@ -58,14 +58,26 @@ interface UnitBoundary {
   label: string;
 }
 
+/** The SECTION-level structural unit the anchor belongs to (the anchor itself when it is a section, else its nearest SECTION ancestor, else the anchor) - the outer bound no definition span may leave. */
+function sectionUnitOf(index: StructuralIndex, anchor: StructuralNode): StructuralNode {
+  if (anchor.nodeType === "SECTION") return anchor;
+  const ancestors = index.getAncestors(anchor.nodeId).filter((a) => a.nodeType === "SECTION").sort((a, b) => a.charEnd - a.charStart - (b.charEnd - b.charStart));
+  return ancestors[0] ?? anchor;
+}
+
 /**
  * Decides the REAL unit boundary the supplied window belongs to (mission
  * §12/§13). Definition prose takes precedence over the anchoring node: a
- * window that starts inside a detected definition belongs to that
- * definition's span (through the last definition that starts inside the
- * window), not to the enclosing definitions section (which may be hundreds
- * of thousands of characters). Otherwise the anchoring node's own span is
- * the unit. Null when no boundary can be established.
+ * window that starts inside (or at the head of) detected definitions
+ * belongs to the definition span - from the covering definition (or the
+ * window start when the first definition begins inside the window) through
+ * the last definition that starts inside the window - never to the
+ * enclosing definitions section as a whole (which may be hundreds of
+ * thousands of characters). The definition span is used only when it lives
+ * inside the anchor's own SECTION-level unit (an inline definition detected
+ * far earlier in the agreement never captures a covenant window) and is
+ * clamped to that unit. Otherwise the anchoring node's own span is the unit.
+ * Null when no boundary can be established.
  */
 function resolveUnitBoundary(index: StructuralIndex, documentId: string, anchor: StructuralNode | undefined, opStart: number, opEnd: number, documentText: string | null): UnitBoundary | null {
   if (opStart < 0) return null;
@@ -74,20 +86,25 @@ function resolveUnitBoundary(index: StructuralIndex, documentId: string, anchor:
       .allDefinitions()
       .filter((d) => d.documentId === documentId)
       .sort((a, b) => a.charStart - b.charStart);
+    const sectionUnit = anchor ? sectionUnitOf(index, anchor) : null;
     const coveringIdx = defs.reduce((acc, d, i) => (d.charStart <= opStart ? i : acc), -1);
-    if (coveringIdx >= 0) {
-      const covering = defs[coveringIdx]!;
-      const lastInsideIdx = defs.reduce((acc, d, i) => (d.charStart >= opStart && d.charStart < opEnd ? i : acc), coveringIdx);
-      const next = defs[lastInsideIdx + 1];
+    const firstInsideIdx = defs.findIndex((d) => d.charStart >= opStart && d.charStart < opEnd);
+    const lastInsideIdx = defs.reduce((acc, d, i) => (d.charStart >= opStart && d.charStart < opEnd ? i : acc), -1);
+    const covering = coveringIdx >= 0 && (!sectionUnit || (sectionUnit.charStart <= defs[coveringIdx]!.charStart && defs[coveringIdx]!.charStart < sectionUnit.charEnd)) ? defs[coveringIdx]! : null;
+    const lead = covering ?? (firstInsideIdx >= 0 && (!sectionUnit || (sectionUnit.charStart <= defs[firstInsideIdx]!.charStart && defs[firstInsideIdx]!.charStart < sectionUnit.charEnd)) ? defs[firstInsideIdx]! : null);
+    if (lead) {
+      const lastIdx = Math.max(lastInsideIdx, covering ? coveringIdx : firstInsideIdx);
+      const last = defs[lastIdx]!;
+      const next = defs[lastIdx + 1];
       const enclosing = index
         .allNodes()
-        .filter((n) => n.documentId === documentId && n.charStart <= covering.charStart && covering.charStart < n.charEnd)
+        .filter((n) => n.documentId === documentId && n.charStart <= last.charStart && last.charStart < n.charEnd)
         .sort((a, b) => a.charEnd - a.charStart - (b.charEnd - b.charStart))[0];
-      const spanEnd = next ? next.charStart : Math.min(documentText.length, enclosing ? enclosing.charEnd : documentText.length);
-      // Definition-span precedence applies only when the definition span really is the window's own unit: the anchoring node (if any) must start inside it or contain its start - a covenant window far below the last definition is not definition prose.
-      const anchorAgrees = !anchor || (covering.charStart <= anchor.charStart && anchor.charStart < spanEnd) || (anchor.charStart <= covering.charStart && covering.charStart < anchor.charEnd);
-      if (anchorAgrees && spanEnd > opStart) {
-        return { start: covering.charStart, end: spanEnd, kind: "DEFINITION_SPAN", label: `definition span of "${covering.exactTerm}"${lastInsideIdx > coveringIdx ? ` through "${defs[lastInsideIdx]!.exactTerm}"` : ""}` };
+      let spanEnd = next ? next.charStart : Math.min(documentText.length, enclosing ? enclosing.charEnd : documentText.length);
+      if (sectionUnit) spanEnd = Math.min(spanEnd, sectionUnit.charEnd);
+      const spanStart = covering ? covering.charStart : opStart;
+      if (spanEnd > spanStart && spanEnd > opStart) {
+        return { start: spanStart, end: spanEnd, kind: "DEFINITION_SPAN", label: `definition span of "${lead.exactTerm}"${lastIdx > defs.indexOf(lead) ? ` through "${last.exactTerm}"` : ""}` };
       }
     }
   }
@@ -132,6 +149,9 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
     reasons.push(`anchor node ${anchor.sectionRef} has no text in the structural index`);
   } else if (boundary) {
     completenessKnown = true;
+    // The resolved unit always CONTAINS the supplied window - extension only ever grows it (a window that reaches past its unit's boundary is over-inclusive, never cut).
+    boundary.start = Math.min(boundary.start, windowStart);
+    boundary.end = Math.max(boundary.end, windowEnd);
     const windowIsUnit = windowStart === boundary.start && windowEnd === boundary.end;
     if (!windowIsUnit) {
       const omittedBefore = boundary.start < windowStart ? (sliceDoc(boundary.start, windowStart) ?? "").trim().length : 0;
