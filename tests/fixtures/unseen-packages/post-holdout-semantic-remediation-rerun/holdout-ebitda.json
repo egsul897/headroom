@@ -1,0 +1,1455 @@
+{
+  "region": {
+    "id": "ebitda",
+    "claimIds": [
+      "A1",
+      "B3"
+    ],
+    "documentId": "doc-a",
+    "sourceSectionRef": "1.01 (Consolidated EBITDA)",
+    "charStart": 75142,
+    "chars": 5200,
+    "structuralNodeKeys": [
+      "doc-a::1.01(4)(1)(ii)(6)(iii)(A)"
+    ]
+  },
+  "operativeSourceText": "“Consolidated EBITDA” means, with\nrespect to any Person for any period, the Consolidated Net Income of such Person and its Subsidiaries for such period:\n(1)\nincreased (without duplication) by the following, in each case (other than clauses (h) and (l)) to the extent deducted (and not added back) in determining Consolidated Net Income for such period:\n\n(a) total interest expense and, to the extent not reflected in such total interest expense, any losses on any derivative\ninstruments entered into for the purpose of hedging interest rate risk, net of interest income and gains on such derivative instruments, and bank and letter of credit fees, letter of guarantee and bankers’ acceptance fees and costs of surety\nbonds in connection with financing activities, together with items excluded from the definition of “Consolidated Interest Expense” pursuant to the definition thereof; plus\n\n17\n\n(b) provision for taxes based on income, profits, revenue or capital,\nincluding federal, foreign and state income, franchise, excise, value added and similar taxes, property taxes and similar taxes, and foreign withholding taxes paid or accrued during such period (including any future taxes or other levies that\nreplace or are intended to be in lieu of taxes, and any penalties and interest related to taxes or arising from tax examinations) and the net tax expense associated with any adjustments made pursuant to the definition of “Consolidated Net\nIncome,”; plus\n(c) Consolidated Depreciation and Amortization Expense for such period; plus\n\n(d) any other non-cash charges, including any write-offs or write-downs reducing\nConsolidated Net Income for such period (provided that if any such non-cash charges represent an accrual or reserve for potential cash items in any future period, (i) the Borrower may\ndetermine not to add back such non-cash charge in the current period and (ii) to the extent the Borrower does decide to add back such non-cash charge, the cash\npayment in respect thereof, with the exception of any cash payments related to the settlement of deferred compensation balances awarded prior to the Closing Date, in such future period shall be subtracted from Consolidated EBITDA to such extent, and\nexcluding amortization of a prepaid cash item that was paid in a prior period); plus\n(e) minority interest expense,\nthe amount of any non-controlling interest consisting of income attributable to non-controlling interests of third parties in any\nnon-wholly-owned Subsidiary, excluding cash distributions in respect thereof, and the amount of any reductions in arriving at Consolidated Net Income resulting from the application of Accounting Standards\nCodification Topic No. 810, Consolidation; plus\n(f) (i) the amount of board of director fees and\n(ii) the amount of payments made to optionholders of such Person in connection with, or as a result of, any distribution being made to equityholders of such Person, which payments are being made to compensate such optionholders as though they\nwere equityholders at the time of, and entitled to share in, such distribution, in each case to the extent permitted hereunder; plus\n\n(g) [reserved]; plus\n\n(h) cash receipts (or any netting arrangements resulting in reduced cash expenditures) not representing Consolidated EBITDA or\nConsolidated Net Income in any prior period to the extent non-cash gains relating to such income were deducted in the calculation of Consolidated EBITDA pursuant to clause (2) below for any previous\nperiod and not added back; plus\n(i) any costs or expenses incurred pursuant to any management equity plan, stock\noption plan or any other management or employee benefit plan, agreement or any stock subscription or shareholder agreement, to the extent that such costs or expenses are funded with cash proceeds contributed to the capital of such Person or net cash\nproceeds of an issuance of Equity Interests of such Person (other than Disqualified Stock); plus\n(j) any net\npension or other post-employment benefit costs representing amortization of unrecognized prior service costs, actuarial losses, including amortization of such amounts arising in prior periods, amortization of the unrecognized net obligation (and\nloss or cost) existing at the date of initial application of FASB Accounting Standards Codification Topic 715—Compensation—Retirement Benefits, and any other items of a similar nature, plus\n\n18\n\n(k) Transaction Expenses; plus\n\n(l) the amount of “run-rate” cost savings, synergies and operating expense\nreductions related to any Permitted Acquisition that are projected by the Borrower in good faith to result from actions either taken or with respect to which substantial steps have been taken or are expected to be taken (in the good faith\ndetermination of the Borrower) within 12 months after the end of such period (which cost savings, synergies or operating expense reductions shall be calculated on a pro forma basis as though such cost savings, synergies or operating expense\nreductions had been realized on the first day of such period), net of the amount of actual benefits realized from such actions during such period (it is understood and agreed that “run-rate” means\nthe full recurri",
+  "compile": {
+    "status": "REVIEW_REQUIRED",
+    "rules": [],
+    "definitions": [
+      {
+        "definitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+        "irSchemaVersion": "headroom-covenant-ir.v1",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "termName": "Consolidated EBITDA",
+        "covenantFamily": "DEFINITIONS_CALCULATION_RULES",
+        "calculationExpression": {
+          "kind": "UNSUPPORTED",
+          "type": null,
+          "sourceEvidence": "(no evidence captured)",
+          "semanticDescription": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+          "reason": "SUBTRACT operands do not type-check together",
+          "requiredReview": true,
+          "provenance": {
+            "documentId": "doc-a",
+            "sourceNodeKey": null,
+            "sourceCitation": "§1.01",
+            "excerpt": null
+          },
+          "attemptedStructure": {
+            "kind": "SUBTRACT",
+            "type": "NUMBER",
+            "exprId": "ir-expr:aa3ea817ecb94c5cb90eadc2",
+            "left": {
+              "kind": "ADD",
+              "type": "MONEY",
+              "exprId": "ir-expr:16a4c81e9f6967e7baac352e",
+              "operands": [
+                {
+                  "kind": "DEFINED_TERM_REFERENCE",
+                  "type": "MONEY",
+                  "termName": "Consolidated Net Income",
+                  "companyId": "final-phase3-closure-holdout-sup",
+                  "instrumentKey": "sup-term-loan-instrument",
+                  "resolvedDefinitionId": null,
+                  "exprId": "ir-expr:9b40b3616746059c26dd993a"
+                },
+                {
+                  "kind": "SUM",
+                  "type": "MONEY",
+                  "exprId": "ir-expr:dd1aade03bc68edf1a918b74",
+                  "operands": [
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Interest Expense, Hedging Losses, and Financing Fees Addback",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:f51150722946e64fd99c2439"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Provision for Income and Similar Taxes Addback",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:96dfcff3f48f6075307052cf"
+                    },
+                    {
+                      "kind": "DEFINED_TERM_REFERENCE",
+                      "type": "MONEY",
+                      "termName": "Consolidated Depreciation and Amortization Expense",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:c2bd5a958bead82c033fa909"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Other Non-Cash Charges Addback",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:e8ba928f1292efa4e76d96e2"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Minority Interest and Noncontrolling Interest Expense Addback",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:9e1dee3e66d083a33ac69e7b"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Board Fees and Optionholder Distribution Payments Addback",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:0a89da9c9f35763bd52105e8"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Previously-Deducted Non-Cash Gain Cash Receipts Addback",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:8b24f6714e7f3ec47243ffa3"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Equity-Funded Employee Benefit Plan Costs Addback",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:2ed0cd6a3c49fc26e6415c0c"
+                    },
+                    {
+                      "kind": "METRIC_REFERENCE",
+                      "type": "MONEY",
+                      "metricName": "Pension and Post-Employment Benefit Costs Addback",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:3457ce1bd90d349642e4c8b2"
+                    },
+                    {
+                      "kind": "DEFINED_TERM_REFERENCE",
+                      "type": "MONEY",
+                      "termName": "Transaction Expenses",
+                      "companyId": "final-phase3-closure-holdout-sup",
+                      "instrumentKey": "sup-term-loan-instrument",
+                      "resolvedDefinitionId": null,
+                      "exprId": "ir-expr:97b20e7fcc09fd4a20198530"
+                    },
+                    {
+                      "kind": "SUBTRACT",
+                      "type": "MONEY",
+                      "exprId": "ir-expr:b189cc804def37a30d2775f9",
+                      "left": {
+                        "kind": "METRIC_REFERENCE",
+                        "type": "MONEY",
+                        "metricName": "Projected Run-Rate Cost Savings and Synergies from Permitted Acquisitions",
+                        "companyId": "final-phase3-closure-holdout-sup",
+                        "instrumentKey": "sup-term-loan-instrument",
+                        "resolvedDefinitionId": null,
+                        "exprId": "ir-expr:9c289ebf3ef890d13464f309"
+                      },
+                      "right": {
+                        "kind": "METRIC_REFERENCE",
+                        "type": "MONEY",
+                        "metricName": "Actual Benefits Realized from Run-Rate Actions During the Period",
+                        "companyId": "final-phase3-closure-holdout-sup",
+                        "instrumentKey": "sup-term-loan-instrument",
+                        "resolvedDefinitionId": null,
+                        "exprId": "ir-expr:456ed6571bbcbc6ee080f513"
+                      },
+                      "provenance": {
+                        "documentId": "doc-a",
+                        "sourceNodeKey": null,
+                        "sourceCitation": "§1.01(1)(l)",
+                        "excerpt": "the amount of \"run-rate\" cost savings, synergies and operating expense reductions related to any Permitted Acquisition that are projected ... net of the amount of actual benefits realized from such actions during such period"
+                      }
+                    }
+                  ],
+                  "provenance": {
+                    "documentId": "doc-a",
+                    "sourceNodeKey": null,
+                    "sourceCitation": "§1.01(1)",
+                    "excerpt": "increased (without duplication) by the following, in each case (other than clauses (h) and (l)) to the extent deducted (and not added back) in determining Consolidated Net Income for such period"
+                  }
+                }
+              ],
+              "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01(1)",
+                "excerpt": null
+              }
+            },
+            "right": {
+              "kind": "UNSUPPORTED",
+              "type": null,
+              "sourceEvidence": "§1.01(1)(h) ('...pursuant to clause (2) below...'); §1.01(1)(l) (text cuts off after 'it is understood and agreed that \"run-rate\" means the full recurri')",
+              "semanticDescription": "Clause (2) of the Consolidated EBITDA definition - the enumerated decreases to Consolidated Net Income (expressly cross-referenced by clause (1)(h) as 'clause (2) below') - together with the tail-end explanatory parenthetical defining 'run-rate' in clause (1)(l) and any further lettered sub-clauses that may follow clause (1)(l) before clause (2) begins",
+              "reason": "The supplied source text is truncated after clause (1)(l) and ends mid-sentence ('the full recurri...'); clause (2) and any remaining content were never provided. This definition has no anchoring structural nodeId in the available context, so getSourceSpan/getChildren/getSiblingClauses could not be used to page further; getDefinition, getOperativeProvision, and getReferencedProvision were all attempted and either returned the same truncated text or could not resolve an absolute/relative cross-reference without a nodeId.",
+              "requiredReview": true,
+              "provenance": {
+                "documentId": "doc-a",
+                "sourceNodeKey": null,
+                "sourceCitation": "§1.01",
+                "excerpt": null
+              },
+              "exprId": "ir-expr:42d8696fa4938c6602a9ee84"
+            },
+            "provenance": {
+              "documentId": "doc-a",
+              "sourceNodeKey": null,
+              "sourceCitation": "§1.01",
+              "excerpt": null
+            }
+          },
+          "exprId": "ir-expr:cd73a9ec698537cd649e2e86"
+        },
+        "dependsOnTerms": [
+          "Consolidated Net Income",
+          "Net Income",
+          "Consolidated Depreciation and Amortization Expense",
+          "Consolidated Interest Expense",
+          "Transaction Expenses",
+          "Permitted Acquisition",
+          "Disqualified Stock",
+          "Equity Interests",
+          "Borrower",
+          "Closing Date",
+          "Person",
+          "Subsidiary",
+          "run-rate"
+        ],
+        "sufficiency": "PARTIAL",
+        "sufficiencyReasons": [
+          "Clause (1) additions (a) through (l) (excluding reserved clause (g)) are captured with citations to their specific lettered sub-clauses and are believed complete based on the supplied text.",
+          "Clause (2) - the decreases/subtractions from Consolidated Net Income expressly referenced in clause (1)(h) - was never supplied and could not be retrieved: this definition lacks a discoverable structural nodeId, so no available tool (getSourceSpan, getChildren, getReferencedProvision) could page beyond the truncation boundary already returned by getDefinition/getOperativeProvision.",
+          "The explanatory gloss on the meaning of 'run-rate' at the tail of clause (1)(l) is truncated, though the substantive computational mechanics of clause (1)(l) itself were captured before the cutoff and are treated as complete.",
+          "Because clause (2) is entirely unknown, the overall Consolidated EBITDA calculation is only partially represented notwithstanding that clause (1) is fully captured.",
+          "The supplied source text is truncated after clause (1)(l) and ends mid-sentence ('the full recurri...'); clause (2) and any remaining content were never provided. This definition has no anchoring structural nodeId in the available context, so getSourceSpan/getChildren/getSiblingClauses could not be used to page further; getDefinition, getOperativeProvision, and getReferencedProvision were all attempted and either returned the same truncated text or could not resolve an absolute/relative cross-reference without a nodeId.",
+          "SUBTRACT operands do not type-check together"
+        ],
+        "provenance": {
+          "documentId": "doc-a",
+          "sourceNodeKey": null,
+          "sourceCitation": "§1.01",
+          "excerpt": "\"Consolidated EBITDA\" means, with respect to any Person for any period, the Consolidated Net Income of such Person and its Subsidiaries for such period: (1) increased (without duplication) by the following... (2) [decreased by...] (not provided in available evidence)"
+        },
+        "compilerVersion": "phase-3f1-fix2-semantic-compiler.v3",
+        "sourceContentVersion": null
+      }
+    ],
+    "failureReasons": [
+      "TRUNCATED_EVIDENCE_USED",
+      "DEFINITION_COMPLETENESS_SUSPECT"
+    ],
+    "telemetry": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5",
+      "promptVersion": "phase-3f1-fix2-semantic-compiler-prompt.v3",
+      "schemaVersion": "headroom-covenant-ir.v1",
+      "stage": "semantic_compilation",
+      "timestamp": "2026-09-01T15:29:12.896Z",
+      "inputTokens": 92660,
+      "outputTokens": 12852,
+      "cachedInputTokens": 0,
+      "cacheCreationInputTokens": 0,
+      "attemptCount": 5,
+      "retryCount": 0,
+      "rateLimitFailures": 0,
+      "latencyMs": 133791,
+      "calculatedCostUsd": 0.31384
+    }
+  },
+  "verify": {
+    "candidateRef": "holdout-candidate:ebitda",
+    "status": "MATERIAL_DISCREPANCY",
+    "findings": [
+      {
+        "findingId": "70f0a0032291c5277681cbb3fcbe63cc67816092b38bae16f14f3b9eb1cdf265",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:ebitda",
+        "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+        "irPath": "definitions[0].calculationExpression.attemptedStructure.left.operands[1].operands[3]",
+        "findingType": "MISSING_CONDITION",
+        "severity": "MATERIAL",
+        "sourceEvidence": "(d) any other non-cash charges, including any write-offs or write-downs reducing Consolidated Net Income for such period (provided that if any such non-cash charges represent an accrual or reserve for potential cash items in any future period, (i) the Borrower may determine not to add back such non-cash charge in the current period and (ii) to the extent the Borrower does decide to add back such non-cash charge, the cash payment in respect thereof, with the exception of any cash payments related to the settlement of deferred compensation balances awarded prior to the Closing Date, in such future period shall be subtracted from Consolidated EBITDA to such extent, and excluding amortization of a prepaid cash item that was paid in a prior period)",
+        "sourceCitation": "§1.01(1)(d)",
+        "proposedIrEvidence": "{\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Other Non-Cash Charges Addback\",\"resolvedDefinitionId\":null}",
+        "verifierReasoning": "Clause (d) is not a simple addback - it contains a substantively operative, forward-looking clawback proviso: if a non-cash charge added back represents an accrual/reserve for a future cash item, the Borrower has an election whether to add it back, and if it does, the future cash payment must later be SUBTRACTED from Consolidated EBITDA in the period paid (with a carve-out for pre-Closing-Date deferred compensation settlements). The proposed IR represents clause (d) solely as an opaque 'Other Non-Cash Charges Addback' METRIC_REFERENCE with no resolvedDefinitionId and no encoded proviso, election, or future-period subtraction mechanism. This is an independently operative condition that changes EBITDA in future periods depending on cash payments - a reviewer relying on the IR would have no way to know EBITDA must later be reduced for these cash payments, which could materially misstate covenant capacity calculated off EBITDA (e.g., leverage-based baskets) in a later period. Given the IR provides no visibility that this mechanism is captured elsewhere, this appears to be a genuine omission rather than a deferred-but-present detail.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:30:43.893Z"
+      },
+      {
+        "findingId": "9b5e1d117a0edfef4484cec803829eea0e0d71d5f6dde343f0cf185995db8036",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:ebitda",
+        "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+        "irPath": "definitions[0].calculationExpression.attemptedStructure.left.operands[1].operands[8]",
+        "findingType": "MISSING_CONDITION",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "(i) any costs or expenses incurred pursuant to any management equity plan, stock option plan or any other management or employee benefit plan, agreement or any stock subscription or shareholder agreement, to the extent that such costs or expenses are funded with cash proceeds contributed to the capital of such Person or net cash proceeds of an issuance of Equity Interests of such Person (other than Disqualified Stock)",
+        "sourceCitation": "§1.01(1)(i)",
+        "proposedIrEvidence": "{\"kind\":\"METRIC_REFERENCE\",\"metricName\":\"Equity-Funded Employee Benefit Plan Costs Addback\",\"resolvedDefinitionId\":null}",
+        "verifierReasoning": "Clause (i) is expressly gated - the addback for management/employee benefit plan costs applies only 'to the extent' the costs are funded with cash capital contributions or net cash proceeds from an Equity Interests issuance (excluding Disqualified Stock). The proposed IR names this addback but, as an unresolved METRIC_REFERENCE with no resolvedDefinitionId, does not visibly encode this equity-funding gate anywhere in the calculation tree. If this gating condition is not captured in whatever ultimately resolves this metric, a user could add back these costs even when not equity-funded, overstating EBITDA. I cannot fully confirm this is dropped versus deferred to an unseen definition, so I mark this UNCERTAIN rather than definitively MATERIAL, but it is a real candidate discrepancy worth investigation.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:30:43.893Z"
+      },
+      {
+        "findingId": "863ccadbef6d27b4c4f5e6427c249c15dcd4b79e144f4fbbe8b3c453040728cf",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:ebitda",
+        "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+        "irPath": "definitions[0].calculationExpression.attemptedStructure.left.operands[1]",
+        "findingType": "MISSING_CONDITION",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "increased (without duplication) by the following, in each case (other than clauses (h) and (l)) to the extent deducted (and not added back) in determining Consolidated Net Income for such period",
+        "sourceCitation": "§1.01(1) chapeau",
+        "proposedIrEvidence": "SUM node aggregating METRIC_REFERENCE/DEFINED_TERM_REFERENCE addbacks (a)-(k) excluding (g), with provenance excerpt quoting the chapeau but no structural COMPARE/gate encoding the 'to the extent deducted (and not added back)' limitation, nor any differentiation carving out clauses (h) and (l) from that limitation",
+        "verifierReasoning": "The chapeau to clause (1) imposes a universal qualifier on every addback except (h) and (l): each item may only be added back 'to the extent deducted (and not added back)' in determining Consolidated Net Income. This is a real, independently operative anti-double-counting condition (and its carve-out for (h) and (l), which are not NI deductions at all) that governs whether and how much of each addback is actually permitted. The proposed IR's SUM node cites this language only as provenance/excerpt text attached to the aggregate node, not as an encoded gating condition on the individual addend metrics, and the special treatment of (h)/(l) is not distinguished structurally (though (l) is separately modeled as a net-of-realized-benefits SUBTRACT, that does not capture the 'not subject to the deducted-in-NI test' distinction). Because all constituent addbacks are opaque METRIC_REFERENCEs with no resolvedDefinitionId, it is uncertain whether this qualifier is captured downstream; if it is not, EBITDA as computed could improperly include amounts never actually deducted from NI, inflating the metric.",
+        "deterministicSignals": [],
+        "verificationMethod": "SEMANTIC_ONLY",
+        "provider": "VERCEL_AI_GATEWAY",
+        "model": "anthropic/claude-sonnet-5",
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": "phase-3c-semantic-verifier-prompt.v1",
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:30:43.894Z"
+      },
+      {
+        "findingId": "2be188a64b7f209afe9984ab6b97e7b4089c511b8f46c0930657f1ca248da46f",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:ebitda",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_RULE",
+        "severity": "NON_MATERIAL",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Consolidated EBITDA)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 12 apparent independent enumerated unit(s) ((l), (a), (b), (c), (d), (i), (ii), (e), (g), (h), (j), (k)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement) [downgraded to NON_MATERIAL: an independent adversarial semantic review (Layer 2) examined this exact candidate, including this deterministic signal, and reported no confirming finding of this type]",
+        "deterministicSignals": [
+          "source text contains 12 apparent independent enumerated unit(s) ((l), (a), (b), (c), (d), (i), (ii), (e), (g), (h), (j), (k)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:29:12.907Z"
+      },
+      {
+        "findingId": "0544f907d85f5fb283dc0af3f8f62d6490660eddfb253dc9f1f219e5d1e7374e",
+        "companyId": "final-phase3-closure-holdout-sup",
+        "instrumentKey": "sup-term-loan-instrument",
+        "sourceDocumentId": "doc-a",
+        "candidateRef": "holdout-candidate:ebitda",
+        "ruleOrDefinitionId": null,
+        "irPath": null,
+        "findingType": "MISSING_CONDITION",
+        "severity": "UNCERTAIN",
+        "sourceEvidence": "(no single source excerpt - an aggregate structural signal spanning the whole candidate's operative text)",
+        "sourceCitation": "1.01 (Consolidated EBITDA)",
+        "proposedIrEvidence": "(absent from compiled IR)",
+        "verifierReasoning": "source text contains 8 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception",
+        "deterministicSignals": [
+          "source text contains 8 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        ],
+        "verificationMethod": "DETERMINISTIC_ONLY",
+        "provider": null,
+        "model": null,
+        "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+        "verifierPromptVersion": null,
+        "resolutionStatus": "OPEN",
+        "createdAt": "2026-09-01T15:29:12.907Z"
+      }
+    ],
+    "sourceInventory": {
+      "candidateRef": "holdout-candidate:ebitda",
+      "items": [
+        {
+          "itemId": "c5e97f250f29999dab5fd5d0bf34feb5121e52acc8c8b4c397eeecf29cef3b80",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "provided that",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1661,
+          "charEnd": 1674
+        },
+        {
+          "itemId": "7ecf58d1b7c4b9c087961c2a9fda3cb0ec6548a1ea2fbbe29d2adfe2a61d373b",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "to the extent that",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 3724,
+          "charEnd": 3742
+        },
+        {
+          "itemId": "50e059b8c60463f262be5ad38031fee90137a951cf4a7165d34d43e75785c33b",
+          "kind": "CONDITIONAL_PHRASE",
+          "rawText": "pro forma basis",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 4911,
+          "charEnd": 4926
+        },
+        {
+          "itemId": "b48eb1a4fc3d21782dc5fa7b1b6b4410295388a0c7c7afc7ba3a8e587a9ad5cb",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 221,
+          "charEnd": 231
+        },
+        {
+          "itemId": "bb0db99ec7f4c7a62082f78fc415755940e55756542af94e539f8ccf2ba4c7d8",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "with the exception of",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1992,
+          "charEnd": 2013
+        },
+        {
+          "itemId": "6cfdbd3586e6ac67e6adde6996b672eb38ab3b4ec2109135e232a9cfd80075c6",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "excluding",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 2214,
+          "charEnd": 2223
+        },
+        {
+          "itemId": "58d9674d8d54fbe0a2f0eed57613b4aa2f2941847d057ab570fd7880eff39433",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "excluding",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 2489,
+          "charEnd": 2498
+        },
+        {
+          "itemId": "8cc6353114dab3083ccf891993262d7c6a9a1c3cccf1148d3c7595958000d0b2",
+          "kind": "EXCEPTION_MARKER",
+          "rawText": "other than",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 3910,
+          "charEnd": 3920
+        },
+        {
+          "itemId": "7cf23679525852a0b2a0e120b67f99339aefece15e5a97c68464c15248a86ed6",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1791,
+          "charEnd": 1799
+        },
+        {
+          "itemId": "0e990236207d23bc13e17ee1a3e076b9ba15894994c41a5338492af64f50d062",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1900,
+          "charEnd": 1908
+        },
+        {
+          "itemId": "452b554f93a825eb028225e38f331a3f62c744444566560692894b2edf96472a",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 4581,
+          "charEnd": 4589
+        },
+        {
+          "itemId": "ca525d5f5b93f71dbd7c57bd0008d3161a8d89f45af0da42375878bccf7bac34",
+          "kind": "ENTITY_SCOPE_TERM",
+          "rawText": "Borrower",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 4767,
+          "charEnd": 4775
+        },
+        {
+          "itemId": "d66e72418bbdca85eb6ec5f3a6a32948bc6921d91b944946b094eea84a50a285",
+          "kind": "TRANSACTION_ACTION_SIGNAL",
+          "rawText": "guarantee",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 658,
+          "charEnd": 667
+        },
+        {
+          "itemId": "25d7090eb9d7c9148ebbea961571ed5989a945d66b40e21208abff10ded0cd23",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1,
+          "charEnd": 20
+        },
+        {
+          "itemId": "849387588c10638d9cc605968fecdf6267fc247c29f59ef75772a1f92263df5d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Net Income",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 76,
+          "charEnd": 99
+        },
+        {
+          "itemId": "0d37d2dfa11b2e3717ca4b6cc9ddab17fd85b87e7530843f7c73013532092284",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Net Income",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 312,
+          "charEnd": 335
+        },
+        {
+          "itemId": "147be34eaa24389257d4941eb47e7c288c52726e65178a97c7aa7f1dbaaeaec3",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Interest Expense",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 817,
+          "charEnd": 846
+        },
+        {
+          "itemId": "b6b9e9890c6b0ccc3a8ef021fa23afb24662322f59818aefa5a02b4aac0301c8",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Net\nIncome",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1429,
+          "charEnd": 1452
+        },
+        {
+          "itemId": "31500f9a048085bd83530dbeeb221c7ffc611281d403fa9549008e8ddd895652",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Depreciation",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1465,
+          "charEnd": 1490
+        },
+        {
+          "itemId": "5370a7c105f390c7270cb0b44ef1aee0a7e184fb330fdd81b2ddfeece711b6c5",
+          "kind": "METRIC_MENTION",
+          "rawText": "Amortization Expense",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1495,
+          "charEnd": 1515
+        },
+        {
+          "itemId": "115508a959318635fb153b63dc8b733a2419ac52fbc6babc77ba0ce1951ca49d",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Net Income",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 1620,
+          "charEnd": 1643
+        },
+        {
+          "itemId": "1bd0d6f2102ff073715d8930f60aece999dd09283d1f373e680bbd8495b7a4cc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Closing Date",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 2113,
+          "charEnd": 2125
+        },
+        {
+          "itemId": "ab99076a1b7f9887e48afdf900761096eb966334a2c91333b8515e7c190843ff",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 2174,
+          "charEnd": 2193
+        },
+        {
+          "itemId": "32337fee1bd3c9b56d98831d72a18c7aedc64d1aac47d6dd7944a9ebf12a1a3e",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Net Income",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 2586,
+          "charEnd": 2609
+        },
+        {
+          "itemId": "276bcaabe782abf814aa704aa5b2c9aa5746588201591a58c1a0643c095d020c",
+          "kind": "METRIC_MENTION",
+          "rawText": "Accounting Standards\nCodification Topic",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 2644,
+          "charEnd": 2683
+        },
+        {
+          "itemId": "3ba121a90e977f09b99b5404e63e72b408946a557ee9c86400742a3f642d2baf",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 3265,
+          "charEnd": 3284
+        },
+        {
+          "itemId": "e2f134212805802712ae470560e0d0be34e6598419be388b535c200315047a48",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated Net Income",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 3288,
+          "charEnd": 3311
+        },
+        {
+          "itemId": "25f01ac63e50916824209a9ec2c957767f39c2a97589bb88e107e6f9ecc4c764",
+          "kind": "METRIC_MENTION",
+          "rawText": "Consolidated EBITDA",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 3421,
+          "charEnd": 3440
+        },
+        {
+          "itemId": "ad94e221edc9e96bce5233d9e1ca288e77da46ef3304e9b0248349199433b60a",
+          "kind": "METRIC_MENTION",
+          "rawText": "Equity Interests",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 3877,
+          "charEnd": 3893
+        },
+        {
+          "itemId": "d8c4e85cfe25911868cca5d42de14abceb3e788b50b4109b52b20e88f1048d27",
+          "kind": "METRIC_MENTION",
+          "rawText": "Disqualified Stock",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 3921,
+          "charEnd": 3939
+        },
+        {
+          "itemId": "3493fae2bcf73b4b97c771abc405f1f0803190d1845e1202fd43cab9551402db",
+          "kind": "METRIC_MENTION",
+          "rawText": "FASB Accounting Standards Codification",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 4266,
+          "charEnd": 4304
+        },
+        {
+          "itemId": "716d6445548effb77d04c773307cdf8825e39164c95174958f3cb0f881d29fca",
+          "kind": "METRIC_MENTION",
+          "rawText": "Retirement Benefits",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 4328,
+          "charEnd": 4347
+        },
+        {
+          "itemId": "92bb58ce6faea2e2b017be8bd1a4b798f57f33e3d883795e417a93f2c13f6a85",
+          "kind": "METRIC_MENTION",
+          "rawText": "Transaction Expenses",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 4404,
+          "charEnd": 4424
+        },
+        {
+          "itemId": "739149b2bc89d10931d61be26be055f1786bbe79537cba5bec3f3a002a9458dc",
+          "kind": "METRIC_MENTION",
+          "rawText": "Permitted Acquisition",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": 4533,
+          "charEnd": 4554
+        },
+        {
+          "itemId": "6074dade98d7b3323d69e5bfd10a81df90fa59c5d75df502b91d55b286573d4f",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(l)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "0f302ab25065b38a82f0befea93da376070b46396c3251e54a202f156b52ab13",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(a)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7068cd9a5b0a3953793fde2c479c2eba2b37bcf16528fcb2040da7551a7fca36",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(b)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "1ae0bb2dc17032577452838ca67c88240fd8df31c9cbed92329fb964da321b32",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(c)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "1ddf0b6a18a459feb4526062ea83d1cb32e4983f73bd617234845cc632792840",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(d)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "36c0b7a3f2a291f1752dd3ef49c8d5c631863d476d9a889dc57825f092406b9f",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(i)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "6c1e1802392b8000c7d54a1fa38e3f9636c8ea49ca21f748a1632022d2d669a3",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(ii)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "99c5d3e7a8d3a5a2c35a4581f14c35ed010cad2cd3e26a18c3b7f14048dccaa3",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(e)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "2f7ef76d22eaa98e8c140ae3c377275c8bca957eabedfbbdbd7216e2b20f13fb",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(g)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "4fb9c4f391a0927331918e063959878e363a1d5296bb5259840ab5e06b6c1c48",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(h)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "34aba8a84dae1ba0215cfe5a98fa6d956b5801709bfc7c26bd2c465c46df526f",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(j)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        },
+        {
+          "itemId": "7e8bfef72f3f7c92029225b1fce2673b43ef5eff669592dbefd4aa679a4e3959",
+          "kind": "INDEPENDENT_LIST_ITEM",
+          "rawText": "(k)",
+          "numericValue": null,
+          "sourceDocumentId": "doc-a",
+          "sourceCitation": "1.01 (Consolidated EBITDA)",
+          "structuralNodeKey": null,
+          "charStart": -1,
+          "charEnd": -1
+        }
+      ],
+      "apparentIndependentUnitCount": 12,
+      "apparentIndependentUnitEvidence": [
+        "(l)",
+        "(a)",
+        "(b)",
+        "(c)",
+        "(d)",
+        "(i)",
+        "(ii)",
+        "(e)",
+        "(g)",
+        "(h)",
+        "(j)",
+        "(k)"
+      ],
+      "inventoryAlgorithmVersion": "phase-3c-source-inventory.v1",
+      "supersessionStatus": "UNKNOWN_SUPERSESSION_STATUS",
+      "supersessionReason": "No specific physical structural-node identity (nodeId) was supplied - supersession status can only be determined for one real physical occurrence, never inferred for a bare document/section label."
+    },
+    "irInventory": {
+      "candidateRef": "holdout-candidate:ebitda",
+      "items": [
+        {
+          "itemId": "e53e3ac992ab84dfe9119d1341396eb7615c3faec9ab3e3f7a993d1c5661bda8",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[0]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Consolidated Net Income",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "5ab8927149dac0d01f210a5bda826aa65fb1fbad170d39790f1a9e9308834278",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[1]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Net Income",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "4628ec9c47db792c4ea6731e136468cd54ff29d9a9179f811c17036f7672d185",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[2]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Consolidated Depreciation and Amortization Expense",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "9d836a3b04a4914df9c1f3ae409937f38853029adba6d40bdc8c5d35c290cfdd",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[3]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Consolidated Interest Expense",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6edeaa272ef2d3264d28d69a716a1a7f0d8bb2184f6af6ca6b2aa2c6511d74fa",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[4]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Transaction Expenses",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "6c7ce6ea3004d7250e996f0b53088b7a515eaee0abf8888b3e8e1891f6352eb1",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[5]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Permitted Acquisition",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "1950aa34626b166eb382c968a9b4e6ebe09a5ac24641a01952b6ddd724ef4e5d",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[6]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Disqualified Stock",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f70d9b21401caf946919b1b31b5d667bbe5d771cad4beb1dc997fadff1f8bab2",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[7]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Equity Interests",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c93105a849476fff1e09639896e619156a4d9b66992d346acd4e1e2549c97643",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[8]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Borrower",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "ef03d5cf1a890c7221e6e7d83bb732b5b5fc071b164c2aa7a3a5fe07fd0e806b",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[9]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Closing Date",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "125d4f39d9fba2b83ee19a81806f54a7a139f564489d8f7cb0fb5244d1ef67ee",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[10]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Person",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "a089a84e601cc944d54e5b9311a4719da61ce68a543cc0b6fe724121bd477003",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[11]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:Subsidiary",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "c3acdf43272ce58fa7fa26c621f952de757c7c7e377965f022a9be4a53e4e0f0",
+          "kind": "DEPENDENCY",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].dependsOnTerms[12]",
+          "numericValue": null,
+          "textValue": "DEFINED_TERM:run-rate",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": null,
+          "sourceExcerpt": null
+        },
+        {
+          "itemId": "f2cc336d05de92cd2490a99d96031ece1e00b9fa18e9418f20b7a7b991adf282",
+          "kind": "UNSUPPORTED_MARKER",
+          "ruleOrDefinitionId": "ir-definition:e5142608789af5f1f88fbcaf",
+          "irPath": "definitions[0].calculationExpression",
+          "numericValue": null,
+          "textValue": "unrecognized or malformed expression (kind=\"SUBTRACT\")",
+          "isAlternativeWithinSelection": false,
+          "sourceCitation": "§1.01",
+          "sourceExcerpt": null
+        }
+      ],
+      "ruleCount": 0,
+      "definitionCount": 1,
+      "inventoryAlgorithmVersion": "phase-3c-ir-inventory.v1"
+    },
+    "reconciliation": {
+      "candidateRef": "holdout-candidate:ebitda",
+      "items": [
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "25d7090eb9d7c9148ebbea961571ed5989a945d66b40e21208abff10ded0cd23",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 1,
+            "charEnd": 20
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated EBITDA\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "849387588c10638d9cc605968fecdf6267fc247c29f59ef75772a1f92263df5d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Net Income",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 76,
+            "charEnd": 99
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Net Income\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "0d37d2dfa11b2e3717ca4b6cc9ddab17fd85b87e7530843f7c73013532092284",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Net Income",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 312,
+            "charEnd": 335
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Net Income\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "147be34eaa24389257d4941eb47e7c288c52726e65178a97c7aa7f1dbaaeaec3",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Interest Expense",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 817,
+            "charEnd": 846
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Interest Expense\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "b6b9e9890c6b0ccc3a8ef021fa23afb24662322f59818aefa5a02b4aac0301c8",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Net\nIncome",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 1429,
+            "charEnd": 1452
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Net\nIncome\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "31500f9a048085bd83530dbeeb221c7ffc611281d403fa9549008e8ddd895652",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Depreciation",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 1465,
+            "charEnd": 1490
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Depreciation\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "5370a7c105f390c7270cb0b44ef1aee0a7e184fb330fdd81b2ddfeece711b6c5",
+            "kind": "METRIC_MENTION",
+            "rawText": "Amortization Expense",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 1495,
+            "charEnd": 1515
+          },
+          "irItems": [],
+          "reason": "source mention \"Amortization Expense\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "115508a959318635fb153b63dc8b733a2419ac52fbc6babc77ba0ce1951ca49d",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Net Income",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 1620,
+            "charEnd": 1643
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Net Income\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "1bd0d6f2102ff073715d8930f60aece999dd09283d1f373e680bbd8495b7a4cc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Closing Date",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 2113,
+            "charEnd": 2125
+          },
+          "irItems": [],
+          "reason": "source mention \"Closing Date\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ab99076a1b7f9887e48afdf900761096eb966334a2c91333b8515e7c190843ff",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 2174,
+            "charEnd": 2193
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated EBITDA\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "32337fee1bd3c9b56d98831d72a18c7aedc64d1aac47d6dd7944a9ebf12a1a3e",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Net Income",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 2586,
+            "charEnd": 2609
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Net Income\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "276bcaabe782abf814aa704aa5b2c9aa5746588201591a58c1a0643c095d020c",
+            "kind": "METRIC_MENTION",
+            "rawText": "Accounting Standards\nCodification Topic",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 2644,
+            "charEnd": 2683
+          },
+          "irItems": [],
+          "reason": "source mention \"Accounting Standards\nCodification Topic\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3ba121a90e977f09b99b5404e63e72b408946a557ee9c86400742a3f642d2baf",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 3265,
+            "charEnd": 3284
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated EBITDA\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "e2f134212805802712ae470560e0d0be34e6598419be388b535c200315047a48",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated Net Income",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 3288,
+            "charEnd": 3311
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated Net Income\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "25f01ac63e50916824209a9ec2c957767f39c2a97589bb88e107e6f9ecc4c764",
+            "kind": "METRIC_MENTION",
+            "rawText": "Consolidated EBITDA",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 3421,
+            "charEnd": 3440
+          },
+          "irItems": [],
+          "reason": "source mention \"Consolidated EBITDA\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "ad94e221edc9e96bce5233d9e1ca288e77da46ef3304e9b0248349199433b60a",
+            "kind": "METRIC_MENTION",
+            "rawText": "Equity Interests",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 3877,
+            "charEnd": 3893
+          },
+          "irItems": [],
+          "reason": "source mention \"Equity Interests\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "d8c4e85cfe25911868cca5d42de14abceb3e788b50b4109b52b20e88f1048d27",
+            "kind": "METRIC_MENTION",
+            "rawText": "Disqualified Stock",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 3921,
+            "charEnd": 3939
+          },
+          "irItems": [],
+          "reason": "source mention \"Disqualified Stock\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "3493fae2bcf73b4b97c771abc405f1f0803190d1845e1202fd43cab9551402db",
+            "kind": "METRIC_MENTION",
+            "rawText": "FASB Accounting Standards Codification",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 4266,
+            "charEnd": 4304
+          },
+          "irItems": [],
+          "reason": "source mention \"FASB Accounting Standards Codification\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "716d6445548effb77d04c773307cdf8825e39164c95174958f3cb0f881d29fca",
+            "kind": "METRIC_MENTION",
+            "rawText": "Retirement Benefits",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 4328,
+            "charEnd": 4347
+          },
+          "irItems": [],
+          "reason": "source mention \"Retirement Benefits\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "92bb58ce6faea2e2b017be8bd1a4b798f57f33e3d883795e417a93f2c13f6a85",
+            "kind": "METRIC_MENTION",
+            "rawText": "Transaction Expenses",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 4404,
+            "charEnd": 4424
+          },
+          "irItems": [],
+          "reason": "source mention \"Transaction Expenses\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "POSSIBLY_ACCOUNTED_FOR",
+          "sourceItem": {
+            "itemId": "739149b2bc89d10931d61be26be055f1786bbe79537cba5bec3f3a002a9458dc",
+            "kind": "METRIC_MENTION",
+            "rawText": "Permitted Acquisition",
+            "numericValue": null,
+            "sourceDocumentId": "doc-a",
+            "sourceCitation": "1.01 (Consolidated EBITDA)",
+            "structuralNodeKey": null,
+            "charStart": 4533,
+            "charEnd": 4554
+          },
+          "irItems": [],
+          "reason": "source mention \"Permitted Acquisition\" (a loose capitalized-phrase heuristic) has no obvious matching compiled metric/defined-term reference - low confidence, not counted as material on its own"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 12 apparent independent enumerated unit(s) ((l), (a), (b), (c), (d), (i), (ii), (e), (g), (h), (j), (k)) but only 0 rule(s) were compiled - possible missing rule/basket (structural completeness signal, never a hard 1:1 requirement)"
+        },
+        {
+          "classification": "AMBIGUOUS",
+          "sourceItem": null,
+          "irItems": [],
+          "reason": "source text contains 8 conditional/exception/proviso marker(s) but the compiled IR records zero conditions or exceptions - possible missing condition/exception"
+        }
+      ],
+      "materialUnresolvedCount": 2
+    },
+    "semanticReviewInvoked": true,
+    "semanticReviewSkippedReason": null,
+    "conditionSuspicion": null,
+    "verifierAlgorithmVersion": "phase-3c-semantic-verifier.v1",
+    "verifiedAt": "2026-09-01T15:30:43.894Z"
+  }
+}
