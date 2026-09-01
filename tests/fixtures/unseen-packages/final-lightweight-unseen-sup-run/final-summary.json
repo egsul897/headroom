@@ -1,0 +1,60 @@
+{
+  "runId": "FINAL_LIGHTWEIGHT_UNSEEN_RUN",
+  "finishedAt": "2026-09-01T11:18:02.654Z",
+  "wallClockMs": 1147187,
+  "totalCostUsd": 5.02623,
+  "budgetCeilingUsd": 7.5,
+  "provider": "VERCEL_AI_GATEWAY",
+  "model": "anthropic/claude-sonnet-5",
+  "documentsProcessed": 3,
+  "totalStructuralNodes": 3185,
+  "totalDiscoveredCandidates": 1810,
+  "eligibleForCompilation": 1710,
+  "candidatesCompiled": 15,
+  "candidatesVerified": 13,
+  "candidatesFullyVerified": 0,
+  "packageCoverageStatus": "PACKAGE_SEMANTICALLY_INCOMPLETE",
+  "documentGateStatuses": [
+    {
+      "documentId": "doc-a",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 3269,
+      "dangerousUnaccountedCount": 1195
+    },
+    {
+      "documentId": "doc-b",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 3333,
+      "dangerousUnaccountedCount": 1144
+    },
+    {
+      "documentId": "doc-c",
+      "gateStatus": "DOCUMENT_GATE_FAILED",
+      "unitCount": 75,
+      "dangerousUnaccountedCount": 28
+    }
+  ],
+  "instrumentUnits": [
+    {
+      "instrumentKey": "instrument:doc-a",
+      "baseDocumentId": "doc-a",
+      "documentIds": [
+        "doc-a"
+      ]
+    },
+    {
+      "instrumentKey": "instrument:doc-b",
+      "baseDocumentId": "doc-b",
+      "documentIds": [
+        "doc-b"
+      ]
+    },
+    {
+      "instrumentKey": "instrument:doc-c",
+      "baseDocumentId": "doc-c",
+      "documentIds": [
+        "doc-c"
+      ]
+    }
+  ]
+}
