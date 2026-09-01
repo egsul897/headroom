@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0",
+  "artifactId": "IMPLEMENTATION_RESULTS",
+  "filesChanged": [
+    {
+      "file": "lib/contract-model/compiler/amendment/types.ts",
+      "change": "Added NodeSupersessionKind (\"PROVISION_LEVEL\" | \"DOCUMENT_LEVEL\") type. Extended NodeSupersessionRecord with required fields supersessionKind and supersedingOperativeDocumentId. Extended NodeSupersessionIndex with documentLevelSupersededDocuments: Map<string, NodeSupersessionRecord> (documentId-keyed, not nodeId-keyed - see 03-integration-design.json)."
+    },
+    {
+      "file": "lib/contract-model/compiler/amendment/operative-state.ts",
+      "change": "buildNodeSupersessionIndex: (1) every pre-existing PROVISION_LEVEL record construction now sets supersessionKind:\"PROVISION_LEVEL\", supersedingOperativeDocumentId:null (no behavior change). (2) NEW second pass, after the pre-existing per-provision loop: for each entry whose state.operativeDocument.status===\"RESOLVED\" and whose own baseDocumentId is in predecessorDocumentIds, composes a DOCUMENT_LEVEL record (using the already-computed OperativeDocumentResolution - never a second version-chain algorithm) into the new documentLevelSupersededDocuments map. getNodeSupersessionStatus: NEW RULE 1 check (documentId-keyed lookup against documentLevelSupersededDocuments) inserted before the pre-existing per-node supersededByNodeId lookup - returns KNOWN_SUPERSEDED with full provenance (which document is now operative, which direct edge/effect/date superseded this one) whenever it fires; falls through to 100%-unchanged pre-existing behavior otherwise. EMPTY_SUPERSESSION_INDEX updated additively (new empty Map, inert)."
+    }
+  ],
+  "testFixupsRequired": [
+    "tests/certification/discovery-supersession-signal-lost-in-pipeline.test.ts",
+    "tests/certification/open2-final-direct-patch-matrix.test.ts",
+    "tests/contract-model/coverage-audit-supersession-gate.test.ts",
+    "tests/foundation-audit/context-retrieval-adversarial.test.ts"
+  ],
+  "testFixupsReason": "These 4 files hand-construct NodeSupersessionIndex/NodeSupersessionRecord object literals directly (rather than going through buildNodeSupersessionIndex). Making supersessionKind/supersedingOperativeDocumentId/documentLevelSupersededDocuments REQUIRED (not optional) fields was a deliberate design choice - it forces every construction site to make an explicit, correct choice rather than silently defaulting, and TypeScript's own compiler caught every site mechanically (6 TS2741/TS2739/TS2345 errors, zero missed). Each site was updated to add supersessionKind:\"PROVISION_LEVEL\", supersedingOperativeDocumentId:null (matching their own pre-existing provision-level intent) and documentLevelSupersededDocuments:new Map() (empty, matching their own pre-existing lack of whole-document-supersession setup). No test's own assertions or behavior were changed - purely additive object-literal fields.",
+  "designIterationLog": "No design-iteration surprises this round (unlike the prior pre-unseen-classifier-remediation session's own 19-test-regression false start) - the consumer-inventory pass (02-consumer-inventory.json) done BEFORE implementation correctly predicted zero D-classification consumers and identified the two exhaustive Record<NodeSupersessionStatus,...> maps up front, which is exactly why the KNOWN_SUPERSEDED-reuse design was chosen instead of a new status literal. The only friction was mechanical (four hand-built test fixtures needing the new required record fields), fully enumerated by the TypeScript compiler itself.",
+  "postImplementationTypeScriptCheck": { "command": "npx tsc --noEmit", "result": "Exactly the same 6 pre-existing baseline errors (00-baseline.json), zero new." },
+  "postImplementationTargetedTestRun": {
+    "command": "npx vitest run tests/contract-model/pre-unseen-operative-integration.test.ts tests/contract-model/node-supersession-awareness.test.ts tests/contract-model/post-3f2-package-graph-restatement.test.ts tests/contract-model/phase-2g-amendment-precedence.test.ts tests/contract-model/pre-unseen-classifier-remediation.test.ts tests/certification/discovery-supersession-signal-lost-in-pipeline.test.ts tests/certification/open2-final-direct-patch-matrix.test.ts tests/certification/open2-final-direct-patch-independent-confirmation.test.ts tests/contract-model/coverage-audit-supersession-gate.test.ts tests/foundation-audit/context-retrieval-adversarial.test.ts tests/foundation-audit/amendment-operative-state-adversarial.test.ts tests/contract-model/semantic-tools-operative-state-discipline.test.ts tests/contract-model/open2-terminal-four-tool-matrix.test.ts",
+    "result": "13 test files, 251 tests, all passed, zero failures."
+  }
+}

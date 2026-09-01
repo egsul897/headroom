@@ -663,8 +663,9 @@ describe("BLOCKER-2 real-consumer remediation — buildCovenantContextBundle rea
 
     const supersessionIndex = {
       coveredDocumentIds: new Set(["doc1"]),
-      supersededByNodeId: new Map([[node.nodeId, { nodeId: node.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01" }]]),
+      supersededByNodeId: new Map([[node.nodeId, { nodeId: node.nodeId, instrumentKey: "instrument-1", provisionKey: "6.01", supersededByEffectId: "eff-1", supersededByAmendmentDocumentId: "amend-doc", supersededEffectiveDate: "2024-06-01", supersessionKind: "PROVISION_LEVEL" as const, supersedingOperativeDocumentId: null }]]),
       ambiguousNodeIds: new Set<string>(),
+      documentLevelSupersededDocuments: new Map(),
     };
     const deterministic = runPassADeterministicSignals("doc1", access.index, supersessionIndex);
     const deterministicByNodeId = new Map(deterministic.map((c) => [c.nodeId, c] as const));
