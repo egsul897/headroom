@@ -57,7 +57,7 @@ async function main() {
     const row: Record<string, unknown> = { id: s.id, title: s.title, semanticallyComplete: acc.semanticallyComplete, expectedComplete: s.expectSemanticallyComplete, counts: acc.counts, unresolvedDependencies: base.rules.reduce((n, r) => n + (r.unresolvedDependencies?.length ?? 0), 0), sharedCapacities: base.sharedCapacities.length };
 
     if (COMPLETE_SCENARIOS.includes(s)) {
-      const local = { item: [0, 0], money: [0, 0], percent: [0, 0], condition: [0, 0] };
+      const local: Record<"item" | "money" | "percent" | "condition", [number, number]> = { item: [0, 0], money: [0, 0], percent: [0, 0], condition: [0, 0] };
       for (const gt of s.items) {
         if (gt.materiality !== "CRITICAL" && gt.materiality !== "MATERIAL") continue;
         const id = b.idOf(gt.ref);
@@ -90,8 +90,8 @@ async function main() {
         }
       }
       for (const k of ["item", "money", "percent", "condition"] as const) {
-        inj[k].injections += local[k][0]!;
-        inj[k].detected += local[k][1]!;
+        inj[k].injections += local[k][0];
+        inj[k].detected += local[k][1];
       }
       row.injected = local;
     }

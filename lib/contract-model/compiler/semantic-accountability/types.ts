@@ -157,6 +157,8 @@ export interface SourceContextRegion {
   /** For an expansion: the exact reference text in the operative unit that justified it, and how it was resolved. */
   expandedFor: { referenceText: string; resolution: ReferenceResolutionStatus; note: string } | null;
   truncatedAtBudget: boolean;
+  /** For the OPERATIVE region (mission §13 compilation-unit strategy): when the supplied window was extended to its real unit boundary, the original window and the boundary kind that justified the extension. Null when the region is exactly what was supplied. */
+  unitExtension: { originalCharStart: number; originalCharEnd: number; unitBoundary: "ANCHOR_NODE" | "DEFINITION_SPAN"; note: string } | null;
 }
 
 export type ReferenceResolutionStatus = "UNIQUE" | "UNIQUE_AFTER_DEGENERATE_EXCLUSION" | "RESOLVED_VIA_ENCLOSING_NODE" | "AMBIGUOUS" | "NOT_FOUND" | "OUT_OF_SCOPE";

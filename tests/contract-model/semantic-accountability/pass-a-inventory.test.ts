@@ -141,10 +141,11 @@ describe("semantic accountability - Pass A deterministic gates", () => {
 });
 
 describe("semantic accountability - source-context sufficiency (mission §12/§13/§15)", () => {
-  it("I39: a window cut inside its own unit is TRUNCATED_SOURCE with the omitted span disclosed - never COMPLETE", async () => {
+  it("I39: a window cut inside a unit that exceeds the operative-unit budget is TRUNCATED_SOURCE with the omitted span disclosed - never COMPLETE, never silently extended", async () => {
     const b = await get("I39");
     expect(b.sourceContext.state).toBe("TRUNCATED_SOURCE");
     expect(b.sourceContext.reasons.join(" ")).toMatch(/never supplied/);
+    expect(b.sourceContext.regions[0]!.unitExtension).toBeNull();
   });
 
   it("I39 contrast: the same unit supplied in full is COMPLETE_LOCAL_SOURCE (truncation is decided against the real boundary, not a window size)", async () => {
@@ -162,13 +163,64 @@ describe("semantic accountability - source-context sufficiency (mission §12/§1
     expect(sc.state).toBe("UNKNOWN_SOURCE_COMPLETENESS");
   });
 
-  it("a definition-prose window cut inside a definition (no anchoring node) is TRUNCATED_SOURCE via the definition span", async () => {
+  it("§13 compilation unit: a window cut inside a definition is EXTENDED to the definition span WITH provenance (unitExtension), state COMPLETE - not merely flagged", async () => {
     const s = CORPUS.find((x) => x.id === "I1")!;
     const { index, anchor } = buildIndexFor(s);
     const full = index.getNodeText(anchor.nodeId, "DESCENDANTS");
-    const cut = full.slice(0, Math.floor(full.length * 0.5));
-    const sc = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: cut, anchorNodeId: null, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null });
+    const defStart = full.indexOf("\"Consolidated Zeta Amount\"");
+    const cut = full.slice(defStart, defStart + Math.floor(full.length * 0.5));
+    for (const anchorNodeId of [null, anchor.nodeId]) {
+      const sc = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: cut, anchorNodeId, operativeCharStart: anchor.charStart + defStart, documentText: index.getDocumentText(DOC_ID) ?? null });
+      expect(sc.state, String(anchorNodeId)).toBe("COMPLETE_LOCAL_SOURCE");
+      const op = sc.regions[0]!;
+      expect(op.unitExtension?.unitBoundary).toBe("DEFINITION_SPAN");
+      expect(op.unitExtension?.originalCharEnd).toBe(anchor.charStart + defStart + cut.length);
+      expect(op.text.length).toBeGreaterThan(cut.length);
+      expect(op.text).toContain("business optimization expenses");
+    }
+  });
+
+  it("§13 compilation unit: a covenant window cut inside its section is EXTENDED to the anchoring node (ANCHOR_NODE boundary); the extended text is what Pass A inventories", async () => {
+    const s = CORPUS.find((x) => x.id === "I6")!;
+    const { index, anchor } = buildIndexFor(s);
+    const full = index.getNodeText(anchor.nodeId, "DESCENDANTS");
+    const cut = full.slice(0, full.indexOf("(b)"));
+    const sc = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: cut, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null });
+    expect(sc.state).toBe("COMPLETE_LOCAL_SOURCE");
+    expect(sc.regions[0]!.unitExtension?.unitBoundary).toBe("ANCHOR_NODE");
+    expect(sc.regions[0]!.text).toBe(full);
+    expect(sc.regions[0]!.charStart).toBe(anchor.charStart);
+    expect(sc.regions[0]!.charEnd).toBe(anchor.charEnd);
+    const inv = await runSemanticInventory({ candidateRef: "ext", documentId: DOC_ID, sourceContext: sc, caller: scriptedInventoryCaller(scriptedWireItems(s.items)) });
+    expect(inv.items.length).toBe(s.items.length);
+  });
+
+  it("§12 a unit larger than the operative-unit budget is TRUNCATED_SOURCE - the window is NOT silently extended and the budget is NOT raised", async () => {
+    const s = CORPUS.find((x) => x.id === "I6")!;
+    const { index, anchor } = buildIndexFor(s);
+    const full = index.getNodeText(anchor.nodeId, "DESCENDANTS");
+    const cut = full.slice(0, full.indexOf("(b)"));
+    const sc = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: cut, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null, maxOperativeUnitChars: 120 });
     expect(sc.state).toBe("TRUNCATED_SOURCE");
+    expect(sc.regions[0]!.text).toBe(cut);
+    expect(sc.regions[0]!.unitExtension).toBeNull();
+    expect(sc.reasons.join(" ")).toMatch(/exceed the 120-char operative-unit budget/);
+  });
+
+  it("§13 a window that already IS its unit (modulo whitespace) is COMPLETE with no extension; a window spanning two definitions extends to the end of the second", async () => {
+    const s34 = CORPUS.find((x) => x.id === "I34")!;
+    const { index, anchor } = buildIndexFor(s34);
+    const full = index.getNodeText(anchor.nodeId, "DESCENDANTS");
+    const a = full.indexOf("\"Term Alpha Amount\"");
+    const g = full.indexOf("\"Term Gamma Amount\"");
+    const window = full.slice(a, g + 10); // starts at Alpha, ends inside Gamma
+    const sc = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: window, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart + a, documentText: index.getDocumentText(DOC_ID) ?? null });
+    expect(sc.state).toBe("COMPLETE_LOCAL_SOURCE");
+    expect(sc.regions[0]!.unitExtension?.unitBoundary).toBe("DEFINITION_SPAN");
+    expect(sc.regions[0]!.text).toContain("Term Alpha Amount and Term Beta Amount");
+    const exact = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: full, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null });
+    expect(exact.regions[0]!.unitExtension).toBeNull();
+    expect(exact.state).toBe("COMPLETE_LOCAL_SOURCE");
   });
 
   it("I10/I29/I32: an explicit cross-section reference is expanded as a bounded region WITH provenance (nodeId, sectionRef, offsets, the justifying reference text)", async () => {

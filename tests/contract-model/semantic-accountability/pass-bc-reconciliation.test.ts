@@ -337,7 +337,7 @@ describe("semantic accountability - compile.ts integration (Pass A freeze -> Pas
       contextBundle: emptyContextBundle({ originatingDocumentId: DOC_ID, originatingStructuralNodeIds: [b.anchor.nodeId], normalizedSourceRef: b.scenario.anchorRef }),
       toolAccess: { structuralIndex: b.index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: emptyContextBundle({ originatingDocumentId: DOC_ID, originatingStructuralNodeIds: [b.anchor.nodeId] }) },
     });
-    const result = await compileCovenantToIR(input, { caller: composer, inventoryCaller: scriptedInventoryCaller(scriptedWireItems(b.scenario.items)), cache: new InMemorySemanticCompilationCache() });
+    const result = await compileCovenantToIR(input, { caller: composer, inventoryCaller: scriptedInventoryCaller(scriptedWireItems(b.scenario.items)), cache: new InMemorySemanticCompilationCache(), sourceContextBudget: b.scenario.sourceContextOptions });
     return { b, result, composer };
   }
 

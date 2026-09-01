@@ -147,6 +147,8 @@ export interface CompileOptions {
    * result and never mistaken for "nothing material here."
    */
   inventoryCaller?: StageCaller;
+  /** SEMANTIC ACCOUNTABILITY: source-context budgets (mission §12/§13). Defaults are the layer's own; tests use small caps to exercise TRUNCATED_SOURCE deterministically. */
+  sourceContextBudget?: { budgetChars?: number; maxExpansionRegionChars?: number; maxOperativeUnitChars?: number };
   /** SEMANTIC ACCOUNTABILITY: set false to skip source-context sufficiency + Pass A + Pass C entirely (result.accountability === null). Default true. */
   accountability?: boolean;
 }
@@ -180,9 +182,15 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       anchorNodeId: input.contextBundle.originatingStructuralNodeIds?.[0] ?? null,
       operativeCharStart: input.operativeCharStart ?? null,
       documentText: index.getDocumentText(input.sourceDocumentId) ?? null,
+      ...(options.sourceContextBudget ?? {}),
     });
     frozenInventory = await runSemanticInventory({ candidateRef: input.candidateRef, documentId: input.sourceDocumentId, sourceContext, caller: options.inventoryCaller });
-    callerInput = { ...input, sourceContext, frozenInventory };
+    // The COMPILATION UNIT (mission §13) is the resolved operative region - when the
+    // supplied window was extended to its real unit boundary (with provenance on
+    // sourceContext.regions[0].unitExtension), Pass B composes against the same
+    // unit Pass A inventoried, never against the narrower window.
+    const operativeRegion = sourceContext.regions[0]!;
+    callerInput = { ...input, operativeSourceText: operativeRegion.text, operativeCharStart: operativeRegion.charStart >= 0 ? operativeRegion.charStart : input.operativeCharStart, sourceContext, frozenInventory };
   }
   const accountabilityFields = { sourceContext, frozenInventory };
 

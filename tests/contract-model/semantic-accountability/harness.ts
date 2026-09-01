@@ -88,7 +88,7 @@ export async function buildScenario(scenario: Scenario): Promise<BuiltScenario> 
   const { index, anchor } = buildIndexFor(scenario);
   const fullUnit = index.getNodeText(anchor.nodeId, "DESCENDANTS");
   const operativeText = scenario.operativeWindow ? scenario.operativeWindow(fullUnit) : fullUnit;
-  const sourceContext = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: operativeText, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null });
+  const sourceContext = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: operativeText, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null, ...(scenario.sourceContextOptions ?? {}) });
   const wireItems = scriptedWireItems(scenario.items);
   const inventory = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: scriptedInventoryCaller(wireItems) });
   const idByRef = mapRefsToIds(scenario.items, inventory.items, sourceContext);

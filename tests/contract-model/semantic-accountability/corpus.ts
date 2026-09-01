@@ -52,6 +52,8 @@ export interface Scenario {
   anchorRef: string;
   /** Optional: derive the operative window from the anchor's full text (I39 truncation). */
   operativeWindow?: (fullUnitText: string) => string;
+  /** Optional source-context budgets (I39: a unit larger than the operative-unit budget is TRUNCATED_SOURCE, never silently extended). */
+  sourceContextOptions?: { budgetChars?: number; maxExpansionRegionChars?: number; maxOperativeUnitChars?: number };
   items: ScenarioItem[];
   compose: (id: Id) => SubmitCompilationInput;
   expectedContextState: SourceContextState;
@@ -907,6 +909,7 @@ const I38 = fixedBasketScenario("I38", "reordered clauses", "7.01", true);
 const I39: Scenario = {
   ...fixedBasketScenario("I39", "source truncation", "7.01", false),
   operativeWindow: (full) => full.slice(0, full.indexOf("(b)")),
+  sourceContextOptions: { maxOperativeUnitChars: 120 },
   items: [item("lead", "PROHIBITION", I6_LEAD, "MATERIAL"), item("a", "PERMISSION", I6_A, "CRITICAL", { values: [money("$25,000,000", 25_000_000)] })],
   compose: (id) => submission({ rules: [rule("ra", "7.01", { capacityExpression: M(25_000_000, [id("a")]) }, [id("lead")])] }),
   expectedContextState: "TRUNCATED_SOURCE",

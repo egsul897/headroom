@@ -29,18 +29,21 @@ export interface ResolveSourceContextInput {
   operativeSourceText: string;
   /** The real physical node the operative text is anchored to, when known. */
   anchorNodeId: string | null;
-  /** Absolute char offset of operativeSourceText within the document, when known - required for truncation detection. */
+  /** Absolute char offset of operativeSourceText within the document, when known - required for truncation detection and unit extension. */
   operativeCharStart: number | null;
-  /** The full document text, when available - enables definition-span truncation detection for windows that are not node-anchored (definitions live in prose). */
+  /** The full document text, when available - enables definition-span unit boundaries (definitions live in prose) and unit extension. */
   documentText?: string | null;
   /** Total character budget across all expansion regions (default 24,000 - bounded local context, never the whole agreement). */
   budgetChars?: number;
   /** Per-expansion-region cap (default 6,000). */
   maxExpansionRegionChars?: number;
+  /** Largest unit the OPERATIVE window may be extended to (default 40,000). A unit larger than this is reported TRUNCATED_SOURCE - never silently cut, never handled by raising a global window limit. */
+  maxOperativeUnitChars?: number;
 }
 
 const DEFAULT_BUDGET_CHARS = 24_000;
 const DEFAULT_REGION_CHARS = 6_000;
+const DEFAULT_OPERATIVE_UNIT_CHARS = 40_000;
 /** Absolute references stated in prose ("Section 6.01(b)(iii)", "§ 7.2(a)"); relative ones ("clause (x)") are only resolvable through the anchoring node's own detected references. */
 const ABSOLUTE_REFERENCE_RE = /\b(?:Sections?|§+)\s*(\d+\.\d+(?:\([a-zA-Z0-9]{1,6}\))*)/g;
 
@@ -48,18 +51,113 @@ function overlaps(aStart: number, aEnd: number, bStart: number, bEnd: number): b
   return aStart < bEnd && bStart < aEnd;
 }
 
+interface UnitBoundary {
+  start: number;
+  end: number;
+  kind: "ANCHOR_NODE" | "DEFINITION_SPAN";
+  label: string;
+}
+
+/**
+ * Decides the REAL unit boundary the supplied window belongs to (mission
+ * §12/§13). Definition prose takes precedence over the anchoring node: a
+ * window that starts inside a detected definition belongs to that
+ * definition's span (through the last definition that starts inside the
+ * window), not to the enclosing definitions section (which may be hundreds
+ * of thousands of characters). Otherwise the anchoring node's own span is
+ * the unit. Null when no boundary can be established.
+ */
+function resolveUnitBoundary(index: StructuralIndex, documentId: string, anchor: StructuralNode | undefined, opStart: number, opEnd: number, documentText: string | null): UnitBoundary | null {
+  if (opStart < 0) return null;
+  if (documentText) {
+    const defs = index
+      .allDefinitions()
+      .filter((d) => d.documentId === documentId)
+      .sort((a, b) => a.charStart - b.charStart);
+    const coveringIdx = defs.reduce((acc, d, i) => (d.charStart <= opStart ? i : acc), -1);
+    if (coveringIdx >= 0) {
+      const covering = defs[coveringIdx]!;
+      const lastInsideIdx = defs.reduce((acc, d, i) => (d.charStart >= opStart && d.charStart < opEnd ? i : acc), coveringIdx);
+      const next = defs[lastInsideIdx + 1];
+      const enclosing = index
+        .allNodes()
+        .filter((n) => n.documentId === documentId && n.charStart <= covering.charStart && covering.charStart < n.charEnd)
+        .sort((a, b) => a.charEnd - a.charStart - (b.charEnd - b.charStart))[0];
+      const spanEnd = next ? next.charStart : Math.min(documentText.length, enclosing ? enclosing.charEnd : documentText.length);
+      // Definition-span precedence applies only when the definition span really is the window's own unit: the anchoring node (if any) must start inside it or contain its start - a covenant window far below the last definition is not definition prose.
+      const anchorAgrees = !anchor || (covering.charStart <= anchor.charStart && anchor.charStart < spanEnd) || (anchor.charStart <= covering.charStart && covering.charStart < anchor.charEnd);
+      if (anchorAgrees && spanEnd > opStart) {
+        return { start: covering.charStart, end: spanEnd, kind: "DEFINITION_SPAN", label: `definition span of "${covering.exactTerm}"${lastInsideIdx > coveringIdx ? ` through "${defs[lastInsideIdx]!.exactTerm}"` : ""}` };
+      }
+    }
+  }
+  if (anchor) return { start: anchor.charStart, end: anchor.charEnd, kind: "ANCHOR_NODE", label: `anchoring unit ${anchor.sectionRef ?? anchor.nodeId}` };
+  return null;
+}
+
 export function resolveSourceContext(input: ResolveSourceContextInput): SourceContextResult {
-  const { index, documentId, operativeSourceText } = input;
+  const { index, documentId } = input;
   const budgetChars = input.budgetChars ?? DEFAULT_BUDGET_CHARS;
   const regionCap = input.maxExpansionRegionChars ?? DEFAULT_REGION_CHARS;
+  const unitCap = input.maxOperativeUnitChars ?? DEFAULT_OPERATIVE_UNIT_CHARS;
   const reasons: string[] = [];
   const unresolved: UnresolvedSourceReference[] = [];
 
   const anchor: StructuralNode | undefined = input.anchorNodeId ? index.getNodeById(input.anchorNodeId) : undefined;
   if (input.anchorNodeId && !anchor) reasons.push(`anchor node "${input.anchorNodeId}" does not exist in the structural index`);
 
-  const opStart = input.operativeCharStart ?? anchor?.charStart ?? -1;
-  const opEnd = opStart >= 0 ? opStart + operativeSourceText.length : -1;
+  const windowStart = input.operativeCharStart ?? anchor?.charStart ?? -1;
+  const windowEnd = windowStart >= 0 ? windowStart + input.operativeSourceText.length : -1;
+  const documentText = input.documentText ?? null;
+  // Text the unit can be extended from: the document itself, else the anchoring node's own text (offset by its charStart).
+  const sliceDoc = (from: number, to: number): string | null => {
+    if (documentText) return documentText.slice(from, to);
+    if (anchor && from >= anchor.charStart && to <= anchor.charEnd) return index.getNodeText(anchor.nodeId, "DESCENDANTS").slice(from - anchor.charStart, to - anchor.charStart);
+    return null;
+  };
+
+  // --- (a) completeness of the operative unit (mission §12) + compilation-unit extension (mission §13) ---
+  let operativeSourceText = input.operativeSourceText;
+  let opStart = windowStart;
+  let opEnd = windowEnd;
+  let truncated = false;
+  let structurallyIncomplete = false;
+  let completenessKnown = false;
+  let unitExtension: SourceContextRegion["unitExtension"] = null;
+
+  const boundary = input.operativeCharStart !== null ? resolveUnitBoundary(index, documentId, anchor, windowStart, windowEnd, documentText) : null;
+  if (anchor && input.operativeCharStart !== null && index.getNodeText(anchor.nodeId, "DESCENDANTS").trim().length === 0) {
+    structurallyIncomplete = true;
+    completenessKnown = true;
+    reasons.push(`anchor node ${anchor.sectionRef} has no text in the structural index`);
+  } else if (boundary) {
+    completenessKnown = true;
+    const windowIsUnit = windowStart === boundary.start && windowEnd === boundary.end;
+    if (!windowIsUnit) {
+      const omittedBefore = boundary.start < windowStart ? (sliceDoc(boundary.start, windowStart) ?? "").trim().length : 0;
+      const omittedAfter = boundary.end > windowEnd ? (sliceDoc(windowEnd, boundary.end) ?? "").trim().length : 0;
+      const unitLength = boundary.end - boundary.start;
+      if (omittedBefore + omittedAfter === 0) {
+        // Only whitespace separates the window from its unit boundary - the window IS the unit.
+      } else if (unitLength <= unitCap) {
+        const unitText = sliceDoc(boundary.start, boundary.end);
+        if (unitText !== null) {
+          unitExtension = { originalCharStart: windowStart, originalCharEnd: windowEnd, unitBoundary: boundary.kind, note: `supplied window [${windowStart}, ${windowEnd}) extended to the ${boundary.label} [${boundary.start}, ${boundary.end}) - ${omittedBefore + omittedAfter} non-whitespace chars of the unit's own text were outside the window` };
+          operativeSourceText = unitText;
+          opStart = boundary.start;
+          opEnd = boundary.end;
+        } else {
+          truncated = true;
+          reasons.push(`operative window [${windowStart}, ${windowEnd}) sits inside the ${boundary.label} [${boundary.start}, ${boundary.end}) but the unit text is not retrievable (no document text) - ${omittedBefore + omittedAfter} chars of the unit's own text were never supplied`);
+        }
+      } else {
+        truncated = true;
+        reasons.push(`operative window [${windowStart}, ${windowEnd}) sits inside the ${boundary.label} [${boundary.start}, ${boundary.end}) whose ${unitLength} chars exceed the ${unitCap}-char operative-unit budget - ${omittedBefore + omittedAfter} chars of the unit's own text were never supplied (the window was NOT silently extended and the budget was NOT raised)`);
+      }
+    }
+  } else if (documentText !== null && documentText === input.operativeSourceText) {
+    completenessKnown = true; // the whole document is the unit
+  }
 
   const operativeRegion: SourceContextRegion = {
     regionId: "operative",
@@ -72,58 +170,8 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
     text: operativeSourceText,
     expandedFor: null,
     truncatedAtBudget: false,
+    unitExtension,
   };
-
-  // --- (a) completeness of the operative unit ---
-  let truncated = false;
-  let structurallyIncomplete = false;
-  let completenessKnown = false;
-
-  if (anchor && input.operativeCharStart !== null) {
-    completenessKnown = true;
-    const anchorText = index.getNodeText(anchor.nodeId, "DESCENDANTS");
-    if (anchorText.trim().length === 0) {
-      structurallyIncomplete = true;
-      reasons.push(`anchor node ${anchor.sectionRef} has no text in the structural index`);
-    }
-    if (opEnd < anchor.charEnd) {
-      const omitted = (input.documentText ?? "").slice(opEnd, anchor.charEnd);
-      const omittedNonWhitespace = input.documentText ? omitted.trim().length : anchor.charEnd - opEnd;
-      if (omittedNonWhitespace > 0) {
-        truncated = true;
-        reasons.push(`operative window ends at char ${opEnd} but the anchoring unit ${anchor.sectionRef} ends at char ${anchor.charEnd} - ${anchor.charEnd - opEnd} chars of the unit's own text were never supplied`);
-      }
-    }
-  } else if (input.operativeCharStart !== null && input.documentText) {
-    // Definition-prose window: locate the definition span the window's tail sits in.
-    const defs = index
-      .allDefinitions()
-      .filter((d) => d.documentId === documentId)
-      .sort((a, b) => a.charStart - b.charStart);
-    if (defs.length > 0) {
-      completenessKnown = true;
-      const lastInsideIdx = defs.reduce((acc, d, i) => (d.charStart >= opStart && d.charStart < opEnd ? i : acc), -1);
-      const coveringIdx = lastInsideIdx >= 0 ? lastInsideIdx : defs.reduce((acc, d, i) => (d.charStart <= opStart ? i : acc), -1);
-      if (coveringIdx >= 0) {
-        const next = defs[coveringIdx + 1];
-        // The unit ends at the next definition, else at the end of the deepest structural node enclosing the window (the definitions section itself), else at the end of the document - never assumed to be the window's own end.
-        const enclosing = index
-          .allNodes()
-          .filter((n) => n.documentId === documentId && n.charStart <= opStart && opStart < n.charEnd)
-          .sort((a, b) => a.charEnd - a.charStart - (b.charEnd - b.charStart))[0];
-        const unitEnd = next ? next.charStart : Math.min(input.documentText.length, enclosing ? enclosing.charEnd : input.documentText.length);
-        if (unitEnd > opEnd) {
-          const omitted = input.documentText.slice(opEnd, unitEnd);
-          if (omitted.trim().length > 0) {
-            truncated = true;
-            reasons.push(`operative window ends at char ${opEnd} inside the definition of "${defs[coveringIdx]!.exactTerm}" (which runs to char ${unitEnd}) - ${omitted.trim().length} chars of that definition were never supplied`);
-          }
-        }
-      }
-    }
-  } else if (input.documentText !== undefined && input.documentText !== null && input.documentText === operativeSourceText) {
-    completenessKnown = true; // the whole document is the unit
-  }
 
   // --- (b) explicit cross-reference expansion ---
   const regions: SourceContextRegion[] = [operativeRegion];
@@ -190,6 +238,7 @@ export function resolveSourceContext(input: ResolveSourceContextInput): SourceCo
       text,
       expandedFor: { referenceText: t.referenceText, resolution: t.status, note: t.note },
       truncatedAtBudget: text.length < full.length,
+      unitExtension: null,
     });
   }
 
