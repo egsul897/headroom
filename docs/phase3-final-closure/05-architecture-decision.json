@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "05-architecture-decision",
+  "decision": "OPTION_C_PASS_A_COVERAGE_STABILITY_FIX",
+  "optionsConsidered": {
+    "A_NO_PRODUCTION_CHANGE": {
+      "chosen": false,
+      "requirement": "the 90.11% is materially driven by identity/granularity variance AND semantic stability already satisfies >=95%",
+      "evidence": "First half holds: 348/372 (93.5%) of non-id-stable material items are identity-attributable (196 span-boundary, 108 split/merge, 44 role-label) and Pass B/C consumed them regardless (captured-status stability 98.98%). Second half FAILS: semantic inventory stability is 90.4% lenient / 88.4% adjudicated / 78.4% conservative / 86.7% coverage-weighted - none reaches 95%. The pre-registered gate is not met on the corrected metric either, so no-change is not available."
+    },
+    "B_PASS_A_IDENTITY_NORMALIZATION_FIX": {
+      "chosen": false,
+      "evidence": "Deterministic boundary normalization (strip leading enumerators/conjunctions/punctuation, trailing punctuation) would collapse 90/196 (45.9%) of span-variance pairs to identical ids, but exact-id stability is not the gate and identity is not what is unstable in a way that matters: the residual failures are text the coarser run never touched. Changing the id derivation would also re-key every frozen inventory and lineage (RVD-1 canonicalization operates on these ids) for no accountability gain. Cross-run semantic equivalence is inherently pairwise and lives in the comparator (scripts), which is corrected in this mission instead."
+    },
+    "C_PASS_A_PROMPT_SCHEMA_STABILITY_FIX": {
+      "chosen": true,
+      "evidence": "04 establishes PASS_A_MODEL_OMISSION as the earliest failure layer with two measured signatures (region-tail omission, sub-clause omission). Production today cannot see either: Pass A accounts for every quantitative VALUE (uninventoriedValues) but not for operative TEXT. The bounded fix adds the missing deterministic accounting and one targeted completion step, entirely inside Pass A."
+    },
+    "D_SOURCE_CONTEXT_FIX": { "chosen": false, "evidence": "Ruled out in 04: byte-identical source context across runs, 0/22 omissions in truncated regions." },
+    "E_MULTI_FACTOR_FIX": { "chosen": false, "evidence": "Not independently demonstrated: the comparator correction is not a production change, and every production-relevant omission traces to one mechanism." }
+  },
+  "boundedChange": {
+    "scope": "Pass A only: lib/contract-model/compiler/semantic-accountability/{inventory.ts, prompt.ts, types.ts, wire-schema.ts}. No change to Pass B composition, Pass C disposition semantics, IR, Phase 3C verifier, operative state, package graph, source-context.ts or reference-resolver.ts.",
+    "mechanism": [
+      "1. DETERMINISTIC OPERATIVE-TEXT COVERAGE ACCOUNTING (zero cost): after normalization, the OPERATIVE region is segmented at generic clause boundaries (sentence ends, semicolons, enumerators such as (a)/(i)/(1)); a segment whose non-whitespace characters are <50% covered by accepted item spans, that is at least 40 non-whitespace characters long and that carries generic operative/conditional drafting language (shall/may/must/means/provided/except/other than/excluding/including/to the extent/unless/subject to/so long as/not to exceed/without duplication/in each case/less/plus/net of) is an UNCOVERED OPERATIVE SEGMENT.",
+      "2. ONE BOUNDED TARGETED GAP RE-INVENTORY CALL (only when uncovered segments exist): the model receives ONLY the uncovered segments (verbatim, with their region offsets) and the same obligations, and returns additional items that go through the identical anti-hallucination gate, value completion, id derivation and duplicate rejection. It never sees or edits the first pass's items (no LLM normalizes another LLM's output), so it can only ADD verified, source-anchored items.",
+      "3. SURFACED, NEVER DROPPED: segments still uncovered after the gap call are recorded as uninventoriedSegments (exact spans + excerpt) and the inventory status becomes INVENTORY_COVERAGE_GAP, which the existing semanticallyComplete rule (inventoryStatus must be INVENTORY_OK) turns into a non-complete unit - the system now truthfully knows what it did not inventory. The status is disclosed with the exact residual segments, never guessed material or immaterial."
+    ],
+    "whyThisIsNotOverNormalization": "Nothing is merged, deduplicated across runs, or rewritten. Conditions and exceptions are never normalized away: the change only ever ADDS items or SURFACES gaps. Materiality of a surfaced gap is never decided deterministically (mission: the scanner never decides materiality) - the gap call or a reviewer does.",
+    "determinism": "Segmentation, coverage arithmetic, the trigger, the status and the residual list are pure functions of (region text, accepted item spans). The only model-dependent step is the bounded gap call, which is subject to the same deterministic gate as the first pass.",
+    "antiEnumeration": "The operative-language vocabulary is generic English drafting connectives; no issuer, section number, defined term, amount or benchmark appears. Tested with invented names/numbers/section styles (06-stability-tests.json).",
+    "expectedEffect": "Region-tail omissions (a whole trailing definition left uncovered) and sub-clause omissions (>=40 chars of uncovered conditional text) become either inventoried by the gap call or visibly surfaced. Sub-40-char fragments ('and any other ...') remain below the surfacing floor by design to avoid flagging connective noise; they are also the least likely to change a compliance conclusion on their own.",
+    "costImpact": "At most one extra small call per unit, only when gaps exist; input = uncovered segments only. Estimated +5-15% of Pass A cost on regions with gaps, zero on regions without."
+  },
+  "comparatorCorrection": {
+    "notProduction": true,
+    "what": "scripts/phase3-final-closure-forensics.ts and its matcher (scripts/lib/pass-a-semantic-matcher.ts) replace exact-id keying with source-first semantic clustering for stability measurement, reporting strict-id, lenient, conservative (folded conditional roles never normalized away), adjudicated and coverage-weighted numbers side by side. The pre-registered 95% gate stays authoritative and is applied to the CONSERVATIVE-or-adjudicated semantic figure, never to a coverage-weighted convenience number."
+  },
+  "validationPlan": {
+    "synthetic": "adversarial tests for the ten §11 shapes against the matcher + coverage-gap detection/gap-call tests against production Pass A (mocked StageCaller), including 'a genuinely omitted material condition remains detectable' and 'a gap call that returns nothing leaves INVENTORY_COVERAGE_GAP'.",
+    "real": "§14 targeted stability rerun on a pre-registered subset (interest-expense and net-income = highest genuine-omission regions; secured-net-leverage = stable control; applicable-liquidity-rate = pricing-grid/asset-sale provision shape), run twice, gates: conservative semantic inventory stability >=95%, CRITICAL variable omissions = 0, 0 false trusted semantics.",
+    "providerPrecondition": "08-provider-health-and-cost.json: the Gateway credential is still HTTP 402 ($150.49 / $150.00) at decision time, so the real validation cannot start until the budget is raised or a fresh credential is supplied. The production change is still made and frozen so that the moment the provider unblocks, the targeted run and the whole-agreement completion execute against one frozen SHA."
+  }
+}
