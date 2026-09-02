@@ -366,6 +366,47 @@ function clipCreditToStartSegment(charStart: number, charEnd: number, bounds: nu
   return { from: charStart, to: Math.min(charEnd, segEnd) };
 }
 
+/**
+ * COORDINATION BOUNDARIES (canary #4).
+ *
+ * Coordination is a STRUCTURAL relation, not a vocabulary: "A and B and C" is three conjuncts whatever A, B and
+ * C say. Splitting a lead-in there is what separates a pure introduction from a lead-in that carries independent
+ * predicates of its own, without any threshold and without any legal keyword list.
+ */
+const COORDINATION_BOUNDARY_RE = /\s+(?:and\/or|and|or)\s+/gi;
+
+/**
+ * Residue-first child descent (mission §6).
+ *
+ * A parent's residue - what is left of the lead-in once child coverage is subtracted - is split at coordination
+ * boundaries and only the FINAL fragment, the one that actually introduces the children, is eligible for
+ * discharge. Everything earlier in the parent is an independent conjunct: children account for their own
+ * semantics, they never grant their parent a blanket exemption.
+ *
+ * Each fragment is then re-classified by the ordinary conservative rules, so an earlier conjunct that happens to
+ * be pure glue is still suppressed, and any fragment carrying a quantitative value of any kind is never
+ * discharged - the value guard applies per fragment, not per residue.
+ */
+function splitParentResidue(span: SourceCoverageSpan, text: string): SourceCoverageSpan[] {
+  const cuts: { start: number; end: number }[] = [];
+  let cursor = span.charStart;
+  const re = new RegExp(COORDINATION_BOUNDARY_RE.source, "gi");
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(span.excerpt)) !== null) {
+    const boundary = span.charStart + m.index + m[0].length;
+    if (boundary > cursor) cuts.push({ start: cursor, end: boundary });
+    cursor = boundary;
+  }
+  if (cursor < span.charEnd) cuts.push({ start: cursor, end: span.charEnd });
+  if (cuts.length <= 1) return [span];
+  return cuts.map((c) => {
+    const excerpt = text.slice(c.start, c.end);
+    const values = span.values.filter((v) => v.charStart >= c.start && v.charEnd <= c.end);
+    const { disposition, reason } = classifyUnaccountedFragment(excerpt, values);
+    return { regionId: span.regionId, charStart: c.start, charEnd: c.end, disposition, reason, excerpt, values };
+  });
+}
+
 const accountsForSource = (materiality: string): boolean => materiality === "CRITICAL" || materiality === "MATERIAL";
 
 /**
@@ -454,11 +495,27 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
       if (children.length === 0) continue;
       const childrenAccounted = children.every((j) => unitSpans[j]!.every((s) => isAccountedDisposition(s.disposition)));
       if (!childrenAccounted) continue;
-      unitSpans[i] = unitSpans[i]!.map((s) =>
-        s.disposition === "UNACCOUNTED_SOURCE" && s.values.length === 0
-          ? { ...s, disposition: "COVERED_BY_CHILD_DESCENT" as const, reason: `lead-in of an enumerated list whose ${children.length} child clause(s) are each accounted for; carries no quantitative value of its own` }
-          : s,
-      );
+      // Residue-first (canary #4): the parent residue is split at coordination boundaries and ONLY the final
+      // fragment - the one that introduces the children - can be discharged. An earlier conjunct is an
+      // independent predicate of the parent's own, so it stays accountable; a fragment carrying a value of any
+      // kind is never discharged.
+      const rebuilt: SourceCoverageSpan[] = [];
+      for (const s of unitSpans[i]!) {
+        if (s.disposition !== "UNACCOUNTED_SOURCE") {
+          rebuilt.push(s);
+          continue;
+        }
+        rebuilt.push(...splitParentResidue(s, text));
+      }
+      let lastResidue = -1;
+      for (let k = 0; k < rebuilt.length; k++) if (rebuilt[k]!.disposition === "UNACCOUNTED_SOURCE") lastResidue = k;
+      // The eligible fragment must be the last thing in the parent unit apart from whitespace/punctuation, i.e.
+      // it must actually run up to the children.
+      const introducesChildren = lastResidue >= 0 && rebuilt.slice(lastResidue + 1).every((s) => s.excerpt.trim().length === 0 || s.disposition === "PUNCTUATION_OR_DELIMITER");
+      if (introducesChildren && rebuilt[lastResidue]!.values.length === 0) {
+        rebuilt[lastResidue] = { ...rebuilt[lastResidue]!, disposition: "COVERED_BY_CHILD_DESCENT", reason: `introduces an enumerated list whose ${children.length} child clause(s) are each accounted for; carries no independent conjunct and no quantitative value of its own` };
+      }
+      unitSpans[i] = rebuilt;
     }
     const regionSpans = unitSpans.flat();
     applyConnectiveOwnership(regionSpans, text);

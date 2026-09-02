@@ -444,6 +444,49 @@ describe("canary #3 - a source-span claim is not semantic coverage by itself", (
   });
 });
 
+describe("canary #4 - child coverage cannot erase independent parent semantics", () => {
+  // The red team's RT-4 / S5 fixture, verbatim: a 176-character lead-in carrying a prepayment obligation, a cure
+  // period and a prohibition, with ONLY its two enumerated children inventoried. Before: the whole lead-in was
+  // COVERED_BY_CHILD_DESCENT, unaccounted 0, semanticallyComplete true.
+  const RT4 = "The Borrower shall prepay the Loans in full upon a Change of Control and shall cure any Default within thirty days after notice and shall not incur any Indebtedness other than (a) the Existing Debt (b) the Revolving Loans.";
+
+  it("ATTACK: a lead-in carrying independent conjuncts keeps them accountable; only the fragment that introduces the children is discharged", async () => {
+    const cov = coverOne(RT4, ["(a) the Existing Debt", "(b) the Revolving Loans."]);
+    expect(unaccountedText(cov)).toContain("shall prepay the Loans in full upon a Change of Control");
+    expect(unaccountedText(cov)).toContain("shall cure any Default within thirty days after notice");
+    // The introducing fragment - and only it - is discharged.
+    expect(cov.spans.some((s) => s.disposition === "COVERED_BY_CHILD_DESCENT" && s.excerpt.includes("other than"))).toBe(true);
+
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", RT4)], unresolvedReferences: [], reasons: [], totalChars: RT4.length, budgetChars: 10_000 };
+    const wire = ["(a) the Existing Debt", "(b) the Revolving Loans."].map((excerpt, i): WireInventoryItem => ({ localRef: `c${i}`, semanticRole: "EXCEPTION", proposition: `child ${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "canary4", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    const rec = reconcileInventoryWithComposition({
+      inventory: inv,
+      composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never,
+      dispositions: inv.items.map((i) => ({ inventoryItemId: i.inventoryItemId, disposition: "REPRESENTED", note: "matched" })),
+      sourceContextState: sc.state,
+    });
+    expect(rec.semanticallyComplete).toBe(false);
+  });
+
+  it("LEGITIMATE PURE CHAPEAU: a lead-in that only introduces its children is still discharged by descent", () => {
+    const text = "The Borrower may make the following Investments: (a) Investments in Subsidiaries. (b) Investments in Joint Ventures.";
+    const cov = coverOne(text, ["(a) Investments in Subsidiaries.", "(b) Investments in Joint Ventures."]);
+    expect(cov.unaccounted).toEqual([]);
+    expect(cov.countsByDisposition.COVERED_BY_CHILD_DESCENT).toBeGreaterThan(0);
+  });
+
+  it("MIXED PARENT: a parent obligation and its value stay accountable while the introducing fragment is discharged", () => {
+    // Wholly generic - no covenant-family semantics.
+    const text = "The Company shall comply within 30 days and may take only the following actions: (a) Action A. (b) Action B.";
+    const cov = coverOne(text, ["(a) Action A.", "(b) Action B."]);
+    expect(unaccountedText(cov)).toContain("shall comply within 30 days");
+    expect(cov.unaccountedValues.map((v) => v.kind)).toContain("DAYS");
+    expect(cov.spans.some((s) => s.disposition === "COVERED_BY_CHILD_DESCENT" && s.excerpt.includes("following actions"))).toBe(true);
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";
