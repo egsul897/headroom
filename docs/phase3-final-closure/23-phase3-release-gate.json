@@ -2,27 +2,158 @@
   "schemaVersion": 1,
   "artifactId": "23-phase3-release-gate",
   "productionSha": "1957105c58be77465745566167f1a05708d4d3b5",
-  "closureRule": "Mission §26: Phase 3 closes only if ALL of A-R pass.",
+  "closureRule": "Mission \u00a726: Phase 3 closes only if ALL of A-R pass.",
   "gates": [
-    { "id": "A", "requirement": "semantic inventory stability >= 95%", "measured": "v1 real holdout (02, post-audit matcher): 90.4% lenient / 88.0% adjudicated (prose-based, informational) / 77.6% conservative (the gated figure) / 64.8% strict-fold lower bound; exact-id 18.88%; v2 post-fix: NOT MEASURED (targeted rerun blocked, 11)", "pass": false, "classification": "PASS_A_MODEL_STABILITY_LIMIT on v1 evidence; v2 effect ENVIRONMENT_BLOCKED" },
-    { "id": "B", "requirement": "CRITICAL variable omissions = 0", "measured": "0 on the v1 holdout pair (14-holdout-stability.json, unchanged); 4 CRITICAL genuine omissions exist in ONE run's inventory (03) but none was captured-in-one-run-and-MISSING_FROM_COMPOSITION-in-the-other, which is what this gate counts", "pass": true, "caveat": "gate definition counts disposition flips, not inventory absences; the 4 CRITICAL inventory absences are reported under A/03" },
-    { "id": "C", "requirement": "whole-agreement Validation B completed", "measured": "3/12 regions (run-1), run-2 not started (12, 13)", "pass": false, "classification": "ENVIRONMENT_BLOCKED" },
-    { "id": "D", "requirement": "whole-agreement CRITICAL inventory recall = 100%", "measured": null, "pass": false, "classification": "ENVIRONMENT_BLOCKED (15)" },
-    { "id": "E", "requirement": "whole-agreement MATERIAL inventory recall >= 95%", "measured": null, "pass": false, "classification": "ENVIRONMENT_BLOCKED (15)" },
-    { "id": "F", "requirement": "material disposition >= 98%", "measured": "94.6% on the 3 completed v1 regions only - not a gate result", "pass": false, "classification": "ENVIRONMENT_BLOCKED (15)" },
-    { "id": "G", "requirement": "material quantitative-value recall >= 95%", "measured": "64.7% on the 3 completed v1 regions only - not a gate result", "pass": false, "classification": "ENVIRONMENT_BLOCKED (15)" },
-    { "id": "H", "requirement": "substantive representation in every required provision family", "measured": "2 of 8 families partially represented (definitions, debt); 6 never ran", "pass": false, "classification": "ENVIRONMENT_BLOCKED (15)" },
-    { "id": "I", "requirement": "real shared-cap / cross-reference semantics represented", "measured": "NOT_MEASURED_ON_REAL_CONTENT (16)", "pass": false, "classification": "ENVIRONMENT_BLOCKED" },
-    { "id": "J", "requirement": "material disposition stability >= 95%", "measured": "v1 holdout exact-id 90.11%; semantic captured-status 98.98% / label 86.7% (02); whole-agreement NOT MEASURED (14)", "pass": false, "classification": "label stability fails on v1 evidence (Pass B UNSUPPORTED cascade); whole-agreement ENVIRONMENT_BLOCKED" },
-    { "id": "K", "requirement": "0 silent material omissions", "measured": "0 on all 16 completed real units (every material item dispositioned or surfaced); v2 additionally surfaces uncovered operative TEXT (INVENTORY_COVERAGE_GAP)", "pass": true },
-    { "id": "L", "requirement": "0 false trusted semantics", "measured": "0/16 real units SEMANTICALLY_COMPLETE; 0 false COMPLETE in the recomputed rollup (17)", "pass": true },
-    { "id": "M", "requirement": "agreement-level rollup remains conservative", "measured": "17: falseSemanticallyComplete 0 of 16 units, all three runs SEMANTICALLY_INCOMPLETE", "pass": true },
-    { "id": "N", "requirement": "verifier independence PASS", "measured": "no semantic-verification file changed (git diff 55e29d6..HEAD empty on that path); independence test passes; 18 feeds nothing back", "pass": true },
-    { "id": "O", "requirement": "14/14 controls PASS", "measured": "14/14 (19)", "pass": true },
-    { "id": "P", "requirement": "known-package regression clean", "measured": "FWRG/LSB/CONMED/DSGR/Riot/Superior identical between pre-mission head and HEAD; no GT modified (20)", "pass": true },
-    { "id": "Q", "requirement": "no new attributable full-suite / TS / lint regression", "measured": "tsc 0 new, lint clean, 0 attributable vitest regressions (21)", "pass": true },
-    { "id": "R", "requirement": "fresh independent audit has no blocker", "measured": "see 22-independent-audit.json", "pass": null }
+    {
+      "id": "A",
+      "requirement": "semantic inventory stability >= 95%",
+      "measured": "v1 real holdout (02, post-audit matcher): 90.4% lenient / 88.0% adjudicated (prose-based, informational) / 77.6% conservative (the gated figure) / 64.8% strict-fold lower bound; exact-id 18.88%; v2 post-fix: NOT MEASURED (targeted rerun blocked, 11)",
+      "pass": false,
+      "classification": "PASS_A_MODEL_STABILITY_LIMIT on v1 evidence; v2 effect ENVIRONMENT_BLOCKED"
+    },
+    {
+      "id": "B",
+      "requirement": "CRITICAL variable omissions = 0",
+      "measured": "0 on the v1 holdout pair (14-holdout-stability.json, unchanged); 4 CRITICAL genuine omissions exist in ONE run's inventory (03) but none was captured-in-one-run-and-MISSING_FROM_COMPOSITION-in-the-other, which is what this gate counts",
+      "pass": true,
+      "caveat": "gate definition counts disposition flips, not inventory absences; the 4 CRITICAL inventory absences are reported under A/03"
+    },
+    {
+      "id": "C",
+      "requirement": "whole-agreement Validation B completed",
+      "measured": "3/12 regions (run-1), run-2 not started (12, 13)",
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "id": "D",
+      "requirement": "whole-agreement CRITICAL inventory recall = 100%",
+      "measured": null,
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED (15)"
+    },
+    {
+      "id": "E",
+      "requirement": "whole-agreement MATERIAL inventory recall >= 95%",
+      "measured": null,
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED (15)"
+    },
+    {
+      "id": "F",
+      "requirement": "material disposition >= 98%",
+      "measured": "94.6% on the 3 completed v1 regions only - not a gate result",
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED (15)"
+    },
+    {
+      "id": "G",
+      "requirement": "material quantitative-value recall >= 95%",
+      "measured": "64.7% on the 3 completed v1 regions only - not a gate result",
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED (15)"
+    },
+    {
+      "id": "H",
+      "requirement": "substantive representation in every required provision family",
+      "measured": "2 of 8 families partially represented (definitions, debt); 6 never ran",
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED (15)"
+    },
+    {
+      "id": "I",
+      "requirement": "real shared-cap / cross-reference semantics represented",
+      "measured": "NOT_MEASURED_ON_REAL_CONTENT (16)",
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED"
+    },
+    {
+      "id": "J",
+      "requirement": "material disposition stability >= 95%",
+      "measured": "v1 holdout exact-id 90.11%; semantic captured-status 98.98% / label 86.7% (02); whole-agreement NOT MEASURED (14)",
+      "pass": false,
+      "classification": "label stability fails on v1 evidence (Pass B UNSUPPORTED cascade); whole-agreement ENVIRONMENT_BLOCKED"
+    },
+    {
+      "id": "K",
+      "requirement": "0 silent material omissions",
+      "measured": "0 on all 16 completed real units (every material item dispositioned or surfaced); v2 additionally surfaces uncovered operative TEXT (INVENTORY_COVERAGE_GAP)",
+      "pass": true
+    },
+    {
+      "id": "L",
+      "requirement": "0 false trusted semantics",
+      "measured": "0/16 real units SEMANTICALLY_COMPLETE; 0 false COMPLETE in the recomputed rollup (17)",
+      "pass": true
+    },
+    {
+      "id": "M",
+      "requirement": "agreement-level rollup remains conservative",
+      "measured": "17: falseSemanticallyComplete 0 of 16 units, all three runs SEMANTICALLY_INCOMPLETE",
+      "pass": true
+    },
+    {
+      "id": "N",
+      "requirement": "verifier independence PASS",
+      "measured": "no semantic-verification file changed (git diff 55e29d6..HEAD empty on that path); independence test passes; 18 feeds nothing back",
+      "pass": true
+    },
+    {
+      "id": "O",
+      "requirement": "14/14 controls PASS",
+      "measured": "14/14 (19)",
+      "pass": true
+    },
+    {
+      "id": "P",
+      "requirement": "known-package regression clean",
+      "measured": "FWRG/LSB/CONMED/DSGR/Riot/Superior identical between pre-mission head and HEAD; no GT modified (20)",
+      "pass": true
+    },
+    {
+      "id": "Q",
+      "requirement": "no new attributable full-suite / TS / lint regression",
+      "measured": "tsc 0 new, lint clean, 0 attributable vitest regressions (21)",
+      "pass": true
+    },
+    {
+      "id": "R",
+      "requirement": "fresh independent audit has no blocker",
+      "measured": "FAIL. Three independent fresh-agent audits; the third, run against the final freeze 1957105, returned BLOCKER with demonstrated silent material omissions (22.reAudit.reAudit3): a whole uncovered covenant that matches no segment vocabulary, uninventoried DAYS/PERIOD/DATE/MULTIPLIER values that do not block completeness, and an expansion-region definition (cap + condition + pledge) that is exempt from both text and value accounting - each ending in INVENTORY_OK, semanticallyComplete true, no failure reason, rollup SEMANTICALLY_COMPLETE.",
+      "pass": false,
+      "classification": "TRUST_BOUNDARY_BLOCKER (mission \u00a725: any trust-boundary blocker prevents closure)"
+    }
   ],
-  "summary": { "pass": 8, "fail": 9, "pending": 1, "failingGates": ["A", "C", "D", "E", "F", "G", "H", "I", "J"], "environmentBlockedGates": ["C", "D", "E", "F", "G", "H", "I"], "evidenceFailGates": ["A", "J"] },
+  "summary": {
+    "pass": 8,
+    "fail": 10,
+    "pending": 0,
+    "failingGates": [
+      "A",
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I",
+      "J",
+      "R"
+    ],
+    "environmentBlockedGates": [
+      "C",
+      "D",
+      "E",
+      "F",
+      "G",
+      "H",
+      "I"
+    ],
+    "evidenceFailGates": [
+      "A",
+      "J",
+      "R"
+    ]
+  },
   "closes": false
 }
