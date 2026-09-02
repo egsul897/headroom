@@ -1,22 +1,52 @@
 {
   "schemaVersion": 1,
   "artifactId": "07-production-freeze",
-  "FINAL_PASS_A_STABILITY_SHA": "bd3b5bec2c955e8c9c99a379e288e10e056a95e9",
+  "FINAL_PASS_A_STABILITY_SHA": "c496751f91cbc91e5b27b87a1cc128e0757f5a11",
   "previousProductionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
-  "frozenAt": "2026-09-02T11:54:42.878Z",
-  "tree": { "treeHash": "6bd4bbf7c088b237a9641651c2020a12a2cfd363cc03467bb1adb20d505eb56c", "fileCount": 345, "roots": ["lib", "app", "prisma"] },
+  "frozenAt": "2026-09-02T12:18:54.506Z",
+  "tree": {
+    "treeHash": "1f94d5bda78201207d5295c93a765ce9a51d257b33a41f590f12c77556d2fc24",
+    "fileCount": 345,
+    "roots": [
+      "lib",
+      "app",
+      "prisma"
+    ]
+  },
   "previousTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1",
-  "record": "docs/semantic-accountability/10-production-freeze.json (rewritten by scripts/semantic-accountability-freeze.ts --write at HEAD=bd3b5be; every validation run re-hashes lib/app/prisma and refuses to run on drift)",
+  "record": "docs/semantic-accountability/10-production-freeze.json (rewritten by scripts/semantic-accountability-freeze.ts --write at HEAD=c496751)",
   "productionFilesChangedSincePreviousFreeze": [
-    "lib/contract-model/compiler/semantic-accountability/inventory.ts (v2 coverage accounting + targeted gap re-inventory + INVENTORY_COVERAGE_GAP)",
+    "lib/contract-model/compiler/semantic-accountability/inventory.ts (v2 coverage accounting + targeted gap re-inventory + INVENTORY_COVERAGE_GAP; audit fixes B1/B2'')",
     "lib/contract-model/compiler/semantic-accountability/prompt.ts (buildGapReinventoryUserContent)",
     "lib/contract-model/compiler/semantic-accountability/types.ts (v2 versions, UncoveredOperativeSegment, GapReinventoryRecord, uninventoriedSegments, counts.uninventoriedSegments)",
-    "lib/contract-model/compiler/semantic-accountability/reconciliation.ts (disclosure only: counts.uninventoriedSegments + reason line; disposition semantics unchanged)",
+    "lib/contract-model/compiler/semantic-accountability/reconciliation.ts (counts/reasons + defense-in-depth: semanticallyComplete requires uninventoriedSegments.length === 0; disposition semantics unchanged)",
     "lib/contract-model/compiler/semantic/types.ts (failure reason SEMANTIC_INVENTORY_COVERAGE_GAP)",
-    "lib/contract-model/compiler/semantic/compile.ts (maps INVENTORY_COVERAGE_GAP to that failure reason + accountability issues; no composition logic change)"
+    "lib/contract-model/compiler/semantic/compile.ts (maps INVENTORY_COVERAGE_GAP or any residual segment to that failure reason; no composition logic change)"
   ],
-  "untouched": ["Pass B composition (semantic/compile.ts model loop, normalize.ts, prompt)", "Pass C disposition semantics", "IR (lib/contract-model/ir/**)", "Phase 3C verifier (semantic-verification/**)", "operative state", "package graph", "source-context.ts", "reference-resolver.ts", "app/**", "prisma/**"],
-  "frozenPaths": ["lib/**", "app/**", "prisma/**", "compiler prompts + configuration (lib/contract-model/compiler/**/prompt.ts, lib/contract-model/compiler/semantic/*.ts, lib/contract-model/compiler/semantic-accountability/*.ts)"],
+  "untouched": [
+    "Pass B composition (semantic/compile.ts model loop, normalize.ts, prompt)",
+    "Pass C disposition semantics",
+    "IR (lib/contract-model/ir/**)",
+    "Phase 3C verifier (semantic-verification/**)",
+    "operative state",
+    "package graph",
+    "source-context.ts",
+    "reference-resolver.ts",
+    "app/**",
+    "prisma/**"
+  ],
+  "frozenPaths": [
+    "lib/**",
+    "app/**",
+    "prisma/**",
+    "compiler prompts + configuration (lib/contract-model/compiler/**/prompt.ts, lib/contract-model/compiler/semantic/*.ts, lib/contract-model/compiler/semantic-accountability/*.ts)"
+  ],
   "rule": "No production change after this record. Any post-freeze change is a NEW SHA and a new validation.",
-  "evidenceProvenanceNote": "The two holdout runs and the 3 completed whole-agreement run-1 regions were produced on 976a565 (v1 ids). A resumed whole-agreement run-1 will carry regions on both SHAs, disclosed per region by the harness's productionShaByRegion; cross-run comparison is semantic (span-based), never by exact id, so the v1->v2 id re-keying does not affect stability measurement."
+  "evidenceProvenanceNote": "The two holdout runs and the 3 completed whole-agreement run-1 regions were produced on 976a565 (v1 ids). A resumed whole-agreement run-1 will carry regions on both SHAs, disclosed per region by the harness's productionShaByRegion; cross-run comparison is semantic (span-based), never by exact id, so the v1->v2 id re-keying does not affect stability measurement.",
+  "supersededFreeze": {
+    "sha": "bd3b5bec2c955e8c9c99a379e288e10e056a95e9",
+    "treeHash": "6bd4bbf7c088b237a9641651c2020a12a2cfd363cc03467bb1adb20d505eb56c",
+    "frozenAt": "2026-09-02T11:54:42.878Z",
+    "reason": "superseded after the independent audit (22) found blockers in the first v2 cut; remediation in commit 8a"
+  }
 }
