@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "16-final-pre-validation-verdict",
+  "verdict": "DETECTOR_NOT_CERTIFIED",
+  "gateApplied": "Mission \u00a718: the frozen detector must survive a fresh independent red-team audit before any paid validation. One material silent omission ending semanticallyComplete is a BLOCKER.",
+  "auditResult": "BLOCKER - 14 of 16 constructed scenarios ended semanticallyComplete with material operative text dropped (13).",
+  "paidValidationAuthorized": false,
+  "paidCallsMade": 0,
+  "whatTheRepairAchieved": [
+    "the six frozen audit counterexamples that were silent under v2 are all surfaced (08), and the reproduction of their pre-repair silence is preserved (01)",
+    "the five conjunctive eligibility filters are gone; the red team confirmed independently that no vocabulary gate, region-label filter or coverage threshold survives in the detection path",
+    "residue arithmetic, determinism, order-invariance, the materiality gate, region-kind neutrality and value blocking for scanner-recognised kinds all held under adversarial attack",
+    "83 deterministic tests and 2400 generated cases pass with zero dangerous false negatives against the mutation families this mission specified"
+  ],
+  "whyThatWasNotEnough": "The mission's own \u00a72 rule is that heuristics may suppress obvious formatting noise but may NOT define the trust boundary. In the delivered implementation every suppression class sits in the ACCOUNTED set, so each is load-bearing: ALL-CAPS text, a short numbered clause, quoted text, a bare integer, non-Latin script and closed-class-only fragments are all discharged on SHAPE. The red team showed each of those shapes carrying real covenant substance in ordinary drafting. My own 2400-case suite scored zero misses because its generator produces text in exactly the register the suppression rules were tuned against - it never generated an all-caps waiver, an amendment's quoted replacement text, a bilingual clause or a bare-integer basket table. A generator built by the implementer is not an adversary.",
+  "classificationUnder\u00a720": {
+    "chosen": "NOT YET SOURCE_COVERAGE_ARCHITECTURE_LIMIT",
+    "why": "\u00a720 reserves SOURCE_COVERAGE_ARCHITECTURE_LIMIT for a detector that CANNOT achieve zero dangerous omission. That is not established. Seven of the eight blockers have identified, bounded fixes that move in the safe direction (narrow or delete a suppression rule, at the cost of more false positives, which are not dangerous). Declaring an architecture limit now would overstate the finding.",
+    "provisional": "If the next cycle cannot close RT-4 and RT-8 without an unacceptable false-positive rate, SOURCE_COVERAGE_ARCHITECTURE_LIMIT becomes the correct return."
+  },
+  "boundedRemediationDesign": {
+    "principle": "Suppression must be non-load-bearing BY CONSTRUCTION. A fragment may be discharged as non-semantic only when it cannot carry a proposition - never because of its case, length, punctuation, script or numerals.",
+    "items": [
+      {
+        "id": "RT-6",
+        "fix": "one line - test for a letter in ANY script (\\p{L}) rather than [A-Za-z0-9] before calling a fragment punctuation",
+        "risk": "none",
+        "falsePositiveCost": "none"
+      },
+      {
+        "id": "RT-7a",
+        "fix": "delete the bare-integer alternative from PAGE_FURNITURE_RE; require explicit page context",
+        "risk": "none",
+        "falsePositiveCost": "standalone page numbers get reported"
+      },
+      {
+        "id": "RT-1/RT-2/RT-5",
+        "fix": "add a CLAUSE_SIGNAL veto used in the SAFE polarity: a closed list of auxiliaries, modals and obligation verbs whose PRESENCE disqualifies heading/label/furniture/citation suppression. Vocabulary that only ever increases scrutiny is permitted by \u00a72; vocabulary that grants eligibility is not. Additionally cap the caption rules by CONTENT-WORD count rather than character length.",
+        "risk": "low",
+        "falsePositiveCost": "headings containing a verb-like word get reported"
+      },
+      {
+        "id": "RT-3",
+        "fix": "remove every substantive word from FUNCTION_WORDS - jointly, severally, directly, indirectly, solely, only, except, unless, notwithstanding, including, subject, provided, plus, minus, less, sum, foregoing and the rest - leaving pure grammar. Normalise OCR hyphenation before the closed-class test so 'sub-ject' cannot collapse into it.",
+        "risk": "medium",
+        "falsePositiveCost": "HIGH and this is the real design decision: connective glue such as 'provided that' between two anchored clauses will be reported. The corpus regains roughly ten false gaps. The honest options are (a) accept them and extend the ground-truth excerpts to include their own connectives, or (b) suppress glue only when it is residue strictly between two covered spans in the same unit. (b) does not save the audit's S3/S4/S9 cases, so (a) is the safe answer."
+      },
+      {
+        "id": "RT-4",
+        "fix": "descent must discharge only a lead-in that carries no proposition of its own. The value guard is insufficient because the scanner's recall is not the language's. Candidate rule: descent discharges only the residue of the lead-in unit that contains no CLAUSE_SIGNAL and no conjunction of independent clauses.",
+        "risk": "high - this is the hardest of the eight"
+      },
+      {
+        "id": "RT-8",
+        "fix": "a proportionality check before an item span is trusted: an item whose span covers multiple structural units, or whose proposition is shorter than some fraction of the text it claims, cannot anchor all of it. This is the same 'granularity is model-controlled' defect the previous audit raised and it remains open."
+      },
+      {
+        "id": "RT-9",
+        "fix": "a gap-call item may close only the span its excerpt actually covers, and must add at least one proposition distinguishable from the gap text it was handed"
+      },
+      {
+        "id": "RT-10",
+        "fix": "verify the owner's inventory exists and covers the delegated region before honouring a link; until then, refuse links entirely (production constructs none today)"
+      },
+      {
+        "id": "RT-11",
+        "fix": "give one enforcement point an independent derivation - e.g. recompute coverage from the frozen inventory at reconciliation time rather than reading the inventory's own list"
+      },
+      {
+        "id": "RT-12/13/14",
+        "fix": "reject duplicate region ids and an empty region set at the input boundary; make accountability:false impossible to combine with a COMPLETED status"
+      }
+    ],
+    "processRule": "Mission \u00a718: any patch goes through a NEW implementation, a NEW freeze and a FRESH audit. No partial patching of this freeze.",
+    "testDebt": "the \u00a713 generator must be rebuilt by someone other than the implementer, or seeded from the red team's registers (all-caps, amendments, bilingual text, bare-integer tables, spelled-out amounts), before its zero-miss result means anything again"
+  },
+  "provider": {
+    "status": "HTTP 402 quota_for_entity_exceeded at $150.49/$150.00",
+    "note": "paid validation is independently blocked; the audit verdict is the binding reason, not the budget"
+  },
+  "finalVerdictString": "SOURCE_COVERAGE_DETECTOR_NOT_CERTIFIED_BLOCKER_REMEDIATION_REQUIRED"
+}
