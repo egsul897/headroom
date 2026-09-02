@@ -19,7 +19,7 @@
  * drifted (unfrozen) production tree; refuses to overwrite an existing run
  * directory (evidence is never rewritten); stops at the budget ceiling.
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 if (!process.env.AI_GATEWAY_API_KEY && !process.env.ANTHROPIC_API_KEY) {
   try {
     const envLocal = readFileSync(".env.local", "utf-8");
@@ -53,6 +53,20 @@ if (!Number.isInteger(runNumber) || runNumber < 1) throw new Error("--run <n> is
 const spec = specFor(mode);
 const BUDGET_CEILING_USD = Number(arg("--budget", mode === "holdout" ? "6" : "12"));
 const OUT_DIR = `${spec.outDirBase}/run-${runNumber}`;
+/**
+ * --resume (Phase 3 final closure §15): continue an EXISTING run directory
+ * whose earlier regions completed but whose later regions failed at the
+ * provider (HTTP 402 budget cap). A region counts as completed when its
+ * preserved record has no error, no PROVIDER_FAILURE and no INVENTORY_FAILED
+ * inventory; every other region is (re)run. Nothing is deleted: a failed
+ * region record is renamed to region-<id>.provider-failure-<ts>.json and the
+ * previous run-summary to run-summary.before-resume-<ts>.json before the
+ * merged summary is written. The merged summary discloses the production
+ * SHA of every region (the resumed regions may run on a newer frozen SHA).
+ */
+const RESUME = process.argv.includes("--resume");
+/** --only <id,id,...>: restrict the run to a pre-registered subset of the manifest (targeted stability rerun, §14). Regions outside the subset are recorded as skipped. */
+const ONLY = new Set((arg("--only") ?? "").split(",").map((s) => s.trim()).filter(Boolean));
 
 let runningCostUsd = 0;
 function preserve(name: string, data: unknown) {
@@ -69,8 +83,29 @@ function logCost(stage: string, cost: number | null | undefined) {
 async function main() {
   console.log(`================ SEMANTIC_ACCOUNTABILITY_VALIDATION ${mode} run-${runNumber} ================`);
   console.log(`Started: ${new Date().toISOString()}  budget ceiling: $${BUDGET_CEILING_USD}`);
-  if (existsSync(OUT_DIR)) throw new Error(`FATAL: ${OUT_DIR} already exists - evidence is never rewritten; use a new run number`);
+  if (existsSync(OUT_DIR) && !RESUME) throw new Error(`FATAL: ${OUT_DIR} already exists - evidence is never rewritten; use a new run number (or --resume to continue a provider-interrupted run)`);
   const frozen = assertProductionFrozen();
+  const resumeStamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const priorSummary: { regions?: Record<string, unknown>[]; totalCostUsd?: number; startedAt?: string; resumeHistory?: unknown[] } | null = RESUME && existsSync(`${OUT_DIR}/run-summary.json`) ? JSON.parse(readFileSync(`${OUT_DIR}/run-summary.json`, "utf-8")) : null;
+  const completedRegionRecords = new Map<string, Record<string, unknown>>();
+  if (RESUME) {
+    if (!priorSummary) throw new Error(`FATAL: --resume requires an existing ${OUT_DIR}/run-summary.json`);
+    for (const region of spec.regions) {
+      const file = `${OUT_DIR}/region-${region.id}.json`;
+      if (!existsSync(file)) continue;
+      const rec = JSON.parse(readFileSync(file, "utf-8"));
+      const failureReasons: string[] = rec.compile?.failureReasons ?? [];
+      const completed = !rec.error && !failureReasons.includes("PROVIDER_FAILURE") && rec.compile?.frozenInventory?.inventoryStatus !== "INVENTORY_FAILED";
+      if (completed) completedRegionRecords.set(region.id, rec);
+      else {
+        const renamed = `${OUT_DIR}/region-${region.id}.provider-failure-${resumeStamp}.json`;
+        renameSync(file, renamed);
+        console.log(`  [resume] ${region.id}: previous record was provider-failed - preserved as ${renamed}, will rerun`);
+      }
+    }
+    renameSync(`${OUT_DIR}/run-summary.json`, `${OUT_DIR}/run-summary.before-resume-${resumeStamp}.json`);
+    console.log(`  [resume] ${completedRegionRecords.size} region(s) already completed and kept; previous summary preserved as run-summary.before-resume-${resumeStamp}.json`);
+  }
   console.log(`  production frozen: sha=${frozen.sha} treeHash=${frozen.treeHash.slice(0, 16)}`);
 
   const pkg = loadPackage(spec);
@@ -88,6 +123,16 @@ async function main() {
   const regionSummaries: Record<string, unknown>[] = [];
 
   for (const region of spec.regions) {
+    if (ONLY.size > 0 && !ONLY.has(region.id)) {
+      regionSummaries.push({ id: region.id, skipped: true, reason: "outside the pre-registered --only subset" });
+      continue;
+    }
+    if (RESUME && completedRegionRecords.has(region.id)) {
+      const prior = (priorSummary?.regions ?? []).find((r) => r.id === region.id);
+      regionSummaries.push({ ...(prior ?? { id: region.id }), productionSha: (completedRegionRecords.get(region.id)!.run as { productionSha?: string } | undefined)?.productionSha ?? null, keptFromPriorRun: true });
+      console.log(`\n=== Region ${region.id}: kept from the prior run (completed before the provider interruption) ===`);
+      continue;
+    }
     if (runningCostUsd >= BUDGET_CEILING_USD) {
       console.log(`  [budget] ceiling reached - stopping before region ${region.id}`);
       regionSummaries.push({ id: region.id, skipped: true, reason: "budget ceiling reached before this region" });
@@ -207,6 +252,7 @@ async function main() {
       id: region.id,
       family: region.family,
       claimIds: region.claimIds,
+      productionSha: frozen.sha,
       sourceContextState: compileResult.sourceContext?.state ?? null,
       unitChars: compileResult.sourceContext?.regions[0]?.text.length ?? null,
       unitExtended: compileResult.sourceContext?.regions[0]?.unitExtension?.unitBoundary ?? null,
@@ -237,9 +283,14 @@ async function main() {
     productionTreeHash: frozen.treeHash,
     versions: { compilerAlgorithm: SEMANTIC_COMPILER_ALGORITHM_VERSION, compilerPrompt: SEMANTIC_COMPILER_PROMPT_VERSION, toolPolicy: SEMANTIC_COMPILER_TOOL_POLICY_VERSION, accountabilityAlgorithm: SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, inventoryPrompt: SEMANTIC_INVENTORY_PROMPT_VERSION, irSchema: IR_SCHEMA_VERSION },
     providers: { compiler: { provider: compileCaller.providerName, model: compileCaller.model }, inventory: { provider: inventoryCaller.providerName, model: inventoryCaller.model }, verifier: { provider: verifyCaller.providerName, model: verifyCaller.model } },
-    totalCostUsd: runningCostUsd,
+    totalCostUsd: runningCostUsd + (priorSummary?.totalCostUsd ?? 0),
+    costUsdThisInvocation: runningCostUsd,
     budgetCeilingUsd: BUDGET_CEILING_USD,
     regionIds: spec.regions.map((r) => r.id),
+    only: ONLY.size > 0 ? [...ONLY] : null,
+    resumed: RESUME,
+    resumeHistory: RESUME ? [...(priorSummary?.resumeHistory ?? []), { resumedAt: startedAt, priorStartedAt: priorSummary?.startedAt ?? null, keptRegions: [...completedRegionRecords.keys()], productionShaThisInvocation: frozen.sha, priorSummaryFile: `run-summary.before-resume-${resumeStamp}.json` }] : [],
+    productionShaByRegion: Object.fromEntries(regionSummaries.map((r) => [r.id as string, (r as { productionSha?: string | null }).productionSha ?? null])),
     regions: regionSummaries,
   });
   console.log("\n================ FINAL SUMMARY ================");

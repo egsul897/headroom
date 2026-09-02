@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "artifactId": "10-production-freeze",
-  "SEMANTIC_ACCOUNTABILITY_PRODUCTION_SHA": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
-  "frozenAt": "2026-09-02T02:00:19.658Z",
+  "SEMANTIC_ACCOUNTABILITY_PRODUCTION_SHA": "bd3b5bec2c955e8c9c99a379e288e10e056a95e9",
+  "frozenAt": "2026-09-02T11:54:42.878Z",
   "frozenPaths": [
     "lib/**",
     "app/**",
@@ -11,7 +11,7 @@
   ],
   "rule": "No production change after this record. Every validation run (scripts/semantic-accountability-validation.ts) re-hashes lib/app/prisma at start and refuses to run on drift. Any post-freeze change is a NEW SHA and a new validation.",
   "tree": {
-    "treeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1",
+    "treeHash": "6bd4bbf7c088b237a9641651c2020a12a2cfd363cc03467bb1adb20d505eb56c",
     "fileCount": 345,
     "roots": [
       "lib",
@@ -21,7 +21,7 @@
     "perRoot": {
       "lib": {
         "files": 275,
-        "hash": "8da00407a6d7993d576de3cd2403828c01e308c2c618c7249a5605c77a34a1aa"
+        "hash": "6caf361cbe8c40957af2daec36d14a2b1e4b609241b3fee11be47b6c834fc1df"
       },
       "app": {
         "files": 36,
