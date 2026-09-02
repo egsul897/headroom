@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "16-shared-cap-real-validation",
+  "status": "NOT_MEASURED_ON_REAL_CONTENT",
+  "classification": "ENVIRONMENT_BLOCKED",
+  "mandatory": true,
+  "preRegisteredRegion": { "id": "cross-reference-dsgr", "family": "CROSS_REFERENCE_SHARED_CAP_CONDITION", "document": "dsgr-a", "sourceSectionRef": "6.10", "locator": "offsetLocator(474298, 2800) - unchanged, no source substitution" },
+  "realEvidenceAvailable": "NONE. In whole-agreement run-1 this region's Pass A call returned HTTP 402 (INVENTORY_FAILED, compile PROVIDER_FAILURE) before any inventory item existed; there is no SOURCE -> Pass A -> SHARED_CAP/DEPENDENCY/REFERENCE item -> target resolution -> Pass B -> IR SharedCapacity/dependency -> Pass C -> verifier chain to trace.",
+  "partialRealSignal": { "region": "debt-dsgr (DEBT family, completed)", "observation": "the composed IR carries 1 SharedCapacity and 7 unresolved dependencies with 5 inventory items dispositioned AMBIGUOUS (carried as IRUnresolvedDependency, never guessed) - this shows the dependency-preservation path operating on real content, but it is a DEBT unit, not the pre-registered shared-cap region, and does not satisfy §17." },
+  "syntheticEvidence": "corpus I28/I29 (shared cap named across two permissions; cross-section reference expansion) pass through the real Pass A -> Pass B -> Pass C chain with SharedCapacity represented and lineage reconciled - explicitly NOT a substitute for real-content evidence per mission §17.",
+  "traceTemplate": ["SOURCE (dsgr-a §6.10 window)", "PASS A: SHARED_CAP / DEPENDENCY / REFERENCE items with referencedSections", "source-context.ts: target resolution (UNIQUE / AMBIGUOUS / NOT_FOUND, disclosed)", "PASS B: IRSharedCapacity or IRUnresolvedDependency with inventoryItemIds lineage", "PASS C: REPRESENTED / AMBIGUOUS disposition per item, value correspondence for the cap amount", "Phase 3C verifier: independent findings"],
+  "howToComplete": "unblock the provider and run 12's resume command; this region is the 12th in the manifest and executes last.",
+  "paidCallsMade": 0
+}

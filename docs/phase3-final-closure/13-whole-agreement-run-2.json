@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "13-whole-agreement-run-2",
+  "status": "NOT_STARTED_ENVIRONMENT_BLOCKED",
+  "manifest": "same 12-region whole-agreement manifest as run-1; no tuning between runs",
+  "command": "npx tsx scripts/semantic-accountability-validation.ts whole-agreement --run 2 --budget 20",
+  "executed": false,
+  "reason": "Provider HTTP 402 budget cap (08); run-2 is sequenced after run-1 completes",
+  "paidCallsMade": 0
+}

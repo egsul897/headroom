@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "14-whole-agreement-stability",
+  "status": "NOT_MEASURED",
+  "classification": "ENVIRONMENT_BLOCKED",
+  "requires": ["12 complete", "13 complete"],
+  "method": "scripts/phase3-final-closure-forensics.ts matcher over whole-agreement run-1 vs run-2, separating Pass A inventory variance (identity-attributable vs genuine omission), Pass B composition variance, Pass C disposition variance; gates: conservative semantic inventory stability >=0.95, material disposition stability >=0.95, CRITICAL variable omissions = 0; no aggregate averaging across regions without the per-region table.",
+  "gates": {
+    "semanticInventoryStabilityConservative": { "required": 0.95, "measured": null },
+    "materialDispositionStability": { "required": 0.95, "measured": null },
+    "criticalVariableOmissions": { "required": 0, "measured": null }
+  },
+  "paidCallsMade": 0
+}

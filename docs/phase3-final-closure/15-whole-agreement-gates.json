@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "15-whole-agreement-gates",
+  "status": "NOT_MEASURED_ON_THE_FULL_MANIFEST",
+  "classification": "ENVIRONMENT_BLOCKED",
+  "rule": "Mission §16: do not report an aggregate pass if a required family has no substantive representation. 9 of 12 regions never ran, so NO aggregate gate is reported as passed.",
+  "gates": {
+    "criticalInventoryRecall": { "required": 1.0, "measured": null, "note": "requires the full manifest and an independent reference; not computable on 3 regions" },
+    "materialInventoryRecall": { "required": 0.95, "measured": null },
+    "materialInventoryDisposition": { "required": 0.98, "measuredOnCompletedRegionsOnly": 0.9458, "detail": "(77-1)+(40-8)+(49-0) = 157 non-MISSING of 166 material items across the 3 completed v1 regions; NOT a gate result - partial, v1 SHA, 3/12 regions" },
+    "materialQuantitativeValueRecall": { "required": 0.95, "measuredOnCompletedRegionsOnly": 0.6471, "detail": "22 of 34 material values present in the composed IR across the 3 completed regions (definitions-dsgr: 0/10) - NOT a gate result" },
+    "silentMaterialOmissions": { "required": 0, "measuredOnCompletedRegionsOnly": 0, "detail": "every material item is dispositioned (REPRESENTED / UNSUPPORTED / AMBIGUOUS / MISSING_FROM_COMPOSITION) and every MISSING one is surfaced in accountability.reasons and the compile failureReasons (INVENTORY_ITEM_MISSING_FROM_COMPOSITION); nothing is silently absent" },
+    "falseTrustedSemantics": { "required": 0, "measuredOnCompletedRegionsOnly": 0, "detail": "0 of 3 completed units is SEMANTICALLY_COMPLETE; all 3 carry verifier MATERIAL_DISCREPANCY and REVIEW_REQUIRED compile status" }
+  },
+  "provisionFamilies": {
+    "definitions": { "substantiveRepresentation": "PARTIAL (definitions-lsb 39/77 represented, definitions-dsgr 32/40)", "regionsRun": 2, "regionsPlanned": 2 },
+    "debt": { "substantiveRepresentation": "PARTIAL (debt-dsgr 44/49 represented, 23 rules, 1 shared capacity; debt-lsb PROVIDER_FAILURE)", "regionsRun": 1, "regionsPlanned": 2 },
+    "liens": { "substantiveRepresentation": "NOT_MEASURED (liens-dsgr-a, liens-dsgr-d INVENTORY_FAILED 402)", "regionsRun": 0, "regionsPlanned": 2 },
+    "restrictedPaymentsInvestments": { "substantiveRepresentation": "NOT_MEASURED (investments-dsgr, restricted-payments-dsgr 402)", "regionsRun": 0, "regionsPlanned": 2 },
+    "assetSalesPrepayments": { "substantiveRepresentation": "NOT_MEASURED (asset-sales-dsgr 402)", "regionsRun": 0, "regionsPlanned": 1 },
+    "financialCovenants": { "substantiveRepresentation": "NOT_MEASURED (financial-covenant-dsgr 402)", "regionsRun": 0, "regionsPlanned": 1 },
+    "reportingAffirmative": { "substantiveRepresentation": "NOT_MEASURED (reporting-dsgr 402)", "regionsRun": 0, "regionsPlanned": 1 },
+    "crossReferenceSharedCap": { "substantiveRepresentation": "NOT_MEASURED (cross-reference-dsgr 402) - see 16", "regionsRun": 0, "regionsPlanned": 1 }
+  },
+  "aggregatePass": false,
+  "paidCallsMade": 0
+}

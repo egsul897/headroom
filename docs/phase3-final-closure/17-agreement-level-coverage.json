@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "17-agreement-level-coverage",
+  "requirement": "Mission §19: recompute the agreement-level rollup over completed real validation. Individual units may remain SEMANTICALLY_INCOMPLETE / REVIEW_REQUIRED; there must be NO false SEMANTICALLY_COMPLETE.",
+  "method": "rollupAgreementSemanticStatus() (lib/contract-model/compiler/semantic-accountability/rollup.ts, unchanged) over every preserved region with an accountability result; provider-failed regions are NOT_EVALUATED and excluded from the unit set (never counted as complete).",
+  "holdoutRun1": {
+    "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-1",
+    "productionShaByRegion": {
+      "applicable-liquidity-rate": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "ebitda": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "first-lien-debt": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "interest-expense": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "net-income": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "secured-net-leverage": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4"
+    },
+    "evaluatedUnits": 6,
+    "notEvaluated": [],
+    "rollup": {
+      "status": "SEMANTICALLY_INCOMPLETE",
+      "reasons": [
+        "6 unit(s) SEMANTICALLY_INCOMPLETE; 1 material item(s) MISSING_FROM_COMPOSITION across the agreement"
+      ],
+      "units": [
+        {
+          "candidateRef": "applicable-liquidity-rate",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "ebitda",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "first-lien-debt",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "1 material inventory item(s) MISSING_FROM_COMPOSITION",
+            "2 material quantitative value(s) missing from the composed IR"
+          ]
+        },
+        {
+          "candidateRef": "interest-expense",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "net-income",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "secured-net-leverage",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        }
+      ],
+      "counts": {
+        "units": 6,
+        "complete": 0,
+        "incomplete": 6,
+        "reviewRequired": 0,
+        "materialMissingFromComposition": 1,
+        "unresolvedCrossReferences": 12
+      }
+    }
+  },
+  "holdoutRun2": {
+    "runDir": "tests/fixtures/semantic-accountability-validation/holdout/run-2",
+    "productionShaByRegion": {
+      "applicable-liquidity-rate": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "ebitda": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "first-lien-debt": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "interest-expense": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "net-income": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "new-definitions": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "secured-net-leverage": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4"
+    },
+    "evaluatedUnits": 7,
+    "notEvaluated": [],
+    "rollup": {
+      "status": "SEMANTICALLY_INCOMPLETE",
+      "reasons": [
+        "6 unit(s) SEMANTICALLY_INCOMPLETE; 5 material item(s) MISSING_FROM_COMPOSITION across the agreement"
+      ],
+      "units": [
+        {
+          "candidateRef": "applicable-liquidity-rate",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "ebitda",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "first-lien-debt",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "3 material inventory item(s) MISSING_FROM_COMPOSITION",
+            "3 material quantitative value(s) missing from the composed IR",
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "interest-expense",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "2 material inventory item(s) MISSING_FROM_COMPOSITION",
+            "3 material quantitative value(s) missing from the composed IR",
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "net-income",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "new-definitions",
+          "unitStatus": "REVIEW_REQUIRED",
+          "reasons": [
+            "compile status REVIEW_REQUIRED",
+            "not independently verified",
+            "operative state uncertain",
+            "3 unresolved cross-reference(s)"
+          ]
+        },
+        {
+          "candidateRef": "secured-net-leverage",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        }
+      ],
+      "counts": {
+        "units": 7,
+        "complete": 0,
+        "incomplete": 6,
+        "reviewRequired": 1,
+        "materialMissingFromComposition": 5,
+        "unresolvedCrossReferences": 15
+      }
+    }
+  },
+  "wholeAgreementRun1": {
+    "runDir": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+    "productionShaByRegion": {
+      "asset-sales-dsgr": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "cross-reference-dsgr": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "debt-dsgr": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "debt-lsb": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "definitions-dsgr": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "definitions-lsb": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "financial-covenant-dsgr": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "investments-dsgr": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "liens-dsgr-a": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "liens-dsgr-d": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "reporting-dsgr": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+      "restricted-payments-dsgr": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4"
+    },
+    "evaluatedUnits": 3,
+    "notEvaluated": [
+      {
+        "id": "asset-sales-dsgr",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      },
+      {
+        "id": "cross-reference-dsgr",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      },
+      {
+        "id": "debt-lsb",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      },
+      {
+        "id": "financial-covenant-dsgr",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      },
+      {
+        "id": "investments-dsgr",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      },
+      {
+        "id": "liens-dsgr-a",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      },
+      {
+        "id": "liens-dsgr-d",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      },
+      {
+        "id": "reporting-dsgr",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      },
+      {
+        "id": "restricted-payments-dsgr",
+        "reason": "provider failure / no accountability result (PROVIDER_FAILURE)"
+      }
+    ],
+    "rollup": {
+      "status": "SEMANTICALLY_INCOMPLETE",
+      "reasons": [
+        "3 unit(s) SEMANTICALLY_INCOMPLETE; 9 material item(s) MISSING_FROM_COMPOSITION across the agreement"
+      ],
+      "units": [
+        {
+          "candidateRef": "debt-dsgr",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "definitions-dsgr",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "8 material inventory item(s) MISSING_FROM_COMPOSITION",
+            "10 material quantitative value(s) missing from the composed IR",
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        },
+        {
+          "candidateRef": "definitions-lsb",
+          "unitStatus": "SEMANTICALLY_INCOMPLETE",
+          "reasons": [
+            "1 material inventory item(s) MISSING_FROM_COMPOSITION",
+            "2 material quantitative value(s) missing from the composed IR",
+            "independent verification found a MATERIAL discrepancy"
+          ]
+        }
+      ],
+      "counts": {
+        "units": 3,
+        "complete": 0,
+        "incomplete": 3,
+        "reviewRequired": 0,
+        "materialMissingFromComposition": 9,
+        "unresolvedCrossReferences": 97
+      }
+    }
+  },
+  "wholeAgreementRun2": {
+    "status": "NOT_MEASURED",
+    "reason": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-2 does not exist (provider budget cap - see 08)"
+  },
+  "summary": {
+    "unitsEvaluated": 16,
+    "falseSemanticallyComplete": 0,
+    "conservative": true
+  }
+}
