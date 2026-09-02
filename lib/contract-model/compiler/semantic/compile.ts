@@ -349,10 +349,12 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       failureReasons.push("SEMANTIC_INVENTORY_UNAVAILABLE");
       accountabilityIssues.push(`[inventory] ${frozenInventory.inventoryStatus}: ${frozenInventory.inventoryStatusReason}`);
     }
-    if (frozenInventory && (frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP" || frozenInventory.uninventoriedSegments.length > 0)) {
+    // NO_SEMANTIC_COMPLETE_WITH_UNACCOUNTED_SOURCE, enforced here independently of the inventory's own status
+    // string and independently of reconciliation's boolean: either signal alone raises the failure.
+    if (frozenInventory && (frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP" || frozenInventory.unaccountedSource.length > 0)) {
       failureReasons.push("SEMANTIC_INVENTORY_COVERAGE_GAP");
-      accountabilityIssues.push(`[inventory] ${frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP" ? "INVENTORY_COVERAGE_GAP" : "uncovered operative segments"}: ${frozenInventory.inventoryStatusReason}`);
-      for (const seg of frozenInventory.uninventoriedSegments) accountabilityIssues.push(`[inventory] uncovered operative text ${seg.regionId}:${seg.charStart}-${seg.charEnd} (${Math.round(seg.coverage * 100)}% covered): "${seg.excerpt.slice(0, 160)}"`);
+      accountabilityIssues.push(`[inventory] ${frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP" ? "INVENTORY_COVERAGE_GAP" : "unaccounted source"}: ${frozenInventory.inventoryStatusReason}`);
+      for (const seg of frozenInventory.unaccountedSource) accountabilityIssues.push(`[inventory] unaccounted source ${seg.regionId}:${seg.charStart}-${seg.charEnd}: "${seg.excerpt.slice(0, 160)}" - ${seg.reason}`);
     }
     if (accountability && (accountability.counts.materialMissingFromComposition > 0 || accountability.counts.materialQuantitativeValuesMissing > 0)) {
       failureReasons.push("INVENTORY_ITEM_MISSING_FROM_COMPOSITION");

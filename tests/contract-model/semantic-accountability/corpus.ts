@@ -58,6 +58,13 @@ export interface Scenario {
   compose: (id: Id) => SubmitCompilationInput;
   expectedContextState: SourceContextState;
   expectSemanticallyComplete: boolean;
+  /**
+   * Dependency-expanded regions whose OWN semantics belong to another compilation unit (mission §9 option A):
+   * the referenced section is itself a unit and inventories its own components. Declaring the link here is what
+   * discharges the region from THIS unit's source coverage; a region not declared here participates in full and
+   * its uncovered text is UNACCOUNTED_SOURCE. Ownership is never assumed from a region's kind.
+   */
+  externallyAccountedRegionIds?: string[];
   /** Items expected to be carried as AMBIGUOUS (unresolved cross-unit dependency - review, never guessed). */
   expectedAmbiguousRefs?: string[];
   /** Items expected to be explicitly dispositioned INTENTIONALLY_NON_COMPUTATIONAL. */
@@ -261,13 +268,16 @@ const I4: Scenario = {
 // ---------------------------------------------------------------------------
 // I5 - nested proviso
 // ---------------------------------------------------------------------------
-const I5_PERM = "Investments in Joint Ventures in an aggregate amount not to exceed $40,000,000";
+// Ground-truth correction found by v3 source coverage: the permission item must include its own operative verb.
+// The v2 excerpt started at "Investments ...", leaving "The Borrower may make" - the whole grant of permission -
+// with no semantic disposition. The detector was right; the ground truth was incomplete.
+const I5_PERM = "The Borrower may make Investments in Joint Ventures in an aggregate amount not to exceed $40,000,000";
 const I5_C1 = "no Default has occurred and is continuing";
 const I5_C2 = "if the Total Leverage Ratio exceeds 4.00 to 1.00, such amount shall not exceed $20,000,000";
 const I5: Scenario = {
   id: "I5",
   title: "nested proviso",
-  text: agreement(COV_HEAD + `SECTION 7.06 Investments. The Borrower may make ${I5_PERM}; provided that ${I5_C1}; provided further that, ${I5_C2}.`),
+  text: agreement(COV_HEAD + `SECTION 7.06 Investments. ${I5_PERM}; provided that ${I5_C1}; provided further that, ${I5_C2}.`),
   anchorRef: "7.06",
   items: [
     item("perm", "PERMISSION", I5_PERM, "CRITICAL", { values: [money("$40,000,000", 40_000_000)] }),
@@ -383,6 +393,7 @@ const I10_B = "Liens not otherwise permitted hereunder securing obligations not 
 const I10_DOC = agreement(COV_HEAD + `SECTION 7.01 Indebtedness. ${I6_LEAD}:\n(a) ${I6_A}.`, `SECTION 7.02 Liens. ${I10_LEAD}:\n(a) ${I10_A}; and\n(b) ${I10_B}.`);
 const I10: Scenario = {
   id: "I10",
+  externallyAccountedRegionIds: ["xref-1"],
   title: "lien tied to debt permission",
   text: I10_DOC,
   anchorRef: "7.02",
@@ -716,6 +727,7 @@ const I27_C2 = "no more than five (5) Equity Cures shall be made during the term
 const I27_C3 = "the amount of any Equity Cure shall not exceed the amount required to cause compliance";
 const I27: Scenario = {
   id: "I27",
+  externallyAccountedRegionIds: ["xref-1"],
   title: "cure right",
   text: agreement(`ARTICLE VIII\nEVENTS OF DEFAULT\n\nSECTION 8.03 Equity Cure. Notwithstanding any failure to comply with Section 7.10, ${I27_CURE}; provided that (a) ${I27_C1}, (b) ${I27_C2} and (c) ${I27_C3}.`, COV_HEAD + `SECTION 7.10 Financial Covenant. ${I22_REQ}.`),
   anchorRef: "8.03",
@@ -755,6 +767,7 @@ const I29_C = "Investments in Foreign Subsidiaries in an aggregate amount not to
 const I29_CAP = "the aggregate amount of Indebtedness incurred under Section 7.01(f) and Investments made under this clause (c) shall not exceed $8,000,000 in the aggregate";
 const I29: Scenario = {
   id: "I29",
+  externallyAccountedRegionIds: ["xref-1"],
   title: "shared cap across covenant families",
   text: agreement(COV_HEAD + `SECTION 7.01 Indebtedness. ${I6_LEAD}:\n(f) Indebtedness of Foreign Subsidiaries in an aggregate principal amount not to exceed $6,000,000.`, `SECTION 7.06 Investments. ${I15_LEAD}:\n(c) ${I29_C}; provided that ${I29_CAP}.`),
   anchorRef: "7.06",
@@ -820,6 +833,7 @@ const I32_A = "Restricted Payments in an aggregate amount not to exceed $11,000,
 const I32_C = "such Restricted Payment would be permitted as an Investment under Section 7.06(c)";
 const I32: Scenario = {
   id: "I32",
+  externallyAccountedRegionIds: ["xref-1"],
   title: "explicit section dependency",
   text: agreement(COV_HEAD + `SECTION 7.05 Restricted Payments. ${I12_LEAD}:\n(a) ${I32_A}; provided that ${I32_C}.`, `SECTION 7.06 Investments. ${I15_LEAD}:\n(c) ${I29_C}.`),
   anchorRef: "7.05",

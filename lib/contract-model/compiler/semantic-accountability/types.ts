@@ -29,9 +29,15 @@
  * Pass B ever sees it, so reconciliation can never be circular.
  */
 
-/** v2 (Phase 3 final closure, decision 05): Pass A gained deterministic operative-TEXT coverage accounting, one bounded targeted gap re-inventory call, and the INVENTORY_COVERAGE_GAP status. Item-id derivation is unchanged in shape but carries this version, so ids are re-keyed relative to v1 evidence (cross-run comparison is semantic, never by exact id). */
-export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v2";
-export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v2";
+/**
+ * v3 (source-coverage repair): the eligibility filters of v2 are gone. Coverage now runs over EVERY region of the
+ * semantic unit, every character is assigned a deterministic disposition, and the default is UNACCOUNTED_SOURCE -
+ * no vocabulary, length floor, coverage threshold or region label can make material text ineligible for scrutiny.
+ * Item-id derivation is unchanged in shape but carries this version, so ids are re-keyed relative to v2/v1
+ * evidence (cross-run comparison is semantic, never by exact id).
+ */
+export const SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION = "semantic-accountability.v3";
+export const SEMANTIC_INVENTORY_PROMPT_VERSION = "semantic-inventory-prompt.v3";
 
 // ---------------------------------------------------------------------------
 // Semantic roles (mission §3) - compact semantic PRIMITIVES, never covenant
@@ -115,17 +121,36 @@ export interface SemanticInventoryItem {
   detectionMethod: "MODEL" | "DETERMINISTIC_VALUE_SCAN";
 }
 
-/** INVENTORY_COVERAGE_GAP (v2): the inventory ran, but after the bounded gap re-inventory at least one operative-text segment carrying generic operative/conditional drafting language is still not covered by any accepted item - accountability for that text is NOT established; the residual segments are listed in uninventoriedSegments. Never treated as INVENTORY_OK. */
+/** INVENTORY_COVERAGE_GAP (v3): the inventory ran, but after the bounded gap re-inventory at least one stretch of source in the semantic unit is still UNACCOUNTED_SOURCE - no item anchors it, no structural parent/child or external-ownership link discharges it, and no deterministic rule classifies it as non-semantic. Accountability for that text is NOT established; the residual spans are listed in unaccountedSource. Never treated as INVENTORY_OK. */
 export type InventoryStatus = "INVENTORY_OK" | "INVENTORY_COVERAGE_GAP" | "INVENTORY_EMPTY_SUSPECT" | "INVENTORY_FAILED" | "INVENTORY_SKIPPED_NO_PROVIDER";
 
-/** An operative-region clause segment (deterministic split at sentence/semicolon/enumerator boundaries) whose non-whitespace characters are less than half covered by accepted item spans, that is long enough to carry a proposition, and that contains generic operative/conditional drafting language. Surfaced exactly like an uninventoried value: with its verified offsets, never dropped, never auto-declared material. */
-export interface UncoveredOperativeSegment {
+/**
+ * A stretch of source in ANY region of the semantic unit that nothing accounts for: no CRITICAL/MATERIAL
+ * inventory item anchors it, no structural parent/child relationship discharges it, no other semantic unit owns
+ * it by a recorded link, and no deterministic rule classifies it as non-semantic (punctuation, connective glue,
+ * a heading, a bare citation, a defined-term label, page furniture). Surfaced with verified offsets, never
+ * dropped, never auto-declared material and never auto-declared immaterial.
+ */
+export interface UnaccountedSourceSpan {
   regionId: string;
   charStart: number;
   charEnd: number;
-  /** Fraction (0-1) of the segment's non-whitespace characters inside some accepted item span. */
-  coverage: number;
   excerpt: string;
+  /** Deterministic explanation of why nothing accounts for this text. */
+  reason: string;
+  /** Quantitative values inside it - present or absent, they never gate whether the span is reported. */
+  values: QuantitativeValue[];
+}
+
+/** Whole-unit source-coverage accounting: how much of each region's source reached which disposition. */
+export interface SourceCoverageSummary {
+  regionsConsidered: string[];
+  countsByDisposition: Record<string, number>;
+  charsByDisposition: Record<string, number>;
+  /** Non-whitespace characters that reached an accounted disposition, over all non-whitespace characters. */
+  accountedCharFraction: number;
+  /** Regions discharged by an explicit external-ownership link (§9 option A), with their owners. */
+  externallyAccountedRegions: { regionId: string; ownerCandidateRef: string; ownerInventoryHash: string }[];
 }
 
 /** Disclosure of the bounded gap re-inventory step (v2). `attempted` is false when the first pass left no uncovered segment (no second call was made). */
@@ -146,7 +171,10 @@ export interface FrozenSemanticInventory {
   /** Quantitative values the deterministic scanner found in the source that NO model-inventoried item covers - surfaced, never dropped, never auto-declared material (mission §6). */
   uninventoriedValues: (QuantitativeValue & { regionId: string })[];
   /** Operative-text segments still uncovered after the gap re-inventory (v2) - the inventory's own disclosure of what it did not account for. Empty when coverage accounting found no residual gap. */
-  uninventoriedSegments: UncoveredOperativeSegment[];
+  /** Every stretch of source in the unit that nothing accounts for. Empty is the only value compatible with semantic completeness. */
+  unaccountedSource: UnaccountedSourceSpan[];
+  /** Whole-unit coverage accounting, for disclosure and for the freeze hash. */
+  sourceCoverage: SourceCoverageSummary;
   gapReinventory: GapReinventoryRecord | null;
   inventoryStatus: InventoryStatus;
   inventoryStatusReason: string;
@@ -249,8 +277,8 @@ export interface SemanticAccountabilityResult {
     materialQuantitativeValues: number;
     materialQuantitativeValuesMissing: number;
     uninventoriedValues: number;
-    /** Operative-text segments Pass A itself could not account for (FrozenSemanticInventory.uninventoriedSegments) - disclosed here so a unit's accountability result carries its own inventory gap, never only a status string. */
-    uninventoriedSegments: number;
+    /** Stretches of source Pass A itself could not account for (FrozenSemanticInventory.unaccountedSource) - disclosed here so a unit's accountability result carries its own inventory gap, never only a status string. */
+    unaccountedSource: number;
     /** IR lineage references to inventoryItemIds that do not exist in the frozen inventory - a composition claiming credit for a component the inventory never had. */
     danglingLineageReferences: number;
     /** A lineage/disposition reference the composition gave WITHOUT its "tag:" prefix but whose content digest matched a real frozen item - resolved, not counted as dangling, but disclosed for audit (mission independence: canonicalization is deterministic string matching on the item's own stable content hash, never a model judgment). */

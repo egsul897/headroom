@@ -18,7 +18,8 @@
  */
 import { describe, expect, it } from "vitest";
 import { matchInventories, semanticStability, type MatchItem } from "../../../scripts/lib/pass-a-semantic-matcher";
-import { findUncoveredOperativeSegments, runSemanticInventory, segmentOperativeText } from "../../../lib/contract-model/compiler/semantic-accountability/inventory";
+import { runSemanticInventory } from "../../../lib/contract-model/compiler/semantic-accountability/inventory";
+import { computeSourceCoverage, segmentSourceUnits } from "../../../lib/contract-model/compiler/semantic-accountability/source-coverage";
 import { reconcileInventoryWithComposition } from "../../../lib/contract-model/compiler/semantic-accountability/reconciliation";
 import { resolveSourceContext } from "../../../lib/contract-model/compiler/semantic-accountability/source-context";
 import type { StageCaller } from "../../../lib/contract-model/compiler/llm-caller";
@@ -211,29 +212,29 @@ function twoStepCaller(first: WireInventoryItem[], gap: WireInventoryItem[] | Er
   };
 }
 
-describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inventory", () => {
+describe("Pass A v3 - whole-unit source coverage + targeted gap re-inventory", () => {
   it("segmentation is deterministic and generic: sentence/semicolon/enumerator boundaries, identical shape under arbitrary names, numbers and section styles", () => {
     const shape = (term: string, amt: string, sec: string) => `"${term}" means, for any period, the Base Amount plus (a) charges not to exceed ${amt} in any period; provided that no Event has occurred; and (b) fees paid pursuant to ${sec}, so long as such fees are cash-settled.`;
-    const s1 = segmentOperativeText(shape("Omega Amount", "$5,000,000", "Section 6.01(b)"));
-    const s2 = segmentOperativeText(shape("Quux Basis", "$17,250,000", "clause 12.4(iv)"));
-    const s3 = segmentOperativeText(shape("Kappa Measure", "$900,000", "Schedule 3"));
+    const s1 = segmentSourceUnits(shape("Omega Amount", "$5,000,000", "Section 6.01(b)"));
+    const s2 = segmentSourceUnits(shape("Quux Basis", "$17,250,000", "clause 12.4(iv)"));
+    const s3 = segmentSourceUnits(shape("Kappa Measure", "$900,000", "Schedule 3"));
     expect(s1.length).toBeGreaterThanOrEqual(4);
     expect(s2.length).toBe(s1.length);
     expect(s3.length).toBe(s1.length);
-    expect(segmentOperativeText(shape("Omega Amount", "$5,000,000", "Section 6.01(b)"))).toEqual(s1);
+    expect(segmentSourceUnits(shape("Omega Amount", "$5,000,000", "Section 6.01(b)"))).toEqual(s1);
   });
 
-  it("an uncovered clause carrying operative language is surfaced with exact offsets; a covered one is not; a short connective is below the floor", () => {
+  it("v3: an unanchored clause is surfaced with exact offsets whatever its length or vocabulary; a fully anchored region surfaces nothing", () => {
     const text = `"Omega Amount" means, for any period, the Base Amount plus (a) charges not to exceed $5,000,000 in any period; provided that no Omega Event has occurred and is continuing at such time; and (b) other amounts.`;
-    const cover = (needle: string) => { const i = text.indexOf(needle); return { regionId: "operative", charStart: i, charEnd: i + needle.length }; };
-    const gaps = findUncoveredOperativeSegments("operative", text, [cover('"Omega Amount" means, for any period, the Base Amount'), cover("charges not to exceed $5,000,000 in any period")]);
-    expect(gaps).toHaveLength(1);
-    expect(text.slice(gaps[0]!.charStart, gaps[0]!.charEnd)).toContain("provided that no Omega Event has occurred");
-    expect(gaps[0]!.coverage).toBe(0);
-    // "(b) other amounts." is < 40 non-whitespace chars and carries no operative vocabulary - below the surfacing floor by design.
-    expect(gaps.some((g) => text.slice(g.charStart, g.charEnd).includes("other amounts"))).toBe(false);
-    // Full coverage -> no gap.
-    expect(findUncoveredOperativeSegments("operative", text, [cover(text)])).toHaveLength(0);
+    const regions = [{ regionId: "operative", kind: "OPERATIVE" as const, documentId: "d", sourceNodeId: null, sectionRef: null, charStart: 0, charEnd: text.length, text, expandedFor: null, truncatedAtBudget: false, unitExtension: null }];
+    const cover = (needle: string) => { const i = text.indexOf(needle); return { regionId: "operative", charStart: i, charEnd: i + needle.length, materiality: "CRITICAL" }; };
+    const cov = computeSourceCoverage({ regions, spans: [cover('"Omega Amount" means, for any period, the Base Amount'), cover("charges not to exceed $5,000,000 in any period")] });
+    expect(cov.unaccounted.some((g) => g.excerpt.includes("provided that no Omega Event has occurred"))).toBe(true);
+    // v2 dropped "(b) other amounts." for being under 40 characters with no connective vocabulary. v3 surfaces it:
+    // there is no length floor and no vocabulary gate anywhere in the detection path.
+    expect(cov.unaccounted.some((g) => g.excerpt.includes("other amounts"))).toBe(true);
+    // Full coverage -> nothing unaccounted.
+    expect(computeSourceCoverage({ regions, spans: [cover(text)] }).unaccounted).toEqual([]);
   });
 
   it("no uncovered segment -> no gap call is made (attempted=false), status INVENTORY_OK", async () => {
@@ -243,7 +244,7 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     expect(inv.inventoryStatus).toBe("INVENTORY_OK");
     expect(inv.gapReinventory).toMatchObject({ attempted: false, segmentsBefore: 0, segmentsAfter: 0 });
     expect(stages).toEqual(["semantic_inventory"]);
-    expect(inv.uninventoriedSegments).toEqual([]);
+    expect(inv.unaccountedSource).toEqual([]);
   });
 
   it("a first pass that skips the definitional lead-in + condition triggers ONE targeted gap call that may only ADD verified items; when it closes the gap the status is INVENTORY_OK with the addition disclosed", async () => {
@@ -254,7 +255,7 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     const inv = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: twoStepCaller(first, gap, stages) });
     expect(stages).toEqual(["semantic_inventory", "semantic_inventory_gap"]);
     expect(inv.inventoryStatus).toBe("INVENTORY_OK");
-    expect(inv.gapReinventory).toMatchObject({ attempted: true, segmentsBefore: 1, itemsAdded: 2, segmentsAfter: 0, error: null });
+    expect(inv.gapReinventory).toMatchObject({ attempted: true, itemsAdded: 2, segmentsAfter: 0, error: null });
     expect(inv.items).toHaveLength(scenario.items.length);
     expect(inv.items.filter((i) => i.semanticRole === "CONDITION")).toHaveLength(1);
     // The gap pass changes nothing about first-pass items: same ids, same count.
@@ -268,10 +269,11 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     const first = wire.filter((w) => w.localRef !== "head" && w.localRef !== "dedupe");
     const inv = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: twoStepCaller(first, [], []) });
     expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
-    expect(inv.uninventoriedSegments).toHaveLength(1);
-    expect(inv.uninventoriedSegments[0]!.excerpt).toContain("without duplication and to the extent deducted");
-    expect(inv.gapReinventory).toMatchObject({ attempted: true, itemsAdded: 0, segmentsAfter: 1 });
-    expect(inv.inventoryStatusReason).toContain("uncovered");
+    expect(inv.unaccountedSource.length).toBeGreaterThan(0);
+    expect(inv.unaccountedSource.some((s) => s.excerpt.includes("without duplication and to the extent deducted"))).toBe(true);
+    expect(inv.gapReinventory).toMatchObject({ attempted: true, itemsAdded: 0 });
+    expect(inv.gapReinventory!.segmentsAfter).toBeGreaterThan(0);
+    expect(inv.inventoryStatusReason).toContain("UNACCOUNTED_SOURCE");
   });
 
   it("a gap call that throws is disclosed (error recorded) and still yields INVENTORY_COVERAGE_GAP - a failed second pass never silently becomes OK", async () => {
@@ -316,13 +318,13 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     const normalized = normalizeScenarioComposition(built, built.scenario.compose(idOf));
     const result = reconcileInventoryWithComposition({ inventory: gapped, composition: { rules: normalized.rules, definitions: normalized.definitions, sharedCapacities: normalized.sharedCapacities }, dispositions: normalized.inventoryDispositions, sourceContextState: built.sourceContext.state });
     expect(result.semanticallyComplete).toBe(false);
-    expect(result.counts.uninventoriedSegments).toBe(1);
+    expect(result.counts.unaccountedSource).toBeGreaterThan(0);
     expect(result.reasons.some((r) => r.includes("INVENTORY_COVERAGE_GAP"))).toBe(true);
-    expect(result.reasons.some((r) => r.includes("operative-text segment"))).toBe(true);
+    expect(result.reasons.some((r) => r.includes("stretch(es) of source"))).toBe(true);
     // Contrast: the fully inventoried scenario is complete.
     const full = reconcileScenario(built, normalizeScenarioComposition(built));
     expect(full.semanticallyComplete).toBe(true);
-    expect(full.counts.uninventoriedSegments).toBe(0);
+    expect(full.counts.unaccountedSource).toBe(0);
   });
 
   it("audit B1: an EMPTY inventory (twice) over operative text that carries only the generic vocabulary (unless / subject to / to the extent / excluding) is INVENTORY_COVERAGE_GAP, never INVENTORY_OK, and never semanticallyComplete", async () => {
@@ -335,7 +337,7 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     const inv = await runSemanticInventory({ candidateRef: "audit-b1", documentId: DOC_ID, sourceContext, caller: twoStepCaller([], [], stages) });
     expect(stages).toEqual(["semantic_inventory", "semantic_inventory_gap"]);
     expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
-    expect(inv.uninventoriedSegments.length).toBeGreaterThan(0);
+    expect(inv.unaccountedSource.length).toBeGreaterThan(0);
     const result = reconcileInventoryWithComposition({ inventory: inv, composition: { rules: [], definitions: [], sharedCapacities: [] }, dispositions: [], sourceContextState: sourceContext.state });
     expect(result.semanticallyComplete).toBe(false);
   });
@@ -347,7 +349,7 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     const inv = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: twoStepCaller(first, echoes, []) });
     expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
     expect(inv.gapReinventory?.itemsAdded).toBe(2);
-    expect(inv.uninventoriedSegments).toHaveLength(1);
+    expect(inv.unaccountedSource.length).toBeGreaterThan(0);
     // And the same echo items as MATERIAL do close it.
     const material = echoes.map((w) => ({ ...w, materiality: "MATERIAL" }));
     const closed = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: twoStepCaller(first, material, []) });
@@ -359,7 +361,7 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     const normalized = normalizeScenarioComposition(built);
     const clean = reconcileScenario(built, normalized);
     expect(clean.semanticallyComplete).toBe(true);
-    const tampered = { ...built.inventory, inventoryStatus: "INVENTORY_OK" as const, uninventoriedSegments: [{ regionId: "operative", charStart: 0, charEnd: 50, coverage: 0, excerpt: "x" }] };
+    const tampered = { ...built.inventory, inventoryStatus: "INVENTORY_OK" as const, unaccountedSource: [{ regionId: "operative", charStart: 0, charEnd: 50, excerpt: "x", reason: "tampered", values: [] }] };
     const result = reconcileInventoryWithComposition({ inventory: tampered, composition: { rules: normalized.rules, definitions: normalized.definitions, sharedCapacities: normalized.sharedCapacities }, dispositions: normalized.inventoryDispositions, sourceContextState: built.sourceContext.state });
     expect(result.semanticallyComplete).toBe(false);
   });
@@ -380,24 +382,28 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     expect(result.reasons.some((r) => /REVIEW_UNCERTAIN item\(s\) MISSING_FROM_COMPOSITION/.test(r))).toBe(true);
   });
 
-  it("re-audit: a conditional tail after a comma (', unless ...') is its own segment, so an uncovered proviso behind a covered main clause is surfaced; a whole sentence with only 'will not ... restricts' vocabulary is surfaced; a short uncovered proviso that opens with a conditional connective is surfaced at the lower conditional-tail floor", () => {
-    const text = `The Borrower shall not permit any Restricted Subsidiary to declare or pay any dividend on its Equity Interests, unless such dividend is paid solely in additional Equity Interests and is declared prior to the Maturity Date. The Borrower will not, and will not permit any Restricted Subsidiary to, enter into any agreement that restricts the ability of any Subsidiary to pay dividends; provided that no Default then exists.`;
+  it("v3: a proviso tail behind a covered main clause, a whole unanchored sentence, and a short enumerated exception are all surfaced - no vocabulary, floor or threshold can hide them", () => {
+    const text = `The Borrower shall not permit any Restricted Subsidiary to declare or pay any dividend on its Equity Interests, unless such dividend is paid solely in additional Equity Interests and is declared prior to the Maturity Date. The Borrower will not, and will not permit any Restricted Subsidiary to, enter into any agreement that restricts the ability of any Subsidiary to pay dividends; provided that no Default then exists. (iv) except Liens for taxes.`;
+    const regions = [{ regionId: "operative", kind: "OPERATIVE" as const, documentId: "d", sourceNodeId: null, sectionRef: null, charStart: 0, charEnd: text.length, text, expandedFor: null, truncatedAtBudget: false, unitExtension: null }];
     const cover = (needle: string) => { const i = text.indexOf(needle); if (i < 0) throw new Error(needle); return { regionId: "operative", charStart: i, charEnd: i + needle.length, materiality: "CRITICAL" }; };
-    const gaps = findUncoveredOperativeSegments("operative", text, [cover("The Borrower shall not permit any Restricted Subsidiary to declare or pay any dividend on its Equity Interests")]);
-    const excerpts = gaps.map((g) => g.excerpt);
-    expect(excerpts.some((e) => e.startsWith("unless such dividend"))).toBe(true);
-    expect(excerpts.some((e) => e.includes("enter into any agreement that restricts"))).toBe(true);
-    expect(excerpts.some((e) => e.includes("provided that no Default then exists"))).toBe(true);
+    const gaps = computeSourceCoverage({ regions, spans: [cover("The Borrower shall not permit any Restricted Subsidiary to declare or pay any dividend on its Equity Interests")] }).unaccounted.map((g) => g.excerpt);
+    expect(gaps.some((e) => e.includes("unless such dividend"))).toBe(true);
+    expect(gaps.some((e) => e.includes("enter into any agreement that restricts"))).toBe(true);
+    expect(gaps.some((e) => e.includes("provided that no Default then exists"))).toBe(true);
+    // An enumerator prefix no longer defeats anything (the v2 conditional-tail rule was anchored at ^).
+    expect(gaps.some((e) => e.includes("except Liens for taxes"))).toBe(true);
     // A non-material span never counts as coverage.
-    const gaps2 = findUncoveredOperativeSegments("operative", text, [{ ...cover(text), materiality: "REVIEW_UNCERTAIN" }]);
-    expect(gaps2.length).toBeGreaterThan(0);
+    expect(computeSourceCoverage({ regions, spans: [{ ...cover(text), materiality: "REVIEW_UNCERTAIN" }] }).unaccounted.length).toBeGreaterThan(0);
   });
 
-  it("corpus-wide: no fully-inventoried scenario leaves an uncovered operative segment, and every scenario's gap record is disclosed", async () => {
+  it("corpus-wide: no fully-inventoried scenario leaves unaccounted source or an unaccounted value, and every scenario's gap record is disclosed", async () => {
     for (const scenario of CORPUS) {
       const b = await buildScenario(scenario);
       expect(b.inventory.gapReinventory, scenario.id).not.toBeNull();
-      if (scenario.expectSemanticallyComplete) expect(b.inventory.uninventoriedSegments, `${scenario.id}: ${JSON.stringify(b.inventory.uninventoriedSegments.map((s) => s.excerpt.slice(0, 80)))}`).toEqual([]);
+      if (scenario.expectSemanticallyComplete) {
+        expect(b.inventory.unaccountedSource, `${scenario.id}: ${JSON.stringify(b.inventory.unaccountedSource.map((s) => s.excerpt.slice(0, 80)))}`).toEqual([]);
+        expect(b.inventory.uninventoriedValues, `${scenario.id} values`).toEqual([]);
+      }
     }
   });
 });

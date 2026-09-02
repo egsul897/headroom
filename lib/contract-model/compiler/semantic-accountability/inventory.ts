@@ -34,7 +34,8 @@ import { buildGapReinventoryUserContent, buildInventorySystemPrompt, buildInvent
 import { quantitativeValuesEquivalent, scanQuantitativeValues } from "./quantitative";
 import { SubmitSemanticInventorySchema, type WireInventoryItem } from "./wire-schema";
 import { INVENTORY_AMBIGUITIES, INVENTORY_MATERIALITIES, OPERATIVE_FLAGS, QUANTITATIVE_KINDS, SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, SEMANTIC_INVENTORY_PROMPT_VERSION, SEMANTIC_ROLES } from "./types";
-import type { FrozenSemanticInventory, GapReinventoryRecord, InventoryAmbiguity, InventoryMateriality, InventoryStatus, OperativeFlag, QuantitativeKind, QuantitativeValue, SemanticInventoryItem, SemanticRole, SourceContextRegion, SourceContextResult, UncoveredOperativeSegment } from "./types";
+import type { FrozenSemanticInventory, GapReinventoryRecord, InventoryAmbiguity, InventoryMateriality, InventoryStatus, OperativeFlag, QuantitativeKind, QuantitativeValue, SemanticInventoryItem, SemanticRole, SourceCoverageSummary, SourceContextRegion, SourceContextResult, UnaccountedSourceSpan } from "./types";
+import { computeSourceCoverage, isAccountedDisposition, type AccountingSpanInput, type ExternalAccountabilityLink, type SourceCoverageResult } from "./source-coverage";
 
 export interface SemanticInventoryInput {
   candidateRef: string;
@@ -42,6 +43,12 @@ export interface SemanticInventoryInput {
   sourceContext: SourceContextResult;
   /** Injectable for testing; defaults to the real env-var-driven getStageCaller(). */
   caller?: StageCaller;
+  /**
+   * Explicit statements that another semantic unit owns a dependency region's own semantics (§9 option A).
+   * A region named here is discharged as ACCOUNTED_BY_EXTERNAL_UNIT; a region NOT named here participates in this
+   * unit's source coverage in full. Unresolved ownership is never assumed - it is UNACCOUNTED_SOURCE.
+   */
+  externalAccountability?: ExternalAccountabilityLink[];
 }
 
 const MAX_EXCERPT_CHARS = 400;
@@ -101,107 +108,70 @@ function normalizeWireValue(v: WireInventoryItem["quantitativeValues"][number], 
 }
 
 // ---------------------------------------------------------------------------
-// v2 OPERATIVE-TEXT COVERAGE ACCOUNTING (Phase 3 final closure, decision 05).
-// Pass A's zero-cost accounting of source TEXT, the counterpart of the
-// quantitative scanner's accounting of source VALUES: a clause segment of
-// the operative region that no accepted item covers, that is long enough to
-// carry a proposition, and that contains generic operative/conditional
-// drafting language is an UNCOVERED OPERATIVE SEGMENT. It is surfaced
-// (never dropped, never auto-declared material) and, once, handed back to
-// the model for a targeted re-inventory. The vocabulary below is generic
-// English drafting connectives - no issuer, section number, defined term,
-// amount or benchmark (mission anti-enumeration).
+// v3 SOURCE COVERAGE (source-coverage.ts) - Pass A's accounting of the source
+// itself. The v2 detector that lived here (a connective vocabulary, a
+// 40-character floor, a 50% coverage threshold, a punctuation boundary and an
+// operative-region filter, all conjunctive) was demonstrated by an independent
+// audit to let material text through on every one of those five axes. It is
+// gone. Coverage is now computed over EVERY region of the unit with source
+// presumed accountable; see source-coverage.ts.
 // ---------------------------------------------------------------------------
-export const SEGMENT_MIN_NON_WHITESPACE_CHARS = 40;
-/** A segment that OPENS with a conditional connective (', unless ...', '; provided that ...') is a condition/exception by construction, so it is surfaced at a lower floor: a missing condition is never normalized away because it is short (re-audit finding). Lead-ins and headers never open with a connective, so this does not re-admit them. */
-export const SEGMENT_MIN_CONDITIONAL_TAIL_CHARS = 16;
-export const SEGMENT_COVERED_THRESHOLD = 0.5;
-const OPERATIVE_SEGMENT_RE = /\b(shall|may|must|means|agrees?|covenants?|provided|except|other than|excluding|excluded|including|included|to the extent|unless|subject to|so long as|not to exceed|without duplication|in each case|net of|less than|greater of|lesser of|greater than|at least|no more than|not more than|prior to|following|during|deemed|permitted|required|restricts?|restricted|prohibits?|prohibited|notwithstanding)\b/i;
-const ENUMERATOR = String.raw`\((?:[a-z]{1,2}|[ivxl]{1,5}|\d{1,2}|[A-Z]{1,2})\)`;
-/** Conditional connectives that open a proviso/exception tail inside a sentence - a comma or semicolon followed by one of these starts a new segment, so an uncovered tail is never hidden behind a covered main clause (re-audit finding). Generic English drafting vocabulary only. */
-const CONDITIONAL_CONNECTIVE = String.raw`(?:unless|provided|except|excluding|other than|subject to|so long as|to the extent|notwithstanding|but only|only if|if and only if)`;
-const OPENS_WITH_CONDITIONAL_RE = new RegExp(String.raw`^\s*${CONDITIONAL_CONNECTIVE}\b`, "i");
-const SEGMENT_BOUNDARY_RE = new RegExp(String.raw`(?<=[.;:])\s+|\n\s*(?=${ENUMERATOR})|\s+(?=${ENUMERATOR}\s)|(?<=[,;])\s+(?=${CONDITIONAL_CONNECTIVE}\b)`, "gi");
 
-/** Deterministic clause segmentation of a region text: splits after sentence/semicolon/colon ends and before enumerators. Offsets are into the region text. */
-export function segmentOperativeText(text: string): { charStart: number; charEnd: number }[] {
-  const out: { charStart: number; charEnd: number }[] = [];
-  let cursor = 0;
-  const re = new RegExp(SEGMENT_BOUNDARY_RE.source, "gi");
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(text)) !== null) {
-    if (m[0].length === 0) {
-      re.lastIndex++;
-      continue;
-    }
-    if (m.index > cursor) out.push({ charStart: cursor, charEnd: m.index });
-    cursor = m.index + m[0].length;
-  }
-  if (cursor < text.length) out.push({ charStart: cursor, charEnd: text.length });
-  return out.filter((s) => text.slice(s.charStart, s.charEnd).trim().length > 0);
-}
-
-/** Only a CRITICAL/MATERIAL item accounts for text (audit finding: an INFORMATIONAL or REVIEW_UNCERTAIN echo item must never close a gap, because Pass C excludes non-material items from every completeness rule). */
+/** Only a CRITICAL/MATERIAL item accounts for source; an INFORMATIONAL or REVIEW_UNCERTAIN echo never closes a gap. */
 const ACCOUNTING_SPAN = (s: { materiality?: string }) => s.materiality === "CRITICAL" || s.materiality === "MATERIAL";
 
-/** Uncovered operative segments of ONE region given the accepted MATERIAL item spans in that region. Adjacent uncovered segments (separated only by whitespace) are merged into one gap so the model receives coherent text. Pure function of (text, spans). */
-export function findUncoveredOperativeSegments(regionId: string, text: string, spans: { regionId: string; charStart: number; charEnd: number; materiality?: string }[]): UncoveredOperativeSegment[] {
-  const mask = new Uint8Array(text.length);
-  for (const s of spans) if (s.regionId === regionId && (s.materiality === undefined || ACCOUNTING_SPAN(s))) mask.fill(1, Math.max(0, s.charStart), Math.min(text.length, s.charEnd));
-  const coverageOf = (a: number, b: number): { nonWs: number; coverage: number } => {
-    let nonWs = 0;
-    let covered = 0;
-    for (let k = a; k < b; k++) {
-      if (/\s/.test(text[k]!)) continue;
-      nonWs++;
-      if (mask[k]) covered++;
-    }
-    return { nonWs, coverage: nonWs === 0 ? 1 : covered / nonWs };
-  };
-  const raw = segmentOperativeText(text).filter((s) => {
-    const seg = text.slice(s.charStart, s.charEnd);
-    const { nonWs, coverage } = coverageOf(s.charStart, s.charEnd);
-    const floor = OPENS_WITH_CONDITIONAL_RE.test(seg) ? SEGMENT_MIN_CONDITIONAL_TAIL_CHARS : SEGMENT_MIN_NON_WHITESPACE_CHARS;
-    return nonWs >= floor && coverage < SEGMENT_COVERED_THRESHOLD && OPERATIVE_SEGMENT_RE.test(seg);
-  });
-  const merged: { charStart: number; charEnd: number }[] = [];
-  for (const s of raw) {
-    const last = merged[merged.length - 1];
-    if (last && text.slice(last.charEnd, s.charStart).trim().length === 0) last.charEnd = s.charEnd;
-    else merged.push({ ...s });
-  }
-  return merged.map((s) => ({ regionId, charStart: s.charStart, charEnd: s.charEnd, coverage: Number(coverageOf(s.charStart, s.charEnd).coverage.toFixed(3)), excerpt: text.slice(s.charStart, s.charEnd) }));
+/** The accounting spans of an accepted inventory, as source-coverage sees them. */
+const accountingSpansOf = (items: SemanticInventoryItem[]): AccountingSpanInput[] => items.map((i) => ({ regionId: i.sourceSpan.regionId, charStart: i.sourceSpan.charStart, charEnd: i.sourceSpan.charEnd, materiality: i.materiality }));
+
+/** Runs whole-unit source coverage for an inventory state. */
+function coverageFor(input: SemanticInventoryInput, items: SemanticInventoryItem[]): SourceCoverageResult {
+  return computeSourceCoverage({ regions: input.sourceContext.regions, spans: accountingSpansOf(items), externalAccountability: input.externalAccountability });
 }
 
-function freezeHash(items: SemanticInventoryItem[], uninventoried: FrozenSemanticInventory["uninventoriedValues"], segments: UncoveredOperativeSegment[]): string {
+/** Projects a coverage result onto the frozen-inventory shapes. */
+function unaccountedFrom(cov: SourceCoverageResult): UnaccountedSourceSpan[] {
+  return cov.unaccounted.map((s) => ({ regionId: s.regionId, charStart: s.charStart, charEnd: s.charEnd, excerpt: s.excerpt, reason: s.reason, values: s.values }));
+}
+
+function summaryFrom(cov: SourceCoverageResult, links: ExternalAccountabilityLink[]): SourceCoverageSummary {
+  const totalChars = Object.values(cov.charsByDisposition).reduce((a, b) => a + b, 0);
+  const accountedChars = Object.entries(cov.charsByDisposition).filter(([d]) => isAccountedDisposition(d as never)).reduce((a, [, n]) => a + n, 0);
+  return {
+    regionsConsidered: cov.regionsConsidered,
+    countsByDisposition: { ...cov.countsByDisposition },
+    charsByDisposition: { ...cov.charsByDisposition },
+    accountedCharFraction: totalChars === 0 ? 1 : Number((accountedChars / totalChars).toFixed(4)),
+    externallyAccountedRegions: links.filter((l) => cov.regionsConsidered.includes(l.regionId)).map((l) => ({ regionId: l.regionId, ownerCandidateRef: l.ownerCandidateRef, ownerInventoryHash: l.ownerInventoryHash })),
+  };
+}
+
+function freezeHash(items: SemanticInventoryItem[], uninventoried: FrozenSemanticInventory["uninventoriedValues"], unaccounted: UnaccountedSourceSpan[]): string {
   const parts = items.map((i) => `${i.inventoryItemId}|${i.semanticRole}|${i.materiality}|${i.sourceSpan.regionId}:${i.sourceSpan.charStart}-${i.sourceSpan.charEnd}|${i.quantitativeValues.map((v) => `${v.kind}=${v.normalizedValue ?? v.rawText}`).join(",")}`);
   parts.push(...uninventoried.map((v) => `uninv|${v.regionId}:${v.charStart}-${v.charEnd}|${v.kind}=${v.normalizedValue ?? v.rawText}`));
-  parts.push(...segments.map((s) => `uninvseg|${s.regionId}:${s.charStart}-${s.charEnd}`));
+  parts.push(...unaccounted.map((s) => `unacc|${s.regionId}:${s.charStart}-${s.charEnd}`));
   return hashParts([SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION, ...parts.sort()]);
 }
 
-function buildResult(input: SemanticInventoryInput, caller: StageCaller, items: SemanticInventoryItem[], status: InventoryStatus, statusReason: string, rejectedUnverifiable: number, rejectedDuplicates: number, segments: UncoveredOperativeSegment[], gapReinventory: GapReinventoryRecord | null, costUsd: number | null): FrozenSemanticInventory {
-  // Quantitative accounting over every region - values no accepted item covers are surfaced, never dropped.
-  const uninventoried: FrozenSemanticInventory["uninventoriedValues"] = [];
-  for (const region of input.sourceContext.regions) {
-    for (const v of scanQuantitativeValues(region.text)) {
-      // Re-audit finding B2': a value under a REVIEW_UNCERTAIN/INFORMATIONAL item is NOT accounted for - only CRITICAL/MATERIAL items account for values, exactly as for text.
-      const covered = items.some((i) => ACCOUNTING_SPAN(i) && i.sourceSpan.regionId === region.regionId && i.sourceSpan.charStart <= v.charStart && v.charEnd <= i.sourceSpan.charEnd);
-      if (!covered) uninventoried.push({ ...v, regionId: region.regionId });
-    }
-  }
+function buildResult(input: SemanticInventoryInput, caller: StageCaller, items: SemanticInventoryItem[], status: InventoryStatus, statusReason: string, rejectedUnverifiable: number, rejectedDuplicates: number, cov: SourceCoverageResult, gapReinventory: GapReinventoryRecord | null, costUsd: number | null): FrozenSemanticInventory {
+  // Quantitative accounting comes from the same coverage pass as the text: EVERY quantitative kind, EVERY region.
+  // There is no money/percent/ratio shortlist and no "operative" region filter - the audit demonstrated both as
+  // silent-omission channels. A value inside deterministically non-semantic source (page furniture, a heading) is
+  // not reported; a value anywhere else that no CRITICAL/MATERIAL item anchors is.
+  const uninventoried: FrozenSemanticInventory["uninventoriedValues"] = cov.unaccountedValues.map((v) => ({ ...v }));
+  const unaccounted = unaccountedFrom(cov);
   return {
     candidateRef: input.candidateRef,
     items,
     uninventoriedValues: uninventoried,
-    uninventoriedSegments: segments,
+    unaccountedSource: unaccounted,
+    sourceCoverage: summaryFrom(cov, input.externalAccountability ?? []),
     gapReinventory,
     inventoryStatus: status,
     inventoryStatusReason: statusReason,
     rejectedUnverifiableItems: rejectedUnverifiable,
     rejectedDuplicateItems: rejectedDuplicates,
     sourceContextState: input.sourceContext.state,
-    frozenContentHash: freezeHash(items, uninventoried, segments),
+    frozenContentHash: freezeHash(items, uninventoried, unaccounted),
     frozenAt: new Date().toISOString(),
     algorithmVersion: SEMANTIC_ACCOUNTABILITY_ALGORITHM_VERSION,
     promptVersion: SEMANTIC_INVENTORY_PROMPT_VERSION,
@@ -297,37 +267,40 @@ export function normalizeInventorySubmission(input: Pick<SemanticInventoryInput,
  * Runs Pass A for one compilation unit and returns the FROZEN inventory.
  * Never throws - a failed call is an INVENTORY_FAILED result.
  *
- * v2: after the first pass, deterministic coverage accounting over the
- * OPERATIVE region finds uncovered operative segments; if any exist, ONE
- * bounded targeted gap re-inventory call receives only those segments and
- * may only ADD verified items (same anti-hallucination gate, value
- * completion, id derivation and duplicate rejection). Segments still
- * uncovered afterwards are surfaced as uninventoriedSegments and the status
- * is INVENTORY_COVERAGE_GAP - never INVENTORY_OK.
+ * v3: after the first pass, deterministic SOURCE COVERAGE runs over every
+ * region of the semantic unit (source-coverage.ts). Detection is
+ * deterministic and complete: it does not consult the model, and it does not
+ * require text to look operative before scrutinising it. If any stretch of
+ * source is UNACCOUNTED_SOURCE, ONE bounded targeted gap re-inventory call
+ * receives exactly those stretches and may only ADD verified items (same
+ * anti-hallucination gate, value completion, id derivation and duplicate
+ * rejection). The gap call is REMEDIATION, never detection: whatever it
+ * returns, coverage is recomputed, and anything still unaccounted is surfaced
+ * with status INVENTORY_COVERAGE_GAP - never INVENTORY_OK.
  */
 export async function runSemanticInventory(input: SemanticInventoryInput): Promise<FrozenSemanticInventory> {
   const caller = input.caller ?? getStageCaller();
+  const emptyCoverage = () => coverageFor(input, []);
   if (caller.isSynthetic) {
-    return buildResult(input, caller, [], "INVENTORY_SKIPPED_NO_PROVIDER", "no real model provider is configured (synthetic StageCaller) - the inventory was not generated; accountability cannot be established for this unit", 0, 0, [], null, null);
+    return buildResult(input, caller, [], "INVENTORY_SKIPPED_NO_PROVIDER", "no real model provider is configured (synthetic StageCaller) - the inventory was not generated; accountability cannot be established for this unit", 0, 0, emptyCoverage(), null, null);
   }
   let wire;
   try {
     wire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory", buildInventorySystemPrompt(), buildInventoryUserContent(input.sourceContext));
   } catch (err) {
-    return buildResult(input, caller, [], "INVENTORY_FAILED", `inventory call failed: ${err instanceof Error ? err.message : String(err)}`, 0, 0, [], null, caller.lastTelemetry()?.calculatedCostUsd ?? null);
+    return buildResult(input, caller, [], "INVENTORY_FAILED", `inventory call failed: ${err instanceof Error ? err.message : String(err)}`, 0, 0, emptyCoverage(), null, caller.lastTelemetry()?.calculatedCostUsd ?? null);
   }
   const firstPassCost = caller.lastTelemetry()?.calculatedCostUsd ?? null;
   const first = normalizeInventorySubmission(input, wire.items);
   let items = first.items;
 
-  // v2 coverage accounting + bounded targeted gap re-inventory (operative region only).
-  const operative = input.sourceContext.regions.find((r) => r.kind === "OPERATIVE");
-  let segments = operative ? findUncoveredOperativeSegments(operative.regionId, operative.text, items.map((i) => ({ ...i.sourceSpan, materiality: i.materiality }))) : [];
-  let gapReinventory: GapReinventoryRecord | null = { attempted: false, segmentsBefore: segments.length, itemsAdded: 0, duplicatesDropped: 0, unverifiableDropped: 0, segmentsAfter: segments.length, costUsd: null, error: null };
-  if (operative && segments.length > 0) {
-    const segmentsBefore = segments.length;
+  // Deterministic detection over the WHOLE unit, then one bounded remediation call.
+  let cov = coverageFor(input, items);
+  let gapReinventory: GapReinventoryRecord = { attempted: false, segmentsBefore: cov.unaccounted.length, itemsAdded: 0, duplicatesDropped: 0, unverifiableDropped: 0, segmentsAfter: cov.unaccounted.length, costUsd: null, error: null };
+  if (cov.unaccounted.length > 0) {
+    const segmentsBefore = cov.unaccounted.length;
     try {
-      const gapWire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory_gap", buildInventorySystemPrompt(), buildGapReinventoryUserContent(input.sourceContext, segments));
+      const gapWire = await caller.call(SubmitSemanticInventorySchema, "semantic_inventory_gap", buildInventorySystemPrompt(), buildGapReinventoryUserContent(input.sourceContext, cov.unaccounted.map((s) => ({ regionId: s.regionId, charStart: s.charStart, charEnd: s.charEnd, excerpt: s.excerpt }))));
       const gapCost = caller.lastTelemetry()?.calculatedCostUsd ?? null;
       const gap = normalizeInventorySubmission(input, gapWire.items);
       const known = new Set(items.map((i) => i.inventoryItemId));
@@ -341,28 +314,30 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
         }
       }
       items = [...items, ...added];
-      segments = findUncoveredOperativeSegments(operative.regionId, operative.text, items.map((i) => ({ ...i.sourceSpan, materiality: i.materiality })));
-      gapReinventory = { attempted: true, segmentsBefore, itemsAdded: added.length, duplicatesDropped: duplicates, unverifiableDropped: gap.rejectedUnverifiable, segmentsAfter: segments.length, costUsd: gapCost, error: null };
+      cov = coverageFor(input, items);
+      gapReinventory = { attempted: true, segmentsBefore, itemsAdded: added.length, duplicatesDropped: duplicates, unverifiableDropped: gap.rejectedUnverifiable, segmentsAfter: cov.unaccounted.length, costUsd: gapCost, error: null };
     } catch (err) {
-      gapReinventory = { attempted: true, segmentsBefore, itemsAdded: 0, duplicatesDropped: 0, unverifiableDropped: 0, segmentsAfter: segments.length, costUsd: caller.lastTelemetry()?.calculatedCostUsd ?? null, error: `gap re-inventory call failed: ${err instanceof Error ? err.message : String(err)}` };
+      gapReinventory = { attempted: true, segmentsBefore, itemsAdded: 0, duplicatesDropped: 0, unverifiableDropped: 0, segmentsAfter: cov.unaccounted.length, costUsd: caller.lastTelemetry()?.calculatedCostUsd ?? null, error: `gap re-inventory call failed: ${err instanceof Error ? err.message : String(err)}` };
     }
   }
   const totalCost = sumCost(firstPassCost, gapReinventory.costUsd);
   const rejectedUnverifiable = first.rejectedUnverifiable;
   const rejectedDuplicates = first.rejectedDuplicates;
 
-  // Coverage gap is decided BEFORE the empty-inventory branch (audit finding B1): an empty inventory over text that
-  // carries the generic operative/conditional vocabulary but none of the narrower legacy OPERATIVE_LANGUAGE_RE words
-  // must still be INVENTORY_COVERAGE_GAP, never INVENTORY_OK.
-  const coverageGap = () => buildResult(input, caller, items, "INVENTORY_COVERAGE_GAP", `${items.length} item(s) accepted (${gapReinventory!.itemsAdded} added by the targeted gap re-inventory), but ${segments.length} operative-text segment(s) carrying operative/conditional language remain uncovered by any CRITICAL/MATERIAL item${gapReinventory!.error ? ` (${gapReinventory!.error})` : ""} - accountability for that text is not established; see uninventoriedSegments`, rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
-  if (items.length === 0) {
-    const suspect = sourceLooksMaterial(input.sourceContext);
-    if (suspect) return buildResult(input, caller, items, "INVENTORY_EMPTY_SUSPECT", `the model returned ${wire.items.length} item(s), ${rejectedUnverifiable} rejected as unverifiable, leaving an EMPTY inventory over source that carries quantitative values or operative language - treated as suspect, never as 'nothing material here'`, rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
-    // Audit finding B1: an empty inventory over text that carries only the generic operative/conditional vocabulary (none of the
-    // narrower legacy OPERATIVE_LANGUAGE_RE words, no scanner value) is a COVERAGE GAP, never INVENTORY_OK.
-    if (segments.length > 0) return coverageGap();
-    return buildResult(input, caller, items, "INVENTORY_OK", "empty inventory over source with no quantitative value, no operative language and no uncovered operative segment", rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
+  // The coverage verdict is decided BEFORE any other status branch: unaccounted source outranks every other
+  // observation about the inventory, including an empty one.
+  // An EMPTY inventory over material-looking source is reported as EMPTY_SUSPECT rather than as a coverage gap:
+  // both refuse completeness identically, and EMPTY_SUSPECT names the more specific failure. Its span list is the
+  // same coverage result, so no unaccounted text is lost by taking this branch.
+  if (items.length === 0 && sourceLooksMaterial(input.sourceContext)) {
+    return buildResult(input, caller, items, "INVENTORY_EMPTY_SUSPECT", `the model returned ${wire.items.length} item(s), ${rejectedUnverifiable} rejected as unverifiable, leaving an EMPTY inventory over source that carries quantitative values or operative language - treated as suspect, never as 'nothing material here'; ${cov.unaccounted.length} stretch(es) of source are unaccounted`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost);
   }
-  if (segments.length > 0) return coverageGap();
-  return buildResult(input, caller, items, "INVENTORY_OK", `${items.length} item(s) accepted, ${rejectedUnverifiable} rejected as unverifiable, ${rejectedDuplicates} duplicate(s) dropped${gapReinventory.attempted ? `; targeted gap re-inventory closed ${gapReinventory.segmentsBefore} uncovered segment(s) with ${gapReinventory.itemsAdded} added item(s)` : "; no uncovered operative segment"}`, rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
+  if (cov.unaccounted.length > 0) {
+    const preview = cov.unaccounted.slice(0, 3).map((s) => `${s.regionId}:${s.charStart}-${s.charEnd}`).join(", ");
+    return buildResult(input, caller, items, "INVENTORY_COVERAGE_GAP", `${items.length} item(s) accepted (${gapReinventory.itemsAdded} added by the targeted gap re-inventory), but ${cov.unaccounted.length} stretch(es) of source across ${cov.regionsConsidered.length} region(s) remain UNACCOUNTED_SOURCE (${preview}${cov.unaccounted.length > 3 ? ", ..." : ""})${gapReinventory.error ? ` (${gapReinventory.error})` : ""} - accountability for that text is not established; see unaccountedSource`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost);
+  }
+  if (items.length === 0) {
+    return buildResult(input, caller, items, "INVENTORY_OK", "empty inventory over source that source coverage accounts for in full as non-semantic (headings, citations, formatting) with no quantitative value and no operative language", rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost);
+  }
+  return buildResult(input, caller, items, "INVENTORY_OK", `${items.length} item(s) accepted, ${rejectedUnverifiable} rejected as unverifiable, ${rejectedDuplicates} duplicate(s) dropped; source coverage accounts for every stretch of source in ${cov.regionsConsidered.length} region(s)${gapReinventory.attempted ? ` (the targeted gap re-inventory closed ${gapReinventory.segmentsBefore} unaccounted stretch(es) with ${gapReinventory.itemsAdded} added item(s))` : ""}`, rejectedUnverifiable, rejectedDuplicates, cov, gapReinventory, totalCost);
 }

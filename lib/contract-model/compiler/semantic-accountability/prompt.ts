@@ -66,7 +66,7 @@ export function buildInventorySystemPrompt(): string {
  * source-anchored items; it cannot edit, merge or re-label anything.
  */
 export function buildGapReinventoryUserContent(sourceContext: SourceContextResult, gaps: { regionId: string; charStart: number; charEnd: number; excerpt: string }[]): string {
-  const blocks = gaps.map((g, i) => `UNCOVERED SEGMENT ${i + 1} (REGION ${g.regionId}; chars ${g.charStart}-${g.charEnd} of that region's text)\n${g.excerpt}`);
+  const blocks = gaps.map((g, i) => `UNACCOUNTED SOURCE ${i + 1} (REGION ${g.regionId}; chars ${g.charStart}-${g.charEnd} of that region's text)\n${g.excerpt}`);
   return [
     `SOURCE CONTEXT STATE: ${sourceContext.state}`,
     "",

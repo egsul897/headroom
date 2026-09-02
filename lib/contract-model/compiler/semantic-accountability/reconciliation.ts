@@ -423,20 +423,28 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
   const criticalMissing = materialMissing.filter((r) => r.materiality === "CRITICAL");
   const materialValues = materialItems.flatMap((r) => r.quantitative);
   const materialValuesMissing = materialValues.filter((q) => q.disposition === "VALUE_MISSING_FROM_COMPOSITION");
-  const operativeEconomicUninventoried = inventory.uninventoriedValues.filter((v) => v.regionId === "operative" && (v.kind === "MONEY" || v.kind === "PERCENT" || v.kind === "RATIO"));
+  // v3: EVERY uninventoried value blocks, of every quantitative kind, in every region. The v2 rule counted only
+  // MONEY/PERCENT/RATIO in the region literally named "operative"; the independent audit demonstrated that a
+  // dropped cure period (DAYS), notice period (PERIOD), maturity date (DATE), incremental multiple (MULTIPLIER)
+  // or any value inside a dependency-expanded definition was therefore invisible. Source coverage has already
+  // excluded values sitting in deterministically non-semantic source, so nothing here is noise.
+  const uninventoriedValues = inventory.uninventoriedValues;
 
   const reasons: string[] = [];
   if (inventory.inventoryStatus !== "INVENTORY_OK") reasons.push(`inventory status ${inventory.inventoryStatus}: ${inventory.inventoryStatusReason}`);
-  if (inventory.uninventoriedSegments.length > 0) reasons.push(`${inventory.uninventoriedSegments.length} operative-text segment(s) Pass A could not account for: ${inventory.uninventoriedSegments.map((s) => `${s.regionId}:${s.charStart}-${s.charEnd}`).join(", ")} - materiality undetermined, review required`);
+  if (inventory.unaccountedSource.length > 0) reasons.push(`${inventory.unaccountedSource.length} stretch(es) of source Pass A could not account for: ${inventory.unaccountedSource.map((s) => `${s.regionId}:${s.charStart}-${s.charEnd}`).join(", ")} - materiality undetermined, review required`);
   if (sourceContextState !== "COMPLETE_LOCAL_SOURCE" && sourceContextState !== "DEPENDENCY_EXPANDED_SOURCE") reasons.push(`source context is ${sourceContextState} - the unit's own boundary was not established as complete`);
   if (materialMissing.length > 0) reasons.push(`${materialMissing.length} material inventory item(s) MISSING_FROM_COMPOSITION (${criticalMissing.length} CRITICAL): ${materialMissing.map((r) => `${r.inventoryItemId} [${r.semanticRole}]`).join(", ")}`);
   if (materialValuesMissing.length > 0) reasons.push(`${materialValuesMissing.length} material quantitative value(s) absent from the composed IR: ${materialValuesMissing.map((q) => q.value.rawText).join(", ")}`);
-  if (operativeEconomicUninventoried.length > 0) reasons.push(`${operativeEconomicUninventoried.length} money/percent/ratio value(s) in the operative text were inventoried by neither Pass A nor the composition: ${operativeEconomicUninventoried.map((v) => v.rawText).join(", ")} - materiality undetermined, review required`);
+  if (uninventoriedValues.length > 0) reasons.push(`${uninventoriedValues.length} quantitative value(s) in the unit's source were inventoried by neither Pass A nor the composition: ${uninventoriedValues.map((v) => `${v.regionId}:${v.kind} ${v.rawText}`).join(", ")} - materiality undetermined, review required`);
   if (reviewUncertainMissing.length > 0) reasons.push(`${reviewUncertainMissing.length} REVIEW_UNCERTAIN item(s) MISSING_FROM_COMPOSITION - materiality undetermined, never treated as immaterial: ${reviewUncertainMissing.map((r) => `${r.inventoryItemId} [${r.semanticRole}]`).join(", ")}`);
   if (danglingLineageReferences > 0) reasons.push(`${danglingLineageReferences} lineage/disposition reference(s) name an inventoryItemId that does not exist in the frozen inventory`);
 
   // Defense in depth (audit finding): completeness is refused on the residual segments themselves, not only on the status string that reports them.
-  const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && inventory.uninventoriedSegments.length === 0 && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && reviewUncertainMissing.length === 0 && materialValuesMissing.length === 0 && operativeEconomicUninventoried.length === 0 && danglingLineageReferences === 0;
+  // NO_SEMANTIC_COMPLETE_WITH_UNACCOUNTED_SOURCE (§14). This is one of three independent enforcement points -
+  // the inventory status, this boolean, and the compile failure reason - and none of them keys on another's
+  // string: any unaccounted source span or unaccounted value refuses completeness on its own.
+  const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && inventory.unaccountedSource.length === 0 && uninventoriedValues.length === 0 && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && reviewUncertainMissing.length === 0 && materialValuesMissing.length === 0 && danglingLineageReferences === 0;
 
   return {
     candidateRef: inventory.candidateRef,
@@ -456,7 +464,7 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       materialQuantitativeValues: materialValues.length,
       materialQuantitativeValuesMissing: materialValuesMissing.length,
       uninventoriedValues: inventory.uninventoriedValues.length,
-      uninventoriedSegments: inventory.uninventoriedSegments.length,
+      unaccountedSource: inventory.unaccountedSource.length,
       danglingLineageReferences,
       canonicalizedLineageReferences,
     },

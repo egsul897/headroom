@@ -75,6 +75,16 @@ export function scriptedInventoryCaller(items: WireInventoryItem[] | (() => Wire
   };
 }
 
+/**
+ * Builds the §9 external-ownership links a scenario declares. In production these carry the OWNER UNIT'S real
+ * frozenContentHash; here the owner is another section of the same synthetic document, so the harness derives a
+ * stable stand-in. Both fields must be non-empty for the link to discharge anything - an undeclared region always
+ * participates in the unit's own source coverage.
+ */
+export function externalLinksFor(scenario: Scenario): { regionId: string; ownerCandidateRef: string; ownerInventoryHash: string }[] {
+  return (scenario.externallyAccountedRegionIds ?? []).map((regionId) => ({ regionId, ownerCandidateRef: `${scenario.id}:${regionId}:owner-unit`, ownerInventoryHash: `synthetic-owner-inventory:${scenario.id}:${regionId}` }));
+}
+
 export function buildIndexFor(scenario: Scenario): { index: StructuralIndex; anchor: StructuralNode } {
   const index = buildTestIndex([{ documentId: DOC_ID, label: "Synthetic Credit Agreement", text: scenario.text }]);
   const matches = index.findNodesByRef(DOC_ID, scenario.anchorRef);
@@ -90,7 +100,7 @@ export async function buildScenario(scenario: Scenario): Promise<BuiltScenario> 
   const operativeText = scenario.operativeWindow ? scenario.operativeWindow(fullUnit) : fullUnit;
   const sourceContext = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: operativeText, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null, ...(scenario.sourceContextOptions ?? {}) });
   const wireItems = scriptedWireItems(scenario.items);
-  const inventory = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: scriptedInventoryCaller(wireItems) });
+  const inventory = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: scriptedInventoryCaller(wireItems), externalAccountability: externalLinksFor(scenario) });
   const idByRef = mapRefsToIds(scenario.items, inventory.items, sourceContext);
   const idOf = (ref: string) => {
     const id = idByRef.get(ref);
@@ -166,7 +176,12 @@ export function accountRecall(built: BuiltScenario): RecallAccounting {
 /** Every scanner value in every region is either covered by an accepted item's span or surfaced as uninventoried - never silently absent (mission §6/§17). */
 export function silentAbsences(built: BuiltScenario): string[] {
   const out: string[] = [];
+  // A region whose accountability is explicitly delegated to another unit (§9 option A) is ACCOUNTED, not silent -
+  // and the delegation itself is disclosed in inventory.sourceCoverage.externallyAccountedRegions, which this
+  // control asserts is present rather than assumed.
+  const delegated = new Set(built.inventory.sourceCoverage.externallyAccountedRegions.map((r) => r.regionId));
   for (const region of built.sourceContext.regions) {
+    if (delegated.has(region.regionId)) continue;
     for (const v of scanQuantitativeValues(region.text)) {
       const covered = built.inventory.items.some((i) => i.sourceSpan.regionId === region.regionId && i.sourceSpan.charStart <= v.charStart && v.charEnd <= i.sourceSpan.charEnd);
       const surfaced = built.inventory.uninventoriedValues.some((u) => u.regionId === region.regionId && u.charStart === v.charStart && u.charEnd === v.charEnd);
