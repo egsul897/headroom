@@ -224,6 +224,8 @@ export interface SemanticAccountabilityResult {
     uninventoriedValues: number;
     /** IR lineage references to inventoryItemIds that do not exist in the frozen inventory - a composition claiming credit for a component the inventory never had. */
     danglingLineageReferences: number;
+    /** A lineage/disposition reference the composition gave WITHOUT its "tag:" prefix but whose content digest matched a real frozen item - resolved, not counted as dangling, but disclosed for audit (mission independence: canonicalization is deterministic string matching on the item's own stable content hash, never a model judgment). */
+    canonicalizedLineageReferences: number;
   },
   /** True only when: inventory ran (INVENTORY_OK), source context is not TRUNCATED/STRUCTURALLY_INCOMPLETE/UNKNOWN, every material item has a non-MISSING disposition, every material value is present or dispositioned, and no dangling lineage. */
   semanticallyComplete: boolean;

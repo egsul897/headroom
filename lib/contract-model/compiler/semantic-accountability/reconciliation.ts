@@ -292,11 +292,51 @@ function isMaterial(item: SemanticInventoryItem): boolean {
   return item.materiality === "CRITICAL" || item.materiality === "MATERIAL";
 }
 
+/**
+ * A composition sometimes reproduces an inventoryItemId without its
+ * "tag:" prefix (observed on real content across providers - the model
+ * still gets the 24-hex-char content digest exactly right, just drops the
+ * namespace label). Since that digest IS the item's real identity
+ * (stable-keys.ts: `${tag}:${digest}`), and a 24-hex-char match is
+ * practically unique, this is resolved by digest lookup rather than
+ * scored as a hallucinated/dangling reference - the same "tolerant of
+ * model formatting, strict about content" posture as every wire-schema
+ * enum in this codebase. A raw id that matches no known digest either way
+ * is a genuine dangling reference and is left exactly as given.
+ */
+function digestOf(id: string): string {
+  const idx = id.indexOf(":");
+  return (idx >= 0 ? id.slice(idx + 1) : id).toLowerCase();
+}
+function buildDigestIndex(items: SemanticInventoryItem[]): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const it of items) map.set(digestOf(it.inventoryItemId), it.inventoryItemId);
+  return map;
+}
+function canonicalizeId(raw: string, knownIds: Set<string>, digestIndex: Map<string, string>): { id: string; canonicalized: boolean } {
+  if (knownIds.has(raw)) return { id: raw, canonicalized: false };
+  const mapped = digestIndex.get(digestOf(raw));
+  return mapped ? { id: mapped, canonicalized: true } : { id: raw, canonicalized: false };
+}
+
 export function reconcileInventoryWithComposition(input: ReconcileInput): SemanticAccountabilityResult {
   const { inventory, composition, sourceContextState } = input;
   const walk = walkComposition(composition);
   const knownIds = new Set(inventory.items.map((i) => i.inventoryItemId));
-  const dispositions = input.dispositions ?? [];
+  const digestIndex = buildDigestIndex(inventory.items);
+  let canonicalizedLineageReferences = 0;
+  for (const entry of walk.lineage) {
+    entry.inventoryItemIds = entry.inventoryItemIds.map((raw) => {
+      const { id, canonicalized } = canonicalizeId(raw, knownIds, digestIndex);
+      if (canonicalized) canonicalizedLineageReferences++;
+      return id;
+    });
+  }
+  const dispositions = (input.dispositions ?? []).map((d) => {
+    const { id, canonicalized } = canonicalizeId(d.inventoryItemId, knownIds, digestIndex);
+    if (canonicalized) canonicalizedLineageReferences++;
+    return { ...d, inventoryItemId: id };
+  });
   const dispositionById = new Map<string, { disposition: InventoryDisposition | null; raw: string; note: string }>();
   for (const d of dispositions) dispositionById.set(d.inventoryItemId, { disposition: normalizeDisposition(d.disposition), raw: d.disposition, note: d.note });
 
@@ -412,6 +452,7 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       materialQuantitativeValuesMissing: materialValuesMissing.length,
       uninventoriedValues: inventory.uninventoriedValues.length,
       danglingLineageReferences,
+      canonicalizedLineageReferences,
     },
     semanticallyComplete,
     reasons,

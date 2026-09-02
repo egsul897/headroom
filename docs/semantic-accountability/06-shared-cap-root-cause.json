@@ -127,5 +127,18 @@
       }
     ],
     "antiEnumeration": "None of the remediation logic is keyed to a specific agreement, section number, defined term, basket name or ground-truth amount (enforced by tests/contract-model/semantic-accountability-independence.test.ts)."
-  }
+  },
+  "realValidationDefectsFound": [
+    {
+      "id": "RVD-1",
+      "discoveredDuring": "SA commit 7, real holdout validation run-1 (Sonnet 5, tests/fixtures/semantic-accountability-validation/holdout/run-1-pre-canonicalization-fix)",
+      "symptom": "0/6 completed regions semanticallyComplete; dangling-lineage counts up to 69/region; up to 44 material items MISSING_FROM_COMPOSITION per region",
+      "rootCause": "The composition model reliably reproduces a frozen inventoryItemId's 24-hex-char content digest but frequently omits its 'inv-item:' namespace prefix when writing the id into a rule/definition/sharedCapacity inventoryItemIds array. Pass C's exact-string match then scored every such reference as dangling/hallucinated. Confirmed 48/48 lineage references in the ebitda region matched a real item by digest alone.",
+      "classification": "ARCHITECTURE_DEFECT (intolerant exact-string id matching), not a model-capability limit - same defect shape independent of the composition model (also present, alongside genuine fabrication, in the discarded Haiku 4.5 run).",
+      "whyNotCaughtBySyntheticCorpus": "The I1-I45 harness scripts the Pass A 'model' to echo each item's own verbatim excerpt and lets normalizeInventorySubmission compute the real id from it - it never exercises a real model RE-TYPING an id it was only shown in a prompt, so the id-formatting variance never occurred in synthetic evidence.",
+      "fix": "lib/contract-model/compiler/semantic-accountability/reconciliation.ts: canonicalizeId() resolves a lineage/disposition id that matches no known id verbatim but matches a known item's content digest to that item; disclosed via a new counts.canonicalizedLineageReferences field, never silently. A genuinely non-matching id (wrong digest) is left as-is and still counted dangling.",
+      "verification": "New regression test (pass-bc-reconciliation.test.ts) with one prefix-dropped id (resolved, REPRESENTED) and one same-shape bogus id (stays dangling); full synthetic suite 139/139 unchanged.",
+      "productionReFrozen": true
+    }
+  ]
 }

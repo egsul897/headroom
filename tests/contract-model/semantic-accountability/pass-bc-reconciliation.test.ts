@@ -81,6 +81,25 @@ describe("semantic accountability - Pass B/C over the synthetic corpus", () => {
     expect(normalized.rules[0]!.sufficiency).toBe("PARTIAL");
     expect(Object.keys(acc)).not.toContain("executable");
   });
+
+  it("real-content defect (found by the frozen-region dry run): a lineage id given WITHOUT its 'inv-item:' prefix is canonicalized by content digest, not scored as dangling - a genuinely bogus id of the same shape stays dangling", async () => {
+    const b = await get("I6");
+    const fullId = b.idOf("a");
+    const bareDigest = fullId.split(":")[1]!;
+    const bogusSameShape = "ffffffffffffffffffffffff"; // 24 hex chars, matches no real item
+    const base = submission({
+      rules: [
+        rule("ra", "7.01", { capacityExpression: M(25_000_000, [bareDigest]) }, [b.idOf("lead")]),
+        rule("rb", "7.01", { capacityExpression: M(10_000_000, [bogusSameShape]) }),
+      ],
+    });
+    const acc = reconcileScenario(b, normalizeScenarioComposition(b, base));
+    const itemA = acc.items.find((i) => i.inventoryItemId === fullId)!;
+    expect(itemA.disposition).toBe("REPRESENTED");
+    expect(itemA.lineageIrPaths).toContain("rules[0].capacityExpression");
+    expect(acc.counts.canonicalizedLineageReferences).toBe(1);
+    expect(acc.counts.danglingLineageReferences).toBe(1); // only the genuinely bogus id
+  });
 });
 
 describe("semantic accountability - injected omissions (I41-I44) derived from every complete scenario", () => {
