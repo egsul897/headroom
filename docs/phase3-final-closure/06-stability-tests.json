@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "artifactId": "06-stability-tests",
   "command": "npx vitest run tests/contract-model/semantic-accountability tests/contract-model/semantic-accountability-independence.test.ts",
-  "result": "4 files, 161/161 passed (139 pre-existing + 22 new)",
+  "result": "4 files, 167/167 passed (139 pre-existing + 22 new + 6 added after the independent audit: matcher A2(i) value change never stable, A2(ii) strict-fold lower bound, A2(iii) fold under a different conditional role; production B1 empty inventory over generic-vocabulary text -> COVERAGE_GAP, B2'' non-material echo items never close a gap, Pass C defense-in-depth refusal on residual segments)",
   "newTestFile": "tests/contract-model/semantic-accountability/pass-a-stability.test.ts",
   "part1_semanticMatcher": {
     "unit": "scripts/lib/pass-a-semantic-matcher.ts (zero-LLM, source-first; the same matcher the forensics script uses)",

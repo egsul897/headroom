@@ -130,7 +130,7 @@ function main() {
 
   const classified: Classified[] = [];
   const idStable: { region: string; id: string; role: string; wordingDiffers: boolean; materialityDiffers: boolean; materiality1: Materiality; materiality2: Materiality; disposition1: Disposition | null; disposition2: Disposition | null }[] = [];
-  const clusterRows: { region: string; clusterId: string; material: boolean; inRun1: number; inRun2: number; roles: string[]; conservativeStable: boolean; lenientStable: boolean; captured1: boolean | null; captured2: boolean | null; dispositions1: string[]; dispositions2: string[]; foldedConditionalRole: boolean; memberKeys: string[] }[] = [];
+  const clusterRows: { region: string; clusterId: string; material: boolean; inRun1: number; inRun2: number; roles: string[]; conservativeStable: boolean; lenientStable: boolean; captured1: boolean | null; captured2: boolean | null; dispositions1: string[]; dispositions2: string[]; foldedConditionalRole: boolean; strictFoldStable: boolean; valuesDiffer: boolean; memberKeys: string[] }[] = [];
   const perRegion: Record<string, unknown>[] = [];
 
   for (const regionId of [...run1.keys()].filter((k) => run2.has(k)).sort()) {
@@ -166,7 +166,7 @@ function main() {
       const ms = cl.members.map((mm) => byRunId.get(`${mm.run}:${mm.id}`)!);
       const r1 = ms.filter((x) => x.run === 1), r2 = ms.filter((x) => x.run === 2);
       const captured = (xs: Item[]) => xs.length === 0 ? null : xs.some((x) => x.disposition !== null && x.disposition !== "MISSING_FROM_COMPOSITION");
-      clusterRows.push({ region: regionId, clusterId: cl.clusterId, material: cl.material, inRun1: cl.inRun1, inRun2: cl.inRun2, roles: cl.roles, lenientStable: cl.lenientStable, conservativeStable: cl.conservativeStable, captured1: captured(r1), captured2: captured(r2), dispositions1: [...new Set(r1.map((x) => x.disposition ?? "NONE"))], dispositions2: [...new Set(r2.map((x) => x.disposition ?? "NONE"))], foldedConditionalRole: cl.foldedConditionalRole, memberKeys: ms.map((x) => `${x.run}:${regionId}:${x.id}`) });
+      clusterRows.push({ region: regionId, clusterId: cl.clusterId, material: cl.material, inRun1: cl.inRun1, inRun2: cl.inRun2, roles: cl.roles, lenientStable: cl.lenientStable, conservativeStable: cl.conservativeStable, captured1: captured(r1), captured2: captured(r2), dispositions1: [...new Set(r1.map((x) => x.disposition ?? "NONE"))], dispositions2: [...new Set(r2.map((x) => x.disposition ?? "NONE"))], foldedConditionalRole: cl.foldedConditionalRole, strictFoldStable: cl.strictFoldStable, valuesDiffer: cl.valuesDiffer, memberKeys: ms.map((x) => `${x.run}:${regionId}:${x.id}`) });
     }
 
     const regionCls = classified.filter((c) => c.region === regionId && MATERIAL(c.materiality));
@@ -265,15 +265,18 @@ function main() {
       ofWhichDispositionedInBothRuns: idSharedCapturedBoth.length,
       sameDispositionLabel: strictSame,
       dispositionStability: idSharedCapturedBoth.length === 0 ? null : Number((strictSame / idSharedCapturedBoth.length).toFixed(4)),
-      materialUnionByExactId: prior.totals.materialUnion,
-      exactIdInventoryStability: Number((idShared.length / prior.totals.materialUnion).toFixed(4)),
+      materialUnionByExactIdThisScript: forensics.totals.materialItemsRun1 + forensics.totals.materialItemsRun2 - idShared.length,
+      exactIdInventoryStability: Number((idShared.length / (forensics.totals.materialItemsRun1 + forensics.totals.materialItemsRun2 - idShared.length)).toFixed(4)),
+      exactIdInventoryStabilityPriorDenominator: { materialUnion: prior.totals.materialUnion, value: Number((idShared.length / prior.totals.materialUnion).toFixed(4)), note: "14-holdout-stability.json counts materiality by the run-1 item when both exist; this script counts an item material when it is material in EITHER run - the two denominators differ (audit finding 1b); the script-consistent figure is the one above" },
       differingLabels: idSharedCapturedBoth.filter((s) => s.disposition1 !== s.disposition2).map((s) => ({ region: s.region, id: s.id, role: s.role, run1: s.disposition1, run2: s.disposition2 })),
     },
     semanticInventoryStability: {
       method: "Union-find clusters over id-identity, 1:1 span pairing, fragment/merge containment and within-run near-duplicates. A material cluster is STABLE when it has members in both runs. CONSERVATIVE additionally treats a CONDITION/EXCEPTION/SHARED_CAP/CURE/THRESHOLD/TRIGGER item that only survives in the other run FOLDED into a broader non-conditional span as NOT stable (a folded condition is a potential condition loss, never normalized away - mission §8/§11).",
       materialClusters: materialClusters.length,
       lenient: { inBoth: inBothLenient.length, stability: Number((inBothLenient.length / materialClusters.length).toFixed(4)) },
-      conservative: { inBoth: inBothConservative.length, stability: Number((inBothConservative.length / materialClusters.length).toFixed(4)), gate: 0.95, pass: inBothConservative.length / materialClusters.length >= 0.95 },
+      conservative: { inBoth: inBothConservative.length, stability: Number((inBothConservative.length / materialClusters.length).toFixed(4)), gate: 0.95, pass: inBothConservative.length / materialClusters.length >= 0.95, gateNote: "the pre-registered 95% gate is applied to THIS figure only" },
+      strictFold: { method: "conservative, plus EVERY material fragment folded into a broader other-run span counted unstable (audit lower bound - a dropped sub-proposition and a granularity split are indistinguishable by spans alone)", inBoth: materialClusters.filter((c) => c.strictFoldStable).length, stability: Number((materialClusters.filter((c) => c.strictFoldStable).length / materialClusters.length).toFixed(4)) },
+      valueDifferingClusters: materialClusters.filter((c) => c.valuesDiffer).length,
       adjudicatedFolded: (() => {
         // A folded cluster is retained only when EVERY material folded member's semantics survive in a container proposition.
         const adjudicated = materialClusters.filter((c) => c.conservativeStable || (c.lenientStable && c.foldedConditionalRole && c.memberKeys.filter((k) => { const x = classified.find((y) => `${y.run}:${y.region}:${y.id}` === k); return x?.conditionalRoleFolded && MATERIAL(x.materiality); }).every((k) => foldedRetained.has(k))));

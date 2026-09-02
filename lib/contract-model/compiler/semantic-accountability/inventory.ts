@@ -136,10 +136,13 @@ export function segmentOperativeText(text: string): { charStart: number; charEnd
   return out.filter((s) => text.slice(s.charStart, s.charEnd).trim().length > 0);
 }
 
-/** Uncovered operative segments of ONE region given the accepted item spans in that region. Adjacent uncovered segments (separated only by whitespace) are merged into one gap so the model receives coherent text. Pure function of (text, spans). */
-export function findUncoveredOperativeSegments(regionId: string, text: string, spans: { regionId: string; charStart: number; charEnd: number }[]): UncoveredOperativeSegment[] {
+/** Only a CRITICAL/MATERIAL item accounts for text (audit finding: an INFORMATIONAL or REVIEW_UNCERTAIN echo item must never close a gap, because Pass C excludes non-material items from every completeness rule). */
+const ACCOUNTING_SPAN = (s: { materiality?: string }) => s.materiality === "CRITICAL" || s.materiality === "MATERIAL";
+
+/** Uncovered operative segments of ONE region given the accepted MATERIAL item spans in that region. Adjacent uncovered segments (separated only by whitespace) are merged into one gap so the model receives coherent text. Pure function of (text, spans). */
+export function findUncoveredOperativeSegments(regionId: string, text: string, spans: { regionId: string; charStart: number; charEnd: number; materiality?: string }[]): UncoveredOperativeSegment[] {
   const mask = new Uint8Array(text.length);
-  for (const s of spans) if (s.regionId === regionId) mask.fill(1, Math.max(0, s.charStart), Math.min(text.length, s.charEnd));
+  for (const s of spans) if (s.regionId === regionId && (s.materiality === undefined || ACCOUNTING_SPAN(s))) mask.fill(1, Math.max(0, s.charStart), Math.min(text.length, s.charEnd));
   const coverageOf = (a: number, b: number): { nonWs: number; coverage: number } => {
     let nonWs = 0;
     let covered = 0;
@@ -312,7 +315,7 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
 
   // v2 coverage accounting + bounded targeted gap re-inventory (operative region only).
   const operative = input.sourceContext.regions.find((r) => r.kind === "OPERATIVE");
-  let segments = operative ? findUncoveredOperativeSegments(operative.regionId, operative.text, items.map((i) => i.sourceSpan)) : [];
+  let segments = operative ? findUncoveredOperativeSegments(operative.regionId, operative.text, items.map((i) => ({ ...i.sourceSpan, materiality: i.materiality }))) : [];
   let gapReinventory: GapReinventoryRecord | null = { attempted: false, segmentsBefore: segments.length, itemsAdded: 0, duplicatesDropped: 0, unverifiableDropped: 0, segmentsAfter: segments.length, costUsd: null, error: null };
   if (operative && segments.length > 0) {
     const segmentsBefore = segments.length;
@@ -331,7 +334,7 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
         }
       }
       items = [...items, ...added];
-      segments = findUncoveredOperativeSegments(operative.regionId, operative.text, items.map((i) => i.sourceSpan));
+      segments = findUncoveredOperativeSegments(operative.regionId, operative.text, items.map((i) => ({ ...i.sourceSpan, materiality: i.materiality })));
       gapReinventory = { attempted: true, segmentsBefore, itemsAdded: added.length, duplicatesDropped: duplicates, unverifiableDropped: gap.rejectedUnverifiable, segmentsAfter: segments.length, costUsd: gapCost, error: null };
     } catch (err) {
       gapReinventory = { attempted: true, segmentsBefore, itemsAdded: 0, duplicatesDropped: 0, unverifiableDropped: 0, segmentsAfter: segments.length, costUsd: caller.lastTelemetry()?.calculatedCostUsd ?? null, error: `gap re-inventory call failed: ${err instanceof Error ? err.message : String(err)}` };
@@ -341,12 +344,18 @@ export async function runSemanticInventory(input: SemanticInventoryInput): Promi
   const rejectedUnverifiable = first.rejectedUnverifiable;
   const rejectedDuplicates = first.rejectedDuplicates;
 
+  // Coverage gap is decided BEFORE the empty-inventory branch (audit finding B1): an empty inventory over text that
+  // carries the generic operative/conditional vocabulary but none of the narrower legacy OPERATIVE_LANGUAGE_RE words
+  // must still be INVENTORY_COVERAGE_GAP, never INVENTORY_OK.
+  const coverageGap = () => buildResult(input, caller, items, "INVENTORY_COVERAGE_GAP", `${items.length} item(s) accepted (${gapReinventory!.itemsAdded} added by the targeted gap re-inventory), but ${segments.length} operative-text segment(s) carrying operative/conditional language remain uncovered by any CRITICAL/MATERIAL item${gapReinventory!.error ? ` (${gapReinventory!.error})` : ""} - accountability for that text is not established; see uninventoriedSegments`, rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
   if (items.length === 0) {
     const suspect = sourceLooksMaterial(input.sourceContext);
-    return buildResult(input, caller, items, suspect ? "INVENTORY_EMPTY_SUSPECT" : "INVENTORY_OK", suspect ? `the model returned ${wire.items.length} item(s), ${rejectedUnverifiable} rejected as unverifiable, leaving an EMPTY inventory over source that carries quantitative values or operative language - treated as suspect, never as 'nothing material here'` : "empty inventory over source with no quantitative value and no operative language", rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
+    if (suspect) return buildResult(input, caller, items, "INVENTORY_EMPTY_SUSPECT", `the model returned ${wire.items.length} item(s), ${rejectedUnverifiable} rejected as unverifiable, leaving an EMPTY inventory over source that carries quantitative values or operative language - treated as suspect, never as 'nothing material here'`, rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
+    // Audit finding B1: an empty inventory over text that carries only the generic operative/conditional vocabulary (none of the
+    // narrower legacy OPERATIVE_LANGUAGE_RE words, no scanner value) is a COVERAGE GAP, never INVENTORY_OK.
+    if (segments.length > 0) return coverageGap();
+    return buildResult(input, caller, items, "INVENTORY_OK", "empty inventory over source with no quantitative value, no operative language and no uncovered operative segment", rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
   }
-  if (segments.length > 0) {
-    return buildResult(input, caller, items, "INVENTORY_COVERAGE_GAP", `${items.length} item(s) accepted (${gapReinventory.itemsAdded} added by the targeted gap re-inventory), but ${segments.length} operative-text segment(s) carrying operative/conditional language remain uncovered by any item${gapReinventory.error ? ` (${gapReinventory.error})` : ""} - accountability for that text is not established; see uninventoriedSegments`, rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
-  }
+  if (segments.length > 0) return coverageGap();
   return buildResult(input, caller, items, "INVENTORY_OK", `${items.length} item(s) accepted, ${rejectedUnverifiable} rejected as unverifiable, ${rejectedDuplicates} duplicate(s) dropped${gapReinventory.attempted ? `; targeted gap re-inventory closed ${gapReinventory.segmentsBefore} uncovered segment(s) with ${gapReinventory.itemsAdded} added item(s)` : "; no uncovered operative segment"}`, rejectedUnverifiable, rejectedDuplicates, segments, gapReinventory, totalCost);
 }

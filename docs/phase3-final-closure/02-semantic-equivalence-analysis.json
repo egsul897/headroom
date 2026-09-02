@@ -17,8 +17,13 @@
     "ofWhichDispositionedInBothRuns": 91,
     "sameDispositionLabel": 82,
     "dispositionStability": 0.9011,
-    "materialUnionByExactId": 463,
-    "exactIdInventoryStability": 0.1965,
+    "materialUnionByExactIdThisScript": 482,
+    "exactIdInventoryStability": 0.1888,
+    "exactIdInventoryStabilityPriorDenominator": {
+      "materialUnion": 463,
+      "value": 0.1965,
+      "note": "14-holdout-stability.json counts materiality by the run-1 item when both exist; this script counts an item material when it is material in EITHER run - the two denominators differ (audit finding 1b); the script-consistent figure is the one above"
+    },
     "differingLabels": [
       {
         "region": "ebitda",
@@ -93,17 +98,24 @@
       "stability": 0.904
     },
     "conservative": {
-      "inBoth": 196,
-      "stability": 0.784,
+      "inBoth": 194,
+      "stability": 0.776,
       "gate": 0.95,
-      "pass": false
+      "pass": false,
+      "gateNote": "the pre-registered 95% gate is applied to THIS figure only"
     },
+    "strictFold": {
+      "method": "conservative, plus EVERY material fragment folded into a broader other-run span counted unstable (audit lower bound - a dropped sub-proposition and a granularity split are indistinguishable by spans alone)",
+      "inBoth": 162,
+      "stability": 0.648
+    },
+    "valueDifferingClusters": 0,
     "adjudicatedFolded": {
       "method": "conservative, except a folded conditional-role item whose content words survive (>=40%) in the container's own Pass A proposition counts as retained",
-      "inBoth": 221,
-      "stability": 0.884,
-      "foldedItemsMaterial": 30,
-      "foldedItemsRetainedInContainerProposition": 25
+      "inBoth": 220,
+      "stability": 0.88,
+      "foldedItemsMaterial": 35,
+      "foldedItemsRetainedInContainerProposition": 29
     },
     "coverageWeighted": {
       "method": "material-inventoried source characters present in both runs / present in either run (supplementary; not the gate metric)",
@@ -566,6 +578,15 @@
         ]
       },
       {
+        "clusterId": "net-income#7",
+        "region": "net-income",
+        "roles": [
+          "EXCEPTION",
+          "ALTERNATIVE",
+          "CONDITION"
+        ]
+      },
+      {
         "clusterId": "net-income#8",
         "region": "net-income",
         "roles": [
@@ -573,16 +594,24 @@
           "CONDITION",
           "DEPENDENCY"
         ]
+      },
+      {
+        "clusterId": "net-income#12",
+        "region": "net-income",
+        "roles": [
+          "EXCEPTION",
+          "CONDITION"
+        ]
       }
     ]
   },
   "semanticDispositionStability": {
     "method": "Over conservative-stable material clusters: captured-status agreement (captured = any member dispositioned non-MISSING) and exact disposition-label agreement (both runs' members carry one and the same label).",
-    "clusters": 196,
-    "capturedStatusAgree": 194,
-    "capturedStability": 0.9898,
-    "labelAgree": 170,
-    "labelStability": 0.8673,
+    "clusters": 194,
+    "capturedStatusAgree": 192,
+    "capturedStability": 0.9897,
+    "labelAgree": 168,
+    "labelStability": 0.866,
     "gate": 0.95,
     "capturedPass": true,
     "labelPass": false,
@@ -958,6 +987,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:aba9ff7dbc445b98bb5cbe0c",
         "2:applicable-liquidity-rate:inv-item:aba9ff7dbc445b98bb5cbe0c"
@@ -983,6 +1014,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:991b99f4ddc2d224adecf3f2",
         "2:applicable-liquidity-rate:inv-item:991b99f4ddc2d224adecf3f2"
@@ -1009,6 +1042,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:975151e0d954ee9695502985",
         "2:applicable-liquidity-rate:inv-item:1d43fddb17d026161c1d09e1"
@@ -1034,6 +1069,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:f2fba50e3b0ed03869dc79c9",
         "2:applicable-liquidity-rate:inv-item:f2fba50e3b0ed03869dc79c9"
@@ -1059,6 +1096,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:8dba12a2711b6daa39d74993",
         "2:applicable-liquidity-rate:inv-item:8dba12a2711b6daa39d74993"
@@ -1084,6 +1123,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:17fffaaecfa892c01fb201db",
         "2:applicable-liquidity-rate:inv-item:17fffaaecfa892c01fb201db"
@@ -1109,6 +1150,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:11bb525502c0edf49507f42a",
         "2:applicable-liquidity-rate:inv-item:11bb525502c0edf49507f42a"
@@ -1134,6 +1177,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:90eb3401f375dcdaa345c308",
         "2:applicable-liquidity-rate:inv-item:c92614f55dacb7278712e77f"
@@ -1159,6 +1204,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:6798b0637c971d11076ffdd8",
         "2:applicable-liquidity-rate:inv-item:1c116c2e2dedad917c9100b6"
@@ -1184,6 +1231,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:9b2d1782cbe1db8e1923b9cf",
         "2:applicable-liquidity-rate:inv-item:9b2d1782cbe1db8e1923b9cf"
@@ -1209,6 +1258,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:66b294d391ed4d9ad642d08b",
         "2:applicable-liquidity-rate:inv-item:66b294d391ed4d9ad642d08b"
@@ -1235,6 +1286,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:84d027de473ee64273d54afb",
         "2:applicable-liquidity-rate:inv-item:4e6218d5de63ff6288ef7c02"
@@ -1261,6 +1314,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:20717739c61b8d262313c2f7",
         "2:applicable-liquidity-rate:inv-item:0e9424bd59b71d7903683179"
@@ -1287,6 +1342,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:0753ca52ec8ea00a143b9853",
         "2:applicable-liquidity-rate:inv-item:c344828ee72de447b33e268e"
@@ -1313,6 +1370,8 @@
         "INTENTIONALLY_NON_COMPUTATIONAL"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:b8cf1e5e4ba3ccb6e03d81be",
         "2:applicable-liquidity-rate:inv-item:5c11f7f2f296de15beaec2a9"
@@ -1340,6 +1399,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:f9f0b311cb8bc5f830bb95de",
         "1:applicable-liquidity-rate:inv-item:05c3470da7af2fbfa6a0484e",
@@ -1367,6 +1428,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:7296fac99677dd2ed0b86aaf",
         "2:applicable-liquidity-rate:inv-item:652e2a6c793010e80b6b56bd"
@@ -1392,6 +1455,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:5122ba82fbb2f96802f4045e",
         "2:applicable-liquidity-rate:inv-item:5122ba82fbb2f96802f4045e"
@@ -1417,6 +1482,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:1ff973659539f33b239a66ac",
         "2:applicable-liquidity-rate:inv-item:1ff973659539f33b239a66ac"
@@ -1443,6 +1510,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:6e86d7761939da3f4937e16e",
         "2:applicable-liquidity-rate:inv-item:6e86d7761939da3f4937e16e",
@@ -1472,6 +1541,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:2ac55dbcbf26a18c9a6040e0",
         "2:applicable-liquidity-rate:inv-item:669d387f063bf3a4bd53bad0"
@@ -1498,6 +1569,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:33f33f56f997e2b5cc7daed4",
         "2:applicable-liquidity-rate:inv-item:93db27c06c3dc7f0075965a6"
@@ -1523,6 +1596,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:31cf33230b652bec7abe89ea",
         "2:applicable-liquidity-rate:inv-item:31cf33230b652bec7abe89ea"
@@ -1548,6 +1623,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:08bfecafc48b19ed07a7ae9f",
         "2:applicable-liquidity-rate:inv-item:08bfecafc48b19ed07a7ae9f"
@@ -1574,6 +1651,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:c6a3ebab8f59fd3b01f6a296",
         "2:applicable-liquidity-rate:inv-item:6f9838dc89f9cf53255da31d"
@@ -1599,6 +1678,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:8b99d6b0b23d49b1b2e5f7a4",
         "2:applicable-liquidity-rate:inv-item:f975bf0f52d600faa19997ff"
@@ -1624,6 +1705,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:4741d1a1c48f17df8a619b63",
         "2:applicable-liquidity-rate:inv-item:fbd806cefdc7c31b4889882f"
@@ -1649,6 +1732,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:3dd357695a8f0b0b47b18a8b",
         "2:applicable-liquidity-rate:inv-item:1be66ddab9b5643dab369e99"
@@ -1674,6 +1759,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:e1fa2f008a86514bf3c02ec4",
         "2:applicable-liquidity-rate:inv-item:709dfdd1961b93b278960060"
@@ -1699,6 +1786,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:4aeab0e6f4a329f35f6c6b6d",
         "2:applicable-liquidity-rate:inv-item:7ee6a26062fc99b6b5481d67"
@@ -1725,6 +1814,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:960fc9877864206a6889e1df",
         "1:applicable-liquidity-rate:inv-item:816604cc324aa86b036f4f11",
@@ -1754,6 +1845,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:bc1f0d089e1be4da3ad594af",
         "2:applicable-liquidity-rate:inv-item:a08116f840476e493071c03d"
@@ -1779,6 +1872,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:2999f0237f988723743cb3c7",
         "2:applicable-liquidity-rate:inv-item:2999f0237f988723743cb3c7"
@@ -1804,6 +1899,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:138b81314c5dda75bf98a287",
         "2:applicable-liquidity-rate:inv-item:a57ca2819692a555736273b7"
@@ -1829,6 +1926,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:14f409eb1aba8c3a2e165f0f",
         "2:applicable-liquidity-rate:inv-item:945a006d28f3d29ea84949da"
@@ -1854,6 +1953,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:018fe8d1f757e828ebff8dad",
         "2:applicable-liquidity-rate:inv-item:88e05dd04242ad26b125af43"
@@ -1879,6 +1980,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:d5326ec7f93534431bc0d68e",
         "2:applicable-liquidity-rate:inv-item:f0a5d3bc164f9f8cdeb307da"
@@ -1904,6 +2007,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:fa8ec6ba4940fb2c6cba5d3d",
         "2:applicable-liquidity-rate:inv-item:937ae78909e31b02921ba1bb"
@@ -1929,6 +2034,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:da7a68e662d0cffd410c700a",
         "2:applicable-liquidity-rate:inv-item:da7a68e662d0cffd410c700a"
@@ -1954,6 +2061,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:61af42b9ba7f767a9ac86dfd",
         "2:applicable-liquidity-rate:inv-item:673ba35b44cf120a9e658585"
@@ -1979,6 +2088,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:11cb63b393fcd5c4b0a186a3",
         "2:applicable-liquidity-rate:inv-item:6bd45975d5ead2831fefc508"
@@ -2004,6 +2115,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:57e9f79f29dab25615c22d7b",
         "2:applicable-liquidity-rate:inv-item:a04e3ba1b94bbddeb4608345"
@@ -2029,6 +2142,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:794ae9463702e169ab7349ca",
         "2:applicable-liquidity-rate:inv-item:b2aff47683d642c932d306ed"
@@ -2054,6 +2169,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:87800afd7156779e5a38e8b6",
         "2:applicable-liquidity-rate:inv-item:001d25e2ed3c2fdf104881ac"
@@ -2079,6 +2196,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:07e71145a95663338107dabd",
         "2:applicable-liquidity-rate:inv-item:d2b8206062bc190c41bb16e3",
@@ -2105,6 +2224,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:fe91247183d7736e21278477",
         "2:applicable-liquidity-rate:inv-item:64a4cdf6ba4ab2c66b659ed7"
@@ -2130,6 +2251,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:9c705a772e3d2ccb4917bc81",
         "2:applicable-liquidity-rate:inv-item:33e84da8d7b501a3b36b4043"
@@ -2155,6 +2278,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:4b5f88c5c999658d2b4d3f41",
         "2:applicable-liquidity-rate:inv-item:fe35232cf56ab698c028eddb"
@@ -2180,6 +2305,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:1a4d9f009ce0148cdc2b1285",
         "2:applicable-liquidity-rate:inv-item:405385bcb690dd808ee86fbd"
@@ -2205,6 +2332,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:5bb3af4297b88bf0eca5ba4a",
         "2:applicable-liquidity-rate:inv-item:3773138a878ac691aa406ddc"
@@ -2230,6 +2359,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:bd2fa6a01e20c34771fe3218",
         "2:applicable-liquidity-rate:inv-item:1c112e29c61e6181ea89ddc5"
@@ -2255,6 +2386,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:a6871c301f73a55426efe27d",
         "2:applicable-liquidity-rate:inv-item:a6871c301f73a55426efe27d"
@@ -2280,6 +2413,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:738647e1dc9e253cc5230cca",
         "2:applicable-liquidity-rate:inv-item:dde91a342093b43c7b2a421b"
@@ -2305,6 +2440,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:eaa53460a57990f5a4d03650",
         "2:applicable-liquidity-rate:inv-item:d3d9fdfd52009d9d47672527"
@@ -2330,6 +2467,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:0b864ccbb1824e6f85f19a31",
         "2:applicable-liquidity-rate:inv-item:3becc54458cbc9a5fdbc2dab"
@@ -2355,6 +2494,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:84d5f0a09032456a67dea8e9",
         "2:applicable-liquidity-rate:inv-item:c51f14207ece515bafa510e0"
@@ -2380,6 +2521,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:applicable-liquidity-rate:inv-item:b6abf98eddc32ecc02c79b50",
         "2:applicable-liquidity-rate:inv-item:4d7ec56ed862ecf98f19f7f8"
@@ -2403,6 +2546,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "2:applicable-liquidity-rate:inv-item:9d1ffddc37b5ba7bfbeca73f"
       ]
@@ -2425,6 +2570,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "2:applicable-liquidity-rate:inv-item:0f7d36c0bfa4821c5699dc52"
       ]
@@ -2449,6 +2596,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:16b61ed7f9ae1a20edf1705b",
         "2:ebitda:inv-item:c8fa1a086cfa605492a8f74c"
@@ -2475,6 +2624,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:812acac60964435f7d2fd0a6",
         "2:ebitda:inv-item:255599bd93c446e4b86dda18"
@@ -2500,6 +2651,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:5ef590a2fade86acb405e4e7",
         "2:ebitda:inv-item:5ef590a2fade86acb405e4e7"
@@ -2525,6 +2678,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:6800d4d3058025de779b0a3a",
         "2:ebitda:inv-item:6800d4d3058025de779b0a3a"
@@ -2550,6 +2705,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:ee38f752eb82e8051c1ce642",
         "2:ebitda:inv-item:ee38f752eb82e8051c1ce642"
@@ -2576,6 +2733,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:b1f8174c392ec9529e58a13f",
         "2:ebitda:inv-item:a06750ad9d3749c839a3f1ec",
@@ -2602,6 +2761,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:97e73aa69de2ef4e26eff2f6",
         "2:ebitda:inv-item:97e73aa69de2ef4e26eff2f6"
@@ -2628,6 +2789,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:7deac7dea06e070566a6f5a1",
         "2:ebitda:inv-item:d16e134393b7014b53564574",
@@ -2654,6 +2817,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:871330b0e5af6bc8febaa1c0",
         "2:ebitda:inv-item:871330b0e5af6bc8febaa1c0"
@@ -2679,6 +2844,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:6a8753f0a1fe10e959fcaa52",
         "2:ebitda:inv-item:6a8753f0a1fe10e959fcaa52"
@@ -2705,6 +2872,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:e8bbe20cbd1993aff11542d5",
         "2:ebitda:inv-item:efe478565190505c33278b93",
@@ -2732,6 +2901,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:6f0a1794a713562120e13428",
         "1:ebitda:inv-item:31d3396374fc887e83e3c96f",
@@ -2759,6 +2930,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:828a9949c5dcd4e13a7e830f",
         "2:ebitda:inv-item:49c60648ee64ed05af88fb6e"
@@ -2784,6 +2957,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:51c2b8ad554a2b0147cb810f",
         "2:ebitda:inv-item:51c2b8ad554a2b0147cb810f"
@@ -2809,6 +2984,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:f19ebe5d67202296160fae76",
         "2:ebitda:inv-item:f19ebe5d67202296160fae76"
@@ -2834,6 +3011,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:8012f69a1116d379f1dfadba",
         "2:ebitda:inv-item:c6bb8aaac343c369b91d36a9"
@@ -2859,6 +3038,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:10f4f77f235823be395000dd",
         "2:ebitda:inv-item:10f4f77f235823be395000dd"
@@ -2884,6 +3065,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:41aa6bacb16cbb2d10f9784f",
         "2:ebitda:inv-item:e92ab547431ee1be950e70c9"
@@ -2909,6 +3092,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:7e5ab64b0fe5ae35876b7186",
         "2:ebitda:inv-item:7e5ab64b0fe5ae35876b7186"
@@ -2934,6 +3119,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:94c08e30b14f3e3e2f487552",
         "2:ebitda:inv-item:94c08e30b14f3e3e2f487552"
@@ -2959,6 +3146,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:737ae03a1baaea6c7745ad5c",
         "2:ebitda:inv-item:737ae03a1baaea6c7745ad5c"
@@ -2984,6 +3173,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:1c8cc0eefbf1322b875dd71b",
         "2:ebitda:inv-item:1c8cc0eefbf1322b875dd71b"
@@ -3009,6 +3200,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:eecbb0bdcffe5598b67501ec",
         "2:ebitda:inv-item:eecbb0bdcffe5598b67501ec"
@@ -3034,6 +3227,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:ddc4db5ffbeb2df029334a36",
         "2:ebitda:inv-item:ddc4db5ffbeb2df029334a36"
@@ -3059,6 +3254,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:8d6ff93cfe612c6e905ea799",
         "1:ebitda:inv-item:93561218113ee7b041198b69",
@@ -3086,6 +3283,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:833ea034a74fe223bb72d639",
         "2:ebitda:inv-item:833ea034a74fe223bb72d639"
@@ -3111,6 +3310,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:06a17cc2941500d55ae541f0",
         "2:ebitda:inv-item:509ce7df233fec9c0ff2247a"
@@ -3136,6 +3337,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:15cdd0ccd5065003dfb01965",
         "2:ebitda:inv-item:15cdd0ccd5065003dfb01965"
@@ -3161,6 +3364,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:1a0de33d4225a9eca663c822",
         "2:ebitda:inv-item:ea061c461730d872715a8429"
@@ -3186,6 +3391,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:220a6129ff105f901e231318",
         "2:ebitda:inv-item:220a6129ff105f901e231318"
@@ -3209,6 +3416,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:ac03f94b1d1c27345f18a707"
       ]
@@ -3233,6 +3442,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:c445358051dedac98ed99b12",
         "2:ebitda:inv-item:2eaccab5735d6433ce08286f"
@@ -3258,6 +3469,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:e9feaab06c66e0272b5fc36b",
         "2:ebitda:inv-item:e9feaab06c66e0272b5fc36b"
@@ -3284,6 +3497,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:51ae3fe1b158808d8fec8686",
         "1:ebitda:inv-item:25155a39b24959438a0d7618",
@@ -3310,6 +3525,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:025d44e1583fea5f56dfa435",
         "2:ebitda:inv-item:025d44e1583fea5f56dfa435"
@@ -3335,6 +3552,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:98b5ca91bbb9004d834e272c",
         "2:ebitda:inv-item:98b5ca91bbb9004d834e272c"
@@ -3360,6 +3579,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:815cdb3672a9e13eb030a9ca",
         "2:ebitda:inv-item:815cdb3672a9e13eb030a9ca"
@@ -3385,6 +3606,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:b319a6d85b6be185746d5d49",
         "2:ebitda:inv-item:b319a6d85b6be185746d5d49"
@@ -3410,6 +3633,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:a67e19b0dcb7fc3a4ad9f66a",
         "2:ebitda:inv-item:a67e19b0dcb7fc3a4ad9f66a"
@@ -3435,6 +3660,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:c0ae9a898fc098d36612317a",
         "2:ebitda:inv-item:c2f3c9a278c6d2f3105adffa"
@@ -3460,6 +3687,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:c5fa65239adf542583fdfea7",
         "2:ebitda:inv-item:40a30d681e63a686f0d777d3"
@@ -3486,6 +3715,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:d68a8a1316e315941f2cf92e",
         "2:ebitda:inv-item:7a22e0993445ff3b23b6df81"
@@ -3512,6 +3743,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:450e15656c5622b3393799cb",
         "1:ebitda:inv-item:1ab7a90894fbb19a6881eb94",
@@ -3539,6 +3772,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:b1b214ded19d7e0f8d539780",
         "2:ebitda:inv-item:b1b214ded19d7e0f8d539780"
@@ -3564,6 +3799,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:2451d337e94771d315becc9d",
         "2:ebitda:inv-item:2451d337e94771d315becc9d"
@@ -3589,6 +3826,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:a7ba78dfd25700e040750592",
         "2:ebitda:inv-item:6681ed54e45c39961427091e"
@@ -3614,6 +3853,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:1f56efc056f3b65873b94347",
         "2:ebitda:inv-item:6991d86e506606feb704bb0e"
@@ -3639,6 +3880,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:ebitda:inv-item:4f9760bbaed12081771a4f8c",
         "2:ebitda:inv-item:1f63130fb9bfcaad563055a6"
@@ -3662,6 +3905,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "2:ebitda:inv-item:8a2c2ae28983e7869bed2b29"
       ]
@@ -3686,6 +3931,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:aef9a6bc0fd2fdde2449da79",
         "2:first-lien-debt:inv-item:aef9a6bc0fd2fdde2449da79"
@@ -3711,6 +3958,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:a96603a7f4c601bdc2b671ac",
         "1:first-lien-debt:inv-item:28f44d1335f4ec037e03c3c8",
@@ -3738,6 +3987,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:f3438f631f8ce94f8407f558",
         "2:first-lien-debt:inv-item:f3438f631f8ce94f8407f558"
@@ -3763,6 +4014,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:c5327f95b57d13ac878620eb",
         "2:first-lien-debt:inv-item:46939fc622dbb3c41a65f837"
@@ -3788,6 +4041,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:1c593a39559a338d12895470",
         "2:first-lien-debt:inv-item:1c593a39559a338d12895470"
@@ -3813,6 +4068,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:18d4c43e405f8da2441451ee",
         "2:first-lien-debt:inv-item:18d4c43e405f8da2441451ee"
@@ -3838,6 +4095,8 @@
         "MISSING_FROM_COMPOSITION"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:f27a0dffcb34e041e38c3c63",
         "2:first-lien-debt:inv-item:f27a0dffcb34e041e38c3c63"
@@ -3863,6 +4122,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:c1249dc5083b9abee3d9b67c",
         "2:first-lien-debt:inv-item:c1249dc5083b9abee3d9b67c"
@@ -3888,6 +4149,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:10f23173b8424cd51fc56028",
         "2:first-lien-debt:inv-item:10f23173b8424cd51fc56028"
@@ -3914,6 +4177,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:f1ed3671580d5cb2c0ea7ca4",
         "1:first-lien-debt:inv-item:7c79208033a5cad1689ff83a",
@@ -3941,6 +4206,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:ce60d3b556341d9391a15917",
         "1:first-lien-debt:inv-item:cd49647e788410665fe1340d",
@@ -3967,6 +4234,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:e826bc3e88067cd4cd377893",
         "2:first-lien-debt:inv-item:e826bc3e88067cd4cd377893"
@@ -3992,6 +4261,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:6251f6678598ecf827049ad1",
         "2:first-lien-debt:inv-item:dbe2f4e04389c94388f048c3"
@@ -4019,6 +4290,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:f4286ea260fee47d7ff54824",
         "1:first-lien-debt:inv-item:7f5339379b2774f92c29caa6",
@@ -4043,6 +4316,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:f22eee682d63c13f8eb4ff3a"
       ]
@@ -4068,6 +4343,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:f80da9cb6fc29fbb0609c3f9",
         "1:first-lien-debt:inv-item:b51c0106183803a46fa123c1",
@@ -4095,6 +4372,8 @@
         "MISSING_FROM_COMPOSITION"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:4895ef2d50bf08c7cad3ed88",
         "1:first-lien-debt:inv-item:a8f7fb5be3f111e2df60ff4b",
@@ -4121,6 +4400,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:792bc34cd17ab35ebf375f77",
         "2:first-lien-debt:inv-item:e2b805b87672ba5e3f858895"
@@ -4146,6 +4427,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:6e3a27bf22dae3b6cc01a697",
         "2:first-lien-debt:inv-item:471c306e1ef393f2163e7f0b"
@@ -4173,6 +4456,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:c4524568ae5f643d44c8b214",
         "1:first-lien-debt:inv-item:4e817827f89d7c59301739fa",
@@ -4199,6 +4484,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:df0ca85512a997f7ca7ecb5d",
         "2:first-lien-debt:inv-item:e4b631df47254ab067eb8357"
@@ -4224,6 +4511,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:c9bce04645ca13ac1d962ac4",
         "2:first-lien-debt:inv-item:efd700c6d58024909c31e8f6"
@@ -4249,6 +4538,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:0abef2722a0f8794dfec3b97",
         "2:first-lien-debt:inv-item:0a49cc2f9001e81e8d78474d"
@@ -4274,6 +4565,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:74b17749e066a6e02fd8a3e0",
         "2:first-lien-debt:inv-item:af900960ffa26284abe5e687"
@@ -4299,6 +4592,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:00f76c906505798e2e2ed671",
         "2:first-lien-debt:inv-item:0bc1274329be69cd35e9edde"
@@ -4324,6 +4619,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:d550a7935c7feca7cbe8b962",
         "2:first-lien-debt:inv-item:eca4975c1a9703c1136ca088"
@@ -4350,6 +4647,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:064ef159bc90e65a9d2cade7",
         "2:first-lien-debt:inv-item:106a67bc4d84372f5b0ddfbb"
@@ -4376,6 +4675,8 @@
         "MISSING_FROM_COMPOSITION"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:first-lien-debt:inv-item:5a7a6a34d5bf61a63bf2cca8",
         "2:first-lien-debt:inv-item:7f906e4fc275373282ac7498"
@@ -4401,6 +4702,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:2968309a63fc1f5fcdf7922a",
         "2:interest-expense:inv-item:5491b70148ac2c911be834a1"
@@ -4426,6 +4729,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:2b673bba423525564a7facd4",
         "2:interest-expense:inv-item:642e13f1781b327b8f8e43b4"
@@ -4451,6 +4756,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:1e9d7066bf4fabeec928cbe6",
         "2:interest-expense:inv-item:f0df1bbc1f5602c6a7d04f7b"
@@ -4476,6 +4783,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:5331bee9e0cc75c06fd70f79",
         "1:interest-expense:inv-item:1f1bde783663f1635ded00a6",
@@ -4502,6 +4811,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:98d42a5f30173759104f6fac",
         "2:interest-expense:inv-item:98d42a5f30173759104f6fac"
@@ -4528,6 +4839,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:e4d815124460bad117b52d3f",
         "1:interest-expense:inv-item:590a4bcc7be691f793470fc3",
@@ -4557,6 +4870,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:08984fb3e7afcb73f3f5b3ba",
         "2:interest-expense:inv-item:cf3ba1b5f6944c51bcef8739"
@@ -4582,6 +4897,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:fd6f78902d33ce7e49da1f7b",
         "2:interest-expense:inv-item:fd6f78902d33ce7e49da1f7b"
@@ -4608,6 +4925,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:5b3175506d498679f7ef0a9a",
         "2:interest-expense:inv-item:df7801493d2bbe8aa4e34fba"
@@ -4633,6 +4952,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:20724b4e484aefb2452fb01c",
         "2:interest-expense:inv-item:57e155cb15908e8a38621f1c"
@@ -4659,6 +4980,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:1c92ee96acabf3569b3ff379",
         "2:interest-expense:inv-item:3730d296f657b7d4e86d4bfa"
@@ -4685,6 +5008,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:faa3eda21758d97606cc30d7",
         "2:interest-expense:inv-item:0be76013320c8a999f2ee332"
@@ -4711,6 +5036,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:aab51f4cd4296230aa7fc161",
         "2:interest-expense:inv-item:457f94ecfa73e526fbe7eed4"
@@ -4737,6 +5064,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:a9528cf05254a4d84cabbd66",
         "2:interest-expense:inv-item:577d00f8133bcf417316f097"
@@ -4763,6 +5092,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:8a9e5d79785e6f09bac2a3be",
         "2:interest-expense:inv-item:baae9c4cb56f86df64e238ff"
@@ -4789,6 +5120,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:b575237c940d6d4f9ff667f3",
         "2:interest-expense:inv-item:9d593481a9cc28ab0124df4a"
@@ -4815,6 +5148,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:92776579a302c07b6802dd59",
         "2:interest-expense:inv-item:042758d79ba6ecae02aa85f5"
@@ -4841,6 +5176,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:fbb32dbcbf2ec871156d2141",
         "2:interest-expense:inv-item:075be824af3a61930fdf802f"
@@ -4867,6 +5204,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:caf6d890697e138e5e1c6b99",
         "2:interest-expense:inv-item:71186deee4a262d0b14a9855"
@@ -4893,6 +5232,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:b661c3f876736dd2b6368ce0",
         "2:interest-expense:inv-item:954e2b6ac25f8f8ddb35e3e2"
@@ -4916,6 +5257,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:17cd4c78768b7df993c39e7f"
       ]
@@ -4940,6 +5283,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:d81614eda8b99963e33ca182",
         "2:interest-expense:inv-item:8957824b2013ccf4fd65b4b6"
@@ -4965,6 +5310,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:055d7e3ed8500dae7c962f24",
         "2:interest-expense:inv-item:64175ba0685d962ef9f487d5"
@@ -4990,6 +5337,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:e402f6addf6989d4d9e52bb8",
         "2:interest-expense:inv-item:e402f6addf6989d4d9e52bb8"
@@ -5015,6 +5364,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:2e79d128e35fc80436217c67",
         "1:interest-expense:inv-item:86ac350deb06585f04229d01",
@@ -5042,6 +5393,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:264378575a4cda9b04cba0b5",
         "2:interest-expense:inv-item:5796082756f1208981d6d4df"
@@ -5067,6 +5420,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:d76fd0ad4932ce6923605717",
         "1:interest-expense:inv-item:04838efad99a5b8c0a5f18d0",
@@ -5091,6 +5446,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:361d9f50736fe8f7fb196f39"
       ]
@@ -5115,6 +5472,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:2565f44379ad86768913891b",
         "2:interest-expense:inv-item:065595e54cb822ba1319a524"
@@ -5140,6 +5499,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:4bbc035b3f0fa96fdb35b2bb",
         "2:interest-expense:inv-item:b3c0d059fe02600da40b0dca"
@@ -5165,6 +5526,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:47f9ede757b35143e517699e",
         "2:interest-expense:inv-item:272431dfb678cddf5583531b"
@@ -5188,6 +5551,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:c60788c8154d077c52cf7fa9"
       ]
@@ -5214,6 +5579,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:4c642c31d21f20820fda2b35",
         "1:interest-expense:inv-item:27d9ec672fa0a8e3c5c645b2",
@@ -5243,6 +5610,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:90ac584225bba9bf29fbeae9",
         "2:interest-expense:inv-item:90ac584225bba9bf29fbeae9"
@@ -5268,6 +5637,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:9117be67f7e01c8a71fe08ef",
         "2:interest-expense:inv-item:9117be67f7e01c8a71fe08ef"
@@ -5294,6 +5665,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:d6d06bc10e073ddaf1343a9e",
         "1:interest-expense:inv-item:e7af2bc02a3390544b5849d9",
@@ -5322,6 +5695,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:9ac0a26ccc76e64eaf41159e",
         "2:interest-expense:inv-item:9ac0a26ccc76e64eaf41159e"
@@ -5347,6 +5722,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:3c720124a48141c0b4e9ec0f",
         "2:interest-expense:inv-item:e02247e02d3c1800d4a2d76b"
@@ -5373,6 +5750,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:d16f1ad0a394ab4441dfefb8",
         "2:interest-expense:inv-item:2a7cbbcce7bbea8a6671fc63"
@@ -5398,6 +5777,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:40c6f1f9a6a0a2f7818c2c74",
         "2:interest-expense:inv-item:c4ad21a579f967c931e94d4c"
@@ -5426,6 +5807,8 @@
         "AMBIGUOUS"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:203ecabb9bab8c26d9254cbf",
         "1:interest-expense:inv-item:fa84ea490fe1b5a5a03e5734",
@@ -5455,6 +5838,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:803086c1dee17e4f6c99d26f",
         "1:interest-expense:inv-item:2ec4e2ddc681c81c1ab091c6",
@@ -5481,6 +5866,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:86c1ec2b7311a46946889376",
         "2:interest-expense:inv-item:84ae7dea6686cc3819061c16"
@@ -5506,6 +5893,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:5de9a2d8d37c0f6306df84c2",
         "1:interest-expense:inv-item:deebe94d284f8b015f1c9d54",
@@ -5535,6 +5924,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:cf300d6177c789c82f11c7ae",
         "1:interest-expense:inv-item:69ea3dec1bd51e448bd926ee",
@@ -5565,6 +5956,8 @@
         "MISSING_FROM_COMPOSITION"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:483bcd53bd2a172b28d253d7",
         "2:interest-expense:inv-item:02b0f261c6d716c3075ae6d3"
@@ -5591,6 +5984,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:c1b06b90d83545a46fbdbf69",
         "2:interest-expense:inv-item:cfcaecf8aac1a2ffe3539cf1"
@@ -5616,6 +6011,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:453fcadf719ed4537319a821",
         "2:interest-expense:inv-item:b492e38a8bd7baef25f13992"
@@ -5639,6 +6036,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:af154854725f13c64329906e"
       ]
@@ -5661,6 +6060,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:967d08980472c0d9f17a2a80"
       ]
@@ -5683,6 +6084,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:38a48b999b321a0cd8435315"
       ]
@@ -5705,6 +6108,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:interest-expense:inv-item:ab05ecca3170de77c5b4c898"
       ]
@@ -5727,6 +6132,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "2:interest-expense:inv-item:80683932d2058aa892f22b08"
       ]
@@ -5749,6 +6156,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "2:interest-expense:inv-item:a5e567fcbb490962cd6bcb2a"
       ]
@@ -5771,6 +6180,8 @@
         "INTENTIONALLY_NON_COMPUTATIONAL"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "2:interest-expense:inv-item:e3fb40c634fb7f96f103c20a"
       ]
@@ -5793,6 +6204,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "2:interest-expense:inv-item:d933c34d10baaf2292d4d439"
       ]
@@ -5815,6 +6228,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "2:interest-expense:inv-item:2e380574714445d5e568e3e1"
       ]
@@ -5841,6 +6256,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:12f4b3e7ad23b6c29a57b631",
         "1:net-income:inv-item:f3d32540c7b2068e3f458a97",
@@ -5867,6 +6284,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:0db75f67ac3ccbc86fde3251",
         "2:net-income:inv-item:e31066a67f691d8711d82030"
@@ -5892,6 +6311,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:06c2a7367851af9980c161d7",
         "2:net-income:inv-item:06c2a7367851af9980c161d7"
@@ -5918,6 +6339,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:393a4ddf8d055adefa3a5b81",
         "1:net-income:inv-item:749bca7a5d641266e5497133",
@@ -5945,6 +6368,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:404494688c893db8cd9d7f2f",
         "2:net-income:inv-item:404494688c893db8cd9d7f2f"
@@ -5962,7 +6387,7 @@
         "CONDITION"
       ],
       "lenientStable": true,
-      "conservativeStable": true,
+      "conservativeStable": false,
       "captured1": true,
       "captured2": true,
       "dispositions1": [
@@ -5971,7 +6396,9 @@
       "dispositions2": [
         "UNSUPPORTED"
       ],
-      "foldedConditionalRole": false,
+      "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:29c555bbb27bbd2c4b2abddd",
         "1:net-income:inv-item:8e430d1e9e5acd590a63c5a2",
@@ -6000,6 +6427,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:4e2ec2efc0b0d1cbddefa201",
         "1:net-income:inv-item:700a4febacd0a57770e26073",
@@ -6025,6 +6454,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:f47b346caa0345e92a4d35b6"
       ]
@@ -6047,6 +6478,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:5e9475d5ceac05b20eccf35c"
       ]
@@ -6071,6 +6504,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:8e8066b43263994c1a6394a4",
         "2:net-income:inv-item:e4c7e1e6832b81cd31b5e05b",
@@ -6088,7 +6523,7 @@
         "CONDITION"
       ],
       "lenientStable": true,
-      "conservativeStable": true,
+      "conservativeStable": false,
       "captured1": true,
       "captured2": true,
       "dispositions1": [
@@ -6097,7 +6532,9 @@
       "dispositions2": [
         "UNSUPPORTED"
       ],
-      "foldedConditionalRole": false,
+      "foldedConditionalRole": true,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:f1356b1a0b4cffac83837353",
         "2:net-income:inv-item:7dc696404e07581379b4eeb8"
@@ -6121,6 +6558,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:703e027fdefb05e164349b9a"
       ]
@@ -6143,6 +6582,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:f8b5b7bae0fc017b7a58f165"
       ]
@@ -6167,6 +6608,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:178dcd68c7141a5c3b82ea6e",
         "2:net-income:inv-item:178dcd68c7141a5c3b82ea6e"
@@ -6190,6 +6633,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:3862ddffdb4dc550d967a933"
       ]
@@ -6214,6 +6659,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:2172e1ba5ab1df5939e26f7a",
         "2:net-income:inv-item:71fe761158dd4ceb35a8709e",
@@ -6240,6 +6687,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:e4dc4ead944c7f19df45f297",
         "2:net-income:inv-item:e4dc4ead944c7f19df45f297"
@@ -6265,6 +6714,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:7de8e642fdd9d821ccf9be9c",
         "2:net-income:inv-item:7de8e642fdd9d821ccf9be9c"
@@ -6290,6 +6741,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:27f2912e07bb10d31aad4397",
         "2:net-income:inv-item:79ad2a9b82e85ced15d9f5dc"
@@ -6313,6 +6766,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:4eda325c70e2bd136c301a8d"
       ]
@@ -6337,6 +6792,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:6076f300a48854a7a2fc94f7",
         "2:net-income:inv-item:6076f300a48854a7a2fc94f7"
@@ -6362,6 +6819,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:e846358a86a68147723c3088",
         "2:net-income:inv-item:5fe58c53555e9998a63d91c6"
@@ -6387,6 +6846,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:5b3497bc3189f3962ab6d7e2",
         "2:net-income:inv-item:14634b222e2b1ddbed64d2fa"
@@ -6412,6 +6873,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:52ffff4187616f31a25690d4",
         "2:net-income:inv-item:52ffff4187616f31a25690d4"
@@ -6437,6 +6900,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:7d49aa0bbad047e7ee31d6ac",
         "2:net-income:inv-item:7d49aa0bbad047e7ee31d6ac"
@@ -6464,6 +6929,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:8e2e9a78bd2ab0e1e471bf58",
         "1:net-income:inv-item:6319f4638819eab84c5b2cb5",
@@ -6492,6 +6959,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:5f13f616535ffddc53942980",
         "1:net-income:inv-item:a49d79c0cc086479863b78a0",
@@ -6518,6 +6987,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:7c402255bbbe694269a07c5e",
         "2:net-income:inv-item:12798257ea8bca6062f91c28"
@@ -6543,6 +7014,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:44bbd2c66a714efe5b335a42",
         "2:net-income:inv-item:44bbd2c66a714efe5b335a42"
@@ -6570,6 +7043,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:402d00b8151d91a322aec040",
         "1:net-income:inv-item:a799c4e95d4ac57dde09952a",
@@ -6597,6 +7072,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:16f28901a0f5a25deb6b2108",
         "2:net-income:inv-item:16f28901a0f5a25deb6b2108"
@@ -6622,6 +7099,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:f5da6f570843f99858c7a006",
         "2:net-income:inv-item:f5da6f570843f99858c7a006"
@@ -6647,6 +7126,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:3139e7c3e1a38f19ec3b42bf",
         "2:net-income:inv-item:3139e7c3e1a38f19ec3b42bf"
@@ -6672,6 +7153,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:b671618e4c62beb5dc99f364",
         "2:net-income:inv-item:b671618e4c62beb5dc99f364"
@@ -6697,6 +7180,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:5958febb53e38b3cea91a1eb",
         "2:net-income:inv-item:74f420ed17f9354963f51fd2"
@@ -6722,6 +7207,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:4ce8a2c85ed0c8a30c15a452",
         "2:net-income:inv-item:4ce8a2c85ed0c8a30c15a452"
@@ -6747,6 +7234,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:2e7723dd5a6bdab17f6c5be0",
         "2:net-income:inv-item:32a47e068ca1bd23c4522e26"
@@ -6772,6 +7261,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:22a9312d821298c0df03a416",
         "2:net-income:inv-item:22a9312d821298c0df03a416"
@@ -6795,6 +7286,8 @@
       ],
       "dispositions2": [],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:f48920e96386f3760bdeb6bd"
       ]
@@ -6819,6 +7312,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:b7725a86e8f3108a42b87092",
         "2:net-income:inv-item:b7725a86e8f3108a42b87092"
@@ -6844,6 +7339,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:988fd71de473e343086ccfba",
         "2:net-income:inv-item:988fd71de473e343086ccfba"
@@ -6869,6 +7366,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:3c7096db2f62a9e4d2db37fa",
         "2:net-income:inv-item:3c7096db2f62a9e4d2db37fa"
@@ -6894,6 +7393,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:b8ba633c26db3a5d5f518431",
         "2:net-income:inv-item:b8ba633c26db3a5d5f518431"
@@ -6919,6 +7420,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:3305f8a6ae0d65b0289ff598",
         "2:net-income:inv-item:3305f8a6ae0d65b0289ff598"
@@ -6944,6 +7447,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:063ab3d0d7cc211cd3a0c3eb",
         "1:net-income:inv-item:4a5d490e075af81cd7d1999f",
@@ -6970,6 +7475,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:b0621ce835f26a47468a3a0c",
         "2:net-income:inv-item:db65389892a34b25da783898"
@@ -6995,6 +7502,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:48371b2365d0c065b790f246",
         "2:net-income:inv-item:48371b2365d0c065b790f246"
@@ -7020,6 +7529,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:be15efa856d2e382fe0e9ec9",
         "2:net-income:inv-item:be15efa856d2e382fe0e9ec9"
@@ -7045,6 +7556,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:net-income:inv-item:60b325fb5c7a007745400a7d",
         "2:net-income:inv-item:60b325fb5c7a007745400a7d"
@@ -7070,6 +7583,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:secured-net-leverage:inv-item:586baebea72d40089dbc9fad",
         "2:secured-net-leverage:inv-item:bc039a8f594bedf9d835caab"
@@ -7095,6 +7610,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:secured-net-leverage:inv-item:bce2c6866219cf90eb971dd6",
         "2:secured-net-leverage:inv-item:0a2d79a251ca5ba8608a58c5"
@@ -7120,6 +7637,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:secured-net-leverage:inv-item:87aaa0b9203061cab794d914",
         "2:secured-net-leverage:inv-item:109d5b4c00c784c8903d7c77"
@@ -7145,6 +7664,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:secured-net-leverage:inv-item:0266ef861e536a6683dc3745",
         "2:secured-net-leverage:inv-item:0266ef861e536a6683dc3745"
@@ -7171,6 +7692,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:secured-net-leverage:inv-item:7a1bab43302769d1716003bc",
         "1:secured-net-leverage:inv-item:3903fd745faad5eaf388b07e",
@@ -7198,6 +7721,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:secured-net-leverage:inv-item:ad4dad63614cdd50629fbf05",
         "1:secured-net-leverage:inv-item:9f483bf2ee1ad68b7d1ab3a9",
@@ -7226,6 +7751,8 @@
         "UNSUPPORTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": true,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:secured-net-leverage:inv-item:283a981919c6ee4b4a120b58",
         "2:secured-net-leverage:inv-item:283a981919c6ee4b4a120b58"
@@ -7253,6 +7780,8 @@
         "REPRESENTED"
       ],
       "foldedConditionalRole": false,
+      "strictFoldStable": false,
+      "valuesDiffer": false,
       "memberKeys": [
         "1:secured-net-leverage:inv-item:a93cb15b6a1729d79b3f583c",
         "1:secured-net-leverage:inv-item:ef0500c6b42b233c426ac094",

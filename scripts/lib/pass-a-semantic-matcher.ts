@@ -74,8 +74,12 @@ export interface Classified {
   counterpartIds: string[];
   /** The difference is one of span boundary / split-merge / role label / value signature / duplicate - the same proposition received a different id. */
   identityAttributable: boolean;
-  /** A CONDITION/EXCEPTION/SHARED_CAP/CURE/THRESHOLD/TRIGGER item that only survives in the other run inside a broader NON-conditional span. Never normalized away. */
+  /** A CONDITION/EXCEPTION/SHARED_CAP/CURE/THRESHOLD/TRIGGER item that only survives in the other run under a DIFFERENT role (folded into a broader span or relabelled). Never normalized away. */
   conditionalRoleFolded: boolean;
+  /** The counterpart carries a DIFFERENT quantitative value set (same span/role, different amount) - never stable under any metric. */
+  valuesDiffer?: boolean;
+  /** GRANULARITY: this item is a fragment of a larger other-run item (a sub-proposition that only survives inside a broader span). */
+  isFragment?: boolean;
   jaccard: number | null;
 }
 export interface Cluster {
@@ -87,7 +91,11 @@ export interface Cluster {
   roles: string[];
   lenientStable: boolean;
   conservativeStable: boolean;
+  /** STRICT-FOLD: additionally treats EVERY material fragment (any role) folded into a broader other-run span as unstable - the lower bound the audit asked for. */
+  strictFoldStable: boolean;
   foldedConditionalRole: boolean;
+  valuesDiffer: boolean;
+  materialFragment: boolean;
 }
 export interface MatchResult {
   idStable: { id: string }[];
@@ -156,13 +164,14 @@ export function matchInventories(run1: MatchItem[], run2: MatchItem[], regionPre
       else if (it.role === o.role) { cls = "VALUE_NORMALIZATION_VARIANCE"; sub = `same role, span shifted so value signature DIFFERENT (jaccard ${p.j.toFixed(2)})`; }
       else if (p.j >= 0.8) { cls = "ROLE_VARIANCE"; sub = `near-same span (jaccard ${p.j.toFixed(2)}), ${it.role} vs ${o.role}`; }
       else { cls = "GRANULARITY_VARIANCE"; sub = `partial overlap (jaccard ${p.j.toFixed(2)}) with different role ${it.role} vs ${o.role}`; }
-      return { run, id: it.id, class: cls, subclass: sub, counterpartIds: [o.id], identityAttributable: true, conditionalRoleFolded: CONDITIONAL_ROLES.has(it.role) && !CONDITIONAL_ROLES.has(o.role), jaccard: Number(p.j.toFixed(3)) };
+      // Audit finding: a conditional-role item paired with a DIFFERENT role (conditional or not) is a possible condition loss.
+      return { run, id: it.id, class: cls, subclass: sub, counterpartIds: [o.id], identityAttributable: true, conditionalRoleFolded: CONDITIONAL_ROLES.has(it.role) && o.role !== it.role, valuesDiffer: rel === "DIFFERENT", jaccard: Number(p.j.toFixed(3)) };
     }
     if (dup) return { run, id: it.id, class: "DUPLICATION_VARIANCE", subclass: `near-duplicate of ${dup.id} in the same run`, counterpartIds: [dup.id], identityAttributable: true, conditionalRoleFolded: false, jaccard: Number(jaccard(it, dup).toFixed(3)) };
     const links = fragmentOf.get(key(run, it));
     if (links && links.length > 0) {
       const isFragment = links.some((l) => len(l) > len(it));
-      return { run, id: it.id, class: "GRANULARITY_VARIANCE", subclass: isFragment ? `fragment of larger other-run item(s)` : `merge of ${links.length} smaller other-run item(s)`, counterpartIds: links.map((l) => l.id), identityAttributable: true, conditionalRoleFolded: isFragment && CONDITIONAL_ROLES.has(it.role) && !links.some((l) => CONDITIONAL_ROLES.has(l.role)), jaccard: null };
+      return { run, id: it.id, class: "GRANULARITY_VARIANCE", subclass: isFragment ? `fragment of larger other-run item(s)` : `merge of ${links.length} smaller other-run item(s)`, counterpartIds: links.map((l) => l.id), identityAttributable: true, conditionalRoleFolded: isFragment && CONDITIONAL_ROLES.has(it.role) && !links.some((l) => l.role === it.role), valuesDiffer: links.every((l) => valuesRelation(it, l) === "DIFFERENT") && it.values.length > 0, isFragment, jaccard: null };
     }
     const cov = coverageBy(it, O);
     const overlapping = O.filter((o) => inter(it, o) > 0).map((o) => o.id);
@@ -182,16 +191,20 @@ export function matchInventories(run1: MatchItem[], run2: MatchItem[], regionPre
     const r1 = ms.filter((m) => m.run === 1), r2 = ms.filter((m) => m.run === 2);
     const material = ms.some((m) => MATERIAL(m.item.materiality));
     const folded = ms.some((m) => clsByKey.get(`${m.run}:${m.item.id}`)?.conditionalRoleFolded && MATERIAL(m.item.materiality));
-    const lenient = r1.length > 0 && r2.length > 0;
-    clusters.push({ clusterId: `${regionPrefix}#${idx++}`, members: ms.map((m) => ({ run: m.run, id: m.item.id })), material, inRun1: r1.length, inRun2: r2.length, roles: [...new Set(ms.map((m) => m.item.role))], lenientStable: lenient, conservativeStable: lenient && !folded, foldedConditionalRole: folded });
+    const valuesDiffer = ms.some((m) => clsByKey.get(`${m.run}:${m.item.id}`)?.valuesDiffer && MATERIAL(m.item.materiality));
+    const materialFragment = ms.some((m) => clsByKey.get(`${m.run}:${m.item.id}`)?.isFragment && MATERIAL(m.item.materiality));
+    // A cluster present in both runs is NOT stable when any member's quantitative value set differs from its counterpart's - a changed amount is a different proposition.
+    const lenient = r1.length > 0 && r2.length > 0 && !valuesDiffer;
+    clusters.push({ clusterId: `${regionPrefix}#${idx++}`, members: ms.map((m) => ({ run: m.run, id: m.item.id })), material, inRun1: r1.length, inRun2: r2.length, roles: [...new Set(ms.map((m) => m.item.role))], lenientStable: lenient, conservativeStable: lenient && !folded, strictFoldStable: lenient && !folded && !materialFragment, foldedConditionalRole: folded, valuesDiffer, materialFragment });
   }
   return { idStable, classified, clusters };
 }
 
-/** Semantic inventory stability over material clusters: lenient (present in both runs) and conservative (folded conditional roles count as unstable). */
-export function semanticStability(clusters: Cluster[]): { materialClusters: number; lenientInBoth: number; lenient: number; conservativeInBoth: number; conservative: number } {
+/** Semantic inventory stability over material clusters: lenient (present in both runs, values agree), conservative (+ folded conditional roles unstable), strictFold (+ every material fragment unstable - the lower bound). */
+export function semanticStability(clusters: Cluster[]): { materialClusters: number; lenientInBoth: number; lenient: number; conservativeInBoth: number; conservative: number; strictFoldInBoth: number; strictFold: number } {
   const mat = clusters.filter((c) => c.material);
   const l = mat.filter((c) => c.lenientStable).length;
   const cons = mat.filter((c) => c.conservativeStable).length;
-  return { materialClusters: mat.length, lenientInBoth: l, lenient: mat.length === 0 ? 1 : l / mat.length, conservativeInBoth: cons, conservative: mat.length === 0 ? 1 : cons / mat.length };
+  const strict = mat.filter((c) => c.strictFoldStable).length;
+  return { materialClusters: mat.length, lenientInBoth: l, lenient: mat.length === 0 ? 1 : l / mat.length, conservativeInBoth: cons, conservative: mat.length === 0 ? 1 : cons / mat.length, strictFoldInBoth: strict, strictFold: mat.length === 0 ? 1 : strict / mat.length };
 }

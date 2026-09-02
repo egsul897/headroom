@@ -432,7 +432,8 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
   if (operativeEconomicUninventoried.length > 0) reasons.push(`${operativeEconomicUninventoried.length} money/percent/ratio value(s) in the operative text were inventoried by neither Pass A nor the composition: ${operativeEconomicUninventoried.map((v) => v.rawText).join(", ")} - materiality undetermined, review required`);
   if (danglingLineageReferences > 0) reasons.push(`${danglingLineageReferences} lineage/disposition reference(s) name an inventoryItemId that does not exist in the frozen inventory`);
 
-  const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && materialValuesMissing.length === 0 && operativeEconomicUninventoried.length === 0 && danglingLineageReferences === 0;
+  // Defense in depth (audit finding): completeness is refused on the residual segments themselves, not only on the status string that reports them.
+  const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && inventory.uninventoriedSegments.length === 0 && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && materialValuesMissing.length === 0 && operativeEconomicUninventoried.length === 0 && danglingLineageReferences === 0;
 
   return {
     candidateRef: inventory.candidateRef,

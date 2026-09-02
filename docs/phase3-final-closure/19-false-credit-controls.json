@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "artifactId": "19-false-credit-controls",
   "requirement": "Mission §21: run the 14 permanent false-credit controls UNCHANGED against the frozen production (FINAL_PASS_A_STABILITY_SHA bd3b5bec2c955e8c9c99a379e288e10e056a95e9). Required 14/14 PASS.",
-  "run": "npx vitest run tests/contract-model/semantic-accountability tests/contract-model/semantic-accountability-independence.test.ts -> 4 files, 161/161 passed (the 139 pre-existing control-bearing tests are unchanged; 22 new v2 tests added alongside, none replaced)",
+  "run": "npx vitest run tests/contract-model/semantic-accountability tests/contract-model/semantic-accountability-independence.test.ts -> 4 files, 167/167 passed (the 139 pre-existing control-bearing tests are unchanged; 28 new v2/audit tests added alongside, none replaced)",
   "controls": [
     { "id": "C1", "name": "Self-declared REPRESENTED never accepted", "test": "pass-bc-reconciliation.test.ts 'self-declared REPRESENTED is never accepted as a disposition'", "pass": true },
     { "id": "C2", "name": "Dangling lineage never silently dropped", "test": "pass-bc-reconciliation.test.ts dangling-lineage test", "pass": true },

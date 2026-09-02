@@ -32,7 +32,10 @@
     ],
     "semanticMaterialOmissions": 13,
     "semanticCriticalOmissions": 4,
-    "criticalCluster": "interest-expense run-2 omitted the entire trailing 'Consolidated First Lien Secured Debt' definition (4 CRITICAL items: the definitional head, the principal-amount scope, the purchase-money-first-lien inclusion, and the non-recourse/undrawn/LC exclusion). The same definition IS the operative unit of the first-lien-debt region and was inventoried there in both runs, so at the agreement level the components are accounted - but inside this unit run-2 was silently incomplete, which is exactly the failure Pass A exists to make visible.",
+    "semanticCriticalOmissionsInOperativeRegions": 0,
+    "semanticMaterialOmissionsInOperativeRegions": 9,
+    "criticalCluster": "CORRECTED AFTER INDEPENDENT AUDIT (22, item 1d): the 4 CRITICAL items of the 'Consolidated First Lien Secured Debt' definition that run-1 inventoried and run-2 did not sit in region xref-1 (a CROSS_REFERENCE_EXPANSION region of the interest-expense unit, 5965 chars), NOT in the unit-extended OPERATIVE region as first written here. The Pass A prompt makes inventorying an expansion region's own components discretionary ('inventory a non-operative region's own components only where the operative text incorporates them'), so this cluster is a difference in how far each run exercised that discretion, not an omission from the unit's operative text. The same definition IS the operative unit of the first-lien-debt region and was inventoried there in both runs. Consequence: the v2 coverage accounting (operative region only, by design - 05) does NOT reach this cluster, and 05's expectedEffect was overstated on this point; in the OPERATIVE regions the genuine material omissions are 10 (14 minus the 4 xref-1 items), CRITICAL semantic omissions 0 (the one CRITICAL operative-region omission is the 'excluding, in each case:' connective header adjudicated non-semantic).",
+    "auditCorrectionNote": "03.measuredCorrelations already recorded 5/22 omissions in non-operative regions; this section originally mislocated the cluster.",
     "surfacedByIndependentVerifier": "1/22 (the verifier is not designed to detect inventory omissions; it audits the IR against the source)"
   },
   "conclusion": {

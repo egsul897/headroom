@@ -137,6 +137,32 @@ describe("Pass A stability - semantic matcher (mission §11 adversarial shapes)"
     expect(s.conservative).toBe(0);
   });
 
+  it("audit A2(i): a value changed inside the same span is NEVER stable - lenient, conservative and strict-fold all refuse it", () => {
+    const a = it_("a", "restructuring charges not to exceed $5,000,000 in any period", "FORMULA_COMPONENT", "CRITICAL", [money("$5,000,000", 5_000_000)]);
+    const b = { ...a, id: "b", values: [money("$6,000,000", 6_000_000)] };
+    const r = matchInventories([a], [b]);
+    expect(r.classified.every((c) => c.class === "VALUE_NORMALIZATION_VARIANCE" && c.valuesDiffer)).toBe(true);
+    const s = semanticStability(r.clusters);
+    expect(s).toMatchObject({ materialClusters: 1, lenient: 0, conservative: 0, strictFold: 0 });
+  });
+
+  it("audit A2(ii): a distinct material sub-proposition folded into a broader non-conditional span is credited by lenient/conservative but NOT by strict-fold (the disclosed lower bound)", () => {
+    const whole = it_("w", "fees paid pursuant to Section 6.01(b), so long as such fees are cash-settled", "PERMISSION");
+    const part = it_("p", "so long as such fees are cash-settled", "PERMISSION");
+    const r = matchInventories([whole, part], [{ ...whole }]);
+    const s = semanticStability(r.clusters);
+    expect(s.lenient).toBe(1);
+    expect(s.strictFold).toBe(0);
+  });
+
+  it("audit A2(iii): a CONDITION folded into a container of a DIFFERENT conditional role (THRESHOLD) is still flagged folded", () => {
+    const cond = it_("c", "so long as such fees are cash-settled", "CONDITION");
+    const thr = it_("t", "fees paid pursuant to Section 6.01(b), so long as such fees are cash-settled", "THRESHOLD");
+    const r = matchInventories([cond], [thr]);
+    expect(r.classified.find((c) => c.id === "c")?.conditionalRoleFolded).toBe(true);
+    expect(semanticStability(r.clusters).conservative).toBe(0);
+  });
+
   it("anti-enumeration: the matcher's verdicts are identical under arbitrary names, amounts and section styles", () => {
     const variants = [
       { term: "Omega Amount", amt: "$5,000,000", sec: "Section 6.01(b)" },
@@ -297,6 +323,45 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     const full = reconcileScenario(built, normalizeScenarioComposition(built));
     expect(full.semanticallyComplete).toBe(true);
     expect(full.counts.uninventoriedSegments).toBe(0);
+  });
+
+  it("audit B1: an EMPTY inventory (twice) over operative text that carries only the generic vocabulary (unless / subject to / to the extent / excluding) is INVENTORY_COVERAGE_GAP, never INVENTORY_OK, and never semanticallyComplete", async () => {
+    const text = `ARTICLE VII\nNEGATIVE COVENANTS\n\nSECTION 7.09 Omega Transfers. Transfers of Omega Assets to any Affiliate are restricted unless the Omega Ratio at such time, subject to the adjustments described in Schedule 4, is no greater than the level then in effect, excluding transfers to the extent funded solely with Retained Proceeds and excluding any transfer completed prior to the Closing Date.\n`;
+    const index = buildTestIndex([{ documentId: DOC_ID, label: "Synthetic", text }]);
+    const anchor = index.findNodesByRef(DOC_ID, "7.09")[0]!;
+    const operativeText = index.getNodeText(anchor.nodeId, "DESCENDANTS");
+    const sourceContext = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: operativeText, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null });
+    const stages: string[] = [];
+    const inv = await runSemanticInventory({ candidateRef: "audit-b1", documentId: DOC_ID, sourceContext, caller: twoStepCaller([], [], stages) });
+    expect(stages).toEqual(["semantic_inventory", "semantic_inventory_gap"]);
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    expect(inv.uninventoriedSegments.length).toBeGreaterThan(0);
+    const result = reconcileInventoryWithComposition({ inventory: inv, composition: { rules: [], definitions: [], sharedCapacities: [] }, dispositions: [], sourceContextState: sourceContext.state });
+    expect(result.semanticallyComplete).toBe(false);
+  });
+
+  it("audit B2'': echo items with non-material materiality (REVIEW_UNCERTAIN / INFORMATIONAL) never close a gap - the segment stays surfaced and the unit stays incomplete", async () => {
+    const { scenario, sourceContext, wire } = contextFor("I1");
+    const first = wire.filter((w) => w.localRef !== "head" && w.localRef !== "dedupe");
+    const echoes: WireInventoryItem[] = wire.filter((w) => w.localRef === "head" || w.localRef === "dedupe").map((w, i) => ({ ...w, materiality: i === 0 ? "REVIEW_UNCERTAIN" : "INFORMATIONAL" }));
+    const inv = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: twoStepCaller(first, echoes, []) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    expect(inv.gapReinventory?.itemsAdded).toBe(2);
+    expect(inv.uninventoriedSegments).toHaveLength(1);
+    // And the same echo items as MATERIAL do close it.
+    const material = echoes.map((w) => ({ ...w, materiality: "MATERIAL" }));
+    const closed = await runSemanticInventory({ candidateRef: scenario.id, documentId: DOC_ID, sourceContext, caller: twoStepCaller(first, material, []) });
+    expect(closed.inventoryStatus).toBe("INVENTORY_OK");
+  });
+
+  it("audit defense in depth: Pass C refuses semanticallyComplete on residual segments even if the status string were INVENTORY_OK", async () => {
+    const built = await buildScenario(CORPUS.find((s) => s.id === "I2")!);
+    const normalized = normalizeScenarioComposition(built);
+    const clean = reconcileScenario(built, normalized);
+    expect(clean.semanticallyComplete).toBe(true);
+    const tampered = { ...built.inventory, inventoryStatus: "INVENTORY_OK" as const, uninventoriedSegments: [{ regionId: "operative", charStart: 0, charEnd: 50, coverage: 0, excerpt: "x" }] };
+    const result = reconcileInventoryWithComposition({ inventory: tampered, composition: { rules: normalized.rules, definitions: normalized.definitions, sharedCapacities: normalized.sharedCapacities }, dispositions: normalized.inventoryDispositions, sourceContextState: built.sourceContext.state });
+    expect(result.semanticallyComplete).toBe(false);
   });
 
   it("corpus-wide: no fully-inventoried scenario leaves an uncovered operative segment, and every scenario's gap record is disclosed", async () => {
