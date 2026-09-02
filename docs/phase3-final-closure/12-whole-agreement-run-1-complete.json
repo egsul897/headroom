@@ -9,7 +9,7 @@
     "preconditionCheck": "08-provider-health-and-cost.json: HTTP 402 persists ($150.49 / $150.00) at the time the resume would start",
     "command": "npx tsx scripts/semantic-accountability-validation.ts whole-agreement --run 1 --resume --budget 16",
     "executed": false,
-    "reason": "no paid call is possible; the harness's --resume path (commit 3) would keep the 3 completed regions, preserve the 9 provider-failed records under a provider-failure suffix, and run regions 4-12 on FINAL_PASS_A_STABILITY_SHA c496751, disclosing the SHA mix per region"
+    "reason": "no paid call is possible; the harness's --resume path (commit 3) would keep the 3 completed regions, preserve the 9 provider-failed records under a provider-failure suffix, and run regions 4-12 on FINAL_PASS_A_STABILITY_SHA 1957105, disclosing the SHA mix per region"
   },
   "completedRegionsSnapshot": [
     { "id": "definitions-lsb", "family": "DEFINITIONS", "inventoryItems": 81, "material": 77, "represented": 39, "unsupported": 40, "materialMissing": 1, "criticalMissing": 1, "materialValues": 15, "materialValuesMissing": 2, "verifyStatus": "MATERIAL_DISCREPANCY", "materialFindings": 4 },

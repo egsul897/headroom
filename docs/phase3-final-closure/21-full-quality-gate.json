@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "artifactId": "21-full-quality-gate",
-  "productionSha": "c496751f91cbc91e5b27b87a1cc128e0757f5a11",
+  "productionSha": "1957105c58be77465745566167f1a05708d4d3b5",
   "databaseEnvironment": {
-    "mission23Check": "pg_isready -h localhost -p 5432 -> initially 'no response' (cluster 16/main down with a stale pid file after the container restart); restored with `pg_ctlcluster 16 main start` (the established local test-DB cluster; 'Removed stale pid file', 'database system is ready to accept connections'); pg_isready -> accepting connections before the full suite. No shared data wiped.",
+    "mission23Check": "pg_isready -h localhost -p 5432 -> initially 'no response' (cluster 16/main down with a stale pid file after the container restart); restored with `pg_ctlcluster 16 main start` (the established local test-DB cluster; 'Removed stale pid file', 'database system is ready to accept connections'); pg_isready -> accepting connections before the full suite. No shared data wiped. Re-checked before the final rerun at 1957105: the cluster had stopped again with the container (pg_isready 'no response'; a first full run then showed 103 failed files, all DB-connection driven); restarted the same way ('Removed stale pid file'), pg_isready accepting connections, and the suite was rerun. No shared data wiped; no database dropped or reset.",
     "dbConnectionErrorsInFullRun": 0
   },
   "typescript": {
@@ -20,37 +20,37 @@
     "pass": true
   },
   "vitest": {
-    "command": "npx vitest run (Postgres up) - rerun after the audit remediation at c496751",
-    "result": "Test Files 3 failed | 287 passed (290); Tests 3 failed | 3363 passed (3366)",
+    "command": "npx vitest run (Postgres up) - final rerun at the final freeze 1957105",
+    "result": "Test Files 2 failed | 288 passed (290); Tests 2 failed | 3366 passed (3368)",
     "baselineDbAvailable": "Test Files 2 failed | 287 passed (289); Tests 2 failed | 3335 passed (3337) (post-freeze baseline of the previous mission)",
-    "delta": "+1 file (pass-a-stability.test.ts), +29 tests net vs the previous-mission baseline (+28 new, +1 from the extended corpus); 1 additional failing test in the full-suite run",
+    "delta": "+1 file (pass-a-stability.test.ts), +31 tests vs that baseline (30 new + 1 from the extended corpus); the same 2 files fail as in the baseline",
     "failingTests": [
       {
         "file": "tests/contract-model/architecture-proposal-node-identity.test.ts",
-        "classification": "PRE_EXISTING_BASELINE (package-fixture-count assertion from an earlier phase)",
+        "test": "no new directory was created under tests/fixtures/unseen-packages/",
+        "classification": "PRE_EXISTING_BASELINE (package-fixture-count assertion from an earlier phase; the extra fixture directory predates this mission)",
         "attributable": false
       },
       {
         "file": "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts",
-        "classification": "PRE_EXISTING_BASELINE (same family)",
-        "attributable": false
-      },
-      {
-        "file": "tests/foundation-audit/repro-connection-race.test.ts",
-        "test": "N concurrent first-time calls should all succeed and converge on one row",
-        "classification": "CONCURRENCY_REPRO under full-suite DB contention; passes in isolation at HEAD 3/3 runs and at the pre-mission head 55e29d6; upload-connection code untouched by this mission",
+        "test": "no new package directory was created under tests/fixtures/unseen-packages/",
+        "classification": "PRE_EXISTING_BASELINE (same assertion family, same cause)",
         "attributable": false
       }
     ],
     "attributableRegressions": 0,
     "pass": true,
-    "passBasis": "0 regressions attributable to code changed in this mission; the single non-baseline failure is a concurrency repro that passes in isolation at both HEAD and the pre-mission head",
-    "priorRunBeforeRemediation": "Test Files 5 failed | 285 passed (290); Tests 5 failed | 3355 passed (3360) - the two extra failures then (part-b-recert LSB 5000ms timeout, open3 O(n) timing) were load-sensitive and passed in isolation at HEAD and at 55e29d6; they did not recur in this run"
+    "passBasis": "the only two failures are the pre-existing baseline pair; the load-sensitive failures seen in earlier runs of this mission (part-b-recert LSB timeout, open3 O(n) timing, repro-connection-race) did not recur in this run",
+    "priorRuns": [
+      "before the audit remediation: 5 failed files (2 baseline + 3 load-sensitive, each passing in isolation at HEAD and at the pre-mission head 55e29d6)",
+      "after commit 8a: 3 failed files (2 baseline + repro-connection-race)",
+      "a first attempt at this final rerun with the Postgres cluster down: 103 failed files / 143 failed tests, entirely DB-connection failures; discarded and rerun after restarting the cluster (recorded here rather than deleted - failed evidence is not rewritten)"
+    ]
   },
   "areas": {
     "semantic accountability (all 4 files)": {
       "files": 4,
-      "tests": 167,
+      "tests": 169,
       "failed": 0
     },
     "Pass A / Pass B / Pass C (tests/contract-model/semantic-accountability/)": {

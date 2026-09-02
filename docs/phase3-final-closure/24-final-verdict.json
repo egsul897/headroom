@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "24-final-verdict",
+  "mission": "HEADROOM - PHASE 3 FINAL CLOSURE / PASS-A INVENTORY STABILITY + COMPLETION OF BLOCKED WHOLE-AGREEMENT VALIDATION",
+  "startingEvidenceSha": "55e29d6",
+  "startingProductionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+  "finalProductionSha": "1957105c58be77465745566167f1a05708d4d3b5",
+  "verdict": "PHASE_3_NOT_CLOSED",
+  "closureRuleApplied": "Mission §26 requires ALL of gates A-R to pass. They do not (23-phase3-release-gate.json).",
+  "limitingLayer": {
+    "primary": "PASS_A_MODEL_STABILITY_LIMIT",
+    "why": "On the only real evidence that exists (the two v1 holdout runs, source-identical per region), the source-first zero-LLM matcher measures semantic inventory stability at 77.6% conservative / 64.8% strict-fold / 90.4% lenient against a 95% gate. The instability is not identity bookkeeping and not infrastructure: the earliest failure layer is PASS_A_MODEL_OMISSION (04) - one run's model emits a decomposition the other does not, with two measured signatures (region-tail omission, sub-clause omission). The prior 90.11% figure was a Pass B/C disposition-label statistic over the 91 items that happened to share an exact id, not a Pass A stability measurement.",
+    "secondary": "ENVIRONMENT_BLOCKED",
+    "secondaryWhy": "Every paid step of this mission (§14 targeted stability rerun, §15 whole-agreement run-1 completion and run-2, §17 real shared-cap trace, §18 whole-agreement stability, and therefore the §16 gates) could not run: the Vercel AI Gateway credential returns HTTP 402 quota_for_entity_exceeded at $150.49 against a $150.00 limit, unchanged between the first and last check of this mission. Gates C-I are blocked, not failed on evidence, and are recorded as such rather than estimated."
+  },
+  "whatWasEstablishedThisMission": [
+    "The 372-item Pass A variance population is classified end to end (01, 03): SOURCE_SPAN 196, GRANULARITY 108, ROLE 44, TRUE_SEMANTIC_VARIANCE 9, GENUINE_OMISSION 14, UNKNOWN 1.",
+    "Both stability numbers are reported side by side without moving the goalposts (02): STRICT_ID_STABILITY 18.88% inventory / 90.11% disposition-on-shared-ids; SEMANTIC_INVENTORY_STABILITY 90.4% lenient, 77.6% conservative (the gated figure), 64.8% strict-fold, 88.0% adjudicated (informational).",
+    "The earliest failure layer is measured, not inferred (04): source context, transport, the schema/excerpt gate and normalization are each ruled out with counts; PASS_A_MODEL_OMISSION is the residual.",
+    "One bounded architectural change was chosen and implemented (05 OPTION C): Pass A now accounts for operative TEXT it did not inventory, makes one targeted gap call, and reports any residue as INVENTORY_COVERAGE_GAP / uninventoriedSegments. Pass B, Pass C, the IR and the Phase 3C verifier are untouched.",
+    "Three independent audits were run by fresh agents; two returned blockers, both remediated inside the same bounded scope with tests, and production was re-frozen after each."
+  ],
+  "whatIsStillUnknown": [
+    "Whether the v2 coverage accounting raises real-content semantic stability at all, and by how much: it is proven on synthetic material (169/169) and unmeasured on real content.",
+    "Whole-agreement CRITICAL/MATERIAL inventory recall, disposition rate, and value recall over all 12 regions (only 3 regions of run-1 ever completed, on the v1 SHA).",
+    "Real shared-cap / cross-reference dependency behaviour on real content (16).",
+    "Whether the gap re-inventory call closes surfaced gaps in practice or mostly leaves them surfaced - the difference between a stability fix and an honesty fix."
+  ],
+  "whatThisIsNot": "This is not a request for another giant validation cycle (§27). The single blocking input is provider budget. The completion path is bounded and already written down: 09's exact command twice for §14, then the pre-registered §15 manifest with --resume, then 11/12-17 recomputed from the run artifacts by scripts that already exist.",
+  "estimatedCostToComplete": "~$43 at the recorded per-region rates (08), for §14 (2 runs x pre-registered subset), §15 (run-1 regions 4-12 + full run-2), and §17.",
+  "phase4Readiness": "NOT READY. Phase 4 depends on trusting a whole-agreement semantic accountability result; that result does not exist, and the one stability number that does exist is below its gate.",
+  "finalVerdictString": "PHASE_3_NOT_CLOSED_LIMITING_LAYER_PASS_A_MODEL_STABILITY_LIMIT"
+}

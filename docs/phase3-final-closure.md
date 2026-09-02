@@ -1,6 +1,6 @@
 # Phase 3 Final Closure: Pass A Inventory Stability + Whole-Agreement Completion
 
-Narrative for the closure mission run against evidence head `55e29d6` and frozen production `976a565`. Machine-readable evidence for every claim is in `docs/phase3-final-closure/00..24`. Production ended frozen at **`c496751f91cbc91e5b27b87a1cc128e0757f5a11`** (FINAL_PASS_A_STABILITY_SHA, after the independent audit's remediation; the first v2 freeze `bd3b5be` is recorded as superseded in `07`).
+Narrative for the closure mission run against evidence head `55e29d6` and frozen production `976a565`. Machine-readable evidence for every claim is in `docs/phase3-final-closure/00..24`. Production ended frozen at **`1957105c58be77465745566167f1a05708d4d3b5`** (FINAL_PASS_A_STABILITY_SHA, after the independent audit's remediation; the first v2 freeze `bd3b5be` is recorded as superseded in `07`).
 
 ## What the 90.11% actually measured
 
@@ -22,9 +22,17 @@ Source context is byte-identical across runs; a truncated inventory cannot parse
 
 Decision (`05`): **Option C**, bounded to Pass A. Deterministic clause segmentation, an uncovered-segment rule, one targeted gap re-inventory call that receives only the uncovered segments and can only *add* items through the identical gates, and a surfaced `INVENTORY_COVERAGE_GAP` status that blocks completeness and compile `COMPLETED`. Running the detector over the synthetic corpus exposed three scenarios whose ground truth omitted the definitional lead-in and a "without duplication" condition; the corpus was extended, not the detector weakened (`06`).
 
-## Independent audit and remediation
+## Independent audits and remediation
 
-A fresh agent audited the first v2 cut and returned **BLOCKER** (`22`): an empty inventory over text carrying only the generic vocabulary could still be `INVENTORY_OK`; non-material echo items from the gap call could close a surfaced gap; completeness keyed on the status string alone; the matcher credited value changes and some folds; the omission cluster was mislocated; the exact-id figure mixed denominators. All were fixed in commit 8a within the same bounded scope (gap decided before the empty-inventory branch; only CRITICAL/MATERIAL spans count as coverage; Pass C and compile refuse completeness on any residual segment; matcher refuses differing values and flags folds under any different role; strict-fold lower bound reported), with 6 new tests (167/167), and production was re-frozen. A second fresh agent re-audited the blocker items against the remediated freeze; its report is in `22`. The operative-region-only scope of coverage accounting and the 40-character floor remain as disclosed limitations.
+Three fresh agents audited this work; none of them wrote it.
+
+**Audit 1** (against the first v2 cut) returned **BLOCKER** (`22`): an empty inventory over text carrying only the generic vocabulary could still be `INVENTORY_OK`; non-material echo items from the gap call could close a surfaced gap; completeness keyed on the status string alone; the matcher credited value changes and some folds; the omission cluster was mislocated; the exact-id figure mixed denominators. Fixed in commit 8a inside the same bounded scope - the gap decision moved before the empty-inventory branch, only CRITICAL/MATERIAL spans count as coverage, Pass C and compile refuse completeness on any residual segment, the matcher refuses differing values and flags folds under any different role, and the strict-fold lower bound is reported - with 6 new tests, then re-frozen.
+
+**Audit 2** (against that remediated freeze) returned residual gaps: a quantitative value sitting under a REVIEW_UNCERTAIN item was still credited as covered; a REVIEW_UNCERTAIN item left MISSING_FROM_COMPOSITION did not block completeness; an accountability result that was not `semanticallyComplete` could pass compile unreported when no other accountability reason fired; and a proviso tail after a comma was hidden behind a covered main clause. All four are fixed in commit 8c: `ACCOUNTING_SPAN` now gates value coverage exactly as it gates text, REVIEW_UNCERTAIN-missing blocks completeness (materiality undetermined is never treated as immaterial), `SEMANTIC_ACCOUNTABILITY_INCOMPLETE` is a compile failure reason, and a conditional tail is its own segment admitted at a lower 16-character floor so a missing condition is never dropped for being short. Two tests added; 169/169. The auditor also asked for the general 40-character floor to be lowered to 24; that was tried and rejected on evidence - it made colon-terminated lead-ins fire as gaps across eleven corpus scenarios, and calibrating a detector by loosening it until the corpus breaks is not a fix. The floor stays 40 and is carried as a disclosed limitation, with the conditional-tail rule covering the case the auditor was actually protecting.
+
+**Audit 3** ran against the final freeze `1957105`; its verbatim report and dispositions are in `22`.
+
+The operative-region-only scope of coverage accounting and the 40-character general floor remain disclosed limitations, not silent ones.
 
 ## What could not run
 
@@ -40,4 +48,10 @@ The Gateway credential is HTTP 402 (`$150.49 / $150.00`, `08`). Every paid step 
 
 ## Verdict
 
-See `24-final-verdict.json`; gate table in `23-phase3-release-gate.json`.
+**`PHASE_3_NOT_CLOSED`** - limiting layer **`PASS_A_MODEL_STABILITY_LIMIT`**, with `ENVIRONMENT_BLOCKED` covering everything the provider budget prevented.
+
+Gates A-R stand at 8 pass, 9 fail, plus the audit gate (`23`). Seven of the nine failures are environment-blocked, not evidence failures. The two evidence failures are A (semantic inventory stability 77.6% conservative against 95%) and J (disposition label stability 86.7% semantic / 90.11% exact-id against 95%). The gate was not moved to fit the result, and no aggregate pass is claimed from partial regions.
+
+What this mission owes the next one is small and specific, not another giant cycle: raise the Gateway budget, run `09`'s command twice, resume `15`'s pre-registered manifest from region 4, run `17`'s shared-cap trace - roughly $43 at recorded rates, against scripts that already exist. Until then the honest statement is that Pass A's real-content stability is measured and below gate, the v2 accounting that should improve it is proven only on synthetic material, and Phase 4 has nothing trustworthy to stand on.
+
+Full machine-readable verdict: `24-final-verdict.json`; gate table: `23-phase3-release-gate.json`.

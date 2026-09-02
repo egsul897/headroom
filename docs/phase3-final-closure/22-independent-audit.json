@@ -33,7 +33,7 @@
     }
   },
   "remediation": {
-    "commit": "c496751 (commit 8a) + re-freeze b211321 (commit 8b)",
+    "commit": "1957105 (commit 8a) + re-freeze b211321 (commit 8b)",
     "byBlocker": {
       "B1 (INVENTORY_OK with uncovered segments)": "coverage-gap decision moved before the empty-inventory branch (INVENTORY_EMPTY_SUSPECT keeps precedence when the legacy words/values are present); test 'audit B1'",
       "B2''/B2' (non-material echo items close a gap)": "only CRITICAL/MATERIAL item spans count as coverage (ACCOUNTING_SPAN); an all-REVIEW_UNCERTAIN inventory over operative text is now INVENTORY_COVERAGE_GAP; test 'audit B2'''",

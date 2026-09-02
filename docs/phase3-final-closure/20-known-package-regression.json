@@ -60,7 +60,7 @@
   "newAttributableRegression": false,
   "priorDriftDisclosed": "The committed Aug-30 known-package artifact and the Sep-1 Riot artifact are both stale relative to the pre-mission head (documented earlier as an expected consequence of fixes landing after those artifacts were generated); this mission neither refreshed nor depends on them.",
   "headAfterAuditRemediation": {
-    "sha": "c496751f91cbc91e5b27b87a1cc128e0757f5a11",
-    "note": "commit 8a (audit remediation) again touched only lib/contract-model/compiler/semantic-accountability/{inventory,reconciliation}.ts and semantic/compile.ts, none of which any of the six regression scripts import (verified by git diff 55e29d6..HEAD --stat -- lib and the auditor's transitive-import check in 22 item 11); the pre-mission-head vs HEAD identity therefore carries to c496751 without a third rerun."
+    "sha": "1957105c58be77465745566167f1a05708d4d3b5",
+    "note": "commit 8a (audit remediation) again touched only lib/contract-model/compiler/semantic-accountability/{inventory,reconciliation}.ts and semantic/compile.ts, none of which any of the six regression scripts import (verified by git diff 55e29d6..HEAD --stat -- lib and the auditor's transitive-import check in 22 item 11); the pre-mission-head vs HEAD identity therefore carries to 1957105 without a third rerun."
   }
 }

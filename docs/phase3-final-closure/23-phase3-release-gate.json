@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactId": "23-phase3-release-gate",
-  "productionSha": "c496751f91cbc91e5b27b87a1cc128e0757f5a11",
+  "productionSha": "1957105c58be77465745566167f1a05708d4d3b5",
   "closureRule": "Mission §26: Phase 3 closes only if ALL of A-R pass.",
   "gates": [
     { "id": "A", "requirement": "semantic inventory stability >= 95%", "measured": "v1 real holdout (02, post-audit matcher): 90.4% lenient / 88.0% adjudicated (prose-based, informational) / 77.6% conservative (the gated figure) / 64.8% strict-fold lower bound; exact-id 18.88%; v2 post-fix: NOT MEASURED (targeted rerun blocked, 11)", "pass": false, "classification": "PASS_A_MODEL_STABILITY_LIMIT on v1 evidence; v2 effect ENVIRONMENT_BLOCKED" },
