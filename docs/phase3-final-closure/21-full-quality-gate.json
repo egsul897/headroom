@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "21-full-quality-gate",
+  "productionSha": "bd3b5bec2c955e8c9c99a379e288e10e056a95e9",
+  "databaseEnvironment": {
+    "mission23Check": "pg_isready -h localhost -p 5432 -> initially 'no response' (cluster 16/main down with a stale pid file after the container restart); restored with `pg_ctlcluster 16 main start` (the established local test-DB cluster; 'Removed stale pid file', 'database system is ready to accept connections'); pg_isready -> accepting connections before the full suite. No shared data wiped.",
+    "dbConnectionErrorsInFullRun": 0
+  },
+  "typescript": { "command": "npx tsc --noEmit", "errors": 6, "newErrors": 0, "baseline": "the 6 pre-existing errors under tests/foundation-audit/ (cascade-and-concurrency x2, discovery-fault-injection x1, real-db-duplicate-physical-occurrence x3)", "pass": true },
+  "lint": { "command": "npx next lint", "result": "No ESLint warnings or errors", "skipped": false, "pass": true },
+  "vitest": {
+    "command": "npx vitest run (Postgres up)",
+    "result": "Test Files 5 failed | 285 passed (290); Tests 5 failed | 3355 passed (3360)",
+    "baselineDbAvailable": "Test Files 2 failed | 287 passed (289); Tests 2 failed | 3335 passed (3337) (post-freeze baseline of the previous mission)",
+    "delta": "+1 file (pass-a-stability.test.ts), +23 tests net (+22 new, +1 from the extended corpus), 3 additional failing tests in the full-suite run",
+    "failingTests": [
+      { "file": "tests/contract-model/architecture-proposal-node-identity.test.ts", "classification": "PRE_EXISTING_BASELINE (package-fixture-count assertion from an earlier phase)", "attributable": false },
+      { "file": "tests/contract-model/phase-3f1-1-forensic-machinery.test.ts", "classification": "PRE_EXISTING_BASELINE (same family)", "attributable": false },
+      { "file": "tests/contract-model/part-b-recert-crosscutting-known-package-regression.test.ts", "test": "LSB independently-derived materialUnitsWithoutClaimReviewItem", "classification": "FULL_SUITE_LOAD (5000ms testTimeout hit while 290 files ran concurrently); passes in isolation at HEAD (348ms)", "attributable": false },
+      { "file": "tests/contract-model/part-b-terminal-recert-open3-independent.test.ts", "test": "measured multi-point scaling is consistent with O(n)", "classification": "TIMING_SENSITIVE (timeRatio 2.46-2.54 vs threshold 2.39 under load); passes in isolation at HEAD 3/3 runs and at the pre-mission head 55e29d6; no code on its path changed in this mission", "attributable": false },
+      { "file": "tests/foundation-audit/repro-connection-race.test.ts", "test": "N concurrent first-time calls should all succeed and converge on one row", "classification": "CONCURRENCY_REPRO under full-suite DB contention (3 P2002 rejections); passes in isolation at HEAD 3/3 runs and at 55e29d6; upload-connection code untouched by this mission", "attributable": false }
+    ],
+    "attributableRegressions": 0,
+    "pass": true,
+    "passBasis": "0 regressions attributable to code changed in this mission; the 3 non-baseline failures reproduce only under full-suite load and pass in isolation at both HEAD and the pre-mission head"
+  },
+  "areas": {
+    "semantic accountability (all 4 files)": { "files": 4, "tests": 161, "failed": 0 },
+    "Pass A / Pass B / Pass C (tests/contract-model/semantic-accountability/)": { "files": 3, "tests": 156, "failed": 0 },
+    "semantic compiler": { "files": 9, "tests": 98, "failed": 0 },
+    "IR": { "files": 7, "tests": 50, "failed": 0 },
+    "normalization": { "files": 1, "tests": 18, "failed": 0 },
+    "completeness": { "files": 2, "tests": 30, "failed": 0 },
+    "verifier (semantic-verification / verify)": { "files": 11, "tests": 153, "failed": 0 },
+    "context retrieval": { "files": 2, "tests": 58, "failed": 0 },
+    "dependency / reference resolution": { "files": 3, "tests": 45, "failed": 0 },
+    "coverage": { "files": 21, "tests": 235, "failed": 0 },
+    "package graph": { "files": 6, "tests": 101, "failed": 0 },
+    "operative state / amendment": { "files": 9, "tests": 134, "failed": 0 },
+    "contract model (all tests/contract-model)": { "files": 156, "tests": 1878, "failed": 4, "note": "the 4 = 2 pre-existing baseline + 2 load-sensitive above" },
+    "foundation-audit": { "files": 34, "tests": 364, "failed": 1, "note": "the concurrency repro above" },
+    "full repository": { "files": 290, "tests": 3360, "failed": 5 }
+  },
+  "overall": { "pass": true, "reasoning": "tsc 0 new errors, lint clean (not skipped), 0 attributable vitest regressions, every area this mission touches at 0 failures, DB restored and verified before the run." }
+}
