@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "12-whole-agreement-run-1-complete",
+  "status": "INCOMPLETE_ENVIRONMENT_BLOCKED",
+  "manifest": "scripts/lib/semantic-accountability-regions.ts whole-agreement (12 pre-registered regions, unchanged, no substitution)",
+  "runDirectory": "tests/fixtures/semantic-accountability-validation/whole-agreement/run-1",
+  "priorState": { "completed": 3, "providerFailed": 9, "regionIdsCompleted": ["definitions-lsb", "definitions-dsgr", "debt-dsgr"], "resumePoint": "region 4 (debt-lsb: inventory completed with 139 items, compile PROVIDER_FAILURE 402; regions 5-12 INVENTORY_FAILED 402)", "productionShaOfCompletedRegions": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4 (v1)" },
+  "resumeAttempt": {
+    "preconditionCheck": "08-provider-health-and-cost.json: HTTP 402 persists ($150.49 / $150.00) at the time the resume would start",
+    "command": "npx tsx scripts/semantic-accountability-validation.ts whole-agreement --run 1 --resume --budget 16",
+    "executed": false,
+    "reason": "no paid call is possible; the harness's --resume path (commit 3) would keep the 3 completed regions, preserve the 9 provider-failed records under a provider-failure suffix, and run regions 4-12 on FINAL_PASS_A_STABILITY_SHA bd3b5be, disclosing the SHA mix per region"
+  },
+  "completedRegionsSnapshot": [
+    { "id": "definitions-lsb", "family": "DEFINITIONS", "inventoryItems": 81, "material": 77, "represented": 39, "unsupported": 40, "materialMissing": 1, "criticalMissing": 1, "materialValues": 15, "materialValuesMissing": 2, "verifyStatus": "MATERIAL_DISCREPANCY", "materialFindings": 4 },
+    { "id": "definitions-dsgr", "family": "DEFINITIONS", "inventoryItems": 41, "material": 40, "represented": 32, "materialMissing": 8, "criticalMissing": 5, "materialValues": 10, "materialValuesMissing": 10, "verifyStatus": "MATERIAL_DISCREPANCY", "materialFindings": 13 },
+    { "id": "debt-dsgr", "family": "DEBT", "inventoryItems": 49, "material": 49, "represented": 44, "ambiguous": 5, "materialMissing": 0, "materialValues": 9, "materialValuesMissing": 0, "sharedCapacities": 1, "unresolvedDependencies": 7, "verifyStatus": "MATERIAL_DISCREPANCY", "materialFindings": 7 }
+  ],
+  "paidCallsMade": 0
+}
