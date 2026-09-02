@@ -663,7 +663,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "At the option of the Required Facility Lenders, Pricing Level 1 overrides the otherwise-applicable rate upon either of two triggering circumstances.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [TRIGGER 1448-1848]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:c6a87b61204e936b44942ea9"
@@ -980,7 +980,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Cross-reference to Section 7.03 (permitted dispositions of all/substantially all assets).",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 4098-4266; REFERENCE 4206-4266]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:8477382d28f60e5f75756ee9",
@@ -1001,7 +1001,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion carve-back referencing Section 7.03(6).",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 4098-4266; REFERENCE 4206-4266]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:8477382d28f60e5f75756ee9",
@@ -1022,7 +1022,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion carve-back referencing Section 7.03(7).",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 4098-4266; REFERENCE 4206-4266]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:8477382d28f60e5f75756ee9",
@@ -1907,7 +1907,7 @@
       "disposition": "REPRESENTED",
       "proposition": "An Approved Fund may be administered, advised or managed by the Lender itself.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 2350-2598]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:6e86d7761939da3f4937e16e"
@@ -1927,7 +1927,7 @@
       "disposition": "REPRESENTED",
       "proposition": "An Approved Fund may be administered, advised or managed by an Affiliate of the Lender.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 2350-2598]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:6e86d7761939da3f4937e16e"
@@ -1947,7 +1947,7 @@
       "disposition": "REPRESENTED",
       "proposition": "An Approved Fund may be administered, advised or managed by an entity or Affiliate of an entity that administers, advises or manages the Lender.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 2350-2598]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:6e86d7761939da3f4937e16e"
@@ -2021,14 +2021,14 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The Equity Interests prong applies to issuances/sales of Subsidiary equity other than to the Borrower or another Subsidiary, whether single or series of transactions.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 67% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 67% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:33f33f56f997e2b5cc7daed4"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "UNSUPPORTED"
     },
     {
       "region": "applicable-liquidity-rate",
@@ -2230,7 +2230,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Cross-reference to Section 7.03, excluding sub-clauses (6) and (7), governing permitted asset sale/disposition transactions.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 4094-4267]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:960fc9877864206a6889e1df"
@@ -2520,14 +2520,14 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Excluded: disposition of an account receivable in connection with its collection or compromise in the ordinary course or in bankruptcy or similar proceedings.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 76% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 76% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:794ae9463702e169ab7349ca"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "UNSUPPORTED"
     },
     {
       "region": "applicable-liquidity-rate",
@@ -2594,7 +2594,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Excluded: conversion of accounts receivable to notes receivable, or other dispositions of accounts receivable in connection with collection thereof in the ordinary course or consistent with past pract",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 6366-6766]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:07e71145a95663338107dabd"
@@ -3046,7 +3046,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "If the Borrower elects to add back such non-cash charge, the cash payment made in respect thereof in the future period must be subtracted from Consolidated EBITDA to that extent.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [REQUIREMENT 1882-2208]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:87ef0b1d08898fddefbb1ed2"
@@ -3174,7 +3174,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Clause (j) addback continues to include amortization of the unrecognized net obligation existing at initial application of FASB ASC Topic 715 (Compensation-Retirement Benefits) and other similar items",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 3951-4347]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:4d3e145e5ffe1a0e261060fb"
@@ -3293,7 +3293,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The clause (l) shared cap cross-references the cost-savings/synergies addback amount included pursuant to Section 1.07(3), which must be aggregated with the clause (l) amount for the 15% test.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [SHARED_CAP 5706-6064]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:51ae3fe1b158808d8fec8686"
@@ -3394,7 +3394,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Clause (2)(a) deduction: non-cash gains for the period.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 7494-7725]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a0686bb42fda80302e84dbb6"
@@ -3603,7 +3603,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The scope of excluded items depends on the definition of Consolidated Interest Expense.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [DEPENDENCY 764-882]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:b1f8174c392ec9529e58a13f"
@@ -3668,7 +3668,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The net tax expense addback depends on adjustments made under the Consolidated Net Income definition.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [DEPENDENCY 1341-1454]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:7deac7dea06e070566a6f5a1"
@@ -3715,7 +3715,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The Borrower may elect not to add back such non-cash charge in the current period.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [PERMISSION 1661-1872]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:e8bbe20cbd1993aff11542d5"
@@ -3735,7 +3735,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "If the Borrower does add back the non-cash charge, the future cash payment (with a carved-out exception) must be subtracted from Consolidated EBITDA when paid.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 2 smaller other-run item(s) [REQUIREMENT 2127-2208; EXCEPTION 1992-2125]",
+      "subclass": "merge of 2 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:6f0a1794a713562120e13428",
@@ -3864,7 +3864,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Addback (j) extends to any other items of a similar nature.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 4152-4388]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:93561218113ee7b041198b69"
@@ -4073,7 +4073,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The reversal exclusion in (2)(a) does not apply to accruals/reserves that have themselves been added back to Consolidated Net Income in calculating Consolidated EBITDA.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 7526-7886]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:1ab7a90894fbb19a6881eb94"
@@ -4174,7 +4174,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Included debt type: Indebtedness for borrowed money.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 249-362]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:1dfae25ee5bc6961b595adbf"
@@ -4194,7 +4194,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Included debt type: Capitalized Lease Obligations.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 249-362]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:1dfae25ee5bc6961b595adbf"
@@ -4214,7 +4214,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Included debt type: purchase money Indebtedness.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 249-362]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:1dfae25ee5bc6961b595adbf"
@@ -4288,7 +4288,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Cash interest expense component (a) excludes amounts attributable to Non-Recourse Indebtedness.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 1004-1241]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:8b46f50ef78820befabf678b"
@@ -4335,7 +4335,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Net cash costs under hedging agreements exclude amounts in connection with the early termination of such agreements.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 1243-1481]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:08790dc811dae0ccb062ac36"
@@ -4409,7 +4409,7 @@
       "disposition": "AMBIGUOUS",
       "proposition": "The PIK interest component's meaning depends on the terms of the (unspecified) agreements governing Indebtedness for borrowed money.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 1815-1969]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:18e032e7e0645b5fec36c945"
@@ -4474,7 +4474,7 @@
       "disposition": "REPRESENTED",
       "proposition": "This exclusion cross-references clauses (b)(i) and (b)(ii) of this same definition.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 2002-2292]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:1283a9971d2eba1e35857712"
@@ -4521,7 +4521,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Cross-reference to FASB Accounting Standards Codification Topic 815, Derivatives and Hedging.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 2300-2552]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:21ded096ea9dbb623011ddaf"
@@ -4622,7 +4622,7 @@
       "disposition": "AMBIGUOUS",
       "proposition": "This exclusion depends on an unidentified registration rights agreement.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 2899-3001]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:fe0f8664a2dcf762754267d4"
@@ -4858,7 +4858,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Consolidated First Lien Secured Debt consists only of Indebtedness for borrowed money, Capitalized Lease Obligations and purchase money Indebtedness.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 3 smaller other-run item(s) [FORMULA_COMPONENT 268-299; FORMULA_COMPONENT 301-330; FORMULA_COMPONENT 335-362]",
+      "subclass": "merge of 3 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a96603a7f4c601bdc2b671ac",
@@ -5474,7 +5474,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Net cash costs under hedging agreements are included in the interest expense addend.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 354-530]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a5ba5d6831375798c86383a9"
@@ -5494,7 +5494,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Non-cash interest expense resulting solely from two enumerated sources is added.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 603-1003]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:0cad589a73d03fb162239ed8"
@@ -5676,7 +5676,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Costs associated with incurring or terminating Hedging Obligations and cash breakage costs on interest-rate hedging agreements are excluded.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 1671-1829]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:0be76013320c8a999f2ee332"
@@ -5858,7 +5858,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Interest expense attributable to exercise of appraisal rights and settlement of related claims/actions in connection with the Transactions, an acquisition, or an Investment is excluded.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 2590-2833]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:71186deee4a262d0b14a9855"
@@ -5878,7 +5878,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Annual agency fees paid to administrative and collateral agents with respect to secured or unsecured Indebtedness, including the Facilities and the Super-Priority Revolving Credit Agreement, are exclu",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 2845-3212]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:954e2b6ac25f8f8ddb35e3e2"
@@ -5898,14 +5898,14 @@
       "disposition": "REPRESENTED",
       "proposition": "For Capitalized Lease Obligations, interest is deemed to accrue at the rate the Person reasonably determines to be the implicit interest rate in accordance with GAAP.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 77% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 77% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:e3fb40c634fb7f96f103c20a"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "INTENTIONALLY_NON_COMPUTATIONAL"
     },
     {
       "region": "interest-expense",
@@ -5972,7 +5972,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Total interest expense is an addback item.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 3864-4264]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:10484adf93f89725ec745f0f"
@@ -6019,7 +6019,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Bank and letter of credit fees, letter of guarantee and bankers' acceptance fees, and surety bond costs in connection with financing activities are included in the addback.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 3864-4264]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:10484adf93f89725ec745f0f"
@@ -6066,7 +6066,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Provision for taxes based on income, profits, revenue or capital (including federal taxes) is an addback item.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 4399-4799]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:54b4d258a98b21d48de337a3"
@@ -6113,14 +6113,14 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Penalties and interest related to taxes or arising from tax examinations are included in the tax addback.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 64% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 64% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:54b4d258a98b21d48de337a3"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "REPRESENTED"
     },
     {
       "region": "interest-expense",
@@ -6214,7 +6214,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "If non-cash charges represent an accrual or reserve for a potential future cash item, special treatment applies.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 99% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 99% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:272431dfb678cddf5583531b",
@@ -6223,7 +6223,7 @@
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "REPRESENTED"
     },
     {
       "region": "interest-expense",
@@ -6263,7 +6263,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "If the Borrower instead decides to add back the non-cash charge, a subtraction obligation is triggered.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [CONDITION 5185-5584; REQUIREMENT 5406-5744]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:14bcf4d10f861b4d05072e86",
@@ -6311,7 +6311,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Minority interest expense and non-controlling interest income attributable to third parties in non-wholly-owned Subsidiaries is an addback item.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 5844-6244]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a00721a303f6e5df11ade616"
@@ -6331,7 +6331,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Reductions in arriving at Consolidated Maintenance Net Income resulting from application of ASC Topic No. 810 (Consolidation) are added back.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 5844-6244]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a00721a303f6e5df11ade616"
@@ -6378,7 +6378,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The board fee and optionholder payment addbacks apply in each case only to the extent permitted under the agreement.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [DEPENDENCY 6638-6684]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:2a7cbbcce7bbea8a6671fc63"
@@ -6425,7 +6425,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Cash receipts (or netting arrangements resulting in reduced cash expenditures) not representing Consolidated Maintenance EBITDA or Consolidated Maintenance Net Income in a prior period are an addback ",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 6890-7273]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:eca38e04593771fa6991ae82"
@@ -6472,7 +6472,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Clause (h) depends on \"clause (2) below\" (the decrease provisions of this same definition) and requires the amount not to have been added back for a previous period.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 6890-7273]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:eca38e04593771fa6991ae82"
@@ -6519,7 +6519,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The clause (i) addback applies only to the extent such costs or expenses are funded with cash proceeds contributed to capital or net cash proceeds of an issuance of Equity Interests.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 7284-7684]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:489028ee0e0d69be25fe5f2a"
@@ -6566,7 +6566,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Net pension or other post-employment benefit costs representing amortization of unrecognized prior service costs are an addback item.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 7713-8113]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:0a7d37e894fa29991093a022"
@@ -6613,7 +6613,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The amount of \"run-rate\" cost savings, synergies and operating expense reductions is an addback item, exempted from the general deduction-gating condition.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 8182-8582]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:c803a484995788576f93a3e1"
@@ -6633,7 +6633,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The run-rate savings must be projected by the Borrower in good faith.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 8182-8582]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:c803a484995788576f93a3e1"
@@ -6653,7 +6653,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The run-rate savings must result from actions taken, or with respect to which substantial steps have been taken, within 12 months after the end of the applicable period.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [TIME_PERIOD 8617-8662]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:02b0f261c6d716c3075ae6d3"
@@ -6907,7 +6907,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Addend (b): non-cash interest expense resulting solely from OID amortization plus PIK interest expense.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 3 smaller other-run item(s) [FORMULA_COMPONENT 603-650; FORMULA_COMPONENT 655-800; EXCEPTION 801-914]",
+      "subclass": "merge of 3 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:e4d815124460bad117b52d3f",
@@ -7091,14 +7091,14 @@
       "disposition": "REPRESENTED",
       "proposition": "Exclusion (ii) references FASB Accounting Standards Codification Topic 815, Derivatives and Hedging.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 52% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 52% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:1c92ee96acabf3569b3ff379"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "REPRESENTED"
     },
     {
       "region": "interest-expense",
@@ -7111,7 +7111,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Exclusion (iii): costs of incurring or terminating Hedging Obligations and cash breakage costs on interest-rate hedging agreements.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [EXCEPTION 1665-1741]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:faa3eda21758d97606cc30d7"
@@ -7293,7 +7293,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Exclusion (xi): interest expense attributable to exercise of appraisal rights and settlement of related claims/actions in connection with the Transactions, any acquisition or Investment.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [EXCEPTION 2585-2685]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:caf6d890697e138e5e1c6b99"
@@ -7313,7 +7313,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Exclusion (xii): annual agency fees paid to administrative and collateral agents regarding secured or unsecured Indebtedness, including the Facilities and the Super-Priority Revolving Credit Agreement",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [EXCEPTION 2839-2960]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:b661c3f876736dd2b6368ce0"
@@ -7351,14 +7351,14 @@
       "disposition": "INTENTIONALLY_NON_COMPUTATIONAL",
       "proposition": "For purposes of the Consolidated Interest Expense definition, interest on a Capitalized Lease Obligation is deemed to accrue at the rate reasonably determined by the Person to be the implicit interest",
       "class": "UNKNOWN",
-      "subclass": "partial coverage 49% - neither clean counterpart nor clear omission",
+      "subclass": "partial coverage 49%",
       "counterpart": null,
       "counterparts": [
         "inv-item:17cd4c78768b7df993c39e7f"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "REPRESENTED"
     },
     {
       "region": "interest-expense",
@@ -7587,7 +7587,7 @@
       "disposition": "REPRESENTED",
       "proposition": "If non-cash charges under (d) represent an accrual/reserve for a potential future cash item, special treatment applies to whether and how the add-back is later reversed.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 2 smaller other-run item(s) [PERMISSION 5315-5396; CONDITION 5406-5478]",
+      "subclass": "merge of 2 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:4c642c31d21f20820fda2b35",
@@ -7662,7 +7662,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Addend (e): minority interest expense, non-controlling interest income (excluding cash distributions), and reductions from ASC Topic 810 consolidation adjustments.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 3 smaller other-run item(s) [FORMULA_COMPONENT 5840-6017; EXCEPTION 6030-6077; FORMULA_COMPONENT 6083-6245]",
+      "subclass": "merge of 3 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:d6d06bc10e073ddaf1343a9e",
@@ -7684,14 +7684,14 @@
       "disposition": "REPRESENTED",
       "proposition": "Addend (e) references Accounting Standards Codification Topic No. 810, Consolidation.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 77% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 77% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:a24e12b9d00b2aee07e676cc"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "UNSUPPORTED"
     },
     {
       "region": "interest-expense",
@@ -7731,7 +7731,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Both (f)(i) and (f)(ii) add-backs apply only to the extent permitted under the Agreement (\"hereunder\").",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [CONDITION 6597-6690]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:d16f1ad0a394ab4441dfefb8"
@@ -7805,7 +7805,7 @@
       "disposition": "AMBIGUOUS",
       "proposition": "Addend (h) depends on \"clause (2) below\" of this same definition (the decreases list).",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [DEPENDENCY 7211-7279]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:e6efa0ad47f5dd3fc4cb6727"
@@ -7906,14 +7906,14 @@
       "disposition": "REPRESENTED",
       "proposition": "Addend (j) references FASB Accounting Standards Codification Topic 715—Compensation—Retirement Benefits.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 54% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 54% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:deebe94d284f8b015f1c9d54"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "UNSUPPORTED"
     },
     {
       "region": "interest-expense",
@@ -7926,7 +7926,7 @@
       "disposition": "MISSING_FROM_COMPOSITION",
       "proposition": "Addend (l): \"run-rate\" cost savings, synergies and operating expense reductions related to restructuring or a Permitted Acquisition, projected in good faith to result from actions taken or with respec",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 4 smaller other-run item(s) [FORMULA_COMPONENT 8178-8234; ALTERNATIVE 8275-8372; ALTERNATIVE 8377-8407; CONDITION 8409-8474]",
+      "subclass": "merge of 4 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:cf300d6177c789c82f11c7ae",
@@ -7949,7 +7949,7 @@
       "disposition": "MISSING_FROM_COMPOSITION",
       "proposition": "The projected cost savings/synergies/reductions must result from actions taken, or with respect to which substantial steps have been taken, within 12 months after the end of the applicable period.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [TIME_PERIOD 8475-8714]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:483bcd53bd2a172b28d253d7"
@@ -8077,7 +8077,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Consolidated Net Income is determined in accordance with GAAP.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 0-249]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:693d11c1dd02e3e958e5d1af"
@@ -8097,7 +8097,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Excludes gain/loss on asset sales, disposals or abandonments, subject to a carve-out for ordinary course transactions.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 2 smaller other-run item(s) [FORMULA_COMPONENT 601-658; EXCEPTION 660-744]",
+      "subclass": "merge of 2 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:6bd4777cbf685819d2f7e3b5",
@@ -8145,7 +8145,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Excludes the Net Income of any Subsidiary (other than a Guarantor), subject to a restriction-based condition.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 1197-1483]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:e9546a0ce58d11d662e88115"
@@ -8192,14 +8192,14 @@
       "disposition": "UNSUPPORTED",
       "proposition": "One basis for the non-permission: lack of prior governmental approval that has not been obtained.",
       "class": "TRUE_SEMANTIC_VARIANCE",
-      "subclass": "text 57% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently",
+      "subclass": "text 57% covered by other-run spans but no clean counterpart",
       "counterpart": null,
       "counterparts": [
         "inv-item:e9546a0ce58d11d662e88115"
       ],
       "identityAttributable": false,
       "conditionalRoleFolded": false,
-      "counterpartDisposition": null
+      "counterpartDisposition": "UNSUPPORTED"
     },
     {
       "region": "net-income",
@@ -8284,7 +8284,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Alternative basis for the addback: amounts actually paid in cash or Cash Equivalents (or converted thereto).",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [CONDITION 882-1125]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:5c12f9bb15fe2e2dae858f79"
@@ -8484,7 +8484,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The exclusion extends to fees/expenses/charges related to the incurrence of Facilities, issuance of Equity Interests (including by a direct or indirect parent of the Borrower), recapitalizations, refi",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [REFERENCE 4062-4136]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:fc312b13d14d63932fcd8e92"
@@ -8504,7 +8504,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The exclusion applies to such transactions whether consummated before, on or after the Closing Date, whether completed or successful, and includes related nonrecurring merger costs regardless of succe",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [REFERENCE 4448-4498]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:c54608b1a9783adec9c17569"
@@ -8524,7 +8524,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Clarifies that the exclusion includes the effect of expensing all transaction-related expenses under ASC Topic No. 805, Business Combinations.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [REFERENCE 4835-4905]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:12798257ea8bca6062f91c28"
@@ -8544,7 +8544,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The timing scope of the exclusion depends on the defined term 'Closing Date'.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [REFERENCE 4448-4498]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:c54608b1a9783adec9c17569"
@@ -8564,7 +8564,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The exclusion's scope depends on the defined term 'Facilities'.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [REFERENCE 4062-4136]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:fc312b13d14d63932fcd8e92"
@@ -8584,7 +8584,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The exclusion depends on the defined term 'Transactions'.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 5131-5409]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:402d00b8151d91a322aec040"
@@ -8676,7 +8676,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Consolidated Net Income is increased to include proceeds received or receivable from business interruption insurance and related reimbursed/indemnified amounts, to the extent not already included.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 1 smaller other-run item(s) [FORMULA_COMPONENT 7044-7126]",
+      "subclass": "merge of 1 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:4a5d490e075af81cd7d1999f"
@@ -8777,7 +8777,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion (4): any gain (loss) on asset sales, disposals or abandonments.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 601-745]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:393a4ddf8d055adefa3a5b81"
@@ -8851,7 +8851,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion (6) does not apply if the dividend/distribution restriction has been legally waived.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [EXCEPTION 1734-1985]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:8e8066b43263994c1a6394a4"
@@ -8952,7 +8952,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion (8)(b): income (loss) from early extinguishment or conversion of derivative instruments.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 2848-2959]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:2172e1ba5ab1df5939e26f7a"
@@ -8999,7 +8999,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion (11) references transactions consummated on, after or prior to the Closing Date.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [CONDITION 4390-4717]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:5f13f616535ffddc53942980"
@@ -9019,7 +9019,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion (11) references fees/expenses/charges related to the incurrence of any Facilities.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 4051-4389]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:8e2e9a78bd2ab0e1e471bf58"
@@ -9039,7 +9039,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion (11) references ASC Topic No. 805, Business Combinations, for expensing of transaction-related expenses.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [REFERENCE 4719-4905]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:7c402255bbbe694269a07c5e"
@@ -9059,7 +9059,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion (12) depends on the defined term 'Transactions'.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 5131-5409]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:402d00b8151d91a322aec040"
@@ -9214,7 +9214,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Exclusion (6) carves out Subsidiaries that are Guarantors from the restricted-dividend exclusion, depending on the defined term 'Guarantor'.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [FORMULA_COMPONENT 1197-1272]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:4e2ec2efc0b0d1cbddefa201"
@@ -9315,7 +9315,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "Clarifying proviso within condition (y): the Facilities securing the restricted cash may also secure other Indebtedness that is itself secured by a pari passu or junior Lien on the Collateral along wi",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [ALTERNATIVE 417-588]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:7a1bab43302769d1716003bc"
@@ -9335,7 +9335,7 @@
       "disposition": "UNSUPPORTED",
       "proposition": "The denominator component (b) is selected by purpose: branch (i) applies for determining compliance with the Financial Maintenance Covenant, branch (ii) applies for all other purposes.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "merge of 2 smaller other-run item(s) [ALTERNATIVE 600-769; ALTERNATIVE 779-880]",
+      "subclass": "merge of 2 smaller other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:defbecf66b5aa8d5b33b6bcb",
@@ -9410,7 +9410,7 @@
       "disposition": "REPRESENTED",
       "proposition": "The fixed, named members of Secured Parties are the Administrative Agent, the Collateral Agent, the Lenders, and each Supplemental Administrative Agent.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 1002-1308]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a93cb15b6a1729d79b3f583c"
@@ -9457,7 +9457,7 @@
       "disposition": "REPRESENTED",
       "proposition": "The appointment mechanism for co-agents/sub-agents/collateral trustees under the Secured Parties definition depends on Section 9.01(2), which designates JPMorgan Chase Bank, N.A. as Collateral Agent a",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 1002-1308; REFERENCE 1145-1307]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a93cb15b6a1729d79b3f583c",
@@ -9478,7 +9478,7 @@
       "disposition": "REPRESENTED",
       "proposition": "The appointment mechanism for co-agents/sub-agents/collateral trustees under the Secured Parties definition also depends on Section 9.07, the content of which is not included in the provided evidence.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 1002-1308; REFERENCE 1145-1307]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a93cb15b6a1729d79b3f583c",
@@ -9634,7 +9634,7 @@
       "disposition": "REPRESENTED",
       "proposition": "The Administrative Agent is a Secured Party.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 1002-1308; OTHER 1041-1140]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a93cb15b6a1729d79b3f583c",
@@ -9655,7 +9655,7 @@
       "disposition": "REPRESENTED",
       "proposition": "The Collateral Agent is a Secured Party.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 1002-1308; OTHER 1041-1140]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a93cb15b6a1729d79b3f583c",
@@ -9676,7 +9676,7 @@
       "disposition": "REPRESENTED",
       "proposition": "The Lenders are Secured Parties.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 1002-1308; OTHER 1041-1140]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a93cb15b6a1729d79b3f583c",
@@ -9697,7 +9697,7 @@
       "disposition": "REPRESENTED",
       "proposition": "Each Supplemental Administrative Agent is a Secured Party.",
       "class": "GRANULARITY_VARIANCE",
-      "subclass": "fragment of larger other-run item(s) [OTHER 1002-1308; OTHER 1041-1140]",
+      "subclass": "fragment of larger other-run item(s)",
       "counterpart": null,
       "counterparts": [
         "inv-item:a93cb15b6a1729d79b3f583c",

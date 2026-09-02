@@ -425,6 +425,7 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
 
   const reasons: string[] = [];
   if (inventory.inventoryStatus !== "INVENTORY_OK") reasons.push(`inventory status ${inventory.inventoryStatus}: ${inventory.inventoryStatusReason}`);
+  if (inventory.uninventoriedSegments.length > 0) reasons.push(`${inventory.uninventoriedSegments.length} operative-text segment(s) Pass A could not account for: ${inventory.uninventoriedSegments.map((s) => `${s.regionId}:${s.charStart}-${s.charEnd}`).join(", ")} - materiality undetermined, review required`);
   if (sourceContextState !== "COMPLETE_LOCAL_SOURCE" && sourceContextState !== "DEPENDENCY_EXPANDED_SOURCE") reasons.push(`source context is ${sourceContextState} - the unit's own boundary was not established as complete`);
   if (materialMissing.length > 0) reasons.push(`${materialMissing.length} material inventory item(s) MISSING_FROM_COMPOSITION (${criticalMissing.length} CRITICAL): ${materialMissing.map((r) => `${r.inventoryItemId} [${r.semanticRole}]`).join(", ")}`);
   if (materialValuesMissing.length > 0) reasons.push(`${materialValuesMissing.length} material quantitative value(s) absent from the composed IR: ${materialValuesMissing.map((q) => q.value.rawText).join(", ")}`);
@@ -451,6 +452,7 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
       materialQuantitativeValues: materialValues.length,
       materialQuantitativeValuesMissing: materialValuesMissing.length,
       uninventoriedValues: inventory.uninventoriedValues.length,
+      uninventoriedSegments: inventory.uninventoriedSegments.length,
       danglingLineageReferences,
       canonicalizedLineageReferences,
     },

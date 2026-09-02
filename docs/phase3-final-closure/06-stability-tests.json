@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "06-stability-tests",
+  "command": "npx vitest run tests/contract-model/semantic-accountability tests/contract-model/semantic-accountability-independence.test.ts",
+  "result": "4 files, 161/161 passed (139 pre-existing + 22 new)",
+  "newTestFile": "tests/contract-model/semantic-accountability/pass-a-stability.test.ts",
+  "part1_semanticMatcher": {
+    "unit": "scripts/lib/pass-a-semantic-matcher.ts (zero-LLM, source-first; the same matcher the forensics script uses)",
+    "mission11Shapes": [
+      { "n": 1, "shape": "same proposition / different wording", "expected": "id-stable (proposition prose is not part of identity)", "pass": true },
+      { "n": 2, "shape": "same proposition / different span boundaries", "expected": "SOURCE_SPAN_VARIANCE, identity-attributable, one stable cluster", "pass": true },
+      { "n": 3, "shape": "same proposition split into two items", "expected": "GRANULARITY_VARIANCE fragments, one stable cluster", "pass": true },
+      { "n": 4, "shape": "two items merged into one", "expected": "GRANULARITY_VARIANCE merge, one stable cluster", "pass": true },
+      { "n": 5, "shape": "duplicate item in one run", "expected": "DUPLICATION_VARIANCE, no extra cluster", "pass": true },
+      { "n": 6, "shape": "same amount different formatting ($5,000,000 vs $5 million)", "expected": "values EQUAL by normalized value", "pass": true },
+      { "n": 7, "shape": "same percentage different formatting (15% vs 15 percent)", "expected": "values EQUAL by normalized value", "pass": true },
+      { "n": 8, "shape": "same cross-reference different formatting", "expected": "span decides; SOURCE_SPAN_VARIANCE, stable", "pass": true },
+      { "n": 9, "shape": "same condition paraphrased", "expected": "id-stable", "pass": true },
+      { "n": 10, "shape": "material condition genuinely omitted", "expected": "GENUINE_OMISSION, not identity-attributable, cluster UNSTABLE - never normalized away", "pass": true },
+      { "n": 11, "shape": "condition folded into a broader non-conditional span", "expected": "conditionalRoleFolded=true; lenient stable, conservative UNSTABLE", "pass": true },
+      { "n": 12, "shape": "anti-enumeration: identical verdicts under arbitrary names/amounts/section styles", "expected": "one distinct verdict set across 3 substitutions", "pass": true }
+    ]
+  },
+  "part2_productionPassAv2": {
+    "unit": "lib/contract-model/compiler/semantic-accountability/inventory.ts (segmentOperativeText, findUncoveredOperativeSegments, runSemanticInventory gap re-inventory)",
+    "tests": [
+      { "name": "segmentation deterministic + generic under arbitrary names/numbers/section styles", "pass": true },
+      { "name": "uncovered operative clause surfaced with exact offsets; covered clause not; short connective below the 40-char floor", "pass": true },
+      { "name": "no uncovered segment -> no gap call (attempted=false), INVENTORY_OK", "pass": true },
+      { "name": "first pass skipping lead-in + condition -> exactly one gap call that only ADDS verified items; gap closed -> INVENTORY_OK with disclosure; first-pass ids unchanged", "pass": true },
+      { "name": "gap call returns nothing -> INVENTORY_COVERAGE_GAP with the residual span surfaced", "pass": true },
+      { "name": "gap call throws -> error disclosed, still INVENTORY_COVERAGE_GAP (never silently OK)", "pass": true },
+      { "name": "gap items pass the same anti-hallucination gate; re-submitted first-pass item counted as duplicate; first-pass counters untouched", "pass": true },
+      { "name": "frozen content hash carries the residual gap (deterministic; differs from the closed inventory)", "pass": true },
+      { "name": "Pass C: INVENTORY_COVERAGE_GAP blocks semanticallyComplete despite full lineage; residual segment in reasons/counts", "pass": true },
+      { "name": "corpus-wide: every fully-inventoried scenario leaves zero uncovered segments; gap record always disclosed", "pass": true }
+    ]
+  },
+  "corpusGroundTruthExtension": {
+    "disclosure": "Running the new detector over the existing 45-scenario corpus flagged 3 scenarios (I1, I2, I4) whose ground truth did not inventory the definitional lead-in ('X means, for any period, ...' / 'the ratio of') and, in I1, the 'without duplication and to the extent deducted in determining' condition. These are real components (the real holdout runs inventoried the equivalent heads as VALUE/OTHER items), so the corpus ground truth was EXTENDED with those items (and their lineage in compose) rather than weakening the detector. No detector threshold was tuned to make a scenario pass. No known-package ground truth was touched.",
+    "scenariosExtended": ["I1 (+head OTHER MATERIAL, +dedupe CONDITION CRITICAL)", "I2 (+head OTHER MATERIAL)", "I4 (+head OTHER MATERIAL)"]
+  },
+  "independence": "tests/contract-model/semantic-accountability-independence.test.ts still passes: inventory.ts/prompt.ts/types.ts/wire-schema.ts import nothing from the compiler, IR, verifier, precedent, discovery or context-retrieval; the verifier imports nothing from semantic-accountability."
+}

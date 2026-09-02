@@ -173,7 +173,10 @@ const I1: Scenario = {
   text: I1_TEXT,
   anchorRef: "1.01",
   items: [
+    // v2 coverage accounting (Phase 3 final closure) surfaced that the definitional lead-in and its "without duplication / to the extent deducted" condition were not in this corpus's ground truth - they are real components and are now inventoried, not excluded from the detector.
+    item("head", "OTHER", '"Consolidated Zeta Amount" means, for any period,', "MATERIAL", { operative: "DEFINITIONAL" }),
     item("base", "FORMULA_COMPONENT", I1_BASE, "CRITICAL", { operative: "DEFINITIONAL", referencedTerms: ["Consolidated Net Income"] }),
+    item("dedupe", "CONDITION", "without duplication and to the extent deducted in determining such Consolidated Net Income", "CRITICAL", { operative: "DEFINITIONAL", parentRef: "base" }),
     ...I1_COMPONENTS.map((c, i) => item(`c${i + 1}`, "FORMULA_COMPONENT", c, "MATERIAL", { operative: "DEFINITIONAL", values: i === 6 ? [money("$5,000,000", 5_000_000)] : i === 7 ? [pct("15%", 0.15)] : [] })),
   ],
   compose: (id) =>
@@ -182,7 +185,7 @@ const I1: Scenario = {
         def("d1", "Consolidated Zeta Amount", SUM([
           TERM("Consolidated Net Income", "MONEY", [id("base")]),
           ...I1_COMPONENTS.map((c, i) => (i === 6 ? MIN([METRIC(c, "MONEY"), M(5_000_000)], [id("c7")]) : i === 7 ? MIN([METRIC(c, "MONEY"), MUL([P(0.15), TERM("Consolidated Zeta Amount")])], [id("c8")]) : METRIC(c, "MONEY", [id(`c${i + 1}`)]))),
-        ]), ["Consolidated Net Income"], [id("base")]),
+        ], [id("dedupe")]), ["Consolidated Net Income"], [id("base"), id("head")]),
       ],
     }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
@@ -200,10 +203,11 @@ const I2: Scenario = {
   text: agreement(DEFS_HEAD + `"Total Leverage Ratio" means, as of any date of determination, the ratio of (a) ${I2_NUM} to (b) ${I2_DEN}.`),
   anchorRef: "1.01",
   items: [
+    item("head", "OTHER", '"Total Leverage Ratio" means, as of any date of determination, the ratio of', "MATERIAL", { operative: "DEFINITIONAL" }),
     item("num", "FORMULA_COMPONENT", I2_NUM, "CRITICAL", { operative: "DEFINITIONAL", referencedTerms: ["Consolidated Total Debt"] }),
     item("den", "FORMULA_COMPONENT", I2_DEN, "CRITICAL", { operative: "DEFINITIONAL", referencedTerms: ["Consolidated Zeta Amount"], values: [period("four consecutive fiscal quarters", 4)] }),
   ],
-  compose: (id) => submission({ definitions: [def("d1", "Total Leverage Ratio", DIV(TERM("Consolidated Total Debt", "MONEY", [id("num")]), DURING("the period of four consecutive fiscal quarters most recently ended", TERM("Consolidated Zeta Amount"), [id("den")])), ["Consolidated Total Debt", "Consolidated Zeta Amount"], [], { sufficiency: "COMPLETE" })] }),
+  compose: (id) => submission({ definitions: [def("d1", "Total Leverage Ratio", DIV(TERM("Consolidated Total Debt", "MONEY", [id("num")]), DURING("the period of four consecutive fiscal quarters most recently ended", TERM("Consolidated Zeta Amount"), [id("den")])), ["Consolidated Total Debt", "Consolidated Zeta Amount"], [id("head")], { sufficiency: "COMPLETE" })] }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
   expectSemanticallyComplete: true,
 };
@@ -244,11 +248,12 @@ const I4: Scenario = {
   text: agreement(DEFS_HEAD + `"Adjusted Zeta Amount" means, for any period, ${I4_BASE} plus (a) ${I4_ADD}; provided that ${I4_CAP}.`),
   anchorRef: "1.01",
   items: [
+    item("head", "OTHER", '"Adjusted Zeta Amount" means, for any period,', "MATERIAL", { operative: "DEFINITIONAL" }),
     item("base", "FORMULA_COMPONENT", I4_BASE, "CRITICAL", { operative: "DEFINITIONAL" }),
     item("add", "FORMULA_COMPONENT", I4_ADD, "MATERIAL", { operative: "DEFINITIONAL" }),
     item("cap", "THRESHOLD", I4_CAP, "CRITICAL", { operative: "DEFINITIONAL", values: [pct("20%", 0.2)] }),
   ],
-  compose: (id) => submission({ definitions: [def("d1", "Adjusted Zeta Amount", SUM([TERM("Consolidated Zeta Amount", "MONEY", [id("base")]), MIN([METRIC("pro forma cost savings", "MONEY", [id("add")]), MUL([P(0.2), TERM("Adjusted Zeta Amount")], [id("cap")])])]), ["Consolidated Zeta Amount"])] }),
+  compose: (id) => submission({ definitions: [def("d1", "Adjusted Zeta Amount", SUM([TERM("Consolidated Zeta Amount", "MONEY", [id("base")]), MIN([METRIC("pro forma cost savings", "MONEY", [id("add")]), MUL([P(0.2), TERM("Adjusted Zeta Amount")], [id("cap")])])]), ["Consolidated Zeta Amount"], [id("head")])] }),
   expectedContextState: "COMPLETE_LOCAL_SOURCE",
   expectSemanticallyComplete: true,
 };

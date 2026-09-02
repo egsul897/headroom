@@ -16,10 +16,12 @@
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { specFor } from "./lib/semantic-accountability-regions";
+import { coverageBy, inter, matchInventories, valuesRelation, type MatchItem } from "./lib/pass-a-semantic-matcher";
+
+const len = (i: { charStart: number; charEnd: number }) => i.charEnd - i.charStart;
 
 type Materiality = "CRITICAL" | "MATERIAL" | "INFORMATIONAL" | "REVIEW_UNCERTAIN";
 type Disposition = "REPRESENTED" | "INTENTIONALLY_NON_COMPUTATIONAL" | "UNSUPPORTED" | "AMBIGUOUS" | "MISSING_FROM_COMPOSITION";
-type VarianceClass = "TRUE_SEMANTIC_VARIANCE" | "GRANULARITY_VARIANCE" | "WORDING_VARIANCE" | "ROLE_VARIANCE" | "MATERIALITY_VARIANCE" | "SOURCE_SPAN_VARIANCE" | "VALUE_NORMALIZATION_VARIANCE" | "DUPLICATION_VARIANCE" | "IDENTITY_VARIANCE" | "GENUINE_OMISSION" | "UNKNOWN";
 
 interface Value { kind: string; rawText: string; normalizedValue: number | null; unit: string | null }
 interface Item {
@@ -52,7 +54,6 @@ interface RegionRun {
 }
 
 const MATERIAL = (m: Materiality) => m === "CRITICAL" || m === "MATERIAL";
-const CONDITIONAL_ROLES = new Set(["CONDITION", "EXCEPTION", "SHARED_CAP", "CURE", "THRESHOLD", "TRIGGER"]);
 const ws = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
 
 function arg(name: string, fallback: string): string {
@@ -101,40 +102,6 @@ function loadRun(dir: string, run: 1 | 2): Map<string, RegionRun> {
   return out;
 }
 
-const len = (i: Item) => i.charEnd - i.charStart;
-function inter(a: Item, b: Item): number {
-  if (a.regionId !== b.regionId) return 0;
-  return Math.max(0, Math.min(a.charEnd, b.charEnd) - Math.max(a.charStart, b.charStart));
-}
-const jaccard = (a: Item, b: Item) => { const i = inter(a, b); return i === 0 ? 0 : i / (Math.max(a.charEnd, b.charEnd) - Math.min(a.charStart, b.charStart)); };
-const containment = (inner: Item, outer: Item) => len(inner) === 0 ? 0 : inter(inner, outer) / len(inner);
-const valueKey = (v: Value) => `${v.kind}:${v.normalizedValue ?? ws(v.rawText)}`;
-function valuesRelation(a: Item, b: Item): "EQUAL" | "SUBSET" | "DIFFERENT" {
-  const A = new Set(a.values.map(valueKey));
-  const B = new Set(b.values.map(valueKey));
-  if (A.size === B.size && [...A].every((k) => B.has(k))) return "EQUAL";
-  if ([...A].every((k) => B.has(k)) || [...B].every((k) => A.has(k))) return "SUBSET";
-  return "DIFFERENT";
-}
-/** Fraction of an item's span covered by the union of the other run's item spans (any role/materiality). */
-function coverageBy(item: Item, others: Item[]): number {
-  const segs = others.filter((o) => o.regionId === item.regionId && inter(item, o) > 0).map((o) => [Math.max(item.charStart, o.charStart), Math.min(item.charEnd, o.charEnd)] as [number, number]).sort((x, y) => x[0] - y[0]);
-  let covered = 0;
-  let cur: [number, number] | null = null;
-  for (const s of segs) {
-    if (!cur || s[0] > cur[1]) { if (cur) covered += cur[1] - cur[0]; cur = [s[0], s[1]]; }
-    else cur[1] = Math.max(cur[1], s[1]);
-  }
-  if (cur) covered += cur[1] - cur[0];
-  return len(item) === 0 ? 0 : covered / len(item);
-}
-
-class UnionFind {
-  private p = new Map<string, string>();
-  find(x: string): string { const p = this.p.get(x) ?? x; if (p === x) return x; const r = this.find(p); this.p.set(x, r); return r; }
-  union(a: string, b: string): void { this.p.set(this.find(a), this.find(b)); }
-}
-
 interface Classified {
   region: string;
   run: 1 | 2;
@@ -143,7 +110,7 @@ interface Classified {
   materiality: Materiality;
   span: string;
   excerpt: string;
-  class: VarianceClass;
+  class: import("./lib/pass-a-semantic-matcher").VarianceClass;
   subclass: string;
   counterpart: { run: 1 | 2; id: string; role: string; span: string; jaccard: number; valuesRelation: string } | null;
   counterparts: string[];
@@ -171,97 +138,35 @@ function main() {
     const B = run2.get(regionId)!;
     const regionsIdentical = [...A.regionTexts.keys()].every((k) => B.regionTexts.get(k)?.text === A.regionTexts.get(k)!.text) && A.regionTexts.size === B.regionTexts.size;
     if (!regionsIdentical) throw new Error(`source context differs across runs for ${regionId} - forensics assume byte-identical source`);
-    const uf = new UnionFind();
-    const key = (i: Item) => `${i.run}:${i.id}`;
-    const matched = new Set<string>();
-
-    // Step 1: identical content-derived ids.
+    // Shared, tested matcher (scripts/lib/pass-a-semantic-matcher.ts) - the same code the §11 adversarial tests exercise.
+    const toMatch = (i: Item): MatchItem => ({ id: i.id, regionId: i.regionId, charStart: i.charStart, charEnd: i.charEnd, role: i.role, materiality: i.materiality, values: i.values.map((v) => ({ kind: v.kind, rawText: v.rawText, normalizedValue: v.normalizedValue })) });
+    const byRunId = new Map<string, Item>();
+    for (const it of [...A.items, ...B.items]) byRunId.set(`${it.run}:${it.id}`, it);
+    const m = matchInventories(A.items.map(toMatch), B.items.map(toMatch), regionId);
     const byId2 = new Map(B.items.map((i) => [i.id, i]));
-    for (const a of A.items) {
-      const b = byId2.get(a.id);
-      if (!b) continue;
-      matched.add(key(a)); matched.add(key(b)); uf.union(key(a), key(b));
-      idStable.push({ region: regionId, id: a.id, role: a.role, wordingDiffers: ws(a.proposition) !== ws(b.proposition), materialityDiffers: a.materiality !== b.materiality, materiality1: a.materiality, materiality2: b.materiality, disposition1: a.disposition, disposition2: b.disposition });
+    for (const { id } of m.idStable) {
+      const a = A.items.find((i) => i.id === id)!;
+      const b = byId2.get(id)!;
+      idStable.push({ region: regionId, id, role: a.role, wordingDiffers: ws(a.proposition) !== ws(b.proposition), materialityDiffers: a.materiality !== b.materiality, materiality1: a.materiality, materiality2: b.materiality, disposition1: a.disposition, disposition2: b.disposition });
     }
-
-    // Step 2: within-run near-duplicates (same role, jaccard >= 0.9) - H.
-    for (const R of [A, B]) {
-      const items = R.items.filter((i) => !matched.has(key(i)));
-      for (let x = 0; x < items.length; x++) for (let y = x + 1; y < items.length; y++) {
-        const p = items[x]!, q = items[y]!;
-        if (p.role === q.role && jaccard(p, q) >= 0.9) uf.union(key(p), key(q));
-      }
+    for (const c of m.classified) {
+      const it = byRunId.get(`${c.run}:${c.id}`)!;
+      const otherRun = c.run === 1 ? 2 : 1;
+      const counterpartItems = c.counterpartIds.map((cid) => byRunId.get(`${otherRun}:${cid}`) ?? byRunId.get(`${c.run}:${cid}`)).filter((x): x is Item => !!x);
+      const one = c.jaccard !== null && c.class !== "DUPLICATION_VARIANCE" && counterpartItems.length === 1 ? counterpartItems[0]! : null;
+      classified.push({
+        region: regionId, run: c.run, id: c.id, role: it.role, materiality: it.materiality, span: `${it.regionId}:${it.charStart}-${it.charEnd}`, excerpt: it.excerpt.slice(0, 160), disposition: it.disposition, proposition: it.proposition.slice(0, 200),
+        class: c.class, subclass: c.subclass,
+        counterpart: one ? { run: one.run, id: one.id, role: one.role, span: `${one.charStart}-${one.charEnd}`, jaccard: c.jaccard!, valuesRelation: valuesRelation(toMatch(it), toMatch(one)) } : null,
+        counterparts: c.counterpartIds, identityAttributable: c.identityAttributable, conditionalRoleFolded: c.conditionalRoleFolded,
+        counterpartDisposition: counterpartItems.find((x) => x.run === otherRun)?.disposition ?? null,
+      });
     }
-
-    // Step 3: greedy one-to-one near-match pairing across runs (jaccard >= 0.5).
-    const pairs: { a: Item; b: Item; j: number }[] = [];
-    for (const a of A.items) if (!matched.has(key(a))) for (const b of B.items) if (!matched.has(key(b))) { const j = jaccard(a, b); if (j >= 0.5) pairs.push({ a, b, j }); }
-    pairs.sort((x, y) => y.j - x.j);
-    const paired = new Map<string, { other: Item; j: number }>();
-    for (const { a, b, j } of pairs) {
-      if (paired.has(key(a)) || paired.has(key(b))) continue;
-      paired.set(key(a), { other: b, j }); paired.set(key(b), { other: a, j });
-      uf.union(key(a), key(b));
-    }
-
-    // Step 4: fragment/merge containment links for everything still unpaired (any role/materiality on the other side).
-    const fragmentOf = new Map<string, Item[]>();
-    for (const [R, O] of [[A, B], [B, A]] as [RegionRun, RegionRun][]) {
-      for (const it of R.items) {
-        if (matched.has(key(it)) || paired.has(key(it))) continue;
-        const containers = O.items.filter((o) => containment(it, o) >= 0.8 && len(o) > len(it));
-        const fragments = O.items.filter((o) => containment(o, it) >= 0.8 && len(it) > len(o));
-        const links = containers.length > 0 ? containers : fragments;
-        if (links.length > 0) { fragmentOf.set(key(it), links); for (const l of links) uf.union(key(it), key(l)); }
-      }
-    }
-
-    // Classification of every item that is NOT id-stable.
-    const classify = (it: Item, R: RegionRun, O: RegionRun): Classified => {
-      const base = { region: regionId, run: it.run, id: it.id, role: it.role, materiality: it.materiality, span: `${it.regionId}:${it.charStart}-${it.charEnd}`, excerpt: it.excerpt.slice(0, 160), disposition: it.disposition, proposition: it.proposition.slice(0, 200) };
-      const dup = R.items.find((o) => o !== it && o.role === it.role && jaccard(it, o) >= 0.9);
-      const p = paired.get(key(it));
-      if (p) {
-        const o = p.other;
-        const rel = valuesRelation(it, o);
-        const sameSpan = it.charStart === o.charStart && it.charEnd === o.charEnd;
-        let cls: VarianceClass; let sub: string;
-        if (sameSpan && it.role !== o.role) { cls = "ROLE_VARIANCE"; sub = `same span, ${it.role} vs ${o.role}`; }
-        else if (sameSpan) { cls = "VALUE_NORMALIZATION_VARIANCE"; sub = `same span+role, value signature ${rel}`; }
-        else if (it.role === o.role && rel !== "DIFFERENT") { cls = "SOURCE_SPAN_VARIANCE"; sub = `same role, jaccard ${p.j.toFixed(2)}, values ${rel}`; }
-        else if (it.role === o.role) { cls = "VALUE_NORMALIZATION_VARIANCE"; sub = `same role, span shifted so value signature DIFFERENT (jaccard ${p.j.toFixed(2)})`; }
-        else if (p.j >= 0.8) { cls = "ROLE_VARIANCE"; sub = `near-same span (jaccard ${p.j.toFixed(2)}), ${it.role} vs ${o.role}`; }
-        else { cls = "GRANULARITY_VARIANCE"; sub = `partial overlap (jaccard ${p.j.toFixed(2)}) with different role ${it.role} vs ${o.role}`; }
-        const folded = CONDITIONAL_ROLES.has(it.role) && !CONDITIONAL_ROLES.has(o.role);
-        return { ...base, class: cls, subclass: sub, counterpart: { run: o.run, id: o.id, role: o.role, span: `${o.charStart}-${o.charEnd}`, jaccard: Number(p.j.toFixed(3)), valuesRelation: rel }, counterparts: [o.id], identityAttributable: true, conditionalRoleFolded: folded, counterpartDisposition: o.disposition };
-      }
-      if (dup) return { ...base, class: "DUPLICATION_VARIANCE", subclass: `near-duplicate of ${dup.id} in the same run (same role, jaccard ${jaccard(it, dup).toFixed(2)})`, counterpart: null, counterparts: [dup.id], identityAttributable: true, conditionalRoleFolded: false, counterpartDisposition: null };
-      const links = fragmentOf.get(key(it));
-      if (links && links.length > 0) {
-        const isFragment = links.some((l) => len(l) > len(it));
-        const folded = isFragment && CONDITIONAL_ROLES.has(it.role) && !links.some((l) => CONDITIONAL_ROLES.has(l.role));
-        return { ...base, class: "GRANULARITY_VARIANCE", subclass: isFragment ? `fragment of larger other-run item(s) [${links.map((l) => `${l.role} ${l.charStart}-${l.charEnd}`).join("; ")}]` : `merge of ${links.length} smaller other-run item(s) [${links.map((l) => `${l.role} ${l.charStart}-${l.charEnd}`).join("; ")}]`, counterpart: null, counterparts: links.map((l) => l.id), identityAttributable: true, conditionalRoleFolded: folded, counterpartDisposition: links[0]!.disposition };
-      }
-      const cov = coverageBy(it, O.items);
-      if (cov >= 0.5) return { ...base, class: "TRUE_SEMANTIC_VARIANCE", subclass: `text ${(cov * 100).toFixed(0)}% covered by other-run spans but with no clean 1:1, fragment or merge counterpart - proposition boundaries drawn differently`, counterpart: null, counterparts: O.items.filter((o) => inter(it, o) > 0).map((o) => o.id), identityAttributable: false, conditionalRoleFolded: false, counterpartDisposition: null };
-      if (cov < 0.2) return { ...base, class: "GENUINE_OMISSION", subclass: `only ${(cov * 100).toFixed(0)}% of this span is touched by ANY other-run item`, counterpart: null, counterparts: [], identityAttributable: false, conditionalRoleFolded: false, counterpartDisposition: null };
-      return { ...base, class: "UNKNOWN", subclass: `partial coverage ${(cov * 100).toFixed(0)}% - neither clean counterpart nor clear omission`, counterpart: null, counterparts: O.items.filter((o) => inter(it, o) > 0).map((o) => o.id), identityAttributable: false, conditionalRoleFolded: false, counterpartDisposition: null };
-    };
-    for (const it of A.items) if (!matched.has(key(it))) classified.push(classify(it, A, B));
-    for (const it of B.items) if (!matched.has(key(it))) classified.push(classify(it, B, A));
-
-    // Clusters.
-    const members = new Map<string, Item[]>();
-    for (const it of [...A.items, ...B.items]) { const r = uf.find(key(it)); if (!members.has(r)) members.set(r, []); members.get(r)!.push(it); }
-    const clsByKey = new Map(classified.filter((c) => c.region === regionId).map((c) => [`${c.run}:${c.id}`, c]));
-    let idx = 0;
-    for (const [, ms] of members) {
-      const r1 = ms.filter((m) => m.run === 1), r2 = ms.filter((m) => m.run === 2);
-      const material = ms.some((m) => MATERIAL(m.materiality));
-      const folded = ms.some((m) => clsByKey.get(key(m))?.conditionalRoleFolded && MATERIAL(m.materiality));
-      const lenient = r1.length > 0 && r2.length > 0;
+    for (const cl of m.clusters) {
+      const ms = cl.members.map((mm) => byRunId.get(`${mm.run}:${mm.id}`)!);
+      const r1 = ms.filter((x) => x.run === 1), r2 = ms.filter((x) => x.run === 2);
       const captured = (xs: Item[]) => xs.length === 0 ? null : xs.some((x) => x.disposition !== null && x.disposition !== "MISSING_FROM_COMPOSITION");
-      clusterRows.push({ region: regionId, clusterId: `${regionId}#${idx++}`, material, inRun1: r1.length, inRun2: r2.length, roles: [...new Set(ms.map((m) => m.role))], lenientStable: lenient, conservativeStable: lenient && !folded, captured1: captured(r1), captured2: captured(r2), dispositions1: [...new Set(r1.map((x) => x.disposition ?? "NONE"))], dispositions2: [...new Set(r2.map((x) => x.disposition ?? "NONE"))], foldedConditionalRole: folded, memberKeys: ms.map((m) => `${m.run}:${regionId}:${m.id}`) });
+      clusterRows.push({ region: regionId, clusterId: cl.clusterId, material: cl.material, inRun1: cl.inRun1, inRun2: cl.inRun2, roles: cl.roles, lenientStable: cl.lenientStable, conservativeStable: cl.conservativeStable, captured1: captured(r1), captured2: captured(r2), dispositions1: [...new Set(r1.map((x) => x.disposition ?? "NONE"))], dispositions2: [...new Set(r2.map((x) => x.disposition ?? "NONE"))], foldedConditionalRole: cl.foldedConditionalRole, memberKeys: ms.map((x) => `${x.run}:${regionId}:${x.id}`) });
     }
 
     const regionCls = classified.filter((c) => c.region === regionId && MATERIAL(c.materiality));

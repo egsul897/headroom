@@ -349,6 +349,11 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       failureReasons.push("SEMANTIC_INVENTORY_UNAVAILABLE");
       accountabilityIssues.push(`[inventory] ${frozenInventory.inventoryStatus}: ${frozenInventory.inventoryStatusReason}`);
     }
+    if (frozenInventory && frozenInventory.inventoryStatus === "INVENTORY_COVERAGE_GAP") {
+      failureReasons.push("SEMANTIC_INVENTORY_COVERAGE_GAP");
+      accountabilityIssues.push(`[inventory] INVENTORY_COVERAGE_GAP: ${frozenInventory.inventoryStatusReason}`);
+      for (const seg of frozenInventory.uninventoriedSegments) accountabilityIssues.push(`[inventory] uncovered operative text ${seg.regionId}:${seg.charStart}-${seg.charEnd} (${Math.round(seg.coverage * 100)}% covered): "${seg.excerpt.slice(0, 160)}"`);
+    }
     if (accountability && (accountability.counts.materialMissingFromComposition > 0 || accountability.counts.materialQuantitativeValuesMissing > 0)) {
       failureReasons.push("INVENTORY_ITEM_MISSING_FROM_COMPOSITION");
       accountabilityIssues.push(...accountability.reasons.filter((r) => /MISSING_FROM_COMPOSITION|absent from the composed IR/.test(r)).map((r) => `[accountability] ${r}`));

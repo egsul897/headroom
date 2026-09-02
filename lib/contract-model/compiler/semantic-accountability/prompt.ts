@@ -57,6 +57,26 @@ export function buildInventorySystemPrompt(): string {
   ].join("\n");
 }
 
+/**
+ * v2 TARGETED GAP RE-INVENTORY (decision 05): the user content for the one
+ * bounded second call Pass A makes when its deterministic coverage
+ * accounting finds operative-text segments no accepted item covers. The
+ * model receives ONLY the uncovered segments (verbatim, with their region
+ * offsets) - never the first pass's items - so it can only ADD verified,
+ * source-anchored items; it cannot edit, merge or re-label anything.
+ */
+export function buildGapReinventoryUserContent(sourceContext: SourceContextResult, gaps: { regionId: string; charStart: number; charEnd: number; excerpt: string }[]): string {
+  const blocks = gaps.map((g, i) => `UNCOVERED SEGMENT ${i + 1} (REGION ${g.regionId}; chars ${g.charStart}-${g.charEnd} of that region's text)\n${g.excerpt}`);
+  return [
+    `SOURCE CONTEXT STATE: ${sourceContext.state}`,
+    "",
+    "A first inventory pass over this unit left the following operative-text segments with NO inventory item covering them. Inventory EVERY independently meaningful contractual component inside these segments, exhaustively and atomically, under the same obligations: one item per atomic proposition, every material number attached, conditions/provisos/exceptions as their own items, cross-references as REFERENCE/DEPENDENCY items, excerpt VERBATIM (a character-for-character substring of the segment text shown, at most 400 characters) with regionId set to the segment's REGION.",
+    "If a segment genuinely carries no contractual component (a heading, a purely descriptive statement, a connective phrase), return no item for it - never manufacture one.",
+    "",
+    ...blocks,
+  ].join("\n");
+}
+
 export function buildInventoryUserContent(sourceContext: SourceContextResult): string {
   const blocks = sourceContext.regions.map((r) => {
     const header = `REGION ${r.regionId} (${r.kind}; ${r.documentId}::${r.sectionRef ?? "(no section ref)"}; chars ${r.charStart}-${r.charEnd}${r.truncatedAtBudget ? "; TRUNCATED AT BUDGET - the region continues beyond what is shown" : ""}${r.expandedFor ? `; included because the operative text references "${r.expandedFor.referenceText}" [${r.expandedFor.resolution}]` : ""})`;
