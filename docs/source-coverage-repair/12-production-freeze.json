@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "12-production-freeze",
+  "FINAL_SOURCE_COVERAGE_SHA": "5344861f9cd9a36b237b2b2b713a30d5df6c5607",
+  "previousProductionSha": "1957105c58be77465745566167f1a05708d4d3b5",
+  "treeHash": "3528188dd73c6745edb9688952a62f4748bc84aedc2e85dc8dc94d3e59981d62",
+  "fileCount": 346,
+  "roots": [
+    "lib",
+    "app",
+    "prisma"
+  ],
+  "record": "docs/semantic-accountability/10-production-freeze.json",
+  "preconditionsMet": {
+    "auditRegressionsPass": "6/6 audit counterexamples surfaced (08)",
+    "deterministicTestsPass": "83/83, minimum 60 (09)",
+    "generatedAdversarialPass": "2400 cases, 0 dangerous false negatives, minimum 2000 (10)",
+    "targetedSuitePass": "5 accountability files, 252/252",
+    "fullSuite": "2 failed | 290 passed files; both failures are the pre-existing fixture-count baseline pair",
+    "typescript": "6 pre-existing errors, 0 new",
+    "lint": "clean, nothing skipped"
+  },
+  "rule": "No production change after this record without a new SHA, a re-freeze and a fresh independent audit."
+}

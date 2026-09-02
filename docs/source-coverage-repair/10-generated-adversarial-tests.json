@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "10-generated-adversarial-tests",
+  "file": "tests/contract-model/semantic-accountability/source-coverage-adversarial.test.ts",
+  "generatedCases": 2400,
+  "requiredMinimum": 2000,
+  "seeded": true,
+  "reproducibleBy": "case index (a linear-congruential generator seeded from the index)",
+  "mutationFamilies": [
+    "DELETE_CLAUSE",
+    "DELETE_CONDITION",
+    "DELETE_EXCEPTION",
+    "TRUNCATE_SPAN",
+    "SHORTEN_CLAUSE (to ~20 chars)",
+    "STRIP_VOCABULARY",
+    "REPHRASE_MODAL",
+    "REORDER_CHILDREN",
+    "MOVE_VALUE_TO_EXPANSION",
+    "DELETE_VALUE_CLAUSE"
+  ],
+  "everyFamilyExercised": "asserted - each family generates more than 100 cases, so a family that silently stopped being produced fails the test",
+  "provisionShapes": [
+    "chapeau + enumerated children",
+    "sentence chain with provisos and a cure period",
+    "definition with formula components, a percent and a ratio",
+    "line-broken reporting block with days, a period, a date and a multiplier"
+  ],
+  "successCriterion": "every content word of the omitted clause appears in the surfaced unaccounted text (or, for a value moved into an expansion, the region is surfaced)",
+  "results": {
+    "dangerousFalseNegatives": 0,
+    "required": 0,
+    "baselineProvisionsChecked": 600,
+    "falseGapsOnUnmutatedBaselines": 0,
+    "deterministicByIndex": true
+  }
+}
