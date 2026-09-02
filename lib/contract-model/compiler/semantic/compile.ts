@@ -359,6 +359,12 @@ export async function compileCovenantToIR(input: SemanticCompilerInput, options:
       accountabilityIssues.push(...accountability.reasons.filter((r) => /MISSING_FROM_COMPOSITION|absent from the composed IR/.test(r)).map((r) => `[accountability] ${r}`));
     }
 
+    if (accountability && !accountability.semanticallyComplete && frozenInventory && frozenInventory.inventoryStatus !== "INVENTORY_SKIPPED_NO_PROVIDER" && !failureReasons.some((r) => r === "INVENTORY_ITEM_MISSING_FROM_COMPOSITION" || r === "SEMANTIC_INVENTORY_UNAVAILABLE" || r === "SEMANTIC_INVENTORY_COVERAGE_GAP" || r === "SOURCE_CONTEXT_TRUNCATED")) {
+      // Re-audit finding B2': every remaining way accountability can be incomplete (uninventoried operative money/percent/ratio values, a REVIEW_UNCERTAIN item missing from the composition, dangling lineage) must be visible on the attempt status, never left as a reason string only.
+      failureReasons.push("SEMANTIC_ACCOUNTABILITY_INCOMPLETE");
+      accountabilityIssues.push(...accountability.reasons.map((r) => `[accountability] ${r}`));
+    }
+
     const hasReviewRequiredSufficiency = normalized.rules.some((r) => r.sufficiency !== "COMPLETE") || normalized.definitions.some((d) => d.sufficiency !== "COMPLETE");
     const unresolvedIssues = [
       ...(callResult.failureDetail ? [callResult.failureDetail] : []),

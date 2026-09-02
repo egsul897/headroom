@@ -364,6 +364,35 @@ describe("Pass A v2 - operative-text coverage accounting + targeted gap re-inven
     expect(result.semanticallyComplete).toBe(false);
   });
 
+  it("re-audit B2': values under a REVIEW_UNCERTAIN item are NOT accounted for (surfaced as uninventoried); an all-REVIEW_UNCERTAIN inventory over a fee sentence is never semanticallyComplete against an empty composition", async () => {
+    const text = `ARTICLE II\nTHE CREDITS\n\nSECTION 2.11 Fees. The Borrower agrees to pay to the Administrative Agent for the account of each Lender a commitment fee equal to 0.50% per annum on the daily unused amount of such Lender's Commitment, and the Applicable Margin for Term Loans is 3.50% per annum.\n`;
+    const index = buildTestIndex([{ documentId: DOC_ID, label: "Synthetic", text }]);
+    const anchor = index.findNodesByRef(DOC_ID, "2.11")[0]!;
+    const operativeText = index.getNodeText(anchor.nodeId, "DESCENDANTS");
+    const sourceContext = resolveSourceContext({ index, documentId: DOC_ID, operativeSourceText: operativeText, anchorNodeId: anchor.nodeId, operativeCharStart: anchor.charStart, documentText: index.getDocumentText(DOC_ID) ?? null });
+    const sentence = operativeText.slice(operativeText.indexOf("The Borrower agrees"), operativeText.indexOf("per annum.") + "per annum.".length);
+    const item: WireInventoryItem = { localRef: "i1", semanticRole: "OTHER", proposition: "fee sentence", excerpt: sentence, regionId: null, quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "REVIEW_UNCERTAIN", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" };
+    const inv = await runSemanticInventory({ candidateRef: "audit-b2prime", documentId: DOC_ID, sourceContext, caller: twoStepCaller([item], [item], []) });
+    expect(inv.items).toHaveLength(1);
+    expect(inv.uninventoriedValues.map((v) => v.rawText)).toEqual(expect.arrayContaining(["0.50%", "3.50%"]));
+    const result = reconcileInventoryWithComposition({ inventory: inv, composition: { rules: [], definitions: [], sharedCapacities: [] }, dispositions: [], sourceContextState: sourceContext.state });
+    expect(result.semanticallyComplete).toBe(false);
+    expect(result.reasons.some((r) => /REVIEW_UNCERTAIN item\(s\) MISSING_FROM_COMPOSITION/.test(r))).toBe(true);
+  });
+
+  it("re-audit: a conditional tail after a comma (', unless ...') is its own segment, so an uncovered proviso behind a covered main clause is surfaced; a whole sentence with only 'will not ... restricts' vocabulary is surfaced; a short uncovered proviso that opens with a conditional connective is surfaced at the lower conditional-tail floor", () => {
+    const text = `The Borrower shall not permit any Restricted Subsidiary to declare or pay any dividend on its Equity Interests, unless such dividend is paid solely in additional Equity Interests and is declared prior to the Maturity Date. The Borrower will not, and will not permit any Restricted Subsidiary to, enter into any agreement that restricts the ability of any Subsidiary to pay dividends; provided that no Default then exists.`;
+    const cover = (needle: string) => { const i = text.indexOf(needle); if (i < 0) throw new Error(needle); return { regionId: "operative", charStart: i, charEnd: i + needle.length, materiality: "CRITICAL" }; };
+    const gaps = findUncoveredOperativeSegments("operative", text, [cover("The Borrower shall not permit any Restricted Subsidiary to declare or pay any dividend on its Equity Interests")]);
+    const excerpts = gaps.map((g) => g.excerpt);
+    expect(excerpts.some((e) => e.startsWith("unless such dividend"))).toBe(true);
+    expect(excerpts.some((e) => e.includes("enter into any agreement that restricts"))).toBe(true);
+    expect(excerpts.some((e) => e.includes("provided that no Default then exists"))).toBe(true);
+    // A non-material span never counts as coverage.
+    const gaps2 = findUncoveredOperativeSegments("operative", text, [{ ...cover(text), materiality: "REVIEW_UNCERTAIN" }]);
+    expect(gaps2.length).toBeGreaterThan(0);
+  });
+
   it("corpus-wide: no fully-inventoried scenario leaves an uncovered operative segment, and every scenario's gap record is disclosed", async () => {
     for (const scenario of CORPUS) {
       const b = await buildScenario(scenario);

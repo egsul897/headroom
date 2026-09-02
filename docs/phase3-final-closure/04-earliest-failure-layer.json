@@ -2,7 +2,13 @@
   "schemaVersion": 1,
   "artifactId": "04-earliest-failure-layer",
   "question": "For every GENUINE_OMISSION in 03, which layer failed first?",
-  "layersConsidered": ["SOURCE_CONTEXT_LIMIT", "PASS_A_MODEL_OMISSION", "PASS_A_TRANSPORT_TRUNCATION", "PASS_A_SCHEMA_PRESSURE", "PASS_A_NORMALIZATION_LOSS"],
+  "layersConsidered": [
+    "SOURCE_CONTEXT_LIMIT",
+    "PASS_A_MODEL_OMISSION",
+    "PASS_A_TRANSPORT_TRUNCATION",
+    "PASS_A_SCHEMA_PRESSURE",
+    "PASS_A_NORMALIZATION_LOSS"
+  ],
   "evidence": {
     "SOURCE_CONTEXT_LIMIT": {
       "ruledOut": true,
@@ -22,13 +28,17 @@
     },
     "PASS_A_MODEL_OMISSION": {
       "ruledOut": false,
-      "why": "Residual and directly evidenced: the model in one run simply did not emit any item touching the omitted text. Two signatures, both measured in 03: (1) REGION-TAIL omission - 9/22 omissions sit in the last 20% of their region text; all 4 CRITICAL semantic omissions are one cluster at positions 0.86-0.95 of the interest-expense unit (the unit-extended operative region contains three consecutive definitions; run-2 stopped inventorying before the third), and (2) SUB-CLAUSE omission - 10/22 omissions are spans under 60 characters ('to the extent not already included therein', 'and any other foreign currency transaction or translation gains and losses') that the coarser run's item spans skip over entirely (<20% coverage). 18/22 omissions are absent from run-2, i.e. run-2 decomposed more coarsely AND skipped text; run-1 did not exhaustively cover run-2's items either (4/22)."
+      "why": "Residual and directly evidenced: the model in one run simply did not emit any item touching the omitted text. Two signatures, both measured in 03: (1) REGION-TAIL omission - 9/22 omissions sit in the last 20% of their region text; the 4 CRITICAL items among them are one cluster at positions 0.86-0.98 of region xref-1, a CROSS_REFERENCE_EXPANSION region of the interest-expense unit (see criticalCluster below for the audit correction - inventorying expansion-region components is discretionary by the Pass A contract), and (2) SUB-CLAUSE omission - 10/22 omissions are spans under 60 characters ('to the extent not already included therein', 'and any other foreign currency transaction or translation gains and losses') that the coarser run's item spans skip over entirely (<20% coverage). 18/22 omissions are absent from run-2, i.e. run-2 decomposed more coarsely AND skipped text; run-1 did not exhaustively cover run-2's items either (4/22)."
     }
   },
   "adjudicationOfTheOmissionList": {
     "materialGenuineOmissions": 14,
     "notSemantic": [
-      { "region": "first-lien-debt", "excerpt": "excluding, in each case:", "reason": "connective header with no independent proposition; the twelve exclusions it introduces were inventoried individually in the other run" }
+      {
+        "region": "first-lien-debt",
+        "excerpt": "excluding, in each case:",
+        "reason": "connective header with no independent proposition; the twelve exclusions it introduces were inventoried individually in the other run"
+      }
     ],
     "semanticMaterialOmissions": 13,
     "semanticCriticalOmissions": 4,

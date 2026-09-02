@@ -113,16 +113,21 @@ function normalizeWireValue(v: WireInventoryItem["quantitativeValues"][number], 
 // amount or benchmark (mission anti-enumeration).
 // ---------------------------------------------------------------------------
 export const SEGMENT_MIN_NON_WHITESPACE_CHARS = 40;
+/** A segment that OPENS with a conditional connective (', unless ...', '; provided that ...') is a condition/exception by construction, so it is surfaced at a lower floor: a missing condition is never normalized away because it is short (re-audit finding). Lead-ins and headers never open with a connective, so this does not re-admit them. */
+export const SEGMENT_MIN_CONDITIONAL_TAIL_CHARS = 16;
 export const SEGMENT_COVERED_THRESHOLD = 0.5;
-const OPERATIVE_SEGMENT_RE = /\b(shall|may|must|means|provided|except|other than|excluding|excluded|including|included|to the extent|unless|subject to|so long as|not to exceed|without duplication|in each case|net of|less than|greater of|lesser of|greater than|at least|no more than|not more than|prior to|following|during|deemed|permitted|required|notwithstanding)\b/i;
+const OPERATIVE_SEGMENT_RE = /\b(shall|may|must|means|agrees?|covenants?|provided|except|other than|excluding|excluded|including|included|to the extent|unless|subject to|so long as|not to exceed|without duplication|in each case|net of|less than|greater of|lesser of|greater than|at least|no more than|not more than|prior to|following|during|deemed|permitted|required|restricts?|restricted|prohibits?|prohibited|notwithstanding)\b/i;
 const ENUMERATOR = String.raw`\((?:[a-z]{1,2}|[ivxl]{1,5}|\d{1,2}|[A-Z]{1,2})\)`;
-const SEGMENT_BOUNDARY_RE = new RegExp(String.raw`(?<=[.;:])\s+|\n\s*(?=${ENUMERATOR})|\s+(?=${ENUMERATOR}\s)`, "g");
+/** Conditional connectives that open a proviso/exception tail inside a sentence - a comma or semicolon followed by one of these starts a new segment, so an uncovered tail is never hidden behind a covered main clause (re-audit finding). Generic English drafting vocabulary only. */
+const CONDITIONAL_CONNECTIVE = String.raw`(?:unless|provided|except|excluding|other than|subject to|so long as|to the extent|notwithstanding|but only|only if|if and only if)`;
+const OPENS_WITH_CONDITIONAL_RE = new RegExp(String.raw`^\s*${CONDITIONAL_CONNECTIVE}\b`, "i");
+const SEGMENT_BOUNDARY_RE = new RegExp(String.raw`(?<=[.;:])\s+|\n\s*(?=${ENUMERATOR})|\s+(?=${ENUMERATOR}\s)|(?<=[,;])\s+(?=${CONDITIONAL_CONNECTIVE}\b)`, "gi");
 
 /** Deterministic clause segmentation of a region text: splits after sentence/semicolon/colon ends and before enumerators. Offsets are into the region text. */
 export function segmentOperativeText(text: string): { charStart: number; charEnd: number }[] {
   const out: { charStart: number; charEnd: number }[] = [];
   let cursor = 0;
-  const re = new RegExp(SEGMENT_BOUNDARY_RE.source, "g");
+  const re = new RegExp(SEGMENT_BOUNDARY_RE.source, "gi");
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null) {
     if (m[0].length === 0) {
@@ -156,7 +161,8 @@ export function findUncoveredOperativeSegments(regionId: string, text: string, s
   const raw = segmentOperativeText(text).filter((s) => {
     const seg = text.slice(s.charStart, s.charEnd);
     const { nonWs, coverage } = coverageOf(s.charStart, s.charEnd);
-    return nonWs >= SEGMENT_MIN_NON_WHITESPACE_CHARS && coverage < SEGMENT_COVERED_THRESHOLD && OPERATIVE_SEGMENT_RE.test(seg);
+    const floor = OPENS_WITH_CONDITIONAL_RE.test(seg) ? SEGMENT_MIN_CONDITIONAL_TAIL_CHARS : SEGMENT_MIN_NON_WHITESPACE_CHARS;
+    return nonWs >= floor && coverage < SEGMENT_COVERED_THRESHOLD && OPERATIVE_SEGMENT_RE.test(seg);
   });
   const merged: { charStart: number; charEnd: number }[] = [];
   for (const s of raw) {
@@ -179,7 +185,8 @@ function buildResult(input: SemanticInventoryInput, caller: StageCaller, items: 
   const uninventoried: FrozenSemanticInventory["uninventoriedValues"] = [];
   for (const region of input.sourceContext.regions) {
     for (const v of scanQuantitativeValues(region.text)) {
-      const covered = items.some((i) => i.sourceSpan.regionId === region.regionId && i.sourceSpan.charStart <= v.charStart && v.charEnd <= i.sourceSpan.charEnd);
+      // Re-audit finding B2': a value under a REVIEW_UNCERTAIN/INFORMATIONAL item is NOT accounted for - only CRITICAL/MATERIAL items account for values, exactly as for text.
+      const covered = items.some((i) => ACCOUNTING_SPAN(i) && i.sourceSpan.regionId === region.regionId && i.sourceSpan.charStart <= v.charStart && v.charEnd <= i.sourceSpan.charEnd);
       if (!covered) uninventoried.push({ ...v, regionId: region.regionId });
     }
   }

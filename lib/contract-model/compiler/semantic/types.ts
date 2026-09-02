@@ -182,7 +182,9 @@ export type SemanticCompilerFailureReason =
   /** SEMANTIC ACCOUNTABILITY: Pass A failed or returned an empty inventory over source that carries quantitative values/operative language (INVENTORY_FAILED / INVENTORY_EMPTY_SUSPECT) - accountability cannot be established, so this attempt can never be COMPLETED. Not raised for INVENTORY_SKIPPED_NO_PROVIDER (no real provider configured), which is disclosed on the result instead. */
   | "SEMANTIC_INVENTORY_UNAVAILABLE"
   /** SEMANTIC ACCOUNTABILITY v2 (Phase 3 final closure, decision 05): Pass A ran but, even after its bounded gap re-inventory, left at least one operative-text segment carrying operative/conditional drafting language uncovered (INVENTORY_COVERAGE_GAP, residual segments disclosed on frozenInventory.uninventoriedSegments). Accountability for that text is not established, so this attempt can never be COMPLETED - the omission is visible instead of silent. */
-  | "SEMANTIC_INVENTORY_COVERAGE_GAP";
+  | "SEMANTIC_INVENTORY_COVERAGE_GAP"
+  /** SEMANTIC ACCOUNTABILITY v2 (re-audit): Pass C's semanticallyComplete is false for a reason not carried by the more specific reasons above (uninventoried operative money/percent/ratio values, a REVIEW_UNCERTAIN inventory item MISSING_FROM_COMPOSITION, dangling lineage) - the attempt can never be COMPLETED while its own accountability says it is incomplete. */
+  | "SEMANTIC_ACCOUNTABILITY_INCOMPLETE";
 
 /** Phase 3F.1 §33/F6 - preserved for every FAILED result whose failureReasons includes TRANSPORT_OR_INTERNAL_ERROR (never populated for any other failure path, which already carries its own structured detail via failureReasons/unresolvedIssues). Bounded and sanitized - never a raw stack dump, never a credential/token value, per task §33's explicit "no secrets/unrestricted stack dumps" instruction. */
 export interface SemanticCompilerErrorDetail {

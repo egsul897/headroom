@@ -418,6 +418,8 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
   const materialItems = items.filter((r) => r.materiality === "CRITICAL" || r.materiality === "MATERIAL");
   const count = (d: InventoryDisposition) => items.filter((r) => r.disposition === d).length;
   const materialMissing = materialItems.filter((r) => r.disposition === "MISSING_FROM_COMPOSITION");
+  // Re-audit finding B2': an item whose materiality is UNDETERMINED (REVIEW_UNCERTAIN) and that the composition never accounted for is not "immaterial" - it blocks completeness and is surfaced for review.
+  const reviewUncertainMissing = items.filter((r) => r.materiality === "REVIEW_UNCERTAIN" && r.disposition === "MISSING_FROM_COMPOSITION");
   const criticalMissing = materialMissing.filter((r) => r.materiality === "CRITICAL");
   const materialValues = materialItems.flatMap((r) => r.quantitative);
   const materialValuesMissing = materialValues.filter((q) => q.disposition === "VALUE_MISSING_FROM_COMPOSITION");
@@ -430,10 +432,11 @@ export function reconcileInventoryWithComposition(input: ReconcileInput): Semant
   if (materialMissing.length > 0) reasons.push(`${materialMissing.length} material inventory item(s) MISSING_FROM_COMPOSITION (${criticalMissing.length} CRITICAL): ${materialMissing.map((r) => `${r.inventoryItemId} [${r.semanticRole}]`).join(", ")}`);
   if (materialValuesMissing.length > 0) reasons.push(`${materialValuesMissing.length} material quantitative value(s) absent from the composed IR: ${materialValuesMissing.map((q) => q.value.rawText).join(", ")}`);
   if (operativeEconomicUninventoried.length > 0) reasons.push(`${operativeEconomicUninventoried.length} money/percent/ratio value(s) in the operative text were inventoried by neither Pass A nor the composition: ${operativeEconomicUninventoried.map((v) => v.rawText).join(", ")} - materiality undetermined, review required`);
+  if (reviewUncertainMissing.length > 0) reasons.push(`${reviewUncertainMissing.length} REVIEW_UNCERTAIN item(s) MISSING_FROM_COMPOSITION - materiality undetermined, never treated as immaterial: ${reviewUncertainMissing.map((r) => `${r.inventoryItemId} [${r.semanticRole}]`).join(", ")}`);
   if (danglingLineageReferences > 0) reasons.push(`${danglingLineageReferences} lineage/disposition reference(s) name an inventoryItemId that does not exist in the frozen inventory`);
 
   // Defense in depth (audit finding): completeness is refused on the residual segments themselves, not only on the status string that reports them.
-  const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && inventory.uninventoriedSegments.length === 0 && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && materialValuesMissing.length === 0 && operativeEconomicUninventoried.length === 0 && danglingLineageReferences === 0;
+  const semanticallyComplete = inventory.inventoryStatus === "INVENTORY_OK" && inventory.uninventoriedSegments.length === 0 && (sourceContextState === "COMPLETE_LOCAL_SOURCE" || sourceContextState === "DEPENDENCY_EXPANDED_SOURCE") && materialMissing.length === 0 && reviewUncertainMissing.length === 0 && materialValuesMissing.length === 0 && operativeEconomicUninventoried.length === 0 && danglingLineageReferences === 0;
 
   return {
     candidateRef: inventory.candidateRef,
