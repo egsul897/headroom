@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "artifactId": "11-provider-cost-plan",
-  "generatedAt": "2026-09-01T23:28:33.841Z",
+  "generatedAt": "2026-09-02T00:32:35.231Z",
   "productionFreeze": {
     "sha": "78c9fb10f1973c2b73c899741aa23cb2acfc0a20",
     "treeHash": "900d8fc2cdb6687747c4cfae39497d25a49a0da90756efd580b7fe98978bb637"
@@ -11,28 +11,19 @@
     "credentialSource": "AI_GATEWAY_API_KEY",
     "compiler": {
       "provider": "vercel-ai-gateway",
-      "model": "anthropic/claude-haiku-4-5",
+      "model": "anthropic/claude-sonnet-5",
       "synthetic": false,
-      "resolvedPricing": "Claude Haiku 4.5"
+      "resolvedPricing": "Claude Sonnet 5"
     },
     "inventoryAndVerifier": {
       "provider": "VERCEL_AI_GATEWAY",
-      "model": "anthropic/claude-haiku-4-5",
+      "model": "anthropic/claude-sonnet-5",
       "synthetic": false,
-      "resolvedPricing": "Claude Haiku 4.5"
+      "resolvedPricing": "Claude Sonnet 5"
     },
-    "ping": {
-      "performed": true,
-      "ok": true,
-      "echo": "HEALTHY",
-      "latencyMs": 3344,
-      "costUsd": 0.00058,
-      "inputTokens": 225,
-      "outputTokens": 13,
-      "model": "anthropic/claude-haiku-4-5"
-    }
+    "ping": null
   },
-  "modelOverrideNote": "Model override via env: ANALYZER_MODEL=anthropic/claude-haiku-4-5 SEMANTIC_COMPILER_MODEL=anthropic/claude-haiku-4-5 - user-requested cheaper model substitution (runtime env var, not a production code change; does not affect the frozen lib/app/prisma tree hash).",
+  "modelOverrideNote": null,
   "method": "Zero-cost deterministic dry run: each frozen region's real source context (anchor, compilation-unit extension, cross-reference expansions) is resolved exactly as compile.ts will resolve it, so unit sizes are the true Pass A/Pass B inputs. Pass A cost = list pricing on the real prompt size; compile cost = Mission-4 observed per-region cost x sqrt(unit growth) x 1.15; verify = Mission-4 observed x 1.1.",
   "plan": {
     "executions": [
@@ -43,8 +34,8 @@
     ],
     "holdout": {
       "mode": "holdout",
-      "model": "Claude Haiku 4.5",
-      "priceRatioToSonnet5": 0.5,
+      "model": "Claude Sonnet 5",
+      "priceRatioToSonnet5": 1,
       "regions": [
         {
           "id": "ebitda",
@@ -101,10 +92,10 @@
           "projection": {
             "passAInputTokens": 7605,
             "passAOutputTokens": 2906,
-            "passACostUsd": 0.022,
+            "passACostUsd": 0.044,
             "priorCompileCostUsd": 0.316,
             "unitGrowth": 1.65,
-            "compileCostUsd": 0.233
+            "compileCostUsd": 0.467
           }
         },
         {
@@ -136,10 +127,10 @@
           "projection": {
             "passAInputTokens": 4740,
             "passAOutputTokens": 1500,
-            "passACostUsd": 0.012,
+            "passACostUsd": 0.024,
             "priorCompileCostUsd": 0.262,
             "unitGrowth": 1,
-            "compileCostUsd": 0.151
+            "compileCostUsd": 0.301
           }
         },
         {
@@ -218,10 +209,10 @@
           "projection": {
             "passAInputTokens": 9806,
             "passAOutputTokens": 4000,
-            "passACostUsd": 0.03,
+            "passACostUsd": 0.06,
             "priorCompileCostUsd": 0.182,
             "unitGrowth": 2.5,
-            "compileCostUsd": 0.166
+            "compileCostUsd": 0.331
           }
         },
         {
@@ -271,10 +262,10 @@
           "projection": {
             "passAInputTokens": 5595,
             "passAOutputTokens": 1727,
-            "passACostUsd": 0.014,
+            "passACostUsd": 0.028,
             "priorCompileCostUsd": 0.229,
             "unitGrowth": 4.59,
-            "compileCostUsd": 0.282
+            "compileCostUsd": 0.564
           }
         },
         {
@@ -338,10 +329,10 @@
           "projection": {
             "passAInputTokens": 5833,
             "passAOutputTokens": 1815,
-            "passACostUsd": 0.015,
+            "passACostUsd": 0.03,
             "priorCompileCostUsd": 0.211,
             "unitGrowth": 1.19,
-            "compileCostUsd": 0.132
+            "compileCostUsd": 0.265
           }
         },
         {
@@ -433,10 +424,10 @@
           "projection": {
             "passAInputTokens": 9872,
             "passAOutputTokens": 4000,
-            "passACostUsd": 0.03,
+            "passACostUsd": 0.06,
             "priorCompileCostUsd": 0.393,
             "unitGrowth": 1.66,
-            "compileCostUsd": 0.292
+            "compileCostUsd": 0.583
           }
         },
         {
@@ -482,10 +473,10 @@
           "projection": {
             "passAInputTokens": 3211,
             "passAOutputTokens": 1500,
-            "passACostUsd": 0.011,
+            "passACostUsd": 0.021,
             "priorCompileCostUsd": 0.207,
             "unitGrowth": 1.19,
-            "compileCostUsd": 0.13
+            "compileCostUsd": 0.26
           }
         },
         {
@@ -531,26 +522,26 @@
           "projection": {
             "passAInputTokens": 3640,
             "passAOutputTokens": 1500,
-            "passACostUsd": 0.011,
+            "passACostUsd": 0.022,
             "priorCompileCostUsd": 0.234,
             "unitGrowth": 1.05,
-            "compileCostUsd": 0.138
+            "compileCostUsd": 0.275
           }
         }
       ],
       "perRun": {
-        "passA": 0.15,
-        "compile": 1.52,
-        "verify": 0.56,
-        "total": 2.23
+        "passA": 0.29,
+        "compile": 3.05,
+        "verify": 1.12,
+        "total": 4.46
       },
       "priorRunObservedUsd": 3.0554,
-      "twoRuns": 4.46
+      "twoRuns": 8.92
     },
     "wholeAgreement": {
       "mode": "whole-agreement",
-      "model": "Claude Haiku 4.5",
-      "priceRatioToSonnet5": 0.5,
+      "model": "Claude Sonnet 5",
+      "priceRatioToSonnet5": 1,
       "regions": [
         {
           "id": "definitions-lsb",
@@ -581,10 +572,10 @@
           "projection": {
             "passAInputTokens": 5124,
             "passAOutputTokens": 1500,
-            "passACostUsd": 0.013,
+            "passACostUsd": 0.025,
             "priorCompileCostUsd": 0.343,
             "unitGrowth": 1,
-            "compileCostUsd": 0.197
+            "compileCostUsd": 0.394
           }
         },
         {
@@ -745,10 +736,10 @@
           "projection": {
             "passAInputTokens": 12642,
             "passAOutputTokens": 4000,
-            "passACostUsd": 0.033,
+            "passACostUsd": 0.065,
             "priorCompileCostUsd": 0.479,
             "unitGrowth": 1.4,
-            "compileCostUsd": 0.325
+            "compileCostUsd": 0.651
           }
         },
         {
@@ -810,10 +801,10 @@
           "projection": {
             "passAInputTokens": 8285,
             "passAOutputTokens": 3287,
-            "passACostUsd": 0.025,
+            "passACostUsd": 0.049,
             "priorCompileCostUsd": 0.477,
             "unitGrowth": 1.95,
-            "compileCostUsd": 0.383
+            "compileCostUsd": 0.767
           }
         },
         {
@@ -848,10 +839,10 @@
           "projection": {
             "passAInputTokens": 7490,
             "passAOutputTokens": 2805,
-            "passACostUsd": 0.022,
+            "passACostUsd": 0.043,
             "priorCompileCostUsd": 0.635,
             "unitGrowth": 1,
-            "compileCostUsd": 0.365
+            "compileCostUsd": 0.73
           }
         },
         {
@@ -906,10 +897,10 @@
           "projection": {
             "passAInputTokens": 5045,
             "passAOutputTokens": 1500,
-            "passACostUsd": 0.013,
+            "passACostUsd": 0.025,
             "priorCompileCostUsd": 0.551,
             "unitGrowth": 1.85,
-            "compileCostUsd": 0.431
+            "compileCostUsd": 0.862
           }
         },
         {
@@ -971,10 +962,10 @@
           "projection": {
             "passAInputTokens": 5418,
             "passAOutputTokens": 1580,
-            "passACostUsd": 0.013,
+            "passACostUsd": 0.027,
             "priorCompileCostUsd": 0.519,
             "unitGrowth": 1.94,
-            "compileCostUsd": 0.415
+            "compileCostUsd": 0.831
           }
         },
         {
@@ -1057,10 +1048,10 @@
           "projection": {
             "passAInputTokens": 8807,
             "passAOutputTokens": 3507,
-            "passACostUsd": 0.026,
+            "passACostUsd": 0.053,
             "priorCompileCostUsd": 0.46,
             "unitGrowth": 1.96,
-            "compileCostUsd": 0.371
+            "compileCostUsd": 0.741
           }
         },
         {
@@ -1112,10 +1103,10 @@
           "projection": {
             "passAInputTokens": 7347,
             "passAOutputTokens": 2721,
-            "passACostUsd": 0.021,
+            "passACostUsd": 0.042,
             "priorCompileCostUsd": 0.564,
             "unitGrowth": 1,
-            "compileCostUsd": 0.324
+            "compileCostUsd": 0.649
           }
         },
         {
@@ -1191,10 +1182,10 @@
           "projection": {
             "passAInputTokens": 9193,
             "passAOutputTokens": 3759,
-            "passACostUsd": 0.028,
+            "passACostUsd": 0.056,
             "priorCompileCostUsd": 0.306,
             "unitGrowth": 1.21,
-            "compileCostUsd": 0.194
+            "compileCostUsd": 0.388
           }
         },
         {
@@ -1224,10 +1215,10 @@
           "projection": {
             "passAInputTokens": 3618,
             "passAOutputTokens": 1500,
-            "passACostUsd": 0.011,
+            "passACostUsd": 0.022,
             "priorCompileCostUsd": 0.184,
             "unitGrowth": 1,
-            "compileCostUsd": 0.106
+            "compileCostUsd": 0.212
           }
         },
         {
@@ -1275,10 +1266,10 @@
           "projection": {
             "passAInputTokens": 6000,
             "passAOutputTokens": 1983,
-            "passACostUsd": 0.016,
+            "passACostUsd": 0.032,
             "priorCompileCostUsd": 0.438,
             "unitGrowth": 2.81,
-            "compileCostUsd": 0.422
+            "compileCostUsd": 0.844
           }
         },
         {
@@ -1308,26 +1299,26 @@
           "projection": {
             "passAInputTokens": 3424,
             "passAOutputTokens": 1500,
-            "passACostUsd": 0.011,
+            "passACostUsd": 0.022,
             "priorCompileCostUsd": 0.177,
             "unitGrowth": 1,
-            "compileCostUsd": 0.102
+            "compileCostUsd": 0.204
           }
         }
       ],
       "perRun": {
-        "passA": 0.23,
-        "compile": 3.64,
-        "verify": 1.09,
-        "total": 4.96
+        "passA": 0.46,
+        "compile": 7.27,
+        "verify": 2.19,
+        "total": 9.92
       },
       "priorRunObservedUsd": 7.122662,
-      "twoRuns": 9.92
+      "twoRuns": 19.84
     },
-    "projectedTotalUsd": 14.38,
+    "projectedTotalUsd": 28.76,
     "recommendedCeilings": {
-      "holdoutPerRun": 4,
-      "wholeAgreementPerRun": 7
+      "holdoutPerRun": 7,
+      "wholeAgreementPerRun": 14
     },
     "authorizationRequiredAbove": 12,
     "authorizationRequired": true,
