@@ -21,6 +21,14 @@
  * See docs/phase-3f1-human-architecture-decision/07-operative-provision-
  * fix.json for the full writeup.
  */
+/**
+ * NOTE (source-coverage repair): every compile in this file runs with `accountability: false`.
+ * These are EVIDENCE-RESOLUTION certification tests - they assert what a tool call does to
+ * `evidenceUnresolved` and to OPERATIVE_STATE_UNRESOLVED. Their scripted clients answer Pass B only, so
+ * with source coverage on, each fixture is (correctly) REVIEW_REQUIRED for uninventoried source and the
+ * evidence property under test would be masked by an unrelated failure reason. Source coverage has its own
+ * suites: tests/contract-model/semantic-accountability/source-coverage*.test.ts.
+ */
 import { describe, expect, it } from "vitest";
 import type Anthropic from "@anthropic-ai/sdk";
 import { parseDocumentStructure } from "../../lib/contract-model/compiler/stage-structure";
@@ -143,7 +151,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         toolAccess: { structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: bundle },
       });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[toolUseBlock("t1", "getOperativeProvision", { sectionRef: "6.99" })], [submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.toolCallLog).toHaveLength(1);
       expect(result.toolCallLog[0]!.evidenceUnresolved).not.toBe(true);
@@ -189,7 +197,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         toolAccess: { structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: bundle },
       });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[toolUseBlock("t1", "getOperativeProvision", { sectionRef: "7.50" })], [submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.toolCallLog[0]!.evidenceUnresolved).toBe(true);
       expect(result.failureReasons).toContain("OPERATIVE_STATE_UNRESOLVED");
@@ -226,7 +234,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         toolAccess: { structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: bundle },
       });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[toolUseBlock("t1", "getOperativeProvision", { sectionRef: "9.99" })], [submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.toolCallLog[0]!.outputSummary).toContain("OPERATIVE_STATE_PARTIAL");
       expect(result.toolCallLog[0]!.evidenceUnresolved).toBe(true);
@@ -266,7 +274,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         toolAccess: { structuralIndex: index, operativeState: null, packageGraph: null, amendmentEffects: null, contextBundle: bundle },
       });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[toolUseBlock("t1", "getOperativeProvision", { sectionRef: "6.50" })], [submitRule({ sufficiency: "COMPLETE" })]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       // A refusal returns ok:false and no evidence at all - evidenceUnresolved
       // must never be fabricated true for a refusal (there is nothing to
@@ -344,7 +352,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         toolAccess: { structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: bundle },
       });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[toolUseBlock("t1", "getOperativeProvision", { sectionRef: "6.60" })], [submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.toolCallLog[0]!.outputSummary).toContain("KNOWN_SUPERSEDED");
       expect(result.toolCallLog[0]!.evidenceUnresolved).toBe(true);
@@ -378,7 +386,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         toolAccess: { structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: bundle },
       });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[toolUseBlock("t1", "getPriorVersion", { ref: "6.01" })], [submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.toolCallLog[0]!.toolName).toBe("getPriorVersion");
       expect(result.toolCallLog[0]!.evidenceUnresolved).not.toBe(true);
@@ -412,7 +420,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         toolAccess: { structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: bundle },
       });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[toolUseBlock("t1", "getDefinition", { term: "Consolidated EBITDA" })], [submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.toolCallLog[0]!.evidenceUnresolved).not.toBe(true);
       expect(result.status).toBe("COMPLETED");
@@ -424,7 +432,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
       const bundle = emptyContextBundle({ hasUnresolvedOperativeEvidence: false, unresolvedEvidenceItemIds: [] });
       const compilerInput = testCompilerInput({ contextBundle: bundle });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
       expect(result.toolCallLog).toHaveLength(0);
       expect(result.inputHasUnresolvedOperativeEvidence).toBe(false);
       expect(result.failureReasons).not.toContain("OPERATIVE_STATE_UNRESOLVED");
@@ -435,7 +443,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
       const bundle = emptyContextBundle({ hasUnresolvedOperativeEvidence: true, unresolvedEvidenceItemIds: ["item-1"] });
       const compilerInput = testCompilerInput({ contextBundle: bundle });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
       expect(result.toolCallLog).toHaveLength(0);
       expect(result.inputHasUnresolvedOperativeEvidence).toBe(true);
       expect(result.failureReasons).toContain("OPERATIVE_STATE_UNRESOLVED");
@@ -477,7 +485,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         "test-model",
         scriptedClient([[toolUseBlock("t1", "getOperativeProvision", { sectionRef: "6.01" })], [toolUseBlock("t2", "getOperativeProvision", { sectionRef: "7.60" })], [submitRule()]])
       );
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.toolCallLog).toHaveLength(2);
       expect(result.toolCallLog[0]!.evidenceUnresolved).not.toBe(true); // 6.01: current.
@@ -506,7 +514,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         "test-model",
         scriptedClient([[toolUseBlock("t1", "getOperativeProvision", { sectionRef: "7.60" })], [toolUseBlock("t2", "getOperativeProvision", { sectionRef: "6.01" })], [submitRule()]])
       );
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.toolCallLog).toHaveLength(2);
       expect(result.toolCallLog[0]!.evidenceUnresolved).toBe(true); // 7.60: conflicted, called first.
@@ -552,7 +560,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
           [submitRule({ sufficiency: "COMPLETE", sufficiencyReasons: ["I reviewed the conflicting amendments and am confident $5,000,000 is correct regardless"] })],
         ])
       );
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.rules[0]?.sufficiency).toBe("COMPLETE"); // the model's own self-report, unmodified.
       // But the ATTEMPT-level status/failureReasons - what a downstream
@@ -588,7 +596,7 @@ describe("HEADROOM OPEN-2 fresh attack matrix (spec §20)", () => {
         toolAccess: { structuralIndex: index, operativeState: state, packageGraph: null, amendmentEffects: null, contextBundle: bundle },
       });
       const caller = new RealSemanticCaller("test", "test-model", scriptedClient([[toolUseBlock("t1", "getOperativeProvision", { sectionRef: "8.10" })], [submitRule()]]));
-      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache() });
+      const result = await compileCovenantToIR(compilerInput, { caller, cache: new InMemorySemanticCompilationCache(), accountability: false });
 
       expect(result.inputHasUnresolvedOperativeEvidence).toBe(false); // the bundle itself is fully "clean" - confirms this is NOT the already-fixed bundle-level gap.
       expect(result.toolCallLog[0]!.evidenceUnresolved).toBe(true); // caught purely by the tool-call-path fix.
