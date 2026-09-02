@@ -332,6 +332,39 @@ describe("source coverage - non-semantic classes are suppressed, never the trust
   });
 });
 
+describe("canary #2 - a subordinating connective is never sufficient to make uncovered text harmless", () => {
+  // The exact fixture the independent red team used (its scenario S9). Before the fix, every word of the
+  // exception was in the closed-class set - except / as / provided / in / Section, and the digits of "6.02" are
+  // invisible to contentWords - so the fragment scored zero content words and was dismissed as STRUCTURAL_NOISE
+  // while the whole cross-referenced exception disappeared: unaccounted 0, semanticallyComplete true.
+  const TEXT = "The Borrower shall not make any Investment, except as provided in Section 6.02, at any time prior to the Maturity Date.";
+
+  it("A: 'except as provided in Section 6.02' stays UNACCOUNTED_SOURCE when no MATERIAL item covers it, and blocks completeness", async () => {
+    const cov = coverOne(TEXT, ["The Borrower shall not make any Investment,", "at any time prior to the Maturity Date."]);
+    expect(unaccountedText(cov)).toContain("except as provided in Section 6.02");
+    expect(cov.unaccounted).toHaveLength(1);
+
+    // ... and end to end, the unit can no longer be semanticallyComplete.
+    const sc = { state: "COMPLETE_LOCAL_SOURCE" as const, regions: [region("operative", TEXT)], unresolvedReferences: [], reasons: [], totalChars: TEXT.length, budgetChars: 10_000 };
+    const wire = ["The Borrower shall not make any Investment,", "at any time prior to the Maturity Date."].map((excerpt, i): WireInventoryItem => ({ localRef: `a${i}`, semanticRole: "PROHIBITION", proposition: `p${i}`, excerpt, regionId: "operative", quantitativeValues: [], referencedTerms: [], referencedSections: [], parentRef: null, relatedRefs: [], materiality: "CRITICAL", ambiguity: "NONE", ambiguityReason: null, operative: "OPERATIVE" }));
+    const inv = await runSemanticInventory({ candidateRef: "canary2", documentId: "d", sourceContext: sc, caller: scriptedCaller(wire) });
+    expect(inv.inventoryStatus).toBe("INVENTORY_COVERAGE_GAP");
+    expect(inv.unaccountedSource.map((u) => u.excerpt).join(" ")).toContain("except as provided in Section 6.02");
+    const rec = reconcileInventoryWithComposition({ inventory: inv, composition: { rules: [{ inventoryItemIds: inv.items.map((i) => i.inventoryItemId), capacityExpression: null, conditions: [], exceptions: [], dependsOn: [], unresolvedDependencies: [] }], definitions: [], sharedCapacities: [] } as never, dispositions: [], sourceContextState: sc.state });
+    expect(rec.semanticallyComplete).toBe(false);
+
+    // Contrast: when a MATERIAL item DOES cover the exception, normal completeness behaviour proceeds.
+    expect(coverOne(TEXT, [TEXT]).unaccounted).toEqual([]);
+  });
+
+  it("B: a connective-only fragment with no independent semantic content stays suppressible", () => {
+    // The negative control. Removing subordinating connectives from the closed class must not make pure
+    // structural glue blocking - "and" carries no proposition and is still STRUCTURAL_NOISE.
+    expect(classifyUnaccountedFragment("and", []).disposition).toBe("STRUCTURAL_NOISE");
+    expect(isAccountedDisposition(classifyUnaccountedFragment("and", []).disposition)).toBe(true);
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";

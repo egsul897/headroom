@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "17-canary-2-closed-class-false-negative",
+  "mission": "SINGLE CANARY #2 - fix exactly one independently demonstrated silent omission: \"except as provided in Section 6.02\". No other audit finding addressed.",
+  "startingFreeze": "5344861f9cd9a36b237b2b2b713a30d5df6c5607",
+  "reproduction": {
+    "fixture": "the red team's scenario S9, verbatim: \"The Borrower shall not make any Investment, except as provided in Section 6.02, at any time prior to the Maturity Date.\" with MATERIAL items on \"The Borrower shall not make any Investment,\" and \"at any time prior to the Maturity Date.\" only",
+    "reproduced": true,
+    "beforeFix": {
+      "fragmentDisposition": "STRUCTURAL_NOISE",
+      "unaccountedSource": 0,
+      "uninventoriedValues": 0,
+      "inventoryStatus": "INVENTORY_OK",
+      "semanticallyComplete": true,
+      "reasons": []
+    },
+    "responsibleFunctionAndBranch": "classifyUnaccountedFragment -> the `const words = contentWords(trimmed); if (words.length === 0) return STRUCTURAL_NOISE` branch in lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "rootCause": "contentWords() returned an EMPTY array for the fragment. Every token was in the closed class: 'except' and 'provided' were listed as subordinating connectives, 'as' and 'in' are grammar, 'Section' is a structural lead-in noun, and WORD_RE (/[A-Za-z][A-Za-z'-]*/) never matches digits so '6.02' is invisible to the counter. Zero content words meant the fragment was treated as the residue of splitting a parent unit - harmless glue - when it was in fact a cross-referenced exception."
+  },
+  "fix": {
+    "file": "lib/contract-model/compiler/semantic-accountability/source-coverage.ts",
+    "change": "removed the nine subordinating connectives - provided, except, unless, including, subject, notwithstanding, however, pursuant, whereas - from FUNCTION_WORDS, and corrected the module docstring's false claim that every content word in the language is outside that set",
+    "linesChanged": "one entry in a Set literal, plus comments",
+    "whyGeneric": "It is a CATEGORY removal, not a pattern match. Nothing in the code mentions the fixture, the phrase, Section 6.02, cross-references or section numbers. Any uncovered text whose only 'content' is a word that can introduce a condition, exception, proviso or override is now accountable - 'unless X', 'subject to Y', 'notwithstanding Z', 'except for W' all behave identically. The rule enforced is the mission's: such a word is never SUFFICIENT to make uncovered text harmless.",
+    "notFixed": [
+      "ALL-CAPS heading classification",
+      "numbered covenant/caption classification",
+      "'jointly and severally'",
+      "'directly or indirectly'",
+      "chapeau/child descent",
+      "amendment quoted replacement language",
+      "CJK",
+      "Cyrillic",
+      "bare-integer baskets",
+      "overbroad inventory spans",
+      "contentWords' blindness to digits (the section number is still invisible to the counter; it was not needed to close this canary)"
+    ]
+  },
+  "afterFix": {
+    "fragmentDisposition": "UNACCOUNTED_SOURCE",
+    "unaccountedSource": 1,
+    "excerpt": "except as provided in Section 6.02,",
+    "inventoryStatus": "INVENTORY_COVERAGE_GAP",
+    "semanticallyComplete": false,
+    "contrast": "when a MATERIAL item does cover the exception, coverage is clean and normal completeness behaviour proceeds"
+  },
+  "negativeControl": {
+    "fragment": "and",
+    "disposition": "STRUCTURAL_NOISE",
+    "blocking": false,
+    "note": "pure connective glue with no independent semantic content remains suppressible"
+  },
+  "regressionTests": [
+    "A: 'except as provided in Section 6.02' stays UNACCOUNTED_SOURCE and blocks completeness end to end",
+    "B: the connective-only fragment 'and' stays safely suppressible"
+  ],
+  "corpusImpact": {
+    "suite": "npx vitest run tests/contract-model/semantic-accountability (6 files)",
+    "previous": {
+      "files": 6,
+      "tests": 255,
+      "passed": 255,
+      "failed": 0
+    },
+    "new": {
+      "files": 6,
+      "tests": 257,
+      "passed": 237,
+      "failed": 20
+    },
+    "testDelta": "+2 (the two canary regression tests); the 20 failures are 9 scenarios failing in both the Pass A and the Pass B/C suite plus the corpus-wide and rollup aggregates",
+    "newlySurfacedGapSpans": 11,
+    "newlySurfacedGapScenarios": 9,
+    "classification": {
+      "TRUE_SAFETY_IMPROVEMENT": 0,
+      "PLAUSIBLE_REVIEW": 1,
+      "OBVIOUS_FALSE_GAP": 10
+    },
+    "perGap": [
+      {
+        "scenario": "I5",
+        "excerpt": "provided that",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...not to exceed $40,000,000; provided that no Default has occurred and is continuing;...",
+        "why": "the proviso body 'no Default has occurred and is continuing' IS inventoried; only the connective is left"
+      },
+      {
+        "scenario": "I5",
+        "excerpt": "provided further that,",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...continuing; provided further that, if the Total Leverage Ratio exceeds 4.00 to 1.00,...",
+        "why": "the conditional body is inventoried"
+      },
+      {
+        "scenario": "I9",
+        "excerpt": "provided that",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...permitted under clause (a) above; provided that the principal amount thereof does not exceed...",
+        "why": "body inventoried"
+      },
+      {
+        "scenario": "I12",
+        "excerpt": "provided that",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...received after the Closing Date; provided that no Default has occurred and is continuing and the Fixed Charge Coverage Ratio...",
+        "why": "body inventoried"
+      },
+      {
+        "scenario": "I17",
+        "excerpt": "provided that",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...not to exceed $8,000,000 at any time outstanding; provided that no Unrestricted Subsidiary shall own any Equity Interests...",
+        "why": "body inventoried"
+      },
+      {
+        "scenario": "I20",
+        "excerpt": "provided that",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...equal to 50% of Excess Cash Flow for such fiscal year; provided that such percentage shall be reduced to 25%...",
+        "why": "body inventoried"
+      },
+      {
+        "scenario": "I27",
+        "excerpt": "Notwithstanding",
+        "class": "PLAUSIBLE_REVIEW",
+        "source": "SECTION 8.03 Equity Cure. Notwithstanding any failure to comply with Section 7.10, the Borrower may receive cash equity contributions...",
+        "why": "the override operator is left unanchored while its object is inventoried. The override relationship - that this section prevails over another - is carried jointly by the word and its complement, so a reviewer could reasonably want it anchored rather than assumed. Not obviously harmless, not obviously a real omission."
+      },
+      {
+        "scenario": "I30",
+        "excerpt": "provided that",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...so long as the Total Leverage Ratio does not exceed 3.75 to 1.00; provided that the Borrower may, in its sole discretion, reclassify...",
+        "why": "body inventoried"
+      },
+      {
+        "scenario": "I31",
+        "excerpt": "provided that",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...any Subsidiary may merge into the Borrower; provided that the Borrower is the surviving entity,...",
+        "why": "body inventoried"
+      },
+      {
+        "scenario": "I31",
+        "excerpt": "except that,",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...the surviving entity, except that, in the case of a merger with a Loan Party, such Loan Party may be the surviving entity...",
+        "why": "body inventoried"
+      },
+      {
+        "scenario": "I32",
+        "excerpt": "provided that",
+        "class": "OBVIOUS_FALSE_GAP",
+        "source": "...in an aggregate amount not to exceed $11,000,000; provided that such Restricted Payment would be permitted as an Investment under Section 7.06(c).",
+        "why": "body inventoried"
+      }
+    ],
+    "notPatched": "None of the 11 were patched, no ground truth was changed and no suppression heuristic was added to restore the old green count. Mission \u00a74/\u00a77: this is a diagnostic about the trade-off.",
+    "tradeoffReading": "The canary is closed and the cost is 10 obviously-harmless glue fragments plus 1 judgment call. Every false gap has the same shape - a bare connective sitting between an anchored clause and its anchored complement - which suggests the durable fix is structural (attach a connective to the clause it introduces when that clause is covered) rather than lexical (put the word back in the closed class). That design decision is deliberately NOT taken here."
+  },
+  "qualityGates": {
+    "typescript": "6 pre-existing errors, 0 new",
+    "lint": "clean",
+    "sourceCoverageSuite": "85/85 including both new tests"
+  },
+  "paidCallsMade": 0,
+  "canary2Solved": true
+}

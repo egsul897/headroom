@@ -174,18 +174,27 @@ export function segmentSourceUnits(text: string, protectedRanges: { charStart: n
  * enumerators and punctuation carries no proposition of its own - it is the
  * glue segmentation left behind when it split a parent unit. This list can
  * only ever move a fragment OUT of scrutiny when the fragment contains no
- * content word and no value, so it cannot hide a proposition: every content
- * word in the language is outside it by construction.
+ * content word and no value.
+ *
+ * This list is NOT proven safe. An independent red team showed that words which can introduce a condition or
+ * exception ("except", "provided", ...) made a real cross-referenced exception score zero content words; those
+ * are gone (canary #2). Other entries here remain KNOWN-BROKEN and deliberately untouched by that canary:
+ * the adverbial adjuncts still swallow "jointly and severally" and "directly or indirectly", and `contentWords`
+ * still cannot see digits, so a bare section number is invisible to it.
  */
 const FUNCTION_WORDS = new Set([
   // determiners, pronouns, prepositions, auxiliaries - pure grammar
   "a", "an", "and", "andor", "any", "are", "as", "at", "be", "been", "being", "both", "but", "by", "each", "either", "for", "from", "hereby", "hereof", "hereto", "hereunder", "in", "into", "is", "it", "its", "of", "on", "or", "other", "over", "per", "such", "than", "that", "the", "their", "then", "there", "thereof", "thereto", "thereunder", "these", "this", "those", "to", "under", "was", "were", "which", "who", "whom", "whose", "with", "within", "without",
   // structural lead-in nouns that introduce a list and carry no proposition alone
   "following", "clause", "clauses", "paragraph", "paragraphs", "section", "sections", "subsection", "subsections", "article", "articles", "annex", "exhibit", "schedule", "appendix",
-  // subordinating connectives. Each REQUIRES a complement to say anything: "provided that" and ", except that,"
-  // are the glue segmentation leaves between two anchored clauses (mission §6 names them explicitly). A real
-  // proviso or exception always carries a content word of its own besides these, so this can never hide one.
-  "provided", "except", "unless", "including", "subject", "notwithstanding", "however", "pursuant", "whereas",
+  // NOTE - subordinating connectives were REMOVED from this set (canary #2).
+  // They used to live here on the reasoning that "a real proviso or exception always carries a content word of
+  // its own besides these". An independent red team falsified that: "except as provided in Section 6.02," is
+  // built entirely from those connectives plus grammar plus a section number, so it scored zero content words
+  // and was dismissed as STRUCTURAL_NOISE while a cross-referenced exception disappeared from the accounting.
+  // A word that can introduce a condition, exception, proviso or override is never sufficient, on its own, to
+  // make uncovered text harmless: provided, except, unless, including, subject, notwithstanding, however,
+  // pursuant, whereas. They are content words now, and glue like ", provided that" is surfaced instead.
   // adverbial adjuncts. An adjunct modifies a proposition and cannot head one; a residue made only of these
   // sits beside text an item already anchors.
   "solely", "only", "also", "otherwise", "further", "respectively", "generally", "collectively", "individually",
