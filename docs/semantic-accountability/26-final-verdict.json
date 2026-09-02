@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "26-final-verdict",
+  "primaryVerdict": "SEMANTIC_ACCOUNTABILITY_NEEDS_ITERATION",
+  "secondaryDisclosure": "ENVIRONMENT_BLOCKED",
+  "reasoning": {
+    "whyNeedsIteration": "Validation A (holdout) is the one validation that ran to full design completion - 2 independent real runs plus a stability comparison, on real, previously-unseen content, against a hash-frozen production compiler. It fell short of a pre-registered, hard mission gate: disposition stability of 90.11%, against a required 95% (14-holdout-stability.json). The hard safety gate (zero CRITICAL-materiality omissions across runs) passed cleanly (0/0), and the instability is concentrated almost entirely in Pass A inventory variance (372) rather than composition/disposition variance (0) - meaning the reconciliation and disposition logic is stable once an item is inventoried, but the upstream inventory step does not yet reliably surface the same set of material items on repeated real-model runs of the same source. That is a genuine, disclosed shortfall in the current architecture, not an infrastructure artifact, and it is why the primary verdict is NEEDS_ITERATION rather than a clean pass.",
+    "whyNotEnvironmentBlockedAlone": "ENVIRONMENT_BLOCKED is reported honestly and separately for what it actually caused: Validation B (whole-agreement, mission section 22) and the shared-cap real-content requirement (mission section 25) could not be completed because the Vercel AI Gateway credential hit its own account-level $150 budget cap (HTTP 402) after only 3/12 regions, and the user chose to stop rather than continue past the block. That is a provider-infrastructure limit, not a capability or architecture finding, and it must not be conflated with the holdout result above - the two are independent gates that failed for different reasons (25-phase3-release-gate.json separates them explicitly: G5 vs G9/G10/G12).",
+    "whyNotAModelCapabilityLimit": "The one clear model-capability finding this session (Haiku 4.5's severe degradation) was discarded and is not part of this verdict's evidence base; the user explicitly chose to switch back to Sonnet 5 rather than accept that confound. All verdict-relevant real evidence is Sonnet-5-only, post the RVD-1 canonicalization fix.",
+    "whatWouldCloseThisOut": [
+      "Root-cause the Pass A inventory variance (372 items differing between two independent runs of the same holdout content) - likely candidates are prompt under-determinism for borderline-materiality items and/or insufficiently anchored extraction boundaries; this is real, unfinished diagnostic work, not yet started.",
+      "Re-run holdout stability after an inventory-determinism fix and confirm >=95%.",
+      "Obtain a Gateway credential with headroom above $150 (or a fresh one) and complete Validation B (whole-agreement, 2 runs + stability) and the shared-cap real-content check that depends on it.",
+      "Re-run the independent audit (24-independent-audit.json AUD-16 caveat) with a genuinely separate/fresh agent rather than within the same session, for full audit independence."
+    ]
+  },
+  "notInThisVerdictSet": [
+    "PHASE_3_CONTRACT_INTELLIGENCE_CLOSED_PHASE_4_READY - ruled out: disposition-stability gate failed and 2 of 4 validation pillars (whole-agreement, shared-cap real coverage) are incomplete.",
+    "MODEL_CAPABILITY_LIMIT - ruled out: the only capability-limit evidence (Haiku) was discarded by user decision; Sonnet 5 evidence does not show a capability ceiling, it shows an inventory-determinism architecture gap.",
+    "CONTEXT_RETRIEVAL_LIMIT / INVENTORY_ARCHITECTURE_LIMIT / COMPOSITION_ARCHITECTURE_LIMIT / DEPENDENCY_ARCHITECTURE_LIMIT / MULTI_FACTOR_GENERALIZATION_LIMIT - considered and rejected as the PRIMARY verdict: the disposition-stability shortfall is the dominant unresolved finding and is most precisely described as a needs-iteration gap in Pass A determinism, not yet localized to one of these specific sub-architectures (that localization is exactly the open root-cause work listed above).",
+    "TRUST_BOUNDARY_REGRESSION - ruled out: G7 (verifier independence) and G8 (14/14 false-credit controls) both pass; no trust-boundary defect was found.",
+    "VALIDATION_CONTAMINATED - ruled out: freeze discipline held throughout (G2), no benchmark/ground-truth contamination was found, and every discarded/partial run was preserved with an explanation rather than silently dropped."
+  ],
+  "confidence": "High confidence in the disposition-stability measurement itself (deterministic comparator, both runs preserved on disk, fully reproducible from tests/fixtures/semantic-accountability-validation/holdout/run-1 and run-2). Lower confidence in whether 90.11% would hold, improve, or worsen at whole-agreement scale, since Validation B did not complete."
+}

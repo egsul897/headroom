@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "25-phase3-release-gate",
+  "purpose": "Roll every mission-required gate up into one pass/fail table, against production freeze SHA 976a5650cbdf3bd4ce16fd86b7370bee30b341e4.",
+  "gates": [
+    {
+      "id": "G1-synthetic-corpus",
+      "requirement": "Generic synthetic corpus (I1-I45) + injected-omission gates all pass, with zero package-specific hardcoding.",
+      "evidence": ["08-generic-inventory-tests.json", "09-generic-reconciliation-tests.json"],
+      "measured": "139/139 synthetic tests passing",
+      "pass": true
+    },
+    {
+      "id": "G2-production-freeze",
+      "requirement": "Every real validation run executes against a hash-verified frozen production tree; no post-freeze production drift.",
+      "evidence": ["10-production-freeze.json"],
+      "measured": "SHA 976a5650cbdf3bd4ce16fd86b7370bee30b341e4, treeHash 199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1, 345 files; assertProductionFrozen() ran and passed at the start of every preserved real run.",
+      "pass": true
+    },
+    {
+      "id": "G3-holdout-validation-A",
+      "requirement": "Validation A (holdout): 2 independent real runs completed against real, previously-unseen content, on the frozen production compiler.",
+      "evidence": ["12-holdout-run-1.json", "13-holdout-run-2.json"],
+      "measured": "run-1: $7.31, 8/8 regions attempted (7/8 compiled + verified, 1 provider failure); run-2: $7.59, 7/8 regions completed. Both post-RVD1-fix.",
+      "pass": true
+    },
+    {
+      "id": "G4-critical-variable-omissions",
+      "requirement": "Zero CRITICAL-materiality items that are captured in one holdout run and MISSING_FROM_COMPOSITION in the other (mission §27 hard safety gate).",
+      "evidence": ["14-holdout-stability.json"],
+      "measured": "criticalVariableOmissions = 0 (required 0)",
+      "pass": true
+    },
+    {
+      "id": "G5-disposition-stability",
+      "requirement": "Disposition stability (same disposition on the same content-derived item across both holdout runs) >= 95% (mission §27).",
+      "evidence": ["14-holdout-stability.json"],
+      "measured": "90.11% (82/91 items dispositioned identically); inventoryVariance=372 vastly exceeds compositionVariance=0, meaning instability is concentrated in what Pass A inventories per real-model run, not in how a shared item is dispositioned once inventoried.",
+      "pass": false,
+      "shortfall": "4.89 percentage points below the pre-registered 95% threshold"
+    },
+    {
+      "id": "G6-agreement-level-rollup",
+      "requirement": "Agreement-level status correctly downgrades to SEMANTICALLY_INCOMPLETE when any unit has a material MISSING_FROM_COMPOSITION item or MATERIAL independent-verifier discrepancy (mission §26); rollup must not silently over-credit.",
+      "evidence": ["19-agreement-level-coverage.json"],
+      "measured": "0/16 real units (across holdout run-1, run-2, and whole-agreement run-1) achieved agreement-level SEMANTICALLY_COMPLETE; every downgrade is traceable to a specific, disclosed reason (material MISSING_FROM_COMPOSITION or independent-verifier MATERIAL discrepancy). Rollup logic verified operating correctly on real data.",
+      "pass": true,
+      "passBasis": "the rollup mechanism itself is correct and conservative; the resulting SEMANTICALLY_INCOMPLETE outcome on real content is a substantive finding (see G5, G7), not a rollup defect"
+    },
+    {
+      "id": "G7-verifier-independence",
+      "requirement": "The independent Phase 3C verifier must remain architecturally and operationally independent of the accountability/reconciliation layer (no shared trust).",
+      "evidence": ["20-verifier-independence.json"],
+      "measured": "PASS - independence held statically (import-boundary enforcement), at runtime (separate call path), and as observed in all real runs.",
+      "pass": true
+    },
+    {
+      "id": "G8-false-credit-controls",
+      "requirement": "14/14 false-credit controls (mission §30) must hold - the system must never award trust/completeness it has not earned.",
+      "evidence": ["21-false-credit-controls.json"],
+      "measured": "14/14 controls pass (C1-C14), including the RVD-1 canonicalization-precision control (C3) added this session.",
+      "pass": true
+    },
+    {
+      "id": "G9-whole-agreement-validation-B",
+      "requirement": "Validation B (whole-agreement): 2 independent real runs + stability comparison across a full agreement, not just holdout regions (mission §22).",
+      "evidence": ["15-whole-agreement-run-1.json", "16-whole-agreement-run-2.json", "17-whole-agreement-stability.json"],
+      "measured": "run-1 completed only 3/12 regions ($5.29 spent) before hitting an external Vercel AI Gateway account-level budget cap (HTTP 402, 'Current spend: $150.34, limit: $150.00'); run-2 and the stability comparison were never started. This is a provider-infrastructure block, not a code or architecture failure, and the user explicitly chose to stop and finalize with partial evidence rather than continue.",
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED",
+      "note": "Not conflated with a capability or architecture verdict; disclosed separately per mission discipline."
+    },
+    {
+      "id": "G10-shared-cap-real-content",
+      "requirement": "Real-content validation of shared-capacity/cross-reference dependency remediation (mission §25), beyond the synthetic corpus.",
+      "evidence": ["18-shared-cap-validation.json"],
+      "measured": "NOT_MEASURED_ON_REAL_CONTENT - the holdout regions selected did not contain a real shared-capacity/cross-basket scenario, and the whole-agreement run that would have covered it stopped early (G9). Only synthetic I28/I29 coverage exists, which does not substitute for real-content validation per mission discipline.",
+      "pass": false,
+      "classification": "ENVIRONMENT_BLOCKED",
+      "note": "Downstream consequence of G9's early stop, not an independent defect."
+    },
+    {
+      "id": "G11-full-regression",
+      "requirement": "tsc / lint / vitest show zero regressions attributable to this workstream's code changes.",
+      "evidence": ["22-known-package-regression.json", "23-full-regression.json"],
+      "measured": "0 new tsc errors, clean next lint, 0 semantic-accountability test files failing; all elevated vitest failures trace to a disclosed session-local DB-unavailability condition plus 2 pre-existing unrelated baseline failures.",
+      "pass": true
+    },
+    {
+      "id": "G12-independent-audit",
+      "requirement": "Independent audit of the whole workstream's claims and evidence (mission-required internal audit pass).",
+      "evidence": ["24-independent-audit.json"],
+      "measured": "17 findings (AUD-1..AUD-17): 14 pass, 2 pass-with-caveat (AUD-3 anti-enumeration prose caveat; AUD-16 audit was performed within the same session rather than by a separate/fresh agent), 1 fail (AUD-15, mirrors G10 - shared-cap real coverage).",
+      "pass": false,
+      "note": "The single audit FAIL is the same underlying gap as G10, not a new independent defect."
+    },
+    {
+      "id": "G13-cost-governance",
+      "requirement": "All spend decisions above the $12 mission threshold require explicit user authorization before proceeding (mission §29).",
+      "evidence": "conversation record: 3 AskUserQuestion check-ins this session (model substitution, tighter cap after budget check-in, stop-and-finalize after provider block)",
+      "measured": "Every threshold crossing was disclosed with concrete evidence and options before proceeding; final cumulative real-validation spend approx. $31.41 (holdout $7.05 discarded + $7.31 + $7.59, whole-agreement $5.29, plus the discarded Haiku run $4.17), all user-authorized in stages.",
+      "pass": true
+    }
+  ],
+  "summary": {
+    "totalGates": 13,
+    "pass": 9,
+    "fail": 4,
+    "failingGateIds": ["G5-disposition-stability", "G9-whole-agreement-validation-B", "G10-shared-cap-real-content", "G12-independent-audit"],
+    "failureClassification": {
+      "genuineArchitectureShortfall": ["G5-disposition-stability"],
+      "environmentBlocked": ["G9-whole-agreement-validation-B", "G10-shared-cap-real-content"],
+      "derivedFromEnvironmentBlock": ["G12-independent-audit (AUD-15 mirrors G10)"]
+    }
+  }
+}

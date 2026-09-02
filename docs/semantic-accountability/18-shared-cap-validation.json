@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "18-shared-cap-validation",
+  "requirement": "Mission section 25: the shared-cap real validation must become structurally represented (IRSharedCapacity + LEDGER_USAGE_REFERENCE lineage) on real content, or prove the equivalent graph.",
+  "status": "NOT_MEASURED_ON_REAL_CONTENT",
+  "reason": "The whole-agreement region pre-registered for shared-cap/cross-reference behavior (cross-reference-dsgr, family CROSS_REFERENCE_SHARED_CAP_CONDITION) did not execute before the provider account budget cap (ENVIRONMENT_BLOCKED - see 15-whole-agreement-run-1.json). The 3 regions that did complete (definitions-lsb, definitions-dsgr, debt-dsgr) do not exercise shared-cap mechanics.",
+  "syntheticEvidence": "The shared-cap architecture IS validated deterministically and on synthetic real-shaped scenarios: I28 (shared cap between two rules in one unit) and I29 (shared cap across covenant families, cross-unit) both pass in the I1-I45 corpus - see tests/contract-model/semantic-accountability/pass-bc-reconciliation.test.ts 'I28/I29: a shared cap is structurally represented ... omitting it is detected'. This does not substitute for real-content validation, which mission section 25 requires and which this run could not complete.",
+  "priorRootCause": "docs/semantic-accountability/06-shared-cap-root-cause.json traced the ORIGINAL Mission-4 shared-cap loss to context-retrieval starvation (BF-5) and normalization silently dropping unresolved dependencies (R-4) - both since remediated (source-context sufficiency layer; IRUnresolvedDependency). That remediation is exercised by I28/I29 synthetically and by the holdout regions' own real unresolved-dependency handling (interest-expense, applicable-liquidity-rate in both holdout runs show DEPENDENCY_EXPANDED_SOURCE with cross-reference expansions), but not by a real shared-cap-specific region.",
+  "conclusion": "Cannot be certified complete this session. Recommended as the first target of a follow-up real-validation run once the provider budget is restored."
+}

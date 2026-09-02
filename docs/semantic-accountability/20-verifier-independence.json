@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "20-verifier-independence",
+  "requirement": "Mission section 28: the independent verifier must not consume Pass A/Pass C conclusions.",
+  "staticEnforcement": "tests/contract-model/semantic-accountability-independence.test.ts asserts semantic-verification/* never imports semantic-accountability/* (import-boundary scan, same technique as every other independence contract in this codebase). Passing in the full suite this session.",
+  "runtimeEnforcement": "scripts/semantic-accountability-validation.ts builds a SEPARATE verifierInput for every real region: when the compiler's resolved source-context unit differs from the raw supplied window, the verifier receives the RESOLVED unit's text (deterministic, not a Pass A/Pass C conclusion) with sourceContext and frozenInventory explicitly stripped (set to undefined) before the call - see verifierOperativeSource field on every preserved region JSON ('RESOLVED_UNIT' vs 'SUPPLIED_WINDOW').",
+  "observedInRealRuns": "Every preserved holdout/whole-agreement region JSON's verify.status and verify.findings were computed by verifyCompiledCandidate with a compilerInput carrying no sourceContext/frozenInventory field - confirmed by direct inspection (field absent in verifierInput, present only in the top-level compile record for disclosure).",
+  "conclusion": "PASS - verifier independence held in all real runs and is enforced both statically and at the call boundary."
+}

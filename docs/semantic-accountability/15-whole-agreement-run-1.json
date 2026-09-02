@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "15-whole-agreement-run-1",
+  "mode": "whole-agreement",
+  "runNumber": 1,
+  "productionSha": "976a5650cbdf3bd4ce16fd86b7370bee30b341e4",
+  "productionTreeHash": "199ba3f88e5bc31ae25572f6b59054c7f4733ab99dffad234d7c9a4601e4b5c1",
+  "providers": {
+    "compiler": {
+      "provider": "vercel-ai-gateway",
+      "model": "anthropic/claude-sonnet-5"
+    },
+    "inventory": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5"
+    },
+    "verifier": {
+      "provider": "VERCEL_AI_GATEWAY",
+      "model": "anthropic/claude-sonnet-5"
+    }
+  },
+  "totalCostUsd": 5.293140000000001,
+  "regionsCompleted": 3,
+  "regionsEnvironmentBlocked": 9,
+  "regionsTotal": 12,
+  "stopReason": "Vercel AI Gateway account-level budget cap (HTTP 402, spend $150.34/$150.00) - external to this mission's own per-run cost ceilings. Per user decision, accepted as final partial evidence; run-2 not executed.",
+  "perRegion": [
+    {
+      "id": "asset-sales-dsgr",
+      "family": "ASSET_SALES_PREPAYMENT",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "semanticallyComplete": null,
+      "counts": null
+    },
+    {
+      "id": "cross-reference-dsgr",
+      "family": "CROSS_REFERENCE_SHARED_CAP_CONDITION",
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "semanticallyComplete": null,
+      "counts": null
+    },
+    {
+      "id": "debt-dsgr",
+      "family": "DEBT",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "environmentBlocked": false,
+      "providerError": null,
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "inventoryStatus": "INVENTORY_OK",
+      "semanticallyComplete": false,
+      "counts": {
+        "inventoried": 49,
+        "material": 49,
+        "represented": 44,
+        "intentionallyNonComputational": 0,
+        "unsupported": 0,
+        "ambiguous": 5,
+        "missingFromComposition": 0,
+        "materialMissingFromComposition": 0,
+        "criticalMissingFromComposition": 0,
+        "materialQuantitativeValues": 9,
+        "materialQuantitativeValuesMissing": 0,
+        "uninventoriedValues": 8,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 75
+      }
+    },
+    {
+      "id": "debt-lsb",
+      "family": "DEBT",
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.34, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_OK",
+      "semanticallyComplete": null,
+      "counts": null
+    },
+    {
+      "id": "definitions-dsgr",
+      "family": "DEFINITIONS",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "environmentBlocked": false,
+      "providerError": null,
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "inventoryStatus": "INVENTORY_OK",
+      "semanticallyComplete": false,
+      "counts": {
+        "inventoried": 41,
+        "material": 40,
+        "represented": 32,
+        "intentionallyNonComputational": 1,
+        "unsupported": 0,
+        "ambiguous": 0,
+        "missingFromComposition": 8,
+        "materialMissingFromComposition": 8,
+        "criticalMissingFromComposition": 5,
+        "materialQuantitativeValues": 10,
+        "materialQuantitativeValuesMissing": 10,
+        "uninventoriedValues": 5,
+        "danglingLineageReferences": 0,
+        "canonicalizedLineageReferences": 41
+      }
+    },
+    {
+      "id": "definitions-lsb",
+      "family": "DEFINITIONS",
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "compileStatus": "REVIEW_REQUIRED",
+      "environmentBlocked": false,
+      "providerError": null,
+      "verifyStatus": "MATERIAL_DISCREPANCY",
+      "inventoryStatus": "INVENTORY_OK",
+      "semanticallyComplete": false,
+      "counts": {
+        "inventoried": 81,
+        "material": 77,
+        "represented": 39,
+        "intentionallyNonComputational": 0,
+        "unsupported": 40,
+        "ambiguous": 0,
+        "missingFromComposition": 2,
+        "materialMissingFromComposition": 1,
+        "criticalMissingFromComposition": 1,
+        "materialQuantitativeValues": 15,
+        "materialQuantitativeValuesMissing": 2,
+        "uninventoriedValues": 0,
+        "danglingLineageReferences": 1,
+        "canonicalizedLineageReferences": 80
+      }
+    },
+    {
+      "id": "financial-covenant-dsgr",
+      "family": "FINANCIAL_COVENANT",
+      "sourceContextState": "COMPLETE_LOCAL_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "semanticallyComplete": null,
+      "counts": null
+    },
+    {
+      "id": "investments-dsgr",
+      "family": "RESTRICTED_PAYMENTS_INVESTMENTS",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "semanticallyComplete": null,
+      "counts": null
+    },
+    {
+      "id": "liens-dsgr-a",
+      "family": "LIENS",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "semanticallyComplete": null,
+      "counts": null
+    },
+    {
+      "id": "liens-dsgr-d",
+      "family": "LIENS",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "semanticallyComplete": null,
+      "counts": null
+    },
+    {
+      "id": "reporting-dsgr",
+      "family": "REPORTING_AFFIRMATIVE",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "semanticallyComplete": null,
+      "counts": null
+    },
+    {
+      "id": "restricted-payments-dsgr",
+      "family": "RESTRICTED_PAYMENTS_INVESTMENTS",
+      "sourceContextState": "DEPENDENCY_EXPANDED_SOURCE",
+      "compileStatus": "FAILED",
+      "environmentBlocked": true,
+      "providerError": "402 {\"error\":{\"message\":\"API key budget exceeded. Current spend: $150.49, limit: $150.00. Please contact your administrator to increase the budget.\",\"type\":\"quota_for_entity_exceeded\"}}",
+      "verifyStatus": null,
+      "inventoryStatus": "INVENTORY_FAILED",
+      "semanticallyComplete": null,
+      "counts": null
+    }
+  ]
+}
