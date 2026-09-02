@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "11-targeted-stability-result",
+  "status": "NOT_MEASURED",
+  "classification": "ENVIRONMENT_BLOCKED",
+  "gates": {
+    "semanticInventoryStabilityConservative": { "required": 0.95, "measured": null },
+    "criticalVariableOmissions": { "required": 0, "measured": null },
+    "falseTrustedSemantics": { "required": 0, "measured": null }
+  },
+  "whatIsKnownWithoutTheRerun": {
+    "syntheticEvidence": "06-stability-tests.json: the v2 coverage accounting closes the two measured omission signatures on synthetic material (region-tail definition, sub-clause condition) when the gap call returns them, and surfaces INVENTORY_COVERAGE_GAP when it does not - 22/22 new tests, 161/161 total.",
+    "realEvidenceOfTheFix": "NONE. The effect of the gap re-inventory on real content (how often the model closes a surfaced gap vs leaves it surfaced) is unmeasured until the provider unblocks.",
+    "preFixRealBaseline": "02-semantic-equivalence-analysis.json: semantic inventory stability 90.4% lenient / 78.4% conservative / 88.4% adjudicated on the v1 holdout runs - the number the rerun must beat to >=95% conservative."
+  },
+  "howToComplete": "Raise the Gateway budget or supply a fresh credential; run 09's command twice; then `npx tsx scripts/phase3-final-closure-forensics.ts` adapted to run-3/run-4 (the script's loadRun/matcher are run-agnostic) and record the conservative semantic stability here.",
+  "paidCallsMade": 0
+}

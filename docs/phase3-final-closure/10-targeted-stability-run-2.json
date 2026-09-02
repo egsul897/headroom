@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "artifactId": "10-targeted-stability-run-2",
+  "status": "ENVIRONMENT_BLOCKED",
+  "dependsOn": "09-targeted-stability-run-1 (same pre-registered 4-region subset, second independent run, no tuning between runs)",
+  "why": "Provider HTTP 402 budget cap (08-provider-health-and-cost.json).",
+  "runDirectory": "tests/fixtures/semantic-accountability-validation/holdout/run-4 (not created)",
+  "paidCallsMade": 0
+}
