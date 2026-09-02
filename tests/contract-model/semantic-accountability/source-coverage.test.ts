@@ -365,6 +365,33 @@ describe("canary #2 - a subordinating connective is never sufficient to make unc
   });
 });
 
+describe("canary #2B - structural connective ownership", () => {
+  const I5 = "The Borrower may make Investments in Joint Ventures in an aggregate amount not to exceed $40,000,000; provided that no Default has occurred and is continuing; provided further that, if the Total Leverage Ratio exceeds 4.00 to 1.00, such amount shall not exceed $20,000,000.";
+  const S9 = "The Borrower shall not make any Investment, except as provided in Section 6.02, at any time prior to the Maturity Date.";
+
+  it("A POSITIVE: a bare 'provided that' whose condition IS covered inherits coverage from the clause it introduces", () => {
+    const cov = coverOne(I5, [
+      "The Borrower may make Investments in Joint Ventures in an aggregate amount not to exceed $40,000,000",
+      "no Default has occurred and is continuing",
+      "if the Total Leverage Ratio exceeds 4.00 to 1.00, such amount shall not exceed $20,000,000",
+    ]);
+    expect(cov.unaccounted).toEqual([]);
+    expect(cov.countsByDisposition.COVERED_BY_CONNECTIVE_OWNERSHIP).toBeGreaterThan(0);
+    // ...and it is inheritance, not suppression: with the condition NOT covered, the whole clause is a gap again.
+    const uncovered = coverOne(I5, ["The Borrower may make Investments in Joint Ventures in an aggregate amount not to exceed $40,000,000"]);
+    expect(unaccountedText(uncovered)).toContain("no Default has occurred and is continuing");
+  });
+
+  it("B NEGATIVE: the canary #2 fixture is unchanged - a connective carrying its own cross-reference never inherits", () => {
+    // "except as provided in Section 6.02" is adjacent to a covered clause exactly as "provided that" is, so
+    // adjacency cannot be what separates them. The reference IS the content of the exception: the fragment
+    // carries its own object, so it can never be discharged by whatever happens to follow it.
+    const cov = coverOne(S9, ["The Borrower shall not make any Investment,", "at any time prior to the Maturity Date."]);
+    expect(unaccountedText(cov)).toContain("except as provided in Section 6.02");
+    expect(cov.countsByDisposition.COVERED_BY_CONNECTIVE_OWNERSHIP).toBe(0);
+  });
+});
+
 describe("source coverage - segmentation, tables and duplicates", () => {
   it("line-broken rows are separate units, not one block (audit finding 7)", () => {
     const text = "Reporting Requirements\nAnnual statements within 90 days after year end\nQuarterly statements within 45 days after quarter end\nNotice of any Default promptly";

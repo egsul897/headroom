@@ -48,6 +48,7 @@ import type { QuantitativeValue, SourceContextRegion } from "./types";
 export const COVERAGE_DISPOSITIONS = [
   "COVERED_BY_INVENTORY",
   "COVERED_BY_CHILD_DESCENT",
+  "COVERED_BY_CONNECTIVE_OWNERSHIP",
   "ACCOUNTED_BY_EXTERNAL_UNIT",
   "STRUCTURAL_NOISE",
   "HEADING_OR_LABEL",
@@ -63,6 +64,7 @@ export type CoverageDisposition = (typeof COVERAGE_DISPOSITIONS)[number];
 const ACCOUNTED: ReadonlySet<CoverageDisposition> = new Set<CoverageDisposition>([
   "COVERED_BY_INVENTORY",
   "COVERED_BY_CHILD_DESCENT",
+  "COVERED_BY_CONNECTIVE_OWNERSHIP",
   "ACCOUNTED_BY_EXTERNAL_UNIT",
   "STRUCTURAL_NOISE",
   "HEADING_OR_LABEL",
@@ -255,6 +257,72 @@ export function classifyUnaccountedFragment(fragment: string, values: Quantitati
 }
 
 // ---------------------------------------------------------------------------
+// Structural connective ownership (canary #2B)
+// ---------------------------------------------------------------------------
+
+/**
+ * Connectives whose ENTIRE semantic contribution is to attach the subordinate clause that follows them.
+ * Membership here does not make a fragment harmless - it only makes it a CANDIDATE for inheriting coverage from
+ * a complement that deterministic structure proves is its own. Every condition in `connectiveOwnsComplement`
+ * must still hold, and a fragment carrying any object of its own is rejected whatever words it uses.
+ *
+ * "notwithstanding" is deliberately absent. It is an OVERRIDE operator, not a clause introducer: its complement
+ * is the provision being disapplied, which lives elsewhere in the agreement. Covering the text that follows it
+ * therefore does not account for the override relationship, so a stranded "notwithstanding" stays a review gap.
+ */
+const CLAUSE_INTRODUCING_CONNECTIVES = new Set(["provided", "except", "unless", "including", "subject", "if", "whereas", "pursuant", "however"]);
+
+/** Reference nouns that, together with a locator, make a fragment carry its OWN object rather than pure glue. */
+const REFERENCE_NOUN_RE = /\b(section|clause|paragraph|subsection|article|annex|exhibit|schedule|appendix)s?\b/i;
+
+/**
+ * True when a fragment is nothing but a clause-introducing connective: it has at least one connective content
+ * word, every content word it has is such a connective, and it carries no object of its own.
+ *
+ * The object test is what separates ", provided that" (glue) from ", except as provided in Section 6.02,"
+ * (an exception whose content IS the cross-reference). A digit or a reference noun means the connective is
+ * saying something itself, so it can never be discharged by whatever happens to follow it.
+ */
+function isPureClauseIntroducer(fragment: string, values: QuantitativeValue[]): boolean {
+  if (values.length > 0) return false;
+  if (/\d/.test(fragment)) return false;
+  if (REFERENCE_NOUN_RE.test(fragment)) return false;
+  if (/["\u201c\u201d]/.test(fragment)) return false;
+  const words = contentWords(fragment);
+  return words.length > 0 && words.every((w) => CLAUSE_INTRODUCING_CONNECTIVES.has(w));
+}
+
+/**
+ * Attaches a stranded connective to the clause it introduces, but ONLY on deterministic structural evidence:
+ *
+ *  - the fragment is a pure clause introducer carrying no object and no value (above);
+ *  - the very next span in the region is COVERED_BY_INVENTORY - nothing but whitespace intervenes, so no
+ *    independent clause and no clause terminator sits between the connective and its complement;
+ *  - that complement's coverage BEGINS where the connective ends, i.e. the covered clause is the one the
+ *    connective introduces rather than some later clause;
+ *  - the complement is substantive in its own right (it has content words of its own).
+ *
+ * If any of that is missing the fragment stays UNACCOUNTED_SOURCE. Text following a connective, a covered
+ * neighbour, brevity, or resemblance to a known connective are each insufficient on their own.
+ */
+function applyConnectiveOwnership(regionSpans: SourceCoverageSpan[], text: string): void {
+  for (let i = 0; i < regionSpans.length; i++) {
+    const span = regionSpans[i]!;
+    if (span.disposition !== "UNACCOUNTED_SOURCE") continue;
+    if (!isPureClauseIntroducer(span.excerpt, span.values)) continue;
+    // The complement must be the immediately following covered span, with only whitespace in between.
+    let j = i + 1;
+    while (j < regionSpans.length && regionSpans[j]!.excerpt.trim().length === 0) j++;
+    const complement = regionSpans[j];
+    if (!complement || complement.disposition !== "COVERED_BY_INVENTORY") continue;
+    if (text.slice(span.charEnd, complement.charStart).trim().length > 0) continue;
+    if (contentWords(complement.excerpt).length === 0) continue;
+    span.disposition = "COVERED_BY_CONNECTIVE_OWNERSHIP";
+    span.reason = `a clause-introducing connective carrying no object of its own, immediately followed by the covered clause it introduces (${complement.regionId}:${complement.charStart}-${complement.charEnd})`;
+  }
+}
+
+// ---------------------------------------------------------------------------
 // The coverage pass
 // ---------------------------------------------------------------------------
 
@@ -350,7 +418,9 @@ export function computeSourceCoverage(input: SourceCoverageInput): SourceCoverag
           : s,
       );
     }
-    for (const local of unitSpans) spans.push(...local);
+    const regionSpans = unitSpans.flat();
+    applyConnectiveOwnership(regionSpans, text);
+    spans.push(...regionSpans);
   }
 
   const merged = mergeAdjacent(spans);
